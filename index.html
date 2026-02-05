@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mercersburg Robotics Tutor</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -43,7 +42,6 @@
       flex-direction: column;
     }
 
-    /* --- HEADER --- */
     .header {
       background: var(--bg-secondary);
       border-bottom: 1px solid var(--border);
@@ -62,7 +60,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
       flex-shrink: 0;
       box-shadow: 0 0 20px var(--accent-glow);
     }
@@ -98,15 +98,8 @@
       height: 7px;
       background: var(--success);
       border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    /* --- PLATFORM SELECTOR --- */
     .platform-bar {
       background: var(--bg-secondary);
       border-bottom: 1px solid var(--border);
@@ -150,7 +143,6 @@
       color: var(--accent);
     }
 
-    /* --- CHAT AREA --- */
     .chat-container {
       flex: 1;
       overflow-y: auto;
@@ -168,7 +160,6 @@
       border-radius: 3px;
     }
 
-    /* --- MESSAGES --- */
     .message {
       display: flex;
       gap: 12px;
@@ -194,7 +185,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      font-size: 12px;
+      font-weight: bold;
+      color: white;
       flex-shrink: 0;
       margin-top: 2px;
     }
@@ -228,7 +221,6 @@
       color: #d4dff0;
     }
 
-    /* Markdown-like formatting in bot messages */
     .msg-content p { margin-bottom: 8px; }
     .msg-content p:last-child { margin-bottom: 0; }
 
@@ -269,7 +261,6 @@
 
     .msg-content li { margin-bottom: 4px; }
 
-    /* Copy button for code blocks */
     .code-copy-btn {
       position: absolute;
       top: 8px;
@@ -290,7 +281,6 @@
       border-color: var(--accent-dim);
     }
 
-    /* --- WELCOME SCREEN --- */
     .welcome {
       display: flex;
       flex-direction: column;
@@ -310,7 +300,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
       margin-bottom: 20px;
       box-shadow: 0 0 40px var(--accent-glow);
     }
@@ -356,13 +348,21 @@
       background: var(--accent-glow);
     }
 
-    .hint-btn .hint-emoji {
-      display: block;
-      font-size: 18px;
-      margin-bottom: 6px;
+    .hint-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 4px;
+      text-align: center;
+      line-height: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      color: white;
+      margin-right: 8px;
+      vertical-align: middle;
     }
 
-    /* --- TYPING INDICATOR --- */
     .typing {
       display: flex;
       gap: 12px;
@@ -398,7 +398,6 @@
       40% { transform: translateY(-6px); opacity: 1; }
     }
 
-    /* --- INPUT AREA --- */
     .input-area {
       background: var(--bg-secondary);
       border-top: 1px solid var(--border);
@@ -484,7 +483,6 @@
 
     .clear-btn:hover { color: var(--error); background: rgba(239,68,68,0.1); }
 
-    /* --- ERROR BANNER --- */
     .error-banner {
       background: rgba(239, 68, 68, 0.1);
       border: 1px solid rgba(239, 68, 68, 0.3);
@@ -498,7 +496,6 @@
       display: none;
     }
 
-    /* --- RESPONSIVE --- */
     @media (max-width: 600px) {
       .welcome-hints { grid-template-columns: 1fr; }
       .header-badge { display: none; }
@@ -508,12 +505,11 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <div class="header">
-    <div class="header-icon">🤖</div>
+    <div class="header-icon">RT</div>
     <div class="header-text">
       <h1>Mercersburg Robotics Tutor</h1>
-      <p>Zumo · 3Pi+ · Zircon — Debugging help & concept explanations</p>
+      <p>Zumo | 3Pi+ | Zircon - Debugging help and concept explanations</p>
     </div>
     <div class="header-badge">
       <span class="status-dot"></span>
@@ -521,7 +517,6 @@
     </div>
   </div>
 
-  <!-- PLATFORM SELECTOR -->
   <div class="platform-bar">
     <span class="platform-label">Platform:</span>
     <button class="platform-btn active" data-platform="zumo">Zumo 32U4</button>
@@ -529,35 +524,32 @@
     <button class="platform-btn" data-platform="zircon">Zircon Soccer</button>
   </div>
 
-  <!-- CHAT -->
   <div class="chat-container" id="chatContainer">
-    <!-- Welcome screen -->
     <div class="welcome" id="welcomeScreen">
-      <div class="welcome-icon">🤖</div>
+      <div class="welcome-icon">?</div>
       <h2>Need help with your robot?</h2>
-      <p>I know your curriculum, your assignments, and your robots. Paste your error message, describe what's going wrong, or ask a concept question.</p>
+      <p>I know your curriculum, your assignments, and your robots. Paste your error message, describe what is going wrong, or ask a concept question.</p>
       <div class="welcome-hints">
-        <button class="hint-btn" onclick="sendHint(this)">
-          <span class="hint-emoji">🔴</span>
-          My code won't compile and I don't understand the error
+        <button class="hint-btn" onclick="sendHint('compile')">
+          <span class="hint-icon">!</span>
+          My code will not compile and I do not understand the error
         </button>
-        <button class="hint-btn" onclick="sendHint(this)">
-          <span class="hint-emoji">🔧</span>
-          My robot compiles but doesn't do what I expect
+        <button class="hint-btn" onclick="sendHint('behavior')">
+          <span class="hint-icon">?</span>
+          My robot compiles but does not do what I expect
         </button>
-        <button class="hint-btn" onclick="sendHint(this)">
-          <span class="hint-emoji">📡</span>
+        <button class="hint-btn" onclick="sendHint('sensors')">
+          <span class="hint-icon">S</span>
           How do the line sensors work?
         </button>
-        <button class="hint-btn" onclick="sendHint(this)">
-          <span class="hint-emoji">💡</span>
-          I'm stuck on a challenge and need a hint
+        <button class="hint-btn" onclick="sendHint('stuck')">
+          <span class="hint-icon">H</span>
+          I am stuck on a challenge and need a hint
         </button>
       </div>
     </div>
   </div>
 
-  <!-- INPUT -->
   <div class="input-area">
     <div class="input-wrapper">
       <textarea
@@ -573,63 +565,51 @@
       </button>
     </div>
     <div class="input-footer">
-      <span>Press Enter to send · Shift+Enter for new line</span>
+      <span>Press Enter to send | Shift+Enter for new line</span>
       <button class="clear-btn" onclick="clearChat()">Clear chat</button>
     </div>
   </div>
 
   <script>
-    // ==========================================
-    // CONFIGURATION — UPDATE THIS URL
-    // ==========================================
-    // After deploying your Cloudflare Worker, replace this URL
-    // with your worker's URL (e.g., https://robotics-tutor-proxy.yourname.workers.dev)
-    const WORKER_URL = "https://zumosupport.weymuthd.workers.dev";
+    var WORKER_URL = "https://zumosupport.weymuthd.workers.dev";
 
-    // ==========================================
-    // STATE
-    // ==========================================
-    let conversationHistory = [];
-    let currentPlatform = "zumo";
-    let isLoading = false;
+    var conversationHistory = [];
+    var currentPlatform = "zumo";
+    var isLoading = false;
 
-    const platformNames = {
+    var platformNames = {
       zumo: "Zumo 32U4 (Line Rescue)",
       "3pi": "3Pi+ 32U4 (Maze/Line Rescue)",
-      zircon: "Zircon Soccer Robot",
+      zircon: "Zircon Soccer Robot"
     };
 
-    // ==========================================
-    // PLATFORM SWITCHING
-    // ==========================================
-    document.querySelectorAll(".platform-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".platform-btn").forEach((b) => b.classList.remove("active"));
+    var hintTexts = {
+      compile: "My code will not compile and I do not understand the error",
+      behavior: "My robot compiles but does not do what I expect",
+      sensors: "How do the line sensors work?",
+      stuck: "I am stuck on a challenge and need a hint"
+    };
+
+    document.querySelectorAll(".platform-btn").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        document.querySelectorAll(".platform-btn").forEach(function(b) {
+          b.classList.remove("active");
+        });
         btn.classList.add("active");
         currentPlatform = btn.dataset.platform;
       });
     });
 
-    // ==========================================
-    // HINT BUTTONS
-    // ==========================================
-    function sendHint(btn) {
-      const text = btn.textContent.trim().replace(/^./, "").trim(); // remove emoji
-      document.getElementById("userInput").value = text;
+    function sendHint(key) {
+      document.getElementById("userInput").value = hintTexts[key];
       sendMessage();
     }
 
-    // ==========================================
-    // AUTO-RESIZE TEXTAREA
-    // ==========================================
     function autoResize(el) {
       el.style.height = "auto";
       el.style.height = Math.min(el.scrollHeight, 150) + "px";
     }
 
-    // ==========================================
-    // KEYBOARD HANDLING
-    // ==========================================
     function handleKey(e) {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
@@ -637,45 +617,39 @@
       }
     }
 
-    // ==========================================
-    // RENDER MARKDOWN-ISH TEXT
-    // ==========================================
     function renderMarkdown(text) {
-      // Code blocks
-      text = text.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
-        const id = "code-" + Math.random().toString(36).substr(2, 6);
-        return `<pre><code id="${id}">${escapeHtml(code.trim())}</code><button class="code-copy-btn" onclick="copyCode('${id}')">Copy</button></pre>`;
+      text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(match, lang, code) {
+        var id = "code-" + Math.random().toString(36).substr(2, 6);
+        return '<pre><code id="' + id + '">' + escapeHtml(code.trim()) + '</code><button class="code-copy-btn" onclick="copyCode(\'' + id + '\')">Copy</button></pre>';
       });
-      // Inline code
       text = text.replace(/`([^`]+)`/g, "<code>$1</code>");
-      // Bold
       text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-      // Italic
       text = text.replace(/\*(.+?)\*/g, "<em>$1</em>");
-      // Line breaks → paragraphs
-      text = text
-        .split(/\n\n+/)
-        .map((p) => {
-          p = p.trim();
-          if (p.startsWith("<pre>") || p.startsWith("<ul>") || p.startsWith("<ol>")) return p;
-          // Handle bullet lists
-          if (p.match(/^[-•]\s/m)) {
-            const items = p.split(/\n/).map((line) =>
-              `<li>${line.replace(/^[-•]\s*/, "")}</li>`
-            ).join("");
-            return `<ul>${items}</ul>`;
+      var paragraphs = text.split(/\n\n+/);
+      var result = "";
+      for (var i = 0; i < paragraphs.length; i++) {
+        var p = paragraphs[i].trim();
+        if (p.indexOf("<pre>") === 0 || p.indexOf("<ul>") === 0 || p.indexOf("<ol>") === 0) {
+          result += p;
+        } else if (p.match(/^[-]\s/m)) {
+          var lines = p.split("\n");
+          var items = "";
+          for (var j = 0; j < lines.length; j++) {
+            items += "<li>" + lines[j].replace(/^[-]\s*/, "") + "</li>";
           }
-          // Numbered lists
-          if (p.match(/^\d+\.\s/m)) {
-            const items = p.split(/\n/).map((line) =>
-              `<li>${line.replace(/^\d+\.\s*/, "")}</li>`
-            ).join("");
-            return `<ol>${items}</ol>`;
+          result += "<ul>" + items + "</ul>";
+        } else if (p.match(/^\d+\.\s/m)) {
+          var lines = p.split("\n");
+          var items = "";
+          for (var j = 0; j < lines.length; j++) {
+            items += "<li>" + lines[j].replace(/^\d+\.\s*/, "") + "</li>";
           }
-          return `<p>${p.replace(/\n/g, "<br>")}</p>`;
-        })
-        .join("");
-      return text;
+          result += "<ol>" + items + "</ol>";
+        } else {
+          result += "<p>" + p.replace(/\n/g, "<br>") + "</p>";
+        }
+      }
+      return result;
     }
 
     function escapeHtml(str) {
@@ -683,31 +657,28 @@
     }
 
     function copyCode(id) {
-      const el = document.getElementById(id);
+      var el = document.getElementById(id);
       navigator.clipboard.writeText(el.textContent);
-      const btn = el.parentElement.querySelector(".code-copy-btn");
+      var btn = el.parentElement.querySelector(".code-copy-btn");
       btn.textContent = "Copied!";
-      setTimeout(() => (btn.textContent = "Copy"), 1500);
+      setTimeout(function() { btn.textContent = "Copy"; }, 1500);
     }
 
-    // ==========================================
-    // ADD MESSAGE TO CHAT
-    // ==========================================
     function addMessage(role, content) {
-      const container = document.getElementById("chatContainer");
-      const welcome = document.getElementById("welcomeScreen");
+      var container = document.getElementById("chatContainer");
+      var welcome = document.getElementById("welcomeScreen");
       if (welcome) welcome.style.display = "none";
 
-      const div = document.createElement("div");
-      div.className = `message ${role}`;
+      var div = document.createElement("div");
+      div.className = "message " + role;
 
-      const avatar = document.createElement("div");
+      var avatar = document.createElement("div");
       avatar.className = "msg-avatar";
-      avatar.textContent = role === "bot" ? "🤖" : "👤";
+      avatar.textContent = role === "bot" ? "RT" : "U";
 
-      const msg = document.createElement("div");
+      var msg = document.createElement("div");
       msg.className = "msg-content";
-      msg.innerHTML = role === "bot" ? renderMarkdown(content) : `<p>${escapeHtml(content)}</p>`;
+      msg.innerHTML = role === "bot" ? renderMarkdown(content) : "<p>" + escapeHtml(content) + "</p>";
 
       div.appendChild(avatar);
       div.appendChild(msg);
@@ -715,33 +686,24 @@
       container.scrollTop = container.scrollHeight;
     }
 
-    // ==========================================
-    // TYPING INDICATOR
-    // ==========================================
     function showTyping() {
-      const container = document.getElementById("chatContainer");
-      const div = document.createElement("div");
+      var container = document.getElementById("chatContainer");
+      var div = document.createElement("div");
       div.className = "typing";
       div.id = "typingIndicator";
-      div.innerHTML = `
-        <div class="msg-avatar" style="background:var(--accent);box-shadow:0 0 12px var(--accent-glow);">🤖</div>
-        <div class="typing-dots"><span></span><span></span><span></span></div>
-      `;
+      div.innerHTML = '<div class="msg-avatar" style="background:var(--accent);box-shadow:0 0 12px var(--accent-glow);">RT</div><div class="typing-dots"><span></span><span></span><span></span></div>';
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
     }
 
     function hideTyping() {
-      const el = document.getElementById("typingIndicator");
+      var el = document.getElementById("typingIndicator");
       if (el) el.remove();
     }
 
-    // ==========================================
-    // SEND MESSAGE
-    // ==========================================
-    async function sendMessage() {
-      const input = document.getElementById("userInput");
-      const text = input.value.trim();
+    function sendMessage() {
+      var input = document.getElementById("userInput");
+      var text = input.value.trim();
       if (!text || isLoading) return;
 
       isLoading = true;
@@ -749,93 +711,62 @@
       input.value = "";
       input.style.height = "auto";
 
-      // Add platform context to first message
-      const userContent =
-        conversationHistory.length === 0
-          ? `[Platform: ${platformNames[currentPlatform]}]\n\n${text}`
-          : text;
+      var userContent = text;
+      if (conversationHistory.length === 0) {
+        userContent = "[Platform: " + platformNames[currentPlatform] + "]\n\n" + text;
+      }
 
       addMessage("user", text);
       conversationHistory.push({ role: "user", content: userContent });
 
       showTyping();
 
-      try {
-        const res = await fetch(WORKER_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: conversationHistory }),
-        });
-
-        hideTyping();
-
+      fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: conversationHistory })
+      })
+      .then(function(res) {
         if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+          throw new Error("HTTP " + res.status);
         }
-
-        const data = await res.json();
+        return res.json();
+      })
+      .then(function(data) {
+        hideTyping();
 
         if (data.error) {
           throw new Error(data.error.message || "API error");
         }
 
-        const reply = data.content
-          .map((block) => (block.type === "text" ? block.text : ""))
-          .filter(Boolean)
-          .join("\n");
+        var reply = "";
+        for (var i = 0; i < data.content.length; i++) {
+          if (data.content[i].type === "text") {
+            reply += data.content[i].text;
+          }
+        }
 
         conversationHistory.push({ role: "assistant", content: reply });
         addMessage("bot", reply);
-      } catch (err) {
+      })
+      .catch(function(err) {
         hideTyping();
-        addMessage(
-          "bot",
-          `**Oops — something went wrong.** The tutor couldn't process your question. This usually means the server is temporarily unavailable.\n\nError: \`${err.message}\`\n\nTry again in a moment, or let your instructor know if this keeps happening.`
-        );
-      }
-
-      isLoading = false;
-      document.getElementById("sendBtn").disabled = false;
-      input.focus();
+        addMessage("bot", "**Oops - something went wrong.** The tutor could not process your question. This usually means the server is temporarily unavailable.\n\nError: `" + err.message + "`\n\nTry again in a moment, or let your instructor know if this keeps happening.");
+      })
+      .finally(function() {
+        isLoading = false;
+        document.getElementById("sendBtn").disabled = false;
+        input.focus();
+      });
     }
 
-    // ==========================================
-    // CLEAR CHAT
-    // ==========================================
     function clearChat() {
       conversationHistory = [];
-      const container = document.getElementById("chatContainer");
-      container.innerHTML = "";
-
-      // Restore welcome
-      container.innerHTML = `
-        <div class="welcome" id="welcomeScreen">
-          <div class="welcome-icon">🤖</div>
-          <h2>Need help with your robot?</h2>
-          <p>I know your curriculum, your assignments, and your robots. Paste your error message, describe what's going wrong, or ask a concept question.</p>
-          <div class="welcome-hints">
-            <button class="hint-btn" onclick="sendHint(this)">
-              <span class="hint-emoji">🔴</span>
-              My code won't compile and I don't understand the error
-            </button>
-            <button class="hint-btn" onclick="sendHint(this)">
-              <span class="hint-emoji">🔧</span>
-              My robot compiles but doesn't do what I expect
-            </button>
-            <button class="hint-btn" onclick="sendHint(this)">
-              <span class="hint-emoji">📡</span>
-              How do the line sensors work?
-            </button>
-            <button class="hint-btn" onclick="sendHint(this)">
-              <span class="hint-emoji">💡</span>
-              I'm stuck on a challenge and need a hint
-            </button>
-          </div>
-        </div>`;
+      var container = document.getElementById("chatContainer");
+      container.innerHTML = '<div class="welcome" id="welcomeScreen"><div class="welcome-icon">?</div><h2>Need help with your robot?</h2><p>I know your curriculum, your assignments, and your robots. Paste your error message, describe what is going wrong, or ask a concept question.</p><div class="welcome-hints"><button class="hint-btn" onclick="sendHint(\'compile\')"><span class="hint-icon">!</span>My code will not compile and I do not understand the error</button><button class="hint-btn" onclick="sendHint(\'behavior\')"><span class="hint-icon">?</span>My robot compiles but does not do what I expect</button><button class="hint-btn" onclick="sendHint(\'sensors\')"><span class="hint-icon">S</span>How do the line sensors work?</button><button class="hint-btn" onclick="sendHint(\'stuck\')"><span class="hint-icon">H</span>I am stuck on a challenge and need a hint</button></div></div>';
     }
 
-    // Focus input on load
-    window.addEventListener("load", () => {
+    window.addEventListener("load", function() {
       document.getElementById("userInput").focus();
     });
   </script>
