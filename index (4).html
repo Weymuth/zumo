@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercersburg Robotics AI Tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-hover: #22263a;
+      --border: #2a2e3f;
+      --text: #e1e4ed;
+      --text-dim: #8b8fa3;
+      --accent: #4f8ff7;
+      --accent-dim: #3a6bc5;
+      --green: #3dd68c;
+      --yellow: #f5c542;
+      --red: #f55858;
+      --orange: #f5953b;
+      --purple: #a371f7;
+      --code-bg: #161822;
+      --user-bg: #273250;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ===================== HEADER ===================== */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .header-logo { font-size: 28px; }
+    .header-title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .header-subtitle {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* ===================== TOOLBAR ===================== */
+    .toolbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .toolbar-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Platform buttons */
+    .platform-btns { display: flex; gap: 6px; }
+    .platform-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .platform-btn:hover { border-color: var(--accent); color: var(--text); }
+    .platform-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* Challenge selector */
+    .challenge-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+      margin: 0 4px;
+    }
+    .challenge-select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      max-width: 320px;
+    }
+    .challenge-select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* Prerequisite banner */
+    .prereq-banner {
+      background: #2a1f00;
+      border: 1px solid #4a3500;
+      border-radius: 8px;
+      margin: 8px 20px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      display: none;
+      flex-shrink: 0;
+    }
+    .prereq-banner.visible { display: block; }
+    .prereq-banner .prereq-title {
+      font-weight: 700;
+      color: var(--yellow);
+      margin-bottom: 4px;
+    }
+    .prereq-banner .prereq-body {
+      color: #d4b44a;
+    }
+
+    /* ===================== CHAT ===================== */
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Drag-and-drop overlay */
+    .chat-area.drag-over::after {
+      content: '📎 Drop your code file here';
+      position: absolute;
+      inset: 0;
+      background: rgba(79, 143, 247, 0.12);
+      border: 2px dashed var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .chat-area { position: relative; }
+
+    /* Welcome screen */
+    .welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+      gap: 16px;
+      padding: 40px 20px;
+    }
+    .welcome-icon { font-size: 56px; }
+    .welcome h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .welcome p {
+      color: var(--text-dim);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+    .welcome-hints {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      max-width: 460px;
+      margin-top: 8px;
+    }
+    .hint-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .hint-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+    }
+    .hint-emoji { font-size: 18px; }
+
+    /* Messages */
+    .message {
+      max-width: 80%;
+      line-height: 1.6;
+      font-size: 14px;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+    .message.user {
+      align-self: flex-end;
+      background: var(--user-bg);
+      border-radius: 16px 16px 4px 16px;
+      padding: 10px 16px;
+    }
+    .message.bot {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px 16px 16px 4px;
+      padding: 12px 16px;
+    }
+
+    /* File attachment in user message */
+    .message .file-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(79, 143, 247, 0.15);
+      border: 1px solid rgba(79, 143, 247, 0.3);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    /* Markdown rendering in bot messages */
+    .message.bot code {
+      background: var(--code-bg);
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .message.bot pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+    .message.bot pre code {
+      background: none;
+      padding: 0;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .message.bot strong { color: var(--accent); font-weight: 600; }
+    .message.bot p { margin: 6px 0; }
+    .message.bot ul, .message.bot ol { margin: 6px 0; padding-left: 20px; }
+    .message.bot li { margin: 4px 0; }
+    .message.bot h3, .message.bot h4 { margin-top: 12px; margin-bottom: 4px; }
+
+    /* Typing indicator */
+    .typing {
+      display: none;
+      align-self: flex-start;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px 16px 16px 4px;
+    }
+    .typing.visible { display: flex; gap: 4px; }
+    .typing span {
+      width: 8px; height: 8px;
+      background: var(--text-dim);
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ===================== INPUT ===================== */
+    .input-area {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+      flex-shrink: 0;
+    }
+
+    /* Attached files preview */
+    .attached-files {
+      display: none;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .attached-files.has-files { display: flex; }
+    .attached-file {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(79, 143, 247, 0.1);
+      border: 1px solid rgba(79, 143, 247, 0.25);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      animation: fadeIn 0.15s ease;
+    }
+    .attached-file .file-icon { font-size: 14px; }
+    .attached-file .file-name { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .attached-file .file-size { color: var(--text-dim); font-size: 10px; }
+    .attached-file .file-remove {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 2px;
+      line-height: 1;
+    }
+    .attached-file .file-remove:hover { color: var(--red); }
+
+    .input-wrapper {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 12px;
+    }
+    .input-wrapper:focus-within { border-color: var(--accent); }
+
+    /* Upload button */
+    .upload-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .upload-btn:hover { color: var(--accent); background: rgba(79, 143, 247, 0.1); }
+    .upload-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    .input-field {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      resize: none;
+      outline: none;
+      max-height: 120px;
+      line-height: 1.5;
+    }
+    .send-btn {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .send-btn:hover { background: var(--accent-dim); }
+    .send-btn:disabled { opacity: 0.4; cursor: default; }
+    .send-btn svg { width: 18px; height: 18px; fill: #fff; }
+
+    .input-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .clear-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 11px;
+      font-family: inherit;
+    }
+    .clear-btn:hover { color: var(--red); }
+
+    /* Hidden file input */
+    #fileInput { display: none; }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 600px) {
+      .header { padding: 10px 12px; }
+      .toolbar { padding: 8px 12px; }
+      .chat-area { padding: 12px; }
+      .input-area { padding: 10px 12px; }
+      .message { max-width: 92%; }
+      .challenge-select { max-width: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-logo">🤖</span>
+    <div>
+      <div class="header-title">Mercersburg Robotics AI Tutor</div>
+      <div class="header-subtitle">Your 24/7 debugging partner</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR: Platform + Challenge Selector -->
+  <div class="toolbar">
+    <span class="toolbar-label">Platform:</span>
+    <div class="platform-btns">
+      <button class="platform-btn active" data-platform="zumo">Zumo 32U4</button>
+      <button class="platform-btn" data-platform="3pi">3Pi+ 32U4</button>
+      <button class="platform-btn" data-platform="zircon">Zircon Soccer</button>
+    </div>
+
+    <div class="challenge-divider"></div>
+
+    <span class="toolbar-label">Working on:</span>
+    <select class="challenge-select" id="challengeSelect" onchange="onChallengeChange()">
+      <option value="">— Select a challenge (optional) —</option>
+
+      <optgroup label="Lesson 1: Hello Robot">
+        <option value="1.1">1.1 Change the Message (Easy ⭐)</option>
+        <option value="1.2">1.2 Change the Beep (Easy ⭐)</option>
+        <option value="1.3">1.3 More Blinks (Medium ⭐⭐)</option>
+        <option value="1.4">1.4 Longer Movement (Medium ⭐⭐)</option>
+        <option value="1.5">1.5 Victory Jingle (Hard ⭐⭐⭐)</option>
+        <option value="1.6">1.6 Battery Check (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 2: Read Code Like A Pro">
+        <option value="2.1">2.1 The Broken Code (Easy ⭐)</option>
+        <option value="2.2">2.2 Battery Screen (Easy ⭐)</option>
+        <option value="2.3">2.3 Button Counter (Medium ⭐⭐)</option>
+        <option value="2.4">2.4 Scrolling Text (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 3: Motors & TRIM">
+        <option value="3.1">3.1 Add a Spin Test (Easy ⭐)</option>
+        <option value="3.2">3.2 Variable Speed Test (Easy ⭐)</option>
+        <option value="3.3">3.3 Battery Warning System (Medium ⭐⭐)</option>
+        <option value="3.4">3.4 Save TRIM to Code (Medium ⭐⭐)</option>
+        <option value="3.5">3.5 Drive a Square (Hard ⭐⭐⭐)</option>
+        <option value="3.6">3.6 Auto-TRIM Preview (Expert ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 4: Line Sensors">
+        <option value="4.1">4.1 Threshold Detection (Easy ⭐)</option>
+        <option value="4.2">4.2 Sensor-to-LED Mapping (Easy ⭐)</option>
+        <option value="4.3">4.3 Hysteresis / Anti-Flicker (Medium ⭐⭐)</option>
+        <option value="4.4">4.4 Edge Detection Warning (Medium ⭐⭐)</option>
+        <option value="4.5">4.5 Simple Line Follower Preview (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 5: Proximity Sensors">
+        <option value="5.1">5.1 Detection Counter (Easy ⭐)</option>
+        <option value="5.2">5.2 Direction Indicator LEDs (Easy ⭐)</option>
+        <option value="5.3">5.3 Proximity-Based Beep Speed (Medium ⭐⭐)</option>
+        <option value="5.4">5.4 All-Around Detection Warning (Medium ⭐⭐)</option>
+        <option value="5.5">5.5 Social Distancing Robot (Medium ⭐⭐)</option>
+        <option value="5.6">5.6 Simple Obstacle Avoidance (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 6: Encoders">
+        <option value="6.1">6.1 The Square (Easy ⭐)</option>
+        <option value="6.2">6.2 The Triangle (Easy ⭐)</option>
+        <option value="6.3">6.3 The Pentagon (Medium ⭐⭐)</option>
+        <option value="6.4">6.4 Basketball Suicide Drill (Medium ⭐⭐)</option>
+        <option value="6.5">6.5 The Odometer (Medium ⭐⭐)</option>
+        <option value="6.6">6.6 Smooth Stopping (Hard ⭐⭐⭐)</option>
+        <option value="6.7">6.7 Smooth Acceleration (Hard ⭐⭐⭐)</option>
+        <option value="6.8">6.8 Trapezoidal Motion Profile (Expert ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 7: Code Organization">
+        <option value="7.1">7.1 Add Reverse Driving (Easy ⭐)</option>
+        <option value="7.2">7.2 Add Turn Helpers (Easy ⭐)</option>
+        <option value="7.3">7.3 Create RobotDisplay Module (Medium ⭐⭐)</option>
+        <option value="7.4">7.4 Add Speed Modes to Config (Medium ⭐⭐)</option>
+        <option value="7.5">7.5 Create RobotSensors Skeleton (Hard ⭐⭐⭐)</option>
+        <option value="7.6">7.6 Square Navigation All Modules (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 8: P-Control Line Following">
+        <option value="8.1">8.1 Speed Optimization (Easy ⭐)</option>
+        <option value="8.2">8.2 Wiggle Test (Easy ⭐)</option>
+        <option value="8.3">8.3 Gap Gauntlet (Medium ⭐⭐)</option>
+        <option value="8.4">8.4 Display Position Bar (Medium ⭐⭐)</option>
+        <option value="8.5">8.5 Adaptive Kp Controller (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 9: Intersections & Dead Ends">
+        <option value="9.1">9.1 LED Turn Indicators (Easy ⭐)</option>
+        <option value="9.2">9.2 Line-Seeking Turns (Medium ⭐⭐)</option>
+        <option value="9.3">9.3 Encoder-Based Turns (Hard ⭐⭐⭐)</option>
+        <option value="9.4">9.4 Debounced Detection (Hard ⭐⭐⭐)</option>
+        <option value="9.5">9.5 Right-Hand Rule Maze Solver (Expert ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 10: Obstacles">
+        <option value="10.1">10.1 LED Turn Indicators (Easy ⭐)</option>
+        <option value="10.2">10.2 Adaptive Forward Duration (Medium ⭐⭐)</option>
+        <option value="10.3">10.3 Both-Direction Avoidance (Medium ⭐⭐)</option>
+        <option value="10.4">10.4 Obstacle + Intersection Combo (Hard ⭐⭐⭐)</option>
+        <option value="10.5">10.5 Encoder-Based Avoidance (Hard ⭐⭐⭐)</option>
+        <option value="10.6">10.6 Alternating Avoidance Direction (Expert ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 11: Edge Detection">
+        <option value="11.1">11.1 Gap Length Detective (Easy ⭐)</option>
+        <option value="11.2">11.2 Recovery Search Pattern (Medium ⭐⭐)</option>
+        <option value="11.3">11.3 Ramp Detection (Hard ⭐⭐⭐)</option>
+        <option value="11.4">11.4 The Gauntlet — Competition Track (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 12: Rescue Zone">
+        <option value="12.1">12.1 Calibration Master (Easy ⭐)</option>
+        <option value="12.2">12.2 Better Search Pattern (Medium ⭐⭐)</option>
+        <option value="12.3">12.3 Victim Counter with Limit (Medium ⭐⭐)</option>
+        <option value="12.4">12.4 Distinguish Living vs Dead (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 13: Competition Prep">
+        <option value="13.1">13.1 Reliability Marathon (Easy ⭐)</option>
+        <option value="13.2">13.2 Environmental Gauntlet (Medium ⭐⭐)</option>
+        <option value="13.3">13.3 Battery Drain Test (Medium ⭐⭐)</option>
+        <option value="13.4">13.4 The Pressure Test (Hard ⭐⭐⭐)</option>
+        <option value="13.5">13.5 Documentation Challenge (Hard ⭐⭐⭐)</option>
+      </optgroup>
+
+      <optgroup label="Lesson 14: Advanced PID Control">
+        <option value="14.1">14.1 High-Speed Smooth Following (Easy ⭐)</option>
+        <option value="14.2">14.2 PD vs PID Comparison (Easy ⭐)</option>
+        <option value="14.3">14.3 Encoder-Based Precise Turns (Medium ⭐⭐)</option>
+        <option value="14.4">14.4 Constant Speed Control (Medium ⭐⭐)</option>
+        <option value="14.5">14.5 Gain Scheduling (Hard ⭐⭐⭐)</option>
+        <option value="14.6">14.6 PID Class Refactoring (Hard ⭐⭐⭐)</option>
+        <option value="14.7">14.7 Data Logging and Analysis (Expert ⭐⭐⭐)</option>
+      </optgroup>
+    </select>
+  </div>
+
+  <!-- PREREQUISITE BANNER -->
+  <div class="prereq-banner" id="prereqBanner">
+    <div class="prereq-title">⚠️ Prerequisites for this challenge:</div>
+    <div class="prereq-body" id="prereqBody"></div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-area" id="chatContainer">
+    <div class="welcome" id="welcomeScreen">
+      <div class="welcome-icon">🤖</div>
+      <h2>Need help with your robot?</h2>
+      <p>I know your curriculum, your assignments, and your robots.
+      Paste your error message, describe what's going wrong, or ask a concept question.
+      You can also <strong>attach code files</strong> (.cpp, .h, .ino) using the 📎 button.</p>
+      <div class="welcome-hints">
+        <button class="hint-btn" onclick="sendHint(this)">
+          <span class="hint-emoji">🔴</span>
+          My code won't compile and I don't understand the error
+        </button>
+        <button class="hint-btn" onclick="sendHint(this)">
+          <span class="hint-emoji">🔧</span>
+          My robot compiles but doesn't do what I expect
+        </button>
+        <button class="hint-btn" onclick="sendHint(this)">
+          <span class="hint-emoji">📡</span>
+          How do the line sensors work?
+        </button>
+        <button class="hint-btn" onclick="sendHint(this)">
+          <span class="hint-emoji">💡</span>
+          I'm stuck on a challenge and need a hint
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPING INDICATOR -->
+  <div class="typing" id="typingIndicator">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-area">
+    <!-- Attached files preview -->
+    <div class="attached-files" id="attachedFiles"></div>
+
+    <div class="input-wrapper">
+      <!-- Upload button -->
+      <button class="upload-btn" onclick="document.getElementById('fileInput').click()" title="Attach code files (.cpp, .h, .ino, .txt)">
+        <svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
+      </button>
+      <input type="file" id="fileInput" multiple accept=".cpp,.h,.hpp,.ino,.txt,.c,.py,.ini,.md,.json,.csv" onchange="handleFileSelect(event)" />
+
+      <textarea
+        class="input-field"
+        id="userInput"
+        placeholder="Paste your error or ask a question..."
+        rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="input-footer">
+      <span>Press Enter to send · Shift+Enter for new line · 📎 Attach code files</span>
+      <button class="clear-btn" onclick="clearChat()">Clear chat</button>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURATION
+    // ==========================================
+    const WORKER_URL = "https://zumosupport.weymuthd.workers.dev";
+
+    // Allowed file extensions for upload
+    const ALLOWED_EXTENSIONS = ['.cpp', '.h', '.hpp', '.ino', '.txt', '.c', '.py', '.ini', '.md', '.json', '.csv'];
+    const MAX_FILE_SIZE = 50000; // 50KB max per file (code files are small)
+    const MAX_FILES = 5;
+
+    // ==========================================
+    // PREREQUISITE DATA (client-side display only)
+    // ==========================================
+    const PREREQ_HINTS = {
+      "6.8": "Requires Challenge 6.6 (Smooth Stopping) AND 6.7 (Smooth Acceleration) — you need both working before combining them.",
+      "7.6": "Requires Challenge 7.1 (Reverse Driving) + 7.2 (Turn Helpers). Ideally also 7.3 (RobotDisplay). All modules must compile.",
+      "8.1": "Your L7 modules must be working: RobotConfig.h, RobotMotion, RobotSensors. Plus the L8 followLine() code.",
+      "8.2": "Needs your L8 base code with followLine() and tuned KP value.",
+      "8.3": "Needs handleGap() from the L8 build section working. Make sure MAX_GAP_TIME is in RobotConfig.h.",
+      "8.4": "Needs readLinePosition() from L8. You'll use the OLED display and map() function.",
+      "8.5": "Needs followLine() and readLinePosition(). ⚠️ Common bug: using the constant KP instead of your adjustable currentKp variable!",
+      "9.1": "Needs the L9 state machine working (AT_INTERSECTION, EXECUTING_TURN states).",
+      "9.2": "Needs L9 turn functions + L8 line sensor reading for the hybrid approach.",
+      "9.3": "Needs L6 encoder knowledge! You must understand ENCODER_COUNTS_90 and add encoder #includes.",
+      "9.4": "Needs L9 checkForIntersection() working reliably before adding debounce logic.",
+      "9.5": "Advanced! Needs FULL understanding of all intersection types and turn functions from L9.",
+      "10.1": "Needs the L10 obstacle avoidance state machine phases working.",
+      "10.2": "Needs L10 checkForObstacle() and PHASE_DRIVE_PAST state.",
+      "10.3": "Needs L10 obstacle phases AND L5 understanding of left vs right proximity sensor values.",
+      "10.4": "⚠️ HARDEST COMBO — needs BOTH obstacle AND intersection state machines working together. Get each working separately first!",
+      "10.5": "Needs L10 obstacle phases + L6 encoder concepts (COUNTS_PER_90_TURN, COUNTS_FORWARD).",
+      "10.6": "Needs L10 obstacle avoidance working. Uses counter variable and modulo (%) operator.",
+      "11.1": "Needs L11 edge/gap detection states + L6 encoder counts for distance calculation.",
+      "11.2": "Needs L11 LINE_LOST state + L6 encoder-based turns (45°/90° rotations).",
+      "11.3": "Needs L11 gap detection + LSM303 accelerometer library (NEW hardware — not in prior lessons).",
+      "11.4": "Requires Challenge 11.1 (gap measurement) working first. Build a full test track.",
+      "12.1": "Needs L12 silver detection code working. Test under multiple lighting conditions.",
+      "12.2": "Needs L12 search pattern + L5 proximity sensors for wall detection + L6 encoder tracking.",
+      "12.3": "Needs L12 performRescue() and rescue state machine working.",
+      "12.4": "Requires Challenge 12.1 (Calibration Master) done first — silver detection must be reliable!",
+      "13.1": "Needs your COMPLETE working robot — line following, intersections, obstacles, edges. All of L1-L12.",
+      "13.2": "Complete robot + ability to recalibrate thresholds for different lighting.",
+      "13.3": "Complete robot + readBatteryMillivolts() for monitoring.",
+      "13.4": "Complete robot + knowledge of competition rules.",
+      "13.5": "Knowledge of ALL threshold values and behaviors from L4-L12.",
+      "14.1": "Needs L8 P-control working + L14 PID extension (KP, KI, KD constants).",
+      "14.2": "Needs L14 PID followLine(). Compare with KI=0 for PD mode.",
+      "14.3": "Needs L6 encoder counts (~370 counts per 90°) + L14 PID concepts.",
+      "14.4": "Needs L6 encoder-based speed measurement + L14 PID concepts.",
+      "14.5": "Requires Challenge 14.1 (basic PID tuning) done first. Multiple gain sets needed.",
+      "14.6": "Needs L14 PID code + C++ class syntax (constructor, methods, private members).",
+      "14.7": "Needs L14 PID variables + Serial output + external analysis tool (Excel/Python).",
+    };
+
+    // ==========================================
+    // STATE
+    // ==========================================
+    let conversationHistory = [];
+    let currentPlatform = "zumo";
+    let currentChallenge = "";
+    let isLoading = false;
+    let attachedFiles = []; // Array of { name, content, size }
+
+    const platformNames = {
+      zumo: "Zumo 32U4 (Line Rescue)",
+      "3pi": "3Pi+ 32U4 (Maze/Line Rescue)",
+      zircon: "Zircon Soccer Robot",
+    };
+
+    // ==========================================
+    // PLATFORM SWITCHING
+    // ==========================================
+    document.querySelectorAll(".platform-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".platform-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentPlatform = btn.dataset.platform;
+      });
+    });
+
+    // ==========================================
+    // CHALLENGE SELECTOR
+    // ==========================================
+    function onChallengeChange() {
+      const select = document.getElementById("challengeSelect");
+      currentChallenge = select.value;
+      const banner = document.getElementById("prereqBanner");
+      const body = document.getElementById("prereqBody");
+
+      if (currentChallenge && PREREQ_HINTS[currentChallenge]) {
+        body.textContent = PREREQ_HINTS[currentChallenge];
+        banner.classList.add("visible");
+      } else {
+        banner.classList.remove("visible");
+      }
+    }
+
+    // ==========================================
+    // FILE UPLOAD HANDLING
+    // ==========================================
+    function handleFileSelect(event) {
+      const files = Array.from(event.target.files);
+      processFiles(files);
+      event.target.value = ""; // Reset so same file can be re-selected
+    }
+
+    function processFiles(files) {
+      for (const file of files) {
+        // Check file count
+        if (attachedFiles.length >= MAX_FILES) {
+          alert("Maximum " + MAX_FILES + " files at a time.");
+          break;
+        }
+
+        // Check extension
+        const ext = "." + file.name.split(".").pop().toLowerCase();
+        if (!ALLOWED_EXTENSIONS.includes(ext)) {
+          alert(file.name + ": Only code files are supported (" + ALLOWED_EXTENSIONS.join(", ") + ")");
+          continue;
+        }
+
+        // Check size
+        if (file.size > MAX_FILE_SIZE) {
+          alert(file.name + ": File too large (max 50KB). Try pasting the relevant section instead.");
+          continue;
+        }
+
+        // Check for duplicates
+        if (attachedFiles.some(f => f.name === file.name)) {
+          continue;
+        }
+
+        // Read file
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          attachedFiles.push({
+            name: file.name,
+            content: e.target.result,
+            size: file.size,
+          });
+          renderAttachedFiles();
+        };
+        reader.readAsText(file);
+      }
+    }
+
+    function removeAttachedFile(index) {
+      attachedFiles.splice(index, 1);
+      renderAttachedFiles();
+    }
+
+    function renderAttachedFiles() {
+      const container = document.getElementById("attachedFiles");
+      if (attachedFiles.length === 0) {
+        container.classList.remove("has-files");
+        container.innerHTML = "";
+        return;
+      }
+
+      container.classList.add("has-files");
+      container.innerHTML = attachedFiles.map((f, i) => {
+        const sizeStr = f.size < 1000 ? f.size + " B" : (f.size / 1000).toFixed(1) + " KB";
+        return '<div class="attached-file">' +
+          '<span class="file-icon">📄</span>' +
+          '<span class="file-name">' + escapeHtml(f.name) + '</span>' +
+          '<span class="file-size">(' + sizeStr + ')</span>' +
+          '<button class="file-remove" onclick="removeAttachedFile(' + i + ')" title="Remove">✕</button>' +
+          '</div>';
+      }).join("");
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ==========================================
+    // DRAG AND DROP
+    // ==========================================
+    const chatArea = document.getElementById("chatContainer");
+    let dragCounter = 0;
+
+    chatArea.addEventListener("dragenter", (e) => {
+      e.preventDefault();
+      dragCounter++;
+      chatArea.classList.add("drag-over");
+    });
+
+    chatArea.addEventListener("dragleave", (e) => {
+      e.preventDefault();
+      dragCounter--;
+      if (dragCounter === 0) chatArea.classList.remove("drag-over");
+    });
+
+    chatArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    chatArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dragCounter = 0;
+      chatArea.classList.remove("drag-over");
+      if (e.dataTransfer.files.length > 0) {
+        processFiles(Array.from(e.dataTransfer.files));
+      }
+    });
+
+    // ==========================================
+    // MESSAGING
+    // ==========================================
+    function addMessage(role, text, fileNames) {
+      const welcome = document.getElementById("welcomeScreen");
+      if (welcome) welcome.remove();
+
+      const container = document.getElementById("chatContainer");
+      const div = document.createElement("div");
+      div.className = "message " + role;
+
+      if (role === "bot") {
+        div.innerHTML = renderMarkdown(text);
+      } else {
+        // Show file tags above the message text for user messages
+        let html = "";
+        if (fileNames && fileNames.length > 0) {
+          html += fileNames.map(n => '<div class="file-tag">📄 ' + escapeHtml(n) + '</div>').join("");
+        }
+        html += '<div>' + escapeHtml(text) + '</div>';
+        div.innerHTML = html;
+      }
+
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function renderMarkdown(text) {
+      let html = text
+        .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+        .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^\- (.+)$/gm, '<li>$1</li>')
+        .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+
+      html = html.replace(/(<li>.*?<\/li>(\s*<br>)*)+/g, (match) => {
+        return '<ul>' + match.replace(/<br>/g, '') + '</ul>';
+      });
+
+      return '<p>' + html + '</p>';
+    }
+
+    function showTyping() {
+      document.getElementById("typingIndicator").classList.add("visible");
+      document.getElementById("chatContainer").scrollTop =
+        document.getElementById("chatContainer").scrollHeight;
+    }
+
+    function hideTyping() {
+      document.getElementById("typingIndicator").classList.remove("visible");
+    }
+
+    function sendHint(btn) {
+      const text = btn.textContent.trim();
+      document.getElementById("userInput").value = text;
+      sendMessage();
+    }
+
+    function handleKey(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function autoResize(el) {
+      el.style.height = "auto";
+      el.style.height = Math.min(el.scrollHeight, 120) + "px";
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+
+      // Must have text OR files
+      if ((!text && attachedFiles.length === 0) || isLoading) return;
+
+      isLoading = true;
+      document.getElementById("sendBtn").disabled = true;
+      input.value = "";
+      input.style.height = "auto";
+
+      // Build the message content
+      const isFirstMessage = conversationHistory.length === 0;
+      let userContent = "";
+
+      // Add platform/challenge context on first message
+      if (isFirstMessage) {
+        let prefix = "[Platform: " + platformNames[currentPlatform] + "]";
+        if (currentChallenge) {
+          prefix += "\n[Currently working on: Challenge " + currentChallenge + "]";
+        }
+        userContent = prefix + "\n\n";
+      }
+
+      // Add file contents
+      const fileNames = attachedFiles.map(f => f.name);
+      if (attachedFiles.length > 0) {
+        for (const f of attachedFiles) {
+          userContent += "--- FILE: " + f.name + " ---\n";
+          userContent += f.content;
+          userContent += "\n--- END FILE ---\n\n";
+        }
+      }
+
+      // Add user's typed message
+      if (text) {
+        userContent += text;
+      } else {
+        userContent += "Here are my code files. Can you review them?";
+      }
+
+      // Show message in chat (display text only, not file contents)
+      const displayText = text || "Can you review my code?";
+      addMessage("user", displayText, fileNames);
+
+      // Clear attached files
+      attachedFiles = [];
+      renderAttachedFiles();
+
+      // Add to conversation history
+      conversationHistory.push({ role: "user", content: userContent });
+
+      showTyping();
+
+      try {
+        const res = await fetch(WORKER_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: conversationHistory,
+            currentChallenge: currentChallenge || null,
+          }),
+        });
+
+        hideTyping();
+
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.error?.message || "HTTP " + res.status);
+        }
+
+        const data = await res.json();
+
+        if (data.error) {
+          throw new Error(data.error.message || "API error");
+        }
+
+        const reply = data.content
+          .map((block) => (block.type === "text" ? block.text : ""))
+          .filter(Boolean)
+          .join("\n");
+
+        conversationHistory.push({ role: "assistant", content: reply });
+        addMessage("bot", reply);
+      } catch (err) {
+        hideTyping();
+        addMessage(
+          "bot",
+          "**Oops — something went wrong.** The tutor couldn't process your question. This usually means the server is temporarily unavailable.\n\nError: `" + err.message + "`\n\nTry again in a moment, or let your instructor know if this keeps happening."
+        );
+      }
+
+      isLoading = false;
+      document.getElementById("sendBtn").disabled = false;
+      input.focus();
+    }
+
+    // ==========================================
+    // CLEAR CHAT
+    // ==========================================
+    function clearChat() {
+      conversationHistory = [];
+      attachedFiles = [];
+      renderAttachedFiles();
+      const container = document.getElementById("chatContainer");
+      container.innerHTML = '\
+        <div class="welcome" id="welcomeScreen">\
+          <div class="welcome-icon">🤖</div>\
+          <h2>Need help with your robot?</h2>\
+          <p>I know your curriculum, your assignments, and your robots.\
+          Paste your error message, describe what\'s going wrong, or ask a concept question.\
+          You can also <strong>attach code files</strong> (.cpp, .h, .ino) using the 📎 button.</p>\
+          <div class="welcome-hints">\
+            <button class="hint-btn" onclick="sendHint(this)">\
+              <span class="hint-emoji">🔴</span>\
+              My code won\'t compile and I don\'t understand the error\
+            </button>\
+            <button class="hint-btn" onclick="sendHint(this)">\
+              <span class="hint-emoji">🔧</span>\
+              My robot compiles but doesn\'t do what I expect\
+            </button>\
+            <button class="hint-btn" onclick="sendHint(this)">\
+              <span class="hint-emoji">📡</span>\
+              How do the line sensors work?\
+            </button>\
+            <button class="hint-btn" onclick="sendHint(this)">\
+              <span class="hint-emoji">💡</span>\
+              I\'m stuck on a challenge and need a hint\
+            </button>\
+          </div>\
+        </div>\
+      ';
+    }
+  </script>
+
+</body>
+</html>
