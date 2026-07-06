@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZUMO Challenge Timer</title>
+<style>
+  html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+  .card {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex; align-items: center; gap: 12px;
+    border: 2px solid #3498db; border-radius: 8px;
+    padding: 6px 12px; max-width: 326px; background: #ffffff;
+    box-sizing: border-box;
+  }
+  .left { text-align: left; min-width: 78px; }
+  .label { font-size: 10px; font-weight: bold; color: #2e86ab; letter-spacing: 0.3px; line-height: 1.2; }
+  .sub { font-size: 10px; font-weight: bold; color: #6c757d; line-height: 1.2; }
+  .sub.up { color: #f44336; }
+  .digits {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 27px; font-weight: bold; line-height: 1;
+    color: #3a7d5c; flex: 1; text-align: center;
+  }
+  .digits.warn { color: #ff9800; }
+  .digits.danger { color: #f44336; }
+  .digits.done { color: #f44336; animation: flash 0.6s step-start infinite; }
+  @keyframes flash { 50% { opacity: 0.25; } }
+  button {
+    font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold;
+    border: none; border-radius: 5px; padding: 6px 10px; margin-left: 4px;
+    cursor: pointer; color: #ffffff; white-space: nowrap;
+  }
+  #startBtn { background: #3a7d5c; }
+  #startBtn.pause { background: #ff8c00; }
+  #resetBtn { background: #6c757d; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="left">
+    <div class="label" id="label"></div>
+    <div class="sub" id="sub"></div>
+  </div>
+  <div class="digits" id="digits">0:00</div>
+  <div>
+    <button id="startBtn">&#9654; START</button><button id="resetBtn">&#8635;</button>
+  </div>
+</div>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var totalSec = Math.round(parseFloat(params.get('min') || '3') * 60);
+  var labelTxt = params.get('label') || 'Timer';
+  var mins = Math.round(totalSec / 60);
+  document.getElementById('label').textContent = labelTxt;
+  var sub = document.getElementById('sub');
+  sub.textContent = mins + ' MINUTES';
+
+  var digits = document.getElementById('digits');
+  var startBtn = document.getElementById('startBtn');
+  var resetBtn = document.getElementById('resetBtn');
+  var remaining = totalSec, timer = null, endAt = 0;
+
+  function fmt(s) {
+    var m = Math.floor(s / 60), r = s % 60;
+    return m + ':' + (r < 10 ? '0' : '') + r;
+  }
+  function paint() {
+    digits.textContent = fmt(remaining);
+    digits.className = 'digits';
+    if (remaining === 0) { digits.className = 'digits done'; }
+    else if (remaining <= totalSec * 0.2) { digits.className = 'digits danger'; }
+    else if (remaining <= totalSec * 0.5) { digits.className = 'digits warn'; }
+  }
+  function beep() {
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [0, 0.25, 0.5].forEach(function (t) {
+        var o = ctx.createOscillator(), g = ctx.createGain();
+        o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
+        g.gain.setValueAtTime(0.15, ctx.currentTime + t);
+        o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + 0.15);
+      });
+    } catch (e) {}
+  }
+  function tick() {
+    remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000));
+    paint();
+    if (remaining === 0) {
+      clearInterval(timer); timer = null;
+      startBtn.textContent = '\u25B6 START'; startBtn.className = '';
+      sub.textContent = "TIME'S UP!"; sub.className = 'sub up';
+      beep();
+    }
+  }
+  startBtn.onclick = function () {
+    if (timer) {
+      clearInterval(timer); timer = null;
+      startBtn.textContent = '\u25B6 RESUME'; startBtn.className = '';
+      return;
+    }
+    if (remaining === 0) { remaining = totalSec; sub.textContent = mins + ' MINUTES'; sub.className = 'sub'; }
+    endAt = Date.now() + remaining * 1000;
+    timer = setInterval(tick, 250);
+    startBtn.textContent = '\u23F8 PAUSE'; startBtn.className = 'pause';
+  };
+  resetBtn.onclick = function () {
+    clearInterval(timer); timer = null;
+    remaining = totalSec; sub.textContent = mins + ' MINUTES'; sub.className = 'sub';
+    startBtn.textContent = '\u25B6 START'; startBtn.className = '';
+    paint();
+  };
+  paint();
+})();
+</script>
+</body>
+</html>
