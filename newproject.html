@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZUMO Project Maker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; background: #f4f6f8; margin: 0; padding: 24px; }
+  .card { max-width: 560px; margin: 0 auto; background: #fff; border: 2px solid #3498db; border-radius: 12px; padding: 22px 26px; }
+  h1 { font-size: 20px; color: #1a5276; margin: 0 0 4px; }
+  .sub { color: #4a5a66; font-size: 13px; margin-bottom: 18px; }
+  label { font-weight: bold; font-size: 13px; color: #333; display: block; margin: 12px 0 4px; }
+  input, select { font-size: 15px; padding: 8px 10px; border: 1px solid #b8c4cc; border-radius: 6px; width: 100%; box-sizing: border-box; }
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+  .preview { font-family: 'Consolas','Courier New',monospace; font-size: 18px; font-weight: bold;
+             color: #2a5a42; background: #eef5f0; border: 1px dashed #3a7d5c; border-radius: 6px;
+             padding: 10px 14px; text-align: center; margin: 18px 0 6px; min-height: 24px; }
+  .err { color: #f44336; font-size: 12.5px; font-weight: bold; height: 16px; text-align: center; }
+  button.go { width: 100%; font-size: 16px; font-weight: bold; color: #fff; background: #3a7d5c;
+              border: none; border-radius: 8px; padding: 12px; margin-top: 10px; cursor: pointer; }
+  button.go:disabled { background: #9db8aa; cursor: default; }
+  .hint { font-size: 12px; color: #6a7a86; margin-top: 10px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>&#129302; ZUMO Project Maker</h1>
+  <div class="sub">Type your name once. Pick where you're working. Download a project that's already named correctly.</div>
+
+  <div class="row">
+    <div>
+      <label for="lname">Last name</label>
+      <input id="lname" placeholder="Smith" autocomplete="off">
+    </div>
+    <div>
+      <label for="finit">First initial (only if two students share a last name)</label>
+      <input id="finit" placeholder="J" maxlength="1" autocomplete="off">
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label for="lesson">Lesson</label>
+      <select id="lesson"></select>
+    </div>
+    <div>
+      <label for="kind">Working on</label>
+      <select id="kind">
+        <option value="main">Main lesson build</option>
+        <option value="M">Mystery sandbox (_M)</option>
+        <option value="C1">Challenge copy (_C1)</option>
+        <option value="C2">Challenge copy (_C2)</option>
+        <option value="C3">Challenge copy (_C3)</option>
+        <option value="C4">Challenge copy (_C4)</option>
+        <option value="C5">Challenge copy (_C5)</option>
+        <option value="C6">Challenge copy (_C6)</option>
+        <option value="B1">Bonus copy (_B1)</option>
+        <option value="B2">Bonus copy (_B2)</option>
+        <option value="B3">Bonus copy (_B3)</option>
+        <option value="B4">Bonus copy (_B4)</option>
+        <option value="B5">Bonus copy (_B5)</option>
+        <option value="B6">Bonus copy (_B6)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="preview" id="preview">&nbsp;</div>
+  <div class="err" id="err"></div>
+  <button class="go" id="go" disabled>&#11015; Download my project folder</button>
+  <div class="hint">Unzip into <b>Documents/PlatformIO</b>, then in VS Code: File &rarr; Open Folder.</div>
+</div>
+
+<script>
+(function () {
+  var TITLES = {1:"Hello Robot",2:"Read Code Like a Pro",3:"Motors",4:"Line Sensors",
+    5:"Proximity Sensors",6:"Encoders",7:"Code Organization",8:"Line Following",
+    9:"Intersections",10:"Obstacles",11:"Edge Detection",12:"Rescue Zone",
+    13:"Competition Prep",14:"Advanced PID Control",15:"Engineering Showcase"};
+
+  var lesson = document.getElementById('lesson');
+  for (var i = 1; i <= 15; i++) {
+    var o = document.createElement('option');
+    o.value = i; o.textContent = 'Lesson ' + String(i).padStart(2,'0') + ' \u2014 ' + TITLES[i];
+    lesson.appendChild(o);
+  }
+
+  var lname = document.getElementById('lname'), finit = document.getElementById('finit'),
+      kind = document.getElementById('kind'), preview = document.getElementById('preview'),
+      go = document.getElementById('go'), err = document.getElementById('err');
+
+  var params = new URLSearchParams(location.search);
+  if (params.get('lesson')) lesson.value = parseInt(params.get('lesson'), 10) || 1;
+  if (params.get('kind')) kind.value = params.get('kind');
+  try {
+    lname.value = localStorage.getItem('zumo_lname') || '';
+    finit.value = localStorage.getItem('zumo_finit') || '';
+  } catch (e) {}
+
+  function clean(s) { return s.replace(/[^A-Za-z]/g, ''); }
+  function folderName() {
+    var n = clean(lname.value);
+    if (!n) return null;
+    n = n.charAt(0).toUpperCase() + n.slice(1);
+    var fi = clean(finit.value).toUpperCase();
+    var base = n + fi + '_L' + String(lesson.value).padStart(2, '0');
+    return kind.value === 'main' ? base : base + '_' + kind.value;
+  }
+  function refresh() {
+    var f = folderName();
+    preview.textContent = f || 'type your last name\u2026';
+    go.disabled = !f;
+    err.textContent = '';
+  }
+  [lname, finit, lesson, kind].forEach(function (el) {
+    el.addEventListener('input', refresh); el.addEventListener('change', refresh);
+  });
+  refresh();
+
+  var INI = "[env:a-star32u4]\nplatform = atmelavr\nboard = a-star32u4\nframework = arduino\nmonitor_speed = 115200\nlib_deps = pololu/Zumo32U4\n";
+
+  function mainCpp(f) {
+    var num = String(lesson.value).padStart(2, '0');
+    var what = kind.value === 'main' ? TITLES[lesson.value]
+             : kind.value === 'M' ? TITLES[lesson.value] + ' \u2014 Mystery Sandbox'
+             : TITLES[lesson.value] + ' \u2014 ' + (kind.value.charAt(0) === 'C' ? 'Challenge ' : 'Bonus Challenge ') + kind.value.slice(1);
+    var name = clean(lname.value); name = name.charAt(0).toUpperCase() + name.slice(1);
+    var d = new Date();
+    var date = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+    return "/*\n=====================================================\nLESSON " + num + " - " + what +
+      "\n=====================================================\nWHAT THIS PROGRAM DOES:\n(update this as you build!)\nAUTHOR: " + name +
+      "\nDATE: " + date + "\n=====================================================\n*/\n\n#include <Zumo32U4.h>\n\n" +
+      "// ===== HARDWARE OBJECTS =====\n\n// ===== CONSTANTS =====\n\n// ===== FUNCTION PROTOTYPES =====\n\n" +
+      "void setup() {\n}\n\nvoid loop() {\n}\n\n// ===== HELPER FUNCTIONS =====\n";
+  }
+
+  go.onclick = function () {
+    var f = folderName();
+    if (!f) return;
+    try {
+      localStorage.setItem('zumo_lname', clean(lname.value));
+      localStorage.setItem('zumo_finit', clean(finit.value));
+    } catch (e) {}
+    var zip = new JSZip();
+    var root = zip.folder(f);
+    root.file('platformio.ini', INI);
+    root.folder('src').file('main.cpp', mainCpp(f));
+    zip.generateAsync({ type: 'blob' }).then(function (blob) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = f + '.zip';
+      document.body.appendChild(a); a.click(); a.remove();
+    }).catch(function (e) { err.textContent = 'Download failed \u2014 tell your teacher: ' + e; });
+  };
+})();
+</script>
+</body>
+</html>
