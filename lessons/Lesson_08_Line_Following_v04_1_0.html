@@ -1,0 +1,2532 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lesson 8: Line Following with P-Control — Zumo 32U4 Robotics</title>
+
+</head>
+
+<body id="top" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; background-color: #fafafa;">
+
+<!-- Navigation -->
+
+<nav style="background: linear-gradient(to bottom, #1a5276 0%, #2e86ab 100%); border-radius: 10px; padding: 15px 20px; margin-bottom: 30px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+<a href="#section-1" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3498db; border-radius: 4px; font-size: 0.85em;">1. Intro</a>
+<a href="#section-2" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3498db; border-radius: 4px; font-size: 0.85em;">2. Objectives</a>
+<a href="#section-3" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3498db; border-radius: 4px; font-size: 0.85em;">3. Theory</a>
+<a href="#section-4" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3a7d5c; border-radius: 4px; font-size: 0.85em;">4. Hardware</a>
+<a href="#section-5" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3a7d5c; border-radius: 4px; font-size: 0.85em;">5. Code</a>
+<a href="#section-6" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3a7d5c; border-radius: 4px; font-size: 0.85em;">6. Build It</a>
+<a href="#section-7" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">7. Test</a>
+<a href="#section-8" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">8. Troubleshoot</a>
+<a href="#section-8a" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">8A. Concepts</a>
+<a href="#section-9" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #9b6a9e; border-radius: 4px; font-size: 0.85em;">9. Challenges</a>
+<a href="#section-10" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">10. Exit</a>
+<a href="#bonus-challenges" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Bonus</a>
+<a href="#glossary" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Glossary</a>
+<a href="#quick-ref" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Quick Ref</a>
+<a href="#image-index" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Image Index</a>
+</div>
+</nav>
+
+<!-- Title Section -->
+
+<div style="text-align: center; padding: 30px; margin-bottom: 30px; background: linear-gradient(to bottom, #1a5276 0%, #2e86ab 100%); color: white; border-radius: 8px;">
+
+<h1 style="font-size: 3em; margin: 0; font-weight: bold; letter-spacing: 2px;">LESSON 08</h1>
+
+<div style="font-size: 1.3em; margin: 10px 0; font-weight: bold;">Line Following with Proportional Control</div>
+
+<div style="font-size: 1em; opacity: 0.9;">Zumo 32U4 Robotics • PlatformIO Edition</div>
+
+<div style="font-size: 0.9em; opacity: 0.8; margin-top: 5px;">Version 4 — July 2026</div>
+
+</div>
+
+<!-- Icon Legend -->
+<div style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 30px;">
+<div style="font-weight: bold; margin-bottom: 10px; color: #495057;">📋 Icon Legend</div>
+<div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9em;">
+<span>📖 LEARN</span> <span>💻 CODE</span> <span>🔨 BUILD</span>
+<span>▶️ TEST</span> <span>✅ CHECKPOINT</span> <span>⚠️ WARNING</span>
+<span>📝 DO THIS NOW</span> <span>🔑 KEY TERM</span> <span>💡 TIP</span> <span>👀 SEE</span>
+<span>🔍 INSIGHT</span> <span>🔮 NEXT</span>
+</div>
+</div>
+
+<!-- New Teaching Approach Notice -->
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>🚀 NEW IN THIS LESSON: Hybrid Approach</strong>
+
+<p>Starting with Lesson 8, you'll write more code yourself! Instead of typing complete code from the book, you'll:</p>
+
+<ol>
+
+<li><strong>Read the pseudocode</strong> — Plain English logic for the algorithm</li>
+
+<li><strong>Fill in the skeleton</strong> — Code template with blanks to complete</li>
+
+<li><strong>Compare to solution</strong> — Check your work against the provided answer</li>
+
+</ol>
+
+<p>This is how professional programmers work: understand the logic first, then translate it to code!</p>
+
+</div>
+
+<!-- Prerequisites Notice -->
+
+<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>📋 PREREQUISITES: Building on Lesson 7</strong>
+
+<p>This lesson builds directly on your <strong>Lesson 7</strong> code organization. You should have:</p>
+
+<ul>
+
+<li>A working Lesson 7 project with the 6-file structure</li>
+
+<li><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">RobotConfig.h</code> — Your configuration constants</li>
+
+<li><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">RobotSensors.h/.cpp</code> — Hardware object definitions</li>
+
+<li><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">RobotMotion.h/.cpp</code> — Movement functions (driveDistance, turnDegrees)</li>
+
+<li><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">main.cpp</code> — Your main program</li>
+
+</ul>
+
+<p>If you don't have Lesson 7 complete, go back and finish it first!</p>
+
+</div>
+
+<!-- PART 1 DIVIDER -->
+<div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 1 — Theory &amp; Concepts</div><div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Sections 1–3: Learn the fundamentals</div></div>
+
+<!-- Section 1: Opening Hook -->
+
+<div style="background-color: #3498db; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-1" style="font-size: 1.15em; font-weight: bold;">📖 Section 1: The Drunk Robot Problem</div></div>
+<div style="border: 2px solid #3498db; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<p>Picture this: You've built your Zumo, calibrated your sensors, and you're ready to follow a line. You write what seems like perfectly logical code:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">If the line is on the left, turn left.
+If the line is on the right, turn right.
+If the line is centered, go straight.</pre>
+
+<p>You set your robot on the track, press the button, and... disaster. Your robot lurches left, overcorrects right, swings back left, and <strong>zigzags down the course like it's had one too many battery charges</strong>.</p>
+
+<p>This is the <strong>"bang-bang" problem</strong>—named after the jarring way the robot bangs back and forth between full-left and full-right corrections.</p>
+
+<div style="background: #e3f2fd; border: 2px dashed #2196f3; border-radius: 10px; padding: 40px 20px; text-align: center; margin: 20px 0; color: #1565c0; font-style: italic;">[VIDEO 8.1] Side-by-side comparison: Robot oscillating with bang-bang control vs. smooth line following with P-control</div>
+
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L08_GRAPHIC_8-1_bang_bang_oscillation.svg" alt="Bang-bang steering diagram: robot path zigzags across a straight line at constant width — every crossing triggers a full-lock turn, so the wobble never shrinks" style="width: 100%; max-width: 860px; display: block; margin: 20px auto;">
+
+<div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>💡 Coach's Tip: When Bang-Bang Works</strong>
+
+<p>Bang-bang control isn't always bad! It works great for <strong>binary actuators</strong> like relays, solenoids, or on/off switches where you only have two states. But for <strong>continuous actuators</strong> like motors that can run at any speed, proportional control gives much smoother results.</p>
+
+</div>
+
+<p>Now watch a competition robot. It glides along the line like it's on rails—smooth, fast, confident. The difference? <strong>Proportional control</strong>.</p>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>🤖 Real-World Connection</strong>
+
+<p>Proportional control is the "P" in PID control—the most widely used control algorithm in the world:</p>
+
+<ul>
+
+<li><strong>Cruise control</strong> — Adjusts throttle based on how far from target speed</li>
+
+<li><strong>Thermostats</strong> — Heat more when temperature is way below target</li>
+
+<li><strong>Drone altitude</strong> — Thrust harder when drifting further from target height</li>
+
+</ul>
+
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Section 2: Learning Objectives -->
+
+</div>
+<div style="background-color: #3498db; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-2" style="font-size: 1.15em; font-weight: bold;">🎯 Section 2: Learning Objectives</div></div>
+<div style="border: 2px solid #3498db; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<p>By the end of this lesson, you will be able to:</p>
+
+<div style="background: white; border: 2px solid #2e86ab; border-radius: 10px; padding: 20px; margin: 20px 0;">
+
+<ul>
+
+<li><strong>Explain</strong> why bang-bang control causes oscillation</li>
+
+<li><strong>Define</strong> error, setpoint, and proportional gain (Kp)</li>
+
+<li><strong>Calculate</strong> steering corrections using the proportional control formula</li>
+
+<li><strong>Update</strong> the RobotSensors module with line sensor functions</li>
+
+<li><strong>Implement</strong> a line-following algorithm using proportional control</li>
+
+<li><strong>Tune</strong> the Kp constant for smooth following</li>
+
+<li><strong>Handle</strong> gaps in the line</li>
+
+</ul>
+
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Section 3: Key Concepts -->
+
+</div>
+<div style="background-color: #3498db; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-3" style="font-size: 1.15em; font-weight: bold;">📖 Section 3: Key Concepts</div></div>
+<div style="border: 2px solid #3498db; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<!-- Bang-Bang vs P-Control Comparison -->
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>📖 LEARN: Bang-Bang vs. P-Control</strong>
+
+<p>Before P-Control, you probably wrote something like this:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (position &lt; <span style="color: #b5cea8;">2000</span>) {
+<span style="color: #7cbf6e;">// Line is left → turn left (HARD)</span>
+motors.setSpeeds(<span style="color: #b5cea8;">100</span>, <span style="color: #b5cea8;">300</span>);
+} <span style="color: #569cd6;">else</span> {
+<span style="color: #7cbf6e;">// Line is right → turn right (HARD)</span>
+motors.setSpeeds(<span style="color: #b5cea8;">300</span>, <span style="color: #b5cea8;">100</span>);
+}</pre>
+
+<p>This is called <strong>Bang-Bang Control</strong>—the robot is always turning hard left or hard right, never anything in between.</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #1a5276; color: white; padding: 12px 15px; text-align: left;">Bang-Bang Control</th>
+
+<th style="background: #1a5276; color: white; padding: 12px 15px; text-align: left;">P-Control</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Only two states: full left or full right</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Infinite states: gentle to aggressive corrections</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Jerky, zig-zag motion</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Smooth, curved corrections</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Looks like: 🚗💥🚗💥🚗</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Looks like: 🚗〰️🚗〰️🚗</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Slow (constant overcorrection)</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Fast (efficient corrections)</td>
+
+</tr>
+
+</table>
+
+<p><strong>The key insight:</strong> P-Control makes corrections <em>proportional</em> to the error. A little off-center? Small correction. Way off-center? Big correction. This is why it's called <strong>P</strong>roportional control.</p>
+
+</div>
+
+<h3 style="color: #3498db; margin-top: 30px;">3.1 The Proportional Control Solution</h3>
+
+<p>The key formula:</p>
+
+<div style="background: #d1ecf1; padding: 20px; border-radius: 8px; font-family: Consolas, monospace; font-size: 1.2em; text-align: center; margin: 20px 0;">correction = Kp × error</div>
+
+<p>Where:</p>
+
+<ul>
+
+<li><strong>error</strong> = position − setpoint (how far off target)</li>
+
+<li><strong>Kp</strong> = proportional gain (how aggressively to correct)</li>
+
+<li><strong>correction</strong> = adjustment to motor speeds</li>
+
+</ul>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Setpoint</strong> — The target value you want to maintain. For line following, the center setpoint is <strong>2000</strong> (range 0-4000).
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Error</strong> — The difference between where you are and where you want to be.
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Kp (Proportional Gain)</strong> — A tuning constant that scales error to correction. With position error ranging from -2000 to +2000 and typical Kp values of 0.1 to 0.3, your correction will range roughly from -600 to +600. Too low = sluggish. Too high = oscillates.
+
+</div>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>🔮 Looking Ahead: The Full PID</strong>
+
+<p>The "P" in P-control stands for <strong>Proportional</strong>—but it's actually just one part of a more complete system called <strong>PID</strong>:</p>
+
+<ul>
+
+<li><strong>P (Proportional)</strong> — What we're learning today: correct based on current error</li>
+
+<li><strong>I (Integral)</strong> — Fixes small persistent errors that P alone can't eliminate</li>
+
+<li><strong>D (Derivative)</strong> — Damps oscillation by predicting where error is heading</li>
+
+</ul>
+
+<p>For line following, P-control alone works great! You might explore PID in future projects or competitions.</p>
+
+</div>
+
+<h3 style="color: #3498db; margin-top: 30px;">3.2 Applying Correction to Motors</h3>
+
+<div style="background: #d1ecf1; padding: 20px; border-radius: 8px; font-family: Consolas, monospace; font-size: 1.2em; text-align: center; margin: 20px 0;">leftSpeed = baseSpeed + correction<br>rightSpeed = baseSpeed - correction</div>
+
+<p><strong>Understanding signed error:</strong> The error value tells you both <em>how far</em> and <em>which direction</em> to correct:</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #1a5276; color: white; padding: 12px 15px; text-align: left;">Situation</th>
+
+<th style="background: #1a5276; color: white; padding: 12px 15px; text-align: left;">Position</th>
+
+<th style="background: #1a5276; color: white; padding: 12px 15px; text-align: left;">Error</th>
+
+<th style="background: #1a5276; color: white; padding: 12px 15px; text-align: left;">Correction</th>
+
+<th style="background: #1a5276; color: white; padding: 12px 15px; text-align: left;">Result</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Line RIGHT of center</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">3000</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">+1000</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">+100 (if Kp=0.1)</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Left faster → turns RIGHT</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Line LEFT of center</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">1000</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">-1000</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">-100 (if Kp=0.1)</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Right faster → turns LEFT</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Line CENTERED</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">2000</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">0</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">0</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Both equal → STRAIGHT</td>
+
+</tr>
+
+</table>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+</div>
+<!-- PART 2 DIVIDER -->
+<div style="background-color: #3a7d5c; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 2 — Hardware &amp; Code</div><div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Sections 4–6: Set up and program your robot</div></div>
+
+<!-- Section 4: Hardware -->
+
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-4" style="font-size: 1.15em; font-weight: bold;">🔧 Section 4: Hardware Overview</div></div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<p>Great news! You already have everything you need from previous lessons:</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">Component</th>
+
+<th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">From Lesson</th>
+
+<th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">Used For</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Line Sensor Array</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Lesson 4</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Detecting line position</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Motors</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Lesson 3</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Driving and steering</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">OLED Display</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Lesson 1</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Showing status and Kp value</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Buttons A, B, C</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Lesson 2</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Adjusting Kp and starting/stopping</td>
+
+</tr>
+
+</table>
+
+<div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>💡 Coach's Tip</strong>
+
+<p>Make sure your line sensors are clean! Dust or debris can cause false readings. Use a soft cloth to gently wipe the sensor lenses.</p>
+
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Section 5: Code Structure -->
+
+<!-- Section 5: Code Walkthrough -->
+</div>
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-5" style="font-size: 1.15em; font-weight: bold;">💻 Section 5: Understanding the Code</div></div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<p>Before you write code, you need to understand the core algorithm. Here's the proportional control formula translated from math to Arduino:</p>
+
+<div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin: 20px 0; font-family: Consolas, monospace;">
+    <strong>Mathematical Formula:</strong>
+    <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">correction = Kp × (position − setpoint)</pre>
+    <strong>Arduino Code:</strong>
+    <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+<span style="color: #569cd6;">int</span> correction = Kp * error;</pre>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">5.1 The Error Signal</h3>
+
+<p>The <strong>error</strong> is how far you are from your target. For line following:</p>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+    <span>🔑</span> <strong>Error = Current Position − Setpoint</strong>
+    <p>Example: If position = 3200 and setpoint = 2000, then error = +1200 (line is 1200 units to the right)</p>
+</div>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📖 Why Signed Errors Matter</strong>
+    <p>Notice the error is <strong>signed</strong> (positive or negative). This tells the robot not just <em>how much</em> to correct, but <em>which direction</em>:</p>
+    <ul>
+        <li>Positive error (+1200) → Line is RIGHT → Turn right</li>
+        <li>Negative error (-1200) → Line is LEFT → Turn left</li>
+        <li>Zero error → Line is CENTERED → Go straight</li>
+    </ul>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">5.2 Proportional Response</h3>
+
+<p>The proportional gain <strong>Kp</strong> scales the error into a motor correction:</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+    <tr>
+        <th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">Error</th>
+        <th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">With Kp = 0.1</th>
+        <th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">Meaning</th>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">0</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">0</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Line centered → no correction</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">±500</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">±50</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Slight offset → gentle adjustment</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">±1000</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">±100</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Moderate offset → medium adjustment</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">±2000</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">±200</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Far off → aggressive adjustment</td>
+    </tr>
+</table>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">5.3 Applying Correction to Motors</h3>
+
+<p>The correction is a steering adjustment added to one motor and subtracted from the other:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">int</span> leftSpeed = BASE_SPEED + correction;
+<span style="color: #569cd6;">int</span> rightSpeed = BASE_SPEED - correction;</pre>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>💡 Coach's Tip: Speed Limiting</strong>
+    <p>Never let motor speeds exceed your <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">MAX_SPEED</code> constant. Use <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">constrain()</code> to keep values safe:</p>
+    <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);</pre>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">5.4 Key Functions You'll Call</h3>
+
+<p>Your new sensor and control functions in this lesson:</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+    <tr>
+        <th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">Function</th>
+        <th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">What It Does</th>
+        <th style="background: #2a5a42; color: white; padding: 12px 15px; text-align: left;">Returns</th>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">initLineSensors()</code></td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Set up the 5-sensor array</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">—</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">calibrateLineSensors()</code></td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Spin to calibrate sensors on your track</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">—</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">readLinePosition()</code></td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Get current line position (0-4000)</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">int position</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">isLineVisible()</code></td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Check if any sensor sees the line</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">bool true/false</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">followLine()</code></td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Calculate and apply P-control steering</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">—</td>
+    </tr>
+
+<tr style="background-color: #f9f9f9;">
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">handleGap()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Coast straight briefly when the line vanishes; stop after MAX_GAP_TIME</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">&#8212;</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">showStatus()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">RUNNING/STOPPED, current Kp, and the button legend on the OLED</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">&#8212;</td>
+
+</tr>
+</table>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+</div>
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-6" style="font-size: 1.15em; font-weight: bold;">🔨 Section 6: Build It: Step-by-Step</div></div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Section 5 gave you the algorithm. Now you build it — into the eight-file architecture you assembled in Lesson 7. Nothing gets rebuilt from scratch: you <strong>edit three files and replace one</strong>, and the other four ride along untouched. That's the whole point of the architecture.</p>
+
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L08_GRAPHIC_8-3_project_file_tree.svg" alt="Eight-file project tree: RobotConfig.h, RobotSensors.h and RobotSensors.cpp get edited, main.cpp is replaced, and the four Helpers and Motion files carry over from Lesson 7 untouched" style="width: 100%; max-width: 860px; display: block; margin: 20px auto;">
+
+<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>⚠️ HOW THIS SECTION WORKS — plan-first, same as Lesson 7</strong>
+<ol>
+<li><strong>📖 Explanation</strong> — what this step changes and why</li>
+<li><strong>🎯 The goal</strong> — what the file must accomplish. No pseudo-code provided.</li>
+<li><strong>📝 MY PLAN</strong> — write your plan into the MY PLAN block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch code. Plain English, numbered. <strong>This block is part of your grade.</strong></li>
+<li><strong>⌨️ Build from YOUR plan</strong> — hints point at the Quick Reference; the thinking is yours</li>
+<li><strong>🔓 Compare</strong> — the reveal shows a worked version. Different code, same behavior = a win.</li>
+<li><strong>✅ Build green</strong> before moving on</li>
+</ol>
+<p style="margin-bottom: 0;"><strong>Three steps break the pattern:</strong> <strong>Step 1</strong> is a copy ritual, <strong>Step 9</strong> is upload-and-tune choreography, and <strong>Step 4</strong> is where this lesson's red build lives — except this time <em>nobody stages it for you</em>. If Step 3's <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> is wrong, Step 4's build goes red and the diagnosis is yours. Lesson 7 walked you through this error species; today you meet it solo.</p>
+</div>
+
+<div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 0 0 20px 0; border-radius: 4px;">
+    <strong>📦 Fell behind? File wrecked? The Maker has your back.</strong>
+    <p style="margin: 8px 0 0 0;">The <a href="https://weymuth.github.io/zumo/newproject.html?lesson=8" target="_blank" style="color: #2e86ab; font-weight: bold;">ZUMO Project Maker</a> has a <strong>CATCH-UP</strong> menu for this lesson: pick the entry named for the step you're about to start, and it opens a project — <strong>all eight files included</strong> — built up to that exact point. No Lesson 7 project to copy? The <strong>Step 1</strong> entry <em>is</em> the finished Lesson 7 build.</p>
+</div>
+
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📋 WHAT YOU NEED</strong>
+<ul style="margin-bottom: 0;">
+<li>VS Code with PlatformIO installed</li>
+<li>Zumo 32U4 robot connected via USB</li>
+<li>Your finished Lesson 7 project (or the Maker's Step 1 preload)</li>
+<li>A line track: black electrical tape on a white surface, with at least one curve</li>
+</ul>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 1 — Copy Your Lesson 7 Project</h3>
+
+<p>Same move as last lesson's ending, in reverse: your Lesson 7 build becomes Lesson 8's starting point. Copy, don't move — Lesson 7 stays intact as your fallback.</p>
+
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 DO THIS NOW</strong>
+<ol style="margin-bottom: 0;">
+<li>In File Explorer, copy your entire <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo_Lesson7</code> folder</li>
+<li>Paste and rename the copy to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo_Lesson8_LineFollowing</code></li>
+<li>Open the <em>new</em> folder in VS Code (File → Open Folder — the folder, not a file)</li>
+</ol>
+</div>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">You should see <strong>eight files</strong>: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">include/</code> holding <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotSensors.h</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotHelpers.h</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.h</code> — and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">src/</code> holding <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotSensors.cpp</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotHelpers.cpp</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.cpp</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>. Count them. Missing any? Your Lesson 7 build wasn't finished — grab the Maker's <strong>Step 1</strong> CATCH-UP entry instead.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 2 — RobotConfig.h: The Six Dials of Line Following</h3>
+
+<p>Every tunable behavior in this lesson gets a named constant in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code> — that's the file's whole job. Line following needs six.</p>
+
+<div style="background-color: #f8f9fa; border-left: 4px solid #5a6872; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🎯 THE GOAL</strong>
+    <p style="margin-bottom: 0;">Add a <strong>LINE FOLLOWING CONSTANTS</strong> block to the end of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code> covering: the setpoint (where "centered" is on the 0&#8211;4000 position scale), a cruise speed, the proportional gain, a speed ceiling, a lost-line threshold, and how long the robot may coast across a gap. Everything already in the file stays.</p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 MY PLAN — yours, before any code</strong>
+    <p style="margin-bottom: 0;">Before peeking: list the six settings a line follower needs in your own words — a name, a type, and a first-guess value for each. Section 5's formula names three of them outright.</p>
+</div>
+
+<p style="margin: 10px 0;">🧭 <strong>Hints, not answers:</strong> starting values live in <a href="#qr-values" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Typical Values</a> — and the position scale (0&#8211;4000, center 2000) is in <a href="#qr-formula" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → The Formula</a>.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Compare with a worked RobotConfig.h (complete file)</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">/*</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">ROBOTCONFIG.H - Robot Calibration Settings</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">All robot-specific values in ONE place!</span>
+<span style="color: #7cbf6e;">Edit this file to tune your robot's performance.</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">*/</span>
+#pragma once
+
+<span style="color: #7cbf6e;">// ===== PHYSICAL PROPERTIES =====</span>
+<span style="color: #7cbf6e;">// These values define your robot's hardware</span>
+
+<span style="color: #7cbf6e;">// Encoder counts per complete wheel rotation</span>
+<span style="color: #7cbf6e;">// (12 counts/motor rotation x 75.81 gear ratio = 909.7)</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> COUNTS_PER_ROTATION = <span style="color: #b5cea8;">909.7</span>;
+
+<span style="color: #7cbf6e;">// Wheel diameter in millimeters (measure yours!)</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> WHEEL_DIAMETER_MM = <span style="color: #b5cea8;">39.0</span>;
+
+<span style="color: #7cbf6e;">// Wheel circumference = pi x diameter</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> WHEEL_CIRCUMFERENCE_MM = <span style="color: #b5cea8;">3.14159</span> * WHEEL_DIAMETER_MM;
+
+<span style="color: #7cbf6e;">// Encoder counts per centimeter of travel</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / <span style="color: #b5cea8;">10.0</span>);
+
+<span style="color: #7cbf6e;">// ===== TURNING PROPERTIES =====</span>
+<span style="color: #7cbf6e;">// Distance between wheel centers - this is a CALIBRATION value!</span>
+<span style="color: #7cbf6e;">// Start at 85.0 (physical measurement), then tune up until 90 degree</span>
+<span style="color: #7cbf6e;">// turns are accurate. Typical tuned values: 98-115 depending on</span>
+<span style="color: #7cbf6e;">// surface and wheel wear.</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> WHEEL_BASE_MM = <span style="color: #b5cea8;">85.0</span>;
+
+<span style="color: #7cbf6e;">// Circumference of the turn circle</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> TURN_CIRCUMFERENCE_MM = <span style="color: #b5cea8;">3.14159</span> * WHEEL_BASE_MM;
+
+<span style="color: #7cbf6e;">// Encoder counts per degree of rotation</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / <span style="color: #b5cea8;">360.0</span>) *
+                                (COUNTS_PER_ROTATION / WHEEL_CIRCUMFERENCE_MM);
+
+<span style="color: #7cbf6e;">// ===== SPEED SETTINGS =====</span>
+<span style="color: #7cbf6e;">// Adjust these to change robot behavior</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> DRIVE_SPEED = <span style="color: #b5cea8;">150</span>;   <span style="color: #7cbf6e;">// Speed for straight driving (0-400)</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> TURN_SPEED = <span style="color: #b5cea8;">150</span>;    <span style="color: #7cbf6e;">// Speed for turning (0-400)</span>
+
+<span style="color: #7cbf6e;">// ===== BATTERY THRESHOLDS =====</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> BATTERY_GOOD = <span style="color: #b5cea8;">4800</span>; <span style="color: #7cbf6e;">// millivolts - fully charged</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> BATTERY_LOW = <span style="color: #b5cea8;">4200</span>;  <span style="color: #7cbf6e;">// millivolts - charge soon</span>
+
+<span style="color: #7cbf6e;">// ===== LINE FOLLOWING CONSTANTS (NEW for Lesson 8) =====</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> LINE_CENTER = <span style="color: #b5cea8;">2000</span>;            <span style="color: #7cbf6e;">// Setpoint - line under middle sensor (0-4000 range)</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> BASE_SPEED = <span style="color: #b5cea8;">150</span>;              <span style="color: #7cbf6e;">// Forward speed when centered (0-400)</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> KP = <span style="color: #b5cea8;">0.1</span>;                    <span style="color: #7cbf6e;">// Proportional gain (tune this!)</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MAX_SPEED = <span style="color: #b5cea8;">300</span>;               <span style="color: #7cbf6e;">// Speed limit after correction</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> LINE_LOST_THRESHOLD = <span style="color: #b5cea8;">200</span>;     <span style="color: #7cbf6e;">// Calibrated sum below this = no line</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> MAX_GAP_TIME = <span style="color: #b5cea8;">500</span>;  <span style="color: #7cbf6e;">// Max milliseconds to cross a gap</span></pre>
+</div>
+</details>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Build (✓). <strong>Green</strong> — constants nobody reads yet are perfectly legal. Your numbers differ from the reveal? Fine, if you can defend them; you'll tune them all in Step 9 anyway.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 3 — RobotSensors.h: One More extern, Four New Promises</h3>
+
+<p>Open <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotSensors.h</code> and read its own comment header: <em>"In later lessons, sensor functions will be added here."</em> Today is that day. The line sensor array joins the hardware roster, and four functions get declared.</p>
+
+<div style="background-color: #f8f9fa; border-left: 4px solid #5a6872; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🎯 THE GOAL</strong>
+    <p style="margin-bottom: 0;">One new hardware declaration — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors</code>, type <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4LineSensors</code>, joining the extern block — plus prototypes for the four functions from the Section 5.4 table: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initLineSensors()</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">calibrateLineSensors()</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLinePosition()</code> (returns <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>), <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isLineVisible()</code> (returns <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code>).</p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 MY PLAN — yours, before any code</strong>
+    <p style="margin-bottom: 0;">Write the extern line and all four prototypes from memory — return type, name, parentheses, semicolon. Then answer in your plan: <em>why</em> does the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">.h</code> line need <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> when the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">.cpp</code> line must not have it?</p>
+</div>
+
+<p style="margin: 10px 0;">🧭 <strong>Hints, not answers:</strong> the one-word difference and why it matters: <a href="#qr-extern" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → The extern Pattern</a>. Function signatures: <a href="#qr-sensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line Sensor Functions</a>.</p>
+
+<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>⚠️ THE EXTERN TRAP — read this before you build</strong>
+<p style="margin-bottom: 0;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern Zumo32U4LineSensors lineSensors;</code> in the header and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4LineSensors lineSensors;</code> in the .cpp look <em>almost identical</em>. The single word <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> is the difference between a promise and a creation. Get it wrong and nothing complains — <em>yet</em>. Step 4's build is where it surfaces.</p>
+</div>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Compare with a worked RobotSensors.h (complete file)</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">/*</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">ROBOTSENSORS.H - Hardware &amp; Sensor Declarations</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">Declares ALL hardware objects used across the project.</span>
+<span style="color: #7cbf6e;">The actual objects are DEFINED in RobotSensors.cpp.</span>
+<span style="color: #7cbf6e;">The keyword "extern" means: "this object exists</span>
+<span style="color: #7cbf6e;">somewhere else - let me use it here."</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">*/</span>
+#pragma once
+#include &lt;Zumo32U4.h&gt;
+
+<span style="color: #7cbf6e;">// ===== EXTERN HARDWARE DECLARATIONS =====</span>
+<span style="color: #7cbf6e;">// These tell other files "these objects exist"</span>
+<span style="color: #7cbf6e;">// The actual objects are created in RobotSensors.cpp</span>
+extern Zumo32U4OLED display;
+extern Zumo32U4Buzzer buzzer;
+extern Zumo32U4Motors motors;
+extern Zumo32U4Encoders encoders;
+extern Zumo32U4ButtonA buttonA;
+extern Zumo32U4ButtonB buttonB;
+extern Zumo32U4ButtonC buttonC;
+extern Zumo32U4LineSensors lineSensors;  <span style="color: #7cbf6e;">// NEW for Lesson 8</span>
+
+<span style="color: #7cbf6e;">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
+<span style="color: #569cd6;">void</span> initLineSensors();
+<span style="color: #569cd6;">void</span> calibrateLineSensors();
+<span style="color: #569cd6;">int</span> readLinePosition();
+<span style="color: #569cd6;">bool</span> isLineVisible();</pre>
+</div>
+</details>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Build (✓). Green — declarations are promises, and nothing has tried to collect on them yet. If your <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> is wrong, this build <em>still passes</em>. The next one won't.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 4 — RobotSensors.cpp: Creating the Hardware — and Facing the Red Build Solo</h3>
+
+<p>The header promised; this file delivers. The real <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors</code> object gets created here, two module-private variables move in, and the first two functions — init and the calibration spin — get bodies.</p>
+
+<div style="background-color: #f8f9fa; border-left: 4px solid #5a6872; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🎯 THE GOAL</strong>
+    <p style="margin-bottom: 0;">Add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#include "RobotConfig.h"</code> near the top (the new code reads <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LINE_CENTER</code>). Define <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors</code> (no extern!), <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">sensorValues[5]</code>, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lastPosition</code>. Then write <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initLineSensors()</code> — one library call, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initFiveSensors()</code> — and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">calibrateLineSensors()</code>: 100 calibration passes while spinning, first half leftward, second half rightward, motors off at the end.</p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 MY PLAN — yours, before any code</strong>
+    <p style="margin-bottom: 0;">Plan the calibration choreography as numbered pseudo-code: how do you get 50 spin-left passes and 50 spin-right passes out of one loop? What single line runs on <em>every</em> pass? What must happen after the loop, no matter what?</p>
+</div>
+
+<p style="margin: 10px 0;">🧭 <strong>Hints, not answers:</strong> spin = opposite wheel signs (Lesson 3). The one-per-pass line is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.calibrate();</code> — signatures in <a href="#qr-sensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line Sensor Functions</a>.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Compare with a worked RobotSensors.cpp at this step (complete file)</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">/*</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">ROBOTSENSORS.CPP - Hardware Definitions</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">This file CREATES all hardware objects.</span>
+<span style="color: #7cbf6e;">This is the ONLY file that creates them.</span>
+<span style="color: #7cbf6e;">Other files use #include "RobotSensors.h" to access them.</span>
+<span style="color: #7cbf6e;">In later lessons, sensor functions will be added here.</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">*/</span>
+#include &lt;Zumo32U4.h&gt;
+#include <span style="color: #ce9178;">"RobotSensors.h"</span>
+#include <span style="color: #ce9178;">"RobotConfig.h"</span>  <span style="color: #7cbf6e;">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
+
+<span style="color: #7cbf6e;">// ===== HARDWARE OBJECT DEFINITIONS =====</span>
+<span style="color: #7cbf6e;">// These are the REAL objects - created exactly ONCE</span>
+Zumo32U4OLED display;
+Zumo32U4Buzzer buzzer;
+Zumo32U4Motors motors;
+Zumo32U4Encoders encoders;
+Zumo32U4ButtonA buttonA;
+Zumo32U4ButtonB buttonB;
+Zumo32U4ButtonC buttonC;
+
+<span style="color: #7cbf6e;">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
+Zumo32U4LineSensors lineSensors;  <span style="color: #7cbf6e;">// NO extern - this file CREATES it</span>
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> sensorValues[<span style="color: #b5cea8;">5</span>];     <span style="color: #7cbf6e;">// Array to store the five readings</span>
+<span style="color: #569cd6;">int</span> lastPosition = LINE_CENTER;   <span style="color: #7cbf6e;">// Last known line position</span>
+
+<span style="color: #7cbf6e;">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
+<span style="color: #569cd6;">void</span> initLineSensors() {
+  lineSensors.initFiveSensors();
+}
+
+<span style="color: #569cd6;">void</span> calibrateLineSensors() {
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">100</span>; i++) {
+    <span style="color: #569cd6;">if</span> (i &lt; <span style="color: #b5cea8;">50</span>) {
+      motors.setSpeeds(-<span style="color: #b5cea8;">100</span>, <span style="color: #b5cea8;">100</span>);  <span style="color: #7cbf6e;">// Spin left</span>
+    } <span style="color: #569cd6;">else</span> {
+      motors.setSpeeds(<span style="color: #b5cea8;">100</span>, -<span style="color: #b5cea8;">100</span>);  <span style="color: #7cbf6e;">// Spin right</span>
+    }
+    lineSensors.calibrate();
+  }
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+}</pre>
+</div>
+</details>
+
+<div style="background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🔴 THE GRADUATED RED BUILD — no script this time</strong>
+<p>Lesson 7 staged its linker error for you, line by line. This lesson doesn't. <strong>Build now.</strong> If Step 3's <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> is right, you go green and move on. If it's wrong, you meet one of two errors — <strong>same root cause, two faces</strong>, depending on what's in your files:</p>
+<table style="border-collapse: collapse; width: 100%; margin: 10px 0;">
+<tr style="background-color: #9a4459; color: white;">
+<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">What the build says</th>
+<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">When you get this face</th>
+</tr>
+<tr><td style="border: 1px solid #ddd; padding: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">redefinition of 'Zumo32U4LineSensors lineSensors'</code> — a <em>compiler</em> error in RobotSensors.cpp</td><td style="border: 1px solid #ddd; padding: 8px;">The header line lost its <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> <em>and</em> the .cpp defines it too — one file just saw two creations</td></tr>
+<tr style="background-color: #f9f9f9;"><td style="border: 1px solid #ddd; padding: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">multiple definition of 'lineSensors'</code> — a <em>linker</em> error naming several .o files</td><td style="border: 1px solid #ddd; padding: 8px;">The header line lost its <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> and you treated that as the creation — now every file that includes the header creates its own</td></tr>
+</table>
+<p style="margin-bottom: 0;">Diagnose solo: which face do you have, which file is guilty, what's the one-word fix? Section 8 has the table if you're truly stuck. <strong>Went green first try?</strong> Earn the encounter anyway: delete the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern</code> keyword, build, read the error, put it back. Two minutes now saves twenty in Lessons 12 and 13.</p>
+</div>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Build ends green (after your detour, if you took one). The hardware exists, the calibration spin has a body, and both header promises so far are kept.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 5 — RobotSensors.cpp: Reading the Line — the Right API for the Job</h3>
+
+<p>The library gives you three ways to read the sensors, and picking the right one is the actual lesson here. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">read()</code> returns <em>raw</em> timings — on plain white paper those still land in the hundreds, so raw values can't reliably tell "white floor" from "faint line." The calibration spin you just wrote exists to fix exactly that: after it, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readCalibrated()</code> rescales every sensor to <strong>0 = your white, 1000 = your black</strong>. And <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> goes one further: calibrated read <em>plus</em> a weighted average that returns the line's position, 0&#8211;4000.</p>
+
+<div style="background-color: #f8f9fa; border-left: 4px solid #5a6872; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🎯 THE GOAL</strong>
+    <p style="margin-bottom: 0;">Two functions finish the module. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLinePosition()</code>: call <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine(sensorValues)</code>, remember the result in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lastPosition</code>, return it. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isLineVisible()</code>: take a <em>calibrated</em> reading, sum all five sensors, and answer — is that sum above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LINE_LOST_THRESHOLD</code>?</p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 MY PLAN — yours, before any code</strong>
+    <p style="margin-bottom: 0;">Plan <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isLineVisible()</code> as pseudo-code, then answer in your plan: on a pure-white gap, roughly what will the calibrated sum be — and what would the <em>raw</em> sum be? Why does only one of those make the 200 threshold meaningful?</p>
+</div>
+
+<p style="margin: 10px 0;">🧭 <strong>Hints, not answers:</strong> all three read calls, with what they return: <a href="#qr-sensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line Sensor Functions</a>.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Compare with the finished RobotSensors.cpp (complete file)</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">/*</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">ROBOTSENSORS.CPP - Hardware Definitions</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">This file CREATES all hardware objects.</span>
+<span style="color: #7cbf6e;">This is the ONLY file that creates them.</span>
+<span style="color: #7cbf6e;">Other files use #include "RobotSensors.h" to access them.</span>
+<span style="color: #7cbf6e;">In later lessons, sensor functions will be added here.</span>
+<span style="color: #7cbf6e;">=====================================================</span>
+<span style="color: #7cbf6e;">*/</span>
+#include &lt;Zumo32U4.h&gt;
+#include <span style="color: #ce9178;">"RobotSensors.h"</span>
+#include <span style="color: #ce9178;">"RobotConfig.h"</span>  <span style="color: #7cbf6e;">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
+
+<span style="color: #7cbf6e;">// ===== HARDWARE OBJECT DEFINITIONS =====</span>
+<span style="color: #7cbf6e;">// These are the REAL objects - created exactly ONCE</span>
+Zumo32U4OLED display;
+Zumo32U4Buzzer buzzer;
+Zumo32U4Motors motors;
+Zumo32U4Encoders encoders;
+Zumo32U4ButtonA buttonA;
+Zumo32U4ButtonB buttonB;
+Zumo32U4ButtonC buttonC;
+
+<span style="color: #7cbf6e;">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
+Zumo32U4LineSensors lineSensors;  <span style="color: #7cbf6e;">// NO extern - this file CREATES it</span>
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> sensorValues[<span style="color: #b5cea8;">5</span>];     <span style="color: #7cbf6e;">// Array to store the five readings</span>
+<span style="color: #569cd6;">int</span> lastPosition = LINE_CENTER;   <span style="color: #7cbf6e;">// Last known line position</span>
+
+<span style="color: #7cbf6e;">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
+<span style="color: #569cd6;">void</span> initLineSensors() {
+  lineSensors.initFiveSensors();
+}
+
+<span style="color: #569cd6;">void</span> calibrateLineSensors() {
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">100</span>; i++) {
+    <span style="color: #569cd6;">if</span> (i &lt; <span style="color: #b5cea8;">50</span>) {
+      motors.setSpeeds(-<span style="color: #b5cea8;">100</span>, <span style="color: #b5cea8;">100</span>);  <span style="color: #7cbf6e;">// Spin left</span>
+    } <span style="color: #569cd6;">else</span> {
+      motors.setSpeeds(<span style="color: #b5cea8;">100</span>, -<span style="color: #b5cea8;">100</span>);  <span style="color: #7cbf6e;">// Spin right</span>
+    }
+    lineSensors.calibrate();
+  }
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+}
+
+<span style="color: #569cd6;">int</span> readLinePosition() {
+  lastPosition = lineSensors.readLine(sensorValues);
+  <span style="color: #569cd6;">return</span> lastPosition;
+}
+
+<span style="color: #569cd6;">bool</span> isLineVisible() {
+  lineSensors.readCalibrated(sensorValues);  <span style="color: #7cbf6e;">// Calibrated: 0 = white, 1000 = black</span>
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> sum = <span style="color: #b5cea8;">0</span>;
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">5</span>; i++) {
+    sum += sensorValues[i];
+  }
+  <span style="color: #569cd6;">return</span> sum &gt; LINE_LOST_THRESHOLD;
+}</pre>
+</div>
+</details>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Build (✓) green. RobotSensors.cpp is done for this lesson — every promise in the header now has a body. All that's left is the file that <em>uses</em> them.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 6 — main.cpp: The Rebase — Boot, Gate, Calibrate</h3>
+
+<p>Lesson 7's tuning-mode main retires. The new <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> keeps the boot ritual you built there — serial + battery report — and adds the line-following startup: sensor init, the safety gate, and the calibration ceremony. The interesting part isn't the code. It's the <strong>order</strong>.</p>
+
+<div style="background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🛑 SAFETY</strong>
+    <p style="margin-bottom: 0;">Calibration <strong>spins the robot</strong> — it's motion, same as driving. The old version of this lesson calibrated before any gate. Not anymore: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">waitForStart()</code> comes <em>before</em> calibration, so the A-press is the one rule with zero exceptions — <strong>nothing moves until A</strong>.</p>
+</div>
+
+<div style="background-color: #f8f9fa; border-left: 4px solid #5a6872; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🎯 THE GOAL</strong>
+    <p style="margin-bottom: 0;">Replace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>'s contents (keep the Maker-stamped header and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#include &lt;Zumo32U4.h&gt;</code> line). State: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">currentKp</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isRunning</code>. One display helper: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showStatus()</code> — RUNNING/STOPPED, current Kp, and the button legend. Then <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> in the right order, and a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> that polls <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">checkBattery()</code> and nothing else — yet.</p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 MY PLAN — yours, before any code</strong>
+    <p style="margin-bottom: 0;">Six setup phases, your plan puts them in order and defends it: <em>serial init &middot; battery report &middot; sensor init &middot; safety gate &middot; calibration &middot; status screen</em>. One of these orderings can spin a robot into someone's hand. Which phase pins the gate's position, and why?</p>
+</div>
+
+<p style="margin: 10px 0;">🧭 <strong>Hints, not answers:</strong> the boot report is Lesson 7 choreography — <strong>copy it from your Lesson 7 main</strong> (swap the title to Lesson 8, and show <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Kp</code> where the encoder numbers were). Copying your own verified work is engineering. Which functions live where: <a href="#qr-where" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Where Does Code Go?</a>.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Compare with a worked main.cpp at this step (complete file)</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">#include <span style="color: #ce9178;">"RobotConfig.h"</span>
+#include <span style="color: #ce9178;">"RobotSensors.h"</span>
+#include <span style="color: #ce9178;">"RobotHelpers.h"</span>
+
+<span style="color: #7cbf6e;">// ===== LINE FOLLOWING STATE =====</span>
+<span style="color: #569cd6;">float</span> currentKp = KP;            <span style="color: #7cbf6e;">// Live-tunable copy of KP</span>
+<span style="color: #569cd6;">bool</span> isRunning = <span style="color: #569cd6;">false</span>;          <span style="color: #7cbf6e;">// Is the robot following right now?</span>
+
+<span style="color: #569cd6;">void</span> showStatus() {
+  display.setLayout21x8();
+  display.clear();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(isRunning ? F(<span style="color: #ce9178;">"RUNNING"</span>) : F(<span style="color: #ce9178;">"STOPPED"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Kp: "</span>));
+  display.print(currentKp, <span style="color: #b5cea8;">2</span>);
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">4</span>);
+  display.print(F(<span style="color: #ce9178;">"A- B:Go C+"</span>));
+}
+
+<span style="color: #7cbf6e;">// ===== SETUP =====</span>
+<span style="color: #569cd6;">void</span> setup() {
+  Serial.begin(<span style="color: #b5cea8;">115200</span>);
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> serialStart = millis();
+  <span style="color: #569cd6;">while</span> (!Serial &amp;&amp; (millis() - serialStart &lt; <span style="color: #b5cea8;">2000</span>)) {
+    delay(<span style="color: #b5cea8;">10</span>); <span style="color: #7cbf6e;">// Wait up to 2s for USB serial connection</span>
+  }
+  delay(<span style="color: #b5cea8;">500</span>);
+  Serial.println(F(<span style="color: #ce9178;">"=== Lesson 8: Line Following ==="</span>));
+
+<span style="color: #7cbf6e;">  // ===== BATTERY REPORT =====</span>
+  <span style="color: #569cd6;">int</span> batteryVoltage = readBatteryMillivolts();
+  <span style="color: #569cd6;">int</span> battWhole = batteryVoltage / <span style="color: #b5cea8;">1000</span>;
+  <span style="color: #569cd6;">int</span> battDecimal = (batteryVoltage / <span style="color: #b5cea8;">10</span>) % <span style="color: #b5cea8;">100</span>;
+  Serial.print(F(<span style="color: #ce9178;">"Battery: "</span>));
+  Serial.print(battWhole);
+  Serial.print(F(<span style="color: #ce9178;">"."</span>));
+  <span style="color: #569cd6;">if</span> (battDecimal &lt; <span style="color: #b5cea8;">10</span>) Serial.print(F(<span style="color: #ce9178;">"0"</span>));
+  Serial.print(battDecimal);
+  Serial.print(F(<span style="color: #ce9178;">"V ("</span>));
+  Serial.print(batteryVoltage);
+  Serial.println(F(<span style="color: #ce9178;">"mV)"</span>));
+
+  display.clear();
+  display.setLayout21x8();
+  display.print(F(<span style="color: #ce9178;">"===== Lesson 8 ====="</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Battery: "</span>));
+  display.print(battWhole);
+  display.print(F(<span style="color: #ce9178;">"."</span>));
+  <span style="color: #569cd6;">if</span> (battDecimal &lt; <span style="color: #b5cea8;">10</span>) display.print(F(<span style="color: #ce9178;">"0"</span>));
+  display.print(battDecimal);
+  display.print(F(<span style="color: #ce9178;">"V"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">4</span>);
+  display.print(F(<span style="color: #ce9178;">"Status: "</span>));
+  <span style="color: #569cd6;">if</span> (batteryVoltage &gt;= BATTERY_GOOD) {
+    display.print(F(<span style="color: #ce9178;">"GOOD"</span>));
+    ledGreen(<span style="color: #b5cea8;">1</span>);
+  } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (batteryVoltage &gt;= BATTERY_LOW) {
+    display.print(F(<span style="color: #ce9178;">"LOW"</span>));
+    ledYellow(<span style="color: #b5cea8;">1</span>);
+    buzzer.playNote(NOTE_A(<span style="color: #b5cea8;">4</span>), <span style="color: #b5cea8;">200</span>, <span style="color: #b5cea8;">15</span>);
+  } <span style="color: #569cd6;">else</span> {
+    display.print(F(<span style="color: #ce9178;">"CHARGE!"</span>));
+    ledRed(<span style="color: #b5cea8;">1</span>);
+    buzzer.playNote(NOTE_A(<span style="color: #b5cea8;">3</span>), <span style="color: #b5cea8;">500</span>, <span style="color: #b5cea8;">15</span>);
+  }
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">6</span>);
+  display.print(F(<span style="color: #ce9178;">"Kp: "</span>));
+  display.print(currentKp, <span style="color: #b5cea8;">2</span>);
+  delay(<span style="color: #b5cea8;">2500</span>);
+  ledGreen(<span style="color: #b5cea8;">0</span>);
+  ledYellow(<span style="color: #b5cea8;">0</span>);
+  ledRed(<span style="color: #b5cea8;">0</span>);
+
+<span style="color: #7cbf6e;">  // ===== LINE SENSOR SETUP =====</span>
+  initLineSensors();
+
+<span style="color: #7cbf6e;">  // ===== SAFETY GATE - before ANY motion =====</span>
+<span style="color: #7cbf6e;">  // Calibration spins the robot, so the A-gate comes FIRST.</span>
+  waitForStart();
+
+<span style="color: #7cbf6e;">  // ===== CALIBRATION =====</span>
+  display.setLayout21x8();
+  display.clear();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"Place robot on line"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Press B to calibrate"</span>));
+  buttonB.waitForButton();
+  display.clear();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"Calibrating..."</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"(spinning)"</span>));
+  delay(<span style="color: #b5cea8;">500</span>);
+  calibrateLineSensors();
+  display.clear();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"Calibration done!"</span>));
+  delay(<span style="color: #b5cea8;">1000</span>);
+  showStatus();
+}
+
+<span style="color: #7cbf6e;">// ===== MAIN LOOP =====</span>
+<span style="color: #569cd6;">void</span> loop() {
+  checkBattery();  <span style="color: #7cbf6e;">// A+B battery report (standard helper)</span>
+}</pre>
+</div>
+</details>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Build, <strong>upload</strong>, and run the sequence on the robot: boot report (2.5 s, no button) → "Press A to start" → A → "Press B to calibrate" → B → <strong>it spins</strong> → "Calibration done!" → STOPPED status with Kp 0.10. First hardware moment of the lesson — enjoy it. The robot can't follow anything yet; that's the next step.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 7 — followLine(): The Whole Lesson in Eight Lines</h3>
+
+<p>Everything so far was plumbing. This is the algorithm — Section 5's formula becoming a function. When people say "proportional control," they mean these eight lines.</p>
+
+<div style="background-color: #f8f9fa; border-left: 4px solid #5a6872; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🎯 THE GOAL</strong>
+    <p style="margin-bottom: 0;">Write <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine()</code> from your plan. Then wire the run switch into <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>: B toggles <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isRunning</code> (with the 3-2-1 countdown from Lesson 7 before it goes, motors hard-stopped when it stops), and while running, every pass calls <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine()</code>.</p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 MY PLAN — yours, before any code</strong>
+    <p style="margin-bottom: 0;">Pseudo-code the algorithm with <strong>no peeking at Section 5</strong>, then check yourself against it: get the position → how far from center? → scale it by the gain → which motor gets +, which gets −? → what keeps the math from commanding speed 550? Write the answer to that last one as a real line.</p>
+</div>
+
+<p style="margin: 10px 0;">🧭 <strong>Hints, not answers:</strong> the four formula lines: <a href="#qr-formula" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → The Formula</a>. The countdown block is choreography — copy it from Lesson 7's C-button routine.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Compare: followLine() and the new loop() (the rest of the file is exactly as Step 6 built it)</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> followLine() {
+  <span style="color: #569cd6;">int</span> position = readLinePosition();
+  <span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+  <span style="color: #569cd6;">int</span> correction = currentKp * error;
+  <span style="color: #569cd6;">int</span> leftSpeed = BASE_SPEED + correction;
+  <span style="color: #569cd6;">int</span> rightSpeed = BASE_SPEED - correction;
+  leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
+  rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
+  motors.setSpeeds(leftSpeed, rightSpeed);
+}</pre>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// ===== MAIN LOOP =====</span>
+<span style="color: #7cbf6e;">// B = start/stop  (A and C get their jobs in Step 8)</span>
+<span style="color: #569cd6;">void</span> loop() {
+  <span style="color: #569cd6;">if</span> (!isRunning) {
+    checkBattery();  <span style="color: #7cbf6e;">// A+B battery report - only while stopped, never mid-run</span>
+  }
+
+  <span style="color: #569cd6;">if</span> (buttonB.getSingleDebouncedPress()) {
+    isRunning = !isRunning;
+    <span style="color: #569cd6;">if</span> (isRunning) {
+<span style="color: #7cbf6e;">      // 3-2-1 countdown before starting</span>
+      <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> count = <span style="color: #b5cea8;">3</span>; count &gt; <span style="color: #b5cea8;">0</span>; count--) {
+        display.setLayout21x8();
+        display.clear();
+        display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+        display.print(count);
+        buzzer.playNote(NOTE_C(<span style="color: #b5cea8;">5</span>), <span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">15</span>);
+        delay(<span style="color: #b5cea8;">1000</span>);
+      }
+      display.clear();
+      display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+      display.print(F(<span style="color: #ce9178;">"GO!"</span>));
+      buzzer.playNote(NOTE_C(<span style="color: #b5cea8;">6</span>), <span style="color: #b5cea8;">300</span>, <span style="color: #b5cea8;">15</span>);
+      delay(<span style="color: #b5cea8;">500</span>);
+    } <span style="color: #569cd6;">else</span> {
+      motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+    }
+    showStatus();
+  }
+
+  <span style="color: #569cd6;">if</span> (isRunning) {
+    followLine();
+  }
+}</pre>
+</div>
+</details>
+
+<div style="background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🛑 SAFETY</strong>
+    <p style="margin-bottom: 0;">First drive: robot on the line, <strong>open floor</strong>, hands clear before you press B. Kp 0.10 is deliberately gentle — expect lazy curves, not disasters. And know your kill switch: <strong>B stops it.</strong></p>
+</div>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Upload. A → B calibrate → B go: the robot <strong>follows the line</strong>. Wobbling? That's oscillation, and it's Section 7's whole topic — not a bug, a tuning signal. Lost the line on the curve? It just drives on blindly for now, steering at full lock — noted, unfixed, and exactly what Step 8 is for.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 8 — handleGap() and the Tuning Buttons</h3>
+
+<p>Two loose ends from your first drive. One: a lost line currently means a blind robot steering at full lock forever. Two: tuning Kp means re-flashing firmware for every 0.02 — miserable. Both get fixed here, and both were <em>designed</em> into Step 6: the third state variable and the A&#8211;/C+ legend on the status screen have been waiting for this step.</p>
+
+<div style="background-color: #f8f9fa; border-left: 4px solid #5a6872; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🎯 THE GOAL</strong>
+    <p style="margin-bottom: 0;">Add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">gapStartTime</code> to the state block. Write <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">handleGap()</code>: first frame of a gap stamps the clock; within <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_GAP_TIME</code>, hold course straight at <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">BASE_SPEED</code>; past it, stop, flip <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isRunning</code> off, and say LINE LOST. Rewire the run branch: line visible → reset the stamp, follow; not visible → <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">handleGap()</code>. Then the tuning twins in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>: A drops <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">currentKp</code> by 0.02 (floor 0.02), C raises it (ceiling 1.0) — <strong>stopped only</strong>, with a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showStatus()</code> and a small debounce delay each.</p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 MY PLAN — yours, before any code</strong>
+    <p style="margin-bottom: 0;">Plan the timer pattern in three numbered lines — <em>stamp once, check elapsed, act on timeout</em> — then answer: why must the visible-branch reset <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">gapStartTime</code> to 0, and what breaks on the <em>second</em> gap if it doesn't? Write the A-button block; the C block is its mirror twin.</p>
+</div>
+
+<p style="margin: 10px 0;">🧭 <strong>Hints, not answers:</strong> the elapsed-time idiom is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">millis() - gapStartTime &gt; MAX_GAP_TIME</code> — same <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">millis()</code> pattern as Lesson 6's timers. Who lives where: <a href="#qr-where" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Where Does Code Go?</a>.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Compare: the full state block, handleGap(), and the finished loop()</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// ===== LINE FOLLOWING STATE =====</span>
+<span style="color: #569cd6;">float</span> currentKp = KP;            <span style="color: #7cbf6e;">// Live-tunable copy of KP</span>
+<span style="color: #569cd6;">bool</span> isRunning = <span style="color: #569cd6;">false</span>;          <span style="color: #7cbf6e;">// Is the robot following right now?</span>
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> gapStartTime = <span style="color: #b5cea8;">0</span>;  <span style="color: #7cbf6e;">// When did the line disappear?</span></pre>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> handleGap() {
+  <span style="color: #569cd6;">if</span> (gapStartTime == <span style="color: #b5cea8;">0</span>) {
+    gapStartTime = millis();
+  }
+  <span style="color: #569cd6;">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
+    motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+    isRunning = <span style="color: #569cd6;">false</span>;
+    display.setLayout21x8();
+    display.clear();
+    display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+    display.print(F(<span style="color: #ce9178;">"LINE LOST!"</span>));
+    display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+    display.print(F(<span style="color: #ce9178;">"Press B to retry"</span>));
+    <span style="color: #569cd6;">return</span>;
+  }
+  motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);   <span style="color: #6a9955;">// Blind AND straight = TRIM</span>
+}</pre>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🧠 Why TRIM here &mdash; and NOT in followLine()</strong>
+    <p style="margin-bottom: 0;">In a gap the robot is <strong>blind</strong>. No line, nothing to read, nothing correcting it &mdash; it is driving on faith, exactly like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance()</code> in Lesson 6. That is an <strong>OPEN loop</strong>, and an open loop needs <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">TRIM</code> or it curves.<br><br>
+    <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine()</code> is the opposite. It reads the line <strong>fifty times a second</strong> and steers on what it sees. It is a <strong>CLOSED loop</strong>, and correcting motor bias is <em>already its job</em>. Add TRIM there and the robot fights its own controller &mdash; the P-term would spend its day undoing a constant you put in on purpose.<br><br>
+    <strong>Is anything watching? If not, it needs TRIM.</strong></p>
+</div>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// ===== MAIN LOOP =====</span>
+<span style="color: #7cbf6e;">// A = Kp down   B = start/stop   C = Kp up</span>
+<span style="color: #569cd6;">void</span> loop() {
+  <span style="color: #569cd6;">if</span> (!isRunning) {
+    checkBattery();  <span style="color: #7cbf6e;">// A+B battery report - only while stopped, never mid-run</span>
+  }
+
+  <span style="color: #569cd6;">if</span> (buttonA.isPressed() &amp;&amp; !isRunning) {
+    currentKp -= <span style="color: #b5cea8;">0.02</span>;
+    <span style="color: #569cd6;">if</span> (currentKp &lt; <span style="color: #b5cea8;">0.02</span>) currentKp = <span style="color: #b5cea8;">0.02</span>;
+    showStatus();
+    delay(<span style="color: #b5cea8;">200</span>);
+  }
+  <span style="color: #569cd6;">if</span> (buttonB.getSingleDebouncedPress()) {
+    isRunning = !isRunning;
+    <span style="color: #569cd6;">if</span> (isRunning) {
+<span style="color: #7cbf6e;">      // 3-2-1 countdown before starting</span>
+      <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> count = <span style="color: #b5cea8;">3</span>; count &gt; <span style="color: #b5cea8;">0</span>; count--) {
+        display.setLayout21x8();
+        display.clear();
+        display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+        display.print(count);
+        buzzer.playNote(NOTE_C(<span style="color: #b5cea8;">5</span>), <span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">15</span>);
+        delay(<span style="color: #b5cea8;">1000</span>);
+      }
+      display.clear();
+      display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+      display.print(F(<span style="color: #ce9178;">"GO!"</span>));
+      buzzer.playNote(NOTE_C(<span style="color: #b5cea8;">6</span>), <span style="color: #b5cea8;">300</span>, <span style="color: #b5cea8;">15</span>);
+      delay(<span style="color: #b5cea8;">500</span>);
+    } <span style="color: #569cd6;">else</span> {
+      motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+    }
+    showStatus();
+  }
+  <span style="color: #569cd6;">if</span> (buttonC.isPressed() &amp;&amp; !isRunning) {
+    currentKp += <span style="color: #b5cea8;">0.02</span>;
+    <span style="color: #569cd6;">if</span> (currentKp &gt; <span style="color: #b5cea8;">1.0</span>) currentKp = <span style="color: #b5cea8;">1.0</span>;
+    showStatus();
+    delay(<span style="color: #b5cea8;">200</span>);
+  }
+
+  <span style="color: #569cd6;">if</span> (isRunning) {
+    <span style="color: #569cd6;">if</span> (isLineVisible()) {
+      gapStartTime = <span style="color: #b5cea8;">0</span>;   <span style="color: #7cbf6e;">// Line is back - reset the gap timer</span>
+      followLine();
+    } <span style="color: #569cd6;">else</span> {
+      handleGap();
+    }
+  }
+}</pre>
+</div>
+</details>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🔍 INSIGHT</strong>
+    <p style="margin-bottom: 0;">Notice what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">checkBattery()</code> got: a <strong>stopped-only guard</strong>. The helper blocks while A+B are held — freezing the loop mid-run would leave the motors locked at their last speeds, driving blind. Guard rule: never block the loop while the robot is moving.</p>
+</div>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Build green, upload. Cover part of the line with paper wider than ~8 cm: the robot coasts straight, then stops with LINE LOST — <strong>on purpose</strong>. Press A and C while stopped and watch Kp step by 0.02 on the status screen. Your whole tuning workflow is now three buttons, zero re-flashes.</p>
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">Step 9 — Drive Day: Upload, Calibrate, Tune</h3>
+
+<p>Pure choreography from here — the code is done. This is the button liturgy you'll run every single session with this robot, so run it enough times that your hands know it.</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+<tr style="background-color: #3a7d5c; color: white;">
+<th style="background: #2a5a42; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">You press</th>
+<th style="background: #2a5a42; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Robot does</th>
+<th style="background: #2a5a42; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Rule it obeys</th>
+</tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">— (power on)</td><td style="border: 1px solid #ddd; padding: 10px;">Boot report: battery + Kp, 2.5 s, no acknowledge</td><td style="border: 1px solid #ddd; padding: 10px;">Report, don't nag</td></tr>
+<tr style="background-color: #f9f9f9;"><td style="border: 1px solid #ddd; padding: 10px;"><strong>A</strong> at the gate</td><td style="border: 1px solid #ddd; padding: 10px;">Arms the robot</td><td style="border: 1px solid #ddd; padding: 10px;"><strong>Nothing moves before A</strong> — calibration included</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;"><strong>B</strong> (on the line)</td><td style="border: 1px solid #ddd; padding: 10px;">Calibration spin, left then right</td><td style="border: 1px solid #ddd; padding: 10px;">Calibrate on the <em>track you'll run</em>, every session</td></tr>
+<tr style="background-color: #f9f9f9;"><td style="border: 1px solid #ddd; padding: 10px;"><strong>B</strong></td><td style="border: 1px solid #ddd; padding: 10px;">3-2-1 countdown → follows the line</td><td style="border: 1px solid #ddd; padding: 10px;">B is go <em>and</em> stop — your kill switch</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;"><strong>A</strong> / <strong>C</strong> while stopped</td><td style="border: 1px solid #ddd; padding: 10px;">Kp −0.02 / +0.02 on the status screen</td><td style="border: 1px solid #ddd; padding: 10px;">Tune between runs, not mid-run</td></tr>
+<tr style="background-color: #f9f9f9;"><td style="border: 1px solid #ddd; padding: 10px;"><strong>A+B</strong> held, while stopped</td><td style="border: 1px solid #ddd; padding: 10px;">Battery report</td><td style="border: 1px solid #ddd; padding: 10px;">Standard helper, Lesson 4 vintage</td></tr>
+</table>
+
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>📝 THE TUNING RITUAL</strong>
+<ol style="margin-bottom: 0;">
+<li>Run the track at Kp 0.10. Watch the <em>character</em> of the drive, not just success/failure.</li>
+<li>Drifts wide on curves → <strong>C</strong> (more gain). Wiggles on straights → <strong>A</strong> (less gain).</li>
+<li>Change one thing, run again. One variable per run — that's the entire discipline of tuning.</li>
+<li>Converged? <strong>Write your Kp down</strong> and bake it into <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">KP</code> in RobotConfig.h. Section 7's tables take it from here.</li>
+</ol>
+</div>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ CHECKPOINT</strong>
+    <p style="margin-bottom: 0;">Robot completes your full track — curves included — at a Kp you chose from evidence and recorded. That number is <em>your robot's</em> number; the robot at the next desk will disagree, and both of you are right.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+<div style="background-color: #c45d76; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-7" style="font-size: 1.15em; font-weight: bold;">▶️ Section 7: Test It</div></div>
+<div style="border: 2px solid #c45d76; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>🎯 Coach's Tip: Tuning Is the Real Work</strong>
+
+<p>Here's a fact that surprises most students: <strong>over 90% of robotics teams don't get their Kp value right on the first try</strong>. Or the second. Or sometimes even the tenth.</p>
+
+<p>This isn't failure—this IS the work. Professional engineers spend hours tuning their robots. When your first attempt doesn't work perfectly, you're not doing something wrong. You're doing exactly what real engineers do: test, observe, adjust, repeat.</p>
+
+</div>
+
+<h3 style="color: #c45d76; margin-top: 30px;">7.1 Basic Function Tests</h3>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Test</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Expected Result</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Pass?</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Press A at the gate</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot arms — nothing has moved yet</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Press B for calibration</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot spins left then right</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Press A (when stopped)</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp decreases by 0.02</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Press C (when stopped)</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp increases by 0.02</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Press B to start</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Display shows "RUNNING"</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Press B to stop</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot stops, display shows "STOPPED"</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+</table>
+
+<h3 style="color: #c45d76; margin-top: 30px;">7.2 Line Following Tests</h3>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Test</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Expected Result</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Pass?</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Straight line</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Follows smoothly with minimal oscillation</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Gentle curve</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Adjusts and stays on line</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">90° turn</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Navigates turn (may need higher Kp)</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Small gap (5 cm)</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Continues straight, finds line again</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Large gap (15 cm)</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">LINE LOST after ~0.5 s — correct! The gap timer gave up on schedule. Making 15 cm crossable is Challenge 3's job</td>
+
+<td style="text-align: center;">☐</td>
+
+</tr>
+
+</table>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>🎉 Did Your Robot Wiggle? Congratulations!</strong>
+
+<p>If your robot wobbled back and forth on the line, you've just discovered <strong>oscillation</strong>—and that's actually a good sign! It means your control system is working; it's just overcorrecting.</p>
+
+<p>Oscillation happens when Kp is too high: the robot sees a small error, makes a big correction, overshoots, sees another error in the opposite direction, overcorrects again... and wiggles down the line.</p>
+
+<p><strong>The fix:</strong> Decrease Kp using button A until the wiggling stops but the robot still handles curves.</p>
+
+</div>
+
+<h3 style="color: #c45d76; margin-top: 30px;">7.3 Kp Tuning Guide</h3>
+
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L08_GRAPHIC_8-2_kp_tuning_comparison.svg" alt="Three panels comparing Kp on the same track: too low drifts off the curve (fix: press C), just right hugs the line with a small wiggle, too high oscillates hard on the straight (fix: press A)" style="width: 100%; max-width: 860px; display: block; margin: 20px auto;">
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Symptom</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Diagnosis</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Fix</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot oscillates/wiggles on straights</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp too HIGH</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Decrease Kp (press A)</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot drifts off on curves</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp too LOW</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Increase Kp (press C)</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot overshoots then corrects</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp slightly HIGH</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Decrease Kp slightly</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot reacts slowly to curves</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp too LOW</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Increase Kp</td>
+
+</tr>
+
+</table>
+
+<div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>💡 Coach's Tip</strong>
+
+<p>Start with Kp = 0.10 and adjust from there. Most robots work well with Kp between 0.08 and 0.25. Write down your tuned value!</p>
+
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Section 7: Troubleshooting -->
+
+</div>
+<div style="background-color: #c45d76; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-8" style="font-size: 1.15em; font-weight: bold;">🔧 Section 8: Troubleshooting</div></div>
+<div style="border: 2px solid #c45d76; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Problem</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Likely Cause</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Solution</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot oscillates constantly</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp too high</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Decrease Kp using button A</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot sluggish on curves</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Kp too low</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Increase Kp using button C</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot loses line on curves</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Speed too high or Kp too low</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Decrease BASE_SPEED or increase Kp</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot spins in circles</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Poor calibration</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Recalibrate on actual track surface</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">LINE LOST instantly, even on the line</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Threshold too high, or calibration skipped</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Recalibrate on your track; if it persists, lower LINE_LOST_THRESHOLD</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Robot doesn't detect line</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Sensors dirty or wrong surface</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Clean sensors, use black on white</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">"LINE LOST!" appears quickly</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">MAX_GAP_TIME too short</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Increase MAX_GAP_TIME to 600-800ms</td>
+
+</tr>
+
+</table>
+
+<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>⚠️ Build Errors? Check These First:</strong>
+
+<ol>
+
+<li><strong>redefinition of 'Zumo32U4LineSensors lineSensors'</strong> (compiler, in RobotSensors.cpp) — The .h line lost its <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">extern</code> while the .cpp also defines it. Same fix either way: <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">extern</code> goes in the header.</li>
+
+<li><strong>multiple definition of 'lineSensors'</strong> (linker, names several .o files) — The .h line lost its <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">extern</code> and nothing else defines it, so every file that includes the header created its own copy. Two faces, one root cause: a definition living in a header.</li>
+
+<li><strong>'sensorValues' was not declared</strong> — You forgot to add the variable in .cpp</li>
+
+<li><strong>'LINE_CENTER' was not declared</strong> — You forgot <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">#include "RobotConfig.h"</code> in RobotSensors.cpp</li>
+
+<li><strong>multiple definition of 'followLine()'</strong> — You put followLine() in RobotMotion.cpp AND main.cpp. Delete it from RobotMotion.cpp!</li>
+
+</ol>
+
+</div>
+
+<h3 style="color: #c45d76; margin-top: 30px;">8.1 Functions Reference</h3>
+
+<p>Functions introduced in this lesson:</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Function</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">File</th>
+
+<th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Purpose</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">initLineSensors()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">RobotSensors.cpp</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Initialize the 5-sensor line array</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">calibrateLineSensors()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">RobotSensors.cpp</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Spin robot to calibrate sensors</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">readLinePosition()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">RobotSensors.cpp</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Get line position (0-4000)</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">isLineVisible()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">RobotSensors.cpp</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Check if any sensor detects line</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">followLine()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><strong>main.cpp ONLY</strong></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Apply P-control to follow line</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">handleGap()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">main.cpp</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Continue straight when line lost</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;"><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">showStatus()</code></td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">main.cpp</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Display state and Kp on OLED</td>
+
+</tr>
+
+</table>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Section 8A: Coding Concepts -->
+</div>
+<div style="background-color: #c45d76; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-8a" style="font-size: 1.15em; font-weight: bold;">🔑 Section 8A: Proportional Control Patterns</div></div>
+<div style="border: 2px solid #c45d76; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<p>Now that you've implemented line following, let's look at the <strong>coding patterns</strong> that make your control system robust and reusable.</p>
+
+<h3 style="color: #c45d76; margin-top: 30px;">8A.1 Function Parameters: Passing Information</h3>
+
+<p>When you write <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">followLine()</code>, you're reading the global <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">currentKp</code> value. But what if you wanted to follow the line with <em>different</em> Kp values at different speeds? That's where <strong>function parameters</strong> come in:</p>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 8px; font-family: Consolas, monospace;">
+    <strong>Current approach (hardcoded):</strong>
+    <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> followLine() {
+    <span style="color: #569cd6;">int</span> position = readLinePosition();
+    <span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+    <span style="color: #569cd6;">int</span> correction = currentKp * error;  <span style="color: #7cbf6e;">// ← uses global currentKp</span>
+}</pre>
+    <strong>Better approach (parameterized):</strong>
+    <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> followLine(<span style="color: #569cd6;">float</span> kp) {
+    <span style="color: #569cd6;">int</span> position = readLinePosition();
+    <span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+    <span style="color: #569cd6;">int</span> correction = kp * error;  <span style="color: #7cbf6e;">// ← uses parameter kp</span>
+}</pre>
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+    <span>🔑</span> <strong>Function Parameter</strong> — A value you pass INTO a function that the function can use. Allows flexibility without global variables.
+</div>
+
+<h3 style="color: #c45d76; margin-top: 30px;">8A.2 Return Values: Getting Data Back</h3>
+
+<p><code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">readLinePosition()</code> returns an integer. But how do you know if that value is valid? What if the line was lost? Advanced code checks return values:</p>
+
+<div style="background: #f5f5f5; padding: 15px; border-radius: 8px; font-family: Consolas, monospace;">
+    <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">int</span> readLinePosition() {
+    lineSensors.read(sensorValues);
+    <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> sum = <span style="color: #b5cea8;">0</span>;
+    <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">5</span>; i++) {
+        sum += sensorValues[i];
+    }
+    <span style="color: #7cbf6e;">// Return -1 to signal "no line detected"</span>
+    <span style="color: #569cd6;">if</span> (sum &lt; LINE_LOST_THRESHOLD) {
+        <span style="color: #569cd6;">return</span> -<span style="color: #b5cea8;">1</span>;
+    }
+    <span style="color: #569cd6;">return</span> lineSensors.readLine(sensorValues);
+}</pre>
+</div>
+
+<div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>✅ Checkpoint</strong>
+    <p>In your <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">main.cpp</code>, you should check:</p>
+    <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">int</span> pos = readLinePosition();
+<span style="color: #569cd6;">if</span> (pos == -<span style="color: #b5cea8;">1</span>) {
+    <span style="color: #7cbf6e;">// Handle lost line</span>
+} <span style="color: #569cd6;">else</span> {
+    <span style="color: #7cbf6e;">// Use the position</span>
+}</pre>
+</div>
+
+<h3 style="color: #c45d76; margin-top: 30px;">8A.3 Error Handling Patterns</h3>
+
+<p>Robust control code anticipates failure. For line following, failures include:</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+    <tr>
+        <th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Failure Mode</th>
+        <th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Detection</th>
+        <th style="background: #9a4459; color: white; padding: 12px 15px; text-align: left;">Response</th>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Line lost in gap</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">All sensors read low</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Go straight; start gap timer</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Gap too long</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Timer exceeds MAX_GAP_TIME</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Stop; display "LINE LOST!"</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Motor speed saturated</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Correction too large</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Clamp to MAX_SPEED with constrain()</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Sensors not calibrated</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Sensor values always 0 or 1000</td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Force recalibration on startup</td>
+    </tr>
+</table>
+
+<h3 style="color: #c45d76; margin-top: 30px;">8A.4 Proportional Control Structure</h3>
+
+<p>The complete pattern you've implemented in this lesson:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> handleRobotControl() {
+    <span style="color: #7cbf6e;">// 1. READ the current state</span>
+    <span style="color: #569cd6;">int</span> position = readLinePosition();
+    <span style="color: #7cbf6e;">// 2. CALCULATE error</span>
+    <span style="color: #569cd6;">int</span> error = position - SETPOINT;
+    <span style="color: #7cbf6e;">// 3. APPLY proportional formula</span>
+    <span style="color: #569cd6;">int</span> correction = Kp * error;
+    <span style="color: #7cbf6e;">// 4. CLAMP the output</span>
+    correction = constrain(correction, -MAX_CORRECTION, MAX_CORRECTION);
+    <span style="color: #7cbf6e;">// 5. CONVERT to motor commands</span>
+    <span style="color: #569cd6;">int</span> leftSpeed = BASE_SPEED + correction;
+    <span style="color: #569cd6;">int</span> rightSpeed = BASE_SPEED - correction;
+    <span style="color: #7cbf6e;">// 6. SEND to motors</span>
+    motors.setSpeeds(leftSpeed, rightSpeed);
+}</pre>
+
+<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>⚠️ This Pattern Scales</strong>
+    <p>This same 6-step pattern works for:</p>
+    <ul>
+        <li><strong>Motor speed control:</strong> Compare target RPM to actual RPM, apply correction</li>
+        <li><strong>Altitude control (drones):</strong> Compare target height to actual height, apply thrust adjustment</li>
+        <li><strong>Temperature control:</strong> Compare target temp to actual temp, apply heating/cooling</li>
+    </ul>
+    <p>You've just learned a fundamental pattern used in professional control systems worldwide.</p>
+</div>
+
+<h3 style="color: #c45d76; margin-top: 30px;">8A.5 Tuning as Feedback Loop</h3>
+
+<p>When you press buttons A and C to adjust Kp, you're running a <strong>manual feedback loop</strong>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #b5cea8;">1.</span> OBSERVE: Robot oscillates (error is visible)
+<span style="color: #b5cea8;">2.</span> HYPOTHESIZE: <span style="color: #ce9178;">"Kp is too high"</span>
+<span style="color: #b5cea8;">3.</span> EXPERIMENT: Press A to decrease Kp
+<span style="color: #b5cea8;">4.</span> MEASURE: Watch robot behavior improve
+<span style="color: #b5cea8;">5.</span> REPEAT until stable</pre>
+
+<p>This is exactly how engineers tune real control systems—by observing system behavior and making incremental adjustments.</p>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+</div>
+
+<!-- PART 4 -->
+<div style="background-color: #9b6a9e; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;">
+    <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 4 — Challenges</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Section 9: Apply what you have learned</div>
+</div>
+
+<!-- Section 9: Challenges -->
+<div style="background-color: #9b6a9e; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-9" style="font-size: 1.15em; font-weight: bold;">🏆 Section 9: Challenges</div></div>
+<div style="border: 2px solid #9b6a9e; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<!-- Challenge 1 -->
+
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;">
+
+<strong>Challenge 1: Speed Optimization</strong>
+
+<span style="display: inline-block; background: #4caf50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">EASY</span>
+
+</div>
+
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=speed_run" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-values" style="color: #2e86ab; font-weight: bold;">Typical Values</a> &mdash; BASE_SPEED's honest range. This one is track time, one constant, and a notebook.</p>
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🎯 THE GOAL</h4>
+
+<p>Find the fastest BASE_SPEED your robot can handle while still following the line.</p>
+
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧠 THE LOGIC</h4>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #b5cea8;">1.</span> Start with tuned Kp
+<span style="color: #b5cea8;">2.</span> Increase BASE_SPEED by <span style="color: #b5cea8;">25</span>
+<span style="color: #b5cea8;">3.</span> Test on track with curves
+<span style="color: #b5cea8;">4.</span> If robot loses line, previous speed was <span style="color: #569cd6;">max</span>
+<span style="color: #b5cea8;">5.</span> Record your fastest reliable speed</pre>
+
+</div>
+
+</div>
+
+<!-- Challenge 2 -->
+
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;">
+
+<strong>Challenge 2: Wiggle Test</strong>
+
+<span style="display: inline-block; background: #4caf50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">EASY</span>
+
+</div>
+
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=wiggle_test" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" style="color: #2e86ab; font-weight: bold;">The Formula</a> &mdash; when Kp is huge, the correction outruns the error. Section 7's oscillation box explains the wiggle you're about to cause on purpose.</p>
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🎯 THE GOAL</h4>
+
+<p>Intentionally make your robot oscillate, then fix it. Document both Kp values.</p>
+
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧠 THE LOGIC</h4>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #b5cea8;">1.</span> Set Kp very high (<span style="color: #b5cea8;">0.5</span> or more)
+<span style="color: #b5cea8;">2.</span> Observe the oscillation
+<span style="color: #b5cea8;">3.</span> Decrease Kp until stable
+<span style="color: #b5cea8;">4.</span> Record: oscillation Kp = _____, stable Kp = _____</pre>
+
+</div>
+
+</div>
+
+<!-- Challenge 3 -->
+
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;">
+
+<strong>Challenge 3: Gap Gauntlet</strong>
+
+<span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span>
+
+</div>
+
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=gap_gauntlet" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-values" style="color: #2e86ab; font-weight: bold;">Typical Values</a> &mdash; plus the card's own time = distance &divide; speed math. MAX_GAP_TIME is the only dial you turn.</p>
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🎯 THE GOAL</h4>
+
+<p>Create a track with multiple gaps (5cm, 10cm, 15cm, 20cm) and tune MAX_GAP_TIME to handle them all.</p>
+
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧠 THE LOGIC</h4>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">1. Calculate: time = distance / speed
+2. At BASE_SPEED=150, robot travels ~15cm/sec
+3. For 20cm gap: need at least 20/15 = 1.33 seconds
+4. Set MAX_GAP_TIME accordingly (with safety margin)</pre>
+
+</div>
+
+</div>
+
+<!-- Challenge 4 -->
+
+<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;">
+
+<strong>Challenge 4: Display Position Bar</strong>
+
+<span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span>
+
+</div>
+
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=position_bar" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-where" style="color: #2e86ab; font-weight: bold;">Where Does Code Go?</a> &mdash; a new display function belongs in main.cpp, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">map()</code> turns 0&#8211;4000 into a 21-column screen position.</p>
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🎯 THE GOAL</h4>
+
+<p>Show a visual bar on the OLED that moves left/right based on line position.</p>
+
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧠 THE LOGIC</h4>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">FUNCTION drawPositionBar:
+MAP position (0-4000) to a screen column (0-20)
+DRAW a marker at that column
+CALL it right after followLine() while running</pre>
+
+</div>
+
+<div style="padding: 15px 20px; background: #e8f5e9;">
+
+<details>
+
+<summary>🔓 Click to reveal a worked version</summary>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> drawPositionBar() {
+  <span style="color: #569cd6;">int</span> pos = readLinePosition();
+  <span style="color: #569cd6;">int</span> col = map(pos, <span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">4000</span>, <span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">20</span>);
+  display.clear();
+  display.gotoXY(col, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"|"</span>));
+}</pre>
+
+<p>Call it from the visible branch, right after <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine();</code> &mdash; and expect slightly lazier steering with the bar on: every OLED redraw costs the loop a few milliseconds. That trade-off is real engineering, not a bug.</p>
+
+</details>
+
+</div>
+
+</div>
+
+<!-- Challenge 5 -->
+
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;">
+
+<strong>Challenge 5: Adaptive Kp Controller</strong>
+
+<span style="display: inline-block; background: #f44336; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span>
+
+</div>
+
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=adaptive_kp" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" style="color: #2e86ab; font-weight: bold;">The Formula</a> &mdash; three gains instead of one, chosen by how far off the line is. The bands are yours to tune.</p>
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🎯 THE GOAL</h4>
+
+<p>Automatically adjust Kp based on how far the robot is from center.</p>
+
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧠 THE LOGIC</h4>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">IF error is small (&lt; <span style="color: #b5cea8;">500</span>): USE low Kp (gentle)
+ELSE IF error is medium (<span style="color: #b5cea8;">500</span>-<span style="color: #b5cea8;">1000</span>): USE medium Kp
+ELSE: USE high Kp (aggressive)</pre>
+
+</div>
+
+<div style="padding: 15px 20px; background: #e8f5e9;">
+
+<details>
+
+<summary>🔓 Click to reveal a worked version</summary>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> adaptiveFollowLine() {
+  <span style="color: #569cd6;">int</span> position = readLinePosition();
+  <span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+  <span style="color: #569cd6;">int</span> absError = abs(error);
+  <span style="color: #569cd6;">float</span> adaptiveKp;
+  <span style="color: #569cd6;">if</span> (absError &lt; <span style="color: #b5cea8;">500</span>) {
+    adaptiveKp = <span style="color: #b5cea8;">0.08</span>;   <span style="color: #7cbf6e;">// Gentle - nearly centered</span>
+  } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (absError &lt; <span style="color: #b5cea8;">1000</span>) {
+    adaptiveKp = <span style="color: #b5cea8;">0.15</span>;   <span style="color: #7cbf6e;">// Medium - drifting</span>
+  } <span style="color: #569cd6;">else</span> {
+    adaptiveKp = <span style="color: #b5cea8;">0.25</span>;   <span style="color: #7cbf6e;">// Aggressive - way off</span>
+  }
+  <span style="color: #569cd6;">int</span> correction = adaptiveKp * error;
+  <span style="color: #569cd6;">int</span> leftSpeed = BASE_SPEED + correction;
+  <span style="color: #569cd6;">int</span> rightSpeed = BASE_SPEED - correction;
+  leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
+  rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
+  motors.setSpeeds(leftSpeed, rightSpeed);
+}</pre>
+
+<p>Swap it in for <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine();</code> in the visible branch. Tune the two band edges (500, 1000) and three gains on your own track &mdash; the reveal's numbers are a starting point, not an answer.</p>
+
+</details>
+
+</div>
+
+</div>
+
+<div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <strong>🏁 FINISHED EARLY?</strong>
+    <p style="margin-bottom: 0;">Five line-following mysteries wait in <a href="#bonus-challenges" style="color: #2e86ab; font-weight: bold;">Bonus</a> &mdash; each Maker link opens the finished build with one defect planted: a correction steering the wrong way, a gain stuck at zero, a calibration that never happened, a gap timer that never gives up, and a robot blind on a perfect line.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Section 10: Exit Ticket -->
+
+</div>
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">🔍 Bonus: Five Line-Following Mysteries</div></div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Detective work. Each Maker link below opens the <strong>finished build with one deliberate defect planted</strong>. The routine: upload it, watch the symptom, <strong>predict the culprit before opening a single file</strong>, find it, fix it, prove the fix on the track. Every defect here is one the robot can't explain to you — the symptom is all you get, exactly like real debugging.</p>
+
+<h4 style="color: #6c757d;">Mystery 1: Backwards Correction</h4>
+<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=backwards_correction" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — upload and start it <em>on a straight line, on the floor</em>. The instant it drifts a hair off center, it snaps <em>hard away</em> from the line and spirals off. Why away — and why so violently?</p>
+<details>
+    <summary>💡 Hint</summary>
+<p>Two characters, one function. The planted lines in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine()</code>:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">  <span style="color: #569cd6;">int</span> leftSpeed = BASE_SPEED - correction;
+  <span style="color: #569cd6;">int</span> rightSpeed = BASE_SPEED + correction;</pre>
+<p>The signs are swapped, so every correction steers <em>away</em> from the line &mdash; which grows the error, which grows the correction. Proportional control with the sign flipped isn't weak, it's a runaway. Swap the signs back.</p>
+</details>
+<h4 style="color: #6c757d;">Mystery 2: The Straight-Liner</h4>
+<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=straight_liner" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — flawless on the straightaway, sails serenely off every curve, no correction whatsoever. Before opening any file: <strong>read the status screen</strong>. It has been telling you the answer the whole time.</p>
+<details>
+    <summary>💡 Hint</summary>
+<p>The screen says <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Kp: 0.00</code>. The planted line:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">float</span> currentKp = <span style="color: #b5cea8;">0.0</span>;           <span style="color: #7cbf6e;">// Live-tunable copy of KP</span></pre>
+<p>Gain zero &rarr; correction zero &rarr; a robot that only drives straight. Pressing C revives it <em>until the next reboot</em> &mdash; live tuning treats the symptom, the initializer is the disease. Restore <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float currentKp = KP;</code>.</p>
+</details>
+<h4 style="color: #6c757d;">Mystery 3: The Uncalibrated Run</h4>
+<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=uncalibrated_run" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — the screen says "Calibrating..." — but the robot never spins — then the instant you press B to go: <strong>LINE LOST</strong>, while sitting dead-center on a perfect line. The display is lying to you. About what?</p>
+<details>
+    <summary>💡 Hint</summary>
+<p>The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">calibrateLineSensors();</code> <em>call</em> was deleted from setup &mdash; the choreography around it survived, so the screen narrates a calibration that never happens. The library's own source says what happens next: <em>"if not calibrated, do nothing"</em> &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readCalibrated()</code> refuses to write, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">sensorValues</code> stays all zeros, the sum never beats the threshold, and the robot is blind by protocol. Put the call back &mdash; and remember Step 5: calibration isn't ceremony, it's what makes the 0&#8211;1000 scale exist.</p>
+</details>
+<h4 style="color: #6c757d;">Mystery 4: The Eternal Gap</h4>
+<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=eternal_gap" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — <strong>floor only, spotter ready</strong> — this one does not stop on its own. It follows fine, but at the first gap it coasts straight… and keeps coasting. Forever. What gave up: the gap logic, or the number it was given?</p>
+<details>
+    <summary>💡 Hint</summary>
+<p>The logic is perfect. The planted constant:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> MAX_GAP_TIME = <span style="color: #b5cea8;">500000</span>;  <span style="color: #7cbf6e;">// Max milliseconds to cross a gap</span></pre>
+<p>500,000 ms is an <strong>eight-minute</strong> gap allowance &mdash; the timeout exists and can essentially never fire. A safety limit that can't trigger is indistinguishable from no safety at all; that's the whole lesson. Restore 500.</p>
+</details>
+<h4 style="color: #6c757d;">Mystery 5: The Blind Robot</h4>
+<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=blind_robot" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — calibration runs correctly this time — real spin and all — and it <em>still</em> declares LINE LOST instantly, parked on a jet-black line. Same symptom as Mystery 3, so: same cause? Prove your answer before you look.</p>
+<details>
+    <summary>💡 Hint</summary>
+<p>Different culprit entirely. The planted constant:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> LINE_LOST_THRESHOLD = <span style="color: #b5cea8;">5001</span>;    <span style="color: #7cbf6e;">// Calibrated sum below this = no line</span></pre>
+<p>Five sensors &times; 1000 max = a highest possible sum of <strong>5000</strong>. The visibility test can never pass &mdash; not on any line, ever. Same symptom as Mystery 3, opposite end of the pipeline: one starves the reading, the other sets an impossible bar. <em>Same symptom &ne; same cause</em> is the most valuable sentence in debugging. Restore 200.</p>
+</details>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-10" style="font-size: 1.15em; font-weight: bold;">📋 Section 10: Exit Ticket</div></div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+
+<h3 style="color: #6c757d; margin-top: 30px;">9.1 Knowledge Check</h3>
+
+<p><strong>1. In your own words, explain why proportional control produces smoother movement than bang-bang control.</strong></p>
+
+<details>
+
+<summary>Show Answer</summary>
+
+<p>Proportional control adjusts correction strength based on error size. Small errors get small corrections, large errors get large corrections. Bang-bang always gives the same correction regardless of error, causing constant overcorrection and oscillation.</p>
+
+</details>
+
+<p><strong>2. Calculate: If linePosition = 3200, LINE_CENTER = 2000, and Kp = 0.15, what is the correction value?</strong></p>
+
+<details>
+
+<summary>Show Answer</summary>
+
+<p>error = 3200 - 2000 = 1200<br>
+
+correction = 0.15 × 1200 = <strong>180</strong></p>
+
+</details>
+
+<p><strong>3. Your robot oscillates on straight lines but handles curves well. What should you adjust?</strong></p>
+
+<details>
+
+<summary>Show Answer</summary>
+
+<p><strong>Decrease Kp.</strong> Oscillation on straights means overcorrecting small errors.</p>
+
+</details>
+
+<h3 style="color: #6c757d; margin-top: 30px;">9.2 Record Your Calibration</h3>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+
+<tr>
+
+<th style="background: #4d5358; color: white; padding: 12px 15px; text-align: left;">Parameter</th>
+
+<th style="background: #4d5358; color: white; padding: 12px 15px; text-align: left;">Your Value</th>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Final tuned Kp</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">____________</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">BASE_SPEED used</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">____________</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Max reliable speed achieved</td>
+
+<td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">____________</td>
+
+</tr>
+
+</table>
+
+<h3 style="color: #6c757d; margin-top: 30px;">9.3 What's Next</h3>
+
+<p>In <strong>Lesson 9: Intersections and Dead Ends</strong>, you'll learn to:</p>
+
+<ul>
+
+<li>Detect <strong>green markers</strong> that indicate turn direction</li>
+
+<li>Execute <strong>guided turns</strong> at intersections</li>
+
+<li>Handle <strong>180° turns</strong> for dead ends</li>
+
+</ul>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Glossary -->
+
+</div>
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="glossary" style="font-size: 1.15em; font-weight: bold;">📖 Glossary</div></div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Bang-Bang Control</strong> — A control method that switches between discrete states with no intermediate values.
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Error</strong> — The difference between current position and target position.
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>extern</strong> — A keyword meaning "this variable exists in another file." Used in .h files.
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Kp (Proportional Gain)</strong> — A tuning constant that scales error to correction. Too high = oscillation, too low = sluggish.
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Oscillation</strong> — Back-and-forth motion caused by overcorrection.
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Proportional Control</strong> — A control method where correction is proportional to error size.
+
+</div>
+
+<div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+
+<span>🔑</span> <strong>Setpoint</strong> — The target value (2000 for centered line).
+
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- Quick Reference -->
+
+</div>
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="quick-ref" style="font-size: 1.15em; font-weight: bold;">⚡ Quick Reference</div></div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin: 15px 0;">
+
+<h3 id="qr-formula" style="color: #6c757d; margin-top: 30px;">📐 THE FORMULA</h3>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">error = position - <span style="color: #b5cea8;">2000</span>
+correction = Kp × error
+leftSpeed = BASE_SPEED + correction
+rightSpeed = BASE_SPEED - correction</pre>
+
+<h3 id="qr-values" style="color: #6c757d; margin-top: 30px;">🎛️ TYPICAL VALUES</h3>
+
+<ul>
+
+<li>Kp: 0.08 - 0.25 (start at 0.10)</li>
+
+<li>BASE_SPEED: 150 - 300</li>
+
+<li>MAX_SPEED: 300-400</li>
+
+</ul>
+
+<h3 id="qr-where" style="color: #6c757d; margin-top: 30px;">📁 WHERE DOES CODE GO?</h3>
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+
+<tr style="background-color: #e8f5e9;">
+
+<th style="background: #4d5358; color: white; padding: 8px; border: 1px solid #dee2e6;">Function</th>
+
+<th style="background: #4d5358; color: white; padding: 8px; border: 1px solid #dee2e6;">File</th>
+
+</tr>
+
+<tr>
+
+<td style="border: 1px solid #dee2e6; padding: 8px;">initLineSensors(), calibrateLineSensors(), readLinePosition(), isLineVisible()</td>
+
+<td style="border: 1px solid #dee2e6; padding: 8px;">RobotSensors.cpp</td>
+
+</tr>
+
+<tr>
+
+<td style="border: 1px solid #dee2e6; padding: 8px;">followLine(), handleGap(), showStatus()</td>
+
+<td style="border: 1px solid #dee2e6; padding: 8px;"><strong>main.cpp ONLY</strong></td>
+
+</tr>
+
+<tr>
+
+<td style="border: 1px solid #dee2e6; padding: 8px;">driveDistance(), turnDegrees()</td>
+
+<td style="border: 1px solid #dee2e6; padding: 8px;">RobotMotion.cpp</td>
+
+</tr>
+
+</table>
+
+<h3 id="qr-sensors" style="color: #6c757d; margin-top: 30px;">📡 LINE SENSOR FUNCTIONS</h3>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+<tr>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Returns</th>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr>
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initLineSensors()</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">&#8212;</td>
+<td style="border: 1px solid #ddd; padding: 10px;">One-time setup — wraps the library's initFiveSensors()</td>
+</tr>
+<tr style="background-color: #f9f9f9;">
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">calibrateLineSensors()</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">&#8212;</td>
+<td style="border: 1px solid #ddd; padding: 10px;">100-pass spin; teaches the library <em>your</em> white and <em>your</em> black</td>
+</tr>
+<tr>
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLinePosition()</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">int 0&#8211;4000</td>
+<td style="border: 1px solid #ddd; padding: 10px;">Calibrated read + weighted average; 2000 = line under the middle sensor</td>
+</tr>
+<tr style="background-color: #f9f9f9;">
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isLineVisible()</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">bool</td>
+<td style="border: 1px solid #ddd; padding: 10px;">Calibrated sum of all five sensors vs LINE_LOST_THRESHOLD</td>
+</tr>
+<tr>
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.read(vals)</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">raw timings</td>
+<td style="border: 1px solid #ddd; padding: 10px;">Uncalibrated — reads in the hundreds even on plain white; can't gate visibility</td>
+</tr>
+<tr style="background-color: #f9f9f9;">
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.readCalibrated(vals)</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">0&#8211;1000 each</td>
+<td style="border: 1px solid #ddd; padding: 10px;">0 = your white, 1000 = your black. Requires calibration first — otherwise it writes nothing</td>
+</tr>
+<tr>
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.readLine(vals)</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">int 0&#8211;4000</td>
+<td style="border: 1px solid #ddd; padding: 10px;">Calibrated read <em>plus</em> position estimate, one call</td>
+</tr>
+</table>
+
+<h3 id="qr-extern" style="color: #6c757d; margin-top: 30px;">🔗 THE EXTERN PATTERN</h3>
+
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+<tr>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">File</th>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">The line</th>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Meaning</th>
+</tr>
+<tr>
+<td style="border: 1px solid #ddd; padding: 10px;">.h</td>
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern Zumo32U4LineSensors lineSensors;</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">"It exists somewhere else — let me use it"</td>
+</tr>
+<tr style="background-color: #f9f9f9;">
+<td style="border: 1px solid #ddd; padding: 10px;">.cpp</td>
+<td style="border: 1px solid #ddd; padding: 10px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4LineSensors lineSensors;</code></td>
+<td style="border: 1px solid #ddd; padding: 10px;">"Create it HERE — exactly once"</td>
+</tr>
+</table>
+<p style="margin-bottom: 0;">One word apart. Get it backwards and Step 4's build shows you one of two faces — <em>redefinition</em> (compiler) or <em>multiple definition</em> (linker) — same root cause: a definition living in a header.</p>
+
+</div>
+
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="image-index" style="font-size: 1.15em; font-weight: bold;">🖼️ Image Index</div></div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+<table style="border-collapse: collapse; width: 100%; margin: 15px 0;">
+<tr style="background-color: #6c757d; color: white;">
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Placeholder</th>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Description</th>
+<th style="background: #4d5358; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Section</th>
+</tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">[GRAPHIC 8.1]</td><td style="border: 1px solid #ddd; padding: 10px;">Bang-bang oscillation: constant-width zigzag across the line (L08_GRAPHIC_8-1_bang_bang_oscillation.svg — live).</td><td style="border: 1px solid #ddd; padding: 10px;">§3</td></tr>
+<tr style="background-color: #f9f9f9;"><td style="border: 1px solid #ddd; padding: 10px;">[GRAPHIC 8.2]</td><td style="border: 1px solid #ddd; padding: 10px;">Kp too low / just right / too high on the same track, with the A/C fix per symptom (L08_GRAPHIC_8-2_kp_tuning_comparison.svg — live).</td><td style="border: 1px solid #ddd; padding: 10px;">§7</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">[GRAPHIC 8.3]</td><td style="border: 1px solid #ddd; padding: 10px;">Eight-file project tree — what to EDIT, what to REPLACE, what carries over (L08_GRAPHIC_8-3_project_file_tree.svg — live).</td><td style="border: 1px solid #ddd; padding: 10px;">§6</td></tr>
+</table>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<hr>
+
+<p style="text-align: center; color: #6c757d;"><em>Lesson 8: Line Following with Proportional Control</em> — Version 4 — July 2026</p>
+
+</body>
+
+</html>
