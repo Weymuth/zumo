@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!-- ZUMO SITE — WELCOME SCREEN / FRONT DOOR — v1.0 (2026-07-12)
+     Two doors: the Textbook (lessons/lesson-NN.html) and the AI Tutor (tutor.html).
+     Lesson links use STABLE filenames — a version bump overwrites the file and the
+     link never breaks. The version lives INSIDE each lesson and in LIVE_ZUMO_TEXTBOOK.md.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercersburg Robotics — Zumo 32U4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1117; --surface:#1a1d27; --surface-hover:#22263a; --border:#2a2e3f;
+    --text:#e1e4ed; --text-dim:#8b8fa3; --accent:#4f8ff7; --accent-dim:#3a6bc5;
+    --green:#3dd68c; --yellow:#f5c542; --purple:#a371f7; --orange:#f5953b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);
+    min-height:100dvh;padding:32px 20px 60px;
+  }
+  .wrap{max-width:1000px;margin:0 auto;}
+
+  /* ---------- HERO ---------- */
+  .hero{text-align:center;padding:26px 0 40px;}
+  .hero-icon{font-size:52px;line-height:1;}
+  .hero h1{font-size:2.1em;font-weight:700;margin:14px 0 8px;letter-spacing:-0.5px;}
+  .hero .sub{color:var(--text-dim);font-size:1.05em;}
+
+  /* ---------- THE TWO DOORS ---------- */
+  .doors{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:46px;}
+  @media(max-width:700px){.doors{grid-template-columns:1fr;}}
+  .door{
+    display:block;text-decoration:none;color:inherit;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:28px 26px;
+    transition:background .15s,border-color .15s,transform .15s;
+  }
+  .door:hover{background:var(--surface-hover);border-color:var(--accent-dim);transform:translateY(-2px);}
+  .door-icon{font-size:34px;margin-bottom:12px;}
+  .door h2{font-size:1.3em;font-weight:600;margin-bottom:7px;}
+  .door p{color:var(--text-dim);font-size:.94em;line-height:1.55;}
+  .door .go{display:inline-block;margin-top:14px;color:var(--accent);font-weight:600;font-size:.9em;}
+  .door.tutor:hover{border-color:var(--purple);}
+  .door.tutor .go{color:var(--purple);}
+
+  /* ---------- LESSON GRID ---------- */
+  .sec-head{
+    display:flex;align-items:baseline;gap:12px;margin:0 0 6px;
+    border-bottom:1px solid var(--border);padding-bottom:10px;
+  }
+  .sec-head h2{font-size:1.15em;font-weight:600;}
+  .sec-head .count{color:var(--text-dim);font-size:.85em;}
+  .unit{margin-top:30px;}
+  .unit-label{
+    color:var(--text-dim);font-size:.76em;font-weight:600;letter-spacing:.09em;
+    text-transform:uppercase;margin:0 0 12px;
+  }
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:11px;}
+  .card{
+    display:block;text-decoration:none;color:inherit;background:var(--surface);
+    border:1px solid var(--border);border-left:3px solid var(--accent-dim);
+    border-radius:9px;padding:13px 15px;transition:background .13s,border-color .13s;
+  }
+  .card:hover{background:var(--surface-hover);border-left-color:var(--accent);}
+  .card .n{color:var(--text-dim);font-size:.74em;font-weight:600;letter-spacing:.06em;}
+  .card .t{font-weight:600;font-size:.97em;margin-top:3px;line-height:1.35;}
+  .card .d{color:var(--text-dim);font-size:.8em;margin-top:5px;line-height:1.4;}
+  .u1 .card{border-left-color:var(--green);}
+  .u1 .card:hover{border-left-color:#5ef0aa;}
+  .u2 .card{border-left-color:var(--yellow);}
+  .u2 .card:hover{border-left-color:#ffd75e;}
+  .u3 .card{border-left-color:var(--orange);}
+  .u3 .card:hover{border-left-color:#ffab5c;}
+  .u4 .card{border-left-color:var(--purple);}
+  .u4 .card:hover{border-left-color:#bd93ff;}
+
+  /* ---------- TOOLS ---------- */
+  .tools{margin-top:42px;padding-top:22px;border-top:1px solid var(--border);
+         display:flex;flex-wrap:wrap;gap:10px;}
+  .tool{
+    text-decoration:none;color:var(--text-dim);background:var(--surface);
+    border:1px solid var(--border);border-radius:8px;padding:9px 15px;font-size:.88em;
+    transition:color .13s,border-color .13s;
+  }
+  .tool:hover{color:var(--text);border-color:var(--accent-dim);}
+  footer{margin-top:34px;text-align:center;color:var(--text-dim);font-size:.8em;line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-icon">&#129302;</div>
+    <h1>Mercersburg Robotics</h1>
+    <div class="sub">Pololu Zumo 32U4 &middot; C++ &middot; PlatformIO</div>
+  </div>
+
+  <!-- ============ THE TWO DOORS ============ -->
+  <div class="doors">
+    <a class="door" href="#textbook">
+      <div class="door-icon">&#128218;</div>
+      <h2>The Textbook</h2>
+      <p>Sixteen lessons, from blinking an LED to a robot that knows when its own wheels are lying to it. Every line of code compiles.</p>
+      <span class="go">Start reading &rarr;</span>
+    </a>
+
+    <a class="door tutor" href="tutor.html">
+      <div class="door-icon">&#128172;</div>
+      <h2>The AI Tutor</h2>
+      <p>Stuck on a challenge? Paste your code and your error. It knows the curriculum, the assignments, and the robot.</p>
+      <span class="go">Ask for help &rarr;</span>
+    </a>
+  </div>
+
+  <!-- ============ THE BOOK ============ -->
+  <div id="textbook">
+    <div class="sec-head">
+      <h2>The Textbook</h2>
+      <span class="count">16 lessons</span>
+    </div>
+
+    <div class="unit u1">
+      <div class="unit-label">Unit 1 &mdash; Make It Move</div>
+      <div class="grid">
+        <a class="card" href="lessons/lesson-01.html">
+          <div class="n">LESSON 1</div><div class="t">Hello, Robot!</div>
+          <div class="d">Your first upload. It beeps, it blinks, it moves.</div>
+        </a>
+        <a class="card" href="lessons/lesson-02.html">
+          <div class="n">LESSON 2</div><div class="t">Read Code Like a Pro</div>
+          <div class="d">You cannot fix what you cannot read.</div>
+        </a>
+        <a class="card" href="lessons/lesson-03.html">
+          <div class="n">LESSON 3</div><div class="t">Motors &amp; TRIM</div>
+          <div class="d">Two motors are never identical. Meet TRIM.</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="unit u2">
+      <div class="unit-label">Unit 2 &mdash; Make It Sense</div>
+      <div class="grid">
+        <a class="card" href="lessons/lesson-04.html">
+          <div class="n">LESSON 4</div><div class="t">Line Sensors</div>
+          <div class="d">Calibrate against white and black. Numbers, not guesses.</div>
+        </a>
+        <a class="card" href="lessons/lesson-05.html">
+          <div class="n">LESSON 5</div><div class="t">Proximity Sensors</div>
+          <div class="d">Seeing without touching &mdash; and what it costs you.</div>
+        </a>
+        <a class="card" href="lessons/lesson-06.html">
+          <div class="n">LESSON 6</div><div class="t">Encoders</div>
+          <div class="d">Stop guessing at distance. Start counting it.</div>
+        </a>
+        <a class="card" href="lessons/lesson-07.html">
+          <div class="n">LESSON 7</div><div class="t">Code Organization</div>
+          <div class="d">One file becomes eight. This is why.</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="unit u3">
+      <div class="unit-label">Unit 3 &mdash; Make It Think</div>
+      <div class="grid">
+        <a class="card" href="lessons/lesson-08.html">
+          <div class="n">LESSON 8</div><div class="t">Line Following with P-Control</div>
+          <div class="d">Your first closed loop. It corrects itself 50&times; a second.</div>
+        </a>
+        <a class="card" href="lessons/lesson-09.html">
+          <div class="n">LESSON 9</div><div class="t">Intersections &amp; Dead Ends</div>
+          <div class="d">A state machine, and a robot that makes decisions.</div>
+        </a>
+        <a class="card" href="lessons/lesson-10.html">
+          <div class="n">LESSON 10</div><div class="t">Obstacles</div>
+          <div class="d">Something is in the way. Now what?</div>
+        </a>
+        <a class="card" href="lessons/lesson-11.html">
+          <div class="n">LESSON 11</div><div class="t">Time Lies, Distance Doesn&#x27;t</div>
+          <div class="d">A tired battery drives slower. Your stopwatch does not care.</div>
+        </a>
+        <a class="card" href="lessons/lesson-12.html">
+          <div class="n">LESSON 12</div><div class="t">Wheels Lie</div>
+          <div class="d">The encoder swears it turned 90&deg;. It did not move.</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="unit u4">
+      <div class="unit-label">Unit 4 &mdash; Make It Compete</div>
+      <div class="grid">
+        <a class="card" href="lessons/lesson-13.html">
+          <div class="n">LESSON 13</div><div class="t">Rescue Zone</div>
+          <div class="d">The robot leaves the line. Nothing is holding it straight now.</div>
+        </a>
+        <a class="card" href="lessons/lesson-14.html">
+          <div class="n">LESSON 14</div><div class="t">Competition Prep</div>
+          <div class="d">It works on your desk. Will it work on the day?</div>
+        </a>
+        <a class="card" href="lessons/lesson-15.html">
+          <div class="n">LESSON 15</div><div class="t">Advanced PID Control</div>
+          <div class="d">P was the beginning. Meet I and D.</div>
+        </a>
+        <a class="card" href="lessons/lesson-16.html">
+          <div class="n">LESSON 16</div><div class="t">Engineering Showcase</div>
+          <div class="d">Build something nobody assigned you.</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOOLS ============ -->
+  <div class="tools">
+    <a class="tool" href="newproject.html">&#128295; Project Maker &mdash; build a lesson project</a>
+    <a class="tool" href="timer.html">&#9201;&#65039; Timer</a>
+    <a class="tool" href="tutor.html">&#128172; AI Tutor</a>
+  </div>
+
+  <footer>
+    Mercersburg Academy Robotics &middot; Pololu Zumo 32U4<br>
+    Every code block in this book is compiled and verified before it ships.
+  </footer>
+
+</div>
+</body>
+</html>
