@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 12: Wheels Lie &mdash; Zumo 32U4 Robotics</title>
+</head>
+<body id="top" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; background-color: #fafafa;">
+
+<!-- ===================== NAVIGATION (STICKY) ===================== -->
+<nav style="background: linear-gradient(to bottom, #1a5276 0%, #2e86ab 100%); padding: 15px 20px; border-radius: 10px; margin-bottom: 30px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center;">
+        <a href="#section-1" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">1. Intro</a>
+        <a href="#section-2" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">2. Objectives</a>
+        <a href="#section-3" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">3. Theory</a>
+        <a href="#section-4" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">4. Hardware</a>
+        <a href="#section-5" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">5. Code</a>
+        <a href="#section-6" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">6. Build It</a>
+        <a href="#section-7" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">7. Calibrate</a>
+        <a href="#section-8" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">8. Troubleshoot</a>
+        <a href="#section-8a" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">8A. Concepts</a>
+        <a href="#section-9" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">9. Challenges</a>
+        <a href="#section-10" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">10. Exit</a>
+        <a href="#bonus-challenges" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">Bonus</a>
+        <a href="#glossary" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">Glossary</a>
+        <a href="#quick-ref" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">Quick Ref</a>
+        <a href="#image-index" style="color: white; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 0.85em; background-color: #3498db;">Image Index</a>
+    </div>
+</nav>
+
+<div style="background: linear-gradient(135deg, #1a5276 0%, #2e86ab 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 25px;">
+    <h1 style="margin: 0 0 8px 0; font-size: 2em;">&#127903;&#65039; LESSON 12</h1>
+    <div style="font-size: 1.5em; font-weight: 300;">Wheels Lie</div>
+    <div style="margin-top: 12px; opacity: 0.9; font-size: 0.95em;">Version 1 &middot; The Gyro &mdash; Measuring the Robot, Not the Wheels</div>
+</div>
+<!-- ===================== PART 1 DIVIDER ===================== -->
+<div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 1 &mdash; Theory &amp; Concepts</div>
+</div>
+
+<h2 id="section-1" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">1. The Turn That Never Happened</h2>
+<p>Put your Zumo on a smooth, slick surface. Tell it to turn 90 degrees.
+Watch the wheels spin. Watch the encoders count. Watch the robot report,
+with total confidence, that it has turned exactly 90 degrees.</p>
+
+<p>Now look at the robot.</p>
+
+<p>It is pointing almost exactly where it started.</p>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; The encoder is not broken. It is doing its job perfectly.</strong><br>The encoder counts <strong>wheel rotation</strong>. The wheel <em>did</em> rotate. The encoder counted it correctly, reported it honestly, and stopped the turn at exactly the right count. Every number it produced was true.<br><br>The wheel just was not <em>attached to the floor</em> at the time.</div>
+<p>This is the first sensor in this book that has lied to you. Not by malfunctioning &mdash;
+by <strong>answering a different question than the one you asked</strong>.</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 22px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">You asked</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">The encoder answered</th>
+</tr>
+<tr>
+  <td style="padding:10px 14px; border:1px solid #ddd;">&quot;Did the <strong>robot</strong> turn 90 degrees?&quot;</td>
+  <td style="padding:10px 14px; border:1px solid #ddd;">&quot;The <strong>wheels</strong> turned far enough that they <em>would have</em> spun the robot 90 degrees &mdash; <em>if they had been gripping.</em>&quot;</td>
+</tr>
+</table>
+
+<p>Those are the same answer on carpet. They are <strong>not</strong> the same answer on a slick floor,
+on a patch of dust, on a wet spot, or when a wheel is jammed against a wall.</p>
+
+<p>And here is the part that should bother you:
+<strong>the encoder cannot tell the difference.</strong> It is structurally incapable of it.
+The wheel is the very thing it is watching. Asking an encoder whether its wheel slipped is like
+asking a witness to confirm their own alibi.</p>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; What this lesson gives you</strong><br>A sensor that watches the <strong>robot</strong> instead of the wheels &mdash; the <strong>gyroscope</strong>. It is the first instrument in this book that can catch <em>another instrument</em> in a lie.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p>
+<h2 id="section-2" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">2. What You Will Be Able To Do</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ul style="line-height:2;">
+<li>Explain <strong>why an encoder cannot detect wheel slip</strong> &mdash; and why that is a structural limit, not a bug.</li>
+<li>Calibrate a gyroscope by measuring its <strong>zero</strong> &mdash; a sensor whose resting value is itself a lie.</li>
+<li>Read a rotation <strong>rate</strong> and add it up over time to get an <strong>angle</strong>.</li>
+<li>Write <code>turnDegreesGyro()</code>, a turn that closes on the <strong>robot&#x27;s</strong> angle instead of the wheels&#x27;.</li>
+<li>Route every intersection turn in the book through the gyro &mdash; by changing <strong>three words</strong>.</li>
+<li>Prove, with the robot in your hands, that the encoder turn and the gyro turn <em>disagree</em> &mdash; and say which one is right.</li>
+</ul>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><h2 id="section-3" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">3. Theory &mdash; Why the Wheels Cannot Catch Themselves</h2>
+<h3 style="color: #1a5276; margin-top: 28px;">3.1 A Sensor Can Only Report What It Watches</h3>
+<p>Every sensor you have used so far watches something <em>outside</em> the robot:</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Sensor</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">What it watches</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Lesson</th>
+</tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;">Line sensors</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">The floor</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">4</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;">Proximity sensor</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Whatever is in front</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">5</td></tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Encoders</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;"><strong>The robot&#x27;s own wheels</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">6</td></tr>
+</table>
+
+<p>Look at that last row again. The encoder is the only one that watches a part of the robot
+<em>instead of</em> the world. That is the whole problem.</p>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; The encoder measures INTENT, not RESULT.</strong><br>It tells you how far the wheel <em>turned</em>. It does not &mdash; and cannot &mdash; tell you how far the <strong>robot moved</strong>. Those two things are connected by <strong>friction</strong>, and friction is not something the encoder can see.<br><br>When friction is good, the encoder&#x27;s answer happens to also be the right answer. You have spent six lessons being quietly lucky.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">3.2 Slip Is Invisible From Inside the Wheel</h3>
+<p>Here is the exact failure, step by step:</p>
+
+<ol style="line-height:2;">
+<li>You command a 90&deg; turn. The code computes: <em>&quot;that is 1,350 encoder counts.&quot;</em></li>
+<li>The motors spin. The wheels spin. The encoders count up: 400&hellip; 900&hellip; 1,350.</li>
+<li>The code sees 1,350, says <em>&quot;done&quot;</em>, and stops the motors.</li>
+<li>The robot has turned <strong>31 degrees</strong>.</li>
+</ol>
+
+<p>Now &mdash; which of those numbers was wrong?</p>
+
+<p><strong>None of them.</strong> The wheel really did spin 1,350 counts. The encoder really did count them.
+The math really was correct. Every single component performed exactly as designed.</p>
+
+<p>The <em>rubber</em> failed. And no encoder anywhere has a rubber sensor.</p>
+<figure style="margin: 24px 0; text-align:center;">
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L12_GRAPHIC_12-01_encoder_vs_gyro.svg" alt="Encoder watches the wheel; gyro watches the chassis" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
+<figcaption style="font-size:0.85em; color:#666; margin-top:8px;"><strong>GRAPHIC 12.1</strong> &mdash; The encoder is bolted to the motor. The gyro is bolted to the chassis. On a slick floor, only one of them is still answering the question you asked.</figcaption></figure>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; This is a structural limit, not a tuning problem.</strong><br>You cannot fix this with a better constant. You cannot fix it with a smarter algorithm. You cannot fix it by counting more carefully.<br><br><strong>The information is not present in the encoder signal at all.</strong> A slipping wheel and a gripping wheel produce the <em>identical</em> stream of counts. There is no clever way to tell them apart, because there is nothing to tell apart &mdash; the two cases are the same to the sensor.<br><br>To detect slip you need a <strong>second instrument, watching something else.</strong></div>
+<h3 style="color: #1a5276; margin-top: 28px;">3.3 The Gyro Watches the Robot</h3>
+<p>A <strong>gyroscope</strong> measures <strong>rotation</strong> &mdash; how fast the thing it is bolted to
+is spinning. It is bolted to the <em>circuit board</em>. The circuit board is bolted to the <em>chassis</em>.</p>
+
+<p>So the gyro measures the <strong>robot</strong>. It has no idea the wheels exist.</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;"></th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Encoder</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Gyro</th>
+</tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Watches</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">The wheel</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">The chassis</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Wheel slips</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#10060; Never notices</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9989; Reports the truth</td></tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Robot lifted off floor</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#10060; Still &quot;driving&quot;</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9989; Reports 0&deg;</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;"><strong>You turn it by hand</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#10060; Sees nothing</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9989; Reports the angle</td></tr>
+</table>
+
+<p>That last row is worth stopping on. <strong>You can pick the robot up, turn it with your hands,
+and the gyro will tell you how far you turned it &mdash; with the motors switched off.</strong>
+The encoders would report absolutely nothing. You will do exactly this in Section 7A.</p><h3 style="color: #1a5276; margin-top: 28px;">3.4 A Gyro Does Not Report an Angle</h3>
+<p>Here is the catch, and it is the reason gyro code looks the way it does.</p>
+
+<p><strong>A gyro reports a RATE, not a position.</strong> It tells you
+&quot;<em>right now I am spinning at 84 degrees per second</em>&quot;. It does <strong>not</strong> tell you
+&quot;<em>I am currently facing 37 degrees</em>&quot;. It has no idea where it is facing. It never did.</p>
+
+<p>To get an <strong>angle</strong> out of a <strong>rate</strong>, you have to add it up over time:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">angle = rate x time
+
+  Spin at 90 deg/sec for 1.0 second  -&gt;  90 degrees
+  Spin at 90 deg/sec for 0.5 seconds -&gt;  45 degrees
+  Spin at 45 deg/sec for 2.0 seconds -&gt;  90 degrees</pre>
+<p>But the robot does not spin at one steady rate. It speeds up, it slows down, it catches on
+a bump. So you cannot do the multiplication once. You have to do it <strong>over and over</strong>,
+in tiny slices, and keep a running total:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">every few milliseconds:
+    rate  = how fast am I spinning RIGHT NOW?
+    dt    = how long since I last checked?
+    total = total + (rate x dt)      &lt;-- accumulate</pre>
+<p>That running total is the angle. That accumulation is what <code>gyroUpdate()</code> does,
+and it is why you must call it <strong>as often as you possibly can</strong> while turning.</p>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Every slice you miss is an angle you never counted.</strong><br>If the robot spins for 40&nbsp;ms and you were not looking, that rotation is <strong>gone</strong>. It is not recovered later &mdash; the gyro has no memory. It only ever tells you about <em>now</em>.<br><br>This is why <code>gyroUpdate()</code> lives <em>inside</em> the turn loop, called thousands of times per turn. Put a <code>delay()</code> in that loop and you are throwing away angle.<br><br><em>(Bonus mystery B2 deletes this call. The robot turns forever and never arrives. Now you know why.)</em></div>
+<h3 style="color: #1a5276; margin-top: 28px;">3.5 The Zero Is a Lie &mdash; and You Must Measure It</h3>
+<p>Set the Zumo on the table. Do not touch it. Do not breathe on it.</p>
+
+<p>Ask the gyro how fast it is spinning.</p>
+
+<p>It will not say zero.</p>
+
+<p>It will say something like <strong>&minus;7</strong>, or <strong>19</strong>, or <strong>&minus;23</strong>.
+A gyro sitting perfectly still routinely reports <strong>up to 25 degrees per second</strong> of rotation
+that is not happening. This is called <strong>bias</strong>, or <strong>drift</strong>, and it is not a defect.
+Every gyro does it. Yours does it. A $40,000 aircraft gyro does it, just less.</p>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Do the arithmetic on that.</strong><br>A bias of 20&deg;/sec, accumulated for one 3-second turn, adds <strong>60 degrees</strong> of pure fiction to your angle.<br><br>Uncorrected, the gyro is <em>worse than the encoder</em>. Much worse.</div>
+<p>So before you can trust the gyro, you must find out <strong>what its lie is</strong> &mdash;
+and then subtract it, forever after.</p>
+
+<p>That is what <code>gyroSetup()</code> does. It reads the gyro <strong>1,024 times</strong> while the robot
+sits absolutely still, averages all 1,024 readings, and stores the result as
+<code>gyroOffset</code>. From that moment on, every reading gets that offset subtracted:</p>
+<figure style="margin: 24px 0; text-align:center;">
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L12_GRAPHIC_12-02_measuring_the_lie.svg" alt="Calibration: 1024 samples, average the bias, subtract it forever" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
+<figcaption style="font-size:0.85em; color:#666; margin-top:8px;"><strong>GRAPHIC 12.2</strong> &mdash; Read it 1,024 times while it is still. Average them. That average is the lie &mdash; subtract it from every reading for the rest of the run.</figcaption></figure>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void gyroUpdate() {
+  imu.readGyro();
+  int16_t turnRate = imu.g.z - gyroOffset;
+
+  uint16_t m  = micros();
+  uint16_t dt = m - gyroLastUpdate;
+  gyroLastUpdate = m;</pre>
+<p style="font-size:0.92em; color:#555; margin-top:-6px;">The subtraction on line 3 is the whole point: <code>imu.g.z</code> is the raw reading (<em>which contains the lie</em>), <code>gyroOffset</code> is the lie you measured at boot, and the difference is the truth.</p>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Why 1,024 samples and not just one?</strong><br>Because the bias is <em>noisy</em> &mdash; it jitters around its true value. One reading might catch it at &minus;23; the next at &minus;11. Averaging 1,024 readings cancels the jitter and leaves the <strong>steady</strong> part, which is the part you can actually subtract.<br><br>It takes about a fifth of a second. That is why the OLED says <strong>HOLD STILL</strong>.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">3.6 A Calibration Against Nothing At All</h3>
+<p>Stop and notice what just happened, because it is genuinely strange.</p>
+
+<p>In <strong>Lesson 4</strong> you calibrated the line sensors. You showed them <strong>white</strong>.
+You showed them <strong>black</strong>. They learned the range between two things you could <em>point at</em>.</p>
+
+<p>Now you are calibrating a sensor by showing it&hellip; <strong>nothing</strong>.
+By holding the robot perfectly still and saying: <em>&quot;whatever you are reading right now &mdash;
+that is what NOTHING looks like. Remember it. Subtract it from everything, forever.&quot;</em></p>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; This is the deepest idea in the lesson.</strong><br>You are not calibrating the sensor against a <em>reference</em>. You are calibrating it against <strong>its own error</strong>.<br><br>The line sensors needed to learn what <em>white</em> was. The gyro needs to learn what <strong>its own dishonesty</strong> is &mdash; and then carry that number around and cancel itself out with it, on every single reading, for the rest of the run.</div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; And therefore: A SPIN CANNOT CALIBRATE A GYRO.</strong><br>If the robot moves during those 1,024 samples, the gyro will average in <em>real rotation</em> and conclude that <strong>spinning is what standing still feels like</strong>.<br><br>It will then subtract that from every future reading &mdash; and report that a robot which is genuinely spinning is perfectly still.<br><br>You will break it on purpose in <strong>Bonus B1</strong>.</div>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Sequence matters, and the code already gets it right.</strong><br>Look at <code>setup()</code>: <code>gyroSetup()</code> runs <strong>before</strong> <code>waitForStart()</code>, which runs <strong>before</strong> <code>calibrateLineSensors()</code>.<br><br>That order is not an accident. <strong>Line-sensor calibration spins the robot.</strong> If the gyro calibrated after it &mdash; or during it &mdash; the spin would poison the zero. The still measurement has to come first, while nothing has moved yet.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><!-- ===================== PART 2 DIVIDER ===================== -->
+<div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 2 &mdash; Hardware &amp; Code</div>
+</div>
+
+<h2 id="section-4" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">4. Hardware &mdash; The Sensor That Costs Nothing</h2>
+<h3 style="color: #1a5276; margin-top: 28px;">4.1 It Is Already On Your Robot</h3>
+<p>You do not have to plug anything in. You do not have to move a jumper.
+The <strong>IMU</strong> &mdash; Inertial Measurement Unit &mdash; has been soldered to your Zumo&#x27;s main board
+since the day it was built, and it has been sitting there, unused, for eleven lessons.</p>
+
+<p>An IMU is actually three sensors in one chip:</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Part</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Measures</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Used here?</th>
+</tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Gyroscope</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Rotation rate (&deg;/sec)</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;"><strong>&#9989; Yes &mdash; the whole lesson</strong></td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;">Accelerometer</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Acceleration / tilt</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Not in this lesson</td></tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;">Magnetometer</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Magnetic field (a compass)</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Not in this lesson</td></tr>
+</table>
+
+<p>We only need the gyro, and we only need <strong>one axis of it</strong>: <code>imu.g.z</code> &mdash;
+the <strong>z</strong> axis, which is the one pointing straight up out of the board. Rotation around a
+vertical axis is exactly what &quot;the robot turning&quot; means.</p>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; The IMU is the only free sensor on this robot.</strong><br>Every other sensor cost you something. The five-sensor line array cost you two proximity receivers &mdash; <strong>pins 20 and 4 are physically shared</strong>, so from Lesson 6 on you have run five line sensors and <em>only the front</em> proximity sensor.<br><br>The IMU costs <strong>zero pins</strong>. It sits on the <strong>I2C bus</strong> (<code>SDA</code>&nbsp;=&nbsp;D2, <code>SCL</code>&nbsp;=&nbsp;D3, fixed in the ATmega32U4 silicon), which nothing else on the Zumo is using. Turning the gyro on takes <strong>nothing away from you.</strong> That is not normal, and it is worth appreciating.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">4.2 One Line You Must Not Forget</h3>
+<p>The I2C bus has to be switched on before anyone can talk over it. That is
+<code>Wire.begin()</code>, and it happens once, at the top of <code>gyroSetup()</code>.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void gyroSetup() {
+  Wire.begin();
+  imu.init();
+  imu.enableDefault();
+  imu.configureForTurnSensing();</pre>
+<p style="font-size:0.92em; color:#555; margin-top:-6px;"><code>Wire.begin()</code> switches on the I2C bus. <code>imu.init()</code> finds the chip and identifies it. <code>enableDefault()</code> powers it up, and <code>configureForTurnSensing()</code> sets it up to measure turns. <strong>The calibration loop follows immediately after.</strong></p>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Forget Wire.begin() and the robot hangs at startup.</strong><br>No error message. No red build. The OLED just says <strong>Gyro calibrating / HOLD STILL</strong> and stays there forever, because <code>imu.gyroDataReady()</code> is waiting for data that will never come over a bus that was never switched on.<br><br>See Section 8 if this happens to you.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">4.3 Two Different Chips, One Set of Code</h3>
+<p>Zumos built in different years carry different IMU chips. Yours might have an
+<code>LSM303D</code>&nbsp;+&nbsp;<code>L3GD20H</code> pair, or a newer
+<code>LSM6DS33</code>&nbsp;+&nbsp;<code>LIS3MDL</code> pair.</p>
+
+<p><strong>You do not care, and you never will.</strong></p>
+
+<p><code>imu.init()</code> asks the chip who it is &mdash; there is a register literally called
+<code>WHO_AM_I</code> &mdash; and then <code>configureForTurnSensing()</code> quietly branches to the right
+setup code for whichever chip answered.</p>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Why this matters in a classroom.</strong><br>If you grab a spare Zumo from an older batch, <strong>your code runs on it unchanged.</strong> No edits, no #ifdefs, no &quot;which board is this?&quot; The library already asked, and already handled it.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">4.4 The Angle Is Stored in a Strange Unit</h3>
+<p>Peek inside <code>RobotSensors.cpp</code> and you will find the running angle total stored like this:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">static uint32_t turnAngle = 0;</pre>
+<p>That is not degrees. It is a <strong>fixed-point</strong> unit where
+<code>2^29</code> units = 45&deg;. It exists because the ATmega32U4 has no floating-point hardware,
+and doing this arithmetic in <code>float</code> thousands of times per turn would be far too slow.</p>
+
+<p>You are never going to touch it. <code>getTurnAngle()</code> converts it to plain degrees,
+and plain degrees is all you will ever see:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">int getTurnAngle() {
+  return (((int32_t)turnAngle &gt;&gt; 16) * 360) &gt;&gt; 16;
+}</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Hidden on purpose.</strong><br>This is what a good function <em>does</em>: it takes something ugly and necessary, and puts a clean door on it. You ask <code>getTurnAngle()</code> for degrees; you get degrees. The fixed-point arithmetic is real, it is running, and it is none of your business.<br><br><em>(Curious what <code>2^29</code> is doing there? Section 8A.3 opens the door.)</em></div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><h2 id="section-5" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">5. The Code &mdash; Four Functions and Three Words</h2>
+<p>Everything in this lesson is four new functions in <code>RobotSensors.cpp</code>,
+one new function in <code>RobotMotion.cpp</code>, and a <strong>three-word change</strong>
+that quietly upgrades every turn in the book.</p>
+<h3 style="color: #1a5276; margin-top: 28px;">5.1 The Four Gyro Functions</h3>
+<p>These go in <code>RobotSensors.cpp</code>, because the gyro is a <em>sensor</em>.
+They are declared in <code>RobotSensors.h</code> so the rest of the project can call them.</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Function</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">When you call it</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><code>gyroSetup()</code></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Once, in <code>setup()</code></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Wakes the chip and <strong>measures the lie</strong> (1,024 samples, robot still)</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;"><code>gyroReset()</code></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;"><strong>At the start of every turn</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Says &quot;you are here&quot; &mdash; sets the angle back to zero</td></tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><code>gyroUpdate()</code></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;"><strong>Constantly, inside the turn loop</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Adds one time-slice of rotation to the running total</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;"><code>getTurnAngle()</code></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Whenever you want to know</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Hands back the running total, <strong>in plain degrees</strong></td></tr>
+</table>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; gyroReset() is not gyroSetup().</strong><br><code>gyroSetup()</code> measures the sensor&#x27;s <em>bias</em> &mdash; it runs <strong>once</strong>, at boot, and it takes a fifth of a second.<br><br><code>gyroReset()</code> just zeroes the <em>counter</em> &mdash; it is instant, and it runs at the start of <strong>every single turn</strong>. It means &quot;measure from <em>here</em>.&quot;<br><br>Mix them up and you get <strong>Bonus B3</strong>: the first turn works and every turn after it finishes instantly.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">5.2 The Honest Turn</h3>
+<p>This is the function the whole lesson has been walking toward.
+Compare it, line for line, against Lesson 6&#x27;s <code>turnDegrees()</code>:</p>
+<table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd; width:50%;"><code>turnDegrees()</code> &mdash; Lesson 6</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd; width:50%;"><code>turnDegreesGyro()</code> &mdash; Lesson 12</th>
+</tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;">Resets the <strong>encoders</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Resets the <strong>gyro</strong></td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;">Spins the wheels in opposite directions</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Spins the wheels in opposite directions <em>(identical)</em></td></tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;">Loops until <strong>the wheels have spun far enough</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Loops until <strong>the robot has actually turned</strong></td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;">Stops the motors</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">Stops the motors <em>(identical)</em></td></tr>
+</table>
+
+<p>Three of the four steps are the same. <strong>One line is different</strong> &mdash; the line that decides
+when to stop &mdash; and that one line is the entire lesson.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// =====================================================
+// THE HONEST TURN (NEW for Lesson 12)
+// =====================================================
+// turnDegrees() stops when the WHEELS have spun far enough.
+// If a wheel slips, the wheel still spins - so the encoder still
+// counts - so the robot still "finishes" a turn it never made.
+// The encoder cannot catch this. The wheel IS what it is watching.
+//
+// The gyro watches the ROBOT. It does not care what the wheels do.
+void turnDegreesGyro(float degrees) {
+  gyroReset();                 // "we are at zero degrees, starting now"
+
+  int leftSpeed  = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
+  int rightSpeed = -leftSpeed;
+
+  // Still NO TRIM. The wheels oppose on purpose, and the GYRO -
+  // not the wheels - decides when we are done.
+  motors.setSpeeds(leftSpeed, rightSpeed);
+
+  while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    gyroUpdate();              // add up the angle, slice by slice
+  }
+
+  motors.setSpeeds(0, 0);
+}</pre>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Notice what is NOT in there: TRIM.</strong><br>There is no <code>TRIM</code> in <code>turnDegreesGyro()</code>, and that is correct.<br><br><strong>TRIM is for open loops.</strong> It corrects a robot that drifts when nothing is watching &mdash; <code>driveDistance()</code>, <code>handleGap()</code>. But this turn <em>is being watched</em>. The gyro checks the real angle thousands of times per second and stops the motors at exactly the right moment.<br><br>Adding TRIM here would mean <strong>fighting a controller that is already correct.</strong> It is not just unnecessary &mdash; it is wrong. <strong>Bonus B4</strong> adds it anyway, and the result is genuinely nasty: <em>the binary is exactly the same size.</em></div>
+<h3 style="color: #1a5276; margin-top: 28px;">5.3 The Three Words</h3>
+<p>Here is the payoff, and it is almost anticlimactic.</p>
+
+<p>Since Lesson 9, every intersection turn in the book has gone through three little helpers.
+They looked like this:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void turnLeft()   { turnDegrees(-90); }
+void turnRight()  { turnDegrees(90);  }
+void turnAround() { turnDegrees(180); }</pre>
+<p>In Step 8, they become this:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void turnLeft()   { turnDegreesGyro(-90); }
+void turnRight()  { turnDegreesGyro(90);  }
+void turnAround() { turnDegreesGyro(180); }</pre>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; You just upgraded every turn in the entire book.</strong><br>You did not touch the Lesson 9 state machine. You did not touch <code>followLine()</code>. You did not touch the intersection logic, or Lesson 10&#x27;s obstacle code, or Lesson 11&#x27;s gap crossing.<br><br><strong>You changed three words inside three one-line functions</strong> &mdash; and every turn the robot makes, anywhere in the book, now closes on its <em>real</em> angle.<br><br>This is what Lesson 7 was <em>for</em>. If those turns had been written out longhand at each call site, this change would have been a fifty-line search-and-replace across four lessons, and you would have missed one.</div>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; turnDegrees() is still there. On purpose.</strong><br>We did not delete it. It is still correct, it still works, and on carpet it still agrees with the gyro to within a degree or two.<br><br>You are going to use it again in <strong>Section 7C</strong> &mdash; to <em>break</em> it, deliberately, in front of your own eyes. <strong>Deleting the old thing teaches nothing. Contradicting it teaches everything.</strong></div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><!-- ===================== PART 3 DIVIDER ===================== -->
+<div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 3 &mdash; Verify &amp; Extend</div>
+</div>
+
+<h2 id="section-6" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">6. Build It &mdash; Eight Steps</h2>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; How this section works</strong><br>Eight steps. Each one names the <strong>one file</strong> you open. After every step the project still <strong>compiles green</strong> &mdash; you can stop anywhere, build, and nothing is broken.<br><br>Steps 6 and 7 will feel like nothing happens. <strong>That is correct, and it is explained when you get there.</strong></div>
+<h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 1: Copy Your Lesson 11 Project<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">no code</span></h3>
+<p>Open the Project Maker, choose <strong>Lesson 12</strong>, and download the starter project.
+It is your finished Lesson 11 robot &mdash; line following, intersections, obstacles, gap crossing &mdash;
+with nothing removed.</p>
+<p><strong>Build it before you change anything.</strong> Confirm it still drives the course.
+You are about to modify a working robot, and you want to be certain it was working when you started.</p>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Your project is EIGHT files.</strong><br><code>RobotConfig.h</code> &middot; <code>RobotSensors.h</code> &middot; <code>RobotSensors.cpp</code> &middot; <code>RobotHelpers.h</code> &middot; <code>RobotHelpers.cpp</code> &middot; <code>RobotMotion.h</code> &middot; <code>RobotMotion.cpp</code> &middot; <code>main.cpp</code><br><br>If you are missing <code>RobotHelpers</code>, you are missing <code>waitForStart()</code> &mdash; your <strong>safety gate</strong>. Re-download before you go any further.</div>
+<h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 2: Create the IMU Object<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotSensors.h + .cpp</span></h3>
+<p>The gyro is hardware, so it gets an object &mdash; exactly like <code>motors</code>,
+<code>encoders</code>, and <code>lineSensors</code> before it.</p>
+<p>First, in <code>RobotSensors.h</code>, <strong>announce</strong> that it exists.
+Add this under the other <code>extern</code> lines:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">extern Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
+<p>Then, in <code>RobotSensors.cpp</code>, actually <strong>create</strong> it.
+Add this under the other object definitions:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; extern in the .h, the real thing in the .cpp.</strong><br>This is the same two-part pattern you have used since Lesson 7. The <code>.h</code> says &quot;<em>this object exists somewhere</em>&quot; so every file can talk about it. The <code>.cpp</code> is where it is actually <strong>made</strong> &mdash; exactly once, in exactly one file.</div>
+<h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 3: Add the Calibration Constant<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotConfig.h</span></h3>
+<p>Open <code>RobotConfig.h</code>. Add this at the bottom:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
+// ===== GYRO (NEW for Lesson 12) =====
+// How many readings to average when learning the gyro&#x27;s "zero".
+// The gyro reports rotation even when it is perfectly still - up to
+// 25 degrees per second of pure fiction. We measure that lie once,
+// at startup, and subtract it forever after.
+const int GYRO_CAL_SAMPLES = 1024;</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Why a constant instead of just typing 1024?</strong><br>Because <code>RobotConfig.h</code> is where every number a human might want to change lives. If your classroom is noisy and the gyro zero comes out unsteady, the fix is <strong>one number, in one place</strong> &mdash; not a hunt through <code>RobotSensors.cpp</code>.</div>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Note: plain int, not uint16_t.</strong><br><code>RobotConfig.h</code> does not include <code>&lt;Arduino.h&gt;</code>, so the fixed-width types like <code>uint16_t</code> are not defined there. Plain <code>int</code> is what belongs in this file.</div>
+<h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 4: Declare the Four Gyro Functions<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotSensors.h</span></h3>
+<p>Back to <code>RobotSensors.h</code>. Add the four prototypes:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== GYRO (NEW for Lesson 12) =====
+// The encoders count WHEEL rotation. The gyro measures ROBOT rotation.
+// When a wheel slips, only one of them is still telling the truth.
+void gyroSetup();
+void gyroReset();
+void gyroUpdate();
+int  getTurnAngle();
+</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Nothing works yet, and the robot has not changed.</strong><br>You have just <em>promised</em> that these four functions exist. You have not written them. The project still compiles &mdash; a prototype is a promise, and the compiler is willing to wait until link time to see it kept.<br><br>You keep it in Step 5.</div>
+<h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 5: Write the Four Gyro Functions<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotSensors.cpp</span></h3>
+<p>This is the big one &mdash; the only step in the lesson with real substance to type.
+Open <code>RobotSensors.cpp</code> and add this at the bottom.</p>
+<p><strong>Read the comments as you go.</strong> Every one of them is answering a question
+you should be asking.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">#include &lt;Wire.h&gt;
+
+// =====================================================
+// GYRO (NEW for Lesson 12)
+// =====================================================
+
+// The gyro&#x27;s idea of "not moving". It is never exactly zero.
+static int16_t gyroOffset = 0;
+
+// How far we have turned since gyroReset(). This is stored in a
+// fixed-point unit where 2^29 units = 45 degrees. You never have to
+// touch it - getTurnAngle() converts it to plain degrees for you.
+static uint32_t turnAngle = 0;
+
+static uint16_t gyroLastUpdate = 0;
+
+void gyroSetup() {
+  Wire.begin();
+  imu.init();
+  imu.enableDefault();
+  imu.configureForTurnSensing();
+
+  // Learn the gyro&#x27;s "zero" - the robot MUST be still for this.
+  long total = 0;
+  for (int i = 0; i &lt; GYRO_CAL_SAMPLES; i++) {
+    while (!imu.gyroDataReady()) { }
+    imu.readGyro();
+    total += imu.g.z;
+  }
+  gyroOffset = total / GYRO_CAL_SAMPLES;
+}
+
+// "You are here." Everything after this is measured from now.
+void gyroReset() {
+  gyroLastUpdate = micros();
+  turnAngle = 0;
+}
+
+// Call this AS OFTEN AS POSSIBLE while turning. The gyro reports a
+// RATE (degrees per second). To get an ANGLE you must add up the
+// rate x time for every slice of time that passes. Miss slices,
+// and you lose the angle that happened during them.
+void gyroUpdate() {
+  imu.readGyro();
+  int16_t turnRate = imu.g.z - gyroOffset;
+
+  uint16_t m  = micros();
+  uint16_t dt = m - gyroLastUpdate;
+  gyroLastUpdate = m;
+
+  // angle change = rotation rate x time
+  int32_t d = (int32_t)turnRate * dt;
+  turnAngle += (int64_t)d * 14680064 / 17578125;
+}
+
+// The gyro&#x27;s answer, in plain degrees.
+int getTurnAngle() {
+  return (((int32_t)turnAngle &gt;&gt; 16) * 360) &gt;&gt; 16;
+}</pre>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; The #include <Wire.h> goes at the TOP of the file.</strong><br>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Build it now. The binary just grew by 1,230 bytes.</strong><br>From <strong>22,802</strong> to <strong>24,032</strong>. That is the gyro going live &mdash; the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 6: Declare the Honest Turn<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotMotion.h</span></h3>
+<p>The gyro is a sensor, so its four functions lived in <code>RobotSensors</code>.
+But a <em>turn</em> is <strong>motion</strong> &mdash; so <code>turnDegreesGyro()</code> belongs in
+<code>RobotMotion</code>, right next to the <code>turnDegrees()</code> it is about to compete with.</p>
+<p>Open <code>RobotMotion.h</code> and add:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">/*
+turnDegreesGyro()          NEW for Lesson 12
+------------------
+The SAME turn as turnDegrees() - but it asks a different question.
+
+  turnDegrees()      asks the WHEELS  "how far did you spin?"
+  turnDegreesGyro()  asks the ROBOT   "how far did you turn?"
+
+On carpet they agree. On a slick floor they do not, and only one
+of them is still right.
+*/
+void turnDegreesGyro(float degrees);
+</pre>
+<h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 7: Write the Honest Turn<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotMotion.cpp</span></h3>
+<p>Open <code>RobotMotion.cpp</code>. Add this at the bottom:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
+// =====================================================
+// THE HONEST TURN (NEW for Lesson 12)
+// =====================================================
+// turnDegrees() stops when the WHEELS have spun far enough.
+// If a wheel slips, the wheel still spins - so the encoder still
+// counts - so the robot still "finishes" a turn it never made.
+// The encoder cannot catch this. The wheel IS what it is watching.
+//
+// The gyro watches the ROBOT. It does not care what the wheels do.
+void turnDegreesGyro(float degrees) {
+  gyroReset();                 // "we are at zero degrees, starting now"
+
+  int leftSpeed  = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
+  int rightSpeed = -leftSpeed;
+
+  // Still NO TRIM. The wheels oppose on purpose, and the GYRO -
+  // not the wheels - decides when we are done.
+  motors.setSpeeds(leftSpeed, rightSpeed);
+
+  while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    gyroUpdate();              // add up the angle, slice by slice
+  }
+
+  motors.setSpeeds(0, 0);
+}</pre>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Build it. The binary did not change. AT ALL.</strong><br>Step 5 grew the binary by 1,230 bytes. Steps 6 and 7 grew it by <strong>zero</strong>. Still <strong>24,032</strong>, to the byte.<br><br>You just wrote a 25-line function and the program did not get any bigger. <strong>Did the edit not save?</strong></div>
+<p>It saved. Look at what you have actually built:</p>
+
+<ul style="line-height:1.9;">
+<li>You <strong>wrote</strong> <code>turnDegreesGyro()</code>. It is in the file. It compiles.</li>
+<li>But <strong>nobody calls it.</strong> Not one line of the robot&#x27;s code says <code>turnDegreesGyro</code>.</li>
+</ul>
+
+<p>The linker noticed. It walked the program looking for anything that could ever actually run,
+found that <code>turnDegreesGyro()</code> is unreachable from <code>main()</code>, and
+<strong>threw it in the bin</strong> before writing the binary. A function nobody calls is dead weight,
+and the linker will not carry dead weight to a chip with 32&nbsp;KB of flash.</p>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; You have written the truth. The robot is still ignoring it.</strong><br>Both turns now exist. <code>turnDegrees()</code> asks the wheels. <code>turnDegreesGyro()</code> asks the robot. They are sitting side by side in the same file, and the robot is <strong>still using the wheels</strong>.<br><br>That is not an oversight &mdash; <strong>it is Step 8&#x27;s entire job.</strong> The old instrument stays until the moment the new one takes over. You never delete the working thing before the replacement is wired in.</div>
+<h3 style="color: #2a5a42; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 8: Switch the Turns &mdash; and Calibrate at Boot<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotMotion.cpp + main.cpp</span></h3>
+<p>Two edits, and the lesson lands.</p>
+<p><strong>First</strong>, in <code>RobotMotion.cpp</code>, find the three intersection helpers.
+They currently read:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void turnLeft()   { turnDegrees(-90); }
+void turnRight()  { turnDegrees(90);  }
+void turnAround() { turnDegrees(180); }</pre>
+<p>Replace them with:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// NEW for Lesson 12 - three words changed, and every turn in the
+// book stops guessing. turnDegrees() is still here, still correct
+// when the wheels grip. These three just stopped depending on that.
+void turnLeft()   { turnDegreesGyro(-90); }
+void turnRight()  { turnDegreesGyro(90);  }
+void turnAround() { turnDegreesGyro(180); }</pre>
+<p><strong>Second</strong>, in <code>main.cpp</code>, the gyro has to learn its zero at boot.
+Find <code>setup()</code>. Add this <strong>immediately before</strong> the
+<code>waitForStart()</code> safety gate:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // ===== GYRO SETUP (NEW for Lesson 12) =====
+  // The robot MUST be still. If it moves now, the gyro will learn
+  // that moving IS still - and it will be wrong for the whole run.
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Gyro calibrating"));
+  display.gotoXY(0, 2);
+  display.print(F("HOLD STILL"));
+  gyroSetup();
+</pre>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; This block MUST come before waitForStart(). Here is why.</strong><br>The next thing <code>setup()</code> does is <code>calibrateLineSensors()</code> &mdash; and <strong>that spins the robot.</strong><br><br>If the gyro were still measuring its zero while the robot spun, it would learn that <strong>spinning is what standing still feels like</strong>, subtract that from every future reading, and be catastrophically wrong for the entire run.<br><br>The still measurement comes first, while nothing has moved yet. <strong>Order is not decoration here.</strong></div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Build it. 24,032 &rarr; 27,422 bytes. +3,390.</strong><br>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable &mdash; and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; What just happened to the rest of the book</strong><br>Every intersection turn from Lesson 9. Every obstacle maneuver from Lesson 10. Everything that ever called <code>turnLeft()</code>, <code>turnRight()</code>, or <code>turnAround()</code>.<br><br><strong>All of it now closes on the robot&#x27;s real angle</strong>, and you did not open a single one of those files.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><h2 id="section-7" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">7. Calibrate &mdash; Catch the Encoder Lying</h2>
+<p>You have built it. Now you are going to <strong>prove it</strong> &mdash; and the proof requires
+that you make the robot fail, on purpose, while you watch.</p>
+
+<p>Five rungs. Each one is a small change to <code>loop()</code> only.
+Do them in order; each one sets up the next.</p>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; You need a slippery surface. Here is what works.</strong><br>Your teacher has <strong>delrin</strong> (acetal) sheet. It is slick against rubber, it is rigid so it lies flat, and it behaves the same in week 15 as it did in week 1.<br><br><strong>No delrin? Hold the robot.</strong> Grip the chassis firmly and let the wheels fight you. Guaranteed slip, zero materials, works every time. <em>The delrin is the demonstration &mdash; but your hands are the proof.</em></div>
+<div style="background:#f4f6f7; border:2px dashed #aab7b8; border-radius:8px; padding:22px; margin:22px 0; text-align:center; color:#566573;"><strong>[IMAGE 12.1]</strong><br><span style="font-size:0.9em;">The delrin sheet, with a Zumo mid-turn on it.</span></div>
+<h3 style="color: #e67e22; margin-top: 34px; padding: 10px 14px; background: #fff8e1; border-radius: 6px;">&#9881;&#65039; 7A &mdash; The Gyro With the Motors Off<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">an instrument, not a command</span></h3>
+<p>Before you let the gyro drive anything, look at what it <em>is</em>.</p>
+<p>Replace your <code>loop()</code> with this. <strong>The motors never run.</strong></p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void loop() {
+  // The motors NEVER run in this test.
+  // Pick the robot up and turn it with your hands.
+  gyroUpdate();
+
+  display.gotoXY(0, 0);
+  display.print(F("Angle: "));
+  display.print(getTurnAngle());
+  display.print(F("    "));
+}</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Now pick the robot up and turn it with your hands.</strong><br>Rotate it a quarter turn. The OLED climbs toward <strong>90</strong>. Turn it back &mdash; it climbs back down. Spin it all the way around and it reaches <strong>360</strong>.<br><br>The motors are off. The encoders are reporting <strong>nothing</strong>. And the robot knows <em>exactly</em> how far you turned it.<br><br><strong>The gyro is an instrument, not a motor command.</strong> It measures the world whether you are driving or not.</div>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Watch it drift.</strong><br>Set the robot down and leave it completely alone for thirty seconds. The number will slowly wander &mdash; a degree, then two, then five.<br><br>That is the leftover bias, the part the 1,024-sample average could not perfectly cancel. It is why <code>gyroReset()</code> is called at the start of <em>every</em> turn instead of once at boot: <strong>you want the drift to have as little time as possible to accumulate.</strong></div>
+<h3 style="color: #e67e22; margin-top: 34px; padding: 10px 14px; background: #fff8e1; border-radius: 6px;">&#9881;&#65039; 7B &mdash; Delete the Calibration<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">the lie is cheaper than the truth</span></h3>
+<p>Same sketch as 7A. One change, in <code>setup()</code>: <strong>do not call
+<code>gyroSetup()</code> at all.</strong> Wake the sensor up &mdash; but never let it learn its zero.</p>
+<p>Replace the gyro-setup block in <code>main.cpp</code> with this:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // ===== GYRO SETUP (NEW for Lesson 12) =====
+  // The robot MUST be still. If it moves now, the gyro will learn
+  // that moving IS still - and it will be wrong for the whole run.
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Gyro calibrating"));
+  display.gotoXY(0, 2);
+  display.print(F("NO CAL - 7B"));
+
+  // 7B: gyroSetup() is GONE. We wake the sensor but never learn
+  // its zero. Put the robot down and DO NOT TOUCH IT.
+  Wire.begin();
+  imu.init();
+  imu.enableDefault();
+  imu.configureForTurnSensing();</pre>
+<p><code>gyroOffset</code> now stays at <strong>0</strong> forever. The gyro has never measured its own lie,
+so it has nothing to subtract.</p>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; You also need <code>#include &lt;Wire.h&gt;</code> at the top of <code>main.cpp</code>.</strong><br>You are calling <code>Wire.begin()</code> directly now instead of letting <code>gyroSetup()</code> do it for you &mdash; so this file needs the header too.</div>
+<p>Build it. <strong>Put the robot down. Do not touch it.</strong></p>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; The number climbs anyway.</strong><br>The robot is <em>motionless</em>. The angle reading crawls upward &mdash; or downward &mdash; steadily, forever. Left alone for a minute it will confidently report that it has rotated a hundred degrees.<br><br>It has not moved at all.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; And look at the byte count: 23,354 &rarr; 23,098. It got SMALLER.</strong><br>The broken version is <strong>256 bytes cheaper</strong> than the correct one.<br><br><strong>The lie costs less than the truth.</strong> Honesty is not free &mdash; it is 256 bytes of code and a fifth of a second of your life, every boot, and it buys you a sensor you can believe.<br><br>Put the calibration back before you go on.</div>
+<h3 style="color: #e67e22; margin-top: 34px; padding: 10px 14px; background: #fff8e1; border-radius: 6px;">&#9881;&#65039; 7C &mdash; The Lie, Caught in the Act<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">&#127919; the point of the lesson</span></h3>
+<p>This is the rung the whole lesson exists for.</p>
+<p>The <strong>encoder</strong> drives this turn &mdash; exactly the Lesson 6 way, gating on the average of both
+encoders. The <strong>gyro</strong> is along for the ride, watching, steering nothing.</p>
+<p>Then both report what they saw.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void loop() {
+  if (!buttonB.getSingleDebouncedPress()) return;
+
+  // 7C: the ENCODER drives this turn. The gyro only watches.
+  gyroReset();
+  encoders.getCountsAndResetLeft();
+  encoders.getCountsAndResetRight();
+
+  long targetCounts = 90 * COUNTS_PER_DEGREE;
+  motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
+
+  while (((abs(encoders.getCountsLeft()) +
+           abs(encoders.getCountsRight())) / 2) &lt; targetCounts) {
+    gyroUpdate();          // watching. not steering.
+  }
+  motors.setSpeeds(0, 0);
+
+  // The encoder is finished. It is CERTAIN it turned 90 degrees.
+  // Ask the gyro what actually happened.
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Encoder: 90"));
+  display.gotoXY(0, 2);
+  display.print(F("Gyro:    "));
+  display.print(abs(getTurnAngle()));
+
+  delay(4000);
+}</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Run it on CARPET first.</strong><br>Press B. The robot turns. The OLED says <code>Encoder: 90</code> and <code>Gyro: 88</code> &mdash; or 91, or 89.<br><br><strong>They agree.</strong> This is the world you have been living in for six lessons, and in this world the encoder is a perfectly good instrument.</div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Now put it on the delrin. Press B.</strong><br><code>Encoder: 90</code><br><code>Gyro:&nbsp;&nbsp;&nbsp;&nbsp;31</code><br><br>The wheels spun exactly as far as they were told. The encoder counted exactly right. The code stopped at exactly the correct count.<br><br><strong>The robot barely moved.</strong><br><br>And notice: <code>Encoder: 90</code> is <em>hardcoded</em> in that sketch. It does not read the encoder at the end &mdash; it does not have to. <strong>The encoder is always certain.</strong> That is the problem.</div>
+<h3 style="color: #e67e22; margin-top: 34px; padding: 10px 14px; background: #fff8e1; border-radius: 6px;">&#9881;&#65039; 7D &mdash; The Honest Turn, Same Surface<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">close on the robot, not the wheels</span></h3>
+<p>Same delrin. Same 90 degrees. One difference: <strong>the gyro is now driving.</strong></p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void loop() {
+  if (!buttonB.getSingleDebouncedPress()) return;
+
+  // 7D: same 90 degrees. Same delrin. Different question.
+  turnDegreesGyro(90);
+
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Gyro turn"));
+  display.gotoXY(0, 2);
+  display.print(F("Angle: "));
+  display.print(abs(getTurnAngle()));
+
+  delay(4000);
+}</pre>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; The robot turns 90 degrees. On the slick surface. Every time.</strong><br>The wheels are still slipping &mdash; you can <em>hear</em> them slipping, and the turn takes noticeably longer than it did on carpet.<br><br><strong>The robot does not care.</strong> It keeps spinning the motors until the <em>chassis</em> has come around 90 degrees, and then it stops. Slip does not make it wrong. Slip just makes it slow.</div><h3 style="color: #e67e22; margin-top: 34px; padding: 10px 14px; background: #fff8e1; border-radius: 6px;">&#9881;&#65039; 7E &mdash; The Lesson 6 Square<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">&#127942; the payoff</span></h3>
+<p>In <strong>Lesson 6</strong> you drove a square. It did not close. The robot came back
+somewhere near where it started, pointing somewhere near the right direction, and you fixed most
+of it with <code>TRIM</code>.</p>
+
+<p>Most of it.</p>
+
+<p>Here is that same square &mdash; twice. <strong>Button A</strong> turns the corners with the
+<em>encoder</em>. <strong>Button C</strong> turns them with the <em>gyro</em>. Everything else is identical.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void loop() {
+  // 7E: THE SQUARE FROM LESSON 6.
+  // A = corners by ENCODER.   C = corners by GYRO.
+  // Run both. On delrin, only one of them comes home.
+
+  if (buttonA.getSingleDebouncedPress()) {
+    display.clear();
+    display.print(F("Encoder square"));
+    for (int i = 0; i &lt; 4; i++) {
+      driveDistance(30);
+      turnDegrees(90);          // the Lesson 6 turn
+    }
+    motors.setSpeeds(0, 0);
+  }
+
+  if (buttonC.getSingleDebouncedPress()) {
+    display.clear();
+    display.print(F("Gyro square"));
+    for (int i = 0; i &lt; 4; i++) {
+      driveDistance(30);
+      turnDegreesGyro(90);      // the Lesson 12 turn
+    }
+    motors.setSpeeds(0, 0);
+  }
+}</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Run A on carpet. Then run C on carpet.</strong><br>Both squares close. Both are decent. On carpet, the encoder is a good instrument and the gyro is a good instrument, and they mostly agree.<br><br><strong>Now move to the delrin.</strong></div>
+<figure style="margin: 24px 0; text-align:center;">
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L12_GRAPHIC_12-03_the_square_that_closes.svg" alt="Encoder square collapses on delrin; gyro square closes" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
+<figcaption style="font-size:0.85em; color:#666; margin-top:8px;"><strong>GRAPHIC 12.3</strong> &mdash; Button A (encoder) and Button C (gyro), same slick surface. Four corners, four errors &mdash; and errors in dead reckoning add up. They do not cancel.</figcaption></figure>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Button A on delrin: the square collapses.</strong><br>Each corner slips a little. The robot turns 60&deg; instead of 90&deg;. Four corners, four errors, and <strong>the errors add up</strong> &mdash; they do not cancel.<br><br>The robot finishes its four sides and its four turns having driven something closer to a <em>pentagon that gave up</em>, and it ends up nowhere near where it started, pointing nowhere near where it began.<br><br>And the encoder is <strong>completely satisfied</strong>. As far as it is concerned, it drove a perfect square.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Button C on delrin: the square closes.</strong><br>Same slippery surface. Same slipping wheels. Same motors, same speed, same 30&nbsp;cm sides.<br><br><strong>The robot comes home.</strong><br><br>Every corner is a real 90 degrees, because every corner was measured on the <em>robot</em> instead of the wheels. The slip is still happening &mdash; it just cannot lie to you any more.</div>
+<p>Six lessons ago, the square that would not close was a mystery, and <code>TRIM</code> was the answer.</p>
+<p><code>TRIM</code> fixed the robot&#x27;s tendency to <em>curve</em>. It could never have fixed this,
+because this was never a curve. <strong>This was a turn that did not happen, reported by a sensor that
+could not know.</strong></p>
+<p>Now you have a sensor that knows.</p>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Before you move on: put loop() back.</strong><br>Section 7 replaced your <code>loop()</code> with test sketches. Restore the real one &mdash; the Lesson 11 state machine &mdash; and rebuild. It should compile to <strong>27,422 bytes</strong> and drive the full course, with every turn now closing on the gyro.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><h2 id="section-8" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">8. Troubleshooting</h2>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">OLED says &quot;Gyro calibrating / HOLD STILL&quot; and never moves on.</div><div style="padding:13px 16px;"><strong>Why:</strong> The I2C bus was never switched on, so <code>imu.gyroDataReady()</code> is waiting for data that can never arrive. The <code>while</code> loop inside <code>gyroSetup()</code> spins forever.<br><strong>Fix:</strong> You are missing <code>Wire.begin()</code> &mdash; it is the <em>first</em> line of <code>gyroSetup()</code>. Also check that <code>#include &lt;Wire.h&gt;</code> is at the top of <code>RobotSensors.cpp</code>.</div></div>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">The angle reading climbs steadily while the robot sits still.</div><div style="padding:13px 16px;"><strong>Why:</strong> The gyro never learned its own bias, so it is reporting its resting lie as real rotation.<br><strong>Fix:</strong> Your calibration loop is missing, commented out, or running zero times. Check that <code>GYRO_CAL_SAMPLES</code> is <strong>1024</strong> in <code>RobotConfig.h</code> and that the <code>for</code> loop in <code>gyroSetup()</code> is actually there. (If you just did Section 7B, this is expected &mdash; put it back.)</div></div>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">Every turn is wildly wrong &mdash; and it was fine yesterday.</div><div style="padding:13px 16px;"><strong>Why:</strong> Something moved the robot during the 1,024-sample calibration. The gyro learned that <em>motion</em> is what stillness feels like.<br><strong>Fix:</strong> Reset the robot and <strong>do not touch it</strong> while the OLED says HOLD STILL. Do not hold it in your hand. Do not calibrate it on a wobbling desk while someone is leaning on it.</div></div>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">The robot turns and turns and never stops.</div><div style="padding:13px 16px;"><strong>Why:</strong> <code>gyroUpdate()</code> is not being called inside the turn loop, so the running angle total never grows. <code>getTurnAngle()</code> keeps returning ~0, so <code>abs(getTurnAngle()) &lt; abs(degrees)</code> is always true, forever.<br><strong>Fix:</strong> Put <code>gyroUpdate();</code> back <em>inside</em> the <code>while</code> loop in <code>turnDegreesGyro()</code>. It has to run thousands of times per turn. (This is Bonus B2.)</div></div>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">The first turn works. Every turn after it finishes instantly.</div><div style="padding:13px 16px;"><strong>Why:</strong> <code>gyroReset()</code> is being called in <code>setup()</code> instead of at the start of each turn. The angle total is never zeroed again, so after the first 90&deg; turn it already reads 90 &mdash; and the <code>while</code> loop exits before the motors have done anything.<br><strong>Fix:</strong> <code>gyroReset()</code> belongs on the <strong>first line of <code>turnDegreesGyro()</code></strong>, not in <code>setup()</code>. (This is Bonus B3.)</div></div>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">Turns are consistently a few degrees short, or a few degrees long.</div><div style="padding:13px 16px;"><strong>Why:</strong> Residual drift, or the motors coasting a little after <code>setSpeeds(0,0)</code>. A few degrees of error is <strong>normal and expected</strong> &mdash; the gyro is enormously better than the encoder on a slick floor, not perfect.<br><strong>Fix:</strong> If it bothers you, that is exactly what <strong>Challenge&nbsp;1</strong> is for: turn to an <em>absolute heading</em> so the small errors stop stacking up across four corners.</div></div>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">The build is red: &#x27;imu&#x27; was not declared in this scope.</div><div style="padding:13px 16px;"><strong>Why:</strong> The file you are compiling cannot see the IMU object.<br><strong>Fix:</strong> Check that <code>extern Zumo32U4IMU imu;</code> is in <code>RobotSensors.h</code> (Step 2), and that the file complaining actually <code>#include</code>s <code>&quot;RobotSensors.h&quot;</code>.</div></div>
+<div style="border:1px solid #ddd; border-radius:8px; margin:16px 0; overflow:hidden;"><div style="background:#fdecea; padding:11px 16px; font-weight:600; color:#922b21;">The build is red: redefinition of &#x27;Zumo32U4IMU imu&#x27;.</div><div style="padding:13px 16px;"><strong>Why:</strong> You created the object in more than one place &mdash; probably you put the real definition in the <code>.h</code> file as well as the <code>.cpp</code>.<br><strong>Fix:</strong> <strong>Exactly one</strong> file creates it: <code>RobotSensors.cpp</code>. The <code>.h</code> gets <code>extern</code> &mdash; a promise, not a thing. This is the same rule as every other object since Lesson 7.</div></div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><h2 id="section-8a" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">8A. Concepts &mdash; Going Deeper</h2>
+<p><em>Optional. Nothing here is required to make the robot work. Everything here is required to understand it.</em></p>
+<h3 style="color: #1a5276; margin-top: 28px;">8A.1 Dead Reckoning, and Why Errors Add Up</h3>
+<p>What the encoder does has a name: <strong>dead reckoning</strong>.
+You know where you started, you know what you <em>did</em>, so you calculate where you must be now.
+Ships navigated oceans this way for centuries.</p>
+
+<p>It has one fatal property: <strong>errors accumulate and never cancel.</strong></p>
+
+<p>If each of your four corners is 5&deg; short, you do not end up 5&deg; off. You end up
+<strong>20&deg;</strong> off, and the fourth side of your square is driving in a direction that has nothing
+to do with where you meant to go. That is what Button A does on the delrin in Section 7E.</p>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Why the gyro helps &mdash; and why it is not magic.</strong><br>The gyro breaks the chain. Each turn closes on the <em>real</em> angle, so an error in corner 1 does not get inherited by corner 2.<br><br>But the gyro is <strong>still dead reckoning</strong> &mdash; it accumulates rate over time, and it <em>still</em> drifts, just far more slowly. It is a better instrument, not a different <em>kind</em> of instrument. Anything that measures &quot;how much did I change&quot; will eventually drift. Only something that measures &quot;where am I, absolutely&quot; &mdash; a compass, a GPS, a line on the floor &mdash; escapes that.<br><br><strong>Which is exactly why we never stopped following the line.</strong></div>
+<h3 style="color: #1a5276; margin-top: 28px;">8A.2 Two Instruments, One Measurement</h3>
+<p>You now own <strong>two independent instruments that measure the same thing</strong>:
+how far the robot turned.</p>
+
+<p>That is not redundancy. That is a <strong>capability</strong>.</p>
+
+<p>When two instruments that should agree <em>disagree</em>, the disagreement itself is information.
+It tells you something is wrong that <em>neither instrument alone could ever have told you</em>:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">encoder says:  90 degrees      (the wheels definitely spun that far)
+gyro says:     31 degrees      (the robot definitely did not turn that far)
+                ---
+difference:    59 degrees   &lt;-- THE WHEELS ARE SLIPPING</pre>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Neither sensor can detect slip. Together, they cannot miss it.</strong><br>The encoder does not know it slipped. The gyro does not know the wheels exist. <strong>The gap between their answers is the slip</strong> &mdash; and it is visible only if you are holding both numbers at once.<br><br>This is <strong>Challenge&nbsp;2</strong>. It is also, in one form or another, how every serious robot, aircraft, and spacecraft on earth knows when one of its sensors has gone bad.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">8A.3 The Fixed-Point Angle &mdash; What 2^29 Is Doing In There</h3>
+<p>Back in Section 4.4 we said the running angle is stored in a strange unit and told you not to worry
+about it. Here is what is actually happening.</p>
+
+<p>The accumulation runs <strong>thousands of times per turn</strong>. Every single pass does a multiply
+and an add. The ATmega32U4 has <strong>no floating-point hardware at all</strong> &mdash; every
+<code>float</code> operation is emulated in software, costing dozens of instructions.</p>
+
+<p>Do that thousands of times per turn and you are not turning any more; you are calculating.</p>
+
+<p>So instead, the angle is stored as a plain <strong>integer</strong>, in a unit chosen so that the math
+comes out clean:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">2^29 units  =  45 degrees
+2^32 units  =  360 degrees  =  all the way around</pre>
+<p>That second line is the trick. A <code>uint32_t</code> holds exactly
+<code>2^32</code> values &mdash; and then it <strong>rolls over to zero</strong>.</p>
+
+<p>Which is precisely what an angle does.</p>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; The overflow bug IS the feature.</strong><br>Turn 360&deg; and the counter overflows back to 0 &mdash; <em>which is the correct answer</em>. Turn &minus;10&deg; and it wraps to just under the top &mdash; <em>which is also correct</em>.<br><br>The thing that would be a catastrophic bug in almost any other program is, here, <strong>free, exact, angle-wrapping arithmetic</strong>. No <code>if</code> statements. No modulo. Nobody wrote code to handle it. It is a property of the <em>unit</em>.<br><br>Choosing your units well can make an entire class of bug impossible to write.</div>
+<h3 style="color: #1a5276; margin-top: 28px;">8A.4 Why the Gyro Is Not Simply Better</h3>
+<p>It would be easy to walk out of this lesson thinking the gyro won and the encoder lost.
+That is not the lesson.</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;"></th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Encoder</th>
+  <th style="padding:10px 14px; text-align:left; border:1px solid #ddd;">Gyro</th>
+</tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Measures distance</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9989; Yes &mdash; the only thing that can</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#10060; No. Cannot. Ever.</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Measures rotation</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9888;&#65039; Only if the wheels grip</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9989; Always</td></tr>
+<tr><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Drifts when idle</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9989; Never. Perfectly stable.</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#10060; Constantly</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:9px 14px; border:1px solid #ddd;"><strong>Needs calibration</strong></td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#9989; No</td>
+    <td style="padding:9px 14px; border:1px solid #ddd;">&#10060; Every single boot</td></tr>
+</table>
+
+<p>Look at rows 3 and 4. The encoder is <em>rock solid</em> in exactly the places the gyro is weakest.
+Leave a Zumo powered on for an hour without touching it, and the encoder will still be telling the perfect
+truth while the gyro has quietly invented a hundred degrees of rotation that never happened.</p>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Notice what you did NOT do in this lesson.</strong><br>You did not replace <code>driveDistance()</code>. <strong>Distance is still the encoder&#x27;s job</strong>, because the gyro physically cannot measure distance &mdash; it has no idea the robot is even moving in a straight line.<br><br>You gave the <strong>turning</strong> to the gyro, and left the <strong>driving</strong> with the encoder. Each sensor kept the job it is actually good at.<br><br><strong>That is the real skill: not picking the best sensor, but knowing what each one is FOR.</strong></div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><!-- ===================== PART 4 DIVIDER ===================== -->
+<div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 4 &mdash; Challenges</div>
+</div>
+
+<h2 id="section-9" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">9. Challenges</h2>
+<p>Three challenges. Each one ships a <strong>blank</strong> &mdash; a constant set to <code>0</code>
+with a starting guess in the comment. <strong>The robot will not work until you fill it in.</strong>
+That is deliberate: you are going to find these numbers by testing, not by being told.</p>
+<h3 style="color:#8e44ad; margin-top:34px; padding:10px 14px; background:#f5eef8; border-radius:6px;">&#127919; Challenge 1 &mdash; Turn to a Heading<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">stop the errors stacking</span></h3>
+<p>Every turn you have written so far is <strong>relative</strong>: &quot;turn 90&deg; <em>from wherever
+you happen to be pointing now</em>.&quot;</p>
+<p>Four relative turns means four separate errors, and they add up (Section 8A.1).</p>
+<p><strong>Write <code>turnToHeading()</code></strong> &mdash; a turn that goes to an <em>absolute</em> angle,
+measured from wherever <code>gyroReset()</code> last defined as zero. Ask for heading 90, and it goes to 90,
+no matter where it is now &mdash; and no matter how wrong the last turn was.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== MAIN LOOP =====
+// One switch, four states - the whole robot brain reads top to bottom
+// CHALLENGE 1: turnDegreesGyro(90) turns 90 degrees FROM HERE.
+// After four of them you have gone in a circle and the errors have
+// added up four times. Write a turn that goes TO a heading instead.
+const int HEADING_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 3.
+
+void turnToHeading(int targetHeading) {
+  gyroUpdate();
+  while (abs(getTurnAngle() - targetHeading) &gt; HEADING_TOLERANCE) {
+    int error = targetHeading - getTurnAngle();
+    int speed = (error &gt; 0) ? TURN_SPEED : -TURN_SPEED;
+    motors.setSpeeds(speed, -speed);
+    gyroUpdate();
+  }
+  motors.setSpeeds(0, 0);
+}</pre>
+<p>And in <code>loop()</code>, drive it around a diamond of headings:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void loop() {
+  if (!buttonB.getSingleDebouncedPress()) return;
+  gyroReset();                 // "straight ahead" is now zero
+  turnToHeading(90);   delay(800);
+  turnToHeading(-90);  delay(800);
+  turnToHeading(0);    delay(800);   // back to straight ahead
+}</pre>
+<div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; What HEADING_TOLERANCE is for.</strong><br>The robot will never land on <em>exactly</em> 90.000&deg;. It will overshoot to 92, come back to 88, and hunt back and forth forever if you demand perfection.<br><br><strong>Tolerance is how close is close enough.</strong> Too tight and it oscillates and never settles. Too loose and your turns are sloppy. Start at 3 and find your own number.</div>
+<h3 style="color:#8e44ad; margin-top:34px; padding:10px 14px; background:#f5eef8; border-radius:6px;">&#127919; Challenge 2 &mdash; The Slip Alarm<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">catch the lie automatically</span></h3>
+<p>In Section 7C <strong>you</strong> read both numbers off the OLED and spotted the disagreement.</p>
+<p>Now make the <strong>robot</strong> do it.</p>
+<p>Drive the turn with the encoder, watch it with the gyro, and if the two disagree by more than
+<code>SLIP_TOLERANCE</code>, <strong>sound the buzzer and say SLIP</strong>.</p>
+<p>At the top of <code>main.cpp</code>, add the blank:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// CHALLENGE 2: you now own two instruments that measure the SAME
+// turn. When they disagree, the wheels slipped. Make the robot say so.
+const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void loop() {
+  if (!buttonB.getSingleDebouncedPress()) return;
+
+  gyroReset();
+  encoders.getCountsAndResetLeft();
+  encoders.getCountsAndResetRight();
+
+  long targetCounts = 90 * COUNTS_PER_DEGREE;
+  motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
+  while (((abs(encoders.getCountsLeft()) +
+           abs(encoders.getCountsRight())) / 2) &lt; targetCounts) {
+    gyroUpdate();
+  }
+  motors.setSpeeds(0, 0);
+
+  int truth = abs(getTurnAngle());   // what really happened
+  int claim = 90;                    // what the encoder swears to
+
+  display.clear();
+  display.gotoXY(0, 0);
+  if (abs(claim - truth) &gt; SLIP_TOLERANCE) {
+    display.print(F("SLIP!"));
+    buzzer.playNote(NOTE_A(3), 400, 15);
+  } else {
+    display.print(F("Clean"));
+  }
+  display.gotoXY(0, 2);
+  display.print(F("Real: "));
+  display.print(truth);
+  delay(4000);
+}</pre>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Read that code again and notice what it is doing.</strong><br>It is <strong>using one sensor to audit another</strong>. Not to replace it &mdash; to <em>check</em> it.<br><br>Run it on carpet: <code>Clean</code>. Run it on delrin: <code>SLIP!</code> and the buzzer goes off.<br><br>Your robot can now detect a condition that <strong>neither of its sensors can detect alone.</strong></div>
+<h3 style="color:#8e44ad; margin-top:34px; padding:10px 14px; background:#f5eef8; border-radius:6px;">&#127919; Challenge 3 &mdash; The Stuck Guard<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">a turn that may never arrive</span></h3>
+<p><code>turnDegreesGyro()</code> has a flaw, and it is the price of its honesty.</p>
+<p>It loops <strong>until the robot has actually turned</strong>. So what happens if the robot
+<em>cannot</em> turn? Jam it against a wall. Hold it still. Now the gyro correctly reports
+&quot;we have not turned&quot; &mdash; and the loop correctly waits &mdash; <strong>forever</strong>, with the
+motors straining.</p>
+<p>The encoder version never had this problem, because the wheels always spin eventually.
+<strong>The gyro version can hang precisely because it is telling the truth.</strong></p>
+<p>Give it a time budget:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== MAIN LOOP =====
+// One switch, four states - the whole robot brain reads top to bottom
+// CHALLENGE 3: turnDegreesGyro() waits for an angle that may never
+// arrive. Jam a wheel and it spins forever. Give it a budget.
+const unsigned long TURN_TIMEOUT_MS = 0;   // &lt;-- YOUR NUMBER. Try 3000.
+
+bool turnDegreesGyroSafe(float degrees) {
+  gyroReset();
+  unsigned long start = millis();
+
+  int leftSpeed = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
+  motors.setSpeeds(leftSpeed, -leftSpeed);
+
+  while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    gyroUpdate();
+    if (millis() - start &gt; TURN_TIMEOUT_MS) {
+      motors.setSpeeds(0, 0);
+      return false;            // I could not do it. Say so.
+    }
+  }
+  motors.setSpeeds(0, 0);
+  return true;
+}</pre>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void loop() {
+  if (!buttonB.getSingleDebouncedPress()) return;
+
+  if (!turnDegreesGyroSafe(90)) {
+    display.clear();
+    display.print(F("STUCK - cannot turn"));
+    buzzer.playNote(NOTE_A(3), 800, 15);
+    motors.setSpeeds(0, 0);
+    while (1) { }              // stop. do not pretend.
+  }
+  display.clear();
+  display.print(F("Turn OK"));
+  delay(2000);
+}</pre>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Note what it does NOT do when it gives up.</strong><br>It does not shrug and carry on as if the turn worked. It <strong>stops the motors, screams, and halts</strong>.<br><br>A robot that knows it failed and keeps going is <em>more</em> dangerous than one that never knew. If the turn did not happen, every single thing the robot does afterward is based on a false idea of which way it is pointing.<br><br><strong>Stop. Do not pretend.</strong></div>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Choosing TURN_TIMEOUT_MS.</strong><br>Too short and a legitimately slow turn on the delrin gets killed as a false alarm. Too long and a genuinely stuck robot sits there grinding its motors.<br><br>Time your slowest <em>real</em> turn on the slipperiest surface you have. Then add margin. Start at 3000.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><!-- ===================== PART 5 DIVIDER ===================== -->
+<div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 5 &mdash; Wrap Up</div>
+</div>
+
+<h2 id="bonus-challenges" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">Bonus &mdash; Four Sabotage Mysteries</h2>
+<p>Each of these is a <strong>working robot with exactly one line changed</strong>.
+The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for a typo.</p>
+<p>The question is always the same, and it is the actual skill:
+<strong>why does THAT line produce THAT symptom?</strong></p>
+<div style="border:2px solid #8e44ad; border-radius:10px; margin:24px 0; overflow:hidden;">
+<div style="background:#8e44ad; color:white; padding:12px 18px; font-weight:600;">&#128373;&#65039; Mystery B1 &mdash; The Calibration That Spins<span style="float:right; font-weight:normal; font-size:0.8em;">27,446 bytes</span></div>
+<div style="padding:16px 18px;">
+<p style="margin-top:0;"><strong>The planted line:</strong></p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // THE PLANTED LINE:
+  motors.setSpeeds(100, -100);   // spinning DURING calibration
+  motors.setSpeeds(0, 0);</pre>
+<p><strong>The symptom:</strong> The robot boots, spins briefly, and then behaves erratically for the entire run. Turns overshoot wildly, or barely happen at all. Every turn is wrong, and wrong by a <em>consistent</em> amount.</p>
+<div style="background:#f5eef8; border-left:5px solid #8e44ad; padding:12px 16px; margin-top:14px; border-radius:4px;">
+<strong>Ask yourself:</strong> The calibration loop is averaging 1,024 readings to learn what &quot;not moving&quot; feels like. What is the robot <em>doing</em> during those 1,024 readings? So what does the gyro conclude that &quot;still&quot; means &mdash; and what does it now subtract from every reading, forever?</div>
+</div></div>
+<div style="border:2px solid #8e44ad; border-radius:10px; margin:24px 0; overflow:hidden;">
+<div style="background:#8e44ad; color:white; padding:12px 18px; font-weight:600;">&#128373;&#65039; Mystery B2 &mdash; The Turn That Never Ends<span style="float:right; font-weight:normal; font-size:0.8em;">26,774 bytes</span></div>
+<div style="padding:16px 18px;">
+<p style="margin-top:0;"><strong>The planted line:</strong></p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // THE PLANTED LINE: gyroUpdate() was deleted from this loop.
+  while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    // (nothing)
+  }
+
+  motors.setSpeeds(0, 0);</pre>
+<p><strong>The symptom:</strong> The robot starts a turn and <strong>never stops turning</strong>. It spins until you cut the power.</p>
+<div style="background:#f5eef8; border-left:5px solid #8e44ad; padding:12px 16px; margin-top:14px; border-radius:4px;">
+<strong>Ask yourself:</strong> A gyro reports a <em>rate</em>, not an angle. Something has to add the rate up over time. If nobody ever adds anything up, what does <code>getTurnAngle()</code> keep returning? And is <code>0 &lt; 90</code> ever going to become false?<br><br><em>Note the byte count: this build is 648 bytes SMALLER than the correct one. Deleting code makes the program smaller. It does not make it work.</em></div>
+</div></div>
+<div style="border:2px solid #8e44ad; border-radius:10px; margin:24px 0; overflow:hidden;">
+<div style="background:#8e44ad; color:white; padding:12px 18px; font-weight:600;">&#128373;&#65039; Mystery B3 &mdash; The First Turn Works<span style="float:right; font-weight:normal; font-size:0.8em;">27,418 bytes</span></div>
+<div style="padding:16px 18px;">
+<p style="margin-top:0;"><strong>The planted line:</strong></p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void turnDegreesGyro(float degrees) {
+  // THE PLANTED LINE: gyroReset() was moved OUT of here
+  // and now runs only once, back in setup().</pre>
+<p style="font-size:0.92em; color:#555; margin:10px 0 6px;">&hellip;and over in <code>main.cpp</code>, inside <code>setup()</code>:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  gyroReset();   // &lt;-- moved here</pre>
+<p><strong>The symptom:</strong> The <strong>first</strong> turn is perfect. Every turn after it finishes <strong>instantly</strong> &mdash; the motors barely twitch before the robot declares the turn complete.</p>
+<div style="background:#f5eef8; border-left:5px solid #8e44ad; padding:12px 16px; margin-top:14px; border-radius:4px;">
+<strong>Ask yourself:</strong> <code>gyroReset()</code> sets the running angle back to zero. If it only ever runs once, at boot &mdash; what does the running total say <em>after</em> the first 90&deg; turn is finished?<br><br>Now the second turn starts. It checks <code>abs(getTurnAngle()) &lt; 90</code>. The angle is <em>already</em> 90. How long does that loop run?</div>
+</div></div>
+<div style="border:2px solid #8e44ad; border-radius:10px; margin:24px 0; overflow:hidden;">
+<div style="background:#8e44ad; color:white; padding:12px 18px; font-weight:600;">&#128373;&#65039; Mystery B4 &mdash; The Helpful TRIM<span style="float:right; font-weight:normal; font-size:0.8em;">27,422 bytes</span></div>
+<div style="padding:16px 18px;">
+<p style="margin-top:0;"><strong>The planted line:</strong></p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
+  motors.setSpeeds(leftSpeed + TRIM, rightSpeed);</pre>
+<p><strong>The symptom:</strong> Turns are subtly, stubbornly off &mdash; and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
+<div style="background:#f5eef8; border-left:5px solid #8e44ad; padding:12px 16px; margin-top:14px; border-radius:4px;">
+<strong>Ask yourself:</strong> TRIM exists to correct an <strong>open loop</strong> &mdash; a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>27,422</strong>. That is <em>exactly</em> the size of the correct build &mdash; not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
+</div></div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; What B4 should teach you for the rest of your life</strong><br>Three of these four mysteries change the program&#x27;s size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><h2 id="section-10" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">10. Exit &mdash; Before You Leave</h2>
+<p>Tick every box. If you cannot tick one, go back &mdash; the section is named.</p>
+<div style="background:#fff; border:1px solid #ddd; border-radius:8px; padding:20px 24px; line-height:2.1;">
+&#9744; I can explain why an encoder <strong>structurally cannot</strong> detect wheel slip. <em>(&sect;3.2)</em><br>
+&#9744; I turned the robot <strong>with my hands</strong> and watched the gyro report the angle, motors off. <em>(&sect;7A)</em><br>
+&#9744; I deleted the calibration and watched a motionless robot report rotation. <em>(&sect;7B)</em><br>
+&#9744; I ran <strong>&sect;7C on a slick surface</strong> and saw the encoder say 90 while the gyro said less.<br>
+&#9744; I can say, out loud, <strong>which of those two numbers was wrong &mdash; and why neither sensor was broken.</strong><br>
+&#9744; I ran the Lesson 6 square on the delrin with <strong>both</strong> buttons and watched only one come home. <em>(&sect;7E)</em><br>
+&#9744; I know why <code>gyroSetup()</code> must run <strong>before</strong> the line-sensor calibration. <em>(&sect;3.6)</em><br>
+&#9744; I know why <code>turnDegreesGyro()</code> has <strong>no TRIM</strong> in it. <em>(&sect;5.2)</em><br>
+&#9744; I understand why Bonus B4 compiles to <strong>exactly the same number of bytes</strong> as the correct build.<br>
+&#9744; My robot drives the full course, and <strong>every turn now closes on the gyro.</strong>
+</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; The one sentence to walk out with</strong><br><strong>A sensor can only tell you about the thing it watches.</strong><br><br>The encoder watches the wheels, so it can only tell you about the wheels. It was never lying to you &mdash; you were asking it a question it had no way to answer, and taking its answer as if it had.</div>
+<p style="margin-top:26px;"><strong>Next lesson:</strong> the robot <em>leaves the line</em>.
+No line means no closed loop &mdash; nothing to correct against, nothing to follow home.
+Everything out in the open is dead reckoning, and now you know exactly how much dead reckoning
+you can trust, and which instrument to trust it with.</p>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p>
+<h2 id="glossary" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">Glossary</h2>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>IMU (Inertial Measurement Unit)</strong><br>The chip on your Zumo containing a gyroscope, an accelerometer, and a magnetometer. Already soldered on; costs zero pins.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Gyroscope</strong><br>Measures <strong>rotation rate</strong> &mdash; how fast something is spinning, in degrees per second. It does <em>not</em> measure direction or position.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Bias / Drift</strong><br>The rotation a gyro reports when it is <strong>perfectly still</strong>. Up to 25&deg;/sec of pure fiction. Not a defect &mdash; every gyro has it.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Calibration (of a gyro)</strong><br>Measuring the bias by averaging many readings while the robot does not move, then subtracting it from every future reading. 1,024 samples, robot still.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Integration (accumulation)</strong><br>Adding up a <em>rate</em> over <em>time</em> to get a <em>total</em>. <code>angle = angle + (rate &times; dt)</code>, thousands of times per turn. This is what <code>gyroUpdate()</code> does.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Dead reckoning</strong><br>Working out where you are from where you started plus what you did. Encoders and gyros both do this. Its fatal flaw: <strong>errors accumulate and never cancel</strong>.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Wheel slip</strong><br>The wheel turns but the robot does not. The encoder counts it as real motion, because from inside the wheel it <em>is</em> real motion.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Open loop / Closed loop</strong><br><strong>Open:</strong> command it and hope (needs TRIM). <strong>Closed:</strong> measure the result and correct until it is right (TRIM would fight it). <code>turnDegreesGyro()</code> is closed.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>I2C</strong><br>A two-wire bus (<code>SDA</code>, <code>SCL</code>) that chips use to talk. The IMU lives on it. Must be switched on with <code>Wire.begin()</code>.</div>
+<div style="margin:14px 0; padding:12px 16px; background:#fff; border-left:4px solid #2e86ab; border-radius:4px;"><strong>Fixed-point</strong><br>Storing a fractional value in an integer by agreeing on a scale. Used here because the ATmega32U4 has no floating-point hardware. <code>2^32 units = 360&deg;</code>, so the counter wraps correctly for free.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p><h2 id="quick-ref" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">Quick Reference</h2>
+<p><em>Every code block below is quoted verbatim from the finished project.</em></p>
+<h3 style="color: #1a5276; margin-top: 28px;">The Four Gyro Functions</h3>
+<p style="font-size:0.9em; color:#666;">In <code>RobotSensors.h</code>:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== GYRO (NEW for Lesson 12) =====
+// The encoders count WHEEL rotation. The gyro measures ROBOT rotation.
+// When a wheel slips, only one of them is still telling the truth.
+void gyroSetup();
+void gyroReset();
+void gyroUpdate();
+int  getTurnAngle();</pre>
+<h3 style="color: #1a5276; margin-top: 28px;">The Honest Turn</h3>
+<p style="font-size:0.9em; color:#666;">In <code>RobotMotion.cpp</code>:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void turnDegreesGyro(float degrees) {
+  gyroReset();                 // "we are at zero degrees, starting now"
+
+  int leftSpeed  = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
+  int rightSpeed = -leftSpeed;
+
+  // Still NO TRIM. The wheels oppose on purpose, and the GYRO -
+  // not the wheels - decides when we are done.
+  motors.setSpeeds(leftSpeed, rightSpeed);
+
+  while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    gyroUpdate();              // add up the angle, slice by slice
+  }
+
+  motors.setSpeeds(0, 0);
+}</pre>
+<h3 style="color: #1a5276; margin-top: 28px;">The Three Intersection Turns</h3>
+<p style="font-size:0.9em; color:#666;">In <code>RobotMotion.cpp</code>:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void turnLeft()   { turnDegreesGyro(-90); }
+void turnRight()  { turnDegreesGyro(90);  }
+void turnAround() { turnDegreesGyro(180); }</pre>
+<h3 style="color: #1a5276; margin-top: 28px;">Boot Sequence &mdash; the order matters</h3>
+<p style="font-size:0.9em; color:#666;">In <code>main.cpp</code>, inside <code>setup()</code>:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // ===== GYRO SETUP (NEW for Lesson 12) =====
+  // The robot MUST be still. If it moves now, the gyro will learn
+  // that moving IS still - and it will be wrong for the whole run.
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Gyro calibrating"));
+  display.gotoXY(0, 2);
+  display.print(F("HOLD STILL"));
+  gyroSetup();
+
+  // ===== SAFETY GATE - before ANY motion =====
+  // Calibration spins the robot, so the A-gate comes FIRST.
+  waitForStart();
+
+  // ===== CALIBRATION =====
+  display.setLayout21x8();
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Place robot on line"));
+  display.gotoXY(0, 2);
+  display.print(F("Press B to calibrate"));
+  buttonB.waitForButton();
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Calibrating..."));
+  display.gotoXY(0, 2);
+  display.print(F("(spinning)"));
+  delay(500);
+  calibrateLineSensors();</pre>
+<p style="font-size:0.92em; color:#555; margin-top:-6px;"><strong>1.</strong> <code>gyroSetup()</code> &mdash; robot must be <em>still</em>. <strong>2.</strong> <code>waitForStart()</code> &mdash; the safety gate. <strong>3.</strong> <code>calibrateLineSensors()</code> &mdash; the robot <em>spins</em>. Reverse 1 and 3 and the spin poisons the gyro zero.</p>
+<h3 style="color: #1a5276; margin-top: 28px;">Byte Counts &mdash; know what a correct build weighs</h3>
+<table style="width:100%; border-collapse: collapse; margin: 16px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:9px 14px; text-align:left; border:1px solid #ddd;">State</th>
+  <th style="padding:9px 14px; text-align:left; border:1px solid #ddd;">Bytes</th>
+  <th style="padding:9px 14px; text-align:left; border:1px solid #ddd;">Why</th></tr>
+<tr><td style="padding:8px 14px; border:1px solid #ddd;">Steps 1&ndash;4</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;"><strong>22,802</strong></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">Objects, constants and prototypes are free</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:8px 14px; border:1px solid #ddd;">Step 5</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;"><strong>24,032</strong></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">+1,230 &mdash; the gyro goes live</td></tr>
+<tr><td style="padding:8px 14px; border:1px solid #ddd;">Steps 6&ndash;7</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;"><strong>24,032</strong></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">+0 &mdash; written, but nobody calls it yet</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:8px 14px; border:1px solid #ddd;"><strong>Step 8 / finished</strong></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;"><strong>27,422</strong></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;"><strong>+3,390 &mdash; the three turns switch</strong></td></tr>
+</table>
+<div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; And remember what Bonus B4 proved.</strong><br>A build that weighs <strong>27,422</strong> bytes is not necessarily a <em>correct</em> build. B4 weighs exactly that and is wrong. The byte count is a useful signal, never a proof.</div>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p>
+<h2 id="image-index" style="color: #1a5276; border-bottom: 3px solid #2e86ab; padding-bottom: 8px; margin-top: 40px;">Image Index</h2>
+<table style="width:100%; border-collapse: collapse; margin: 16px 0;">
+<tr style="background:#1a5276; color:white;">
+  <th style="padding:9px 14px; text-align:left; border:1px solid #ddd;">Slot</th>
+  <th style="padding:9px 14px; text-align:left; border:1px solid #ddd;">Where</th>
+  <th style="padding:9px 14px; text-align:left; border:1px solid #ddd;">Content</th>
+  <th style="padding:9px 14px; text-align:left; border:1px solid #ddd;">Status</th></tr>
+<tr><td style="padding:8px 14px; border:1px solid #ddd;">GRAPHIC 12.1</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">&sect;3.2</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">Encoder vs gyro &mdash; what each one watches<br><code style="font-size:0.85em;">L12_GRAPHIC_12-01_encoder_vs_gyro.svg</code></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">&#9989; SVG</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:8px 14px; border:1px solid #ddd;">GRAPHIC 12.2</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">&sect;3.5</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">The bias &mdash; measuring the lie, 1,024 samples<br><code style="font-size:0.85em;">L12_GRAPHIC_12-02_measuring_the_lie.svg</code></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">&#9989; SVG</td></tr>
+<tr><td style="padding:8px 14px; border:1px solid #ddd;">GRAPHIC 12.3</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">&sect;7E</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">The square that closes vs the square that collapses<br><code style="font-size:0.85em;">L12_GRAPHIC_12-03_the_square_that_closes.svg</code></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">&#9989; SVG</td></tr>
+<tr style="background:#f8f9fa;"><td style="padding:8px 14px; border:1px solid #ddd;"><strong>IMAGE 12.1</strong></td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">&sect;7</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;">The delrin sheet with a Zumo mid-turn on it</td>
+    <td style="padding:8px 14px; border:1px solid #ddd;"><strong>PHOTO &mdash; pending</strong></td></tr>
+</table>
+<p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p>
+
+</body>
+</html>
