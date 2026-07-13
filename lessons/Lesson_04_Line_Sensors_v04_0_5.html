@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4: Line Sensors | Zumo 32U4 Robotics</title>
+</head>
+<body id="top" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; background-color: #fafafa;">
+
+<!-- Sticky Navigation -->
+<nav style="background: linear-gradient(to bottom, #1a5276 0%, #2e86ab 100%); border-radius: 10px; padding: 15px 20px; margin-bottom: 30px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+<a href="#section-1" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3498db; border-radius: 4px; font-size: 0.85em;">1. Intro</a>
+<a href="#section-2" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3498db; border-radius: 4px; font-size: 0.85em;">2. Objectives</a>
+<a href="#section-3" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3498db; border-radius: 4px; font-size: 0.85em;">3. Theory</a>
+<a href="#section-4" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3a7d5c; border-radius: 4px; font-size: 0.85em;">4. Hardware</a>
+<a href="#section-5" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3a7d5c; border-radius: 4px; font-size: 0.85em;">5. The Code</a>
+<a href="#section-6" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3a7d5c; border-radius: 4px; font-size: 0.85em;">6. Build It</a>
+<a href="#section-7" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">7. Test</a>
+<a href="#section-8" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">8. Troubleshoot</a>
+<a href="#section-8a" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">8A. If Statements</a>
+<a href="#section-9" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #9b6a9e; border-radius: 4px; font-size: 0.85em;">9. Challenges</a>
+<a href="#section-10" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">10. Exit</a> <a href="#bonus-challenges" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Bonus</a>
+<a href="#glossary" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Glossary</a>
+<a href="#quick-reference" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Quick Ref</a>
+</div>
+</nav>
+
+<!-- Title Section -->
+<div style="text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(to bottom, #1a5276 0%, #2e86ab 100%); border-radius: 12px; color: white;">
+<h1 style="font-size: 3em; margin: 0; font-weight: bold; letter-spacing: 2px;">LESSON 04</h1>
+<div style="font-size: 1.5em; margin: 10px 0; font-weight: 300;">Line Sensors</div>
+<div style="font-size: 1em; opacity: 0.9;">Zumo 32U4 Robotics • PlatformIO Edition</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 4 — July 2026</div>
+</div>
+
+<!-- Icon Legend -->
+<div style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-bottom: 30px;">
+<div style="font-weight: bold; margin-bottom: 10px; color: #495057;">📋 Icon Legend</div>
+<div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9em;">
+<span>📖 LEARN</span> <span>💻 CODE</span> <span>🔨 BUILD</span>
+<span>▶️ TEST</span> <span>✅ CHECKPOINT</span> <span>⚠️ WARNING</span>
+<span>📝 DO THIS NOW</span> <span>🔑 KEY TERM</span> <span>💡 TIP</span> <span>👀 SEE</span>
+<span>🔍 INSIGHT</span> <span>🔮 NEXT</span>
+</div>
+</div>
+
+
+<!-- ==================== PART 1 ==================== -->
+<div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 1 — Theory &amp; Concepts</div><div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Sections 1–3: Learn the fundamentals</div></div>
+
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;" id="what-you-need-1">
+<strong>📋 WHAT YOU NEED BEFORE STARTING</strong>
+<ul>
+<li>Completed Lesson 3 (your robot drives straight and you recorded your TRIM value)</li>
+<li>Zumo 32U4 robot with fresh(ish) batteries</li>
+<li>USB cable connected to computer</li>
+<li>White poster board and black electrical tape (about 3/4 inch wide) — you will build a small test surface</li>
+<li>A pair of small tweezers or steady fingers — in Part 2 you will move two tiny jumpers on the robot</li>
+</ul>
+</div>
+
+<!-- Section 1: Opening Hook -->
+<div style="background-color: #3498db; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-1" style="font-size: 1.15em; font-weight: bold;">📖 Section 1: The Robot That Learned to See</div>
+</div>
+<div style="border: 2px solid #3498db; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Lesson 3 ended with a promise. Your robot could finally drive straight — you measured its crooked tendencies, calculated a TRIM value, and corrected them — but it was still blind. It moved through the world without knowing a single thing about it. The last words of that lesson were: <em>"Get ready to give your robot eyes!"</em></p>
+
+<p>Here they are. Flip your robot over and look at the front edge of the underside, just behind the blade. You will see a row of <strong>five small rectangular windows</strong>. Each one is an eye — not a camera, but something simpler, faster, and perfectly suited to a robot that lives an inch above the floor. Each window contains an <strong>infrared reflectance sensor</strong>: a tiny invisible-light flashlight paired with a light detector. The flashlight shines infrared light straight down at the floor. The detector measures how much bounces back. A white surface reflects most of the light; a black surface swallows it. That single trick — <em>measuring the bounce</em> — is enough to tell your robot exactly where a black line is underneath it.</p>
+
+<p>It is hard to overstate how much this one ability unlocks. Line following, which you will master in Lesson 8, is built entirely on these five sensors. Edge detection — knowing when the floor is about to end — comes from the same hardware. Nearly every task on a competition field, from staying inside a boundary to navigating an intersection, begins with the question <em>"what is under me right now?"</em> The humble reflectance sensor is the workhorse of competitive robotics, and after today it works for you.</p>
+
+<p>But there is a twist, and it is the reason this lesson is shaped the way it is. Count the windows again: five. Now here is the surprising part — <strong>as your robot sits right now, only three of those five eyes are actually connected to its brain.</strong> Sensors 1, 3, and 5 (left edge, center, right edge) are wired up and ready. Sensors 2 and 4 are asleep — physically present, fully functional, and connected to nothing.</p>
+
+<p>This is not a defect, and nobody forgot to finish building your robot. It is a deliberate engineering decision, and the reason is <strong>scarcity</strong>. The front sensor board actually carries <em>eight</em> sensors — the five line sensors facing down, plus three proximity sensors facing out (you will meet those in Lesson 5). But the board only has <em>six</em> wires available to carry sensor signals to the microcontroller. Eight sensors, six wires. Something has to give. Pololu's engineers chose a default — three line sensors down, three proximity sensors out — and then did something genuinely great: they put the choice on a pair of <strong>movable jumpers</strong> and handed it to you.</p>
+
+<p>So this lesson is a story in two acts. In Act One, you will wake up the three connected sensors, learn to read them, and <strong>calibrate</strong> them so they give honest answers on your specific test surface. Then you will push them to their limit and measure — precisely — what three eyes can and cannot see. In Act Two, you will move two jumpers the size of a grain of rice, wake the other two eyes, and run the exact same tests again. By the end you will not just <em>believe</em> that five sensors beat three; you will have the numbers to prove it, and you will know exactly what those two extra eyes cost you in return. That is what real engineering looks like: not choosing what sounds better, but measuring the trade-off and deciding with evidence.</p>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ One promise before we start</strong>
+<p style="margin-bottom: 0;">At the end of this lesson you will put both jumpers back where you found them. This is not busywork — Lesson 5 uses the side-facing proximity sensors, and those sensors <em>share wires</em> with line sensors 2 and 4. Leave the jumpers moved, and next week your robot is blind on its left and right sides. Engineers restore what they borrow. It's in the exit checklist, and yes, it will be checked.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Section 2: Learning Objectives -->
+<div style="background-color: #3498db; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-2" style="font-size: 1.15em; font-weight: bold;">🎯 Section 2: Learning Objectives</div>
+</div>
+<div style="border: 2px solid #3498db; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>By the end of this lesson, you will be able to:</p>
+<ul style="list-style: none; padding-left: 0;">
+<li>☐ Explain how an infrared reflectance sensor tells a dark surface from a light one</li>
+<li>☐ Locate all eight sensors on the front sensor array — five line sensors facing down, three proximity sensors facing out — and explain why only six can be connected at once</li>
+<li>☐ Identify the two configuration jumpers and state what each position connects</li>
+<li>☐ Initialize and read the three-sensor configuration with <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">initThreeSensors()</code> and <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">read()</code></li>
+<li>☐ Read individual values out of an array using index numbers</li>
+<li>☐ Calibrate the sensors for your specific surface and explain what calibration actually changes</li>
+<li>☐ Reconfigure the robot — jumpers <em>and</em> code — for the five-sensor configuration</li>
+<li>☐ Use <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">readLine()</code> to turn five readings into a single line-position number from 0 to 4000, and interpret that number</li>
+<li>☐ Run a fair side-by-side test and argue, with your own data, what five sensors buy you and what they cost</li>
+<li>☐ Write a basic <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">if</code> statement that makes your robot react to what it sees</li>
+<li>☐ Restore the robot to its standard configuration and explain why Lesson 5 depends on it</li>
+</ul>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Section 3: Background Theory -->
+<div style="background-color: #3498db; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-3" style="font-size: 1.15em; font-weight: bold;">📖 Section 3: Background Theory — How Robots See Lines</div>
+</div>
+<div style="border: 2px solid #3498db; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<h3 style="color: #3498db;">3.1 How Reflectance Sensors Work</h3>
+
+<p>Every one of the five windows on your robot's underside contains the same two components: an <strong>infrared LED</strong> that shines invisible light straight down, and a <strong>phototransistor</strong> — a light-sensitive switch — that watches for whatever bounces back. Infrared is just light with a wavelength slightly too long for human eyes. Your eyes can't see it, but a phototransistor can, and so can most phone cameras: point your phone at the underside while a sensor program runs and you may see the emitters glowing faint purple.</p>
+
+<p>The physics of the measurement is beautifully simple. A white or light surface reflects most of the infrared light back up into the phototransistor. A black surface — like electrical tape — absorbs almost all of it, so very little returns. Measure the bounce, and you know the darkness of the floor under that window. Do it with five windows in a row, and you know <em>where</em> a dark line sits beneath the robot.</p>
+
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L04_GRAPHIC_4-03_reflectance_bounce.svg" alt="The bounce: over white, the IR beam reflects strongly back to the detector (fast drain, low number); over black tape, most IR is absorbed and only a weak return reaches the detector (slow drain, high number)" style="width: 100%; max-width: 760px; display: block; margin: 20px auto;">
+
+<p>Now for the clever part: <em>how</em> the robot measures the bounce. There is no light-meter chip in these sensors. Instead, the microcontroller plays a timing game with each phototransistor, thousands of times per second:</p>
+
+<ol>
+<li>The pin charges the sensor's tiny capacitor — like filling a small bucket of electricity.</li>
+<li>The pin lets go and starts a stopwatch.</li>
+<li>The phototransistor drains the bucket — and it drains <strong>faster when more infrared light is hitting it</strong>.</li>
+<li>The stopwatch stops when the bucket is empty. That time, in microseconds, IS the sensor reading.</li>
+</ol>
+
+<p>Over a bright white surface, lots of light returns, the bucket drains fast, and the reading is a <strong>small number</strong> — maybe 100–300 microseconds. Over black tape, almost no light returns, the bucket drains slowly, and the reading is a <strong>big number</strong>. If the bucket still isn't empty after 2000 microseconds, the robot gives up and calls it 2000 — the darkest reading possible.</p>
+
+<h4 style="color: #3498db;">Wait — the readings seem backward?</h4>
+
+<p>They do, and it trips up almost everyone once. Your instinct says a sensor should report "how much light" — big number, bright surface. These sensors report <strong>how long the drain took</strong> — so big numbers mean <em>dark</em> and small numbers mean <em>bright</em>. Say it to yourself now, because you will need it every time you read the numbers on the OLED: <strong>HIGH = DARK. LOW = LIGHT.</strong> On a white poster board with a black tape line, the sensor over the tape is the one shouting the biggest number.</p>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9c27b0; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #6a1b9a;">🔑 Key Term: Reflectance Sensor</strong>
+<p style="margin-bottom: 0;">A sensor that measures how much light bounces back off a nearby surface. The Zumo's line sensors pair an infrared emitter with a phototransistor and report the reflection as a <em>decay time</em> in microseconds: high values mean a dark (absorbing) surface, low values mean a light (reflecting) surface.</p>
+</div>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0d47a1;">📖 LEARN: Why infrared instead of regular light?</strong>
+<p>Three reasons. First, IR LEDs and phototransistors are cheap and tiny — the whole sensor fits in a package smaller than a grain of rice. Second, by shining its own light source, the sensor works in a dark room, a bright room, or inside the shadow under the robot — it isn't at the mercy of the ceiling lights. Third, pairing the emitter and detector at the same wavelength filters out most ordinary room light.</p>
+<p style="margin-bottom: 0;">Most — not all. <strong>Sunlight is loaded with infrared.</strong> Direct sun on your test surface can flood the phototransistors and make every reading look "bright" no matter what's below. If your robot works perfectly in the classroom and goes haywire next to a sunny window, the window is the bug. (This is worth remembering: it shows up again in Section 8.)</p>
+</div>
+
+<h3 style="color: #3498db;">3.2 One Array, Eight Sensors, Six Wires</h3>
+
+<p>Here is the part of the story most tutorials skip, and it explains the mystery from Section 1. The front sensor board on your Zumo carries <strong>eight sensors</strong>: the five line sensors facing down, plus three <strong>proximity sensor receivers</strong> facing outward — left, front, and right — which detect nearby objects (Lesson 5 is all about them). Eight sensors that would each love their own wire into the microcontroller.</p>
+
+<p>They can't have it. A microcontroller has a fixed number of input/output pins, and on a robot as packed as the Zumo — motors, encoders, buzzer, display, buttons, USB — pins are a scarce resource, budgeted like money. The designers allocated <strong>six signal wires</strong> to the front sensor board. Six wires, eight sensors. Four sensors get a permanent wire of their own. The other four sensors <strong>share two wires, two apiece</strong> — and a physical jumper on the sensor board decides, for each shared wire, which sensor is actually plugged in.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #1a5276; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Wire (pin)</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Connected to</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Choice?</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Pin 18</td><td style="padding: 10px; border: 1px solid #ddd;">Line sensor 1 (far left)</td><td style="padding: 10px; border: 1px solid #ddd;">Fixed — always connected</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><strong>Pin 20</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>Line sensor 2 OR left proximity receiver</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>JUMPER decides</strong></td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Pin 21</td><td style="padding: 10px; border: 1px solid #ddd;">Line sensor 3 (center)</td><td style="padding: 10px; border: 1px solid #ddd;">Fixed — always connected</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><strong>Pin 4</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>Line sensor 4 OR right proximity receiver</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>JUMPER decides</strong></td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Pin 12</td><td style="padding: 10px; border: 1px solid #ddd;">Line sensor 5 (far right)</td><td style="padding: 10px; border: 1px solid #ddd;">Fixed — always connected</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">Pin 22</td><td style="padding: 10px; border: 1px solid #ddd;">Front proximity receiver</td><td style="padding: 10px; border: 1px solid #ddd;">Fixed — always connected</td></tr>
+</table>
+
+<p>Read that table slowly, because the whole lesson lives inside it. Line sensors 1, 3, and 5 are <em>always</em> wired — that is why they work out of the box. Line sensors 2 and 4 each share a wire with one of the side proximity receivers, and a jumper the size of a grain of rice sits on each shared wire like a railroad switch, routing the wire to one sensor or the other. The front proximity receiver keeps its own dedicated wire no matter what — the robot never gives up its forward vision.</p>
+
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L04_GRAPHIC_4-04_pin_sharing_map.svg" alt="Pin-sharing map, factory position: pins 18, 21, 12 wire permanently to sensors 1, 3, 5; pin 20 routes through a jumper to the LEFT proximity receiver (sensor 2 disconnected) and pin 4 through a jumper to the RIGHT proximity receiver (sensor 4 disconnected); sliding both jumpers to the DN side enables five-sensor mode" style="width: 100%; max-width: 860px; display: block; margin: 20px auto;">
+
+<!-- BENCH-TEST FLAG (DJ, Session 17): the practical consequence of the DN2/DN4 jumper position for
+     side proximity sensing in 5-line mode is DISPUTED pending DJ bench test. The paragraph below
+     states only the documented wiring + the L05-compatibility fact. Do not strengthen the claim
+     until the bench verdict is in. -->
+<p>Your robots arrive from the factory with both jumpers set to the <strong>proximity side</strong>: three line sensors down, three proximity receivers out. Move both jumpers to the line-sensor side and all five line sensors come alive. What exactly that costs you in proximity sensing is a question we will put to the test with real hardware rather than settle on paper — but one fact is already certain and non-negotiable: <strong>Lesson 5's programs are written for the factory jumper position.</strong> That is why this lesson ends by putting the jumpers back.</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0d47a1;">🔍 INSIGHT: This is what engineering actually is</strong>
+<p style="margin-bottom: 0;">Beginners imagine engineering as building the best possible machine. Real engineering is allocating <em>scarce resources</em> — pins, grams, dollars, milliseconds, battery capacity — among competing goods. The Zumo's designers could not give you every sensor at once, so they gave you a <strong>choice</strong> and made it reversible. Learning to see designs as bundles of trade-offs, rather than lists of features, is one of the biggest mental upgrades in this entire course.</p>
+</div>
+
+<h3 style="color: #3498db;">3.3 The Factory Default: Three Eyes Open</h3>
+
+<p>Why did Pololu pick <em>three line sensors + three proximity receivers</em> as the default, rather than five and one? Because it is the most balanced general-purpose loadout. The Zumo was born as a <strong>sumo robot</strong> — a machine that shoves opponents out of a white-bordered ring. For that job you need to know two things: <em>where is the edge of the ring?</em> (line sensors — and three are enough to catch a thick border) and <em>where is my opponent?</em> (proximity receivers, ideally on all three sides). The default configuration answers both questions at once.</p>
+
+<p>In the three-sensor configuration, your working sensors are <strong>1, 3, and 5</strong> — far left, dead center, far right. Notice what that pattern gives you: coverage at the edges and the middle, the three places a boundary or line is most likely to matter first. And notice what it costs you: big blind gaps between sensor 1 and 3, and between 3 and 5, where a narrow line of tape can hide completely. You are going to find those gaps yourself, with your own robot, in Section 6 — and that discovery is what motivates Act Two.</p>
+
+<h3 style="color: #3498db;">3.4 Calibration: Teaching Your Sensors What "Black" Means</h3>
+
+<p>Suppose sensor 3 reads 1400 right now. Is that a black line? You genuinely cannot say. Maybe it's black tape. Maybe it's gray carpet with the robot sitting slightly nose-down so the sensor is closer to the floor. Maybe sensor 3 just runs "darker" than its siblings — and it might: no two phototransistors are manufactured perfectly identical, and a reading also shifts with surface texture, sensor height, even dust on the window. Raw readings are honest, but they are not <em>comparable</em> — not between sensors, and not between surfaces.</p>
+
+<p><strong>Calibration</strong> fixes this, and the idea is one you already use in daily life. Before judging whether today is "hot," you need to know the local range — 90°F is a heat wave in Alaska and a relief in Phoenix. Calibration shows each sensor its personal extremes: during a calibration sweep, you slide the sensors back and forth across the line while each one records the <em>brightest</em> value it ever sees (your white poster board) and the <em>darkest</em> (your black tape). From then on, every raw reading is re-graded on that personal scale and reported as a number from <strong>0 to 1000</strong>: 0 means "as bright as the brightest thing I've ever seen," 1000 means "as dark as the darkest."</p>
+
+<p>After calibration, the numbers finally mean the same thing everywhere. A calibrated 950 is a confident "black" whether it came from sensor 1 or sensor 5, on poster board or on a competition mat. And that is what makes everything in the rest of this lesson possible — including the one-number line position you are about to meet.</p>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9c27b0; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #6a1b9a;">🔑 Key Term: Calibration</strong>
+<p style="margin-bottom: 0;">Measuring a sensor's actual minimum and maximum on the current surface, then rescaling all future readings onto a standard 0–1000 range. Calibration data lives in RAM — it evaporates at power-off, which is why every run of your program starts with a fresh calibration sweep. New surface or new lighting? Recalibrate.</p>
+</div>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Coach's Tip</strong>
+<p style="margin-bottom: 0;">When teams complain that "the sensors are broken," the real story — nine times out of ten — is a bad or skipped calibration sweep. A sweep that never actually passed every sensor over the tape leaves some sensor thinking dark-gray is the blackest thing in the universe. Sweep <em>slowly</em>, and make sure <em>every</em> window crosses the line.</p>
+</div>
+
+<h3 style="color: #3498db;">3.5 From Five Numbers to One: How readLine() Thinks</h3>
+
+<p>Once the sensors are calibrated, your program could look at all the individual values — sensor 1 says 40, sensor 2 says 130, sensor 3 says 880... — and reason about them one by one. Sometimes you will. But for steering, what you really want is a single answer to a single question: <strong>"where is the line under me, exactly?"</strong> The library function <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">readLine()</code> compresses all five readings into that one number, and the way it does it is a genuinely elegant piece of math called a <strong>weighted average</strong>.</p>
+
+<p>First, each sensor gets a position label: sensor 1 sits at position 0, sensor 2 at 1000, sensor 3 at 2000, sensor 4 at 3000, sensor 5 at 4000. Then <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">readLine()</code> computes the average of those positions — but each position is <em>weighted by how dark its sensor reads</em>. A sensor screaming "1000 — pure black!" pulls the average hard toward its own position. A sensor whispering "60 — basically white" barely tugs at all. The result is the line's center of darkness, on a scale from <strong>0 (far left) to 4000 (far right)</strong>, with <strong>2000 meaning dead center</strong>.</p>
+
+<p>Work one example by hand — this is exactly the arithmetic the robot does hundreds of times per second. Say the calibrated readings are:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #1a5276; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Sensor</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Position</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Calibrated value</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Weighted (position × value)</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">1</td><td style="padding: 10px; border: 1px solid #ddd;">0</td><td style="padding: 10px; border: 1px solid #ddd;">0</td><td style="padding: 10px; border: 1px solid #ddd;">0</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">2</td><td style="padding: 10px; border: 1px solid #ddd;">1000</td><td style="padding: 10px; border: 1px solid #ddd;">120</td><td style="padding: 10px; border: 1px solid #ddd;">120,000</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">3</td><td style="padding: 10px; border: 1px solid #ddd;">2000</td><td style="padding: 10px; border: 1px solid #ddd;">850</td><td style="padding: 10px; border: 1px solid #ddd;">1,700,000</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">4</td><td style="padding: 10px; border: 1px solid #ddd;">3000</td><td style="padding: 10px; border: 1px solid #ddd;">640</td><td style="padding: 10px; border: 1px solid #ddd;">1,920,000</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">5</td><td style="padding: 10px; border: 1px solid #ddd;">4000</td><td style="padding: 10px; border: 1px solid #ddd;">0</td><td style="padding: 10px; border: 1px solid #ddd;">0</td></tr>
+</table>
+
+<p>Position = (120,000 + 1,700,000 + 1,920,000) ÷ (120 + 850 + 640) = 3,740,000 ÷ 1,610 ≈ <strong>2323</strong>. The line's darkness is centered a little right of sensor 3 — leaning toward sensor 4, which matches the readings: sensor 4 is fairly dark, sensor 2 barely. Notice something remarkable: the answer 2323 is a position <em>between</em> sensors. The weighted average lets five sensors report line positions with far finer grain than five separate yes/no votes ever could.</p>
+
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L04_GRAPHIC_4-05_readline_numberline.svg" alt="readLine position number line, 0 to 4000: five sensors at home values 0, 1000, 2000, 3000, 4000, each labeled with its physical number and array box index; the Section 3.5 worked example value 2323 is flagged a little right of center" style="width: 100%; max-width: 760px; display: block; margin: 20px auto;">
+
+<p>Three fine-print behaviors of <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">readLine()</code> are worth knowing now, because each one will explain something you'll see on the bench:</p>
+
+<ul>
+<li><strong>It ignores whispers.</strong> Values of 50 or below are treated as noise and left out of the average entirely, so a speck of dust doesn't drag the position around.</li>
+<li><strong>It remembers which side it fell off.</strong> If <em>no</em> sensor sees anything dark (nothing above 200), the line is lost — and instead of panicking, <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">readLine()</code> returns 0 if the line was last seen left of center, or 4000 if it was last seen to the right. The robot's best guess is "it went that way." Lesson 8 turns this little memory into recovery behavior.</li>
+<li><strong>The scale depends on the sensor count.</strong> Positions run 0 to (number of sensors − 1) × 1000. Five sensors: 0–4000, center 2000. Three sensors: 0–2000, center 1000. Keep this in mind in Act One.</li>
+</ul>
+
+<p>One more relative: <code style="background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">readLineWhite()</code> does the identical math with every value flipped, for the mirror-world case of a <em>white</em> line on a <em>dark</em> floor. Same idea, opposite wardrobe.</p>
+
+<h3 style="color: #3498db;">3.6 Resolution: What Two More Eyes Actually Buy</h3>
+
+<p>So why bother with five sensors if three work? The answer is a concept that shows up everywhere in engineering — screens, cameras, GPS, medical scanners — called <strong>resolution</strong>: the level of detail a measurement can distinguish.</p>
+
+<p>Think about the blind gaps first. With three active sensors at the far left, center, and far right of the array, there are two wide stretches of floor between neighboring sensors that nobody is watching. A strip of electrical tape is narrow; it can sit entirely inside one of those gaps, and the robot reads <em>all white</em> — the line is directly underneath it and completely invisible. Wake sensors 2 and 4 and those two big gaps become four small ones; the same tape now cannot hide, because it always overlaps at least one window.</p>
+
+<p>Then there's the quality of the position estimate itself. The weighted average is only as good as its ingredients: with three sensors contributing, the estimate leans on sparse information and jumps in coarser steps as the line moves; with five, each small shift of the line changes the balance among more witnesses, and the position number tracks it more smoothly and more confidently. In Lesson 8, when that position number gets fed into a steering correction many times per second, the difference between a jumpy estimate and a smooth one becomes the difference between a robot that <em>slaloms</em> down the line and one that <em>glides</em>. And in Lesson 15, an algorithm called PID will squeeze every drop of value out of that smoothness.</p>
+
+<p>But — and this is the honest, textbook-grade truth — resolution is not free, and more is not automatically better. You already know the price tag on the Zumo (two jumpers' worth of proximity hardware). There are subtler costs too: five sensors take longer to read than three, and more data per loop means more work per loop. For a thick line and simple decisions, three sensors may be genuinely sufficient — plenty of successful sumo robots never wake sensors 2 and 4 at all. The point of Act Two is not "five is better." The point is that after today, you will know <em>how much</em> better, <em>for what</em>, and <em>at what cost</em> — because you measured it.</p>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9c27b0; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #6a1b9a;">🔑 Key Term: Resolution</strong>
+<p style="margin-bottom: 0;">The smallest difference a measurement system can distinguish. More sensors across the same space = finer spatial resolution: smaller things can be detected, and positions can be pinned down more precisely. Resolution always costs something — pins, time, money, or power — so engineers buy exactly as much of it as the job needs.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- ==================== PART 2 ==================== -->
+<div style="background-color: #3a7d5c; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 2 — Hands-On Setup &amp; Programming</div><div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Sections 4–6: Set up and program your robot</div></div>
+
+<!-- Section 4: Hardware -->
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-4" style="font-size: 1.15em; font-weight: bold;">🔨 Section 4: Hardware — Meet Your Sensors</div>
+</div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Theory time is over — pick up your robot. In this section you will physically locate everything Section 3 talked about: the five sensor windows, the two jumpers that decide which sensors are awake, and then you will build the test surface and the software project the rest of the lesson runs on. Do these four steps in order; each one takes just a few minutes.</p>
+
+<h3 style="color: #3a7d5c;">4.1 Find the Five Windows</h3>
+
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<strong>📝 DO THIS NOW</strong>
+<p style="margin-bottom: 0;">Remove the batteries' influence from the equation: make sure the power switch is <strong>OFF</strong>. Then tip the robot end-over-end toward you, so it rests on its back with the <strong>blade pointing toward you</strong>. Look at the strip of circuit board just behind the blade.</p>
+</div>
+
+<p>You should see a neat row of <strong>five small rectangular windows</strong> — the reflectance sensors from Section 3.1. Each window is one emitter/detector pair. They sit just behind the blade so the robot reads the floor slightly ahead of its tracks: it sees the line a moment before it drives over it, which is exactly what steering will need in Lesson 8.</p>
+
+<div style="border: 2px dashed #999; background-color: #f8f9fa; padding: 30px; text-align: center; margin: 20px 0; border-radius: 8px; color: #666;">[IMAGE 4.1] Underside of the Zumo, blade toward camera: the five sensor windows circled and numbered 1–5</div>
+
+<p>Now number them — and be careful, because this is where left and right love to betray people. Sensor numbers are defined from the <strong>robot's own point of view</strong>: sensor 1 is the robot's far-left eye, sensor 5 its far-right. Held the way you are holding it now — on its back, blade toward you — the robot's left conveniently lines up with <strong>your</strong> left: sensor 1 is the leftmost window from where you sit, sensor 5 the rightmost, sensor 3 dead center. But flip the robot any other way (say, rolling it sideways with the blade pointing away) and the row mirrors. When in doubt, come back to this pose: <em>on its back, blade toward you</em>.</p>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Coach's Tip</strong>
+<p style="margin-bottom: 0;">Don't just trust the pose — in Section 6 you will <em>verify</em> your numbering with software: slide the tape under one end of the row and watch which reading jumps. If the "wrong" end reacts, you numbered the sensors backward. Thirty seconds of checking beats a whole afternoon of debugging a robot that steers the wrong way.</p>
+</div>
+
+<h3 style="color: #3a7d5c;">4.2 Find the Two Jumpers</h3>
+
+<p>Stay in the same pose and look at the front sensor board — the separate small circuit board that carries the sensor windows. Somewhere on it sit <strong>two tiny plastic jumper blocks</strong>, each straddling two of three metal pins. These are the railroad switches from the Section 3.2 table. Each jumper has two possible positions, and the positions are labeled on the board: one jumper chooses between <strong>DN2</strong> (line sensor 2) and <strong>LFT</strong> (left proximity receiver); the other chooses between <strong>DN4</strong> (line sensor 4) and <strong>RGT</strong> (right proximity receiver).</p>
+
+<div style="border: 2px dashed #999; background-color: #f8f9fa; padding: 30px; text-align: center; margin: 20px 0; border-radius: 8px; color: #666;">[IMAGE 4.2] Close-up of the front sensor array: the two configuration jumpers in the factory position (proximity side), position labels visible</div>
+
+<p>Right now, both jumpers should be sitting on the <strong>proximity side</strong> — the factory position, three line sensors and three proximity receivers. Compare yours against the photo above and confirm it. If a jumper is missing or already moved, tell your instructor before going further; this lesson assumes everyone starts from the factory position.</p>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ WARNING — Look, don't touch (yet)</strong>
+<p style="margin-bottom: 0;">You will move these jumpers in Act Two (Section 6) — not now. When the time comes, three rules apply: <strong>power OFF</strong> before touching them; work <strong>over a table</strong>, because a dropped jumper is a lost jumper; and use <strong>tweezers or a careful fingernail</strong> — the blocks are small and the pins bend if you fight them. A jumper only ever slides straight up off its pins and straight back down onto two pins. No twisting.</p>
+</div>
+
+<h3 style="color: #3a7d5c;">4.3 Build Your Test Surface</h3>
+
+<p>Every measurement in this lesson happens on a surface you build in the next five minutes, and the quality of your data depends on it. You need three things: strong contrast, a flat surface, and no direct sunlight.</p>
+
+<ol>
+<li>Lay your <strong>white poster board</strong> on a flat table or floor. Tape the corners down if it wants to curl — a bump under the board tilts the robot and changes every sensor's height.</li>
+<li>Run one <strong>straight strip of black electrical tape</strong> (about 3/4 inch wide) down the middle, at least two feet long. Press it down firmly, especially the edges — a lifted edge casts a shadow and reads inconsistently.</li>
+<li>Leave generous <strong>white margins</strong> — at least a robot's width of clean white on each side of the line, so sensors far from the tape have honest "bright" ground to look at.</li>
+</ol>
+
+<div style="border: 2px dashed #999; background-color: #f8f9fa; padding: 30px; text-align: center; margin: 20px 0; border-radius: 8px; color: #666;">[IMAGE 4.3] Finished test surface: white poster board with a straight black tape line and wide white margins</div>
+
+<p>Position the whole thing <strong>away from windows</strong>. You learned why in Section 3.1: sunlight is loaded with infrared, and a sunbeam across your test surface will quietly poison every reading you take today. Classroom lighting is fine; the sensors bring their own light.</p>
+
+<h3 style="color: #3a7d5c;">4.4 Set Up Your Project</h3>
+
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<strong>📝 DO THIS NOW — Start a New Lesson (same ritual as always)</strong>
+<ol>
+<li>Open the <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=main" target="_blank" style="color: #2e86ab; font-weight: bold;">ZUMO Project Maker</a> → confirm <strong>Lesson 04 — Main lesson build</strong>, click Download.</li>
+<li>Unzip and drag the <strong>LastName_L04</strong> folder into <strong>Documents/PlatformIO</strong>.</li>
+<li>VS Code: <strong>File → Open Folder</strong> → your new folder (close Lesson 3's folder first).</li>
+<li>Check the header comment the Maker pre-filled, then <strong>Build</strong> (✓) — healthy before you write a line.</li>
+</ol>
+<p style="color: #666; font-size: 0.9em; margin: 6px 0 0;">No internet? Copy your <strong>ZUMO_Template</strong>, rename it <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L04</code> by hand — and <strong>paste in the STANDARD HELPERS block</strong> from Section 5.6 (the Maker adds it automatically; the plain template doesn't have it).</p>
+<div style="text-align: center; margin: 22px 0;">
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L04_GRAPHIC_4-02_project_file_tree.svg" alt="The Lesson 4 PlatformIO project tree: src/main.cpp, include/, lib/, platformio.ini" style="width: 100%; max-width: 860px; height: auto;">
+<div style="color: #666; font-size: 14px; margin-top: 8px;"><strong>[GRAPHIC 4.2]</strong> Your Lesson 4 project &mdash; what each folder is for (File: L04_GRAPHIC_4-02_project_file_tree.svg)</div>
+</div>
+
+</div>
+
+<p>One thing is new in this download, and it's worth noticing before you scroll past it. Starting with this lesson, every Maker project arrives with a block of pre-installed code at the bottom labeled <strong>STANDARD HELPERS (added after Lesson 3)</strong>, plus two matching lines in the FUNCTION PROTOTYPES section. From Lesson 4 onward, robots run programs that <em>move</em> based on what they <em>sense</em> — and that changes the safety rules. Section 5.6 introduces the two helpers and the two habits they build. For now, just confirm they're there and that the project builds.</p>
+
+<div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #2e7d32;">✅ CHECKPOINT — Section 4 complete when:</strong>
+<ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+<li>☐ You found all five sensor windows and can point to sensor 1 and sensor 5 without hesitating</li>
+<li>☐ Both jumpers confirmed in the <strong>factory position</strong> (they match IMAGE 4.2)</li>
+<li>☐ Test surface built: straight line, firm tape edges, wide white margins, no direct sun</li>
+<li>☐ <strong>LastName_L04</strong> project created, STANDARD HELPERS block present, Build shows ✓</li>
+</ul>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Section 5: The Code -->
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-5" style="font-size: 1.15em; font-weight: bold;">💻 Section 5: The Code — How Today's Program Thinks</div>
+</div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>This section walks through every piece of today's program so you understand what each part does and why it exists. Think of it as the blueprint; Section 6 is the construction. Read it with your project open — everything here goes into <strong>one</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>, organized in the seven-section layout you have used since Lesson 2.</p>
+
+<h3 style="color: #3a7d5c;">5.1 The Shape of Today's Program</h3>
+
+<p>Both acts of this lesson run <em>the same program</em> in two costumes. In Act One it wakes three sensors and shows their calibrated readings. In Act Two you change two lines and a display function, and it wakes five sensors and adds a line-position readout. Nothing in it drives the motors — today's program only <strong>senses and shows</strong>. (The driving starts in Section 9, once you can trust what the robot sees.)</p>
+
+<p>The program has five jobs, and each one maps to a helper or a section of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>: declare the hardware, wake the right sensor set, calibrate, read into an array, and display. Let's take them in order.</p>
+
+<h3 style="color: #3a7d5c;">5.2 The Hardware Objects</h3>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// ===== HARDWARE OBJECTS =====</span>
+<span style="color: #4ec9b6;">Zumo32U4ButtonA</span> buttonA;
+<span style="color: #4ec9b6;">Zumo32U4ButtonB</span> buttonB;
+<span style="color: #4ec9b6;">Zumo32U4OLED</span> display;
+<span style="color: #4ec9b6;">Zumo32U4LineSensors</span> lineSensors;
+
+<span style="color: #6a9955;">// ===== CONSTANTS =====</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">uint8_t</span> NUM_SENSORS = <span style="color: #b5cea8;">3</span>;                <span style="color: #6a9955;">// Act One: sensors 1, 3, 5</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> CAL_TIME_MS = <span style="color: #b5cea8;">5000</span>;        <span style="color: #6a9955;">// calibration sweep window</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> DISPLAY_INTERVAL_MS = <span style="color: #b5cea8;">100</span>; <span style="color: #6a9955;">// refresh rate for readings</span></pre>
+
+<p>Four objects this time. The display and the two buttons you know; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">buttonB</code> earns its seat because the STANDARD HELPERS use the A+B combination for the battery check (Section 5.6). The new face is <strong><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4LineSensors lineSensors;</code></strong> — your handle on the entire reflectance array. Every sensor operation in this lesson goes through this one object: waking sensors, calibrating them, reading them raw or calibrated, and computing the line position.</p>
+
+<h3 style="color: #3a7d5c;">5.3 The Constants</h3>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #2a5a42; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Constant</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Value</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it controls</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">NUM_SENSORS</code></td><td style="padding: 10px; border: 1px solid #ddd;">3 (Act One) → 5 (Act Two)</td><td style="padding: 10px; border: 1px solid #ddd;">How many sensors are awake — sizes the array and drives every loop that walks it</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">CAL_TIME_MS</code></td><td style="padding: 10px; border: 1px solid #ddd;">5000</td><td style="padding: 10px; border: 1px solid #ddd;">Length of the calibration sweep window, in milliseconds</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">DISPLAY_INTERVAL_MS</code></td><td style="padding: 10px; border: 1px solid #ddd;">100</td><td style="padding: 10px; border: 1px solid #ddd;">Pause between readings — 10 updates per second is fast enough to feel live and slow enough to read</td></tr>
+</table>
+
+<p>Same discipline as Lesson 2: values that tune behavior live at the top, in ALL_CAPS, defined once. When Act Two arrives, changing <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">NUM_SENSORS</code> in <em>one place</em> resizes the array and retunes every loop automatically. That is the payoff for killing magic numbers.</p>
+
+<h3 style="color: #3a7d5c;">5.4 Waking the Sensors: The Software Half of the Jumper Story</h3>
+
+<p>The jumpers are the hardware half of the three-vs-five choice. The software half is a single line in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code>:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #2a5a42; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Sensors it wakes</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Hardware it assumes</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.initThreeSensors();</code></td><td style="padding: 10px; border: 1px solid #ddd;">1, 3, 5</td><td style="padding: 10px; border: 1px solid #ddd;">Works in <strong>any</strong> jumper position — sensors 1, 3, 5 have their own permanent wires</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.initFiveSensors();</code></td><td style="padding: 10px; border: 1px solid #ddd;">1, 2, 3, 4, 5</td><td style="padding: 10px; border: 1px solid #ddd;">Requires <strong>both jumpers moved</strong> to DN2 / DN4 — otherwise sensors 2 and 4 read nonsense</td></tr>
+</table>
+
+<p>Notice the asymmetry, because it matters twice today. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initThreeSensors()</code> is safe everywhere — its three sensors are hardwired. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initFiveSensors()</code> makes a <em>promise about the hardware</em> — that pins 20 and 4 actually lead to line sensors. The code compiles either way; the compiler cannot see your jumpers. If the promise is false, nothing crashes and nothing warns you — sensors 2 and 4 simply report garbage. You will see this with your own eyes in Section 6, on purpose, because it is one of the most important lessons in robotics: <strong>hardware and software each keep promises the other can't check.</strong></p>
+
+<h3 style="color: #3a7d5c;">5.5 Reading Into an Array — Three Values, One Variable</h3>
+
+<p>Lesson 3 promised that the line sensors would hand you data "as an array." Here is that moment. One reading produces three numbers at once (five in Act Two) — one per sensor. Rather than juggling three separate variables, the program declares a single <strong>array</strong>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// ===== GLOBAL VARIABLES =====</span>
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> lineSensorValues[NUM_SENSORS];   <span style="color: #6a9955;">// one slot per active sensor</span></pre>
+
+<p>An array is a row of numbered boxes stored under one name. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[NUM_SENSORS]</code> creates <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">NUM_SENSORS</code> boxes; a call like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.read(lineSensorValues)</code> fills all of them in one shot. You then open an individual box with its <strong>index</strong> in square brackets — and here is the rule that catches everyone at least once: <strong>the boxes are numbered starting from ZERO.</strong> The first box is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[0]</code>, not <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[1]</code>.</p>
+
+<p>And that creates a genuinely tricky mismatch, because the <em>sensors</em> are numbered 1–5. Worse: in the three-sensor configuration, the array only has boxes for the sensors that are <em>awake</em>. Study this table until it feels obvious — it is the number-one source of Lesson 4 bugs:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #2a5a42; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Configuration</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">lineSensorValues[0]</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">[1]</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">[2]</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">[3]</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">[4]</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Three sensors</td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 1 (left)</td><td style="padding: 10px; border: 1px solid #ddd;"><strong>Sensor 3 (center)</strong></td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 5 (right)</td><td style="padding: 10px; border: 1px solid #ddd;">—</td><td style="padding: 10px; border: 1px solid #ddd;">—</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">Five sensors</td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 1</td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 2</td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 3 (center)</td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 4</td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 5</td></tr>
+</table>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ WARNING — Index is not sensor number</strong>
+<p style="margin-bottom: 0;">In the three-sensor configuration, the <em>center</em> sensor lives in box <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[1]</code>. In the five-sensor configuration, the center moves to box <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[2]</code>. Code that reads "the center sensor" by index must change when the configuration changes. Say it out loud: <strong>index counts awake sensors from zero; it does not name the sensor.</strong></p>
+</div>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9c27b0; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #6a1b9a;">🔑 Key Term: Array</strong>
+<p style="margin-bottom: 0;">A numbered row of same-type values stored under one name. Declared with a size (<code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">unsigned int values[3];</code>), accessed by index in square brackets, and — always — indexed from zero. Arrays let one function call hand you many results at once, and let one loop process them all.</p>
+</div>
+
+<h3 style="color: #3a7d5c;">5.6 The STANDARD HELPERS — Two Habits That Start Today</h3>
+
+<p>Open your Maker-made project and scroll to the bottom. Below your usual helper area sits a block you did not write, labeled <strong>STANDARD HELPERS (added after Lesson 3)</strong>, with two matching lines up in FUNCTION PROTOTYPES. Starting this lesson, <em>every</em> project you make ships with it. Here is the block in full — this is also the copy source if you ever build a project by hand from the plain template:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// ----- STANDARD HELPERS (added after Lesson 3) -----</span>
+
+<span style="color: #6a9955;">/*
+waitForStart()
+--------------
+SAFETY GATE: nothing moves until Button A is pressed.
+Call it at the END of setup(), always.
+*/</span>
+<span style="color: #569cd6;">void</span> waitForStart() {
+  display.clear();
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"Press A"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"to start"</span>));
+  buttonA.waitForButton();
+  display.clear();
+  delay(<span style="color: #b5cea8;">500</span>);  <span style="color: #6a9955;">// time to get your hands clear</span>
+}
+
+<span style="color: #6a9955;">/*
+checkBattery()
+--------------
+Hold A + B together at any time to see the battery.
+Call it at the TOP of loop().
+*/</span>
+<span style="color: #569cd6;">void</span> checkBattery() {
+  <span style="color: #569cd6;">if</span> (buttonA.isPressed() &amp;&amp; buttonB.isPressed()) {
+    display.clear();
+    display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"Battery"</span>));
+    display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+    <span style="color: #569cd6;">int</span> mv = readBatteryMillivolts();
+    display.print(mv);
+    display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">" mV"</span>));
+    <span style="color: #569cd6;">while</span> (buttonA.isPressed() || buttonB.isPressed()) {
+      <span style="color: #6a9955;">// wait for release</span>
+    }
+    delay(<span style="color: #b5cea8;">200</span>);
+    display.clear();
+  }
+}</pre>
+
+<p>Why now? Because Lesson 4 is the moment your robots stop being remote-controlled toys and start being <strong>machines that act on their own senses</strong>. From here on, programs will read sensors and move motors in response — and a robot that lunges the instant the power switch flips is a robot that drives off a desk, chews a USB cable, or startles someone into dropping it. Two habits, enforced by two helpers, book-wide from today:</p>
+
+<ul>
+<li><strong><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">waitForStart()</code> — the safety gate.</strong> Called at the <em>end</em> of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code>, always. The robot boots, finishes its setup work, then stops and waits: <em>"Press A to start."</em> Nothing moves at power-on — ever again. The half-second delay after the press exists so your hands are clear before anything happens.</li>
+<li><strong><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">checkBattery()</code> — the A+B battery check.</strong> Called at the <em>top</em> of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>. Hold buttons A and B together at any moment and the display shows battery millivolts until you let go. Weak batteries cause the weirdest bugs in robotics — motors that stutter, sensors that drift, resets from nowhere — and now every robot answers "how are your batteries?" the same way. The combo-press trick inside it is the same pattern as Lesson 3's A+C reset.</li>
+</ul>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Coach's Tip</strong>
+<p style="margin-bottom: 0;">Today's program doesn't drive any motors — so why bother with a safety gate? Because habits only protect you if they're unconditional. The gate costs one button press; forming the habit now means it's already second nature in Section 9, when the motors come back.</p>
+</div>
+
+<h3 style="color: #3a7d5c;">5.7 The Calibration Sweep</h3>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">/*
+calibrateSensors()
+------------------
+Shows each sensor its personal brightest and darkest.
+Slide the robot side to side across the line until the
+countdown ends. Every window must cross the tape.
+*/</span>
+<span style="color: #569cd6;">void</span> calibrateSensors() {
+  display.clear();
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"Sweep!"</span>));
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> startTime = millis();
+  <span style="color: #569cd6;">while</span> (millis() - startTime &lt; CAL_TIME_MS) {
+    lineSensors.calibrate();
+    display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+    display.print((CAL_TIME_MS - (millis() - startTime)) / <span style="color: #b5cea8;">1000</span> + <span style="color: #b5cea8;">1</span>);
+    display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">" sec "</span>));
+  }
+  display.clear();
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"Cal done"</span>));
+  delay(<span style="color: #b5cea8;">750</span>);
+  display.clear();
+}</pre>
+
+<p>This helper is Section 3.4 turned into code. For five seconds (that's <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">CAL_TIME_MS</code>), it calls <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.calibrate()</code> as fast as it can, while you slide the robot side to side across the tape. Each call takes a fresh reading on every sensor and quietly updates that sensor's personal record book — <em>brightest ever seen, darkest ever seen</em>. The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">while (millis() - startTime &lt; CAL_TIME_MS)</code> pattern is the non-blocking clock trick from Lesson 3's boot-banner fix, reused: check the elapsed time each pass instead of freezing in one long delay, which is what lets the countdown on row 1 stay live.</p>
+
+<p>The record books are the whole product of calibration. They live in RAM, they vanish at power-off, and every future <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readCalibrated()</code> uses them to re-grade raw readings onto the honest 0–1000 scale.</p>
+
+<h3 style="color: #3a7d5c;">5.8 Displaying What the Robot Sees</h3>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">/*
+showReadings()
+--------------
+OLED: three calibrated values squeezed to 0-99 (value / 10).
+Serial Monitor: the full 0-1000 values, tab-separated.
+*/</span>
+<span style="color: #569cd6;">void</span> showReadings() {
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> scaled = lineSensorValues[i] / <span style="color: #b5cea8;">10</span>;
+    <span style="color: #569cd6;">if</span> (scaled &gt; <span style="color: #b5cea8;">99</span>) scaled = <span style="color: #b5cea8;">99</span>;
+    <span style="color: #569cd6;">if</span> (scaled &lt; <span style="color: #b5cea8;">10</span>) display.print(<span style="color: #ce9178;">'0'</span>);
+    display.print(scaled);
+    <span style="color: #569cd6;">if</span> (i &lt; NUM_SENSORS - <span style="color: #b5cea8;">1</span>) display.print(<span style="color: #ce9178;">' '</span>);
+  }
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span style="color: #4ec9b6;">Serial</span>.print(lineSensorValues[i]);
+    <span style="color: #4ec9b6;">Serial</span>.print(<span style="color: #ce9178;">'\t'</span>);
+  }
+  <span style="color: #4ec9b6;">Serial</span>.println();
+}</pre>
+
+<p>Two audiences, two displays. The <strong>Serial Monitor</strong> gets the full-precision values, tab-separated, one line per reading — that's your lab notebook, and it's where you'll copy numbers from during the experiments. The <strong>OLED</strong> gets a squeezed version, because it only has 8 characters per row: each 0–1000 value is divided by 10 and printed as two digits, giving a live <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">99 00 99</code>-style dashboard that fits the row exactly. Glance test: white floor reads near <strong>00</strong>, tape reads near <strong>99</strong>. In Act Two this function changes shape to fit five one-digit values plus a position line — you'll swap it in Section 6, Step 7.</p>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Section 6: Build It -->
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-6" style="font-size: 1.15em; font-weight: bold;">🔨 Section 6: Build It — Two Acts, Step by Step</div>
+</div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Section 5 showed the code in labeled pieces so you could understand each one. In this section <strong>you write it</strong> — each step explains <strong>why</strong>, hands you the plan in pseudo-code, and points you at the Quick Reference. You translate the plan into code, then check it against the reveal.</p>
+
+<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<strong>⚠️ HOW THIS SECTION WORKS</strong>
+<p>Each step follows the same pattern:</p>
+<ol>
+<li><strong>📖 Explanation</strong> — understand what the code does and why</li>
+<li><strong>🗺️ The plan</strong> — the step's behavior in pseudo-code, plus where to look things up</li>
+<li><strong>⌨️ Translate it</strong> — you turn the plan into real code</li>
+<li><strong>🔓 Check your work</strong> — open the reveal only after you've tried</li>
+<li><strong>✅ Build</strong> — keep it green before moving on</li>
+</ol>
+<p><strong>Do NOT skip ahead.</strong> One step at a time, in order — every step assumes the previous one compiled. One step keeps its gray copy boxes on purpose: <strong>Step 5</strong> — you'll see why when the build turns red.</p>
+</div>
+
+<div style="background-color: #e7f1fb; border-left: 4px solid #2e86ab; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <strong style="color: #1a5276;">📦 Fell behind? File wrecked?</strong>
+    <p style="margin: 8px 0 0 0;">The <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4" target="_blank" style="color: #2e86ab; font-weight: bold;">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the entry named for the step you're about to build, and it opens a project already caught up to that exact point. Missed a day? Broke your file beyond repair? Grab the right entry and keep moving &mdash; no shame, no retyping.</p>
+</div>
+
+<h3 style="color: #3a7d5c;">ACT ONE — Three Sensors</h3>
+
+<h4 style="color: #3a7d5c;">Step 1 — Open your project and confirm the baseline</h4>
+
+<p>Open <strong>LastName_L04</strong> in VS Code (you made it in Section 4.4). Confirm the STANDARD HELPERS block sits at the bottom and its two prototypes sit in FUNCTION PROTOTYPES. Build (✓). Green before you touch anything — that's the baseline that proves later errors are yours, not the template's.</p>
+
+<h4 style="color: #3a7d5c;">Step 2 — Hardware objects, constants, and the array</h4>
+
+<p>Three things enter the file today: the cast, the settings, and one scratch-pad array.</p>
+
+<p style="margin: 10px 0 6px;"><strong>The plan, in pseudo-code:</strong></p>
+<pre style="background-color: #f8f9fa; border: 1px solid #b8c4cc; border-radius: 6px; padding: 14px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #2c3e50; line-height: 1.7; margin: 6px 0 12px;">cast list   →  buttons A and B, the OLED display,
+               and the line sensor array          ← new today
+settings    →  NUM_SENSORS: how many eyes are awake (3 for Act One)
+               CAL_TIME_MS: the calibration sweep window (5000 ms)
+               DISPLAY_INTERVAL_MS: dashboard refresh pause (100 ms)
+scratch pad →  one global array, a slot per active sensor —
+               declared right after the prototypes block</pre>
+
+<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The template already declares buttonA, buttonB, and display — the one new actor and the array syntax are both in the <a href="#qr-hardware" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Hardware objects</a> table. Write the three constants first: the array's size comes from NUM_SENSORS, so that name must exist before the array uses it.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Check your work — open after you've tried</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// ===== HARDWARE OBJECTS =====</span>
+<span style="color: #4ec9b6;">Zumo32U4ButtonA</span> buttonA;
+<span style="color: #4ec9b6;">Zumo32U4ButtonB</span> buttonB;
+<span style="color: #4ec9b6;">Zumo32U4OLED</span> display;
+<span style="color: #4ec9b6;">Zumo32U4LineSensors</span> lineSensors;
+
+<span style="color: #6a9955;">// ===== CONSTANTS =====</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">uint8_t</span> NUM_SENSORS = <span style="color: #b5cea8;">3</span>;                <span style="color: #6a9955;">// Act One: sensors 1, 3, 5</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> CAL_TIME_MS = <span style="color: #b5cea8;">5000</span>;        <span style="color: #6a9955;">// calibration sweep window</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> DISPLAY_INTERVAL_MS = <span style="color: #b5cea8;">100</span>; <span style="color: #6a9955;">// refresh rate for readings</span>
+
+<span style="color: #6a9955;">// ===== GLOBAL VARIABLES =====</span>
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> lineSensorValues[NUM_SENSORS];   <span style="color: #6a9955;">// one slot per active sensor</span></pre>
+</div>
+</details>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<strong>✅ CHECKPOINT</strong>
+<ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+<li>☐ Build (✓) — still green: declarations alone don't do anything yet, but the compiler now knows every name we're about to use</li>
+<li>☐ Four hardware objects, three constants, one array — all above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code></li>
+</ul>
+</div>
+
+<h4 style="color: #3a7d5c;">Step 3 — setup(): wake the sensors</h4>
+
+<p>Three lines, three jobs — and one rule about where the last one sits.</p>
+
+<p style="margin: 10px 0 6px;"><strong>The plan, in pseudo-code:</strong></p>
+<pre style="background-color: #f8f9fa; border: 1px solid #b8c4cc; border-radius: 6px; padding: 14px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #2c3e50; line-height: 1.7; margin: 6px 0 12px;">when the robot boots:
+1. start the USB serial link (115200 baud)
+2. wake sensors 1, 3, and 5
+3. gate at the door — nothing runs until A is pressed
+                       ← LAST line of setup, always</pre>
+
+<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The serial link is in <a href="#qr-serial" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Serial Monitor</a>, the wake-up call is in <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line sensor functions</a>, and the gate you already know from Section 5.6.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Check your work — open after you've tried</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">void</span> setup() {
+  <span style="color: #4ec9b6;">Serial</span>.begin(<span style="color: #b5cea8;">115200</span>);
+  lineSensors.initThreeSensors();   <span style="color: #6a9955;">// wake sensors 1, 3, 5</span>
+  waitForStart();
+}</pre>
+</div>
+</details>
+
+<div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<strong>✅ CHECKPOINT</strong>
+<ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+<li>☐ Build (✓) — and upload if you like: the robot boots to "Press A / to start" and waits politely. That's the gate working</li>
+<li>☐ <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">waitForStart()</code> is the <strong>last line of setup, always</strong></li>
+</ul>
+</div>
+
+<h4 style="color: #3a7d5c;">Step 4 — loop(): raw readings to the Serial Monitor</h4>
+
+<p>Now make the robot report what it sees, over and over, one line of numbers per pass.</p>
+
+<p style="margin: 10px 0 6px;"><strong>The plan, in pseudo-code:</strong></p>
+<pre style="background-color: #f8f9fa; border: 1px solid #b8c4cc; border-radius: 6px; padding: 14px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #2c3e50; line-height: 1.7; margin: 6px 0 12px;">every pass through loop():
+1. guard the battery (the A+B combo)
+2. read RAW values into the array
+3. print each value + a tab      ← for loop, one lap per sensor
+4. end the line
+5. brief pause so the numbers don't blur</pre>
+
+<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The raw read call is in <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line sensor functions</a>, printing and the tab trick are in <a href="#qr-serial" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Serial Monitor</a>, and the pause is in <a href="#qr-timing" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Timing</a>. The for loop counts <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i</code> from 0 up to NUM_SENSORS — the same lap-per-sensor pattern every sensor lesson uses from here forward.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Check your work — open after you've tried</summary>
+<div style="margin-top: 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">void</span> loop() {
+  checkBattery();
+  lineSensors.read(lineSensorValues);   <span style="color: #6a9955;">// RAW readings, 0-2000 microseconds</span>
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span style="color: #4ec9b6;">Serial</span>.print(lineSensorValues[i]);
+    <span style="color: #4ec9b6;">Serial</span>.print(<span style="color: #ce9178;">'\t'</span>);
+  }
+  <span style="color: #4ec9b6;">Serial</span>.println();
+  delay(DISPLAY_INTERVAL_MS);
+}</pre>
+</div>
+</details>
+
+<p><strong>Build (✓), upload,</strong> open the Serial Monitor, press A on the robot. Columns of numbers start flowing — one column per sensor, left to right: <strong>sensor 1, sensor 3, sensor 5.</strong> These are raw readings: microseconds of drain time, 0 to 2000, HIGH = DARK.</p>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0c5460;">👀 WHAT YOU SHOULD SEE — and three experiments to run right now</strong>
+<p><strong>1. The wave test:</strong> hold the robot in the air, sensors down, and wave your hand a couple of centimeters under it. All three columns should jump when your hand passes. Sensors alive: confirmed.</p>
+<p><strong>2. The numbering test (this one settles Section 4.1):</strong> set the robot on your test surface, then slide the board so the tape sits under the <em>robot's left</em> end of the sensor row. The <strong>first</strong> column should go high. If the <strong>last</strong> column went high instead, your idea of the robot's left is mirrored — fix your mental picture now, before any code depends on it.</p>
+<p style="margin-bottom: 0;"><strong>3. The honesty test:</strong> put all sensors over plain white and look closely at the three columns. They will <em>not</em> read the same — one sensor might idle at 180 while its neighbor idles at 320, on the identical surface. Same floor, different numbers. That's the manufacturing variance from Section 3.4, live on your screen — and it's exactly the problem the next step fixes.</p>
+</div>
+
+<div id="sensor-data" style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong>📝 DO THIS NOW — Record your raw readings</strong>
+<p style="margin-bottom: 6px;">From the Serial Monitor, copy typical raw values into this table (you'll want them for the Exit Ticket and for Section 7):</p>
+<table style="width: 100%; border-collapse: collapse; margin: 10px 0 0;">
+<tr style="background-color: #2a5a42; color: white;">
+<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Surface</th>
+<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Sensor 1 (raw)</th>
+<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Sensor 3 (raw)</th>
+<th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Sensor 5 (raw)</th>
+</tr>
+<tr><td style="padding: 8px; border: 1px solid #ddd;">Plain white</td><td style="padding: 8px; border: 1px solid #ddd;">______</td><td style="padding: 8px; border: 1px solid #ddd;">______</td><td style="padding: 8px; border: 1px solid #ddd;">______</td></tr>
+<tr style="background-color: #fff;"><td style="padding: 8px; border: 1px solid #ddd;">Black tape</td><td style="padding: 8px; border: 1px solid #ddd;">______</td><td style="padding: 8px; border: 1px solid #ddd;">______</td><td style="padding: 8px; border: 1px solid #ddd;">______</td></tr>
+</table>
+</div>
+
+<h4 style="color: #3a7d5c;">Step 5 — Add calibration (and meet a familiar red build)</h4>
+
+<p>Now make the readings honest. First, add one call in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code>, between the sensor init and the safety gate:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">void</span> setup() {
+  <span style="color: #4ec9b6;">Serial</span>.begin(<span style="color: #b5cea8;">115200</span>);
+  lineSensors.initThreeSensors();   <span style="color: #6a9955;">// wake sensors 1, 3, 5</span>
+  calibrateSensors();
+  waitForStart();
+}</pre>
+
+<p><strong>Build. It fails.</strong> Red squiggle, and the terminal says something like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">'calibrateSensors' was not declared in this scope</code>. Good — you have seen this exact error before, on purpose, in Lesson 2 Step 7. The compiler read <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> top-to-bottom, hit a name it had never heard of, and quit. The fix is the same as it was then: a <strong>function prototype</strong> up top, and the function itself down in helpers. Since we're about to need <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showReadings()</code> too, declare <em>both</em> prototypes now — one trip:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// ===== FUNCTION PROTOTYPES =====</span>
+<span style="color: #569cd6;">void</span> calibrateSensors();
+<span style="color: #569cd6;">void</span> showReadings();
+<span style="color: #569cd6;">void</span> waitForStart();
+<span style="color: #569cd6;">void</span> checkBattery();</pre>
+
+<p>Then add the two functions to the HELPER FUNCTIONS section, above the STANDARD HELPERS block:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">/*
+calibrateSensors()
+------------------
+Shows each sensor its personal brightest and darkest.
+Slide the robot side to side across the line until the
+countdown ends. Every window must cross the tape.
+*/</span>
+<span style="color: #569cd6;">void</span> calibrateSensors() {
+  display.clear();
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"Sweep!"</span>));
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> startTime = millis();
+  <span style="color: #569cd6;">while</span> (millis() - startTime &lt; CAL_TIME_MS) {
+    lineSensors.calibrate();
+    display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+    display.print((CAL_TIME_MS - (millis() - startTime)) / <span style="color: #b5cea8;">1000</span> + <span style="color: #b5cea8;">1</span>);
+    display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">" sec "</span>));
+  }
+  display.clear();
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"Cal done"</span>));
+  delay(<span style="color: #b5cea8;">750</span>);
+  display.clear();
+}
+
+<span style="color: #6a9955;">/*
+showReadings()
+--------------
+OLED: three calibrated values squeezed to 0-99 (value / 10).
+Serial Monitor: the full 0-1000 values, tab-separated.
+*/</span>
+<span style="color: #569cd6;">void</span> showReadings() {
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> scaled = lineSensorValues[i] / <span style="color: #b5cea8;">10</span>;
+    <span style="color: #569cd6;">if</span> (scaled &gt; <span style="color: #b5cea8;">99</span>) scaled = <span style="color: #b5cea8;">99</span>;
+    <span style="color: #569cd6;">if</span> (scaled &lt; <span style="color: #b5cea8;">10</span>) display.print(<span style="color: #ce9178;">'0'</span>);
+    display.print(scaled);
+    <span style="color: #569cd6;">if</span> (i &lt; NUM_SENSORS - <span style="color: #b5cea8;">1</span>) display.print(<span style="color: #ce9178;">' '</span>);
+  }
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span style="color: #4ec9b6;">Serial</span>.print(lineSensorValues[i]);
+    <span style="color: #4ec9b6;">Serial</span>.print(<span style="color: #ce9178;">'\t'</span>);
+  }
+  <span style="color: #4ec9b6;">Serial</span>.println();
+}</pre>
+
+<p>And switch <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> from raw to calibrated:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">void</span> loop() {
+  checkBattery();
+  lineSensors.readCalibrated(lineSensorValues);
+  showReadings();
+  delay(DISPLAY_INTERVAL_MS);
+}</pre>
+
+<p>Build — green again. The red build wasn't a detour; it was a rep. Every time that error message costs you ten seconds instead of ten minutes, Lesson 2 is paying rent.</p>
+
+<h4 style="color: #3a7d5c;">Step 6 — Run Act One for real</h4>
+
+<p>Upload. The robot now boots straight into <strong>"Sweep!"</strong> with a countdown — that's your five-second calibration window. Set it on the test surface and slide it side to side so <em>every window crosses the tape at least twice</em>. "Cal done," then the gate: press A.</p>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0c5460;">👀 WHAT YOU SHOULD SEE</strong>
+<p style="margin-bottom: 0;">The OLED shows three two-digit numbers — your live dashboard. On plain white, all three sit near <strong>00</strong> (and notice: NOW they agree with each other — that's calibration earning its keep). Slide the tape under the center sensor: the middle number leaps toward <strong>99</strong>. Under sensor 1: the first number leaps. The Serial Monitor shows the same story in full 0–1000 precision.</p>
+</div>
+
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong>📝 DO THIS NOW — Find the blind gap</strong>
+<p style="margin-bottom: 0;">Here is the experiment Act One has been building toward. Start with the tape under sensor 1 (first number ~99). Now slide the board <em>slowly</em> sideways, moving the line toward sensor 3, and watch the dashboard. At some point the first number falls back to 00 — and the middle number <strong>hasn't risen yet</strong>. The line is directly under your robot, and the dashboard reads all-white: <strong>the line has vanished into the blind gap.</strong> Keep sliding until sensor 3 finally picks it up. That dead zone you just drove through is the resolution limit from Section 3.6 — not a theory, a place on your desk. You'll measure it properly in Section 7.</p>
+</div>
+
+<div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #2e7d32;">✅ CHECKPOINT — Act One complete when:</strong>
+<ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+<li>☐ Calibration sweep runs at boot and every window crossed the tape during it</li>
+<li>☐ On white: all three dashboard numbers near 00 and in agreement</li>
+<li>☐ Each sensor individually responds when the tape sits under it</li>
+<li>☐ Numbering verified: the robot's-left sensor is the first number</li>
+<li>☐ You found the blind gap and can reproduce it on demand</li>
+<li>☐ Raw readings recorded in the Step 4 table</li>
+</ul>
+</div>
+
+<div style="background: linear-gradient(to right, #e8f5e9, #c8e6c9, #e8f5e9); border: 2px solid #4caf50; border-radius: 10px; padding: 15px 20px; margin: 30px 0 20px 0; text-align: center;">
+<strong style="color: #2e7d32; font-size: 1.1em;">🏁 END OF ACT ONE — Three sensors mastered. Now let's wake the other two.</strong>
+</div>
+
+<h3 style="color: #3a7d5c;">ACT TWO — Five Sensors</h3>
+
+<h4 style="color: #3a7d5c;">Step 7 — Change the software FIRST (yes, first — on purpose)</h4>
+
+<p>We are deliberately doing this in the "wrong" order — code first, jumpers second — because the gap between those two steps teaches something no lecture can.</p>
+
+<p style="margin: 10px 0 6px;"><strong>The plan, in pseudo-code:</strong></p>
+<pre style="background-color: #f8f9fa; border: 1px solid #b8c4cc; border-radius: 6px; padding: 14px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #2c3e50; line-height: 1.7; margin: 6px 0 12px;">four changes — all software, jumpers untouched (that's the point):
+1. NUM_SENSORS: 3 → 5
+2. setup(): wake five sensors instead of three
+3. showReadings() → showReadings(position)
+   row 0: five values squeezed to ONE digit each (÷ 101)
+   row 1: "P:" + the line position    ← the star of Act Two
+   (and update its prototype — it takes a parameter now)
+4. loop(): ask readLine() for the position,
+   hand it to showReadings()</pre>
+
+<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> Changes 1, 2, and 4 are a line each — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initFiveSensors()</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> are both in <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line sensor functions</a>, and what the position scale means is in <a href="#qr-configs" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → The two configurations</a>. Change 3 is the real work: rewrite <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showReadings()</code> from its plan above — the display calls are in <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Display</a>.</p>
+
+<details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+<summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Check your work — open after you've tried</summary>
+<div style="margin-top: 15px;">
+<p><strong>7a.</strong> One constant:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">uint8_t</span> NUM_SENSORS = <span style="color: #b5cea8;">5</span>;                <span style="color: #6a9955;">// Act Two: all five sensors</span></pre>
+
+<p><strong>7b.</strong> One line in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;">  lineSensors.initFiveSensors();    <span style="color: #6a9955;">// requires jumpers on DN2 / DN4!</span></pre>
+
+<p><strong>7c.</strong> Replace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showReadings()</code> with the five-sensor version (and update its prototype to match — it takes a parameter now):</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">void</span> showReadings(<span style="color: #569cd6;">int</span> position);</pre>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">/*
+showReadings(position)
+----------------------
+OLED row 0: five calibrated values squeezed to one digit each (0-9).
+OLED row 1: the line position, 0-4000 (2000 = dead center).
+Serial Monitor: full values plus the position.
+*/</span>
+<span style="color: #569cd6;">void</span> showReadings(<span style="color: #569cd6;">int</span> position) {
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+    display.print(lineSensorValues[i] / <span style="color: #b5cea8;">101</span>);   <span style="color: #6a9955;">// 0-1000 -&gt; single digit 0-9</span>
+  }
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"P:"</span>));
+  display.print(position);
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"   "</span>));   <span style="color: #6a9955;">// wipe leftover digits</span>
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span style="color: #4ec9b6;">Serial</span>.print(lineSensorValues[i]);
+    <span style="color: #4ec9b6;">Serial</span>.print(<span style="color: #ce9178;">'\t'</span>);
+  }
+  <span style="color: #4ec9b6;">Serial</span>.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"pos="</span>));
+  <span style="color: #4ec9b6;">Serial</span>.println(position);
+}</pre>
+
+<p><strong>7d.</strong> And <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> now asks for the position:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">void</span> loop() {
+  checkBattery();
+  <span style="color: #569cd6;">int</span> position = lineSensors.readLine(lineSensorValues);
+  showReadings(position);
+  delay(DISPLAY_INTERVAL_MS);
+}</pre>
+</div>
+</details>
+
+<p>Build (✓ — the code is fine), upload, sweep, press A. Now look at the dashboard: five digits on the top row.</p>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0c5460;">👀 WHAT YOU SHOULD SEE — a robot half-lying to you</strong>
+<p style="margin-bottom: 0;">Digits 1, 3, and 5 behave: slide tape under those sensors and they answer. Digits 2 and 4 do <strong>not</strong> respond to the tape — no matter what the line does under windows 2 and 4, those digits won't track it. The code asked pins 20 and 4 for line readings, but your jumpers still route those pins elsewhere. Nothing crashed. Nothing warned. The program simply reports numbers that mean nothing — <strong>the most dangerous kind of wrong.</strong> This is what a hardware/software mismatch looks like from the inside, and now you'll recognize it forever.</p>
+</div>
+
+<h4 style="color: #3a7d5c;">Step 8 — Now move the jumpers</h4>
+
+<div style="border: 2px dashed #999; background-color: #f8f9fa; padding: 30px; text-align: center; margin: 20px 0; border-radius: 8px; color: #666;">[VIDEO 4.1] Moving the two configuration jumpers from the proximity position to DN2 / DN4 — full close-up procedure</div>
+
+<ol>
+<li><strong>Power OFF.</strong> Unplug USB too.</li>
+<li>Flip the robot into the Section 4 pose — on its back, blade toward you — <strong>over the table</strong>.</li>
+<li>With tweezers or a careful fingernail, lift the first jumper <em>straight up</em> off its pins, then seat it back down on the <strong>DN2</strong> pair. No twisting; it should press on with gentle, even force.</li>
+<li>Repeat for the second jumper → the <strong>DN4</strong> pair.</li>
+<li>Double-check both blocks are fully seated and sitting level, matching the DN positions.</li>
+</ol>
+
+<p>Power on, sweep (recalibrate — the two newly-woken sensors have blank record books!), press A.</p>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0c5460;">👀 WHAT YOU SHOULD SEE</strong>
+<p style="margin-bottom: 0;">All five digits now answer. Slide the tape slowly across the whole row and watch the "hill" of dark walk sensor to sensor: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">90000 → 09000 → 00900 → 00090 → 00009</code>. Five eyes, all awake. And the bottom row is the star of Act Two: <strong>P:</strong> followed by the line position, 0–4000. Center the tape under the middle sensor and it reads near <strong>2000</strong>. Slide left, it falls toward 0; slide right, it climbs toward 4000 — and watch how it glides <em>through the in-between values</em>: 1200, 1450, 1700... That's the weighted average from Section 3.5, alive.</p>
+</div>
+
+<div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #2e7d32;">✅ CHECKPOINT — Act Two complete when:</strong>
+<ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+<li>☐ Both jumpers seated on DN2 / DN4 (moved with power off)</li>
+<li>☐ After a fresh sweep, all five digits respond to the tape individually</li>
+<li>☐ The position readout sits near 2000 with the line centered, near 0 far left, near 4000 far right</li>
+<li>☐ You watched the mismatch state in Step 7 and can explain why digits 2 and 4 were dead</li>
+</ul>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- ==================== PART 3 ==================== -->
+<div style="background-color: #c45d76; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 3 — Testing &amp; Challenges</div><div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Sections 7–8A: Verify and extend</div></div>
+
+<!-- Section 7: Test -->
+<div style="background-color: #c45d76; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-7" style="font-size: 1.15em; font-weight: bold;">▶️ Section 7: Test — The Resolution Experiment</div>
+</div>
+<div style="border: 2px solid #c45d76; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Act One and Act Two each ended with working sensors. Now comes the payoff of the whole lesson: a <strong>fair, controlled comparison</strong> of three sensors against five. And here is the trick that makes it genuinely fair: with the jumpers now on DN2/DN4, sensors 1, 3, and 5 <em>still have their own permanent wires</em> — so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initThreeSensors()</code> works in this jumper position too. You can switch between the three-sensor program and the five-sensor program <strong>purely in software</strong>, on identical hardware, on the same surface, in the same light. Same robot, same everything — only the number of open eyes changes. That is what "controlled experiment" means.</p>
+
+<h3 style="color: #c45d76;">7.1 Test A — Hide the Line</h3>
+
+<p><strong>Question:</strong> can the line disappear under the robot?</p>
+
+<ol>
+<li><strong>Flash the Act One program</strong> (three sensors — flip <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">NUM_SENSORS</code> back to 3, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initThreeSensors()</code>, three-value <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showReadings()</code> — or keep a saved copy of each version — the <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=act_one" target="_blank" style="color: #2e86ab; font-weight: bold;">Project Maker has Act One</a> and <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=act_two" target="_blank" style="color: #2e86ab; font-weight: bold;">Act Two</a> preloaded as separate folders). Sweep, press A.</li>
+<li>Slide the line into the gap between sensors 1 and 3, using the Step 6 technique, until the dashboard reads all-white. Line hidden: <strong>yes / no?</strong></li>
+<li><strong>Flash the Act Two program</strong> (five sensors). Sweep, press A.</li>
+<li>Try to hide the line in that same gap — or anywhere under the row. Watch digits 2 and 4 in particular. Line hidden: <strong>yes / no?</strong></li>
+</ol>
+
+<div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0c5460;">👀 WHAT YOU SHOULD SEE</strong>
+<p style="margin-bottom: 0;">Three sensors: the line vanishes in two different places — the 1↔3 gap and the 3↔5 gap. Five sensors: there is nowhere to hide; before one digit lets go of the line, its neighbor has already caught it. Two extra eyes closed both blind spots.</p>
+</div>
+
+<h3 style="color: #c45d76;">7.2 Test B — The Slow Slide</h3>
+
+<p><strong>Question:</strong> how smoothly does each configuration track the line's position?</p>
+
+<p>For each program in turn, watch the <em>position</em> this time (in the three-sensor program, temporarily print <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.readLine(lineSensorValues)</code> to the Serial Monitor — remember its scale is <strong>0–2000</strong> with three sensors). Slide the line at a slow, steady pace from far left to far right, and watch how the number travels. Record what you observe:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #9a4459; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Observation</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Three sensors (0–2000)</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Five sensors (0–4000)</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Could the line hide? (Test A)</td><td style="padding: 10px; border: 1px solid #ddd;">______</td><td style="padding: 10px; border: 1px solid #ddd;">______</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">Position during the slide: smooth glide or big jumps?</td><td style="padding: 10px; border: 1px solid #ddd;">______</td><td style="padding: 10px; border: 1px solid #ddd;">______</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Roughly how big were the biggest jumps between updates?</td><td style="padding: 10px; border: 1px solid #ddd;">______</td><td style="padding: 10px; border: 1px solid #ddd;">______</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">Your verdict: which estimate would you trust to steer a robot?</td><td style="padding: 10px; border: 1px solid #ddd;" colspan="2">______</td></tr>
+</table>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #0d47a1;">🔍 INSIGHT — You just did real engineering</strong>
+<p style="margin-bottom: 0;">Notice what you did NOT do: you did not ask which option "is better" and take somebody's word for it. You held everything constant, changed one variable, and measured. Your table is <em>evidence</em>. When Lesson 8 asks you to choose a sensor configuration for line following, you won't be guessing — you'll be citing your own data. Keep the table; the Exit Ticket asks about it.</p>
+</div>
+
+<h3 style="color: #c45d76;">7.3 Restore the Robot — the Exit Ritual</h3>
+
+<p>The experiment is over, the data is recorded, and now the promise from Section 1 comes due. Lesson 5 is the proximity lesson, and it needs all three proximity receivers — left, front, and right. Those receivers live on the two pins you borrowed today. So every robot in the room must end today the way it began.</p>
+
+<p><strong>This is a loan, not a goodbye.</strong> At the end of Lesson 5 you will move these jumpers back to DN2/DN4 — and that time it is <em>permanent</em>. From Lesson 6 onward your robot is a five-sensor line follower with a single <em>front</em> proximity sensor, because sensors 2 and 4 will be living on pins 20 and 4 for good. Today you are handing the side receivers back for exactly one lesson, so that Lesson 5 can use them.</p>
+
+<ol>
+<li><strong>Power OFF</strong>, USB unplugged.</li>
+<li>Section 4 pose, over the table. Move both jumpers back: one to <strong>LFT</strong>, one to <strong>RGT</strong> — straight up, straight down, fully seated.</li>
+<li>Compare against [IMAGE 4.2]. They should look exactly like they did this morning.</li>
+<li><strong>Verify with software</strong> — never trust a hardware change without a test: flash the Act One (three-sensor) program, sweep, press A, and confirm sensors 1, 3, 5 all respond to the tape. Three honest sensors = restoration confirmed.</li>
+</ol>
+
+<div style="background: linear-gradient(to right, #e8f5e9, #c8e6c9, #e8f5e9); border: 2px solid #4caf50; border-radius: 10px; padding: 15px 20px; margin: 30px 0 20px 0; text-align: center;">
+<strong style="color: #2e7d32; font-size: 1.1em;">🏁 ROBOT RESTORED — jumpers home, verified by test. Lesson 5 will find it exactly as expected — and will send them to DN2/DN4 for good when it is finished.</strong>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Section 8: Troubleshoot -->
+<div style="background-color: #c45d76; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-8" style="font-size: 1.15em; font-weight: bold;">⚠️ Section 8: Troubleshoot — Systematic Debugging</div>
+</div>
+<div style="border: 2px solid #c45d76; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Sensor bugs feel spookier than code bugs because the program compiles, uploads, runs — and lies. The debugging method is the same as ever: <strong>change one thing, test, repeat.</strong> And with sensors there is a golden first move that solves half of everything: <em>look at the raw numbers.</em> The Serial Monitor doesn't interpret, doesn't calibrate, doesn't guess — it shows you exactly what the robot sees. Start every sensor investigation there.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #9a4459; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Symptom</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Likely cause</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Fix</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Every reading sits at maximum (2000 raw / near 99) no matter the surface</td><td style="padding: 10px; border: 1px solid #ddd;">Sensors too far from the floor — robot held in the air reads “dark” because nothing bounces back</td><td style="padding: 10px; border: 1px solid #ddd;">Set the robot ON the surface. These sensors are designed for a few millimeters of range; air counts as black.</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">Readings don't change at all when you slide the tape</td><td style="padding: 10px; border: 1px solid #ddd;">Program not actually running (still at the safety gate), or Serial Monitor watching an old session</td><td style="padding: 10px; border: 1px solid #ddd;">Look at the OLED: if it says “Press A / to start,” press A. If the port dropped after upload, reopen the Serial Monitor.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Calibrated values look wrong everywhere — white doesn't read near 0, tape doesn't read near 1000</td><td style="padding: 10px; border: 1px solid #ddd;">Bad calibration sweep: some window never crossed the tape, so its record book is missing a real “darkest”</td><td style="padding: 10px; border: 1px solid #ddd;">Re-run the program and sweep again — slowly, edge to edge, every window across the tape at least twice.</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">Sensors 2 and 4 ignore the tape in five-sensor mode</td><td style="padding: 10px; border: 1px solid #ddd;">Hardware/software mismatch: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">initFiveSensors()</code> in code, but the jumpers still sit in the factory position</td><td style="padding: 10px; border: 1px solid #ddd;">Power off, move both jumpers to DN2 / DN4 (Section 6, Step 8), power on, recalibrate.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Everything reads “bright” near a window, works fine elsewhere</td><td style="padding: 10px; border: 1px solid #ddd;">Direct sunlight — the sun floods the phototransistors with infrared</td><td style="padding: 10px; border: 1px solid #ddd;">Move the test surface out of the sunbeam (Section 3.1). Curtains also work.</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">The position readout is stuck at exactly 0 or exactly 4000</td><td style="padding: 10px; border: 1px solid #ddd;">The line is lost — no sensor sees dark, so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> reports its last-known side (Section 3.5)</td><td style="padding: 10px; border: 1px solid #ddd;">Put the line back under the array. If it IS under the array, recalibrate — the robot's idea of “dark” is stale.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">One sensor always reads darker than its neighbors, even after calibration</td><td style="padding: 10px; border: 1px solid #ddd;">Dust, tape gunk, or a fingerprint on that sensor window</td><td style="padding: 10px; border: 1px solid #ddd;">Power off and wipe the window gently with a dry cloth or cotton swab. Recalibrate.</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;">Left and right seem swapped — tape under the robot's left lights up the LAST column</td><td style="padding: 10px; border: 1px solid #ddd;">Mirrored mental picture of the sensor row (Section 4.1)</td><td style="padding: 10px; border: 1px solid #ddd;">Re-do the pose: robot on its back, blade toward you. Robot's left = your left in that pose only.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">Readings were fine yesterday, garbage today</td><td style="padding: 10px; border: 1px solid #ddd;">Calibration doesn't survive power-off — its record books live in RAM</td><td style="padding: 10px; border: 1px solid #ddd;">Nothing is broken. Sweep again. Every session starts with a fresh calibration; that's by design.</td></tr>
+</table>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Coach's Tip</strong>
+<p style="margin-bottom: 0;">Notice how many rows above end in "recalibrate." When a sensor system misbehaves, calibration is the cheapest experiment you can run — ten seconds, zero risk. Rule it out first, every time.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Section 8A: If Statements -->
+<div style="background-color: #c45d76; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-8a" style="font-size: 1.15em; font-weight: bold;">🔑 Section 8A: Your First If Statement — Making the Robot Decide</div>
+</div>
+<div style="border: 2px solid #c45d76; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Everything so far has been sensing and showing. But the entire point of giving a robot eyes is so it can <strong>act</strong> on what it sees — and acting on information requires something new: a way for code to take <em>different paths</em> depending on a value. That tool is the <strong>if statement</strong>, and it is arguably the single most important concept in all of programming. Every behavior your robot will ever have — stop at the line, chase the light, avoid the wall, win the match — is if statements all the way down. The challenges in Section 9 use it immediately; this section makes sure you own it first.</p>
+
+<p><em>(Your robot is back in the standard three-sensor configuration after Section 7.3 — every example here assumes that: center sensor = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code>, position scale 0–2000.)</em></p>
+
+<h3 style="color: #c45d76;">8A.1 What Is a Decision in Code?</h3>
+
+<p>Until now, your programs have been a straight road: the robot executes line 1, then line 2, then line 3, every loop, no exceptions. An if statement adds a fork: <em>"IF this condition is true, run these lines. Otherwise, skip them."</em> You make hundreds of these forks a day without noticing — <em>if it's raining, take the umbrella; if the light is red, stop.</em> The pattern in C++ is compact:</p>
+
+<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L04_GRAPHIC_4-01_if_anatomy.svg" alt="Anatomy of an if statement: the condition in parentheses is a yes/no question; the opening brace starts the conditional block; the action lines run only when the condition is true; the closing brace ends the block" style="width: 100%; max-width: 700px; display: block; margin: 20px auto;">
+
+<p>Three parts, always the same three parts. <strong>The condition</strong>, in parentheses — a question with a yes/no answer, usually built from a comparison: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&gt;</code> greater than, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&lt;</code> less than, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">==</code> equal to (two equals signs — one is assignment, and that typo is a classic). <strong>The braces</strong>, which fence off the conditional block. <strong>The action</strong> — everything inside the fence, which runs only on "yes."</p>
+
+<p>Reading it out loud helps more than you'd expect. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (sensorValue &gt; 500) { ledYellow(1); }</code> reads: <em>"If the sensor value is greater than 500, turn the yellow LED on."</em> If the value is 500 or below, the whole block is skipped as if it weren't there, and the program carries on underneath.</p>
+
+<h3 style="color: #c45d76;">8A.2 Adding an Else</h3>
+
+<p>Often "skip it" isn't enough — you want a plan for both answers. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else</code> attaches the "no" plan:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">if</span> (sensorValue &gt; <span style="color: #b5cea8;">500</span>) {
+  ledYellow(<span style="color: #b5cea8;">1</span>);   <span style="color: #6a9955;">// dark detected - LED ON</span>
+} <span style="color: #569cd6;">else</span> {
+  ledYellow(<span style="color: #b5cea8;">0</span>);   <span style="color: #6a9955;">// light detected - LED OFF</span>
+}</pre>
+
+<p>Exactly one of the two blocks runs, every time — never both, never neither. This on/off symmetry is everywhere in robotics: moving or stopped, line or no line, friend or wall.</p>
+
+<div style="background-color: #f3e5f5; border-left: 4px solid #9c27b0; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #6a1b9a;">🔑 Key Term: Threshold</strong>
+<p style="margin-bottom: 0;">The cutoff value a condition compares against — the 500 in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">sensorValue &gt; 500</code>. On the calibrated 0–1000 scale, 500 is the natural "darker than halfway" line between white and tape. Choosing good thresholds from real data — like the readings in your Step 4 table — is a skill you'll use in every sensor lesson from now on.</p>
+</div>
+
+<h3 style="color: #c45d76;">✏️ 8A.3 Worked Example #1: The Dark Detector</h3>
+
+<p><strong>Goal:</strong> yellow LED on whenever the center sensor sees the line. <strong>What we know:</strong> center = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code> (three-sensor config!); calibrated values run 0–1000; "on the tape" comfortably clears 500. <strong>The code</strong>, inside <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> after the read:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;">lineSensors.readCalibrated(lineSensorValues);
+
+<span style="color: #569cd6;">if</span> (lineSensorValues[<span style="color: #b5cea8;">1</span>] &gt; <span style="color: #b5cea8;">500</span>) {
+  ledYellow(<span style="color: #b5cea8;">1</span>);   <span style="color: #6a9955;">// dark detected - LED ON</span>
+} <span style="color: #569cd6;">else</span> {
+  ledYellow(<span style="color: #b5cea8;">0</span>);   <span style="color: #6a9955;">// light detected - LED OFF</span>
+}</pre>
+
+<p>Slide the tape under the center window: LED on. Slide it away: LED off. Your robot just made its first decision — about ten times a second, tirelessly, exactly as written. (Ten, not sixty: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">DISPLAY_INTERVAL_MS</code> pauses the loop 100 ms every pass. Bonus Mystery 5 makes you feel that limit.)</p>
+
+<h3 style="color: #c45d76;">✏️ 8A.4 Worked Example #2: The Line Position Indicator</h3>
+
+<p><strong>Goal:</strong> the display announces which zone the line is in — LEFT, CENTER, or RIGHT. <strong>What we know:</strong> with three sensors, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> gives 0–2000 with 1000 as dead center. Three zones need a <em>chain</em> of decisions — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else if</code> glues them together:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">int</span> position = lineSensors.readLine(lineSensorValues);
+display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+<span style="color: #569cd6;">if</span> (position &lt; <span style="color: #b5cea8;">750</span>) {
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"LEFT  "</span>));
+} <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (position &gt; <span style="color: #b5cea8;">1250</span>) {
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"RIGHT "</span>));
+} <span style="color: #569cd6;">else</span> {
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"CENTER"</span>));
+}</pre>
+
+<p>Read the chain top to bottom, the way the robot does: <em>below 750? Say LEFT and stop. Otherwise, above 1250? Say RIGHT and stop. Otherwise — it must be in the middle band — say CENTER.</em> Exactly one branch fires. The trailing spaces in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">"LEFT&nbsp;&nbsp;"</code> are doing quiet, honest work: they overwrite leftover letters from a longer previous word on the 8-character row.</p>
+
+<h3 style="color: #c45d76;">🎯 8A.5 Quick Practice: Fill in the Blanks</h3>
+
+<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #2a5a42;">🎯 CHALLENGE (2 minutes)</strong>
+<p>Complete this code so the <strong>red</strong> LED turns on when the <strong>left</strong> sensor (sensor 1) sees the line:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;">lineSensors.readCalibrated(lineSensorValues);
+
+<span style="color: #569cd6;">if</span> (_________ &gt; <span style="color: #b5cea8;">500</span>) {
+  _________;
+}</pre>
+<details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#2a5a42; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal the answer</summary>
+<div style="padding: 0 20px 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;">lineSensors.readCalibrated(lineSensorValues);
+
+<span style="color: #569cd6;">if</span> (lineSensorValues[<span style="color: #b5cea8;">0</span>] &gt; <span style="color: #b5cea8;">500</span>) {
+  ledRed(<span style="color: #b5cea8;">1</span>);
+}</pre>
+<p style="margin-bottom: 0;"><strong>Explanation:</strong> sensor 1 is the <em>first awake sensor</em>, so in the three-sensor configuration it lives in box <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[0]</code> — index counts from zero. If you wrote <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[1]</code>, you just met the number-one Lesson 4 bug from Section 5.5 — better here than in a competition.</p>
+</div>
+</details>
+</div>
+
+<div style="background-color: #e8d4c4; border-left: 4px solid #d4a574; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #8a5a2b;">🚀 Where this goes next</strong>
+<p style="margin-bottom: 0;">Every challenge in Section 9 is an if statement wearing a costume. Lesson 5 wires ifs to the proximity sensors. Lesson 8 puts an if-driven correction inside a loop and calls it line following. You will never write another program without one.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- ==================== PART 4 ==================== -->
+<div style="background-color: #9b6a9e; color: white; padding: 12px 20px; border-radius: 8px; margin: 22px 0 10px;"><div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 4 — Challenges</div><div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Section 9: Apply what you have learned</div></div>
+
+<!-- Section 9: Challenges -->
+<div style="background-color: #9b6a9e; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-9" style="font-size: 1.15em; font-weight: bold;">🏆 Section 9: Challenges &amp; Extensions</div>
+</div>
+<div style="border: 2px solid #9b6a9e; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Now it's your turn. Five challenges, easy to expert, each one an if statement wearing a different costume — and the last two put the motors back in play. <strong>All challenges run in the standard three-sensor configuration</strong> (your robot is already there after Section 7.3): center sensor = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code>, position scale 0–2000, center 1000. Every challenge card says where to work; challenges that replace your loop get their own project copy so your main build stays clean.</p>
+
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Line Light</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #4caf50; color: white;">EASY</span></div>
+<div style="padding: 15px 20px; background: white;">
+<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=3&amp;label=Challenge+1" title="3-minute countdown timer for Challenge 1" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe><p><strong>Your task:</strong> yellow LED on and <strong>"LINE!"</strong> on the display's bottom row whenever the center sensor sees the tape; LED off and row blank otherwise. (This is the Dark Detector from 8A.3 plus a display twist.)</p>
+<p><strong>Hints:</strong> center sensor = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code> · clear the message by printing spaces · the display work goes in <em>both</em> branches.</p><p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> · <a href="#qr-leds" style="color: #2e86ab; font-weight: bold;">LEDs</a> &mdash; the display work goes in <em>both</em> branches</p>
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
+<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> your main <strong>LastName_L04</strong> build — this challenge adds to it — or a fresh copy that opens <strong>preloaded with the finished three-sensor program</strong>: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_light" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p><details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+<div style="padding: 0 20px 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;">lineSensors.readCalibrated(lineSensorValues);
+
+<span style="color: #569cd6;">if</span> (lineSensorValues[<span style="color: #b5cea8;">1</span>] &gt; <span style="color: #b5cea8;">600</span>) {
+  ledYellow(<span style="color: #b5cea8;">1</span>);
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"LINE!"</span>));
+} <span style="color: #569cd6;">else</span> {
+  ledYellow(<span style="color: #b5cea8;">0</span>);
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"     "</span>));
+}</pre>
+<p style="margin-bottom: 0;">Both branches touch the display — one writes the word, the other erases it with five spaces. Miss the erase and "LINE!" sticks forever after its first appearance.</p>
+</div>
+</details>
+</div>
+</div>
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: The Line Counter</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #ff9800; color: white;">MEDIUM</span></div>
+<div style="padding: 15px 20px; background: white;">
+<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+2" title="4-minute countdown timer for Challenge 2" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe><p><strong>Your task:</strong> the robot counts how many times the tape passes under its center sensor, and shows the running count on the display. Slide the surface back and forth under it: 1... 2... 3...</p>
+<p><strong>The trap (and the whole point):</strong> "if dark, add one" counts hundreds per crossing — the loop runs ten times a second and the line is under the sensor for many loops. You need to count <em>arrivals</em>, not <em>presence</em>: add one only at the moment the sensor <strong>goes from white to dark</strong>. Track where you were with a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> variable.</p>
+<p><strong>Bonus polish:</strong> use two different thresholds — count at &gt;600, release at &lt;400 — so a reading that jitters around one cutoff can't double-count. (That trick has a name: <em>hysteresis</em>. It's in the glossary.)</p><p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-scales" style="color: #2e86ab; font-weight: bold;">Value scales</a> &mdash; two thresholds, one boolean memory</p>
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
+<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — this challenge replaces your loop. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_counter" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p><details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+<div style="padding: 0 20px 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// with the other globals:</span>
+<span style="color: #569cd6;">bool</span> onLine = <span style="color: #569cd6;">false</span>;
+<span style="color: #569cd6;">int</span> crossings = <span style="color: #b5cea8;">0</span>;
+
+<span style="color: #6a9955;">// inside loop(), after checkBattery():</span>
+lineSensors.readCalibrated(lineSensorValues);
+
+<span style="color: #569cd6;">if</span> (lineSensorValues[<span style="color: #b5cea8;">1</span>] &gt; <span style="color: #b5cea8;">600</span> &amp;&amp; !onLine) {
+  onLine = <span style="color: #569cd6;">true</span>;                    <span style="color: #6a9955;">// the line just ARRIVED</span>
+  crossings = crossings + <span style="color: #b5cea8;">1</span>;
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(crossings);
+  display.print(<span style="color: #4ec9b6;">F</span>(<span style="color: #ce9178;">"   "</span>));
+}
+<span style="color: #569cd6;">if</span> (lineSensorValues[<span style="color: #b5cea8;">1</span>] &lt; <span style="color: #b5cea8;">400</span> &amp;&amp; onLine) {
+  onLine = <span style="color: #569cd6;">false</span>;                   <span style="color: #6a9955;">// the line has fully LEFT</span>
+}</pre>
+<p style="margin-bottom: 0;">The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp; !onLine</code> is the arrival detector: dark AND we weren't already on it. The gap between 600 and 400 is the hysteresis band — inside it, nothing changes state, so jitter can't ring the counter.</p>
+</div>
+</details>
+</div>
+</div>
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: The Position Pointer</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #ff9800; color: white;">MEDIUM</span></div>
+<div style="padding: 15px 20px; background: white;">
+<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+3" title="4-minute countdown timer for Challenge 3" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe><p><strong>Your task:</strong> turn the bottom display row into a live pointer — a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code> character that slides along the 8-character row, tracking the line's position under the robot. Line far left: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code> at the row's left edge. Dead center: middle of the row. Far right: right edge.</p>
+<p><strong>Hints:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> gives 0–2000 (three sensors) · you need to squash 0–2000 down to a column number 0–7 · then print 8 characters: seven spaces and one <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code>, with an if deciding which is which.</p><p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-configs" style="color: #2e86ab; font-weight: bold;">The two configurations</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> &mdash; three sensors, so the scale is 0–2000</p>
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
+<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=position_pointer" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p><details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+<div style="padding: 0 20px 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">int</span> position = lineSensors.readLine(lineSensorValues);
+
+display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> c = <span style="color: #b5cea8;">0</span>; c &lt; <span style="color: #b5cea8;">8</span>; c++) {
+  <span style="color: #569cd6;">if</span> (c == position / <span style="color: #b5cea8;">251</span>) {   <span style="color: #6a9955;">// 0-2000 squashed to column 0-7</span>
+    display.print(<span style="color: #ce9178;">'^'</span>);
+  } <span style="color: #569cd6;">else</span> {
+    display.print(<span style="color: #ce9178;">' '</span>);
+  }
+}</pre>
+<p style="margin-bottom: 0;">Why 251? Dividing by 250 would let position 2000 produce column 8 — one past the row's edge. 2000 / 251 = 7, so the pointer stays on the display at full right. Off-by-one guards like this are half of real programming.</p>
+</div>
+</details>
+</div>
+</div>
+<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Edge Guard</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #f44336; color: white;">HARD</span></div>
+<div style="padding: 15px 20px; background: white;">
+<p><strong>Your task:</strong> the first true sense-and-act program of the course. The robot <strong>creeps forward on its own</strong> and <strong>freezes the instant ANY sensor sees the line.</strong> Place it a foot from the tape, press A, and watch it stop itself at the edge — every time, any approach angle.</p>
+<p><strong>New ingredient:</strong> motors are back — add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4Motors motors;</code> to your hardware objects. Keep the speed gentle (<code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">80</code> is plenty). "Any sensor" means checking all three boxes of the array — a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop with an if inside beats writing three ifs.</p>
+<p><strong>Safety notes:</strong> this robot moves by itself — clear runway, and appreciate that <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">waitForStart()</code> is now doing exactly the job it was hired for. If it curves as it creeps, your Lesson 3 TRIM values fix that.</p><p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> &mdash; declare the motors object first — it's in <a href="#qr-hardware" style="color: #2e86ab; font-weight: bold;">Hardware objects</a></p>
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
+<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — motors change everything. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=edge_guard" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p><details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+<div style="padding: 0 20px 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// hardware objects: add</span>
+<span style="color: #4ec9b6;">Zumo32U4Motors</span> motors;
+
+<span style="color: #6a9955;">// constants: add</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> CREEP_SPEED = <span style="color: #b5cea8;">80</span>;
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> LINE_SEEN = <span style="color: #b5cea8;">600</span>;
+
+<span style="color: #6a9955;">// inside loop(), after checkBattery():</span>
+lineSensors.readCalibrated(lineSensorValues);
+
+<span style="color: #569cd6;">bool</span> lineSeen = <span style="color: #569cd6;">false</span>;
+<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span style="color: #569cd6;">if</span> (lineSensorValues[i] &gt; LINE_SEEN) {
+    lineSeen = <span style="color: #569cd6;">true</span>;
+  }
+}
+
+<span style="color: #569cd6;">if</span> (lineSeen) {
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);       <span style="color: #6a9955;">// freeze at the line</span>
+} <span style="color: #569cd6;">else</span> {
+  motors.setSpeeds(CREEP_SPEED, CREEP_SPEED);
+}</pre>
+<p style="margin-bottom: 0;">The for loop asks every awake sensor the same question and remembers if <em>anyone</em> said yes. This exact shape — read all, decide once, act — is the skeleton of every autonomous behavior you will ever write.</p>
+</div>
+</details>
+</div>
+</div>
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: The Centering Game</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #7d5283; color: white;">EXPERT</span></div>
+<div style="padding: 15px 20px; background: white;">
+<p><strong>Your task:</strong> the robot pivots in place to <strong>center the line under itself</strong>. Set it down with the tape anywhere under the sensor row, press A — it rotates until the line sits at position ≈1000, then holds. Nudge the surface left or right and it re-centers, like a compass needle finding north.</p>
+<p><strong>Think it through before coding:</strong> position below center → the line is to the robot's <em>left</em> → pivot left (left track backward, right track forward). Above center → mirror it. Near center → stop. "Near" matters: demand <em>exactly</em> 1000 and the robot will vibrate forever around the target — give it a tolerance band (a <em>deadband</em>) and it settles.</p>
+<p><strong>Why this is the expert card:</strong> you are closing the full loop — sense → compute error → correct — which is, in miniature, the architecture of line following (Lesson 8) and PID control (Lesson 15). You're not preparing to do robotics anymore. This IS robotics.</p><p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-configs" style="color: #2e86ab; font-weight: bold;">The two configurations</a> &mdash; center of the 0–2000 scale is 1000; correct <em>toward</em> the line</p>
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
+<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=centering_game" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p><details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+<div style="padding: 0 20px 15px;">
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// hardware objects: add</span>
+<span style="color: #4ec9b6;">Zumo32U4Motors</span> motors;
+
+<span style="color: #6a9955;">// constants: add</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> TURN_SPEED = <span style="color: #b5cea8;">100</span>;
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> CENTER = <span style="color: #b5cea8;">1000</span>;      <span style="color: #6a9955;">// three-sensor scale: 0-2000</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> DEADBAND = <span style="color: #b5cea8;">100</span>;
+
+<span style="color: #6a9955;">// inside loop(), after checkBattery():</span>
+<span style="color: #569cd6;">int</span> position = lineSensors.readLine(lineSensorValues);
+<span style="color: #569cd6;">int</span> error = position - CENTER;
+
+<span style="color: #569cd6;">if</span> (error &lt; -DEADBAND) {
+  motors.setSpeeds(-TURN_SPEED, TURN_SPEED);   <span style="color: #6a9955;">// line is left -&gt; pivot left</span>
+} <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (error &gt; DEADBAND) {
+  motors.setSpeeds(TURN_SPEED, -TURN_SPEED);   <span style="color: #6a9955;">// line is right -&gt; pivot right</span>
+} <span style="color: #569cd6;">else</span> {
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);                      <span style="color: #6a9955;">// centered - hold</span>
+}</pre>
+<p style="margin-bottom: 0;">The pivot directions follow the Lesson 3 rule — a robot turns toward its slower (here, backward) track. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error</code> is a concept worth savoring: one signed number that says both <em>which way</em> and <em>how far</em>. In Lesson 15, PID does nothing but stare at this exact number — you've just met the main character early.</p>
+</div>
+</details>
+</div>
+</div>
+
+<div style="background-color: #f8f9fa; border: 2px solid #6c757d; border-radius: 10px; padding: 15px 20px; margin: 25px 0;">
+<strong style="color: #4d5358;">🏁 FINISHED EARLY?</strong>
+<p style="margin-bottom: 0;">Five bonus mysteries are waiting in <a href="#bonus-challenges" style="color: #2e86ab; font-weight: bold;">Bonus</a> — no new folders needed, mostly prediction and detective work: a white-line world, a blinded eye, a sun hunt, a ruler, and a speed test.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Bonus -->
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">🔍 Bonus: Five Sensor Mysteries</div>
+</div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Observation challenges — no new project folders, work in your main <strong>LastName_L04</strong> build. Each one is a small experiment: <strong>predict, test, explain.</strong> The hints are there if you're stuck, but try to out-think them first.</p>
+
+
+<h4 style="color: #6c757d;">Mystery 1: White World</h4>
+<p>Swap <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> for <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLineWhite()</code> in your position code and run it on your normal surface. The position goes insane. <em>Why exactly</em> — what is the robot now hunting for? Where would this version be the right tool?</p>
+<details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#5a6872; background:#f8f9fa; border-radius:8px;">💡 Hint</summary><div style="padding: 0 20px 15px;"><p style="margin-bottom: 0;">Section 3.5, last paragraph — "opposite wardrobe." It flips every value and hunts the <em>brightest</em> thing. Right tool for a white line on a dark floor (some competition mats are exactly that).</p></div></details>
+
+<h4 style="color: #6c757d;">Mystery 2: The Covered Eye</h4>
+<p><strong>Predict first, then test:</strong> put a small piece of tape over the center sensor's window, recalibrate, and run. What do the readings do? Was your prediction right? Now explain the calibration sweep's role in what you saw.</p>
+<details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#5a6872; background:#f8f9fa; border-radius:8px;">💡 Hint</summary><div style="padding: 0 20px 15px;"><p style="margin-bottom: 0;">A covered eye sees the same darkness everywhere — so during the sweep, its "brightest ever" and "darkest ever" are nearly identical. Calibration then has almost no range to grade against, and tiny flickers get stretched into wild swings. (Remove the tape and recalibrate to undo.)</p></div></details>
+
+<h4 style="color: #6c757d;">Mystery 3: The Sun Hunter</h4>
+<p>Take the robot (raw-readings program) toward the sunniest spot in the room and watch the numbers as you go. Then aim the sensors at the window from a foot away. What happens, and why does the robot "see" sunshine at all — its emitters point down?</p>
+<details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#5a6872; background:#f8f9fa; border-radius:8px;">💡 Hint</summary><div style="padding: 0 20px 15px;"><p style="margin-bottom: 0;">The phototransistor can't tell WHOSE infrared it's drinking. Sunlight is full of IR, so the bucket drains fast no matter what — everything reads "bright." Your emitters were never the only light source in the room; they're just usually the loudest.</p></div></details>
+
+<h4 style="color: #6c757d;">Mystery 4: The Gap Ruler</h4>
+<p>Back in Section 6 you <em>found</em> the blind gap. Now measure it: with the three-sensor program running, find where the line disappears, mark the surface position, slide until it reappears, mark again. Ruler out — how many millimeters wide is your robot's blind spot? Compare with a neighbor's robot.</p>
+<details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#5a6872; background:#f8f9fa; border-radius:8px;">💡 Hint</summary><div style="padding: 0 20px 15px;"><p style="margin-bottom: 0;">The invisible zone is roughly the sensor-to-sensor spacing minus your tape's width — which is why <em>wider tape</em> is the classic three-sensor survival trick. Notice your measured number is a hardware fact you produced with a piece of tape and a ruler.</p></div></details>
+
+<h4 style="color: #6c757d;">Mystery 5: The Speed Reader</h4>
+<p>With the position program running, slide the surface under the robot slowly, then fast, then as fast as you dare. At some speed the position readout stops keeping up. Estimate: how many readings per second is the program taking, and what constant would you change to react faster?</p>
+<details style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#5a6872; background:#f8f9fa; border-radius:8px;">💡 Hint</summary><div style="padding: 0 20px 15px;"><p style="margin-bottom: 0;">The loop waits <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">DISPLAY_INTERVAL_MS</code> = 100 ms per pass — about 10 readings per second. Between readings the robot is blind. Line followers shrink that pause dramatically; there's a reason racing code doesn't sightsee.</p></div></details>
+
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Section 10: Exit Ticket -->
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="section-10" style="font-size: 1.15em; font-weight: bold;">✅ Section 10: Exit Ticket — Prove It to Yourself</div>
+</div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Before you close the lid: an honest self-check. Tick what's true, read the answers <em>after</em> you've tried each question in your head, and be straight with yourself about the confidence line — it's information for you, not a grade.</p>
+
+<h4 style="color: #6c757d;">Technical Skills</h4>
+<ul style="list-style: none; padding-left: 10px;">
+<li>☐ I can locate all five sensor windows and number them from the robot's point of view</li>
+<li>☐ I can identify the two configuration jumpers and both of their positions</li>
+<li>☐ I can run a calibration sweep correctly (every window across the tape)</li>
+<li>☐ I can read sensors into an array and pull out one sensor's value by index</li>
+<li>☐ I wrote and ran code using initThreeSensors() and initFiveSensors() — and matched the jumpers to each</li>
+<li>☐ I can display live sensor data on the OLED and full data on the Serial Monitor</li>
+<li>☐ I integrated waitForStart() and checkBattery() and can say where each goes and why</li>
+<li>☐ I wrote at least one working if statement that made the robot act on a sensor</li>
+</ul>
+
+<h4 style="color: #6c757d;">Conceptual Understanding — 10 questions, answers underneath</h4>
+<p style="margin: 12px 0 2px;"><strong>1. Why do the sensors emit their own infrared light instead of just looking at the floor?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>So they control the lighting. By supplying their own IR and measuring what bounces back, the reading depends on the surface's reflectivity — not on how bright the room happens to be.</em></p>
+<p style="margin: 12px 0 2px;"><strong>2. A raw reading of 1400 comes in. Dark or light?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>You genuinely can't say — raw values only mean something relative to that sensor's personal range on that surface in that light. That's the “1400 problem,” and it's exactly why calibration exists.</em></p>
+<p style="margin: 12px 0 2px;"><strong>3. What does the calibration sweep actually produce, and where does it live?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>A per-sensor record book: brightest ever seen and darkest ever seen. It lives in RAM — so it vanishes at power-off, and every session starts with a fresh sweep.</em></p>
+<p style="margin: 12px 0 2px;"><strong>4. After calibration, what do 0 and 1000 mean?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>0 = “as bright as this sensor has ever seen on this surface,” 1000 = “as dark as it has ever seen.” Every sensor is graded on its own curve, so their numbers finally agree.</em></p>
+<p style="margin: 12px 0 2px;"><strong>5. Your five-sensor code runs but sensors 2 and 4 ignore the tape. What happened?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>Hardware/software mismatch: initFiveSensors() promises the jumpers are on DN2/DN4, but they're still in the factory position. The code compiles fine — the compiler can't see jumpers.</em></p>
+<p style="margin: 12px 0 2px;"><strong>6. In the three-sensor configuration, which box holds the center sensor — and why is that a trap?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>lineSensorValues[1]. The trap: index counts awake sensors from zero, it doesn't name the sensor — so the center sensor is [1] with three awake but [2] with five awake.</em></p>
+<p style="margin: 12px 0 2px;"><strong>7. readLine() returns 2323 in five-sensor mode. Say what that means in plain English.</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>The line's center of darkness sits a little right of the robot's center — about 16% of the way from center (2000) toward the right edge (4000) — 323 of the 2000 units on that side, computed as a weighted average of all sensors.</em></p>
+<p style="margin: 12px 0 2px;"><strong>8. Why can readLine() report positions like 1500 — between two sensors?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>Because a line between sensors darkens both of them partially, and the weighted average blends those partial readings into an in-between answer. Five coarse eyes, one fine estimate.</em></p>
+<p style="margin: 12px 0 2px;"><strong>9. What did the five-sensor configuration buy you, and what did it cost?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>Bought: no blind gaps and a smoother, finer position estimate (your Section 7 table is the evidence). Cost: two shared pins reassigned by physically moving jumpers — and Lesson 5's programs expect those pins back.</em></p>
+<p style="margin: 12px 0 2px;"><strong>10. Why does waitForStart() go at the END of setup and checkBattery() at the TOP of loop?</strong></p>
+<p style="margin: 0 0 10px; color: #4d5358;"><em>The gate must be the last thing before the robot goes live, so all setup work happens while it's still safely parked. The battery check must run every pass so A+B answers instantly, no matter what the rest of loop is doing.</em></p>
+
+<h4 style="color: #6c757d;">Problem-Solving</h4>
+<ul style="list-style: none; padding-left: 10px;">
+<li>☐ When readings looked wrong, I checked the raw numbers on the Serial Monitor first</li>
+<li>☐ I ran the three-vs-five comparison as a fair test and recorded evidence</li>
+<li>☐ I diagnosed the deliberate mismatch in Step 7 (dead digits 2 and 4) and can explain it</li>
+<li>☐ I restored the jumpers and verified the restoration with a software test</li>
+</ul>
+
+<p style="margin-top: 18px;"><strong>Confidence check</strong> — circle one: 😟 Lost &nbsp;·&nbsp; 😐 Shaky &nbsp;·&nbsp; 🙂 Solid &nbsp;·&nbsp; 😎 Could teach it</p>
+
+<div style="background-color: #ede7f6; border-left: 4px solid #7e57c2; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #4527a0;">🔮 WHAT'S NEXT — Lesson 5: Proximity Sensors</strong>
+<p style="margin-bottom: 0;">Today your robot learned to look <em>down</em>. Next lesson it looks <em>out</em>: the three infrared proximity receivers that detect objects in front of and beside the robot — same infrared physics, pointed at the world instead of the floor. And here's the satisfying part: those side receivers live on the exact pins you shared today... which is why your jumpers had to go home. Your robot is already wired for Lesson 5. You made sure of it in Section 7.3.</p>
+</div>
+
+<h3 style="color: #6c757d; margin-top: 30px;">Engineer&rsquo;s Log</h3>
+
+<div style="background: #f8f9fa; border-left: 5px solid #1a5276; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<b>&#128211; ENGINEER&rsquo;S LOG #04 &mdash; feeds: Electronic Design (sensors) + testing data</b><br>
+<b>Record your calibration minimum and maximum.</b> Then explain what calibration <i>is</i> &mdash; and why those numbers change when you carry the robot into a different room. (RCJ rule 3.11 is blunt about it: the lighting at the venue is not the lighting at home.)<br>
+<i>Why judges care: a team that recalibrates at the venue has already answered the first question the field will ask.</i></div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Glossary -->
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="glossary" style="font-size: 1.15em; font-weight: bold;">📖 Glossary</div>
+</div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Infrared (IR)</strong> — Light with a wavelength just beyond red — invisible to human eyes, plainly visible to the robot's sensors (and to most phone cameras). The line sensors both emit and detect it.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Reflectance sensor</strong> — An emitter/detector pair that shines IR at a surface and measures how much bounces back. Bright surfaces reflect a lot; dark surfaces absorb. All five floor-facing windows are reflectance sensors.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Phototransistor</strong> — The detector half of each sensor — a light-controlled valve. The more IR that lands on it, the faster it drains the sensor's measurement charge.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Raw reading</strong> — The uncalibrated drain time, 0–2000 microseconds. HIGH = DARK. Only meaningful relative to that one sensor's personal range — remember the 1400 problem.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Calibration</strong> — The sweep that teaches each sensor its personal brightest and darkest on the actual surface. Produces per-sensor record books, stored in RAM, gone at power-off.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Calibrated reading</strong> — A raw reading re-graded against the record books onto a shared 0 (brightest seen) to 1000 (darkest seen) scale — the scale on which sensors finally agree.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Array</strong> — A numbered row of same-type values under one name — unsigned int values[3]. Filled all at once by a sensor read; accessed one box at a time by index.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Index</strong> — A box number in an array, counted from ZERO. Index is not sensor number: with three sensors awake, the center sensor lives at index [1].</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Weighted average</strong> — How readLine() turns five (or three) readings into one position: each sensor's location, weighted by how much darkness it sees. It's why positions between sensors exist.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Resolution</strong> — How finely a measurement can distinguish positions. More sensors = smaller blind gaps and a smoother position estimate — you measured this in Section 7.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Jumper</strong> — A small shorting block that connects two of three pins, physically routing a shared microcontroller pin to one sensor or another. The Zumo has two, factory-set to the proximity side.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Threshold</strong> — The cutoff a condition compares against — sensorValue &gt; 500. Choose it from real data, halfway between your measured white and dark readings.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>Hysteresis</strong> — Using two thresholds (trigger high, release low) so a jittery reading can't rapidly flip a decision back and forth. The gap between them is a no-change zone.</div>
+<div style="background-color: #e7d4ff; border: 2px solid #9b59b6; border-radius: 8px; padding: 12px 16px; margin: 10px 0;"><strong>If statement</strong> — The fork in the road: a condition in parentheses, braces around an action, and the action runs only when the condition is true. With else, both answers get a plan.</div>
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Quick Reference -->
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="quick-reference" style="font-size: 1.15em; font-weight: bold;">⚡ Quick Reference</div>
+</div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<h4 id="qr-hardware" style="color: #6c757d;">Hardware objects (declare above setup)</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4ButtonA buttonA;</code></td><td style="padding: 10px; border: 1px solid #ddd;">Button A (B and C follow the same pattern)</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4OLED display;</code></td><td style="padding: 10px; border: 1px solid #ddd;">The OLED screen</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4LineSensors lineSensors;</code></td><td style="padding: 10px; border: 1px solid #ddd;">The line sensor array — new today</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4Motors motors;</code></td><td style="padding: 10px; border: 1px solid #ddd;">Both motors, driven as one unit (Challenges 4–5)</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">unsigned int lineSensorValues[NUM_SENSORS];</code></td><td style="padding: 10px; border: 1px solid #ddd;">The readings array — one slot per active sensor</td></tr>
+</table>
+
+<h4 id="qr-linesensors" style="color: #6c757d;">Line sensor functions</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.initThreeSensors();</code></td><td style="padding: 10px; border: 1px solid #ddd;">Wake sensors 1, 3, 5 — works in any jumper position</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.initFiveSensors();</code></td><td style="padding: 10px; border: 1px solid #ddd;">Wake all five — REQUIRES jumpers on DN2 / DN4</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.calibrate();</code></td><td style="padding: 10px; border: 1px solid #ddd;">One calibration pass — call repeatedly during the sweep</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.read(values);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Raw readings into the array, 0–2000, HIGH = DARK</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.readCalibrated(values);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Calibrated readings into the array, 0–1000 per sensor</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int p = lineSensors.readLine(values);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Calibrated read + weighted-average line position (dark line)</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensors.readLineWhite(values);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Same, hunting a WHITE line on a dark surface</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">waitForStart();</code></td><td style="padding: 10px; border: 1px solid #ddd;">Safety gate — LAST line of setup(), always</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">checkBattery();</code></td><td style="padding: 10px; border: 1px solid #ddd;">A+B battery display — TOP of loop(), always</td></tr>
+</table>
+
+<h4 id="qr-configs" style="color: #6c757d;">The two configurations</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;"></th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Three sensors (factory)</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Five sensors</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><strong>Jumpers</strong></td><td style="padding: 10px; border: 1px solid #ddd;">LFT / RGT (home position)</td><td style="padding: 10px; border: 1px solid #ddd;">DN2 / DN4</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><strong>Array boxes</strong></td><td style="padding: 10px; border: 1px solid #ddd;">[0]=S1 · [1]=S3 center · [2]=S5</td><td style="padding: 10px; border: 1px solid #ddd;">[0]–[4] = S1–S5, center [2]</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><strong>readLine() scale</strong></td><td style="padding: 10px; border: 1px solid #ddd;">0–2000, center 1000</td><td style="padding: 10px; border: 1px solid #ddd;">0–4000, center 2000</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><strong>Blind gaps</strong></td><td style="padding: 10px; border: 1px solid #ddd;">Yes — two of them</td><td style="padding: 10px; border: 1px solid #ddd;">None</td></tr>
+</table>
+
+<h4 id="qr-display" style="color: #6c757d;">Display</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">display.clear();</code></td><td style="padding: 10px; border: 1px solid #ddd;">Wipe the screen, cursor to top-left</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">display.gotoXY(col, row);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Move the cursor — row 0 = top, row 1 = bottom</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">display.print(F("text"));</code></td><td style="padding: 10px; border: 1px solid #ddd;">Print text (F() keeps it out of precious RAM)</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">display.print(value);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Print a number — digits only, no cleanup: wipe leftovers with spaces</td></tr>
+</table>
+
+<h4 id="qr-leds" style="color: #6c757d;">LEDs</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledYellow(1);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Yellow LED on</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledYellow(0);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Yellow LED off (ledGreen and ledRed work the same)</td></tr>
+</table>
+
+<h4 id="qr-motors" style="color: #6c757d;">Motors (Challenges 4–5 — robot moves!)</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">motors.setSpeeds(left, right);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Both motors at once, −400 to +400 each</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">motors.setSpeeds(0, 0);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Full stop</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">motors.setSpeeds(-s, s);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Pivot left in place (opposite signs spin — Lesson 3)</td></tr>
+</table>
+
+<h4 id="qr-serial" style="color: #6c757d;">Serial Monitor</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.begin(115200);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Start the USB link — first line of setup()</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.print(value);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Print without ending the line</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.print('\t');</code></td><td style="padding: 10px; border: 1px solid #ddd;">Print a tab — makes columns line up</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.println();</code></td><td style="padding: 10px; border: 1px solid #ddd;">End the line (println(value) prints, then ends)</td></tr>
+</table>
+
+<h4 id="qr-timing" style="color: #6c757d;">Timing</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0 20px;">
+<tr style="background-color: #4d5358; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Call</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">What it does</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(ms);</code></td><td style="padding: 10px; border: 1px solid #ddd;">Pause everything for that many milliseconds</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">millis();</code></td><td style="padding: 10px; border: 1px solid #ddd;">Milliseconds since boot — the clock behind the calibration countdown</td></tr>
+</table>
+
+<h4 id="qr-scales" style="color: #6c757d;">Value scales at a glance</h4>
+<p>Raw: <strong>0–2000</strong> µs, meaning varies per sensor · Calibrated: <strong>0 = brightest seen → 1000 = darkest seen</strong>, per-sensor fair · Position: <strong>0 = far left → max = far right</strong>, max = (sensors − 1) × 1000. Line lost → position snaps to 0 or max, by last-seen side.</p>
+
+<h4 id="qr-if" style="color: #6c757d;">The if statement</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">if</span> (condition) {
+  <span style="color: #6a9955;">// runs only when condition is true</span>
+} <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (otherCondition) {
+  <span style="color: #6a9955;">// first no, second yes</span>
+} <span style="color: #569cd6;">else</span> {
+  <span style="color: #6a9955;">// all questions answered no</span>
+}
+
+<span style="color: #6a9955;">// comparisons:  &gt;   &lt;   &gt;=   &lt;=   ==(two!)   !=</span></pre>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Image Index -->
+<div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
+<div id="image-index" style="font-size: 1.15em; font-weight: bold;">🖼️ Image Index</div>
+</div>
+<div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>Every figure in this lesson, live or still to come. Note that <strong>IMAGE</strong> and <strong>GRAPHIC</strong> are separate numbering series — <em>[IMAGE 4.1]</em> and <em>[GRAPHIC 4.1]</em> are two different figures, by design.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0;">
+<thead>
+<tr style="background-color: #6c757d; color: white;">
+<th style="background: #4d5358; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Placeholder</th>
+<th style="background: #4d5358; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Description</th>
+<th style="background: #4d5358; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Type</th>
+<th style="background: #4d5358; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 4.1]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Underside of the Zumo, blade toward camera: the five sensor windows circled and numbered 1–5</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">⬜ still needed</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 4.2]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Close-up of the front sensor array: the two configuration jumpers in the factory position (proximity side), position labels visible</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">⬜ still needed</td></tr>
+<tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 4.3]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Finished test surface: white poster board with a straight black tape line and wide white margins</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">⬜ still needed</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.1]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Anatomy of an if statement: the condition, the braces, the action</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
+<tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.2]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Your Lesson 4 project — what each folder is for</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.3]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">How a reflectance sensor works: IR shines down, a white floor bounces it back, black tape swallows it</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
+<tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.4]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Eight sensors, six wires: which pins are fixed and which two the jumpers decide</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.5]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The readLine() number line: 0 far left, 2000 dead center, 4000 far right</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
+<tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[VIDEO 4.1]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Moving the two configuration jumpers from the proximity position to DN2 / DN4 — full close-up procedure</td><td style="padding: 12px; border: 1px solid #ddd;">Video</td><td style="padding: 12px; border: 1px solid #ddd;">⬜ still needed</td></tr>
+</tbody>
+</table>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<!-- Footer -->
+<footer style="text-align: center; padding: 30px; margin-top: 40px; background-color: #f8f9fa; border-radius: 8px; color: #6c757d;">
+<p style="margin: 0;">Zumo 32U4 Robotics • Lesson 04: Line Sensors</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 4 — July 2026 • PlatformIO Edition</p>
+</footer>
+
+</body>
+</html>
