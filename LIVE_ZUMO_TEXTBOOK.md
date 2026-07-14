@@ -1,10 +1,10 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 14, 2026 (Session 34 close)
-**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS, ALL CLEAN, PASS B COMPLETE, BYTE COUNTS ARE COMPILER TRUTH** · L01 v03.1.3 · L02 v02.0.31 · L03 v03.0.13 · L04 v04.0.5 · L05 v04.1.4 · L06 v04.5.2 · L07 v04.3.2 · L08 v04.1.2 · L09 v05.0.3 · L10 v02.1.5 · L11 v02.0.3 · L12 v01.0.3 · L13 v02.0.3 · L14 v02.1.1 · L15 v02.0.2 · L16 v02.0.1 · Bible **v8.20** · Maker **v2.23** · Gate **v1.1** · Harness **v3.0** · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE** · 📓 **ENGINEER'S LOG IN ALL 16** · 📐 **EVERY PUBLISHED BYTE COUNT COMPILE-VERIFIED (55 PIO-true builds, S34)**
-**Currently working on:** SESSION 35 = (1) **HEADER NORMALIZATION L11→L16** — DJ ruled System A (Q27): blue `#3498db` §1–3, green `#3a7d5c` §4–6, banner `<div id="section-N">` book-wide, (2) **MAKER WIRING L11→L16** — 100 kinds live and unreachable, (3) Grok L01 batch (4 cosmetic items) + `lib_deps` pin bench test, (4) DJ bench checks (L02 green-LED · L09 green-tape), (5) 5 stale image deletions, (6) 22-photo queue, (7) **AI Tutor rebuild LAST**.
+**Date:** July 14, 2026 (Session 35 close)
+**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS, ALL CLEAN, HEADERS NORMALIZED BOOK-WIDE** · L01 v03.1.3 · L02 v02.0.31 · L03 v03.0.13 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.3 · L07 v04.3.3 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.1.0 · L12 v01.1.0 · L13 v02.1.0 · L14 v02.2.0 · L15 v02.1.0 · L16 v02.1.0 · Bible **v8.21** · Maker **v2.23** · Gate **v1.1** · Harness **v3.0** · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE** · 📐 **ALL 1,180 PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🎨 **4 PART BANNERS / 5 COLOR GROUPS, ALL 16**
+**Currently working on:** SESSION 36 = (1) **MAKER WIRING L11→L16** — 100 kinds live and unreachable; anchors are NOT uniform (L13 regular; L11's only "Step" headings are in §3 theory, not the §6 build) — hand-place, do not pattern-match, (2) Grok L01 batch (4 cosmetic items) + `lib_deps` pin bench test, (3) DJ bench checks (L02 green-LED · L09 green-tape), (4) 5 stale image deletions, (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
 
-> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.20).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
+> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.21).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
 
 ---
 
@@ -32,7 +32,7 @@ weymuth.github.io/zumo/
 
 ---
 
-## LESSON STATE — all live, all verified by fresh clone (S34 close)
+## LESSON STATE — all live (S35 close)
 
 | # | Title | Version | Figures | Placeholders left |
 |---|---|---|---|---|
@@ -40,20 +40,52 @@ weymuth.github.io/zumo/
 | 02 | Read Code Like a Pro | v02.0.31 | 10 | 2 |
 | 03 | Motors & TRIM | v03.0.13 | 11 | 4 |
 | 04 | Line Sensors | v04.0.5 | 5 | 3 |
-| 05 | Proximity Sensors | v04.1.4 | 8 | 3 |
-| 06 | Encoders | v04.5.2 | 11 | 0 |
-| 07 | Code Organization | v04.3.2 | 7 | 7 |
-| 08 | Line Following | v04.1.2 | 3 | 0 |
-| 09 | Intersections & Dead Ends | v05.0.3 | 8 | 0 |
-| 10 | Obstacles | v02.1.5 | 7 | 0 |
-| 11 | Time Lies, Distance Doesn't | v02.0.3 | 4 | 0 |
-| 12 | Wheels Lie | v01.0.3 | 3 | 1 |
-| 13 | Rescue Zone | v02.0.3 | 2 | 2 |
-| 14 | Competition Prep | v02.1.1 | 4 | 2 |
-| 15 | The Present Isn't Enough | v02.0.2 | 3 | 0 |
-| 16 | Nothing Left to Take Away | v02.0.1 | 3 | 1 |
+| 05 | Proximity Sensors | v04.1.5 | 8 | 3 |
+| 06 | Encoders | v04.5.3 | 11 | 0 |
+| 07 | Code Organization | v04.3.3 | 7 | 7 |
+| 08 | Line Following | v04.1.3 | 3 | 0 |
+| 09 | Intersections & Dead Ends | v05.0.4 | 8 | 0 |
+| 10 | Obstacles | v02.1.6 | 7 | 0 |
+| 11 | Time Lies, Distance Doesn't | v02.1.0 | 4 | 0 |
+| 12 | Wheels Lie | v01.1.0 | 3 | 1 |
+| 13 | Rescue Zone | v02.1.0 | 2 | 2 |
+| 14 | Competition Prep | v02.2.0 | 4 | 2 |
+| 15 | The Present Isn't Enough | v02.1.0 | 3 | 0 |
+| 16 | Nothing Left to Take Away | v02.1.0 | 3 | 1 |
 
 **Book-wide audit (live tree, S34 close):** zero duplicate ids · zero dead anchors · **zero broken `<img>`** · div balance 0 · 📓 Engineer's Log ×16 · payload gate **PASS** · **zero stale byte counts (all 23 old figures purged, verified by residue sweep on a fresh clone)**.
+
+---
+
+## SESSION 35 — WHAT LANDED
+
+### 🎨 HEADER NORMALIZATION — COMPLETE, ALL 16 LESSONS
+**DJ ruling: FOUR PART banners, FIVE colour groups.** The Bible was already right; the book had drifted.
+Canon: §1–3 `#3498db` · §4–6 `#3a7d5c` · §7/8/8A `#c45d76` · §9 `#9b6a9e` · §10+end `#6c757d` (colour, **no divider**).
+
+The drift was deeper than S34 mapped — **10 lessons were wrong, not 6**:
+- **L07/L08/L09** had NO PART 3 banner at all (jumped PART 2 → PART 4). Inserted.
+- **L10** had a 5th banner ("PART 5 — Wrap Up") and PART 3 mistitled "Verify & Extend". Fixed.
+- **L11** was off in FOUR groups, not one: `#2a5a42` green (the *dark variant*, not the cap colour), `#e67e22` orange, `#8e44ad` purple, `#16a085` teal. Repainted.
+- **L11–L14** had all-blue nav strips and all-blue PART banners. Recoloured.
+- **L15/L16** had NO section caps, gradient PART banners with non-canon groupings (PART 2 = §4–5, PART 3 = §6), and `s1..s10` ids. Rebuilt.
+
+### 🗺️ IMAGE INDEX NAV PILL — REMOVED BOOK-WIDE (DJ ruling)
+Students have no need to navigate to the Image Index. The **pill** is gone from all 8 lessons that carried it (L05–L12); the **section** stays, still gray. The Bible's nav-count line (§6.5) already excluded it — the lessons had drifted. Line rewritten to 12–14.
+
+### 🔴 L10 `step_4_RED` — RE-LINKED (DJ ruling)
+The Maker's "broken on purpose" Red Build was live and gated but unreachable — S34 had cut the link *and authored* "No download for the broken one — you typed it yourself." Verified the payload really is broken (header + cpp both define `proxSensors`, no `extern`) and that fixing the `extern` builds green (the three new functions are declared but uncalled, so nothing fails to link). Line replaced with a link. **Maker unchanged (v2.23).**
+
+### ✅ VERIFICATION
+- Payload gate: **PASS**, 16/16.
+- **1,180 published numeric figures compared against the pre-session clone — all byte-identical.** The S34 byte audit survived intact.
+- `<div>` balance verified on every converted lesson.
+
+### 🧹 PROJECT FOLDER — EMPTIED
+Everything now lives in the repo (DJ pushed the toolchain at 07:43 EDT: `gate_payload_match.py`, `pio_harness.sh`, `extract_project.py`, the handoff). Project instructions are now one line.
+
+### ⚠️ NOT DONE — MAKER WIRING (deferred to S36 by DJ ruling)
+100 kinds still unreachable (L11:18 · L12:20 · L13:18 · L14:17 · L15:19 · L16:8). **Anchors are not uniform — do not pattern-match.** L13 is fully regular (Steps / 7A–7E / Challenges 9.1–9.3 / Mysteries B1–B4); L11's only "Step" headings sit in §3 theory, not the §6 build. Canon link shapes are extracted in the S36 handoff. L11–L16 will bump a SECOND time — DJ accepted this over rushing 100 links.
 
 ---
 
