@@ -1,8 +1,8 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 14, 2026 (Session 37 close)
-**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · MAKER WIRED 99/99 · FORMATTING-CLEAN BOOK-WIDE** · L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.1 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.4 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.27** · Gate **v1.1** · Harness **v3.0** · engine.py (new) · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons, vs Maker v2.27)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🧹 **FLAT-INSIDE CENSUS: 6 lines book-wide, all in L02 `broken_code` — deliberate**
-**Currently working on:** SESSION 38 = (1) **Q017 bench check** — L09 green-tape band, procedure + decision table in the handoff (constant change would be EXPENSIVE: payload chain L09→L15), (2) **Q037 ruling** — L01 "Coming from Arduino?" callout (approve/modify/drop), (3) **Grok L03 EEPROM-preview taste call** (Claude recommends decline; other 3 claims false positives), (4) 5 stale image deletions (`git rm` in handoff, if not already run), (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
+**Date:** July 14, 2026 (Session 37 close — FINAL, incl. post-close batch)
+**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · MAKER WIRED 99/99 · FORMATTING-CLEAN BOOK-WIDE** · L01 v03.2.2 · L02 v02.1.0 · L03 v03.1.1 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.5 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.7 · L11 v02.2.0 · L12 v01.2.1 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py (new) · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons, vs Maker v2.28)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🧹 **FLAT-CODE CLASS CLOSED ON EVERY SURFACE: payloads 6/deliberate · builder 0 · all 16 displays 0** · 📖 **GROK REVIEW PASS 16/16 COMPLETE**
+**Currently working on:** SESSION 38 = (1) **Q017 bench + three riders** — green-tape six numbers · calibration-spin stopwatch (Q044) · gyro-bias stopwatch (Q046, unruled) — all in the handoff, (2) **Q037 ruling** — L01 "Coming from Arduino?" callout, (3) 5 stale image deletions at push time, (4) 22-photo queue, (5) **AI Tutor rebuild LAST**.
 
 > **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.24).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
 
@@ -14,7 +14,7 @@
 weymuth.github.io/zumo/
 ├── index.html                    ← welcome screen (Textbook | AI Tutor)
 ├── tutor.html                    ← AI Tutor (stale — rebuild LAST)
-├── newproject.html               ← Project Maker (v2.27, live)
+├── newproject.html               ← Project Maker (v2.28, pending S37 push)
 ├── timer.html
 ├── ROBOCUP_RESCUE_LINE_2026.md   ← NEW S34 — sole source of truth for competition claims
 ├── lessons/
@@ -36,18 +36,18 @@ weymuth.github.io/zumo/
 
 | # | Title | Version | Figures | Placeholders left |
 |---|---|---|---|---|
-| 01 | Hello, Robot! | v03.2.1 | 18 | 0 |
+| 01 | Hello, Robot! | v03.2.2 | 18 | 0 |
 | 02 | Read Code Like a Pro | v02.1.0 | 10 | 2 |
 | 03 | Motors & TRIM | v03.1.1 | 11 | 4 |
 | 04 | Line Sensors | v04.0.5 | 5 | 3 |
 | 05 | Proximity Sensors | v04.1.5 | 8 | 3 |
 | 06 | Encoders | v04.5.4 | 11 | 0 |
-| 07 | Code Organization | v04.3.4 | 7 | 7 |
+| 07 | Code Organization | v04.3.5 | 7 | 7 |
 | 08 | Line Following | v04.1.3 | 3 | 0 |
 | 09 | Intersections & Dead Ends | v05.0.4 | 8 | 0 |
-| 10 | Obstacles | v02.1.6 | 7 | 0 |
+| 10 | Obstacles | v02.1.7 | 7 | 0 |
 | 11 | Time Lies, Distance Doesn't | v02.2.0 | 4 | 0 |
-| 12 | Wheels Lie | v01.2.0 | 3 | 1 |
+| 12 | Wheels Lie | v01.2.1 | 3 | 1 |
 | 13 | Rescue Zone | v02.2.0 | 2 | 2 |
 | 14 | Competition Prep | v02.4.0 | 4 | 2 |
 | 15 | The Present Isn't Enough | v02.2.0 | 3 | 0 |
@@ -85,6 +85,12 @@ S37's `git rm` used bare-stem globs that match **zero files** — the real names
 
 ### 📎 POST-CLOSE ADDENDUM (Q041, DJ-approved)
 L03 → **v03.1.1**: one sentence at the Calibration Data Record previewing L16's EEPROM arc — *"Until then, this paper copy IS your EEPROM."* Prose-only; gate re-run PASS. Also post-close: L04 Grok triage — 3 false positives, A+B on-screen hint **DECLINED (Q040)**.
+
+### 📎 POST-CLOSE ADDENDUM 2 — THE FINAL BATCH (DJ: "make all final changes")
+Five items, built and verified at close: **Maker v2.28** — skeleton builder's 5 concatenated strings indented (10 flat lines → 0; a fresh blank L04+ project now downloads clean; PAYLOADS byte-identical, asserted) · **L10 v02.1.7** — §8A.2's two flat `case` labels indented to the house Δ+2 (1,979-sample convention) · **L01 v03.2.2** — §5.5 Complete Program's three dropped-indent lines restored at the block's own 4-space · **L07 v04.3.5** — memorization Coach's Tip after the objectives (Q043) · **L12 v01.2.1** — magic-number sentence after the fixed-point code (Q045). Verification: node OK · gate PASS book-wide vs v2.28 · builder census 0 · display census 0 (L01, L10) · div balances 251/240/239/185 all paired · zero byte-figure impact.
+
+### 📖 GROK REVIEW PASS — 16/16 LESSONS, CLOSED
+~20 verifiable claims → **2 survivors** (both built above) · 2 DJ taste rulings (L03 EEPROM preview built v03.1.1 · L08 spin-duration pending Q017 stopwatch) · rest false positives, including **three cases of the book's own coined phrases quoted back as suggestions** (leap of faith · "may not refuse the match" · numbers-not-adjectives). Arc-level reads accurate throughout. Structural sweeps alongside the pass found the three real formatting defects Grok cannot see (builder · L10 · L01) — reviewers read content; censuses read structure. Both channels are needed.
 
 ### ✅ VERIFICATION
 Payload gate **PASS book-wide vs Maker v2.27** (control runs on untouched source first) · INI gate PASS · div balances 332/332 · 282/282 · 203/203 · 239/239 · flat census 6/deliberate · sabotage integrity asserted · `node` re-parse: 15 lessons, zero dangling refs, zero orphans.

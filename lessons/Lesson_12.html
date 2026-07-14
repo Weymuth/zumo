@@ -527,6 +527,7 @@ void gyroUpdate() {
 int getTurnAngle() {
   return (((int32_t)turnAngle &gt;&gt; 16) * 360) &gt;&gt; 16;
 }</pre>
+<p><em>About those two giant numbers: they convert the gyro&rsquo;s raw readings into degrees using pure integer math &mdash; this function must run as often as possible, and integer math keeps every call cheap and exact. You do not need to derive that ratio to use it. You need to know what it does &mdash; and now you do.</em></p>
 <div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; The #include <Wire.h> goes at the TOP of the file.</strong><br>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Build it now. The binary just grew by 800 bytes.</strong><br>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live &mdash; the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 5</summary>
