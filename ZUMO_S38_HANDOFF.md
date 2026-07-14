@@ -24,7 +24,7 @@ Then verify LIVE.md's date (**July 14, 2026 — Session 37 close**) and its less
 | `newproject.html` | **v2.27** · L02 `finished` payload indented (extract and eyeball, or grep the escaped body for `\n  `) |
 | `lessons/Lesson_01.html` | contains `slide it to the right, as you face the back` and `green USB power LED` |
 | `lessons/Lesson_02.html` | contains `That Unnumbered Row, in 10 Seconds` (the prototype teaser) |
-| `lessons/Lesson_03.html` | code pres indented (open one `<pre>`, look for leading spaces inside braces) |
+| `lessons/Lesson_03.html` | **v03.1.1** — contains `this paper copy IS your EEPROM` |
 | `images/L01_GRAPHIC_1-13_zumo_rear_view.svg` | contains `slide RIGHT for ON` |
 | `engine.py` | present at repo root |
 
@@ -37,7 +37,7 @@ Also check whether the 5 stale images are gone (the `git rm` below may or may no
 
 **Code-complete, fully wired, gate-clean, and — new this session — formatting-clean book-wide.**
 
-L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.0 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.4 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0
+L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.1 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.4 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0
 **Bible v8.24 · Maker v2.27 · Gate v1.1 · Harness v3.0 · engine.py (new, repo root)**
 
 - 🎯 Payload gate PASSES all 15 lessons (run against Maker v2.27 at close).
@@ -53,7 +53,7 @@ L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.0 · L04 v04.0.5 · L05 v04.1.5 · L06 v
    Any Step-9+ build → A → B calibration spin ON the course → while STOPPED slide white/green/black under the outer sensors → report six numbers.
    Decision table: both greens inside ~300–700 with ≥100 clearance → **CLOSED, zero cost**. Slightly outside → prose nudge, minor bump. Badly outside (<200 or >800) → **EXPENSIVE**: `GREEN_LOW/HIGH` live in gated payloads inherited L09→L15 — constant change = re-gate + byte re-audit across the chain. Do not order casually.
 2. **Q037 ruling — L01 "Coming from Arduino?" callout.** DJ leans against a skip lane ("skip kid" risk); Claude proposed a 4–5 bullet differences callout (PlatformIO not IDE · exact-pinned lib · 32U4 drops its USB port on reset · checkpoint ritual) ending "your pace outlet is the HARD challenges." Approve, modify, or drop.
-3. **Grok L03 taste call** — "EEPROM persistence preview" suggestion. L03 has zero EEPROM; the book touches it only in L16; L03 already solves persistence deliberately (paper Calibration Record + constants from L04 on). **Claude recommends decline.** The other three L03 claims were verified false positives / no-action.
+3. ~~Grok L03 EEPROM taste call~~ — **RESOLVED post-close (Q041)**: preview sentence shipped in L03 v03.1.1, framed so the paper record stays the hero. Other three L03 claims: false positives / no-action. L04 review also triaged post-close: 3 false positives, A+B on-screen hint **DECLINED (Q040)**.
 4. **Repo cleanup** (if not already run):
    ```
    git rm images/L01_IMAGE_1-13_kr_c_programming_book.png \

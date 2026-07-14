@@ -1,7 +1,7 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** July 14, 2026 (Session 37 close)
-**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · MAKER WIRED 99/99 · FORMATTING-CLEAN BOOK-WIDE** · L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.0 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.4 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.27** · Gate **v1.1** · Harness **v3.0** · engine.py (new) · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons, vs Maker v2.27)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🧹 **FLAT-INSIDE CENSUS: 6 lines book-wide, all in L02 `broken_code` — deliberate**
+**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · MAKER WIRED 99/99 · FORMATTING-CLEAN BOOK-WIDE** · L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.1 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.4 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.27** · Gate **v1.1** · Harness **v3.0** · engine.py (new) · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons, vs Maker v2.27)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🧹 **FLAT-INSIDE CENSUS: 6 lines book-wide, all in L02 `broken_code` — deliberate**
 **Currently working on:** SESSION 38 = (1) **Q017 bench check** — L09 green-tape band, procedure + decision table in the handoff (constant change would be EXPENSIVE: payload chain L09→L15), (2) **Q037 ruling** — L01 "Coming from Arduino?" callout (approve/modify/drop), (3) **Grok L03 EEPROM-preview taste call** (Claude recommends decline; other 3 claims false positives), (4) 5 stale image deletions (`git rm` in handoff, if not already run), (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
 
 > **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.24).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
@@ -38,7 +38,7 @@ weymuth.github.io/zumo/
 |---|---|---|---|---|
 | 01 | Hello, Robot! | v03.2.1 | 18 | 0 |
 | 02 | Read Code Like a Pro | v02.1.0 | 10 | 2 |
-| 03 | Motors & TRIM | v03.1.0 | 11 | 4 |
+| 03 | Motors & TRIM | v03.1.1 | 11 | 4 |
 | 04 | Line Sensors | v04.0.5 | 5 | 3 |
 | 05 | Proximity Sensors | v04.1.5 | 8 | 3 |
 | 06 | Encoders | v04.5.4 | 11 | 0 |
@@ -82,6 +82,9 @@ L01 batch: power-switch art BUILT · debounce + LED syntax confirmed false posit
 
 ### ⚠️ HANDOFF DEFECT FIXED
 S37's `git rm` used bare-stem globs that match **zero files** — the real names carry descriptive suffixes. Corrected 5-path command in the S38 handoff.
+
+### 📎 POST-CLOSE ADDENDUM (Q041, DJ-approved)
+L03 → **v03.1.1**: one sentence at the Calibration Data Record previewing L16's EEPROM arc — *"Until then, this paper copy IS your EEPROM."* Prose-only; gate re-run PASS. Also post-close: L04 Grok triage — 3 false positives, A+B on-screen hint **DECLINED (Q040)**.
 
 ### ✅ VERIFICATION
 Payload gate **PASS book-wide vs Maker v2.27** (control runs on untouched source first) · INI gate PASS · div balances 332/332 · 282/282 · 203/203 · 239/239 · flat census 6/deliberate · sabotage integrity asserted · `node` re-parse: 15 lessons, zero dangling refs, zero orphans.
