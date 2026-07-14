@@ -1,10 +1,10 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** July 14, 2026 (Session 36 close)
-**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · THE MAKER IS WIRED: 99 KINDS, 99 LINKS, CLEAN 1:1** · L01 v03.1.3 · L02 v02.0.31 · L03 v03.0.13 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.3 · L07 v04.3.3 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.22** · Maker **v2.25** · Gate **v1.1** · Harness **v3.0** · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🔗 **EVERY MAKER KIND REACHABLE FROM ITS LESSON**
+**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · THE MAKER IS WIRED: 99 KINDS, 99 LINKS, CLEAN 1:1** · L01 v03.2.0 · L02 v02.0.31 · L03 v03.0.13 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.3 · L07 v04.3.3 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.26** · Gate **v1.1** · Harness **v3.0** · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🔗 **EVERY MAKER KIND REACHABLE FROM ITS LESSON**
 **Currently working on:** SESSION 37 = (1) **`lib_deps` PIN** — Maker line 1663 is unpinned; tag `2.0.1` IS real, but the library ships NO `library.json` (Arduino manifest only) and the PlatformIO registry is unreachable from the container. DJ runs `pio pkg show pololu/Zumo32U4`, OR accept the registry-independent git-tag pin — then a coordinated Maker + L01 + Bible bump, (2) Grok L01 batch (LED syntax · debounce note · power-switch label art), (3) DJ bench checks (L02 green-LED · L09 green-tape), (4) 5 stale image deletions (verified 0 refs), (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
 
-> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.22).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
+> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.24).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
 
 ---
 
@@ -14,7 +14,7 @@
 weymuth.github.io/zumo/
 ├── index.html                    ← welcome screen (Textbook | AI Tutor)
 ├── tutor.html                    ← AI Tutor (stale — rebuild LAST)
-├── newproject.html               ← Project Maker (v2.25, live)
+├── newproject.html               ← Project Maker (v2.26, live)
 ├── timer.html
 ├── ROBOCUP_RESCUE_LINE_2026.md   ← NEW S34 — sole source of truth for competition claims
 ├── lessons/
@@ -36,7 +36,7 @@ weymuth.github.io/zumo/
 
 | # | Title | Version | Figures | Placeholders left |
 |---|---|---|---|---|
-| 01 | Hello, Robot! | v03.1.3 | 18 | 0 |
+| 01 | Hello, Robot! | v03.2.0 | 18 | 0 |
 | 02 | Read Code Like a Pro | v02.0.31 | 10 | 2 |
 | 03 | Motors & TRIM | v03.0.13 | 11 | 4 |
 | 04 | Line Sensors | v04.0.5 | 5 | 3 |
@@ -77,8 +77,20 @@ Four rules, all earned this session: **15.1** the §7 ladder is five rungs and t
 ### ⚖️ CHALLENGE SOLUTION-DISCLOSURE — RAISED, PARKED (DJ ruling)
 Wiring the §9 links surfaced that **the book has no disclosure canon**: L06/L07/L11/L13/L14 publish solutions · **L08/L09 withhold them** · L10 gives neither · L12/L15 print a scaffold with a blank. Also found: **L08's challenge cards already carry a Maker link** — pointing at `finished`, a neutral starting copy, not the answer. DJ: *"leave things as they are for now; I'll make the call after I go through them as a student."* Link goes inside whatever each lesson already discloses. Three options preserved in memory for the ruling.
 
+### 📌 `lib_deps` PINNED — and the book had been teaching the wrong fix
+`lib_deps` was **unpinned** (bare `pololu/Zumo32U4`). The registry holds exactly **two** versions — 2.0.0 and **2.0.1 (latest, published 2022-09-07)**. GitHub agrees and stops at 2.0.1. **There is no 2.1.0 and there never was** — the `^2.1.0` pin recorded in L01's §8 table was a typo.
+
+The defect was never the typo. It was **the fix the book published for it: "Remove the version pin."** That traded a typo for a permanent hole, and the fleet has run unpinned ever since. **A bad pin is fixed by pinning correctly, never by unpinning** — and this book cannot afford the hole: it publishes exact byte counts against a **28,672 B ceiling with 638 B of headroom on L15**. A library update doesn't make a figure stale; it pushes a student's build over the wall while the lesson insists it should have fit.
+
+Now `lib_deps = pololu/Zumo32U4@2.0.1` — **EXACT**, not `^2.0.1` (a future 2.1.0 would satisfy the caret and land silently). **Zero byte impact** — 2.0.1 is already what resolves today. L01 teaches the pin, and its troubleshooting row now reads: *that version does not exist; run `pio pkg show pololu/Zumo32U4` instead of guessing a number.* Also repaired: **L01's two `platformio.ini` code blocks disagreed with each other** — one inline, one split across two lines, and only one matched what the Maker writes. **New gate:** the `lib_deps` line must be byte-identical in the Maker template and every lesson `<pre>`. **PASSES.**
+
+### 📦 BIBLE §12 REWRITTEN — DELIVERY CANON WAS NEVER WRITTEN DOWN
+§12 was **stale**: it told a new session to *upload* the Bible (it lives in the repo — it is cloned) and named a handoff file that does not exist. It also carried **no delivery canon at all** — `PUSH_WORKFLOW.md` had said since S34 that *"root docs all go up together, in one shot,"* but the Bible never captured it, and S36 duly split the delivery into a "push zip" and loose project-folder files. Wrong. **EVERYTHING LIVES IN THE REPO** — Bible, LIVE.md, handoffs, gate scripts, harness, web tools, lessons, images. Session open = **clone**. Session close = **ONE zip, full repo layout, every changed file including root docs** — one extract, one commit, one push. **A zip cannot delete:** removals ship as explicit `git rm` lines in the close note.
+
+Also fixed a trap of my own making: §12.1 documents the session-open grep, so `grep -o "Bible version: v[0-9.]*"` began **matching its own example** and returning a bogus second line. The ritual now uses `grep -oE "...v[0-9.]+"` — the `+` requires a digit, so the example cannot self-match. *(Anywhere the old greedy `*` form survives, it will return two lines. Use `-oE` and `+`.)*
+
 ### ✅ VERIFICATION
-Payload gate **PASS, all 15 lessons**, control run on untouched source first · **99 links / 99 kinds, 1:1** · Maker parses, zero dangling refs, zero orphan payloads · byte-residue sweep intact (S34 audit preserved) · structure balanced, zero heading churn · push verified by fresh clone (md5, all 7 files).
+Payload gate **PASS, all 15 lessons**, control run on untouched source first · **INI-consistency gate PASS** · **99 links / 99 kinds, 1:1** · Maker parses, zero dangling refs, zero orphan payloads · byte-residue sweep intact (S34 audit preserved) · structure balanced, zero heading churn · push verified by fresh clone (md5, all 7 files).
 
 ---
 
@@ -149,12 +161,11 @@ images/L09_GRAPHIC_9-08_project_file_tree.svg       (duplicate of 9-8)
 
 ## S37 AGENDA
 
-1. **`lib_deps` PIN (blocked on one DJ command).** Maker line 1663 = `lib_deps = pololu/Zumo32U4`, unpinned. **Verified:** the Pololu repo's real tags are `1.1.1 … 2.0.0, 2.0.1`; tag `2.0.1` exists and its manifest says `version=2.0.1`. **Also verified — likely the cause of DJ's build error:** the library ships **only `library.properties`** (the Arduino manifest); there is **no `library.json`**, and PlatformIO reads `owner/name` as a *registry* reference whose versions need not match the GitHub tags. `api.registry.platformio.org` is **blocked by the container allowlist** — Claude cannot settle this from here. Close it either by (a) DJ running `pio pkg show pololu/Zumo32U4`, or (b) accepting the registry-independent git-tag pin: `lib_deps = https://github.com/pololu/zumo-32u4-arduino-library.git#2.0.1`. Then a coordinated Maker + L01 prose + Bible change (moderate bump).
-2. **Grok L01 batch** (one minor bump): LED syntax note · debounce note · power-switch label → Claude SVG · `lib_deps` line-break bench check.
-3. **DJ bench checks:** L02 §5 green-LED "USB activity light" claim · L09 green-tape 300–700 (Q017).
-4. **Repo cleanup — 5 stale images, verified 0 references** (see below). One `git rm`.
-5. **22-photo queue** (DJ, `IMAGE_SHOT_LIST.md`).
-6. 🔴 **AI Tutor rebuild — LAST** (standing DJ ruling).
+1. **Power-switch art** — `L01_GRAPHIC_1-13` labels *where* the switch is but not **which way is ON**, while the prose says "slide it toward the tracks." Redraw with a direction indicator (Claude SVG, minor bump). *The other two Grok L01 items were **FALSE POSITIVES** — debounce is already fully explained in the "While-Loop Trapdoor" callout, and the LED syntax is already consistent (`ledYellow(1)`/`ledYellow(0)`, one form). The fix already existed.*
+2. **DJ bench checks:** L02 §5 green-LED "USB activity light" claim · L09 green-tape 300–700 (Q017).
+3. **Repo cleanup — 5 stale images, verified 0 references** (listed below). One `git rm`.
+4. **22-photo queue** (DJ, `IMAGE_SHOT_LIST.md`).
+5. 🔴 **AI Tutor rebuild — LAST** (standing DJ ruling).
 
 ## OPEN QUEUE (parked)
 

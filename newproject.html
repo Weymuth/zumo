@@ -3,6 +3,14 @@
      v2.21 Lesson 15 registry (The Present Isn't Enough - PID rebuild): KINDS[15] + PAYLOADS[15]=16 keys x 8 files (7 build steps, 2 physical ladder rungs 7A/7D - 7B/7C/7E are knob-only on the finished build and need no reflash, 3 CHALLENGES, 4 sabotaged-build BONUS); DL_ALL += 15; TITLES[15] retitled.
      v2.20 Lesson 14 registry (Competition Prep rebuild): KINDS[14] + PAYLOADS[14]=13 keys x 8 files (4 build steps, ladder 7A-7E with 7A/7B/7D/7E as physical rungs on the finished build, 3 CHALLENGES, 4 sabotaged-build BONUS); DL_ALL += 14.
      v2.19 Lesson 13 registry (Rescue Zone rebuild): KINDS[13] + PAYLOADS[13]=19 keys x 8 files (6 build steps, ladder 7A-7E, 3 finished-derived CHALLENGES, 4 sabotaged-build BONUS); DL_ALL += 13.
+     v2.26 LIB_DEPS PINNED: lib_deps = pololu/Zumo32U4@2.0.1 (was unpinned). The registry holds exactly TWO
+           versions - 2.0.0 and 2.0.1 (latest, published 2022-09-07). There is no 2.1.0 and there never was:
+           the ^2.1.0 pin recorded in L01's troubleshooting table was a typo, and the "fix" the book gave for
+           it - REMOVE the pin - left every student build tracking whatever the registry serves. This book
+           publishes exact byte counts against a 28,672 B ceiling (L15 ships with 638 B spare), so an
+           unpinned dependency is a live hazard, not a style preference. EXACT pin, not caret: a future 2.1.0
+           would satisfy ^2.0.1 and land silently. Zero byte impact - 2.0.1 is already what resolves today.
+           (v2.25 was never pushed; it is a ghost. This build carries both its L14 retire and the pin.)
      v2.25 L14 DUPLICATE KIND RETIRED: KINDS[14] "step_4" removed; PAYLOADS[14]["after_step_4"] deleted (it was
            byte-identical to "finished"). L14 was the ONLY lesson with a step_* kind for its LAST step, so the
            Maker offered one build under two names. Canon (Bible v8.22): step kinds cover 1..N-1; "finished"
@@ -111,7 +119,7 @@
   <button class="go" id="go" disabled>&#11015; Download my project folder</button>
 <button class="go" id="goAll" disabled style="display: none; margin-top: 8px; background: #4d5358;">&#11015; Download ALL templates for this lesson (one zip)</button>
   <div class="hint">Unzip into <b>Documents/PlatformIO</b>, then in VS Code: File &rarr; Open Folder.</div>
-  <div class="hint" style="margin-top: 4px; color: #b0bac2;">Project Maker v2.25</div>
+  <div class="hint" style="margin-top: 4px; color: #b0bac2;">Project Maker v2.26</div>
 </div>
 
 <script>
@@ -1663,7 +1671,7 @@
   lesson.addEventListener('change', function () { rebuildKinds('main'); refresh(); });
   refresh();
 
-  var INI = "[env:a-star32u4]\nplatform = atmelavr\nboard = a-star32u4\nframework = arduino\nmonitor_speed = 115200\nlib_deps = pololu/Zumo32U4\n";
+  var INI = "[env:a-star32u4]\nplatform = atmelavr\nboard = a-star32u4\nframework = arduino\nmonitor_speed = 115200\nlib_deps = pololu/Zumo32U4@2.0.1\n";
 
   function mainCpp(recArg) {
     var num = String(lesson.value).padStart(2, '0');

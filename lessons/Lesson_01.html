@@ -364,13 +364,13 @@
 <span style="color: #e06c75;">board</span> = a-star32u4
 <span style="color: #e06c75;">framework</span> = arduino
 <span style="color: #e06c75;">monitor_speed</span> = 115200
-<span style="color: #e06c75;">lib_deps</span> = pololu/Zumo32U4</pre>
+<span style="color: #e06c75;">lib_deps</span> = pololu/Zumo32U4@2.0.1</pre>
 <ul>
     <li><code>platform</code> — the chip family (Atmel AVR — the family the ATmega32U4 belongs to)</li>
     <li><code>board</code> — the exact board, so the compiler knows its memory size and pin layout</li>
     <li><code>framework</code> — the coding style we use (Arduino: <code>setup()</code> and <code>loop()</code>)</li>
     <li><code>monitor_speed</code> — how fast the Serial Monitor talks to the robot (must match the code)</li>
-    <li><code>lib_deps</code> — the libraries to download — this is where the Pololu Zumo library comes from</li>
+    <li><code>lib_deps</code> — the libraries to download — this is where the Pololu Zumo library comes from. The <code>@2.0.1</code> on the end is a <strong>version pin</strong>: it names the exact release you want. Leave it off and the project quietly takes whatever the authors published most recently — and the robot you build in June stops matching the one you built in September. Pin it, and your build is the same build, forever.</li>
 </ul>
 
 <h3 id="section-5-1" style="color: #3a7d5c; margin-top: 30px;">5.1 The Include Statement</h3>
@@ -637,8 +637,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">200</span>, <span style="color: #
 <span style="color: #e06c75;">board</span> = a-star32u4
 <span style="color: #e06c75;">framework</span> = arduino
 <span style="color: #e06c75;">monitor_speed</span> = 115200
-<span style="color: #e06c75;">lib_deps</span> =
-    pololu/Zumo32U4</code></pre>
+<span style="color: #e06c75;">lib_deps</span> = pololu/Zumo32U4@2.0.1</code></pre>
 
 <!-- CALLOUT: Do This Now (Orange) -->
 <div style="background-color: #ffe4c9; border-left: 4px solid #ff8c00; padding: 15px; margin: 15px 0; border-radius: 4px;">
@@ -888,12 +887,12 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <tr>
             <td style="border: 1px solid #ccc; padding: 8px;">Build fails: "Zumo32U4.h: No such file"</td>
             <td style="border: 1px solid #ccc; padding: 8px;">lib_deps line missing from platformio.ini</td>
-            <td style="border: 1px solid #ccc; padding: 8px;">Open platformio.ini and confirm <code>lib_deps = pololu/Zumo32U4</code> is on its own line, save, rebuild</td>
+            <td style="border: 1px solid #ccc; padding: 8px;">Open platformio.ini and confirm <code>lib_deps = pololu/Zumo32U4@2.0.1</code> is on its own line, save, rebuild</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ccc; padding: 8px;">UnknownPackageError: "Could not find the package with 'pololu/Zumo32U4 @ ^2.1.0'"</td>
             <td style="border: 1px solid #ccc; padding: 8px;">Version pin points at a release that doesn&#39;t exist in the registry</td>
-            <td style="border: 1px solid #ccc; padding: 8px;">Remove the version pin: use <code>lib_deps = pololu/Zumo32U4</code> exactly, save, rebuild</td>
+            <td style="border: 1px solid #ccc; padding: 8px;">That version does not exist. Only <strong>2.0.0</strong> and <strong>2.0.1</strong> do — run <code>pio pkg show pololu/Zumo32U4</code> to see the real list instead of guessing a number. Restore <code>lib_deps = pololu/Zumo32U4@2.0.1</code>, save, rebuild</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ccc; padding: 8px;">Upload fails: "could not open port … Resource busy" (Errno 16)</td>
