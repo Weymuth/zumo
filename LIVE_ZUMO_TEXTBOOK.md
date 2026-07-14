@@ -1,8 +1,8 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** July 14, 2026 (Session 37 close)
-**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · PAYLOAD INDENTATION CLEAN BOOK-WIDE** · L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.0 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.4 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.27** · Gate **v1.1** · Harness **v3.0** · engine.py **NEW** · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons, vs v2.27)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🔗 **EVERY MAKER KIND REACHABLE FROM ITS LESSON**
-**Currently working on:** SESSION 38 = (1) **Q017 L09 green-tape bench check** (DJ; procedure + decision table in the S38 handoff — a constant change is EXPENSIVE, prose-only is cheap), (2) **Q037 ruling** — "Coming from Arduino?" callout for L01 (Q032 ruled: NO skip lane), (3) **5 stale image deletions at push time** (corrected `git rm` in handoff — the S37 handoff's globs matched ZERO files), (4) 22-photo queue, (5) **AI Tutor rebuild LAST**.
+**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · MAKER WIRED 99/99 · FORMATTING-CLEAN BOOK-WIDE** · L01 v03.2.1 · L02 v02.1.0 · L03 v03.1.0 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.4 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.27** · Gate **v1.1** · Harness **v3.0** · engine.py (new) · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons, vs Maker v2.27)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🧹 **FLAT-INSIDE CENSUS: 6 lines book-wide, all in L02 `broken_code` — deliberate**
+**Currently working on:** SESSION 38 = (1) **Q017 bench check** — L09 green-tape band, procedure + decision table in the handoff (constant change would be EXPENSIVE: payload chain L09→L15), (2) **Q037 ruling** — L01 "Coming from Arduino?" callout (approve/modify/drop), (3) **Grok L03 EEPROM-preview taste call** (Claude recommends decline; other 3 claims false positives), (4) 5 stale image deletions (`git rm` in handoff, if not already run), (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
 
 > **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.24).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
 
@@ -14,7 +14,7 @@
 weymuth.github.io/zumo/
 ├── index.html                    ← welcome screen (Textbook | AI Tutor)
 ├── tutor.html                    ← AI Tutor (stale — rebuild LAST)
-├── newproject.html               ← Project Maker (v2.27, pending S37 push)
+├── newproject.html               ← Project Maker (v2.27, live)
 ├── timer.html
 ├── ROBOCUP_RESCUE_LINE_2026.md   ← NEW S34 — sole source of truth for competition claims
 ├── lessons/
@@ -32,7 +32,7 @@ weymuth.github.io/zumo/
 
 ---
 
-## LESSON STATE — all live (S37 close)
+## LESSON STATE — all live (S36 close)
 
 | # | Title | Version | Figures | Placeholders left |
 |---|---|---|---|---|
@@ -59,34 +59,32 @@ weymuth.github.io/zumo/
 
 ## SESSION 37 — WHAT LANDED
 
-### ✅ S36 PUSH VERIFIED LANDED (fresh clone: Maker v2.26 · L01 4 pins · L14 16 links)
+### 🔦 POWER-SWITCH ART + L01 v03.2.1 (Q26 ruling: ON = slide RIGHT, facing the back)
+`L01_GRAPHIC_1-13` rebuilt: ON-direction arrow in the switch body, zoomed OFF→ON inset, **green USB power LED added as badge 9** (Pololu: under the center rear edge — a second power light the old art omitted entirely). Prose aligned: "slide it toward the tracks" → "slide it to the right, as you face the back of the robot"; blue-vs-green LED tell added to the power warning; **one-blue-LED = critically drained batteries** note added to the checklist (left blue dims ~3 V — far past the 4,200 mV eneloop floor).
 
-### 🔦 L01 v03.2.1 — THE REAR VIEW FINALLY SAYS WHICH WAY IS ON
-`L01_GRAPHIC_1-13` rebuilt: ON-direction arrow in the switch body + a zoomed OFF→ON inset (**DJ bench ruling Q26: ON = slide RIGHT, as you face the back**), the **green USB power LED added as badge 9** (centered under the board edge per Pololu), and legend sublines (blue = battery power, switch ON · green = cable live). Six prose edits: the ambiguous "slide it toward the tracks" replaced; caption/alt/Image-Index updated for badge 9; the Plugged-In warning gained the LED tell (*green without blue = USB alone*); the troubleshooting checklist gained: **one blue LED lit (the left dims first) = pack critically drained** — by the time it shows, an eneloop pack is far past the 4,200 mV floor.
+### 🟢 L02 GREEN-LED BENCH CHECK — CLOSED FROM DOCS, NO ROBOT NEEDED
+Pololu §3.2: green = TX activity **and** shares a line with the DISPLAY interface; red = RX + display. The book's §5 checkpoint claim was RIGHT for its moment (first upload = USB traffic); the Quick Reference rows were incomplete and now carry the display cause. The planned bench check came off DJ's plate.
 
-### ✅ L02 §5 GREEN-LED BENCH CHECK — CLOSED FROM POLOLU DOCS, NO ROBOT NEEDED
-**The book was right**: the green user LED flashes on USB **transmit** (PD5), red on **receive** (PB0). The gap was the second cause: on the OLED board green/red share **display interface lines** and flicker on every display update. QR table rows fixed; §5 checkpoint prose untouched (correct as written).
+### 🧹 THE BIG ONE — BOOK-WIDE FORMATTING REPAIR (Grok's "false positive" reversed)
+Grok's vague "formatting issues" flag was REAL: **the good-version code was flat-left** — L02 227/227 lines unindented (`finished` included — students downloaded a flat file from the *structure lesson*), L03 496/496, residues in L04–L07 (incl. L07's whole capstone), while L08–L16 were pristine. Repaired in one coordinated pass:
+- **L02 v02.1.0** — 14 good blocks densified (DJ ruling: "go denser") + indented, 6 mystery listings indented (sabotage lines stripped-equality asserted), **prototype teaser** inserted at the Sketch Anatomy row (Grok L02-2, approved). `broken_code` byte-identical — deliberately awful stays awful. Absorbs the green/red QR fix.
+- **L03 v03.1.0** — comments already at canon; pure indentation, 496 → 0.
+- **L04/L05** — payload-only defects (lessons already displayed indented); files unchanged, **no bumps**.
+- **L06 v04.5.4 · L07 v04.3.4** — display-indent fixes (16 + 20 pres) + L07 payload files incl. one body shared byte-identical between steps 6 and 7 (assert-caught, fixed in both slots).
+- **Maker v2.27** — 30 payload bodies rewritten by count-asserted escaped-needle surgery; PAYLOADS re-parsed (15 lessons, key sets intact); `node --check` clean.
+- **Final census: 6 flat lines book-wide, all in `broken_code` — deliberate.** Zero inheritance ripple (no L04–L07 `finished` changed; L02/L03 verified downstream-independent). Zero byte-figure impact.
 
-### 🧹 THE FLAT-CODE DEFECT — FOUND AND REPAIRED BOOK-WIDE
-Depth-aware census: **L02 227/227 and L03 496/496 payload lines flat inside braces** — the code-structure lesson shipped unindented downloads — L04–L07 carried 41 residue lines, **L08–L16 pristine (0)**, proving flat was never the intent. Grok's vague "formatting issues" flag was REAL; initially triaged false-positive from content-only checks, **reversed on payload evidence**. Repair: **L02** densified + indented (DJ ruling: *"go denser — more detailed than less"*) · **L03** indent-only (comments already at canon) · **L04/L05** payload-only (lessons already displayed indented; files unchanged, no bumps) · **L06/L07** display + payload (incl. L07's capstone trio). Final census: **6 flat lines book-wide, all in `broken_code` — deliberate.** Preserved by design: §1 mystery originals, `broken_code`, every pseudo-code plan block (reindenting destroys their column alignment), L05's internal 4-space quirk (parked).
+### 🛠️ `engine.py` — NEW TOOL, REPO ROOT
+Brace-depth indenter (2-space house canon, measured 34,738 vs 268 — the 268 all L05, parked) · raw-indent (markup-untouched, for indent-only work) · flat-only surgical variants · fidelity-testable syntax highlighter (20/20 byte-exact on L02; **escaping styles differ per lesson** — L03 can't be byte-exact re-rendered, hence raw-indent) · payload brace-span/escape surgery. Prose plan blocks excluded by classifier (reindent destroys their column alignment).
 
-### 📖 L02 v02.1.0 — DENSER, INDENTED, AND ONE NEW TEASER
-14 good-version blocks re-commented + indented, 6 §9 mystery listings indented (sabotage lines stripped-equality asserted), and a **prototype before/after teaser** at the Sketch Anatomy row (Q033) — the dense midpoint section becomes a payoff instead of a cold open. Grok triage overall: 5 verifiable claims → 4 false positives (the monitor-gap note exists **three times**; `lib_deps` byte-identical; every Section-N cross-ref verified against the heading map) + the 1 reversal above. Q032 ruled: **no Quick-Start skip lane.**
+### 🔍 GROK TRIAGE (L01 S34-batch + fresh L03)
+L01 batch: power-switch art BUILT · debounce + LED syntax confirmed false positives (fix already existed). L03: setSpeeds sign-convention claim FALSE POSITIVE (🔑 box, signed QR ranges, objective, solution confirms convention) · turn-test values FALSE POSITIVE (350 ms @ 150 ≈ 100° ballpark, explicitly "Adjust for 90°!", countdown/constrain/always-stop present) · **EEPROM preview → S38 taste call, decline recommended** (zero EEPROM in L03, book touches it only in L16; persistence already solved by Calibration Record + constants).
 
-### 🔧 MAKER v2.27 — 30 PAYLOAD BODIES REWRITTEN, SURGICALLY
-Count-asserted escaped-needle replacement per body (§15.5 honored: no line-based cuts) · `broken_code` byte-identical (asserted) · `node` re-parse: 15 lessons intact, key sets intact · one hidden twin caught by assert: L07 `after_step_6/main.cpp` == `after_step_7/main.cpp` byte-for-byte — deduped and fixed in both slots.
-
-### 🧰 engine.py — NEW, REPO ROOT
-Brace-depth indenter (block-comment aware, **2-space house canon: measured 34,738 depth-1 lines at 2 vs 268 at 4, the 4s all in L05**) + syntax highlighter (**20/20 byte-exact round-trip on L02**; L03's mixed escaping fails fidelity — use `raw_indent`, which never touches markup) + payload-surgery helpers + `is_code_block()` prose classifier.
-
-### 🛡️ GATE PROPERTY PROVEN
-The line-wise fallback makes indentation and trailing-comment **additions** safe in both directions (a stripped payload line is a substring of its commented lesson twin). Only line **removals** orphan payloads.
-
-### ⚠️ THE HANDOFF'S OWN git rm DELETED NOTHING
-S37's published globs (`L01_IMAGE_1-13.*` …) matched zero files — real names carry suffixes, and `git rm` aborts on the first miss. Corrected 5-path command in the cleanup block below and the S38 handoff. **Dry-run every published command against a clone.**
+### ⚠️ HANDOFF DEFECT FIXED
+S37's `git rm` used bare-stem globs that match **zero files** — the real names carry descriptive suffixes. Corrected 5-path command in the S38 handoff.
 
 ### ✅ VERIFICATION
-Full-book payload gate **PASS vs Maker v2.27** (control run on untouched source first) · INI gate PASS (1 unique `lib_deps` string) · div balances 332/332 · 282/282 · 203/203 · 239/239 · zero inheritance ripple (no L04–L07 `finished` changed; L02/L03 `finished` changes verified downstream-independent) · **zero byte-figure impact** (whitespace and comments don't compile) · SVG verified pixel-programmatically after the image-view tool degraded mid-session (never claim an eyeball that didn't happen).
+Payload gate **PASS book-wide vs Maker v2.27** (control runs on untouched source first) · INI gate PASS · div balances 332/332 · 282/282 · 203/203 · 239/239 · flat census 6/deliberate · sabotage integrity asserted · `node` re-parse: 15 lessons, zero dangling refs, zero orphans.
 
 ---
 
@@ -190,20 +188,16 @@ images/L09_GRAPHIC_9-07_sensor_patterns.svg         (duplicate of 9-7)
 images/L09_GRAPHIC_9-08_project_file_tree.svg       (duplicate of 9-8)
 ```
 
-**Corrected one-liner (S37 — the S37 handoff's globs matched ZERO files):**
-```bash
-git rm images/L01_IMAGE_1-13_kr_c_programming_book.png images/L07_GRAPHIC_7-16_six_file_architecture.svg images/L08_GRAPHIC_8-03_project_file_tree.svg images/L09_GRAPHIC_9-07_sensor_patterns.svg images/L09_GRAPHIC_9-08_project_file_tree.svg
-```
-
 ---
 
 ## S38 AGENDA
 
-1. **Q017 — L09 green-tape bench check** (DJ, ten seconds on a robot; full procedure + decision table in `ZUMO_S38_HANDOFF.md`). A constant change is EXPENSIVE (gated payloads inherited L09→L15); prose-only is cheap.
-2. **Q037 — "Coming from Arduino?" callout** for L01 (DJ ruling; Q032 ruled NO skip lane).
-3. **5 stale image deletions at push time** (corrected `git rm` above).
-4. **22-photo queue** (DJ, `IMAGE_SHOT_LIST.md`).
-5. 🔴 **AI Tutor rebuild — LAST** (standing DJ ruling).
+1. **Q017 — L09 green-tape bench check** (procedure + decision table in the handoff; a constant change is EXPENSIVE — payload chain L09→L15).
+2. **Q037 — L01 "Coming from Arduino?" callout ruling** (approve/modify/drop; no skip lane either way).
+3. **Grok L03 EEPROM-preview taste call** (decline recommended).
+4. **Repo cleanup — corrected 5-path `git rm`** (in the handoff, if not already run).
+5. **22-photo queue** (DJ, `IMAGE_SHOT_LIST.md`).
+6. 🔴 **AI Tutor rebuild — LAST** (standing DJ ruling).
 
 ## OPEN QUEUE (parked)
 
@@ -213,7 +207,6 @@ git rm images/L01_IMAGE_1-13_kr_c_programming_book.png images/L07_GRAPHIC_7-16_s
 - **Challenge solution-disclosure — PARKED by DJ** (5 patterns across 10 lessons; three options held in memory; DJ rules after classroom use)
 - "Know Your Zumo" standalone board-map reference page (after the book is done)
 - §9 difficulty grouping · L06 goal→logic→template card pattern
-- **L05's internal 4-space indentation** (mixed 2/4 within its own payloads — NEW S37, parked; house canon is 2-space)
 
 ---
 
