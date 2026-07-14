@@ -483,6 +483,26 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <p style="text-align: center; margin: 20px 0;"><a href="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L02_GRAPHIC_2-05_sketch_anatomy.pdf" style="display: inline-block; background-color: #3498db; color: white; text-decoration: none; font-weight: bold; padding: 10px 22px; border-radius: 6px;">⬇ Download the Sketch Anatomy diagram (PDF)</a></p>
 
+<div style="background-color: #fff3e0; border-left: 4px solid #e67e22; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong>🔍 INSIGHT &mdash; That Unnumbered Row, in 10 Seconds</strong>
+<p>The gray <strong>Function Prototypes</strong> row earns its place with one line. Call a helper that is defined <em>below</em> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>, and the build fails:</p>
+<div style="background-color: #1e1e1e; border-radius: 8px; padding: 14px 18px; margin: 12px 0;"><pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
+  sayHello(); <span style="color: #6a9955;">// ERROR: 'sayHello' was not declared in this scope</span>
+}
+
+<span style="color: #6a9955;">// The definition sits BELOW loop() - the compiler hasn't met it yet</span>
+<span style="color: #569cd6;">void</span> sayHello() {
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Hello!"</span>));
+}</pre></div>
+<p>The fix is a <strong>prototype</strong> &mdash; a one-line promise, up in that unnumbered row, that the full definition exists further down:</p>
+<div style="background-color: #1e1e1e; border-radius: 8px; padding: 14px 18px; margin: 12px 0;"><pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> sayHello(); <span style="color: #6a9955;">// The prototype - a one-line promise, up top</span>
+
+<span style="color: #569cd6;">void</span> loop() {
+  sayHello(); <span style="color: #6a9955;">// Now this compiles - the name was declared first</span>
+}</pre></div>
+<p>That is the whole trick. You will build with prototypes later in this lesson &mdash; this is just the handshake.</p>
+</div>
+
 <div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 20px 0; border-radius: 8px;">
 
 <strong>🔑 Curly Braces { }</strong> — Define the start and end of a <strong>code block</strong>. Every opening brace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">{</code> MUST have a matching closing brace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code>. Mismatched braces are one of the most common errors!
@@ -793,12 +813,12 @@ display.print(F(<span style="color: #ce9178;">"Ready!"</span>)); <span style="co
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-<span style="color: #6a9955;">// This code repeats hundreds of times per second!</span>
-<span style="color: #569cd6;">if</span> (buttonA.isPressed()) {
-ledYellow(<span style="color: #b5cea8;">1</span>);
-} <span style="color: #569cd6;">else</span> {
-ledYellow(<span style="color: #b5cea8;">0</span>);
-}
+  <span style="color: #6a9955;">// This code repeats hundreds of times per second!</span>
+  <span style="color: #569cd6;">if</span> (buttonA.isPressed()) {
+    ledYellow(<span style="color: #b5cea8;">1</span>); <span style="color: #6a9955;">// Held down = LED on</span>
+  } <span style="color: #569cd6;">else</span> {
+    ledYellow(<span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;">// Released = LED off</span>
+  }
 }</pre>
 
 </div>
@@ -1316,14 +1336,15 @@ src/main.cpp:8:1: error: expected '}' at end of input</pre>
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> setup() {
-<span style="color: #6a9955;">// Start communication with computer</span>
-<span style="color: #4ec9b6;">Serial</span>.begin(<span style="color: #b5cea8;">115200</span>);
+  <span style="color: #6a9955;">// Start communication with computer</span>
+  <span style="color: #6a9955;">// 115200 = the speed; the Serial Monitor must match it</span>
+  <span style="color: #4ec9b6;">Serial</span>.begin(<span style="color: #b5cea8;">115200</span>);
 }
 
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #6a9955;">// Say hello once per second - impossible to miss</span>
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Hello from Zumo!"</span>));
-delay(<span style="color: #b5cea8;">1000</span>);
+  <span style="color: #6a9955;">// Say hello once per second - impossible to miss</span>
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Hello from Zumo!"</span>));
+  delay(<span style="color: #b5cea8;">1000</span>); <span style="color: #6a9955;">// Wait 1 second, then loop() runs again</span>
 }</pre>
 
 </div>
@@ -1447,9 +1468,9 @@ loop()   →  1. change the comment so it describes the NEW job:
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-<span style="color: #6a9955;">// Say hello once per second - impossible to miss</span>
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Hello from Zumo!"</span>));
-delay(<span style="color: #b5cea8;">1000</span>);
+  <span style="color: #6a9955;">// Say hello once per second - impossible to miss</span>
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Hello from Zumo!"</span>));
+  delay(<span style="color: #b5cea8;">1000</span>); <span style="color: #6a9955;">// Wait 1 second, then loop() runs again</span>
 }</pre>
 
 </div>
@@ -1469,10 +1490,11 @@ delay(<span style="color: #b5cea8;">1000</span>);
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 15px 0 5px;">
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-<span style="color: #6a9955;">// Check if button A is pressed</span>
-<span style="color: #569cd6;">if</span> (buttonA.getSingleDebouncedPress()) {
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button A pressed!"</span>));
-}
+  <span style="color: #6a9955;">// Check if button A is pressed</span>
+  <span style="color: #6a9955;">// getSingleDebouncedPress() = true exactly once per press</span>
+  <span style="color: #569cd6;">if</span> (buttonA.getSingleDebouncedPress()) {
+    <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button A pressed!"</span>)); <span style="color: #6a9955;">// Report to the Serial Monitor</span>
+  }
 }</pre>
 
 </div>
@@ -1600,10 +1622,10 @@ test       →  all three buttons print different messages</pre>
 <p>Add in loop():</p>
 
 <pre style="margin: 5px 0; font-family: 'Courier New', monospace; font-size: 0.9em;"><span style="color: #569cd6;">if</span> (buttonB.getSingleDebouncedPress()) {
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button B pressed!"</span>));
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button B pressed!"</span>)); <span style="color: #6a9955;">// Same pattern, new actor</span>
 }
 <span style="color: #569cd6;">if</span> (buttonC.getSingleDebouncedPress()) {
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button C pressed!"</span>));
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button C pressed!"</span>));
 }</pre>
 
 </div>
@@ -1742,11 +1764,11 @@ loop()     →  no changes (yet)</pre>
 
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
 
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"> <span style="color: #6a9955;">// Set up the display</span>
-display.clear();
-display.setLayout21x8();
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Set up the display</span>
+display.clear(); <span style="color: #6a9955;">// Erase whatever was on screen</span>
+display.setLayout21x8(); <span style="color: #6a9955;">// 21 columns x 8 rows of text</span>
 <span style="color: #6a9955;">// Show welcome message on screen</span>
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;">// Column 0, row 0 - the top line</span>
 display.print(F(<span style="color: #ce9178;">"LESSON 2"</span>));
 display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
 display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));</pre>
@@ -1890,12 +1912,12 @@ blinkLED(); <span style="color: #6a9955;">// Call our helper function</span>
 
 <pre style="margin: 5px 0; font-family: 'Courier New', monospace; font-size: 0.9em;"><span style="color: #6a9955;">// Blink the yellow LED multiple times</span>
 <span style="color: #569cd6;">void</span> blinkLED(<span style="color: #569cd6;">int</span> times) {
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; times; i++) {
-ledYellow(<span style="color: #b5cea8;">1</span>);
-delay(<span style="color: #b5cea8;">100</span>);
-ledYellow(<span style="color: #b5cea8;">0</span>);
-delay(<span style="color: #b5cea8;">100</span>);
-}
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; times; i++) {
+    ledYellow(<span style="color: #b5cea8;">1</span>); <span style="color: #6a9955;">// On...</span>
+    delay(<span style="color: #b5cea8;">100</span>);
+    ledYellow(<span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;">// ...and off = one blink</span>
+    delay(<span style="color: #b5cea8;">100</span>);
+  }
 }</pre>
 
 <p>Now you can call <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">blinkLED(3);</code> to blink 3 times!</p>
@@ -1947,16 +1969,16 @@ script     →  in the button A check, after blinkLED():
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Show the About screen</span>
 <span style="color: #569cd6;">void</span> showAboutScreen() {
-display.clear();
-display.setLayout21x8();
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-display.print(F(<span style="color: #ce9178;">"=== ABOUT ==="</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-display.print(F(<span style="color: #ce9178;">"Lesson 2 Demo"</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">4</span>);
-display.print(F(<span style="color: #ce9178;">"Version: 1.0"</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">6</span>);
-display.print(F(<span style="color: #ce9178;">"By: YOUR NAME"</span>));
+  display.clear(); <span style="color: #6a9955;">// Erase whatever was on screen</span>
+  display.setLayout21x8(); <span style="color: #6a9955;">// 21 columns x 8 rows of text</span>
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;">// Column 0, row 0 - the top line</span>
+  display.print(F(<span style="color: #ce9178;">"=== ABOUT ==="</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>); <span style="color: #6a9955;">// Skip a row for readability</span>
+  display.print(F(<span style="color: #ce9178;">"Lesson 2 Demo"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">4</span>);
+  display.print(F(<span style="color: #ce9178;">"Version: 1.0"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">6</span>);
+  display.print(F(<span style="color: #ce9178;">"By: YOUR NAME"</span>));
 }</pre>
 
 </div>
@@ -2039,16 +2061,16 @@ script     →  button B check: after blinkLED(),
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Show the Controls screen</span>
 <span style="color: #569cd6;">void</span> showControlsScreen() {
-display.clear();
-display.setLayout21x8();
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-display.print(F(<span style="color: #ce9178;">"=== CONTROLS ==="</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-display.print(F(<span style="color: #ce9178;">"A: About"</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">3</span>);
-display.print(F(<span style="color: #ce9178;">"B: This screen"</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">4</span>);
-display.print(F(<span style="color: #ce9178;">"C: Status"</span>));
+  display.clear(); <span style="color: #6a9955;">// Erase whatever was on screen</span>
+  display.setLayout21x8();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"=== CONTROLS ==="</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>); <span style="color: #6a9955;">// One row per button</span>
+  display.print(F(<span style="color: #ce9178;">"A: About"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">3</span>);
+  display.print(F(<span style="color: #ce9178;">"B: This screen"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">4</span>);
+  display.print(F(<span style="color: #ce9178;">"C: Status"</span>));
 }</pre>
 
 </div>
@@ -2123,16 +2145,16 @@ script     →  button C check: after blinkLED(),
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Show the Status screen</span>
 <span style="color: #569cd6;">void</span> showStatusScreen() {
-display.clear();
-display.setLayout21x8();
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-display.print(F(<span style="color: #ce9178;">"=== STATUS ==="</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-display.print(F(<span style="color: #ce9178;">"Uptime (sec):"</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">3</span>);
-display.print(millis() / <span style="color: #b5cea8;">1000</span>); <span style="color: #6a9955;">// Convert milliseconds to seconds</span>
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">5</span>);
-display.print(F(<span style="color: #ce9178;">"Buttons work!"</span>));
+  display.clear(); <span style="color: #6a9955;">// Erase whatever was on screen</span>
+  display.setLayout21x8();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"=== STATUS ==="</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Uptime (sec):"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">3</span>);
+  display.print(millis() / <span style="color: #b5cea8;">1000</span>); <span style="color: #6a9955;">// Convert milliseconds to seconds</span>
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">5</span>);
+  display.print(F(<span style="color: #ce9178;">"Buttons work!"</span>));
 }</pre>
 
 </div>
@@ -2857,14 +2879,14 @@ delay(<span style="color: #b5cea8;">500</span>);
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 10px 0;">
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> showBatteryScreen() {
-display.clear();
-display.setLayout21x8();
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-display.print(F(<span style="color: #ce9178;">"=== BATTERY ==="</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-display.print(F(<span style="color: #ce9178;">"Voltage: "</span>));
-display.print(readBatteryMillivolts());
-display.print(F(<span style="color: #ce9178;">" mV"</span>));
+  display.clear(); <span style="color: #6a9955;">// Erase whatever was on screen</span>
+  display.setLayout21x8();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"=== BATTERY ==="</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Voltage: "</span>));
+  display.print(readBatteryMillivolts()); <span style="color: #6a9955;">// Live reading from the robot</span>
+  display.print(F(<span style="color: #ce9178;">" mV"</span>));
 }</pre>
 
 </div>
@@ -2922,10 +2944,10 @@ delay(<span style="color: #b5cea8;">200</span>); <span style="color: #6a9955;">/
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 10px 0;">
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonA.getSingleDebouncedPress()) {
-countA++; <span style="color: #6a9955;">// Add this line</span>
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button A pressed!"</span>));
-blinkLED();
-showAboutScreen();
+  countA++; <span style="color: #6a9955;">// Add this line - one more press counted</span>
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Button A pressed!"</span>));
+  blinkLED();
+  showAboutScreen();
 }</pre>
 
 </div>
@@ -2934,9 +2956,9 @@ showAboutScreen();
 
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 10px 0;">
 
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;">display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">5</span>);
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;">display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">5</span>); <span style="color: #6a9955;">// Row 5 - below the status lines</span>
 display.print(F(<span style="color: #ce9178;">"A:"</span>));
-display.print(countA);
+display.print(countA); <span style="color: #6a9955;">// The live counts, updated every redraw</span>
 display.print(F(<span style="color: #ce9178;">" B:"</span>));
 display.print(countB);
 display.print(F(<span style="color: #ce9178;">" C:"</span>));
@@ -3053,12 +3075,12 @@ delay(<span style="color: #b5cea8;">300</span>);   <span style="color: #6a9955;"
 
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Redraw the startup welcome screen</span>
 <span style="color: #569cd6;">void</span> resetToWelcome() {
-display.clear();
-display.setLayout21x8();
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-display.print(F(<span style="color: #ce9178;">"LESSON 2"</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));
+  display.clear(); <span style="color: #6a9955;">// Erase whatever was on screen</span>
+  display.setLayout21x8();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"LESSON 2"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));
 }</pre>
 
 </div>
@@ -3266,13 +3288,13 @@ display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));
 <span style="color: #569cd6;">void</span> setup() {
 }
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">3</span>; i++) {
-ledYellow(<span style="color: #b5cea8;">1</span>);
-delay(<span style="color: #b5cea8;">200</span>);
-ledYellow(<span style="color: #b5cea8;">0</span>);
-delay(<span style="color: #b5cea8;">200</span>);
-}
-delay(<span style="color: #b5cea8;">2000</span>);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">3</span>; i++) {
+    ledYellow(<span style="color: #b5cea8;">1</span>);
+    delay(<span style="color: #b5cea8;">200</span>);
+    ledYellow(<span style="color: #b5cea8;">0</span>);
+    delay(<span style="color: #b5cea8;">200</span>);
+  }
+  delay(<span style="color: #b5cea8;">2000</span>);
 }</pre>
 
 </div>
@@ -3306,11 +3328,11 @@ delay(<span style="color: #b5cea8;">2000</span>);
 <span style="color: #569cd6;">void</span> setup() {
 }
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #569cd6;">if</span> (buttonA.isPressed()) {
-ledYellow(<span style="color: #b5cea8;">0</span>);
-} <span style="color: #569cd6;">else</span> {
-ledYellow(<span style="color: #b5cea8;">1</span>);
-}
+  <span style="color: #569cd6;">if</span> (buttonA.isPressed()) {
+    ledYellow(<span style="color: #b5cea8;">0</span>);
+  } <span style="color: #569cd6;">else</span> {
+    ledYellow(<span style="color: #b5cea8;">1</span>);
+  }
 }</pre>
 
 </div>
@@ -3345,9 +3367,9 @@ ledYellow(<span style="color: #b5cea8;">1</span>);
 <span style="color: #569cd6;">void</span> setup() {
 }
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #569cd6;">if</span> (buttonB.getSingleDebouncedPress()) {
-buzzer.playFrequency(<span style="color: #b5cea8;">440</span>, <span style="color: #b5cea8;">200</span>, <span style="color: #b5cea8;">12</span>);
-}
+  <span style="color: #569cd6;">if</span> (buttonB.getSingleDebouncedPress()) {
+    buzzer.playFrequency(<span style="color: #b5cea8;">440</span>, <span style="color: #b5cea8;">200</span>, <span style="color: #b5cea8;">12</span>);
+  }
 }</pre>
 
 </div>
@@ -3379,12 +3401,12 @@ buzzer.playFrequency(<span style="color: #b5cea8;">440</span>, <span style="colo
 <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #c586c0;">#include</span> <span style="color: #ce9178;">&lt;Zumo32U4.h&gt;</span>
 <span style="color: #4ec9b6;">Zumo32U4OLED</span> display;
 <span style="color: #569cd6;">void</span> setup() {
-display.clear();
-display.setLayout21x8();
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-display.print(F(<span style="color: #ce9178;">"ROBOT"</span>));
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-display.print(F(<span style="color: #ce9178;">"ZUMO"</span>));
+  display.clear();
+  display.setLayout21x8();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"ROBOT"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"ZUMO"</span>));
 }
 <span style="color: #569cd6;">void</span> loop() {
 }</pre>
@@ -3420,8 +3442,8 @@ display.print(F(<span style="color: #ce9178;">"ZUMO"</span>));
 <span style="color: #569cd6;">void</span> setup() {
 }
 <span style="color: #569cd6;">void</span> loop() {
-buzzer.playFrequency(<span style="color: #b5cea8;">880</span>, <span style="color: #b5cea8;">100</span>, <span style="color: #b5cea8;">10</span>);
-delay(<span style="color: #b5cea8;">150</span>);
+  buzzer.playFrequency(<span style="color: #b5cea8;">880</span>, <span style="color: #b5cea8;">100</span>, <span style="color: #b5cea8;">10</span>);
+  delay(<span style="color: #b5cea8;">150</span>);
 }</pre>
 
 </div>
@@ -3464,11 +3486,11 @@ delay(<span style="color: #b5cea8;">150</span>);
 <span style="color: #569cd6;">void</span> setup() {
 }
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #569cd6;">if</span> (buttonB.isPressed()) {
-motors.setSpeeds(<span style="color: #b5cea8;">400</span>, <span style="color: #b5cea8;">400</span>);
-} <span style="color: #569cd6;">else</span> {
-motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-}
+  <span style="color: #569cd6;">if</span> (buttonB.isPressed()) {
+    motors.setSpeeds(<span style="color: #b5cea8;">400</span>, <span style="color: #b5cea8;">400</span>);
+  } <span style="color: #569cd6;">else</span> {
+    motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  }
 }</pre>
 
 </div>
@@ -3729,7 +3751,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledGreen(1);</code></td>
 
-<td style="padding: 12px; border: 1px solid #ddd;">Green LED on/off — shares the USB activity light, so it may flicker on its own while USB is connected</td>
+<td style="padding: 12px; border: 1px solid #ddd;">Green LED on/off — shares its pin with USB transmit activity and the display interface, so it may flicker on its own</td>
 
 </tr>
 
@@ -3737,7 +3759,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledRed(1);</code></td>
 
-<td style="padding: 12px; border: 1px solid #ddd;">Red LED on/off — also shares a USB activity light; yellow is the only one that's all yours</td>
+<td style="padding: 12px; border: 1px solid #ddd;">Red LED on/off — also shared (USB receive + display); yellow is the only one that's all yours</td>
 
 </tr>
 

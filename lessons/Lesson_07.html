@@ -300,31 +300,31 @@ error: 'driveDistance' was not declared in this scope</pre>
 <div style="background: #EF5350; color: white; padding: 8px 15px; font-weight: bold;">❌ BEFORE: Everything in loop()</div>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-<span style="color: #7cbf6e;">// Drive forward 30cm</span>
-encoders.getCountsAndResetLeft();
-encoders.getCountsAndResetRight();
-<span style="color: #569cd6;">int</span> target = <span style="color: #b5cea8;">30</span> * <span style="color: #b5cea8;">74</span>.<span style="color: #b5cea8;">3</span>;
-motors.setSpeeds(<span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">150</span>);
-<span style="color: #569cd6;">while</span> (abs(encoders.getCountsLeft()) < target) {
-delay(<span style="color: #b5cea8;">10</span>);
+  <span style="color: #7cbf6e;">// Drive forward 30cm</span>
+  encoders.getCountsAndResetLeft();
+  encoders.getCountsAndResetRight();
+  <span style="color: #569cd6;">int</span> target = <span style="color: #b5cea8;">30</span> * <span style="color: #b5cea8;">74</span>.<span style="color: #b5cea8;">3</span>;
+  motors.setSpeeds(<span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">150</span>);
+  <span style="color: #569cd6;">while</span> (abs(encoders.getCountsLeft()) < target) {
+    delay(<span style="color: #b5cea8;">10</span>);
 }
-motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-delay(<span style="color: #b5cea8;">500</span>);
-<span style="color: #7cbf6e;">// Turn right 90 degrees</span>
-encoders.getCountsAndResetLeft();
-encoders.getCountsAndResetRight();
-<span style="color: #569cd6;">int</span> turnTarget = <span style="color: #b5cea8;">90</span> * <span style="color: #b5cea8;">5</span>.<span style="color: #b5cea8;">5</span>;
-motors.setSpeeds(<span style="color: #b5cea8;">150</span>, -<span style="color: #b5cea8;">150</span>);
-<span style="color: #569cd6;">while</span> (abs(encoders.getCountsLeft()) < turnTarget) {
-delay(<span style="color: #b5cea8;">10</span>);
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  delay(<span style="color: #b5cea8;">500</span>);
+  <span style="color: #7cbf6e;">// Turn right 90 degrees</span>
+  encoders.getCountsAndResetLeft();
+  encoders.getCountsAndResetRight();
+  <span style="color: #569cd6;">int</span> turnTarget = <span style="color: #b5cea8;">90</span> * <span style="color: #b5cea8;">5</span>.<span style="color: #b5cea8;">5</span>;
+  motors.setSpeeds(<span style="color: #b5cea8;">150</span>, -<span style="color: #b5cea8;">150</span>);
+  <span style="color: #569cd6;">while</span> (abs(encoders.getCountsLeft()) < turnTarget) {
+    delay(<span style="color: #b5cea8;">10</span>);
 }
-motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-delay(<span style="color: #b5cea8;">500</span>);
-<span style="color: #7cbf6e;">// Drive forward 30cm again...</span>
-<span style="color: #7cbf6e;">// (same 10 lines repeated!)</span>
-<span style="color: #7cbf6e;">// Turn right 90 degrees again...</span>
-<span style="color: #7cbf6e;">// (same 8 lines repeated!)</span>
-<span style="color: #7cbf6e;">// ... and so on for 100+ lines</span>
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  delay(<span style="color: #b5cea8;">500</span>);
+  <span style="color: #7cbf6e;">// Drive forward 30cm again...</span>
+  <span style="color: #7cbf6e;">// (same 10 lines repeated!)</span>
+  <span style="color: #7cbf6e;">// Turn right 90 degrees again...</span>
+  <span style="color: #7cbf6e;">// (same 8 lines repeated!)</span>
+  <span style="color: #7cbf6e;">// ... and so on for 100+ lines</span>
 }</pre>
 
 </div>
@@ -334,13 +334,13 @@ delay(<span style="color: #b5cea8;">500</span>);
 <div style="background: #4CAF50; color: white; padding: 8px 15px; font-weight: bold;">✅ AFTER: Organized with Functions</div>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-<span style="color: #7cbf6e;">// Drive a square - so clean!</span>
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i < <span style="color: #b5cea8;">4</span>; i++) {
-driveDistance(<span style="color: #b5cea8;">30</span>);
-turnDegrees(<span style="color: #b5cea8;">90</span>);
-delay(<span style="color: #b5cea8;">500</span>);
+  <span style="color: #7cbf6e;">// Drive a square - so clean!</span>
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i < <span style="color: #b5cea8;">4</span>; i++) {
+    driveDistance(<span style="color: #b5cea8;">30</span>);
+    turnDegrees(<span style="color: #b5cea8;">90</span>);
+    delay(<span style="color: #b5cea8;">500</span>);
 }
-<span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
+  <span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
 }
 <span style="color: #7cbf6e;">// The complex code is hidden</span>
 <span style="color: #7cbf6e;">// in RobotMotion.cpp where it</span>
@@ -528,15 +528,15 @@ delay(<span style="color: #b5cea8;">500</span>);
 <span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"RobotMotion.h"</span>
 <span style="color: #7cbf6e;">// Function definition (the actual code)</span>
 <span style="color: #569cd6;">void</span> driveDistance(<span style="color: #569cd6;">float</span> centimeters) {
-encoders.getCountsAndResetLeft();
-encoders.getCountsAndResetRight();
-<span style="color: #569cd6;">int</span> targetCounts = abs(centimeters) * COUNTS_PER_CM;
-<span style="color: #569cd6;">int</span> speed = (centimeters > <span style="color: #b5cea8;">0</span>) ? DRIVE_SPEED : -DRIVE_SPEED;
-motors.setSpeeds(speed, speed);
-<span style="color: #569cd6;">while</span> (abs(encoders.getCountsLeft()) < targetCounts) {
-delay(<span style="color: #b5cea8;">10</span>);
+  encoders.getCountsAndResetLeft();
+  encoders.getCountsAndResetRight();
+  <span style="color: #569cd6;">int</span> targetCounts = abs(centimeters) * COUNTS_PER_CM;
+  <span style="color: #569cd6;">int</span> speed = (centimeters > <span style="color: #b5cea8;">0</span>) ? DRIVE_SPEED : -DRIVE_SPEED;
+  motors.setSpeeds(speed, speed);
+  <span style="color: #569cd6;">while</span> (abs(encoders.getCountsLeft()) < targetCounts) {
+    delay(<span style="color: #b5cea8;">10</span>);
 }
-motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
 }</pre>
 
 <p>Notice the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#include "RobotMotion.h"</code> at the top. This connects the implementation file to its header file. It's saying: "I'm going to fulfill the promises made in RobotMotion.h."</p>
@@ -682,19 +682,19 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// GLOBAL variable — declared outside any function</span>
 <span style="color: #569cd6;">int</span> robotSpeed = <span style="color: #b5cea8;">200</span>; <span style="color: #7cbf6e;">// Everyone can see this!</span>
 <span style="color: #569cd6;">void</span> setup() {
-Serial.begin(<span style="color: #b5cea8;">115200</span>);
+  Serial.begin(<span style="color: #b5cea8;">115200</span>);
 }
 <span style="color: #569cd6;">void</span> driveForward() {
-<span style="color: #7cbf6e;">// LOCAL variable — only exists inside this function</span>
-<span style="color: #569cd6;">int</span> turnAmount = <span style="color: #b5cea8;">50</span>; <span style="color: #7cbf6e;">// Only driveForward() can see this</span>
-motors.setSpeeds(robotSpeed + turnAmount, robotSpeed - turnAmount);
-<span style="color: #7cbf6e;">// ✅ robotSpeed works — it's global</span>
-<span style="color: #7cbf6e;">// ✅ turnAmount works — we're inside driveForward()</span>
+  <span style="color: #7cbf6e;">// LOCAL variable — only exists inside this function</span>
+  <span style="color: #569cd6;">int</span> turnAmount = <span style="color: #b5cea8;">50</span>; <span style="color: #7cbf6e;">// Only driveForward() can see this</span>
+  motors.setSpeeds(robotSpeed + turnAmount, robotSpeed - turnAmount);
+  <span style="color: #7cbf6e;">// ✅ robotSpeed works — it's global</span>
+  <span style="color: #7cbf6e;">// ✅ turnAmount works — we're inside driveForward()</span>
 }
 <span style="color: #569cd6;">void</span> loop() {
-driveForward();
-Serial.println(robotSpeed); <span style="color: #7cbf6e;">// ✅ Works — robotSpeed is global</span>
-Serial.println(turnAmount); <span style="color: #7cbf6e;">// ❌ ERROR! turnAmount doesn't exist here</span>
+  driveForward();
+  Serial.println(robotSpeed); <span style="color: #7cbf6e;">// ✅ Works — robotSpeed is global</span>
+  Serial.println(turnAmount); <span style="color: #7cbf6e;">// ❌ ERROR! turnAmount doesn't exist here</span>
 }</pre>
 
 <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
@@ -2210,12 +2210,12 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 <p>When debugging multi-file projects, test one function at a time before combining them:</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-<span style="color: #7cbf6e;">// Test just driveDistance first</span>
-Serial.begin(<span style="color: #b5cea8;">115200</span>);
-Serial.println(F(<span style="color: #ce9178;">"Testing driveDistance(30)..."</span>));
-driveDistance(<span style="color: #b5cea8;">30</span>);
-Serial.println(F(<span style="color: #ce9178;">"Done!"</span>));
-<span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
+  <span style="color: #7cbf6e;">// Test just driveDistance first</span>
+  Serial.begin(<span style="color: #b5cea8;">115200</span>);
+  Serial.println(F(<span style="color: #ce9178;">"Testing driveDistance(30)..."</span>));
+  driveDistance(<span style="color: #b5cea8;">30</span>);
+  Serial.println(F(<span style="color: #ce9178;">"Done!"</span>));
+  <span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
 }</pre>
 
 <p>Open the Serial Monitor (plug icon) to see the messages. This helps you isolate which function has a problem!</p>
@@ -2386,18 +2386,18 @@ display.gotoXY(0, 0);</pre>
 <span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"RobotConfig.h"</span>
 <span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"RobotMotion.h"</span>
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #7cbf6e;">// Drive forward 30 centimeters</span>
-driveDistance(<span style="color: #b5cea8;">30</span>);
-<span style="color: #7cbf6e;">// Drive backward 15 centimeters</span>
-driveDistance(-<span style="color: #b5cea8;">15</span>);
-<span style="color: #7cbf6e;">// Turn right 90 degrees</span>
-turnDegrees(<span style="color: #b5cea8;">90</span>);
-<span style="color: #7cbf6e;">// Turn left 45 degrees</span>
-turnDegrees(-<span style="color: #b5cea8;">45</span>);
-<span style="color: #7cbf6e;">// Drive a square (combine functions!)</span>
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i < <span style="color: #b5cea8;">4</span>; i++) {
-driveDistance(<span style="color: #b5cea8;">25</span>);
-turnDegrees(<span style="color: #b5cea8;">90</span>);
+  <span style="color: #7cbf6e;">// Drive forward 30 centimeters</span>
+  driveDistance(<span style="color: #b5cea8;">30</span>);
+  <span style="color: #7cbf6e;">// Drive backward 15 centimeters</span>
+  driveDistance(-<span style="color: #b5cea8;">15</span>);
+  <span style="color: #7cbf6e;">// Turn right 90 degrees</span>
+  turnDegrees(<span style="color: #b5cea8;">90</span>);
+  <span style="color: #7cbf6e;">// Turn left 45 degrees</span>
+  turnDegrees(-<span style="color: #b5cea8;">45</span>);
+  <span style="color: #7cbf6e;">// Drive a square (combine functions!)</span>
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i < <span style="color: #b5cea8;">4</span>; i++) {
+    driveDistance(<span style="color: #b5cea8;">25</span>);
+    turnDegrees(<span style="color: #b5cea8;">90</span>);
 }
 }</pre>
 
@@ -2663,16 +2663,16 @@ Call driveDistance with NEGATIVE centimeters</pre>
 <p><strong>Step 2:</strong> Add the implementation to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.cpp</code> (after driveDistance):</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> driveBackward(<span style="color: #569cd6;">float</span> centimeters) {
-driveDistance(____________);
+  driveDistance(____________);
 }</pre>
 
 <p><strong>Step 3:</strong> Test it in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>:</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-driveDistance(<span style="color: #b5cea8;">30</span>); <span style="color: #7cbf6e;">// Forward 30cm</span>
-delay(<span style="color: #b5cea8;">500</span>);
-driveBackward(<span style="color: #b5cea8;">30</span>); <span style="color: #7cbf6e;">// Back 30cm - should return to start!</span>
-<span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
+  driveDistance(<span style="color: #b5cea8;">30</span>); <span style="color: #7cbf6e;">// Forward 30cm</span>
+  delay(<span style="color: #b5cea8;">500</span>);
+  driveBackward(<span style="color: #b5cea8;">30</span>); <span style="color: #7cbf6e;">// Back 30cm - should return to start!</span>
+  <span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
 }</pre>
 
 </div>
@@ -2688,7 +2688,7 @@ driveBackward(<span style="color: #b5cea8;">30</span>); <span style="color: #7cb
 <p><strong>RobotMotion.cpp:</strong></p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> driveBackward(<span style="color: #569cd6;">float</span> centimeters) {
-driveDistance(-centimeters); <span style="color: #7cbf6e;">// Negative = backward!</span>
+  driveDistance(-centimeters); <span style="color: #7cbf6e;">// Negative = backward!</span>
 }</pre>
 
 <p><strong>Key concept:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveBackward(20)</code> is clearer than <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance(-20)</code>. Wrapper functions improve readability!</p>
@@ -2737,21 +2737,21 @@ Call turnDegrees with NEGATIVE degrees</pre>
 <p><strong>Step 2:</strong> Add implementations to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.cpp</code>:</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> turnRight(<span style="color: #569cd6;">float</span> degrees) {
-turnDegrees(________); <span style="color: #7cbf6e;">// Positive = right</span>
+  turnDegrees(________); <span style="color: #7cbf6e;">// Positive = right</span>
 }
 <span style="color: #569cd6;">void</span> turnLeft(<span style="color: #569cd6;">float</span> degrees) {
-turnDegrees(________); <span style="color: #7cbf6e;">// Negative = left</span>
+  turnDegrees(________); <span style="color: #7cbf6e;">// Negative = left</span>
 }</pre>
 
 <p><strong>Step 3:</strong> Test with a square in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>:</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">4</span>; i++) {
-driveDistance(<span style="color: #b5cea8;">20</span>);
-turnRight(<span style="color: #b5cea8;">90</span>); <span style="color: #7cbf6e;">// Much clearer than turnDegrees(90)!</span>
-delay(<span style="color: #b5cea8;">300</span>);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">4</span>; i++) {
+    driveDistance(<span style="color: #b5cea8;">20</span>);
+    turnRight(<span style="color: #b5cea8;">90</span>); <span style="color: #7cbf6e;">// Much clearer than turnDegrees(90)!</span>
+    delay(<span style="color: #b5cea8;">300</span>);
 }
-<span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
+  <span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
 }</pre>
 
 </div>
@@ -2765,10 +2765,10 @@ delay(<span style="color: #b5cea8;">300</span>);
 <span style="color: #569cd6;">void</span> turnLeft(<span style="color: #569cd6;">float</span> degrees);
 <span style="color: #7cbf6e;">// RobotMotion.cpp:</span>
 <span style="color: #569cd6;">void</span> turnRight(<span style="color: #569cd6;">float</span> degrees) {
-turnDegrees(degrees); <span style="color: #7cbf6e;">// Positive = right</span>
+  turnDegrees(degrees); <span style="color: #7cbf6e;">// Positive = right</span>
 }
 <span style="color: #569cd6;">void</span> turnLeft(<span style="color: #569cd6;">float</span> degrees) {
-turnDegrees(-degrees); <span style="color: #7cbf6e;">// Negative = left</span>
+  turnDegrees(-degrees); <span style="color: #7cbf6e;">// Negative = left</span>
 }</pre>
 
 <p><strong>Key concept:</strong> Now you can write <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">turnLeft(90)</code> instead of remembering that negative means left!</p>
@@ -2824,34 +2824,34 @@ Print line2</pre>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// ===== DISPLAY HELPERS =====</span>
 <span style="color: #569cd6;">void</span> initDisplay() {
-display.setLayout21x8();
+  display.setLayout21x8();
 }
 <span style="color: #569cd6;">void</span> showMessage(<span style="color: #569cd6;">const</span> char* line1, <span style="color: #569cd6;">const</span> char* line2) {
-display.clear();
-display.print(line1);
-display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-display.print(line2);
+  display.clear();
+  display.print(line1);
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(line2);
 }</pre>
 
 <p><strong>Step 3:</strong> Update <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> to use the helpers:</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> setup() {
-<span style="color: #7cbf6e;">// ... battery check ...</span>
-initDisplay();
-showMessage(<span style="color: #ce9178;">"ORGANIZED!"</span>, <span style="color: #ce9178;">"Press A"</span>);
-buttonA.waitForButton();
-delay(<span style="color: #b5cea8;">500</span>);
+  <span style="color: #7cbf6e;">// ... battery check ...</span>
+  initDisplay();
+  showMessage(<span style="color: #ce9178;">"ORGANIZED!"</span>, <span style="color: #ce9178;">"Press A"</span>);
+  buttonA.waitForButton();
+  delay(<span style="color: #b5cea8;">500</span>);
 }
 <span style="color: #569cd6;">void</span> loop() {
-showMessage(<span style="color: #ce9178;">"Forward"</span>, <span style="color: #ce9178;">"30 cm..."</span>);
-driveDistance(<span style="color: #b5cea8;">30</span>);
-delay(<span style="color: #b5cea8;">500</span>);
-showMessage(<span style="color: #ce9178;">"Turn"</span>, <span style="color: #ce9178;">"90 deg..."</span>);
-turnDegrees(<span style="color: #b5cea8;">90</span>);
-delay(<span style="color: #b5cea8;">500</span>);
-showMessage(<span style="color: #ce9178;">"DONE!"</span>, <span style="color: #ce9178;">"Press A"</span>);
-buttonA.waitForButton();
-delay(<span style="color: #b5cea8;">500</span>);
+  showMessage(<span style="color: #ce9178;">"Forward"</span>, <span style="color: #ce9178;">"30 cm..."</span>);
+  driveDistance(<span style="color: #b5cea8;">30</span>);
+  delay(<span style="color: #b5cea8;">500</span>);
+  showMessage(<span style="color: #ce9178;">"Turn"</span>, <span style="color: #ce9178;">"90 deg..."</span>);
+  turnDegrees(<span style="color: #b5cea8;">90</span>);
+  delay(<span style="color: #b5cea8;">500</span>);
+  showMessage(<span style="color: #ce9178;">"DONE!"</span>, <span style="color: #ce9178;">"Press A"</span>);
+  buttonA.waitForButton();
+  delay(<span style="color: #b5cea8;">500</span>);
 }</pre>
 
 </div>
@@ -3037,14 +3037,14 @@ Create stub implementations (empty or <span style="color: #569cd6;">return</span
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// ===== SENSOR FUNCTIONS (stubs — filled in Lesson 8) =====</span>
 <span style="color: #569cd6;">void</span> initLineSensors() {
-<span style="color: #7cbf6e;">// TODO: Add sensor initialization in Lesson 8</span>
+  <span style="color: #7cbf6e;">// TODO: Add sensor initialization in Lesson 8</span>
 }
 <span style="color: #569cd6;">void</span> calibrateLineSensors() {
-<span style="color: #7cbf6e;">// TODO: Add calibration code in Lesson 8</span>
+  <span style="color: #7cbf6e;">// TODO: Add calibration code in Lesson 8</span>
 }
 <span style="color: #569cd6;">int</span> readLinePosition() {
-<span style="color: #7cbf6e;">// TODO: Add sensor reading in Lesson 8</span>
-<span style="color: #569cd6;">return</span> ____; <span style="color: #7cbf6e;">// Return center position as placeholder</span>
+  <span style="color: #7cbf6e;">// TODO: Add sensor reading in Lesson 8</span>
+  <span style="color: #569cd6;">return</span> ____; <span style="color: #7cbf6e;">// Return center position as placeholder</span>
 }</pre>
 
 <p><strong>Step 3:</strong> Test that it compiles — add a quick test call in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>'s setup():</p>
@@ -3078,14 +3078,14 @@ Create stub implementations (empty or <span style="color: #569cd6;">return</span
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// Add these AFTER the hardware definitions:</span>
 <span style="color: #7cbf6e;">// ===== SENSOR FUNCTIONS (stubs — filled in Lesson 8) =====</span>
 <span style="color: #569cd6;">void</span> initLineSensors() {
-<span style="color: #7cbf6e;">// TODO: Add sensor initialization in Lesson 8</span>
+  <span style="color: #7cbf6e;">// TODO: Add sensor initialization in Lesson 8</span>
 }
 <span style="color: #569cd6;">void</span> calibrateLineSensors() {
-<span style="color: #7cbf6e;">// TODO: Add calibration code in Lesson 8 </span>
+  <span style="color: #7cbf6e;">// TODO: Add calibration code in Lesson 8 </span>
 }
 <span style="color: #569cd6;">int</span> readLinePosition() {
-<span style="color: #7cbf6e;">// TODO: Add sensor reading in Lesson 8</span>
-<span style="color: #569cd6;">return</span> <span style="color: #b5cea8;">2000</span>; <span style="color: #7cbf6e;">// Return center position as placeholder</span>
+  <span style="color: #7cbf6e;">// TODO: Add sensor reading in Lesson 8</span>
+  <span style="color: #569cd6;">return</span> <span style="color: #b5cea8;">2000</span>; <span style="color: #7cbf6e;">// Return center position as placeholder</span>
 }</pre>
 
 <p><strong>Key concept:</strong> Adding stub functions to existing files lets you set up your architecture before writing the real code. This is how professional developers work — build the structure first, fill in the details later.</p>
@@ -3143,21 +3143,21 @@ Show <span style="color: #ce9178;">"Complete!"</span> message</pre>
 <p><strong>Step 3:</strong> Write the main program:</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> setup() {
-showMessage(<span style="color: #ce9178;">"Square Demo"</span>, <span style="color: #ce9178;">"Press A"</span>);
-buttonA.waitForButton();
-delay(<span style="color: #b5cea8;">500</span>);
+  showMessage(<span style="color: #ce9178;">"Square Demo"</span>, <span style="color: #ce9178;">"Press A"</span>);
+  buttonA.waitForButton();
+  delay(<span style="color: #b5cea8;">500</span>);
 }
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; ____; i++) {
-showMessage(<span style="color: #ce9178;">"Side"</span>, <span style="color: #ce9178;">"driving..."</span>);
-driveDistance(____);
-delay(<span style="color: #b5cea8;">300</span>);
-showMessage(<span style="color: #ce9178;">"Turning"</span>, <span style="color: #ce9178;">"right..."</span>);
-turnRight(____);
-delay(<span style="color: #b5cea8;">300</span>);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; ____; i++) {
+    showMessage(<span style="color: #ce9178;">"Side"</span>, <span style="color: #ce9178;">"driving..."</span>);
+    driveDistance(____);
+    delay(<span style="color: #b5cea8;">300</span>);
+    showMessage(<span style="color: #ce9178;">"Turning"</span>, <span style="color: #ce9178;">"right..."</span>);
+    turnRight(____);
+    delay(<span style="color: #b5cea8;">300</span>);
 }
-showMessage(<span style="color: #ce9178;">"Square"</span>, <span style="color: #ce9178;">"Complete!"</span>);
-<span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
+  showMessage(<span style="color: #ce9178;">"Square"</span>, <span style="color: #ce9178;">"Complete!"</span>);
+  <span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
 }</pre>
 
 </div>
@@ -3171,21 +3171,21 @@ showMessage(<span style="color: #ce9178;">"Square"</span>, <span style="color: #
 <span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"RobotSensors.h"</span>
 <span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"RobotMotion.h"</span>
 <span style="color: #569cd6;">void</span> setup() {
-showMessage(<span style="color: #ce9178;">"Square Demo"</span>, <span style="color: #ce9178;">"Press A"</span>);
-buttonA.waitForButton();
-delay(<span style="color: #b5cea8;">500</span>);
+  showMessage(<span style="color: #ce9178;">"Square Demo"</span>, <span style="color: #ce9178;">"Press A"</span>);
+  buttonA.waitForButton();
+  delay(<span style="color: #b5cea8;">500</span>);
 }
 <span style="color: #569cd6;">void</span> loop() {
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">4</span>; i++) {
-showMessage(<span style="color: #ce9178;">"Side"</span>, <span style="color: #ce9178;">"driving..."</span>);
-driveDistance(<span style="color: #b5cea8;">25</span>);
-delay(<span style="color: #b5cea8;">300</span>);
-showMessage(<span style="color: #ce9178;">"Turning"</span>, <span style="color: #ce9178;">"right..."</span>);
-turnRight(<span style="color: #b5cea8;">90</span>);
-delay(<span style="color: #b5cea8;">300</span>);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">4</span>; i++) {
+    showMessage(<span style="color: #ce9178;">"Side"</span>, <span style="color: #ce9178;">"driving..."</span>);
+    driveDistance(<span style="color: #b5cea8;">25</span>);
+    delay(<span style="color: #b5cea8;">300</span>);
+    showMessage(<span style="color: #ce9178;">"Turning"</span>, <span style="color: #ce9178;">"right..."</span>);
+    turnRight(<span style="color: #b5cea8;">90</span>);
+    delay(<span style="color: #b5cea8;">300</span>);
 }
-showMessage(<span style="color: #ce9178;">"Square"</span>, <span style="color: #ce9178;">"Complete!"</span>);
-<span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
+  showMessage(<span style="color: #ce9178;">"Square"</span>, <span style="color: #ce9178;">"Complete!"</span>);
+  <span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
 }</pre>
 
 <p><strong>Key concept:</strong> Notice how clean main.cpp is now! All the complexity is hidden in your modules. This is the power of code organization—main.cpp just describes WHAT the robot does, not HOW it does it.</p>
@@ -3589,7 +3589,7 @@ Source files (.cpp) → <code style="font-family: 'Courier New', monospace; back
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"MyFile.h"</span>
 <span style="color: #569cd6;">void</span> myFunction(<span style="color: #569cd6;">int</span> param) {
-<span style="color: #7cbf6e;">// Actual code here</span>
+  <span style="color: #7cbf6e;">// Actual code here</span>
 }</pre>
 
 </div>
@@ -3607,7 +3607,7 @@ Source files (.cpp) → <code style="font-family: 'Courier New', monospace; back
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"RobotConfig.h"</span> <span style="color: #7cbf6e;">// Get constants</span>
 <span style="color: #569cd6;">#include</span> <span style="color: #ce9178;">"RobotMotion.h"</span> <span style="color: #7cbf6e;">// Get function declarations</span>
 <span style="color: #569cd6;">void</span> loop() {
-driveDistance(<span style="color: #b5cea8;">30</span>); <span style="color: #7cbf6e;">// Just works!</span>
+  driveDistance(<span style="color: #b5cea8;">30</span>); <span style="color: #7cbf6e;">// Just works!</span>
 }</pre>
 
 </div>
