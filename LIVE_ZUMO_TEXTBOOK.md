@@ -1,10 +1,10 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 14, 2026 (Session 35 close)
-**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS, ALL CLEAN, HEADERS NORMALIZED BOOK-WIDE** · L01 v03.1.3 · L02 v02.0.31 · L03 v03.0.13 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.3 · L07 v04.3.3 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.1.0 · L12 v01.1.0 · L13 v02.1.0 · L14 v02.2.0 · L15 v02.1.0 · L16 v02.1.0 · Bible **v8.21** · Maker **v2.23** · Gate **v1.1** · Harness **v3.0** · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE** · 📐 **ALL 1,180 PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🎨 **4 PART BANNERS / 5 COLOR GROUPS, ALL 16**
-**Currently working on:** SESSION 36 = (1) **MAKER WIRING L11→L16** — 100 kinds live and unreachable; anchors are NOT uniform (L13 regular; L11's only "Step" headings are in §3 theory, not the §6 build) — hand-place, do not pattern-match, (2) Grok L01 batch (4 cosmetic items) + `lib_deps` pin bench test, (3) DJ bench checks (L02 green-LED · L09 green-tape), (4) 5 stale image deletions, (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
+**Date:** July 14, 2026 (Session 36 close)
+**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · THE MAKER IS WIRED: 99 KINDS, 99 LINKS, CLEAN 1:1** · L01 v03.1.3 · L02 v02.0.31 · L03 v03.0.13 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.3 · L07 v04.3.3 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.6 · L11 v02.2.0 · L12 v01.2.0 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.22** · Maker **v2.25** · Gate **v1.1** · Harness **v3.0** · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🔗 **EVERY MAKER KIND REACHABLE FROM ITS LESSON**
+**Currently working on:** SESSION 37 = (1) **`lib_deps` PIN** — Maker line 1663 is unpinned; tag `2.0.1` IS real, but the library ships NO `library.json` (Arduino manifest only) and the PlatformIO registry is unreachable from the container. DJ runs `pio pkg show pololu/Zumo32U4`, OR accept the registry-independent git-tag pin — then a coordinated Maker + L01 + Bible bump, (2) Grok L01 batch (LED syntax · debounce note · power-switch label art), (3) DJ bench checks (L02 green-LED · L09 green-tape), (4) 5 stale image deletions (verified 0 refs), (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
 
-> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.21).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
+> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.22).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
 
 ---
 
@@ -14,7 +14,7 @@
 weymuth.github.io/zumo/
 ├── index.html                    ← welcome screen (Textbook | AI Tutor)
 ├── tutor.html                    ← AI Tutor (stale — rebuild LAST)
-├── newproject.html               ← Project Maker (v2.23, live)
+├── newproject.html               ← Project Maker (v2.25, live)
 ├── timer.html
 ├── ROBOCUP_RESCUE_LINE_2026.md   ← NEW S34 — sole source of truth for competition claims
 ├── lessons/
@@ -32,7 +32,7 @@ weymuth.github.io/zumo/
 
 ---
 
-## LESSON STATE — all live (S35 close)
+## LESSON STATE — all live (S36 close)
 
 | # | Title | Version | Figures | Placeholders left |
 |---|---|---|---|---|
@@ -46,14 +46,39 @@ weymuth.github.io/zumo/
 | 08 | Line Following | v04.1.3 | 3 | 0 |
 | 09 | Intersections & Dead Ends | v05.0.4 | 8 | 0 |
 | 10 | Obstacles | v02.1.6 | 7 | 0 |
-| 11 | Time Lies, Distance Doesn't | v02.1.0 | 4 | 0 |
-| 12 | Wheels Lie | v01.1.0 | 3 | 1 |
-| 13 | Rescue Zone | v02.1.0 | 2 | 2 |
-| 14 | Competition Prep | v02.2.0 | 4 | 2 |
-| 15 | The Present Isn't Enough | v02.1.0 | 3 | 0 |
-| 16 | Nothing Left to Take Away | v02.1.0 | 3 | 1 |
+| 11 | Time Lies, Distance Doesn't | v02.2.0 | 4 | 0 |
+| 12 | Wheels Lie | v01.2.0 | 3 | 1 |
+| 13 | Rescue Zone | v02.2.0 | 2 | 2 |
+| 14 | Competition Prep | v02.4.0 | 4 | 2 |
+| 15 | The Present Isn't Enough | v02.2.0 | 3 | 0 |
+| 16 | Nothing Left to Take Away | v02.2.0 | 3 | 1 |
 
 **Book-wide audit (live tree, S34 close):** zero duplicate ids · zero dead anchors · **zero broken `<img>`** · div balance 0 · 📓 Engineer's Log ×16 · payload gate **PASS** · **zero stale byte counts (all 23 old figures purged, verified by residue sweep on a fresh clone)**.
+
+---
+
+## SESSION 36 — WHAT LANDED
+
+### 🔗 THE MAKER IS WIRED — 99 KINDS, 99 LINKS, CLEAN 1:1
+L11–L16 carried **100 live, gated, unreachable payload kinds**. Every one is now linked from the lesson that teaches it. Links were **hand-placed and audited against the heading they landed under** — no pattern-matching. Two asserts fired mid-build and were right both times: a duplicate text anchor in L13 that would have wired Challenge 2's link into the wrong block, and four L12 mystery links collapsing to one offset (L12's mysteries are heading-less `<div>` cards).
+
+### 🪜 L11 §7 RE-LETTERED — the Maker was off by one
+L11's ladder is five rungs (7A–7E) but the Maker's letters had drifted from 7C on: `cal_7c` was labelled with the lesson's **7D** content, `cal_7d` referenced **no rung at all**, and the lesson's **7C — TRIM Under Blindness had no kind**. Re-lettered to match. 7C now points at `cal_7b` (a run-only rung — no code changes, the student zeroes their own TRIM). 7D's merged payload compile-verified: **20,560 B, 8,112 B spare, RAM 617/2,560** — byte-identical to the old `cal_7d`. Old `cal_7c` payload deleted.
+
+### 🗑️ L14 `step_4` RETIRED — a duplicate kind, not a build (DJ ruling)
+L14 was the **only** lesson with a `step_*` kind for its LAST step, and `after_step_4` was **byte-identical to `finished`** — the Maker offered one project under two names. Canon (now Bible §15.2): step kinds cover steps 1..N−1; **`finished` IS step N**. Kind retired, orphaned payload deleted, L14 now reads exactly like its five siblings. Book-wide kinds 100 → **99**.
+
+### 📖 BIBLE v8.22 — NEW §15 MAKER REGISTRY & LINK CANON
+Four rules, all earned this session: **15.1** the §7 ladder is five rungs and the Maker's letters must match the lesson's · **15.2** `finished` IS the last step · **15.3** a kind may share another kind's `payloadRef` (run-only rungs — do not manufacture duplicate payloads) · **15.4** the four link shapes · **15.5** ⚠️ **the Maker is NOT uniformly formatted — edit by offset, never by line.**
+
+### 🐛 THE BUG THAT PROVES §15.5
+`PAYLOADS` is pretty-printed for some lessons and **compact single-line for others** — L14's whole block is ONE line. A line-based deletion (`rfind('\n')`) walked back past every preceding key and **silently collapsed PAYLOADS from 15 lessons to 10**. The JS still parsed. Only a `node` re-parse asserting lesson count caught it. Rebuilt with an offset-exact cut.
+
+### ⚖️ CHALLENGE SOLUTION-DISCLOSURE — RAISED, PARKED (DJ ruling)
+Wiring the §9 links surfaced that **the book has no disclosure canon**: L06/L07/L11/L13/L14 publish solutions · **L08/L09 withhold them** · L10 gives neither · L12/L15 print a scaffold with a blank. Also found: **L08's challenge cards already carry a Maker link** — pointing at `finished`, a neutral starting copy, not the answer. DJ: *"leave things as they are for now; I'll make the call after I go through them as a student."* Link goes inside whatever each lesson already discloses. Three options preserved in memory for the ruling.
+
+### ✅ VERIFICATION
+Payload gate **PASS, all 15 lessons**, control run on untouched source first · **99 links / 99 kinds, 1:1** · Maker parses, zero dangling refs, zero orphan payloads · byte-residue sweep intact (S34 audit preserved) · structure balanced, zero heading churn · push verified by fresh clone (md5, all 7 files).
 
 ---
 
@@ -122,19 +147,21 @@ images/L09_GRAPHIC_9-08_project_file_tree.svg       (duplicate of 9-8)
 
 ---
 
-## S35 AGENDA
+## S37 AGENDA
 
-1. **HEADER NORMALIZATION L11→L16 to System A** — L11: green swap only. L12–L14: `<h2>` → banner divs. L15–L16: gradient → banner AND `s1..s10` ids → `section-N` (TOC links are self-contained; verified safe). Byte-count lines in converted sections must survive untouched.
-2. **MAKER WIRING L11→L16** — ~100 links (L11:18 · L12:21 · L13:19 · L14:13 · L15:16 · L16:8 kinds). `step_4_RED` is an orphan kind in the Maker (link cut S34) — delete from Maker or leave dormant, DJ ruling. One version bump per lesson covers headers + wiring together.
-3. **Grok L01 batch** (one minor bump): LED syntax note · debounce note · power-switch label → art queue · `lib_deps` line-break bench check. **PLUS lib_deps pin** — 2.0.1 IS real; DJ's error was syntax; bench-test `@^2.0.1` / `@~2.0.1` / git-tag → moderate bump (Maker + L01 + Bible) when resolved.
-4. **DJ bench checks:** L02 §5 green-LED "USB activity light" claim · L09 green-tape 300–700 (Q017).
-5. Repo cleanup (5 images) · **22-photo queue** · Bible bump (byte canon + header canon + push workflow + rules doc) · **AI Tutor rebuild LAST**.
+1. **`lib_deps` PIN (blocked on one DJ command).** Maker line 1663 = `lib_deps = pololu/Zumo32U4`, unpinned. **Verified:** the Pololu repo's real tags are `1.1.1 … 2.0.0, 2.0.1`; tag `2.0.1` exists and its manifest says `version=2.0.1`. **Also verified — likely the cause of DJ's build error:** the library ships **only `library.properties`** (the Arduino manifest); there is **no `library.json`**, and PlatformIO reads `owner/name` as a *registry* reference whose versions need not match the GitHub tags. `api.registry.platformio.org` is **blocked by the container allowlist** — Claude cannot settle this from here. Close it either by (a) DJ running `pio pkg show pololu/Zumo32U4`, or (b) accepting the registry-independent git-tag pin: `lib_deps = https://github.com/pololu/zumo-32u4-arduino-library.git#2.0.1`. Then a coordinated Maker + L01 prose + Bible change (moderate bump).
+2. **Grok L01 batch** (one minor bump): LED syntax note · debounce note · power-switch label → Claude SVG · `lib_deps` line-break bench check.
+3. **DJ bench checks:** L02 §5 green-LED "USB activity light" claim · L09 green-tape 300–700 (Q017).
+4. **Repo cleanup — 5 stale images, verified 0 references** (see below). One `git rm`.
+5. **22-photo queue** (DJ, `IMAGE_SHOT_LIST.md`).
+6. 🔴 **AI Tutor rebuild — LAST** (standing DJ ruling).
 
 ## OPEN QUEUE (parked)
 
 - 🔴 AI Tutor badly stale — rebuild LAST (standing DJ ruling)
 - Gate filename regex — teach it `Lesson_NN.html`
 - L04 §3.6 `initFiveSensors()` compile-test
+- **Challenge solution-disclosure — PARKED by DJ** (5 patterns across 10 lessons; three options held in memory; DJ rules after classroom use)
 - "Know Your Zumo" standalone board-map reference page (after the book is done)
 - §9 difficulty grouping · L06 goal→logic→template card pattern
 
