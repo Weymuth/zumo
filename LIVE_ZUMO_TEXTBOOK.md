@@ -1,10 +1,27 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 14, 2026 (Session 37 close — FINAL, incl. post-close batch)
-**Status:** 🌐 **THE SITE IS LIVE — 16/16 LESSONS · MAKER WIRED 99/99 · FORMATTING-CLEAN BOOK-WIDE** · L01 v03.2.2 · L02 v02.1.0 · L03 v03.1.1 · L04 v04.0.5 · L05 v04.1.5 · L06 v04.5.4 · L07 v04.3.5 · L08 v04.1.3 · L09 v05.0.4 · L10 v02.1.7 · L11 v02.2.0 · L12 v01.2.1 · L13 v02.2.0 · L14 v02.4.0 · L15 v02.2.0 · L16 v02.2.0 · Bible **v8.24** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py (new) · 🎯 **PAYLOAD GATE PASSES BOOK-WIDE (15 lessons, vs Maker v2.28)** · 📐 **ALL PUBLISHED FIGURES BYTE-IDENTICAL (S34 audit intact)** · 🧹 **FLAT-CODE CLASS CLOSED ON EVERY SURFACE: payloads 6/deliberate · builder 0 · all 16 displays 0** · 📖 **GROK REVIEW PASS 16/16 COMPLETE**
-**Currently working on:** SESSION 38 = (1) **Q017 bench + three riders** — green-tape six numbers · calibration-spin stopwatch (Q044) · gyro-bias stopwatch (Q046, unruled) — all in the handoff, (2) **Q037 ruling** — L01 "Coming from Arduino?" callout, (3) 5 stale image deletions at push time, (4) 22-photo queue, (5) **AI Tutor rebuild LAST**.
+**Date:** July 15, 2026 (Session 38 close — visual pass, STAGED not pushed)
+**Status:** 🎨 **S38 VISUAL PASS COMPLETE — STAGED, NOT PUSHED** · L01 v03.2.3 · L02 v02.1.1 · L03 v03.1.2 · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.24** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · 🎯 **PAYLOAD GATE UNAFFECTED (visual-only; no payload/byte changes)** · 🎭 **BANNERS UNIFIED 16/16 · PART BARS MERGED 64/64 · PREREQ BOXES LABELED 6/6** · 🏫 **LANDING PAGE = MERCERSBURG MARK (dark variant)** · 🪦 **GROK RETIRED**
+**Currently working on:** SESSION 39 = (1) **PUSH S38** (SVGs→images, index→Pages, 16 lessons→Canvas, 5 git rm) then verify by clone, (2) **Q017 bench + three riders** (green-tape six numbers · calibration-spin stopwatch Q044 · gyro-bias Q046 unruled), (3) **Q037 ruling** — L01 "Coming from Arduino?" callout, (4) 22-photo queue, (5) **AI Tutor rebuild LAST**.
 
 > **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.24).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
+
+
+## 📋 SESSION 38 — VISUAL PASS (STAGED, NOT PUSHED)
+
+**All changes are display/layout only. No payload, byte, gate, or Maker changes. Payload gate and byte figures are untouched.**
+
+1. **Title banners unified 16/16.** One template book-wide: dark-top gradient `linear-gradient(to bottom, #1a5276 0%, #2e86ab 100%)`, centered, `border-radius 12px`. Five rows: LESSON NN eyebrow (0.95em, letter-spacing 3px) · title (2.3em, in `<h1>`) · tagline (1.1em, omitted if none) · "Zumo 32U4 Robotics • PlatformIO Edition" · "Version N — Month". Four prior families (centered / left-rail-emoji / inverted L15 / no-version L16) collapsed. Emoji dropped from L11–L14. New titles+taglines authored for L01–L04, L08 (see table below). L02 keeps June 2026; L11–L14, L16 dated July 2026 (inferred — last edit S36/S37).
+2. **PART/section bars merged 64/64 (Option C1).** Each PART bar now squares its bottom (`border-radius: 8px 8px 0 0; margin: 22px 0 0`) and caps its first section (section header → `border-radius: 0; margin-top: 0`), forming one connected unit. Colors preserved per part (blue P1 / green P2 / purple P3 / rose P4). Was: two same-color pills with a 34px gap.
+3. **L03/L04 prereq boxes relocated.** "WHAT YOU NEED BEFORE STARTING" boxes moved to ABOVE their PART bar (were between bar and section, blocking the merge). L03: two boxes (P1, P2). L04: one (P1). This freed the last 3 unmerged bars → 64/64.
+4. **Prereq boxes labeled 6/6.** New id scheme `what-you-need-l{NN}-p{N}`: l02-p1, l03-p1, l03-p2, l04-p1, l05-p1, l09-p1. Previously 4 of 6 had no id; the 2 labeled ones shared ambiguous `what-you-need-1`.
+5. **L10 §8A.2 case-body indent fix.** Six lines +2 spaces. Flat/relative-indent census now 0 book-wide (last member of the S37 formatting class).
+6. **Landing page (`index.html` v1.2.1).** Robot emoji + wordmark → Mercersburg Academy Robotics mark. Dark variant: lettering white, gear `#b6bbc7` (option C), orange untouched, sits directly on --bg (no plate — white lettering). `<h1>` retained sr-only. Blue/print master kept in images/.
+7. **Grok retired.** DJ fired it + cancelled the sub. Its 16/16 review produced 22 claims → 0 builds (all false positives or the book's own sentences quoted back). The "quote-and-grep" tell survives as tool-independent discipline.
+
+**S38 title/tagline table:** L01 Sense, Decide, Act / And Everything That Comes First · L02 Mastering the Code / Reading Code You Didn't Write · L03 Motor TRIM / No Two Motors Are the Same · L04 Line Sensors / Your Robot Cannot See — It Measures · L05 Proximity Sensors / Teaching Your Robot to Sense · L06 Encoders / Teaching Your Robot to Measure · L07 Code Organization / Cleaning Up Your Robot's Brain · L08 Line Following / Proportional Control, and Why Bang-Bang Fails · L09 Intersections & Dead Ends / Teaching Your Robot to Decide · L10 Obstacles / When the Course Fights Back · L11 Time Lies, Distance Doesn't / Encoder-Based Gap Crossing · L12 Wheels Lie / The Gyro — Measuring the Robot, Not the Wheels · L13 Rescue Zone / Flying on Instruments — Navigating Where the Line Cannot Go · L14 Competition Prep / Trust Is Earned at Boot — Reliability as an Engineering Skill · L15 The Present Isn't Enough / PID Control — and the Tuning Bench That Proves It · L16 Nothing Left to Take Away / The Capstone Write-Up
+
+**S38 = STAGED ONLY.** Nothing pushed. First S39 action = push, then verify by clone.
 
 ---
 
