@@ -1,11 +1,38 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 15, 2026 (Session 38 close — visual pass, STAGED not pushed)
-**Status:** 🎨 **S38 VISUAL PASS COMPLETE — STAGED, NOT PUSHED** · L01 v03.2.3 · L02 v02.1.1 · L03 v03.1.2 · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.24** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · 🎯 **PAYLOAD GATE UNAFFECTED (visual-only; no payload/byte changes)** · 🎭 **BANNERS UNIFIED 16/16 · PART BARS MERGED 64/64 · PREREQ BOXES LABELED 6/6** · 🏫 **LANDING PAGE = MERCERSBURG MARK (dark variant)** · 🪦 **GROK RETIRED**
-**Currently working on:** SESSION 39 = (1) **PUSH S38** (SVGs→images, index→Pages, 16 lessons→Canvas, 5 git rm) then verify by clone, (2) **Q017 bench + three riders** (green-tape six numbers · calibration-spin stopwatch Q044 · gyro-bias Q046 unruled), (3) **Q037 ruling** — L01 "Coming from Arduino?" callout, (4) 22-photo queue, (5) **AI Tutor rebuild LAST**.
+**Date:** July 15, 2026 (Session 39 close — L03 content pass + L01 cover + Bible v8.25, STAGED not pushed)
+**Status:** 📗 **S39 L03 CONTENT PASS COMPLETE — STAGED, NOT PUSHED** · L01 v03.2.4 · L02 v02.1.1 · L03 v03.2.0 · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.25** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · 🎯 **PAYLOAD GATE UNAFFECTED (L03 display/prose/art only; no payload/byte changes)** · 🎨 **L03: 3 NEW SVGs + gearmotor photo + gear-train swap + gear-ratio color code · GRAPHIC 3.7 textLength FIXED** · 📖 **BIBLE v8.25 — NEW §16 HARDWARE GROUND TRUTH + §17 SVG CANON** · ⚠️ **S38 + S39 BOTH STAGED, NOT PUSHED**
+**Currently working on:** SESSION 40 = (1) **PUSH S38 + S39 TOGETHER** (both staged; SVGs/PNGs→images, index→Pages, lessons→Canvas, root docs, then all git rm) — verify by clone, (2) **Q017 bench + three riders** (green-tape six numbers · calibration-spin stopwatch Q044 · gyro-bias Q046 unruled), (3) **Q037 ruling** — L01 "Coming from Arduino?" callout, (4) L03 two placeholders (brushed/brushless §4.2, 3-Roombas §4.5) + IMAGE 3.4 screenshot, (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
 
-> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.24).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -o "Bible version: v[0-9.]*"`.
+> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.25).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -oE "Bible version: v[0-9.]+"`.
 
+
+## 📗 SESSION 39 — L03 CONTENT PASS + L01 COVER + BIBLE v8.25 (STAGED, NOT PUSHED)
+
+**L03 v03.1.2 → v03.2.0 (moderate).** Display/prose/art only — no payload, byte, gate, or Maker changes. In-file "Version 3" header unchanged (major digit only).
+
+1. **Three new SVGs (book canon).** GRAPHIC 3.16 three turn types (spin/pivot/swing, orange arrows, swing corrected to arc toward the slow side) · GRAPHIC 3.17 math number line (−/0/+ = backward/stopped/forward) · GRAPHIC 3.18 gear train (side view of meshing gears + traced cutaway of the real gear stack showing the ladder on stepped shafts).
+2. **Gearmotor photo (IMAGE 3.16, Pololu)** wired into "Feel the gearbox" Try This.
+3. **A-Star board image (IMAGE 3.14) dropped** from "Inside the little can," replaced by GRAPHIC 3.18. `git rm images/L03_IMAGE_3-14_astar_board.jpg` at push (DJ ruling: drop, not relocate).
+4. **Gear-ratio color code — verified & corrected** (was vague "color is the ratio"): Green 50:1 / **Blue 75:1** / Red 100:1 HP, from Pololu User's Guide 0J63 §1.1. Fleet = blue = 75:1.
+5. **GRAPHIC 3.7 fixed** — removed `textLength="560"` that stretched the `setSpeeds(200 + TRIM, 200)` code line (the "weird spacing" DJ spotted; NOT a cache ghost — it was baked into the SVG, lines 63–65).
+6. **Prose:** "Test Length"→"test duration" · notebook adds (predict-bias, dead-reckoning, motor-test doc) · TRIM-on-tape + notebook (tape stays) · floor tape → Post-it (TRIM stays tape) · "why 5/10 not smaller" explainer · constrain nuance (library hard-caps ±400 like VEX; constrain protects YOUR math, not the motor) · elevated "ALWAYS STOP YOUR MOTORS" callout · coast/brake/hold explainer (Zumo setSpeeds(0,0) = brake) · expanded stall-current tip (hold-wheels AND too-heavy = same event) · first-open server-pulldown build note · riser coach tip.
+7. **Two placeholders left for DJ:** brushed/brushless explainer (§4.2) · 3-Roombas Coach's Note (§4.5). Plus IMAGE 3.4 (terminal-success screenshot) still needed.
+8. **Inventory table updated:** 3.14 marked removed; rows added for 3.16 photo + 3.16/3.17/3.18 graphics.
+
+**L01 v03.2.3 → v03.2.4 (minor).** Book-cover image swapped (K&R hardcover → Prentice-Hall paperback, `L01_IMAGE_1-18`, overwrite in place). Lesson_01.html NOT changed — it already referenced that filename; only the image bytes changed. No Lesson_01.html in the push.
+
+**Bible v8.24 → v8.25 (moderate).** Two NEW sections capturing memory-only canon into the durable document (DJ ruling: err toward MORE in the Bible as a memory backup). **§16 HARDWARE GROUND TRUTH** — gear-ratio color code, TRIM=LEFT, setSpeeds ±400 hard-cap + constrain's real job, brake-style stop, stall current (one event two symptoms), encoder averaging, shared pins 20/4, 28,672/2,560 B ceiling. **§17 SVG/GRAPHIC CANON** — 1100×850, blue title band, single-polygon arrows, section colors, IMAGE/GRAPHIC separate number spaces, and the **textLength stretch trap** (only over-stretch is a defect; ~30 SVGs use it — per-file audit DEFERRED, do not blind-replace).
+
+**Non-issues confirmed (no action):** IMAGE 3.4 = still-needed placeholder (not broken) · IMAGE 3.14 = intentionally removed · the "weird spacing" was a REAL defect in GRAPHIC 3.7, now fixed (my earlier "cache ghost" call was wrong).
+
+**Correction within S39:** an initial attempt to move L03's PART-2 prereq box BELOW the green banner broke the S38 banner→section merge (banner squared its bottom but the orange box sat between it and Section 4, reopening the gap). Reverted — the prereq box stays ABOVE the PART bar so the banner merges onto its first section, per S38 canon and matching Parts 1 & 3. No Bible change: S38's "prereq box above the PART bar" rule already governs this.
+
+**S39 = STAGED ONLY,** delivered as `ZUMO_S39_PUSH.zip` (repo layout: lessons/, images/, README). **S38 and S39 must push TOGETHER** — S38 was never pushed. First S40 action = push both, verify by clone.
+
+**New deferred package:** `textLength` SVG audit — 30 files, only over-stretched ones are defects; per-file audit, not a blind sweep.
+
+---
 
 ## 📋 SESSION 38 — VISUAL PASS (STAGED, NOT PUSHED)
 
@@ -53,9 +80,9 @@ weymuth.github.io/zumo/
 
 | # | Title | Version | Figures | Placeholders left |
 |---|---|---|---|---|
-| 01 | Hello, Robot! | v03.2.2 | 18 | 0 |
+| 01 | Hello, Robot! | v03.2.4 | 18 | 0 |
 | 02 | Read Code Like a Pro | v02.1.0 | 10 | 2 |
-| 03 | Motors & TRIM | v03.1.1 | 11 | 4 |
+| 03 | Motors & TRIM | v03.2.0 | 14 | 2 + 1 screenshot |
 | 04 | Line Sensors | v04.0.5 | 5 | 3 |
 | 05 | Proximity Sensors | v04.1.5 | 8 | 3 |
 | 06 | Encoders | v04.5.4 | 11 | 0 |

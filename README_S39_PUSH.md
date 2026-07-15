@@ -70,3 +70,9 @@ natural width (forces character-gap stretching, as GRAPHIC 3.7 did). When it con
 to fit a box (value <= natural width), it is intentional and fine. Needs a per-file audit to
 tell which are over-stretched vs. fit-to-width — a scoped session, not a blind find/replace.
 Only GRAPHIC 3.7 (the one DJ spotted) is fixed in this push.
+
+
+## ROOT DOCS IN THIS ZIP (repo root)
+- ZUMO_SUPER_BIBLE.md      v8.24 -> v8.25 (NEW sec16 Hardware Ground Truth + sec17 SVG Canon)
+- LIVE_ZUMO_TEXTBOOK.md    regenerated for S39 close (versions grepped from artifacts)
+- ZUMO_S40_HANDOFF.md      paste at top of the S40 chat
