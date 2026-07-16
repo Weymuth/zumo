@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.2, S43
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.3, S44
+v1.3 WHOLE-TEMPLATE STARTER EXEMPTIONS: Bible §18.3 was rewritten S44 (starters are
+now the full section-header template, not a minimal skeleton). The S43 minimal-skeleton
+exempt entries were replaced with the whole-template starter-only lines for L03
+constrain/ramp (seeded CONFIG constants, landing-zone hint comments, empty-loop notes,
+the L05 for-loop forward-reference). Same principle: these lines exist ONLY in the
+starter and have no solution source to byte-derive from. Pattern recurs for future starters.
 v1.2 STARTER-SCAFFOLDING EXEMPTIONS: challenge-starter payloads (Bible §18.3) carry
-comment-only skeleton lines ("// write your code here", "// (none needed...)") that
-exist ONLY in the starter and have no solution source to byte-derive from. Added 6
-EXEMPT entries for L03 constrain/ramp starters. Pattern will recur for future starters.
+comment-only skeleton lines that exist ONLY in the starter (superseded by v1.3's set).
 v1.1 INHERITANCE RULE: lesson N's corpus additionally includes lesson N-1's
 'finished' payload bodies — inheriting lessons (L08+) copy the prior project
 wholesale in Step 1, so files carried unchanged are canonical by construction.
@@ -34,30 +38,45 @@ EXEMPT = {
         "in-context adaptation: lesson comment is a placement instruction (S19 design)",
     ("5", "step_6", "drawBar(2, frontValue);   // TEMPORARY - removed in Step 6"):
         "in-context adaptation: lesson comment is a placement instruction (S19 design)",
-    # S43: L03 challenge-starter scaffolding (Bible §18.3). These comment-only skeleton
-    # lines exist ONLY in the starter payload — there is no solution source to derive from.
-    ("3", "constrain", "// (write your speed constants here: LEFT_SPEED, RIGHT_SPEED, MAX_SPEED, RUN_MS)"):
-        "L03 constrain starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+    # S44: L03 whole-template challenge-starter scaffolding (Bible §18.3, rewritten S44).
+    # Starter-only lines with no solution source to byte-derive from. Supersedes the S43
+    # minimal-skeleton exemptions (those lines no longer exist after the whole-template rebuild).
+    ("3", "constrain", "// (empty - the run happens once, in setup)"):
+        "L03 constrain whole-template starter (S44, §18.3): starter-only comment, no derivation source",
     ("3", "constrain", "// (none needed for this challenge)"):
-        "L03 constrain starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+        "L03 constrain whole-template starter (S44, §18.3): starter-only comment, no derivation source",
     ("3", "constrain", "// write your code here"):
-        "L03 constrain starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
-    ("3", "ramp", "// (write your constants here: MAX_SPEED, STEP, STEP_MS)"):
-        "L03 ramp starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
-    ("3", "ramp", "// (none needed for this challenge)"):
-        "L03 ramp starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
-    ("3", "ramp", "// write your code here"):
-        "L03 ramp starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+        "L03 constrain whole-template starter (S44, §18.3): starter-only comment, no derivation source",
+    ("3", "ramp", "const int STEP_MS  = 0;    // <-- YOUR NUMBER. Pause between speed steps. Try 200."):
+        "L03 ramp whole-template starter (S44, §18.3): seeded starter constant, no derivation source",
+    ("3", "ramp", "const int MAX_SPEED = 200;  // the top speed you ease up to"):
+        "L03 ramp whole-template starter (S44, §18.3): seeded starter constant, no derivation source",
     ("3", "constrain", "// 1. constrain each speed to +/- MAX_SPEED, feed into motors.setSpeeds(...)"):
-        "L03 constrain starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
+        "L03 constrain whole-template starter (S44, §18.3): starter-only hint, no derivation source",
+    ("3", "ramp", "// Ease the motors up to MAX_SPEED one step at a time, by hand."):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
+    ("3", "ramp", "// Set a low speed, wait STEP_MS, set a higher speed, wait again -"):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
+    ("3", "ramp", "// (empty - the ramp happens once, in setup)"):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only comment, no derivation source",
+    ("3", "ramp", "// (none needed for this challenge)"):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only comment, no derivation source",
+    ("3", "ramp", "// write your code here"):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only comment, no derivation source",
     ("3", "constrain", "// 2. delay(RUN_MS)"):
-        "L03 constrain starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
+        "L03 constrain whole-template starter (S44, §18.3): starter-only hint, no derivation source",
     ("3", "constrain", "// 3. motors.setSpeeds(0, 0);  // stop before the edge"):
-        "L03 constrain starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
-    ("3", "ramp", "// ramp speed from 0 up to MAX_SPEED in a loop (add STEP each pass, short delay)"):
-        "L03 ramp starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
-    ("3", "ramp", "// then motors.setSpeeds(0, 0);"):
-        "L03 ramp starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
+        "L03 constrain whole-template starter (S44, §18.3): starter-only hint, no derivation source",
+    ("3", "ramp", "// climb 50 -> 100 -> 150 -> 200. Each line is one rung."):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
+    ("3", "ramp", "//   motors.setSpeeds(50, 50);   delay(STEP_MS);"):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone example, no derivation source",
+    ("3", "ramp", "//   ... keep climbing ..."):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
+    ("3", "ramp", "// When you reach MAX_SPEED, you are done - do NOT go past the cap."):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
+    ("3", "ramp", "// (In Lesson 5 you'll learn the for loop, which does this climb for you.)"):
+        "L03 ramp whole-template starter (S44, §18.3): starter-only L05 forward-reference, no derivation source",
 }
 
 def decode_pres(txt):
