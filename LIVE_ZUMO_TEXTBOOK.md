@@ -1,11 +1,30 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 15, 2026 (Session 39 close — L03 content pass + L01 cover + Bible v8.25, STAGED not pushed)
-**Status:** 📗 **S39 L03 CONTENT PASS COMPLETE — STAGED, NOT PUSHED** · L01 v03.2.4 · L02 v02.1.1 · L03 v03.2.0 · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.25** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · 🎯 **PAYLOAD GATE UNAFFECTED (L03 display/prose/art only; no payload/byte changes)** · 🎨 **L03: 3 NEW SVGs + gearmotor photo + gear-train swap + gear-ratio color code · GRAPHIC 3.7 textLength FIXED** · 📖 **BIBLE v8.25 — NEW §16 HARDWARE GROUND TRUTH + §17 SVG CANON** · ⚠️ **S38 + S39 BOTH STAGED, NOT PUSHED**
-**Currently working on:** SESSION 40 = (1) **PUSH S38 + S39 TOGETHER** (both staged; SVGs/PNGs→images, index→Pages, lessons→Canvas, root docs, then all git rm) — verify by clone, (2) **Q017 bench + three riders** (green-tape six numbers · calibration-spin stopwatch Q044 · gyro-bias Q046 unruled), (3) **Q037 ruling** — L01 "Coming from Arduino?" callout, (4) L03 two placeholders (brushed/brushless §4.2, 3-Roombas §4.5) + IMAGE 3.4 screenshot, (5) 22-photo queue, (6) **AI Tutor rebuild LAST**.
+**Date:** July 16, 2026 (Session 41 close — S40 documentation pass: Bible v8.26 = §14.1 TDP-is-notebook + new §18 challenge-design canon. S38/S39/S40 content all LIVE.)
+**Status:** 📘 **S41 DOCUMENTATION PASS COMPLETE — BIBLE v8.26** · L01 v03.2.4 · L02 v02.1.1 · L03 v03.2.0 · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.26** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · ✅ **S38 + S39 + S40 ALL LIVE** (content, 5 image deletions, ZUMO_TDP_Template.md, favicon.ico — verified by clone) · 📖 **BIBLE v8.26 — §14.1 THE LOG IS THE TDP + NEW §18 CHALLENGE-DESIGN CANON (Saxon spiral · marker convention · starter principles)** · 🎯 **NO lesson/payload/byte changes this session — Bible + LIVE.md only**
+**Currently working on:** SESSION 42 = (1) **LEARNER MODE — `L03_C02` Battery Warning next** (`if` voltage < 4200 → "LOW BATTERY!" on OLED; Socratic, coach only, don't hand over the solution; grep Claude's own code vs canon — correct pin `pololu/Zumo32U4@2.0.1`), (2) **PUSH the 16 spiral stars** → `images/` (from `ZUMO_spiral_stars_FINAL.zip`, DJ's hands, not yet up), (3) **QUEUED BOOK TASKS from S40 learner finds:** L03 add "1000 ms = 1 second" · L03 challenge reorder + add Constrain & Ramp (apply §18 spiral going forward) · Coach's Tip upload/power-on sequence · Coach's Tip AI-autocomplete-injects-wrong-code · Maker batch (starters-only bulk download · `?lesson=N` progressive disclosure · C## folder labels · verify `?kind=` = starters) · L01 VS-Code multi-root "Pick a folder" step, (4) **BENCH (need robot):** Q017 L09 green-tape six numbers · Q044 calibration-spin stopwatch · Q046 gyro-bias · L02 §5 green-LED. **PARKED (don't reopen):** challenge solution-disclosure · monetization/ebook · "Know Your Zumo" page · AI Tutor rebuild (LAST).
 
-> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.25).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -oE "Bible version: v[0-9.]+"`.
+> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.26).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -oE "Bible version: v[0-9.]+"`.
 
+
+## 📘 SESSION 41 — S40 DOCUMENTATION PASS (Bible v8.25 → v8.26)
+
+Memory carried the S40 decisions; the FILES had not been updated. This session folded them into durable canon. **No lesson, payload, or byte changes** — Bible + LIVE.md only.
+
+**Bible v8.25 → v8.26 (moderate).**
+- **§14.1 THE LOG *IS* THE TDP (NEW):** the 16 Engineer's Log prompts accumulate into ONE growing Google Doc structured as a RoboCupJunior TDP — notebook and TDP are the same artifact. Template = `ZUMO_TDP_Template.md` (repo root, live, carries the v2 edits: solo "Robot & Author", four-turn wheel-base). Prompts stay in the lessons (one source of truth); the Doc holds only TDP scaffolding + PART A standing lists A1–A5.
+- **§18 CHALLENGE-DESIGN CANON (NEW SECTION):**
+  - **18.1 Saxon spiral** — each lesson's challenges reinforce 1–2 prior concepts alongside the new one; roll out going forward lesson-by-lesson, do NOT retrofit L01/L02; one new concept per rung.
+  - **18.2 marker convention** — blue "🔁 Spiraled skills:" header line naming the source in words + inline ⭐ numbered stars (source lesson # inside). Assets `spiral_star_01..16` in `images/` (vector-path numbers, gold gradient) — built S40, DJ-approved, **not yet pushed**.
+  - **18.3 starter principles** — minimal skeleton, includes + the ONE needed hardware object pre-placed, empty section headers ("// (none needed for this challenge)"), MY PLAN ships blank, marked "// write your code here" zone, don't re-explain setup()/loop(); challenge folder labels may take a C## prefix (output-string only, keep `kind=` ids, flat).
+
+**Confirmed LIVE by clone (do not re-push):** S38+S39 content, the 5 image deletions, `ZUMO_TDP_Template.md` (root), `favicon.ico` (root).
+
+**Ready to push (DJ's hands):** the 16 spiral stars → `images/` (`ZUMO_spiral_stars_FINAL.zip`).
+
+**Learner mode next:** `L03_C02` Battery Warning (Socratic — coach, don't hand over the solution).
+
+---
 
 ## 📗 SESSION 39 — L03 CONTENT PASS + L01 COVER + BIBLE v8.25 (STAGED, NOT PUSHED)
 
