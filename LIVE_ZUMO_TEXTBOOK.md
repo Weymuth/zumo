@@ -1,8 +1,36 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 16, 2026 (Session 41 close — S40 documentation pass: Bible v8.26 = §14.1 TDP-is-notebook + new §18 challenge-design canon. S38/S39/S40 content all LIVE.)
+**Date:** July 16, 2026 (Session 41 close — S40 documentation pass DONE (Bible v8.26 pushed) + L03 challenge-redesign DESIGN session: 8-card ladder, 5-tier scale, "Builds on:" marker, Constrain/Ramp specced. NO L03 surgery yet — next session is the gated build.)
 **Status:** 📘 **S41 DOCUMENTATION PASS COMPLETE — BIBLE v8.26** · L01 v03.2.4 · L02 v02.1.1 · L03 v03.2.0 · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.26** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · ✅ **S38 + S39 + S40 ALL LIVE** (content, 5 image deletions, ZUMO_TDP_Template.md, favicon.ico — verified by clone) · 📖 **BIBLE v8.26 — §14.1 THE LOG IS THE TDP + NEW §18 CHALLENGE-DESIGN CANON (Saxon spiral · marker convention · starter principles)** · 🎯 **NO lesson/payload/byte changes this session — Bible + LIVE.md only**
-**Currently working on:** SESSION 42 = (1) **LEARNER MODE — `L03_C02` Battery Warning next** (`if` voltage < 4200 → "LOW BATTERY!" on OLED; Socratic, coach only, don't hand over the solution; grep Claude's own code vs canon — correct pin `pololu/Zumo32U4@2.0.1`), (2) **PUSH the 16 spiral stars** → `images/` (from `ZUMO_spiral_stars_FINAL.zip`, DJ's hands, not yet up), (3) **QUEUED BOOK TASKS from S40 learner finds:** L03 add "1000 ms = 1 second" · L03 challenge reorder + add Constrain & Ramp (apply §18 spiral going forward) · Coach's Tip upload/power-on sequence · Coach's Tip AI-autocomplete-injects-wrong-code · Maker batch (starters-only bulk download · `?lesson=N` progressive disclosure · C## folder labels · verify `?kind=` = starters) · L01 VS-Code multi-root "Pick a folder" step, (4) **BENCH (need robot):** Q017 L09 green-tape six numbers · Q044 calibration-spin stopwatch · Q046 gyro-bias · L02 §5 green-LED. **PARKED (don't reopen):** challenge solution-disclosure · monetization/ebook · "Know Your Zumo" page · AI Tutor rebuild (LAST).
+**Currently working on:** SESSION 42 = **THE L03 CHALLENGE-REDESIGN GATED BUILD** (all designed in S41, nothing injected yet — this is the surgery). Dependency order: (1) **L03 body — teach "1000 ms = 1 second"** (delay() unit; prerequisite for Constrain/Ramp), (2) **Bible canon edits** — §6.12 rating scale → 5-tier **EASY·MEDIUM·TOUGH·HARD·ADVANCED**; §18.2 header rename **"🔁 Spiraled skills:" → "🔁 Builds on:"** (keep "spiral" as the teacher-side method name), (3) **L02 — add the "Builds on:" explainer callout** (before L03's first marked card ships), (4) **L03 surgery** — reorder 6→8 cards, inject **Constrain** + **Ramp**, move `kind=` links + reveal blocks WITH their cards (§15 gate), re-rate all pills to 5-tier, add Builds-on markers (Battery→L02 display ⭐02; Constrain→L02 constants ⭐02), (5) **Maker** — starter payloads for the 2 new challenges (§18.3 minimal skeletons), verify `?kind=` = starters. **Then** learner-mode the cards in the new order. **BENCH (need robot):** Q017 · Q044 · Q046 · L02 §5 green-LED · Constrain RUN_MS duration (does 1 s show the 150-vs-clamped-200 difference?). **PARKED:** solution-disclosure · monetization/ebook · "Know Your Zumo" · AI Tutor (LAST).
+
+---
+
+## 🎨 SESSION 41 DESIGN LOCKS — L03 CHALLENGE REDESIGN (design only; build is S42)
+
+**Rating scale (book-wide, NEW):** **EASY · MEDIUM · TOUGH · HARD · ADVANCED** — 5 tiers, replaces EASY/MEDIUM/HARD. No minimum cards per tier; order carries difficulty, labels assist. (Bible §6.12 edit queued S42.)
+
+**Spiral marker (book-wide, NEW name):** student-facing header = **"🔁 Builds on:"** (was "Spiraled skills:" in §18.2). Names the reused prior skill in words + inline ⭐ numbered star (source lesson # inside, `spiral_star_NN.svg`). "Spiral" remains the teacher-side/Bible method name. (Bible §18.2 edit queued S42.)
+
+**L03 ladder — 8 cards, reordered, NOTHING DELETED** (old 6 + 2 new):
+| # | Card | Tier | New concept | Builds on |
+|---|------|------|-------------|-----------|
+| 1 | Spin Test | EASY | direction / signs | — |
+| 2 | Battery Warning | EASY | `if` comparison | ⭐ L02 OLED display |
+| 3 | **Constrain** *(NEW)* | EASY | clamp a value (`constrain()`) | ⭐ L02 constants |
+| 4 | **Ramp** *(NEW)* | MEDIUM | change a value over time (loop) | Constrain (rung 3) |
+| 5 | Variable Speed | MEDIUM | arrays + cycling index | — |
+| 6 | Save TRIM | MEDIUM | persist a tuned value as a constant | — |
+| 7 | Drive a Square | HARD | author a function + sequence | — |
+| 8 | Auto-TRIM | ADVANCED | open-ended research (no code) | — |
+
+*(TOUGH tier unused in L03 — fine. Existing kinds: spin_test, variable_speed, battery_warning, save_trim, drive_a_square, auto_trim. Two NEW kinds needed: constrain, ramp. Bonus set — creep_mode/backwards_trim/backwards_robot/braking_test/figure_eight/speedometer — UNTOUCHED.)*
+
+**Constrain card — LOCKED spec:** two motor-speed constants `const int LEFT_SPEED / RIGHT_SPEED` (student edits 150/200/250 across three uploads) + `const int MAX_SPEED = 200` cap. `setSpeeds(constrain(LEFT_SPEED,-MAX_SPEED,MAX_SPEED), constrain(RIGHT_SPEED,-MAX_SPEED,MAX_SPEED))`. Observe: 150 slower; 200 & 250 IDENTICAL (both clamped to 200) — the "aha." Also try LEFT≠RIGHT to see per-argument clamp (robot curves — OK). Run `delay(...)` then `setSpeeds(0,0)` to stop. Method A (edit + re-upload ×3, NOT button-cycle — buttons not taught yet). TRIM stays OUT of the code (that's Save TRIM's job) — only referenced in "Builds on:" as another constant they've met. Constrain is on SPEED; time is only a stop-timer, unrelated. **Third left/right reinforcement in L03** (Spin signs → TRIM offset → Constrain clamp) — earns EASY *because* it builds on prior contact.
+
+**Ramp card — spec (refine S42):** soft-start — ramp LEFT/RIGHT speed gradually from 0 up to MAX_SPEED in a loop (not a jump to full speed). Spirals back to Constrain (ramp up to the clamped MAX_SPEED). MEDIUM.
+
+---
 
 > **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.26).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -oE "Bible version: v[0-9.]+"`.
 
@@ -20,7 +48,7 @@ Memory carried the S40 decisions; the FILES had not been updated. This session f
 
 **Confirmed LIVE by clone (do not re-push):** S38+S39 content, the 5 image deletions, `ZUMO_TDP_Template.md` (root), `favicon.ico` (root).
 
-**Ready to push (DJ's hands):** the 16 spiral stars → `images/` (`ZUMO_spiral_stars_FINAL.zip`).
+**Spiral stars — LIVE:** all 16 `spiral_star_01..16.svg` pushed to `images/` this session (commit `b3467a6`, verified by clone). Ready to wire into challenge markers in S42.
 
 **Learner mode next:** `L03_C02` Battery Warning (Socratic — coach, don't hand over the solution).
 
