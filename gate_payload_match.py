@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.1, S22
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.2, S43
+v1.2 STARTER-SCAFFOLDING EXEMPTIONS: challenge-starter payloads (Bible §18.3) carry
+comment-only skeleton lines ("// write your code here", "// (none needed...)") that
+exist ONLY in the starter and have no solution source to byte-derive from. Added 6
+EXEMPT entries for L03 constrain/ramp starters. Pattern will recur for future starters.
 v1.1 INHERITANCE RULE: lesson N's corpus additionally includes lesson N-1's
 'finished' payload bodies — inheriting lessons (L08+) copy the prior project
 wholesale in Step 1, so files carried unchanged are canonical by construction.
@@ -30,6 +34,30 @@ EXEMPT = {
         "in-context adaptation: lesson comment is a placement instruction (S19 design)",
     ("5", "step_6", "drawBar(2, frontValue);   // TEMPORARY - removed in Step 6"):
         "in-context adaptation: lesson comment is a placement instruction (S19 design)",
+    # S43: L03 challenge-starter scaffolding (Bible §18.3). These comment-only skeleton
+    # lines exist ONLY in the starter payload — there is no solution source to derive from.
+    ("3", "constrain", "// (write your speed constants here: LEFT_SPEED, RIGHT_SPEED, MAX_SPEED, RUN_MS)"):
+        "L03 constrain starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+    ("3", "constrain", "// (none needed for this challenge)"):
+        "L03 constrain starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+    ("3", "constrain", "// write your code here"):
+        "L03 constrain starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+    ("3", "ramp", "// (write your constants here: MAX_SPEED, STEP, STEP_MS)"):
+        "L03 ramp starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+    ("3", "ramp", "// (none needed for this challenge)"):
+        "L03 ramp starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+    ("3", "ramp", "// write your code here"):
+        "L03 ramp starter scaffolding (S43, §18.3): starter-only comment, no derivation source",
+    ("3", "constrain", "// 1. constrain each speed to +/- MAX_SPEED, feed into motors.setSpeeds(...)"):
+        "L03 constrain starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
+    ("3", "constrain", "// 2. delay(RUN_MS)"):
+        "L03 constrain starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
+    ("3", "constrain", "// 3. motors.setSpeeds(0, 0);  // stop before the edge"):
+        "L03 constrain starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
+    ("3", "ramp", "// ramp speed from 0 up to MAX_SPEED in a loop (add STEP each pass, short delay)"):
+        "L03 ramp starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
+    ("3", "ramp", "// then motors.setSpeeds(0, 0);"):
+        "L03 ramp starter scaffolding (S43, §18.3): starter-only hint, no derivation source",
 }
 
 def decode_pres(txt):

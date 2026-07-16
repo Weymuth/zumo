@@ -2836,7 +2836,172 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 </div>
 
 <div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: Variable Speed Test</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #4caf50;">EASY</span></div>
+    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: Battery Warning System</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #4caf50;">EASY</span></div>
+    <div style="padding: 15px 20px; background: white;">
+        <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 14px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the OLED <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">display.print()</code> you used in Lesson 2 <img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/spiral_star_02.svg" alt="Spiral review from Lesson 02" style="height: 1.1em; vertical-align: middle; margin: 0 2px;">.</div>
+
+        <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
+
+<p><strong>Goal:</strong> Make the OLED display "LOW BATTERY!" if voltage drops below <strong>4200 mV</strong> &mdash; the point where our NiMH cells are nearly empty and further draining damages them.</p>
+
+<p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=battery_warning" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+
+<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-battery" style="color: #2e86ab; font-weight: bold;">Battery</a> and <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a>.</p>
+
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
+
+<p><strong>Hint:</strong> Add a battery check at the start of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateDisplay()</code>.</p>
+
+<p><strong>Success:</strong> OLED shows warning when batteries are low, normal display otherwise.</p>
+
+</div>
+
+<details style="margin: 15px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+
+<summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+
+<div style="margin-top: 15px;">
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// In updateDisplay(), add at the start:</span>
+<span style="color: #569cd6;">int</span> mv = readBatteryMillivolts();
+<span style="color: #569cd6;">if</span> (mv &lt; <span style="color: #b5cea8;">4200</span>) {
+  display.clear();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"!! LOW BATTERY !!"</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Replace batteries"</span>));
+  <span style="color: #569cd6;">return</span>; <span style="color: #6a9955;">// Skip normal display</span>
+}</pre>
+
+</div>
+
+</div>
+
+</details>
+    </div>
+</div>
+
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: Clamp the Speed with constrain()</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #4caf50;">EASY</span></div>
+    <div style="padding: 15px 20px; background: white;">
+        <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 14px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> named <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">const</code> values from Lesson 2 <img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/spiral_star_02.svg" alt="Spiral review from Lesson 02" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> — this is the third time you've used a left/right pair (spin signs &rarr; TRIM offset &rarr; now a speed clamp).</div>
+        <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
+
+<p><strong>Goal:</strong> Add a <strong>speed cap</strong> so a too-large number can never reach the motors. You'll set a left and a right speed as constants, run the robot for a moment, then stop &mdash; and discover that past a certain point, bigger numbers do <strong>nothing</strong>.</p>
+
+<p>📁 <strong>Work in:</strong> a fresh starter that opens ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=constrain" target="_blank" style="color: #2e86ab; font-weight: bold;">&rarr; make this folder for me</a></p>
+
+<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>. The new tool is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">constrain(value, low, high)</code> &mdash; it hands back <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">value</code>, but never below <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">low</code> and never above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">high</code>.</p>
+
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block before you touch the code.</p>
+
+<p><strong>Your task:</strong></p>
+<ol>
+<li>Make three constants: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LEFT_SPEED</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RIGHT_SPEED</code> (start both at <strong>150</strong>), and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_SPEED</code> (set to <strong>200</strong>).</li>
+<li>Send each speed through <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">constrain(&hellip;, -MAX_SPEED, MAX_SPEED)</code> into <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds()</code>.</li>
+<li>Run briefly, then <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds(0, 0)</code> so it stops before it drives off the table.</li>
+<li>Upload three times: change both speeds to <strong>150</strong>, then <strong>200</strong>, then <strong>250</strong>. Watch what happens.</li>
+</ol>
+
+<p><strong>The "aha":</strong> 150 is clearly slower. But <strong>200 and 250 come out identical</strong> &mdash; the clamp holds both to 200. The number on the screen changed; the robot didn't. Try making LEFT and RIGHT different (say 250 and 150) and watch the clamp act on each one separately.</p>
+
+<p><strong>Success:</strong> you can explain why 250 and 200 behave the same, and TRIM never entered the code &mdash; the clamp lives on <strong>speed</strong>, not time.</p>
+
+</div>
+
+<details style="margin: 15px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+
+<summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+
+<div style="margin-top: 15px;">
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Three constants at the top of the file:</span>
+<span style="color: #569cd6;">const int</span> LEFT_SPEED  = <span style="color: #b5cea8;">150</span>;   <span style="color: #6a9955;">// try 150, then 200, then 250</span>
+<span style="color: #569cd6;">const int</span> RIGHT_SPEED = <span style="color: #b5cea8;">150</span>;
+<span style="color: #569cd6;">const int</span> MAX_SPEED   = <span style="color: #b5cea8;">200</span>;   <span style="color: #6a9955;">// the cap</span>
+<span style="color: #569cd6;">const int</span> RUN_MS      = <span style="color: #b5cea8;">0</span>;     <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 1000 (1 s) and adjust.</span>
+
+<span style="color: #6a9955;">// In setup(), after waitForButtonA():</span>
+motors.setSpeeds(
+  constrain(LEFT_SPEED,  -MAX_SPEED, MAX_SPEED),
+  constrain(RIGHT_SPEED, -MAX_SPEED, MAX_SPEED)
+);
+delay(RUN_MS);
+motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);   <span style="color: #6a9955;">// stop before the edge</span></pre>
+
+</div>
+
+<p style="margin-top: 12px;"><strong>Why 250 == 200:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">constrain(250, -200, 200)</code> returns 200. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">constrain(200, -200, 200)</code> also returns 200. Same value reaches the motors, so the robot moves the same.</p>
+
+</div>
+
+</details>
+    </div>
+</div>
+
+<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Ramp Up to Speed</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3;">MEDIUM</span></div>
+    <div style="padding: 15px 20px; background: white;">
+        <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 14px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the speed clamp from <strong>Challenge 3</strong> just above &mdash; you'll ramp up <em>to</em> that same capped <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_SPEED</code>, not jump to it.</div>
+        <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
+
+<p><strong>Goal:</strong> Instead of slamming the motors to full speed the instant the robot starts, <strong>ease them up</strong> &mdash; a soft start. You'll change a speed value <strong>over time</strong> inside a loop rather than setting it once.</p>
+
+<p>📁 <strong>Work in:</strong> a fresh starter that opens ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=ramp" target="_blank" style="color: #2e86ab; font-weight: bold;">&rarr; make this folder for me</a></p>
+
+<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>. You already have the tools: a variable that <strong>changes</strong>, a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop, and a short <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> between steps.</p>
+
+<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block before you touch the code.</p>
+
+<p><strong>Your task:</strong></p>
+<ol>
+<li>Start speed at <strong>0</strong>.</li>
+<li>In a loop, add a small step (say <strong>10</strong>) each pass, call <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds()</code>, then a short <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code>.</li>
+<li>Stop climbing once you reach <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_SPEED</code> &mdash; the same cap from Challenge 3.</li>
+<li>Then <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds(0, 0)</code> to stop.</li>
+</ol>
+
+<p><strong>The "aha":</strong> the robot glides up to speed instead of lurching. Same top speed as before &mdash; but how it <em>gets</em> there is now under your control. That's the difference between setting a value and <strong>changing a value over time</strong>.</p>
+
+<p><strong>Success:</strong> a visibly smooth start, and the ramp stops climbing at the cap rather than blowing past it.</p>
+
+</div>
+
+<details style="margin: 15px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+
+<summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
+
+<div style="margin-top: 15px;">
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const int</span> MAX_SPEED = <span style="color: #b5cea8;">200</span>;
+<span style="color: #569cd6;">const int</span> STEP      = <span style="color: #b5cea8;">10</span>;    <span style="color: #6a9955;">// how much to add each pass</span>
+<span style="color: #569cd6;">const int</span> STEP_MS   = <span style="color: #b5cea8;">0</span>;     <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 30 and adjust.</span>
+
+<span style="color: #6a9955;">// In setup(), after waitForButtonA():</span>
+<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> speed = <span style="color: #b5cea8;">0</span>; speed &lt;= MAX_SPEED; speed += STEP) {
+  motors.setSpeeds(speed, speed);
+  delay(STEP_MS);
+}
+motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);</pre>
+
+</div>
+
+<p style="margin-top: 12px;"><strong>Why the cap matters:</strong> the loop condition <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">speed &lt;= MAX_SPEED</code> is what stops the climb &mdash; the same 200 ceiling you clamped to in Challenge 3, now reached gradually instead of instantly.</p>
+
+</div>
+
+</details>
+    </div>
+</div>
+
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: Variable Speed Test</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3;">MEDIUM</span></div>
     <div style="padding: 15px 20px; background: white;">
         <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
 
@@ -2879,54 +3044,8 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
     </div>
 </div>
 
-<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: Battery Warning System</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #ff9800;">MEDIUM</span></div>
-    <div style="padding: 15px 20px; background: white;">
-        <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
-
-<p><strong>Goal:</strong> Make the OLED display "LOW BATTERY!" if voltage drops below <strong>4200 mV</strong> &mdash; the point where our NiMH cells are nearly empty and further draining damages them.</p>
-
-<p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=battery_warning" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-battery" style="color: #2e86ab; font-weight: bold;">Battery</a> and <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a>.</p>
-
-<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
-
-<p><strong>Hint:</strong> Add a battery check at the start of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateDisplay()</code>.</p>
-
-<p><strong>Success:</strong> OLED shows warning when batteries are low, normal display otherwise.</p>
-
-</div>
-
-<details style="margin: 15px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
-
-<summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
-
-<div style="margin-top: 15px;">
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// In updateDisplay(), add at the start:</span>
-<span style="color: #569cd6;">int</span> mv = readBatteryMillivolts();
-<span style="color: #569cd6;">if</span> (mv &lt; <span style="color: #b5cea8;">4500</span>) {
-  display.clear();
-  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
-  display.print(F(<span style="color: #ce9178;">"!! LOW BATTERY !!"</span>));
-  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
-  display.print(F(<span style="color: #ce9178;">"Replace batteries"</span>));
-  <span style="color: #569cd6;">return</span>; <span style="color: #6a9955;">// Skip normal display</span>
-}</pre>
-
-</div>
-
-</div>
-
-</details>
-    </div>
-</div>
-
-<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Save TRIM to Code</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #ff9800;">MEDIUM</span></div>
+<div id="challenge-6" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 6: Save TRIM to Code</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3;">MEDIUM</span></div>
     <div style="padding: 15px 20px; background: white;">
         <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
 
@@ -2964,8 +3083,8 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
     </div>
 </div>
 
-<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: Drive a Square</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #f44336;">HARD</span></div>
+<div id="challenge-7" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 7: Drive a Square</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #ff9800;">HARD</span></div>
     <div style="padding: 15px 20px; background: white;">
         <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
 
@@ -3040,8 +3159,8 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
     </div>
 </div>
 
-<div id="challenge-6" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 6: Auto-TRIM Preview</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #7d5283;">EXPERT</span></div>
+<div id="challenge-8" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
+    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 8: Auto-TRIM Preview</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #f44336;">ADVANCED</span></div>
     <div style="padding: 15px 20px; background: white;">
         <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
 
