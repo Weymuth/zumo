@@ -2949,18 +2949,18 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
         <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 14px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the speed clamp from <strong>Challenge 3</strong> just above &mdash; you'll ramp up <em>to</em> that same capped <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_SPEED</code>, not jump to it.</div>
         <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
 
-<p><strong>Goal:</strong> Instead of slamming the motors to full speed the instant the robot starts, <strong>ease them up</strong> &mdash; a soft start. You'll change a speed value <strong>over time</strong> inside a loop rather than setting it once.</p>
+<p><strong>Goal:</strong> Instead of slamming the motors to full speed the instant the robot starts, <strong>ease them up</strong> &mdash; a soft start. You'll change the speed <strong>over time</strong> by writing the climb out one step at a time rather than setting it once.</p>
 
 <p>📁 <strong>Work in:</strong> a fresh starter that opens ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=ramp" target="_blank" style="color: #2e86ab; font-weight: bold;">&rarr; make this folder for me</a></p>
 
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>. You already have the tools: a variable that <strong>changes</strong>, a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop, and a short <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> between steps.</p>
+<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>. You already have both tools you need: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds()</code> and a short <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code>. Write the climb out by hand &mdash; one <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds()</code> + <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> per rung.</p>
 
 <p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block before you touch the code.</p>
 
 <p><strong>Your task:</strong></p>
 <ol>
 <li>Start speed at <strong>0</strong>.</li>
-<li>In a loop, add a small step (say <strong>10</strong>) each pass, call <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds()</code>, then a short <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code>.</li>
+<li>Climb by hand in steps: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds(50, 50)</code> then a short <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code>, then <strong>100</strong>, then <strong>150</strong>, then <strong>200</strong> &mdash; one line per rung.</li>
 <li>Stop climbing once you reach <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_SPEED</code> &mdash; the same cap from Challenge 3.</li>
 <li>Then <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds(0, 0)</code> to stop.</li>
 </ol>
@@ -2979,20 +2979,20 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0;">
 
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const int</span> MAX_SPEED = <span style="color: #b5cea8;">200</span>;
-<span style="color: #569cd6;">const int</span> STEP      = <span style="color: #b5cea8;">10</span>;    <span style="color: #6a9955;">// how much to add each pass</span>
-<span style="color: #569cd6;">const int</span> STEP_MS   = <span style="color: #b5cea8;">0</span>;     <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 30 and adjust.</span>
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const int</span> MAX_SPEED = <span style="color: #b5cea8;">200</span>;   <span style="color: #6a9955;">// the top of the climb</span>
+<span style="color: #569cd6;">const int</span> STEP_MS   = <span style="color: #b5cea8;">0</span>;     <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 200 and adjust.</span>
 
-<span style="color: #6a9955;">// In setup(), after waitForButtonA():</span>
-<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> speed = <span style="color: #b5cea8;">0</span>; speed &lt;= MAX_SPEED; speed += STEP) {
-  motors.setSpeeds(speed, speed);
-  delay(STEP_MS);
-}
+<span style="color: #6a9955;">// In setup() - write the climb out by hand, one rung at a time:</span>
+motors.setSpeeds(<span style="color: #b5cea8;">50</span>,  <span style="color: #b5cea8;">50</span>);   delay(STEP_MS);
+motors.setSpeeds(<span style="color: #b5cea8;">100</span>, <span style="color: #b5cea8;">100</span>);  delay(STEP_MS);
+motors.setSpeeds(<span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">150</span>);  delay(STEP_MS);
+motors.setSpeeds(MAX_SPEED, MAX_SPEED);   <span style="color: #6a9955;">// stop at the cap - don't go past</span>
+delay(STEP_MS);
 motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);</pre>
 
 </div>
 
-<p style="margin-top: 12px;"><strong>Why the cap matters:</strong> the loop condition <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">speed &lt;= MAX_SPEED</code> is what stops the climb &mdash; the same 200 ceiling you clamped to in Challenge 3, now reached gradually instead of instantly.</p>
+<p style="margin-top: 12px;"><strong>Why the cap matters:</strong> the last rung lands exactly on <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_SPEED</code> &mdash; the same 200 ceiling you clamped to in Challenge 3, now reached gradually instead of instantly. You write each rung yourself here; in <strong>Lesson 5</strong> you'll meet the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop, which writes the whole climb for you in three lines.</p>
 
 </div>
 
