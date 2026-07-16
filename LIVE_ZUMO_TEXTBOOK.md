@@ -1,7 +1,7 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 16, 2026 (Session 41 close — S40 documentation pass DONE (Bible v8.26 pushed) + L03 challenge-redesign DESIGN session: 8-card ladder, 5-tier scale, "Builds on:" marker, Constrain/Ramp specced. NO L03 surgery yet — next session is the gated build.)
-**Status:** 📘 **S41 DOCUMENTATION PASS COMPLETE — BIBLE v8.26** · L01 v03.2.4 · L02 v02.1.1 · L03 v03.2.0 · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.26** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · ✅ **S38 + S39 + S40 ALL LIVE** (content, 5 image deletions, ZUMO_TDP_Template.md, favicon.ico — verified by clone) · 📖 **BIBLE v8.26 — §14.1 THE LOG IS THE TDP + NEW §18 CHALLENGE-DESIGN CANON (Saxon spiral · marker convention · starter principles)** · 🎯 **NO lesson/payload/byte changes this session — Bible + LIVE.md only**
+**Date:** July 16, 2026 (Session 42 close — L03 milliseconds callout applied at §3.7 (held, UNPRESENTED, L03 stays v03.2.0); Bible v8.27 (§6.12 rating scale recolored to UP-TO-5 tiers + §18.2 marker header "Spiraled skills" → "Builds on"). L03 challenge SURGERY (6→8 cards, Constrain/Ramp) NOT done — carried to S43. Book-wide pill sweep QUEUED.)
+**Status:** 📘 **S42 — L03 MS-CALLOUT (held) + BIBLE v8.27** · L01 v03.2.4 · L02 v02.1.1 · L03 v03.2.0 *(callout applied, held unpresented; bumps to v03.3.0 at S43 surgery)* · L04 v04.0.6 · L05 v04.1.6 · L06 v04.5.5 · L07 v04.3.6 · L08 v04.1.4 · L09 v05.0.5 · L10 v02.1.8 · L11 v02.2.1 · L12 v01.2.2 · L13 v02.2.1 · L14 v02.4.1 · L15 v02.2.1 · L16 v02.2.1 · index.html **v1.2.1** · Bible **v8.27** · Maker **v2.28** · Gate **v1.1** · Harness **v3.0** · engine.py · ✅ **S38 + S39 + S40 ALL LIVE** (content, 5 image deletions, ZUMO_TDP_Template.md, favicon.ico — verified by clone) · 📖 **BIBLE v8.27 — §6.12 RATING SCALE → UP-TO-5 TIERS (EASY green · MEDIUM blue #2196f3 · TOUGH purple #9c27b0 · HARD orange #ff9800 · ADVANCED red #f44336) + §18.2 MARKER "Spiraled skills" → "Builds on"** · ⚠️ **QUEUED: book-wide pill sweep — ~47 pills L01–L10 to the new scale (MEDIUM orange→blue ×27, HARD red→orange ×15, EXPERT→TOUGH purple ×5)** · 🎯 **Only 2 files changed this session: ZUMO_SUPER_BIBLE.md + lessons/Lesson_03.html**
 **Currently working on:** SESSION 42 = **THE L03 CHALLENGE-REDESIGN GATED BUILD** (all designed in S41, nothing injected yet — this is the surgery). Dependency order: (1) **L03 body — teach "1000 ms = 1 second"** (delay() unit; prerequisite for Constrain/Ramp), (2) **Bible canon edits** — §6.12 rating scale → 5-tier **EASY·MEDIUM·TOUGH·HARD·ADVANCED**; §18.2 header rename **"🔁 Spiraled skills:" → "🔁 Builds on:"** (keep "spiral" as the teacher-side method name), (3) **L02 — add the "Builds on:" explainer callout** (before L03's first marked card ships), (4) **L03 surgery** — reorder 6→8 cards, inject **Constrain** + **Ramp**, move `kind=` links + reveal blocks WITH their cards (§15 gate), re-rate all pills to 5-tier, add Builds-on markers (Battery→L02 display ⭐02; Constrain→L02 constants ⭐02), (5) **Maker** — starter payloads for the 2 new challenges (§18.3 minimal skeletons), verify `?kind=` = starters. **Then** learner-mode the cards in the new order. **BENCH (need robot):** Q017 · Q044 · Q046 · L02 §5 green-LED · Constrain RUN_MS duration (does 1 s show the 150-vs-clamped-200 difference?). **PARKED:** solution-disclosure · monetization/ebook · "Know Your Zumo" · AI Tutor (LAST).
 
 ---
@@ -32,8 +32,29 @@
 
 ---
 
-> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.26).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -oE "Bible version: v[0-9.]+"`.
+> **Source of truth = `ZUMO_SUPER_BIBLE.md` (v8.27).** Filename is UNVERSIONED — the version lives ONLY in the internal line. Verify with `grep -oE "Bible version: v[0-9.]+"`.
 
+
+## 📘 SESSION 42 — L03 MS-CALLOUT (held) + BIBLE v8.27 (rating scale + marker rename)
+
+The L03 challenge-redesign build began; the heavy surgery was **not** reached and is carried to S43. Two files changed: `ZUMO_SUPER_BIBLE.md` and `lessons/Lesson_03.html`.
+
+**What locked:**
+1. **L03 §3.7 milliseconds callout** — green tip teaching "1000 ms = 1 second" inserted at the top of §3.7 (prerequisite for the Constrain/Ramp stop-timers). L03 is **HELD, UNPRESENTED, still v03.2.0** — per the write-order + ghost rule, the single moderate bump to **v03.3.0** happens when the S43 surgery lands, not now.
+2. **Bible §6.12 rating scale → UP-TO-5 tiers** (v8.27). A lesson uses as many as it needs, in order; no minimum per tier:
+   - EASY green `#4caf50` · MEDIUM blue `#2196f3` · TOUGH purple `#9c27b0` · HARD orange `#ff9800` · ADVANCED red `#f44336`
+   - Replaces the old EASY/MEDIUM/HARD/EXPERT/COMPETITION set.
+3. **Bible §18.2 marker header renamed** "🔁 Spiraled skills:" → "🔁 Builds on:" (v8.27). "Spiral" stays the teacher-side method name; ⭐ numbered-star convention unchanged.
+
+**QUEUED DEBT — book-wide pill sweep (NOT applied):** ~47 pills across L01–L10 must move to the new scale — MEDIUM orange→blue ×27, HARD red→orange ×15, EXPERT→TOUGH purple ×5. The new hex map above is the authority. Its own scoped session.
+
+**Carried to S43 (the L03 surgery, in order):**
+- (3) L02 — "Builds on:" explainer callout (introduce ⭐ + "Builds on:" once, before L03's first marked card; at/before §9). Bumps L02.
+- (4) L03 surgery — reorder 6→8 cards, inject Constrain + Ramp, move each `kind=` link + reveal block WITH its card (§15 gate), re-rate every pill to the 5-tier scale, add "Builds on:" markers (Battery ⭐L02 display, Constrain ⭐L02 constants). DELETE NOTHING. Then bump L03 v03.2.0 → **v03.3.0** (moderate, single).
+- (5) Maker — starter payloads for `constrain` + `ramp` (§18.3 minimal skeletons); verify `?kind=` = starters. Two new kinds.
+- (6) learner-mode the cards in the new order (Socratic). Grep Claude's own code vs canon — lib pin `pololu/Zumo32U4@2.0.1`.
+
+---
 
 ## 📘 SESSION 41 — S40 DOCUMENTATION PASS (Bible v8.25 → v8.26)
 
