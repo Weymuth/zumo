@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.2.2 -->
+<!-- Lesson version: v01.2.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,7 +134,7 @@ The math really was correct. Every single component performed exactly as designe
 
 <p>The <em>rubber</em> failed. And no encoder anywhere has a rubber sensor.</p>
 <figure style="margin: 24px 0; text-align:center;">
-<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L12_GRAPHIC_12-01_encoder_vs_gyro.svg" alt="Encoder watches the wheel; gyro watches the chassis" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
+<img src="https://weymuth.github.io/zumo/images/L12_GRAPHIC_12-01_encoder_vs_gyro.svg" alt="Encoder watches the wheel; gyro watches the chassis" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
 <figcaption style="font-size:0.85em; color:#666; margin-top:8px;"><strong>GRAPHIC 12.1</strong> &mdash; The encoder is bolted to the motor. The gyro is bolted to the chassis. On a slick floor, only one of them is still answering the question you asked.</figcaption></figure>
 <div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; This is a structural limit, not a tuning problem.</strong><br>You cannot fix this with a better constant. You cannot fix it with a smarter algorithm. You cannot fix it by counting more carefully.<br><br><strong>The information is not present in the encoder signal at all.</strong> A slipping wheel and a gripping wheel produce the <em>identical</em> stream of counts. There is no clever way to tell them apart, because there is nothing to tell apart &mdash; the two cases are the same to the sensor.<br><br>To detect slip you need a <strong>second instrument, watching something else.</strong></div>
 <h3 style="color: #3498db; margin-top: 28px;">3.3 The Gyro Watches the Robot</h3>
@@ -207,7 +207,7 @@ and then subtract it, forever after.</p>
 sits absolutely still, averages all 1,024 readings, and stores the result as
 <code>gyroOffset</code>. From that moment on, every reading gets that offset subtracted:</p>
 <figure style="margin: 24px 0; text-align:center;">
-<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L12_GRAPHIC_12-02_measuring_the_lie.svg" alt="Calibration: 1024 samples, average the bias, subtract it forever" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
+<img src="https://weymuth.github.io/zumo/images/L12_GRAPHIC_12-02_measuring_the_lie.svg" alt="Calibration: 1024 samples, average the bias, subtract it forever" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
 <figcaption style="font-size:0.85em; color:#666; margin-top:8px;"><strong>GRAPHIC 12.2</strong> &mdash; Read it 1,024 times while it is still. Average them. That average is the lie &mdash; subtract it from every reading for the rest of the run.</figcaption></figure>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void gyroUpdate() {
   imu.readGyro();
@@ -801,7 +801,7 @@ of it with <code>TRIM</code>.</p>
 }</pre>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Run A on carpet. Then run C on carpet.</strong><br>Both squares close. Both are decent. On carpet, the encoder is a good instrument and the gyro is a good instrument, and they mostly agree.<br><br><strong>Now move to the delrin.</strong></div>
 <figure style="margin: 24px 0; text-align:center;">
-<img src="https://raw.githubusercontent.com/Weymuth/zumo/main/images/L12_GRAPHIC_12-03_the_square_that_closes.svg" alt="Encoder square collapses on delrin; gyro square closes" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
+<img src="https://weymuth.github.io/zumo/images/L12_GRAPHIC_12-03_the_square_that_closes.svg" alt="Encoder square collapses on delrin; gyro square closes" style="max-width:100%; height:auto; border-radius:8px; border:1px solid #ddd;">
 <figcaption style="font-size:0.85em; color:#666; margin-top:8px;"><strong>GRAPHIC 12.3</strong> &mdash; Button A (encoder) and Button C (gyro), same slick surface. Four corners, four errors &mdash; and errors in dead reckoning add up. They do not cancel.</figcaption></figure>
 <div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Button A on delrin: the square collapses.</strong><br>Each corner slips a little. The robot turns 60&deg; instead of 90&deg;. Four corners, four errors, and <strong>the errors add up</strong> &mdash; they do not cancel.<br><br>The robot finishes its four sides and its four turns having driven something closer to a <em>pentagon that gave up</em>, and it ends up nowhere near where it started, pointing nowhere near where it began.<br><br>And the encoder is <strong>completely satisfied</strong>. As far as it is concerned, it drove a perfect square.</div>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Button C on delrin: the square closes.</strong><br>Same slippery surface. Same slipping wheels. Same motors, same speed, same 30&nbsp;cm sides.<br><br><strong>The robot comes home.</strong><br><br>Every corner is a real 90 degrees, because every corner was measured on the <em>robot</em> instead of the wheels. The slip is still happening &mdash; it just cannot lie to you any more.</div>
