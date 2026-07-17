@@ -1,14 +1,14 @@
-# ZUMO — L03 Code Templates + Solutions (STAGING)
+# ZUMO — L03 Challenge Templates + Solutions (STAGING)
 
 > **⚠️ STAGING — NOT YET MAKER-GATED.** These are learner-mode reconstructions from Session 47, built for teaching. They are **not** yet verified against the Maker's `mainCpp()` wrapper or run through `gate_payload_match.py`. Before they become live Maker payloads they need the payload-body treatment:
 > - The wrapper AUTO-PREPENDS the banner + `#include <Zumo32U4.h>` + the MY PLAN block. So a stored **payload body starts at `// ===== HARDWARE OBJECTS =====`** and EXCLUDES the header shown here. (Bible §18.3.)
 > - Gate-check each against its lesson source at save.
 > - **Chat-display rule (Bible §18.3):** when SHOWING a starter to DJ, PREPEND the wrapper header so what DJ sees matches the generated file. The full-file versions below already include the header for that reason.
 >
-> **Term:** "Code Template" (DJ's preferred term; retires "scaffold").
+> **Term:** "challenge template" (Bible §18.3 canon as of S48; retires "scaffold" for this sense).
 > **Canon followed:** whole-template starters (Bible §18.3) — full 5-section scaffold, the ONE hardware object the concept needs pre-placed, concept blank in a marked landing zone, MY PLAN blank. TRIM on the LEFT motor (`setSpeeds(speed + TRIM, speed)`).
 >
-> **Reversal-debt note:** the LIVE cards for C01/C05/C06 link to `?lesson=3&kind=...` with `payloadRef=finished`, but **no L03 `finished` payload exists**, so the Maker currently emits a blank scaffold and the card text ("preloaded with the finished lesson program") is wrong. These templates are the intended replacement.
+> **Payload note (corrected S49):** an L03 `finished` payload DOES exist in the Maker, so C01/C02/C05/C06 (payloadRef `finished`) and C03/C04 (payloadRef `constrain`/`ramp`) all emit valid code — the earlier "no finished payload" claim was wrong against the live file. **DJ ruling S49: C01–C06 stay finished-preload.** So this file is a **teaching/reference record** of all 8 challenges + solutions, not a payload-staging file. The two genuinely broken cards are **C07 and C08**, whose `payloadRef` is literally `"CHALLENGES"` (group name leaked into the ref slot) — a real defect to fix in a later Maker pass; their templates are recorded below for that work.
 
 ---
 
@@ -46,7 +46,7 @@ DATE: <auto>
 
 ## C01 — Add a Spin Test
 
-### Code Template (payload body — object pre-placed: `motors`)
+### Challenge Template (payload body — object pre-placed: `motors`)
 ```cpp
 // ===== HARDWARE OBJECTS =====
 Zumo32U4Motors motors;
@@ -96,7 +96,7 @@ void runSpinTest() {
 
 ## C02 — Battery Warning System
 
-### Code Template (object pre-placed: `display`)
+### Challenge Template (object pre-placed: `display`)
 ```cpp
 // ===== HARDWARE OBJECTS =====
 Zumo32U4OLED display;
@@ -143,7 +143,7 @@ void loop() {
 
 ## C03 — Clamp the Speed with constrain()
 
-### Code Template (objects pre-placed: `buttonA` for the safety gate, `motors`)
+### Challenge Template (objects pre-placed: `buttonA` for the safety gate, `motors`)
 ```cpp
 // ===== HARDWARE OBJECTS =====
 Zumo32U4ButtonA buttonA;
@@ -199,7 +199,7 @@ void loop() {
 
 ## C04 — Ramp Up to Speed  (Ramp Option C: hand-unrolled, NO for-loop)
 
-### Code Template (objects pre-placed: `buttonA`, `motors`)
+### Challenge Template (objects pre-placed: `buttonA`, `motors`)
 ```cpp
 // ===== HARDWARE OBJECTS =====
 Zumo32U4ButtonA buttonA;
@@ -253,7 +253,7 @@ void loop() {
 
 ## C05 — Variable Speed Test  (hardest rung: array + index + modulo)
 
-### Code Template (objects pre-placed: `buttonB`, `display`, `motors`; includes a GLOBAL VARIABLES section)
+### Challenge Template (objects pre-placed: `buttonB`, `display`, `motors`; includes a GLOBAL VARIABLES section)
 ```cpp
 // ===== HARDWARE OBJECTS =====
 Zumo32U4ButtonB buttonB;
@@ -317,7 +317,7 @@ void loop() {
 
 ## C06 — Save TRIM to Code
 
-### Code Template (object pre-placed: `motors`; TRIM-finder skeleton present so there's a `trimValue` to save)
+### Challenge Template (object pre-placed: `motors`; TRIM-finder skeleton present so there's a `trimValue` to save)
 ```cpp
 // ===== HARDWARE OBJECTS =====
 Zumo32U4Motors motors;
@@ -368,5 +368,144 @@ void loop() {
 }
 ```
 
+## C07 — Drive a Square
+
+### Challenge Template (object pre-placed: `motors`; uses the LEFT-motor TRIM convention on the straights)
+```cpp
+// ===== HARDWARE OBJECTS =====
+Zumo32U4Motors motors;
+
+// ===== CONSTANTS =====
+const int DRIVE_SPEED = 200;
+const int TURN_SPEED  = 150;
+const int DRIVE_TIME  = 1000;   // ms per side  <-- YOUR NUMBER
+const int TURN_TIME   = 350;    // ms per 90° turn  <-- YOUR NUMBER (adjust!)
+
+// ===== GLOBAL VARIABLES =====
+int trimValue = 0;   // <-- your bench-found TRIM
+
+// ===== FUNCTION PROTOTYPES =====
+// DECLARE driveSquare() here (name only, with a semicolon)
+
+// ==== SETUP ====
+void setup() {
+  // write your code here: call driveSquare() once
+}
+
+// ==== LOOP ====
+void loop() {
+}
+
+// ===== HELPER FUNCTIONS =====
+// DEFINE driveSquare() here:
+//   repeat 4 times { drive forward one side, stop, turn right 90°, stop }
+//   TRIM goes on the LEFT motor for the straight; the turn opposes the wheels.
+```
+
+### Solution
+```cpp
+// ===== HARDWARE OBJECTS =====
+Zumo32U4Motors motors;
+
+int trimValue = 0;
+
+void driveSquare() {
+  const int DRIVE_SPEED = 200;
+  const int TURN_SPEED  = 150;
+  const int DRIVE_TIME  = 1000;
+  const int TURN_TIME   = 350;   // Adjust for 90°!
+  for (int side = 0; side < 4; side++) {
+    // Drive forward with TRIM (LEFT motor)
+    motors.setSpeeds(DRIVE_SPEED + trimValue, DRIVE_SPEED);
+    delay(DRIVE_TIME);
+    motors.setSpeeds(0, 0);
+    delay(200);
+    // Turn right: left forward, right backward
+    motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
+    delay(TURN_TIME);
+    motors.setSpeeds(0, 0);
+    delay(200);
+  }
+}
+
+void setup() {
+  driveSquare();
+}
+
+void loop() {
+}
+```
+> Motor convention confirmed: `setSpeeds(TURN_SPEED, -TURN_SPEED)` = left forward + right backward = turn right. Calibrate ONE 90° turn first, then build up to the full square. Timing-based turns compound error (5°×4 = 20° drift) — Lesson 6 fixes this with encoders.
+
 ---
-*L03 Code Templates + solutions · Session 47 · STAGING, not Maker-gated · see ZUMO_LEARNMODE_L03.md for the teaching detail*
+
+## C08 — Auto-TRIM Preview  (research/pseudocode — no runnable concept, comments only)
+
+### Challenge Template (object pre-placed: `motors`; deliverable is a commented algorithm, not new behavior)
+```cpp
+// ===== HARDWARE OBJECTS =====
+Zumo32U4Motors motors;
+
+// ===== CONSTANTS =====
+// (none needed for this challenge)
+
+// ===== GLOBAL VARIABLES =====
+int trimValue = 0;
+
+// ===== FUNCTION PROTOTYPES =====
+// (none needed — the deliverable is a comment block, no new function is called)
+
+// ==== SETUP ====
+void setup() {
+  // your working TRIM Finder can stay here
+}
+
+// ==== LOOP ====
+void loop() {
+}
+
+// ===== HELPER FUNCTIONS =====
+// write your AUTO-TRIM ALGORITHM here as a /* ... */ comment block.
+// Describe the steps — do NOT implement it (encoders come in Lesson 6).
+```
+
+### Solution
+```cpp
+// ===== HARDWARE OBJECTS =====
+Zumo32U4Motors motors;
+
+int trimValue = 0;
+
+/*
+AUTO-TRIM ALGORITHM (Preview of Lesson 6)
+-------------------------------------------
+1. Reset both encoder counts to 0
+2. Run both motors at same speed for 2 seconds
+3. Read encoder counts: leftCount, rightCount
+4. If leftCount > rightCount:
+   - Left wheel turned more = robot curved right
+   - Need to slow left OR speed up right
+   - difference = leftCount - rightCount
+   - TRIM = -1 * (difference / totalCount) * BASE_SPEED
+5. If rightCount > leftCount:
+   - Right wheel turned more = robot curved left
+   - Need to slow right OR speed up left
+   - TRIM = +1 * (difference / totalCount) * BASE_SPEED
+6. Apply TRIM and test again
+7. Repeat until leftCount ≈ rightCount
+
+This is CLOSED-LOOP control — we implement it in Lesson 6.
+*/
+
+void setup() {
+}
+
+void loop() {
+}
+```
+> Where it goes: paste the comment block right after `runMotorTest()`, above `setup()` — helpers defined above `setup` need no prototype. The deliverable is the well-commented algorithm, not running code.
+
+---
+
+---
+*L03 Challenge Templates + solutions · all 8 challenges (C07/C08 added S49) · reference record, not Maker-gated · see ZUMO_LEARNMODE_L03.md for the teaching detail*
