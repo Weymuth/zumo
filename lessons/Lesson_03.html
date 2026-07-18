@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.4.6 -->
+<!-- Lesson version: v03.4.7 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2818,6 +2818,8 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 
 <p><strong>Hint:</strong> Spinning means one motor forward, one backward: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">motors.setSpeeds(150, -150);</code></p>
 
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; border-radius: 4px; color: #1e1e1e;"><strong>🧩 About PROTOTYPE:</strong> if you define your spin function <em>below</em> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">setup()</code> and call it from above, the compiler complains it "was not declared in this scope" — it reads top to bottom and hasn't met the function yet. Two fixes (same as Step 12): move the function above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">setup()</code>, or leave it at the bottom and add its <strong>prototype</strong> — one line at the top, the function's signature followed by a semicolon.</div>
+
 <p><strong>Success:</strong> Robot spins in place for 1 second, then stops.</p>
 
 
@@ -2988,6 +2990,8 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <p><strong>Success:</strong> a visibly smooth start, and the ramp stops climbing at the cap rather than blowing past it.</p>
 
+<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px; color: #1e1e1e;"><strong>🔧 Coach's Tips — when the build fights you:</strong><p style="margin: 8px 0 0 0;"><strong>1. "It compiled" can be a stale build.</strong> If your change didn't seem to take effect, the compiler may have reused an old build. Run <strong>Clean</strong>, then <strong>Build</strong>, before you trust what you're seeing.</p><p style="margin: 8px 0 0 0;"><strong>2. The compiler judges the file on disk, not the tab you're looking at.</strong> If an error makes no sense, confirm you actually <em>saved</em>. When in doubt, dump the real file: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">type src\main.cpp</code> (Windows) shows exactly what the compiler sees.</p><p style="margin: 8px 0 0 0;"><strong>3. Errors surface one at a time.</strong> Fix the first error and rebuild — a second, previously hidden error often appears. An early typo (like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">motor</code> vs <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">motors</code>) can mask a missing semicolon further down. Work top to bottom, one at a time.</p></div>
+
 
 <details style="margin: 15px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
 
@@ -3038,7 +3042,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <strong>🆕 New operator: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">%</code> (modulo)</strong><br>
 The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">%</code> operator gives you the <strong>remainder</strong> of a division &mdash; not the divide itself. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">7 % 3</code> is <strong>1</strong> (7 &divide; 3 is 2 with 1 left over). <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">6 % 3</code> is <strong>0</strong> (nothing left over).<br><br>
-Why it matters here: a remainder can never be as big as the number you divide by, so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">something % 4</code> is always one of <strong>0, 1, 2, 3</strong> &mdash; then it wraps back to 0. That is exactly the cycle you want for four speeds: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0 &rarr; 1 &rarr; 2 &rarr; 3 &rarr; 0 &rarr; 1&hellip;</code> It keeps your index from ever running off the end of the array.
+Why it matters here: a remainder can never be as big as the number you divide by, so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">something % 4</code> is always one of <strong>0, 1, 2, 3</strong> &mdash; then it wraps back to 0. That is exactly the cycle you want for four speeds: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0 &rarr; 1 &rarr; 2 &rarr; 3 &rarr; 0 &rarr; 1&hellip;</code> It keeps your index from ever running off the end of the array. (Remember arrays are <strong>zero-indexed</strong>: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">TEST_SPEEDS[0]</code> is the first speed, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">[3]</code> the last — four slots numbered 0&ndash;3, which is exactly what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">% 4</code> produces.)
 
 </div>
 
@@ -3081,6 +3085,8 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
 <p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
 
 <p><strong>Hint:</strong> Create a constant for your TRIM and initialize with it.</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; border-radius: 4px; color: #1e1e1e;"><strong>🧠 Watch your scope:</strong> declare the TRIM constant at the <strong>top of the file, outside every function</strong> (global) so the whole program can see it. If you accidentally re-declare it <em>inside</em> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">setup()</code> — e.g. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">int trimValue = 8;</code> inside the braces — you create a second, <em>local</em> copy that only setup() can see and that vanishes when setup() ends; the driving code still reads the global 0 and nothing changes. Set the global once, at the top.</div>
 
 <p><strong>Success:</strong> Program boots with your saved TRIM value already set.</p>
 
