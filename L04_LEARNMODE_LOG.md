@@ -45,3 +45,30 @@
 - **Next learner-mode session:** either resume L04 at C02 (Line Counter) after discoveries, or the still-pending L03_C05 Variable Speed.
 - **Nothing in the book was edited this session** — this log is a teaching-record / book-task-candidate file only, not yet Bible-canon or a lesson change.
 
+---
+## Session 52 (Jul 19, 2026) — L04 BUILD COMPLETED end-to-end (Discoveries → Act One → Act Two → §7 → restore)
+
+DJ had robot + white surface + matte black electrical tape (the S51 blocker cleared). Whole L04 learner-mode build done and hardware-verified. **Book NOT edited; L04 stays v04.0.12.** Full session record + data tables in project doc `ZUMO_S52_LEARNMODE_L04_LOG.md`.
+
+### Recorded data (DJ's robot)
+Raw — white: S1 52 / S3 32 / S5 52 · tape: S1 1112 / S3 680 / S5 1280. Calibrated: white ~0 (agree); tape ~1000 outers, center caps ~800 (weakest eye; clears the 500 threshold fine).
+5-sensor gap map: hides in outer gaps **1↔2 & 4↔5**; NOT in inner 2↔3 & 3↔4.
+
+### Friction points (S52)
+- **Missed multi-part edit, green build hid it (headline S52).** Step 5: prototype + both functions added, but `loop()` not switched to `readCalibrated`/`showReadings()`. Build went GREEN (same signature; an unused function is legal C++), so raw values + a blank OLED were the only symptom. **A green build confirms syntax, not that every edit landed — verify the file before upload on multi-part edits.**
+- **Calibration sweep technique = biggest time sink.** DJ didn't know to slide DURING the countdown; a still/narrow sweep collapsed calibrated values to ~0 (left/right 0, center maxed at 7). Wide flat slide → full 1000. Timer is fine (5 s); the miss was the cue.
+- `println`↔`print` recurred; prototype typos `intPosition` / `unit8_t` (pure-syntax walls, handed fast per profile).
+- **POS** — DJ unsure what the position number is/does (math is in §3.5 but the purpose didn't land build-first); caught that POS is in the ROBOT's frame (turning the robot moves "4000" to the other side).
+- **Test B misconception** — guessed "fewer sensors = smoother" (backwards; more eyes = finer resolution = smoother).
+- **Forgot to reseat the sensor array** ("code isn't working" = array physically unplugged) — validates the reseat-caution callout below.
+
+### 📋 BOOK-TASK CANDIDATES (S52 — for a book-work session; NOT applied here)
+1. **Sweep clarity (Steps 5–6, §3.4):** OLED `"Sweep!"` → imperative `"SLIDE ←→"`; add a "Start Slide" cue; prose "slide DURING the countdown"; new SVG of the hand-slide. **Terminology LOCKED (DJ ruling S52): sweep = concept, slide = hand, spin = motor.** Keep `CAL_TIME_MS=5000` (lengthening rejected — data: a proper 5-sec slide hits 1000).
+2. **Step 8 safety callouts (promote to prominent warnings):** POWER OFF **and UNPLUG**; gentle jumper seating (no twist/force, bent pins); **reseat sensor array carefully** (double-confirmed — DJ forgot it).
+3. **POS at point of use (Step 8):** explain what POS is + its steering PURPOSE (not just the §3.5 back-ref); state it's in the robot's frame (0=robot-left, 4000=robot-right) and address "if I turn it around."
+4. **⭐ BIG FINDING — §7 Test A / §3.6 "nowhere to hide" OVERCLAIMS.** Five sensors close the inner gaps (2↔3, 3↔4) but the wider OUTER gaps (1↔2, 4↔5) still hide a narrow line (verified, symmetric). Cause: sensors 2/4 sit nearer center than outers, so the outer gaps are widest. Reframe Test A as "map all 4 gaps, find the outer two still hide" — resolution is finite AND non-uniform. Bonus hook: pos=0 (left gap) / 4000 (right gap) IDs which gap swallowed the line. Add caveat: outer blind spots matter less in real following (line kept near center).
+5. **§7 Test B — pre-empt the misconception:** "you might guess fewer sensors track more smoothly — measure it, you'll find the opposite."
+
+### Next learner-mode session
+L04 challenges **C02–C05** (C01 done S50), OR a book-work pass to apply candidates 1–5, OR L03_C05 Variable Speed.
+
