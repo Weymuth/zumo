@@ -11,8 +11,8 @@
 | # | Challenge | Concept(s) | Predicted student snag | Severity |
 |---|-----------|-----------|------------------------|----------|
 | C01 | Line Light | if/else · array slot · LED vs OLED · erase-with-spaces · gotoXY both branches | API recall (ledYellow/gotoXY/F/spaces); else-cleanup vs one-way state; 3v5 center-slot | MEDIUM |
-| C02 | The Line Counter | | | |
-| C03 | The Position Pointer | | | |
+| C02 | The Line Counter | transition-vs-state · bool memory · hysteresis · `&&` · reset block | `=` vs `==` (both directions, silent) · `};` vs `;`+`}` · stray `if(...);` · increment spellings · threshold inversion · slot `[1]` | MEDIUM |
+| C03 | The Position Pointer | `readLine()` 0–2000 · integer-division scaling · off-by-one (`/251`) · `for` loop · `if/else` in a loop | ⚠️ **`for` not taught until L05 §5.13** — missing prerequisite, not a difficulty problem | HARD (misscoped) |
 | C04 | Edge Guard | | | |
 | C05 | The Centering Game | | | |
 
@@ -72,3 +72,48 @@ Raw — white: S1 52 / S3 32 / S5 52 · tape: S1 1112 / S3 680 / S5 1280. Calibr
 ### Next learner-mode session
 L04 challenges **C02–C05** (C01 done S50), OR a book-work pass to apply candidates 1–5, OR L03_C05 Variable Speed.
 
+
+---
+## Session 53 (Jul 19, 2026) — C02 COMPLETE (hardware-verified) · C03 PAUSED at the `for` wall
+
+DJ had robot + surface + tape. **Book NOT edited; L04 stays v04.0.12.** Walked C02 end to end; C03 stopped at DJ's request ("I need a break, I'm frustrated") after the concepts landed but the syntax wall held.
+
+### L04_C02 — The Line Counter — ✅ DONE, runs on hardware
+DJ derived the entire mechanism Socratically: current reading + remembered previous reading → the arrival is the *transition* (light→dark), not the state; the release (dark→light) resets the memory; hysteresis band 500 catch / 400 release. **The logic was never the problem.** Every single stall was C++ syntax.
+
+**Syntax walls hit, in order (each one a book candidate — see below):**
+- `=` vs `==` — hit in BOTH directions in one challenge: `onLine = true` written inside an `if` (would fire every pass), and `onLine == true;` written as a standalone statement (asks a question, discards the answer, changes nothing). **Neither errors. Neither warns.**
+- `count(ii + 1)` — parentheses read as a function call; increment written as if it were one.
+- Three increment spellings all written at once (`count = count+1;` `count++;` `count += 1;`) → counter jumped by 3. DJ: "We need to point out the three different ways to do a count +".
+- `if (...);  {` — stray semicolon after the condition; the `if` then controls nothing and the block runs unconditionally. Compiles clean.
+- `};` vs `;` then `}` — statement terminator and block close conflated repeatedly; cost several rounds and broke `loop()`'s brace balance (helpers ended up defined inside `loop()`).
+- Threshold inversion — catch 400 / release 500 (backwards), which makes the dead band an overlap band. Self-corrected once the consequence was named.
+- Bool values inverted in both blocks simultaneously (`== true` / `= false` in arrival) — recovered once `onLine` was restated as the single question "was it dark last pass?"
+- Array name singular (`lineSensorValue`) recurring.
+
+**⭐ Slot ambiguity recurrence (3rd instance).** DJ first wrote `lineSensorValues(1,3,5)` — the *physical window* numbering — then over-corrected to `[2]`. Center on the 3-sensor array is `[1]`. This has now bitten in C01 and twice in C02. **Strengthens the existing S52 candidate: state the array size and center slot at point-of-use in every card.**
+
+**⭐ Display collision — DJ ruling: MAKE IT A TEACHING MOMENT.** The card's own solution prints the count to `gotoXY(0,0)` — the exact cell `showReadings()` rewrites every loop pass. A student following the card verbatim gets an invisible counter and a "my code doesn't work" that is not a logic bug at all. DJ hit it, diagnosed it from the symptom himself, and fixed it with a one-character change (`(0,0)` → `(0,1)`). **Ruling: do not silently fix the card — keep the collision and teach it** (two things owning one resource; ask "what else is writing there?"). Candidate placement: a hint or a post-challenge note, not a spoiler.
+
+**C02 verdict:** logic mastered (transition-vs-state, bool memory, hysteresis, reset). All friction was syntax + API. Severity for students: **MEDIUM** — but higher than C01 because the silent-failure syntax traps give no compiler help. Time: ~20 exchanges.
+
+### L04_C03 — The Position Pointer — ⏸️ PAUSED (concepts landed, syntax wall)
+**Landed:** division as the range-squashing operation; the off-by-one at `2000/250 = 8` (no column 8) and why the card divides by **251**; `c < 8` for exactly 8 passes (derived the `< count`, not `<= last index` rule).
+**Wall:** writing a `for` loop and an `if/else` inside it. DJ: "I have no clue where to start." Also misfired reaching for `printLine("...")` (not a function), `position(c)` (parens = function call), `if c = ` (no parens, `=` for `==`), and "then" as a keyword.
+
+**⭐⭐ BIG FINDING — C03 HAS A MISSING PREREQUISITE.** C03 requires writing a `for` loop. **`for` is not taught until L05 §5.13.** A student reaching C03 has seen a `for` loop only as unexplained code inside their own `showReadings()` helper. This is the same class as the L03 modulo find, but worse: modulo was one operator in a reveal; this is the entire structure the challenge is built on. Options: (a) move C03 to L05 or later, (b) add a short `for` primer to the card, (c) restructure C03 without a loop (8 hand-written prints — the L03 Ramp "Option C" precedent), (d) leave it and accept it as a stretch challenge with the solution as the teach.
+
+### 📋 BOOK-TASK CANDIDATES (S53 — none applied)
+6. **`=` vs `==`** — assignment vs comparison, **both failure directions**, each shown with its silent symptom. Highest-value item from this session; hit repeatedly and never errors. Placement TBD (L02 data-types callout neighborhood, or L03 where `if` is introduced).
+7. **Three spellings of increment** — `x = x + 1` / `x++` / `x += 1`, all equivalent, pick one. Used across the book, taught nowhere. (DJ raised this twice, unprompted.)
+8. **The stray-semicolon killer** — `if (...);` silently disables the `if`. Coach's Tip class: "compiles clean, does the wrong thing."
+9. **`;` vs `}`** — every statement ends `;`, every block closes `}` on its own line; they never combine as `};` inside a function body.
+10. **C02 display collision → keep and teach** (DJ ruling, above).
+11. **C03 `for`-loop prerequisite** (above) — needs a DJ ruling among options a–d.
+12. **Slot ambiguity, 3rd recurrence** — reinforces S52 candidate #3-adjacent: name the array size + center slot at point of use.
+
+### ⏱️ Time-cost note (DJ raised it)
+DJ's worry: "how much time will students spend on this if it's taking me this long?" Reading: DJ's run **overstates** student time — he was doing two jobs at once (solving + auditing the book), and he is colder on C++ syntax than students fresh out of L01–L03 will be. It **understates** in one way: DJ diagnosed the display collision from the symptom in seconds; a student may stare at a blank row for ten minutes. Estimate for C02 with the card in hand: **~25–35 min**, acceptable for a MEDIUM §9 challenge (challenges are extensions, not milestones). C03 is the genuine outlier and the cause is the missing `for` prerequisite, not student effort.
+
+### Next learner-mode session
+L04 **C03** (resume, after a ruling on the `for` prerequisite) · then C04 Edge Guard / C05 · L03_C05 Variable Speed still pending.
