@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <!-- ZUMO Project Maker — v2.18 (2026-07-12)
+     v2.36 (S51) L07 catch-up base added (DJ ruling S51: L07 Step 1 starts from the Lesson 6 finished
+           build). L07's catch-up ladder had no step_1 and step_2 was payloadRef null -> a blank single-
+           file scaffold instead of the L6 program to refactor. Added PAYLOADS["7"]["after_step_1"] as an
+           EXACT copy of PAYLOADS["6"]["finished"] (byte-extracted from the registry per Bible S11, NOT
+           reconstructed), added a "Step 1 - No Lesson 6 project? Start here" CATCH-UP kind -> after_step_1,
+           and repointed step_2 null -> after_step_1 (mirrors the L08-L16 catch-up pattern). Minor bump.
+     v2.35 (S51) Blank-starter vocab per lesson: the >=Lesson-4 blank starter (mainCpp) hardcoded
+           "CONSTANTS" + a GLOBAL VARIABLES section for ALL >=4 lessons, but L05/L06 use "CONFIGURATION"
+           (and L05 orders GLOBAL VARIABLES before FUNCTION PROTOTYPES; L06 has no globals). Made mainCpp
+           lesson-aware for the single-file >=4 lessons so each blank "Main build" / first-step download
+           matches its own lesson's section set/order/vocab (L04 unchanged; L05 CONFIGURATION + GLOBALS-
+           before-prototypes; L06 CONFIGURATION no-globals). Realizes the Bible v8.33.1 lesson-agnostic
+           section canon. Verified: generated scaffold headers == each lesson's payload headers. Minor bump.
+           NOTE: L07 catch-up step_2=null is NOT fixed here — it needs a constructed after_step_1 base and
+           L06-finished is not a byte-clean source (consts differ, ground-up module rebuild); parked per
+           Bible §11 (extract, don't reconstruct) for a dedicated pass.
+     v2.34 (S51) L05 challenge payloadRef fix: Challenges 1/4/5 (detection_counter, social_distancing,
+           obstacle_avoidance) had payloadRef null -> their "make this folder for me" download resolved
+           to the blank scaffold instead of the finished L05 proximity program. Set to "finished" to
+           match sibling C2/C3 (directional_alerts, beep_speed) and the S49 C07/C08 finished-preload
+           canon (DJ ruling S51; searched repo + project docs, no prior decision to leave them blank).
+           payloadRef only; labels unchanged (L05 challenge labels carry no "(finished preload)" suffix,
+           matching C2/C3). Minor bump.
      v2.33 (S51) Scaffold fix: the >=Lesson-4 blank starter (mainCpp, used by every "Main lesson build"
            and by L04 "Discovery 4.1 - Globals & Constants (Step 2)", both payloadRef null) was missing
            the // ===== GLOBAL VARIABLES ===== section. Step 2's reveal / after_step_2 payload place
@@ -146,7 +169,7 @@
   <button class="go" id="go" disabled>&#11015; Download my project folder</button>
 <button class="go" id="goAll" disabled style="display: none; margin-top: 8px; background: #4d5358;">&#11015; Download ALL templates for this lesson (one zip)</button>
   <div class="hint">Unzip into <b>Documents/PlatformIO</b>, then in VS Code: File &rarr; Open Folder.</div>
-  <div class="hint" style="margin-top: 4px; color: #b0bac2;">Project Maker v2.33</div>
+  <div class="hint" style="margin-top: 4px; color: #b0bac2;">Project Maker v2.36</div>
 </div>
 
 <script>
@@ -407,11 +430,11 @@
       ["step_6",             "Step 6 \u2014 The Display Suite (copy step)","Step_6",              "Step 6: The Display Suite",                 "DISCOVERIES", "step_6"],
       ["step_7",             "Step 7 \u2014 Upload and Full Test",         "Step_7",              "Step 7: Upload and Full Test",              "DISCOVERIES", "finished"],
       ["jumper_check",       "Section 7.3 \u2014 JUMPER CHECK (Exit Ritual)", "Jumper_Check",     "Section 7.3: Jumper Check",                 "DISCOVERIES", "jumper_check"],
-      ["detection_counter",  "Challenge 1: Detection Counter",           "Detection_Counter",   "Challenge 1: Detection Counter",            "CHALLENGES", null],
+      ["detection_counter",  "Challenge 1: Detection Counter",           "Detection_Counter",   "Challenge 1: Detection Counter",            "CHALLENGES", "finished"],
       ["directional_alerts", "Challenge 2: Directional LED Alerts",      "Directional_Alerts",  "Challenge 2: Directional LED Alerts",       "CHALLENGES", "finished"],
       ["beep_speed",         "Challenge 3: Proximity-Based Beep Speed",  "Beep_Speed",          "Challenge 3: Proximity-Based Beep Speed",   "CHALLENGES", "finished"],
-      ["social_distancing",  "Challenge 4: Social Distancing Robot",     "Social_Distancing",   "Challenge 4: Social Distancing Robot",      "CHALLENGES", null],
-      ["obstacle_avoidance", "Challenge 5: Simple Obstacle Avoidance",   "Obstacle_Avoidance",  "Challenge 5: Simple Obstacle Avoidance",    "CHALLENGES", null],
+      ["social_distancing",  "Challenge 4: Social Distancing Robot",     "Social_Distancing",   "Challenge 4: Social Distancing Robot",      "CHALLENGES", "finished"],
+      ["obstacle_avoidance", "Challenge 5: Simple Obstacle Avoidance",   "Obstacle_Avoidance",  "Challenge 5: Simple Obstacle Avoidance",    "CHALLENGES", "finished"],
       ["custom",             "Custom copy\u2026",                         null,                  "",                                          null, null]
     ],
     6: [
@@ -439,7 +462,8 @@
     ],
     7: [
       ["main", "Main lesson build", "", "", null, null],
-      ["step_2", "Step 2 \u2014 RobotConfig.h", "Step_2", "Step 2: RobotConfig.h", "CATCH-UP", null],
+      ["step_1", "Step 1 \u2014 No Lesson 6 project? Start here (Lesson 6 finished build)", "Step_1", "Step 1: Lesson 6 Finished Build", "CATCH-UP", "after_step_1"],
+      ["step_2", "Step 2 \u2014 RobotConfig.h", "Step_2", "Step 2: RobotConfig.h", "CATCH-UP", "after_step_1"],
       ["step_3", "Step 3 \u2014 RobotSensors.h", "Step_3", "Step 3: RobotSensors.h", "CATCH-UP", "after_step_2"],
       ["step_4", "Step 4 \u2014 RobotSensors.cpp", "Step_4", "Step 4: RobotSensors.cpp", "CATCH-UP", "after_step_3"],
       ["step_5", "Step 5 \u2014 RobotHelpers.h / .cpp", "Step_5", "Step 5: RobotHelpers", "CATCH-UP", "after_step_4"],
@@ -1290,6 +1314,7 @@
   }
  },
  "7": {
+  "after_step_1": "// ===== HARDWARE OBJECTS =====\nZumo32U4ButtonA buttonA;\nZumo32U4ButtonB buttonB;\nZumo32U4OLED display;\nZumo32U4Encoders encoders;\nZumo32U4Motors motors;\n\n// ===== CONFIGURATION =====\n// ----- Distance Measurement -----\nconst float COUNTS_PER_ROTATION = 909.7;\nconst float WHEEL_DIAMETER_MM = 39.0;\nconst float WHEEL_CIRCUMFERENCE_MM = 3.14159 * WHEEL_DIAMETER_MM;\nconst float COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0);\n\n// ----- Motor Control -----\nconst int DRIVE_SPEED = 150;\n\n// ----- TRIM: your robot's straight-line correction -----\n// From Lesson 3. No two motors are identical, so \"both wheels, same\n// number\" does NOT drive straight. TRIM is added to the LEFT motor.\n//   Robot curves LEFT  -> RAISE TRIM (speeds the left wheel up)\n//   Robot curves RIGHT -> LOWER TRIM (it can go negative)\nconst int TRIM = 0;   // <-- YOUR NUMBER from Lesson 3 \n\n// ----- Turning -----\nconst float WHEEL_BASE_MM = 85.0;\nconst float TURN_CIRCUMFERENCE_MM = 3.14159 * WHEEL_BASE_MM;\nconst float COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / 360.0) *\n                                (COUNTS_PER_ROTATION / WHEEL_CIRCUMFERENCE_MM);\n\n// ===== FUNCTION PROTOTYPES =====\nvoid waitForStart();\nvoid checkBattery();\nvoid displayEncoderCounts();\nvoid driveDistance(float distanceCm);\nvoid turnDegrees(float degrees);\n\nvoid setup() {\n  display.setLayout21x8();\n  waitForStart();\n}\n\nvoid loop() {\n  checkBattery();\n  display.clear();\n  display.print(F(\"Press A: demo\"));\n  buttonA.waitForButton();\n  for (int i = 3; i > 0; i--) {\n    display.clear();\n    display.print(F(\"Starting: \"));\n    display.print(i);\n    delay(1000);\n  }\n  display.clear();\n  display.print(F(\"1: Fwd 30cm\"));\n  delay(500);\n  driveDistance(30);\n  delay(500);\n  display.clear();\n  display.print(F(\"2: Turn 90\"));\n  delay(500);\n  turnDegrees(90);\n  delay(500);\n  display.clear();\n  display.print(F(\"3: Fwd 20cm\"));\n  delay(500);\n  driveDistance(20);\n  delay(500);\n  display.clear();\n  display.print(F(\"4: Turn 180\"));\n  delay(500);\n  turnDegrees(180);\n  delay(500);\n  display.clear();\n  display.print(F(\"5: Fwd 20cm\"));\n  delay(500);\n  driveDistance(20);\n  delay(500);\n  display.clear();\n  display.print(F(\"COMPLETE!\"));\n  delay(2000);\n}\n\n// ===== HELPER FUNCTIONS =====\n\n/*\ndisplayEncoderCounts()\n----------------------\nLive dashboard: raw counts plus the distance they add\nup to, using the COUNTS_PER_CM math from Section 5.\n*/\nvoid displayEncoderCounts() {\n  int leftCount = encoders.getCountsLeft();\n  int rightCount = encoders.getCountsRight();\n  float distanceCm = ((leftCount + rightCount) / 2.0) / COUNTS_PER_CM;\n  display.clear();\n  display.print(F(\"L: \"));\n  display.print(leftCount);\n  display.gotoXY(0, 1);\n  display.print(F(\"R: \"));\n  display.print(rightCount);\n  display.gotoXY(0, 3);\n  display.print(F(\"Distance:\"));\n  display.gotoXY(0, 4);\n  display.print(distanceCm, 1);\n  display.print(F(\" cm\"));\n}\n\n/*\naverageCounts()\n---------------\nHow far have we gone? Ask BOTH wheels, not one.\nWatching a single encoder means a slipping or stiff wheel on the\nother side never gets noticed - the move ends early or late, and\nnothing warns you.\n*/\nstatic long averageCounts() {\n  long left  = abs(encoders.getCountsLeft());\n  long right = abs(encoders.getCountsRight());\n  return (left + right) / 2;\n}\n\n/*\ndriveDistance(distanceCm)\n-------------------------\nDrive a measured distance. Positive = forward,\nnegative = backward. Blocks until the distance is done.\n(Heads-up: int math caps the target near 440 cm.)\n*/\nvoid driveDistance(float distanceCm) {\n  // Reset encoders to start counting from zero\n  encoders.getCountsAndResetLeft();\n  encoders.getCountsAndResetRight();\n  // Calculate target\n  int targetCounts = abs(distanceCm) * COUNTS_PER_CM;\n  // Set direction based on positive/negative distance\n  int speed = (distanceCm > 0) ? DRIVE_SPEED : -DRIVE_SPEED;\n  // Start driving\n  // TRIM keeps it STRAIGHT. The encoders only count rotation - they\n  // cannot tell you the robot curved. Without TRIM, this drives an ARC.\n  motors.setSpeeds(speed + TRIM, speed);\n  // Wait until we've traveled far enough - AVERAGE both wheels\n  while (averageCounts() < targetCounts) {\n    delay(10);\n  }\n  // Stop!\n  motors.setSpeeds(0, 0);\n}\n\n/*\nturnDegrees(degrees)\n--------------------\nPivot in place. Positive = right, negative = left.\nSame skeleton as driveDistance() - new math, opposite wheels.\n*/\nvoid turnDegrees(float degrees) {\n  // Reset encoders\n  encoders.getCountsAndResetLeft();\n  encoders.getCountsAndResetRight();\n  // Calculate target counts for this turn\n  int targetCounts = abs(degrees) * COUNTS_PER_DEGREE;\n  // Set wheel directions: positive = turn right\n  int leftSpeed = (degrees > 0) ? DRIVE_SPEED : -DRIVE_SPEED;\n  int rightSpeed = -leftSpeed; // Opposite direction!\n  // Start turning\n  // NO TRIM here - the wheels are fighting on purpose, and the\n  // encoders decide the angle.\n  motors.setSpeeds(leftSpeed, rightSpeed);\n  // Wait until we've turned enough - AVERAGE both wheels\n  while (averageCounts() < targetCounts) {\n    delay(10);\n  }\n  // Stop!\n  motors.setSpeeds(0, 0);\n}\n\n// ----- STANDARD HELPERS (added after Lesson 3) -----\n\n/*\nwaitForStart()\n--------------\nSAFETY GATE: nothing moves until Button A is pressed.\nCall it at the END of setup(), always.\n*/\nvoid waitForStart() {\n  display.clear();\n  display.print(F(\"Press A\"));\n  display.gotoXY(0, 1);\n  display.print(F(\"to start\"));\n  buttonA.waitForButton();\n  display.clear();\n  delay(500);  // time to get your hands clear\n}\n\n/*\ncheckBattery()\n--------------\nHold A + B together at any time to see the battery.\nCall it at the TOP of loop().\n*/\nvoid checkBattery() {\n  if (buttonA.isPressed() && buttonB.isPressed()) {\n    display.clear();\n    display.print(F(\"Battery\"));\n    display.gotoXY(0, 1);\n    int mv = readBatteryMillivolts();\n    display.print(mv);\n    display.print(F(\" mV\"));\n    while (buttonA.isPressed() || buttonB.isPressed()) {\n      // wait for release\n    }\n    delay(200);\n    display.clear();\n  }\n}\n",
   "after_step_2": {
    "main.cpp": "#include \"RobotConfig.h\"\n\n// ===== HARDWARE OBJECTS =====\nZumo32U4ButtonA buttonA;\nZumo32U4ButtonB buttonB;\nZumo32U4OLED display;\n\n// ===== FUNCTION PROTOTYPES =====\nvoid waitForStart();\nvoid checkBattery();\n\nvoid setup() {\n  waitForStart();\n}\n\nvoid loop() {\n  checkBattery();\n}\n\n// ===== HELPER FUNCTIONS =====\n\n// ----- STANDARD HELPERS (added after Lesson 3) -----\n\n/*\nwaitForStart()\n--------------\nSAFETY GATE: nothing moves until Button A is pressed.\nCall it at the END of setup(), always.\n*/\nvoid waitForStart() {\n  display.clear();\n  display.print(F(\"Press A\"));\n  display.gotoXY(0, 1);\n  display.print(F(\"to start\"));\n  buttonA.waitForButton();\n  display.clear();\n  delay(500);  // time to get your hands clear\n}\n\n/*\ncheckBattery()\n--------------\nHold A + B together at any time to see the battery.\nCall it at the TOP of loop().\n*/\nvoid checkBattery() {\n  if (buttonA.isPressed() && buttonB.isPressed()) {\n    display.clear();\n    display.print(F(\"Battery\"));\n    display.gotoXY(0, 1);\n    int mv = readBatteryMillivolts();\n    display.print(mv);\n    display.print(F(\" mV\"));\n    while (buttonA.isPressed() || buttonB.isPressed()) {\n      // wait for release\n    }\n    delay(200);\n    display.clear();\n  }\n}",
    "RobotConfig.h": "/*\n=====================================================\nROBOTCONFIG.H - Robot Calibration Settings\n=====================================================\nAll robot-specific values in ONE place!\nEdit this file to tune your robot's performance.\n=====================================================\n*/\n#pragma once\n\n// ===== PHYSICAL PROPERTIES =====\n// These values define your robot's hardware\n\n// Encoder counts per complete wheel rotation\n// (12 counts/motor rotation x 75.81 gear ratio = 909.7)\nconst float COUNTS_PER_ROTATION = 909.7;\n\n// Wheel diameter in millimeters (measure yours!)\nconst float WHEEL_DIAMETER_MM = 39.0;\n\n// Wheel circumference = pi x diameter\nconst float WHEEL_CIRCUMFERENCE_MM = 3.14159 * WHEEL_DIAMETER_MM;\n\n// Encoder counts per centimeter of travel\nconst float COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0);\n\n// ===== TURNING PROPERTIES =====\n// Distance between wheel centers - this is a CALIBRATION value!\n// Start at 85.0 (physical measurement), then tune up until 90 degree\n// turns are accurate. Typical tuned values: 98-115 depending on\n// surface and wheel wear.\nconst float WHEEL_BASE_MM = 85.0;\n\n// Circumference of the turn circle\nconst float TURN_CIRCUMFERENCE_MM = 3.14159 * WHEEL_BASE_MM;\n\n// Encoder counts per degree of rotation\nconst float COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / 360.0) *\n                                (COUNTS_PER_ROTATION / WHEEL_CIRCUMFERENCE_MM);\n\n// ===== SPEED SETTINGS =====\n// Adjust these to change robot behavior\nconst int DRIVE_SPEED = 150;   // Speed for straight driving (0-400)\nconst int TURN_SPEED = 150;    // Speed for turning (0-400)\n\n// Remember TRIM from Lesson 6? It lived at the top of main.cpp,\n// buried in a 200-line file. This is where it always belonged:\n// a robot-specific number, in the robot-specific numbers file.\n// (It was born in Lesson 3, spent in Lesson 6, and filed here.)\nconst int TRIM = 0;   // <-- YOUR NUMBER\n\n// ===== BATTERY THRESHOLDS =====\nconst int BATTERY_GOOD = 4800; // millivolts - fully charged\nconst int BATTERY_LOW = 4200;  // millivolts - charge soon\n"
@@ -1737,11 +1762,22 @@
         "// ===== HARDWARE OBJECTS =====\n\n// ===== CONSTANTS =====\n\n// ===== FUNCTION PROTOTYPES =====\n\n" +
         "void setup() {\n}\n\nvoid loop() {\n}\n\n// ===== HELPER FUNCTIONS =====\n";
     }
+    var Lnum = parseInt(lesson.value, 10);
+    // Blank-starter section vocab/order matches each single-file >=4 lesson's own payloads (S51):
+    // L04 CONSTANTS + GLOBAL VARIABLES; L05 CONFIGURATION + GLOBAL VARIABLES (before prototypes);
+    // L06 CONFIGURATION, no globals. Other >=4 (multi-file "main" fallback) keep the L04-style default.
+    var protos = "// ===== FUNCTION PROTOTYPES =====\nvoid waitForStart();\nvoid checkBattery();\n\n";
+    var mid;
+    if (Lnum === 5) {
+      mid = "// ===== CONFIGURATION =====\n\n// ===== GLOBAL VARIABLES =====\n\n" + protos;
+    } else if (Lnum === 6) {
+      mid = "// ===== CONFIGURATION =====\n\n" + protos;
+    } else {
+      mid = "// ===== CONSTANTS =====\n\n" + protos + "// ===== GLOBAL VARIABLES =====\n\n";
+    }
     return head +
       "// ===== HARDWARE OBJECTS =====\nZumo32U4ButtonA buttonA;\nZumo32U4ButtonB buttonB;\nZumo32U4OLED display;\n\n" +
-      "// ===== CONSTANTS =====\n\n" +
-      "// ===== FUNCTION PROTOTYPES =====\nvoid waitForStart();\nvoid checkBattery();\n\n" +
-      "// ===== GLOBAL VARIABLES =====\n\n" +
+      mid +
       "void setup() {\n  waitForStart();\n}\n\n" +
       "void loop() {\n  checkBattery();\n}\n\n" +
       "// ===== HELPER FUNCTIONS =====\n\n// ----- STANDARD HELPERS (added after Lesson 3) -----\n\n" +
