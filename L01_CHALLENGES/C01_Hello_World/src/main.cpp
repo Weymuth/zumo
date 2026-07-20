@@ -48,7 +48,8 @@ DATE: 7/19/2026
 // │ screen and the monitor agree.                           │
 // │                                                         │
 // │ ── PART 3: make it YOURS ──                             │
-// │ Change the SCREEN greeting to your own name --          │
+// │ Same marker as Part 1:  <<< CH1 PART 1, PART 3 and      │
+// │ PART 4.  Change the SCREEN greeting to your own name -- │
 // │ "Hello, DJ!" -- and leave the Serial line saying        │
 // │ "Hello, World!".                                        │
 // │                                                         │
@@ -68,6 +69,8 @@ DATE: 7/19/2026
 // │ course, and the rest of engineering.                    │
 // │                                                         │
 // │ ── PART 5: find your robot's name ──                    │
+// │ Find  <<< CH1 PART 5 -- it is marked READ ONLY. That    │
+// │ block is the only part of this file you do NOT edit.    │
 // │ Your robot has a name in its permanent memory. It is    │
 // │ NOT in this file -- scrolling will not find it. The     │
 // │ only way to learn it is to ask the robot.               │
@@ -134,7 +137,7 @@ void setup() {
     // ───── SET UP THE DISPLAY ─────
     display.clear();
     display.setLayout21x8();
-    display.print("Press A");        // <<< CH1 PART 1 and PART 4
+    display.print("Press A");        // <<< CH1 PART 1, PART 3 and PART 4
 
     // ───── 1. WAIT FOR THE BUTTON ─────
     while (!buttonA.getSingleDebouncedPress()) {   // <<< CH1 PART 4
@@ -144,7 +147,7 @@ void setup() {
     // ───── 2. SAY HELLO ─────
     Serial.println("Hello, Robot!");  // <<< CH1 PART 2
 
-    // ───── WHO AM I? ─────
+    // ───── WHO AM I? ─────          // <<< CH1 PART 5 — READ ONLY, do not edit
     Serial.print("Robot name: ");
     if (EEPROM.read(NAME_ADDR) == 0x5A) {
         for (int i = 0; i < 20; i++) {
