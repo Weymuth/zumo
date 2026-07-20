@@ -315,3 +315,85 @@ up, but every version bump stores a full new copy, and **GitHub's web UI truncat
 above ~1 MB on rename** (S33 canon) — always rename ON DISK, never in the browser editor.
 That is a handling hazard, not a backup one, but it is the file most likely to be damaged
 by a routine action.
+
+---
+
+# ⭐ END-OF-SESSION STATE (this supersedes anything above it)
+
+## LIVE — verified by fresh clone, commit `856acb5` "Session 54 cleaning"
+**Maker v2.37** · L01 v03.2.7 · Bible v8.33.1 · Gate v1.3 · Harness v3.0
+`images/L01_GRAPHIC_1-19_playfrequency_anatomy.svg` — LIVE
+All other lessons unchanged.
+
+## ✅ MAKER v2.37 SHIPPED — Lesson 1 finally has a registry
+First time L01 has ANY Maker integration. Built idempotently from the clean live base
+(not patched onto an earlier attempt), md5-verified after push: `3c06a7c0dc36db1e7d1dee9ee3893e79`.
+
+- **`KINDS[1]`** — 13 entries (main + 11 challenges + custom)
+- **`PAYLOADS["1"]`** — 11 bodies, one shared code body per Bible §18.3
+- **`mainCpp()` now lesson-aware for MY PLAN** — L01 ships WITHOUT the pseudo-code block
+- **`DL_ALL_LESSONS`** now includes 1
+
+**Verification performed:**
+| Check | Result |
+|---|---|
+| `node --check` both script blocks | PASS |
+| Maker output vs. the 11 disk files | **11/11 BYTE-IDENTICAL** |
+| All 16 lessons still in KINDS + PAYLOADS | intact, 212 payload keys |
+| Book-wide payload gate, **L02–L16** | **PASS** |
+| Book-wide payload gate, **L01** | **FAIL (148) — expected, see below** |
+| Compile, all 11 files | PASS, 10,208 B each |
+
+⚠️ **My first injection attempt failed 11/11.** My generator had invented its own header
+(`Hello, Robot!` + hyphen) instead of the Maker's real format (`TITLES[1]` = `Hello Robot`
++ em-dash `\u2014`). **The byte-match gate caught it.** Lesson: never hand-write a header
+that the Maker also generates — derive it from the Maker's own code.
+
+## 🔴 THE ONE BLOCKING INCONSISTENCY
+**L01 is v03.2.7 — unchanged.** The Maker now serves eleven L01 challenge files that
+`Lesson_01.html` never mentions. The gate fails 148 checks on L01, all of them the same
+cause: *the payload code does not appear anywhere in the lesson.*
+
+**This is not a defect — it is the gate refusing to let the Maker and the book disagree.**
+Nothing student-facing is broken (no L01 card links to the Maker yet), so it waits safely.
+But **the §9 rewrite is now mandatory, not optional polish.**
+
+## 🎯 S55 OPENS HERE — land ONE complete L01 as v03.3.0
+Do all of these in a single pass so the file bumps once, not seven times:
+1. **§9 rewrite** — all 11 cards rewritten to match the built files, plus a
+   "📁 Work in:" bar on each linking to `newproject.html?lesson=1&kind=cNN` (L08 pattern).
+   ⚠️ C01's card still says "Change the Message," which is now PART 3 of five.
+2. **§5 Reekes prose block** (drafted + approved, web-verified)
+3. **§9 Williams/Spielberg prose block** (drafted + approved, web-verified)
+4. **§3.1 AI/Copilot hard callout** (drafted + approved)
+5. **§1 research Coach's Tip** — "How You Ask Is Part of the Answer" (drafted + approved)
+6. **Quick Reference note chart** — C4–C6 naturals + F3 175, plus `playNote()` / `play()` pointers
+7. **GRAPHIC 1-19 `<img>` wiring** into §5 + image-index row (SVG already live in `images/`)
+8. **C05 wording** — add "Why might the Serial Monitor be a challenge **at that point?**"
+9. Then **re-run the gate** — L01 must go from FAIL(148) to PASS.
+
+## 🧹 REPO CLEANUP DONE THIS SESSION
+Removed: `Lesson_01_WIP_S54.html` · `main.cpp` · `ZUMO_L01_CHALLENGE_FILE_SPEC.md`
+(superseded by tonight's reversal) · `ZUMO_S50/S52/S53/S54_HANDOFF.md`.
+
+⚠️ **`ZUMO_NAME_WRITER` is NOT in the repo.** It was pushed as bare `main.cpp`, then removed
+in cleanup. Under the option-B ruling it BELONGS in git — needed on any machine, every
+August, for years. **Re-add it under a real name** (`ZUMO_NAME_WRITER_main.cpp`, or a folder
+with its `platformio.ini`). It is compile-verified at 8,886 B.
+
+## 📋 STILL QUEUED (unchanged)
+L16 EEPROM prose fix (+ the 512 address-map note) · **L04 `setLayout21x8`** (the ONLY lesson
+of 16 missing it) · L04 C03 `for` primer (option b) + `L04_LEARNMODE_LOG.md` correction ·
+extend the gate to cover L01 challenge bodies (required by option B) · the 6 syntax-gap
+prose candidates + "out-of-range values don't error."
+
+## 🔬 BENCH — still owed
+**C06** (tape + ruler: does it come home? do the 3 runs disagree?) and **C11** (fresh vs.
+tired voltage, then re-drive C06). ⚠️ **If C06's robot comes home too accurately, the drive
+needs lengthening — which regenerates the shared body, all 11 files AND the payloads.**
+Do this before writing §9 cards against the current versions.
+
+## 🔴 SEPTEMBER DEADLINE
+**Name-flash every robot before students open L01**, or the whole class sees
+`(unnamed -- see your teacher)` on day one. ~1 min/robot. Add to the Period 1 handout-day
+row of the Teacher Daily Grid.
