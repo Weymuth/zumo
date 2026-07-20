@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.2.3 -->
+<!-- Lesson version: v01.2.4 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -414,7 +414,7 @@ with nothing removed.</p>
 <p><strong>Build it before you change anything.</strong> Confirm it still drives the course.
 You are about to modify a working robot, and you want to be certain it was working when you started.</p>
 <div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Your project is EIGHT files.</strong><br><code>RobotConfig.h</code> &middot; <code>RobotSensors.h</code> &middot; <code>RobotSensors.cpp</code> &middot; <code>RobotHelpers.h</code> &middot; <code>RobotHelpers.cpp</code> &middot; <code>RobotMotion.h</code> &middot; <code>RobotMotion.cpp</code> &middot; <code>main.cpp</code><br><br>If you are missing <code>RobotHelpers</code>, you are missing <code>waitForStart()</code> &mdash; your <strong>safety gate</strong>. Re-download before you go any further.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 1</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_1" style="color: #2e86ab; font-weight: bold;">Open Step 1 in Project Maker</a></p></div>
@@ -429,7 +429,7 @@ Add this under the other <code>extern</code> lines:</p>
 Add this under the other object definitions:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; extern in the .h, the real thing in the .cpp.</strong><br>This is the same two-part pattern you have used since Lesson 7. The <code>.h</code> says &quot;<em>this object exists somewhere</em>&quot; so every file can talk about it. The <code>.cpp</code> is where it is actually <strong>made</strong> &mdash; exactly once, in exactly one file.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 2</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_2" style="color: #2e86ab; font-weight: bold;">Open Step 2 in Project Maker</a></p></div>
@@ -445,7 +445,7 @@ Add this under the other object definitions:</p>
 const int GYRO_CAL_SAMPLES = 1024;</pre>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Why a constant instead of just typing 1024?</strong><br>Because <code>RobotConfig.h</code> is where every number a human might want to change lives. If your classroom is noisy and the gyro zero comes out unsteady, the fix is <strong>one number, in one place</strong> &mdash; not a hunt through <code>RobotSensors.cpp</code>.</div>
 <div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Note: plain int, not uint16_t.</strong><br><code>RobotConfig.h</code> does not include <code>&lt;Arduino.h&gt;</code>, so the fixed-width types like <code>uint16_t</code> are not defined there. Plain <code>int</code> is what belongs in this file.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 3</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_3" style="color: #2e86ab; font-weight: bold;">Open Step 3 in Project Maker</a></p></div>
@@ -461,7 +461,7 @@ void gyroUpdate();
 int  getTurnAngle();
 </pre>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Nothing works yet, and the robot has not changed.</strong><br>You have just <em>promised</em> that these four functions exist. You have not written them. The project still compiles &mdash; a prototype is a promise, and the compiler is willing to wait until link time to see it kept.<br><br>You keep it in Step 5.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 4</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_4" style="color: #2e86ab; font-weight: bold;">Open Step 4 in Project Maker</a></p></div>
@@ -532,7 +532,7 @@ int getTurnAngle() {
 }</pre>
 <p><em>About those two giant numbers: they convert the gyro&rsquo;s raw readings into degrees using pure integer math &mdash; this function must run as often as possible, and integer math keeps every call cheap and exact. You do not need to derive that ratio to use it. You need to know what it does &mdash; and now you do.</em></p>
 <div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; The #include <Wire.h> goes at the TOP of the file.</strong><br>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Build it now. The binary just grew by 800 bytes.</strong><br>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live &mdash; the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Build it now. The binary just grew by 800 bytes.</strong><br>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live &mdash; the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 5</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_5" style="color: #2e86ab; font-weight: bold;">Open Step 5 in Project Maker</a></p></div>
@@ -555,7 +555,7 @@ of them is still right.
 */
 void turnDegreesGyro(float degrees);
 </pre>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 6</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_6" style="color: #2e86ab; font-weight: bold;">Open Step 6 in Project Maker</a></p></div>
@@ -601,7 +601,7 @@ found that <code>turnDegreesGyro()</code> is unreachable from <code>main()</code
 <strong>threw it in the bin</strong> before writing the binary. A function nobody calls is dead weight,
 and the linker will not carry dead weight to a chip this small. The ATmega32U4 has 32&nbsp;KB of flash on paper &#8212; but 4&nbsp;KB of that is the bootloader, the little program that lets you upload over USB at all. What is actually yours is <strong>28,672 bytes</strong>. Lesson 16 will show you exactly how little that is.</p>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; You have written the truth. The robot is still ignoring it.</strong><br>Both turns now exist. <code>turnDegrees()</code> asks the wheels. <code>turnDegreesGyro()</code> asks the robot. They are sitting side by side in the same file, and the robot is <strong>still using the wheels</strong>.<br><br>That is not an oversight &mdash; <strong>it is Step 8&#x27;s entire job.</strong> The old instrument stays until the moment the new one takes over. You never delete the working thing before the replacement is wired in.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 7</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_7" style="color: #2e86ab; font-weight: bold;">Open Step 7 in Project Maker</a></p></div>
@@ -636,7 +636,7 @@ Find <code>setup()</code>. Add this <strong>immediately before</strong> the
 <div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; This block MUST come before waitForStart(). Here is why.</strong><br>The next thing <code>setup()</code> does is <code>calibrateLineSensors()</code> &mdash; and <strong>that spins the robot.</strong><br><br>If the gyro were still measuring its zero while the robot spun, it would learn that <strong>spinning is what standing still feels like</strong>, subtract that from every future reading, and be catastrophically wrong for the entire run.<br><br>The still measurement comes first, while nothing has moved yet. <strong>Order is not decoration here.</strong></div>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Build it. 21,342 &rarr; 24,534 bytes. +3,192.</strong><br>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable &mdash; and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; What just happened to the rest of the book</strong><br>Every intersection turn from Lesson 9. Every obstacle maneuver from Lesson 10. Everything that ever called <code>turnLeft()</code>, <code>turnRight()</code>, or <code>turnAround()</code>.<br><br><strong>All of it now closes on the robot&#x27;s real angle</strong>, and you did not open a single one of those files.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 8 (finished build)</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=finished" style="color: #2e86ab; font-weight: bold;">Open the finished Lesson 12 build in Project Maker</a></p></div>
@@ -668,7 +668,7 @@ Do them in order; each one sets up the next.</p>
 }</pre>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Now pick the robot up and turn it with your hands.</strong><br>Rotate it a quarter turn. The OLED climbs toward <strong>90</strong>. Turn it back &mdash; it climbs back down. Spin it all the way around and it reaches <strong>360</strong>.<br><br>The motors are off. The encoders are reporting <strong>nothing</strong>. And the robot knows <em>exactly</em> how far you turned it.<br><br><strong>The gyro is an instrument, not a motor command.</strong> It measures the world whether you are driving or not.</div>
 <div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Watch it drift.</strong><br>Set the robot down and leave it completely alone for thirty seconds. The number will slowly wander &mdash; a degree, then two, then five.<br><br>That is the leftover bias, the part the 1,024-sample average could not perfectly cancel. It is why <code>gyroReset()</code> is called at the start of <em>every</em> turn instead of once at boot: <strong>you want the drift to have as little time as possible to accumulate.</strong></div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7A in the Project Maker</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7a" style="color: #2e86ab; font-weight: bold;">Open 7A &mdash; The Gyro With the Motors Off</a></p></div>
@@ -698,7 +698,7 @@ so it has nothing to subtract.</p>
 <p>Build it. <strong>Put the robot down. Do not touch it.</strong></p>
 <div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; The number climbs anyway.</strong><br>The robot is <em>motionless</em>. The angle reading crawls upward &mdash; or downward &mdash; steadily, forever. Left alone for a minute it will confidently report that it has rotated a hundred degrees.<br><br>It has not moved at all.</div>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; And look at the byte count: 20,626 &rarr; 20,422. It got SMALLER.</strong><br>The broken version is <strong>204 bytes cheaper</strong> than the correct one.<br><br><strong>The lie costs less than the truth.</strong> Honesty is not free &mdash; it is 204 bytes of code and a fifth of a second of your life, every boot, and it buys you a sensor you can believe.<br><br>Put the calibration back before you go on.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7B in the Project Maker</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7b" style="color: #2e86ab; font-weight: bold;">Open 7B &mdash; Delete the Calibration</a></p></div>
@@ -738,7 +738,7 @@ encoders. The <strong>gyro</strong> is along for the ride, watching, steering no
 }</pre>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; Run it on CARPET first.</strong><br>Press B. The robot turns. The OLED says <code>Encoder: 90</code> and <code>Gyro: 88</code> &mdash; or 91, or 89.<br><br><strong>They agree.</strong> This is the world you have been living in for six lessons, and in this world the encoder is a perfectly good instrument.</div>
 <div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Now put it on the delrin. Press B.</strong><br><code>Encoder: 90</code><br><code>Gyro:&nbsp;&nbsp;&nbsp;&nbsp;31</code><br><br>The wheels spun exactly as far as they were told. The encoder counted exactly right. The code stopped at exactly the correct count.<br><br><strong>The robot barely moved.</strong><br><br>And notice: <code>Encoder: 90</code> is <em>hardcoded</em> in that sketch. It does not read the encoder at the end &mdash; it does not have to. <strong>The encoder is always certain.</strong> That is the problem.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7C in the Project Maker</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7c" style="color: #2e86ab; font-weight: bold;">Open 7C &mdash; The Lie, Caught in the Act</a></p></div>
@@ -760,7 +760,7 @@ encoders. The <strong>gyro</strong> is along for the ride, watching, steering no
 
   delay(4000);
 }</pre>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; The robot turns 90 degrees. On the slick surface. Every time.</strong><br>The wheels are still slipping &mdash; you can <em>hear</em> them slipping, and the turn takes noticeably longer than it did on carpet.<br><br><strong>The robot does not care.</strong> It keeps spinning the motors until the <em>chassis</em> has come around 90 degrees, and then it stops. Slip does not make it wrong. Slip just makes it slow.</div><details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; The robot turns 90 degrees. On the slick surface. Every time.</strong><br>The wheels are still slipping &mdash; you can <em>hear</em> them slipping, and the turn takes noticeably longer than it did on carpet.<br><br><strong>The robot does not care.</strong> It keeps spinning the motors until the <em>chassis</em> has come around 90 degrees, and then it stops. Slip does not make it wrong. Slip just makes it slow.</div><details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7D in the Project Maker</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7d" style="color: #2e86ab; font-weight: bold;">Open 7D &mdash; The Honest Turn</a></p></div>
@@ -811,7 +811,7 @@ because this was never a curve. <strong>This was a turn that did not happen, rep
 could not know.</strong></p>
 <p>Now you have a sensor that knows.</p>
 <div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Before you move on: put loop() back.</strong><br>Section 7 replaced your <code>loop()</code> with test sketches. Restore the real one &mdash; the Lesson 11 state machine &mdash; and rebuild. It should compile to <strong>24,534 bytes</strong> and drive the full course, with every turn now closing on the gyro.</div>
-<details style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
+<details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7E in the Project Maker</summary>
 <div style="margin-top: 12px;">
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7e" style="color: #2e86ab; font-weight: bold;">Open 7E &mdash; The Lesson 6 Square</a></p></div>
@@ -927,7 +927,7 @@ you happen to be pointing now</em>.&quot;</p>
 <p><strong>Write <code>turnToHeading()</code></strong> &mdash; a turn that goes to an <em>absolute</em> angle,
 measured from wherever <code>gyroReset()</code> last defined as zero. Ask for heading 90, and it goes to 90,
 no matter where it is now &mdash; and no matter how wrong the last turn was.</p>
-<details style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
+<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
 <div style="margin-top: 12px;">
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== MAIN LOOP =====
 // One switch, four states - the whole robot brain reads top to bottom
@@ -962,7 +962,7 @@ void turnToHeading(int targetHeading) {
 <p>Drive the turn with the encoder, watch it with the gyro, and if the two disagree by more than
 <code>SLIP_TOLERANCE</code>, <strong>sound the buzzer and say SLIP</strong>.</p>
 <p>At the top of <code>main.cpp</code>, add the blank:</p>
-<details style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
+<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
 <div style="margin-top: 12px;">
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// CHALLENGE 2: you now own two instruments that measure the SAME
 // turn. When they disagree, the wheels slipped. Make the robot say so.
@@ -1009,7 +1009,7 @@ motors straining.</p>
 <p>The encoder version never had this problem, because the wheels always spin eventually.
 <strong>The gyro version can hang precisely because it is telling the truth.</strong></p>
 <p>Give it a time budget:</p>
-<details style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
+<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
 <div style="margin-top: 12px;">
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== MAIN LOOP =====
 // One switch, four states - the whole robot brain reads top to bottom
