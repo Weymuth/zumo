@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.3.0 -->
+<!-- Lesson version: v03.4.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +32,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Sense, Decide, Act</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">And Everything That Comes First</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.3 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.4 &mdash; July 2026</div>
 </div>
 
 <!-- ===== ICON LEGEND ===== -->
@@ -1093,6 +1093,97 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
     <p><strong>Challenge 10 asks you to write five of your own.</strong> Not a tune &mdash; a message.</p>
 </div>
 
+<h3 style="color: #7d5283; margin-top: 20px;">The Challenge Program</h3>
+<p>Every challenge below starts from the <strong>same program</strong> &mdash; the one you just built, with one block added. The challenge files carry an extra piece that Section 5.5 did not need: the robot's <strong>name-reader</strong>, which pulls the name stored in the robot's permanent memory. You will use it in Challenge 1; the rest of the program is exactly what you already built.</p>
+<p>Each challenge file also marks its own landing zone with a <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt;</code> comment. Those markers differ from challenge to challenge, so they are not shown here &mdash; each card below quotes its own.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== HARDWARE OBJECTS =====
+Zumo32U4ButtonA buttonA;
+Zumo32U4ButtonB buttonB;
+Zumo32U4ButtonC buttonC;
+Zumo32U4OLED display;
+Zumo32U4Motors motors;
+Zumo32U4Buzzer buzzer;
+
+// ===== CONSTANTS =====
+#include &lt;EEPROM.h&gt;
+const int NAME_ADDR = 512;   // where your robot's name lives
+
+// ===== GLOBAL VARIABLES =====
+// (none needed for this challenge)
+
+// ===== FUNCTION PROTOTYPES =====
+// (none needed for this challenge)
+
+void setup() {
+    // ───── START SERIAL ─────
+    Serial.begin(115200);
+
+    // ───── SET UP THE DISPLAY ─────
+    display.clear();
+    display.setLayout21x8();
+    display.print("Press A");
+
+    // ───── 1. WAIT FOR THE BUTTON ─────
+    while (!buttonA.getSingleDebouncedPress()) {
+        delay(10);
+    }
+
+    // ───── 2. SAY HELLO ─────
+    Serial.println("Hello, Robot!");
+
+    // ───── WHO AM I? ─────
+    Serial.print("Robot name: ");
+    if (EEPROM.read(NAME_ADDR) == 0x5A) {
+        for (int i = 0; i &lt; 20; i++) {
+            char c = EEPROM.read(NAME_ADDR + 1 + i);
+            if (c == '\0') { break; }
+            Serial.print(c);
+        }
+    } else {
+        Serial.print("(unnamed -- see your teacher)");
+    }
+    Serial.println();
+
+    // ───── 3. BEEP ─────
+    buzzer.playFrequency(440, 800, 15);
+    delay(900);
+
+    // ───── 4. BLINK THE LED ─────
+    for (int i = 0; i &lt; 3; i++) {
+        ledYellow(1);
+        delay(200);
+        ledYellow(0);
+        delay(200);
+    }
+
+    // ───── 5. DRIVE: FORWARD, THEN BACK ─────
+    display.clear();
+    display.print("Moving!");
+    motors.setSpeeds(200, 200);   // Forward
+    delay(350);
+    motors.setSpeeds(0, 0);       // Stop
+    delay(200);
+    motors.setSpeeds(-200, -200); // Backward
+    delay(350);
+    motors.setSpeeds(0, 0);       // Stop
+
+    // ───── 6. VICTORY JINGLE ─────
+    display.clear();
+    display.print("Done!");
+    buzzer.playFrequency(523, 100, 15);  // C5
+    delay(150);
+    buzzer.playFrequency(659, 100, 15);  // E5
+    delay(150);
+    buzzer.playFrequency(784, 300, 15);  // G5
+}
+
+void loop() {
+    // Nothing here for Lesson 1
+}
+
+// ===== HELPER FUNCTIONS =====
+// (none needed for this challenge)</pre>
+
 <div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;">
     <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Hello, World!</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3;">MEDIUM</span></div>
     <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
@@ -1100,12 +1191,17 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
     </div>
     <div style="padding: 15px 20px; background: white;">
         <p><strong>Goal:</strong> Make your robot say the two words every programmer starts with &mdash; then find out its name.</p>
-        <p><strong>Five parts, in order. Test after each one.</strong> The file marks each landing zone with a <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt;</code> comment.</p>
+        <p><strong>Five parts, in order. Test after each one.</strong></p>
         <p><strong>Part 1 &mdash; put it on the screen.</strong> Add <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">display.gotoXY(0, 0);</code> and <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">display.print("Hello, World!");</code> above the <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">"Press A"</code> line, then park the cursor on row 1 so both fit.</p>
         <p><strong>Part 2 &mdash; say it in both places.</strong> Change the Serial message so the monitor and the screen agree.</p>
         <p><strong>Part 3 &mdash; make it yours.</strong> Put your own name on the screen; leave Serial saying <em>Hello, World!</em></p>
         <p><strong>Part 4 &mdash; change the button.</strong> Make the robot wait for Button B. <strong>Two things must change</strong> &mdash; the text and the behavior. Change only one and your screen tells a lie: it asks for B while the robot still waits for A. Code and label move together.</p>
         <p><strong>Part 5 &mdash; find your robot's name.</strong> It lives in permanent memory, not in this file. Open the Serial Monitor, press the button, and read the line after the greeting. Then find out <em>why</em> it has that name &mdash; the Coach's Tip in Section 1 shows you how to ask.</p>
+<p style="margin: 12px 0 6px;">All five parts are marked in the file. Parts 1, 3 and 4 share one line; Part 5 is marked READ ONLY &mdash; it is the one block you do not edit.</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    display.print("Press A");        // &lt;&lt;&lt; CH1 PART 1, PART 3 and PART 4
+    while (!buttonA.getSingleDebouncedPress()) {   // &lt;&lt;&lt; CH1 PART 4
+    Serial.println("Hello, Robot!");  // &lt;&lt;&lt; CH1 PART 2
+    // ───── WHO AM I? ─────          // &lt;&lt;&lt; CH1 PART 5 — READ ONLY, do not edit</pre>
     </div>
 </div>
 
@@ -1132,6 +1228,8 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         </ul>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 2</code> in the file. One number changes:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    buzzer.playFrequency(440, 800, 15);   // &lt;&lt;&lt; CHALLENGE 2: change 440</pre>
     </div>
 </div>
 
@@ -1152,6 +1250,10 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>Then double the speed by cutting each <code>delay(200)</code> inside the loop in half: <code>delay(100)</code>. Smaller delays = faster blinking.</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 3</code> in the file. Three numbers carry this one:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    for (int i = 0; i &lt; 3; i++) {      // &lt;&lt;&lt; CHALLENGE 3: the count
+        delay(200);                    // &lt;&lt;&lt; CHALLENGE 3: light-on time
+        delay(200);                    // &lt;&lt;&lt; CHALLENGE 3: light-off time</pre>
     </div>
 </div>
 
@@ -1172,6 +1274,8 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>The robot drives for <strong>twice as long</strong> in each direction — 700 milliseconds instead of 350 — so it travels roughly twice the distance. The <code>delay()</code> after <code>setSpeeds()</code> controls how long the motors hold that speed before the next command. If your prediction matched: that is engineering intuition forming.</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 4</code> in the file. One number changes:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    delay(350);                   // &lt;&lt;&lt; CHALLENGE 4: change to 700</pre>
     </div>
 </div>
 
@@ -1195,6 +1299,8 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>Two audiences, two devices, one truth. The display talks to whoever is standing next to the robot; the Serial Monitor talks to your computer &mdash; and only while the cable is attached. Every debugging session for the rest of this course is a choice between those two, and from Lesson 11 on, the robot will be running untethered <em>on the floor</em> &mdash; where the OLED is the only one of the two you can still read.</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 5</code> in the file. Your three lines go where this comment sits:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    // &lt;&lt;&lt; CHALLENGE 5: YOUR THREE LINES GO HERE</pre>
     </div>
 </div>
 
@@ -1224,6 +1330,17 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p><strong>Keep your measurement.</strong> You will want it later &mdash; it is the first honest data your robot ever gave you.</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">There is no marker in this file and nothing to change. This is the block you are measuring &mdash; identical numbers out and back, opposite signs:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    // ───── 5. DRIVE: FORWARD, THEN BACK ─────
+    display.clear();
+    display.print("Moving!");
+    motors.setSpeeds(200, 200);   // Forward
+    delay(350);
+    motors.setSpeeds(0, 0);       // Stop
+    delay(200);
+    motors.setSpeeds(-200, -200); // Backward
+    delay(350);
+    motors.setSpeeds(0, 0);       // Stop</pre>
     </div>
 </div>
 
@@ -1251,6 +1368,8 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>Notice 784 is exactly double 392 — one octave apart, which is what gives a siren its rise-and-fall character.</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 7</code> in the file. Your siren goes where this comment sits:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    // &lt;&lt;&lt; CHALLENGE 7: YOUR SIREN GOES HERE</pre>
     </div>
 </div>
 
@@ -1275,6 +1394,8 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>The left track pushes forward while the right pulls backward, so the robot rotates around its own center — a pirouette. This differential trick is exactly how the Zumo will steer for the rest of the course.</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 8</code> in the file. Two numbers become opposites:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    motors.setSpeeds(200, 200);   // &lt;&lt;&lt; CHALLENGE 8: make these opposite</pre>
     </div>
 </div>
 
@@ -1295,6 +1416,8 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>The show starts <strong>the instant the robot powers on or resets</strong> — no waiting for Button A. That is exactly why the wait exists: it gives you time to position the robot (and close the Serial Monitor gap from Section 7). You just proved the while-loop trapdoor from Section 5 by removing the trapdoor. Put the line back when you are done!</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 9</code> in the file. It marks the three lines you remove:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    // &lt;&lt;&lt; CHALLENGE 9: delete these three lines</pre>
     </div>
 </div>
 
@@ -1309,6 +1432,9 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>Pick a message first &mdash; <em>I am awake</em>, <em>I am done</em>, <em>something is wrong</em>, <em>I found it</em>, <em>are you there?</em> &mdash; then sketch the five pitches before you type them.</p>
         <p>Each note needs two lines: play it, then wait. Without the delay all five fire at once and you hear one noise. <strong>The silence between notes is part of the music.</strong></p>
         <p>The file also gives you the real Devil's Tower sequence to hear first. <strong>Test:</strong> play yours for somebody without telling them the message, and ask what they think the robot is saying.</p>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 10</code> in the file. Your five notes replace the three that are there:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    // &lt;&lt;&lt; CHALLENGE 10: YOUR FIVE-NOTE SIGNAL GOES HERE
+    // Replace these three notes with your five.</pre>
     </div>
 </div>
 
@@ -1347,6 +1473,8 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
         <p>This is a preview of how robots sense their environment—including themselves!</p>
     </div>
 </details>
+<p style="margin: 12px 0 6px;">Find <code style="background:#e8e8e8; padding:2px 6px; border-radius:4px;">&lt;&lt;&lt; CHALLENGE 11</code> in the file. Your battery check goes where this comment sits:</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    // &lt;&lt;&lt; CHALLENGE 11: YOUR BATTERY CHECK GOES HERE</pre>
     </div>
 </div>
 
@@ -1776,7 +1904,7 @@ Learn to read C++ code like a professional so you can predict what code will do 
 
 <hr>
 <p style="text-align: center; color: #666; font-size: 0.9em;">
-    <strong>Lesson 1: Hello, Robot!</strong> • Version 03.3 — July 2026 • Zumo 32U4 Robotics<br>
+    <strong>Lesson 1: Hello, Robot!</strong> • Version 03.4 — July 2026 • Zumo 32U4 Robotics<br>
     ZUMO Callout Standard v1.0 Applied
 </p>
 
