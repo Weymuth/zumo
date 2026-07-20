@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.0.12 -->
+<!-- Lesson version: v04.1.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +19,7 @@
 <a href="#section-6" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #3a7d5c; border-radius: 4px; font-size: 0.85em;">6. Build It</a>
 <a href="#section-7" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">7. Test</a>
 <a href="#section-8" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">8. Troubleshoot</a>
-<a href="#section-8a" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">8A. If Statements</a>
+<a href="#section-8a" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #c45d76; border-radius: 4px; font-size: 0.85em;">8A. If &amp; For</a>
 <a href="#section-9" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #9b6a9e; border-radius: 4px; font-size: 0.85em;">9. Challenges</a>
 <a href="#section-10" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">10. Exit</a> <a href="#bonus-challenges" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Bonus</a>
 <a href="#glossary" style="color: white; text-decoration: none; padding: 5px 12px; background-color: #6c757d; border-radius: 4px; font-size: 0.85em;">Glossary</a>
@@ -33,7 +33,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Line Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Your Robot Cannot See &mdash; It Measures</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.0 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.1 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -684,7 +684,7 @@ scratch pad →  one global array, a slot per active sensor —
 4. end the line
 5. brief pause so the numbers don't blur</pre>
 
-<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The raw read call is in <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line sensor functions</a>, printing and the tab trick are in <a href="#qr-serial" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Serial Monitor</a>, and the pause is in <a href="#qr-timing" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Timing</a>. The for loop counts <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i</code> from 0 up to NUM_SENSORS — the same lap-per-sensor pattern every sensor lesson uses from here forward.</p>
+<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The raw read call is in <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Line sensor functions</a>, printing and the tab trick are in <a href="#qr-serial" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Serial Monitor</a>, and the pause is in <a href="#qr-timing" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Timing</a>. The for loop counts <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i</code> from 0 up to NUM_SENSORS — the same lap-per-sensor pattern every sensor lesson uses from here forward. Copy it as written for now; <a href="#section-8a" style="color: #2e86ab; font-weight: bold;">Section 8A</a> takes it apart piece by piece before the challenges ask you to write your own.</p>
 
 <details style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">🔓 Check your work — open after you've tried</summary>
@@ -1044,13 +1044,15 @@ Serial Monitor: full values plus the position.
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
 </div>
 
-<!-- Section 8A: If Statements -->
+<!-- Section 8A: If Statements and For Loops -->
 <div style="background-color: #c45d76; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
-<div id="section-8a" style="font-size: 1.15em; font-weight: bold;">🔑 Section 8A: Your First If Statement — Making the Robot Decide</div>
+<div id="section-8a" style="font-size: 1.15em; font-weight: bold;">🔑 Section 8A: Deciding and Repeating — If Statements and For Loops</div>
 </div>
 <div style="border: 2px solid #c45d76; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
 <p>Everything so far has been sensing and showing. But the entire point of giving a robot eyes is so it can <strong>act</strong> on what it sees — and acting on information requires something new: a way for code to take <em>different paths</em> depending on a value. That tool is the <strong>if statement</strong>, and it is arguably the single most important concept in all of programming. Every behavior your robot will ever have — stop at the line, chase the light, avoid the wall, win the match — is if statements all the way down. The challenges in Section 9 use it immediately; this section makes sure you own it first.</p>
+
+<p>Then it does the same for the <strong>for loop</strong> — the tool you have already been using since Step 4 without anyone taking it apart for you. An if statement lets code choose. A for loop lets code <em>repeat</em>. Section 9 asks for both, and two of its challenges ask for them <em>together</em>.</p>
 
 <p><em>(Your robot is back in the standard three-sensor configuration after Section 7.3 — every example here assumes that: center sensor = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code>, position scale 0–2000.)</em></p>
 
@@ -1133,9 +1135,65 @@ display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5ce
 </details>
 </div>
 
+<h3 style="color: #c45d76;">🔁 8A.6 Doing It Three Times Without Writing It Three Times: the for Loop</h3>
+
+<p>You have already written one of these. Back in Step 4 you typed this into <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>, and it worked, and nobody explained it:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+  Serial.print(lineSensorValues[i]);
+  Serial.print(<span style="color: #ce9178;">'\t'</span>);
+}</pre>
+
+<p>Here is what it saved you, and it is an argument this lesson can make better than any other in the book. Without a loop, printing three sensors means writing the same two lines three times, once for box <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[0]</code>, once for <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[1]</code>, once for <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[2]</code>. Tedious, but survivable.</p>
+
+<p>Then Act Two woke sensors 2 and 4. <strong>Five sensors.</strong> Every one of those copied blocks would have to be found and duplicated again — and every place in your program that walked the array would need the same surgery, and the one you missed would fail silently. Instead you changed a single character: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">NUM_SENSORS = 3</code> became <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">5</code>. The loop asked for the new number and kept working. <em>That</em> is what the loop bought you, and you already spent it today without noticing.</p>
+
+<div style="text-align: center; margin: 22px 0;">
+<img src="https://weymuth.github.io/zumo/images/L04_GRAPHIC_4-06_for_anatomy.svg" alt="Anatomy of a for loop: the START part creates the counter uint8_t i = 0 and runs once; the CONTINUE IF part tests i less than NUM_SENSORS before every lap; the UPDATE part runs i++ after each lap; the order each lap is start once, check, run body, update, check again" style="width: 100%; max-width: 760px; height: auto;">
+<div style="color: #666; font-size: 14px; margin-top: 8px;"><strong>[GRAPHIC 4.6]</strong> The three parts of a for loop &mdash; and why Act Two did not break it (File: L04_GRAPHIC_4-06_for_anatomy.svg)</div>
+</div>
+
+<p>The three parts live inside the parentheses, separated by semicolons, and they do <strong>not</strong> run in reading order. Trace one lap at a time:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #a04a5f; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Lap</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Is <code style="font-family: 'Courier New', monospace; font-size: 0.9em;">i &lt; 3</code>?</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Body prints</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Which sensor is that?</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">i = 0</td><td style="padding: 10px; border: 1px solid #ddd;">0 &lt; 3 &rarr; yes</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">lineSensorValues[0]</code></td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 1 &mdash; far left</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">i = 1</td><td style="padding: 10px; border: 1px solid #ddd;">1 &lt; 3 &rarr; yes</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">lineSensorValues[1]</code></td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 3 &mdash; center</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">i = 2</td><td style="padding: 10px; border: 1px solid #ddd;">2 &lt; 3 &rarr; yes</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">lineSensorValues[2]</code></td><td style="padding: 10px; border: 1px solid #ddd;">Sensor 5 &mdash; far right</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">i = 3</td><td style="padding: 10px; border: 1px solid #ddd;">3 &lt; 3 &rarr; <strong>no</strong></td><td style="padding: 10px; border: 1px solid #ddd;">nothing &mdash; the loop ends</td><td style="padding: 10px; border: 1px solid #ddd;">&mdash;</td></tr>
+</table>
+
+<p>Read the last row twice. The loop stops the moment the test fails, which is why <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i &lt; NUM_SENSORS</code> visits boxes 0, 1 and 2 — three laps — and never touches a box numbered 3. That is not a coincidence; it is the same zero-counting rule from Section 5.5, wearing a different hat. A loop written <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i &lt;= NUM_SENSORS</code> would reach for a fourth box that does not exist.</p>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ WARNING — the two loops that never end</strong>
+<p style="margin-bottom: 0;">Forget the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i++</code> and the counter never moves: the test stays true forever and your robot freezes with the screen half-drawn. Put a semicolon right after the closing parenthesis — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for (...);</code> — and the loop runs an empty body the correct number of times and then executes your block <em>once</em>. Both compile clean. Neither is a compiler's problem to catch; they are yours.</p>
+</div>
+
+<h3 style="color: #c45d76;">🔁 8A.7 A Loop with a Decision Inside</h3>
+
+<p>An if statement chooses. A for loop repeats. Put one inside the other and you get the shape most real robot code is made of — and you already own an example of it. This is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showReadings()</code> from Section 5.8, the function drawing your OLED right now:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">uint8_t</span> i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> scaled = lineSensorValues[i] / <span style="color: #b5cea8;">10</span>;
+  <span style="color: #569cd6;">if</span> (scaled &gt; <span style="color: #b5cea8;">99</span>) scaled = <span style="color: #b5cea8;">99</span>;
+  <span style="color: #569cd6;">if</span> (scaled &lt; <span style="color: #b5cea8;">10</span>) display.print(<span style="color: #ce9178;">'0'</span>);
+  display.print(scaled);
+  <span style="color: #569cd6;">if</span> (i &lt; NUM_SENSORS - <span style="color: #b5cea8;">1</span>) display.print(<span style="color: #ce9178;">' '</span>);
+}</pre>
+
+<p>Three ifs, all inside one loop, each answering a question about <em>this lap only</em>. The last one is the interesting one: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i &lt; NUM_SENSORS - 1</code> is true on every lap except the final one, so a space goes <em>between</em> the numbers and never after the last. That single line is why your display reads <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">42 87 13</code> and not <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">42 87 13 </code> with a stray gap pushing the row one character too wide.</p>
+
+<p>Notice what the loop and the if are each responsible for. The loop decides <strong>how many times</strong>. The if decides <strong>what happens this time</strong>. Keep those two jobs straight and nested code stops being confusing — and you will need them together within the hour, because two of the Section 9 challenges are exactly this shape.</p>
+
 <div style="background-color: #e8d4c4; border-left: 4px solid #d4a574; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
 <strong style="color: #8a5a2b;">🚀 Where this goes next</strong>
-<p style="margin-bottom: 0;">Every challenge in Section 9 is an if statement wearing a costume. Lesson 5 wires ifs to the proximity sensors. Lesson 8 puts an if-driven correction inside a loop and calls it line following. You will never write another program without one.</p>
+<p style="margin-bottom: 0;">Every challenge in Section 9 is an if statement wearing a costume, and two of them hand it a for loop to ride in. Lesson 5 wires ifs to the proximity sensors and takes the for loop further — counting <em>down</em>, and drawing bar graphs with it. Lesson 8 puts an if-driven correction inside a loop and calls it line following. You will never write another program without both.</p>
 </div>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
@@ -1364,6 +1422,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <li>☐ I can display live sensor data on the OLED and full data on the Serial Monitor</li>
 <li>☐ I integrated waitForStart() and checkBattery() and can say where each goes and why</li>
 <li>☐ I wrote at least one working if statement that made the robot act on a sensor</li>
+<li>☐ I can read a for loop and say how many times it runs — and why it stops where it does</li>
 </ul>
 
 <h4 style="color: #6c757d;">Conceptual Understanding — 10 questions, answers underneath</h4>
@@ -1581,6 +1640,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.1]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Anatomy of an if statement: the condition, the braces, the action</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.2]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Your Lesson 4 project — what each folder is for</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
 <tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.3]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">How a reflectance sensor works: IR shines down, a white floor bounces it back, black tape swallows it</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
+<tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.6]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The three parts of a for loop — and why Act Two did not break it</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.4]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Eight sensors, six wires: which pins are fixed and which two the jumpers decide</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
 <tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 4.5]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The readLine() number line: 0 far left, 2000 dead center, 4000 far right</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">✅ in the lesson</td></tr>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[VIDEO 4.1]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Moving the two configuration jumpers from the proximity position to DN2 / DN4 — full close-up procedure</td><td style="padding: 12px; border: 1px solid #ddd;">Video</td><td style="padding: 12px; border: 1px solid #ddd;">⬜ still needed</td></tr>
@@ -1593,7 +1653,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <!-- Footer -->
 <footer style="text-align: center; padding: 30px; margin-top: 40px; background-color: #f8f9fa; border-radius: 8px; color: #6c757d;">
 <p style="margin: 0;">Zumo 32U4 Robotics • Lesson 04: Line Sensors</p>
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 04.0 — July 2026 • PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 04.1 — July 2026 • PlatformIO Edition</p>
 </footer>
 
 </body>

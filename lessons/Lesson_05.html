@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.1.9 -->
+<!-- Lesson version: v04.2.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +33,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Proximity Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Sense</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.1 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.2 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -698,16 +698,15 @@ Call it at the TOP of loop().
     <p>The A+B battery combo works even while you're flipping between display modes — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">checkBattery()</code> runs before the mode buttons get a look at your fingers. Try it mid-session: hold A+B, read the millivolts, release, and the proximity display picks up right where it left off.</p>
 </div>
 
-<h3 id="code-5-15" style="color: #3a7d5c; margin-top: 30px;">5.15 Coding Concepts: The For Loop</h3>
+<h3 id="code-5-15" style="color: #3a7d5c; margin-top: 30px;">5.15 Coding Concepts: The For Loop, Second Look</h3>
 
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>🔍 INSIGHT</strong><br>
-Before tackling the challenges, make sure you understand for loops — you'll need them!
-</div>
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 18px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop you took apart in Lesson 4, Section 8A <img src="https://weymuth.github.io/zumo/images/spiral_star_04.svg" alt="Spiral review from Lesson 04" style="height: 1.1em; vertical-align: middle; margin: 0 2px;">.</div>
 
-<p>In this lesson's challenges, you'll need to use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loops to repeat actions. Let's make sure you understand how they work!</p>
+<p>You already own this tool. In Lesson 4 you used a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop to walk the sensor array, and Section 8A there pulled it apart into its three parts — START, CONTINUE IF, UPDATE. Nothing below replaces that. This is the <strong>second look</strong>, and it exists because this lesson asks the loop to do two things Lesson 4 never did: <strong>count downward</strong>, and <strong>draw</strong> — a loop whose body decides, character by character, what to put on the screen.</p>
 
-<h4 style="color: #6c757d; margin-top: 25px;">Real-World Analogy</h4>
+<p>Start with a refresher, then go straight to the new work.</p>
+
+<h4 style="color: #6c757d; margin-top: 25px;">Refresher: the Analogy</h4>
 
 <p>Imagine a coach saying:</p>
 
@@ -767,6 +766,37 @@ Before tackling the challenges, make sure you understand for loops — you'll ne
 </div>
 
 <p><strong>Result:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">####--</code> — Four filled, two empty!</p>
+
+<h4 style="color: #6c757d; margin-top: 25px;">New in Lesson 5: Counting the Other Way</h4>
+
+<p>Every loop you have written so far started at 0 and climbed. Nothing requires that. The counter is an ordinary variable and the three parts are yours to set — so a loop can just as easily start high and walk down:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// A 3-2-1 countdown before the robot moves</span>
+<span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">3</span>; i &gt;= <span style="color: #b5cea8;">1</span>; i--) {
+  display.clear();
+  display.print(i);
+  delay(<span style="color: #b5cea8;">1000</span>);
+}</pre>
+
+<p>Read the three parts against the ascending version and every one of them flipped:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #2a5a42; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Part</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Climbing up</th>
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Counting down</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">START</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">int i = 0</code> — begin at the bottom</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">int i = 3</code> — begin at the top</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">CONTINUE IF</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">i &lt; 6</code> — stop when it gets too big</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">i &gt;= 1</code> — stop when it gets too small</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">UPDATE</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">i++</code> — add one</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">i--</code> — subtract one</td></tr>
+</table>
+
+<p>The loop prints 3, then 2, then 1, then quits — because on the next lap <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i</code> is 0 and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0 &gt;= 1</code> is false. Notice the test is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&gt;=</code> and not <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&gt;</code>: with a plain <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&gt;</code> the countdown would show 3 and 2 and then stop, and your robot would launch a full second early. One character, one second, one crashed run.</p>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ WARNING — the countdown that never counts</strong>
+<p style="margin-bottom: 0;">Write <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i++</code> in a loop that starts at 3 and tests <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">i &gt;= 1</code> and the counter runs away from its finish line forever — the robot hangs on the number 3 and never moves. When a loop refuses to end, check that UPDATE is walking <em>toward</em> the condition, not away from it.</p>
+</div>
 
 <h4 style="color: #6c757d; margin-top: 25px;">Worked Example #2: Counting Detections</h4>
 
@@ -2037,7 +2067,7 @@ proxSensors.countsXxxWithYyyLeds();  <span style="color: #7cbf6e;">// Get 0-6 va
 <hr style="margin: 40px 0;">
 <p style="text-align: center; color: #888;">
     <em>Zumo 32U4 Robotics — Lesson 5: Proximity Sensors</em><br>
-    Version 04.1 — July 2026
+    Version 04.2 — July 2026
 </p>
 
 </body>
