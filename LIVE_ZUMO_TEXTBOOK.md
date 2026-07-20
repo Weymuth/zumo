@@ -1,78 +1,80 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 20, 2026 (Session 57 — the construct sweep continues: `while`).
-**Status (S57, fifth batch):** ⚠️ **STAGED, NOT PUSHED.** Batches 1–4 are **LIVE** at commit `5592276`. This batch changes **two files**: **L06 v04.5.9 → v04.6.0** (new §5.3) and **L05 v04.2.0 → v04.2.1** (dangling forward-pointer repaired). No images, no Maker, no Bible, no gate change.
+**Date:** July 20, 2026 (Session 57 — the construct sweep CLOSES: increments + `switch`).
+**Status (S57, sixth batch):** ⚠️ **STAGED, NOT PUSHED.** Batches 1–5 are **LIVE** at commit `93de63a`. This batch changes **two files**: **L03 v03.5.0 → v03.6.0** (new §5.6) and **L05 v04.2.1 → v04.2.2** (`switch` forward-pointer). No images, no Maker, no Bible, no gate change.
 
 **Lesson versions — every one grepped from its own file, not carried forward:**
-L01 v03.4.0 · L02 v02.4.0 · L03 v03.5.0 · L04 v04.1.2 · L05 **v04.2.1** · L06 **v04.6.0** · L07 v04.3.10 · L08 v04.1.7 · L09 v05.0.9 · L10 v02.1.12 · L11 v02.2.2 · L12 v01.2.3 · L13 v02.2.2 · L14 v02.4.2 · L15 v02.2.3 · L16 v02.2.3 · Bible v8.36.1 · Maker v2.39 · Gate v1.6 · Harness v3.0.
+L01 v03.4.0 · L02 v02.4.0 · L03 **v03.6.0** · L04 v04.1.2 · L05 **v04.2.2** · L06 v04.6.0 · L07 v04.3.10 · L08 v04.1.7 · L09 v05.0.9 · L10 v02.1.12 · L11 v02.2.2 · L12 v01.2.3 · L13 v02.2.2 · L14 v02.4.2 · L15 v02.2.3 · L16 v02.2.3 · Bible v8.36.1 · Maker v2.39 · Gate v1.6 · Harness v3.0.
 
 ---
 
-## THE HEADLINE — THE BOOK'S MOST-USED UNTAUGHT CONSTRUCT, PLUS A PROMISE IT NEVER KEPT
+## THE HEADLINE — THE CONSTRUCT SWEEP IS COMPLETE
 
-`while` was used from Lesson 1 and taught in none of the sixteen lessons — and **L06 leans on it 23 times**, more than any other lesson. `while (abs(encoders.getCountsLeft()) < targetCounts)` is the literal heart of `driveDistance()` and `turnDegrees()`: every measured move in the book waits inside one. Students meet it at L06 Step 7 as a *translate-it-yourself* blueprint — asked to write a function whose body is a construct the book never explained.
+Every control-flow and operator construct the challenges ask students to write now has a teaching home at or before first write. The last two were the mildest, and each was a different kind of gap:
 
-And the gap had a second, uglier half. **L05 §5.15 explicitly promised** *"You'll explore while loops in advanced behaviors later!"* — a forward-pointer to a lesson that never delivered, the same defect class as L16's "never touched" EEPROM claim.
+- **The increment spellings were never reconciled.** `x++` *is* taught — one line inside L01's for-loop walkthrough. But `x += 1` (used L03, L08, L09, L15 heavily, L16) and `x = x + 1` (L04, L12, L15) are used across the book and **never once tied back to it.** A student who writes `count = count + 1` and meets `count += 1` in a reveal has no way to know they are identical. This is not a missing tool — it is three names for one tool, never introduced as such.
+- **`switch` was a four-lesson forward gap.** Used once in L05 §5.13 (the display-mode dispatch), taught properly in L09. Students copy it in L05 with no idea what it is for four lessons.
 
 ---
 
 ## WHAT SHIPPED
 
-### 1. L06 §5.3 — *The while Loop: Waiting Until Something Happens* (v04.5.9 → **v04.6.0**)
+### 1. L03 §5.6 — *Three Ways to Say "Add One"* (v03.5.0 → **v03.6.0**)
 
-Placed at the end of §5, immediately before Step 7 asks students to write `driveDistance()`. Carries a **🔁 Builds on:** marker with the ⭐4 star, because the teaching hinges on the contrast:
+A single table putting all three spellings side by side against `testCount` going 4 → 5: `testCount = testCount + 1` (the long form, spells out every piece), `testCount += 1` (shorthand, takes any number), `testCount++` (shortest, only ever adds 1). Then the tie-back — *you already used the last one: `i++` is what steps a for loop* — and a rule of thumb: `++` for exactly 1, `+= n` for any other amount, long form when learning the line. Closes with the two things that trip people: there is no `++` for adding 5 (it is `+= 5`), and subtraction mirrors all three (`-= `, `--`).
 
-- **`for` vs `while` stated as two different questions.** `for` repeats a *known number of times* (once per sensor, eight, three); `while` repeats *as long as something stays true*, however many times that turns out to be. *You do not know in advance how many 10-ms checks it takes to roll 30 cm; you only know when to stop.*
-- **The exact loop from `driveDistance()`**, walked as a sentence — motors told to run *once* before the loop, the loop itself doing nothing but watch, releasing the instant the count crosses target.
-- A two-row decision table (known count → `for`; world-dependent → `while`).
-- **The danger every while carries: it must be able to end.** A `for` counts to its own finish line; a `while` only stops when its condition goes false, so something inside must make that happen. Two accidental traps named — forgetting to start the motors, and a target the count can never reach — with the debugging habit: when a robot hangs mid-move, suspect the while condition first.
-- Coach's Tip: whenever you write a `while`, answer out loud *what makes this stop?* before moving on. If you can't point at it, you've written an infinite loop and just haven't run it yet.
+Placed at the end of §5, after §5.5's if/comparison material — the same "writing statements" territory, and L03 is the first lesson to use `+=` in code.
 
-### 2. L05 §5.15 — the broken promise repaired (v04.2.0 → **v04.2.1**)
+### 2. L05 §5.13 — the `switch` forward-pointer (v04.2.1 → **v04.2.2**)
 
-*"You'll explore while loops in advanced behaviors later!"* → *"You'll meet the while loop properly in Lesson 6, Section 5.3 — it is the heart of every measured move, driving until the encoders say you have gone far enough."* The forward-pointer now points at something real.
+A one-paragraph note before the `loop()` block that contains the switch: what it does (picks one block based on a value), how to read it (a stack of `if` checks about the same variable, each `case` an answer, `break` ends it), and where it gets taught — *"Lesson 9 takes switch apart properly when the robot needs to choose between intersection types."* Copy-as-written for now. Same shape as the L05→L06 `while` pointer from the last batch.
 
 ---
 
 ## VERIFICATION
 
-- `count==1` asserts on every edit; L06 banners moved (moderate bump), L05 banner held (minor bump) — §5b.
-- Normalized diff: L06 62 changed lines / 3 removed (version strings), L05 one-line swap + version.
-- Structure: L06 div 207/207, pre 71/71, tables 14/14 · L05 div 142/142 — zero dup ids, zero dead anchors.
-- **Payload gate: PASS**, ADVISORY 635 — unchanged. Prose only; the `while` in the reveal code was already there.
-- Every `<img>` in L05 and L06 resolves against `images/`, including `spiral_star_04.svg`.
+- `count==1` asserts on every edit; L03 banners moved (moderate), L05 banner held (minor) — §5b.
+- Normalized diff: L03 51 changed lines / 3 removed (version strings), L05 4 changed / 1 removed.
+- Structure: L03 div 316/316, pre 51/51, tables 21/21 · L05 div 142/142, pre 44/44, tables 16/16 — zero dup ids, zero dead anchors.
+- **Payload gate: PASS**, ADVISORY 635 — unchanged. Prose only.
+- Both new blocks re-read as rendered; no stray tags.
 
 ---
 
-## PUSH BATCH (S57, fifth batch)
+## PUSH BATCH (S57, sixth batch)
 
-1. **`lessons/Lesson_05.html`** (v04.2.1) · **`lessons/Lesson_06.html`** (v04.6.0) → repo + Canvas.
+1. **`lessons/Lesson_03.html`** (v03.6.0) · **`lessons/Lesson_05.html`** (v04.2.2) → repo + Canvas.
 2. **`LIVE_ZUMO_TEXTBOOK.md`** → repo root.
 
-No images, no Maker, no Bible. Verify by fresh clone (§12.4).
+No images, no Maker, no Bible. Verify by fresh clone (§12.4). **Note:** the shallow clone can serve the *prior* commit for a minute or two after a push — if verify shows the old version, wait ~20 s and re-clone before concluding the push failed.
 
 _Housekeeping: a stray `.DS_Store` is still committed — clean up whenever, not urgent._
 
 ---
 
-## THE SWEEP — WHERE IT STANDS
+## THE SWEEP — CLOSED
 
-Constructs run through the §11 rule: **`if` ✅, `for` ✅, `&&`/`||`/`!` ✅, `while` ✅.** Still open:
+Every construct a §9 challenge asks students to WRITE now has a teaching home at or before first write:
 
-- **`+=` / the three increment spellings** (`x = x + 1` / `x++` / `x += 1`) — used across the book, reconciled nowhere; `+=` first appears L03, heaviest in L15 (13×). Log candidate #7. Fits L03 §5.5.
-- **`switch`** — mildest: one L05 use, properly taught in L09. A single forward-pointer in L05 closes it, mirroring the L05→L06 while fix just made.
+| construct | taught in | first write |
+|---|---|---|
+| `if` | L02 §3.2c → L03 §5.5 → L04 §8A | L03 C02 |
+| `for` | L04 §8A.6 / §8A.7 | L04 C03 |
+| `&&` `\|\|` `!` | L02 §3.2d | L02 §9 |
+| `while` | L06 §5.3 | L06 Step 7 |
+| `=` vs `==` | L03 §5.5 | L03 C02 |
+| `++` / `+=` / `= x+1` | L01 (++) + L03 §5.6 (reconciled) | L02 §9 |
+| `switch` | L09, pointer from L05 §5.13 | L09 |
 
-After those two, every control-flow and operator construct the challenges require will have a teaching home at or before first write. **The sweep has only ever covered code blocks; it has not checked library-call vocabulary** (e.g. `map()`, `constrain()`, `millis()`) — those are a separate audit if wanted.
-
-**Method note:** prose-keyword matching finds words, not teaching — three false readings this session (`while`-taught-in-L03, the L04 index, an L01 corruption false alarm). Read every "taught" hit before trusting it.
+**Scope limit — read before assuming this class of defect is fully closed:** the sweep covered **control-flow and operators in code blocks only.** It did NOT audit **library-call vocabulary** — `map()`, `constrain()`, `millis()`, `abs()`, the `(cond) ? a : b` ternary (L06 Step 7 calls it "worth learning today" but nothing teaches it), `struct`/`enum` (L09/L16), arrays and indexing. Any of those could be the next used-before-taught finding; a second sweep would be its own session.
 
 ---
 
 ## STILL QUEUED
 
-Finish the sweep (increments → `switch`) · L03_C05 Variable Speed learner mode · L04 C03 learner mode (**unblocked**) · L04 C04/C05 walkthroughs · "out-of-range values don't error" · C06 reorder to #1 · whole-template starters L08/L09/L10 · Maker batch (bulk DL · `?lesson=N` soft gate · C## labels) · L01 VS Code multi-root step.
+Library-vocabulary sweep (above) — ternary is the strongest lead · L03_C05 Variable Speed learner mode · L04 C03 learner mode (**unblocked**) · L04 C04/C05 walkthroughs · "out-of-range values don't error" · C06 reorder to #1 · whole-template starters L08/L09/L10 · Maker batch (bulk DL · `?lesson=N` soft gate · C## labels) · L01 VS Code multi-root step.
 
-**DONE this session:** L16 EEPROM · L04 `for` · L04 `setLayout21x8` · L04 index (false alarm) · learnmode-log correction · `if` · `=` vs `==` · `&&`/`||`/`!` · **`while` (L06 §5.3, L05 pointer repaired).**
+**DONE this session:** L16 EEPROM · L04 `for` · L04 `setLayout21x8` · L04 index (false alarm) · learnmode-log correction · `if` · `=` vs `==` · `&&`/`||`/`!` · `while` · **increments (L03 §5.6) · `switch` pointer (L05 §5.13).** Construct sweep CLOSED.
 
 **BENCH (need robot):** C06 · C11 · Q017 L09 six numbers · Q044 calibration-spin · Q046 gyro-bias · L02 §5 green-LED · Constrain RUN_MS.
 
@@ -81,4 +83,4 @@ Finish the sweep (increments → `switch`) · L03_C05 Variable Speed learner mod
 **⚠️ AI TUTOR** — students get API access, syllabus has no entry, `tutor.html` stale (no L12+). **Term starts Sept 8.**
 
 ---
-*Written S57, July 20 2026. Batches 1–4 LIVE (`5592276`); L05 v04.2.1 + L06 v04.6.0 staged, not pushed.*
+*Written S57, July 20 2026. Batches 1–5 LIVE (`93de63a`); L03 v03.6.0 + L05 v04.2.2 staged, not pushed.*
