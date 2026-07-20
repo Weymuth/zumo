@@ -1,5 +1,101 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
+**Date:** July 19, 2026 (Session 55 — DIAGNOSIS + INFRASTRUCTURE session).
+**Status (S55):** ⚠️ **STAGED, NOT PUSHED.** Live tree verified by fresh clone, commit `5a4e7ea`. **Bible v8.33.1 → v8.34** · **Gate v1.3 → v1.4** · L01 **v03.3.0** and Maker **v2.38** confirmed already live (S55's earlier pass). No lesson or Maker edits this session.
+
+**Lesson versions — every one grepped from its own file, not carried forward:**
+L01 v03.3.0 · L02 v02.2.4 · L03 v03.4.7 · L04 v04.0.12 · L05 v04.1.9 · L06 v04.5.9 · L07 v04.3.10 · L08 v04.1.7 · L09 v05.0.9 · L10 v02.1.12 · L11 v02.2.2 · L12 v01.2.3 · L13 v02.2.2 · L14 v02.4.2 · L15 v02.2.3 · L16 v02.2.2 · **Bible v8.34** · **Maker v2.38** · **Gate v1.4** · Harness v3.0.
+
+---
+
+## 🔴 WHY THIS SESSION EXISTS — FOUR TAKES BURNED ON DIAGNOSIS
+
+S55 needed four attempts. **None failed on the build; all four failed on reading the state.** Two causes, both now fixed structurally.
+
+**Cause 1 — LIVE.md was two sessions stale.** S54 pushed eleven challenge files, a Maker bump and a graphic without regenerating it; the earlier S55 pass pushed L01 v03.3.0 + Maker v2.38 and did the same. Takes 1 and 2 built on `L01 v03.2.7 / Maker v2.37` — numbers that had not been true for two sessions. → **Bible §12.6.**
+
+**Cause 2 — the gate under-reported by 6×.** `gate_payload_match.py` v1.3 recorded only `missing[0]` per chunk (line 135) and printed only the first 20 fails (line 200). L01 reported **FAIL (148)** when the true count was **900**, and every one of the 20 visible lines was a comment. Takes 2 and 3 both concluded "comment-only scaffolding, just exempt it." **It was not.** → **Gate v1.4.**
+
+---
+
+## ✅ DELIVERED THIS SESSION (staged — DJ pushes)
+
+### Bible v8.33.1 → v8.34 — NEW §12.6
+§12.3 already ruled that *"remember to update LIVE.md" is too weak to prevent* the write-ordering bug. What it did not cover is **the session that ends before reaching step 3** — the failure that actually recurs. §12.6 closes it:
+- **(A)** Write LIVE.md **when the last version-changing edit lands**, re-verify at close. §12.3's steps 1–5 unchanged; this removes the window in which a dead session leaves nothing behind. ⚠️ *This is a deliberate softening of §12.3 — if it ever produces a ghost version, part A is the thing to revisit.*
+- **(B)** A push that bumps a version and **omits LIVE.md is an INCOMPLETE PUSH** — same defect class as a card disagreeing with its file.
+- **(C)** Session open runs a **DRIFT CHECK**, not a read: grep the files, compare to LIVE.md, **the files win**. On disagreement, say so in the FIRST message, then **ask DJ for a newer LIVE.md** (the prior session may have written one that never got pushed) before regenerating.
+
+### Gate v1.3 → v1.4 — reporting fix + category census
+Every missing line recorded; print cap 200 with an explicit `... N more`; and a **CATEGORY CENSUS** that separates boxed-comment header art / `<<<` markers / other comments / **EXECUTABLE CODE**. Regression-tested: **L02–L16 PASS on both v1.3 and v1.4** — verdicts unchanged, reporting only.
+
+L01 under v1.4, census summing exactly to 900:
+
+| Category | Count |
+|---|---|
+| boxed-comment (header art) | 632 |
+| landing-zone markers `<<<` | 14 |
+| other comments | 122 |
+| **EXECUTABLE CODE** | **132** |
+
+---
+
+## 🔬 THE REAL L01 FINDING — NOT A GATE DEFECT
+
+The 132 executable lines are **the EEPROM robot-name reader** (`const int NAME_ADDR = 512`, `EEPROM.read(NAME_ADDR)`, the 20-char read loop, `Zumo32U4ButtonC buttonC`, `#include <EEPROM.h>`). Grep-verified: these appear **ZERO times in `Lesson_01.html`**.
+
+**C01 Part 5 asks students to find their robot's name. The Maker ships them the code that reads it. The book never shows that code.** §5.5's listing is **56 lines**; the challenge body is **88**. The 32-line gap is the name-reader, `buttonC` and the section scaffold.
+
+**Exempting this would have made the gate agree that shipping untaught code is fine.** The gate was working; the reporting hid what it found.
+
+**Other verified facts:**
+- Maker payloads ↔ repo `L01_CHALLENGES/` files: **11/11 match**. Option B intact.
+- ⚠️ **"All eleven bodies are byte-identical" was FALSE** — all eleven differ. The proof on record (*"all compile to exactly 10,208 B"*) does not establish it; identical compiled size proves nothing, which is **already Bible §11 canon** (the S27 `bonus_b3_unspenttrim` sabotage compiled byte-identical to the correct build). What IS true, verified by comparing statements with markers and comments set aside: **all eleven share ONE 55-statement executable body**; the differences are markers and comments only.
+- ✅ `ZUMO_NAME_WRITER_main.cpp` **is in the repo** (4 EEPROM writes, magic `0x5A`, addr 512). The S55 handoff's "not in the repo" note is stale — **the September dependency is DONE**, not queued.
+
+---
+
+## 🎯 S56 OPENS HERE — build L01 §9, land it as ONE bump
+
+**Design fully locked with DJ this session. Do not re-open; build.**
+
+| Item | Decision |
+|---|---|
+| §9 listing | **P1** — the shared 88-line body, **markerless**, plain framing, at the TOP of §9 before the cards |
+| File markers | **M1** — exactly as S54 shipped, `CH1 PART N` / `CHALLENGE N:` prefixes **KEPT** |
+| Cards | Keep existing prose location **AND** name the marker (C01's existing pattern), all eleven |
+| C06 | Current numbers, **no bench**, no regeneration |
+| C06 markers | markerless — measure-only, nothing to edit |
+
+**Why markers are KEPT in the files (do not "simplify"):** C01's header block refers to its markers by name six times — *"Find `<<< CH1 PART 1` below"*. The marker text is a **lookup key the instructions depend on**. Strip it and the file breaks. A proposal to drop the redundant prefix was raised and **withdrawn** for this reason.
+
+**Why the §9 listing is markerless (structurally forced):** the listing is ONE program shared by eleven challenges, and **the markers are exactly what differ between them** — strip markers and nine of eleven bodies collapse to one hash. No single marker set is correct for more than one challenge. The listing shows the shared body; each card names its own marker in prose. Same architecture as the files: one body, eleven headers.
+
+**⚠️ The listing needs one framing sentence.** §5.5 = 56 lines, challenge body = 88. Without a note, a student sees the program grow by 32 lines and no explanation. Draft the sentence for DJ before inserting.
+
+**Then:** re-run gate v1.4 — **L01 must go FAIL(900) → PASS**, and the census must show **0 EXECUTABLE CODE**. Bump L01 v03.3.0 → **v03.4.0** (moderate: new listing + eleven rewritten cards). §5b two homes: hidden comment full, visible banner major.minor.
+
+---
+
+## 📌 PUSH BATCH (S55) — root docs only, no lessons, no Maker, no SVGs
+`ZUMO_SUPER_BIBLE.md` (v8.34) · `gate_payload_match.py` (v1.4) · `LIVE_ZUMO_TEXTBOOK.md` (this file) · `ZUMO_S56_HANDOFF.md`
+
+---
+
+## 📋 STILL QUEUED (unchanged)
+L16 EEPROM prose fix + the 512 address-map note (L16's *"this book has never touched it"* is false once L01 ships) · **L04 `setLayout21x8` — the ONLY lesson of 16 missing it** · L04 C03 `for` primer (option b) + `L04_LEARNMODE_LOG.md` correction · extend the gate to cover L01 challenge bodies (required by option B) · the 6 syntax-gap prose candidates + "out-of-range values don't error."
+
+**BENCH (need robot):** C06 · C11 · Q017 L09 six numbers · Q044 calibration-spin · Q046 gyro-bias · L02 §5 green-LED · Constrain RUN_MS.
+
+**PARKED:** solution-disclosure · monetization/ebook · "Know Your Zumo" · day-by-day grid + syllabus · TDP template v3 (A5 Lab Log) · §9 difficulty grouping · L06 card pattern.
+
+**⚠️ AI TUTOR** — students get API access, the syllabus has no entry for it, `tutor.html` is stale with no L12+ content. **Term starts Sept 8.**
+
+---
+_↓ S54 and earlier history below, unchanged. ↓_
+
+# LIVE_ZUMO_TEXTBOOK.md
+
 **Date:** July 19, 2026 (Session 54 — BUILD session; **Maker v2.37 shipped, L01 wired up for the first time**).
 **Status (S54):** ✅ **PUSHED & LIVE — commit `856acb5`, verified by fresh clone.** **Maker v2.36 → v2.37** · L01 v03.2.7 (UNCHANGED — see the blocker below) · Bible v8.33.1 · Gate v1.3 · Harness v3.0. New in `images/`: `L01_GRAPHIC_1-19_playfrequency_anatomy.svg`. New root files: `ZUMO_S55_HANDOFF.md`, `TEACHER_NOTE_AI_tools.md`. Root cleanup: removed `Lesson_01_WIP_S54.html`, stray `main.cpp`, the superseded `ZUMO_L01_CHALLENGE_FILE_SPEC.md`, and handoffs S50/S52/S53/S54.
 

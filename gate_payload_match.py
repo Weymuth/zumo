@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.3, S44
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.4, S55
+v1.4 REPORTING FIX — the gate was UNDER-REPORTING and it cost a session.
+Two truncations stacked: (a) only missing[0] was recorded per payload chunk, and
+(b) only the first 20 fails were printed. L01 reported "FAIL (148)" while the true
+count was 900, and the 20 visible lines were all comments — so three separate S55
+sessions concluded the failure was comment-only scaffolding and proposed exempting
+it. It was not: 146 of the 900 were executable code (an EEPROM name-reader present
+in the Maker payloads and in NO lesson). Now: every missing line is recorded, the
+print cap is 200 with an explicit "... N more", and a CATEGORY CENSUS separates
+boxed comments / <<< markers / other comments / EXECUTABLE CODE. Read the census,
+not the raw count.
 v1.3 WHOLE-TEMPLATE STARTER EXEMPTIONS: Bible §18.3 was rewritten S44 (starters are
 now the full section-header template, not a minimal skeleton). The S43 minimal-skeleton
 exempt entries were replaced with the whole-template starter-only lines for L03
@@ -132,7 +142,42 @@ def check_payload_text(name, text, corpus, fails):
         missing = [l for l in missing if (Lk[0], Lk[1], l) not in EXEMPT]
         if not missing:
             continue
-        fails.append(f"{name}: unmatched: {missing[0][:70]!r}")
+        for _m in missing:
+            fails.append(f"{name}: unmatched: {_m[:70]!r}")
+
+def _summarize(fails):
+    """Category census. A raw FAIL count is easy to misread: 627 boxed-comment
+    lines and 146 lines of real code are NOT the same defect, and a truncated
+    display makes an all-comment failure look like the whole story (S55 — three
+    sessions read FAIL(148) off a capped list and proposed the wrong fix)."""
+    import collections
+    hdr = mark = com = code = 0
+    codelines = []
+    for f in fails:
+        if ": unmatched: " not in f:
+            continue
+        t = f.split(": unmatched: ", 1)[1].strip().strip("'\"")
+        st = t.strip()
+        if st.startswith(("// \u2502", "// \u250c", "// \u251c", "// \u2514")):
+            hdr += 1
+        elif "<<<" in st:
+            mark += 1
+        elif st.startswith("//"):
+            com += 1
+        else:
+            code += 1
+            codelines.append(st)
+    print("\n  CATEGORY CENSUS")
+    print(f"    boxed-comment (header art) : {hdr}")
+    print(f"    landing-zone markers <<<   : {mark}")
+    print(f"    other comments             : {com}")
+    print(f"    EXECUTABLE CODE            : {code}")
+    if codelines:
+        print("    -- distinct code lines --")
+        for c in sorted(set(codelines))[:40]:
+            print("      ", c[:90])
+        if len(set(codelines)) > 40:
+            print(f"       ... {len(set(codelines))-40} more distinct")
 
 def main():
     maker_path, lesson_paths = sys.argv[1], sys.argv[2:]
@@ -197,7 +242,11 @@ def main():
     print()
     if fails:
         print(f"GATE: FAIL ({len(fails)})")
-        [print("  -", f) for f in fails[:20]]
+        _cap = 200
+        [print("  -", f) for f in fails[:_cap]]
+        if len(fails) > _cap:
+            print(f"  ... {len(fails)-_cap} more (showing first {_cap})")
+        _summarize(fails)
         sys.exit(1)
     print("GATE: PASS — every payload byte-derives from lesson pres + Maker templates")
 
