@@ -2,6 +2,8 @@
 ### Socratic walkthrough of L04 challenges · friction points + refinement ideas
 
 > Running record. Each entry: where DJ (proxy for a student) hit a snag, or a lesson gap / improvement idea surfaced during the walkthrough. Feeds classroom-issue predictions + book-task queue (same class as the S47 L03 finds). Tags: L04_C##_W##.
+>
+> **Annotated S57 (July 20, 2026).** Findings are preserved as originally observed; resolutions are appended and dated rather than written over, so the record still shows what a learner actually hit. One factual error was corrected in place and marked (the for-loop tutorial is L05 §5.15, not §5.13).
 
 ## 🔑 HEADLINE FINDING (S50, confirmed across L03 + L04 C01)
 **The logic is not the wall — the Zumo/OLED API is.** DJ (and by extension students) reason through if/else, states, and both-branch cleanup correctly on the first try. Every stall is API RECALL: which function (`ledYellow` vs `display`), `gotoXY`, `F()`, array-slot indices, brace/paren placement. DJ, in his words: "the logic part works for me, it's the code intricacies that mess me up."
@@ -12,7 +14,7 @@
 |---|-----------|-----------|------------------------|----------|
 | C01 | Line Light | if/else · array slot · LED vs OLED · erase-with-spaces · gotoXY both branches | API recall (ledYellow/gotoXY/F/spaces); else-cleanup vs one-way state; 3v5 center-slot | MEDIUM |
 | C02 | The Line Counter | transition-vs-state · bool memory · hysteresis · `&&` · reset block | `=` vs `==` (both directions, silent) · `};` vs `;`+`}` · stray `if(...);` · increment spellings · threshold inversion · slot `[1]` | MEDIUM |
-| C03 | The Position Pointer | `readLine()` 0–2000 · integer-division scaling · off-by-one (`/251`) · `for` loop · `if/else` in a loop | ⚠️ **`for` not taught until L05 §5.13** — missing prerequisite, not a difficulty problem | HARD (misscoped) |
+| C03 | The Position Pointer | `readLine()` 0–2000 · integer-division scaling · off-by-one (`/251`) · `for` loop · `if/else` in a loop | ~~`for` not taught until L05~~ — **RESOLVED S57:** L04 §8A.6/§8A.7 now teach the `for` loop and the loop-with-an-if. Remaining snag is ordinary API recall, as with C01/C02 | **HARD** (was "misscoped") |
 | C04 | Edge Guard | | | |
 | C05 | The Centering Game | | | |
 
@@ -101,7 +103,21 @@ DJ derived the entire mechanism Socratically: current reading + remembered previ
 **Landed:** division as the range-squashing operation; the off-by-one at `2000/250 = 8` (no column 8) and why the card divides by **251**; `c < 8` for exactly 8 passes (derived the `< count`, not `<= last index` rule).
 **Wall:** writing a `for` loop and an `if/else` inside it. DJ: "I have no clue where to start." Also misfired reaching for `printLine("...")` (not a function), `position(c)` (parens = function call), `if c = ` (no parens, `=` for `==`), and "then" as a keyword.
 
-**⭐⭐ BIG FINDING — C03 HAS A MISSING PREREQUISITE.** C03 requires writing a `for` loop. **`for` is not taught until L05 §5.13.** A student reaching C03 has seen a `for` loop only as unexplained code inside their own `showReadings()` helper. This is the same class as the L03 modulo find, but worse: modulo was one operator in a reveal; this is the entire structure the challenge is built on. Options: (a) move C03 to L05 or later, (b) add a short `for` primer to the card, (c) restructure C03 without a loop (8 hand-written prints — the L03 Ramp "Option C" precedent), (d) leave it and accept it as a stretch challenge with the solution as the teach.
+**⭐⭐ BIG FINDING — C03 HAS A MISSING PREREQUISITE.** C03 requires writing a `for` loop. **`for` is not taught until L05 §5.15.** *(Section number corrected S57 — this log originally said §5.13, which is L05's `loop()` walkthrough, not the for-loop tutorial.)* A student reaching C03 has seen a `for` loop only as unexplained code inside their own `showReadings()` helper. This is the same class as the L03 modulo find, but worse: modulo was one operator in a reveal; this is the entire structure the challenge is built on. Options: (a) move C03 to L05 or later, (b) add a short `for` primer to the card, (c) restructure C03 without a loop (8 hand-written prints — the L03 Ramp "Option C" precedent), (d) leave it and accept it as a stretch challenge with the solution as the teach.
+
+> **✅ RESOLVED — S57 (July 20, 2026). DJ ruling: none of a–d. Option (e): teach it in L04, where the lesson's own design already said tutorials go.**
+>
+> The audit that followed this finding changed its shape. `for` was **not** absent from L04 — the lesson **uses it 8 times in its own taught code and 5 times in its Maker payloads**, and Step 4 has students type one. §5.8 even narrates it in a single sentence. What L04 lacked was the *tutorial*: §8A taught `if` and stopped, while its own intro states the rule — *"the challenges in Section 9 use it immediately; this section makes sure you own it first."*
+>
+> That killed option (c) outright: unrolling C03's loop would have stripped `for` from two challenges while it stayed in eight places elsewhere in the same lesson, including a passage that explains it. Options (a), (b) and (d) all treated a teaching gap as a scoping problem.
+>
+> **What shipped (L04 v04.1.0, L05 v04.2.0):**
+> - **§8A.6** — the `for` loop, opening with the loop the student already typed in Step 4, a lap-by-lap trace table, and the argument only L04 can make: Act One reads 3 sensors, Act Two reads 5, and the loop is why that switch cost one character. New figure `L04_GRAPHIC_4-06_for_anatomy.svg`.
+> - **§8A.7** — a loop with a decision inside, taught from `showReadings()`'s own `if (i < NUM_SENSORS - 1)` line. This is precisely C03's and C04's shape, taught without giving either answer away.
+> - **L05 §5.15** demoted from first contact to the §18.1 spiral second rung (🔁 Builds on: ⭐4), and it gained the **descending loop** (`i >= 1; i--`) that L05's own challenge solutions had been using while pointing back at a section that never taught it.
+> - **Bible v8.36.1 §11** — *§8A must cover what §9 requires.* Using a construct inside the lesson's given code is not teaching it.
+>
+> **For the AI Tutor rebuild:** this find is the cleanest example in the book of a gap that reads like a difficulty problem. DJ's "I have no clue where to start" was not a hard challenge and not a weak student — it was a tool the book had handed over without ever opening. Check that distinction before re-rating anything.
 
 ### 📋 BOOK-TASK CANDIDATES (S53 — none applied)
 6. **`=` vs `==`** — assignment vs comparison, **both failure directions**, each shown with its silent symptom. Highest-value item from this session; hit repeatedly and never errors. Placement TBD (L02 data-types callout neighborhood, or L03 where `if` is introduced).
@@ -109,11 +125,11 @@ DJ derived the entire mechanism Socratically: current reading + remembered previ
 8. **The stray-semicolon killer** — `if (...);` silently disables the `if`. Coach's Tip class: "compiles clean, does the wrong thing."
 9. **`;` vs `}`** — every statement ends `;`, every block closes `}` on its own line; they never combine as `};` inside a function body.
 10. **C02 display collision → keep and teach** (DJ ruling, above).
-11. **C03 `for`-loop prerequisite** (above) — needs a DJ ruling among options a–d.
+11. ~~**C03 `for`-loop prerequisite** — needs a DJ ruling among options a–d.~~ **✅ DONE S57** — ruled option (e): `for` is now taught in L04 §8A.6/§8A.7; L05 §5.15 became the spiral second rung. See the resolution block under C03.
 12. **Slot ambiguity, 3rd recurrence** — reinforces S52 candidate #3-adjacent: name the array size + center slot at point of use.
 
 ### ⏱️ Time-cost note (DJ raised it)
-DJ's worry: "how much time will students spend on this if it's taking me this long?" Reading: DJ's run **overstates** student time — he was doing two jobs at once (solving + auditing the book), and he is colder on C++ syntax than students fresh out of L01–L03 will be. It **understates** in one way: DJ diagnosed the display collision from the symptom in seconds; a student may stare at a blank row for ten minutes. Estimate for C02 with the card in hand: **~25–35 min**, acceptable for a MEDIUM §9 challenge (challenges are extensions, not milestones). C03 is the genuine outlier and the cause is the missing `for` prerequisite, not student effort.
+DJ's worry: "how much time will students spend on this if it's taking me this long?" Reading: DJ's run **overstates** student time — he was doing two jobs at once (solving + auditing the book), and he is colder on C++ syntax than students fresh out of L01–L03 will be. It **understates** in one way: DJ diagnosed the display collision from the symptom in seconds; a student may stare at a blank row for ten minutes. Estimate for C02 with the card in hand: **~25–35 min**, acceptable for a MEDIUM §9 challenge (challenges are extensions, not milestones). C03 is the genuine outlier and the cause is the missing `for` prerequisite, not student effort. *(S57: the prerequisite now exists — §8A.6/§8A.7. Re-time C03 on the next pass before trusting the outlier label; the wall it measured has been removed.)*
 
 ### Next learner-mode session
-L04 **C03** (resume, after a ruling on the `for` prerequisite) · then C04 Edge Guard / C05 · L03_C05 Variable Speed still pending.
+L04 **C03** — **unblocked S57**, resume against the new §8A.6/§8A.7 (do the walkthrough with the tutorial in hand and see whether the wall was the loop or the API) · then C04 Edge Guard / C05 · L03_C05 Variable Speed still pending.
