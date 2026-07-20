@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.3.0 -->
+<!-- Lesson version: v02.4.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -68,7 +68,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Mastering the Code</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Reading Code You Didn't Write</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.3 &mdash; June 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.4 &mdash; June 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -943,6 +943,65 @@ ledYellow(<span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;"
 <div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
 <strong style="color: #3a5a3a;">💡 Coach's Tip</strong>
 <p style="margin-bottom: 0;">When you read someone else's if statement &mdash; including your own from last week &mdash; put the question in plain English first, out loud, before you look at what is inside the braces. Programmers who skip that step end up debugging the wrong half of the statement.</p>
+</div>
+
+<h3 id="section-3-2-logic" style="color: #2e86ab; margin-top: 30px;">3.2d Asking More Than One Question: <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">&amp;&amp;</code>, <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">||</code> and <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">!</code></h3>
+
+<p>The if statement you just met asks <em>one</em> question. Robots rarely get to ask one. <em>Is the button pressed <strong>and</strong> is the battery good? Is the left sensor dark <strong>or</strong> the right one? Have we <strong>not</strong> found the line yet?</em> Three small operators do that joining, and every one of them reads exactly like the English word it replaces.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #1a5276; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Operator</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Say it as</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">The whole thing is true when&hellip;</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">&amp;&amp;</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>and</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>both</strong> sides are true. One false and the whole thing is false.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">||</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>or</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>either</strong> side is true. Both false is the only way to fail.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">!</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>not</strong></td><td style="padding: 10px; border: 1px solid #ddd;">the one thing after it is <strong>false</strong>. It flips the answer over.</td></tr>
+</table>
+
+<p><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> is two ampersands, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> is two pipe characters &mdash; the key above Enter on most keyboards, shift-backslash. Writing one instead of two is a different operator entirely and will not do what you want.</p>
+
+<p><strong>Both must be true &mdash; <code>&amp;&amp;</code>.</strong> A range check is the everyday case: is this number inside a window?</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (count &gt; <span style="color: #b5cea8;">0</span> &amp;&amp; count &lt; <span style="color: #b5cea8;">10</span>) {
+  <span style="color: #6a9955;">// runs only for 1 through 9 — BOTH questions answered yes</span>
+}</pre>
+
+</div>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ WARNING — each side must be a whole question</strong>
+<p style="margin-bottom: 0;">English lets you say &ldquo;if count is above 0 and below 10.&rdquo; C++ does not. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (count &gt; 0 &amp;&amp; &lt; 10)</code> is an error, because <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&lt; 10</code> on its own is not a question &mdash; below <em>what</em>? Say the variable again on the right-hand side: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">count &gt; 0 &amp;&amp; count &lt; 10</code>. The good news is that this one is loud: the compiler stops and points at the line, unlike the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">=</code> trap waiting for you in Lesson 3.</p>
+</div>
+
+<p><strong>Either will do &mdash; <code>||</code>.</strong> Same shape, lower bar:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonB.isPressed() || buttonC.isPressed()) {
+  <span style="color: #6a9955;">// runs if EITHER button is down — or both</span>
+}</pre>
+
+</div>
+
+<p>Note that &ldquo;or&rdquo; in code is more generous than &ldquo;or&rdquo; in conversation. When someone offers you tea or coffee they mean one of them; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> is perfectly happy with both.</p>
+
+<p><strong>Flip the answer &mdash; <code>!</code>.</strong> Put it in front of a yes/no value and it reverses it. Remember the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool foundLine</code> from 3.2b:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (!foundLine) {
+  <span style="color: #6a9955;">// runs when foundLine is FALSE — "if we have NOT found the line"</span>
+}</pre>
+
+</div>
+
+<p>That single character is easy to miss when reading quickly, and it inverts the entire meaning of the line. When a condition behaves backwards, look for a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">!</code> you did not notice before you go looking for anything cleverer.</p>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Coach's Tip &mdash; read the whole condition aloud as one sentence</strong>
+<p style="margin-bottom: 0;">&ldquo;If count is greater than zero <em>and</em> count is less than ten.&rdquo; If the sentence does not make sense out loud, the code will not make sense to the robot either. This is the fastest bug-finder you will ever own, it costs nothing, and it works on somebody else's code too. You will need <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> in this lesson's challenges &mdash; more than one of them wants two buttons held at the same time.</p>
 </div>
 
 <h3 id="section-3-3" style="color: #2e86ab; margin-top: 30px;">3.3 The Two-Week Rule</h3>
