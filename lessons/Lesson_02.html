@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.2.4 -->
+<!-- Lesson version: v02.3.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -68,7 +68,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Mastering the Code</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Reading Code You Didn't Write</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.2 &mdash; June 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.3 &mdash; June 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -913,6 +913,37 @@ ledYellow(<span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;"
 <p>A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> (short for <em>Boolean</em>, named after mathematician George Boole) holds exactly one of two values: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">true</code> or <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">false</code>. Nothing else. Think of it as a light switch &mdash; on or off, with no in-between.</p>
 
 <p>That makes <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> perfect for questions the robot answers yes or no: <em>is the button pressed?</em> <em>have we finished the turn?</em> <em>is the battery low?</em> You will lean on <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> heavily once the robot starts making decisions &mdash; a variable like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool foundLine = true;</code> is the robot remembering the answer to a yes/no question so it can act on it later.</p>
+
+<h3 id="section-3-2-if" style="color: #2e86ab; margin-top: 30px;">3.2c Making a Choice: the if Statement</h3>
+
+<p>A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> holds the answer to a yes/no question. That raises an obvious next question: what <em>does</em> something about the answer? That job belongs to the <strong>if statement</strong>, and you have already run one — it was in the very first warm-up of this lesson, deciding whether to light the LED.</p>
+
+<p>Every program you have written so far has been a straight road: line 1, then line 2, then line 3, every time, no exceptions. An if statement puts a fork in that road:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonC.isPressed()) {   <span style="color: #6a9955;">// the yes/no question</span>
+  ledYellow(<span style="color: #b5cea8;">1</span>);            <span style="color: #6a9955;">// runs only when the answer is YES</span>
+} <span style="color: #569cd6;">else</span> {
+  ledYellow(<span style="color: #b5cea8;">0</span>);            <span style="color: #6a9955;">// runs only when the answer is NO</span>
+}</pre>
+
+</div>
+
+<p>Read it out loud and it says what it does: <em>if button C is being pressed, turn the LED on; otherwise, turn it off.</em> Three parts carry it:</p>
+
+<ul>
+<li>The <strong>condition</strong> in parentheses — a question with a yes/no answer. Exactly the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> idea from 3.2b, asked at the moment it matters instead of stored in a variable.</li>
+<li>The <strong>braces</strong> — the lines that run when the answer is yes. Same code block from 3.1; nothing new.</li>
+<li><strong><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else</code></strong> — optional. Leave it off and a &ldquo;no&rdquo; simply skips the block and carries on underneath. Include it and you have named a plan for both answers.</li>
+</ul>
+
+<p>That is genuinely all of it for now, and it is enough to read every program in this lesson. What it is <em>not</em> yet is enough to write your own from a blank line &mdash; that is Lesson 3, where you will turn a sentence like &ldquo;if the battery is low, warn me&rdquo; into working code and meet the one-character typo that breaks it silently. Lesson 4 then takes the if apart properly, wires it to the sensors, and shows you why every robot behavior you will ever build is made of these.</p>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Coach's Tip</strong>
+<p style="margin-bottom: 0;">When you read someone else's if statement &mdash; including your own from last week &mdash; put the question in plain English first, out loud, before you look at what is inside the braces. Programmers who skip that step end up debugging the wrong half of the statement.</p>
+</div>
 
 <h3 id="section-3-3" style="color: #2e86ab; margin-top: 30px;">3.3 The Two-Week Rule</h3>
 

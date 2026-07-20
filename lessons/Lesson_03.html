@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.4.7 -->
+<!-- Lesson version: v03.5.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -58,7 +58,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Motor TRIM</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">No Two Motors Are the Same</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.4 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.5 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -1397,6 +1397,63 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
 <div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; border-radius: 4px;">
     <span>🔍</span> <strong>Why four small functions instead of one big <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>?</strong> Each function names a single idea, so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> reads like a summary: "if button A, lower trim; if button B, run test." Short, named functions are easier to debug and reuse &mdash; the same habit you started in Lesson 2's 8A.
+</div>
+
+<h3 style="color: #3a7d5c; margin-top: 30px;">5.5 Writing a Decision: if, Comparison, and the One-Character Trap</h3>
+
+<p>Lesson 2 taught you to <em>read</em> an if statement: a question in parentheses, a block in braces, an optional <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else</code> for the other answer. Section 9 asks you to <em>write</em> one from a blank line, which is a different skill. Here is the whole move.</p>
+
+<p><strong>Start with the sentence.</strong> Say what you want in plain English, with the word &ldquo;if&rdquo; in it: <em>&ldquo;If the test speed is above 400, print a warning.&rdquo;</em> Now translate it left to right &mdash; the sentence and the code are in the same order:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (testSpeed &gt; <span style="color: #b5cea8;">400</span>) {
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Too fast for this classroom!"</span>));
+}</pre>
+
+<p>The only genuinely new piece is the middle: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">testSpeed &gt; 400</code>. That is a <strong>comparison</strong>, and it is how a number becomes a yes/no answer the if can use. Six of them cover everything you will need:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #2a5a42; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Operator</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Asks</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">True when&hellip;</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">&gt;</code></td><td style="padding: 10px; border: 1px solid #ddd;">greater than</td><td style="padding: 10px; border: 1px solid #ddd;" >left is bigger &mdash; <code style="font-family: 'Courier New', monospace; font-size: 0.9em;">500 &gt; 400</code></td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">&lt;</code></td><td style="padding: 10px; border: 1px solid #ddd;">less than</td><td style="padding: 10px; border: 1px solid #ddd;">left is smaller &mdash; <code style="font-family: 'Courier New', monospace; font-size: 0.9em;">300 &lt; 400</code></td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">&gt;=</code></td><td style="padding: 10px; border: 1px solid #ddd;">greater than or equal</td><td style="padding: 10px; border: 1px solid #ddd;">bigger <em>or</em> exactly equal &mdash; the boundary counts</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">&lt;=</code></td><td style="padding: 10px; border: 1px solid #ddd;">less than or equal</td><td style="padding: 10px; border: 1px solid #ddd;">smaller <em>or</em> exactly equal</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">==</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>is equal to</strong></td><td style="padding: 10px; border: 1px solid #ddd;">the two values match &mdash; <strong>note the TWO equals signs</strong></td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">!=</code></td><td style="padding: 10px; border: 1px solid #ddd;">is not equal to</td><td style="padding: 10px; border: 1px solid #ddd;">the two values differ</td></tr>
+</table>
+
+<p>Decide the boundary on purpose. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&gt;</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&gt;=</code> differ by exactly one case &mdash; the value sitting on the line &mdash; and that one case is where robot bugs like to live.</p>
+
+<div style="background-color: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #922b21;">🚨 The one-character trap: <code style="font-family: 'Courier New', monospace; background: #f5c6c0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">=</code> is not <code style="font-family: 'Courier New', monospace; background: #f5c6c0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">==</code></strong>
+<p>One equals sign <strong>assigns</strong>: <em>put this value in that box.</em> Two equals signs <strong>compare</strong>: <em>are these two the same?</em> Different jobs, one keystroke apart &mdash; and this is the most expensive typo in the language, because <b>neither direction is an error</b>. Both compile. Both run. Both do the wrong thing quietly.</p>
+<p><strong>Direction 1 &mdash; you meant to compare and typed one equals:</strong></p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (trimValue = <span style="color: #b5cea8;">5</span>) {     <span style="color: #6a9955;">// WRONG: this ASSIGNS 5 to trimValue</span>
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+}</pre>
+<p>Two things just went wrong, and the screen tells you about neither. Your TRIM was overwritten with 5. And the if now tests the value 5, which C++ treats as true &mdash; so the block runs <strong>every single time</strong>, forever, no matter what TRIM was.</p>
+<p><strong>Direction 2 &mdash; you meant to assign and typed two:</strong></p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">trimValue == <span style="color: #b5cea8;">5</span>;              <span style="color: #6a9955;">// WRONG: this COMPARES, then throws the answer away</span></pre>
+<p>The comparison happens, produces true or false, and nothing catches it. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">trimValue</code> never changes. You will swear you set it, and the robot will swear you did not, and the robot is right.</p>
+<p style="margin-bottom: 0;"><strong>The habit that saves you:</strong> when a condition behaves like it is stuck &mdash; always firing, or never firing &mdash; count the equals signs <em>before</em> you question your logic. Inside <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (&hellip;)</code>, a single <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">=</code> is almost always a typo.</p>
+</div>
+
+<p><strong>Two more shapes, and you have the full set.</strong> Add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else</code> when there is a plan for &ldquo;no,&rdquo; and chain <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else if</code> when there are more than two outcomes:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (testSpeed &gt; <span style="color: #b5cea8;">400</span>) {
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Too fast"</span>));
+} <span style="color: #569cd6;">else if</span> (testSpeed &lt; <span style="color: #b5cea8;">50</span>) {
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Too slow to move"</span>));
+} <span style="color: #569cd6;">else</span> {
+  <span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Good testing speed"</span>));
+}</pre>
+
+<p>They are checked top to bottom and <strong>exactly one branch runs</strong> &mdash; the first one whose answer is yes. Once a branch fires, the rest are skipped without even being asked. That is why order matters: put the narrowest condition first, or a broader one above it will answer for it.</p>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Coach's Tip &mdash; write the sentence first, in a comment</strong>
+<p style="margin-bottom: 0;">Before typing an if, write what you want as a comment on the line above it: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">// if the battery is under 4200, warn me</code>. Then translate your own sentence. Students who stall on &ldquo;where do I start&rdquo; have almost always skipped this step &mdash; they are trying to invent the logic and recall the syntax at the same time. Separate the two and each one is easy. Lesson 4 takes the if apart properly and wires it to the sensors; this is enough to write your own today.</p>
 </div>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
@@ -4141,7 +4198,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <p style="margin: 0;">Zumo 32U4 Robotics • Lesson 03: Motors &amp; TRIM</p>
 
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 03.4 — July 2026 • PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 03.5 — July 2026 • PlatformIO Edition</p>
 
 </footer>
 
