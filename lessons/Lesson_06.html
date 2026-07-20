@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.5.9 -->
+<!-- Lesson version: v04.6.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -42,7 +42,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Encoders</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Measure</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.5 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.6 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -546,6 +546,45 @@
 
 <p><strong>Rule:</strong> ALWAYS call <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">getCountsAndResetLeft()</code> and <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">getCountsAndResetRight()</code> at the START of every new movement function.</p>
 
+</div>
+
+<h3 id="code-6-3" style="color: #3a7d5c; margin-top: 30px;">5.3 Coding Concepts: The while Loop &mdash; Waiting Until Something Happens</h3>
+
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 16px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">for</code> loop from Lesson 4 <img src="https://weymuth.github.io/zumo/images/spiral_star_04.svg" alt="Spiral review from Lesson 04" style="height: 1.1em; vertical-align: middle; margin: 0 2px;">. Both repeat &mdash; but they answer different questions, and this lesson needs the one you have not met yet.</div>
+
+<p>Every function you are about to build has the same heart: <em>start the motors, then wait until the encoders say you have gone far enough.</em> That waiting is a <strong>while loop</strong>, and it is the tool you have been missing. A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">for</code> loop repeats a <strong>known number of times</strong> &mdash; once per sensor, eight times, three. A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">while</code> loop repeats <strong>as long as something stays true</strong>, however many times that turns out to be. You do not know in advance how many 10-millisecond checks it takes to roll 30&nbsp;cm; you only know when to stop.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">while</span> (<span style="color: #dcdcaa;">condition is still true</span>) {
+  <span style="color: #7cbf6e;">// do this, then check the condition again</span>
+}</pre>
+
+<p>The order is the whole idea, and it is worth walking once: check the condition; if true, run the body once; then go back and check <em>again</em>; keep going until the check finally comes back false; then move on to whatever is below the closing brace. Here is the exact loop at the centre of <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">driveDistance()</code>, the function you write in Step 7:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">motors.setSpeeds(speed, speed);            <span style="color: #7cbf6e;">// start rolling</span>
+<span style="color: #569cd6;">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
+  delay(<span style="color: #b5cea8;">10</span>);                              <span style="color: #7cbf6e;">// hold here, re-checking 100x a second</span>
+}
+motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);                  <span style="color: #7cbf6e;">// the count finally reached target — stop</span></pre>
+
+<p>Read it as a sentence: <em>while the distance rolled so far is still less than the target, wait ten milliseconds and look again.</em> The motors were told to run <strong>once</strong>, before the loop. The loop itself does nothing but watch &mdash; and the instant the count crosses the target, the condition turns false, the loop releases, and the very next line stops the robot.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #2a5a42; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Question</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Reach for&hellip;</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Because</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">"Do this once per sensor / N times."</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Consolas', monospace;">for</code></td><td style="padding: 10px; border: 1px solid #ddd;">the count is known before you start</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;">"Keep going until the robot has driven far enough."</td><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Consolas', monospace;">while</code></td><td style="padding: 10px; border: 1px solid #ddd;">the count depends on the world, not on you</td></tr>
+</table>
+
+<div style="background-color: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #922b21;">🚨 The danger every while loop carries: it must be able to end</strong>
+<p>A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">for</code> loop counts to a finish line on its own. A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">while</code> loop only stops when its condition goes false &mdash; so <strong>something inside the loop, or out in the world, has to be able to make that happen.</strong> The loop above ends because the wheels turn and the encoder count climbs toward <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">targetCounts</code>. Take that away and the loop runs forever, the robot frozen mid-function with no error and no clue why.</p>
+<p style="margin-bottom: 0;">Two ways to build the trap by accident: forget to start the motors before the loop (the count never climbs, so the condition never turns false), or compare against a target the count can never reach. When a robot hangs partway through a move, suspect the while condition first &mdash; ask "what in here is supposed to make this false, and is it actually happening?"</p>
+</div>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #2a5a42;">💡 Coach's Tip</strong>
+<p style="margin-bottom: 0;">Whenever you write a <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">while</code>, before you move on, answer one question out loud: <em>what makes this stop?</em> If you cannot point at the exact thing that turns the condition false, you have written an infinite loop &mdash; you just have not run it yet.</p>
 </div>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
@@ -2592,7 +2631,7 @@ Stop motors</pre>
 
 <em>Zumo 32U4 Robotics — Lesson 6: Encoders</em><br>
 
-Version 04.5 — July 2026
+Version 04.6 — July 2026
 
 </p>
 
