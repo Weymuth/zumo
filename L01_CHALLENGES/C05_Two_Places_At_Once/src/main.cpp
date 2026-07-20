@@ -4,7 +4,7 @@ LESSON 01 - Hello Robot — Challenge 5: Two Places at Once
 =====================================================
 WHAT THIS PROGRAM DOES:
 (update this as you build!)
-AUTHOR: DJ Weymuth
+AUTHOR: Dj
 DATE: 7/19/2026
 =====================================================
 */
@@ -32,8 +32,7 @@ DATE: 7/19/2026
 // │ ── WHY THIS MATTERS LATER ──                            │
 // │ Two audiences, two devices, one truth. The display      │
 // │ talks to whoever is standing next to the robot. The     │
-// │ Serial Monitor talks to your computer -- and ONLY       │
-// │ while the cable is attached.                            │
+// │ Serial Monitor talks to your computer.                  │
 // │                                                         │
 // │ Every debugging session for the rest of this course is  │
 // │ a choice between those two. From Lesson 11 on, your     │
@@ -42,6 +41,9 @@ DATE: 7/19/2026
 // │                                                         │
 // │     Which one would you trust more? _________________   │
 // │     Why? ____________________________________________   │
+// │                                                         │
+// │     Why might the Serial Monitor be a challenge         │
+// │     at that point? __________________________________   │
 // └─────────────────────────────────────────────────────────┘
 // ===== HARDWARE OBJECTS =====
 Zumo32U4ButtonA buttonA;
