@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.2.4 -->
+<!-- Lesson version: v02.2.5 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1393,7 +1393,7 @@ Build the instrument before you turn the knob. Always.</div>
 <p>Every one of these is a real technique used in real control systems. The first three ship
 with solutions. The last four do not &mdash; you have the bench now, and the bench will tell you whether
 you got it right.</p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">9.1 Gain Scheduling &mdash; one gain does not fit a whole track &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
+<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-1" data-challenge="15.1" data-kind="challenge">9.1 Gain Scheduling &mdash; one gain does not fit a whole track &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
 <p>A K<sub>p</sub> gentle enough to hold a straight without weaving is too lazy for a hairpin.
 A K<sub>p</sub> sharp enough for the hairpin turns the straight into a slalom. <b>You have been
 trying to solve with one number a problem that has two answers.</b></p>
@@ -1421,7 +1421,7 @@ error crosses <code>CORNER_ERROR</code>, the gain <i>jumps</i>. A discontinuity 
 place where it can chatter. If yours buzzes right at the threshold, you have found the reason real
 systems <i>blend</i> between gains instead of switching.</div>
 <p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c1_gainsched" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">9.2 Filter the Derivative &mdash; D cannot tell noise from news &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
+<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-2" data-challenge="15.2" data-kind="challenge">9.2 Filter the Derivative &mdash; D cannot tell noise from news &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
 <p>Section 3.6 named this: D is a rate, and <b>sensor noise is a rate too &mdash; a huge one.</b>
 D has no way to know that a 40-unit jitter in the line reading is not a real, violent movement of the
 track, so it responds to it with everything it has. That is why K<sub>d</sub> gets twitchy before it
@@ -1463,7 +1463,7 @@ are, by definition, acting on slightly stale information. Turn <code>D_FILTER</c
 and you will find the point where D is so smooth it is no longer <i>early</i>, which was the entire
 reason you hired it. <b>Use the bench. Find the knee.</b></div>
 <p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c2_dfilter" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">9.3 Measure Your Worst Pass &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
+<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-3" data-challenge="15.3" data-kind="challenge">9.3 Measure Your Worst Pass &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
 <p>In 7A you measured a <i>typical</i> dt by hand. But your controller does not divide by the
 typical dt &mdash; it divides by <b>whatever this pass happened to take</b>. So: what is the <i>worst</i>
 one? What is the longest single trip through <code>loop()</code> in a whole 10-second run?</p>
@@ -1532,7 +1532,7 @@ your loop occasionally takes far longer than the rest. The OLED? The buzzer? A
 <code>delay()</code> you forgot about? <b>Every one of those milliseconds is a millisecond in which
 your controller is not controlling.</b></div>
 <p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c3_worstdt" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">9.4 Anti-Windup: Conditional Integration &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
+<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-4" data-challenge="15.4" data-kind="challenge">9.4 Anti-Windup: Conditional Integration &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
 <p>Clamping the integral is the blunt fix. The sharp one is to <b>stop accumulating at all
      when the output is already saturated.</b> If <code>speedTrim</code> is already pinned at
      <code>SPEED_TRIM_MAX</code>, then adding more to the integral cannot possibly make the robot go
@@ -1540,7 +1540,7 @@ your controller is not controlling.</b></div>
      <p>Implement it: only run <code>speedIntegral += error * dt;</code> when the output is
      <i>not</i> saturated. Then compare it against the clamp, on the bench, with a tired battery.
      <b>Which recovers faster when the load comes off?</b></p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">9.5 Derivative on Measurement &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
+<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-5" data-challenge="15.5" data-kind="challenge">9.5 Derivative on Measurement &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
 <p>Section 3.6 said line following gets a free pass on <b>derivative kick</b> because
      <code>LINE_CENTER</code> never moves. The speed loop is not so lucky &mdash; the moment you let
      <code>TARGET_SPEED_CMS</code> change during a run (slow for the corners, fast for the straights),
@@ -1550,7 +1550,7 @@ your controller is not controlling.</b></div>
      <div style="font-family: monospace; background: #f4f9fc; padding: 10px; margin: 10px 0;">
      d = -Kd &times; (measurement - lastMeasurement) / dt</div>
      <p>Then make the target change mid-run and prove, on the bench, that it does not kick.</p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">9.6 The Speed-Aware Line Loop &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
+<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-6" data-challenge="15.6" data-kind="challenge">9.6 The Speed-Aware Line Loop &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
 <p>Here is something the bench will show you and intuition will not: <b>your line gains are
      only correct at the speed you tuned them at.</b> Go twice as fast and the same K<sub>p</sub>
      produces the same steering command over half the distance &mdash; which is, in effect, a gain
@@ -1558,7 +1558,7 @@ your controller is not controlling.</b></div>
      <p>Make K<sub>p</sub> and K<sub>d</sub> scale with <code>currentBase</code>. Then set the speed
      loop to a slow target, tune, double the target, and check whether your gains survived. Report
      with numbers.</p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">9.7 Score the Whole Course &nbsp;<span style="color:#c0392b; font-size:0.75em;">[ADVANCED]</span></h3>
+<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-7" data-challenge="15.7" data-kind="challenge">9.7 Score the Whole Course &nbsp;<span style="color:#c0392b; font-size:0.75em;">[ADVANCED]</span></h3>
 <p><code>TUNING_RUN_MS</code> is 10 seconds because a bench run has to be repeatable. But a
      <i>course</i> run is not 10 seconds, and MAE over a course that includes gaps, intersections and
      a rescue zone is a number that mixes four different jobs into one average.</p>
