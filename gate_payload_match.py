@@ -1,7 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.4, S55
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.6, S56
+v1.6 BOXED-HEADER FINGERPRINTS. v1.5 made boxed instruction headers advisory so a
+self-contained challenge file would not fail the gate for carrying its own working
+instructions. That left a hole: an advisory line could be EDITED and the gate still
+said PASS, so file instructions could drift away from the book's card prose unseen.
+Fix: pin each boxed header with an md5 in BOXED_FP (below). The gate recomputes the
+hash from the payload and fails on any change. Advisory means "not required to appear
+in the book", NOT "unchecked". To change a header intentionally, edit it, run with
+--update-fp to print the new manifest, and paste it in — the bump is deliberate.
+v1.5 BOXED INSTRUCTION HEADERS ARE ADVISORY, NOT FAILING.
+v1.5 BOXED INSTRUCTION HEADERS ARE ADVISORY, NOT FAILING. A challenge file's boxed
+header (// ┌─┐ … // └─┘) is the student's working instructions, deliberately kept IN
+the file so a student coding in one window never has to switch to the book for a step
+(DJ ruling, S56). The book's §9 card carries the same instructions as prose — better
+form for reading — plus the exact target line quoted verbatim. So a boxed-header line
+that does not byte-match is a FORMAT difference, not missing content, and must not
+fail the gate. Everything else still fails: EXECUTABLE CODE is never advisory.
+Boxed lines are counted and reported under ADVISORY so drift stays visible.
+v1.4 REPORTING FIX — the gate was UNDER-REPORTING and it cost a session.
 v1.4 REPORTING FIX — the gate was UNDER-REPORTING and it cost a session.
 Two truncations stacked: (a) only missing[0] was recorded per payload chunk, and
 (b) only the first 20 fails were printed. L01 reported "FAIL (148)" while the true
@@ -24,7 +42,7 @@ v1.1 INHERITANCE RULE: lesson N's corpus additionally includes lesson N-1's
 'finished' payload bodies — inheriting lessons (L08+) copy the prior project
 wholesale in Step 1, so files carried unchanged are canonical by construction.
 Byte-strict: modified content must still appear in lesson N's own pres.
-Prior: v1.0, S21
+Prior: v1.4 S55, v1.0 S21
 Verifies every Maker payload derives byte-exactly from canonical sources:
   1. the lesson HTML's decoded <pre> corpus (dark + light pres), OR
   2. the Maker's own template strings (skeleton glue inside mainCpp()).
@@ -126,6 +144,54 @@ def maker_templates(js):
         tpl.append(s)
     return "".join(tpl) + "\n\n" + "\n".join(tpl)
 
+
+# --- v1.6 BOXED-HEADER FINGERPRINTS -------------------------------------------
+# Boxed instruction headers are ADVISORY for book-matching (v1.5) but PINNED here, so
+# an edit to a challenge file's instructions cannot pass silently. lesson -> key ->
+# [line_count, md5]. Regenerate deliberately with --update-fp after an intended change.
+BOXED_FP = {
+    "1": {
+        "c01": [101, "9a19defc17a54a2c2064885b3c92b8ab"],
+        "c02": [33, "08ca58452dffb720dc61f39f47588c22"],
+        "c03": [30, "55a68a42210fda651876a117a0714372"],
+        "c04": [36, "0a11103c26a3194fbc3b551a41cc7107"],
+        "c05": [34, "fb80eeb4ef1218ad5b73f81307df7ccb"],
+        "c06": [42, "3e23bd39ae126185bbd529a80fac16f9"],
+        "c07": [72, "8cc29c06520d2c3014a40216a0d7335a"],
+        "c08": [76, "9552ea0166fdcf891238ea9811418188"],
+        "c09": [48, "fed732800ae0f97364bbc2bfac479b56"],
+        "c10": [60, "e72b11b9e0b2c8034e18835baa4f5d27"],
+        "c11": [103, "f66db059cec915d2a20cbb3a33416c18"],
+    },
+}
+
+ADVISORY = []
+OBSERVED_FP = {}
+
+def _is_boxed(line):
+    """A boxed instruction-header line: // ┌ ─ ┐ / // │ / // ├ / // └ (Bible §11, S56)."""
+    return line.strip().startswith(("// \u2502", "// \u250c", "// \u251c", "// \u2514"))
+
+def _boxed_lines(text):
+    return [l for l in text.split("\n") if _is_boxed(l)]
+
+def check_boxed_fp(L, key, text, fails, observed):
+    """v1.6: boxed instruction headers are advisory for book-matching but PINNED.
+    Any edit to a challenge file's in-file instructions must be deliberate."""
+    import hashlib
+    b = _boxed_lines(text)
+    if not b:
+        return
+    h = hashlib.md5("\n".join(b).encode("utf-8")).hexdigest()
+    observed.setdefault(L, {})[key] = [len(b), h]
+    want = BOXED_FP.get(L, {}).get(key)
+    if want is None:
+        fails.append(f"L{L}/{key}: boxed header present but NOT PINNED in BOXED_FP "
+                     f"(add [{len(b)}, {h!r}] or run --update-fp)")
+    elif want[1] != h:
+        fails.append(f"L{L}/{key}: BOXED HEADER CHANGED — pinned {want[0]} lines/{want[1][:12]}, "
+                     f"found {len(b)} lines/{h[:12]}. Intentional? run --update-fp.")
+
 def check_payload_text(name, text, corpus, fails):
     chunks = [c for c in re.split(r'\n\s*\n', text) if len(c.strip()) >= MIN_CHARS]
     for c in chunks:
@@ -143,7 +209,8 @@ def check_payload_text(name, text, corpus, fails):
         if not missing:
             continue
         for _m in missing:
-            fails.append(f"{name}: unmatched: {_m[:70]!r}")
+            _entry = f"{name}: unmatched: {_m[:70]!r}"
+            (ADVISORY if _is_boxed(_m) else fails).append(_entry)
 
 def _summarize(fails):
     """Category census. A raw FAIL count is easy to misread: 627 boxed-comment
@@ -180,7 +247,9 @@ def _summarize(fails):
             print(f"       ... {len(set(codelines))-40} more distinct")
 
 def main():
-    maker_path, lesson_paths = sys.argv[1], sys.argv[2:]
+    args = [a for a in sys.argv[1:] if a != "--update-fp"]
+    update_fp = "--update-fp" in sys.argv
+    maker_path, lesson_paths = args[0], args[1:]
     mk = open(maker_path, encoding='utf-8').read()
     js = re.search(r'<script>(.*)</script>', mk, re.S).group(1)
     fails, notes = [], []
@@ -225,9 +294,11 @@ def main():
                 for fn, content in pay.items():
                     n_files += 1
                     check_payload_text(f"L{L}/{key}/{fn}", content, corpus, fails)
+                check_boxed_fp(L, key, "\n".join(pay.values()), fails, OBSERVED_FP)
             else:
                 n_files += 1
                 check_payload_text(f"L{L}/{key}", pay, corpus, fails)
+                check_boxed_fp(L, key, pay, fails, OBSERVED_FP)
         notes.append(f"L{L:>02}: {len(P)} payload keys, {n_files} bodies/files checked")
 
     # registry keys resolve per lesson
@@ -240,6 +311,26 @@ def main():
 
     print("\n".join(notes))
     print()
+    if update_fp:
+        print("  BOXED_FP = {")
+        for L in sorted(OBSERVED_FP, key=int):
+            print(f'      "{L}": {{')
+            for k in sorted(OBSERVED_FP[L]):
+                n, h = OBSERVED_FP[L][k]
+                print(f'          "{k}": [{n}, "{h}"],')
+            print("      },")
+        print("  }")
+        print("  ^ paste into BOXED_FP. Only do this for an INTENDED header change.\n")
+    if ADVISORY:
+        print(f"  ADVISORY ({len(ADVISORY)}) — boxed instruction-header lines, not failures.")
+        print("  These are the challenge files' in-file working instructions (Bible §11, S56).")
+        print("  The book's cards carry the same content as prose; format differs by design.")
+        _byl = {}
+        for a in ADVISORY:
+            k = a.split(":")[0].split("/")[0]
+            _byl[k] = _byl.get(k, 0) + 1
+        print("   ", "  ".join(f"{k}={v}" for k, v in sorted(_byl.items())))
+        print()
     if fails:
         print(f"GATE: FAIL ({len(fails)})")
         _cap = 200
