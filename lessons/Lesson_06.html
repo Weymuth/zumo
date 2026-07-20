@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.6.0 -->
+<!-- Lesson version: v04.7.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -42,7 +42,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Encoders</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Measure</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.6 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.7 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -587,6 +587,49 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 <p style="margin-bottom: 0;">Whenever you write a <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">while</code>, before you move on, answer one question out loud: <em>what makes this stop?</em> If you cannot point at the exact thing that turns the condition false, you have written an infinite loop &mdash; you just have not run it yet.</p>
 </div>
 
+<h3 id="code-6-4" style="color: #3a7d5c; margin-top: 30px;">5.4 Two Small Tools This Function Needs: <code style="font-family: 'Consolas', monospace; font-size: 0.85em;">abs()</code> and <code style="font-family: 'Consolas', monospace; font-size: 0.85em;">?:</code></h3>
+
+<p>The <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">driveDistance()</code> you are about to write leans on two things you have not been shown outright. Both are small. Both save you from a bug that is nastier than it looks.</p>
+
+<h4 style="color: #6c757d; margin-top: 22px;"><code style="font-family: 'Consolas', monospace;">abs()</code> &mdash; throw away the minus sign</h4>
+
+<p><code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">abs()</code> gives you the <strong>absolute value</strong> of a number: the number with any negative sign stripped off. <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">abs(-30)</code> is <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">30</code>; <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">abs(30)</code> is still <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">30</code>. Think of it as &ldquo;how far from zero,&rdquo; direction thrown away.</p>
+
+<p>Here is why the function cannot work without it. You tell the robot to drive <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">-30</code> &mdash; thirty centimetres <em>backward</em>. That distance becomes a target the encoder count has to reach:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// WITHOUT abs — the backward bug</span>
+int targetCounts = -30 * COUNTS_PER_CM;   <span style="color: #7cbf6e;">// a NEGATIVE target</span>
+<span style="color: #569cd6;">while</span> (encoderCount &lt; targetCounts) { ... }   <span style="color: #7cbf6e;">// already true — loop never runs, robot never moves</span></pre>
+
+<p>The count starts at 0. A negative target is already below 0, so <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">0 &lt; targetCounts</code> is false on the very first check and the loop exits before the wheels turn. Wrap the distance in <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">abs()</code> and the target is always a positive number the count can climb to, whichever way the robot drives:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">int targetCounts = abs(distanceCm) * COUNTS_PER_CM;   <span style="color: #7cbf6e;">// always positive — the count can reach it</span></pre>
+
+<p>You will meet the same trick in Step 13, where <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">abs()</code> on each wheel's change keeps a distance measurement positive no matter which way a wheel rolled.</p>
+
+<h4 style="color: #6c757d; margin-top: 22px;">The <code style="font-family: 'Consolas', monospace;">?:</code> choice &mdash; an if that hands back a value</h4>
+
+<p>The direction still has to come from somewhere: forward means <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">+DRIVE_SPEED</code>, backward means <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">-DRIVE_SPEED</code>. You could write that as a four-line if. C++ gives you a one-line form built for exactly this &mdash; picking one of two <em>values</em>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">int speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;</pre>
+
+<p>Read it as a question and two answers, in that order: <em>is <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">distanceCm</code> greater than 0? If yes, use <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">DRIVE_SPEED</code>; if no, use <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">-DRIVE_SPEED</code>.</em> The <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">?</code> holds the question, the <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">:</code> separates the yes-answer from the no-answer. It is the same decision an <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">if/else</code> makes &mdash; the difference is that this one <strong>produces a value</strong> you can drop straight into a variable, instead of running blocks of code. The whole thing above is identical to:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// the same choice, the long way</span>
+int speed;
+<span style="color: #569cd6;">if</span> (distanceCm &gt; 0) {
+  speed = DRIVE_SPEED;
+} <span style="color: #569cd6;">else</span> {
+  speed = -DRIVE_SPEED;
+}</pre>
+
+<p>Reach for <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">?:</code> only when you are choosing between two values for one variable, as here. For anything longer, the full <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">if/else</code> is clearer &mdash; and clarity beats brevity every time someone has to read your code later, including you.</p>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #2a5a42;">💡 Coach's Tip</strong>
+<p style="margin-bottom: 0;">If <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">?:</code> makes your head hurt on a given line, write the <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">if/else</code> instead &mdash; it compiles to the same thing and the robot cannot tell the difference. The one-liner is a convenience, never a requirement.</p>
+</div>
+
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
 
 <!-- Section 6: Build It -->
@@ -842,7 +885,7 @@ driveDistance(distanceCm):
 5. wait (checking every 10 ms) until |left count| reaches target
 6. full stop</pre>
 
-<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The read-<em>and-reset</em> calls are in <a href="#qr-recipes" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Code Recipes</a>; motor commands in <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Motors</a>. Positive-or-negative in one line is the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">(condition) ? a : b</code> pick — worth learning today.</p>
+<p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The read-<em>and-reset</em> calls are in <a href="#qr-recipes" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Code Recipes</a>; motor commands in <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Motors</a>. Positive-or-negative in one line is the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">(condition) ? a : b</code> pick — both it and the abs() on the line above are unpacked in <a href="#code-6-4" style="color: #2e86ab; font-weight: bold;">Section 5.4</a>, just above.</p>
 
 <div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
 <strong>💡 Coach's Tip — the 440 cm ceiling</strong>
@@ -2631,7 +2674,7 @@ Stop motors</pre>
 
 <em>Zumo 32U4 Robotics — Lesson 6: Encoders</em><br>
 
-Version 04.6 — July 2026
+Version 04.7 — July 2026
 
 </p>
 
