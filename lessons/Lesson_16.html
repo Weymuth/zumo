@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.2.2 -->
+<!-- Lesson version: v02.2.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -291,10 +291,15 @@ the battery and every number you spent an afternoon finding is gone, reset to wh
 <div style="color: #666; font-size: 14px; margin-top: 8px;"><strong>[GRAPHIC 16.1]</strong> Three memories, three jobs &mdash; and only one of them remembers after the switch (File: L16_GRAPHIC_16-01_three_memories.svg)</div>
 </div>
 
-<p>The 32U4 has a third memory, and this book has never touched it: <b>1,024 bytes of EEPROM</b> &mdash;
+<p>The 32U4 has a third memory: <b>1,024 bytes of EEPROM</b> &mdash;
 electrically erasable, programmable, and above all <b>non-volatile</b>. Write a byte there and it is
 still there next week, next month, battery or no battery. It is where a robot keeps what it has learned
 about itself.</p>
+<p>You have already read from it. In Lesson 1, Challenge 1 sent you to find your robot&rsquo;s name and
+told you it lived in &ldquo;permanent memory, not in this file.&rdquo; This is that memory. The name sits
+at address <b>512</b>, written once before the robot ever reached you, and it has survived every upload
+you have done in fifteen lessons since &mdash; because an upload replaces <i>flash</i>, and the name was
+never in flash. That was a <b>read</b>. Lesson 16 is the first time this book <b>writes</b>.</p>
 <table style="width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
 <tr><th style="background: #4d5358; color: white; padding: 10px 14px; text-align: left;">Memory</th>
 <th style="background: #4d5358; color: white; padding: 10px 14px; text-align: right;">Size</th>
@@ -310,6 +315,20 @@ inside the driving loop stalls an entire pass. Never write EEPROM while the robo
 each EEPROM cell endures roughly <b>100,000 writes</b> and then dies &mdash; permanently. A save inside
 <code>loop()</code> at 400 passes per second murders a cell in under five minutes. Saves happen on a
 button press, while stopped. Always.</div>
+<p style="margin-top: 22px;"><b>Who owns which addresses.</b> EEPROM is one flat 1,024-byte space with
+no filesystem, no filenames and no protection. Nothing stops one program from writing over another
+program&rsquo;s bytes &mdash; the only thing keeping them apart is an agreement about who uses what. The
+fleet runs on this map:</p>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+<tr><th style="background: #4d5358; color: white; padding: 10px 14px; text-align: left;">Address</th>
+<th style="background: #4d5358; color: white; padding: 10px 14px; text-align: left;">Owner</th>
+<th style="background: #4d5358; color: white; padding: 10px 14px; text-align: left;">What lives there</th></tr>
+<tr><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">0 &ndash; 511</td><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">Lesson 16 &mdash; this lesson</td><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Saved</code> block: magic byte, your gains, your baseline</td></tr>
+<tr><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">512 &ndash; 543</td><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">Lesson 1 &mdash; your robot&rsquo;s name</td><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">Magic byte <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0x5A</code>, then the name, written once by your teacher</td></tr>
+<tr><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">544 &ndash; 1023</td><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">unclaimed</td><td style="padding: 8px 14px; border-bottom: 1px solid #ddd; background: white;">Free. If your Section 7 enhancement needs to remember something, take it from here</td></tr>
+</table>
+<p>Your capstone stays inside its own lines. Write to 512 and your robot loses its name &mdash; and no
+error message tells you, because to the hardware one byte is exactly as valid as another.</p>
 <p style="margin-top: 22px;"><a href="#top" style="color: #2e86ab; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 0.9em;">&#8593; Back to top</a></p>
 </div>
 <div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-5" style="font-size: 1.15em; font-weight: bold;">&#128187; Section 5: Code &mdash; The Instrument and the Socket</div></div>
