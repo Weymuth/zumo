@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.1.10 -->
+<!-- Lesson version: v04.2.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -44,7 +44,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Line Following</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Proportional Control, and Why Bang-Bang Fails</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.1 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.2 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -2075,6 +2075,22 @@ CALL it right after followLine() while running</pre>
 
 <div style="padding: 15px 20px; background: #e8f5e9;">
 
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>Map the line position onto the 20-column display, then draw the bar at that column. Fill the range and the column.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> drawPositionBar() {
+  <span style="color: #569cd6;">int</span> pos = readLinePosition();
+  <span style="color: #569cd6;">int</span> col = map(pos, <span style="color: #b5cea8;">0</span>, ____, <span style="color: #b5cea8;">0</span>, ____);
+  display.clear();
+  display.gotoXY(____, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"|"</span>));
+}</pre>
+
+</div>
+
 <details data-reveal="solution">
 
 <summary>🔓 Click to reveal a worked version</summary>
@@ -2131,6 +2147,34 @@ ELSE: USE high Kp (aggressive)</pre>
 </div>
 
 <div style="padding: 15px 20px; background: #e8f5e9;">
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>Pick a gentle / medium / aggressive K<sub>p</sub> from how far off-center you are, then steer with it. Fill the three gains and the term that does the steering.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> adaptiveFollowLine() {
+  <span style="color: #569cd6;">int</span> position = readLinePosition();
+  <span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+  <span style="color: #569cd6;">int</span> absError = abs(error);
+  <span style="color: #569cd6;">float</span> adaptiveKp;
+  <span style="color: #569cd6;">if</span> (absError &lt; <span style="color: #b5cea8;">500</span>) {
+    adaptiveKp = ____;   <span style="color: #7cbf6e;">// Gentle - nearly centered</span>
+  } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (absError &lt; <span style="color: #b5cea8;">1000</span>) {
+    adaptiveKp = ____;   <span style="color: #7cbf6e;">// Medium - drifting</span>
+  } <span style="color: #569cd6;">else</span> {
+    adaptiveKp = ____;   <span style="color: #7cbf6e;">// Aggressive - way off</span>
+  }
+  <span style="color: #569cd6;">int</span> correction = ____ * error;
+  <span style="color: #569cd6;">int</span> leftSpeed = BASE_SPEED + correction;
+  <span style="color: #569cd6;">int</span> rightSpeed = BASE_SPEED - correction;
+  leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
+  rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
+  motors.setSpeeds(leftSpeed, rightSpeed);
+}</pre>
+
+</div>
 
 <details data-reveal="solution">
 
@@ -2526,7 +2570,7 @@ rightSpeed = BASE_SPEED - correction</pre>
 
 <hr>
 
-<p style="text-align: center; color: #6c757d;"><em>Lesson 8: Line Following with Proportional Control</em> — Version 04.1 — July 2026</p>
+<p style="text-align: center; color: #6c757d;"><em>Lesson 8: Line Following with Proportional Control</em> — Version 04.2 — July 2026</p>
 
 </body>
 

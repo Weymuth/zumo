@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.0.12 -->
+<!-- Lesson version: v05.1.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +35,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Intersections &amp; Dead Ends</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Decide</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 05.0 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 05.1 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== ICON LEGEND ===================== -->
@@ -1312,6 +1312,32 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>A helper in main.cpp reads into its own local array (the module’s <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">sensorValues</code> is RobotSensors’ private property &mdash; Lesson 7’s boundaries still stand), prints, and asks for the verdict. A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">static unsigned long</code> timestamp keeps it to every 500 ms. Call it once at the top of the STOPPED case.</p>
 </div>
 <div style="padding: 15px 20px;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>Throttle the print to a readable rate, read the <em>calibrated</em> values, and reuse the lesson’s detector for the verdict.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// C1: print the five calibrated values + verdict, twice a second</span>
+<span style="color: #569cd6;">void</span> debugSensors() {
+  <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> lastPrint = <span style="color: #b5cea8;">0</span>;
+  <span style="color: #569cd6;">if</span> (millis() - lastPrint &lt; ____) <span style="color: #569cd6;">return</span>;
+  lastPrint = millis();
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> vals[<span style="color: #b5cea8;">5</span>];
+  lineSensors.____(vals);
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">5</span>; i++) {
+    Serial.print(vals[i]);
+    Serial.print(F(<span style="color: #ce9178;">" "</span>));
+  }
+  IntersectionType seen = ____;
+  <span style="color: #569cd6;">if</span> (seen == GO_LEFT)            Serial.println(F(<span style="color: #ce9178;">"&lt;- GO_LEFT"</span>));
+  <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (seen == GO_RIGHT)      Serial.println(F(<span style="color: #ce9178;">"GO_RIGHT -&gt;"</span>));
+  <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (seen == DEAD_END)      Serial.println(F(<span style="color: #ce9178;">"DEAD_END"</span>));
+  <span style="color: #569cd6;">else</span>                            Serial.println(F(<span style="color: #ce9178;">"-"</span>));
+}</pre>
+
+</div>
+
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// C1: print the five calibrated values + verdict, twice a second</span>
@@ -1357,6 +1383,21 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Two touch points, both obvious once you name the states: set the LED where the decision is announced (AT_INTERSECTION, right before <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showDecision()</code>), clear all three where the turn finishes (EXECUTING_TURN, before returning to FOLLOWING_LINE). No LED logic anywhere else &mdash; that’s the state machine keeping jobs in their rooms.</p>
 </div>
 <div style="padding: 15px 20px;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>Light one LED per turn direction. Fill in which LED goes with which way.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">    <span style="color: #569cd6;">case</span> AT_INTERSECTION: {
+      <span style="color: #569cd6;">if</span> (pendingTurn == GO_LEFT)       ____(<span style="color: #b5cea8;">1</span>);
+      <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (pendingTurn == GO_RIGHT) ____(<span style="color: #b5cea8;">1</span>);
+      <span style="color: #569cd6;">else</span>                              ____(<span style="color: #b5cea8;">1</span>);
+      
+      showDecision();</pre>
+
+</div>
+
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">    <span style="color: #569cd6;">case</span> AT_INTERSECTION: {
@@ -1390,6 +1431,25 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Three moves: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">turnDegrees(-60)</code> covers the predictable bulk; a slow spin (half <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">TURN_SPEED</code>) hands control to the sensors; a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">do&amp;hellip;while</code> watches sensor <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[2]</code> until its calibrated value says <em>black</em>. Then swap one dispatch line in EXECUTING_TURN &mdash; and notice what you did <strong>not</strong> touch: Section 8A’s modularity tip, proven.</p>
 </div>
 <div style="padding: 15px 20px;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>Turn most of the way on encoders, then creep until the CENTER sensor is back on black. Fill the turn, the sensor index, and the black threshold.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// C3: turn most of the way on encoders, then creep until the line is back</span>
+<span style="color: #569cd6;">void</span> turnLeftWithSeek() {
+  turnDegrees(-____);   <span style="color: #7cbf6e;">// Step 1: most of the turn, precise and repeatable</span>
+  motors.setSpeeds(-TURN_SPEED / <span style="color: #b5cea8;">2</span>, TURN_SPEED / <span style="color: #b5cea8;">2</span>);   <span style="color: #7cbf6e;">// Step 2: slow creep</span>
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">int</span> vals[<span style="color: #b5cea8;">5</span>];
+  <span style="color: #569cd6;">do</span> {
+    lineSensors.readCalibrated(vals);
+  } <span style="color: #569cd6;">while</span> (vals[____] &lt; ____);   <span style="color: #7cbf6e;">// Step 3: stop when the CENTER sensor is on black</span>
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+}</pre>
+
+</div>
+
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// C3: turn most of the way on encoders, then creep until the line is back</span>
@@ -1427,6 +1487,21 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>One constant in RobotConfig.h &mdash; the sensor-array-to-axle distance, <strong>measured on your robot</strong>, not copied &mdash; and one <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance()</code> call at the top of EXECUTING_TURN. Lesson 6’s odometry doing intersection work.</p>
 </div>
 <div style="padding: 15px 20px;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>One constant — the array-to-axle distance you measure — and one call that drives it before the turn.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// C4: distance from the sensor array back to the wheel axle.</span>
+<span style="color: #7cbf6e;">// Measure YOUR robot - this puts the wheels over the junction.</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> MARKER_ADVANCE_CM = ____;
+
+<span style="color: #7cbf6e;">// in EXECUTING_TURN, BEFORE the turn:</span>
+driveDistance(____);   <span style="color: #7cbf6e;">// center the wheels on the junction</span></pre>
+
+</div>
+
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">// C4: distance from the sensor array back to the wheel axle.</span>
@@ -1460,6 +1535,28 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Two <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">static</code> locals inside the FOLLOWING_LINE case remember the last verdict and its streak. Same non-NO verdict &rarr; count up; anything else &rarr; reset. Only a streak of 3 gets to stop the motors and change state &mdash; and remember to reset both statics when it fires, or the <em>next</em> marker inherits a stale streak.</p>
 </div>
 <div style="padding: 15px 20px;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>Count consecutive matching reads; fire only after three in a row. Fill the “same as last time” test and the threshold.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">        <span style="color: #569cd6;">static</span> IntersectionType lastSeen = NO_INTERSECTION;
+        <span style="color: #569cd6;">static</span> <span style="color: #569cd6;">int</span> seenCount = <span style="color: #b5cea8;">0</span>;
+        IntersectionType seen = checkForIntersection();
+        <span style="color: #569cd6;">if</span> (seen != NO_INTERSECTION &amp;&amp; seen == ____) seenCount++;
+        <span style="color: #569cd6;">else</span> seenCount = (seen != NO_INTERSECTION) ? <span style="color: #b5cea8;">1</span> : <span style="color: #b5cea8;">0</span>;
+        lastSeen = seen;
+        <span style="color: #569cd6;">if</span> (seenCount &gt;= ____) {   <span style="color: #7cbf6e;">// C5: three matching reads = a real marker</span>
+          motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);   <span style="color: #7cbf6e;">// Stop FIRST - then think</span>
+          pendingTurn = seen;
+          seenCount = <span style="color: #b5cea8;">0</span>;
+          lastSeen = NO_INTERSECTION;
+          currentState = AT_INTERSECTION;
+        }</pre>
+
+</div>
+
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">        <span style="color: #569cd6;">static</span> IntersectionType lastSeen = NO_INTERSECTION;
@@ -1499,6 +1596,19 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Two policy changes. <strong>Detection:</strong> an all-black sensor row (calibrated sum above ~4200) is a crossing &mdash; teach <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">checkForIntersection()</code> to return <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">GO_RIGHT</code> for it, <em>before</em> the green tests. <strong>Dead ends:</strong> in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">handleGap()</code>, the timeout stops meaning <em>give up</em> and starts meaning <em>turn around and drive back</em>. The state machine itself needs zero changes &mdash; policies changed, structure held.</p>
 </div>
 <div style="padding: 15px 20px;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>An all-black row is an unmarked crossing — take the right. Fill the all-black test and the direction.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
+  <span style="color: #569cd6;">int</span> sum = <span style="color: #b5cea8;">0</span>;
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = <span style="color: #b5cea8;">0</span>; i &lt; <span style="color: #b5cea8;">5</span>; i++) sum += sensorValues[i];
+  <span style="color: #569cd6;">if</span> (sum &gt; ____) <span style="color: #569cd6;">return</span> ____;   <span style="color: #7cbf6e;">// right-hand rule: always take the right</span></pre>
+
+</div>
+
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #7cbf6e;">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
@@ -1781,7 +1891,7 @@ counted on encoders - battery sag and TRIM cannot bend it</pre>
 <!-- ===================== FOOTER ===================== -->
 <div style="text-align: center; color: #6c757d; margin-top: 50px; padding: 30px 0; border-top: 2px solid #ddd;">
     <p><em>Zumo 32U4 Robotics — Lesson 9: Intersections &amp; Dead Ends</em></p>
-    <p>Version 05.0 — July 2026</p>
+    <p>Version 05.1 — July 2026</p>
 </div>
 
 </body>
