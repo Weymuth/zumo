@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.1.15 -->
+<!-- Lesson version: v02.2.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +35,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Obstacles</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">When the Course Fights Back</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.1 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.2 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== ICON LEGEND ===================== -->
@@ -1873,15 +1873,21 @@ distinction is the whole architecture:</p>
 <div style="border: 2px solid #9b6a9e; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 25px; background: white;">
 <p>Your robot works. Now make it <em>smarter</em>. Each challenge starts from your finished
 Lesson 10 project &mdash; and each one is a real problem, not a busywork exercise.</p>
-<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; margin: 25px 0; border-radius: 4px;" id="challenge-1" data-challenge="10.1" data-kind="challenge" data-difficulty="easy">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-        <strong style="color: #2a5a42;">🎯 CHALLENGE C1</strong>
-        <span style="background-color: #4caf50; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: bold;">EASY</span>
-    </div>
-    <h4 style="color: #2a5a42; margin: 10px 0 12px 0;">The Impatient Beep</h4>
-    <p><strong>🎯 THE GOAL</strong><br>Make the robot beep <strong>differently</strong> depending on how close the obstacle is when it stops. A gentle note if it caught it early; an urgent, higher note if it nearly hit the thing.</p>
-    <p><strong>🧠 THE LOGIC</strong><br>You already have the number &mdash; <code>readFrontProx()</code> returns 0&ndash;6. Compare it against <code>VERY_CLOSE_THRESHOLD</code> inside <code>OBSTACLE_DETECTED</code> and pick a different note.</p>
-    <p><strong>🧩 THE TEMPLATE</strong></p>
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="10.1" data-kind="challenge" data-difficulty="easy">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: The Impatient Beep</strong> <span style="display: inline-block; background: #4caf50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">EASY</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Make the robot beep <strong>differently</strong> depending on how close the obstacle is when it stops. A gentle note if it caught it early; an urgent, higher note if it nearly hit the thing.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC</h4>
+<p style="margin: 0;">You already have the number &mdash; <code>readFrontProx()</code> returns 0&ndash;6. Compare it against <code>VERY_CLOSE_THRESHOLD</code> inside <code>OBSTACLE_DETECTED</code> and pick a different note.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;"><span style="color: #569cd6;">case</span> OBSTACLE_DETECTED: {
   <span style="color: #569cd6;">if</span> (killSwitchPressed()) <span style="color: #569cd6;">break</span>;
 
@@ -1894,21 +1900,29 @@ Lesson 10 project &mdash; and each one is a real problem, not a busywork exercis
   }
   <span style="color: #6a9955;">// ...rest of the state...</span>
 }</pre>
-<details data-reveal="hint" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
-<summary style="cursor: pointer; font-weight: bold; color: #2a5a42;">🔓 Stuck? Open this.</summary>
+</div>
+<details data-reveal="hint" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Stuck? Open this.</summary>
 <div style="margin-top: 12px;">
 <p><strong>It will not compile at first.</strong> You are declaring <code>int howClose</code> inside a <code>case</code>, and C++ requires braces <code>{ }</code> around a case body that declares a variable. The template above already has them &mdash; if you get <code>jump to case label</code>, you dropped one.</p><p>Two things to get right. First, call <code>readFrontProx()</code> <strong>before</strong> the robot has been sitting still for a while &mdash; the reading is a snapshot of the moment it stopped. Second, remember the scale is 0&ndash;6. If you are comparing against 500, you have confused the proximity scale with the line&#8209;sensor scale, and your condition will never be true.</p></div>
 </details>
 </div>
-<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; margin: 25px 0; border-radius: 4px;" id="challenge-2" data-challenge="10.2" data-kind="challenge" data-difficulty="medium">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-        <strong style="color: #2a5a42;">🎯 CHALLENGE C2</strong>
-        <span style="background-color: #2196f3; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: bold;">MEDIUM</span>
-    </div>
-    <h4 style="color: #2a5a42; margin: 10px 0 12px 0;">Alternate Sides</h4>
-    <p><strong>🎯 THE GOAL</strong><br>Right now the robot always detours the <em>same</em> direction. If two obstacles sit close together, it will happily walk itself off the edge of the mat. Make it <strong>alternate</strong>: turn away right on the first obstacle, left on the second, right on the third&hellip;</p>
-    <p><strong>🧠 THE LOGIC</strong><br>You cannot use a sensor for this &mdash; remember &sect;3.2, you have <em>no idea</em> which side the obstacle is on. So do not try. Just <strong>count</strong>. Keep a counter that survives between loop passes, and negate the turn angle on every other obstacle.</p>
-    <p><strong>🧩 THE TEMPLATE</strong></p>
+
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="10.2" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: Alternate Sides</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Right now the robot always detours the <em>same</em> direction. If two obstacles sit close together, it will happily walk itself off the edge of the mat. Make it <strong>alternate</strong>: turn away right on the first obstacle, left on the second, right on the third&hellip;</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC</h4>
+<p style="margin: 0;">You cannot use a sensor for this &mdash; remember &sect;3.2, you have <em>no idea</em> which side the obstacle is on. So do not try. Just <strong>count</strong>. Keep a counter that survives between loop passes, and negate the turn angle on every other obstacle.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;"><span style="color: #569cd6;">int</span> obstacleCount = <span style="color: #b5cea8;">0</span>;   <span style="color: #6a9955;">// global - survives between loop() passes</span>
 
 <span style="color: #6a9955;">// ...in OBSTACLE_DETECTED, when you commit to the maneuver:</span>
@@ -1926,35 +1940,49 @@ obstacleCount++;
   avoidPhase = PHASE_DRIVE_PAST;
   <span style="color: #569cd6;">break</span>;
 }</pre>
-<details data-reveal="hint" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
-<summary style="cursor: pointer; font-weight: bold; color: #2a5a42;">🔓 Stuck? Open this.</summary>
+</div>
+<details data-reveal="hint" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Stuck? Open this.</summary>
 <div style="margin-top: 12px;">
 <p>The trap: <code>PHASE_TURN_BACK</code> must turn back the <em>opposite</em> way from whatever <code>PHASE_TURN_AWAY</code> did. If you negate the first turn but not the second, the robot will turn away left and then turn back left as well &mdash; ending up driving perpendicular to the line, in open floor, looking very confused.</p><p>Cleanest fix: store the direction you chose in a variable when you commit to the maneuver, and have both phases read it. One decision, used twice.</p></div>
 </details>
 </div>
-<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; margin: 25px 0; border-radius: 4px;" id="challenge-3" data-challenge="10.3" data-kind="challenge" data-difficulty="medium">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-        <strong style="color: #2a5a42;">🎯 CHALLENGE C3</strong>
-        <span style="background-color: #2196f3; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: bold;">MEDIUM</span>
-    </div>
-    <h4 style="color: #2a5a42; margin: 10px 0 12px 0;">Count and Report</h4>
-    <p><strong>🎯 THE GOAL</strong><br>At the end of a run, tell the driver how many obstacles the robot avoided. Show it on the display when the robot returns to <code>STOPPED</code>.</p>
-    <p><strong>🧠 THE LOGIC</strong><br>This is a small thing that teaches a big habit: a robot that <em>reports</em> what it did is a robot you can debug. Keep the counter from C2 (or add one), and print it in the <code>STOPPED</code> state.</p>
-<details data-reveal="hint" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
-<summary style="cursor: pointer; font-weight: bold; color: #2a5a42;">🔓 Stuck? Open this.</summary>
+
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="10.3" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: Count and Report</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">At the end of a run, tell the driver how many obstacles the robot avoided. Show it on the display when the robot returns to <code>STOPPED</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC</h4>
+<p style="margin: 0;">This is a small thing that teaches a big habit: a robot that <em>reports</em> what it did is a robot you can debug. Keep the counter from C2 (or add one), and print it in the <code>STOPPED</code> state.</p>
+</div>
+<details data-reveal="hint" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Stuck? Open this.</summary>
 <div style="margin-top: 12px;">
 <p>Careful with <code>showStatus()</code> &mdash; it does a <code>display.clear()</code> every time it runs, so anything you print before calling it gets wiped instantly. Print the count <em>inside</em> <code>showStatus()</code>, on a line of its own, rather than trying to sneak it in before.</p><p><code>display.gotoXY(0, 4);</code> is free &mdash; nothing else is using row 4 while stopped.</p></div>
 </details>
 </div>
-<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; margin: 25px 0; border-radius: 4px;" id="challenge-4" data-challenge="10.4" data-kind="challenge" data-difficulty="hard">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-        <strong style="color: #2a5a42;">🎯 CHALLENGE C4</strong>
-        <span style="background-color: #ff9800; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: bold;">HARD</span>
-    </div>
-    <h4 style="color: #2a5a42; margin: 10px 0 12px 0;">The Bump Guard</h4>
-    <p><strong>🎯 THE GOAL</strong><br>Your robot stops at <code>CLOSE_THRESHOLD</code> (3). But what if the obstacle is matte black, or angled, and the reading jumps straight from 1 to 6 with nothing in between? Make the robot <strong>back up</strong> before it starts the avoidance maneuver, if it discovers it is already too close.</p>
-    <p><strong>🧠 THE LOGIC</strong><br>Add a new phase at the <em>front</em> of the maneuver: <code>PHASE_BACK_OFF</code>. It runs only if <code>readFrontProx() >= VERY_CLOSE_THRESHOLD</code> &mdash; otherwise you skip straight to <code>PHASE_TURN_AWAY</code>. This is your first <em>conditional</em> phase, and it is a genuinely new shape.</p>
-    <p><strong>🧩 THE TEMPLATE</strong></p>
+
+<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="10.4" data-kind="challenge" data-difficulty="hard">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: The Bump Guard</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Your robot stops at <code>CLOSE_THRESHOLD</code> (3). But what if the obstacle is matte black, or angled, and the reading jumps straight from 1 to 6 with nothing in between? Make the robot <strong>back up</strong> before it starts the avoidance maneuver, if it discovers it is already too close.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC</h4>
+<p style="margin: 0;">Add a new phase at the <em>front</em> of the maneuver: <code>PHASE_BACK_OFF</code>. It runs only if <code>readFrontProx() >= VERY_CLOSE_THRESHOLD</code> &mdash; otherwise you skip straight to <code>PHASE_TURN_AWAY</code>. This is your first <em>conditional</em> phase, and it is a genuinely new shape.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;"><span style="color: #6a9955;">// In RobotConfig.h - a new phase, at the FRONT of the enum:</span>
 <span style="color: #569cd6;">enum</span> <span style="color: #4ec9b6;">AvoidPhase</span> {
   PHASE_BACK_OFF,    <span style="color: #6a9955;">// NEW - only used when we are dangerously close</span>
@@ -1964,26 +1992,34 @@ obstacleCount++;
   PHASE_SEEK_LINE,
   PHASE_COMPLETE
 };</pre>
-<details data-reveal="hint" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
-<summary style="cursor: pointer; font-weight: bold; color: #2a5a42;">🔓 Stuck? Open this.</summary>
+</div>
+<details data-reveal="hint" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Stuck? Open this.</summary>
 <div style="margin-top: 12px;">
 <p>Two real problems here.</p><p><strong>(1) How do you back up?</strong> <code>driveDistance()</code> takes centimeters &mdash; try a <em>negative</em> number and see what your Lesson 6 code actually does with it. If it does not handle negatives, that is not a bug in this challenge &mdash; that is a bug in <code>driveDistance()</code>, and finding it is worth more than finishing the challenge.</p><p><strong>(2) Where does the skip go?</strong> In <code>OBSTACLE_DETECTED</code>, when you set <code>avoidPhase</code>, choose which phase to <em>start</em> on. That is the whole trick: the maneuver does not need an <code>if</code> inside it if you simply start it in the right place.</p></div>
 </details>
 </div>
-<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; margin: 25px 0; border-radius: 4px;" id="challenge-5" data-challenge="10.5" data-kind="challenge" data-difficulty="advanced">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-        <strong style="color: #2a5a42;">🎯 CHALLENGE C5</strong>
-        <span style="background-color: #f44336; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: bold;">ADVANCED</span>
-    </div>
-    <h4 style="color: #2a5a42; margin: 10px 0 12px 0;">The Obstacle That Is Really a Wall</h4>
-    <p><strong>🎯 THE GOAL</strong><br>The robot detours around the block, hunts for the line&hellip; and there is no line, because the &ldquo;obstacle&rdquo; was a wall running <em>alongside</em> the course. Right now the robot hunts for 5 seconds and stops. Make it <strong>try the other side</strong> before giving up.</p>
-    <p><strong>🧠 THE LOGIC</strong><br>When <code>RETURNING_TO_LINE</code> times out, do not go to <code>STOPPED</code>. Instead: turn around, drive back across where you came from, and run the maneuver again in the opposite direction. You will need a flag so the robot only does this <strong>once</strong> &mdash; otherwise it will oscillate forever, which is arguably worse than stopping.</p>
-<details data-reveal="hint" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
-<summary style="cursor: pointer; font-weight: bold; color: #2a5a42;">🔓 Stuck? Open this.</summary>
+
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="10.5" data-kind="challenge" data-difficulty="advanced">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: The Obstacle That Is Really a Wall</strong> <span style="display: inline-block; background: #f44336; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">ADVANCED</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">The robot detours around the block, hunts for the line&hellip; and there is no line, because the &ldquo;obstacle&rdquo; was a wall running <em>alongside</em> the course. Right now the robot hunts for 5 seconds and stops. Make it <strong>try the other side</strong> before giving up.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC</h4>
+<p style="margin: 0;">When <code>RETURNING_TO_LINE</code> times out, do not go to <code>STOPPED</code>. Instead: turn around, drive back across where you came from, and run the maneuver again in the opposite direction. You will need a flag so the robot only does this <strong>once</strong> &mdash; otherwise it will oscillate forever, which is arguably worse than stopping.</p>
+</div>
+<details data-reveal="hint" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Stuck? Open this.</summary>
 <div style="margin-top: 12px;">
 <p>This is the hardest challenge in the lesson, and the hard part is not the driving &mdash; it is knowing <em>when to quit</em>.</p><p>Add a <code>bool triedOtherSide = false;</code>. On timeout: if it is <code>false</code>, set it <code>true</code>, flip your turn direction, and re&#8209;enter <code>AVOIDING_OBSTACLE</code> at <code>PHASE_TURN_AWAY</code>. If it is already <code>true</code>, you have tried both sides &mdash; stop, and say so honestly on the display.</p><p><strong>And reset the flag</strong> when the robot successfully finds the line again. A robot that remembers a failure forever will refuse to try on the next obstacle.</p></div>
 </details>
 </div>
+
 <div style="text-align: right; margin-top: 25px;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></div>
 </div>
 
@@ -2253,7 +2289,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <div style="text-align: center; padding: 25px 20px; margin-top: 40px; background: linear-gradient(to bottom, #1a5276 0%, #2e86ab 100%); color: white; border-radius: 12px;">
     <div style="font-size: 1.1em; font-weight: bold;">LESSON 10 &mdash; Obstacles</div>
     <div style="font-size: 0.9em; opacity: 0.9; margin-top: 6px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-    <div style="font-size: 0.85em; opacity: 0.8; margin-top: 4px;">Version 02.1 &mdash; July 2026</div>
+    <div style="font-size: 0.85em; opacity: 0.8; margin-top: 4px;">Version 02.2 &mdash; July 2026</div>
     <div style="margin-top: 12px;"><a href="#top" style="color: white; text-decoration: underline;">&uarr; Back to top</a></div>
 </div>
 
