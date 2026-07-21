@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.2.0 -->
+<!-- Lesson version: v04.3.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Line Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Your Robot Cannot See &mdash; It Measures</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.2 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.3 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -1225,10 +1225,38 @@ display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5ce
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> your main <strong>LastName_L04</strong> build — this challenge adds to it — or a fresh copy that opens <strong>preloaded with the finished three-sensor program</strong>: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_light" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> · <a href="#qr-leds" style="color: #2e86ab; font-weight: bold;">LEDs</a> &mdash; the display work goes in <em>both</em> branches</p>
 </div>
-<div style="padding: 15px 20px;">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=3&amp;label=Challenge+1" title="3-minute countdown timer for Challenge 1" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe><p><strong>Your task:</strong> yellow LED on and <strong>"LINE!"</strong> on the display's bottom row whenever the center sensor sees the tape; LED off and row blank otherwise. (This is the Dark Detector from 8A.3 plus a display twist.)</p>
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">yellow LED on and <strong>"LINE!"</strong> on the display's bottom row whenever the center sensor sees the tape; LED off and row blank otherwise. (This is the Dark Detector from 8A.3 plus a display twist.)</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">read the calibrated sensors
+if the CENTER sensor is over tape (value &gt; threshold):
+    yellow LED on, print "LINE!"
+else:
+    yellow LED off, clear the message</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the center-sensor index and the tape threshold.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">lineSensors.readCalibrated(lineSensorValues);
+<span style="color: #569cd6;">if</span> (lineSensorValues[____] &gt; ____) {   <span style="color: #6a9955;">// center sensor over tape?</span>
+  ledYellow(<span style="color: #b5cea8;">1</span>);
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+  display.print(F(<span style="color: #ce9178;">"LINE!"</span>));
+} <span style="color: #569cd6;">else</span> {
+  ledYellow(<span style="color: #b5cea8;">0</span>);
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+  display.print(F(<span style="color: #ce9178;">"     "</span>));
+}</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
+<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=3&amp;label=Challenge+1" title="3-minute countdown timer for Challenge 1" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe>
 <p><strong>Hints:</strong> center sensor = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code> · clear the message by printing spaces · the display work goes in <em>both</em> branches.</p>
 <p style="margin-top: 8px;">🔧 <strong>Functions you'll need:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensors.readCalibrated(lineSensorValues)</code> <span style="color:#666;">read all</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensorValues[1]</code> <span style="color:#666;">center sensor</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">ledYellow(1)/ledYellow(0)</code> <span style="color:#666;">LED on/off</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">display.gotoXY(0,1)</code> <span style="color:#666;">move cursor</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">display.print(F("LINE!"))</code> <span style="color:#666;">print / F("     ") to erase</span></p>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;"><summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <div style="padding: 0 20px 15px;">
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;">lineSensors.readCalibrated(lineSensorValues);
@@ -1253,11 +1281,37 @@ display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5ce
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — this challenge replaces your loop. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_counter" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-scales" style="color: #2e86ab; font-weight: bold;">Value scales</a> &mdash; two thresholds, one boolean memory</p>
 </div>
-<div style="padding: 15px 20px;">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+2" title="4-minute countdown timer for Challenge 2" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe><p><strong>Your task:</strong> the robot counts how many times the tape passes under its center sensor, and shows the running count on the display. Slide the surface back and forth under it: 1... 2... 3...</p>
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">the robot counts how many times the tape passes under its center sensor, and shows the running count on the display. Slide the surface back and forth under it: 1... 2... 3...</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">keep a flag onLine and a counter crossings
+each loop, read the center sensor:
+    if it JUST arrived (over threshold AND not already onLine):
+        onLine = true, add 1 to crossings
+    when it leaves the line: onLine = false
+(the flag stops one crossing being counted many times)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the “not already on the line” half of the arrival test.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">bool</span> onLine = <span style="color: #569cd6;">false</span>;
+<span style="color: #569cd6;">int</span> crossings = <span style="color: #b5cea8;">0</span>;
+<span style="color: #6a9955;">// in loop():</span>
+<span style="color: #569cd6;">if</span> (lineSensorValues[<span style="color: #b5cea8;">1</span>] &gt; <span style="color: #b5cea8;">600</span> &amp;&amp; ____) {   <span style="color: #6a9955;">// over the line AND not already on it</span>
+  onLine = <span style="color: #569cd6;">true</span>;
+  crossings++;
+}</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
+<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+2" title="4-minute countdown timer for Challenge 2" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe>
 <p><strong>The trap (and the whole point):</strong> "if dark, add one" counts hundreds per crossing — the loop runs ten times a second and the line is under the sensor for many loops. You need to count <em>arrivals</em>, not <em>presence</em>: add one only at the moment the sensor <strong>goes from white to dark</strong>. Track where you were with a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> variable.</p>
 <p><strong>Bonus polish:</strong> use two different thresholds — count at &gt;600, release at &lt;400 — so a reading that jitters around one cutoff can't double-count. (That trick has a name: <em>hysteresis</em>. It's in the glossary.)</p>
 <p style="margin-top: 8px;">🔧 <strong>Functions you'll need:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensors.readCalibrated(lineSensorValues)</code> <span style="color:#666;">read all</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensorValues[1]</code> <span style="color:#666;">center sensor</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">display.gotoXY(0,1)</code> <span style="color:#666;">move cursor</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">display.print(count)</code> <span style="color:#666;">print a number</span></p>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;"><summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <div style="padding: 0 20px 15px;">
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// with the other globals:</span>
@@ -1288,10 +1342,36 @@ lineSensors.readCalibrated(lineSensorValues);
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=position_pointer" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-configs" style="color: #2e86ab; font-weight: bold;">The two configurations</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> &mdash; three sensors, so the scale is 0–2000</p>
 </div>
-<div style="padding: 15px 20px;">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+3" title="4-minute countdown timer for Challenge 3" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe><p><strong>Your task:</strong> turn the bottom display row into a live pointer — a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code> character that slides along the 8-character row, tracking the line's position under the robot. Line far left: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code> at the row's left edge. Dead center: middle of the row. Far right: right edge.</p>
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">turn the bottom display row into a live pointer — a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code> character that slides along the 8-character row, tracking the line's position under the robot. Line far left: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code> at the row's left edge. Dead center: middle of the row. Far right: right edge.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">read the line POSITION (0-2000 across the array)
+map it to a display column (0-7) by dividing
+for each of the 8 columns:
+    print ‘^’ at the mapped column, ‘ ’ everywhere else</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the divisor that squashes 0–2000 into 8 columns.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">int</span> position = lineSensors.readLine(lineSensorValues);
+display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">1</span>);
+<span style="color: #569cd6;">for</span> (uint8_t c = <span style="color: #b5cea8;">0</span>; c &lt; <span style="color: #b5cea8;">8</span>; c++) {
+  <span style="color: #569cd6;">if</span> (c == position / ____) {   <span style="color: #6a9955;">// 0-2000 -> columns 0-7</span>
+    display.print(<span style="color: #ce9178;">'^'</span>);
+  } <span style="color: #569cd6;">else</span> {
+    display.print(<span style="color: #ce9178;">' '</span>);
+  }
+}</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
+<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+3" title="4-minute countdown timer for Challenge 3" loading="lazy" style="float: right; width: 336px; height: 56px; border: none; margin: 0 0 8px 16px;">Click-to-start timer (available in the online version).</iframe>
 <p><strong>Hints:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> gives 0–2000 (three sensors) · you need to squash 0–2000 down to a column number 0–7 · then print 8 characters: seven spaces and one <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">^</code>, with an if deciding which is which.</p>
 <p style="margin-top: 8px;">🔧 <strong>Functions you'll need:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensors.readLine(lineSensorValues)</code> <span style="color:#666;">position 0–2000</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">display.gotoXY(col,row)</code> <span style="color:#666;">move cursor</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">display.print(F("..."))</code> <span style="color:#666;">print text</span></p>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;"><summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <div style="padding: 0 20px 15px;">
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #569cd6;">int</span> position = lineSensors.readLine(lineSensorValues);
@@ -1315,11 +1395,33 @@ display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5ce
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — motors change everything. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=edge_guard" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> &mdash; declare the motors object first — it's in <a href="#qr-hardware" style="color: #2e86ab; font-weight: bold;">Hardware objects</a></p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Your task:</strong> the first true sense-and-act program of the course. The robot <strong>creeps forward on its own</strong> and <strong>freezes the instant ANY sensor sees the line.</strong> Place it a foot from the tape, press A, and watch it stop itself at the edge — every time, any approach angle.</p>
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">the first true sense-and-act program of the course. The robot <strong>creeps forward on its own</strong> and <strong>freezes the instant ANY sensor sees the line.</strong> Place it a foot from the tape, press A, and watch it stop itself at the edge — every time, any approach angle.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">creep forward at a slow speed
+each loop: read all sensors — is ANY sensor over the line?
+    if a line is seen -> stop the motors (freeze)
+    else -> keep creeping</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the creep speed and the flag you set when a line is seen.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> CREEP_SPEED = ____;   <span style="color: #6a9955;">// slow</span>
+<span style="color: #569cd6;">bool</span> lineSeen = <span style="color: #569cd6;">false</span>;
+<span style="color: #569cd6;">for</span> (uint8_t i = <span style="color: #b5cea8;">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span style="color: #569cd6;">if</span> (lineSensorValues[i] &gt; LINE_SEEN) lineSeen = ____;   <span style="color: #6a9955;">// any sensor over the line</span>
+}
+<span style="color: #6a9955;">// if lineSeen -> setSpeeds(0,0); else creep forward</span></pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>New ingredient:</strong> motors are back — add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Zumo32U4Motors motors;</code> to your hardware objects. Keep the speed gentle (<code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">80</code> is plenty). "Any sensor" means checking all three boxes of the array — a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop with an if inside beats writing three ifs.</p>
 <p><strong>Safety notes:</strong> this robot moves by itself — clear runway, and appreciate that <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">waitForStart()</code> is now doing exactly the job it was hired for. If it curves as it creeps, your Lesson 3 TRIM values fix that.</p>
 <p style="margin-top: 8px;">🔧 <strong>Functions you'll need:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensors.readCalibrated(lineSensorValues)</code> <span style="color:#666;">read all</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensorValues[0] / [2]</code> <span style="color:#666;">the edge sensors</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">ledYellow(1)/ledRed(1)</code> <span style="color:#666;">warn</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">motors.setSpeeds(0,0)</code> <span style="color:#666;">stop</span></p>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;"><summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <div style="padding: 0 20px 15px;">
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// hardware objects: add</span>
@@ -1355,11 +1457,36 @@ lineSensors.readCalibrated(lineSensorValues);
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=centering_game" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-configs" style="color: #2e86ab; font-weight: bold;">The two configurations</a> &mdash; center of the 0–2000 scale is 1000; correct <em>toward</em> the line</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Your task:</strong> the robot pivots in place to <strong>center the line under itself</strong>. Set it down with the tape anywhere under the sensor row, press A — it rotates until the line sits at position ≈1000, then holds. Nudge the surface left or right and it re-centers, like a compass needle finding north.</p>
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">the robot pivots in place to <strong>center the line under itself</strong>. Set it down with the tape anywhere under the sensor row, press A — it rotates until the line sits at position ≈1000, then holds. Nudge the surface left or right and it re-centers, like a compass needle finding north.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">read the line position, compare to CENTER (1000)
+error = position - CENTER
+if |error| is small (within DEADBAND) -> stop, it’s centred
+else -> pivot toward the line (the way that shrinks the error)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the centre value and the error calculation.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> CENTER = ____;      <span style="color: #6a9955;">// middle of the 0-2000 scale</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> DEADBAND = <span style="color: #b5cea8;">100</span>;
+<span style="color: #569cd6;">int</span> position = lineSensors.readLine(lineSensorValues);
+<span style="color: #569cd6;">int</span> error = position - ____;   <span style="color: #6a9955;">// how far off centre</span>
+<span style="color: #569cd6;">if</span> (abs(error) &lt; DEADBAND) {
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);      <span style="color: #6a9955;">// centred - stop</span>
+} <span style="color: #569cd6;">else</span> {
+  <span style="color: #6a9955;">// pivot toward the line</span>
+}</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>Think it through before coding:</strong> position below center → the line is to the robot's <em>left</em> → pivot left (left track backward, right track forward). Above center → mirror it. Near center → stop. "Near" matters: demand <em>exactly</em> 1000 and the robot will vibrate forever around the target — give it a tolerance band (a <em>deadband</em>) and it settles.</p>
 <p><strong>Why this is the expert card:</strong> you are closing the full loop — sense → compute error → correct — which is, in miniature, the architecture of line following (Lesson 8) and PID control (Lesson 15). You're not preparing to do robotics anymore. This IS robotics.</p>
 <p style="margin-top: 8px;">🔧 <strong>Functions you'll need:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensors.readLine(lineSensorValues)</code> <span style="color:#666;">position 0–2000</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">motors.setSpeeds(L,R)</code> <span style="color:#666;">drive</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">center of range ≈ 1000</code> <span style="color:#666;">the target</span></p>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;"><summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <div style="padding: 0 20px 15px;">
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 16px 0;"><span style="color: #6a9955;">// hardware objects: add</span>
@@ -1678,7 +1805,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <!-- Footer -->
 <footer style="text-align: center; padding: 30px; margin-top: 40px; background-color: #f8f9fa; border-radius: 8px; color: #6c757d;">
 <p style="margin: 0;">Zumo 32U4 Robotics • Lesson 04: Line Sensors</p>
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 04.2 — July 2026 • PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 04.3 — July 2026 • PlatformIO Edition</p>
 </footer>
 
 </body>
