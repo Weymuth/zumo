@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.5.0 -->
+<!-- Lesson version: v02.6.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -69,7 +69,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Mastering the Code</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Reading Code You Didn't Write</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.5 &mdash; June 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.6 &mdash; June 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -2989,9 +2989,38 @@ delay(<span style="color: #b5cea8;">500</span>);
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L02</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=2&amp;kind=battery_screen" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display Functions</a> and <a href="#qr-battery" style="color: #2e86ab; font-weight: bold;">Battery</a>.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Add a fourth screen (Button A + B pressed together) that shows battery-related info.</p>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Add a fourth screen (Button A + B pressed together) that shows battery-related info.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">write a showBatteryScreen() function:
+    clear display, set the 21x8 layout
+    print a title, then the live voltage from readBatteryMillivolts()
+in loop(), at the top:
+    if A AND B are both pressed -> showBatteryScreen(), then a small delay</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the live-reading call and the second button in the trigger.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">void</span> showBatteryScreen() {
+  display.clear();
+  display.setLayout21x8();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F(<span style="color: #ce9178;">"=== BATTERY ==="</span>));
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">"Voltage: "</span>));
+  display.print(____);            <span style="color: #6a9955;">// live reading from the robot</span>
+  display.print(F(<span style="color: #ce9178;">" mV"</span>));
+}
 
+<span style="color: #6a9955;">// in loop(), at the top:</span>
+<span style="color: #569cd6;">if</span> (buttonA.isPressed() &amp;&amp; ____) {   <span style="color: #6a9955;">// both buttons</span>
+  showBatteryScreen();
+  delay(<span style="color: #b5cea8;">200</span>);
+}</pre>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3029,7 +3058,7 @@ delay(<span style="color: #b5cea8;">200</span>); <span style="color: #6a9955;">/
 </div>
 
 </details>
-</div>
+
 </div>
 
 <div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="2.3" data-kind="challenge" data-difficulty="medium">
@@ -3038,9 +3067,33 @@ delay(<span style="color: #b5cea8;">200</span>); <span style="color: #6a9955;">/
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L02</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=2&amp;kind=button_counter" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buttons" style="color: #2e86ab; font-weight: bold;">Button Functions</a> &mdash; plus the variables you already met in Section 3.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Track how many times each button has been pressed. Show the counts on the Status screen.</p>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Track how many times each button has been pressed. Show the counts on the Status screen.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">declare three counters up top: int countA/countB/countC = 0
+each time a button’s single-press fires -> add one to that counter
+on the status redraw -> print the three counts on a spare row</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the increment and the value you print.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">int</span> countA = <span style="color: #b5cea8;">0</span>;
+<span style="color: #569cd6;">int</span> countB = <span style="color: #b5cea8;">0</span>;
+<span style="color: #569cd6;">int</span> countC = <span style="color: #b5cea8;">0</span>;
 
+<span style="color: #6a9955;">// inside button A’s single-press block:</span>
+<span style="color: #569cd6;">if</span> (buttonA.getSingleDebouncedPress()) {
+  ____;                 <span style="color: #6a9955;">// one more press counted</span>
+}
+
+<span style="color: #6a9955;">// on the status screen:</span>
+display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">5</span>);
+display.print(F(<span style="color: #ce9178;">"A:"</span>));
+display.print(____);    <span style="color: #6a9955;">// the live count</span></pre>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3087,7 +3140,7 @@ display.print(countC);</pre>
 </div>
 
 </details>
-</div>
+
 </div>
 
 <div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="2.4" data-kind="challenge" data-difficulty="medium">
@@ -3096,17 +3149,26 @@ display.print(countC);</pre>
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L02</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=2&amp;kind=sound_feedback" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-sound" style="color: #2e86ab; font-weight: bold;">Sound (Buzzer)</a>. And <a href="#bonus-3" style="color: #2e86ab; font-weight: bold;">Bonus 3: Buzzer Pitch</a> below has a complete working buzzer program you can study.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Give every button its own confirmation tone, so you can <em>hear</em> which screen you switched to without looking.</p>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Give every button its own confirmation tone, so you can hear which screen you switched to without looking.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">create a Zumo32U4Buzzer buzzer up top
+in each button’s press block -> buzzer.playFrequency(pitch, ms, volume)
+    give each button a DIFFERENT pitch so you can tell them apart</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the pitch for button A (give B and C their own).</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">Zumo32U4Buzzer</span> buzzer;
 
-
-
-
-
-
-
-<p><strong>Predict first:</strong> Count it before you code it — how many total lines will you add? Write your number down, then check yourself after.</p>
-
+<span style="color: #6a9955;">// inside button A’s press block:</span>
+<span style="color: #569cd6;">if</span> (buttonA.getSingleDebouncedPress()) {
+  buzzer.playFrequency(____, <span style="color: #b5cea8;">100</span>, <span style="color: #b5cea8;">12</span>);   <span style="color: #6a9955;">// pitch, ms, volume</span>
+}</pre>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3141,7 +3203,7 @@ showAboutScreen();
 </div>
 
 </details>
-</div>
+
 </div>
 
 <div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="2.5" data-kind="challenge" data-difficulty="medium">
@@ -3150,17 +3212,28 @@ showAboutScreen();
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L02</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=2&amp;kind=master_reset" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buttons" style="color: #2e86ab; font-weight: bold;">Button Functions</a> &mdash; one of those rows answers "held down <em>right now</em>?"</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Pressing A and C <em>at the same time</em> returns the robot to its welcome screen and prints <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">SYSTEM RESET</code> to the Serial Monitor — from any screen.</p>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Pressing A and C at the same time returns the robot to its welcome screen and prints SYSTEM RESET to the Serial Monitor.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">write a resetToWelcome() that redraws the startup screen (declare its prototype up top)
+in loop():
+    if A AND C are both pressed -> print "SYSTEM RESET", call resetToWelcome(), then a delay</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the second button and the function you call.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">void</span> resetToWelcome();   <span style="color: #6a9955;">// prototype up top</span>
 
-
-
-
-
-
-
-<p><strong>Think first:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">getSingleDebouncedPress()</code> fires once per press-and-release of a single button. For a two-button combo you need a different question: &quot;are both held down <em>right now</em>?&quot;</p>
-
+<span style="color: #6a9955;">// in loop():</span>
+<span style="color: #569cd6;">if</span> (buttonA.isPressed() &amp;&amp; ____) {   <span style="color: #6a9955;">// A and C together</span>
+  Serial.println(F(<span style="color: #ce9178;">"SYSTEM RESET"</span>));
+  ____();                            <span style="color: #6a9955;">// redraw the welcome screen</span>
+  delay(<span style="color: #b5cea8;">300</span>);
+}</pre>
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3206,7 +3279,7 @@ delay(<span style="color: #b5cea8;">300</span>);   <span style="color: #6a9955;"
 </div>
 
 </details>
-</div>
+
 </div>
 
 <div id="challenge-6" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="2.6" data-kind="challenge" data-difficulty="hard">

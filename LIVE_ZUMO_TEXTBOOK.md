@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 21, 2026 (Session 60 — Project B: L08, L09, L10, L11, L14, L15 converted to the canonical challenge card).
-**Status:** **L08, L09, L10, L11, L14, L15 are LIVE** — L14/L15 (`a2238937`), L11 (`63abdc3`), L08/L09 (`7de0402`), L10 v02.2.0 (`92e7e31`), all fresh-clone + md5 verified. Maker **v2.41**, Bible **v8.38**. This file (LIVE.md) is the only remaining push.
+**Date:** July 21, 2026 (Session 60 — Project B part A / shell normalization: L02–L05, L08–L15 all on canonical shells).
+**Status:** **Every lesson now on a canonical challenge-card shell.** L02 v02.5.0 / L03 v03.7.0 / L04 v04.2.0 shell-repaired & LIVE (`46187dc`); prior conversions L08–L15 also live. Maker **v2.41**, Bible **v8.38**. This file (LIVE.md) is the only remaining push.
 
-**Versions:** L01 v03.4.3 · L02 v02.4.3 · L03 v03.6.3 · L04 v04.1.5 · L05 v04.3.0 · L06 v04.7.3 · L07 v04.3.13 · L08 **v04.2.0** · L09 **v05.1.0** · L10 **v02.2.0** · L11 **v02.3.0** · L12 v01.3.0 · L13 v02.3.0 · L14 **v02.5.0** · L15 **v02.3.0** · L16 v02.2.5 · Bible **v8.38** · Maker **v2.41** · Gate v1.6 · Harness v3.0.
+**Versions:** L01 v03.4.3 · L02 **v02.5.0** · L03 **v03.7.0** · L04 **v04.2.0** · L05 v04.3.0 · L06 v04.7.3 · L07 v04.3.13 · L08 **v04.2.0** · L09 **v05.1.0** · L10 **v02.2.0** · L11 **v02.3.0** · L12 v01.3.0 · L13 v02.3.0 · L14 **v02.5.0** · L15 **v02.3.0** · L16 v02.2.5 · Bible **v8.38** · Maker **v2.41** · Gate v1.6 · Harness v3.0.
 
 ---
 
@@ -12,6 +12,8 @@
 **L14 (Competition Prep) — 3 challenges, hybrid.** C1 Wheel Test (MEDIUM) + C3 LoP Counter (TOUGH) → full Goal→Logic→Template cards; C2 Strict Mode (EASY) → prose card (three-line trick-question answer; panels would be hollow). Blanks verified to fill exactly to each solution.
 
 **L15 (The Present Isn't Enough / PID) — 7 challenges, two groups.** C1–C3 (MEDIUM) → full panel cards, multi-part solutions preserved verbatim in the reveal (all three templates fill exactly to solution). C4–C7 (HARD ×3 / ADVANCED) → canonical shell + **prose, no panels** — preserving their deliberately-open, no-solution design (the §9 intro states it: "the first three ship with solutions, the last four do not"). Two internal cross-refs to "Challenge 9.2" updated → "Challenge 2".
+
+**L02 + L03 + L04 — shell repair, lesson-only.** All 19 challenges: stripped the old white/gray body wrappers, hoisted 📁 Work-in + 🔍 Where-to-look into the pale-yellow bar, dropped the 📝 Plan-first line from L02/L03 (their Maker templates already carry the MY PLAN block — confirmed `mainCpp()` adds it for lesson>1), and reskinned solutions flush. Preserved: L03’s 14 teaching callouts, L04’s timer iframes + hint/solution reveals, all solution code (gate PASS on each). Goal/task stays prose for now — the full Goal/Logic/Template panel bodies are the in-progress next phase. L02 v02.4.3→v02.5.0, L03 v03.6.3→v03.7.0, L04 v04.1.5→v04.2.0.
 
 **L10 (Obstacles) — green callout → canonical card, lesson-only.** All 5 challenges restyled from the old green left-border callout to the plum-box card: gradient header with sequential “Challenge N: Title”, canonical pill, new Work-in bar, and 🎯 Goal / 🧠 Logic / 🧩 Template moved from inline <strong> labels into panels. C1/C2/C4 keep their Template code shown openly (L10 has no separate solutions — disclosure unchanged); C3/C5 stay prose. Word-level diff confirms only the header restyling + Work-in bars changed — all Goal/Logic/Template/hint text byte-preserved. No Maker touch (gate confirms L10’s 20 payloads untouched). L10 v02.1.15 → v02.2.0.
 
@@ -33,7 +35,7 @@ Verify by fresh clone (~30–40 s cache lag).
 
 ## STILL QUEUED (S61)
 
-- **Project B — continue the rollout** against §6.12a: **L02/L03/L04 next** (per-challenge hybrid + shell repair — the most mixed markup in the book, a bigger/careful job). L06/L07 already conform; L01 stays prose; L16 is tier-cards. **Done: L05, L08, L09, L10, L11, L12, L13, L14, L15.**
+- **Project B part B — full panels (IN PROGRESS):** author 🎯 Goal / 🧠 Logic / 🧩 Template panels for the ~17 algorithmic challenges in L02 (2.2–2.5), L03 (3.1–3.8), L04 (4.1–4.5); debug/no-solution ones (2.1, 2.6) stay prose. Part A (shell normalization) is DONE book-wide. **Shells canonical: all lessons.**
 - **L13 solution-comment fix (carried from S59):** L13 cards say "Challenge 1/2/3" but the revealed-solution comments + `c1_sweep/c2_report/c3_rowzero` payloads still read `// CHALLENGE 9.x` — coordinated lesson+Maker sync, same operation just applied to L14/L15. Bumps L13 + Maker.
 - **Difficulty-progression audit (NEW, DJ-requested S60):** book-wide check that L01→L16 actually ramps consistently — easy at L01–L03, steadily harder after. Run once the Project B rollout is complete; verify we're doing what we set out to do.
 
@@ -44,4 +46,4 @@ Verify by fresh clone (~30–40 s cache lag).
 **PARKED:** solution-disclosure · monetization/ebook · "Know Your Zumo" · day-by-day grid + syllabus · TDP template v3 · §9 difficulty grouping · challenge-card full goal→logic→template redesign for the ~80 challenges that lack it (Project B pass B).
 
 ---
-*Written S60, July 21 2026. L08 v04.2.0 + L09 v05.1.0 + L10 v02.2.0 + L11 v02.3.0 + L14 v02.5.0 + L15 v02.3.0 + Maker v2.41 all live; this LIVE.md folds in L10.*
+*Written S60, July 21 2026. L02 v02.5.0 + L03 v03.7.0 + L04 v04.2.0 shell-repaired & live (`46187dc`); every lesson now on a canonical shell. Full panels for L02–L04 in progress.*
