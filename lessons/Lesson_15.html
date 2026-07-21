@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.2.6 -->
+<!-- Lesson version: v02.3.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +33,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">The Present Isn't Enough</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">PID Control &mdash; and the Tuning Bench That Proves It</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.2 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.3 &mdash; July 2026</div>
 </div>
 <div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; margin: 22px 0 0;">
     <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 1 &mdash; Theory &amp; Concepts</div>
@@ -211,7 +211,7 @@ not in the code.</b></div></div>
 the line loop and watch it fail on a curve, and in <b>7E</b> you will move it to the speed loop and
 watch it save a run on a dying battery. Same term. Same three lines. The robot will tell you.</p>
 <h3 style="color: #3498db; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">3.6 The three failures, and their names</h3>
-<table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Failure</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">What you see</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Cause</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Fix</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Integral windup</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A huge lunge after the robot is picked up, blocked, or loses the line</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Error stayed large; the integral piled up with nowhere to spend it</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Clamp the <i>integral itself</i>, not just the output &mdash; and reset it on re-entry</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Derivative kick</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A violent spike the instant the target changes</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A step change in the setpoint makes <code>(error - lastError)</code> enormous for one pass</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Take the derivative of the <i>measurement</i>, not the error</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Noise amplification</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Twitchy, jittery steering that gets worse as you raise K<sub>d</sub></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">D is a rate. Sensor noise is a rate too &mdash; a huge one. D cannot tell them apart.</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Lower K<sub>d</sub>, or low-pass filter the derivative (Challenge 9.2)</td></tr></table>
+<table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Failure</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">What you see</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Cause</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Fix</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Integral windup</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A huge lunge after the robot is picked up, blocked, or loses the line</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Error stayed large; the integral piled up with nowhere to spend it</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Clamp the <i>integral itself</i>, not just the output &mdash; and reset it on re-entry</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Derivative kick</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A violent spike the instant the target changes</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A step change in the setpoint makes <code>(error - lastError)</code> enormous for one pass</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Take the derivative of the <i>measurement</i>, not the error</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Noise amplification</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Twitchy, jittery steering that gets worse as you raise K<sub>d</sub></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">D is a rate. Sensor noise is a rate too &mdash; a huge one. D cannot tell them apart.</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Lower K<sub>d</sub>, or low-pass filter the derivative (Challenge 2)</td></tr></table>
 <div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">Line following gets a free pass on <b>derivative kick</b>: our setpoint is
 <code>LINE_CENTER</code>, and it never changes. Remember the name anyway &mdash; the first time you put a
 PID on something with a moving target, it will be the first thing that bites you.</div>
@@ -1204,7 +1204,7 @@ You are done. That is not a feeling. That is a condition.</li>
 <div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Both failure directions, so you can recognize them:</b><br>
 &bull; <b>K<sub>d</sub> too low</b> &mdash; still weaving. D is not damping enough.<br>
 &bull; <b>K<sub>d</sub> too high</b> &mdash; twitchy, jerky, buzzing. D is now amplifying <i>sensor
-noise</i>, which is a rate too. (Challenge 9.2 fixes this properly.)</div>
+noise</i>, which is a rate too. (Challenge 2 fixes this properly.)</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7C in the Project Maker</summary>
 <div style="margin-top: 12px;">
@@ -1394,25 +1394,50 @@ Build the instrument before you turn the knob. Always.</div>
 <p>Every one of these is a real technique used in real control systems. The first three ship
 with solutions. The last four do not &mdash; you have the bench now, and the bench will tell you whether
 you got it right.</p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-1" data-challenge="15.1" data-kind="challenge">9.1 Gain Scheduling &mdash; one gain does not fit a whole track &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
-<p>A K<sub>p</sub> gentle enough to hold a straight without weaving is too lazy for a hairpin.
-A K<sub>p</sub> sharp enough for the hairpin turns the straight into a slalom. <b>You have been
-trying to solve with one number a problem that has two answers.</b></p>
-<p><b>Do this:</b> use a <i>different</i> K<sub>p</sub> when the error is large. Tune the straight
-gain on a straight, and the corner gain on a corner &mdash; separately, using the bench, one at a
-time.</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="15.1" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Gain Scheduling</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — add a corner gain and schedule it in <code>followLine()</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">One K<sub>p</sub> can’t fit a whole track: gentle enough to hold a straight is too lazy for a hairpin, and sharp enough for the hairpin turns the straight into a slalom. Use a <em>different</em> K<sub>p</sub> when the error is large — tune the straight gain on a straight and the corner gain on a corner, separately, on the bench.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">add two constants:
+    CORNER_ERROR  (the straight-vs-corner boundary)
+    KP_CORNER     (the sharper gain, bench-tuned)
+in followLine(), before computing p:
+    if |error| &gt; CORNER_ERROR  -&gt; use KP_CORNER   (you are in a corner)
+    else                       -&gt; use currentKp   (you are on a straight)
+    p = the chosen gain * error</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Pick the gain from the error, then compute p. The corner gain stays a bench-tuned blank.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #6a9955;">// RobotConfig.h:</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span>   CORNER_ERROR = <span style="color: #b5cea8;">600</span>;   <span style="color: #6a9955;">// above this |error|, not a straight</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> KP_CORNER    = <span style="color: #b5cea8;">0.0</span>;   <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
+
+<span style="color: #6a9955;">// followLine(), replace the P line:</span>
+<span style="color: #569cd6;">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? ____ : ____;
+<span style="color: #569cd6;">float</span> p  = kp * error;</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <div style="background: #fff8e1; border: 2px dashed #e0a800; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-family: Helvetica, Arial, sans-serif;"><b>SOLUTION &mdash; add to RobotConfig.h:</b></div>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
-<span style="color: #7cbf6e;">// ===== CHALLENGE 9.1: GAIN SCHEDULING =====</span>
+<span style="color: #7cbf6e;">// ===== CHALLENGE 1: GAIN SCHEDULING =====</span>
 <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span>   CORNER_ERROR = 600;   <span style="color: #7cbf6e;">// Above this, you are not on a straight</span>
 <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> KP_CORNER    = <span style="color: #b5cea8;">0</span>.0;   <span style="color: #7cbf6e;">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
 </pre>
 <div style="background: #fff8e1; border: 2px dashed #e0a800; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-family: Helvetica, Arial, sans-serif;"><b>and in <code>followLine()</code>, replace the P line:</b></div>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
   <span style="color: #7cbf6e;">// P - THE PRESENT. How far off am I right now?</span>
-  <span style="color: #7cbf6e;">// CHALLENGE 9.1 - one gain does not fit a whole track. A Kp gentle</span>
+  <span style="color: #7cbf6e;">// CHALLENGE 1 - one gain does not fit a whole track. A Kp gentle</span>
   <span style="color: #7cbf6e;">// enough for a straight is too lazy for a hairpin.</span>
   <span style="color: #569cd6;">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? KP_CORNER : currentKp;
   <span style="color: #569cd6;">float</span> p = kp * error;
@@ -1421,19 +1446,46 @@ time.</p>
 error crosses <code>CORNER_ERROR</code>, the gain <i>jumps</i>. A discontinuity in a controller is a
 place where it can chatter. If yours buzzes right at the threshold, you have found the reason real
 systems <i>blend</i> between gains instead of switching.</div>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c1_gainsched" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-2" data-challenge="15.2" data-kind="challenge">9.2 Filter the Derivative &mdash; D cannot tell noise from news &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
-<p>Section 3.6 named this: D is a rate, and <b>sensor noise is a rate too &mdash; a huge one.</b>
-D has no way to know that a 40-unit jitter in the line reading is not a real, violent movement of the
-track, so it responds to it with everything it has. That is why K<sub>d</sub> gets twitchy before it
-gets good.</p>
-<p><b>Do this:</b> low-pass filter the derivative. Keep most of what you believed last pass, and mix
-in a little of what you see now.</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c1_gainsched" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="15.2" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: Filter the Derivative</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — low-pass filter the derivative in <code>followLine()</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">D is a rate, and sensor noise is a rate too — a huge one. D can’t tell a 40-unit jitter from a real, violent move of the track, so it reacts to noise with everything it has (that is why K<sub>d</sub> gets twitchy before it gets good). Low-pass filter the derivative: keep most of what you believed last pass, mix in a little of what you see now.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">add a constant D_FILTER   (0 = no filter, ~0.7 = smooth)
+add a global   dFiltered  (remembers the smoothed value)
+in followLine(), where D is computed:
+    dRaw      = (error - lastError) / dt
+    dFiltered = D_FILTER * (old dFiltered) + (1 - D_FILTER) * dRaw
+    d         = currentKd * dFiltered</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">The blend is the whole trick — mostly the old belief, a little of the new reading.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #6a9955;">// RobotConfig.h:</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> D_FILTER = <span style="color: #b5cea8;">0.0</span>;   <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. 0 = none, try 0.7.</span>
+
+<span style="color: #6a9955;">// a global to remember the smoothed value:</span>
+<span style="color: #569cd6;">float</span> dFiltered = <span style="color: #b5cea8;">0</span>;
+
+<span style="color: #6a9955;">// followLine(), the D line:</span>
+<span style="color: #569cd6;">float</span> dRaw = (error - lastError) / dtSec;
+dFiltered  = D_FILTER * ____ + (<span style="color: #b5cea8;">1.0</span> - D_FILTER) * ____;
+<span style="color: #569cd6;">float</span> d    = currentKd * dFiltered;</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <div style="background: #fff8e1; border: 2px dashed #e0a800; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-family: Helvetica, Arial, sans-serif;"><b>SOLUTION &mdash; add to RobotConfig.h:</b></div>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
-<span style="color: #7cbf6e;">// ===== CHALLENGE 9.2: FILTER THE DERIVATIVE =====</span>
+<span style="color: #7cbf6e;">// ===== CHALLENGE 2: FILTER THE DERIVATIVE =====</span>
 <span style="color: #7cbf6e;">// D is a rate. Sensor noise is a rate too - a huge one. D cannot tell</span>
 <span style="color: #7cbf6e;">// them apart, so it amplifies both. 0 = no filter, 0.9 = heavy filter.</span>
 <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> D_FILTER = <span style="color: #b5cea8;">0</span>.0;   <span style="color: #7cbf6e;">// &lt;-- YOUR NUMBER. Try 0.7.</span>
@@ -1444,7 +1496,7 @@ in a little of what you see now.</p>
 <span style="color: #569cd6;">float</span> currentKd = KD;         <span style="color: #7cbf6e;">// The SECOND knob. currentKp was the first.</span>
 <span style="color: #569cd6;">float</span> lastError = 0;          <span style="color: #7cbf6e;">// Where the error was last pass - THE PAST</span>
 <span style="color: #569cd6;">float</span> dtSec     = 0;
-<span style="color: #569cd6;">float</span> dFiltered = 0;   <span style="color: #7cbf6e;">// CHALLENGE 9.2 - the smoothed derivative          // How long THIS pass took. One clock, two loops.</span>
+<span style="color: #569cd6;">float</span> dFiltered = 0;   <span style="color: #7cbf6e;">// CHALLENGE 2 - the smoothed derivative          // How long THIS pass took. One clock, two loops.</span>
 <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> lastMicros = 0; <span style="color: #7cbf6e;">// When the last pass was. MICROseconds. See below.</span>
 </pre>
 <div style="background: #fff8e1; border: 2px dashed #e0a800; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-family: Helvetica, Arial, sans-serif;"><b>and the D line in <code>followLine()</code>:</b></div>
@@ -1453,7 +1505,7 @@ in a little of what you see now.</p>
   <span style="color: #7cbf6e;">// If I am already racing back toward the line, D eases off the wheel</span>
   <span style="color: #7cbf6e;">// BEFORE I sail past it. P can never do that: P knows where I am, not</span>
   <span style="color: #7cbf6e;">// where I am HEADED. This is the term that kills the weave.</span>
-  <span style="color: #7cbf6e;">// CHALLENGE 9.2 - a low-pass filter. Keep most of what you believed</span>
+  <span style="color: #7cbf6e;">// CHALLENGE 2 - a low-pass filter. Keep most of what you believed</span>
   <span style="color: #7cbf6e;">// last pass, and mix in a little of what you see now.</span>
   <span style="color: #569cd6;">float</span> dRaw = (error - lastError) / dtSec;
   dFiltered = D_FILTER * dFiltered + (<span style="color: #b5cea8;">1.0</span> - D_FILTER) * dRaw;
@@ -1463,14 +1515,40 @@ in a little of what you see now.</p>
 are, by definition, acting on slightly stale information. Turn <code>D_FILTER</code> up toward 0.95
 and you will find the point where D is so smooth it is no longer <i>early</i>, which was the entire
 reason you hired it. <b>Use the bench. Find the knee.</b></div>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c2_dfilter" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-3" data-challenge="15.3" data-kind="challenge">9.3 Measure Your Worst Pass &nbsp;<span style="color:#3a7d5c; font-size:0.75em;">[MEDIUM]</span></h3>
-<p>In 7A you measured a <i>typical</i> dt by hand. But your controller does not divide by the
-typical dt &mdash; it divides by <b>whatever this pass happened to take</b>. So: what is the <i>worst</i>
-one? What is the longest single trip through <code>loop()</code> in a whole 10-second run?</p>
-<p><b>Do this:</b> track the maximum <code>dt</code> of the run and print it on the score screen.</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c2_dfilter" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="15.3" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: Measure Your Worst Pass</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — track the worst <code>dt</code> and show it on the score screen.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Your controller doesn’t divide by the <em>typical</em> dt — it divides by whatever <em>this</em> pass took. So what is the <em>worst</em> one: the longest single trip through <code>loop()</code> in a whole run? Track the maximum dt and print it on the score screen — then go find what caused it.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">add a global dtWorstUs = 0   (the slowest pass so far)
+in deltaTimeSec(), once you know this pass's elapsed time:
+    if elapsed &gt; dtWorstUs  -&gt;  dtWorstUs = elapsed
+clear it in runReset()      (dtWorstUs = 0)
+print it on the score screen</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">One global, one comparison, one clear, one print.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #6a9955;">// a global - the slowest pass so far:</span>
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> dtWorstUs = <span style="color: #b5cea8;">0</span>;
+
+<span style="color: #6a9955;">// in deltaTimeSec(), after computing elapsed:</span>
+<span style="color: #569cd6;">if</span> (elapsed &gt; ____) dtWorstUs = elapsed;
+
+<span style="color: #6a9955;">// clear in runReset():        dtWorstUs = 0;</span>
+<span style="color: #6a9955;">// print on the score screen:  display.print(dtWorstUs);</span></pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <div style="background: #fff8e1; border: 2px dashed #e0a800; padding: 12px 16px; margin: 14px 0; border-radius: 4px; font-family: Helvetica, Arial, sans-serif;"><b>SOLUTION &mdash; one global, one line in the clock, one line in the report:</b></div>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
 <span style="color: #7cbf6e;">// ===== THE SCOREBOARD (NEW for Lesson 15) =====</span>
@@ -1484,7 +1562,7 @@ one? What is the longest single trip through <code>loop()</code> in a whole 10-s
 <span style="color: #569cd6;">int</span>  runCross    = 0;
 <span style="color: #569cd6;">int</span>  runLastSign = 0;
 <span style="color: #569cd6;">int</span>  knob        = 0;   <span style="color: #7cbf6e;">// which gain the buttons are turning</span>
-<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> dtWorstUs = 0;   <span style="color: #7cbf6e;">// CHALLENGE 9.3 - the slowest pass of the run</span>
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> dtWorstUs = 0;   <span style="color: #7cbf6e;">// CHALLENGE 3 - the slowest pass of the run</span>
 </pre>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
 <span style="color: #7cbf6e;">// ===== THE CLOCK (NEW for Lesson 15) =====</span>
@@ -1508,7 +1586,7 @@ one? What is the longest single trip through <code>loop()</code> in a whole 10-s
   <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> elapsed = now - lastMicros;   <span style="color: #7cbf6e;">// unsigned math survives rollover</span>
   lastMicros = now;
   <span style="color: #569cd6;">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
-  <span style="color: #569cd6;">if</span> (elapsed &gt; dtWorstUs) dtWorstUs = elapsed;   <span style="color: #7cbf6e;">// CHALLENGE 9.3</span>
+  <span style="color: #569cd6;">if</span> (elapsed &gt; dtWorstUs) dtWorstUs = elapsed;   <span style="color: #7cbf6e;">// CHALLENGE 3</span>
   <span style="color: #569cd6;">return</span> elapsed / <span style="color: #b5cea8;">1000000</span>.0;
 }
 </pre>
@@ -1532,8 +1610,14 @@ one? What is the longest single trip through <code>loop()</code> in a whole 10-s
 your loop occasionally takes far longer than the rest. The OLED? The buzzer? A
 <code>delay()</code> you forgot about? <b>Every one of those milliseconds is a millisecond in which
 your controller is not controlling.</b></div>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c3_worstdt" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-4" data-challenge="15.4" data-kind="challenge">9.4 Anti-Windup: Conditional Integration &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=c3_worstdt" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="15.4" data-kind="challenge" data-difficulty="hard">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Anti-Windup: Conditional Integration</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — change how the speed loop integrates.</p>
+</div>
+<div style="padding: 15px 20px;">
 <p>Clamping the integral is the blunt fix. The sharp one is to <b>stop accumulating at all
      when the output is already saturated.</b> If <code>speedTrim</code> is already pinned at
      <code>SPEED_TRIM_MAX</code>, then adding more to the integral cannot possibly make the robot go
@@ -1541,7 +1625,14 @@ your controller is not controlling.</b></div>
      <p>Implement it: only run <code>speedIntegral += error * dt;</code> when the output is
      <i>not</i> saturated. Then compare it against the clamp, on the bench, with a tired battery.
      <b>Which recovers faster when the load comes off?</b></p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-5" data-challenge="15.5" data-kind="challenge">9.5 Derivative on Measurement &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
+</div>
+</div>
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="15.5" data-kind="challenge" data-difficulty="hard">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: Derivative on Measurement</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — add a measurement-based D term to the speed loop.</p>
+</div>
+<div style="padding: 15px 20px;">
 <p>Section 3.6 said line following gets a free pass on <b>derivative kick</b> because
      <code>LINE_CENTER</code> never moves. The speed loop is not so lucky &mdash; the moment you let
      <code>TARGET_SPEED_CMS</code> change during a run (slow for the corners, fast for the straights),
@@ -1551,7 +1642,14 @@ your controller is not controlling.</b></div>
      <div style="font-family: monospace; background: #f4f9fc; padding: 10px; margin: 10px 0;">
      d = -Kd &times; (measurement - lastMeasurement) / dt</div>
      <p>Then make the target change mid-run and prove, on the bench, that it does not kick.</p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-6" data-challenge="15.6" data-kind="challenge">9.6 The Speed-Aware Line Loop &nbsp;<span style="color:#c0392b; font-size:0.75em;">[HARD]</span></h3>
+</div>
+</div>
+<div id="challenge-6" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="15.6" data-kind="challenge" data-difficulty="hard">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 6: The Speed-Aware Line Loop</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — scale the line gains with speed.</p>
+</div>
+<div style="padding: 15px 20px;">
 <p>Here is something the bench will show you and intuition will not: <b>your line gains are
      only correct at the speed you tuned them at.</b> Go twice as fast and the same K<sub>p</sub>
      produces the same steering command over half the distance &mdash; which is, in effect, a gain
@@ -1559,7 +1657,14 @@ your controller is not controlling.</b></div>
      <p>Make K<sub>p</sub> and K<sub>d</sub> scale with <code>currentBase</code>. Then set the speed
      loop to a slow target, tune, double the target, and check whether your gains survived. Report
      with numbers.</p>
-<h3 style="color: #9b6a9e; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;" id="challenge-7" data-challenge="15.7" data-kind="challenge">9.7 Score the Whole Course &nbsp;<span style="color:#c0392b; font-size:0.75em;">[ADVANCED]</span></h3>
+</div>
+</div>
+<div id="challenge-7" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="15.7" data-kind="challenge" data-difficulty="advanced">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 7: Score the Whole Course</strong> <span style="display: inline-block; background: #f44336; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">ADVANCED</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — score MAE per state.</p>
+</div>
+<div style="padding: 15px 20px;">
 <p><code>TUNING_RUN_MS</code> is 10 seconds because a bench run has to be repeatable. But a
      <i>course</i> run is not 10 seconds, and MAE over a course that includes gaps, intersections and
      a rescue zone is a number that mixes four different jobs into one average.</p>
@@ -1567,6 +1672,9 @@ your controller is not controlling.</b></div>
      GAP_CROSSING, one for the sweep. Now you can tune the line loop without a gap crossing polluting
      the number you are trying to read. <b>An average that mixes two jobs is an average that hides
      both.</b></p>
+</div>
+</div>
+
 <p style="margin-top: 22px;"><a href="#top" style="color: #2e86ab; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 0.9em;">&#8593; Back to top</a></p>
 
 </div>
@@ -1813,7 +1921,7 @@ the room is not a test.<br><br>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Tag</th><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Image</th><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Where</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">[IMAGE 15.1]</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">The three tenses &mdash; P reads the error, D reads its slope, I reads the area under it</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&sect;3.1</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">[IMAGE 15.2]</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">P vs PD response to the same step &mdash; oscillation vs a clean glide</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&sect;3.3</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">[IMAGE 15.3]</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Integral windup on a curve &mdash; why a steady error is not always a mistake</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&sect;3.5</td></tr></table>
 
 <div style="background: linear-gradient(135deg, #6c757d 0%, #2e86ab 100%); color: white; padding: 20px 30px; border-radius: 10px; margin-top: 40px; text-align: center; font-size: 0.9em; opacity: 0.95;">
-Lesson 15 &middot; The Present Isn't Enough &middot; Version 02.2 &middot; Zumo 32U4 Robotics
+Lesson 15 &middot; The Present Isn't Enough &middot; Version 02.3 &middot; Zumo 32U4 Robotics
 </div>
 
 </body>

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.4.5 -->
+<!-- Lesson version: v02.5.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Competition Prep</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Trust Is Earned at Boot &mdash; Reliability as an Engineering Skill</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.4 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.5 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== PART 1 DIVIDER ===================== -->
@@ -1522,11 +1522,49 @@ Walk around the field and observe:
 
 </div><h3 style="color: #2e86ab; margin-top: 30px;">The Code Challenges</h3>
 <p>Three upgrades to the competition build. Worked solutions behind each reveal, and every one is a compiled, verified build in the Maker under <em>Lesson 14 &rarr; CHALLENGES</em>.</p>
-<h4 style="color: #9b6a9e; margin-top: 24px;" id="challenge-1" data-challenge="14.1" data-kind="challenge">Challenge 9.1 &mdash; The Wheel Test</h4>
-<p>The self-test inspects four subsystems and skips the two most important wheels in your life. Add a fifth check: prompt the pit crew to spin each tread by hand, and PASS only when <em>both</em> encoders report real motion. A wheel that will not count is a wheel the odometer cannot see &mdash; and Lessons 11 and 13 both run on that odometer.</p><details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="14.1" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: The Wheel Test</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L14</strong> build — add a fifth check inside <code>selfTest()</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">The self-test checks four subsystems and skips the wheels. Add a fifth check that PASSes only when the pit crew can spin <em>each</em> tread by hand and <em>both</em> encoders report real motion. A wheel that will not count is invisible to the odometer — and Lessons 11 and 13 both ride on that odometer.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">prompt the crew: "spin both wheels"
+save each wheel's starting count
+until BOTH wheels have moved (or 10 seconds pass):
+    if the left count changed a lot   -&gt; leftOK
+    if the right count changed a lot  -&gt; rightOK
+pass only if leftOK AND rightOK
+(one wheel passing must never carry the other)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Two independent flags are the whole point — fill the three blanks.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">6</span>);
+display.print(F(<span style="color: #ce9178;">&quot;ENC spin wheels...&quot;</span>));
+<span style="color: #569cd6;">long</span> startL = encoders.getCountsLeft();
+<span style="color: #569cd6;">long</span> startR = encoders.getCountsRight();
+<span style="color: #569cd6;">bool</span> leftOK = <span style="color: #569cd6;">false</span>, rightOK = <span style="color: #569cd6;">false</span>;
+<span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> encStart = millis();
+<span style="color: #569cd6;">while</span> (millis() - encStart &lt; <span style="color: #b5cea8;">10000</span> &amp;&amp; !(leftOK &amp;&amp; rightOK)) {
+  <span style="color: #569cd6;">if</span> (abs(encoders.getCountsLeft()  - startL) &gt; <span style="color: #b5cea8;">100</span>) leftOK = ____;
+  <span style="color: #569cd6;">if</span> (abs(encoders.getCountsRight() - startR) &gt; <span style="color: #b5cea8;">100</span>) rightOK = ____;
+}
+<span style="color: #569cd6;">bool</span> encOK = leftOK ____ rightOK;   <span style="color: #6a9955;">// both, not either</span>
+display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">6</span>);
+display.print(F(<span style="color: #ce9178;">&quot;ENC &quot;</span>));
+display.print(encOK ? F(<span style="color: #ce9178;">&quot;PASS          &quot;</span>) : F(<span style="color: #ce9178;">&quot;FAIL          &quot;</span>));
+<span style="color: #569cd6;">if</span> (!encOK) allPass = <span style="color: #569cd6;">false</span>;</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <p>Inserted just before the verdict block in <code>selfTest()</code>:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
-  <span style="color: #7cbf6e;">// ----- 5. ENCODERS - CHALLENGE 9.1: do both wheels count? -----</span>
+  <span style="color: #7cbf6e;">// ----- 5. ENCODERS - CHALLENGE 1: do both wheels count? -----</span>
   <span style="color: #7cbf6e;">// Spin each tread by hand. A wheel that will not count is a wheel</span>
   <span style="color: #7cbf6e;">// the odometer cannot see - find out in the pit, not mid-match.</span>
   display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">6</span>);
@@ -1545,29 +1583,81 @@ Walk around the field and observe:
   display.print(encOK ? F(&quot;PASS          &quot;) : F(&quot;FAIL          &quot;));
   <span style="color: #569cd6;">if</span> (!encOK) allPass = <span style="color: #569cd6;">false</span>;
 </pre>
-<p>Note the ten-second window and the two independent flags &mdash; one wheel passing must never carry the other. Both-encoder discipline, from Lesson 11, now applied to the tester.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=14&amp;kind=c1_wheeltest" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h4 style="color: #9b6a9e; margin-top: 24px;" id="challenge-2" data-challenge="14.2" data-kind="challenge">Challenge 9.2 &mdash; Strict Mode</h4>
-<p>The A-override exists because match day is messy. Some teams want the opposite rule: a robot that fails inspection does not run, full stop &mdash; fix the robot, not the rules. Remove the override so a failed self-test parks the robot until power-cycle. Think first: what should the loop <em>wait for</em>? (Trick question.)</p><details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p>Note the ten-second window and the two independent flags &mdash; one wheel passing must never carry the other. Both-encoder discipline, from Lesson 11, now applied to the tester.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=14&amp;kind=c1_wheeltest" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="14.2" data-kind="challenge" data-difficulty="easy">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: Strict Mode</strong> <span style="display: inline-block; background: #4caf50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">EASY</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L14</strong> build — rewrite the self-test's failure branch.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
+<p style="margin: 0;">The A-override exists because match day is messy. Some teams want the opposite rule: a robot that fails inspection does not run, full stop — fix the robot, not the rules. Remove the override so a failed self-test parks the robot until power-cycle. Think first: what should the loop <em>wait for</em>? (Trick question.)</p>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <p>The failure branch, rewritten:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
     display.print(F(&quot;FAILED - NO OVERRIDE&quot;));
     ledRed(<span style="color: #b5cea8;">1</span>);
     buzzer.playNote(NOTE_A(<span style="color: #b5cea8;">3</span>), <span style="color: #b5cea8;">500</span>, <span style="color: #b5cea8;">15</span>);
-    <span style="color: #7cbf6e;">// CHALLENGE 9.2: strict mode. Fix the robot, not the rules.</span>
+    <span style="color: #7cbf6e;">// CHALLENGE 2: strict mode. Fix the robot, not the rules.</span>
     <span style="color: #7cbf6e;">// The while(true) is deliberate: there is nothing to wait FOR.</span>
     <span style="color: #569cd6;">while</span> (<span style="color: #569cd6;">true</span>) {
       <span style="color: #7cbf6e;">// parked. Power-cycle after the repair.</span>
     }
 </pre>
-<p>The <code>while (true)</code> is the answer to the trick question: there is nothing to wait <em>for</em>. No button makes a dead battery charged. The robot parks, red light on, failure on the screen, until a human fixes the cause and power-cycles &mdash; which is exactly the policy the challenge asked for, stated in three lines of honest code.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=14&amp;kind=c2_strict" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h4 style="color: #9b6a9e; margin-top: 24px;" id="challenge-3" data-challenge="14.3" data-kind="challenge">Challenge 9.3 &mdash; The LoP Counter</h4>
-<p>Section 9&rsquo;s Lack-of-Progress guidance taught the decision; now instrument it. Make C, pressed during a run, stop the robot, count the LoP, announce it, and return to STOPPED &mdash; keeping the running total. A team that knows its LoP <em>rate</em> knows which failure to fix first, and that number is worth more than any single match.</p><details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p>The <code>while (true)</code> is the answer to the trick question: there is nothing to wait <em>for</em>. No button makes a dead battery charged. The robot parks, red light on, failure on the screen, until a human fixes the cause and power-cycles &mdash; which is exactly the policy the challenge asked for, stated in three lines of honest code.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=14&amp;kind=c2_strict" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="14.3" data-kind="challenge" data-difficulty="tough">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: The LoP Counter</strong> <span style="display: inline-block; background: #9c27b0; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">TOUGH</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L14</strong> build — add a counter, then a check at the top of <code>FOLLOWING_LINE</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Section 9's Lack-of-Progress guidance taught the decision; now instrument it. Make C, pressed mid-run, stop the robot, add one to a running LoP count, show it, and return to STOPPED — keeping the total all match. A team that knows its LoP <em>rate</em> knows which failure to fix first.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">declare a counter that lives for the whole run: lopCount = 0
+at the TOP of FOLLOWING_LINE, right after the kill switch:
+    if C was pressed (debounced):
+        stop the motors
+        add one to lopCount
+        show "LoP #&lt;count&gt;" and beep
+        return to STOPPED
+        break out of this loop pass
+keep the count on screen — it must survive to the next press</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">A run-long counter, plus a one-shot check at the top of the state. Fill the four blanks.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">int</span> lopCount = <span style="color: #b5cea8;">0</span>;      <span style="color: #6a9955;">// lives for the whole run</span>
+
+<span style="color: #6a9955;">// top of FOLLOWING_LINE, right after the kill switch:</span>
+<span style="color: #569cd6;">if</span> (buttonC.____) {
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  lopCount____;                       <span style="color: #6a9955;">// count this one</span>
+  display.setLayout21x8();
+  display.clear();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">2</span>);
+  display.print(F(<span style="color: #ce9178;">&quot;LoP #&quot;</span>));
+  display.print(lopCount);
+  buzzer.playNote(NOTE_A(<span style="color: #b5cea8;">4</span>), <span style="color: #b5cea8;">300</span>, <span style="color: #b5cea8;">15</span>);
+  delay(<span style="color: #b5cea8;">800</span>);
+  currentState = ____;                <span style="color: #6a9955;">// back to the start state</span>
+  showStatus();
+  ____;                               <span style="color: #6a9955;">// leave this loop pass</span>
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <p>One counter with the other bookkeeping:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
-<span style="color: #569cd6;">int</span>   lopCount = <span style="color: #b5cea8;">0</span>;    <span style="color: #7cbf6e;">// CHALLENGE 9.3: Lack-of-Progress restarts this run</span>
+<span style="color: #569cd6;">int</span>   lopCount = <span style="color: #b5cea8;">0</span>;    <span style="color: #7cbf6e;">// CHALLENGE 3: Lack-of-Progress restarts this run</span>
 </pre>
 <p>And the check, at the very top of <code>FOLLOWING_LINE</code>, right after the kill switch:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
-      <span style="color: #7cbf6e;">// CHALLENGE 9.3: C = Lack of Progress. Stop, count it, reset to</span>
+      <span style="color: #7cbf6e;">// CHALLENGE 3: C = Lack of Progress. Stop, count it, reset to</span>
       <span style="color: #7cbf6e;">// the start state - and KEEP the count on the screen. A team</span>
       <span style="color: #7cbf6e;">// that knows its LoP rate knows which failure to fix first.</span>
       <span style="color: #569cd6;">if</span> (buttonC.getSingleDebouncedPress()) {
@@ -1585,7 +1675,8 @@ Walk around the field and observe:
         <span style="color: #569cd6;">break</span>;
       }
 </pre>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=14&amp;kind=c3_lop" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=14&amp;kind=c3_lop" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">&#8593; Back to top</a></p>
 
 </div>
@@ -2017,7 +2108,7 @@ This is when bad decisions happen. You just had a disappointing run, you're frus
 <p style="text-align:right; margin-top:10px;"><a href="#top">&#8593; Back to top</a></p>
 
 <div style="background: linear-gradient(135deg, #6c757d 0%, #2e86ab 100%); color: white; padding: 20px 30px; border-radius: 10px; margin-top: 40px; text-align: center; font-size: 0.9em; opacity: 0.95;">
-Lesson 14 &middot; Competition Prep &middot; Version 02.4 &middot; Zumo 32U4 Robotics
+Lesson 14 &middot; Competition Prep &middot; Version 02.5 &middot; Zumo 32U4 Robotics
 </div>
 
 </body>
