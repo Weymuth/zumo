@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.7.0 -->
+<!-- Lesson version: v03.8.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -59,7 +59,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Motor TRIM</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">No Two Motors Are the Same</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.7 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.8 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -2892,20 +2892,34 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03</code> build — this adds a function to your TRIM Finder — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=spin_test" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> and <a href="#qr-speed-direction" style="color: #2e86ab; font-weight: bold;">Speed vs Direction</a> &mdash; a spin is just the sign rules from the 🔮 predict sandbox.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Add a "spin test" function that makes the robot spin in place instead of driving forward.</p>
-
-
-
-
-
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Add a "spin test" function that makes the robot spin in place instead of driving forward.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">a spin = the two wheels turning OPPOSITE ways
+write runSpinTest():
+    setSpeeds(one wheel +, the other -)   -> spins in place
+    delay, then stop</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the two speeds — opposite signs make it spin.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">void</span> runSpinTest() {
+  motors.setSpeeds(____, ____);   <span style="color: #6a9955;">// one wheel forward, one backward = spin</span>
+  delay(<span style="color: #b5cea8;">1000</span>);
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+}</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>Hint:</strong> Spinning means one motor forward, one backward: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">motors.setSpeeds(150, -150);</code></p>
 
 <div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; border-radius: 4px; color: #1e1e1e;"><strong>🧩 About PROTOTYPE:</strong> if you define your spin function <em>below</em> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">setup()</code> and call it from above, the compiler complains it "was not declared in this scope" — it reads top to bottom and hasn't met the function yet. Two fixes (same as Step 12): move the function above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">setup()</code>, or leave it at the bottom and add its <strong>prototype</strong> — one line at the top, the function's signature followed by a semicolon.</div>
 
 <p><strong>Success:</strong> Robot spins in place for 1 second, then stops.</p>
-
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -2937,11 +2951,34 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=battery_warning" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-battery" style="color: #2e86ab; font-weight: bold;">Battery</a> and <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a>.</p>
 </div>
-<div style="padding: 15px 20px;">
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Make the OLED display "LOW BATTERY!" if voltage drops below <strong>4200 mV</strong> &mdash; the point where our NiMH cells are nearly empty and further draining damages them.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">at the start of updateDisplay():
+    read the live voltage (readBatteryMillivolts())
+    if it is below the floor -> show the warning and RETURN (skip normal display)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the live read and the floor threshold.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #6a9955;">// at the start of updateDisplay():</span>
+<span style="color: #569cd6;">int</span> mv = ____;              <span style="color: #6a9955;">// live battery reading</span>
+<span style="color: #569cd6;">if</span> (mv &lt; ____) {            <span style="color: #6a9955;">// NiMH nearly-empty floor</span>
+  display.clear();
+  display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  display.print(F("!! LOW BATTERY !!"));
+  <span style="color: #569cd6;">return</span>;                   <span style="color: #6a9955;">// skip the normal display</span>
+}</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 14px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the OLED <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">display.print()</code> you used in Lesson 2 <img src="https://weymuth.github.io/zumo/images/spiral_star_02.svg" alt="Spiral review from Lesson 02" style="height: 1.1em; vertical-align: middle; margin: 0 2px;">.</div>
 
 
-<p><strong>Goal:</strong> Make the OLED display "LOW BATTERY!" if voltage drops below <strong>4200 mV</strong> &mdash; the point where our NiMH cells are nearly empty and further draining damages them.</p>
+
 
 
 
@@ -2954,8 +2991,7 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 8px;">
 <p style="margin: 0;"><strong>⚠️ Testing on USB? The reading lies.</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readBatteryMillivolts()</code> only reads the <em>battery</em> voltage. Plugged into USB with the power switch off, it reads low (or zero) &mdash; so your warning fires even on a full charge. That is not a bug in your code. To test this challenge for real, run the robot on <strong>batteries with the power switch on</strong>, unplugged. On USB, expect a false &ldquo;LOW BATTERY&rdquo; and ignore it.</p>
 </div>
-
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -2989,10 +3025,31 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <p>📁 <strong>Work in:</strong> a fresh starter that opens ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=constrain" target="_blank" style="color: #2e86ab; font-weight: bold;">&rarr; make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>. The new tool is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">constrain(value, low, high)</code> &mdash; it hands back <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">value</code>, but never below <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">low</code> and never above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">high</code>.</p>
 </div>
-<div style="padding: 15px 20px;">
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Add a <strong>speed cap</strong> so a too-large number can never reach the motors. You'll set a left and a right speed as constants, run the robot for a moment, then stop &mdash; and discover that past a certain point, bigger numbers do <strong>nothing</strong>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">declare LEFT_SPEED / RIGHT_SPEED / MAX_SPEED (the cap) as constants
+before driving -> clamp each speed to +/- the cap with constrain()
+constrain(value, low, high) hands back a value that can never leave the range</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the function that clamps each speed to the cap.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MAX_SPEED = <span style="color: #b5cea8;">200</span>;   <span style="color: #6a9955;">// the cap</span>
+<span style="color: #6a9955;">// in setup(), before driving:</span>
+motors.setSpeeds(
+  ____(LEFT_SPEED,  -MAX_SPEED, MAX_SPEED),   <span style="color: #6a9955;">// clamp to the cap</span>
+  ____(RIGHT_SPEED, -MAX_SPEED, MAX_SPEED)
+);</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 14px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> named <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">const</code> values from Lesson 2 <img src="https://weymuth.github.io/zumo/images/spiral_star_02.svg" alt="Spiral review from Lesson 02" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> — this is the third time you've used a left/right pair (spin signs &rarr; TRIM offset &rarr; now a speed clamp).</div>
 
-<p><strong>Goal:</strong> Add a <strong>speed cap</strong> so a too-large number can never reach the motors. You'll set a left and a right speed as constants, run the robot for a moment, then stop &mdash; and discover that past a certain point, bigger numbers do <strong>nothing</strong>.</p>
+
 
 
 
@@ -3018,8 +3075,7 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <p><strong>The "aha":</strong> 150 is clearly slower. But <strong>200 and 250 come out identical</strong> &mdash; the clamp holds both to 200. The number on the screen changed; the robot didn't. Try making LEFT and RIGHT different (say 250 and 150) and watch the clamp act on each one separately.</p>
 
 <p><strong>Success:</strong> you can explain why 250 and 200 behave the same, and TRIM never entered the code &mdash; the clamp lives on <strong>speed</strong>, not time.</p>
-
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3058,10 +3114,31 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 <p>📁 <strong>Work in:</strong> a fresh starter that opens ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=ramp" target="_blank" style="color: #2e86ab; font-weight: bold;">&rarr; make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>. You already have both tools you need: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds()</code> and a short <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code>. Write the climb out by hand &mdash; one <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setSpeeds()</code> + <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> per rung.</p>
 </div>
-<div style="padding: 15px 20px;">
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Instead of slamming the motors to full speed the instant the robot starts, <strong>ease them up</strong> &mdash; a soft start. You'll change the speed <strong>over time</strong> by writing the climb out one step at a time rather than setting it once.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">don’t jump straight to full speed
+instead step up one rung at a time, pausing STEP_MS between:
+    50 -> 100 -> 150 -> MAX_SPEED   (stop at the cap, don’t overshoot)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the two middle rungs of the climb.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MAX_SPEED = <span style="color: #b5cea8;">200</span>;
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> STEP_MS   = <span style="color: #b5cea8;">0</span>;     <span style="color: #6a9955;">// <-- YOUR NUMBER (try 200)</span>
+motors.setSpeeds(<span style="color: #b5cea8;">50</span>,  <span style="color: #b5cea8;">50</span>);   delay(STEP_MS);
+motors.setSpeeds(____, ____); delay(STEP_MS);   <span style="color: #6a9955;">// next rung</span>
+motors.setSpeeds(____, ____); delay(STEP_MS);   <span style="color: #6a9955;">// next rung</span>
+motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span style="color: #6a9955;">// stop at the cap</span></pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 14px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the speed clamp from <strong>Challenge 3</strong> just above &mdash; you'll ramp up <em>to</em> that same capped <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MAX_SPEED</code>, not jump to it.</div>
 
-<p><strong>Goal:</strong> Instead of slamming the motors to full speed the instant the robot starts, <strong>ease them up</strong> &mdash; a soft start. You'll change the speed <strong>over time</strong> by writing the climb out one step at a time rather than setting it once.</p>
+
 
 
 
@@ -3080,8 +3157,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 <p><strong>Success:</strong> a visibly smooth start, and the ramp stops climbing at the cap rather than blowing past it.</p>
 
 <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px; color: #1e1e1e;"><strong>🔧 Coach's Tips — when the build fights you:</strong><p style="margin: 8px 0 0 0;"><strong>1. "It compiled" can be a stale build.</strong> If your change didn't seem to take effect, the compiler may have reused an old build. Run <strong>Clean</strong>, then <strong>Build</strong>, before you trust what you're seeing.</p><p style="margin: 8px 0 0 0;"><strong>2. The compiler judges the file on disk, not the tab you're looking at.</strong> If an error makes no sense, confirm you actually <em>saved</em>. When in doubt, dump the real file: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">type src\main.cpp</code> (Windows) shows exactly what the compiler sees.</p><p style="margin: 8px 0 0 0;"><strong>3. Errors surface one at a time.</strong> Fix the first error and rebuild — a second, previously hidden error often appears. An early typo (like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">motor</code> vs <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">motors</code>) can mask a missing semicolon further down. Work top to bottom, one at a time.</p></div>
-
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3117,13 +3193,29 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=variable_speed" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> and <a href="#qr-speed-range" style="color: #2e86ab; font-weight: bold;">Speed Range</a>; the array-and-index shape is in this card's hint.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Modify the program so pressing B multiple times cycles through different test speeds: 150 → 200 → 250 → 300 → 150...</p>
-
-
-
-
-
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Modify the program so pressing B multiple times cycles through different test speeds: 150 → 200 → 250 → 300 → 150...</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">store the speeds in an ARRAY, keep an INDEX of where you are
+use TEST_SPEEDS[index] as the current speed
+each press -> index = (index + 1) % NUM_SPEEDS   (modulo wraps back to 0)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the index you read and the wrap divisor.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> TEST_SPEEDS[] = {<span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">200</span>, <span style="color: #b5cea8;">250</span>, <span style="color: #b5cea8;">300</span>};
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> NUM_SPEEDS = <span style="color: #b5cea8;">4</span>;
+<span style="color: #569cd6;">int</span> speedIndex = <span style="color: #b5cea8;">1</span>;
+<span style="color: #6a9955;">// current speed:</span>
+<span style="color: #569cd6;">int</span> currentSpeed = TEST_SPEEDS[____];        <span style="color: #6a9955;">// this slot</span>
+<span style="color: #6a9955;">// advance, wrapping to the start:</span>
+speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % ____;</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>Hint:</strong> Use an array of speeds and an index variable.</p>
 
 <p><strong>Success:</strong> Each press of B runs the test at a different speed, cycling through all four.</p>
@@ -3135,8 +3227,7 @@ The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; pad
 Why it matters here: a remainder can never be as big as the number you divide by, so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">something % 4</code> is always one of <strong>0, 1, 2, 3</strong> &mdash; then it wraps back to 0. That is exactly the cycle you want for four speeds: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0 &rarr; 1 &rarr; 2 &rarr; 3 &rarr; 0 &rarr; 1&hellip;</code> It keeps your index from ever running off the end of the array. (Remember arrays are <strong>zero-indexed</strong>: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">TEST_SPEEDS[0]</code> is the first speed, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">[3]</code> the last — four slots numbered 0&ndash;3, which is exactly what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">% 4</code> produces.)
 
 </div>
-
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3168,20 +3259,29 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03</code> build — this one edits your constants — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=save_trim" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-trim-pattern" style="color: #2e86ab; font-weight: bold;">TRIM Pattern</a> &mdash; and your logged value from the §7 trial table.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Once you find your TRIM value, modify the code to START with that value instead of 0.</p>
-
-
-
-
-
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Once you find your TRIM value, modify the code to START with that value instead of 0.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">make a constant for the TRIM value you measured
+initialise trimValue from it, so the robot starts corrected instead of at 0</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill in the TRIM value you found on the bench.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MY_TRIM = ____;   <span style="color: #6a9955;">// <-- the value you measured</span>
+<span style="color: #569cd6;">int</span> trimValue = MY_TRIM;    <span style="color: #6a9955;">// start corrected, not at 0</span></pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>Hint:</strong> Create a constant for your TRIM and initialize with it.</p>
 
 <div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; border-radius: 4px; color: #1e1e1e;"><strong>🧠 Watch your scope:</strong> declare the TRIM constant at the <strong>top of the file, outside every function</strong> (global) so the whole program can see it. If you accidentally re-declare it <em>inside</em> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">setup()</code> — e.g. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">int trimValue = 8;</code> inside the braces — you create a second, <em>local</em> copy that only setup() can see and that vanishes when setup() ends; the driving code still reads the global 0 and nothing changes. Set the global once, at the top.</div>
 
 <p><strong>Success:</strong> Program boots with your saved TRIM value already set.</p>
-
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3208,13 +3308,31 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
 <p>📁 <strong>Work in:</strong> a fresh template copy named <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03_Drive_A_Square</code> — a new motion program deserves its own home <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=drive_a_square" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>, <a href="#qr-speed-direction" style="color: #2e86ab; font-weight: bold;">Speed vs Direction</a>, and <a href="#qr-safe-run" style="color: #2e86ab; font-weight: bold;">Safe Motor Run Pattern</a>.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Create a function that makes the robot drive a square pattern: forward, turn right 90°, repeat 4 times to return to the starting position.</p>
-
-
-
-
-
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Create a function that makes the robot drive a square pattern: forward, turn right 90°, repeat 4 times to return to the starting position.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">a square is the SAME corner done four times -> a for loop
+each side: drive straight (with TRIM!), stop, turn right 90°
+tune TURN_TIME until the fourth corner lands you back on the tape</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the turn time, the side count, and the TRIM on the straight.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">void</span> driveSquare() {
+  <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> TURN_TIME = ____;   <span style="color: #6a9955;">// <-- tune for exactly 90 degrees</span>
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> side = <span style="color: #b5cea8;">0</span>; side &lt; ____; side++) {   <span style="color: #6a9955;">// four sides</span>
+    motors.setSpeeds(DRIVE_SPEED + ____, DRIVE_SPEED);   <span style="color: #6a9955;">// straight, WITH trim</span>
+    delay(DRIVE_TIME);
+    motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>); delay(<span style="color: #b5cea8;">200</span>);
+    <span style="color: #6a9955;">// ... then turn right 90 degrees ...</span>
+  }
+}</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>Hint:</strong> Place a small piece of tape on the floor to mark the starting position. The robot should end up back on the tape!</p>
 
 <p><strong>Success:</strong> Robot drives a recognizable square and ends near its starting position.</p>
@@ -3237,7 +3355,7 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
 <p>This challenge reveals why <strong>timing-based movement is unreliable</strong>—we'll fix this in Lesson 6 with encoders.</p>
 
 </div>
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -3283,18 +3401,24 @@ speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;
 <p>📁 <strong>Work in:</strong> a fresh template copy named <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03_Auto_TRIM</code> — experimental — keep your working TRIM Finder safe <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=auto_trim" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> no code needed &mdash; your sources are Section 3.11 (TRIM Math) and this card's prompts; the deliverable is comments.</p>
 </div>
-<div style="padding: 15px 20px;">
-<p><strong>Goal:</strong> Research how encoders could automatically calculate TRIM. Don't implement it yet—just describe the algorithm in comments.</p>
-
-
-
-
-
+<div style="padding: 0;">
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Research how encoders could automatically calculate TRIM. Don't implement it yet—just describe the algorithm in comments.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">if you could COUNT each wheel’s rotations while driving “straight”:
+    compare leftCount vs rightCount
+    more on one side = the robot curved -> that wheel ran faster
+    the difference, scaled, IS the TRIM correction
+(this is exactly what Lesson 6 encoders make possible)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>Hint:</strong> If you could count wheel rotations, you'd compare left vs right counts after driving "straight"...</p>
 
 <p><strong>Success:</strong> A well-commented pseudocode algorithm that explains each step of auto-TRIM calibration.</p>
-
-
+</div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
 
 <summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -4234,7 +4358,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <p style="margin: 0;">Zumo 32U4 Robotics • Lesson 03: Motors &amp; TRIM</p>
 
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 03.7 — July 2026 • PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 03.8 — July 2026 • PlatformIO Edition</p>
 
 </footer>
 
