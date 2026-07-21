@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.2.5 -->
+<!-- Lesson version: v02.3.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Time Lies, Distance Doesn't</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Encoder-Based Gap Crossing</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.2 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.3 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== PART 1 DIVIDER ===================== -->
@@ -750,14 +750,40 @@ The same code that was impossible becomes trivial.</p>
 <div style="background-color: #9b6a9e; color: white; padding: 13px 18px; border-radius: 0; margin-top: 0;"><div id="section-9" style="font-size: 1.15em; font-weight: bold;">&#127919; Section 9: Challenges</div></div>
 <div style="border: 2px solid #9b6a9e; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 25px; background: white;">
 <p>Three challenges, easy to hard. Each one starts from your finished Section 6 code.</p>
-<h3 style="color: #9b6a9e; margin-top: 34px; padding: 10px 14px; background: #f5eef8; border-radius: 6px;" id="challenge-1" data-challenge="11.1" data-kind="challenge">&#127919; Challenge 1: The Retreat<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">&#9733;&#9734;&#9734; easy</span></h3>
-<p>Right now <code>LINE_LOST</code> just stops, wherever it happens to be &mdash; possibly several
-centimeters past the last piece of line it ever saw.</p>
-<p><strong>Make it back up to where the line was.</strong></p>
-<p>The odometer already knows how far the robot came in blind. So it also knows how far back
-it needs to go. And you have owned a function that drives an exact distance since Lesson 6.</p>
-<details data-reveal="hint" style="margin: 12px 0; border-left: 4px solid #9b6a9e; background: #faf6fd; padding: 10px 14px; border-radius: 4px;"><summary style="cursor: pointer; font-weight: bold; color: #9b6a9e;">&#128161; Hint</summary><div style="margin-top: 12px;"><code>blindDistanceCm()</code> gives you the distance travelled since the line vanished. <code>driveDistance()</code> takes centimeters &mdash; and <strong>negative means backward</strong>. Read the value <em>before</em> you stop the motors.</div></details>
-<details data-reveal="solution" style="margin: 12px 0; border-left: 4px solid #9b6a9e; background: #faf6fd; padding: 10px 14px; border-radius: 4px;"><summary style="cursor: pointer; font-weight: bold; color: #9b6a9e;">&#9989; Solution</summary><div style="margin-top: 12px;"><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    case LINE_LOST: {
+
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="11.1" data-kind="challenge" data-difficulty="easy">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: The Retreat</strong> <span style="display: inline-block; background: #4caf50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">EASY</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L11</strong> build — make <code>LINE_LOST</code> back up to where the line was.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;"><code>LINE_LOST</code> just stops wherever it happens to be — maybe several centimeters past the last line it saw. Make it back up to where the line was. The odometer already knows how far the robot came in blind, so it knows how far to go back — and you’ve owned a drive-exact-distance function since Lesson 6.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">in the LINE_LOST case:
+    read how far we came in blind   (blindDistanceCm()) BEFORE stopping
+    stop the motors
+    if we really moved (more than ~1 cm):
+        driveDistance(-that distance)   (negative = backward)
+        re-zero the odometer            (we are home)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">driveDistance() takes centimeters, and negative means backward. Read the distance BEFORE you stop the motors.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">case</span> LINE_LOST: {
+  <span style="color: #569cd6;">float</span> retreat = ____;              <span style="color: #6a9955;">// how far we came in blind (read BEFORE stopping)</span>
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  <span style="color: #569cd6;">if</span> (retreat &gt; <span style="color: #b5cea8;">1.0</span>) {               <span style="color: #6a9955;">// only worth it if we really moved</span>
+    driveDistance(____);             <span style="color: #6a9955;">// negative = backward</span>
+    gapStartCounts = averageCounts();   <span style="color: #6a9955;">// we are home; re-zero</span>
+  }</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    case LINE_LOST: {
       // CHALLENGE 1: do not just stop - RETREAT.
       // blindDistanceCm() knows exactly how far we came in blind.
       // driveDistance() (Lesson 6) can take us exactly that far back.
@@ -766,14 +792,46 @@ it needs to go. And you have owned a function that drives an exact distance sinc
       if (retreat &gt; 1.0) {           // only worth doing if we really moved
         driveDistance(-retreat);     // negative = backward
         gapStartCounts = averageCounts();   // we are home; re-zero
-      }</pre><p style="margin-top:10px;">Note the <code>retreat &gt; 1.0</code> guard &mdash; there is no point reversing 2&nbsp;mm, and re-zeroing the odometer afterward keeps the next gap honest.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c1_backup" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; margin-top: 34px; padding: 10px 14px; background: #f5eef8; border-radius: 6px;" id="challenge-2" data-challenge="11.2" data-kind="challenge">&#127919; Challenge 2: The Hunt<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">&#9733;&#9733;&#9734; medium</span></h3>
-<p>A robot that loses the line does not have to give up. The line might be six degrees off to one side.</p>
-<p><strong>When the budget runs out, sweep left and right looking for it.</strong>
-Turn 30&deg; right; if the line is there, resume. If not, sweep 60&deg; left; if the line is there, resume.
-If neither works, straighten up and stop.</p>
-<details data-reveal="hint" style="margin: 12px 0; border-left: 4px solid #9b6a9e; background: #faf6fd; padding: 10px 14px; border-radius: 4px;"><summary style="cursor: pointer; font-weight: bold; color: #9b6a9e;">&#128161; Hint</summary><div style="margin-top: 12px;">You already own <code>turnDegrees()</code> and <code>isLineVisible()</code>. The sweep is a small loop. Remember to <strong>undo</strong> your turns if the hunt fails &mdash; otherwise the robot ends up stopped at a strange angle and the next run starts crooked.</div></details>
-<details data-reveal="solution" style="margin: 12px 0; border-left: 4px solid #9b6a9e; background: #faf6fd; padding: 10px 14px; border-radius: 4px;"><summary style="cursor: pointer; font-weight: bold; color: #9b6a9e;">&#9989; Solution</summary><div style="margin-top: 12px;"><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">      // CHALLENGE 2: do not give up - HUNT.
+      }</pre><p style="margin-top:10px;">Note the <code>retreat &gt; 1.0</code> guard &mdash; there is no point reversing 2&nbsp;mm, and re-zeroing the odometer afterward keeps the next gap honest.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c1_backup" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="11.2" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: The Hunt</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L11</strong> build — sweep for the line before giving up.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">A robot that loses the line doesn’t have to give up — the line might be six degrees off to one side. When the budget runs out, sweep for it: turn 30&deg; right (resume if found), else sweep 60&deg; left (resume if found), else straighten up and stop.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">sweep a quarter-turn each way (you own turnDegrees() and isLineVisible()):
+    turn 30 right                -&gt; line visible? resume FOLLOWING_LINE
+    turn 60 left (past centre)   -&gt; line visible? resume FOLLOWING_LINE
+    neither: turn 30 right to face front again, then STOP
+undo the sweep on failure - otherwise the next run starts crooked</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">A small loop does the sweep. The turn amounts are the blanks: right 30, then left 60, then 30 to straighten.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">if</span> (buttonB.getSingleDebouncedPress()) {
+  <span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> sweep = <span style="color: #b5cea8;">0</span>; sweep &lt; <span style="color: #b5cea8;">2</span>; sweep++) {
+    turnDegrees(sweep == <span style="color: #b5cea8;">0</span> ? ____ : ____);   <span style="color: #6a9955;">// right 30, then left 60</span>
+    <span style="color: #569cd6;">if</span> (isLineVisible()) {
+      currentState = FOLLOWING_LINE;
+      showStatus();
+      <span style="color: #569cd6;">return</span>;
+    }
+  }
+  turnDegrees(____);          <span style="color: #6a9955;">// undo the sweep - face front again</span>
+  currentState = STOPPED;
+  showStatus();
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">      // CHALLENGE 2: do not give up - HUNT.
       // Sweep a quarter turn each way. The line may be just off to one side.
       if (buttonB.getSingleDebouncedPress()) {
         for (int sweep = 0; sweep &lt; 2; sweep++) {
@@ -787,20 +845,44 @@ If neither works, straighten up and stop.</p>
         turnDegrees(30);            // undo the sweep - face front again
         currentState = STOPPED;
         showStatus();
-      }</pre><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c2_hunt" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color: #9b6a9e; margin-top: 34px; padding: 10px 14px; background: #f5eef8; border-radius: 6px;" id="challenge-3" data-challenge="11.3" data-kind="challenge">&#127919; Challenge 3: The Speed Budget<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">&#9733;&#9733;&#9733; hard</span></h3>
-<p>Right now the robot charges across a gap at full <code>BASE_SPEED</code> and then stops dead
-when the budget runs out. That is a lurch, and a fast lurch at that.</p>
-<p><strong>Make it slow down as the budget burns.</strong> At 0% spent, full speed.
-At 100% spent, half speed. The give-up should be a glide, not a slam.</p>
-<details data-reveal="hint" style="margin: 12px 0; border-left: 4px solid #9b6a9e; background: #faf6fd; padding: 10px 14px; border-radius: 4px;"><summary style="cursor: pointer; font-weight: bold; color: #9b6a9e;">&#128161; Hint</summary><div style="margin-top: 12px;">The fraction of budget spent is <code>blindDistanceCm() / GAP_MAX_CM</code> &mdash; a float from 0.0 to 1.0. <code>constrain()</code> keeps it in range. Then scale <code>BASE_SPEED</code> by it.<br><br><strong>And do not lose the TRIM.</strong> You are still open loop &mdash; if anything, more so.</div></details>
-<details data-reveal="solution" style="margin: 12px 0; border-left: 4px solid #9b6a9e; background: #faf6fd; padding: 10px 14px; border-radius: 4px;"><summary style="cursor: pointer; font-weight: bold; color: #9b6a9e;">&#9989; Solution</summary><div style="margin-top: 12px;"><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // CHALLENGE 3: the deeper into the gap, the less you know.
+      }</pre><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c2_hunt" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="11.3" data-kind="challenge" data-difficulty="hard">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: The Speed Budget</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L11</strong> build — slow down as the gap budget burns.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">The robot charges across a gap at full <code>BASE_SPEED</code> and then stops dead when the budget runs out — a lurch. Make it slow down as the budget burns: full speed at 0% spent, half speed at 100%. The give-up should be a glide, not a slam.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">spent = blindDistanceCm() / GAP_MAX_CM      (0.0 at the start, 1.0 at the budget)
+clamp spent to 0.0 .. 1.0                    (constrain())
+gapSpeed = BASE_SPEED scaled down by spent   (full -&gt; half)
+drive at gapSpeed + TRIM   &lt;- still open loop, KEEP the TRIM</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Scale the speed by how much budget is spent — and keep the TRIM: you are still open loop here, if anything more so.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">float</span> spent = blindDistanceCm() / GAP_MAX_CM;   <span style="color: #6a9955;">// 0.0 -&gt; 1.0</span>
+spent = constrain(spent, ____, ____);
+<span style="color: #569cd6;">int</span> gapSpeed = BASE_SPEED - (BASE_SPEED / <span style="color: #b5cea8;">2</span>) * ____;
+motors.setSpeeds(gapSpeed + ____, gapSpeed);    <span style="color: #6a9955;">// still open loop - keep TRIM</span></pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">  // CHALLENGE 3: the deeper into the gap, the less you know.
   // Burn speed as you burn budget. At 0% spent, full speed.
   // At 100% spent, half speed - so the give-up is gentle, not a lurch.
   float spent = blindDistanceCm() / GAP_MAX_CM;   // 0.0 -&gt; 1.0
   spent = constrain(spent, 0.0, 1.0);
   int gapSpeed = BASE_SPEED - (BASE_SPEED / 2) * spent;
-  motors.setSpeeds(gapSpeed + TRIM, gapSpeed);</pre><p style="margin-top:10px;">The TRIM still rides on the left motor. Slowing down does not make the loop any less open &mdash; it just makes the mistake cheaper.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c3_speed" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
+  motors.setSpeeds(gapSpeed + TRIM, gapSpeed);</pre><p style="margin-top:10px;">The TRIM still rides on the left motor. Slowing down does not make the loop any less open &mdash; it just makes the mistake cheaper.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c3_speed" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
 <p style="text-align: right; margin-top: 25px;"><a href="#top" style="color: #2e86ab;">&uarr; Back to top</a></p>
 </div>
 
@@ -974,6 +1056,6 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 </div>
 
 <hr style="margin-top: 40px; border: none; border-top: 1px solid #ddd;">
-<p style="text-align: center; color: #888; font-size: 0.85em; padding: 20px;">Lesson 11 &mdash; Time Lies, Distance Doesn't &middot; Version 02.2 &middot; Zumo 32U4 Robotics</p>
+<p style="text-align: center; color: #888; font-size: 0.85em; padding: 20px;">Lesson 11 &mdash; Time Lies, Distance Doesn't &middot; Version 02.3 &middot; Zumo 32U4 Robotics</p>
 </body>
 </html>
