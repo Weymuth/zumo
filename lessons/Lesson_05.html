@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.2.5 -->
+<!-- Lesson version: v04.3.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Proximity Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Sense</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.2 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.3 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -1443,19 +1443,43 @@ A pair of sensors pointed at the same target gives you two facts for the price o
 <p>These are independent challenges, ordered easiest to hardest. Every card says where to work; challenges that replace your <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> get their own project copy so your main build stays clean.</p>
 
 <div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="5.1" data-kind="challenge" data-difficulty="easy">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Detection Counter</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #4caf50; color: white;">EASY</span></div>
-    <div style="padding: 15px 20px; background: white;">
-        <p><strong>Your task:</strong> Count how many times the front sensor detects something. Display the count on the OLED. Reset with Button A.</p>
-
-<details data-reveal="hint">
-    <summary>💡 Hint</summary>
-    <p>Use a global counter and a "was detected" flag to count only NEW detections (edge detection).</p>
-</details>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-proximity" style="color: #2e86ab; font-weight: bold;">Key Functions</a> · <a href="#qr-scale" style="color: #2e86ab; font-weight: bold;">Value Range</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> &mdash; the arrived/left trick needs one boolean memory</p>
-<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
-<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Detection Counter</strong> (this one replaces <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>, so your main build stays clean): <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=detection_counter" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-<details data-reveal="solution" style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
-<div style="padding: 15px 20px;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Detection Counter</strong> <span style="display: inline-block; background: #4caf50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">EASY</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Detection Counter</strong> (this one replaces <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>, so your main build stays clean): <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=detection_counter" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-proximity" style="color: #2e86ab; font-weight: bold;">Key Functions</a> · <a href="#qr-scale" style="color: #2e86ab; font-weight: bold;">Value Range</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> &mdash; the arrived/left trick needs one boolean memory</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Count how many times the front sensor sees something <strong>new</strong>, show the running total on the OLED, and reset it to zero with Button&nbsp;A.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">keep two memories: a COUNT, and a flag "was something there last loop?"
+every loop:
+  read the front sensor  &rarr; frontValue
+  something there now?    &rarr; frontValue &gt;= DETECTION_THRESHOLD
+  if there NOW and it was NOT there last loop:   // a brand-new arrival
+      add 1 to COUNT, show it
+  remember "there now" for next loop
+  if Button A was pressed &rarr; set COUNT back to 0</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p><strong>Step 1:</strong> Two globals above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> &mdash; the flag is what makes "new" possible:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">int</span> detectionCount = <span style="color: #b5cea8;">0</span>;
+<span style="color: #569cd6;">bool</span> wasDetected = ____;    <span style="color: #7cbf6e;">// nothing seen yet at power-on</span></pre>
+<p style="margin-top: 12px;"><strong>Step 2:</strong> In <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>, the "is it NEW?" test is the whole trick:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin-bottom: 0;"><span style="color: #569cd6;">bool</span> isDetected = (frontValue &gt;= DETECTION_THRESHOLD);
+<span style="color: #569cd6;">if</span> (isDetected &amp;&amp; !____) {      <span style="color: #7cbf6e;">// there now, and NOT there last loop</span>
+    detectionCount++;
+    display.clear();
+    display.print(F(<span style="color: #ce9178;">"Count: "</span>));
+    display.print(detectionCount);
+}
+____ = isDetected;              <span style="color: #7cbf6e;">// remember for next loop</span></pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">#include &lt;Zumo32U4.h&gt;
 
 Zumo32U4ProximitySensors proxSensors;
@@ -1499,26 +1523,48 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span style="color: #b5cea8;">50</span>);
 }</pre>
-    <p>The flag is the whole trick: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isDetected &amp;&amp; !wasDetected</code> is true only on the <em>rising edge</em> — the moment nothing becomes something. Without it, one hand held in place would count thousands of times per second. (The STANDARD HELPERS block isn't shown — the Maker ships it at the bottom.)</p>
-</div>
+<p style="margin-bottom: 0;">The flag is the whole trick: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">isDetected &amp;&amp; !wasDetected</code> is true only on the <em>rising edge</em> &mdash; the moment nothing becomes something. Without it, one hand held in place would count thousands of times per second. (The STANDARD HELPERS block isn't shown &mdash; the Maker ships it at the bottom.)</p>
 </details>
-    </div>
 </div>
 
 <div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="5.2" data-kind="challenge" data-difficulty="easy">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: Directional LED Alerts</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #4caf50; color: white;">EASY</span></div>
-    <div style="padding: 15px 20px; background: white;">
-        <p><strong>Your task:</strong> Use the three onboard LEDs (red, yellow, green) to show which direction has the closest detection, instead of only reporting numbers. Red for a left detection, yellow for front, green for right.</p>
-
-<details data-reveal="hint">
-    <summary>💡 Hint</summary>
-    <p>Compare <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">leftValue</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">frontValue</code>, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">rightValue</code>, find the largest, and turn on the matching LED. This is the find-the-maximum pattern from Section 8A applied to three values instead of two.</p>
-</details>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-leds" style="color: #2e86ab; font-weight: bold;">LEDs</a> · <a href="#qr-proximity" style="color: #2e86ab; font-weight: bold;">Key Functions</a> · <a href="#qr-thresholds" style="color: #2e86ab; font-weight: bold;">Standard Thresholds</a> &mdash; three LEDs, one winner</p>
-<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
-<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — replace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=directional_alerts" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-<details data-reveal="solution" style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
-<div style="padding: 15px 20px;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: Directional LED Alerts</strong> <span style="display: inline-block; background: #4caf50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">EASY</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — replace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=directional_alerts" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-leds" style="color: #2e86ab; font-weight: bold;">LEDs</a> · <a href="#qr-proximity" style="color: #2e86ab; font-weight: bold;">Key Functions</a> · <a href="#qr-thresholds" style="color: #2e86ab; font-weight: bold;">Standard Thresholds</a> &mdash; three LEDs, one winner</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Use the three onboard LEDs to show which direction has the strongest detection &mdash; red for a left detection, yellow for front, green for right &mdash; instead of only reporting numbers.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">inside updateIndicators(), pick the winner among left / front / right:
+  if all three read 0        &rarr; all LEDs off (the room is empty)
+  else if LEFT is the biggest &rarr; red on
+  else if RIGHT beats front   &rarr; green on
+  else                        &rarr; yellow on (front wins)
+check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room lights red.
+(leave the buzzer half of the function alone.)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p>Replace the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateIndicators()</code> with the winner-picker. Fill the blanks:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin-bottom: 0;"><span style="color: #569cd6;">void</span> updateIndicators() {
+    <span style="color: #569cd6;">if</span> (leftValue == <span style="color: #b5cea8;">0</span> &amp;&amp; frontValue == <span style="color: #b5cea8;">0</span> &amp;&amp; rightValue == <span style="color: #b5cea8;">0</span>) {
+        ledRed(<span style="color: #b5cea8;">0</span>); ledYellow(<span style="color: #b5cea8;">0</span>); ledGreen(____);   <span style="color: #7cbf6e;">// all clear</span>
+    } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (leftValue &gt;= frontValue &amp;&amp; leftValue &gt;= rightValue) {
+        ledRed(____); ledYellow(<span style="color: #b5cea8;">0</span>); ledGreen(<span style="color: #b5cea8;">0</span>);   <span style="color: #7cbf6e;">// LEFT closest</span>
+    } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (rightValue &gt;= frontValue) {
+        ledRed(<span style="color: #b5cea8;">0</span>); ledYellow(<span style="color: #b5cea8;">0</span>); ledGreen(____);   <span style="color: #7cbf6e;">// RIGHT closest</span>
+    } <span style="color: #569cd6;">else</span> {
+        ledRed(<span style="color: #b5cea8;">0</span>); ledYellow(____); ledGreen(<span style="color: #b5cea8;">0</span>);   <span style="color: #7cbf6e;">// FRONT closest</span>
+    }
+    <span style="color: #7cbf6e;">// ... buzzer code stays exactly as it was ...</span>
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> updateIndicators() {
     <span style="color: #7cbf6e;">// Which direction has the strongest detection?</span>
     <span style="color: #569cd6;">if</span> (leftValue == <span style="color: #b5cea8;">0</span> &amp;&amp; frontValue == <span style="color: #b5cea8;">0</span> &amp;&amp; rightValue == <span style="color: #b5cea8;">0</span>) {
@@ -1548,26 +1594,43 @@ Zumo32U4ButtonB buttonB;
         lastBeep = millis();
     }
 }</pre>
-    <p>The all-zero check comes first — otherwise a silent room would still light the red LED (0 ≥ 0 ≥ 0 is true!). Ties go left, then right; the buzzer half of the function is untouched.</p>
-</div>
+<p style="margin-bottom: 0;">The all-zero check comes first &mdash; otherwise a silent room would still light the red LED (0 &ge; 0 &ge; 0 is true!). Ties go left, then right; the buzzer half of the function is untouched.</p>
 </details>
-    </div>
 </div>
 
 <div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="5.3" data-kind="challenge" data-difficulty="medium">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: Proximity-Based Beep Speed</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3; color: white;">MEDIUM</span></div>
-    <div style="padding: 15px 20px; background: white;">
-        <p><strong>Your task:</strong> Make beep speed smoothly proportional to distance. Formula: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">beepInterval = 700 - (value * 100)</code>.</p>
-
-<details data-reveal="hint">
-    <summary>💡 Hint</summary>
-    <p>The formula replaces the fixed-threshold cascade — one line of arithmetic instead of three if/else branches. Where in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateIndicators()</code> does the cascade live?</p>
-</details>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buzzer" style="color: #2e86ab; font-weight: bold;">Sound (Buzzer)</a> · <a href="#qr-timing" style="color: #2e86ab; font-weight: bold;">Timing</a> · <a href="#qr-scale" style="color: #2e86ab; font-weight: bold;">Value Range</a> &mdash; the interval is arithmetic on the reading</p>
-<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
-<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — modify <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=beep_speed" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-<details data-reveal="solution" style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
-<div style="padding: 15px 20px;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: Proximity-Based Beep Speed</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — modify <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=beep_speed" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buzzer" style="color: #2e86ab; font-weight: bold;">Sound (Buzzer)</a> · <a href="#qr-timing" style="color: #2e86ab; font-weight: bold;">Timing</a> · <a href="#qr-scale" style="color: #2e86ab; font-weight: bold;">Value Range</a> &mdash; the interval is arithmetic on the reading</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Make the beep speed change <strong>smoothly</strong> with distance instead of in fixed steps, using the formula <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">beepInterval = 700 - (value * 100)</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">in updateIndicators(), the fixed-threshold beep cascade becomes ONE line of arithmetic:
+  if something is detected (frontValue &gt;= DETECTION_THRESHOLD):
+      beepInterval = 700 - (frontValue * 100)   // closer = bigger reading = shorter interval
+  else:
+      beepInterval = 0    // silent, no ticking at an empty room
+(the beep-timing check underneath stays the same.)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p>Swap the fixed-threshold beep cascade in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">updateIndicators()</code> for the formula. Fill the blanks:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin-bottom: 0;"><span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> beepInterval = <span style="color: #b5cea8;">0</span>;
+<span style="color: #569cd6;">if</span> (frontValue &gt;= DETECTION_THRESHOLD) {
+    beepInterval = ____ - (frontValue * ____);   <span style="color: #7cbf6e;">// 1 -&gt; 600ms ... 6 -&gt; 100ms</span>
+}
+<span style="color: #569cd6;">if</span> (beepInterval &gt; <span style="color: #b5cea8;">0</span> &amp;&amp; millis() - lastBeep &gt; beepInterval) {
+    buzzer.playNote(NOTE_C(<span style="color: #b5cea8;">5</span>), <span style="color: #b5cea8;">30</span>, <span style="color: #b5cea8;">15</span>);
+    lastBeep = millis();
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> updateIndicators() {
     <span style="color: #7cbf6e;">// LED: On if anything detected in front</span>
     <span style="color: #569cd6;">if</span> (frontValue &gt;= DETECTION_THRESHOLD) {
@@ -1586,41 +1649,48 @@ Zumo32U4ButtonB buttonB;
         lastBeep = millis();
     }
 }</pre>
-    <p>Reading 1 → 600&nbsp;ms between beeps; reading 6 → 100&nbsp;ms. The zero-detection guard matters: without it the formula would produce <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">beepInterval = 700</code> and the robot would tick slowly at an empty room forever.</p>
-</div>
+<p style="margin-bottom: 0;">Reading 1 &rarr; 600&nbsp;ms between beeps; reading 6 &rarr; 100&nbsp;ms. The zero-detection guard matters: without it the formula would produce <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">beepInterval = 700</code> and the robot would tick slowly at an empty room forever.</p>
 </details>
-    </div>
 </div>
 
 <div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="5.4" data-kind="challenge" data-difficulty="medium">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Social Distancing Robot</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3; color: white;">MEDIUM</span></div>
-    <div style="padding: 15px 20px; background: white;">
-        <p><strong>Your task:</strong> Create a robot that maintains a "safe distance" from your hand.</p>
-        <p><strong>The Behavior:</strong></p>
-        <ul>
-        <li>If your hand gets too close (&lt; 10 cm) → Robot reverses</li>
-        <li>If your hand gets too far (&gt; 20 cm) → Robot drives forward</li>
-        <li>If your hand is in the "safe zone" (10–20 cm) → Robot stops</li>
-        </ul>
-        <p>The robot should "follow" your hand while keeping its distance — like a shy pet!</p>
-
-<details data-reveal="hint">
-    <summary>💡 Hint: Think in Zones</summary>
-    <p>You'll need two threshold values and three behaviors — and remember, on the 0–6 scale a higher reading means closer, so "too close" is a HIGH count:</p>
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
-    <span style="color: #7cbf6e;">// Too close! Back up</span>
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Social Distancing Robot</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Social Distancing</strong> (motors + its own <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>): <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=social_distancing" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-thresholds" style="color: #2e86ab; font-weight: bold;">Standard Thresholds</a> · <a href="#qr-scale" style="color: #2e86ab; font-weight: bold;">Value Range</a> &mdash; higher reading = closer, so "too close" is a HIGH count</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Keep a "safe distance" from your hand: reverse if it gets too close (&lt; 10&nbsp;cm), drive forward if it gets too far (&gt; 20&nbsp;cm), and hold still in the safe zone (10&ndash;20&nbsp;cm). The robot "follows" your hand while keeping its distance &mdash; like a shy pet.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">two thresholds: CLOSE (~10cm, a HIGH reading) and FAR (~20cm, a LOW reading).
+remember: higher reading = closer.
+every loop, read frontValue and decide:
+  if frontValue &gt;= CLOSE   &rarr; too close: back away
+  else if frontValue == 0   &rarr; no hand at all: hold still (a shy pet waits, it does not wander)
+  else if frontValue &lt;= FAR &rarr; too far: drive forward
+  else                      &rarr; just right: stop</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p><strong>Step 1:</strong> Two thresholds above <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> &mdash; you will tune these to your robot:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> CLOSE_THRESHOLD = ____;   <span style="color: #7cbf6e;">// ~10cm (a HIGH reading)</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> FAR_THRESHOLD   = ____;   <span style="color: #7cbf6e;">// ~20cm (a LOW reading)</span></pre>
+<p style="margin-top: 12px;"><strong>Step 2:</strong> The four-way decision in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> &mdash; note the extra branch for "no hand at all":</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin-bottom: 0;"><span style="color: #569cd6;">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
+    motors.setSpeeds(-<span style="color: #b5cea8;">150</span>, -<span style="color: #b5cea8;">150</span>);   <span style="color: #7cbf6e;">// too close - back away</span>
+} <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (frontValue == ____) {
+    motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);         <span style="color: #7cbf6e;">// no hand - hold still</span>
 } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (frontValue &lt;= FAR_THRESHOLD) {
-    <span style="color: #7cbf6e;">// Too far! Move forward</span>
+    motors.setSpeeds(<span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">150</span>);     <span style="color: #7cbf6e;">// too far - catch up</span>
 } <span style="color: #569cd6;">else</span> {
-    <span style="color: #7cbf6e;">// Just right - stop</span>
+    motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);         <span style="color: #7cbf6e;">// just right - hold position</span>
 }</pre>
-    <p>Remember: Proximity sensors return 0–6 (brightness levels), not centimeters. You'll need to experiment to find which values correspond to ~10cm and ~20cm for your robot. Start with something like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">CLOSE_THRESHOLD = 4</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">FAR_THRESHOLD = 2</code>.</p>
-</details>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-thresholds" style="color: #2e86ab; font-weight: bold;">Standard Thresholds</a> · <a href="#qr-scale" style="color: #2e86ab; font-weight: bold;">Value Range</a> &mdash; higher reading = closer, so "too close" is a HIGH count</p>
-<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
-<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Social Distancing</strong> (motors + its own <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>): <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=social_distancing" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-<details data-reveal="solution" style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
-<div style="padding: 15px 20px;">
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">#include &lt;Zumo32U4.h&gt;
 
 Zumo32U4ProximitySensors proxSensors;
@@ -1657,26 +1727,49 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span style="color: #b5cea8;">50</span>);
 }</pre>
-    <p>One branch more than the hint skeleton: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">frontValue == 0</code> means <em>no hand at all</em>, and a shy pet waits — it doesn't wander off hunting. Try removing that branch and watch what the robot does in an empty room to see why it's there.</p>
-</div>
+<p style="margin-bottom: 0;">One branch more than the basic three-zone plan: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">frontValue == 0</code> means <em>no hand at all</em>, and a shy pet waits &mdash; it doesn't wander off hunting. Try removing that branch and watch what the robot does in an empty room to see why it's there.</p>
 </details>
-    </div>
 </div>
 
 <div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="5.5" data-kind="challenge" data-difficulty="hard">
-    <div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: Simple Obstacle Avoidance</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #ff9800; color: white;">HARD</span></div>
-    <div style="padding: 15px 20px; background: white;">
-        <p><strong>Your task:</strong> Make the robot actually MOVE. If front detects close object, stop and turn. If clear, drive forward.</p>
-
-<details data-reveal="hint">
-    <summary>💡 Hint</summary>
-    <p>Add motors. Set motor speeds based on <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">frontValue</code>. Include a 3-2-1 countdown before movement starts — that's the for loop from Section 5.15!</p>
-</details>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-proximity" style="color: #2e86ab; font-weight: bold;">Key Functions</a> · <a href="#qr-thresholds" style="color: #2e86ab; font-weight: bold;">Standard Thresholds</a> &mdash; sense, decide, steer — your first full loop with motion</p>
-<p>📝 <strong>Plan first:</strong> sketch your steps in the <strong>MY PLAN</strong> block at the top of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> before you touch the code.</p>
-<p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Obstacle Avoidance</strong> (motors + its own <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>): <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=obstacle_avoidance" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-<details data-reveal="solution" style="background:white; border:1px solid #ddd; border-radius:8px; margin:15px 0;"><summary style="padding:15px 20px; cursor:pointer; font-weight:bold; color:#1a5276; background:#f8f9fa; border-radius:8px;">🔓 Click to reveal solution</summary>
-<div style="padding: 15px 20px;">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: Simple Obstacle Avoidance</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Obstacle Avoidance</strong> (motors + its own <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>): <a href="https://weymuth.github.io/zumo/newproject.html?lesson=5&amp;kind=obstacle_avoidance" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-proximity" style="color: #2e86ab; font-weight: bold;">Key Functions</a> · <a href="#qr-thresholds" style="color: #2e86ab; font-weight: bold;">Standard Thresholds</a> &mdash; sense, decide, steer &mdash; your first full loop with motion</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Make the robot actually MOVE: drive forward when the path is clear, and when the front sensor sees a close obstacle, stop and turn away. Start with a 3-2-1 countdown so it doesn't bolt the instant you set it down.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">in setup(), after waitForStart(): run a 3-2-1 countdown (the for loop from Section 5.15), then show "GO!".
+every loop, read frontValue and decide:
+  if frontValue &gt;= CLOSE_THRESHOLD:   // obstacle ahead
+      stop briefly, then spin in place ~90 degrees (a timed turn)
+  else:
+      cruise forward</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p><strong>Step 1:</strong> The countdown in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> &mdash; the for loop from Section 5.15:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">for</span> (<span style="color: #569cd6;">int</span> i = ____; i &gt;= <span style="color: #b5cea8;">1</span>; i--) {   <span style="color: #7cbf6e;">// 3, 2, 1</span>
+    display.clear();
+    display.print(i);
+    delay(<span style="color: #b5cea8;">1000</span>);
+}</pre>
+<p style="margin-top: 12px;"><strong>Step 2:</strong> The drive/avoid decision in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> &mdash; a spin is one wheel forward, one back:</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin-bottom: 0;"><span style="color: #569cd6;">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
+    motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);         <span style="color: #7cbf6e;">// obstacle! stop...</span>
+    delay(<span style="color: #b5cea8;">200</span>);
+    motors.setSpeeds(-<span style="color: #b5cea8;">150</span>, ____);    <span style="color: #7cbf6e;">// ...spin in place...</span>
+    delay(<span style="color: #b5cea8;">400</span>);                     <span style="color: #7cbf6e;">// ~90 degrees - tune for your robot</span>
+} <span style="color: #569cd6;">else</span> {
+    motors.setSpeeds(____, <span style="color: #b5cea8;">150</span>);     <span style="color: #7cbf6e;">// ...cruise</span>
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">#include &lt;Zumo32U4.h&gt;
 
 Zumo32U4ProximitySensors proxSensors;
@@ -1720,10 +1813,8 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span style="color: #b5cea8;">20</span>);
 }</pre>
-    <p>The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(400)</code> turn is timed, not measured — roughly 90° at these speeds on a charged battery, and it will drift as the battery drains. That's not a bug to fix today; it's the exact problem Lesson 6's encoders exist to solve.</p>
-</div>
+<p style="margin-bottom: 0;">The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(400)</code> turn is timed, not measured &mdash; roughly 90&deg; at these speeds on a charged battery, and it will drift as the battery drains. That's not a bug to fix today; it's the exact problem Lesson 6's encoders exist to solve.</p>
 </details>
-    </div>
 </div>
 
 <div style="background-color: #f8f9fa; border: 2px solid #6c757d; border-radius: 10px; padding: 15px 20px; margin: 25px 0;">
@@ -2070,7 +2161,7 @@ proxSensors.countsXxxWithYyyLeds();  <span style="color: #7cbf6e;">// Get 0-6 va
 <hr style="margin: 40px 0;">
 <p style="text-align: center; color: #888;">
     <em>Zumo 32U4 Robotics — Lesson 5: Proximity Sensors</em><br>
-    Version 04.2 — July 2026
+    Version 04.3 — July 2026
 </p>
 
 </body>

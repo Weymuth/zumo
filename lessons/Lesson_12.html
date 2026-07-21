@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.2.6 -->
+<!-- Lesson version: v01.3.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Wheels Lie</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">The Gyro &mdash; Measuring the Robot, Not the Wheels</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 01.2 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 01.3 &mdash; July 2026</div>
 </div>
 <!-- ===================== PART 1 DIVIDER ===================== -->
 <div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; margin: 22px 0 0;">
@@ -921,15 +921,45 @@ truth while the gyro has quietly invented a hundred degrees of rotation that nev
 <p>Three challenges. Each one ships a <strong>blank</strong> &mdash; a constant set to <code>0</code>
 with a starting guess in the comment. <strong>The robot will not work until you fill it in.</strong>
 That is deliberate: you are going to find these numbers by testing, not by being told.</p>
-<h3 style="color:#9b6a9e; margin-top:34px; padding:10px 14px; background:#f5eef8; border-radius:6px;" id="challenge-1" data-challenge="12.1" data-kind="challenge">&#127919; Challenge 1 &mdash; Turn to a Heading<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">stop the errors stacking</span></h3>
-<p>Every turn you have written so far is <strong>relative</strong>: &quot;turn 90&deg; <em>from wherever
-you happen to be pointing now</em>.&quot;</p>
-<p>Four relative turns means four separate errors, and they add up (Section 8A.1).</p>
-<p><strong>Write <code>turnToHeading()</code></strong> &mdash; a turn that goes to an <em>absolute</em> angle,
-measured from wherever <code>gyroReset()</code> last defined as zero. Ask for heading 90, and it goes to 90,
-no matter where it is now &mdash; and no matter how wrong the last turn was.</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="12.1" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Turn to a Heading</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — add the new function to <code>main.cpp</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Write <code>turnToHeading()</code> — a turn to an <strong>absolute</strong> angle, measured from wherever <code>gyroReset()</code> last set as zero. Ask for heading 90 and it goes to 90, no matter where the robot is pointing now or how wrong the last turn was. Every turn so far has been <em>relative</em>, and four relative errors stack.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">turnToHeading(target):
+  read the gyro
+  while we are NOT yet within HEADING_TOLERANCE of the target:
+    error = target - current heading
+    spin toward the target
+      (one way if error is positive, the other if negative)
+    read the gyro again
+  stop the motors</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">HEADING_TOLERANCE is yours to find; the two blanks are the logic.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> HEADING_TOLERANCE = <span style="color: #b5cea8;">0</span>;   <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 3.</span>
+
+<span style="color: #569cd6;">void</span> turnToHeading(<span style="color: #569cd6;">int</span> targetHeading) {
+  gyroUpdate();
+  <span style="color: #569cd6;">while</span> (abs(getTurnAngle() - targetHeading) &gt; ____) {   <span style="color: #6a9955;">// close enough yet?</span>
+    <span style="color: #569cd6;">int</span> error = targetHeading - getTurnAngle();
+    <span style="color: #569cd6;">int</span> speed = (error &gt; <span style="color: #b5cea8;">0</span>) ? TURN_SPEED : ____;          <span style="color: #6a9955;">// which way to spin?</span>
+    motors.setSpeeds(speed, -speed);
+    gyroUpdate();
+  }
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== MAIN LOOP =====
 // One switch, four states - the whole robot brain reads top to bottom
 // CHALLENGE 1: turnDegreesGyro(90) turns 90 degrees FROM HERE.
@@ -956,15 +986,48 @@ void turnToHeading(int targetHeading) {
   turnToHeading(0);    delay(800);   // back to straight ahead
 }</pre>
 <div style="background-color: #e8f4fd; border-left: 5px solid #3498db; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128161; What HEADING_TOLERANCE is for.</strong><br>The robot will never land on <em>exactly</em> 90.000&deg;. It will overshoot to 92, come back to 88, and hunt back and forth forever if you demand perfection.<br><br><strong>Tolerance is how close is close enough.</strong> Too tight and it oscillates and never settles. Too loose and your turns are sloppy. Start at 3 and find your own number.</div>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c1_heading" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color:#9b6a9e; margin-top:34px; padding:10px 14px; background:#f5eef8; border-radius:6px;" id="challenge-2" data-challenge="12.2" data-kind="challenge">&#127919; Challenge 2 &mdash; The Slip Alarm<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">catch the lie automatically</span></h3>
-<p>In Section 7C <strong>you</strong> read both numbers off the OLED and spotted the disagreement.</p>
-<p>Now make the <strong>robot</strong> do it.</p>
-<p>Drive the turn with the encoder, watch it with the gyro, and if the two disagree by more than
-<code>SLIP_TOLERANCE</code>, <strong>sound the buzzer and say SLIP</strong>.</p>
-<p>At the top of <code>main.cpp</code>, add the blank:</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c1_heading" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="12.2" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: The Slip Alarm</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — add the slip check to <code>loop()</code>.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Make the robot catch its own wheel-slip <strong>automatically</strong>: drive a turn with the encoder, watch it with the gyro, and if the two disagree by more than <code>SLIP_TOLERANCE</code>, sound the buzzer and show <strong>SLIP</strong>. In Section 7C <em>you</em> spotted the disagreement by eye; now the robot does it.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">drive a 90-degree turn using the ENCODER (count wheel rotation)
+while turning, keep the GYRO updated
+when the encoder says "done", read what the gyro ACTUALLY measured
+compare the encoder's claim (90) to the gyro's truth:
+  if they disagree by more than SLIP_TOLERANCE:
+      show "SLIP!" and sound the buzzer
+  else:
+      show "Clean"</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">SLIP_TOLERANCE is yours; the blanks are the audit — the encoder's claim vs the gyro's truth.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> SLIP_TOLERANCE = <span style="color: #b5cea8;">0</span>;   <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 10.</span>
+
+<span style="color: #6a9955;">// after the encoder-driven turn finishes:</span>
+<span style="color: #569cd6;">int</span> truth = abs(getTurnAngle());   <span style="color: #6a9955;">// what the gyro really saw</span>
+<span style="color: #569cd6;">int</span> claim = ____;                  <span style="color: #6a9955;">// what the encoder swears it did</span>
+
+<span style="color: #569cd6;">if</span> (abs(claim - truth) &gt; ____) {   <span style="color: #6a9955;">// do the two instruments disagree?</span>
+  display.print(F(<span style="color: #ce9178;">"SLIP!"</span>));
+  buzzer.playNote(NOTE_A(<span style="color: #b5cea8;">3</span>), <span style="color: #b5cea8;">400</span>, <span style="color: #b5cea8;">15</span>);
+} <span style="color: #569cd6;">else</span> {
+  display.print(F(<span style="color: #ce9178;">"Clean"</span>));
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// CHALLENGE 2: you now own two instruments that measure the SAME
 // turn. When they disagree, the wheels slipped. Make the robot say so.
 const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
@@ -1000,18 +1063,54 @@ const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
   delay(4000);
 }</pre>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; Read that code again and notice what it is doing.</strong><br>It is <strong>using one sensor to audit another</strong>. Not to replace it &mdash; to <em>check</em> it.<br><br>Run it on carpet: <code>Clean</code>. Run it on delrin: <code>SLIP!</code> and the buzzer goes off.<br><br>Your robot can now detect a condition that <strong>neither of its sensors can detect alone.</strong></div>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c2_slipalarm" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h3 style="color:#9b6a9e; margin-top:34px; padding:10px 14px; background:#f5eef8; border-radius:6px;" id="challenge-3" data-challenge="12.3" data-kind="challenge">&#127919; Challenge 3 &mdash; The Stuck Guard<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">a turn that may never arrive</span></h3>
-<p><code>turnDegreesGyro()</code> has a flaw, and it is the price of its honesty.</p>
-<p>It loops <strong>until the robot has actually turned</strong>. So what happens if the robot
-<em>cannot</em> turn? Jam it against a wall. Hold it still. Now the gyro correctly reports
-&quot;we have not turned&quot; &mdash; and the loop correctly waits &mdash; <strong>forever</strong>, with the
-motors straining.</p>
-<p>The encoder version never had this problem, because the wheels always spin eventually.
-<strong>The gyro version can hang precisely because it is telling the truth.</strong></p>
-<p>Give it a time budget:</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c2_slipalarm" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="12.3" data-kind="challenge" data-difficulty="hard">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: The Stuck Guard</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — replace <code>turnDegreesGyro()</code> with a safe version.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;"><code>turnDegreesGyro()</code> loops until the robot has actually turned — so if it <em>cannot</em> turn (jammed against a wall), it waits <strong>forever</strong> with the motors straining. Give it a time budget: after <code>TURN_TIMEOUT_MS</code>, stop, report STUCK, and halt honestly.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">turnDegreesGyroSafe(degrees):
+  reset the gyro, note the start time
+  start spinning toward the target
+  while we have NOT yet turned |degrees|:
+    keep the gyro updated
+    if we have been trying longer than TURN_TIMEOUT_MS:
+        stop the motors and report FAILURE (return false)
+  stop the motors, report SUCCESS (return true)</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">TURN_TIMEOUT_MS is yours; the blanks are the escape hatch — a clock check inside the wait, and honest return values.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> TURN_TIMEOUT_MS = <span style="color: #b5cea8;">0</span>;   <span style="color: #6a9955;">// &lt;-- YOUR NUMBER. Try 3000.</span>
+
+<span style="color: #569cd6;">bool</span> turnDegreesGyroSafe(<span style="color: #569cd6;">float</span> degrees) {
+  gyroReset();
+  <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> start = millis();
+  <span style="color: #569cd6;">int</span> leftSpeed = (degrees &gt; <span style="color: #b5cea8;">0</span>) ? TURN_SPEED : -TURN_SPEED;
+  motors.setSpeeds(leftSpeed, -leftSpeed);
+
+  <span style="color: #569cd6;">while</span> (abs(getTurnAngle()) &lt; abs(degrees)) {
+    gyroUpdate();
+    <span style="color: #569cd6;">if</span> (millis() - start &gt; ____) {    <span style="color: #6a9955;">// out of time?</span>
+      motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+      <span style="color: #569cd6;">return</span> ____;                     <span style="color: #6a9955;">// I could not do it. Say so.</span>
+    }
+  }
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  <span style="color: #569cd6;">return</span> ____;                         <span style="color: #6a9955;">// success</span>
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== MAIN LOOP =====
 // One switch, four states - the whole robot brain reads top to bottom
 // CHALLENGE 3: turnDegreesGyro() waits for an angle that may never
@@ -1051,7 +1150,10 @@ bool turnDegreesGyroSafe(float degrees) {
 }</pre>
 <div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Note what it does NOT do when it gives up.</strong><br>It does not shrug and carry on as if the turn worked. It <strong>stops the motors, screams, and halts</strong>.<br><br>A robot that knows it failed and keeps going is <em>more</em> dangerous than one that never knew. If the turn did not happen, every single thing the robot does afterward is based on a false idea of which way it is pointing.<br><br><strong>Stop. Do not pretend.</strong></div>
 <div style="background-color: #fff8e1; border-left: 5px solid #f39c12; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9888;&#65039; Choosing TURN_TIMEOUT_MS.</strong><br>Too short and a legitimately slow turn on the delrin gets killed as a false alarm. Too long and a genuinely stuck robot sits there grinding its motors.<br><br>Time your slowest <em>real</em> turn on the slipperiest surface you have. Then add margin. Start at 3000.</div>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c3_stuckguard" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c3_stuckguard" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
+
 <p style="text-align:right; margin-top:10px;"><a href="#top" style="color:#2e86ab; text-decoration:none; font-size:0.85em;">&#8593; Back to top</a></p>
 </div>
 

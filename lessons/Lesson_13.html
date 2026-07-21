@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.2.5 -->
+<!-- Lesson version: v02.3.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Rescue Zone</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Flying on Instruments &mdash; Navigating Where the Line Cannot Go</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.2 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.3 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== PART 1 DIVIDER ===================== -->
@@ -835,7 +835,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 <p>Say calibration recorded <code>calmin = 400</code> (white floor, raw) and a maximum of 2400 (black tape). Now the robot rolls onto silver and a sensor reads a raw 250 &mdash; brighter than white, so a <em>smaller</em> decay time. The library computes <code>x = (250 - 400) * 1000 / 2000 = -75</code>. Negative &mdash; genuinely outside the calibrated world, and the sign carries the information &ldquo;brighter than anything you showed me.&rdquo; Then the clamp executes: <code>if (x &lt; 0) x = 0</code>. The &minus;75 becomes 0. White floor also computes to 0. <strong>The subtraction knew; the clamp forgot.</strong> On the raw channel the two numbers were 250 and 400 &mdash; a gulf you can drive a threshold through, which is exactly what <code>SILVER_RAW_MAX</code> is.</p>
 <h3 style="color: #2e86ab; margin-top: 30px;">8A.2 Row Zero &mdash; The Leap of Faith</h3>
 <p>The victim test compares this row to the last row &mdash; so what does the <em>first</em> row compare against? Nothing. There is no last row. The code makes an explicit choice (<code>rowCount &gt; 0</code> in the guard): <strong>row zero&rsquo;s prox stop is always believed to be the wall.</strong> The robot spends its first row learning the room, and every later row is checked against that knowledge.</p>
-<p>The cost is honest: a victim sitting dead in row zero&rsquo;s path gets recorded as a very close wall, and the sweep steps politely around it. Rare &mdash; it requires the ball on the exact lane the robot enters by &mdash; but real. Challenge 9.3 sells insurance: give row zero one benefit of the doubt, sidestep, and measure again. Two agreeing measurements from different lanes are believable; that is the same instinct as averaging both encoders.</p>
+<p>The cost is honest: a victim sitting dead in row zero&rsquo;s path gets recorded as a very close wall, and the sweep steps politely around it. Rare &mdash; it requires the ball on the exact lane the robot enters by &mdash; but real. Challenge 3 sells insurance: give row zero one benefit of the doubt, sidestep, and measure again. Two agreeing measurements from different lanes are believable; that is the same instinct as averaging both encoders.</p>
 <h3 style="color: #2e86ab; margin-top: 30px;">8A.3 What Would See the Black Ball?</h3>
 <p>The prox fails on the black ball because it measures <em>reflected infrared</em>, and the ball&rsquo;s job is to absorb exactly that. So what measures something else?</p>
 <ul>
@@ -855,10 +855,40 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 <div style="border: 2px solid #9b6a9e; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 25px; background: white;">
 
 <p>Three challenges, in rising order of nerve. Each has a worked solution behind the reveal &mdash; and every solution is a compiled, verified build in the Project Maker under <em>Lesson 13 &rarr; CHALLENGES</em>. Wrestle first, peek second.</p>
-<h4 style="color: #9b6a9e; margin-top: 24px;" id="challenge-1" data-challenge="13.1" data-kind="challenge">Challenge 9.1 &mdash; Keep Sweeping</h4>
-<p>One victim is a demo; a rescue robot keeps working. After the celebration, step <em>around</em> the victim and hand control back to the sweep, so a zone with two silver balls ends with <code>Rescues: 2</code>. Think hard about one bookkeeping question before you code: after stepping around a victim, should <code>lastRowCm</code> update?</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="13.1" data-kind="challenge" data-difficulty="medium">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Keep Sweeping</strong> <span style="display: inline-block; background: #2196f3; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">MEDIUM</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — modify the <code>VICTIM_FOUND</code> state.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">One victim is a demo; a rescue robot keeps working. After the celebration, step <em>around</em> the victim and hand control back to the sweep, so a zone with two silver balls ends with <code>Rescues: 2</code>. First answer the bookkeeping question: after stepping around a victim, should <code>lastRowCm</code> update?</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">replace VICTIM_FOUND's ending — instead of parking in STOPPED:
+  back off the victim
+  take the lawnmower turn EARLY (turn, step one row, turn)
+  flip the sweep direction
+  hand control back to SWEEPING_ZONE
+DO NOT update lastRowCm — the victim is not the wall.</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the two blanks — the rejoin is the whole trick.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #6a9955;">// in VICTIM_FOUND, after the celebration:</span>
+driveDistance(-<span style="color: #b5cea8;">10.0</span>);              <span style="color: #6a9955;">// back off the victim</span>
+turnDegreesGyro(<span style="color: #b5cea8;">90.0</span> * sweepDir);  <span style="color: #6a9955;">// early lawnmower turn</span>
+driveDistance(ROW_STEP_CM);
+turnDegreesGyro(<span style="color: #b5cea8;">90.0</span> * sweepDir);
+sweepDir = ____;                   <span style="color: #6a9955;">// flip the sweep direction</span>
+currentState = ____;               <span style="color: #6a9955;">// hand back to the sweep</span>
+<span style="color: #569cd6;">break</span>;
+<span style="color: #6a9955;">// (do NOT touch lastRowCm)</span></pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <p>Replace <code>VICTIM_FOUND</code>&rsquo;s ending &mdash; instead of parking in <code>STOPPED</code>, back off, take the lawnmower turn early, and rejoin:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
       <span style="color: #7cbf6e;">// CHALLENGE 9.1: one victim is a demo. A rescue ROBOT keeps</span>
       <span style="color: #7cbf6e;">// sweeping. Step around the victim - back off, sidestep, rejoin -</span>
@@ -872,11 +902,41 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
       currentState = SWEEPING_ZONE;
       <span style="color: #569cd6;">break</span>;
 </pre>
-<p>And the bookkeeping answer: <strong>no.</strong> <code>lastRowCm</code> is the wall&rsquo;s address, and the victim is not the wall. Update it and the next row&rsquo;s victim test compares against a corrupted ruler &mdash; the very ruler that caught this victim.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c1_sweep" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h4 style="color: #9b6a9e; margin-top: 24px;" id="challenge-2" data-challenge="13.2" data-kind="challenge">Challenge 9.2 &mdash; The Sweep Report</h4>
-<p>When the kill switch ends a run, make the robot account for itself: rows completed, total centimeters swept, victims found. Everything you need is already being measured &mdash; this challenge is pure bookkeeping, and bookkeeping is most of real engineering.</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p>And the bookkeeping answer: <strong>no.</strong> <code>lastRowCm</code> is the wall&rsquo;s address, and the victim is not the wall. Update it and the next row&rsquo;s victim test compares against a corrupted ruler &mdash; the very ruler that caught this victim.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c1_sweep" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="13.2" data-kind="challenge" data-difficulty="tough">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: The Sweep Report</strong> <span style="display: inline-block; background: #9c27b0; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">TOUGH</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — add an accumulator, then a report in the kill branch.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">When the kill switch ends a run, make the robot account for itself: rows completed, total centimeters swept, victims found. Everything you need is already being measured — this challenge is pure bookkeeping, and bookkeeping is most of real engineering.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">add an accumulator:  totalSweptCm, starts at 0
+every leg the sweep drives:  totalSweptCm += lastLegCm
+when the run ends by the kill switch:
+  show a SWEEP REPORT — rows, total cm, rescues</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the three blanks — one accumulator, fed each leg, spent in the report.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">float</span> totalSweptCm = ____;   <span style="color: #6a9955;">// start the logbook empty</span>
+
+<span style="color: #6a9955;">// each leg the sweep drives:</span>
+totalSweptCm += ____;        <span style="color: #6a9955;">// add this leg's distance</span>
+
+<span style="color: #6a9955;">// in the kill branch, the report:</span>
+display.print(F(&quot;Rows: &quot;));    display.print(rowCount);
+display.print(F(&quot;Dist: &quot;));    display.print(____);   <span style="color: #6a9955;">// the total swept</span>
+display.print(F(&quot;Rescues: &quot;)); display.print(rescueCount);</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <p>One accumulator with the sweep variables:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
 <span style="color: #569cd6;">float</span> totalSweptCm = <span style="color: #b5cea8;">0</span>; <span style="color: #7cbf6e;">// CHALLENGE 9.2: every centimeter the sweep drove</span>
 </pre>
@@ -905,11 +965,46 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
         <span style="color: #569cd6;">break</span>;
       }
 </pre>
-<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c2_report" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
-<h4 style="color: #9b6a9e; margin-top: 24px;" id="challenge-3" data-challenge="13.3" data-kind="challenge">Challenge 9.3 &mdash; Row Zero, Insured</h4>
-<p>Section 8A.2 named the leap of faith: a victim in row zero&rsquo;s path is mistaken for the wall. Sell the insurance &mdash; if the <em>first</em> row stops on the prox, give it exactly one benefit of the doubt: back off, sidestep one lane, and run row zero again. Same reading twice, from two lanes? Believe the wall. Careful with the trap: why must the retry happen <em>once</em> and only once?</p>
-<details data-reveal="solution" style="margin: 15px 0; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 18px;"><summary style="cursor: pointer; font-weight: 600; color: #9b6a9e;">Reveal the worked solution</summary>
-<div style="margin-top: 12px;">
+<p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c2_report" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="13.3" data-kind="challenge" data-difficulty="hard">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: Row Zero, Insured</strong> <span style="display: inline-block; background: #ff9800; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">HARD</span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — add a one-shot retry ahead of the victim test.</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
+<p style="margin: 0;">Section 8A.2 named the leap of faith: a victim in row zero's path is mistaken for the wall. Sell the insurance — if the <em>first</em> row stops on the prox, give it exactly one benefit of the doubt: back off, sidestep one lane, and run row zero again. Same reading twice, from two lanes? Believe the wall. The trap: why must the retry happen <em>once</em> and only once?</p>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">add a one-shot flag:  rowZeroRetried = false
+ahead of the victim test, if:
+    the stop was the prox, AND it is row zero, AND we have NOT retried yet:
+  spend the retry (set the flag true)
+  back off, sidestep one lane (SAME heading — still row zero)
+  run row zero again
+the flag makes this happen ONCE — without it, a truly close wall retries forever.</pre>
+</div>
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
+<p style="margin: 0 0 8px;">Fill the three blanks — the flag is what makes it one-shot.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;"><span style="color: #569cd6;">bool</span> rowZeroRetried = ____;   <span style="color: #6a9955;">// row zero gets ONE benefit of the doubt</span>
+
+<span style="color: #6a9955;">// ahead of the victim test:</span>
+<span style="color: #569cd6;">if</span> (reason == STOP_PROX &amp;&amp; rowCount == <span style="color: #b5cea8;">0</span> &amp;&amp; !____) {   <span style="color: #6a9955;">// first row, not yet retried</span>
+  rowZeroRetried = ____;       <span style="color: #6a9955;">// spend the one retry</span>
+  driveDistance(-<span style="color: #b5cea8;">10.0</span>);
+  turnDegreesGyro(<span style="color: #b5cea8;">90.0</span>);
+  driveDistance(ROW_STEP_CM);
+  turnDegreesGyro(-<span style="color: #b5cea8;">90.0</span>);      <span style="color: #6a9955;">// sidestep, SAME heading - still row zero</span>
+  <span style="color: #569cd6;">break</span>;
+}</pre>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
+
 <p>A one-shot flag with the sweep variables:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
 <span style="color: #569cd6;">bool</span>  rowZeroRetried = <span style="color: #569cd6;">false</span>; <span style="color: #7cbf6e;">// CHALLENGE 9.3: row zero gets ONE benefit of the doubt</span>
 </pre>
@@ -928,7 +1023,10 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
         <span style="color: #569cd6;">break</span>;
       }
 </pre>
-<p>Without the flag, a genuinely close wall triggers the retry forever &mdash; sidestep, remeasure, sidestep, remeasure &mdash; a robot pacing the zone edge for eternity. One retry converts &ldquo;possibly wrong once&rdquo; into &ldquo;confirmed twice,&rdquo; and that is all the confidence a measurement can buy.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c3_rowzero" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></div></details>
+<p>Without the flag, a genuinely close wall triggers the retry forever &mdash; sidestep, remeasure, sidestep, remeasure &mdash; a robot pacing the zone edge for eternity. One retry converts &ldquo;possibly wrong once&rdquo; into &ldquo;confirmed twice,&rdquo; and that is all the confidence a measurement can buy.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c3_rowzero" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
+
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">&#8593; Back to top</a></p>
 
 </div>
@@ -1005,7 +1103,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span style="color: #7cbf6e;">// a
 <dt style="font-weight: 600; color: #6c757d; margin-top: 14px;">Cross-examination (sensor fusion)</dt>
 <dd style="margin-left: 20px;">Using one sensor to resolve another&rsquo;s ambiguity. The gyro checked the encoders (Lesson 12); the odometer now checks the prox. The grown-up name is sensor fusion.</dd>
 <dt style="font-weight: 600; color: #6c757d; margin-top: 14px;">Row zero / leap of faith</dt>
-<dd style="margin-left: 20px;">The sweep&rsquo;s first row, which has no previous row to compare against and therefore must believe its prox stop is the wall. Insurable (Challenge 9.3), not eliminable.</dd>
+<dd style="margin-left: 20px;">The sweep&rsquo;s first row, which has no previous row to compare against and therefore must believe its prox stop is the wall. Insurable (Challenge 3), not eliminable.</dd>
 </dl>
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">&#8593; Back to top</a></p>
 
@@ -1107,7 +1205,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 <p style="text-align:right; margin-top:10px;"><a href="#top">&#8593; Back to top</a></p>
 
 <div style="background: linear-gradient(135deg, #6c757d 0%, #2e86ab 100%); color: white; padding: 20px 30px; border-radius: 10px; margin-top: 40px; text-align: center; font-size: 0.9em; opacity: 0.95;">
-Lesson 13 &middot; Rescue Zone &middot; Version 02.2 &middot; Zumo 32U4 Robotics
+Lesson 13 &middot; Rescue Zone &middot; Version 02.3 &middot; Zumo 32U4 Robotics
 </div>
 
 </body>
