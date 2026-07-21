@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 21, 2026 (Session 60 — Project B: L14 + L15 converted to the canonical challenge card).
-**Status:** **L14 + L15 are LIVE** (commit `a2238937`, "14 & 15 Update") — fresh-clone + md5 verified. Maker at **v2.41**. This file (LIVE.md) is the only remaining push for the batch → repo root. Bible unchanged (v8.38).
+**Date:** July 21, 2026 (Session 60 — Project B: L11, L14, L15 converted to the canonical challenge card).
+**Status:** **L11, L14, L15 are LIVE** — L14/L15 in `a2238937`, L11 v02.3.0 in `63abdc3` ("Update Lesson_11.html"), all fresh-clone + md5 verified. Maker at **v2.41**, Bible unchanged (v8.38). This file (LIVE.md) is the only remaining push.
 
-**Versions:** L01 v03.4.3 · L02 v02.4.3 · L03 v03.6.3 · L04 v04.1.5 · L05 v04.3.0 · L06 v04.7.3 · L07 v04.3.13 · L08 v04.1.10 · L09 v05.0.12 · L10 v02.1.15 · L11 v02.2.5 · L12 v01.3.0 · L13 v02.3.0 · L14 **v02.5.0** · L15 **v02.3.0** · L16 v02.2.5 · Bible **v8.38** · Maker **v2.41** · Gate v1.6 · Harness v3.0.
+**Versions:** L01 v03.4.3 · L02 v02.4.3 · L03 v03.6.3 · L04 v04.1.5 · L05 v04.3.0 · L06 v04.7.3 · L07 v04.3.13 · L08 v04.1.10 · L09 v05.0.12 · L10 v02.1.15 · L11 **v02.3.0** · L12 v01.3.0 · L13 v02.3.0 · L14 **v02.5.0** · L15 **v02.3.0** · L16 v02.2.5 · Bible **v8.38** · Maker **v2.41** · Gate v1.6 · Harness v3.0.
 
 ---
 
@@ -13,13 +13,15 @@
 
 **L15 (The Present Isn't Enough / PID) — 7 challenges, two groups.** C1–C3 (MEDIUM) → full panel cards, multi-part solutions preserved verbatim in the reveal (all three templates fill exactly to solution). C4–C7 (HARD ×3 / ADVANCED) → canonical shell + **prose, no panels** — preserving their deliberately-open, no-solution design (the §9 intro states it: "the first three ship with solutions, the last four do not"). Two internal cross-refs to "Challenge 9.2" updated → "Challenge 2".
 
+**L11 (Time Lies, Distance Doesn't) — 3 challenges + 4 mysteries, lesson-only.** The 3 challenges (The Retreat / EASY, The Hunt / MEDIUM, The Speed Budget / HARD) → full Goal→Logic→Template cards; each hint folded into its Logic panel; solutions preserved verbatim (gate confirms they still byte-match). Already sequential with `CHALLENGE 1/2/3` comments, so **no renumber, no comment sync, no Maker touch**. The 4 mysteries (a separate `data-kind="mystery"` construct) left in their own Bonus box. Star-text difficulty → canonical pills. L11 v02.2.5 → v02.3.0.
+
 **Both:** headings "9.x" → **sequential "Challenge N"**; the `// CHALLENGE 9.x` solution comments synced to `1/2/3/…` in the lesson **and** the matching Maker payloads (L14: `c1_wheeltest/c2_strict/c3_lop`; L15: `c1_gainsched/c2_dfilter/c3_worstdt`). Comment-only; executable bodies unchanged. L13's `9.x` comments deliberately left (see queue). Old inline `[TIER]` text tags → canonical five-tier pills. Full payload gate PASS; diff-audit clean on both.
 
 ---
 
 ## PUSH BATCH (S60)
 
-1. **`LIVE_ZUMO_TEXTBOOK.md`** → repo root. *(Lessons L14/L15 + `newproject.html` v2.41 already pushed in `a2238937`.)*
+1. **`LIVE_ZUMO_TEXTBOOK.md`** → repo root. *(Lessons L14/L15 + Maker v2.41 in `a2238937`; L11 v02.3.0 in `63abdc3` — all already pushed.)*
 
 Verify by fresh clone (~30–40 s cache lag).
 
@@ -27,7 +29,7 @@ Verify by fresh clone (~30–40 s cache lag).
 
 ## STILL QUEUED (S61)
 
-- **Project B — continue the rollout** against §6.12a: **L11 next** (3 challenges + 4 mysteries — mysteries stay prose), then L08/L09 (add Template + show solution — open case), L10 (green-callout → purple-card convert), L02/L03/L04 (per-challenge hybrid + shell repair). L06/L07 already conform. L05/L12/L13/L14/L15 done.
+- **Project B — continue the rollout** against §6.12a: **L08/L09 next** (add Template + show solution — the "open" case), then L10 (green-callout → purple-card convert), L02/L03/L04 (per-challenge hybrid + shell repair). L06/L07 already conform; L01 stays prose; L16 is tier-cards. **Done: L05, L11, L12, L13, L14, L15.**
 - **L13 solution-comment fix (carried from S59):** L13 cards say "Challenge 1/2/3" but the revealed-solution comments + `c1_sweep/c2_report/c3_rowzero` payloads still read `// CHALLENGE 9.x` — coordinated lesson+Maker sync, same operation just applied to L14/L15. Bumps L13 + Maker.
 - **Difficulty-progression audit (NEW, DJ-requested S60):** book-wide check that L01→L16 actually ramps consistently — easy at L01–L03, steadily harder after. Run once the Project B rollout is complete; verify we're doing what we set out to do.
 
@@ -38,4 +40,4 @@ Verify by fresh clone (~30–40 s cache lag).
 **PARKED:** solution-disclosure · monetization/ebook · "Know Your Zumo" · day-by-day grid + syllabus · TDP template v3 · §9 difficulty grouping · challenge-card full goal→logic→template redesign for the ~80 challenges that lack it (Project B pass B).
 
 ---
-*Written S60, July 21 2026. L14 v02.5.0 + L15 v02.3.0 + Maker v2.41 live (`a2238937`); this LIVE.md is the batch's final push.*
+*Written S60, July 21 2026. L11 v02.3.0 (`63abdc3`) + L14 v02.5.0 + L15 v02.3.0 + Maker v2.41 all live; this LIVE.md folds in L11.*
