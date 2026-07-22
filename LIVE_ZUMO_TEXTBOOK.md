@@ -1,13 +1,13 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 22, 2026 (Session 62 — book-wide callout standardization sweep: all 16 lessons now type Tip/Note/Warning by function; L15/L16 de-boxed).
+**Date:** July 22, 2026 (Session 61 — book-wide callout standardization sweep: all 16 lessons now type Tip/Note/Warning by function; L15/L16 de-boxed).
 **Status:** **Callout sweep complete, L01–L16.** Every coach callout now types by *function* on canonical colors per Bible §6.6a — Tip 💡 (make it work) / Note 📘 (why/context) / Warning ⚠️ (real caution). Book-wide totals: 77 Tip · 107 Note · 72 Warning. L15/L16 came into the system via **de-boxing**: ~52 rhetorical/analogy/flow boxes flattened to prose, 21 real callouts kept as typed boxes, formal devices (Key Terms, COMPILE CHECK, ENGINEER'S LOG, 🏆 RoboCup Connection) left intact. Triple-checked: div-balanced 16/16, zero content loss (only the bared "Coach" label word removed), formal devices byte-unchanged. **Bible v8.40** (§6.6a callout-by-function + §6.6 13-icon legend) and **Maker v2.43** are on disk. **STAGED, NOT PUSHED.** Robot-icon-family still blocked (S61 — image quality + ChatGPT credits); the single Zumo mark on the Textbook tile (`index.html` + `images/Zumo_Robot_Mark.png`) is in the working tree.
 
 **Versions:** L01 v03.5.0 · L02 v02.9.0 · L03 v03.9.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.40** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S62) — book-wide callout standardization · all 16 lessons
+## WHAT SHIPPED THIS BATCH (S61) — book-wide callout standardization · all 16 lessons
 
 **The sweep.** Every "Coach's Tip/Note" and drifted color-coded box across L01–L16 was re-typed by **function** onto the Bible §6.6a canonical system: **Tip 💡** = actionable "make it work / fix it" (`#f0f7f0`), **Note 📘** = enrichment "why / context" (`#eceff1`), **Warning ⚠️** = real caution/safety (`#fff8e1`). Reassignment was by function, not original icon (the book had Tip/Note inverted in places). Bare labels, no "Coach's". Book-wide totals: **77 Tip · 107 Note · 72 Warning.**
 
