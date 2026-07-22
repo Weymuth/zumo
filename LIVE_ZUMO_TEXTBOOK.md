@@ -1,9 +1,27 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 21, 2026 (Session 60 — Project B COMPLETE: canonical shells book-wide + Goal/Logic/Template panels through L02–L15).
-**Status:** **Project B fully clean, L01–L16.** L13 solution-comment/payload sync done (the last loose end) — L13 v02.3.1 + Maker v2.42. Every challenge card uses the canonical shell; sequential "Challenge N" headers now match their solution comments and Maker payloads everywhere. Bible **v8.38**. This push = L13 + Maker + LIVE.md.
+**Date:** July 22, 2026 (Session 62 — book-wide callout standardization sweep: all 16 lessons now type Tip/Note/Warning by function; L15/L16 de-boxed).
+**Status:** **Callout sweep complete, L01–L16.** Every coach callout now types by *function* on canonical colors per Bible §6.6a — Tip 💡 (make it work) / Note 📘 (why/context) / Warning ⚠️ (real caution). Book-wide totals: 77 Tip · 107 Note · 72 Warning. L15/L16 came into the system via **de-boxing**: ~52 rhetorical/analogy/flow boxes flattened to prose, 21 real callouts kept as typed boxes, formal devices (Key Terms, COMPILE CHECK, ENGINEER'S LOG, 🏆 RoboCup Connection) left intact. Triple-checked: div-balanced 16/16, zero content loss (only the bared "Coach" label word removed), formal devices byte-unchanged. **Bible v8.40** (§6.6a callout-by-function + §6.6 13-icon legend) and **Maker v2.43** are on disk. **STAGED, NOT PUSHED.** Robot-icon-family still blocked (S61 — image quality + ChatGPT credits); the single Zumo mark on the Textbook tile (`index.html` + `images/Zumo_Robot_Mark.png`) is in the working tree.
 
-**Versions:** L01 v03.4.3 · L02 **v02.7.0** · L03 **v03.8.0** · L04 **v04.3.0** · L05 v04.3.0 · L06 v04.7.3 · L07 v04.3.13 · L08 **v04.2.0** · L09 **v05.1.0** · L10 **v02.2.0** · L11 **v02.3.0** · L12 v01.3.0 · L13 **v02.3.1** · L14 **v02.5.0** · L15 **v02.3.0** · L16 v02.2.5 · Bible **v8.38** · Maker **v2.42** · Gate v1.6 · Harness v3.0.
+**Versions:** L01 v03.5.0 · L02 v02.9.0 · L03 v03.9.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.40** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
+
+---
+
+## WHAT SHIPPED THIS BATCH (S62) — book-wide callout standardization · all 16 lessons
+
+**The sweep.** Every "Coach's Tip/Note" and drifted color-coded box across L01–L16 was re-typed by **function** onto the Bible §6.6a canonical system: **Tip 💡** = actionable "make it work / fix it" (`#f0f7f0`), **Note 📘** = enrichment "why / context" (`#eceff1`), **Warning ⚠️** = real caution/safety (`#fff8e1`). Reassignment was by function, not original icon (the book had Tip/Note inverted in places). Bare labels, no "Coach's". Book-wide totals: **77 Tip · 107 Note · 72 Warning.**
+
+**Left alone (formal/distinct devices, not coach callouts):** 🔑 Key Term · 📖 LEARN · 🔍 INSIGHT · 📝 DO-THIS-NOW / rituals · ✅ CHECKPOINT · 👀 WHAT YOU SHOULD SEE · 🎯 CHALLENGE / THE GOAL · 🔮 WHAT'S NEXT · 🔁 Builds on · 📦 Fell behind? · 🏁 FINISHED EARLY? · 📋 PREREQUISITES · 🔨 COMPILE CHECK · 📓 ENGINEER'S LOG · 🏆 RoboCup Connection · type-explainer (`#e3f2fd`).
+
+**L15 / L16 — de-boxed (different treatment).** These two used a bespoke color-coded emphasis-box system (~53 / ~40 boxes, mostly no labels — analogies, verdicts, takeaways). Decision: the typed Tip/Note/Warning system is better for beginners (explicit beats implicit color-code), and 40–53 boxes is bad reading. So rhetorical/analogy/flow boxes were **de-boxed** (styling stripped to `margin: 16px 0;` — content + div kept, zero balance risk) and only genuine callouts kept as canonical typed boxes. L15: 10 Warning / 3 Note / 1 Tip kept, ~39 flattened. L16: 4 Warning / 2 Note / 1 Tip kept, ~13 flattened. Formal devices left intact.
+
+**Verification (triple-checked).** 16/16 div-balanced · zero double-icons · zero malformed styles · zero empty de-boxed divs · every lesson shows balanced +/- edits (in-place swaps, no content deletion) · de-box removed only the bared "Coach" label word · formal devices byte-unchanged vs repo HEAD.
+
+**Also on disk, staged, unpushed:** Bible **v8.40** (§6.6a callout-by-function + §6.6 13-icon legend incl. 📘) · Maker **v2.43** · S61 robot mark on Textbook tile (`index.html` + `Zumo_Robot_Mark.png`). Robot-icon-**family** remains blocked (S61 image quality + ChatGPT credits).
+
+**Next.** Difficulty-progression audit (L01–L03 easy, consistent hardening across all 16 — DJ's stated big goal). Future: expand the 📓 Engineer's Log icon/section (DJ likes it). Standing parked queue unchanged.
+
+**Versions this batch:** L01 v03.5.0 · L02 v02.9.0 · L03 v03.9.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0.
 
 ---
 

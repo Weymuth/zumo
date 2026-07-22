@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.3.0 -->
+<!-- Lesson version: v02.4.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +33,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">The Present Isn't Enough</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">PID Control &mdash; and the Tuning Bench That Proves It</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.3 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.4 &mdash; July 2026</div>
 </div>
 <div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; margin: 22px 0 0;">
     <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 1 &mdash; Theory &amp; Concepts</div>
@@ -54,7 +54,7 @@ motors.setSpeeds(BASE_SPEED + correction, BASE_SPEED - correction);
 right now?</i> &mdash; and it steers in proportion to the answer. It is the whole reason your robot
 can drive a track at all.</p>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>And it is stuck in the present tense.</b><br>
+<div style="margin: 16px 0;"><b>And it is stuck in the present tense.</b><br>
 P knows where you are. It does not know where you are <i>heading</i>, and it does not know where
 you have <i>been</i>. Everything that is still wrong with your line follower &mdash; the weave on the
 straights, the overshoot out of a corner, the way it runs slower and slower as the battery dies
@@ -63,7 +63,7 @@ straights, the overshoot out of a corner, the way it runs slower and slower as t
 <p>This lesson gives the controller two more tenses. It also gives you something you have never had
 before: <b>a way to tell whether your tuning actually helped.</b></p>
 
-<div style="background: #fdf3e7; border-left: 5px solid #e67e22; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>The honest warning up front.</b> Most PID chapters end with a student turning
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️ The honest warning up front.</b> Most PID chapters end with a student turning
 knobs, squinting at the robot, and saying &ldquo;that looked smoother.&rdquo; That is not tuning. That is
 hoping. Half this lesson is about building an instrument that replaces the squint with a
 <b>number</b>.</div>
@@ -90,7 +90,7 @@ hoping. Half this lesson is about building an instrument that replaces the squin
 
 <h3 style="color: #3498db; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">3.1 The complete equation, then the pieces</h3>
 <p>Here is the whole thing, and then we will take it apart:</p>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="text-align: center; font-size: 1.15em; font-family: Georgia, serif;">
+<div style="margin: 16px 0;"><div style="text-align: center; font-size: 1.15em; font-family: Georgia, serif;">
 output = (K<sub>p</sub> &times; error) &nbsp;+&nbsp; (K<sub>i</sub> &times; &sum;error&middot;dt) &nbsp;+&nbsp; (K<sub>d</sub> &times; &Delta;error/dt)
 </div>
 <div style="text-align: center; margin-top: 12px; color: #3a7d5c;">
@@ -115,7 +115,7 @@ full correction right up until the moment you arrive &mdash; and then you sail s
 hard the other way. Sail past again. That is the <b>weave</b>, and no value of K<sub>p</sub> makes
 it go away: too small and the robot is lazy, too large and the weave becomes a wobble.</p>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Analogy.</b> Walk toward a wall with your eyes closed while a friend calls out
+<div style="margin: 16px 0;"><b>Analogy.</b> Walk toward a wall with your eyes closed while a friend calls out
 your distance: &ldquo;ten feet&hellip; five&hellip; two&hellip;&rdquo; You know exactly where you are at every moment.
 You <i>still</i> hit the wall, because nobody told you how fast you were closing.</div>
 <h3 style="color: #3498db; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">3.3 D &mdash; the future</h3>
@@ -134,11 +134,11 @@ shrinking fast, so the derivative is a large negative number. D subtracts from t
 <i>before</i> the robot reaches center. It brakes early. P cannot do this, because braking early
 requires knowing something P has never known: which way you are headed.</p>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Analogy.</b> You do not park a car by driving at the space full speed and
+<div style="margin: 16px 0;"><b>Analogy.</b> You do not park a car by driving at the space full speed and
 stamping the brake at the last instant. You slow down <i>as you approach</i>. D is the part of you
 that does that.</div>
 <div style="text-align: center; margin: 26px 0;"><img src="https://weymuth.github.io/zumo/images/L15_GRAPHIC_15-02_p_vs_pd.svg" alt="[IMAGE 15.2] The same step, two controllers: P alone oscillates around the line; PD glides onto it." style="max-width: 100%; border: 1px solid #cdd9e1; border-radius: 6px;"><div style="font-size: 0.88em; color: #607d8b; margin-top: 6px; font-family: Helvetica, Arial, sans-serif;">[IMAGE 15.2] The same step, two controllers: P alone oscillates around the line; PD glides onto it.</div></div>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#128161; Coach&rsquo;s Tip:</b> D is often called the <i>damper</i>, and that is
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>📘  </b> D is often called the <i>damper</i>, and that is
 exactly right. It is the shock absorber. Take the shocks off a car and every bump becomes a bounce
 that lasts a block.</div>
 <h3 style="color: #3498db; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">3.4 I &mdash; the past</h3>
@@ -161,7 +161,7 @@ output.</p>
 small error that never dies grows into a large command. <b>I is the only term that can drive a
 steady error to zero.</b></p>
 
-<div style="background: #fdf3e7; border-left: 5px solid #e67e22; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; And I is the most dangerous term in the equation.</b> If the error
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  And I is the most dangerous term in the equation.</b> If the error
 stays large for a while &mdash; the robot is picked up, the line disappears, a wheel is blocked &mdash; the
 integral keeps piling up into an enormous number. When the robot finally recovers, that stored
 command fires all at once and the robot lunges. This is <b>integral windup</b>, and it is why I
@@ -173,7 +173,7 @@ this book always does: <b>take the theory to the actual hardware and see what su
 <p>Start with the number I is supposed to fix. On this robot, K<sub>p</sub> is around 0.1, and the
 drivetrain bias P has to cancel is roughly the size of your <code>TRIM</code> &mdash; call it 8 speed
 units. At the settling point:</p>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="text-align: center; font-family: Georgia, serif; font-size: 1.05em;">
+<div style="margin: 16px 0;"><div style="text-align: center; font-family: Georgia, serif; font-size: 1.05em;">
 correction = K<sub>p</sub> &times; error &nbsp;&rarr;&nbsp; error = correction / K<sub>p</sub> = 8 / 0.1 =
 <b>80 units</b>
 </div>
@@ -185,7 +185,7 @@ constant-radius curve, the robot must steer constantly &mdash; and the only way 
 steering command is to sit at a constant, non-zero error. <b>On a curve, a steady error is not a
 mistake. It is the answer.</b></p>
 
-<div style="background: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>The I term cannot tell the difference.</b> It sees a steady error, concludes
+<div style="margin: 16px 0;"><b>The I term cannot tell the difference.</b> It sees a steady error, concludes
 that nobody is fixing it, and starts piling up a correction. Every curve on the track winds it up.
 And when the curve ends and the robot needs to go straight, the integral is still holding a command
 that says <i>keep turning</i>. It overshoots the exit of every corner.<br><br>
@@ -196,7 +196,7 @@ does not return &ldquo;I don't know.&rdquo; It <b>saturates</b>: it pins to 0 or
 saw, and holds there. The error slams to &plusmn;2000 and stays. P handles that fine &mdash; a hard turn,
 then recovery. An integrator treats it as two full seconds of maximum wrongness that it is duty-bound
 to repay.</p>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>So here is the verdict this lesson ships, and it is not a preference:</b>
+<div style="margin: 16px 0;"><b>So here is the verdict this lesson ships, and it is not a preference:</b>
 <div style="margin-top: 10px; font-size: 1.08em;">
 &#9654; <b>The LINE loop gets P and D.</b> Not I. A curve holds a steady error on purpose, and I
 mistakes the answer for a mistake.<br><br>
@@ -212,7 +212,7 @@ the line loop and watch it fail on a curve, and in <b>7E</b> you will move it to
 watch it save a run on a dying battery. Same term. Same three lines. The robot will tell you.</p>
 <h3 style="color: #3498db; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">3.6 The three failures, and their names</h3>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Failure</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">What you see</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Cause</th><th style="background: #3498db; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Fix</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Integral windup</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A huge lunge after the robot is picked up, blocked, or loses the line</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Error stayed large; the integral piled up with nowhere to spend it</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Clamp the <i>integral itself</i>, not just the output &mdash; and reset it on re-entry</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Derivative kick</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A violent spike the instant the target changes</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A step change in the setpoint makes <code>(error - lastError)</code> enormous for one pass</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Take the derivative of the <i>measurement</i>, not the error</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Noise amplification</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Twitchy, jittery steering that gets worse as you raise K<sub>d</sub></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">D is a rate. Sensor noise is a rate too &mdash; a huge one. D cannot tell them apart.</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Lower K<sub>d</sub>, or low-pass filter the derivative (Challenge 2)</td></tr></table>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">Line following gets a free pass on <b>derivative kick</b>: our setpoint is
+<div style="margin: 16px 0;">Line following gets a free pass on <b>derivative kick</b>: our setpoint is
 <code>LINE_CENTER</code>, and it never changes. Remember the name anyway &mdash; the first time you put a
 PID on something with a moving target, it will be the first thing that bites you.</div>
 <p style="margin-top: 22px;"><a href="#top" style="color: #2e86ab; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 0.9em;">&#8593; Back to top</a></p>
@@ -249,7 +249,7 @@ discharge slowly, bright ones quickly &mdash; the timing <i>is</i> the measureme
 
 <p>And <code>initFiveSensors()</code> sets that timing ceiling to <b>2000 microseconds</b>. So:</p>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #3a7d5c; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Fact</th><th style="background: #3a7d5c; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Consequence</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">One <code>readLinePosition()</code> can block for up to <b>2000&nbsp;&micro;s</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Your loop takes roughly <b>2&ndash;3 milliseconds</b> per pass</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Black discharges slower than white</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">The loop period is <b>not even constant</b> &mdash; it depends on what is under the robot</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><code>millis()</code> resolves to <b>1 millisecond</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Asked to measure a 2&nbsp;ms interval it answers &ldquo;2&rdquo;. Or &ldquo;3&rdquo;. Or <b>&ldquo;0&rdquo;</b>.</td></tr></table>
-<div style="background: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; You cannot divide by zero.</b><br><br>
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  You cannot divide by zero.</b><br><br>
 A derivative computed as <code>(error - lastError) / dt</code> where <code>dt</code> came from
 <code>millis()</code> is not &ldquo;a bit imprecise.&rdquo; On a fast pass it is <b>undefined</b>, and on every
 other pass it is quantized to 2 or 3 &mdash; a &plusmn;50% measurement error that has nothing to do with the
@@ -260,7 +260,7 @@ robot and everything to do with the ruler.<br><br>
 0.2% ruler. That is the clock this lesson runs on, and it is the only one aboard that can do the
 job.</p>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>You will prove this yourself in 7A</b> &mdash; with the motors off, by hand, watching
+<div style="margin: 16px 0;"><b>You will prove this yourself in 7A</b> &mdash; with the motors off, by hand, watching
 both numbers on the screen at the same time.</div>
 <h3 style="color: #3a7d5c; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">4.3 Rollover, and why the subtraction is safe</h3>
 <p><code>micros()</code> counts up in an <code>unsigned long</code> and wraps back to zero
@@ -294,7 +294,7 @@ about every 70 minutes. That sounds like a landmine. It is not &mdash; <b>as lon
 comes out right even across the rollover. Store the <i>timestamps</i> and subtract them. Never store
 an elapsed total and compare it to a target &mdash; <i>that</i> is where rollover bugs live.</p>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b><code>DT_MIN_US</code> is an engineering limit, not a blank.</b> It ships with
+<div style="margin: 16px 0;"><b><code>DT_MIN_US</code> is an engineering limit, not a blank.</b> It ships with
 a value and a reason: 100&nbsp;&micro;s sits far below this loop's real period, so it can only ever fire
 if something is already badly wrong. Changing a limit means beating its reason.</div>
 <p style="margin-top: 22px;"><a href="#top" style="color: #2e86ab; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 0.9em;">&#8593; Back to top</a></p>
@@ -304,7 +304,7 @@ if something is already badly wrong. Changing a limit means beating its reason.<
 <div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 25px; background: white;">
 
 <h3 style="color: #3a7d5c; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">5.1 The rule that governs this whole lesson</h3>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b><code>followLine()</code> keeps its name and every one of its call sites.
+<div style="margin: 16px 0;"><b><code>followLine()</code> keeps its name and every one of its call sites.
 Only the question it asks gets better.</b><br><br>
 There is no <code>followLinePD()</code>. There is no <code>followLinePID()</code>. When Lesson 11
 upgraded <code>handleGap()</code> from a stopwatch to an odometer, it kept the name, the call site,
@@ -351,7 +351,7 @@ them get a better controller.</b></div>
 <span style="color: #7cbf6e;">// motors saturate and it can no longer come back down.</span>
 <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> SPEED_TRIM_MAX = 80;
 </pre>
-<div style="background: #fdf3e7; border-left: 5px solid #e67e22; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Three blanks, and every one of them is spent.</b> <code>KD</code>,
+<div style="margin: 16px 0;"><b>Three blanks, and every one of them is spent.</b> <code>KD</code>,
 <code>KP_SPEED</code>, <code>KI_SPEED</code> all ship as <code>0</code> with the starting guess in
 the comment. You find the numbers in section 7. Nobody hands them to you, because the number that is
 right for your robot on your track is not the number that is right for mine.</div>
@@ -476,7 +476,7 @@ them work. <b>You cannot tune what you cannot score.</b></p>
   showScore();
 }
 </pre>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>The bell.</b> Every run is the same length &mdash; <code>TUNING_RUN_MS</code>.
+<div style="margin: 16px 0;"><b>The bell.</b> Every run is the same length &mdash; <code>TUNING_RUN_MS</code>.
 This is not a detail. <b>Two gains are only comparable if the runs were.</b> A 12-second run and a
 7-second run produce two MAE numbers that cannot be compared, and a student who does not know that
 will spend an afternoon chasing noise.</div>
@@ -510,7 +510,7 @@ will spend an afternoon chasing noise.</div>
   }
 }
 </pre>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9654; A tuning rig you have to recompile is not a tuning rig.</b><br>
+<div style="margin: 16px 0;"><b>&#9654; A tuning rig you have to recompile is not a tuning rig.</b><br>
 Every gain in this project is adjustable <b>on the robot, between runs, without a cable.</b> That is
 why sections 7B, 7C and 7E have no new code to download: they are the <i>same build</i>, run with
 different knobs. The only rungs that change the program are 7A (which does not drive) and 7D (which
@@ -542,7 +542,7 @@ is designed to fail).</div>
   showStatus();
 }
 </pre>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>The general rule, and it is worth more than this lesson:</b> if something
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>📘 The general rule, and it is worth more than this lesson:</b> if something
 <i>must</i> happen every time you enter a state, <b>put it in the doorway &mdash; not in the four places
 that walk through it.</b> A reset you have to remember at four call sites is a bug with a four-day
 fuse: it works today, and it fails the first time somebody adds a fifth door.</div>
@@ -606,7 +606,7 @@ from Lesson 6, <code>COUNTS_PER_CM</code> from Lesson 6, and the <code>dt</code>
 <code>followLine()</code> already measured this pass. <b>You did not buy a single new instrument.</b>
 You wired three you already owned into a loop that closes.</p>
 
-<div style="background: #fdf3e7; border-left: 5px solid #e67e22; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Clamp the memory, not just the output.</b> Look at the <code>iMax</code> line.
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>💡 Clamp the memory, not just the output.</b> Look at the <code>iMax</code> line.
 It is tempting to clamp only <code>speedTrim</code> on the way out &mdash; but then the integral keeps
 growing on the inside, invisibly, and when you finally need it to come <i>back down</i> it has
 thousands of accumulated units to unwind first. The robot stays wrong for seconds after the cause is
@@ -650,7 +650,7 @@ before you touch anything, and write the number down. <b>That number is your con
   RUN_REPORT           <span style="color: #7cbf6e;">// NEW for Lesson 15: the run is over - here is the score</span>
 };
 </pre>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>The byte count did not move. That is correct.</b> A <code>const</code>
+<div style="margin: 16px 0;"><b>The byte count did not move. That is correct.</b> A <code>const</code>
 that nothing reads yet costs nothing &mdash; the compiler simply does not emit it. Constants are free
 until something spends them.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -685,7 +685,7 @@ until something spends them.</div>
   <span style="color: #569cd6;">return</span> elapsed / <span style="color: #b5cea8;">1000000</span>.0;
 }
 </pre>
-<div style="background: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; You just wrote a whole function and the program did not get one
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  You just wrote a whole function and the program did not get one
 byte bigger. Why?</b><br><br>
 Because <b>nothing calls it.</b> The linker looked at <code>deltaTimeSec()</code>, saw that no code
 anywhere reaches it, and threw it away before it ever got into the binary. Your source file has a
@@ -726,7 +726,7 @@ happens to you by accident.</div>
   motors.setSpeeds(leftSpeed, rightSpeed);
 }
 </pre>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>+162 bytes, and <i>now</i> the clock is in the binary.</b> Something calls
+<div style="margin: 16px 0;"><b>+162 bytes, and <i>now</i> the clock is in the binary.</b> Something calls
 it, so it survives. Flash this and drive: with <code>KD</code> still at 0, the robot behaves exactly
 as it did in Lesson 14 &mdash; because <code>currentKd</code> is 0 and the D term contributes nothing.
 <b>The machinery is in, and it is switched off.</b> That is exactly where you want to be before you
@@ -887,7 +887,7 @@ start tuning.</div>
       <span style="color: #569cd6;">break</span>;
     }
 </pre>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Read what the kill switch does now.</b> B still stops the robot instantly
+<div style="margin: 16px 0;"><b>Read what the kill switch does now.</b> B still stops the robot instantly
 &mdash; that is untouchable and it always will be. But it no longer <i>throws away the run</i>. It stops
 the wheels and shows you the score. <b>Stopping a run is not the same as cancelling it.</b></div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -988,7 +988,7 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
         <span style="color: #569cd6;">break</span>;
       }
 </pre>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Sixty-eight bytes to close a hole you cannot see yet.</b> Cross a gap and
+<div style="margin: 16px 0;"><b>Sixty-eight bytes to close a hole you cannot see yet.</b> Cross a gap and
 come back: the line was gone for half a second, <code>readLine()</code> was pinned at 4000 the whole
 time, and <code>lastError</code> is still holding that number. The first pass back on the line
 computes a derivative against a value from a different world. The robot flinches. <b>Now it
@@ -1062,7 +1062,7 @@ cannot.</b></div>
         runSample(lastError);   <span style="color: #7cbf6e;">// followLine() just wrote it. Score the pass.</span>
         updateSpeedLoop(dtSec); <span style="color: #7cbf6e;">// and followLine() just timed it. One clock, two loops.</span>
 </pre>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Two control loops, one clock, one pass.</b> The line loop decides
+<div style="margin: 16px 0;"><b>Two control loops, one clock, one pass.</b> The line loop decides
 <i>where</i> to steer. The speed loop decides <i>how fast</i>. They share a <code>dt</code> because
 they share a <code>loop()</code>, and reading the clock twice in one pass would give the second
 reader a <code>dt</code> of nearly zero &mdash; which is exactly the bug section 4 warned you about,
@@ -1085,7 +1085,7 @@ sneaking back in through a different door.</div>
 <h3 style="color: #c45d76; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">7.0 First: the rules of a fair test</h3>
 <p>Everything below is worthless if you skip this. Three gains, tuned by feel, on a track that
 keeps changing, with a battery that keeps dying, is not an experiment. It is a superstition.</p>
-<div style="background: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>The three rules. Break any one of them and your numbers mean nothing.</b>
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️ The three rules. Break any one of them and your numbers mean nothing.</b>
 <ol style="margin: 10px 0 0 0;">
 <li style="margin-bottom: 6px;"><b>Same track, same start line, every run.</b> Mark the start with tape.</li>
 <li style="margin-bottom: 6px;"><b>Same battery state.</b> You cannot compare a run on a fresh pack
@@ -1132,13 +1132,13 @@ calibrated a square.</li>
 </pre>
 <p><b>Do this, and write the answers in your notebook:</b></p>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Do</th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Watch</th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Write down</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Hold the robot still, centered on the line</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><code>ERR</code> near 0, <code>dERR</code> near 0</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Your <b>dt&nbsp;&micro;s</b>. This is your loop period.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Slide it slowly to the left</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><code>ERR</code> grows one way, <code>dERR</code> small</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">The sign of <code>ERR</code> when the line is left of center</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Snap it across the line fast</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><code>dERR</code> spikes hard</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>This is what D reacts to.</b> P never sees it.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Slide it over the black tape, then over white</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><code>dt&nbsp;&micro;s</code> <i>changes</i></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Two numbers: dt over black, dt over white</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Now read the <code>dt ms</code> row &mdash; that is what <code>millis()</code> would have said</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">It reads 2. Or 3. Or <b>0</b>.</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">What <code>(error-lastError)/0</code> evaluates to</td></tr></table>
-<div style="background: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; That last row is the whole reason this lesson uses
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  That last row is the whole reason this lesson uses
 <code>micros()</code>.</b> Your loop is a couple of milliseconds long, and the only clock most
 Arduino code ever reaches for cannot resolve it. It is not <i>close</i> to good enough. It is
 <b>the wrong instrument</b>, and it will hand you a division by zero without so much as a
 warning.</div>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Also notice:</b> dt changed when you moved the robot from white to black. The
+<div style="margin: 16px 0;"><b>Also notice:</b> dt changed when you moved the robot from white to black. The
 loop is not on a metronome. That is exactly why <code>dt</code> is <i>measured every pass</i> and
 never assumed.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -1156,13 +1156,13 @@ never assumed.</div>
 <li style="margin-bottom: 6px;">Keep doubling until the robot <b>oscillates and will not settle</b>
 &mdash; a steady weave that neither grows nor dies away.</li>
 </ol>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Why double, and not nudge?</b> Gains live on a logarithmic scale. A student
+<div style="margin: 16px 0;"><b>Why double, and not nudge?</b> Gains live on a logarithmic scale. A student
 adding 0.01 at a time will still be adding 0.01 at a time when the bell rings for lunch. Double
 until it breaks, then halve. You will find the edge in six runs instead of sixty.</div>
 
 <p>That Kp is <b>K<sub>u</sub></b> &mdash; the <i>ultimate gain</i>. And the WEAVE number at K<sub>u</sub>
 hands you the second half of the classical recipe for free:</p>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="text-align: center; font-size: 1.15em;">
+<div style="margin: 16px 0;"><div style="text-align: center; font-size: 1.15em;">
 <b>T<sub>u</sub> = 2 &divide; WEAVE</b>
 </div>
 <div style="text-align: center; margin-top: 8px; color: #3a7d5c;">
@@ -1180,14 +1180,14 @@ the score screen, <code>showScore()</code> prints <b>TRY&nbsp;Kd</b>.</p>
 <p>That number is <b>Ziegler&ndash;Nichols</b>, a recipe from the 1940s that has been landing engineers
 in the right ZIP code for eighty years:</p>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Controller</th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">K<sub>p</sub></th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">K<sub>i</sub></th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">K<sub>d</sub></th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">P only</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">0.5 &times; K<sub>u</sub></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&mdash;</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&mdash;</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">PI</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">0.45 &times; K<sub>u</sub></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">1.2 &times; K<sub>p</sub> / T<sub>u</sub></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&mdash;</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>PID</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>0.6 &times; K<sub>u</sub></b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">2 &times; K<sub>p</sub> / T<sub>u</sub></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>K<sub>p</sub> &times; T<sub>u</sub> / 8</b></td></tr></table>
-<div style="background: #fdf3e7; border-left: 5px solid #e67e22; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; Ziegler&ndash;Nichols is a starting point, not an answer.</b> It is
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  Ziegler&ndash;Nichols is a starting point, not an answer.</b> It is
 famously aggressive &mdash; it was designed for industrial processes that care more about responding
 fast than about overshooting. It will get you close. It will not get you good. <b>Anyone who tells
 you Z&ndash;N <i>is</i> the tuning is selling you something.</b></div>
 
 <p><b>Now hill-climb.</b> This is the actual procedure, and it has a stopping condition, which is
 what makes it a procedure and not a vibe:</p>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">
+<div style="margin: 16px 0;">
 <b>THE HILL-CLIMB</b>
 <ol style="margin: 10px 0 0 0;">
 <li style="margin-bottom: 6px;">Run. Record <b>MAE</b>. That is your score to beat.</li>
@@ -1201,7 +1201,7 @@ You are done. That is not a feeling. That is a condition.</li>
 
 <p>Watch <b>WEAVE</b> and <b>PEAK</b> too, because MAE alone can hide things:</p>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">What the numbers say</th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">What it means</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">MAE down, WEAVE down</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Real improvement.</b> Keep it.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">MAE down, WEAVE <i>up</i></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">It is cutting corners by hunting. Fast, ugly, fragile. Suspect it.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">MAE flat, PEAK way up</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">One bad corner is eating the run. Look at <i>where</i>, not just how much.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">MAE up, everything up</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">You went the wrong way. Undo it.</td></tr></table>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Both failure directions, so you can recognize them:</b><br>
+<div style="margin: 16px 0;"><b>Both failure directions, so you can recognize them:</b><br>
 &bull; <b>K<sub>d</sub> too low</b> &mdash; still weaving. D is not damping enough.<br>
 &bull; <b>K<sub>d</sub> too high</b> &mdash; twitchy, jerky, buzzing. D is now amplifying <i>sensor
 noise</i>, which is a rate too. (Challenge 2 fixes this properly.)</div>
@@ -1211,7 +1211,7 @@ noise</i>, which is a rate too. (Challenge 2 fixes this properly.)</div>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=15&amp;kind=cal_7c" style="color: #2e86ab; font-weight: bold;">Open 7C &mdash; Add D and Hill-Climb</a></p></div>
 </details>
 <h3 style="color: #c45d76; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">7D &mdash; Put I on the line. Watch it fail. &nbsp;<span style="color:#607d8b; font-size:0.8em;">(27,222 bytes)</span></h3>
-<div style="background: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; This rung is designed to fail. Build it anyway.</b> Section 3.5
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  This rung is designed to fail. Build it anyway.</b> Section 3.5
 told you the I term is wrong for the line loop. You should not believe a textbook that tells you
 something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b></div>
 <p>Add one constant:</p>
@@ -1283,7 +1283,7 @@ something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b><
 </pre>
 <p><b>Now run this, in this order:</b></p>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Run</th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Track</th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">KI_LINE</th><th style="background: #c45d76; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">What you will see</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">1</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A long <b>straight</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">0.5</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">It works. MAE may even drop a little. The steady offset shrinks.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">2</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A long, steady <b>curve</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">0.5</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Watch the <b>exit</b>. The robot keeps turning after the curve ends.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">3</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">The same curve</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">2.0</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">It swings wide out of the corner and has to fight its way back.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">4</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">A course with a <b>gap</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">2.0</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">It comes back off the gap and <b>lunges</b>. That is windup.</td></tr></table>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Now say out loud what you just saw, and why.</b><br><br>
+<div style="margin: 16px 0;"><b>Now say out loud what you just saw, and why.</b><br><br>
 On the straight, the steady error was a <i>mistake</i>, and I erased it &mdash; correctly.<br>
 On the curve, the steady error was <b>the steering command</b>. It was the <i>answer</i>. And I,
 which cannot tell the two apart, kept adding to it until the robot was turning harder than the curve
@@ -1315,7 +1315,7 @@ is steady-state error, and this is the first time in this book you have been abl
 this.</b></li>
 <li style="margin-bottom: 6px;">Back KpS off. Now bring <b>KiS</b> up from zero, slowly.</li>
 </ol>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>THE MOMENT.</b> Take the robot you just tuned on a fresh pack. Run it.
+<div style="margin: 16px 0;"><b>THE MOMENT.</b> Take the robot you just tuned on a fresh pack. Run it.
 Write down the MAE. Now put in a <b>tired battery</b> &mdash; one that still boots and still passes
 <code>selfTest()</code>, but is well down &mdash; and run the identical course.<br><br>
 <b>KiS = 0:</b> the robot runs slow the entire time, and it never gets faster. P sees the error, does
@@ -1326,7 +1326,7 @@ up until the wheels are actually turning at the speed you asked for.<br><br>
 <b>The term that was a liability on the line is the hero on the battery.</b> Same three lines of
 arithmetic. The world changed, not the code.</div>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Now go back and re-read section 3.5.</b> It should read differently than it did
+<div style="margin: 16px 0;"><b>Now go back and re-read section 3.5.</b> It should read differently than it did
 an hour ago. That is the point of the ladder.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7E in the Project Maker</summary>
@@ -1355,13 +1355,13 @@ an hour ago. That is the point of the ladder.</div>
 <p>You have now been burned twice by the same class of mistake, in two different lessons.
 Lesson 11: a stopwatch cannot measure a distance. Lesson 15: a millisecond clock cannot measure a
 two-millisecond loop.</p>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>An instrument is not &ldquo;good&rdquo; or &ldquo;bad.&rdquo; It is <i>matched</i> or
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>📘 An instrument is not &ldquo;good&rdquo; or &ldquo;bad.&rdquo; It is <i>matched</i> or
 <i>mismatched</i> to the thing you are measuring.</b> <code>millis()</code> is a fine clock. It has
 run every timeout in this book. It is simply <b>the wrong size</b> for this job, and being the wrong
 size does not make it complain &mdash; it makes it <i>lie quietly</i>.</div>
 <p>Before you divide by any measured interval, ask: <i>can my ruler even see this?</i></p>
 <h3 style="color: #c45d76; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">8A.2 A constant error is not automatically a mistake</h3>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">The I term encodes an assumption so deep that most textbooks never say it out
+<div style="margin: 16px 0;">The I term encodes an assumption so deep that most textbooks never say it out
 loud: <b>that an error which persists is an error which nobody is fixing.</b><br><br>
 On a dying battery, that assumption is true.<br>
 On a curve, it is <b>false</b> &mdash; the persistent error <i>is</i> the fix.<br><br>
@@ -1371,11 +1371,11 @@ of this lesson: not the equation, but the judgment about where the equation belo
 <p>State that must be cleared on entry belongs to <b>the entry</b>, not to the callers. Four
 callers today; five next month; the fifth one will forget. <code>enterFollowing()</code> costs 68
 bytes and makes forgetting impossible.</p>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">Recognize the shape of this. It is the same idea as Lesson 14's startup ritual:
+<div style="margin: 16px 0;">Recognize the shape of this. It is the same idea as Lesson 14's startup ritual:
 <b>enforce the order in code, not in memory.</b> Anything you have to <i>remember</i> to do is
 something you will eventually <i>forget</i> to do &mdash; and probably at a competition.</div>
 <h3 style="color: #c45d76; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">8A.4 &ldquo;Smoother&rdquo; is not a measurement</h3>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>An engineer who cannot say <i>how much better</i> has not shown that it is
+<div style="margin: 16px 0;"><b>An engineer who cannot say <i>how much better</i> has not shown that it is
 better at all.</b><br><br>
 MAE, PEAK and WEAVE are not there to make the lesson look scientific. They are there because human
 eyes are terrible at this: they see the last thing that happened, they want the change to have
@@ -1442,7 +1442,7 @@ in followLine(), before computing p:
   <span style="color: #569cd6;">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? KP_CORNER : currentKp;
   <span style="color: #569cd6;">float</span> p = kp * error;
 </pre>
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>The catch, and it is worth finding out the hard way:</b> the moment the
+<div style="margin: 16px 0;"><b>The catch, and it is worth finding out the hard way:</b> the moment the
 error crosses <code>CORNER_ERROR</code>, the gain <i>jumps</i>. A discontinuity in a controller is a
 place where it can chatter. If yours buzzes right at the threshold, you have found the reason real
 systems <i>blend</i> between gains instead of switching.</div>
@@ -1511,7 +1511,7 @@ dFiltered  = D_FILTER * ____ + (<span style="color: #b5cea8;">1.0</span> - D_FIL
   dFiltered = D_FILTER * dFiltered + (<span style="color: #b5cea8;">1.0</span> - D_FILTER) * dRaw;
   <span style="color: #569cd6;">float</span> d = currentKd * dFiltered;
 </pre>
-<div style="background: #fdf3e7; border-left: 5px solid #e67e22; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; Nothing is free.</b> The filter also delays the derivative &mdash; you
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  Nothing is free.</b> The filter also delays the derivative &mdash; you
 are, by definition, acting on slightly stale information. Turn <code>D_FILTER</code> up toward 0.95
 and you will find the point where D is so smooth it is no longer <i>early</i>, which was the entire
 reason you hired it. <b>Use the bench. Find the knee.</b></div>
@@ -1606,7 +1606,7 @@ print it on the score screen</pre>
   display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">7</span>); display.print(F(<span style="color: #ce9178;">"A- C+ holdA tapC B"</span>));
 }
 </pre>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>Read the number, then go and find out what caused it.</b> Something in
+<div style="margin: 16px 0;"><b>Read the number, then go and find out what caused it.</b> Something in
 your loop occasionally takes far longer than the rest. The OLED? The buzzer? A
 <code>delay()</code> you forgot about? <b>Every one of those milliseconds is a millisecond in which
 your controller is not controlling.</b></div>
@@ -1681,7 +1681,7 @@ your controller is not controlling.</b></div>
 <div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-10" style="font-size: 1.15em; font-weight: bold;">&#127881; Section 10: Wrap-Up</div></div>
 <div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 25px; background: white;">
 
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>What you built.</b> A line follower that anticipates instead of only
+<div style="margin: 16px 0;"><b>What you built.</b> A line follower that anticipates instead of only
 reacting. A speed loop that refuses to be slowly, quietly wrong. And a <b>bench</b> that can tell you,
 in a number, whether any change you make is an improvement or a story you told yourself.</div>
 
@@ -1694,7 +1694,7 @@ in a number, whether any change you make is an improvement or a story you told y
 <li style="margin-bottom: 6px;">Why &ldquo;that looked smoother&rdquo; is not an engineering claim.</li>
 </ul>
 
-<div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>One sentence to carry out of here:</b><br>
+<div style="margin: 16px 0;"><b>One sentence to carry out of here:</b><br>
 <i>P knows where you are. D knows where you are going. I remembers where you have been &mdash; and whether
 that memory is wisdom or superstition depends entirely on what you attached it to.</i></div>
 <h3 style="color: #6c757d; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">Engineer&rsquo;s Log</h3>
@@ -1748,7 +1748,7 @@ They are <b>identical</b>.</div>
 }
 </pre>
 <details data-reveal="hint" style="margin: 12px 0;"><summary style="cursor: pointer; color: #2e86ab; font-weight: bold;">
-Show the hint</summary><div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">Section 4.2. What is the smallest interval this clock can
+Show the hint</summary><div style="margin: 16px 0;">Section 4.2. What is the smallest interval this clock can
 resolve? What is the length of one pass through this loop? Now write down what <code>elapsed</code>
 equals on a fast pass, and then look at the line that divides by it.<br><br>
 And ask yourself why the fault is <i>worse on white</i>.</div></details>
@@ -1787,7 +1787,7 @@ pull.<br><br>
 }
 </pre>
 <details data-reveal="hint" style="margin: 12px 0;"><summary style="cursor: pointer; color: #2e86ab; font-weight: bold;">
-Show the hint</summary><div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">Compare this function, line for line, against the one in
+Show the hint</summary><div style="margin: 16px 0;">Compare this function, line for line, against the one in
 5.4. Something is <b>missing</b>, not changed. Then ask: if that line is gone, what does
 <code>lastError</code> hold on pass number 500? And what, therefore, is the derivative actually
 computing the rate of change <i>of</i>?<br><br>
@@ -1826,7 +1826,7 @@ smaller than correct.</b></div>
 }
 </pre>
 <details data-reveal="hint" style="margin: 12px 0;"><summary style="cursor: pointer; color: #2e86ab; font-weight: bold;">
-Show the hint</summary><div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><code>resetPID()</code> is still there. It is still correct.
+Show the hint</summary><div style="margin: 16px 0;"><code>resetPID()</code> is still there. It is still correct.
 It is still perfectly written. <b>Read the four lines under it.</b><br><br>
 Then remember what <code>readLine()</code> returns while the robot is blind &mdash; section 3.5 &mdash; and
 ask what <code>lastError</code> and <code>speedIntegral</code> are holding at the instant the line
@@ -1871,13 +1871,13 @@ IDENTICAL.</b></div>
 }
 </pre>
 <details data-reveal="hint" style="margin: 12px 0;"><summary style="cursor: pointer; color: #2e86ab; font-weight: bold;">
-Show the hint</summary><div style="background: #f4f9fc; border-left: 5px solid #2e86ab; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">One character. Find it.<br><br>
+Show the hint</summary><div style="margin: 16px 0;">One character. Find it.<br><br>
 Then think about what D is <i>for</i>: as the robot races back toward the line, the error is
 shrinking, so the derivative is <b>negative</b>. The correct controller <i>adds</i> that negative
 number, which <b>reduces</b> the correction &mdash; it brakes early. What does this one do with it?<br><br>
 <b>This is why a sabotage that only shows up when you turn a gain up is so dangerous: the bug hides
 behind the very knob you would use to find it.</b></div></details>
-<div style="background: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><b>&#9888; The lesson of B1 and B4, and it applies to every program you
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  The lesson of B1 and B4, and it applies to every program you
 will ever write:</b><br><br>
 <b>The byte count proves nothing.</b> Both of those builds are exactly, to the byte, the size of the
 correct program. A file size is not a test. A clean compile is not a test. A robot that drives across
@@ -1904,7 +1904,7 @@ the room is not a test.<br><br>
 <h3 style="color: #6c757d; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">The tuning protocol</h3>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Step</th><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Do</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>0</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Fix the track. Charge the battery. Mark the start line.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>1</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Kd = 0. <b>Double</b> Kp until it oscillates and will not settle. That Kp is <b>K<sub>u</sub></b>.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>2</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Read WEAVE at K<sub>u</sub>. <b>T<sub>u</sub> = 2 &divide; WEAVE.</b></td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>3</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Take the Z&ndash;N starting point: Kp = 0.6&nbsp;K<sub>u</sub>, Kd = Kp&nbsp;T<sub>u</sub>/8. (The robot prints it.)</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>4</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>Hill-climb:</b> one gain, &plusmn;50%, keep only if MAE drops.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>5</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>STOP</b> when no single &plusmn;50% move improves MAE.</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><b>6</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Speed loop: KpS until it is steadily slow, then bring KiS up until it is not.</td></tr></table>
 <h3 style="color: #6c757d; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">The rules</h3>
-<div style="background: #eef7f1; border-left: 5px solid #3a7d5c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">
+<div style="margin: 16px 0;">
 &bull; <b>The line loop gets P and D. The speed loop gets the I.</b><br>
 &bull; <b>Measure dt with <code>micros()</code>, every pass.</b> <code>millis()</code> cannot see this loop.<br>
 &bull; <b>Clamp the integral, not just the output.</b><br>
@@ -1921,7 +1921,7 @@ the room is not a test.<br><br>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Tag</th><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Image</th><th style="background: #6c757d; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Where</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">[IMAGE 15.1]</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">The three tenses &mdash; P reads the error, D reads its slope, I reads the area under it</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&sect;3.1</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">[IMAGE 15.2]</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">P vs PD response to the same step &mdash; oscillation vs a clean glide</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&sect;3.3</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">[IMAGE 15.3]</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Integral windup on a curve &mdash; why a steady error is not always a mistake</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">&sect;3.5</td></tr></table>
 
 <div style="background: linear-gradient(135deg, #6c757d 0%, #2e86ab 100%); color: white; padding: 20px 30px; border-radius: 10px; margin-top: 40px; text-align: center; font-size: 0.9em; opacity: 0.95;">
-Lesson 15 &middot; The Present Isn't Enough &middot; Version 02.3 &middot; Zumo 32U4 Robotics
+Lesson 15 &middot; The Present Isn't Enough &middot; Version 02.4 &middot; Zumo 32U4 Robotics
 </div>
 
 </body>
