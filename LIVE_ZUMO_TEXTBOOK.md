@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** July 21, 2026 (Session 60 — Project B COMPLETE: canonical shells book-wide + Goal/Logic/Template panels through L02–L15).
-**Status:** **L02 v02.7.0 + L03 v03.8.0 live; L04 v04.3.0 is this push.** L02/L03/L04 now fully paneled (shell repair + 🎯 Goal / 🧠 Logic / 🧩 Template on every algorithmic challenge). Every lesson L02–L15 now carries canonical cards. Maker **v2.41**, Bible **v8.38**. This LIVE.md + L04 are the remaining push.
+**Status:** **Project B fully clean, L01–L16.** L13 solution-comment/payload sync done (the last loose end) — L13 v02.3.1 + Maker v2.42. Every challenge card uses the canonical shell; sequential "Challenge N" headers now match their solution comments and Maker payloads everywhere. Bible **v8.38**. This push = L13 + Maker + LIVE.md.
 
-**Versions:** L01 v03.4.3 · L02 **v02.7.0** · L03 **v03.8.0** · L04 **v04.3.0** · L05 v04.3.0 · L06 v04.7.3 · L07 v04.3.13 · L08 **v04.2.0** · L09 **v05.1.0** · L10 **v02.2.0** · L11 **v02.3.0** · L12 v01.3.0 · L13 v02.3.0 · L14 **v02.5.0** · L15 **v02.3.0** · L16 v02.2.5 · Bible **v8.38** · Maker **v2.41** · Gate v1.6 · Harness v3.0.
+**Versions:** L01 v03.4.3 · L02 **v02.7.0** · L03 **v03.8.0** · L04 **v04.3.0** · L05 v04.3.0 · L06 v04.7.3 · L07 v04.3.13 · L08 **v04.2.0** · L09 **v05.1.0** · L10 **v02.2.0** · L11 **v02.3.0** · L12 v01.3.0 · L13 **v02.3.1** · L14 **v02.5.0** · L15 **v02.3.0** · L16 v02.2.5 · Bible **v8.38** · Maker **v2.42** · Gate v1.6 · Harness v3.0.
 
 ---
 
@@ -12,6 +12,8 @@
 **L14 (Competition Prep) — 3 challenges, hybrid.** C1 Wheel Test (MEDIUM) + C3 LoP Counter (TOUGH) → full Goal→Logic→Template cards; C2 Strict Mode (EASY) → prose card (three-line trick-question answer; panels would be hollow). Blanks verified to fill exactly to each solution.
 
 **L15 (The Present Isn't Enough / PID) — 7 challenges, two groups.** C1–C3 (MEDIUM) → full panel cards, multi-part solutions preserved verbatim in the reveal (all three templates fill exactly to solution). C4–C7 (HARD ×3 / ADVANCED) → canonical shell + **prose, no panels** — preserving their deliberately-open, no-solution design (the §9 intro states it: "the first three ship with solutions, the last four do not"). Two internal cross-refs to "Challenge 9.2" updated → "Challenge 2".
+
+**L13 — solution-comment sync (lesson + Maker).** L13’s cards read “Challenge 1/2/3” but its revealed-solution comments + payloads (c1_sweep/c2_report/c3_rowzero) still said “// CHALLENGE 9.x” — synced to 1/2/3 in both the lesson and the three Maker payloads (count-guarded; no collision with L09, which uses a different convention). Gate PASS, node --check clean. L13 v02.3.0→v02.3.1 (minor — banner unchanged per §5b), Maker v2.41→v2.42.
 
 **L02 + L03 + L04 — FULL PANELS (lesson-only).** Added 🎯 Goal / 🧠 Logic (Pseudocode) / 🧩 Template panels to every algorithmic challenge: L02 2.2–2.5, L03 3.1–3.7 (3.8 research = Goal+Logic), L04 4.1–4.5. Debug/no-solution types (L02 2.1, 2.6) stay prose. Template blanks fill to the real solution tokens (verified). Built with a preserve-everything rebuild after an early version dropped middle prose — triple-checked vs the original pre-shell files: zero prose/code/image/anchor/Maker-link loss, gate PASS, div balance 0, versions consistent. ⚠️ L02 v02.6.0 (the first panel build) had dropped prose and was superseded by v02.7.0. Versions: L02 v02.5.0→v02.7.0, L03 v03.7.0→v03.8.0, L04 v04.2.0→v04.3.0.
 
@@ -38,7 +40,6 @@ Verify by fresh clone (~30–40 s cache lag).
 ## STILL QUEUED (S61)
 
 - **Project B — DONE.** Shells canonical book-wide; Goal/Logic/Template panels on every algorithmic challenge L02–L15. L01 stays prose, L06/L07 already conformed, L16 = tier-cards (all intentional). Any remaining challenge-card polish is a future pass, not a gap.
-- **L13 solution-comment fix (carried from S59):** L13 cards say "Challenge 1/2/3" but the revealed-solution comments + `c1_sweep/c2_report/c3_rowzero` payloads still read `// CHALLENGE 9.x` — coordinated lesson+Maker sync, same operation just applied to L14/L15. Bumps L13 + Maker.
 - **Difficulty-progression audit (NEW, DJ-requested S60):** book-wide check that L01→L16 actually ramps consistently — easy at L01–L03, steadily harder after. Run once the Project B rollout is complete; verify we're doing what we set out to do.
 
 **LOGIN / TRACKING (parked, DJ "back burner" S60 — architecture confirmed):** The Robot-Trainer shell (`weymuth.github.io/Robot-Trainer/`) authenticates via a Cloudflare Worker `zumoauth.weymuthd.workers.dev` (session cookie; `/me` returns `{username}` = lastname+firstinitial, e.g. `weymuthd`; `/track` logs events; `home.html` already fires both). The zumo book/Maker share the origin `weymuth.github.io`, so the Worker already trusts them and the cookie already flows — no backend change needed to read `/me`. Deferred pieces, in order of appetite: (1) wire the Maker to `/me` to auto-fill the folder from the login and drop the name prompt (folder = the username directly; ~10 lines JS; keep a manual fallback for no-session opens); (2) a shared tracking snippet on the book/Maker/tutor pages (lesson-opened, key clicks, and — DJ: **definitely** — read-quality: scroll-depth + focus-time) posting to `/track`; this needs the Worker to actually **persist** the event stream somewhere queryable per student. Soft posture only (identity + logging, book stays readable without a session); hard-gating the book is a separate hosting change that only earns its keep if monetizing. Note: minors' behavioral data — keep minimal.
@@ -48,4 +49,4 @@ Verify by fresh clone (~30–40 s cache lag).
 **PARKED:** *(low priority, down-the-road)* challenge **countdown timers** — consider a SELECTIVE rollout to short/bounded "quick attempt" challenges only (not the heavy multi-step builds), decide after the fall classroom run; note they’re online-only (iframe), so solve the Canvas-display wrinkle first · solution-disclosure · monetization/ebook · "Know Your Zumo" · day-by-day grid + syllabus · TDP template v3 · §9 difficulty grouping · challenge-card full goal→logic→template redesign for the ~80 challenges that lack it (Project B pass B).
 
 ---
-*Written S60, July 21 2026. L02 v02.7.0 + L03 v03.8.0 live; L04 v04.3.0 + this LIVE.md are the final push. Project B (shells + panels) complete through L02–L15.*
+*Written S60, July 21 2026. Project B complete and clean across L01–L16; L13 sync (v02.3.1) + Maker v2.42 the final cleanup. This push = L13 + Maker + LIVE.md.*
