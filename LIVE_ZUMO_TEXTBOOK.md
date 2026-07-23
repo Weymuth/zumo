@@ -1,13 +1,31 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 22, 2026 (Session 62 — the split difficulty pill: challenges now carry TWO ratings, doing and grasping; applied L01–L03).
-**Status:** **Split-pill system live on L01–L03.** The difficulty pill is now ONE badge cut by a 45° slash into a **doing** half (five warm tiers — what the hands do) and a **grasping** half (three blues — what the head must hold), white text throughout. Canonized as **Bible §6.12b (v8.41)**, superseding the v8.27 single five-tier scale. 25 pills converted across L01/L02/L03 with five doing-axis re-rates. Grasping is rated **against the lesson prose**, which makes the pill a live instrument for §11 "§8A must cover what §9 requires" — a Deep rating on an untaught concept is a logged teaching gap. **PUSHED + LIVE — verified by fresh clone at commit `c6da344` (Jul 22), all four files byte-identical to delivery.** L04–L16 still carry single pills and are NOT yet swept.
+**Date:** July 22, 2026 (Session 63 — the robot icon family is LIVE: 42 files in `images/glowbots/`, bordered for buttons + transparent glow for images).
+**Status:** **Robot icon family LIVE — `images/glowbots/`, 42 files, commit `12867ea`.** Five robots (Zumo · 3Pi+ · Romi · Balboa · Zircon) in TWO sets: **bordered** (1254/256/128/64/52, RGB) for **buttons**, and **glow** (transparent RGBA, full 1186²/256/128) for **images**. Canonized as **Bible §21 (v8.42)**, which **supersedes the S61 frame-swap-only build rule** — the "never separate the robot from its glow" prohibition is lifted, since S63 cut all five successfully including the two §21.4 predicted would fail. Glow floor is **128 px**; below that use bordered. All five glow cutouts verified uniform (mean edge distance 1.28–1.32 px, zero opaque edge pixels at every size). **Split-pill system remains live on L01–L03 from S62 and is UNCHANGED — L04–L16 still carry single pills and are NOT yet swept, pending DJ's visual review of the rendered L01–L02 pills.**
 
-**Versions:** L01 v03.6.0 · L02 v02.10.0 · L03 v03.10.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.41** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
+**Versions:** L01 v03.6.0 · L02 v02.10.0 · L03 v03.10.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.42** · Maker **v2.43** · Gate v1.6 · Harness v3.0. *(No lesson version changed in S63 — icon work only.)*
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S62) — the split difficulty pill · L01–L03
+## WHAT SHIPPED THIS BATCH (S63) — the robot icon family
+
+**Pushed:** `images/glowbots/` — 42 files, flat. 25 bordered (5 robots × 1254/256/128/64/52, RGB) · 15 glow (5 × full-1186²/256/128, RGBA) · 2 QA contact sheets. Verified byte-identical to delivery by fresh clone at commit `12867ea`.
+
+**Buttons are bordered; images are glow** (DJ ruling). The border ring gives a hard silhouette that survives downsampling to 52 px; a transparent cutout does not.
+
+**The build method changed.** S61 canon said to NEVER separate the robot from its glow, on the evidence of a failed attempt. S63 separated all five — including Balboa (open roll cage) and Zircon (black PCB), the two that rule predicted would defeat it. Two findings made it work:
+1. **Edge-connected flood fill, not a brightness threshold.** Background = dark AND reachable from the crop edge, so interior dark pixels survive by construction.
+2. **Cut the falloff, don't preserve it.** The glow is painted additively on black, so its outer falloff IS black; kept as soft alpha it renders as grey haze — invisible on dark, filthy on white.
+
+**QA rule earned the hard way: check on white.** Three separate glow defects shipped in this session because every QA sheet was rendered on a dark background, where a transparent-cutout defect cannot be seen. DJ caught all three by eye and ultimately fixed three of the five masters in Photoshop; those became the reference, and 3Pi+/Balboa were tightened to match (they carried 57 px and 39 px of halo against the others' 0–1 px).
+
+**Also shipped:** Bible **v8.42** — §21.3 rewritten (two outputs, two methods), §21.4 amended (Balboa's real problem is that it is the only *portrait* robot, not that it is open-frame), §21.2 colors re-tabled (canonical = spec, as-built = recorded generator drift; 3Pi+ is the Δ55 outlier), §21.7 new (live file inventory + uniformity spec).
+
+**Open debts on this family:** border inset ships at 10–18 px against a 64 px spec (DJ: "leave them for now" — 64 remains the spec) · filenames are S63 working names, not a ruled convention · the two `QA_*` sheets are committed alongside real assets.
+
+---
+
+## WHAT SHIPPED LAST BATCH (S62) — the split difficulty pill · L01–L03
 
 **Why two axes.** A single pill has to lie whenever doing and grasping diverge. L03 C08 Auto-TRIM Preview asks for COMMENTS ONLY — trivial to do — but requires reasoning about encoder differentials three lessons before encoders exist. Rated ADVANCED it warned students off a card they could finish in ten minutes; rated EASY it hid the only hard thing about it. Split, it reads **Easy / Deep** and both are true.
 
