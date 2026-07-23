@@ -1,7 +1,7 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** July 22, 2026 (Session 61 — book-wide callout standardization sweep: all 16 lessons now type Tip/Note/Warning by function; L15/L16 de-boxed).
-**Status:** **Callout sweep complete, L01–L16.** Every coach callout now types by *function* on canonical colors per Bible §6.6a — Tip 💡 (make it work) / Note 📘 (why/context) / Warning ⚠️ (real caution). Book-wide totals: 77 Tip · 107 Note · 72 Warning. L15/L16 came into the system via **de-boxing**: ~52 rhetorical/analogy/flow boxes flattened to prose, 21 real callouts kept as typed boxes, formal devices (Key Terms, COMPILE CHECK, ENGINEER'S LOG, 🏆 RoboCup Connection) left intact. Triple-checked: div-balanced 16/16, zero content loss (only the bared "Coach" label word removed), formal devices byte-unchanged. **Bible v8.40** (§6.6a callout-by-function + §6.6 13-icon legend) and **Maker v2.43** are on disk. **STAGED, NOT PUSHED.** Robot-icon-family still blocked (S61 — image quality + ChatGPT credits); the single Zumo mark on the Textbook tile (`index.html` + `images/Zumo_Robot_Mark.png`) is in the working tree.
+**Status:** **Callout sweep complete, L01–L16.** Every coach callout now types by *function* on canonical colors per Bible §6.6a — Tip 💡 (make it work) / Note 📘 (why/context) / Warning ⚠️ (real caution). Book-wide totals: 77 Tip · 107 Note · 72 Warning. L15/L16 came into the system via **de-boxing**: ~52 rhetorical/analogy/flow boxes flattened to prose, 21 real callouts kept as typed boxes, formal devices (Key Terms, COMPILE CHECK, ENGINEER'S LOG, 🏆 RoboCup Connection) left intact. Triple-checked: div-balanced 16/16, zero content loss (only the bared "Coach" label word removed), formal devices byte-unchanged. **Bible v8.40** (§6.6a callout-by-function + §6.6 13-icon legend) and **Maker v2.43** shipped with the sweep. **PUSHED + LIVE — verified by fresh clone at commit `2401499` (Jul 22).** The single Zumo mark on the Textbook tile (`index.html` + `images/Zumo_Robot_Mark.png`, 52px) is also live. Still blocked: the robot-icon **family** (bordered + mark set) — image quality + ChatGPT credits.
 
 **Versions:** L01 v03.5.0 · L02 v02.9.0 · L03 v03.9.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.40** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
 
@@ -17,7 +17,7 @@
 
 **Verification (triple-checked).** 16/16 div-balanced · zero double-icons · zero malformed styles · zero empty de-boxed divs · every lesson shows balanced +/- edits (in-place swaps, no content deletion) · de-box removed only the bared "Coach" label word · formal devices byte-unchanged vs repo HEAD.
 
-**Also on disk, staged, unpushed:** Bible **v8.40** (§6.6a callout-by-function + §6.6 13-icon legend incl. 📘) · Maker **v2.43** · S61 robot mark on Textbook tile (`index.html` + `Zumo_Robot_Mark.png`). Robot-icon-**family** remains blocked (S61 image quality + ChatGPT credits).
+**Also shipped this batch (pushed + live):** Bible **v8.40** (§6.6a callout-by-function + §6.6 13-icon legend incl. 📘) · Maker **v2.43** · S61 robot mark on the Textbook tile (`index.html` + `Zumo_Robot_Mark.png`). Robot-icon-**family** remains blocked (image quality + ChatGPT credits).
 
 **Next.** Difficulty-progression audit (L01–L03 easy, consistent hardening across all 16 — DJ's stated big goal). Future: expand the 📓 Engineer's Log icon/section (DJ likes it). Standing parked queue unchanged.
 

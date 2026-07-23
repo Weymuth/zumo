@@ -6,7 +6,7 @@
 3. `grep -oE "Bible version: v[0-9.]+" ZUMO_SUPER_BIBLE.md` — confirm internal.
 4. LIVE.md wins over memory. **Grep the actual file/commit, never trust a pasted version number — or a summary's session number** (see process note below).
 
-## LIVE STATE — verified by fresh clone, Jul 22, commit `63a9bfb` (+ the LIVE.md session-label fix pushed right after)
+## LIVE STATE — verified by fresh clone, Jul 22, commit `2401499`
 All 16 lessons swept + live:
 L01 v03.5.0 · L02 v02.9.0 · L03 v03.9.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0
 Bible **v8.40** · Maker **v2.43** · Gate v1.6 · Harness v3.0
