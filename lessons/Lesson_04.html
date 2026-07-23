@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.4.0 -->
+<!-- Lesson version: v04.5.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Line Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Your Robot Cannot See &mdash; It Measures</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.4 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.5 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -1200,6 +1200,89 @@ display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5ce
 
 <p>Notice what the loop and the if are each responsible for. The loop decides <strong>how many times</strong>. The if decides <strong>what happens this time</strong>. Keep those two jobs straight and nested code stops being confusing — and you will need them together within the hour, because two of the Section 9 challenges are exactly this shape.</p>
 
+<h3 style="color: #c45d76;">🔁 8A.8 Remembering Where You Were: a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> as Memory</h3>
+
+<p>Every program you have written so far answers the same question over and over: <em>what is true right now?</em> The sensor is dark, so the LED is on. The sensor is light, so the LED is off. Ask again a tenth of a second later and the answer is fresh. Nothing is remembered, and nothing needs to be.</p>
+
+<p>Now try to count something. Slide a strip of tape under the center sensor and count how many times it passes. The obvious code is a disaster:</p>
+
+<pre style="background-color: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; overflow-x: auto;"><span style="color: #6a9955;">// WRONG - this counts hundreds per crossing</span>
+<span style="color: #569cd6;">if</span> (lineSensorValues[<span style="color: #b5cea8;">1</span>] &gt; <span style="color: #b5cea8;">600</span>) {
+    crossings++;
+}</pre>
+
+<p>The loop runs about ten times a second. The tape sits under the sensor for perhaps half a second. That is five trips through the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code>, all of them true, all of them adding one — for a single crossing. The count runs away and the number on the display is meaningless.</p>
+
+<p>The bug is not in the comparison. The comparison is right: the sensor really <em>is</em> over the tape, five times in a row. The bug is that you asked the wrong question. You do not want to know <strong>whether the sensor is on the line</strong>. You want to know <strong>whether it just arrived</strong> — and "just arrived" is not a fact about this instant. It is a fact about this instant <em>compared to the last one</em>.</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #1565c0;">&lt;/&gt; A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> that outlives one trip through the loop</strong>
+<div style="background: white; padding: 10px 14px; margin-top: 10px; border-radius: 3px;">
+<code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> — true or false, a yes/no switch — you met it in Lesson 2 §3.2b as a <em>type</em>. Here it takes a <em>job</em>: holding one fact from one loop into the next.
+</div>
+<p style="margin-bottom: 0; margin-top: 12px;">A variable declared <strong>above</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> — in GLOBAL VARIABLES — is created once and keeps its value forever. A variable declared <strong>inside</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> is born and dies on every trip. That placement is the whole difference between a robot that remembers and one that cannot.</p>
+</div>
+
+<p>So keep a flag that records where you were, and compare it to where you are:</p>
+
+<pre style="background-color: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; overflow-x: auto;"><span style="color: #6a9955;">// ===== GLOBAL VARIABLES =====</span>
+<span style="color: #569cd6;">bool</span> onLine = <span style="color: #569cd6;">false</span>;      <span style="color: #6a9955;">// where I was last time</span>
+<span style="color: #569cd6;">int</span>  crossings = <span style="color: #b5cea8;">0</span>;
+
+<span style="color: #6a9955;">// inside loop():</span>
+<span style="color: #569cd6;">bool</span> nowDark = (lineSensorValues[<span style="color: #b5cea8;">1</span>] &gt; <span style="color: #b5cea8;">600</span>);   <span style="color: #6a9955;">// where I am now</span>
+
+<span style="color: #569cd6;">if</span> (nowDark &amp;&amp; !onLine) {   <span style="color: #6a9955;">// dark now, light before -> just ARRIVED</span>
+    crossings++;
+}
+onLine = nowDark;           <span style="color: #6a9955;">// today becomes yesterday</span></pre>
+
+<p>Read the middle line out loud: <em>"if it is dark now and it was not dark before."</em> That is an <strong>edge</strong> — the moment a value changes, not the stretch of time it stays changed. The five true readings are still five true readings, but only the first of them has a false <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">onLine</code> sitting behind it, so only the first one counts.</p>
+
+<p>The last line is the one people forget, and forgetting it breaks everything in a way that is hard to see: without <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">onLine = nowDark;</code> the flag never updates, the second half of the test is true forever, and you are back to counting hundreds. The flag has to be brought up to date at the end of every trip, whether anything happened or not.</p>
+
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #37474f;">📘 Note</strong>
+<p style="margin-bottom: 0;">Real sensors do not switch cleanly. Right at the threshold a reading can flicker across the line several times in a few milliseconds, and each flicker is a fresh "arrival." The cure is to arm and disarm at two <em>different</em> values — count when it climbs past 600, but do not re-arm until it drops below 400. The gap between them is a no-man's-land that noise cannot rattle around in. That is <strong>hysteresis</strong>, and you will meet it again wherever a robot has to decide that something has genuinely changed.</p>
+</div>
+
+<h3 style="color: #c45d76;">🔁 8A.9 "Close Enough": <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs()</code> and the Deadband</h3>
+
+<p>Some questions are not "is it dark?" but "how far off am I?" Ask the line sensors for a position with <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readLine()</code> and you get a number from 0 to 2000, with 1000 meaning dead center. Subtract, and you have the most useful quantity in robotics:</p>
+
+<pre style="background-color: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; overflow-x: auto;"><span style="color: #569cd6;">int</span> error = position - <span style="color: #b5cea8;">1000</span>;   <span style="color: #6a9955;">// how far off centre, and which way</span></pre>
+
+<p>That single subtraction carries two facts at once. Its <strong>size</strong> says how wrong you are; its <strong>sign</strong> says which way. Position 1400 gives <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error = 400</code>; position 600 gives <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error = -400</code>. Equally wrong, opposite directions — which is exactly what you need to know to correct it.</p>
+
+<p>But now you want to ask "am I close enough to stop?" and the sign gets in the way. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error &lt; 100</code> is true for −400, which is not close at all. You need the size <em>without</em> the sign:</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #1565c0;">&lt;/&gt; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs()</code> — throw away the sign, keep the size</strong>
+<div style="background: white; padding: 10px 14px; margin-top: 10px; border-radius: 3px;">
+<code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs(x)</code> — the <em>absolute value</em> of x: how far it is from zero, always positive — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs(-400)</code> is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">400</code>, and so is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs(400)</code>.
+</div>
+<p style="margin-bottom: 0; margin-top: 12px;">Use it whenever you care <strong>how far off</strong> something is but not <strong>which side</strong> it is off on. Keep the signed value too — you still need the sign to know which way to correct.</p>
+</div>
+
+<p>So <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs(error) &lt; 100</code> asks the real question: am I within 100 of centre, on either side?</p>
+
+<p>Why not simply demand <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error == 0</code>? Because the robot will never get there, and it will destroy itself trying. Position 1002 is off by 2, so it corrects. The correction overshoots to 997, so it corrects the other way. Overshoot, correct, overshoot, correct — the robot buzzes in place around the target it cannot quite land on, forever. It is not broken. It is doing precisely what you asked, and what you asked was impossible.</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #1565c0;">&lt;/&gt; The <strong>deadband</strong> — a band where the robot does nothing</strong>
+<div style="background: white; padding: 10px 14px; margin-top: 10px; border-radius: 3px;">
+A <strong>deadband</strong> is a tolerance around the target inside which you take no action — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (abs(error) &lt; DEADBAND) { motors.setSpeeds(0, 0); }</code>
+</div>
+<p style="margin-bottom: 0; margin-top: 12px;">Too narrow and the robot hunts and buzzes. Too wide and it stops visibly off-target and calls it done. The right width is a number you find by trying, not one you can look up — it depends on your sensors, your surface, and your speed.</p>
+</div>
+
+<p>Put the three ideas in order and you have a control loop: measure the error, ignore it if it is small enough, otherwise push in the direction that shrinks it. Every steering correction in this book is that shape.</p>
+
+<div style="background-color: #e8d4c4; border-left: 4px solid #d4a574; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #8a5a2b;">🚀 Where this goes next</strong>
+<p style="margin-bottom: 0;">Right now the correction is blunt: off-centre, so pivot. In Lesson 8 you will make the correction <em>proportional</em> to the error — a small error gets a gentle nudge, a big one a hard shove — and the robot stops lurching and starts gliding. The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error = position - 1000</code> line you write in Challenge 5 today is the same line that becomes line following four lessons from now. This is not a warm-up for it; it <em>is</em> it, without a name yet.</p>
+</div>
+
 <div style="background-color: #e8d4c4; border-left: 4px solid #d4a574; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
 <strong style="color: #8a5a2b;">🚀 Where this goes next</strong>
 <p style="margin-bottom: 0;">Every challenge in Section 9 is an if statement wearing a costume, and two of them hand it a for loop to ride in. Lesson 5 wires ifs to the proximity sensors and takes the for loop further — counting <em>down</em>, and drawing bar graphs with it. Lesson 8 puts an if-driven correction inside a loop and calls it line following. You will never write another program without both.</p>
@@ -1217,10 +1300,10 @@ display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5ce
 </div>
 <div style="border: 2px solid #9b6a9e; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
-<p>Now it's your turn. Five challenges, easy to expert, each one an if statement wearing a different costume — and the last two put the motors back in play. <strong>All challenges run in the standard three-sensor configuration</strong> (your robot is already there after Section 7.3): center sensor = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code>, position scale 0–2000, center 1000. Every challenge card says where to work; challenges that replace your loop get their own project copy so your main build stays clean.</p>
+<p>Now it's your turn. Five challenges, easy to advanced, each one an if statement wearing a different costume — and the last two put the motors back in play. <strong>All challenges run in the standard three-sensor configuration</strong> (your robot is already there after Section 7.3): center sensor = <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">lineSensorValues[1]</code>, position scale 0–2000, center 1000. Every challenge card says where to work; challenges that replace your loop get their own project copy so your main build stays clean.</p>
 
-<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.1" data-kind="challenge" data-difficulty="easy">
-<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Line Light</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #4caf50; color: white;">EASY</span></div>
+<div id="challenge-1" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.1" data-kind="challenge" data-difficulty="easy" data-grasp="light">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 1: Line Light</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #4A6B22; color: #ffffff; padding: 3px 13px 3px 11px;">Easy</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #4A7FB5; color: #ffffff; padding: 3px 11px 3px 13px;">Light</span></span></div>
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> your main <strong>LastName_L04</strong> build — this challenge adds to it — or a fresh copy that opens <strong>preloaded with the finished three-sensor program</strong>: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_light" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> · <a href="#qr-leds" style="color: #2e86ab; font-weight: bold;">LEDs</a> &mdash; the display work goes in <em>both</em> branches</p>
@@ -1275,8 +1358,8 @@ else:
 </details>
 </div>
 </div>
-<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.2" data-kind="challenge" data-difficulty="medium">
-<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: The Line Counter</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3; color: white;">MEDIUM</span></div>
+<div id="challenge-2" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.2" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 2: The Line Counter</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #9A6B10; color: #ffffff; padding: 3px 13px 3px 11px;">Medium</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #0C3F6C; color: #ffffff; padding: 3px 11px 3px 13px;">Deep</span></span></div>
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — this challenge replaces your loop. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_counter" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-scales" style="color: #2e86ab; font-weight: bold;">Value scales</a> &mdash; two thresholds, one boolean memory</p>
@@ -1336,8 +1419,8 @@ lineSensors.readCalibrated(lineSensorValues);
 </details>
 </div>
 </div>
-<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.3" data-kind="challenge" data-difficulty="medium">
-<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: The Position Pointer</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #2196f3; color: white;">MEDIUM</span></div>
+<div id="challenge-3" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.3" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 3: The Position Pointer</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #9A6B10; color: #ffffff; padding: 3px 13px 3px 11px;">Medium</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #185FA5; color: #ffffff; padding: 3px 11px 3px 13px;">Moderate</span></span></div>
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=position_pointer" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-configs" style="color: #2e86ab; font-weight: bold;">The two configurations</a> · <a href="#qr-display" style="color: #2e86ab; font-weight: bold;">Display</a> &mdash; three sensors, so the scale is 0–2000</p>
@@ -1389,8 +1472,8 @@ display.gotoXY(<span style="color: #b5cea8;">0</span>, <span style="color: #b5ce
 </details>
 </div>
 </div>
-<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.4" data-kind="challenge" data-difficulty="hard">
-<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Edge Guard</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #ff9800; color: white;">HARD</span></div>
+<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.4" data-kind="challenge" data-difficulty="hard" data-grasp="moderate">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Edge Guard</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #8A2F18; color: #ffffff; padding: 3px 13px 3px 11px;">Hard</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #185FA5; color: #ffffff; padding: 3px 11px 3px 13px;">Moderate</span></span></div>
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — motors change everything. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=edge_guard" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-if" style="color: #2e86ab; font-weight: bold;">The if statement</a> &mdash; declare the motors object first — it's in <a href="#qr-hardware" style="color: #2e86ab; font-weight: bold;">Hardware objects</a></p>
@@ -1451,8 +1534,8 @@ lineSensors.readCalibrated(lineSensorValues);
 </details>
 </div>
 </div>
-<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.5" data-kind="challenge" data-difficulty="advanced">
-<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: The Centering Game</strong> <span style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; background: #f44336; color: white;">ADVANCED</span></div>
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="4.5" data-kind="challenge" data-difficulty="advanced" data-grasp="deep">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: The Centering Game</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #6B2545; color: #ffffff; padding: 3px 13px 3px 11px;">Advanced</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #0C3F6C; color: #ffffff; padding: 3px 11px 3px 13px;">Deep</span></span></div>
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 10px 0 0; font-size: 0.95em;">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=centering_game" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" style="color: #2e86ab; font-weight: bold;">Line sensor functions</a> · <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-configs" style="color: #2e86ab; font-weight: bold;">The two configurations</a> &mdash; center of the 0–2000 scale is 1000; correct <em>toward</em> the line</p>
@@ -1484,7 +1567,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 </div>
 <div style="padding: 15px 20px; border-bottom: 1px solid #eee;">
 <p><strong>Think it through before coding:</strong> position below center → the line is to the robot's <em>left</em> → pivot left (left track backward, right track forward). Above center → mirror it. Near center → stop. "Near" matters: demand <em>exactly</em> 1000 and the robot will vibrate forever around the target — give it a tolerance band (a <em>deadband</em>) and it settles.</p>
-<p><strong>Why this is the expert card:</strong> you are closing the full loop — sense → compute error → correct — which is, in miniature, the architecture of line following (Lesson 8) and PID control (Lesson 15). You're not preparing to do robotics anymore. This IS robotics.</p>
+<p><strong>Why this is the advanced card:</strong> you are closing the full loop — sense → compute error → correct — which is, in miniature, the architecture of line following (Lesson 8) and PID control (Lesson 15). You're not preparing to do robotics anymore. This IS robotics.</p>
 <p style="margin-top: 8px;">🔧 <strong>Functions you'll need:</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">lineSensors.readLine(lineSensorValues)</code> <span style="color:#666;">position 0–2000</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">motors.setSpeeds(L,R)</code> <span style="color:#666;">drive</span> · <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #333;">center of range ≈ 1000</code> <span style="color:#666;">the target</span></p>
 </div>
 <details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;"><summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">🔓 Click to reveal solution</summary>
@@ -1805,7 +1888,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <!-- Footer -->
 <footer style="text-align: center; padding: 30px; margin-top: 40px; background-color: #f8f9fa; border-radius: 8px; color: #6c757d;">
 <p style="margin: 0;">Zumo 32U4 Robotics • Lesson 04: Line Sensors</p>
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 04.4 — July 2026 • PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 04.5 — July 2026 • PlatformIO Edition</p>
 </footer>
 
 </body>
