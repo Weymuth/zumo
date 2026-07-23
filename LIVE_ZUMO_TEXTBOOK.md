@@ -1,9 +1,29 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 22, 2026 (Session 61 — book-wide callout standardization sweep: all 16 lessons now type Tip/Note/Warning by function; L15/L16 de-boxed).
-**Status:** **Callout sweep complete, L01–L16.** Every coach callout now types by *function* on canonical colors per Bible §6.6a — Tip 💡 (make it work) / Note 📘 (why/context) / Warning ⚠️ (real caution). Book-wide totals: 77 Tip · 107 Note · 72 Warning. L15/L16 came into the system via **de-boxing**: ~52 rhetorical/analogy/flow boxes flattened to prose, 21 real callouts kept as typed boxes, formal devices (Key Terms, COMPILE CHECK, ENGINEER'S LOG, 🏆 RoboCup Connection) left intact. Triple-checked: div-balanced 16/16, zero content loss (only the bared "Coach" label word removed), formal devices byte-unchanged. **Bible v8.40** (§6.6a callout-by-function + §6.6 13-icon legend) and **Maker v2.43** shipped with the sweep. **PUSHED + LIVE — verified by fresh clone at commit `2401499` (Jul 22).** The single Zumo mark on the Textbook tile (`index.html` + `images/Zumo_Robot_Mark.png`, 52px) is also live. Still blocked: the robot-icon **family** (bordered + mark set) — image quality + ChatGPT credits.
+**Date:** July 22, 2026 (Session 62 — the split difficulty pill: challenges now carry TWO ratings, doing and grasping; applied L01–L03).
+**Status:** **Split-pill system live on L01–L03.** The difficulty pill is now ONE badge cut by a 45° slash into a **doing** half (five warm tiers — what the hands do) and a **grasping** half (three blues — what the head must hold), white text throughout. Canonized as **Bible §6.12b (v8.41)**, superseding the v8.27 single five-tier scale. 25 pills converted across L01/L02/L03 with five doing-axis re-rates. Grasping is rated **against the lesson prose**, which makes the pill a live instrument for §11 "§8A must cover what §9 requires" — a Deep rating on an untaught concept is a logged teaching gap. **PUSHED + LIVE — verified by fresh clone at commit `c6da344` (Jul 22), all four files byte-identical to delivery.** L04–L16 still carry single pills and are NOT yet swept.
 
-**Versions:** L01 v03.5.0 · L02 v02.9.0 · L03 v03.9.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.40** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
+**Versions:** L01 v03.6.0 · L02 v02.10.0 · L03 v03.10.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.41** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
+
+---
+
+## WHAT SHIPPED THIS BATCH (S62) — the split difficulty pill · L01–L03
+
+**Why two axes.** A single pill has to lie whenever doing and grasping diverge. L03 C08 Auto-TRIM Preview asks for COMMENTS ONLY — trivial to do — but requires reasoning about encoder differentials three lessons before encoders exist. Rated ADVANCED it warned students off a card they could finish in ten minutes; rated EASY it hid the only hard thing about it. Split, it reads **Easy / Deep** and both are true.
+
+**The scales.** Doing: Easy `#4A6B22` · Medium `#9A6B10` · Tough `#B85425` · Hard `#8A2F18` · Advanced `#6B2545`. Grasping: Light `#4A7FB5` · Moderate `#185FA5` · Deep `#0C3F6C`. The doing ramp walks one direction around the warm wheel so order is legible without reading the words; grasping stays one blue family because warm-vs-cool is what signals the two halves ask different questions. Markup is inline-styles-only (Canvas-safe): a `display:inline-flex` badge with a skewed 8px white divider on negative margins, so the cut reads as one badge divided rather than two pills touching.
+
+**Doing-axis re-rates (5).** L01 C11 Battery Check MEDIUM→**Easy** (the `if` ships pre-written; student fills two blanks) · L02 C06 Scrolling Text HARD→**Medium** (a `for` loop plus variable `gotoXY` — the HARD was a missing Template panel, not difficulty) · L03 C03 constrain() EASY→**Medium** (introduces a new function AND a named cap) · L03 C05 Variable Speed MEDIUM→**Tough** (arrays + index + modulo) · L03 C08 Auto-TRIM ADVANCED→**Easy** (writes comments only).
+
+**Audit basis.** All 78 challenge bodies across L01–L16 were read against their pills before any edit; L01–L03 prose was grepped for every construct its challenges require. The full doing-axis audit found six mis-rates — the five above plus **L05 C01 Detection Counter EASY→Medium** (identical boolean edge-detection pattern to L04 C02, which is rated MEDIUM) and **L14 C02 Strict Mode EASY→Medium** (three lines of code, but the point is a trick question about `while(true)`). Those two are NOT yet applied — they live in L05/L14, outside this batch.
+
+**⚠ OPEN TEACHING GAP (marked, not fixed).** **L03 C05 Variable Speed** requires **arrays** and the **modulo operator `%`**. Neither appears anywhere in L03 prose — verified by grep, S62. Rated Tough / Deep. The modulo explainer was already in the standing queue; **the array gap was not previously known.**
+
+**Verification.** 25/25 pills matched one canonical shape before editing (zero strays). Bounded-scope script with `count==N` assert guards aborting before write. Visible-word diff vs. backups shows ONLY pill labels changed — no prose moved. Div and span counts identical in all three files. Both version homes bumped per §5b. Push verified by fresh clone with md5 match on all four files.
+
+**Also shipped:** Bible **v8.41** — new **§6.12b** (the split pill, its colors, its markup, and the rating discipline), **§6.12** pill spec rewritten to point at it, **§20.2** gains `data-grasp="light|moderate|deep"` alongside `data-difficulty` (name retained for the doing axis so existing tooling does not break).
+
+**Next.** Sweep the split pill across **L04–L16** (53 remaining pills, same method) — apply the two known re-rates (L05 C01, L14 C02) in that pass. Then resume the difficulty-progression audit proper, now on two axes instead of one.
 
 ---
 
