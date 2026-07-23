@@ -1,9 +1,23 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** July 22, 2026 (Session 63 — the robot icon family is LIVE: 42 files in `images/glowbots/`, bordered for buttons + transparent glow for images).
-**Status:** **Robot icon family LIVE — `images/glowbots/`, 42 files, commit `12867ea`.** Five robots (Zumo · 3Pi+ · Romi · Balboa · Zircon) in TWO sets: **bordered** (1254/256/128/64/52, RGB) for **buttons**, and **glow** (transparent RGBA, full 1186²/256/128) for **images**. Canonized as **Bible §21 (v8.42)**, which **supersedes the S61 frame-swap-only build rule** — the "never separate the robot from its glow" prohibition is lifted, since S63 cut all five successfully including the two §21.4 predicted would fail. Glow floor is **128 px**; below that use bordered. All five glow cutouts verified uniform (mean edge distance 1.28–1.32 px, zero opaque edge pixels at every size). **Split-pill system remains live on L01–L03 from S62 and is UNCHANGED — L04–L16 still carry single pills and are NOT yet swept, pending DJ's visual review of the rendered L01–L02 pills.**
+**Status:** **Robot icon family LIVE — `images/glowbots/`, 42 files, commit `12867ea`.** Five robots (Zumo · 3Pi+ · Romi · Balboa · Zircon) in TWO sets: **bordered** (1254/256/128/64/52, RGB) for **buttons**, and **glow** (transparent RGBA, full 1186²/256/128) for **images**. Canonized as **Bible §21 (v8.42)**, which **supersedes the S61 frame-swap-only build rule** — the "never separate the robot from its glow" prohibition is lifted, since S63 cut all five successfully including the two §21.4 predicted would fail. Glow floor is **128 px**; below that use bordered. All five glow cutouts verified uniform (mean edge distance 1.28–1.32 px, zero opaque edge pixels at every size). **Split pill live on L01–L03; the slash was HALVED this session** (8px→4px, margins -4px→-2px) across all 25 pills — Bible **§6.12b (v8.43)**. L04–L16 still carry single pills and are NOT yet swept, pending DJ's sign-off on the rendered look.
 
-**Versions:** L01 v03.6.0 · L02 v02.10.0 · L03 v03.10.0 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.42** · Maker **v2.43** · Gate v1.6 · Harness v3.0. *(No lesson version changed in S63 — icon work only.)*
+**Versions:** L01 v03.6.1 · L02 v02.10.1 · L03 v03.10.1 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.43** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
+
+---
+
+## ALSO SHIPPED (S63) — the split-pill slash, halved
+
+**The change.** `width: 8px; margin: 0 -4px` → `width: 4px; margin: 0 -2px` on all **25** live pills (L01 11 · L02 6 · L03 8). Markup was uniform — zero variants — so a single exact-match replace covered the book.
+
+**The margin is structurally half the width.** The two halves close *over* the slash; halving the width alone would have opened a 4px gap. Any future change to one number must change the other.
+
+**Verified:** div and span balance unchanged; a line-by-line diff audit confirmed every changed line is either a slash or a version comment, zero unexpected edits.
+
+**Versions:** L01 v03.6.1 · L02 v02.10.1 · L03 v03.10.1 — hidden comment only; visible banners (`Version 03.6` / `02.10` / `03.10`) left alone, since a cosmetic change is a minor bump per §5b.
+
+**Not applied:** DJ floated halving again to 2px — deferred, not done.
 
 ---
 
