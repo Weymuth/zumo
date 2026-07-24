@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.11.0 -->
+<!-- Lesson version: v02.12.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -69,7 +69,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Mastering the Code</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Reading Code You Didn't Write</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.11 &mdash; June 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.12 &mdash; June 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -423,7 +423,50 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 <div style="background-color: #3498db; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-3" style="font-size: 1.15em; font-weight: bold;">📖 Section 3: Code Anatomy</div></div>
 <div style="border: 2px solid #3498db; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
-<p>Every Arduino program you write will have the same basic structure. Think of it like a recipe — ingredients at the top, instructions in the middle, and techniques at the end.</p>
+<p>Every Arduino program you write will have the same basic structure. Think of it like a recipe &mdash; ingredients at the top, instructions in the middle, and techniques at the end.</p>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">🍽️ The recipe, written out</strong>
+
+<p style="margin: 8px 0;">Here is a real recipe for a real thing your robot can do &mdash; <em>blink the yellow LED twice when you press button A</em> &mdash; written the way a cookbook would write it. Every part has a home in the program.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.93em;">
+<tr style="background-color: #ffe9a8;">
+<th style="border: 1px solid #e0c060; padding: 8px; text-align: left; width: 34%;">Recipe part</th>
+<th style="border: 1px solid #e0c060; padding: 8px; text-align: left;">In the program</th>
+</tr>
+<tr>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Title card</strong><br><em>&ldquo;Double Blink &mdash; serves 1 robot&rdquo;</em></td>
+<td style="border: 1px solid #e0c060; padding: 8px;">The <strong>header comment</strong> &mdash; what this makes, who wrote it, when</td>
+</tr>
+<tr>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Equipment</strong><br><em>&ldquo;You will need a mixing bowl&rdquo;</em></td>
+<td style="border: 1px solid #e0c060; padding: 8px;">The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#include</code> &mdash; go get the toolbox before you start</td>
+</tr>
+<tr>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Ingredients</strong><br><em>&ldquo;1 button, 1 yellow LED&rdquo;</em></td>
+<td style="border: 1px solid #e0c060; padding: 8px;">The <strong>hardware objects</strong> &mdash; named, laid out, before you cook</td>
+</tr>
+<tr>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Measurements</strong><br><em>&ldquo;Bake at 350&deg; for 10 min&rdquo;</em></td>
+<td style="border: 1px solid #e0c060; padding: 8px;">The <strong>constants</strong> &mdash; the numbers, named once so you can adjust the whole dish in one place</td>
+</tr>
+<tr>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Prep, done once</strong><br><em>&ldquo;Preheat the oven&rdquo;</em></td>
+<td style="border: 1px solid #e0c060; padding: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> &mdash; runs one time, before anything else</td>
+</tr>
+<tr>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Method</strong><br><em>&ldquo;Stir until smooth. Repeat.&rdquo;</em></td>
+<td style="border: 1px solid #e0c060; padding: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> &mdash; the steps that run over and over</td>
+</tr>
+<tr>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Techniques</strong><br><em>&ldquo;To fold: cut down, turn the bowl&hellip;&rdquo;</em></td>
+<td style="border: 1px solid #e0c060; padding: 8px;"><strong>Helper functions</strong> &mdash; a move explained once at the back, referred to by name in the method</td>
+</tr>
+</table>
+
+<p style="margin-bottom: 0;">Read the method of a good recipe and you will notice it never re-explains a technique mid-step. It says &ldquo;fold in the egg whites&rdquo; and trusts the technique section. That is exactly what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">blinkLED();</code> is doing inside <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> &mdash; naming a move that is spelled out further down. <strong>A program you can read like a recipe is a program you wrote well.</strong></p>
+</div>
 
 <div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
 
@@ -479,7 +522,14 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 </div>
 
-<p style="text-align: center; margin: 20px 0;"><a href="https://weymuth.github.io/zumo/images/L02_GRAPHIC_2-05_sketch_anatomy.pdf" style="display: inline-block; background-color: #3498db; color: white; text-decoration: none; font-weight: bold; padding: 10px 22px; border-radius: 6px;">⬇ Download the Sketch Anatomy diagram (PDF)</a></p>
+<p style="text-align: center; margin: 20px 0;"><a href="https://weymuth.github.io/zumo/images/L02_GRAPHIC_2-05_sketch_anatomy.pdf" style="display: inline-block; background-color: #3498db; color: white; text-decoration: none; font-weight: bold; padding: 10px 22px; border-radius: 6px;">⬇ Download the Sketch Anatomy diagram (PDF)</a>
+&nbsp;
+<a href="https://weymuth.github.io/zumo/images/L02_GRAPHIC_2-05_sketch_anatomy_card.png" style="display: inline-block; background-color: #5a6872; color: white; text-decoration: none; font-weight: bold; padding: 10px 22px; border-radius: 6px;">⬇ Notebook card (PNG)</a></p>
+
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong>📓 For your engineering notebook</strong>
+<p style="margin-bottom: 0;">The <strong>PNG</strong> is sized to drop straight into a notebook &mdash; print it and tape it inside the front cover of a paper notebook, or paste it into a digital one. Unlike the diagram above, it is a picture, so it goes anywhere an image goes. Your notebook is your TDP, and a reference card in the front of it is worth more than the same diagram in a browser tab you have closed.</p>
+</div>
 
 <div style="background-color: #fff3e0; border-left: 4px solid #e67e22; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
 <strong>🔍 INSIGHT &mdash; That Unnumbered Row, in 10 Seconds</strong>
@@ -499,6 +549,63 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
   sayHello(); <span style="color: #6a9955;">// Now this compiles - the name was declared first</span>
 }</pre></div>
 <p>That is the whole trick. You will build with prototypes later in this lesson &mdash; this is just the handshake.</p>
+</div>
+
+<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; border-radius: 4px; margin: 20px 0;">
+
+<strong style="color: #2a5a42;">🎯 CHALLENGE (3 minutes) &mdash; Three Builds That Fail</strong>
+
+<p>You have now seen one scope error and its fix. Here are three more programs that will not build. <strong>Do not type them in.</strong> For each one, read it and answer two questions on paper: <em>which line does the compiler stop on, and what does it need?</em></p>
+
+<p style="margin-bottom: 6px;"><strong>Build 1:</strong></p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> setup() {}
+
+<span style="color: #569cd6;">void</span> loop() {
+  flashTwice();
+}
+
+<span style="color: #569cd6;">void</span> flashTwice() {
+  ledYellow(<span style="color: #b5cea8;">1</span>); delay(<span style="color: #b5cea8;">100</span>); ledYellow(<span style="color: #b5cea8;">0</span>);
+  ledYellow(<span style="color: #b5cea8;">1</span>); delay(<span style="color: #b5cea8;">100</span>); ledYellow(<span style="color: #b5cea8;">0</span>);
+}</pre>
+
+<p style="margin-bottom: 6px;"><strong>Build 2:</strong></p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> beep();
+
+<span style="color: #569cd6;">void</span> setup() {}
+
+<span style="color: #569cd6;">void</span> loop() {
+  beep();
+}</pre>
+
+<p style="margin-bottom: 6px;"><strong>Build 3:</strong></p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> showCount();
+
+<span style="color: #569cd6;">void</span> setup() {}
+
+<span style="color: #569cd6;">void</span> loop() {
+  showCount(<span style="color: #b5cea8;">5</span>);
+}
+
+<span style="color: #569cd6;">void</span> showCount(<span style="color: #569cd6;">int</span> n) {
+  display.print(n);
+}</pre>
+
+<details style="margin-top: 14px;">
+<summary style="cursor: pointer; font-weight: bold; color: #2a5a42;">🔓 Answers &mdash; click after you have written all three down</summary>
+<div style="margin-top: 12px;">
+
+<p><strong>Build 1 &mdash; the one you already know.</strong> Stops at <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">flashTwice();</code> inside <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code>: <em>'flashTwice' was not declared in this scope</em>. The definition is below <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> and the compiler has not met it yet. <strong>Fix:</strong> a prototype up in the unnumbered row.</p>
+
+<p><strong>Build 2 &mdash; this one is different, and it is the trap.</strong> The prototype is there, so the <em>compiler</em> is satisfied and reports nothing. The error arrives later and from a different program: <em>undefined reference to 'beep()'</em>. That is the <strong>linker</strong> talking. You promised a function existed and never wrote it. A prototype is a promise, not a definition &mdash; and something eventually checks.</p>
+
+<p style="margin-bottom: 0;"><strong>Build 3 &mdash; the prototype and the function disagree.</strong> The prototype promises <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">showCount()</code> takes nothing; the definition takes an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>. C++ treats those as two <em>different</em> functions, so the call matches the definition but the promise never gets kept: another <em>undefined reference</em>. <strong>Fix:</strong> the prototype must match the definition exactly &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">void showCount(int n);</code>. Copy the first line of the function and add a semicolon; do not retype it from memory.</p>
+
+</div>
+</details>
+
+<p style="margin-top: 14px; margin-bottom: 0;"><em>The lesson underneath all three: &ldquo;not declared in this scope&rdquo; and &ldquo;undefined reference&rdquo; are thrown by two different programs at two different times. Knowing which one is complaining tells you whether you forgot to <strong>announce</strong> a function or forgot to <strong>write</strong> it.</em></p>
+
 </div>
 
 <div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 20px 0; border-radius: 8px;">
@@ -1746,6 +1853,11 @@ loop()   →  1. change the comment so it describes the NEW job:
 <div style="color: #666; font-size: 14px; margin-top: 8px;"><strong>[IMAGE 2.10]</strong> The expected failure — 'buttonA' was not declared in this scope (File: L02_IMAGE_2-10_buttonA_error_red_build.png)</div>
 </div>
 
+<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; border-radius: 4px; margin: 20px 0;">
+<strong style="color: #2a5a42;">🎯 CHALLENGE (1 minute)</strong>
+<p style="margin-bottom: 0;">Make the robot answer button <strong>C</strong> instead of button A. You will change one letter in two places &mdash; and if you change only one of them, the build tells you exactly which one you missed.</p>
+</div>
+
 <!-- STEP 4 -->
 
 <div style="background-color: #3a7d5c; color: white; padding: 15px 20px; font-size: 1.2em; font-weight: bold;">STEP 4: Fix the Error — Add the Hardware Object</div>
@@ -2190,6 +2302,11 @@ blinkLED(); <span style="color: #6a9955;">// Call our helper function</span>
 
 </div>
 
+<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; border-radius: 4px; margin: 20px 0;">
+<strong style="color: #2a5a42;">🎯 CHALLENGE (2 minutes)</strong>
+<p style="margin-bottom: 0;">Call <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">blinkLED()</code> a second time inside <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">loop()</code> so the LED blinks twice per press. Then answer in your head: you added one line, not seven &mdash; <em>that</em> is what the helper function bought you.</p>
+</div>
+
 <!-- STEP 8 -->
 
 <div style="background-color: #3a7d5c; color: white; padding: 15px 20px; font-size: 1.2em; font-weight: bold;">STEP 8: Create the About Screen</div>
@@ -2370,6 +2487,11 @@ showControlsScreen();
 
 </div>
 
+<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; border-radius: 4px; margin: 20px 0;">
+<strong style="color: #2a5a42;">🎯 CHALLENGE (1 minute)</strong>
+<p style="margin-bottom: 0;">Add a fourth line to the controls screen listing one thing your robot cannot do yet. Use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">gotoXY(0, 6)</code>. Keep it under 21 characters &mdash; the screen is 21 columns wide, and anything longer is simply not drawn.</p>
+</div>
+
 <!-- STEP 10 -->
 
 <div style="background-color: #3a7d5c; color: white; padding: 15px 20px; font-size: 1.2em; font-weight: bold;">STEP 10: Create the Status Screen</div>
@@ -2464,6 +2586,11 @@ showStatusScreen();
 <div style="color: #666; font-size: 14px; margin-top: 8px;"><strong>[IMAGE 2.8]</strong> OLED showing the Status screen with uptime (File: L02_IMAGE_2-08_oled_status_screen.svg)</div>
 </div>
 
+</div>
+
+<div style="background-color: #e8f3ec; border-left: 4px solid #3a7d5c; padding: 15px 20px; border-radius: 4px; margin: 20px 0;">
+<strong style="color: #2a5a42;">🎯 CHALLENGE (2 minutes)</strong>
+<p style="margin-bottom: 0;">Add the battery voltage to the status screen. The reading comes from <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readBatteryMillivolts()</code> and arrives in millivolts, so 4,800 means 4.8&nbsp;volts. Print the raw number for now &mdash; making it read as <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">4.8V</code> is a Lesson 3 problem.</p>
 </div>
 
 <!-- STEP 11 -->
@@ -4409,7 +4536,7 @@ display.print(count);              <span style="color: #6a9955;">// a variable �
 
 <p style="margin: 0;">Zumo 32U4 Robotics &bull; Lesson 02: Read Code Like a Pro</p>
 
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 02.11 &mdash; July 2026 &bull; PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 02.12 &mdash; July 2026 &bull; PlatformIO Edition</p>
 
 </footer>
 
