@@ -13,8 +13,8 @@
 
 ## LIVE STATE at S67 close (pending DJ push — verify by fresh clone at S68 open)
 L01 v03.6.4 · L02 v02.13.4 · L03 v03.10.1 · L04 v04.5.3 · L05 v04.5.0 · **L06 v04.10.0** ·
-**L07 v04.6.0** · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.6.1 · L12 v01.6.0 ·
-L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0
+**L07 v04.6.1** · **L08 v04.4.1** · **L09 v05.3.1** · **L10 v02.4.1** · **L11 v02.6.2** ·
+**L12 v01.6.1** · **L13 v02.5.1** · **L14 v02.7.1** · **L15 v02.5.1** · L16 v02.4.0
 Bible **v8.49** (unchanged) · Maker **v2.44** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 ·
 book_gates v1.1 · going_deeper v01.0.0. All 14 book gates PASS on the delivered set.
 Base commit at S67 open was `aee2f8f` ("Sprial test" — DJ's push of the two S67 docs).
@@ -60,6 +60,31 @@ Base commit at S67 open was `aee2f8f` ("Sprial test" — DJ's push of the two S6
 6. **Process:** S67's own v1.0 assessment contained a hand-summed error (L06-after 2.43 vs true
    2.29); caught by DJ-requested double check, fixed as doc v1.1, ritual rule added (#6 above).
 
+
+## ALSO DONE IN S67 — THE SPIRAL-MARKING BATCH (second batch, after the ec3026a push)
+
+**14 markers, L07–L15, nine minor bumps** (hidden line only per §5b; visible banners unchanged).
+Format: established `Builds on:` box + spiral_star_NN.svg — card markers as a band after the
+work-in box; prose markers after their heading. **Format choice is Inferred** (the moved card used
+it and DJ pushed without objection) — one word from DJ reverses or restyles it.
+
+CARDS (8): L07 C6 ⭐06+03 (square) · L09 C3 ⭐06+04 · L10 C3 ⭐05 (counter) · L11 C3 ⭐07
+(trapezoid decel — the S67 move paying off same-session) · L11 C4 ⭐03 (TRIM) · L13 C1 ⭐09
+(state machine) · L13 C2 ⭐10 · L14 C3 ⭐10.
+PROSE (6): L08 §3 bang-bang ⭐04 (the LEARN example IS L04's Centering Game) · L08 §3.1 ⭐05
+(`beepInterval = 700 - (value * 100)` quoted exact from L05 C3 — a P-term three lessons early) ·
+L09 §3.4 ⭐03 (Variable Speed Test = an unnamed state machine) · L10 §1 ⭐05 · L12 §7E ⭐06 ·
+L15 §1 ⭐08.
+
+**Two proposed markers KILLED by quote-and-grep before insertion:** L10 C4 is a back-up phase,
+not debounce (the assessment doc's "hysteresis" claim was wrong — trust/debounce spine has no L10
+touchpoint); L08 C2's card text doesn't reference centering (marker relocated to §3 prose, where
+the relationship is verbatim). Verify-before-mark held.
+
+Coverage after batch: **L02–L15 every lesson ≥1 marker.** Only L01 (nothing prior to build on)
+and L16 (no challenge cards) are zero — both defensible, neither ruled.
+All 14 gates PASS, pill sweep clean, on the delivered set.
+
 ## S67 PROCESS NOTES
 - One assistant turn between DJ's "proceed" and "pushed" produced no output; DJ's push turned out
   to be the two docs, not move files (verified by tree-diff, not assumed). Canon held: verify by
@@ -72,9 +97,10 @@ Base commit at S67 open was `aee2f8f` ("Sprial test" — DJ's push of the two S6
 - **L08 capstone authoring** — now the ramp's only visible sag (2.00 behind two 2.29s).
   Part-B-scale. The natural spiral seed is in the spine map: L05 C3's beep formula IS a P-term
   the students already wrote — L08 never mentions it.
-- **Spiral marking batch, L07–L16** — nine spines mapped, stars 01–16 already in images/. Needs
-  one DJ ruling first: same `Builds on:` + star convention as L02–L06 (the moved card used it),
-  or a lighter back-half format. Bounded mechanical batch once ruled.
+- **Spiral marking: DJ format review** — the batch SHIPPED under the Inferred format ruling;
+  DJ should eyeball one card marker + one prose marker in the rendered book and bless or restyle.
+  Remaining unmarked spine touchpoints (deliberately skipped as weaker): L14 battery §4.3,
+  L14 self-test↔L09 debounce, L15 C1/C2 card-level markers.
 - **DJ's own tier pass** + **rolling depth read (L14 first)** — both still to come, unchanged.
 - **L16 zero challenge cards** — flagged twice now, still unruled (deliberate capstone shape?).
 
