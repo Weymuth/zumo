@@ -1,9 +1,41 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 23, 2026 (Session 64 — the split-pill sweep is COMPLETE: all 84 challenges across 15 lessons now carry both axes).
-**Status:** **THE SPLIT-PILL SWEEP IS COMPLETE.** L04–L15 swept this session; with L01–L03 from S62 that is **84 challenges across 15 lessons**, every card carrying `data-difficulty` AND `data-grasp`, and **0 old single pills remaining** (measured by `pill_sweep.py --audit`, not claimed). L16 is exempt — it uses the §6.12 tier-card variant and has no challenge cards. **Six teaching gaps were found and fixed** by the grasping pass, which is §6.12b working as designed (a Deep rating against untaught prose IS a gap): L04 §8A.8 `bool`-as-memory · L04 §8A.9 `abs()` and the deadband · L06 §5.5 the polygon exterior-angle rule · L07 C05 stub definition · L08 `qr-map` · L09 `qr-dowhile`. **Three doing-axis re-rates:** L05 C01 Easy→Medium and L14 C02 Easy→Medium (both carried in from the S63 handoff) plus L10 C03 Medium→Easy (new). The book's single **Tough** (L13 C02) was deliberately kept so the tier stays live. **Two missing footer banners repaired** (L02, L12) — all 16 lessons now have both §5b visible homes agreeing for the first time. Canonized as Bible **§6.12b** (sweep complete + the progression table), **§6.12c** (inline CSS drifts per rebuild — match structurally), **§11** (a transcribed-only construct gets a Quick Reference row, not a prose section) and **§5b** (both banner homes mandatory). New tool: **`pill_sweep.py` v1.0**, repo root.
+**Date:** July 24, 2026 (Session 65 — L02 depth pass, the Going Deeper page, and terminal-output color canon).
+**Status:** **L02 GOT A DEPTH PASS AND THE BOOK GOT AN OPTIONAL-READING PAGE.** Five prose additions to L02 (brace style + the one-liner trap · a full `F()` explainer · short-circuit evaluation · "why, not what" pulled forward from L10 · the semicolon habit and why the error points at the wrong line), plus a `qr-flash` Quick Reference row. `F()` was used **692 times across 15 lessons and explained once** — same defect class as S64's `map()` and `do…while`. Brief `F()` reminders added to **L12** and **L16**, the only two lessons with memory prose already on the page (L07/L14/L15 evaluated and rejected — L07 has zero memory prose; L14/L15 "ceiling" hits are the 2000 µs sensor timeout). L02 also gained the **robot recipe table**, a **printable notebook card** (`_card.png`, 1800×1816 @300dpi), a **3-minute "Three Builds That Fail" debug challenge**, and **ten live timer iframes** — every timed challenge in L02 now has a real countdown, 20 in total. New standalone **`going_deeper.html` v01.0.0** — six collapsible entries, every one anchored to a chapter, linked from the index tools row. Canonized as Bible **§22** (terminal color), **§6.13** (the guard-clause brace rule) and **§23** (Going Deeper).
 
-**Versions:** L01 v03.6.1 · L02 v02.10.2 · L03 v03.10.1 · L04 v04.5.0 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.0 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.5.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.3.0 · Bible **v8.44** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep **v1.0**.
+**Versions:** L01 v03.6.2 · L02 v02.12.2 · L03 v03.10.1 · L04 v04.5.0 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.1 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.6.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0 · Bible **v8.45** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · going_deeper **v01.0.0**.
+
+---
+
+## WHAT SHIPPED THIS BATCH (S65)
+
+**L02 depth pass — five additions.** All five came from DJ's own read of the lesson. Brace style
+(Allman vs K&R, book is K&R at 837 vs 2) plus a ⚠️ WARNING on the one-liner trap — the second line that
+silently escapes a braceless `if`, compiles clean, and misbehaves. A full `F()` explainer replacing a
+four-sentence note. Short-circuit evaluation, which had **zero hits book-wide**. "Why, not what" pulled
+forward from its only prior appearance in L10. And the semicolon habit, including the part that actually
+confuses people: the compiler reports the line *after* the mistake.
+
+**The `F()` gap.** 692 uses across 15 lessons, one explanation. Now a proper LEARN section (flash vs SRAM
+table, the AVR copy-to-SRAM behavior, the desk-and-bookshelf analogy, and the fact that SRAM overflow gives
+**no error at all**) plus a `qr-flash` Quick Reference row and two placed reminders. Reminder placement was
+measured, not guessed: only **L12** (which already names 28,672 and watches the linker discard dead weight)
+and **L16** (the wall) have memory prose to attach to.
+
+**Timers were the miss worth recording.** `timer.html` is a **live countdown iframe** (`?min=`/`?label=`),
+and L02 already had ten on its Challenge and Bonus cards. The build-step challenges had only the *text*
+"CHALLENGE (1 minute)" with no widget — and the first S65 pass added more text labels, not timers. Ten real
+iframes now cover every build step. Step 2 already had its heading; what it lacked was the timer.
+
+**Going Deeper (`going_deeper.html` v01.0.0).** Six collapsible entries: ASCII/binary/baud · what `F()`
+really does (Harvard vs von Neumann) · the four-stage build chain · translation units and why eight files ·
+fixed point applied to Kp · class vs instance. Every entry anchors to a chapter and closes pointing back at
+it. Most of the offered general-C++ material was **rejected** for having no anchor.
+
+**Terminal color canon (Bible §22).** SUCCESS `#6a9955` (DJ-ruled — deliberately the comment green, not the
+terminal's brighter true green), errors `#f14c4c`. The diagnostic line goes red; the source echo and caret
+stay plain, because L02's "look at the line above" rule depends on the student judging that line themselves.
+Of 71 blocks containing the word "error", only **11** are console output.
 
 ---
 
