@@ -225,8 +225,12 @@
       if (!units.length) { s.disabled = true; return; }
       s.disabled = false;
       const label = el => (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 60);
-      const chs = units.filter(u => u.getAttribute("data-kind") !== "mystery");
-      const mys = units.filter(u => u.getAttribute("data-kind") === "mystery");
+      // A unit with no data-kind is a canonical challenge card (the book's
+      // default and the majority case) -- keep that behaviour unchanged.
+      const kindOf = u => u.getAttribute("data-kind") || "challenge";
+      const of = k => units.filter(u => kindOf(u) === k);
+      const known = ["challenge", "warmup", "tryit", "mystery"];
+      const other = units.filter(u => !known.includes(kindOf(u)));
       const group = (name, arr) => {
         if (!arr.length) return;
         const g = document.createElement("optgroup"); g.label = name;
@@ -237,8 +241,11 @@
         });
         s.appendChild(g);
       };
-      group("Challenges", chs);
-      group("Mysteries", mys);
+      group("Challenges", of("challenge"));
+      group("Warm-Ups", of("warmup"));
+      group("Try It", of("tryit"));
+      group("Mysteries", of("mystery"));
+      group("Other", other);
     }
 
     function onChallengeChange() { currentChallenge = document.getElementById("challengeSelect").value; }
