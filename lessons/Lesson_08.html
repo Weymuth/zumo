@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.4.1 -->
+<!-- Lesson version: v04.5.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -44,7 +44,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Line Following</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Proportional Control, and Why Bang-Bang Fails</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.4 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.5 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -2212,6 +2212,126 @@ ELSE: USE high Kp (aggressive)</pre>
 
 </div>
 
+<!-- Challenge 6: The Racing Line -->
+
+<div id="challenge-6" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="8.6" data-kind="challenge" data-difficulty="advanced" data-grasp="deep">
+
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;">
+
+<strong>Challenge 6: The Racing Line</strong>
+
+<span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #6B2545; color: #ffffff; padding: 3px 13px 3px 11px;">Advanced</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #0C3F6C; color: #ffffff; padding: 3px 11px 3px 13px;">Deep</span></span>
+
+</div>
+
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=racing_line" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
+<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" style="color: #2e86ab; font-weight: bold;">The Formula</a> &mdash; one error, two listeners: the steering P you already have, and the throttle P you are about to add. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">KS</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">MIN_SPEED</code> are yours to tune.</p>
+</div>
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the beep-speed formula from Lesson 5 <img src="https://weymuth.github.io/zumo/images/spiral_star_05.svg" alt="Spiral review from Lesson 05" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; output proportional to input, one more time. There it set a beep. Here it sets the throttle.</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🎯 THE GOAL</h4>
+
+<p>One <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">BASE_SPEED</code> is a compromise: fast enough to win the straights, slow enough to survive the curves. Challenge&nbsp;1 found that compromise number. Now remove the compromise &mdash; <strong>let the error set the throttle.</strong> Centered means full speed. Far off the line means the robot slows itself down. Two proportional controllers running on the same error: one steers, one throttles.</p>
+
+</div>
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧠 THE LOGIC</h4>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">1. position, error, correction &mdash; UNCHANGED (the steering P)
+2. speed = BASE_SPEED - KS &times; |error|   (the throttle P)
+3. IF speed &lt; MIN_SPEED: speed = MIN_SPEED   (the floor)
+4. left = speed + correction, right = speed - correction
+5. constrain both, setSpeeds &mdash; UNCHANGED</pre>
+
+</div>
+
+<div style="padding: 15px 20px; background: #e8f5e9;">
+
+<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
+
+<h4 style="color: #9b6a9e; margin-top: 25px;">🧩 THE TEMPLATE</h4>
+
+<p>Two new dials in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code>, next to the other line-following constants:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> KS = ____;        <span style="color: #7cbf6e;">// Throttle gain - how hard error brakes the robot</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MIN_SPEED = ____;    <span style="color: #7cbf6e;">// The floor - never crawl slower than this</span></pre>
+
+<p>Then two new lines inside <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine()</code> in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> &mdash; everything else stays exactly as it is:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> followLine() {
+  <span style="color: #569cd6;">int</span> position = readLinePosition();
+  <span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+  <span style="color: #569cd6;">int</span> correction = currentKp * error;
+
+  <span style="color: #7cbf6e;">// THE THROTTLE P - speed falls as the error grows</span>
+  <span style="color: #569cd6;">int</span> speed = BASE_SPEED - ____________;
+  <span style="color: #569cd6;">if</span> (speed &lt; MIN_SPEED) {
+    speed = ____________;
+  }
+
+  <span style="color: #569cd6;">int</span> leftSpeed = speed + correction;
+  <span style="color: #569cd6;">int</span> rightSpeed = speed - correction;
+  leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
+  rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
+  motors.setSpeeds(leftSpeed, rightSpeed);
+}</pre>
+
+</div>
+
+<details data-reveal="solution">
+
+<summary>🔓 Click to reveal a worked version</summary>
+
+<p><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">float</span> KS = <span style="color: #b5cea8;">0.03</span>;        <span style="color: #7cbf6e;">// Throttle gain - how hard error brakes the robot</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MIN_SPEED = <span style="color: #b5cea8;">100</span>;    <span style="color: #7cbf6e;">// The floor - never crawl slower than this</span></pre>
+
+<p><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> followLine() {
+  <span style="color: #569cd6;">int</span> position = readLinePosition();
+  <span style="color: #569cd6;">int</span> error = position - LINE_CENTER;
+  <span style="color: #569cd6;">int</span> correction = currentKp * error;
+
+  <span style="color: #7cbf6e;">// THE THROTTLE P - speed falls as the error grows</span>
+  <span style="color: #569cd6;">int</span> speed = BASE_SPEED - KS * abs(error);
+  <span style="color: #569cd6;">if</span> (speed &lt; MIN_SPEED) {
+    speed = MIN_SPEED;
+  }
+
+  <span style="color: #569cd6;">int</span> leftSpeed = speed + correction;
+  <span style="color: #569cd6;">int</span> rightSpeed = speed - correction;
+  leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
+  rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
+  motors.setSpeeds(leftSpeed, rightSpeed);
+}</pre>
+
+<p><strong>The arithmetic of the throttle:</strong> error tops out at 2000. At <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">KS = 0.03</code> the biggest possible slowdown is 0.03 &times; 2000 = 60 &mdash; a BASE_SPEED of 150 dips to 90 in the worst moment, and the floor catches it at 100. Raise KS and the robot brakes harder for its mistakes; raise it too far and it crawls through every wobble.</p>
+
+<p><strong>Three ways this goes wrong:</strong></p>
+<ul>
+<li><strong>Used <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error</code> instead of <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs(error)</code>:</strong> the robot speeds UP when the line drifts one way and brakes the other way. Slowing down has no direction &mdash; that is what the absolute value is for.</li>
+<li><strong>No floor:</strong> a hard corner at a hot KS can drive speed to zero &mdash; the robot stalls in exactly the curve it most needed to finish. MIN_SPEED is the promise that it always keeps moving.</li>
+<li><strong>Tuned KS before Kp:</strong> the throttle rides on the steering. A wobbling robot manufactures fake error and brakes for corners that are not there. Wiggle Test first (Challenge&nbsp;2), then KS.</li>
+</ul>
+
+<p><strong>The tuning ritual, in order:</strong> tune Kp until stable (Challenge&nbsp;2) &rarr; raise KS until curves feel deliberate instead of desperate &rarr; then raise BASE_SPEED <em>past</em> the maximum you recorded in Challenge&nbsp;1. That old number was the compromise. The compromise is gone, so your straight-line ceiling is higher than it was &mdash; write both numbers in your notebook, side by side.</p>
+
+<p><strong>Notice what you built:</strong> Challenge&nbsp;5 picked between three gains by error band &mdash; steps. This slides continuously &mdash; a ramp. Same idea, smoother tool. And in Lesson&nbsp;15 you will bolt two more terms onto this very same <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">error</code> variable. Today the error got a second listener; there it gets a memory and a forecast.</p>
+
+</details>
+
+</div>
+
+</div>
+
+
 <div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 20px 0; border-radius: 4px;">
     <strong>🏁 FINISHED EARLY?</strong>
     <p style="margin-bottom: 0;">Five line-following mysteries wait in <a href="#bonus-challenges" style="color: #2e86ab; font-weight: bold;">Bonus</a> &mdash; each Maker link opens the finished build with one defect planted: a correction steering the wrong way, a gain stuck at zero, a calibration that never happened, a gap timer that never gives up, and a robot blind on a perfect line.</p>
@@ -2591,7 +2711,7 @@ map(2000, 0, 4000, 0, 20)   <span style="color: #6a9955;">// 2000 is halfway thr
 
 <hr>
 
-<p style="text-align: center; color: #6c757d;"><em>Lesson 8: Line Following with Proportional Control</em> — Version 04.4 — July 2026</p>
+<p style="text-align: center; color: #6c757d;"><em>Lesson 8: Line Following with Proportional Control</em> — Version 04.5 — July 2026</p>
 
 </body>
 

@@ -13,9 +13,9 @@
 
 ## LIVE STATE at S67 close (pending DJ push — verify by fresh clone at S68 open)
 L01 v03.6.4 · L02 v02.13.4 · L03 v03.10.1 · L04 v04.5.3 · L05 v04.5.0 · **L06 v04.10.0** ·
-**L07 v04.6.1** · **L08 v04.4.1** · **L09 v05.3.1** · **L10 v02.4.1** · **L11 v02.6.2** ·
+**L07 v04.6.1** · **L08 v04.5.0** · **L09 v05.3.1** · **L10 v02.4.1** · **L11 v02.6.2** ·
 **L12 v01.6.1** · **L13 v02.5.1** · **L14 v02.7.1** · **L15 v02.5.1** · L16 v02.4.0
-Bible **v8.49** (unchanged) · Maker **v2.44** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 ·
+Bible **v8.49** (unchanged) · Maker **v2.45** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 ·
 book_gates v1.1 · going_deeper v01.0.0. All 14 book gates PASS on the delivered set.
 Base commit at S67 open was `aee2f8f` ("Sprial test" — DJ's push of the two S67 docs).
 
@@ -85,6 +85,19 @@ Coverage after batch: **L02–L15 every lesson ≥1 marker.** Only L01 (nothing 
 and L16 (no challenge cards) are zero — both defensible, neither ruled.
 All 14 gates PASS, pill sweep clean, on the delivered set.
 
+
+## ALSO DONE IN S67 — THE L08 CAPSTONE (third batch, after the 084b5de push)
+
+**Challenge 6: The Racing Line (Advanced/Deep) · L08 v04.5.0 · Maker v2.45.** DJ-approved design:
+a second P-controller on the same error — `speed = BASE_SPEED - KS * abs(error)` + `MIN_SPEED`
+floor; steering P untouched. Closes C1's compromise, spirals L05 C3 (⭐05 band on the card),
+slides where C5 stepped, seeds L15. Constructs verified in L08's own payload (constrain/abs/
+millis). Maker = one `racing_line` finished-preload row, zero payload authoring.
+**Ramp: L08 2.00→2.50. L01→L10 is now fully monotone non-decreasing** —
+1.36 · 1.67 · 1.88 · 2.00 · 2.20 · 2.29 · 2.29 · 2.50 · 2.50 · 2.60. Remaining dips: L11
+(priced-in from S66) and L14's mild step after L13. Solution NOT harness-compiled (same
+toolchain block) — same bench item as the trapezoid: compile L08 finished + C6 green.
+
 ## S67 PROCESS NOTES
 - One assistant turn between DJ's "proceed" and "pushed" produced no output; DJ's push turned out
   to be the two docs, not move files (verified by tree-diff, not assumed). Canon held: verify by
@@ -94,9 +107,9 @@ All 14 gates PASS, pill sweep clean, on the delivered set.
   code line is the header declaration. → BENCH item.
 
 ## S68 CANDIDATES (audit continues — needs DJ rulings)
-- **L08 capstone authoring** — now the ramp's only visible sag (2.00 behind two 2.29s).
-  Part-B-scale. The natural spiral seed is in the spine map: L05 C3's beep formula IS a P-term
-  the students already wrote — L08 never mentions it.
+- **L08 capstone: DONE (The Racing Line).** The L01→L10 ramp is finished. What remains of the
+  progression audit: DJ's own tier pass · his rolling depth read (L14 first) · the L12–L14
+  count question if it ever reopens (Job A shelved) · L14's mild step after L13 (log only).
 - **Spiral marking: DJ format review** — the batch SHIPPED under the Inferred format ruling;
   DJ should eyeball one card marker + one prose marker in the rendered book and bless or restyle.
   Remaining unmarked spine touchpoints (deliberately skipped as weaker): L14 battery §4.3,
@@ -121,7 +134,7 @@ All 14 gates PASS, pill sweep clean, on the delivered set.
 
 ## BENCH (need the robot)
 Q017 L09 six numbers · calibration-spin stopwatch · gyro-bias · L02 §5 green-LED · Constrain
-RUN_MS · L11 C4 double-TRIM mirror-drift · **L07+trapezoid green-build verify (NEW)**.
+RUN_MS · L11 C4 double-TRIM mirror-drift · **L07+trapezoid green-build verify (NEW)** · **L08+Racing-Line green-build verify (NEW)**.
 
 ## PARKED (don't reopen unprompted)
 Solution-disclosure · monetization/ebook · "Know Your Zumo" page.
