@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.13.3 -->
+<!-- Lesson version: v02.13.4 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -69,7 +69,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Mastering the Code</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Reading Code You Didn't Write</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.13 &mdash; June 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.13 &mdash; July 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -2147,11 +2147,11 @@ display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));</pre>
 
 <p><strong>So here is the problem.</strong> When you write a piece of text in your program &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">"Press A, B, or C"</code> &mdash; that text has to be stored in flash, because flash is where your uploaded program lives. Fine. But the AVR chip has an awkward habit: at power-on, before your <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> even runs, it <strong>copies every string out of flash and into SRAM</strong>, and leaves the copy there for the entire time the robot is on.</p>
 
-<p>Count the cost. That one string is 17 characters, so 18 bytes with its invisible end-marker. Ten messages like it and you have quietly spent 180 bytes of your 2,560 &mdash; seven percent of your working memory &mdash; on text that never changes and is only read.</p>
+<p>Count the cost. That one string is 16 characters, so 17 bytes once you count the invisible marker C++ puts on the end of every string. Ten messages like it and you have quietly spent 170 bytes of your 2,560 &mdash; about seven percent of your working memory &mdash; on text that never changes and is only read.</p>
 
 <p><strong>What <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> does is cancel the copy.</strong> Wrapping a string tells the compiler: leave this one in flash, and teach <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">print()</code> to read it straight from there, one character at a time, at the moment it is needed.</p>
 
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">display.print(<span style="color: #ce9178;">"Press A, B, or C"</span>);      <span style="color: #6a9955;">// 18 bytes of SRAM, permanently</span>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">display.print(<span style="color: #ce9178;">"Press A, B, or C"</span>);      <span style="color: #6a9955;">// 17 bytes of SRAM, permanently</span>
 display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));   <span style="color: #6a9955;">// 0 bytes of SRAM</span></pre>
 
 <p>Two extra characters. The screen shows exactly the same thing. The difference is invisible until the day it isn't.</p>

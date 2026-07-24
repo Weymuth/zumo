@@ -3,7 +3,7 @@
 **Date:** July 24, 2026 (Session 65 — L02 depth pass · Going Deeper · terminal colors · the Challenge-name split).
 **Status:** **L02 GOT A DEPTH PASS AND THE BOOK GOT AN OPTIONAL-READING PAGE.** Five prose additions to L02 (brace style + the one-liner trap · a full `F()` explainer · short-circuit evaluation · "why, not what" pulled forward from L10 · the semicolon habit and why the error points at the wrong line), plus a `qr-flash` Quick Reference row. `F()` was used **692 times across 15 lessons and explained once** — same defect class as S64's `map()` and `do…while`. Brief `F()` reminders added to **L12** and **L16**, the only two lessons with memory prose already on the page (L07/L14/L15 evaluated and rejected — L07 has zero memory prose; L14/L15 "ceiling" hits are the 2000 µs sensor timeout). L02 also gained the **robot recipe table**, a **printable notebook card** (`_card.png`, 1800×1816 @300dpi), a **3-minute "Three Builds That Fail" debug challenge**, and **ten live timer iframes** — every timed challenge in L02 now has a real countdown, 20 in total. New standalone **`going_deeper.html` v01.0.0** — six collapsible entries, every one anchored to a chapter, linked from the index tools row. Canonized as Bible **§22** (terminal color), **§6.13** (the guard-clause brace rule) and **§23** (Going Deeper).
 
-**Versions:** L01 v03.6.3 · L02 v02.13.3 · L03 v03.10.1 · L04 v04.5.2 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.1 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.6.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0 · Bible **v8.47** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · going_deeper **v01.0.0**.
+**Versions:** L01 v03.6.4 · L02 v02.13.4 · L03 v03.10.1 · L04 v04.5.2 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.1 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.6.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0 · Bible **v8.48** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · **book_gates v1.0 (NEW)** · going_deeper **v01.0.0**.
 
 ---
 
@@ -68,6 +68,30 @@ specifically against L01/L02/L07/L08/L12/L15/L16. A pointer box now sits at the 
 L01 and L02, each naming the entries relevant to that lesson. Also confirmed correct-as-is: L01 has **no
 timers and no F()** because it teaches neither — its steps are install procedures, not timed practice, and
 its 11 challenge labels are already unique in the picker.
+
+
+**L01→L02 flow and accuracy re-check — three finds, all mine from earlier in S65.**
+(1) **A published arithmetic error.** The new `F()` explainer counted `"Press A, B, or C"` as 17 characters /
+18 bytes; it is **16 characters / 17 bytes**. The ten-string total was wrong in the same way (180 → **170**).
+Corrected in the prose and in the code comment. The percentage claim survives — 170/2,560 is still about
+seven percent.
+(2) **L01 promised something L02 does not deliver.** L01's "What's Next" asked *"What's the difference between
+`=` and `==`?"* as a Lesson 2 hook, but L02 §3.2c deliberately defers that to Lesson 3 ("the one-character
+typo that breaks it silently"). The question is a good hook, so it was kept and reworded to stop implying L02
+answers it. Same defect class as §11's "§8A must cover what §9 requires", pointed at a cross-lesson promise.
+(3) **L02's two visible banners disagreed on the month** — header read June 2026, footer July 2026. Both now
+July, matching L01.
+
+
+**S65 closes with a standing tool, per DJ: "be more consistent and fix everything."** Three times this
+session a named fix left the same defect class alive elsewhere and DJ had to re-ask. **`book_gates.py` v1.0**
+(repo root) now runs every machine-checkable Bible rule against the whole book in one pass — §5b version AND
+date, §22 colors, §4.1/4.2/4.3, §6.12b parity, tag balance, timers, link resolution. Run it at session open
+and before every delivery; an undelivered gate run = incomplete delivery. **All eleven gates PASS** on this
+batch. Canonized as Bible §24, with two root-cause rules: gate the whole field, not the captured group
+(the June/July date survived a "passing" version check); and a computed claim is verified by computation,
+never recall (the 18-bytes error). New session ritual: `python3 book_gates.py` joins `pill_sweep.py --audit`
+at open.
 
 ---
 
