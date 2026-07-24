@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 24, 2026 (Session 65 — L02 depth pass, the Going Deeper page, and terminal-output color canon).
+**Date:** July 24, 2026 (Session 65 — L02 depth pass · Going Deeper · terminal colors · the Challenge-name split).
 **Status:** **L02 GOT A DEPTH PASS AND THE BOOK GOT AN OPTIONAL-READING PAGE.** Five prose additions to L02 (brace style + the one-liner trap · a full `F()` explainer · short-circuit evaluation · "why, not what" pulled forward from L10 · the semicolon habit and why the error points at the wrong line), plus a `qr-flash` Quick Reference row. `F()` was used **692 times across 15 lessons and explained once** — same defect class as S64's `map()` and `do…while`. Brief `F()` reminders added to **L12** and **L16**, the only two lessons with memory prose already on the page (L07/L14/L15 evaluated and rejected — L07 has zero memory prose; L14/L15 "ceiling" hits are the 2000 µs sensor timeout). L02 also gained the **robot recipe table**, a **printable notebook card** (`_card.png`, 1800×1816 @300dpi), a **3-minute "Three Builds That Fail" debug challenge**, and **ten live timer iframes** — every timed challenge in L02 now has a real countdown, 20 in total. New standalone **`going_deeper.html` v01.0.0** — six collapsible entries, every one anchored to a chapter, linked from the index tools row. Canonized as Bible **§22** (terminal color), **§6.13** (the guard-clause brace rule) and **§23** (Going Deeper).
 
-**Versions:** L01 v03.6.2 · L02 v02.12.2 · L03 v03.10.1 · L04 v04.5.0 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.1 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.6.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0 · Bible **v8.45** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · going_deeper **v01.0.0**.
+**Versions:** L01 v03.6.2 · L02 v02.13.0 · L03 v03.10.1 · L04 v04.5.1 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.1 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.6.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0 · Bible **v8.46** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · going_deeper **v01.0.0**.
 
 ---
 
@@ -36,6 +36,17 @@ it. Most of the offered general-C++ material was **rejected** for having no anch
 terminal's brighter true green), errors `#f14c4c`. The diagnostic line goes red; the source echo and caret
 stay plain, because L02's "look at the line above" rule depends on the student judging that line themselves.
 Of 71 blocks containing the word "error", only **11** are console output.
+
+
+**Also shipped S65 — the "Challenge" name collision, resolved.** L02 had three different constructs all
+called Challenge: Section 1 warm-ups (1–4), inline green practice boxes, and Bonus Challenges (1–6). "Did you
+finish Challenge 3?" had three defensible answers. Worse, the AI Tutor queries `[data-challenge]` and **only
+the 6 Bonus cards were tagged** — a student asking about a warm-up got the wrong card back. Renamed:
+warm-ups → **Warm-Up N**, inline boxes → **TRY IT (n minutes)**, Bonus Challenges unchanged (§4 vocabulary
+canon). Every practice construct now carries `data-challenge` + `data-kind`, with suffix `w`/`t` so a warm-up
+can never collide with a card number. Audited book-wide: gaps existed **only** in L02 (15) and L04 (1) — both
+closed; **104 unique markers, zero duplicates**. Canonized as Bible **§4.1** and **§4.2**. L02 v02.13.0,
+L04 v04.5.1.
 
 ---
 
