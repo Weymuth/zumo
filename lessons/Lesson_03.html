@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.10.1 -->
+<!-- Lesson version: v03.11.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -59,7 +59,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Motor TRIM</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">No Two Motors Are the Same</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.10 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.11 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -2875,6 +2875,58 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
     <strong style="color: #2a5a42;">🎯 CHALLENGE:</strong> Add a calibration constant <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">SETTLE_TIME</code> (try <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">300</code> ms) and use it to pause briefly <em>before</em> each motor test starts, so the robot isn't moving when you let go of the button. One named constant, one <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code>, cleaner results.
 </div>
 
+<h3 style="color: #c45d76; margin-top: 30px;">8A.5 When One Knob Becomes Several: Arrays</h3>
+
+<p>Every tunable so far has been a single named value. Sometimes you want to try <em>several</em> in a row &mdash; four test speeds, three thresholds &mdash; and naming them <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">TEST_SPEED_1</code> through <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">TEST_SPEED_4</code> gets ugly the moment you want to step through them.</p>
+
+<p>An <strong>array</strong> is one name holding a numbered row of values. The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">[]</code> after the name is what makes it a row instead of a single value:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> TEST_SPEEDS[] = {<span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">200</span>, <span style="color: #b5cea8;">250</span>, <span style="color: #b5cea8;">300</span>};
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> NUM_SPEEDS = <span style="color: #b5cea8;">4</span>;   <span style="color: #6a9955;">// how many slots — worth naming, you will need it</span></pre>
+
+<p>You read one slot by its number, in square brackets:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">TEST_SPEEDS[<span style="color: #b5cea8;">0</span>]   <span style="color: #6a9955;">// 150  <-- the FIRST slot</span>
+TEST_SPEEDS[<span style="color: #b5cea8;">1</span>]   <span style="color: #6a9955;">// 200</span>
+TEST_SPEEDS[<span style="color: #b5cea8;">2</span>]   <span style="color: #6a9955;">// 250</span>
+TEST_SPEEDS[<span style="color: #b5cea8;">3</span>]   <span style="color: #6a9955;">// 300  <-- the LAST slot</span></pre>
+
+<p><strong>Counting starts at zero.</strong> Four values live in slots 0, 1, 2 and 3 &mdash; there is no slot 4. Every programmer trips on this once; the rule is that the last slot is always one less than the count.</p>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;">
+    <span>&#9888;&#65039;</span> <strong>Warning:</strong> reading past the end &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">TEST_SPEEDS[4]</code> on a four-slot array &mdash; is <em>not</em> an error. C++ does no bounds checking on an AVR: it reads whatever bytes happen to sit after your array and hands them back as a number. Your robot then drives at a speed you never wrote. This is why the wrap in 8A.6 matters.
+</div>
+
+<p>The payoff is that the slot number can be a <em>variable</em>. One line then reads a different speed depending on what that variable holds:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">int</span> speedIndex = <span style="color: #b5cea8;">1</span>;
+<span style="color: #569cd6;">int</span> currentSpeed = TEST_SPEEDS[speedIndex];   <span style="color: #6a9955;">// 200 — because speedIndex is 1</span></pre>
+
+<h3 style="color: #c45d76; margin-top: 30px;">8A.6 Wrapping Around: the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">%</code> Operator</h3>
+
+<p>Once an index can move, it has to come back. Advance <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">speedIndex</code> four times on a four-slot array and it is pointing at slot 4, which does not exist. The obvious fix needs an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">speedIndex = speedIndex + <span style="color: #b5cea8;">1</span>;
+<span style="color: #569cd6;">if</span> (speedIndex &gt;= NUM_SPEEDS) {
+    speedIndex = <span style="color: #b5cea8;">0</span>;
+}</pre>
+
+<p>There is a one-line version. The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">%</code> operator &mdash; <strong>modulo</strong> &mdash; gives you the <em>remainder</em> of a division rather than the division itself:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #b5cea8;">7</span> % <span style="color: #b5cea8;">3</span>   <span style="color: #6a9955;">// 1   — 3 goes into 7 twice, with 1 left over</span>
+<span style="color: #b5cea8;">6</span> % <span style="color: #b5cea8;">3</span>   <span style="color: #6a9955;">// 0   — divides evenly, nothing left over</span>
+<span style="color: #b5cea8;">2</span> % <span style="color: #b5cea8;">4</span>   <span style="color: #6a9955;">// 2   — 4 does not fit at all, so all of it is left over</span></pre>
+
+<p>The property that makes it useful: <strong>a remainder can never be as large as the number you divide by.</strong> So <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">something % 4</code> is always 0, 1, 2 or 3 &mdash; which is exactly the set of legal slot numbers for a four-slot array. Advancing and wrapping become one line:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;   <span style="color: #6a9955;">// 0 -> 1 -> 2 -> 3 -> 0 -> 1 ...</span></pre>
+
+<p>No <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code>, and no way to run off the end &mdash; the operator makes the out-of-range value from 8A.5 unreachable by construction.</p>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 15px 0; border-radius: 4px;">
+    <span>&#128161;</span> <strong>Tip:</strong> the parentheses are load-bearing. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">%</code> binds tighter than <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">+</code>, so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">speedIndex + 1 % NUM_SPEEDS</code> is read as <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">speedIndex + (1 % NUM_SPEEDS)</code> &mdash; and since <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">1 % 4</code> is just 1, that line adds one forever and never wraps. Write <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">(speedIndex + 1) % NUM_SPEEDS</code>.
+</div>
+
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
 </div>
 
@@ -3187,11 +3239,11 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 </div>
 </div>
 
-<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="3.5" data-kind="challenge" data-difficulty="tough" data-grasp="deep">
-<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: Variable Speed Test</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #B85425; color: #ffffff; padding: 3px 13px 3px 11px;">Tough</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #0C3F6C; color: #ffffff; padding: 3px 11px 3px 13px;">Deep</span></span></div>
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="3.5" data-kind="challenge" data-difficulty="tough" data-grasp="moderate">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: Variable Speed Test</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #B85425; color: #ffffff; padding: 3px 13px 3px 11px;">Tough</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #185FA5; color: #ffffff; padding: 3px 11px 3px 13px;">Moderate</span></span></div>
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p>📁 <strong>Work in:</strong> your main <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=3&amp;kind=variable_speed" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> and <a href="#qr-speed-range" style="color: #2e86ab; font-weight: bold;">Speed Range</a>; the array-and-index shape is in this card's hint.</p>
+<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a>, <a href="#qr-speed-range" style="color: #2e86ab; font-weight: bold;">Speed Range</a>, <a href="#qr-array" style="color: #2e86ab; font-weight: bold;">Arrays</a> and <a href="#qr-modulo" style="color: #2e86ab; font-weight: bold;">Modulo (%)</a>; both are taught in &sect;8A.5&ndash;8A.6.</p>
 </div>
 <div style="padding: 0;">
 <div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
@@ -4083,6 +4135,37 @@ constrain(200, -400, 400) → 200 // In range, unchanged</pre>
 
 </div>
 
+<h3 id="qr-array" style="color: #6c757d; margin-top: 25px;">Arrays</h3>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> TEST_SPEEDS[] = {<span style="color: #b5cea8;">150</span>, <span style="color: #b5cea8;">200</span>, <span style="color: #b5cea8;">250</span>, <span style="color: #b5cea8;">300</span>};
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> NUM_SPEEDS = <span style="color: #b5cea8;">4</span>;
+<span style="color: #6a9955;">// Slots are numbered from ZERO:</span>
+TEST_SPEEDS[<span style="color: #b5cea8;">0</span>]  <span style="color: #6a9955;">// 150  (first)</span>
+TEST_SPEEDS[<span style="color: #b5cea8;">3</span>]  <span style="color: #6a9955;">// 300  (last — one less than the count)</span>
+<span style="color: #6a9955;">// The slot number can be a variable:</span>
+<span style="color: #569cd6;">int</span> speedIndex = <span style="color: #b5cea8;">1</span>;
+<span style="color: #569cd6;">int</span> currentSpeed = TEST_SPEEDS[speedIndex];  <span style="color: #6a9955;">// 200</span>
+<span style="color: #6a9955;">// TEST_SPEEDS[4] is NOT an error — it returns garbage. See 8A.5.</span></pre>
+
+</div>
+
+<h3 id="qr-modulo" style="color: #6c757d; margin-top: 25px;">Modulo (%) &mdash; Wrapping an Index</h3>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// % gives the REMAINDER of a division, not the division:</span>
+<span style="color: #b5cea8;">7</span> % <span style="color: #b5cea8;">3</span>  <span style="color: #6a9955;">// 1</span>
+<span style="color: #b5cea8;">6</span> % <span style="color: #b5cea8;">3</span>  <span style="color: #6a9955;">// 0</span>
+<span style="color: #b5cea8;">2</span> % <span style="color: #b5cea8;">4</span>  <span style="color: #6a9955;">// 2</span>
+<span style="color: #6a9955;">// A remainder is never as big as the divisor,</span>
+<span style="color: #6a9955;">// so  x % 4  is always 0, 1, 2 or 3.</span>
+speedIndex = (speedIndex + <span style="color: #b5cea8;">1</span>) % NUM_SPEEDS;  <span style="color: #6a9955;">// 0->1->2->3->0...</span>
+<span style="color: #6a9955;">// Parentheses required: % binds tighter than +. See 8A.6.</span></pre>
+
+</div>
+
 <h3 id="qr-trim-pattern" style="color: #6c757d; margin-top: 25px;">TRIM Pattern</h3>
 
 <div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 16px 0; color: #e8e8e8;">
@@ -4358,7 +4441,7 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <p style="margin: 0;">Zumo 32U4 Robotics • Lesson 03: Motors &amp; TRIM</p>
 
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 03.10 — July 2026 • PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 03.11 — July 2026 • PlatformIO Edition</p>
 
 </footer>
 

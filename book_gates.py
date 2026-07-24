@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.1 (S65) — whole-book consistency gates.
+# book_gates.py v1.2 (S68) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -207,6 +207,61 @@ for f in files:
         if w in T[f]:
             bad.append(f'{L(f)}: "{w}" — {why}')
 gate('§16  hardware constants match canon', bad)
+
+# ---- structure: real HTML parse (S68). Supersedes count-based checks: an orphaned
+# ---- close tag can BALANCE an unclosed box, so a count gate is satisfied by the bug itself.
+from html.parser import HTMLParser as _HP
+_VOID = {'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}
+_STRICT = {'div','details','summary','table','section','article','span','a','pre','body','html','ul','ol','h1','h2','h3','h4'}
+
+class _Struct(_HP):
+    def __init__(self):
+        super().__init__(convert_charrefs=True); self.stack=[]; self.err=[]
+    def handle_starttag(self, t, a):
+        if t not in _VOID: self.stack.append((t, self.getpos()[0]))
+    def handle_endtag(self, t):
+        if t in _VOID: return
+        for i in range(len(self.stack)-1, -1, -1):
+            if self.stack[i][0] == t:
+                for tag, ln in self.stack[i+1:]:
+                    if tag in _STRICT:
+                        self.err.append(f'line {ln}: <{tag}> never closed (swallowed by </{t}> line {self.getpos()[0]})')
+                del self.stack[i:]; return
+        if t in _STRICT:
+            self.err.append(f'line {self.getpos()[0]}: stray </{t}> with nothing open')
+
+bad = []
+for f in site:
+    pr = _Struct(); pr.feed(R[f]); pr.close()
+    for e in pr.err + [f'line {l}: <{t}> still open at EOF' for t, l in pr.stack if t in _STRICT]:
+        bad.append(f'{f}: {e}')
+    trail = R[f][R[f].rfind('</html>') + 7:].strip()
+    if trail:
+        bad.append(f'{f}: {trail[:40]!r} after </html>')
+gate('structure: HTML parses to the intended shape', bad)
+
+# ---- structure: end matter must not be sealed inside a section panel (S68).
+# ---- Well-formed HTML can still be wrong: L06/L07 parsed clean with the footer
+# ---- trapped inside the Image Index box. The parser cannot see this class.
+bad = []
+_d = re.compile(r'<div\b[^>]*>|</div\s*>')
+for f in files:
+    i = R[f].find('id="image-index"')
+    if i < 0:
+        continue
+    j = R[f].find('border-top: none', i)
+    j = R[f].rfind('<div', 0, j)
+    depth = 0; close = None
+    for m in _d.finditer(R[f], j):
+        depth += 1 if m.group(0).startswith('<div') else -1
+        if depth == 0:
+            close = m.end(); break
+    if close is None:
+        bad.append(f'{L(f)}: Image Index panel never closes'); continue
+    inside = R[f][j:close]
+    if re.search(r'<hr\b|linear-gradient\(135deg, #6c757d', inside):
+        bad.append(f'{L(f)}: lesson end matter is sealed INSIDE the Image Index panel')
+gate('structure: end matter sits outside the section panel', bad)
 
 print()
 print('=' * 52)
