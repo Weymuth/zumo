@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.10.2 -->
+<!-- Lesson version: v02.11.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -69,7 +69,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Mastering the Code</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Reading Code You Didn't Write</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.10 &mdash; June 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.11 &mdash; June 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -503,7 +503,57 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <div style="background-color: #e7d4ff; border-left: 4px solid #9b59b6; padding: 15px; margin: 20px 0; border-radius: 8px;">
 
-<strong>🔑 Curly Braces { }</strong> — Define the start and end of a <strong>code block</strong>. Every opening brace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">{</code> MUST have a matching closing brace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code>. Mismatched braces are one of the most common errors!
+<strong>🔑 Curly Braces { }</strong> &mdash; Define the start and end of a <strong>code block</strong>. Every opening brace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">{</code> MUST have a matching closing brace <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code>. Mismatched braces are one of the most common errors!
+
+</div>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong style="color: #0d47a1;">📖 LEARN &mdash; Where the Brace Goes, and the One-Liner Trap</strong>
+
+<p>Look at any two C++ programs written by different people and you will notice something petty and universal: they disagree about where the opening brace belongs. There are two answers, both correct, and the argument between them is older than you are.</p>
+
+<p><strong>K&amp;R style</strong> puts the opening brace on the <em>same line</em> as the thing it opens. It is named for Kernighan and Ritchie, who wrote the original C book, and it is what the Linux kernel, Google's style guide, and Arduino all use:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> setup() {
+  ledYellow(<span style="color: #b5cea8;">1</span>);
+}</pre>
+
+<p><strong>Allman style</strong> drops the brace to its own line, lined up underneath:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> setup()
+{
+  ledYellow(<span style="color: #b5cea8;">1</span>);
+}</pre>
+
+<p>Allman makes the pairing easy to see &mdash; the two braces sit in the same column, so a missing one is obvious at a glance. K&amp;R costs one fewer line per block, which on a laptop screen means more of your program visible at once. Neither compiles differently. The compiler does not care and never will; whitespace is invisible to it.</p>
+
+<p><strong>What matters is that you do not mix them.</strong> A file that switches styles halfway through is harder to read than a file in either style, because your eye stops being able to predict where to look. <strong>This book uses K&amp;R everywhere</strong> &mdash; every program you download from the Project Maker is written that way. Match it, and your code will look like the book's code.</p>
+
+<p style="margin-bottom: 0;">Professionals stop arguing about this by handing the decision to a tool. Formatters like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">clang-format</code> restyle a whole file on save, so the question never reaches a code review. You do not need one yet &mdash; but that is where the argument goes to die.</p>
+
+</div>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ WARNING &mdash; the one-liner trap</strong>
+
+<p>C++ lets you skip the braces entirely when a block holds exactly one statement:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (killSwitchPressed()) <span style="color: #569cd6;">break</span>; <span style="color: #6a9955;">// legal, and used in this book</span></pre>
+
+<p>That is a <strong>guard clause</strong> &mdash; a short test with a short consequence, all on one line, and it is genuinely easier to read braced-up than not. You will meet this exact line in Lesson 10.</p>
+
+<p><strong>The trap is what happens next.</strong> Suppose you come back and want the robot to also stop the motors. The obvious edit looks right:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (killSwitchPressed())
+  motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5cea8;">0</span>);
+  <span style="color: #569cd6;">break</span>;                    <span style="color: #6a9955;">// ← NOT part of the if!</span></pre>
+
+<p>The indentation says both lines belong to the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code>. The compiler disagrees. Without braces, an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code> owns <strong>exactly one statement</strong> &mdash; the first one. The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">break;</code> now runs <em>every single time through the loop</em>, kill switch or not, and your robot stops immediately for no visible reason.</p>
+
+<p>And here is why this one is nastier than the mistakes in section 3.4: <strong>it compiles clean.</strong> No error, no warning, no red squiggle. The build succeeds and the robot misbehaves, which means you will go looking for the bug in your logic instead of in your punctuation. This exact mistake &mdash; two statements where the compiler saw one &mdash; caused a real security hole in Apple's software in 2014 that went unnoticed for over a year.</p>
+
+<p style="margin-bottom: 0;"><strong>The book's rule:</strong> braces are the default. Leave them off only when the entire statement fits on the same line as the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code>. <strong>The moment you want a second line, add the braces first &mdash; before you type it.</strong></p>
 
 </div>
 
@@ -562,6 +612,8 @@ DATE: December 10, 2024
 </div>
 
 <p>Pro habit: use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">/* */</code> for the header, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">//</code> for everything else. It keeps your code scannable.</p>
+
+<p><strong>One more habit, and it is the one that separates a useful comment from a useless one: comment the <em>why</em>, not the <em>what</em>.</strong> The code already says what it does &mdash; anyone who can read C++ can see that <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1473);</code> waits 1,473 milliseconds. Writing <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">// wait 1473 ms</code> next to it adds nothing and now there are two things to keep in sync. What the code <em>cannot</em> tell you is why that number: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">// 1473ms = one full wheel rotation at SPEED 200, measured 11/14</code>. That comment survives being useful for years, and it is the one you will thank yourself for.</p>
 
 </div>
 
@@ -1000,6 +1052,35 @@ ledYellow(<span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;"
 
 <p>That single character is easy to miss when reading quickly, and it inverts the entire meaning of the line. When a condition behaves backwards, look for a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">!</code> you did not notice before you go looking for anything cleverer.</p>
 
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong style="color: #0d47a1;">📖 LEARN &mdash; C++ Stops Reading Once It Knows the Answer</strong>
+
+<p>There is one more thing about <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> that looks like trivia and is not. <strong>C++ reads a condition left to right, and quits the moment the answer is settled.</strong> Programmers call this <em>short-circuit evaluation</em>.</p>
+
+<p>Think about what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> needs: both sides true. So if the left side comes back <strong>false</strong>, the whole thing is already false &mdash; and whatever is on the right is <em>never looked at</em>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (batteryOK() &amp;&amp; startRun()) {
+  <span style="color: #6a9955;">// If batteryOK() is false, startRun() NEVER RUNS.</span>
+  <span style="color: #6a9955;">// The robot does not start. No error. It just doesn't happen.</span>
+}</pre>
+
+<p>And <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> needs only one side true, so a <strong>true</strong> on the left settles it and the right side is skipped:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonA.isPressed() || buttonB.isPressed()) {
+  <span style="color: #6a9955;">// If A is down, B is never even checked.</span>
+}</pre>
+
+<p><strong>This cuts both ways, and you need to know both.</strong></p>
+
+<p><strong>It is a tool.</strong> Put the cheap or protective question first and the expensive or risky one second, and the second is protected by the first. Reading a sensor takes real time; checking a variable takes almost none. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (sensorEnabled &amp;&amp; readSensor() &gt; 500)</code> never reads the sensor when it is switched off. That ordering is deliberate, and you will see it throughout the later lessons.</p>
+
+<p><strong>It is a trap.</strong> If the right-hand side <em>does</em> something &mdash; moves a motor, advances a counter, updates the screen &mdash; then that something silently stops happening whenever the left side decides the question early. The bug looks impossible: the line is right there, it clearly runs, and yet the counter never moves.</p>
+
+<p style="margin-bottom: 0;"><strong>The habit that avoids all of it:</strong> keep conditions as pure <em>questions</em>. A condition should ask, not act. If a line needs to happen, put it inside the braces where you can see it &mdash; not hidden on the right-hand side of an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code>, where whether it runs at all depends on something else entirely.</p>
+
+</div>
+
 <div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
 <strong style="color: #3a5a3a;">💡 Tip &mdash; read the whole condition aloud as one sentence</strong>
 <p style="margin-bottom: 0;">&ldquo;If count is greater than zero <em>and</em> count is less than ten.&rdquo; If the sentence does not make sense out loud, the code will not make sense to the robot either. This is the fastest bug-finder you will ever own, it costs nothing, and it works on somebody else's code too. You will need <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> in this lesson's challenges &mdash; more than one of them wants two buttons held at the same time.</p>
@@ -1102,6 +1183,27 @@ ledYellow(<span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;"
 <h3 id="section-3-4" style="color: #2e86ab; margin-top: 30px;">3.4 Common Pitfalls</h3>
 
 <p>These are the mistakes that trip up almost every beginner. Learn to recognize them now!</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong style="color: #0d47a1;">📖 LEARN &mdash; The Semicolon, and Why the Error Points at the Wrong Line</strong>
+
+<p>The missing semicolon is the first error nearly everyone meets, and it has one confusing habit worth understanding before it wastes your afternoon.</p>
+
+<p>A semicolon ends a <strong>statement</strong> &mdash; one complete instruction. C++ ignores line breaks entirely; as far as the compiler is concerned your whole program could be a single enormous line. The semicolon is the only thing telling it where one instruction stops and the next begins.</p>
+
+<p><strong>So when you leave one out, the compiler does not notice at that line.</strong> It reads straight past the end of your line, still expecting the rest of the instruction, and only complains when it hits something that cannot possibly continue it &mdash; which is usually on the <em>next</em> line:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">ledYellow(<span style="color: #b5cea8;">1</span>)      <span style="color: #6a9955;">// ← the missing ; is HERE</span>
+delay(<span style="color: #b5cea8;">1000</span>);      <span style="color: #6a9955;">// ← but the error points HERE</span></pre>
+
+<p style="background-color: #fffde7; border-left: 3px solid #fbc02d; padding: 10px 14px; border-radius: 4px;"><strong>The rule that saves you:</strong> when an error mentions a semicolon, look at the line <em>above</em> the one the compiler names. Nine times out of ten that is where the problem sits.</p>
+
+<p><strong>Building the habit.</strong> Type the semicolon as part of the statement, not as a separate afterthought &mdash; the same way you type the closing parenthesis right after the opening one. Fingers learn this faster than brains do, which is also the argument for typing the code in this book out by hand instead of copy-pasting it. And do not fight the compiler on it: a missing semicolon stops the build instantly and for free, which makes it the cheapest error you will ever have. Your editor will underline it in red before you even hit Build.</p>
+
+<p style="margin-bottom: 0;"><strong>Two places a semicolon does <em>not</em> go</strong>, both of which cause stranger problems than leaving one out. There is no semicolon after the closing brace of a function &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">void setup() { }</code> is finished. And a stray semicolon right after an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code> condition &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (x &gt; 5);</code> &mdash; compiles perfectly and silently means "if x is greater than 5, do nothing at all," after which the braces below it run every time regardless. Same family as the one-liner trap from section 3.1: legal code, clean build, wrong robot.</p>
+
+</div>
 
 <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
 
@@ -1893,13 +1995,53 @@ display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));</pre>
 
 </details>
 
-<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
 
-<strong>📘 Note: What's F() For?</strong>
+<strong style="color: #0d47a1;">📖 LEARN &mdash; F() and Where Your Text Actually Lives</strong>
 
-<p>The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> around text strings saves RAM on your microcontroller. Instead of storing <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">"LESSON 2"</code> in precious RAM, it keeps the text in flash memory (PROGMEM).</p>
+<p>You have now typed <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> around every piece of text you have sent to the screen, and nobody has told you what it does. Here is the whole story, because you are going to type it several hundred more times before this book is finished.</p>
 
-<p>For small programs it doesn't matter much, but it's a <strong>good habit</strong> to use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> for any text that doesn't change. Your robot only has 2.5KB of RAM!</p>
+<p><strong>Your robot has two kinds of memory, and they are wildly different sizes.</strong></p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em;">
+<tr style="background-color: #d0e3f5;">
+<th style="border: 1px solid #90b8d8; padding: 8px; text-align: left;">Memory</th>
+<th style="border: 1px solid #90b8d8; padding: 8px; text-align: left;">Size on your Zumo</th>
+<th style="border: 1px solid #90b8d8; padding: 8px; text-align: left;">What it holds</th>
+</tr>
+<tr>
+<td style="border: 1px solid #90b8d8; padding: 8px;"><strong>Flash</strong></td>
+<td style="border: 1px solid #90b8d8; padding: 8px;">28,672 bytes usable</td>
+<td style="border: 1px solid #90b8d8; padding: 8px;">Your program. Written once, at upload. Survives power-off.</td>
+</tr>
+<tr>
+<td style="border: 1px solid #90b8d8; padding: 8px;"><strong>SRAM</strong></td>
+<td style="border: 1px solid #90b8d8; padding: 8px;">about 2.5 KB</td>
+<td style="border: 1px solid #90b8d8; padding: 8px;">Variables, while the program runs. Erased at power-off.</td>
+</tr>
+</table>
+
+<p>Flash is roughly <strong>eleven times bigger</strong>. And you already know SRAM is the scarce one &mdash; that is the memory the Constants section talked about, the one your globals live in permanently.</p>
+
+<p><strong>So here is the problem.</strong> When you write a piece of text in your program &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">"Press A, B, or C"</code> &mdash; that text has to be stored in flash, because flash is where your uploaded program lives. Fine. But the AVR chip has an awkward habit: at power-on, before your <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">setup()</code> even runs, it <strong>copies every string out of flash and into SRAM</strong>, and leaves the copy there for the entire time the robot is on.</p>
+
+<p>Count the cost. That one string is 17 characters, so 18 bytes with its invisible end-marker. Ten messages like it and you have quietly spent 180 bytes of your 2,560 &mdash; seven percent of your working memory &mdash; on text that never changes and is only read.</p>
+
+<p><strong>What <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> does is cancel the copy.</strong> Wrapping a string tells the compiler: leave this one in flash, and teach <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">print()</code> to read it straight from there, one character at a time, at the moment it is needed.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">display.print(<span style="color: #ce9178;">"Press A, B, or C"</span>);      <span style="color: #6a9955;">// 18 bytes of SRAM, permanently</span>
+display.print(F(<span style="color: #ce9178;">"Press A, B, or C"</span>));   <span style="color: #6a9955;">// 0 bytes of SRAM</span></pre>
+
+<p>Two extra characters. The screen shows exactly the same thing. The difference is invisible until the day it isn't.</p>
+
+<div style="background-color: #fffde7; border-left: 3px solid #fbc02d; padding: 12px 15px; margin: 15px 0; border-radius: 4px;">
+<strong>💡 The desk and the bookshelf</strong>
+<p style="margin-bottom: 0;">SRAM is your desk &mdash; small, fast, and where the actual work happens. Flash is the bookshelf across the room &mdash; big, and you can only read from it. Without <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code>, you walk over at the start of class and copy every quotation you might need onto index cards, then spread all of them across your desk and leave them there all period. With <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code>, you leave the books on the shelf and walk over to read a line when you actually need it. Slightly slower each time. Enormously more desk.</p>
+</div>
+
+<p><strong>When does it stop being optional?</strong> Right now, with a program this small, nothing bad happens either way &mdash; which is exactly why it is worth building the habit while the stakes are zero. Later they will not be. Running out of SRAM does not produce an error message; the compiler cannot tell how much you will use while the program runs. Instead the robot starts behaving strangely &mdash; garbled OLED text, a reset in the middle of a run, numbers that change on their own &mdash; and you go looking for a bug in your logic that is not there. Lesson 16 is where you meet the ceiling properly.</p>
+
+<p style="margin-bottom: 0;"><strong>The rule, then:</strong> if the text is written between quotes and never changes, wrap it in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code>. Every single time. If you are building the text at runtime &mdash; a sensor value, a variable, anything the program computes &mdash; you cannot use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code>, because there is nothing sitting in flash to point at.</p>
 
 </div>
 
@@ -4087,6 +4229,22 @@ display.print(F(<span style="color: #ce9178;">"text"</span>)); <span style="colo
 
 </div>
 
+<h3 id="qr-flash" style="color: #6c757d; margin-top: 30px;">💾 F() &mdash; KEEPING TEXT OUT OF RAM</h3>
+
+<p>Wrap any <strong>fixed</strong> string in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> and it stays in flash memory instead of being copied into SRAM at power-on. Your robot has 28,672 bytes of usable flash and only about 2.5 KB of SRAM, so this is close to free memory.</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">display.print(F(<span style="color: #ce9178;">"Press A"</span>));     <span style="color: #6a9955;">// fixed text → always wrap it</span>
+Serial.println(F(<span style="color: #ce9178;">"Ready"</span>));      <span style="color: #6a9955;">// works on Serial too</span>
+
+display.print(count);              <span style="color: #6a9955;">// a variable → no F(), nothing to wrap</span></pre>
+
+<ul>
+<li>Use it on every string literal you print. Two extra characters, zero downside.</li>
+<li>It only works on text written between quotes &mdash; never on a variable or a computed value.</li>
+<li>Running out of SRAM gives you <strong>no error message</strong>. It gives you garbled text, random resets, and variables that change on their own.</li>
+<li>Full explanation in section 3.2; the memory ceiling itself is Lesson 16.</li>
+</ul>
+
 <h3 id="qr-errors" style="color: #6c757d; border-bottom: 2px solid #6c757d; padding-bottom: 8px;">Common Errors Quick Fix</h3>
 
 <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
@@ -4251,7 +4409,7 @@ display.print(F(<span style="color: #ce9178;">"text"</span>)); <span style="colo
 
 <p style="margin: 0;">Zumo 32U4 Robotics &bull; Lesson 02: Read Code Like a Pro</p>
 
-<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 02.10 &mdash; July 2026 &bull; PlatformIO Edition</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9em;">Version 02.11 &mdash; July 2026 &bull; PlatformIO Edition</p>
 
 </footer>
 

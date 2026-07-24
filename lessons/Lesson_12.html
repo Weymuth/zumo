@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.5.0 -->
+<!-- Lesson version: v01.6.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Wheels Lie</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">The Gyro &mdash; Measuring the Robot, Not the Wheels</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 01.5 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 01.6 &mdash; July 2026</div>
 </div>
 <!-- ===================== PART 1 DIVIDER ===================== -->
 <div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; margin: 22px 0 0;">
@@ -601,6 +601,11 @@ void turnDegreesGyro(float degrees) {
 found that <code>turnDegreesGyro()</code> is unreachable from <code>main()</code>, and
 <strong>threw it in the bin</strong> before writing the binary. A function nobody calls is dead weight,
 and the linker will not carry dead weight to a chip this small. The ATmega32U4 has 32&nbsp;KB of flash on paper &#8212; but 4&nbsp;KB of that is the bootloader, the little program that lets you upload over USB at all. What is actually yours is <strong>28,672 bytes</strong>. Lesson 16 will show you exactly how little that is.</p>
+
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;">
+<strong>💾 Reminder &mdash; this is why every string in this book wears F()</strong>
+<p style="margin-bottom: 0;">The linker just threw away a whole function to save space on a chip this small. Text is the other thing quietly competing for room &mdash; and unwrapped strings do not compete for <em>flash</em>, they compete for <strong>SRAM</strong>, the 2.5&nbsp;KB you have for variables. Every string literal you write without <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> gets copied into SRAM at power-on and sits there for the whole run. Wrapping it leaves it in flash and costs you nothing. <em>(Lesson 2, section 3.2 &mdash; or the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">F()</code> row in the Quick Reference.)</em></p>
+</div>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#127942; You have written the truth. The robot is still ignoring it.</strong><br>Both turns now exist. <code>turnDegrees()</code> asks the wheels. <code>turnDegreesGyro()</code> asks the robot. They are sitting side by side in the same file, and the robot is <strong>still using the wheels</strong>.<br><br>That is not an oversight &mdash; <strong>it is Step 8&#x27;s entire job.</strong> The old instrument stays until the moment the new one takes over. You never delete the working thing before the replacement is wired in.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 7</summary>
@@ -1379,7 +1384,7 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 
 
 <div style="background: linear-gradient(135deg, #6c757d 0%, #2e86ab 100%); color: white; padding: 20px 30px; border-radius: 10px; margin-top: 40px; text-align: center; font-size: 0.9em; opacity: 0.95;">
-Lesson 12 &middot; Wheels Lie &middot; Version 01.5 &middot; Zumo 32U4 Robotics
+Lesson 12 &middot; Wheels Lie &middot; Version 01.6 &middot; Zumo 32U4 Robotics
 </div>
 
 </body>

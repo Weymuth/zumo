@@ -1,0 +1,375 @@
+<!-- Going Deeper version: v01.0.0 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Going Deeper &mdash; Zumo 32U4 Robotics</title>
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1117; --surface:#1a1d27; --surface-hover:#22263a; --border:#2a2e3f;
+    --text:#e1e4ed; --text-dim:#8b8fa3; --accent:#4f8ff7; --accent-dim:#3a6bc5;
+    --green:#3dd68c; --yellow:#f5c542; --purple:#a371f7; --orange:#f5953b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);
+    min-height:100dvh;padding:32px 20px 60px;line-height:1.6;
+  }
+  .wrap{max-width:820px;margin:0 auto;}
+
+  .back{display:inline-block;color:var(--text-dim);text-decoration:none;font-size:.9em;margin-bottom:26px;}
+  .back:hover{color:var(--accent);}
+
+  .hero{text-align:center;padding:10px 0 34px;border-bottom:1px solid var(--border);margin-bottom:34px;}
+  .hero .icon{font-size:40px;margin-bottom:12px;}
+  .hero h1{font-size:1.9em;font-weight:700;margin-bottom:12px;}
+  .hero p{color:var(--text-dim);font-size:1em;max-width:620px;margin:0 auto;}
+
+  .preamble{
+    background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--yellow);
+    border-radius:10px;padding:18px 22px;margin-bottom:30px;
+  }
+  .preamble strong{color:var(--yellow);}
+  .preamble p{color:var(--text-dim);font-size:.94em;}
+
+  details{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    margin-bottom:14px;overflow:hidden;
+  }
+  details[open]{border-color:var(--accent-dim);}
+  summary{
+    cursor:pointer;padding:18px 22px;font-weight:600;font-size:1.05em;
+    list-style:none;display:flex;align-items:baseline;gap:12px;
+    transition:background .15s;
+  }
+  summary:hover{background:var(--surface-hover);}
+  summary::-webkit-details-marker{display:none;}
+  summary::before{content:'\25B8';color:var(--accent);font-size:.85em;transition:transform .15s;flex-shrink:0;}
+  details[open] summary::before{transform:rotate(90deg);}
+  .anchor{
+    color:var(--text-dim);font-size:.72em;font-weight:600;letter-spacing:.06em;
+    text-transform:uppercase;margin-left:auto;flex-shrink:0;
+  }
+  .body{padding:0 22px 22px;border-top:1px solid var(--border);padding-top:18px;}
+  .body p{margin-bottom:13px;color:var(--text);font-size:.95em;}
+  .body p:last-child{margin-bottom:0;}
+  .body h3{font-size:1em;font-weight:600;color:var(--accent);margin:20px 0 9px;}
+  .body ul{margin:0 0 13px 20px;color:var(--text);font-size:.95em;}
+  .body li{margin-bottom:6px;}
+  .body em{color:var(--text-dim);}
+
+  code{
+    font-family:'Consolas','Courier New',monospace;background:#0b0d13;
+    border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-size:.88em;color:#9cdcfe;
+  }
+  pre{
+    background:#0b0d13;border:1px solid var(--border);border-radius:8px;padding:14px 16px;
+    overflow-x:auto;font-family:'Consolas','Courier New',monospace;font-size:.86em;
+    line-height:1.7;color:#e8e8e8;margin:0 0 13px;
+  }
+  pre code{background:none;border:none;padding:0;font-size:1em;color:inherit;}
+  .kw{color:#569cd6;} .cm{color:#6a9955;} .nu{color:#b5cea8;}
+  .st{color:#ce9178;} .ty{color:#4ec9b6;} .pp{color:#c586c0;}
+
+  table{width:100%;border-collapse:collapse;margin:0 0 13px;font-size:.9em;}
+  th,td{border:1px solid var(--border);padding:7px 11px;text-align:left;}
+  th{background:#0b0d13;color:var(--accent);font-weight:600;}
+
+  .callout{
+    background:#0b0d13;border-left:3px solid var(--green);border-radius:6px;
+    padding:13px 16px;margin:0 0 13px;font-size:.92em;
+  }
+  .callout strong{color:var(--green);}
+  .warn{border-left-color:var(--orange);}
+  .warn strong{color:var(--orange);}
+
+  .backref{
+    margin-top:18px;padding-top:14px;border-top:1px solid var(--border);
+    color:var(--text-dim);font-size:.88em;
+  }
+  .backref strong{color:var(--text);}
+
+  footer{
+    margin-top:44px;padding-top:22px;border-top:1px solid var(--border);
+    text-align:center;color:var(--text-dim);font-size:.85em;line-height:1.7;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="index.html">&larr; Back to the textbook</a>
+
+  <div class="hero">
+    <div class="icon">&#128301;</div>
+    <h1>Going Deeper</h1>
+    <p>Six things the book uses without fully explaining, opened up one level. Every entry starts from something you have already built.</p>
+  </div>
+
+  <div class="preamble">
+    <p><strong>Read this first.</strong> Nothing on this page is required. Nothing here is on a milestone, a reading quiz, or an exit ticket. These are answers to &ldquo;but <em>why</em> does it work like that?&rdquo; &mdash; the question the lessons deliberately postpone so you can get the robot moving. If a chapter is due, go do the chapter. This page will still be here.</p>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <details>
+    <summary>How a letter becomes electricity <span class="anchor">Lesson 2</span></summary>
+    <div class="body">
+
+      <p>In Lesson 2 you wrote <code>display.print(F("LESSON 2"))</code> and eight characters appeared on the OLED. The robot does not have letters in it. It has voltages that are either high or low. Something in between turned one into the other, and it is worth seeing.</p>
+
+      <h3>Step 1 &mdash; every character is secretly a number</h3>
+      <p>A long time ago engineers agreed on a lookup table so that every machine would use the same number for the same character. It is called <strong>ASCII</strong>, and it is nothing more sophisticated than an agreed-upon list:</p>
+
+      <table>
+        <tr><th>Character</th><th>ASCII number</th></tr>
+        <tr><td><code>A</code></td><td>65</td></tr>
+        <tr><td><code>B</code></td><td>66</td></tr>
+        <tr><td><code>a</code></td><td>97</td></tr>
+        <tr><td><code>0</code> (the character zero)</td><td>48</td></tr>
+        <tr><td>space</td><td>32</td></tr>
+      </table>
+
+      <p>Notice that <code>'0'</code> is 48, not 0. The <em>character</em> zero and the <em>number</em> zero are different things, which is why you cannot do arithmetic on text without converting it first.</p>
+
+      <div class="callout">
+        <strong>Try it on your robot.</strong> A <code>char</code> in C++ is just a small number wearing a costume. This compiles and prints <code>65</code>:
+        <pre><code><span class="ty">char</span> letter = <span class="st">'A'</span>;
+Serial.println((<span class="ty">int</span>)letter);   <span class="cm">// 65</span></code></pre>
+      </div>
+
+      <h3>Step 2 &mdash; every number is a row of switches</h3>
+      <p>The chip has no way to store &ldquo;65.&rdquo; It has switches that are on or off. So it writes 65 using eight of them, where each position is worth double the one to its right:</p>
+
+      <pre><code>128   64   32   16    8    4    2    1
+  0    1    0    0    0    0    0    1
+
+      64 + 1 = 65  ->  the letter 'A'</code></pre>
+
+      <p>That is <strong>binary</strong>, and the recipe is greedy: walk left to right, and at each slot ask &ldquo;does this fit in what is left?&rdquo; If yes, write 1 and subtract. If no, write 0.</p>
+
+      <p>Work 25 through it: 128 no, 64 no, 32 no, 16 <em>yes</em> (9 left), 8 <em>yes</em> (1 left), 4 no, 2 no, 1 <em>yes</em> (0 left). Answer: <code>00011001</code>.</p>
+
+      <p>Eight switches is a <strong>byte</strong>, and it holds 0 through 255. That number should look familiar &mdash; it is the same 8-bit ceiling behind a great many limits you will meet in embedded work.</p>
+
+      <h3>Step 3 &mdash; the switches become voltage over time</h3>
+      <p>To send a byte down a single wire, the two ends agree on a speed and the sender flips the line high and low in time with a clock. The receiver samples at the agreed rate and reassembles the bits. That agreed speed is the <strong>baud rate</strong> &mdash; the <code>115200</code> in <code>Serial.begin(115200)</code>, measured in bits per second. Both ends must use the same number, or the receiver samples at the wrong moments and reassembles bits that were never sent. That is the actual mechanism behind the &ldquo;Serial Monitor shows garbage&rdquo; row in Lesson 1's troubleshooting table.</p>
+
+      <div class="callout warn">
+        <strong>Why this matters past the trivia.</strong> Every OLED string, every <code>Serial.println()</code>, and every byte of your program on its way down the USB cable is doing exactly this. When Lesson 16 tells you a string costs 18 bytes, it is counting characters &mdash; one byte each, plus one invisible zero on the end marking where the text stops.
+      </div>
+
+      <div class="backref"><strong>Back to the book:</strong> Lesson 2 &sect;3.2 (what <code>print()</code> and <code>F()</code> do) &middot; Lesson 16 (where bytes stop being abstract).</div>
+    </div>
+  </details>
+
+  <!-- ============================================================ 2 -->
+  <details>
+    <summary>What F() is really doing <span class="anchor">Lessons 2, 12, 16</span></summary>
+    <div class="body">
+
+      <p>Lesson 2 tells you that <code>F()</code> keeps a string in flash instead of copying it into SRAM. True, and enough to work with. The question it leaves alone is <em>why the chip would ever copy it in the first place.</em> The answer is that your robot's processor is built on a fundamentally different plan than the computer you are typing on.</p>
+
+      <h3>Two memories that cannot see each other</h3>
+      <p>Your laptop uses a <strong>von Neumann</strong> design: one memory space holding both program and data, one set of instructions for reaching it. A string is just bytes at an address, and the same instruction reads it whether it is code or text.</p>
+
+      <p>The ATmega32U4 uses a <strong>Harvard</strong> design instead. Program and data live in physically separate memories, reached by <em>different machine instructions</em>:</p>
+
+      <table>
+        <tr><th></th><th>Flash</th><th>SRAM</th></tr>
+        <tr><td>Size on your Zumo</td><td>28,672 B usable</td><td>~2,560 B</td></tr>
+        <tr><td>Survives power-off</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Written by</td><td>Upload only</td><td>Your program, constantly</td></tr>
+        <tr><td>Read with</td><td><code>LPM</code> instruction</td><td><code>LD</code> instruction</td></tr>
+      </table>
+
+      <p>That last row is the whole problem. A pointer on this chip is just a number, and the number 300 means <em>two different bytes</em> depending on which instruction you use to fetch it. So when a function like <code>print()</code> receives a pointer, it has no way to tell which memory it points into.</p>
+
+      <h3>The compiler's cowardly, sensible fix</h3>
+      <p>Faced with that ambiguity, the toolchain does the only thing that always works: at power-on, before <code>setup()</code> runs, it copies every string out of flash into SRAM. Now every pointer means SRAM, <code>print()</code> is safe, and your code works. The cost is that a copy of all your text is squatting permanently in the memory you needed for variables.</p>
+
+      <p><code>F()</code> is how you refuse that deal. It is a macro that casts the string to a distinct type &mdash; <code>__FlashStringHelper*</code> &mdash; that exists purely so the compiler can tell the difference:</p>
+
+      <pre><code>display.print(<span class="st">"Ready"</span>);      <span class="cm">// const char* -> "read from SRAM"</span>
+display.print(F(<span class="st">"Ready"</span>));   <span class="cm">// __FlashStringHelper* -> "read from flash"</span></code></pre>
+
+      <p>Same text, different <em>type</em>. C++ picks a different version of <code>print()</code> based on that type, and the flash version reads characters one at a time with the <code>LPM</code> instruction instead of expecting a copy in SRAM. That is the entire trick: <code>F()</code> does not move anything &mdash; it changes which <code>print()</code> gets called.</p>
+
+      <div class="callout">
+        <strong>Why nobody on a laptop has heard of this.</strong> Desktop C++ has no <code>F()</code> because von Neumann machines have no ambiguity to resolve. If you go looking for this online you will find Arduino and AVR pages and nothing else. It is not a C++ feature. It is a workaround for a hardware split, and it disappears the moment you move to a chip that does not have one.
+      </div>
+
+      <div class="backref"><strong>Back to the book:</strong> Lesson 2 &sect;3.2 &middot; Lesson 12 (the linker discarding dead weight) &middot; Lesson 16 (the 28,672-byte wall).</div>
+    </div>
+  </details>
+
+  <!-- ============================================================ 3 -->
+  <details>
+    <summary>What actually happens when you press Build <span class="anchor">Lessons 1, 12, 16</span></summary>
+    <div class="body">
+
+      <p>Lesson 1 calls it &ldquo;compiling.&rdquo; Lesson 12 mentions that &ldquo;the linker noticed&rdquo; an unused function and threw it away. Those are two different programs, and there are two more you have never been introduced to. Knowing which one is complaining tells you where the mistake is.</p>
+
+      <h3>Four programs, in order</h3>
+
+      <p><strong>1. The preprocessor</strong> runs first and does not understand C++ at all. It is a text substitution engine. It finds every <code>#include</code> and pastes that entire file in place of the line; it finds every <code>#define</code> and swaps the text. Its output is one enormous file with no <code>#</code> lines left in it.</p>
+
+      <p><em>Its errors sound like:</em> <code>Zumo32U4.h: No such file or directory</code>. The library is missing or misspelled. Nothing has been compiled yet.</p>
+
+      <p><strong>2. The compiler</strong> takes that file and translates it into machine instructions for the AVR. This is the stage that reads your syntax, so it is the one that catches missing semicolons, unmatched braces, and undeclared names. It works on <em>one file at a time</em> and knows nothing about the others &mdash; which is exactly why Lesson 7's headers exist.</p>
+
+      <p><em>Its errors sound like:</em> <code>expected ';' before</code> &middot; <code>'calibrateSensors' was not declared in this scope</code>.</p>
+
+      <p><strong>3. The linker</strong> collects the compiled pieces and wires them together, matching every function call to the one definition of that function. It is the first stage that sees your whole program at once.</p>
+
+      <p><em>Its errors sound like:</em> <code>undefined reference to</code> &mdash; you promised a function existed and never wrote it. Also: <code>region 'text' overflowed</code>, the Lesson 16 wall.</p>
+
+      <div class="callout">
+        <strong>This is the Lesson 12 moment.</strong> The linker walks outward from <code>main()</code> asking &ldquo;can this ever run?&rdquo; A function nothing calls is unreachable, so it never gets written to the binary at all. That is why writing <code>turnDegreesGyro()</code> did not make your program one byte bigger. The linker is also the only stage that could possibly know that &mdash; the compiler saw only one file.
+      </div>
+
+      <p><strong>4. The uploader</strong> converts the binary to Intel HEX (a text format, oddly), talks to the bootloader over USB, and writes it into flash. The bootloader is that 4&nbsp;KB you do not get to use.</p>
+
+      <h3>Reading an error message backwards</h3>
+      <table>
+        <tr><th>The message mentions</th><th>Blame</th><th>So look for</th></tr>
+        <tr><td>No such file</td><td>Preprocessor</td><td>A wrong <code>#include</code></td></tr>
+        <tr><td>expected / not declared</td><td>Compiler</td><td>Syntax, or a missing prototype</td></tr>
+        <tr><td>undefined reference</td><td>Linker</td><td>Declared but never defined</td></tr>
+        <tr><td>region overflowed</td><td>Linker</td><td>Lesson 16</td></tr>
+      </table>
+
+      <div class="backref"><strong>Back to the book:</strong> Lesson 1 (Build and Upload) &middot; Lesson 7 (why one file cannot see another) &middot; Lesson 12 (the linker) &middot; Lesson 16 (the ceiling).</div>
+    </div>
+  </details>
+
+  <!-- ============================================================ 4 -->
+  <details>
+    <summary>Why eight files instead of one <span class="anchor">Lesson 7</span></summary>
+    <div class="body">
+
+      <p>Lesson 7 hands you the rules: declarations go in <code>.h</code>, definitions go in <code>.cpp</code>, shared variables get <code>extern</code>. Follow them and it compiles. The reasoning underneath is one fact from the previous entry, applied over and over.</p>
+
+      <h3>The compiler sees one file at a time</h3>
+      <p>Each <code>.cpp</code> is compiled in complete isolation &mdash; a <strong>translation unit</strong>. When <code>Movement.cpp</code> calls <code>readLinePosition()</code>, the compiler has never heard of it, because that function lives in a file it is not currently looking at. It cannot go peek. It has one job, one file.</p>
+
+      <p>So you leave it a note. A header is a file of <em>promises</em>: this function exists, here is its shape, trust me and carry on. The compiler generates a placeholder call and marks it unresolved. Later the linker &mdash; which does see everything &mdash; finds the real definition and fills in the address.</p>
+
+      <div class="callout">
+        <strong>This is the same idea as the prototype in Lesson 2.</strong> A prototype lets you call a function defined lower in the same file. A header lets you call one defined in a different file entirely. Identical trick, wider scope: <em>declare the shape now, supply the body later, let the linker connect them.</em>
+      </div>
+
+      <h3>Why <code>extern</code> exists</h3>
+      <p>Variables have the same problem plus one extra hazard. If two <code>.cpp</code> files both say <code>int robotSpeed;</code>, you have created <em>two different variables</em> with the same name, and the linker will refuse the job. So you split it: one file <strong>defines</strong> it, and the header <strong>declares</strong> it with <code>extern</code>, which means &ldquo;this exists somewhere else, do not make another one.&rdquo;</p>
+
+      <pre><code><span class="cm">// Config.h  - the promise, seen by everyone</span>
+<span class="kw">extern</span> <span class="ty">int</span> robotSpeed;
+
+<span class="cm">// Config.cpp - the one real variable</span>
+<span class="ty">int</span> robotSpeed = <span class="nu">200</span>;</code></pre>
+
+      <h3>What you actually bought</h3>
+      <ul>
+        <li><strong>Change one file, rebuild one file.</strong> Editing <code>Movement.cpp</code> does not recompile the other seven.</li>
+        <li><strong>Errors get a return address.</strong> A line-sensor bug lives in <code>Sensors.cpp</code>, not somewhere in 800 lines.</li>
+        <li><strong>The header becomes the documentation.</strong> Reading <code>Movement.h</code> tells you what movement can do without reading how.</li>
+        <li><strong>You can hand someone a file.</strong> Your teammate implements against the header while you keep working. That is the actual reason professional codebases are built this way.</li>
+      </ul>
+
+      <div class="backref"><strong>Back to the book:</strong> Lesson 2 &sect;3.1 (prototypes) &middot; Lesson 7 (the eight-file architecture).</div>
+    </div>
+  </details>
+
+  <!-- ============================================================ 5 -->
+  <details>
+    <summary>Fixed point, applied to your own code <span class="anchor">Lessons 8, 12, 15</span></summary>
+    <div class="body">
+
+      <p>Lesson 12 &sect;8A.3 already showed you fixed point in action: the gyro stores its running angle as a plain integer where 2<sup>29</sup> units = 45&deg;, because the ATmega32U4 has no floating-point hardware and emulating it thousands of times per turn would eat the whole loop. That was Pololu's code, and the lesson tells you it is none of your business.</p>
+
+      <p>This entry is the same idea pointed at <em>your</em> code &mdash; specifically at <code>float Kp = 0.10;</code> from Lesson 8, which is doing exactly the expensive thing L12 warned about, in the tightest loop you own.</p>
+
+      <h3>What a float actually costs here</h3>
+      <p>When you write <code>correction = Kp * error;</code>, the compiler substitutes a call into a software library that assembles the answer out of integer operations. Rough shape of it:</p>
+
+      <table>
+        <tr><th>Operation</th><th>Roughly</th></tr>
+        <tr><td><code>int</code> add</td><td>1 cycle</td></tr>
+        <tr><td><code>int</code> multiply</td><td>2 cycles</td></tr>
+        <tr><td><code>float</code> add</td><td>~100+ cycles</td></tr>
+        <tr><td><code>float</code> multiply</td><td>~140+ cycles</td></tr>
+      </table>
+
+      <p>Two orders of magnitude. The float library also costs you a chunk of flash the moment you use it &mdash; which is why Lesson 16's byte ladder is as high as it is.</p>
+
+      <h3>Fixed point: decimals without floats</h3>
+      <p>The trick is to stop storing the decimal at all and agree to remember where it goes. Multiply everything by 100, do integer arithmetic, divide at the very end:</p>
+
+      <pre><code><span class="cm">// float version</span>
+<span class="ty">float</span> Kp = <span class="nu">0.10</span>;
+correction = Kp * error;
+
+<span class="cm">// fixed-point version: Kp scaled by 100</span>
+<span class="kw">const</span> <span class="ty">int</span> KP_X100 = <span class="nu">10</span>;              <span class="cm">// 0.10 * 100</span>
+correction = (KP_X100 * error) / <span class="nu">100</span>;</code></pre>
+
+      <p>Same answer, integer speed. The scale factor lives in your head and in the constant's name &mdash; which is why <code>KP_X100</code> is named that way and not <code>KP</code>.</p>
+
+      <div class="callout warn">
+        <strong>What it costs you.</strong> Integer division truncates, so error accumulates. Multiply first and divide last, or you throw away precision you needed. And a scaled value overflows sooner: an <code>int</code> stops at 32,767, so <code>KP_X100 * error</code> with a large error can wrap around to a negative number and drive your robot the wrong way. That failure is silent.
+      </div>
+
+      <p><strong>Should you convert?</strong> Not while you are learning &mdash; floats are readable, and in Lesson 8 your loop has time to spare. Reach for this when the byte ladder is against the ceiling in Lesson 16, or when the Lesson 15 loop timing will not come down. L12 made this choice for the gyro because that code runs thousands of times per turn; whether your control loop has crossed the same line is a measurement, not a guess.</p>
+
+      <div class="callout">
+        <strong>The deeper lesson, which L12 states better than I can.</strong> Choosing your units well can make an entire class of bug impossible to write &mdash; the gyro's angle wraps correctly at 360&deg; for free, because of the unit, with no code handling it. Fixed point is not only a speed trick. It is a chance to pick units that do work for you.
+      </div>
+
+      <div class="backref"><strong>Back to the book:</strong> Lesson 8 (Kp) &middot; Lesson 12 &sect;8A.3 (fixed point, explained properly) &middot; Lesson 15 (the full PID) &middot; Lesson 16 (the flash budget).</div>
+    </div>
+  </details>
+
+  <!-- ============================================================ 6 -->
+  <details>
+    <summary>What an object is, one level down <span class="anchor">Lesson 2</span></summary>
+    <div class="body">
+
+      <p>Lesson 2 says an object is a named bundle of memory plus the commands that work on it, and that you talk to it with name-dot-command. That is accurate. Here is the layer underneath &mdash; enough to explain the errors you will actually hit, and no further.</p>
+
+      <h3>Class and instance are different things</h3>
+      <p><code>Zumo32U4Motors</code> is a <strong>class</strong> &mdash; a description, written by Pololu, that lives in the library. It occupies no memory in your robot and controls nothing. It is a blueprint.</p>
+
+      <p><code>motors</code> is an <strong>instance</strong> &mdash; an actual object built from that blueprint when you wrote <code>Zumo32U4Motors motors;</code>. It has an address. It is the thing that does something.</p>
+
+      <p>The distinction sounds academic until you read an error message. <code>'Zumo32U4Motors' has not been declared</code> means the compiler cannot find the blueprint &mdash; your <code>#include</code> is missing. <code>'motors' was not declared in this scope</code> means the blueprint is fine but you never built one, or you built it somewhere this code cannot see.</p>
+
+      <h3>Why the dot</h3>
+      <p>When you call <code>motors.setSpeeds(100, 100)</code>, the function needs to know <em>which</em> object to act on. The dot supplies it. Behind the scenes the compiler passes the object's address as a hidden first argument, which is why the same <code>setSpeeds</code> code can drive any number of motor objects without confusion.</p>
+
+      <p>That is also why <code>Zumo32U4Motors.setSpeeds(100, 100)</code> is an error. You handed it the blueprint. There is nothing there to drive.</p>
+
+      <h3>Why declaring two is a bug, not a duplicate</h3>
+      <pre><code>Zumo32U4Motors motors;      <span class="cm">// in main.cpp</span>
+Zumo32U4Motors motors2;     <span class="cm">// somewhere else - DON'T</span></code></pre>
+
+      <p>This compiles. Both objects work. And they both write to the same physical motor-driver pins, with no idea the other exists &mdash; so whichever ran last wins, and the resulting behavior looks like a logic bug rather than a structural one. An object is a <em>handle</em> to hardware, not the hardware itself. One handle per thing, declared once, up top.</p>
+
+      <div class="callout">
+        <strong>Where to stop.</strong> If you go reading about C++ objects online you will hit constructors, destructors, inheritance, <code>new</code>, and smart pointers within about two screens. Almost none of that applies here: dynamic allocation is avoided on a chip with 2.5&nbsp;KB of SRAM, and this book never needs it. Objects in this book are exactly what Lesson 2 says &mdash; declared once at the top, alive for the whole run, talked to with a dot.
+      </div>
+
+      <div class="backref"><strong>Back to the book:</strong> Lesson 2 &sect;3.2 (Hardware Objects) &middot; Lesson 7 (where objects live once there are eight files).</div>
+    </div>
+  </details>
+
+  <footer>
+    Going Deeper &middot; Version 01.0 &middot; Zumo 32U4 Robotics<br>
+    Optional reading. The chapters are the course.
+  </footer>
+
+</div>
+</body>
+</html>
