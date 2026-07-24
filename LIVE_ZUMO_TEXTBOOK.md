@@ -1,9 +1,62 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 22, 2026 (Session 63 — the robot icon family is LIVE: 42 files in `images/glowbots/`, bordered for buttons + transparent glow for images).
-**Status:** **Robot icon family LIVE — `images/glowbots/`, 42 files, commit `12867ea`.** Five robots (Zumo · 3Pi+ · Romi · Balboa · Zircon) in TWO sets: **bordered** (1254/256/128/64/52, RGB) for **buttons**, and **glow** (transparent RGBA, full 1186²/256/128) for **images**. Canonized as **Bible §21 (v8.42)**, which **supersedes the S61 frame-swap-only build rule** — the "never separate the robot from its glow" prohibition is lifted, since S63 cut all five successfully including the two §21.4 predicted would fail. Glow floor is **128 px**; below that use bordered. All five glow cutouts verified uniform (mean edge distance 1.28–1.32 px, zero opaque edge pixels at every size). **Split pill live on L01–L03; the slash was HALVED this session** (8px→4px, margins -4px→-2px) across all 25 pills — Bible **§6.12b (v8.43)**. L04–L16 still carry single pills and are NOT yet swept, pending DJ's sign-off on the rendered look.
+**Date:** July 23, 2026 (Session 64 — the split-pill sweep is COMPLETE: all 84 challenges across 15 lessons now carry both axes).
+**Status:** **THE SPLIT-PILL SWEEP IS COMPLETE.** L04–L15 swept this session; with L01–L03 from S62 that is **84 challenges across 15 lessons**, every card carrying `data-difficulty` AND `data-grasp`, and **0 old single pills remaining** (measured by `pill_sweep.py --audit`, not claimed). L16 is exempt — it uses the §6.12 tier-card variant and has no challenge cards. **Six teaching gaps were found and fixed** by the grasping pass, which is §6.12b working as designed (a Deep rating against untaught prose IS a gap): L04 §8A.8 `bool`-as-memory · L04 §8A.9 `abs()` and the deadband · L06 §5.5 the polygon exterior-angle rule · L07 C05 stub definition · L08 `qr-map` · L09 `qr-dowhile`. **Three doing-axis re-rates:** L05 C01 Easy→Medium and L14 C02 Easy→Medium (both carried in from the S63 handoff) plus L10 C03 Medium→Easy (new). The book's single **Tough** (L13 C02) was deliberately kept so the tier stays live. **Two missing footer banners repaired** (L02, L12) — all 16 lessons now have both §5b visible homes agreeing for the first time. Canonized as Bible **§6.12b** (sweep complete + the progression table), **§6.12c** (inline CSS drifts per rebuild — match structurally), **§11** (a transcribed-only construct gets a Quick Reference row, not a prose section) and **§5b** (both banner homes mandatory). New tool: **`pill_sweep.py` v1.0**, repo root.
 
-**Versions:** L01 v03.6.1 · L02 v02.10.1 · L03 v03.10.1 · L04 v04.4.0 · L05 v04.4.0 · L06 v04.8.0 · L07 v04.4.0 · L08 v04.3.0 · L09 v05.2.0 · L10 v02.3.0 · L11 v02.4.0 · L12 v01.4.0 · L13 v02.4.0 · L14 v02.6.0 · L15 v02.4.0 · L16 v02.3.0 · Bible **v8.43** · Maker **v2.43** · Gate v1.6 · Harness v3.0.
+**Versions:** L01 v03.6.1 · L02 v02.10.2 · L03 v03.10.1 · L04 v04.5.0 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.0 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.5.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.3.0 · Bible **v8.44** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep **v1.0**.
+
+---
+
+## WHAT SHIPPED THIS BATCH (S64) — the split-pill sweep, complete
+
+**The sweep.** L04–L15, 59 pills, converted to the two-axis split pill. With S62's L01–L03 the book is
+now at **84 challenges / 15 lessons / 0 old pills**. Verified by `pill_sweep.py --audit`,
+which is read-only and reports `SWEPT` / `not swept` / `*** MIXED ***` per lesson — a half-applied sweep
+cannot pass silently.
+
+**Why it was not a find-and-replace.** The same visual pill carried **nine distinct style strings** across
+L04–L15 — same rendering, different CSS property order. Canvas strips `<style>` and `class=`, so every card
+holds its own inline copy and every rebuild retypes it. Git shows the flips are single-commit and
+lesson-clustered (L05/L12/L13 all changed together in `a3cd518`, the S59 Project B pilot): **strata, not
+rot.** S63's note that "markup was uniform, zero variants" was true of L01–L03 only, because those three
+share one stratum. Now Bible **§6.12c**.
+
+**Teaching gaps found and fixed** (six, all the same class as the standing L03 C05 gap):
+
+| Lesson | Gap | Fix |
+|---|---|---|
+| L04 | `bool` state across `loop()` passes — 0 prose hits, C02 needs it | **§8A.8 NEW** — runaway counter, edge vs presence, global-vs-local placement, hysteresis |
+| L04 | `abs()` + deadband — 0 prose hits, C05 needs it | **§8A.9 NEW** — error carries size AND sign; why `error == 0` buzzes forever |
+| L06 | polygon exterior angle — 0 prose hits, C03 says "you must calculate" | **§5.5 NEW** — 360÷sides, why the square hid the rule |
+| L07 | "stub" used 9× in C05, never defined | one-line definition in the card |
+| L08 | `map()` — appears **once in the entire book**, as a fill-in blank | **`qr-map`** Quick Reference row + C04 pointer repointed |
+| L09 | `do…while` — supplied complete in C03, taught nowhere | **`qr-dowhile`** Quick Reference row + C03 pointer |
+
+**Two near-misses worth recording.** `static` looked like an L09 gap (0 prose hits there) but is properly
+taught in **L05** with a 🔑 callout — and L03's hit is "static friction", L06/L07's are the different
+file-scope sense. `while(true)` looked absent from the book but appears **11 times in L06**; the raw-HTML
+grep missed it because syntax highlighting splits the construct across `<span>` tags. Both are now §6.12c
+rules: strip tags before grepping a construct, and check sibling lessons before declaring a gap.
+
+**Structural repairs.** L02 and L12 shipped with only the HEADER version banner; both now carry the footer
+one too, matching their own neighbours' format (L02 → `<footer>` like L03, L12 → gradient div like L13),
+with the version derived from the hidden comment so the homes cannot disagree. **All 16 lessons now have
+both §5b visible homes present and agreeing** — a first for the project.
+
+**The progression, both axes** (lesson means, doing / grasping):
+
+| L01 | L02 | L03 | L04 | L05 | L06 | L07 | L08 | L09 | L10 | L11 | L12 | L13 | L14 | L15 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1.36 / 1.36 | 1.67 / 1.50 | 1.69 / 1.62 | **2.40 / 2.20** | 2.00 / 1.80 | 2.25 / 1.88 | **1.83 / 1.50** | 1.80 / 2.00 | 2.17 / 2.17 | 2.20 / 1.80 | 2.00 / **2.33** | 2.33 / 2.33 | 2.50 / 2.00 | 2.33 / 2.33 | 2.71 / 2.57 |
+
+Floor and ceiling are clean. **L04 spikes to 2.40/2.20** (third-hardest doing, sitting fourth) and **L07
+sags to 1.83/1.50** — below L05, barely above L03, with L08 at 1.80 behind it. Challenge COUNT collapses
+after L10: L11–L14 hold 12 between them, fewer than L01 alone, while **L11 pairs the book's highest grasp
+mean (2.33) with its lowest count** — under-practiced rather than under-taught.
+
+**Open, not fixed:** L15 C04–C07 ship with no template and no solution reveal (four of the hardest cards
+give a stuck student only prose, and the AI Tutor nothing to strip). A stray `</div>` sits after `</html>`
+in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth walk catches it.
 
 ---
 
