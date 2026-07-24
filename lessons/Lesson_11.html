@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.5.0 -->
+<!-- Lesson version: v02.6.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Time Lies, Distance Doesn't</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Encoder-Based Gap Crossing</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.5 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.6 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== PART 1 DIVIDER ===================== -->
@@ -883,6 +883,55 @@ motors.setSpeeds(gapSpeed + ____, gapSpeed);    <span style="color: #6a9955;">//
   motors.setSpeeds(gapSpeed + TRIM, gapSpeed);</pre><p style="margin-top:10px;">The TRIM still rides on the left motor. Slowing down does not make the loop any less open &mdash; it just makes the mistake cheaper.</p><p style="margin-top: 10px;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c3_speed" style="color: #2e86ab; font-weight: bold;">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
+<div id="challenge-4" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="11.4" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 4: Prove Your TRIM</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #9A6B10; color: #ffffff; padding: 3px 13px 3px 11px;">Medium</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #185FA5; color: #ffffff; padding: 3px 11px 3px 13px;">Moderate</span></span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">&#128193; <strong>Work in:</strong> your <strong>LastName_L11</strong> build &mdash; only <code>RobotConfig.h</code> changes between runs, and your real number goes back at the end &mdash; or a fresh copy at the &sect;7C state: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7c" target="_blank" style="color: #2e86ab; font-weight: bold;">&rarr; make this folder for me</a></p>
+</div>
+<div style="padding: 15px 20px; background: white;">
+<p style="margin-top: 0;">Section 7C showed you the effect: in a gap, TRIM is the only thing steering. This challenge makes you <strong>measure</strong> it &mdash; and checks a prediction you wrote down eight lessons ago.</p>
+<p><strong>The setup.</strong> Use your widest gap. Place a post-it at your starting point and line the robot's <strong>front blade</strong> up with its edge &mdash; put the robot in the same exact spot every run; the blade is the easiest consistent reference.</p>
+<p><strong>Three runs.</strong> Before each run, write a prediction in your notebook: <em>which way</em> the robot will drift, and a guess in cm. Then run it, and place a second post-it where it stops &mdash; label it with the run number. After three runs the three post-its ARE your data: measure each one's sideways distance from the line.</p>
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8; margin: 0;">Run 1:  const int TRIM = ___;   // your Lesson 6 number
+Run 2:  const int TRIM = 0;     // the correction removed
+Run 3:  const int TRIM = ___;   // DOUBLE your number</pre>
+<p style="margin-bottom: 0;">In Lesson 3 &sect;7 you recorded which way YOUR robot naturally curves. Run 2 should reproduce it. Run 3 should mirror it. Do they? Six numbers go in your notebook &mdash; three guesses, three measurements. That is a Performance Evaluation table row, measured by you.</p>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">&#128275; Click to reveal solution</summary>
+<p><strong>The pattern you should see.</strong> Run 1 tracks straight, within a centimeter or two. Run 2 drifts toward your robot's <em>natural</em> curve &mdash; the direction from your Lesson 3 notebook &mdash; because with the correction gone, the motor imbalance is back in charge. Run 3 drifts the <em>opposite</em> way by roughly the same amount: doubling the correction overshoots by about the margin that zero undershoots.</p>
+<p><strong>Why the gap is where this shows.</strong> Open loop. There is no line, so there is no feedback, so the error compounds with every blind centimeter &mdash; drift grows with gap width. On the line, P-control corrects the same imbalance fifty times a second and you never see it.</p>
+<p style="margin-bottom: 0;"><strong>The diagnostic.</strong> If Run 3 drifts the <em>same</em> direction as Run 2, your TRIM sign is wrong &mdash; you have been boosting the wrong wheel, and closed-loop control has been quietly covering for it everywhere except in gaps.</p>
+</details>
+</div>
+
+<div id="challenge-5" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="11.5" data-kind="challenge" data-difficulty="easy" data-grasp="moderate">
+<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;"><strong>Challenge 5: The Cliff Arithmetic &mdash; Your Numbers</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #4A6B22; color: #ffffff; padding: 3px 13px 3px 11px;">Easy</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #185FA5; color: #ffffff; padding: 3px 11px 3px 13px;">Moderate</span></span></div>
+<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
+<p style="margin: 0;">&#128193; <strong>Work in:</strong> your engineering notebook &mdash; plus a ruler and your powered-off robot. No code in this one; the deliverable is a page of checked numbers.</p>
+</div>
+<div style="padding: 15px 20px; background: white;">
+<p style="margin-top: 0;">Section 8A.4 ran the cliff arithmetic on a demo robot &mdash; 25&nbsp;cm/s, 4.5&nbsp;cm of warning, 10&nbsp;cm gaps &mdash; and proved no threshold can work. Every number in that proof is checkable, and two of them are yours.</p>
+<p><strong>Part 1 &mdash; your inequality.</strong> Power the robot off, flip it over, and measure YOUR warning distance: from the front edge of the line-sensor array back to where the tracks touch the ground. Compute YOUR speed from your <code>BASE_SPEED</code> (speed &divide; 400 &times; 65&nbsp;cm/s). Use your course's widest gap. Redo &sect;8A.4 steps 1&ndash;4 with those three numbers. By how many milliseconds does your robot lose?</p>
+<p><strong>Part 2 &mdash; the boom.</strong> &sect;8A.4 says a sensor boom fixes it. How long, exactly, for YOUR gap width? Write the inequality, produce a number in cm.</p>
+<p><strong>Part 3 &mdash; the proof.</strong> &sect;8A.4 claims slowing down cannot help: <em>&ldquo;the ratio never changes.&rdquo;</em> Prove it. Call the speed <code>v</code>, write the warning time and the alarm time as expressions in <code>v</code>, and show the comparison comes out the same for every <code>v</code>.</p>
+<p style="margin-bottom: 0;">A number you checked is evidence; a number you were handed is a guess. This page is your evidence.</p>
+</div>
+<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
+<summary style="cursor: pointer; font-weight: bold; padding: 5px; color: #1a5276;">&#128275; Click to reveal solution</summary>
+<p><strong>Worked with the demo numbers</strong> (yours will differ &mdash; that is the point):</p>
+<pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">warning time = 4.5 cm / v          alarm time = G / v     (G = widest gap)
+
+the alarm fires in time only if:   G / v  &lt;  4.5 / v
+multiply both sides by v:          G      &lt;  4.5 cm
+
+Speed divided OUT. The comparison is between two DISTANCES,
+and v was never really in it. A 10 cm gap loses at every speed:
+with the demo numbers, 400 ms - 180 ms = 220 ms too late.</pre>
+<p style="margin-bottom: 0;"><strong>The boom.</strong> The sensor must ride <em>more than G centimeters</em> ahead of the wheel contact patch. For 10&nbsp;cm gaps the stock 4.5&nbsp;cm leaves you at least 5.5&nbsp;cm short before any safety margin &mdash; which is why the fix in &sect;8A.4 is mechanical, not a better threshold. The algorithm was never the problem.</p>
+</details>
+</div>
+
 <p style="text-align: right; margin-top: 25px;"><a href="#top" style="color: #2e86ab;">&uarr; Back to top</a></p>
 </div>
 
@@ -1056,6 +1105,6 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 </div>
 
 <hr style="margin-top: 40px; border: none; border-top: 1px solid #ddd;">
-<p style="text-align: center; color: #888; font-size: 0.85em; padding: 20px;">Lesson 11 &mdash; Time Lies, Distance Doesn't &middot; Version 02.5 &middot; Zumo 32U4 Robotics</p>
+<p style="text-align: center; color: #888; font-size: 0.85em; padding: 20px;">Lesson 11 &mdash; Time Lies, Distance Doesn't &middot; Version 02.6 &middot; Zumo 32U4 Robotics</p>
 </body>
 </html>

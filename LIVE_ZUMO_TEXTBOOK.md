@@ -1,9 +1,23 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 24, 2026 (Session 65 — L02 depth pass · Going Deeper · terminal colors · the Challenge-name split).
-**Status:** **L02 GOT A DEPTH PASS AND THE BOOK GOT AN OPTIONAL-READING PAGE.** Five prose additions to L02 (brace style + the one-liner trap · a full `F()` explainer · short-circuit evaluation · "why, not what" pulled forward from L10 · the semicolon habit and why the error points at the wrong line), plus a `qr-flash` Quick Reference row. `F()` was used **692 times across 15 lessons and explained once** — same defect class as S64's `map()` and `do…while`. Brief `F()` reminders added to **L12** and **L16**, the only two lessons with memory prose already on the page (L07/L14/L15 evaluated and rejected — L07 has zero memory prose; L14/L15 "ceiling" hits are the 2000 µs sensor timeout). L02 also gained the **robot recipe table**, a **printable notebook card** (`_card.png`, 1800×1816 @300dpi), a **3-minute "Three Builds That Fail" debug challenge**, and **ten live timer iframes** — every timed challenge in L02 now has a real countdown, 20 in total. New standalone **`going_deeper.html` v01.0.0** — six collapsible entries, every one anchored to a chapter, linked from the index tools row. Canonized as Bible **§22** (terminal color), **§6.13** (the guard-clause brace rule) and **§23** (Going Deeper).
+**Date:** July 24, 2026 (Session 66 — the difficulty-progression audit: L04 re-rate · L07 C03 re-rate · two new L11 challenges).
+**Status:** **THE PROGRESSION AUDIT FINALLY STARTED — AND ITS FIRST THREE RULINGS SHIPPED.** The both-axes means were recomputed fresh on the canonical five-tier doing scale (the S64 table had mapped Hard=3/Advanced=4, understating the L04 spike). (1) **L04 card-by-card re-rate, DJ-approved:** C2 Medium→Easy/Deep (one blank, transcription-level hands, the edge-detection concept carries the load — the L03 C08 Easy/Deep shape), C3 Medium→Easy/Moderate, C4 Hard→Tough/Moderate, C5 Advanced→Hard/Deep. L04 doing mean **2.80 → 2.00**; the opening ramp is now monotone 1.36 → 1.67 → 1.88 → 2.00 → 2.20 → 2.62 (L01–L06). (2) **L07 C03 Medium→Easy** (file-verified: zero blanks, fully specified pseudocode — v8.44 transcribed-only class). (3) **L11 count collapse: two new challenge cards** built from existing prose, zero Maker/payload impact — **Challenge 4: Prove Your TRIM** (Medium/Moderate, prose format; three predict-then-measure gap runs at TRIM/0/2×TRIM with a post-it start-and-stop measurement method, front-blade alignment for a consistent start; rides the existing `cal_7c` kind) and **Challenge 5: The Cliff Arithmetic — Your Numbers** (Easy/Moderate, notebook-only; rerun §8A.4 with your measured numbers, compute your boom length, prove v cancels). L11 N 3→5, doing 2.33→2.00, grasp 2.33→2.20. Tough usage 2→3 book-wide. All 14 book gates PASS on the delivered set.
 
-**Versions:** L01 v03.6.4 · L02 v02.13.4 · L03 v03.10.1 · L04 v04.5.2 · L05 v04.5.0 · L06 v04.9.0 · L07 v04.5.1 · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 v02.5.0 · L12 v01.6.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0 · Bible **v8.49** · Maker **v2.43** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · **book_gates v1.1** · going_deeper **v01.0.0**.
+**Versions:** L01 v03.6.4 · L02 v02.13.4 · L03 v03.10.1 · L04 **v04.5.3** · L05 v04.5.0 · L06 v04.9.0 · L07 **v04.5.2** · L08 v04.4.0 · L09 v05.3.0 · L10 v02.4.0 · L11 **v02.6.1** · L12 v01.6.0 · L13 v02.5.0 · L14 v02.7.0 · L15 v02.5.0 · L16 v02.4.0 · Bible v8.49 · Maker v2.43 · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates v1.1 · going_deeper v01.0.0.
+
+---
+
+## WHAT SHIPPED THIS BATCH (S66)
+
+**The scale correction.** The prior audit table's means only reproduce under a four-point doing mapping (Hard=3, Advanced=4); §6.12b's canonical order is five tiers with Tough=3. Recomputed 1–5, L04 was **2.80** — second-hardest doing in the book at position 4 of 16 — not the recorded 2.40. Every shape finding survived the rescale.
+
+**L04 (v04.5.3).** Four attribute + visible-pill re-rates, each scoped to its own card block with count==1 asserts. C1 kept Easy/Light. Grasp axis untouched (2.20) — L04's load is cognitive and the split pill exists to say so. One flag logged: C2's Deep concept (arrival-vs-presence) is taught inside the card, not §5/§8A prose; ruled covered, not a gap — and it is load-bearing downstream (L09's transitions, L13's literal "just arrived").
+
+**L07 (v04.5.2).** C03 doing Medium→Easy. Honest re-rate deepens the recorded sag — deliberately: it exposes that L07 needs a harder capstone rather than a flattering label.
+
+**L11 (v02.6.1).** Two cards appended after C3 (markers 11.4/11.5, `data-kind="challenge"`, `data-reveal="solution"`, L11's own card strata per §6.12c). Banners 02.5→02.6 both homes; v02.6.1 is the post-delivery post-it-method revision (DJ-ruled measurement change). New bench item: verify C4's double-TRIM mirror-drift on a real gap before classroom use.
+
+**Remaining audit findings (carried):** L07–L08 sag now reads 1.83/2.00 doing — needs harder capstones, Part-B-scale authoring. L12–L14 still at 3 challenges each. DJ's own tier pass still to come.
 
 ---
 
