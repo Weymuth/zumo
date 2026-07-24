@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.9.0 -->
+<!-- Lesson version: v04.10.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -43,7 +43,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Encoders</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Measure</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.9 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.10 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -2232,170 +2232,7 @@ Stop motors</pre>
 
 </div>
 
-<!-- Challenge 8: Trapezoidal Motion Profile -->
 
-<div id="challenge-8" style="border: 2px solid #7d5283; border-radius: 10px; margin: 25px 0; overflow: hidden;" data-challenge="6.8" data-kind="challenge" data-difficulty="advanced" data-grasp="deep">
-
-<div style="background: linear-gradient(135deg, #7d5283, #9b6a9e); color: white; padding: 12px 20px;">
-
-<strong>Challenge 8: Trapezoidal Motion Profile</strong> <span style="display: inline-flex; align-items: stretch; margin-left: 10px; font-size: 0.8em; border-radius: 999px; overflow: hidden; vertical-align: middle;"><span style="background: #6B2545; color: #ffffff; padding: 3px 13px 3px 11px;">Advanced</span><span style="width: 4px; background: #ffffff; transform: skewX(-20deg); margin: 0 -2px; position: relative; z-index: 2;"></span><span style="background: #0C3F6C; color: #ffffff; padding: 3px 11px 3px 13px;">Deep</span></span>
-
-</div>
-<div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
-<p style="margin: 0 0 8px;">📁 <strong>Work in:</strong> your main <strong>LastName_L06</strong> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=6&amp;kind=trapezoidal" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make this folder for me</a></p>
-<p style="margin: 0;">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">Motors</a> · <a href="#qr-recipes" style="color: #2e86ab; font-weight: bold;">Code Recipes</a> &mdash; Challenge 6 + Challenge 7 welded together — the real-robotics motion profile.</p>
-</div>
-
-<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
-
-<h4 style="margin-top: 0;">🎯 THE GOAL</h4>
-
-<p>Combine smooth acceleration AND smooth deceleration into one professional-grade motion function. Start slow, ramp to full speed, then slow down before stopping. This is called a <strong>trapezoidal motion profile</strong> because the speed graph looks like a trapezoid!</p>
-
-</div>
-
-<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f3e5f5;">
-
-<h4 style="margin-top: 0;">🧠 THE LOGIC (Pseudocode)</h4>
-
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">Set target counts
-Start at HALF speed
-WHILE not at target:
-Calculate current progress (0.0 to 1.0)
-IF progress &lt; 0.25:
-Use HALF speed (accelerating phase)
-ELSE IF progress &lt; 0.75:
-Use FULL speed (cruise phase)
-ELSE:
-Use HALF speed (decelerating phase)
-END IF
-END WHILE
-Stop motors</pre>
-
-<img src="https://weymuth.github.io/zumo/images/L06_GRAPHIC_6-11_trapezoid_motion_profile.svg" alt="A trapezoidal motion profile: speed ramps up, holds at cruise, then ramps down to zero, so the distance travelled is the area under the trapezoid." style="width: 100%; max-width: 900px; display: block; margin: 20px auto;">
-
-<p><strong>Real-world use:</strong> Industrial robots, CNC machines, and RoboCup champions all use trapezoidal (or S-curve) motion profiles!</p>
-
-</div>
-
-<div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #e8f5e9;">
-
-<h4 style="margin-top: 0;">🧩 THE TEMPLATE</h4>
-
-<p><strong>Step 1:</strong> Create a new function called <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">driveDistanceTrapezoidal()</code> in the Helper Functions section (AFTER <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">driveDistance()</code>):</p>
-
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">/*</span>
-<span style="color: #6a9955;">driveDistanceTrapezoidal(distanceCm)</span>
-<span style="color: #6a9955;">------------------------------------</span>
-<span style="color: #6a9955;">Slow start -&gt; fast cruise -&gt; slow finish.</span>
-<span style="color: #6a9955;">*/</span>
-<span style="color: #569cd6;">void</span> driveDistanceTrapezoidal(<span style="color: #569cd6;">float</span> distanceCm) {
-  encoders.getCountsAndResetLeft();
-  encoders.getCountsAndResetRight();
-  <span style="color: #569cd6;">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span style="color: #569cd6;">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
-  <span style="color: #569cd6;">int</span> halfSpeed = DRIVE_SPEED / 2;
-  <span style="color: #569cd6;">int</span> fullSpeed = DRIVE_SPEED;
-  motors.setSpeeds(halfSpeed * direction + TRIM, halfSpeed * direction);
-  <span style="color: #569cd6;">while</span> (averageCounts() &lt; targetCounts) {
-    <span style="color: #569cd6;">long</span> currentCounts = averageCounts();
-    <span style="color: #569cd6;">float</span> progress = (<span style="color: #569cd6;">float</span>)currentCounts / targetCounts;
-    <span style="color: #569cd6;">int</span> speed;
-    <span style="color: #569cd6;">if</span> (progress &lt; ____) {
-      speed = _________; <span style="color: #6a9955;">// Accelerating</span>
-    } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (progress &lt; ____) {
-      speed = _________; <span style="color: #6a9955;">// Cruising</span>
-    } <span style="color: #569cd6;">else</span> {
-      speed = _________; <span style="color: #6a9955;">// Decelerating</span>
-    }
-    motors.setSpeeds(speed * direction + TRIM, speed * direction);
-    delay(10);
-  }
-  motors.setSpeeds(0, 0);
-}</pre>
-
-<p><strong>Step 2:</strong> Test it! In <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">loop()</code>, call your new function:</p>
-
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">void</span> loop() {
-  display.clear();
-  display.print(F(<span style="color: #ce9178;">"Trapezoid 60cm"</span>));
-  driveDistanceTrapezoidal(<span style="color: #b5cea8;">60</span>); <span style="color: #7cbf6e;">// Use your pro-level version!</span>
-  display.clear();
-  display.print(F(<span style="color: #ce9178;">"Done!"</span>));
-  <span style="color: #569cd6;">while</span>(<span style="color: #569cd6;">true</span>) { }
-}</pre>
-
-<p><strong>Step 3:</strong> Watch carefully! You should see three distinct phases: slow start → fast middle → slow finish. This is competition-level motion control!</p>
-
-</div>
-
-<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">💡 COMMON ERRORS</div>
-
-<ul>
-
-<li><strong>Integer division:</strong> Make sure <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">progress</code> is a <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">float</code>! If you use <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">int</code>, it will always be 0 until the very end.</li>
-
-<li><strong>Wrong comparison order:</strong> Check for &lt;0.25 FIRST, then &lt;0.75. If you check 0.75 first, the 0.25 condition will never trigger!</li>
-
-<li><strong>Forgot to multiply by direction:</strong> Without <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">* direction</code>, negative distances won't work.</li>
-
-</ul>
-
-</div>
-
-<details data-reveal="solution" style="margin: 0; border: none; padding: 15px 20px;">
-
-<summary style="cursor: pointer; font-weight: bold; padding: 5px;">🔓 Click to reveal solution</summary>
-
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">/*</span>
-<span style="color: #6a9955;">driveDistanceTrapezoidal(distanceCm)</span>
-<span style="color: #6a9955;">------------------------------------</span>
-<span style="color: #6a9955;">Slow start -&gt; fast cruise -&gt; slow finish.</span>
-<span style="color: #6a9955;">*/</span>
-<span style="color: #569cd6;">void</span> driveDistanceTrapezoidal(<span style="color: #569cd6;">float</span> distanceCm) {
-  encoders.getCountsAndResetLeft();
-  encoders.getCountsAndResetRight();
-  <span style="color: #569cd6;">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span style="color: #569cd6;">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
-  <span style="color: #569cd6;">int</span> halfSpeed = DRIVE_SPEED / 2;
-  <span style="color: #569cd6;">int</span> fullSpeed = DRIVE_SPEED;
-  motors.setSpeeds(halfSpeed * direction + TRIM, halfSpeed * direction);
-  <span style="color: #569cd6;">while</span> (averageCounts() &lt; targetCounts) {
-    <span style="color: #569cd6;">long</span> currentCounts = averageCounts();
-    <span style="color: #569cd6;">float</span> progress = (<span style="color: #569cd6;">float</span>)currentCounts / targetCounts;
-    <span style="color: #569cd6;">int</span> speed;
-    <span style="color: #569cd6;">if</span> (progress &lt; 0.25) {
-      speed = halfSpeed;      <span style="color: #6a9955;">// Accelerating phase</span>
-    } <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (progress &lt; 0.75) {
-      speed = fullSpeed;      <span style="color: #6a9955;">// Cruise phase</span>
-    } <span style="color: #569cd6;">else</span> {
-      speed = halfSpeed;      <span style="color: #6a9955;">// Decelerating phase</span>
-    }
-    motors.setSpeeds(speed * direction + TRIM, speed * direction);
-    delay(10);
-  }
-  motors.setSpeeds(0, 0);
-}</pre>
-
-<p><strong>Key concept:</strong> The trapezoidal profile balances speed with precision:</p>
-
-<ul>
-
-<li><strong>0-25%:</strong> Half speed prevents wheel slip at start</li>
-
-<li><strong>25-75%:</strong> Full speed for efficiency</li>
-
-<li><strong>75-100%:</strong> Half speed for accurate stopping</li>
-
-</ul>
-
-<p><strong>Competition tip:</strong> Adjust the percentages based on your surface. Slippery floors might need 0-35% acceleration and 65-100% deceleration!</p>
-
-</details>
-
-</div>
 
 <div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 20px 0; border-radius: 4px;">
     <strong>🏁 FINISHED EARLY?</strong>
@@ -2730,7 +2567,6 @@ Stop motors</pre>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 6.6]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Where the encoders live &#8212; top-down, inside the motors</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 6.9]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The five-move demo, every leg and turn labelled</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 6.10]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Anatomy of a function &#8212; return type, name, parameters, body</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
-<tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 6.11]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The trapezoidal motion profile: slow start, fast cruise, slow finish</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 6.12]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The measured course: tape at 0 cm and 30 cm, with the &#177;2 cm landing zone</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[VIDEO 6.1]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Robot navigating a course using encoder counts for positioning</td><td style="padding: 12px; border: 1px solid #ddd;">Video</td><td style="padding: 12px; border: 1px solid #ddd;">&#9744; still needed</td></tr>
 </tbody>
@@ -2744,7 +2580,7 @@ Stop motors</pre>
 
 <em>Zumo 32U4 Robotics — Lesson 6: Encoders</em><br>
 
-Version 04.9 — July 2026
+Version 04.10 — July 2026
 
 </p>
 
