@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.0 (S65) — whole-book consistency gates.
+# book_gates.py v1.1 (S65) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -158,6 +158,55 @@ for f in site:
                               'https://weymuth.github.io/zumo/going_deeper.html'):
             bad.append(f'{f}: {m.group(1)}')
 gate('going_deeper links canonical', bad)
+
+# ---- §24: cross-lesson promises — a forward-ref's topic must exist in the target lesson
+bad = []
+T = {f: txt(R[f]) for f in files}
+for f in files:
+    src = int(L(f))
+    for m in re.finditer(r'([^.!?]{10,140}?)\b[Ll]esson (\d+)\b([^.!?]{0,110})[.!?]', T[f]):
+        tgt = int(m.group(2))
+        if tgt <= src or tgt > 16:
+            continue
+        sent = (m.group(1) + ' Lesson ' + m.group(2) + m.group(3)).strip()
+        keys = re.findall(r'[a-zA-Z_]+\(\)|\b(?:gyro|encoder|PID|state machine|kill switch|silver|'
+                          r'proximity|calibrat\w+|modulo|array|float|extern|header|P-control|Kp|EEPROM|'
+                          r'for loop|==)\b', sent)
+        keys = [k for k in set(keys) if len(k) > 2][:3]
+        if not keys:
+            continue
+        tf = f'lessons/Lesson_{tgt:02d}.html'
+        missing = [k for k in keys if k.lower() not in T[tf].lower()]
+        if missing:
+            bad.append(f'L{src:02d} -> L{tgt:02d}: promises {missing}')
+gate('§24  cross-lesson promises land in target lesson', bad)
+
+# ---- §24.4: verifiable arithmetic in prose
+bad = []
+for f in files:
+    t = T[f]
+    for m in re.finditer(r'(\d+)\s*characters?,?\s*(?:so|=|is|makes?)\s*(\d+)\s*bytes', t):
+        a, b = int(m.group(1)), int(m.group(2))
+        if b not in (a, a + 1):
+            bad.append(f'{L(f)}: "{m.group(0)}"')
+    for m in re.finditer(r'([\d,]+)\s*(?:ms|milliseconds?)\s*(?:=|is|equals?)\s*([\d.]+)\s*seconds?', t):
+        a = int(m.group(1).replace(',', '')); b = float(m.group(2))
+        if abs(a / 1000 - b) > 0.01:
+            bad.append(f'{L(f)}: "{m.group(0)}" ({a}ms = {a/1000}s)')
+    for m in re.finditer(r'([\d,]+)\s*(?:mV|millivolts?)[^.]{0,60}?([\d.]+)\s*volts?', t):
+        a = int(m.group(1).replace(',', '')); b = float(m.group(2))
+        if abs(a / 1000 - b) > 0.05:
+            bad.append(f'{L(f)}: "{m.group(0)[:60]}" ({a}mV = {a/1000}V)')
+gate('§24.4 arithmetic claims verify', bad)
+
+# ---- §16: hardware constants match canon (wrong values that must never appear)
+bad = []
+WRONG = {'32,768 bytes usable': 'usable flash is 28,672'}
+for f in files:
+    for w, why in WRONG.items():
+        if w in T[f]:
+            bad.append(f'{L(f)}: "{w}" — {why}')
+gate('§16  hardware constants match canon', bad)
 
 print()
 print('=' * 52)
