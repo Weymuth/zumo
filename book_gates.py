@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.3 (S69) — whole-book consistency gates.
+# book_gates.py v1.4 (S70) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -280,6 +280,95 @@ if strips:
         if s2 != ref:
             bad.append(f'{L(f)}: lesson strip differs from L{L(ref_f)}')
 gate('§6.5a lesson strip present and byte-identical in all 16', bad)
+
+# ---- §25.6: header hero + footer + hidden build banner, identical across all 17 pages
+import hashlib
+
+PAGES = files + (['going_deeper.html'] if os.path.exists('going_deeper.html') else [])
+
+
+def _close_of(s2, st, tag):
+    d = 0
+    for m in re.finditer(rf'<{tag}\b|</{tag}>', s2[st:]):
+        d += 1 if m.group(0) != f'</{tag}>' else -1
+        if d == 0:
+            return st + m.end()
+    return -1
+
+
+def _skel(block):
+    return hashlib.md5(re.sub(r'>[^<]*<', '><', block).encode()).hexdigest()[:8]
+
+
+heroes, footers, bad = {}, {}, []
+for f in PAGES:
+    s2 = R[f]
+    lab = 'GOING DEEPER' if f == 'going_deeper.html' else 'LESSON ' + L(f)
+    m = re.search(r'>\s*' + lab + r'\s*<', s2)
+    if not m:
+        bad.append(f'{f}: no hero label "{lab}"')
+        continue
+    v = re.search(r'Version \d+\.\d+ &mdash; \w+ \d{4}', s2[m.start():m.start() + 2500])
+    if not v:
+        bad.append(f'{f}: hero has no dated Version line')
+        continue
+    vpos = m.start() + v.start()
+    st = m.start()
+    while True:
+        st = s2.rfind('<div', 0, st)
+        if st < 0:
+            break
+        en = _close_of(s2, st, 'div')
+        if en > vpos:
+            break
+    heroes.setdefault(_skel(s2[st:en]), []).append(f)
+    i = s2.find('&copy; 2026 RoboLore')
+    if i < 0:
+        bad.append(f'{f}: footer missing the credits line')
+        continue
+    a = s2.rfind('<p', 0, i)
+    b = s2.find('</p>', i) + 4
+    footers.setdefault(_skel(s2[a:b]), []).append(f)
+    if 'BUILD BANNER' not in s2 or 'ZUMO Callout Standard' not in s2:
+        bad.append(f'{f}: no hidden build banner')
+if len(heroes) > 1:
+    bad.append(f'hero skeletons differ: { {k: [L(x) for x in v] for k, v in heroes.items()} }')
+if len(footers) > 1:
+    bad.append(f'footer skeletons differ: { {k: [L(x) for x in v] for k, v in footers.items()} }')
+gate('§25.6 header/footer/hidden banner identical across all 17', bad)
+
+# ---- §25.2: where a lesson has converted to the four exit blocks, it must conform
+RETIRED = ['STOP &amp; PROCESS', 'Conceptual Understanding',
+           'Check Your Understanding', 'Reflection Questions',
+           'Explain It in Writing']
+bad = []
+for f in files:
+    s2 = R[f]
+    if 'MENTAL KNOWLEDGE CHECK' not in s2:
+        continue                      # not yet converted — §25 does not bind it
+    i = s2.find('MENTAL KNOWLEDGE CHECK')
+    st = s2.rfind('<div', 0, i)
+    en = _close_of(s2, st, 'div')
+    blk = s2[st:en]
+    n = blk.count('data-reveal="quiz"')
+    if not 3 <= n <= 5:
+        bad.append(f'{L(f)}: Mental has {n} items, §25.2 caps 3-5')
+    for m in re.finditer(r'<summary[^>]*>(.*?)</summary>', blk, re.S):
+        if not re.search(r'&sect;|§', m.group(1)):
+            bad.append(f'{L(f)}: Mental item names no § — {txt(m.group(1))[:52]}')
+    if s2.find('KNOWLEDGE CHECK &mdash; What You Just Built') < s2.find('id="section-10"'):
+        bad.append(f'{L(f)}: §10 Knowledge Check is not inside §10')
+    j = s2.find('REFLECTION &mdash; In Your Notebook')
+    if j < 0:
+        bad.append(f'{L(f)}: converted but has no Reflection block')
+    else:
+        rst = s2.rfind('<div', 0, j)
+        if 'data-reveal' in s2[rst:_close_of(s2, rst, 'div')]:
+            bad.append(f'{L(f)}: Reflection carries a reveal (§25.2: never)')
+    for r in RETIRED:
+        if r in s2:
+            bad.append(f'{L(f)}: converted but retired name still present — "{html.unescape(r)}"')
+gate('§25.2 converted lessons conform to the four exit blocks', bad)
 
 print()
 print('=' * 52)
