@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.2 (S68) — whole-book consistency gates.
+# book_gates.py v1.3 (S69) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -262,6 +262,24 @@ for f in files:
     if re.search(r'<hr\b|linear-gradient\(135deg, #6c757d', inside):
         bad.append(f'{L(f)}: lesson end matter is sealed INSIDE the Image Index panel')
 gate('structure: end matter sits outside the section panel', bad)
+
+# ---- §6.5a: the lesson strip is present in every lesson and byte-identical book-wide.
+# It ships as ONE block (static links + self-hydrating script deriving the current lesson
+# from the URL), so any hand-variation is drift. Marker comments bound the block.
+bad = []
+strips = []
+for f in files:
+    m = re.search(r'<!-- LESSON STRIP v1.*?<!-- /LESSON STRIP -->', R[f], re.S)
+    if not m:
+        bad.append(f'{L(f)}: lesson strip missing')
+    else:
+        strips.append((f, m.group(0)))
+if strips:
+    ref_f, ref = strips[0]
+    for f, s2 in strips[1:]:
+        if s2 != ref:
+            bad.append(f'{L(f)}: lesson strip differs from L{L(ref_f)}')
+gate('§6.5a lesson strip present and byte-identical in all 16', bad)
 
 print()
 print('=' * 52)
