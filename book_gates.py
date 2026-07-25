@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.6 (S71) — whole-book consistency gates.
+# book_gates.py v1.7 (S71) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -378,6 +378,13 @@ for f in files:
                 bad.append(f'{L(f)}: Brain Check 0{k} wrapper is not Type 10 indigo (§25.10)')
     if 'BRAIN CHECK COLUMN START' not in s2:
         bad.append(f'{L(f)}: converted but Brain Check column block missing (§25.10)')
+    j2 = s2.find('id="brain-check-02"')
+    if j2 > 0:
+        blk2 = s2[j2:_close_of(s2, s2.rfind('<div', 0, j2 + 30), 'div')]
+        boxes = blk2.count('\u2610')
+        tagged = blk2.count('data-bc-skill=')
+        if boxes != tagged:
+            bad.append(f'{L(f)}: BC02 has {boxes} checkbox items but {tagged} data-bc-skill tags (§25.10 skill gate)')
 gate('§25.2 converted lessons conform to the four exit blocks + §25.10 Brain Check', bad)
 
 # ---- §5b: every web tool carries a greppable in-file version line

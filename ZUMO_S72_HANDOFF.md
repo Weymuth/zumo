@@ -8,9 +8,9 @@
 5. LIVE.md wins over memory. §24.6c: control-run every audit grep AND assert the injection landed.
 
 ## LIVE STATE at S71 close — staged for DJ push
-L01 **v03.9.0** · L02–L16 unchanged (v02.15.2 / v03.13.2 / v04.6.2 / v04.8.2 / v04.11.2 / v04.7.2 / v04.6.2 /
+L01 **v03.9.2** · L02–L16 unchanged (v02.15.2 / v03.13.2 / v04.6.2 / v04.8.2 / v04.11.2 / v04.7.2 / v04.6.2 /
 v05.4.2 / v02.5.2 / v02.7.2 / v01.7.2 / v02.6.2 / v02.8.2 / v02.6.2 / v02.5.2)
-Bible **v8.55** · Maker v2.45.1 · **book_gates v1.6 (21 gates)** · new `images/BrainGear_Incomplete.png` + `images/BrainGear_Complete.png`
+Bible **v8.57** · Maker v2.45.1 · **book_gates v1.7 (21 gates)** · new `images/BrainGear_Incomplete.png` + `images/BrainGear_Complete.png`
 NOT verified: rendered Pages site (sandbox blocks weymuth.github.io). **DJ must eyeball L01 after push:** the
 Brain Check column (desktop + confirm it hides on a phone), the four indigo blocks, Mark-done toggles persisting
 across reload, the §6 banner now ABOVE the build content, and the formerly-white reveal answers now readable.

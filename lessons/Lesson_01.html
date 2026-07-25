@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.9.0 -->
+<!-- Lesson version: v03.9.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -910,6 +910,18 @@ Verifying | ############################# | <span style="color: #b5cea8;">100</s
     </ul>
 </div>
 
+<!-- CALLOUT: Do This Now (Orange) — deliberate upload-error rep (§25.10: gated skill #10 must be earnable by every student) -->
+<div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <strong style="color: #c45a00;">&#128221; DO THIS NOW &mdash; Break It On Purpose (60 seconds)</strong>
+    <p style="margin: 8px 0 0;">Your upload works. Now make it fail &mdash; deliberately &mdash; so the most common upload error is one you have already beaten:</p>
+    <ol style="margin: 8px 0 0;">
+        <li>Switch the robot&rsquo;s power <strong>OFF</strong>.</li>
+        <li>Click <strong>Upload</strong> anyway. Watch it fail &mdash; and actually <em>read</em> the error message. What does it say it cannot find?</li>
+        <li>Switch power back <strong>ON</strong> and upload again. (If it still refuses: double-tap the reset button, then Upload &mdash; the same fix from the list above.)</li>
+    </ol>
+    <p style="margin: 8px 0 0;">That is Brain Check skill #10 earned honestly: you identified an upload error and fixed it. Every engineer hits this exact failure weekly &mdash; a dead power switch, a sleeping port. Meeting it on purpose today means it never costs you five confused minutes on a build day.</p>
+</div>
+
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
 
 <!-- ===== PART 3: TEST & CHALLENGES ===== -->
@@ -1582,18 +1594,20 @@ if (voltage &lt; ______) {        // &larr; your threshold, in millivolts
 
 <strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</strong>
 
+<p style="margin: 8px 0 0; font-size: 0.9em; color: #5a6872;">Tap each skill you can actually do &mdash; the Mark-done button unlocks when all ten are checked.</p>
+
 <div style="margin-top: 10px;">
     <ul style="list-style: none; padding-left: 0; margin: 0;">
-        <li>☐ Install VS Code and verify it opens?</li>
-        <li>☐ Install Git (Mac) or Git for Windows?</li>
-        <li>☐ Install and locate the PlatformIO extension?</li>
-        <li>☐ Create a new PlatformIO project for the A-Star 32U4?</li>
-        <li>☐ Write and save a platformio.ini configuration file?</li>
-        <li>☐ Write a complete Arduino sketch with setup() and loop()?</li>
-        <li>☐ Build code successfully (no compiler errors)?</li>
-        <li>☐ Upload code to your Zumo robot?</li>
-        <li>☐ Use the Serial Monitor to view robot messages?</li>
-        <li>☐ Identify and fix at least one common upload error?</li>
+        <li data-bc-skill="1" style="cursor: pointer;">☐ Install VS Code and verify it opens?</li>
+        <li data-bc-skill="2" style="cursor: pointer;">☐ Install Git (Mac) or Git for Windows?</li>
+        <li data-bc-skill="3" style="cursor: pointer;">☐ Install and locate the PlatformIO extension?</li>
+        <li data-bc-skill="4" style="cursor: pointer;">☐ Create a new PlatformIO project for the A-Star 32U4?</li>
+        <li data-bc-skill="5" style="cursor: pointer;">☐ Write and save a platformio.ini configuration file?</li>
+        <li data-bc-skill="6" style="cursor: pointer;">☐ Write a complete Arduino sketch with setup() and loop()?</li>
+        <li data-bc-skill="7" style="cursor: pointer;">☐ Build code successfully (no compiler errors)?</li>
+        <li data-bc-skill="8" style="cursor: pointer;">☐ Upload code to your Zumo robot?</li>
+        <li data-bc-skill="9" style="cursor: pointer;">☐ Use the Serial Monitor to view robot messages?</li>
+        <li data-bc-skill="10" style="cursor: pointer;">☐ Identify and fix at least one common upload error?</li>
     </ul>
 <p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="2" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 02 done</button></p>
 </div>
@@ -2058,13 +2072,30 @@ Learn to read C++ code like a professional so you can predict what code will do 
 (function() {
     var m = (window.location.pathname.match(/Lesson_(\d+)/) || []);
     var key = 'bc_L' + (m[1] || '00');
-    var st;
+    var skey = key + '_sk';
+    var st, sk;
     try { st = JSON.parse(window.localStorage.getItem(key)); } catch (e) { st = null; }
     if (!st || Object.prototype.toString.call(st) !== '[object Array]' || st.length !== 4) st = [0, 0, 0, 0];
+    var skillEls = document.querySelectorAll('[data-bc-skill]');
+    try { sk = JSON.parse(window.localStorage.getItem(skey)); } catch (e) { sk = null; }
+    if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
+        sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
+    }
     var GRAY = 'https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png';
     var GREEN = 'https://weymuth.github.io/zumo/images/BrainGear_Complete.png';
+    function allSkills() {
+        if (!sk.length) return true;
+        for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
+        return true;
+    }
     function paint() {
         var all = st[0] && st[1] && st[2] && st[3];
+        for (var q = 0; q < skillEls.length; q++) {
+            var li = skillEls[q];
+            var txt = li.textContent.replace(/^[\u2610\u2611]\s*/, '');
+            li.textContent = (sk[q] ? '\u2611 ' : '\u2610 ') + txt;
+            li.style.color = sk[q] ? '#2e7d32' : '';
+        }
         for (var i = 0; i < 4; i++) {
             var n = i + 1;
             var pill = document.querySelector('[data-bc-pill="' + n + '"]');
@@ -2076,8 +2107,13 @@ Learn to read C++ code like a professional so you can predict what code will do 
             if (ico) ico.src = st[i] ? GREEN : GRAY;
             var btn = document.querySelector('[data-bc-btn="' + n + '"]');
             if (btn) {
-                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo' : 'Mark Brain Check 0' + n + ' done';
-                btn.style.backgroundColor = st[i] ? '#4caf50' : '#3f51b5';
+                var locked = (n === 2) && !st[i] && !allSkills();
+                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo'
+                                : (locked ? '\uD83D\uDD12 Check all ' + skillEls.length + ' skills to unlock'
+                                          : 'Mark Brain Check 0' + n + ' done');
+                btn.style.backgroundColor = st[i] ? '#4caf50' : (locked ? '#9e9e9e' : '#3f51b5');
+                btn.style.cursor = locked ? 'not-allowed' : 'pointer';
+                btn.title = locked ? 'Tap each skill in the list above first.' : '';
             }
         }
         var em = document.getElementById('bc-emblem');
@@ -2085,10 +2121,21 @@ Learn to read C++ code like a professional so you can predict what code will do 
     }
     document.addEventListener('click', function(e) {
         var t = e.target;
-        while (t && t !== document && !(t.getAttribute && t.getAttribute('data-bc-btn'))) t = t.parentNode;
+        while (t && t !== document && !(t.getAttribute && (t.getAttribute('data-bc-btn') || t.getAttribute('data-bc-skill')))) t = t.parentNode;
         if (!t || t === document || !t.getAttribute) return;
+        var skn = t.getAttribute('data-bc-skill');
+        if (skn) {
+            var j = parseInt(skn, 10) - 1;
+            if (j >= 0 && j < sk.length) {
+                sk[j] = sk[j] ? 0 : 1;
+                try { window.localStorage.setItem(skey, JSON.stringify(sk)); } catch (e3) {}
+                paint();
+            }
+            return;
+        }
         var i = parseInt(t.getAttribute('data-bc-btn'), 10) - 1;
         if (i < 0 || i > 3) return;
+        if (i === 1 && !st[i] && !allSkills()) { return; }
         st[i] = st[i] ? 0 : 1;
         try { window.localStorage.setItem(key, JSON.stringify(st)); } catch (e2) {}
         paint();
