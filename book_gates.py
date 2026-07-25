@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.5 (S70) — whole-book consistency gates.
+# book_gates.py v1.6 (S71) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -368,7 +368,17 @@ for f in files:
     for r in RETIRED:
         if r in s2:
             bad.append(f'{L(f)}: converted but retired name still present — "{html.unescape(r)}"')
-gate('§25.2 converted lessons conform to the four exit blocks', bad)
+    for k in range(1, 5):
+        if f'id="brain-check-0{k}"' not in s2:
+            bad.append(f'{L(f)}: converted but Brain Check anchor 0{k} missing (§25.10)')
+        else:
+            j = s2.find(f'id="brain-check-0{k}"')
+            wrap = s2[s2.rfind('<div', 0, j + 30):s2.find('>', j) + 1]
+            if 'border-left: 4px solid #3f51b5' not in wrap:
+                bad.append(f'{L(f)}: Brain Check 0{k} wrapper is not Type 10 indigo (§25.10)')
+    if 'BRAIN CHECK COLUMN START' not in s2:
+        bad.append(f'{L(f)}: converted but Brain Check column block missing (§25.10)')
+gate('§25.2 converted lessons conform to the four exit blocks + §25.10 Brain Check', bad)
 
 # ---- §5b: every web tool carries a greppable in-file version line
 WEB_TOOLS = {'timer.html': 'Timer', 'tutor/tutor.html': 'Tutor',

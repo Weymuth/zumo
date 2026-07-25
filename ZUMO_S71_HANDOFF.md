@@ -4,18 +4,18 @@
 1. Clone fresh: `git clone --depth 1 https://github.com/Weymuth/zumo.git`
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. `grep -oE "Bible version: v[0-9.]+" ZUMO_SUPER_BIBLE.md` — confirm internal.
-4. `python3 book_gates.py` — all **19** must PASS. Then `python3 pill_sweep.py --audit lessons/Lesson_*.html`.
+4. `python3 book_gates.py` — all **21** must PASS. Then `python3 pill_sweep.py --audit lessons/Lesson_*.html`.
 5. LIVE.md wins over memory. Grep the actual file, never trust a pasted version number.
 6. **§24.6c** — control-run every audit grep before its number becomes a finding; report VERIFIED or SUSPECTED.
    S70 addendum: **that applies to the control run itself.** One S70 injection test passed because it injected a
    string that did not exist in the file (`in order?` vs the real `in order.`). Assert the injection landed.
 
-## LIVE STATE at S70 close — on disk, gated, **NOT PUSHED**
+## LIVE STATE at S70 close — **PUSHED and byte-verified**, final commit `892e29a` "Session 71 final"
 L01 **v03.8.1** · L02 v02.15.2 · L03 v03.13.2 · L04 v04.6.2 · L05 v04.8.2 · L06 v04.11.2 · L07 v04.7.2 ·
 L08 v04.6.2 · L09 v05.4.2 · L10 v02.5.2 · L11 v02.7.2 · L12 v01.7.2 · L13 v02.6.2 · L14 v02.8.2 ·
 L15 v02.6.2 · L16 v02.5.2
-Bible **v8.53** · Maker v2.45 (unchanged) · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 ·
-**book_gates v1.4 (19 gates)** · going_deeper **v01.1.0**
+Bible **v8.54** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 ·
+**book_gates v1.5 (21 gates)** · going_deeper **v01.1.0** · timer **v1.3.0** · tutor **v1.0.0** · index **v1.3.0**
 NOT verified: the rendered Pages site (sandbox allowlist blocks weymuth.github.io). DJ should eyeball the new
 DEEPER pill wrap on mobile and the going_deeper hero/footer on its dark background.
 
@@ -34,6 +34,22 @@ DEEPER pill wrap on mobile and the going_deeper hero/footer on its dark backgrou
    `going_deeper.html` brought onto the shared hero/footer. Skeleton hashes: hero `4fdedafb`, footer `aff5311e`.
 5. **DEEPER pill** in the §6.5a strip, all 16 — Going Deeper was reachable from only 7 of 16 lessons.
 6. **book_gates v1.3 → v1.4** — §25.6 and §25.2, control-run in both directions (four separate injections).
+
+## LATE-S70 ADDENDUM (after the first handoff draft — the push-verification arc)
+
+7. **Two pushes landed the right bytes in the WRONG FOLDER** — `going_deeper.html` into `lessons/` (23 links
+   kept serving the stale root copy) and `tutor.html` to root (the live tutor stayed unversioned). Both looked
+   like clean pushes; no contents gate could see them. **book_gates v1.4 → v1.5** adds
+   `§12/§23 site layout` (exact set of 21 pages + paths — stray, missing, or misplaced all FAIL) and
+   `§5b web tools carry an in-file version line`. Control-run three ways, incl. a reproduction of the
+   Going Deeper incident (fails as STRAY **and** MISSING).
+8. **All four web tools now open with a canonical version line** — timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 ·
+   index v1.3.0 — baselines labelled as baselines in each file's own header. Found en route: the Maker's
+   changelog OPENS with v2.18 against a live v2.45 (the v3.0 ghost), and Bible §5b's web-tool sentence claimed
+   "Maker v1.3". §5b rewritten (v8.54): never record a tool version in Bible prose — grep the file.
+9. **§25.6a** — the tool pages are NOT chapters; they owe a version line, nothing else. `index.html` is the one
+   credits exception (public front door): `© 2026 RoboLore · Written and compiled by DJ Weymuth and Claude AI`.
+10. `.gitignore` added (DJ) — the stray-`.DS_Store` housekeeping item is CLOSED.
 
 ## S70 PROCESS NOTES
 - The footer roll needed **three** locator corrections (nested `</div>` matching, then `<footer>` tags never
