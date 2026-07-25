@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.4 (S70) — whole-book consistency gates.
+# book_gates.py v1.5 (S70) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -369,6 +369,32 @@ for f in files:
         if r in s2:
             bad.append(f'{L(f)}: converted but retired name still present — "{html.unescape(r)}"')
 gate('§25.2 converted lessons conform to the four exit blocks', bad)
+
+# ---- §5b: every web tool carries a greppable in-file version line
+WEB_TOOLS = {'timer.html': 'Timer', 'tutor/tutor.html': 'Tutor',
+             'newproject.html': None, 'index.html': 'Index'}
+bad = []
+for f in WEB_TOOLS:
+    if not os.path.exists(f):
+        bad.append(f'{f}: MISSING from the repo')
+        continue
+    head = open(f, encoding='utf-8').read()[:600]
+    if not re.search(r'<!--\s*\w[\w ]*version:\s*v[\d.]+\s*-->', head, re.I):
+        bad.append(f'{f}: no in-file version comment in the first 600 bytes')
+gate('§5b  web tools carry an in-file version line', bad)
+
+# ---- §12/§23: canonical site layout — every page in its one correct place, no strays
+EXPECTED = sorted(
+    [f'lessons/Lesson_{n:02d}.html' for n in range(1, 17)] +
+    ['going_deeper.html', 'index.html', 'newproject.html', 'timer.html', 'tutor/tutor.html'])
+found = sorted(f for f in glob.glob('**/*.html', recursive=True)
+               if not f.startswith('.git'))
+bad = []
+for f in sorted(set(found) - set(EXPECTED)):
+    bad.append(f'STRAY page: {f}  (not a canonical location)')
+for f in sorted(set(EXPECTED) - set(found)):
+    bad.append(f'MISSING page: {f}')
+gate('§12/§23 site layout: every page in its canonical place, no strays', bad)
 
 print()
 print('=' * 52)
