@@ -10,22 +10,26 @@
 ## LIVE STATE at S71 close — staged for DJ push
 L01 **v03.9.2** · L02–L16 unchanged (v02.15.2 / v03.13.2 / v04.6.2 / v04.8.2 / v04.11.2 / v04.7.2 / v04.6.2 /
 v05.4.2 / v02.5.2 / v02.7.2 / v01.7.2 / v02.6.2 / v02.8.2 / v02.6.2 / v02.5.2)
-Bible **v8.57** · Maker v2.45.1 · **book_gates v1.7 (21 gates)** · new `images/BrainGear_Incomplete.png` + `images/BrainGear_Complete.png`
+Bible **v8.57.1** · Maker v2.45.1 · **book_gates v1.7 (21 gates)** · new `images/BrainGear_Incomplete.png` + `images/BrainGear_Complete.png`
 NOT verified: rendered Pages site (sandbox blocks weymuth.github.io). **DJ must eyeball L01 after push:** the
 Brain Check column (desktop + confirm it hides on a phone), the four indigo blocks, Mark-done toggles persisting
 across reload, the §6 banner now ABOVE the build content, and the formerly-white reveal answers now readable.
 
-## DONE IN S71 (all gate-verified, control-run 4 ways)
-1. **Bible v8.55** — §25.10 BRAIN CHECK (family name 01–04, Type 10 livery, column, localStorage check-off ≠ grade,
-   icon rules: gray-not-red per §22, no dark backings, state never color-alone) + §8 Type 10 Knowledge row (bg
-   `#e8eaf6` / border `#3f51b5` / title `#283593`).
-2. **L01 v03.9.0 — Brain Check reference.** Blocks renamed `BRAIN CHECK NN · CONSTRUCT — subtitle`, Type 10 skin,
-   anchors `brain-check-01..04`, Mark-done buttons, column + script (markers `BRAIN CHECK COLUMN START/END`).
+## DONE IN S71 (all gate-verified; every control-run injection asserted to have landed)
+1. **Bible v8.55→v8.57** — §25.10 BRAIN CHECK (family 01–04, Type 10 livery, column, localStorage check-off ≠ grade,
+   icon rules: gray-not-red per §22, no dark backings, state never color-alone) + §8 Type 10 row · then the SKILL GATE
+   (BC02 Mark-done locks until all ☐ tapped ☑, `bc_LNN_sk`) · then GATED-ITEM ACHIEVABILITY (a locked skill must be
+   earnable by every student; chance-dependent items get a deliberate rep — review rule, not machine-gateable).
+2. **L01 v03.8.1→v03.9.2 — Brain Check reference.** Blocks renamed `BRAIN CHECK NN · CONSTRUCT — subtitle`, Type 10
+   skin, anchors `brain-check-01..04`, Mark-done buttons, column + script (markers `BRAIN CHECK COLUMN START/END`);
+   ten BC02 skills tappable + button lock; **Break-It-On-Purpose rep** (end of §6 Step 6: power off → upload fails →
+   read → fix) so skill #10 no longer gates on luck.
    **Defect killed:** Mental block was nested inside the §6 banner (banner rendered below it; `color: white`
    inheritance made all five reveal answers white-on-white). Three gates were structurally blind to it.
 3. **Icon pair** — DJ artwork; gray rebuilt single-color+alpha to match green's transparent interiors
    (0 opaque light-interior px both; 0 red residue; contrast 9.59:1 white / 8.00:1 callout).
-4. **book_gates v1.6** — §25.2 extended (+anchors, +Type 10 wrapper, +column). Four control runs, injections asserted.
+4. **book_gates v1.5→v1.7** — §25.2 gate extended twice (anchors + Type 10 wrapper + column presence; then
+   ☐-glyph/`data-bc-skill` parity). Five control runs total, all injections asserted landed (S70 addendum honored).
 5. LIVE.md regenerated LAST; fixed S70 staleness ("All 19 gates", duplicate Maker v2.45).
 
 ## INFERRED THIS SESSION (flag to DJ, one line each)
@@ -57,5 +61,4 @@ QA_* sheets in images/glowbots · border inset 10–18 vs 64 · Canvas reading q
 Solution-disclosure · monetization/ebook · "Know Your Zumo" page.
 
 ---
-*Written at S71 close, Jul 25 2026. The four exit blocks got a name, a color, a column, and a memory — and the
-session's best find was DJ's: the light gray inside the gray icon was cut residue pretending to be design.*
+*Written at S71 close, Jul 25 2026. The four exit blocks got a name, a color, a column, and a memory — and the session's two best finds were DJ's: the light gray inside the gray icon was cut residue pretending to be design, and the skill lock had quietly made item 10 a blocker on luck.*
