@@ -11,16 +11,19 @@
    ever been pointed at corrected files has proved nothing.
 
 ## LIVE STATE at S68 close (pending DJ push — verify by fresh clone at S69 open)
-L01 **v03.6.5** · L02 v02.13.4 · L03 **v03.11.0** · L04 v04.5.3 · L05 **v04.6.0** · L06 **v04.10.1** ·
-L07 **v04.6.2** · L08 **v04.5.1** · L09 v05.3.1 · L10 v02.4.1 · L11 v02.6.2 · L12 **v01.6.2** ·
+L01 **v03.6.5** · L02 v02.13.4 · L03 **v03.11.0** · L04 v04.5.3 · L05 **v04.7.0** · L06 **v04.10.1** ·
+L07 **v04.6.2** · L08 **v04.5.1** · L09 v05.3.1 · L10 **v02.4.2** · L11 v02.6.2 · L12 **v01.6.2** ·
 L13 **v02.5.2** · L14 **v02.7.2** · L15 **v02.5.2** · L16 **v02.4.1**
 Bible **v8.50** · Maker v2.45 (unchanged) · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 ·
 **book_gates v1.2** · going_deeper v01.0.0. All 16 gates PASS. Base commit at S68 open: `79b391e`.
 
 **Push order:** images before lesson HTML · lessons · docs/LIVE.md anytime. Maker unchanged this session.
-**New image files (4):** `L05_GRAPHIC_5-01_robot_sees_obstacles.svg` (REPLACES the live one),
-`L05_IMAGE_5-05a_array_three_live_factory.png`, `L05_IMAGE_5-05b_array_five_live_fivedown.png`,
-`L05_IMAGE_5-06_proximity_facing_directions.png`.
+**New/changed image files (7):** `L05_GRAPHIC_5-01_robot_sees_obstacles.svg` (**REPLACES** the live one) ·
+`L05_GRAPHIC_5-07_the_dead_spot.svg` (new) · `L05_IMAGE_5-05a_array_three_live_factory.png` ·
+`L05_IMAGE_5-05b_array_five_live_fivedown.png` · `L05_IMAGE_5-06_proximity_facing_directions.png` ·
+`L05_IMAGE_5-07_forward_ir_leds_on_blade.png` · `L05_IMAGE_5-08_middle_ir_leds_main_board.png`.
+**SVG entity rule (bit me this session):** SVG is XML — only `&amp; &lt; &gt; &quot; &apos;` are legal named
+entities. `&ldquo;`/`&rdquo;` etc. must be numeric (`&#8220;`). cairosvg fails loudly; a browser may not.
 
 ---
 
@@ -39,8 +42,17 @@ Bible **v8.50** · Maker v2.45 (unchanged) · Gate v1.6 · Harness v3.0 · pill_
    board photo) is side-facing. Now LEFT −90.1° · FRONT 0.0° · RIGHT +90.1°. Scene "box far left" →
    "wall alongside". Caption, alt, index row, §1 prose all moved with it. **L05 v04.6.0** (banner 04.6).
 5. **L05 photos.** IMAGE 5.6 (§4.1, proximity facing directions) · IMAGE 5.5a/5.5b (§7.3, factory 1·3·5 vs
-   five-down 1–5). A first candidate was reverted pre-ship: it was the #1419 six-sensor Zumo Reflectance
-   Sensor Array (Zumo shield for Arduino), not the students' #3122 front sensor array.
+   five-down 1–5) · **IMAGE 5.7/5.8** (§4.1, the forward emitter pair on the blade and the middle pair on the
+   bare board, where the tracks hide them on an assembled robot). A first candidate was reverted pre-ship: it
+   was the #1419 six-sensor Zumo Reflectance Sensor Array (Zumo shield for Arduino), not the students' #3122
+   front sensor array — caught by reading the ©2012 silkscreen and sensor count against the product line.
+5b. **THE DEAD SPOT — new §3.4a + GRAPHIC 5.7, flagged forward to L10 (DJ ruling).** Pololu 0J63 §3.6 records a
+   significant dead spot between the front sensor and each side sensor. With FRONT at ±19° and the side cones on
+   the flanks, that is **two blind wedges ~19°–72° off each side**. GRAPHIC 5.7 hatches them and carries a
+   three-step strip: LEFT sees it → you turn → all zeros → keep turning → FRONT has it. §3.4 also gained the
+   series-wiring fact (front-left + middle-left on one current path; the emitters flood, the *detectors* supply
+   direction). **L10 v02.4.2** carries the matching back-reference: five-down removes the side receivers, so
+   everything outside FRONT's ±19° is invisible permanently. **L05 v04.7.0** (banner 04.7).
 6. **L03 §8A.5 arrays + §8A.6 modulo** + `qr-array` / `qr-modulo` + C05 "Where to look" re-pointed (it had
    pointed at its own hint). C05 re-rated Tough/Deep → **Tough/Moderate**, grasp axis only — **ramp
    untouched, L03 stays 1.88 on the doing axis.** **L03 v03.11.0** (banner 03.11).

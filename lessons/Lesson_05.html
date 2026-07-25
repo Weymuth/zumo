@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.6.0 -->
+<!-- Lesson version: v04.7.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Proximity Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Sense</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.6 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.7 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -218,6 +218,20 @@
 
 <p>And that's why one <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">read()</code> hands you <strong>two numbers per sensor</strong>: the library runs the full whisper-to-yell sequence once with the left team, then once with the right team, and every ear takes notes both times.</p>
 
+
+<p><strong>Why they are teams and not four switches.</strong> The front-left LED and the middle-left LED are wired <strong>in series</strong> &mdash; one current path, so lighting either one lights both. Same for the right pair. That is not a software choice you could change; it is a wire. It also means the side detector is being helped by the blade LED and the front detector is being helped by the side LED, every single time a team fires. <strong>The emitters flood; the direction you get back comes from which detector answers.</strong></p>
+
+<h3 id="section-3-4a" style="color: #3498db; margin-top: 30px;">3.4a The Dead Spot Between Them</h3>
+
+<p>Three cones do not add up to a circle. FRONT covers about &plusmn;19&deg; of your nose and each side detector covers a wedge centred straight out the flank &mdash; which leaves <strong>two blind wedges, roughly 19&deg; to 72&deg; off each side</strong>, where no detector is aimed. Pololu measured this and calls it a significant dead spot between the front sensor and each side sensor.</p>
+
+<img src="https://weymuth.github.io/zumo/images/L05_GRAPHIC_5-07_the_dead_spot.svg" alt="Top view of the Zumo showing the front detection cone covering about plus or minus nineteen degrees ahead, the left and right cones aimed straight out of each flank, and two hatched blind wedges between them from roughly nineteen to seventy-two degrees off each side. A three-step strip alongside shows an object detected by the left sensor, then falling into the blind wedge as the robot turns toward it and reading zero on all sensors, then being picked up by the front sensor as the turn continues." style="width: 100%; max-width: 1000px; display: block; margin: 14px auto; border: 1px solid #ddd; border-radius: 8px;">
+<p style="font-size: 0.9em; color: #666; margin-top: 8px; font-style: italic; text-align: center;">[GRAPHIC 5.7] Between &#8220;ahead&#8221; and &#8220;beside&#8221; there is a wedge nothing is watching. The consequence is the strip on the right: see it on the left, turn to face it, and it vanishes mid-turn.</p>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;">
+    <span>&#9888;&#65039;</span> <strong>Warning:</strong> a reading that drops to 0 <em>while you are turning toward the thing you just detected</em> is not a broken sensor and not a bug in your code. Nothing is aimed there. Design around it: remember what you saw and keep turning rather than re-testing every frame. <strong>Lesson 10 leans on exactly this dead spot</strong> &mdash; by then the five-down jumper move has taken your side receivers away, so the blind region starts at about 19&deg; off your nose and never closes.
+</div>
+
 <h3 id="section-3-5" style="color: #3498db; margin-top: 30px;">3.5 A Proximity Sensor Is Not a Ruler</h3>
 
 <p>Brightness counts measure <strong>echo strength</strong>, not distance. A big white box at 25&nbsp;cm can out-echo a small black cup at 10&nbsp;cm — more surface, better reflector, stronger echo, higher count. The sensor isn't lying; it's answering a different question than "how far?"</p>
@@ -255,6 +269,13 @@
 
 <img src="https://weymuth.github.io/zumo/images/L05_IMAGE_5-06_proximity_facing_directions.png" alt="The three proximity receivers on the Zumo 32U4 front sensor array, each boxed and labelled with the direction it faces: the centre receiver marked FRONT has two arrows pointing straight ahead, while the two outer receivers each have a single arrow pointing straight out to the side, away from the board." style="width: 100%; max-width: 900px; display: block; margin: 14px auto; border: 1px solid #ddd; border-radius: 8px;">
 <p style="font-size: 0.9em; color: #666; margin-top: 8px; font-style: italic; text-align: center;">[IMAGE 5.6] <strong>Why &ldquo;left&rdquo; and &ldquo;right&rdquo; mean <em>sideways</em>.</strong> FRONT looks straight ahead. The two outer receivers look out of the <em>sides</em> of the robot &mdash; not forward-left and forward-right. Something just off your nose is still FRONT&rsquo;s business; LEFT and RIGHT are watching your flanks. <span style="color: #888;">Photo: Pololu, annotated.</span></p>
+
+
+<p><strong>Where the four emitters actually are.</strong> Two you can see, two you cannot:</p>
+<img src="https://weymuth.github.io/zumo/images/L05_IMAGE_5-07_forward_ir_leds_on_blade.png" alt="Top view of an assembled Zumo 32U4 OLED robot with the two forward infrared emitter LEDs boxed in red, seated in their plastic holder on the steel blade at the front of the robot." style="width: 100%; max-width: 900px; display: block; margin: 14px auto; border: 1px solid #ddd; border-radius: 8px;">
+<p style="font-size: 0.9em; color: #666; margin-top: 8px; font-style: italic; text-align: center;">[IMAGE 5.7] The <strong>forward pair</strong> &mdash; the clear domes on the blade, in their protective holder. Assembled robots ship with the wide-angle (50&deg;) clear LEDs. <span style="color: #888;">Photo: Pololu, annotated.</span></p>
+<img src="https://weymuth.github.io/zumo/images/L05_IMAGE_5-08_middle_ir_leds_main_board.png" alt="Top view of a bare Zumo 32U4 OLED main board with the middle-left and middle-right infrared emitter LEDs boxed in red at the far left and right edges of the board, level with the middle of the robot between the wheel cutouts." style="width: 100%; max-width: 780px; display: block; margin: 14px auto; border: 1px solid #ddd; border-radius: 8px;">
+<p style="font-size: 0.9em; color: #666; margin-top: 8px; font-style: italic; text-align: center;">[IMAGE 5.8] The <strong>middle pair</strong>, on the bare board &mdash; surface-mounted at the outer edges, aiming straight out. On your robot they are hidden inside the tracks, which is why you have never seen them. Note the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">A1 = VBAT/2</code> silkscreen just inboard: A1 is the pin that picks which LED team fires. <span style="color: #888;">Photo: Pololu, annotated.</span></p>
 
 <h3 style="color: #3a7d5c; margin-top: 30px;">4.2 The Two-LED System</h3>
 
@@ -2164,6 +2185,9 @@ proxSensors.countsXxxWithYyyLeds();  <span style="color: #7cbf6e;">// Get 0-6 va
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 5.5a]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Front sensor array, factory jumpers: three of five reflectance sensors live (1, 3, 5)</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 5.5b]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">Front sensor array, five-down jumpers: all five reflectance sensors live (1&ndash;5)</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 5.6]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The three proximity receivers and the direction each faces &mdash; FRONT ahead, the outer two out the sides</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[GRAPHIC 5.7]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The dead spot: two blind wedges ~19&deg;&ndash;72&deg; off each flank, and the see-it/turn/lose-it sequence</td><td style="padding: 12px; border: 1px solid #ddd;">Diagram (SVG)</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
+<tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 5.7]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The two forward IR emitters in their holder on the blade</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
+<tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 5.8]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The two middle IR emitters on the bare main board, hidden by the tracks on an assembled robot</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 5.4a]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The two jumpers in the factory position (LFT / RGT) &#8212; 3 line sensors, 3 proximity receivers</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 <tr style="background-color: #f8f9fa;"><td style="padding: 12px; border: 1px solid #ddd;"><strong>[IMAGE 5.4b]</strong></td><td style="padding: 12px; border: 1px solid #ddd;">The two jumpers moved to DN2 / DN4 &#8212; 5 line sensors, 1 proximity sensor. Permanent.</td><td style="padding: 12px; border: 1px solid #ddd;">Photo</td><td style="padding: 12px; border: 1px solid #ddd;">&#9989; in the lesson</td></tr>
 </tbody>
@@ -2175,7 +2199,7 @@ proxSensors.countsXxxWithYyyLeds();  <span style="color: #7cbf6e;">// Get 0-6 va
 <hr style="margin: 40px 0;">
 <p style="text-align: center; color: #888;">
     <em>Zumo 32U4 Robotics — Lesson 5: Proximity Sensors</em><br>
-    Version 04.6 — July 2026
+    Version 04.7 — July 2026
 </p>
 
 </body>
