@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.7.0 -->
+<!-- Lesson version: v04.7.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,8 +263,9 @@
 <p>The Zumo 32U4's proximity system has two parts. <strong>Three detectors</strong> sit on the front sensor array, each facing a different direction &#8212; LEFT, FRONT, and RIGHT. <strong>Four IR emitter LEDs</strong> live on the main board: two forward-facing LEDs mounted on the front blade (the clear domes you can see), and two middle LEDs on the sides between the wheels that shine left and right.</p>
 
 <img src="https://weymuth.github.io/zumo/images/L05_GRAPHIC_5-05_proximity_sensor_layout.svg" alt="Proximity system layout, top view: two forward emitters on the blade and two middle emitters between the wheels, wired as LEFT and RIGHT teams; three receivers facing left, front, and right" style="width: 100%; max-width: 860px; display: block; margin: 20px auto;">
+<p style="font-size: 0.9em; color: #666; margin-top: 8px; font-style: italic; text-align: center;">[GRAPHIC 5.5] The whole system, from above. Four emitters wired as two teams &mdash; one blade LED and one middle LED per side &mdash; and three detectors, each aimed a different way: LEFT out the flank, FRONT up the nose, RIGHT out the other flank.</p>
 
-<p><strong>Key insight:</strong> The detectors "see" reflections from the IR LEDs. Objects on the left side reflect more light from the left LEDs, and vice versa.</p>
+<p><strong>Key insight:</strong> the detectors see reflections &mdash; but they do not see <em>direction</em>. Because each side's two emitters are wired in series (&sect;3.4), firing a team floods a wide area, so a strong return tells you something is out there without telling you where it is. Direction comes from <strong>which detector answers</strong>: an object out your left flank reads on LEFT because LEFT is the only detector aimed there. The one place the LED team <em>does</em> carry direction is the front detector, read twice &mdash; that is &sect;4.2.</p>
 
 
 <img src="https://weymuth.github.io/zumo/images/L05_IMAGE_5-06_proximity_facing_directions.png" alt="The three proximity receivers on the Zumo 32U4 front sensor array, each boxed and labelled with the direction it faces: the centre receiver marked FRONT has two arrows pointing straight ahead, while the two outer receivers each have a single arrow pointing straight out to the side, away from the board." style="width: 100%; max-width: 900px; display: block; margin: 14px auto; border: 1px solid #ddd; border-radius: 8px;">
@@ -286,7 +287,7 @@
     <li><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">countsFrontWithRightLeds()</code> — Front detector lit by RIGHT side LEDs</li>
 </ul>
 
-<p>If an object is slightly left of center, the left-LED reading will be higher. We combine them with <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">max()</code> to detect objects regardless of their exact position.</p>
+<p>If an object is slightly left of center, the LEFT-team reading will be higher. We combine them with <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">max()</code> to detect objects regardless of their exact position &mdash; &ldquo;slightly&rdquo; meaning inside FRONT's own &plusmn;19&deg;. Past that you are in the dead spot of &sect;3.4a, and no amount of combining will find the object.</p>
 
 <div style="text-align: center; margin: 25px 0;">
 <img src="https://weymuth.github.io/zumo/images/L05_GRAPHIC_5-03_two_led_system.svg" alt="Front elevation of the Zumo showing the left emitter, the single front receiver, and the right emitter; below, the two reads of that one receiver returning 5 and 2 for an object sitting left of centre" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;">
@@ -1387,7 +1388,7 @@ void loop() {
 
 <h3 style="color: #c45d76; margin-top: 30px;">8A.1 Why Two LEDs Per Direction?</h3>
 
-<p>The front of the Zumo has one IR receiver (a 38 kHz detector module — a different kind of part from the phototransistors in the line sensors) with two forward IR emitters, one on each side of it. Firing them separately tells you not just <em>that</em> something is ahead, but roughly <em>which side</em> of center it sits on:</p>
+<p>The FRONT detector is a single IR receiver (a 38 kHz detector module — a different kind of part from the phototransistors in the line sensors), and it sits between the two forward emitters on the blade, one to its left and one to its right. Firing the LEFT team and then the RIGHT team tells you not just <em>that</em> something is ahead, but roughly <em>which side</em> of center it sits on. Remember from &sect;3.4 that a &ldquo;team&rdquo; is two LEDs in series &mdash; the blade LED plus the middle one &mdash; so what changes between the two reads is which <em>side</em> is lit, not one single LED:</p>
 
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">proxSensors.read();
 <span style="color: #569cd6;">int</span> frontLeft  = proxSensors.countsFrontWithLeftLeds();   <span style="color: #7cbf6e;">// object lit from the left</span>
