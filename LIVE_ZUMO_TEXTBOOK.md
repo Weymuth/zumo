@@ -1,11 +1,60 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 75 — **THE DUPLICATE WAS DOING HALF THE WORK**: **L05 joined the Brain Check family** (v04.9.0), the fifth conversion. Bible **v8.61**.)
-**Status:** **L05 CARRIED ITS ANCESTOR TWICE, AND ONE OF THE SIX PAIRS WAS ALREADY SPLIT.** The §25.10b retired-name sweep found `Conceptual Understanding` — the same second-entry ancestor L04 had — but L05’s copy sits directly above a `Knowledge Check` holding **the same six facts with reveals**. Four pairs were word-identical. **One was not:** *"What does a function prototype promise the compiler?"* against *"Our helper functions live below loop(), in any order — why does the build still succeed?"* — one fact, two cognitive levels, which is the §25.2 recall/apply line already drawn. Treating the answerless list as pure waste would have discarded a Mental item and forced an authored replacement; instead **BC01 reached its 3-item floor on migrated wording** and DJ ruled two more authored on top, to five: the 38 kHz trick (§3.1) and the permanent DN2/DN4 jumper move (§1, §7.3). **BC03 came out at 4**, so §25.8’s cap conflict is untested for a third straight lesson. **BC04 was authored from scratch** — L05 had no Reflection — and deliberately does NOT take the shared-pin tradeoff, which Engineer’s Log #05 already owns. **The session’s rule is what happens to a skill that cannot be gated**, now §25.10c: it moves, it does not die. One of L05’s four Problem-Solving items retired into the §9 lead-in sentence that already said it; another was never a checkbox at all and became **Mystery 6, "No Yesterday"**, reshaped to the section’s own predict/test/explain contract — which cost the host its title, *Five* Proximity Mysteries becoming *Six*. **Nothing was deleted: all 23 exit-region items audited to their new seats, zero lost**, every migrated answer character-exact. Found and closed en route: L05’s five bonus mysteries had **no `data-challenge` markers**, so they were invisible to the AI Tutor picker (§4.2) — now `5.m1`–`5.m6`.
+**Date:** July 26, 2026 (Session 76 — **THE CITATION POINTED AT A HOLE**: **L06 joined the Brain Check family** (**v04.12.0**), the sixth conversion. Bible **v8.62**.)
+**Status:** **L06 HAD NO ANCESTOR TO SPLIT AND ONE QUESTION WITH NOWHERE TO POINT.** The §25.10b retired-name sweep came back **empty** — no `Conceptual Understanding`, no `STOP & PROCESS`, nothing — so §25.10c's two-block case did not arise and L06 is the mirror image of L05: **BC03 migrated, BC04 half-migrated, BC01 and BC02 authored from scratch.** The find is in the migration. Three of the four Knowledge Check citations verified by content on the first pass; the fourth, *"drives 33cm instead of 30cm, what should you adjust?"*, answers `WHEEL_DIAMETER_MM` — **a string that appears in exactly two places in the file, §6 Step 5 where it is declared and the question itself.** Nothing teaches it. The reason it survived is a **within-lesson promise that does not land**: Step 8's checkpoint says *"Off by a lot? Section 8 has the table"* and §8's Quick Fix Table covered five faults, none of them distance accuracy — and the §24 promise gate only walks promises naming ANOTHER lesson, so nothing could see it. Per DJ ruling the **content was written rather than the citation re-aimed**: §8 gained a sixth row and the item now cites §8 truthfully (**new §25.10d**). **BC02 is the first built under §25.5** — L06's six §2 objectives migrated character-exact, so Technical Skills and Objectives agree by construction and L06 does not join the four-lesson reconciliation debt. **BC03 came out at 5** per DJ ruling, which *conforms to* §25.8's cap rather than forcing it — **L02 remains the sole outlier at 7 and the cap conflict is still open**. Found en route and fixed: **L05 shipped a literal `{CODE}` placeholder** in BC01 item 3 in yesterday's S75 push (v04.9.1), and **the Bible's own column fingerprint was the short slice** — 5,596 / `8fa00744` measures START through *before* the 43-character END comment, so verifying against it reproduces the very defect §25.10c exists to prevent; canonical is now **5,639 / `070806a6`**. L06's five bonus mysteries were untagged and invisible to the AI Tutor (§4.2) — now `6.m1`–`6.m5`. **All 12 exit-region items audited to their new seats, zero lost.**
 
-**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.0** · L06 **v04.11.2** · L07 **v04.7.2** · L08 **v04.6.2** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.61** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.7 (21 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.1** · L06 **v04.12.0** · L07 **v04.7.2** · L08 **v04.6.2** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.62** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.7 (21 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
+
+## WHAT SHIPPED THIS BATCH (S76 — L06 joins the Brain Check family)
+
+**1. L06 v04.11.2 → v04.12.0 — the sixth conversion, and the first with no ancestor at all.** The §25.10b
+retired-name sweep returned **zero hits**. L06 held a 4-item `Knowledge Check` (answers present) and a
+single `Reflection` prompt, **no Technical Skills checklist and no Mental block** — the mirror image of
+L05. **BC01 Mental (5)** authored at the §5/§6 seam: the second encoder channel (§3.2) · 909.7 counts per
+wheel rotation and where it comes from (§3.3) · 74.3 counts/cm from a 39 mm wheel (§3.4) · `for` vs
+`while` (§5.3) · why the target is wrapped in `abs()` (§5.4). **BC02 (6)** = §2's six objectives,
+character-exact. **BC03 (5)**: four migrated character-exact plus one authored on Step 13's
+`averageCounts()` change. **BC04 (3)**: the closed-loop prompt migrated, two authored.
+
+**2. §25.10d — a citation can point at a HOLE, not just at the wrong section.** S73/S74/S75 each found a
+mis-aimed citation and re-aimed it. L06 was the first where there was nowhere to aim: `WHEEL_DIAMETER_MM`
+appears twice in the file, at its declaration and in the question asking about it. **DJ ruled to write the
+missing content** — §8's Quick Fix Table gained a sixth row (overshooting → raise the diameter, stopping
+short → lower it, re-measure) which closes the gap, repairs Step 8's broken pointer, and gives the item a
+§8 citation that verifies.
+
+**3. A within-lesson promise is ungated.** Step 8 sent students to a §8 table that did not cover their
+fault. `§24 cross-lesson promises land in target lesson` only walks promises naming another lesson. Until
+a gate exists, a lesson's own internal pointers get followed by hand during conversion.
+
+**4. The Bible's column fingerprint was the short slice.** §25.10c mandates copying START through the full
+43-character END comment and then recorded the block as 5,596 chars / `8fa00744` — the span measured
+*before* the terminator. Anyone verifying against it slices 5,596 and reproduces the S75 defect. The live
+files were always correct and byte-identical across all six converted lessons. **Canonical is now 5,639 /
+`070806a6`, ending in `-->`.**
+
+**5. §25.5 applied for the first time.** BC02 migrates §2's objectives character-exact, so the two lists
+agree by construction. L03/L04/L05 keep their debt per the S74 ruling; L06 never acquires one.
+
+**6. L05 v04.9.0 → v04.9.1 — a literal `{CODE}` placeholder shipped live in S75.** BC01 item 3 carried
+`<code style="{CODE}">`, so the browser dropped the invalid style and the code span rendered unstyled.
+Only occurrence book-wide. No gate covers unsubstituted template placeholders.
+
+**7. §4.2 gap closed for L06, and quantified for the rest.** L06's five mysteries carried no
+`data-challenge` markers — tagged `6.m1`–`6.m5` on the L11/L05 convention. The book-wide sweep (S76 queue
+item 9) is now **VERIFIED: 20 mysteries still untagged across L04 (5), L07 (5), L08 (5), L09 (5).** Only
+L05 (6) and L11 (4) are done.
+
+**8. Verification.** 21/21 gates PASS, pill_sweep clean, column byte-identical across all six converted
+lessons. Four control runs, each with a landed-injection assert, each restoring byte-identical: a stripped
+`data-bc-skill` fails with the exact `06: BC02 has 6 checkbox items but 5 data-bc-skill tags` · a
+reintroduced `Conceptual Understanding` fails on the retired name · a 42-of-43-byte END comment fails the
+parse gate while **tag balance passes**, reproducing S75 · a dropped `</div>` fails both. Content-
+preservation audit: **12 exit-region items manifested before any edit, ACCOUNTED 12 · LOST 0**, every
+migrated question and answer character-exact. Diff audit: 34 lines removed, every one a version line, an
+intended block, or a mystery heading being retagged.
 
 ## WHAT SHIPPED THIS BATCH (S75 — L05 joins the Brain Check family)
 

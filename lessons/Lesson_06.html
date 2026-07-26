@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.11.2 -->
+<!-- Lesson version: v04.12.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -82,7 +82,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Encoders</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Measure</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.11 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.12 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -740,6 +740,45 @@ int speed;
 </div>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<div id="brain-check-01" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</strong>
+
+<p>That is the reading done. Before you put a single wheel on the floor, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Each wheel has two encoder channels, not one. What does the second one buy you? (&sect;3.2)</summary>
+
+<div style="margin-top: 12px;"><p>Direction. Channel A triggers before Channel B when the wheel rolls forward, and B before A when it rolls backward &mdash; so the <em>order</em> of the two signals says which way it turned. That is why counts are signed: forward adds, backward subtracts, and you get direction free with the measurement instead of having to ask for it separately.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. One full turn of a wheel is how many encoder counts &mdash; and where does that number come from? (&sect;3.3)</summary>
+
+<div style="margin-top: 12px;"><p>About 909.7. The encoder produces 12 counts per turn of the <em>motor</em> shaft, and a 75.81:1 gearbox sits between the motor and the wheel: 12 &times; 75.81 = 909.7. The number is a property of your gearbox, not of encoders in general &mdash; a 50:1 Zumo reads about 600 and a 100:1 reads about 1,200. Every distance in this lesson rests on getting this one right.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. The wheels are 39&#8239;mm across. How many counts is one centimetre, and how do you get there? (&sect;3.4)</summary>
+
+<div style="margin-top: 12px;"><p>About 74.3. Circumference = &pi; &times; 39&#8239;mm = 122.5&#8239;mm, which is 12.25&#8239;cm of floor per wheel rotation. So 909.7 counts &divide; 12.25&#8239;cm = 74.3 counts per cm. Driving 30&#8239;cm is therefore 30 &times; 74.3 &asymp; 2,229 counts.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop and a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">while</code> loop both repeat. What different question does each one answer? (&sect;5.3)</summary>
+
+<div style="margin-top: 12px;"><p>A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop runs a number of times you know before you start &mdash; once per sensor, eight times, three. A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">while</code> loop runs as long as something stays true, however many times that turns out to be. You cannot know in advance how many 10-millisecond checks it takes to roll 30&#8239;cm; you only know when to stop. That is a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">while</code>.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. Why does the distance get wrapped in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs()</code> before it becomes a target? (&sect;5.4)</summary>
+
+<div style="margin-top: 12px;"><p>Because encoder counts are signed and the target has to be something the count can climb <em>to</em>. Ask for &minus;30 and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">-30 * COUNTS_PER_CM</code> is a negative target; the count starts at 0, so <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0 &lt; targetCounts</code> is already false on the very first check and the loop exits before the wheels ever turn. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs()</code> makes the target positive whichever way the robot is driving, and the direction is handled separately by the sign on the motor speed.</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="1" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 01 done</button></p>
+</div>
 
 <!-- Section 6: Build It -->
 
@@ -1458,6 +1497,8 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <tr><td style="border: 1px solid #ccc; padding: 10px;">Robot doesn't move</td><td style="border: 1px solid #ccc; padding: 10px;">targetCounts is 0</td><td style="border: 1px solid #ccc; padding: 10px;">Check COUNTS_PER_CM value</td></tr>
 
 <tr style="background: #f9f9f9;"><td style="border: 1px solid #ccc; padding: 10px;">Robot never stops</td><td style="border: 1px solid #ccc; padding: 10px;">Wrong comparison in while</td><td style="border: 1px solid #ccc; padding: 10px;">Use &lt; not &gt; in while loop</td></tr>
+
+<tr><td style="border: 1px solid #ccc; padding: 10px;">Drives the wrong distance &#8212; you commanded 30&#8239;cm and the ruler says 33</td><td style="border: 1px solid #ccc; padding: 10px;"><code>COUNTS_PER_CM</code> is built from <code>WHEEL_DIAMETER_MM</code>, and 39.0 is the <em>nominal</em> figure &#8212; your tracks, your floor and your robot are not nominal</td><td style="border: 1px solid #ccc; padding: 10px;"><strong>Overshooting? INCREASE</strong> <code>WHEEL_DIAMETER_MM</code> (try 40, 41&#8230;). A bigger diameter means fewer counts per cm, so the robot stops sooner. <strong>Stopping short? Lower it.</strong> Change one number, re-measure, repeat &#8212; this is calibration, not a bug. <strong>(&sect;3.4 has the formula)</strong></td></tr>
 
 <tr><td style="border: 1px solid #ccc; padding: 10px;">Turns too small (under 90&#176;)</td><td style="border: 1px solid #ccc; padding: 10px;"><code>WHEEL_BASE_MM</code> is too <strong>small</strong> &#8212; too few counts are being commanded</td><td style="border: 1px solid #ccc; padding: 10px;"><strong>INCREASE</strong> <code>WHEEL_BASE_MM</code> (try 95, 100, 110&#8230;)</td></tr>
 
@@ -2287,58 +2328,72 @@ Stop motors</pre>
 <div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
 
-<h3 style="color: #6c757d; margin-top: 30px;">Knowledge Check</h3>
+<div id="brain-check-02" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<p><strong>1. What's the difference between getCountsLeft() and getCountsAndResetLeft()?</strong></p>
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</strong>
 
-<details data-reveal="solution" style="margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; padding: 10px 15px;">
+<p>These are the six objectives this lesson opened with, in Section 2 &mdash; the same list, now asked back. Tap each one you can honestly claim. All six unlock the button.</p>
 
-<summary style="cursor: pointer; font-weight: bold;">Show answer</summary>
+    <ul style="list-style: none; padding-left: 0; margin-top: 0;">
+        <li data-bc-skill="1" style="cursor: pointer;">☐ Explain how quadrature encoders measure wheel rotation and direction</li>
+        <li data-bc-skill="2" style="cursor: pointer;">☐ Calculate the relationship between encoder counts, wheel rotations, and distance</li>
+        <li data-bc-skill="3" style="cursor: pointer;">☐ Write functions that drive your robot to specific distances in centimeters</li>
+        <li data-bc-skill="4" style="cursor: pointer;">☐ Write functions that turn your robot to precise angles in degrees</li>
+        <li data-bc-skill="5" style="cursor: pointer;">☐ Understand the difference between open-loop and closed-loop control</li>
+        <li data-bc-skill="6" style="cursor: pointer;">☐ Create and use your own custom functions in C++</li>
+    </ul>
 
-<p style="margin-top: 15px;"><code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">getCountsLeft()</code> returns the count without changing it. <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">getCountsAndResetLeft()</code> returns the count AND resets it to zero.</p>
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="2" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 02 done</button></p>
+</div>
 
-</details>
+<div id="brain-check-03" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<p><strong>2. If the robot drives 33cm instead of 30cm, what should you adjust?</strong></p>
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</strong>
 
-<details data-reveal="solution" style="margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; padding: 10px 15px;">
+<p>You built it and it drives. These ask whether you know <em>why</em> it drives.</p>
 
-<summary style="cursor: pointer; font-weight: bold;">Show answer</summary>
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. What's the difference between <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">getCountsLeft()</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">getCountsAndResetLeft()</code>? (&sect;5.2)</summary>
 
-<p style="margin-top: 15px;">Increase WHEEL_DIAMETER_MM slightly. A larger diameter means fewer counts per cm, so the robot will stop sooner.</p>
-
-</details>
-
-<p><strong>3. Why is 120° the correct turn angle for a triangle, not 60°?</strong></p>
-
-<details data-reveal="solution" style="margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; padding: 10px 15px;">
-
-<summary style="cursor: pointer; font-weight: bold;">Show answer</summary>
-
-<p style="margin-top: 15px;">We turn through the EXTERIOR angle, not the interior angle. For an equilateral triangle: 180° - 60° = 120°.</p>
+<div style="margin-top: 12px;"><p><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">getCountsLeft()</code> returns the count without changing it. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">getCountsAndResetLeft()</code> returns the count AND resets it to zero.</p></div>
 
 </details>
 
-<p><strong>4. What's the difference between open-loop and closed-loop control?</strong></p>
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. If the robot drives 33cm instead of 30cm, what should you adjust? (&sect;8)</summary>
 
-<details data-reveal="solution" style="margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; padding: 10px 15px;">
-
-<summary style="cursor: pointer; font-weight: bold;">Show answer</summary>
-
-<p style="margin-top: 15px;"><strong>Open-loop:</strong> No feedback—"run motors for 2 seconds"<br><strong>Closed-loop:</strong> Uses feedback—"run motors until encoders show 30cm"</p>
+<div style="margin-top: 12px;"><p>Increase WHEEL_DIAMETER_MM slightly. A larger diameter means fewer counts per cm, so the robot will stop sooner.</p></div>
 
 </details>
 
-<h3 style="color: #6c757d; margin-top: 30px;">Reflection</h3>
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. Why is 120° the correct turn angle for a triangle, not 60°? (&sect;5.5)</summary>
 
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<div style="margin-top: 12px;"><p>We turn through the EXTERIOR angle, not the interior angle. For an equilateral triangle: 180&#176; - 60&#176; = 120&#176;.</p></div>
 
-<div style="font-weight: bold; font-size: 1.1em; margin-bottom: 8px;">🤔 Think About It</div>
+</details>
 
-<p><strong>How does closed-loop control improve your robot's reliability compared to open-loop?</strong></p>
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. What's the difference between open-loop and closed-loop control? (&sect;3.6)</summary>
 
-<p>Consider: What happens with open-loop control when batteries run low? When one wheel slips? When the floor surface changes? How does encoder feedback solve these problems?</p>
+<div style="margin-top: 12px;"><p><strong>Open-loop:</strong> No feedback—"run motors for 2 seconds"<br><strong>Closed-loop:</strong> Uses feedback—"run motors until encoders show 30cm"</p></div>
 
+</details>
+
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. Step 13 changed the drive gate from one encoder to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">averageCounts()</code>. Why does asking both wheels beat asking the better one? (&sect;6 Step 13)</summary>
+
+<div style="margin-top: 12px;"><p>Because you do not get to choose which wheel misbehaves. The old gate watched the left encoder only, so a slipping left track over-counted and the loop quit early, while a dragging right track was never asked anything at all and the robot sailed straight past the mark. Averaging does not make either wheel honest &mdash; it makes the error <em>shared</em>, so a bad track costs you half the distance error instead of all of it, and it costs you that in a direction you can predict.</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="3" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 03 done</button></p>
+</div>
+
+<div id="brain-check-04" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+    <strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</strong>
+    <p>No reveal on these &mdash; there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
+    <ol>
+        <li>How does closed-loop control improve your robot's reliability compared to open-loop? Consider: What happens with open-loop control when batteries run low? When one wheel slips? When the floor surface changes? How does encoder feedback solve these problems?</li>
+        <li>An encoder measures the <em>wheel</em>, not the ground. Mystery 1 and Mystery 2 both showed you the gap: the screen can read a confident 30&#8239;cm while the robot sits still in your hand. Name one place on a rescue course where that gap would cost you points &mdash; and say what second source of truth you would cross-check against.</li>
+        <li>How confident are you with encoders &mdash; still shaky, getting there, confident, or ready to have the robot navigate on measured distance alone? Say what would move you up one step.</li>
+    </ol>
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="4" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 04 done</button></p>
 </div>
 
 <div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
@@ -2372,31 +2427,31 @@ Stop motors</pre>
 
 <p>Observation challenges — no new project folders, work with your main <strong>LastName_L06</strong> build running its dashboard (the Step 4–6 program, or grab <strong>Discovery 6.5</strong> from the Maker). Each one is a small experiment: <strong>predict, test, explain.</strong> The hints are there if you're stuck.</p>
 
-<h4 style="color: #6c757d;">Mystery 1: The Slipping Wheel</h4>
+<h4 style="color: #6c757d;" id="mystery-1" data-challenge="6.m1" data-kind="mystery">Mystery 1: The Slipping Wheel</h4>
 <p>Put the robot on something slick — a smooth folder, a plastic binder cover. Run a 30&#8239;cm drive and measure what it <em>actually</em> traveled with the ruler. The screen says 30; the ruler says less. Which one is lying?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Neither — they answer different questions. The encoder counts <strong>wheel rotation</strong>, and the wheel really did rotate 30&#8239;cm worth. Travel is rotation <em>plus grip</em>. This gap is why competition robots cross-check encoders against other sensors.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 2: The Air Drive</h4>
+<h4 style="color: #6c757d;" id="mystery-2" data-challenge="6.m2" data-kind="mystery">Mystery 2: The Air Drive</h4>
 <p>Hold the robot in the air (fingers clear of the tracks!) and start a 50&#8239;cm drive. Predict: does it ever stop? Then watch the dashboard while it runs. Explain what "distance" meant to the robot during the flight.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>It stops right on schedule — the wheels spun 50&#8239;cm worth of counts while the robot went nowhere. Encoders measure the motor's side of the story, and in the air that story is fiction.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 3: The Uneven Twins</h4>
+<h4 style="color: #6c757d;" id="mystery-3" data-challenge="6.m3" data-kind="mystery">Mystery 3: The Uneven Twins</h4>
 <p>Run <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance(50)</code> three times. First clean. Then hold a finger <em>lightly</em> against the <strong>left</strong> track while it drives. Then the <strong>right</strong> track instead. Same drag, same distance requested — predict: does the robot stop short, overshoot, or land right, and does it matter <em>which</em> track you touch?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Drag the <strong>left</strong> track and the robot <strong>stops short</strong>: that track slips, the left encoder over-counts, and the loop quits early. Drag the <strong>right</strong> and it sails straight past the mark — because before Step 13 the gate was <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs(encoders.getCountsLeft())</code> and <em>nothing ever asked the right wheel anything.</em> That is not normal variance. That is a bug you can feel with one finger. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">averageCounts()</code> asks both wheels, so a stiff track now costs you <em>half</em> the error instead of all of it.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 4: The 440 Ruler</h4>
+<h4 style="color: #6c757d;" id="mystery-4" data-challenge="6.m4" data-kind="mystery">Mystery 4: The 440 Ruler</h4>
 <p>Without running it, read <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance</code> and predict what happens if you call it with 500&#8239;cm. Now check the Note in Step 7. What is special about the number 32,767 — and what would the robot actually do?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>The target lives in an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>, which tops out at 32,767 on this chip. 500&#8239;cm &times; ~74.3 counts/cm &asymp; 37,000 — past the ceiling, the math silently wraps to a wrong (possibly tiny or negative) number. The robot barely moves, or the while-loop's finish line lands somewhere you never intended. Big numbers need bigger boxes — that's what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long</code> is for, in a later lesson.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 5: The Backwards Counter</h4>
+<h4 style="color: #6c757d;" id="mystery-5" data-challenge="6.m5" data-kind="mystery">Mystery 5: The Backwards Counter</h4>
 <p>Run the dashboard and pull the robot <em>backwards</em> along the ruler. Predict first: do the counts go up, or something else? Then explain why the lesson's functions wrap every count in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs()</code>.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
@@ -2626,9 +2681,99 @@ Stop motors</pre>
 </p>
 
 <!-- ===== BUILD BANNER (hidden from students; keeps the §5b two-homes gate honest) =====
-     Version 04.11 &mdash; July 2026 &bull; LESSON 06 &middot; Encoders
+     Version 04.12 &mdash; July 2026 &bull; LESSON 06 &middot; Encoders
      ZUMO Callout Standard v1.0 Applied
 ===== -->
+<!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
+<div id="brain-check-col" style="position: fixed; right: 10px; top: 50%; transform: translateY(-50%); z-index: 90; background-color: rgba(255,255,255,0.95); border: 1px solid #c5cae9; border-radius: 8px; padding: 8px 6px; display: flex; flex-direction: column; gap: 6px; align-items: center;" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
+    <img id="bc-emblem" src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="Brain Check progress" style="width: 30px; height: auto;">
+    <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">01</a>
+    <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">02</a>
+    <a href="#brain-check-03" data-bc-pill="3" aria-label="Brain Check 03" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">03</a>
+    <a href="#brain-check-04" data-bc-pill="4" aria-label="Brain Check 04" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">04</a>
+</div>
+<script>
+(function() {
+    var m = (window.location.pathname.match(/Lesson_(\d+)/) || []);
+    var key = 'bc_L' + (m[1] || '00');
+    var skey = key + '_sk';
+    var st, sk;
+    try { st = JSON.parse(window.localStorage.getItem(key)); } catch (e) { st = null; }
+    if (!st || Object.prototype.toString.call(st) !== '[object Array]' || st.length !== 4) st = [0, 0, 0, 0];
+    var skillEls = document.querySelectorAll('[data-bc-skill]');
+    try { sk = JSON.parse(window.localStorage.getItem(skey)); } catch (e) { sk = null; }
+    if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
+        sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
+    }
+    var GRAY = 'https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png';
+    var GREEN = 'https://weymuth.github.io/zumo/images/BrainGear_Complete.png';
+    function allSkills() {
+        if (!sk.length) return true;
+        for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
+        return true;
+    }
+    function paint() {
+        var all = st[0] && st[1] && st[2] && st[3];
+        for (var q = 0; q < skillEls.length; q++) {
+            var li = skillEls[q];
+            var txt = li.textContent.replace(/^[\u2610\u2611]\s*/, '');
+            li.textContent = (sk[q] ? '\u2611 ' : '\u2610 ') + txt;
+            li.style.color = sk[q] ? '#2e7d32' : '';
+        }
+        for (var i = 0; i < 4; i++) {
+            var n = i + 1;
+            var pill = document.querySelector('[data-bc-pill="' + n + '"]');
+            if (pill) {
+                pill.style.backgroundColor = st[i] ? '#4caf50' : '#3f51b5';
+                pill.textContent = st[i] ? '\u2713' : '0' + n;
+            }
+            var ico = document.querySelector('[data-bc-icon="' + n + '"]');
+            if (ico) ico.src = st[i] ? GREEN : GRAY;
+            var btn = document.querySelector('[data-bc-btn="' + n + '"]');
+            if (btn) {
+                var locked = (n === 2) && !st[i] && !allSkills();
+                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo'
+                                : (locked ? '\uD83D\uDD12 Check all ' + skillEls.length + ' skills to unlock'
+                                          : 'Mark Brain Check 0' + n + ' done');
+                btn.style.backgroundColor = st[i] ? '#4caf50' : (locked ? '#9e9e9e' : '#3f51b5');
+                btn.style.cursor = locked ? 'not-allowed' : 'pointer';
+                btn.title = locked ? 'Tap each skill in the list above first.' : '';
+            }
+        }
+        var em = document.getElementById('bc-emblem');
+        if (em) em.src = all ? GREEN : GRAY;
+    }
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== document && !(t.getAttribute && (t.getAttribute('data-bc-btn') || t.getAttribute('data-bc-skill')))) t = t.parentNode;
+        if (!t || t === document || !t.getAttribute) return;
+        var skn = t.getAttribute('data-bc-skill');
+        if (skn) {
+            var j = parseInt(skn, 10) - 1;
+            if (j >= 0 && j < sk.length) {
+                sk[j] = sk[j] ? 0 : 1;
+                try { window.localStorage.setItem(skey, JSON.stringify(sk)); } catch (e3) {}
+                paint();
+            }
+            return;
+        }
+        var i = parseInt(t.getAttribute('data-bc-btn'), 10) - 1;
+        if (i < 0 || i > 3) return;
+        if (i === 1 && !st[i] && !allSkills()) { return; }
+        st[i] = st[i] ? 0 : 1;
+        try { window.localStorage.setItem(key, JSON.stringify(st)); } catch (e2) {}
+        paint();
+    });
+    function fit() {
+        var c = document.getElementById('brain-check-col');
+        if (c) c.style.display = (window.innerWidth < 700) ? 'none' : 'flex';
+    }
+    window.addEventListener('resize', fit);
+    paint();
+    fit();
+})();
+</script>
+<!-- ===== BRAIN CHECK COLUMN END ===== -->
 </body>
 
 </html>
