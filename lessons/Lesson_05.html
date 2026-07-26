@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.8.2 -->
+<!-- Lesson version: v04.9.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +73,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Proximity Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Sense</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.8 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.9 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -914,6 +914,46 @@ Call it at the TOP of loop().
 
 <!-- Section 6: Build It -->
 </div>
+
+<div id="brain-check-01" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</strong>
+
+<p>That is the reading done. Before you point a single sensor at the world, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. The room is already full of infrared — sunlight especially. Why doesn't it flood every proximity reading? (&sect;3.1)</summary>
+
+<div style="margin-top: 12px;"><p>Because the robot blinks its IR LEDs about 38,000 times per second and the receiver is a tuned ear that only reacts to that rhythm. Steady sunlight has no 38 kHz flicker, so it is ignored — like picking a friend out of a loud crowd because they whistle a pattern nobody else knows. Up to a point: enough raw IR can deafen the ear outright, which is why Section 8 lists bright light as a cause of erratic readings.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. What value range do Zumo proximity sensors return? (&sect;3.2)</summary>
+
+<div style="margin-top: 12px;"><p>0–6 (brightness levels), NOT 0–255. Each level represents a different IR pulse brightness that detected a reflection.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. What does <code style="{CODE}">DETECTION_THRESHOLD = 1</code> mean? (&sect;3.3)</summary>
+
+<div style="margin-top: 12px;"><p>Any reading of 1 or higher counts as "something detected." Since 0 means nothing, a threshold of 1 catches even faint/distant objects.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. What does a function prototype promise the compiler? (&sect;5.5)</summary>
+
+<div style="margin-top: 12px;"><p>That a function by that name exists, with that return type and those parameters, and that its full definition appears somewhere later in the file. The compiler reads top to bottom and refuses to call a name it has not heard of; the prototype is the promise that lets it proceed.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. Right now your two configuration jumpers sit at LFT/RGT. Where do they end up by the end of this lesson, and what do you trade away? (&sect;1, &sect;7.3)</summary>
+
+<div style="margin-top: 12px;"><p>At DN2/DN4 — and this time permanently. You trade your left and right proximity receivers for line sensors 2 and 4. This lesson borrowed all three receivers and every reading you took came from that loan; Section 7.3 is where it comes due. Lesson 6 will not work until you move them.</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="1" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 01 done</button></p>
+</div>
+
 <div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-6" style="font-size: 1.15em; font-weight: bold;">🔨 Section 6: Build It</div></div>
 <div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
@@ -1891,7 +1931,7 @@ Zumo32U4ButtonB buttonB;
 
 <div style="background-color: #f8f9fa; border: 2px solid #6c757d; border-radius: 10px; padding: 15px 20px; margin: 25px 0;">
 <strong style="color: #4d5358;">🏁 FINISHED EARLY?</strong>
-<p style="margin-bottom: 0;">Five bonus mysteries are waiting in <a href="#bonus-challenges" style="color: #2e86ab; font-weight: bold;">Bonus</a> — no new folders needed, mostly prediction and detective work: a steady lamp, an unfair race, a side-eye, a two-number spy, and a silent listener.</p>
+<p style="margin-bottom: 0;">Six bonus mysteries are waiting in <a href="#bonus-challenges" style="color: #2e86ab; font-weight: bold;">Bonus</a> — no new folders needed, mostly prediction and detective work: a steady lamp, an unfair race, a side-eye, a two-number spy, a silent listener, and a robot with no yesterday.</p>
 </div>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
@@ -1900,41 +1940,47 @@ Zumo32U4ButtonB buttonB;
 
 <!-- Bonus -->
 <div style="background-color: #6c757d; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;">
-<div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">🔍 Bonus: Five Proximity Mysteries</div>
+<div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">🔍 Bonus: Six Proximity Mysteries</div>
 </div>
 <div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
 <p>Observation challenges — no new project folders, work with your main <strong>LastName_L05</strong> build running. Each one is a small experiment: <strong>predict, test, explain.</strong> The hints are there if you're stuck, but try to out-think them first.</p>
 
-<h4 style="color: #6c757d;">Mystery 1: The Steady Lamp</h4>
+<h4 style="color: #6c757d;" id="mystery-1" data-challenge="5.m1" data-kind="mystery">Mystery 1: The Steady Lamp</h4>
 <p>Point a bright flashlight straight into the front receiver. Predict first: what will F read? Test it. Then, if the sun is out, set the robot in direct sunlight and try again. Explain the difference.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Section 3.1 — the receiver is a tuned ear. A steady beam has no 38&nbsp;kHz flicker to hear. But enough raw IR can deafen the ear outright, which is why Section 8's table lists bright light under erratic readings.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 2: The Unfair Race</h4>
+<h4 style="color: #6c757d;" id="mystery-2" data-challenge="5.m2" data-kind="mystery">Mystery 2: The Unfair Race</h4>
 <p>Hold a sheet of white paper in front of the robot at 20&nbsp;cm and note the reading. Now hold something black and soft — a dark T-shirt works — at the <em>same</em> distance. Predict: same number? Test. Explain why the sensor isn't broken.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Section 3.5 — the sensor measures echo strength, not distance. White paper is simply a better reflector than black fabric.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 3: The Side-Eye</h4>
+<h4 style="color: #6c757d;" id="mystery-3" data-challenge="5.m3" data-kind="mystery">Mystery 3: The Side-Eye</h4>
 <p>Place a box diagonally ahead and to the right — about 45°, 15&nbsp;cm out. Before you look: which of the three readings will move? Just R? Test it, and watch F's two small numbers too.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Sections 3.4 and 8A — two ears can hear one object, and the right flashlight team lights it best. Expect R <em>and</em> the right half of F's pair.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 4: The Two-Number Spy</h4>
+<h4 style="color: #6c757d;" id="mystery-4" data-challenge="5.m4" data-kind="mystery">Mystery 4: The Two-Number Spy</h4>
 <p>Numeric mode shows F with its two source numbers beside it. Slide your hand slowly from the robot's far left to its far right, keeping the distance steady. Predict what the two small numbers do — and where they trade places.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Section 8A.2 — the left/right pair is a direction finder. The crossover happens where your hand faces the front receiver dead-on.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 5: The Silent Listener</h4>
+<h4 style="color: #6c757d;" id="mystery-5" data-challenge="5.m5" data-kind="mystery">Mystery 5: The Silent Listener</h4>
 <p>Find a partner whose robot is also running today's program. Stand the two robots facing each other, about half a meter apart, both started. Nothing in the room is moving — so why do both robots' readings jump around?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Sections 3.6 and 3.1 &#8212; each robot hears the other&#8217;s 38 kHz shouts and books them as its own echoes. The library documentation warns about exactly this. Sit with what it implies: a sensor that can be fooled by a neighbour can also be <em>used</em> to listen for one. That is the whole idea behind <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readBasic()</code> in Section 3.6 &#8212; sensing an opponent who is sensing you.</p>
+</details>
+<h4 style="color: #6c757d;" id="mystery-6" data-challenge="5.m6" data-kind="mystery">Mystery 6: No Yesterday</h4>
+<p>Walk your hand in from the right until R climbs, then take it away completely. Predict first: in any of the three display modes, is there anything left on the screen that knows the last thing you saw came from the right? Test it. Then explain what your program would need before it could answer that.</p>
+<details data-reveal="hint">
+    <summary>💡 Hint</summary>
+    <p>Sections 5.4 and 5.13 &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">readAllSensors()</code> runs at the top of every pass and overwrites all five reading variables, so each one only ever holds <em>right now</em>. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">displayMode</code> is the one global that survives a pass untouched, because nothing writes to it unless you press a button. A history needs a variable of that second kind. Section 3.4a already told you this was coming: remember what you saw and keep turning.</p>
 </details>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
@@ -1945,84 +1991,75 @@ Zumo32U4ButtonB buttonB;
 <div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
 
-<h4 style="color: #6c757d; margin-top: 25px;">Technical Skills: Can you...?</h4>
+<div id="brain-check-02" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ Checkpoint</strong>
-    <ul style="list-style: none; padding-left: 0;">
-        <li>☐ Explain that proximity sensors use IR light to detect objects</li>
-        <li>☐ State that Zumo proximity values are 0-6, not 0-255</li>
-        <li>☐ Read all three proximity sensors using the library</li>
-        <li>☐ Use threshold constants to categorize detection levels</li>
-        <li>☐ Combine front sensor readings with max()</li>
-        <li>☐ Create visual feedback (bars, status words) based on sensor data</li>
-        <li>☐ Create audio feedback that varies with proximity</li>
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</strong>
+
+<p>Tap each one you can honestly claim. All nine unlock the button.</p>
+
+    <p style="margin-bottom: 4px;"><strong>I can&hellip;</strong></p>
+    <ul style="list-style: none; padding-left: 0; margin-top: 0;">
+        <li data-bc-skill="1" style="cursor: pointer;">☐ Explain that proximity sensors use IR light to detect objects</li>
+        <li data-bc-skill="2" style="cursor: pointer;">☐ State that Zumo proximity values are 0-6, not 0-255</li>
+        <li data-bc-skill="3" style="cursor: pointer;">☐ Read all three proximity sensors using the library</li>
+        <li data-bc-skill="4" style="cursor: pointer;">☐ Use threshold constants to categorize detection levels</li>
+        <li data-bc-skill="5" style="cursor: pointer;">☐ Combine front sensor readings with max()</li>
+        <li data-bc-skill="6" style="cursor: pointer;">☐ Create visual feedback (bars, status words) based on sensor data</li>
+        <li data-bc-skill="7" style="cursor: pointer;">☐ Create audio feedback that varies with proximity</li>
     </ul>
+    <p style="margin-bottom: 4px;"><strong>I have&hellip;</strong></p>
+    <ul style="list-style: none; padding-left: 0; margin-top: 0;">
+        <li data-bc-skill="8" style="cursor: pointer;">☐ Completed at least one of the <strong>Section 9</strong> challenges</li>
+        <li data-bc-skill="9" style="cursor: pointer;">☐ Changed the threshold values and watched what it did to detection</li>
+    </ul>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="2" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 02 done</button></p>
 </div>
 
-<h4 style="color: #6c757d;">Conceptual Understanding: Do you know...?</h4>
+<div id="brain-check-03" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>📘 Note</strong>
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</strong>
+
+<p>You built it and it runs. These ask whether you know <em>why</em> it runs.</p>
+
+
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Why do we use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">max(frontLeftValue, frontRightValue)</code>? (&sect;4.2)</summary>
+
+<div style="margin-top: 12px;"><p>The front detector can be illuminated from either side. Taking the maximum ensures we detect objects even if they're slightly off-center (to the left or right of straight ahead).</p></div>
+
+</details>
+
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. Our helper functions live <em>below</em> loop(), in any order — why does the build still succeed? (&sect;5.5)</summary>
+
+<div style="margin-top: 12px;"><p>Because of the FUNCTION PROTOTYPES section. The compiler reads top to bottom and refuses to call a name it hasn't heard of — but a prototype is a promise: "this function exists; details below." Once every helper is declared up top, the definitions can sit anywhere in the file.</p></div>
+
+</details>
+
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. How is a <strong>threshold</strong> different from a <strong>sensor reading</strong>? (&sect;3.3, &sect;3.5)</summary>
+
+<div style="margin-top: 12px;"><p>A reading is what the world <em>is</em> &#8212; a number the hardware hands you, 0&#8211;6, that you do not get to choose. A threshold is a line <em>you</em> draw through those numbers to turn a measurement into a decision: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">DETECTION_THRESHOLD = 1</code> is not something the sensor told you, it is your ruling on what counts as "something is there." Readings are facts; thresholds are judgments. That is why thresholds live at the top of the file as named constants &#8212; so you can change your mind in one place.</p></div>
+
+</details>
+
+<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. Why is using a for loop better than using multiple <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> calls? (&sect;5.15)</summary>
+
+<div style="margin-top: 12px;"><p>For loops let you repeat code without duplicating it. Instead of writing <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); display.print(F("3"));</code> then <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); display.print(F("2"));</code> and so on, you can use one loop that handles all iterations. This makes code shorter, easier to modify (change the count in one place), and less error-prone. Loops are a fundamental programming concept you'll use constantly!</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="3" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 03 done</button></p>
+</div>
+
+<div id="brain-check-04" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+    <strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</strong>
+    <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
-        <li>What value range do Zumo proximity sensors return?</li>
-        <li>Why do we use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">max(frontLeftValue, frontRightValue)</code>?</li>
-        <li>What does DETECTION_THRESHOLD = 1 mean?</li>
-        <li>What does a function prototype promise the compiler?</li>
-        <li>How is a threshold different from a sensor reading?</li>
-        <li>Why is a for loop better than writing the same line over and over?</li>
+        <li>Section 3.5 says a proximity sensor is not a ruler — it reports echo strength, not distance. Where on a real rescue course would that difference bite you, and what would you do about it?</li>
+        <li>Your robot has blind wedges roughly 19&deg; to 72&deg; off each side that no detector is aimed into. Name the one thing you would most want it to notice there — and say whether you would fix that in hardware or in code.</li>
+        <li>How confident are you with the proximity sensors — still shaky, getting there, confident, or ready to make the robot act on what it sees? Say what would move you up one step.</li>
     </ol>
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="4" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 04 done</button></p>
 </div>
-
-<h4 style="color: #6c757d;">Problem-Solving: Can you modify or extend...?</h4>
-
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>📖 Learn/Insight</strong>
-    <ul>
-        <li>Complete at least one of the <strong>Section 9</strong> challenges</li>
-        <li>Complete at least one of the <strong>Bonus</strong> mysteries</li>
-        <li>Experiment: Try changing the threshold values and observe the effect on detection</li>
-        <li>Extend: Add a fourth display mode that shows detection history (which direction was closest last?)</li>
-    </ul>
-</div>
-
-<h4 style="color: #6c757d; margin-top: 25px;">Knowledge Check</h4>
-
-<p>1. What value range do Zumo proximity sensors return?</p>
-<details data-reveal="solution">
-    <summary>Show answer</summary>
-    <p>0–6 (brightness levels), NOT 0–255. Each level represents a different IR pulse brightness that detected a reflection.</p>
-</details>
-
-<p>2. Why do we use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">max(frontLeftValue, frontRightValue)</code>?</p>
-<details data-reveal="solution">
-    <summary>Show answer</summary>
-    <p>The front detector can be illuminated from either side. Taking the maximum ensures we detect objects even if they're slightly off-center (to the left or right of straight ahead).</p>
-</details>
-
-<p>3. What does <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">DETECTION_THRESHOLD = 1</code> mean?</p>
-<details data-reveal="solution">
-    <summary>Show answer</summary>
-    <p>Any reading of 1 or higher counts as "something detected." Since 0 means nothing, a threshold of 1 catches even faint/distant objects.</p>
-</details>
-
-<p>4. Our helper functions live <em>below</em> loop(), in any order — why does the build still succeed?</p>
-<details data-reveal="solution">
-    <summary>Show answer</summary>
-    <p>Because of the FUNCTION PROTOTYPES section. The compiler reads top to bottom and refuses to call a name it hasn't heard of — but a prototype is a promise: "this function exists; details below." Once every helper is declared up top, the definitions can sit anywhere in the file.</p>
-</details>
-
-<p>5. How is a <strong>threshold</strong> different from a <strong>sensor reading</strong>?</p>
-<details data-reveal="solution" style="margin: 10px 0 18px;">
-    <summary>Show answer</summary>
-    <p>A reading is what the world <em>is</em> &#8212; a number the hardware hands you, 0&#8211;6, that you do not get to choose. A threshold is a line <em>you</em> draw through those numbers to turn a measurement into a decision: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">DETECTION_THRESHOLD = 1</code> is not something the sensor told you, it is your ruling on what counts as "something is there." Readings are facts; thresholds are judgments. That is why thresholds live at the top of the file as named constants &#8212; so you can change your mind in one place.</p>
-</details>
-
-<p>6. (Reflection) Why is using a for loop better than using multiple <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> calls?</p>
-<details data-reveal="solution">
-    <summary>Show answer</summary>
-    <p>For loops let you repeat code without duplicating it. Instead of writing <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); display.print(F("3"));</code> then <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); display.print(F("2"));</code> and so on, you can use one loop that handles all iterations. This makes code shorter, easier to modify (change the count in one place), and less error-prone. Loops are a fundamental programming concept you'll use constantly!</p>
-</details>
 
 <h3 style="color: #6c757d; margin-top: 30px;">What's Next?</h3>
 
@@ -2246,8 +2283,98 @@ proxSensors.countsXxxWithYyyLeds();  <span style="color: #7cbf6e;">// Get 0-6 va
 
 
 <!-- ===== BUILD BANNER (hidden from students; keeps the §5b two-homes gate honest) =====
-     Version 04.8 &mdash; July 2026 &bull; LESSON 05 &middot; Proximity Sensors
+     Version 04.9 &mdash; July 2026 &bull; LESSON 05 &middot; Proximity Sensors
      ZUMO Callout Standard v1.0 Applied
 ===== -->
+<!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
+<div id="brain-check-col" style="position: fixed; right: 10px; top: 50%; transform: translateY(-50%); z-index: 90; background-color: rgba(255,255,255,0.95); border: 1px solid #c5cae9; border-radius: 8px; padding: 8px 6px; display: flex; flex-direction: column; gap: 6px; align-items: center;" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
+    <img id="bc-emblem" src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="Brain Check progress" style="width: 30px; height: auto;">
+    <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">01</a>
+    <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">02</a>
+    <a href="#brain-check-03" data-bc-pill="3" aria-label="Brain Check 03" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">03</a>
+    <a href="#brain-check-04" data-bc-pill="4" aria-label="Brain Check 04" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">04</a>
+</div>
+<script>
+(function() {
+    var m = (window.location.pathname.match(/Lesson_(\d+)/) || []);
+    var key = 'bc_L' + (m[1] || '00');
+    var skey = key + '_sk';
+    var st, sk;
+    try { st = JSON.parse(window.localStorage.getItem(key)); } catch (e) { st = null; }
+    if (!st || Object.prototype.toString.call(st) !== '[object Array]' || st.length !== 4) st = [0, 0, 0, 0];
+    var skillEls = document.querySelectorAll('[data-bc-skill]');
+    try { sk = JSON.parse(window.localStorage.getItem(skey)); } catch (e) { sk = null; }
+    if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
+        sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
+    }
+    var GRAY = 'https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png';
+    var GREEN = 'https://weymuth.github.io/zumo/images/BrainGear_Complete.png';
+    function allSkills() {
+        if (!sk.length) return true;
+        for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
+        return true;
+    }
+    function paint() {
+        var all = st[0] && st[1] && st[2] && st[3];
+        for (var q = 0; q < skillEls.length; q++) {
+            var li = skillEls[q];
+            var txt = li.textContent.replace(/^[\u2610\u2611]\s*/, '');
+            li.textContent = (sk[q] ? '\u2611 ' : '\u2610 ') + txt;
+            li.style.color = sk[q] ? '#2e7d32' : '';
+        }
+        for (var i = 0; i < 4; i++) {
+            var n = i + 1;
+            var pill = document.querySelector('[data-bc-pill="' + n + '"]');
+            if (pill) {
+                pill.style.backgroundColor = st[i] ? '#4caf50' : '#3f51b5';
+                pill.textContent = st[i] ? '\u2713' : '0' + n;
+            }
+            var ico = document.querySelector('[data-bc-icon="' + n + '"]');
+            if (ico) ico.src = st[i] ? GREEN : GRAY;
+            var btn = document.querySelector('[data-bc-btn="' + n + '"]');
+            if (btn) {
+                var locked = (n === 2) && !st[i] && !allSkills();
+                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo'
+                                : (locked ? '\uD83D\uDD12 Check all ' + skillEls.length + ' skills to unlock'
+                                          : 'Mark Brain Check 0' + n + ' done');
+                btn.style.backgroundColor = st[i] ? '#4caf50' : (locked ? '#9e9e9e' : '#3f51b5');
+                btn.style.cursor = locked ? 'not-allowed' : 'pointer';
+                btn.title = locked ? 'Tap each skill in the list above first.' : '';
+            }
+        }
+        var em = document.getElementById('bc-emblem');
+        if (em) em.src = all ? GREEN : GRAY;
+    }
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== document && !(t.getAttribute && (t.getAttribute('data-bc-btn') || t.getAttribute('data-bc-skill')))) t = t.parentNode;
+        if (!t || t === document || !t.getAttribute) return;
+        var skn = t.getAttribute('data-bc-skill');
+        if (skn) {
+            var j = parseInt(skn, 10) - 1;
+            if (j >= 0 && j < sk.length) {
+                sk[j] = sk[j] ? 0 : 1;
+                try { window.localStorage.setItem(skey, JSON.stringify(sk)); } catch (e3) {}
+                paint();
+            }
+            return;
+        }
+        var i = parseInt(t.getAttribute('data-bc-btn'), 10) - 1;
+        if (i < 0 || i > 3) return;
+        if (i === 1 && !st[i] && !allSkills()) { return; }
+        st[i] = st[i] ? 0 : 1;
+        try { window.localStorage.setItem(key, JSON.stringify(st)); } catch (e2) {}
+        paint();
+    });
+    function fit() {
+        var c = document.getElementById('brain-check-col');
+        if (c) c.style.display = (window.innerWidth < 700) ? 'none' : 'flex';
+    }
+    window.addEventListener('resize', fit);
+    paint();
+    fit();
+})();
+</script>
+<!-- ===== BRAIN CHECK COLUMN END ===== -->
 </body>
 </html>
