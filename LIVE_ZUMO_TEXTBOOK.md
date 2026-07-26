@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 79 — **THE STRIP LIST IS A WHITELIST, SO A KEPT REVEAL TYPE IS A PUBLICATION CHANNEL**: a finished challenge answer was living inside a `hint` in **L01 Challenge 11** and reaching the AI Tutor; the four Brain Check blocks that had drifted to `solution` were hiding the wrong thing and are retyped `quiz`. Bible **v8.65**, book_gates **v1.9 (23 gates)**.)
+**Date:** July 26, 2026 (Session 79 — **THE STRIP LIST IS A WHITELIST, SO A KEPT REVEAL TYPE IS A PUBLICATION CHANNEL**: a finished challenge answer was living inside a `hint` in **L01 Challenge 11** and reaching the AI Tutor; the four Brain Check blocks that had drifted to `solution` were hiding the wrong thing and are retyped `quiz`. Then DJ caught the split's own cosmetic side effect on the rendered page. Bible **v8.65.1**, book_gates **v1.10 (24 gates)**.)
 **Status:** **DJ RULING — WHAT WE HIDE FROM THE TUTOR IS CHALLENGE ANSWERS, NOT BRAIN CHECK ANSWERS.** BC01 was `quiz` in all eight converted lessons while BC03 had drifted to `solution` in L05–L08 — one construct, 12 `quiz` to 4 `solution`, never ruled in any §25 entry. §20.1 already names `quiz` for “knowledge-check answers” and **L09's live ancestor is already `quiz`**, so all four were retyped and the sixteen Brain Check blocks are now uniform; stripping BC03 bought little anyway, because every BC03 item cites the section holding its answer and the tutor receives that prose. Then the inverse defect: **L01 C11's complete battery-check answer** (threshold `4500` + the `LOW BATT!` body, filling the exact blank the card asks the student to fill) **sat inside a `hint` reveal**, which §20.1 KEEPS — shipped to the model through eight sessions of L01 edits. Fixed by **splitting, not retyping**: the coaching content stays `hint`, the worked code moves to a sibling `solution` reveal. **book_gates v1.9** gates the shape, control-run three ways. The first book-wide leak survey returned **73 candidates and was almost all false positives** — it read every §6.12a Template panel as finished code in open prose — so the shipped gate is narrow and the one verified leak was found by reading, not by the detector. **OPEN:** L02 `2.t4`'s `check` reveal holds the full worked code for a TRY IT the card tells students to translate themselves.
 
-**Versions:** L01 **v03.10.1** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.2** · L06 **v04.12.1** · L07 **v04.8.1** · L08 **v04.7.1** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.65** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.9 (23 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.2** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.2** · L06 **v04.12.1** · L07 **v04.8.1** · L08 **v04.7.1** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.65.1** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.10 (24 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
@@ -39,6 +39,16 @@ running where the checking step was wrong before the work was.
 **5. Bible v8.64 → v8.65** — §20.1 gains **rule (4)**: the strip list is a whitelist, so a
 finished code block belongs in a `solution` reveal even when the surrounding box is a hint, and the fix is to
 SPLIT the box rather than retype it.
+
+**6. L01 v03.10.1 → v03.10.2 — the split's own cosmetic side effect, caught by DJ on the render.**
+The new `solution` summary carries `padding:15px 20px`; the `hint` directly above it carried none, so the two
+stacked rows put their disclosure triangle and label at different left insets. Census: summary padding is
+stratified book-wide (hint 47 bare / 11 padded · solution 59 padded / 50 bare · catchup 76 bare) —
+§6.12c drift, not rot — but **exactly one stacked pair disagreed, and it was the pair authored an hour
+earlier.** Fixed by padding C11's hint summary, **scoped by offset**: the identical bare-summary string occurs
+**12 times in L01**. **book_gates v1.9 → v1.10** gates it, control-run both directions. The detector's
+first version returned zero — it counted the first reveal's own body as prose between the siblings, so
+depth-match the `</details>` before comparing neighbours.
 
 **OPEN — needs a DJ ruling:** L02 `2.t4`'s `check` reveal holds the complete worked code for a TRY IT box
 whose card says *“Now translate it yourself.”* `check` is KEPT by §20.1 design, so it reaches the

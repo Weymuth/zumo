@@ -4,7 +4,7 @@
 1. Clone fresh: `git clone --depth 1 https://github.com/Weymuth/zumo.git`
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. `grep -oE "Bible version: v[0-9.]+" ZUMO_SUPER_BIBLE.md` — confirm internal.
-4. `python3 book_gates.py` — all **23** must PASS (gate file **v1.9**). Then `python3 pill_sweep.py --audit lessons/Lesson_*.html`.
+4. `python3 book_gates.py` — all **24** must PASS (gate file **v1.10**). Then `python3 pill_sweep.py --audit lessons/Lesson_*.html`.
 5. LIVE.md wins over memory. §24.6c: control-run every audit grep AND assert the injection landed.
 6. §25.10b/c/d/e/f as before.
 7. **NEW — check the push actually landed.** S79 opened on a tree that did not contain S78's work:
@@ -12,19 +12,21 @@
    the session whose work they carry. Verify by grepping a version out of the clone, never by reading
    the commit message. The GitHub API (`/commits/{sha}`) lists the changed files and settles it in one call.
 
-## LIVE STATE at S79 close — VERIFIED, gates 23/23 PASS
-L01 **v03.10.1** · L02 v03.0.0 · L03 v03.14.0 · L04 v04.7.0 · L05 **v04.9.2** · L06 **v04.12.1** ·
+## LIVE STATE at S79 close — VERIFIED, gates 24/24 PASS
+L01 **v03.10.2** · L02 v03.0.0 · L03 v03.14.0 · L04 v04.7.0 · L05 **v04.9.2** · L06 **v04.12.1** ·
 L07 **v04.8.1** · L08 **v04.7.1** · L09 v05.4.2 · L10 v02.5.2 · L11 v02.7.2 · L12 v01.7.2 ·
 L13 v02.6.2 · L14 v02.8.2 · L15 v02.6.2 · L16 v02.5.2
-Bible **v8.65** · Maker v2.45.1 · book_gates **v1.9 (23 gates)** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0
+Bible **v8.65.1** · Maker v2.45.1 · book_gates **v1.10 (24 gates)** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0
 
 **Brain Check family: eight of sixteen — L01–L08, and now uniform.** All sixteen blocks use
 `data-reveal="quiz"`. Column still byte-identical in all eight: **5,639 chars / md5 `070806a6`, ending `-->`.**
 
 **NOT verified: the rendered Pages site** (sandbox blocks weymuth.github.io).
 
-**DJ must eyeball L01 C11.** The card now shows two reveals where it showed one — a `hint` (voltage table,
-USB catch) and below it a `solution` (the worked code). Check the new box renders in L01's card livery.
+**L01 C11 render CONFIRMED by DJ screenshot at S79 close** — pill, Work-in bar, both reveals, and the
+card's closing border all correct; the solution sits above the Find-the-marker block, matching all eight
+sibling cards that have one. The one defect the render exposed (mismatched summary padding on the stacked
+hint/solution pair) was fixed same session and is now gated. **Still unverified: nothing on this card.**
 
 ## DONE IN S79
 
@@ -47,6 +49,13 @@ byte-comparing to source — identical in all four, so the change is attribute-o
 ### 4. Bible v8.64 → v8.65
 §20.1 rule (4): the strip list is a whitelist, so a finished code block belongs in a `solution` reveal even
 when the surrounding box is a hint — and the fix is to SPLIT the box, not retype it.
+
+### 5. L01 v03.10.1 → v03.10.2 — the split's cosmetic side effect (DJ caught it on the render)
+The new `solution` summary has `padding:15px 20px`; the `hint` above it had none, so the two stacked rows put
+their triangle and label at different left insets. **Exactly one stacked pair in the book disagreed** and it
+was the pair authored an hour earlier. Scoped by offset — the bare-summary string occurs 12 times in L01.
+**book_gates v1.9 → v1.10**: `§6.12c stacked sibling reveals agree on summary padding`, control-run
+both directions. Bible → **v8.65.1**.
 
 ## THREE THINGS S79 LEARNED THE HARD WAY
 1. **The push label lied and the paperwork agreed with itself.** The S79 handoff said "VERIFIED, gates 22/22
@@ -125,11 +134,10 @@ Solution-disclosure · monetization/ebook · "Know Your Zumo" page — **note:**
 §4 Hardware, with Install moving down.
 
 ## PUSH NOTE
-Replace: `lessons/Lesson_01.html` · `lessons/Lesson_05.html` · `lessons/Lesson_06.html` ·
-`lessons/Lesson_07.html` · `lessons/Lesson_08.html` · `ZUMO_SUPER_BIBLE.md` · `book_gates.py` ·
-`LIVE_ZUMO_TEXTBOOK.md`
-Add: `ZUMO_S80_HANDOFF.md`
-`git rm ZUMO_S78_HANDOFF.md`
+**First push (landed, commit `8821732`):** the five lessons + Bible v8.65 + book_gates v1.9 +
+LIVE.md + this handoff.
+**Second push (the cosmetic fix):** replace `lessons/Lesson_01.html` (v03.10.2) · `book_gates.py`
+(v1.10) · `ZUMO_SUPER_BIBLE.md` (v8.65.1) · `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_S80_HANDOFF.md`.
 
 ---
 *Written at S79 close, July 26 2026. The session opened by finding that S78's work was not in the repo at

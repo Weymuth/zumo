@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.9 (S79) — whole-book consistency gates.
+# book_gates.py v1.10 (S79) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -481,6 +481,47 @@ for f in files:
                 bad.append(f'{f} challenge {m.group(1)}: {n}-line finished code block '
                            f'inside a data-reveal="hint" — reaches the tutor; type it "solution"')
 gate('§20.1 no finished answer hidden behind a hint reveal', bad)
+
+
+# ---- §8/§6.12c: two reveals stacked as siblings must agree on summary padding.
+# One padded and one not makes the disclosure triangle and label sit at different
+# left insets on adjacent rows -- visible, and invisible to every other gate.
+# Introduced at S79 by adding a padded solution beneath an unpadded hint (L01 C11).
+_DET = re.compile(r'<details\b[^>]*>|</details>', re.I)
+
+
+def _sibling_reveals(s):
+    spans, stack = [], []
+    for m in _DET.finditer(s):
+        if m.group().startswith('</'):
+            if stack:
+                spans.append((stack.pop(), m.end()))
+        else:
+            stack.append(m.start())
+    out = []
+    for a, b in sorted(spans):
+        blk = s[a:b]
+        t = re.search(r'data-reveal="([a-z]+)"', blk[:400])
+        sm = re.search(r'<summary([^>]*)>', blk)
+        out.append((a, b, t.group(1) if t else None, sm.group(1) if sm else ''))
+    return out
+
+
+bad = []
+for f in files:
+    s = R[f]
+    rs = _sibling_reveals(s)
+    for k in range(len(rs) - 1):
+        a, b = rs[k], rs[k + 1]
+        if b[0] < a[1]:
+            continue                                    # nested, not a sibling
+        if re.sub(r'\s+', '', re.sub(r'<[^>]+>', '', s[a[1]:b[0]])):
+            continue                                    # prose between them
+        if ('padding' in a[3]) != ('padding' in b[3]):
+            bad.append(f'{f}: {a[2]} reveal stacked directly above {b[2]} reveal, '
+                       f'but only one <summary> carries padding — the triangle and '
+                       f'label sit at different left insets')
+gate('§6.12c stacked sibling reveals agree on summary padding', bad)
 
 
 print()
