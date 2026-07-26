@@ -1,13 +1,66 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 76 — **THE CITATION POINTED AT A HOLE**: **L06 joined the Brain Check family** (**v04.12.0**), the sixth conversion. Bible **v8.62**.)
-**Status:** **L06 HAD NO ANCESTOR TO SPLIT AND ONE QUESTION WITH NOWHERE TO POINT.** The §25.10b retired-name sweep came back **empty** — no `Conceptual Understanding`, no `STOP & PROCESS`, nothing — so §25.10c's two-block case did not arise and L06 is the mirror image of L05: **BC03 migrated, BC04 half-migrated, BC01 and BC02 authored from scratch.** The find is in the migration. Three of the four Knowledge Check citations verified by content on the first pass; the fourth, *"drives 33cm instead of 30cm, what should you adjust?"*, answers `WHEEL_DIAMETER_MM` — **a string that appears in exactly two places in the file, §6 Step 5 where it is declared and the question itself.** Nothing teaches it. The reason it survived is a **within-lesson promise that does not land**: Step 8's checkpoint says *"Off by a lot? Section 8 has the table"* and §8's Quick Fix Table covered five faults, none of them distance accuracy — and the §24 promise gate only walks promises naming ANOTHER lesson, so nothing could see it. Per DJ ruling the **content was written rather than the citation re-aimed**: §8 gained a sixth row and the item now cites §8 truthfully (**new §25.10d**). **BC02 is the first built under §25.5** — L06's six §2 objectives migrated character-exact, so Technical Skills and Objectives agree by construction and L06 does not join the four-lesson reconciliation debt. **BC03 came out at 5** per DJ ruling, which *conforms to* §25.8's cap rather than forcing it — **L02 remains the sole outlier at 7 and the cap conflict is still open**. Found en route and fixed: **L05 shipped a literal `{CODE}` placeholder** in BC01 item 3 in yesterday's S75 push (v04.9.1), and **the Bible's own column fingerprint was the short slice** — 5,596 / `8fa00744` measures START through *before* the 43-character END comment, so verifying against it reproduces the very defect §25.10c exists to prevent; canonical is now **5,639 / `070806a6`**. L06's five bonus mysteries were untagged and invisible to the AI Tutor (§4.2) — now `6.m1`–`6.m5`. **All 12 exit-region items audited to their new seats, zero lost.**
+**Date:** July 26, 2026 (Session 77 — **THE SWEEP THAT SCOPES THE WORK WAS ITSELF UNGATED**: **L07 joined the Brain Check family** (**v04.8.0**), the seventh conversion. Bible **v8.63**.)
+**Status:** **L07's §25.10b RETIRED-NAME SWEEP RETURNED ZERO AND THE LESSON HAD TWO LIVE ANCESTORS.** A 6-item *Self-Assessment* and a 7-item *Knowledge Check* — the second sitting under BC03's own live name — neither on §25.2's retired list, so the sweep that is supposed to scope a conversion saw nothing. Trusting it would have written four new blocks on top of two that already existed. The zero was only trustworthy because the same grep was control-run across the unconverted lessons and **did** fire (L09, L10, L11, L14). **New §25.10e: scope a conversion by READING §10 and asking what job each block does, never by grepping what it is called** — the same shape is live and unswept in **L08 *Check Yourself*, L11 *Skills Check*, L15/L16 *Wrap-Up***. **DJ ruled the §25.8 cap open**: *"keep more than 5 and we can weed them out later"* — Knowledge Check is now a **floor of 4 with no maximum**, ending a conflict dodged four times while L02 sat live at 7. **DJ also ruled nothing gets retired**: new root file **`ZUMO_PARKED_EXIT_ITEMS.md`** holds displaced-but-live items verbatim with provenance, the inverse of `ZUMO_SHELVED_CARDS.md`. One item did not come forward: the Self-Assessment asked students to tick *"Write include guards"* while §3.6 files include guards under 📘 *The Old Way* and teaches `#pragma once` — **a checklist item contradicting its own lesson**, parked with an honest recognition-shaped rewrite for later. BC02 = §2's nine objectives migrated per §25.5, so L07 never joins the reconciliation debt. All six BC03 citations content-verified; the practical seventh had no section anywhere in the lesson and **reshaped into BC04** rather than being cut. **Exit-region audit: 13 items manifested, ACCOUNTED 13, LOST 0.**
 
-**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.1** · L06 **v04.12.0** · L07 **v04.7.2** · L08 **v04.6.2** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.62** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.7 (21 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.1** · L06 **v04.12.0** · L07 **v04.8.0** · L08 **v04.6.2** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.63** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.7 (21 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S76 — L06 joins the Brain Check family)
+## WHAT SHIPPED THIS BATCH (S77 — L07 joins the Brain Check family)
+
+**1. L07 v04.7.2 → v04.8.0 — the seventh conversion, and the first where the scoping sweep lied.**
+§25.10b's retired-name grep returned **zero across all five names**. L07 nonetheless held two live
+ancestors: a 6-item **Self-Assessment** (Technical Skills) and a 7-item **Knowledge Check** (BC03),
+the latter under BC03's own live name. **BC01 Mental (5)** authored at the §5/§6 seam — the semicolon
+that makes a declaration a promise (§3.3) · the three things a .cpp holds (§3.4) · global vs local
+scope (§3.7) · one real compiler error poor organization causes (§3.1) · eight files, one job each
+(§5.1, §5.2). **BC02 (9)** = §2's objectives, migrated per §25.5. **BC03 (6)**, every citation
+content-verified: §3.3 · §8A.1 · §3.6 · §3.5 · §3.8 · §8. **BC04 (3)**: the practical question
+reshaped out of BC03, plus two authored.
+
+**2. §25.10e — the retired-name list is not the ancestor detector.** It only ever caught names somebody
+thought to retire. Verified live and unswept in the unconverted lessons: **L08 *Check Yourself* ·
+L11 *Skills Check* · L15/L16 *Wrap-Up***. Scope a conversion by reading §10 and asking what job each
+block does. §25.10b's empty result is a lead, never a verdict.
+
+**3. The sweep got its own control run, and that is the only reason the zero was usable.** The same
+grep across L07–L16 fired on L09, L10, L11 and L14. **A sweep that returns nothing everywhere is
+indistinguishable from a broken pattern** — §24.6c applied to the grep that scopes the work rather
+than to the gate that checks it.
+
+**4. §25.8's cap is now a floor (DJ ruling).** *"Keep more than 5 and we can weed them out later."*
+Knowledge Check runs **4 minimum, no maximum**; §25.2's *"scales with the lesson"* is operative.
+The conflict had been dodged four times while L02 shipped live at 7. **The proposed BC03 count gate
+is still not written** — against the old ceiling it would have failed L02 and L07 on its first run.
+
+**5. Nothing is retired (DJ ruling) — new root file `ZUMO_PARKED_EXIT_ITEMS.md`.** Displaced-but-live
+items, verbatim, with their replacement mapped alongside so the later call is a comparison. It is the
+**inverse** of `ZUMO_SHELVED_CARDS.md` (proposals never live) — the two must not be merged.
+
+**6. A checklist item that contradicted its own lesson did not come forward.** Self-Assessment asked
+for *"Write include guards for a header file"*; §3.6 files include guards under 📘 *The Old Way* and
+teaches `#pragma once`. Never achievable as written (§25.10). Parked with a recognition-shaped rewrite
+if a later pass wants the skill back.
+
+**7. Five mysteries tagged `7.m1`–`7.m5`** (§4.2) — invisible to the Tutor picker until now. Fifteen
+still untagged: L04 (5) · L08 (5) · L09 (5).
+
+**8. Verification.** 21/21 gates PASS, pill_sweep clean, column byte-identical across all seven
+converted lessons (**5,639 chars / `070806a6`**). **Four control runs, each with a landed-injection
+assert, each restoring byte-identical:** a stripped `data-bc-skill` fails the skill gate · a
+reintroduced `Conceptual Understanding` fails the retired-name gate · a 42-of-43-byte END comment
+fails the parse gate **while tag balance passes** · a dropped `</div>` fails both. Diff audit: 67
+lines removed, every one a version line, a migrated block, or a mystery heading being retagged.
+
+**9. My first content-preservation audit was wrong and said LOST 2.** Bad slice boundaries — it
+counted 15 Self-Assessment items where there are 6 and zero Knowledge Check items where there are 7.
+Re-run against the headings verified by eye: **13 manifested, ACCOUNTED 13, LOST 0.** The audit grep
+was an ungated gate, in the session whose finding is that the scoping grep is an ungated gate.
+
+---
+
+## WHAT SHIPPED PREVIOUSLY (S76 — L06 joins the Brain Check family)
 
 **1. L06 v04.11.2 → v04.12.0 — the sixth conversion, and the first with no ancestor at all.** The §25.10b
 retired-name sweep returned **zero hits**. L06 held a 4-item `Knowledge Check` (answers present) and a

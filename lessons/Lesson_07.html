@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.7.2 -->
+<!-- Lesson version: v04.8.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -82,7 +82,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Code Organization</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Cleaning Up Your Robot's Brain</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.7 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.8 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -1113,6 +1113,45 @@ This eight-file layout isn't just for this lesson — it's the architecture you'
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
 </div>
+<div id="brain-check-01" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</strong>
+
+<p>That is the reading done &mdash; Sections 1 through 5. Before you split a single file, answer these five <em>from your head</em>: no scrolling back, no editor open. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. A declaration ends with one particular piece of punctuation. Which one &mdash; and what does it tell the compiler? (&sect;3.3)</summary>
+
+<div style="margin-top: 12px;"><p>A semicolon, not curly braces. The semicolon is what makes the line a <em>promise</em>: it says this function exists and here is how to call it, but the code lives somewhere else. Swap in curly braces and you have written a definition instead &mdash; the actual work &mdash; which is why putting one in a header that several files include produces &ldquo;multiple definition&rdquo; later.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. Name the three kinds of thing that belong in a .cpp file. (&sect;3.4)</summary>
+
+<div style="margin-top: 12px;"><p><code>#include</code> statements that connect it to the headers it needs; function definitions, meaning the full code behind each promise; and private helper code that nothing outside the file needs to know about. The .h says what exists, the .cpp says how it works.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. Where is a global variable declared, and where is a local one? (&sect;3.7)</summary>
+
+<div style="margin-top: 12px;"><p>A global is declared outside every function, at the top of the file &mdash; the classroom, where anyone can reach it. A local is declared inside a function and exists only there &mdash; your pocket. Reach for a local from outside its function and the compiler tells you it was never declared, which is the same message you get for a missing <code>#include</code> and a different cause.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. Poor organization is not just untidy. Name one compiler error it actually causes. (&sect;3.1)</summary>
+
+<div style="margin-top: 12px;"><p>Either <em>multiple definition of 'WHEEL_DIAMETER'</em> &mdash; the same constant defined in two files that meet at link time &mdash; or <em>'driveDistance' was not declared in this scope</em>, where the file calling it never got the header that promises it. Both are organization failures wearing a compiler's vocabulary.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. How many files does this lesson split the program into, and what decides what goes in each? (&sect;5.1, &sect;5.2)</summary>
+
+<div style="margin-top: 12px;"><p>Eight, and the rule is one clear job per file. If you cannot say in a sentence what a file is responsible for, the code is in the wrong place. That single-job test is what you will use in Section 6 every time you decide where a new line belongs.</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="1" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 01 done</button></p>
+</div>
+
 <div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-6" style="font-size: 1.15em; font-weight: bold;">🔨 Section 6: Build It: Step-by-Step</div></div>
 <div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
@@ -3443,28 +3482,25 @@ Same distance contract as driveDistance().
 <div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
 
-<h3 style="color: #6c757d; margin-top: 30px;">Self-Assessment</h3>
+<div id="brain-check-02" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<div style="background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</strong>
 
-<p><strong>After this lesson, I can:</strong></p>
+<p>These are the nine objectives this lesson opened with, in Section 2 &mdash; the same list, now asked back. Tap each one you can honestly claim. All nine unlock the button.</p>
 
-<ul style="list-style: none; padding-left: 5px;">
+    <ul style="list-style: none; padding-left: 0; margin-top: 0;">
+        <li data-bc-skill="1" style="cursor: pointer;">☐ Explain the difference between a header file (<code>.h</code>) and an implementation file (<code>.cpp</code>)</li>
+        <li data-bc-skill="2" style="cursor: pointer;">☐ Explain the difference between a <strong>declaration</strong> (a promise) and a <strong>definition</strong> (keeping it)</li>
+        <li data-bc-skill="3" style="cursor: pointer;">☐ Use <code>#include</code> to connect files, and say when to use <code>&lt;angle brackets&gt;</code> and when to use <code>"quotes"</code></li>
+        <li data-bc-skill="4" style="cursor: pointer;">☐ Use <code>#pragma once</code> and say what problem it does &#8212; and does not &#8212; solve</li>
+        <li data-bc-skill="5" style="cursor: pointer;">☐ Use <code>extern</code> to share one hardware object across eight files</li>
+        <li data-bc-skill="6" style="cursor: pointer;">☐ Split your Lesson 6 program into the <strong>eight-file architecture</strong> and keep it building green at every step</li>
+        <li data-bc-skill="7" style="cursor: pointer;">☐ Read a <strong>linker</strong> error and tell it apart from a compiler error</li>
+        <li data-bc-skill="8" style="cursor: pointer;">☐ Tune your whole robot by changing two numbers in <code>RobotConfig.h</code></li>
+        <li data-bc-skill="9" style="cursor: pointer;">☐ Navigate a multi-file project in PlatformIO (tabs, Go to Definition, Peek)</li>
+    </ul>
 
-<li>☐ Explain the difference between .h and .cpp files</li>
-
-<li>☐ Write include guards for a header file</li>
-
-<li>☐ Use #include with quotes vs. angle brackets correctly</li>
-
-<li>☐ Organize code into logical, reusable files</li>
-
-<li>☐ Navigate a multi-file project in VS Code</li>
-
-<li>☐ Debug common multi-file errors</li>
-
-</ul>
-
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="2" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 02 done</button></p>
 </div>
 
 <div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
@@ -3487,9 +3523,14 @@ Same distance contract as driveDistance().
 
 </div>
 
-<h3 style="color: #6c757d; margin-top: 30px;">Knowledge Check</h3>
+<div id="brain-check-03" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<p><strong>1. What is the purpose of a header file (.h)?</strong></p>
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</strong>
+
+<p>Seven questions about the project you just built. Answer each one, then click to compare. The section number after each question is where to re-read if you missed it.</p>
+
+
+<p><strong>1. What is the purpose of a header file (.h)? (&sect;3.3)</strong></p>
 
 <details data-reveal="solution">
 
@@ -3499,7 +3540,7 @@ Same distance contract as driveDistance().
 
 </details>
 
-<p><strong>2. What is the difference between a function declaration and a function definition?</strong></p>
+<p><strong>2. What is the difference between a function declaration and a function definition? (&sect;8A.1)</strong></p>
 
 <details data-reveal="solution">
 
@@ -3511,7 +3552,7 @@ Same distance contract as driveDistance().
 
 </details>
 
-<p><strong>3. What does <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#pragma once</code> do, and why do we need it?</strong></p>
+<p><strong>3. What does <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#pragma once</code> do, and why do we need it? (&sect;3.6)</strong></p>
 
 <details data-reveal="solution">
 
@@ -3521,7 +3562,7 @@ Same distance contract as driveDistance().
 
 </details>
 
-<p><strong>4. When should you use angle brackets &lt;&gt; vs. quotes "" in #include?</strong></p>
+<p><strong>4. When should you use angle brackets &lt;&gt; vs. quotes "" in #include? (&sect;3.5)</strong></p>
 
 <details data-reveal="solution">
 
@@ -3533,7 +3574,7 @@ Same distance contract as driveDistance().
 
 </details>
 
-<p><strong>5. In PlatformIO, which folder should contain .h files and which should contain .cpp files?</strong></p>
+<p><strong>5. In PlatformIO, which folder should contain .h files and which should contain .cpp files? (&sect;3.8)</strong></p>
 
 <details data-reveal="solution">
 
@@ -3545,7 +3586,7 @@ Source files (.cpp) → <code style="font-family: 'Courier New', monospace; back
 
 </details>
 
-<p><strong>6. What error would you see if you forgot to #include "RobotMotion.h" but tried to call driveDistance(30)?</strong></p>
+<p><strong>6. What error would you see if you forgot to #include "RobotMotion.h" but tried to call driveDistance(30)? (&sect;8)</strong></p>
 
 <details data-reveal="solution">
 
@@ -3555,15 +3596,23 @@ Source files (.cpp) → <code style="font-family: 'Courier New', monospace; back
 
 </details>
 
-<p><strong>7. (Practical) You're working on a team. Your partner wants to add proximity sensor code while you work on line following. How does code organization help?</strong></p>
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="3" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 03 done</button></p>
+</div>
 
-<details data-reveal="solution">
+<div id="brain-check-04" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<summary>Show answer</summary>
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</strong>
 
-<p>With organized code, your partner creates <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotProximity.h/.cpp</code> while you work on <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotSensors.h/.cpp</code>. You're working on completely different files, so there are no conflicts. When done, each of you just adds an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#include</code> to main.cpp!</p>
+<p>No answers to reveal on these &mdash; they go in your notebook, and they feed the Software section of your TDP.</p>
 
-</details>
+<ol style="margin: 10px 0 0;">
+    <li style="margin-bottom: 10px;">Your partner wants to add proximity-sensor code while you work on line following. Explain how the eight-file split lets you both work at once &mdash; name the files each of you touches, and the one file you both eventually edit.</li>
+    <li style="margin-bottom: 10px;">Which of the eight files was hardest to decide about &mdash; where you genuinely had to stop and think &ldquo;does this line go here or there?&rdquo; Write down the line and the two files you were choosing between.</li>
+    <li style="margin-bottom: 10px;">Section 3 called a header &ldquo;a list of promises.&rdquo; After building the project, is that a good description or a misleading one? Argue either side in three sentences.</li>
+</ol>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="4" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 04 done</button></p>
+</div>
 
 <h3 style="color: #6c757d; margin-top: 30px;">What's Next?</h3>
 
@@ -3629,31 +3678,31 @@ Source files (.cpp) → <code style="font-family: 'Courier New', monospace; back
 
 <p>Sabotage science — work in a <strong>spare copy</strong> of the finished build (Maker → CHALLENGES → any finished preload), because you'll be breaking things on purpose. Each one: <strong>predict, break, build, explain, undo.</strong> No robot needed for the first four.</p>
 
-<h4 style="color: #6c757d;">Mystery 1: The Missing Guard</h4>
+<h4 style="color: #6c757d;" id="mystery-1" data-challenge="7.m1" data-kind="mystery">Mystery 1: The Missing Guard</h4>
 <p>Delete the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#pragma once</code> line from <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code>. Predict: red or green? Build. Now add a <em>second</em> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#include &quot;RobotConfig.h&quot;</code> line to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.cpp</code> and build again. Explain both results.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>First build: <strong>green</strong> — each .cpp is compiled separately, and no single file included the header twice. Second build: <strong>red</strong>, <em>redefinition</em> — one file got two copies of every constant. The guard costs one line and makes double-include impossible; that's why it's the first line of every header.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 2: The Broken Promise</h4>
+<h4 style="color: #6c757d;" id="mystery-2" data-challenge="7.m2" data-kind="mystery">Mystery 2: The Broken Promise</h4>
 <p>Comment out the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern Zumo32U4OLED display;</code> line in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotSensors.h</code>. Before building, predict: <em>which files</em> go red, and with which Section 8 error?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Every file that <em>uses</em> the display through the header — RobotHelpers.cpp, RobotMotion.cpp (if it prints), main.cpp — fails with <em>'display' was not declared in this scope</em> (Error 1). RobotSensors.cpp stays happy: it has the real object. The promise wasn't the object — but the whole project was leaning on it.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 3: The Great Include Shuffle</h4>
+<h4 style="color: #6c757d;" id="mystery-3" data-challenge="7.m3" data-kind="mystery">Mystery 3: The Great Include Shuffle</h4>
 <p>In <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>, reverse the order of the four project includes — RobotMotion first, RobotConfig last. Predict: red or green?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p><strong>Green.</strong> Each header stands on its own: guards on top, and every header includes what <em>it</em> needs (RobotSensors.h pulls the Zumo library itself). Order-proof headers are a mark of good organization — if shuffling includes breaks a project, some header is secretly freeloading.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 4: The Vanished File</h4>
+<h4 style="color: #6c757d;" id="mystery-4" data-challenge="7.m4" data-kind="mystery">Mystery 4: The Vanished File</h4>
 <p>Rename <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.cpp</code> to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.txt</code> (right-click → Rename). Predict the error — and trickier: is it a <em>compiler</em> error or a <em>linker</em> error? Build, check, rename it back.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p><em>Undefined reference to 'driveDistance(float)'</em> — a <strong>linker</strong> error (Error 4). PlatformIO only compiles <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">.cpp</code> files, so the .txt was silently skipped; every file still <em>compiled</em> fine on the header's promise. The linker was the one left holding an empty bag.</p>
 </details>
-<h4 style="color: #6c757d;">Mystery 5: The One-Number Tune-Up</h4>
+<h4 style="color: #6c757d;" id="mystery-5" data-challenge="7.m5" data-kind="mystery">Mystery 5: The One-Number Tune-Up</h4>
 <p>Robot time. Run B (turn 90&deg;) four times and note the total drift. Now change <strong>only</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">WHEEL_BASE_MM</code> in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code> — up 3 if it undershoots, down 3 if it overshoots — rebuild, repeat. Count: how many <em>files</em> did you touch? How many <em>behaviors</em> changed?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
@@ -3904,9 +3953,99 @@ Source files (.cpp) → <code style="font-family: 'Courier New', monospace; back
 </p>
 
 <!-- ===== BUILD BANNER (hidden from students; keeps the §5b two-homes gate honest) =====
-     Version 04.7 &mdash; July 2026 &bull; LESSON 07 &middot; Code Organization
+     Version 04.8 &mdash; July 2026 &bull; LESSON 07 &middot; Code Organization
      ZUMO Callout Standard v1.0 Applied
 ===== -->
+<!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
+<div id="brain-check-col" style="position: fixed; right: 10px; top: 50%; transform: translateY(-50%); z-index: 90; background-color: rgba(255,255,255,0.95); border: 1px solid #c5cae9; border-radius: 8px; padding: 8px 6px; display: flex; flex-direction: column; gap: 6px; align-items: center;" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
+    <img id="bc-emblem" src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="Brain Check progress" style="width: 30px; height: auto;">
+    <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">01</a>
+    <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">02</a>
+    <a href="#brain-check-03" data-bc-pill="3" aria-label="Brain Check 03" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">03</a>
+    <a href="#brain-check-04" data-bc-pill="4" aria-label="Brain Check 04" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">04</a>
+</div>
+<script>
+(function() {
+    var m = (window.location.pathname.match(/Lesson_(\d+)/) || []);
+    var key = 'bc_L' + (m[1] || '00');
+    var skey = key + '_sk';
+    var st, sk;
+    try { st = JSON.parse(window.localStorage.getItem(key)); } catch (e) { st = null; }
+    if (!st || Object.prototype.toString.call(st) !== '[object Array]' || st.length !== 4) st = [0, 0, 0, 0];
+    var skillEls = document.querySelectorAll('[data-bc-skill]');
+    try { sk = JSON.parse(window.localStorage.getItem(skey)); } catch (e) { sk = null; }
+    if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
+        sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
+    }
+    var GRAY = 'https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png';
+    var GREEN = 'https://weymuth.github.io/zumo/images/BrainGear_Complete.png';
+    function allSkills() {
+        if (!sk.length) return true;
+        for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
+        return true;
+    }
+    function paint() {
+        var all = st[0] && st[1] && st[2] && st[3];
+        for (var q = 0; q < skillEls.length; q++) {
+            var li = skillEls[q];
+            var txt = li.textContent.replace(/^[\u2610\u2611]\s*/, '');
+            li.textContent = (sk[q] ? '\u2611 ' : '\u2610 ') + txt;
+            li.style.color = sk[q] ? '#2e7d32' : '';
+        }
+        for (var i = 0; i < 4; i++) {
+            var n = i + 1;
+            var pill = document.querySelector('[data-bc-pill="' + n + '"]');
+            if (pill) {
+                pill.style.backgroundColor = st[i] ? '#4caf50' : '#3f51b5';
+                pill.textContent = st[i] ? '\u2713' : '0' + n;
+            }
+            var ico = document.querySelector('[data-bc-icon="' + n + '"]');
+            if (ico) ico.src = st[i] ? GREEN : GRAY;
+            var btn = document.querySelector('[data-bc-btn="' + n + '"]');
+            if (btn) {
+                var locked = (n === 2) && !st[i] && !allSkills();
+                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo'
+                                : (locked ? '\uD83D\uDD12 Check all ' + skillEls.length + ' skills to unlock'
+                                          : 'Mark Brain Check 0' + n + ' done');
+                btn.style.backgroundColor = st[i] ? '#4caf50' : (locked ? '#9e9e9e' : '#3f51b5');
+                btn.style.cursor = locked ? 'not-allowed' : 'pointer';
+                btn.title = locked ? 'Tap each skill in the list above first.' : '';
+            }
+        }
+        var em = document.getElementById('bc-emblem');
+        if (em) em.src = all ? GREEN : GRAY;
+    }
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== document && !(t.getAttribute && (t.getAttribute('data-bc-btn') || t.getAttribute('data-bc-skill')))) t = t.parentNode;
+        if (!t || t === document || !t.getAttribute) return;
+        var skn = t.getAttribute('data-bc-skill');
+        if (skn) {
+            var j = parseInt(skn, 10) - 1;
+            if (j >= 0 && j < sk.length) {
+                sk[j] = sk[j] ? 0 : 1;
+                try { window.localStorage.setItem(skey, JSON.stringify(sk)); } catch (e3) {}
+                paint();
+            }
+            return;
+        }
+        var i = parseInt(t.getAttribute('data-bc-btn'), 10) - 1;
+        if (i < 0 || i > 3) return;
+        if (i === 1 && !st[i] && !allSkills()) { return; }
+        st[i] = st[i] ? 0 : 1;
+        try { window.localStorage.setItem(key, JSON.stringify(st)); } catch (e2) {}
+        paint();
+    });
+    function fit() {
+        var c = document.getElementById('brain-check-col');
+        if (c) c.style.display = (window.innerWidth < 700) ? 'none' : 'flex';
+    }
+    window.addEventListener('resize', fit);
+    paint();
+    fit();
+})();
+</script>
+<!-- ===== BRAIN CHECK COLUMN END ===== -->
 </body>
 
 </html>
