@@ -1,4 +1,10 @@
-# L02 RESTRUCTURE — MEASURED PLAN (written S72, to execute S73)
+# L02 RESTRUCTURE — MEASURED PLAN (written S72) — **EXECUTED S73, L02 v03.0.0**
+
+> **DO NOT RE-CUT FROM THIS FILE.** It shipped S73 and is kept as the record of how the renumber was
+> measured, not as an instruction. Two things below turned out wrong at execution and are corrected in
+> LIVE.md: (1) §3 closes to **3.1–3.6**, not 3.1–3.5 — `3.2d` is its own `<h3>`, not nested inside `3.2c`;
+> (2) the citation trap was worse than logged — BC01 item 3 cited §3.2 for the function prototype, which
+> §3.2 never taught, so the pointer was already wrong before any renumber touched it.
 
 **Authority:** Bible **§4.4** (v8.58, S72). DJ-ruled S72: ten-section skeleton mandatory · §4 is always
 Hardware · lesson-unique material folds · §8A stays conditional · concepts before the code walkthrough ·

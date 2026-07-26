@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.16.0 -->
+<!-- Lesson version: v03.0.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -108,7 +108,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Mastering the Code</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Reading Code You Didn't Write</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.16 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.0 &mdash; July 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -699,13 +699,489 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 
 <p>The indentation says both lines belong to the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code>. The compiler disagrees. Without braces, an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code> owns <strong>exactly one statement</strong> &mdash; the first one. The <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">break;</code> now runs <em>every single time through the loop</em>, kill switch or not, and your robot stops immediately for no visible reason.</p>
 
-<p>And here is why this one is nastier than the mistakes in section 3.4: <strong>it compiles clean.</strong> No error, no warning, no red squiggle. The build succeeds and the robot misbehaves, which means you will go looking for the bug in your logic instead of in your punctuation. This exact mistake &mdash; two statements where the compiler saw one &mdash; caused a real security hole in Apple's software in 2014 that went unnoticed for over a year.</p>
+<p>And here is why this one is nastier than the mistakes in section 3.6: <strong>it compiles clean.</strong> No error, no warning, no red squiggle. The build succeeds and the robot misbehaves, which means you will go looking for the bug in your logic instead of in your punctuation. This exact mistake &mdash; two statements where the compiler saw one &mdash; caused a real security hole in Apple's software in 2014 that went unnoticed for over a year.</p>
 
 <p style="margin-bottom: 0;"><strong>The book's rule:</strong> braces are the default. Leave them off only when the entire statement fits on the same line as the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code>. <strong>The moment you want a second line, add the braces first &mdash; before you type it.</strong></p>
 
 </div>
 
-<h3 id="section-3-2" style="color: #2e86ab; margin-top: 30px;">3.2 Understanding Each Section</h3>
+<h3 id="section-3-2" style="color: #2e86ab; margin-top: 30px;">3.2 Data Types: What Kind of Value?</h3>
+
+<p>Before we go further, one idea that quietly runs under everything: every variable has a <strong>data type</strong> that tells the robot what kind of value it holds. Pick the wrong type and your number gets silently chopped or your math goes sideways. Here are the five you will meet in this book.</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 8px;">
+  <p style="margin: 0 0 12px 0; font-weight: bold; color: #1565c0;">&lt;/&gt; The five data types you'll meet</p>
+  <p style="margin: 0 0 15px 0; color: #1565c0;">A data type tells the robot what kind of value a variable holds. These five cover everything in this book.</p>
+  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code> &mdash; a whole number, no decimal &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int speed = 150;</code></div>
+  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> &mdash; true or false, a yes/no switch &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool isDone = false;</code></div>
+  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float</code> &mdash; a number with a decimal &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float kp = 0.5;</code></div>
+  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long</code> &mdash; a very big whole number &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long timer = 60000;</code></div>
+  <div style="background: white; padding: 10px 14px; border-radius: 6px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">char</code> &mdash; a single character, like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">'A'</code> &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">char grade = 'B';</code></div>
+</div>
+
+<p>You will write almost everything in this lesson with <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>, and you will use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> too, so those two are worth a closer look now. The other three you will meet where they matter: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long</code> shows up in <strong>Lesson 5</strong> for timing, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float</code> appears once you start doing math with decimals, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">char</code> is here for completeness &mdash; this book rarely needs it.</p>
+
+<h4 style="color: #3a7d5c; margin-top: 25px;">int &mdash; the workhorse</h4>
+
+<p>An <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code> holds a whole number: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">150</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">-42</code>. No fractions. This is the type you reach for by default &mdash; motor speeds, counts, pin numbers, loop counters are all whole numbers, so they are all <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>s.</p>
+
+<p>The catch is the one you already saw in the warning above: an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code> cannot hold a decimal. If you try to put <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">2.5</code> into an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>, the robot does not round &mdash; it <strong>chops off</strong> everything after the decimal point and keeps <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">2</code>. That is not an error, so nothing warns you; you just get the wrong number. When you need the fraction, that is what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float</code> is for (Lesson 7).</p>
+
+<h4 style="color: #3a7d5c; margin-top: 25px;">bool &mdash; the yes/no switch</h4>
+
+<p>A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> (short for <em>Boolean</em>, named after mathematician George Boole) holds exactly one of two values: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">true</code> or <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">false</code>. Nothing else. Think of it as a light switch &mdash; on or off, with no in-between.</p>
+
+<p>That makes <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> perfect for questions the robot answers yes or no: <em>is the button pressed?</em> <em>have we finished the turn?</em> <em>is the battery low?</em> You will lean on <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> heavily once the robot starts making decisions &mdash; a variable like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool foundLine = true;</code> is the robot remembering the answer to a yes/no question so it can act on it later.</p>
+
+<h3 id="section-3-3" style="color: #2e86ab; margin-top: 30px;">3.3 Making a Choice: the if Statement</h3>
+
+<p>A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> holds the answer to a yes/no question. That raises an obvious next question: what <em>does</em> something about the answer? That job belongs to the <strong>if statement</strong>, and you have already run one — it was in the very first warm-up of this lesson, deciding whether to light the LED.</p>
+
+<p>Every program you have written so far has been a straight road: line 1, then line 2, then line 3, every time, no exceptions. An if statement puts a fork in that road:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonC.isPressed()) {   <span style="color: #6a9955;">// the yes/no question</span>
+  ledYellow(<span style="color: #b5cea8;">1</span>);            <span style="color: #6a9955;">// runs only when the answer is YES</span>
+} <span style="color: #569cd6;">else</span> {
+  ledYellow(<span style="color: #b5cea8;">0</span>);            <span style="color: #6a9955;">// runs only when the answer is NO</span>
+}</pre>
+
+</div>
+
+<p>Read it out loud and it says what it does: <em>if button C is being pressed, turn the LED on; otherwise, turn it off.</em> Three parts carry it:</p>
+
+<ul>
+<li>The <strong>condition</strong> in parentheses — a question with a yes/no answer. Exactly the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> idea from 3.2, asked at the moment it matters instead of stored in a variable.</li>
+<li>The <strong>braces</strong> — the lines that run when the answer is yes. Same code block from 3.1; nothing new.</li>
+<li><strong><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else</code></strong> — optional. Leave it off and a &ldquo;no&rdquo; simply skips the block and carries on underneath. Include it and you have named a plan for both answers.</li>
+</ul>
+
+<p>That is genuinely all of it for now, and it is enough to read every program in this lesson. What it is <em>not</em> yet is enough to write your own from a blank line &mdash; that is Lesson 3, where you will turn a sentence like &ldquo;if the battery is low, warn me&rdquo; into working code and meet the one-character typo that breaks it silently. Lesson 4 then takes the if apart properly, wires it to the sensors, and shows you why every robot behavior you will ever build is made of these.</p>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Tip</strong>
+<p style="margin-bottom: 0;">When you read someone else's if statement &mdash; including your own from last week &mdash; put the question in plain English first, out loud, before you look at what is inside the braces. Programmers who skip that step end up debugging the wrong half of the statement.</p>
+</div>
+
+<h3 id="section-3-4" style="color: #2e86ab; margin-top: 30px;">3.4 Asking More Than One Question: <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">&amp;&amp;</code>, <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">||</code> and <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">!</code></h3>
+
+<p>The if statement you just met asks <em>one</em> question. Robots rarely get to ask one. <em>Is the button pressed <strong>and</strong> is the battery good? Is the left sensor dark <strong>or</strong> the right one? Have we <strong>not</strong> found the line yet?</em> Three small operators do that joining, and every one of them reads exactly like the English word it replaces.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<tr style="background-color: #1a5276; color: white;">
+<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Operator</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Say it as</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">The whole thing is true when&hellip;</th>
+</tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">&amp;&amp;</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>and</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>both</strong> sides are true. One false and the whole thing is false.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">||</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>or</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>either</strong> side is true. Both false is the only way to fail.</td></tr>
+<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">!</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>not</strong></td><td style="padding: 10px; border: 1px solid #ddd;">the one thing after it is <strong>false</strong>. It flips the answer over.</td></tr>
+</table>
+
+<p><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> is two ampersands, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> is two pipe characters &mdash; the key above Enter on most keyboards, shift-backslash. Writing one instead of two is a different operator entirely and will not do what you want.</p>
+
+<p><strong>Both must be true &mdash; <code>&amp;&amp;</code>.</strong> A range check is the everyday case: is this number inside a window?</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (count &gt; <span style="color: #b5cea8;">0</span> &amp;&amp; count &lt; <span style="color: #b5cea8;">10</span>) {
+  <span style="color: #6a9955;">// runs only for 1 through 9 — BOTH questions answered yes</span>
+}</pre>
+
+</div>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #856404;">⚠️ WARNING — each side must be a whole question</strong>
+<p style="margin-bottom: 0;">English lets you say &ldquo;if count is above 0 and below 10.&rdquo; C++ does not. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (count &gt; 0 &amp;&amp; &lt; 10)</code> is an error, because <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&lt; 10</code> on its own is not a question &mdash; below <em>what</em>? Say the variable again on the right-hand side: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">count &gt; 0 &amp;&amp; count &lt; 10</code>. The good news is that this one is loud: the compiler stops and points at the line, unlike the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">=</code> trap waiting for you in Lesson 3.</p>
+</div>
+
+<p><strong>Either will do &mdash; <code>||</code>.</strong> Same shape, lower bar:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonB.isPressed() || buttonC.isPressed()) {
+  <span style="color: #6a9955;">// runs if EITHER button is down — or both</span>
+}</pre>
+
+</div>
+
+<p>Note that &ldquo;or&rdquo; in code is more generous than &ldquo;or&rdquo; in conversation. When someone offers you tea or coffee they mean one of them; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> is perfectly happy with both.</p>
+
+<p><strong>Flip the answer &mdash; <code>!</code>.</strong> Put it in front of a yes/no value and it reverses it. Remember the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool foundLine</code> from 3.2:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (!foundLine) {
+  <span style="color: #6a9955;">// runs when foundLine is FALSE — "if we have NOT found the line"</span>
+}</pre>
+
+</div>
+
+<p>That single character is easy to miss when reading quickly, and it inverts the entire meaning of the line. When a condition behaves backwards, look for a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">!</code> you did not notice before you go looking for anything cleverer.</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong style="color: #0d47a1;">📖 LEARN &mdash; C++ Stops Reading Once It Knows the Answer</strong>
+
+<p>There is one more thing about <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> that looks like trivia and is not. <strong>C++ reads a condition left to right, and quits the moment the answer is settled.</strong> Programmers call this <em>short-circuit evaluation</em>.</p>
+
+<p>Think about what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> needs: both sides true. So if the left side comes back <strong>false</strong>, the whole thing is already false &mdash; and whatever is on the right is <em>never looked at</em>:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (batteryOK() &amp;&amp; startRun()) {
+  <span style="color: #6a9955;">// If batteryOK() is false, startRun() NEVER RUNS.</span>
+  <span style="color: #6a9955;">// The robot does not start. No error. It just doesn't happen.</span>
+}</pre>
+
+<p>And <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> needs only one side true, so a <strong>true</strong> on the left settles it and the right side is skipped:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonA.isPressed() || buttonB.isPressed()) {
+  <span style="color: #6a9955;">// If A is down, B is never even checked.</span>
+}</pre>
+
+<p><strong>This cuts both ways, and you need to know both.</strong></p>
+
+<p><strong>It is a tool.</strong> Put the cheap or protective question first and the expensive or risky one second, and the second is protected by the first. Reading a sensor takes real time; checking a variable takes almost none. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (sensorEnabled &amp;&amp; readSensor() &gt; 500)</code> never reads the sensor when it is switched off. That ordering is deliberate, and you will see it throughout the later lessons.</p>
+
+<p><strong>It is a trap.</strong> If the right-hand side <em>does</em> something &mdash; moves a motor, advances a counter, updates the screen &mdash; then that something silently stops happening whenever the left side decides the question early. The bug looks impossible: the line is right there, it clearly runs, and yet the counter never moves.</p>
+
+<p style="margin-bottom: 0;"><strong>The habit that avoids all of it:</strong> keep conditions as pure <em>questions</em>. A condition should ask, not act. If a line needs to happen, put it inside the braces where you can see it &mdash; not hidden on the right-hand side of an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code>, where whether it runs at all depends on something else entirely.</p>
+
+</div>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+<strong style="color: #3a5a3a;">💡 Tip &mdash; read the whole condition aloud as one sentence</strong>
+<p style="margin-bottom: 0;">&ldquo;If count is greater than zero <em>and</em> count is less than ten.&rdquo; If the sentence does not make sense out loud, the code will not make sense to the robot either. This is the fastest bug-finder you will ever own, it costs nothing, and it works on somebody else's code too. You will need <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> in this lesson's challenges &mdash; more than one of them wants two buttons held at the same time.</p>
+</div>
+
+<h3 id="section-3-5" style="color: #2e86ab; margin-top: 30px;">3.5 The Two-Week Rule</h3>
+
+<p><strong>Write code as if the next person to read it is a total stranger who knows nothing about what you were thinking.</strong></p>
+
+<p>(That stranger is you, two weeks from now, having forgotten everything.)</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong style="color: #0d47a1;">📖 LEARN — Why Professionals Obsess Over Readable Code</strong>
+
+<p>Here is a fact that surprises most new programmers: professional software engineers spend far more of their time <strong>reading</strong> code than writing it. Studies of real software teams consistently estimate that well over half of a professional’s hours go to reading, understanding, and maintaining code that already exists — not typing new lines. A line of code gets written once, but it gets <em>read</em> dozens or hundreds of times over its life: by teammates, by code reviewers, and by the original author months later, staring at their own work like a stranger wrote it.</p>
+
+<p>That is why an intent-driven comment is worth real money in the real world. Compare these two versions of the same line:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Version 1 — repeats what the code already says (useless):</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MOTOR_SPEED = <span style="color: #b5cea8;">200</span>;  <span style="color: #6a9955;">// set speed to 200</span>
+
+<span style="color: #6a9955;">// Version 2 — explains WHY the value was chosen (gold):</span>
+<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MOTOR_SPEED = <span style="color: #b5cea8;">200</span>;  <span style="color: #6a9955;">// Cap speed so turns stay controllable on tile floors</span></pre>
+
+</div>
+
+<p>Version 2 answers the question a future reader will actually ask: <em>“Can I change this number?”</em> With Version 1, they have no idea. With Version 2, they know exactly what they are trading away if they raise it.</p>
+
+</div>
+
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>📘 Note: Comments Are for Future-You</strong>
+
+<p>When you write code, you understand it perfectly. Two weeks later? It might as well be written in ancient Egyptian.</p>
+
+<p>Good comments answer:</p>
+
+<ul>
+
+<li><strong>WHAT</strong> does this code do?</li>
+
+<li><strong>WHY</strong> is it here? (This is the important one!)</li>
+
+</ul>
+
+</div>
+
+<h4 style="color: #3a7d5c; margin-top: 25px;">Bad Comments vs. Good Comments</h4>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+
+<thead>
+
+<tr>
+
+<th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #FCE4D6;">❌ Bad Comment</th>
+
+<th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #E2F0D9;">✅ Good Comment</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); // delay</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); // Wait 1 second for sensor to stabilize</code></td>
+
+</tr>
+
+<tr style="background-color: #f8f9fa;">
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">x = 5; // set x to 5</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">x = 5; // Number of retries before giving up</code></td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">// do the thing</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">// Spin to calibrate sensors</code></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>The bad comments just repeat what the code says. The good comments explain <strong>why</strong>.</p>
+
+<h3 id="section-3-6" style="color: #2e86ab; margin-top: 30px;">3.6 Common Pitfalls</h3>
+
+<p>These are the mistakes that trip up almost every beginner. Learn to recognize them now!</p>
+
+<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong style="color: #0d47a1;">📖 LEARN &mdash; The Semicolon, and Why the Error Points at the Wrong Line</strong>
+
+<p>The missing semicolon is the first error nearly everyone meets, and it has one confusing habit worth understanding before it wastes your afternoon.</p>
+
+<p>A semicolon ends a <strong>statement</strong> &mdash; one complete instruction. C++ ignores line breaks entirely; as far as the compiler is concerned your whole program could be a single enormous line. The semicolon is the only thing telling it where one instruction stops and the next begins.</p>
+
+<p><strong>So when you leave one out, the compiler does not notice at that line.</strong> It reads straight past the end of your line, still expecting the rest of the instruction, and only complains when it hits something that cannot possibly continue it &mdash; which is usually on the <em>next</em> line:</p>
+
+<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">ledYellow(<span style="color: #b5cea8;">1</span>)      <span style="color: #6a9955;">// ← the missing ; is HERE</span>
+delay(<span style="color: #b5cea8;">1000</span>);      <span style="color: #6a9955;">// ← but the error points HERE</span></pre>
+
+<p style="background-color: #fffde7; border-left: 3px solid #fbc02d; padding: 10px 14px; border-radius: 4px;"><strong>The rule that saves you:</strong> when an error mentions a semicolon, look at the line <em>above</em> the one the compiler names. Nine times out of ten that is where the problem sits.</p>
+
+<p><strong>Building the habit.</strong> Type the semicolon as part of the statement, not as a separate afterthought &mdash; the same way you type the closing parenthesis right after the opening one. Fingers learn this faster than brains do, which is also the argument for typing the code in this book out by hand instead of copy-pasting it. And do not fight the compiler on it: a missing semicolon stops the build instantly and for free, which makes it the cheapest error you will ever have. Your editor will underline it in red before you even hit Build.</p>
+
+<p style="margin-bottom: 0;"><strong>Two places a semicolon does <em>not</em> go</strong>, both of which cause stranger problems than leaving one out. There is no semicolon after the closing brace of a function &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">void setup() { }</code> is finished. And a stray semicolon right after an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code> condition &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (x &gt; 5);</code> &mdash; compiles perfectly and silently means "if x is greater than 5, do nothing at all," after which the braces below it run every time regardless. Same family as the one-liner trap from section 3.1: legal code, clean build, wrong robot.</p>
+
+</div>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+
+<thead>
+
+<tr style="background-color: #3498db; color: white;">
+
+<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">What You Typed</th>
+
+<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Error Message</th>
+
+<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">What's Wrong</th>
+
+<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Fix</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000)</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">expected ';' before...</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;">Missing semicolon at end</td>
+
+<td style="padding: 12px; border: 1px solid #ddd;">Add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">;</code> → <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000);</code></td>
+
+</tr>
+
+<tr style="background-color: #f8f9fa;">
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; white-space: pre-wrap;">void setup() {
+  // code</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">expected '}' at end of input</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;">Missing closing brace</td>
+
+<td style="padding: 12px; border: 1px solid #ddd;">Add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code> to close the function</td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ButtonA.isPressed()</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">'ButtonA' was not declared</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;">Wrong capitalization</td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">buttonA.isPressed()</code></td>
+
+</tr>
+
+<tr style="background-color: #f8f9fa;">
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if buttonA.isPressed()</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">expected '(' before...</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;">Missing parentheses around condition</td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (buttonA.isPressed())</code></td>
+
+</tr>
+
+<tr>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.println("Hello);</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">missing terminating " character</code></td>
+
+<td style="padding: 12px; border: 1px solid #ddd;">Missing closing quote</td>
+
+<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.println(F("Hello"));</code></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong style="font-size: 1.15em;">⚠️ THE #1 ERROR YOU WILL MAKE: The Missing Semicolon</strong>
+
+<p>Every statement needs a semicolon. When one is missing, the compiler blends that line into the next one — and then complains about the <em>wrong line</em>. Here, the mistake is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(100)</code> — but watch where the error points:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;">delay(<span style="color: #b5cea8;">100</span>)          <span style="color: #6a9955;">// ← line 8: THE ACTUAL MISTAKE (no semicolon)</span>
+ledYellow(<span style="color: #b5cea8;">1</span>);       <span style="color: #6a9955;">// ← line 9: an innocent line</span></pre>
+
+</div>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #f14c4c;">src/main.cpp:9:1: error: expected ';' before 'ledYellow'</span>
+ ledYellow(1);
+ ^~~~~~~~~</pre>
+
+</div>
+
+<p style="font-size: 1.1em;"><strong>THE RULE: THE COMPILER POINTS AT THE LINE <em>AFTER</em> THE MISTAKE. ALWAYS LOOK UP ONE LINE.</strong></p>
+
+<p>Burn this in now — it will save you hundreds of confused minutes this semester.</p>
+
+</div>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>💡 Pitfall 2: Mismatched Braces</strong>
+
+<p>Every <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">{</code> needs a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code>. One missing brace confuses the compiler so badly it often throws <em>several</em> errors at once — here, a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code> was forgotten before <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">void loop()</code>:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #f14c4c;">src/main.cpp:4:13: error: a function-definition is not allowed here before '{' token</span>
+ void loop() {
+             ^
+<span style="color: #f14c4c;">src/main.cpp:8:1: error: expected '}' at end of input</span></pre>
+
+</div>
+
+<p><strong>When you see an error avalanche, fix the FIRST error and rebuild</strong> — the rest usually vanish. Use VS Code’s bracket matching: click a brace and its partner lights up.</p>
+
+</div>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>💡 Pitfall 3: Case Sensitivity</strong>
+
+<p>C++ treats <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">buttonA</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ButtonA</code>, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">BUTTONA</code> as three completely different names. Get the capitalization wrong and the compiler claims the name doesn’t exist at all:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #f14c4c;">src/main.cpp:6:5: error: 'ButtonA' was not declared in this scope</span>
+ if (ButtonA.isPressed()) {
+     ^~~~~~~</pre>
+
+</div>
+
+<p><strong>&quot;was not declared&quot; often means &quot;you spelled or capitalized it differently than where you created it.&quot;</strong> Check the capitalization before you check anything else.</p>
+
+</div>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>💡 Tip: Read Error Messages Carefully</strong>
+
+<p>Error messages tell you <strong>what's wrong</strong> and <strong>what line</strong> to look at. The actual error is often on the line <em>before</em> the one mentioned — check for missing semicolons or braces!</p>
+
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- ============================================ -->
+
+<!-- PART 2: BUILD IT -->
+
+<!-- ============================================ -->
+</div>
+<div style="background-color: #3a7d5c; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; margin: 22px 0 0;">
+    <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 2 — Hardware & Code</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Sections 4–6: Set up and program your robot</div>
+</div>
+
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 0; margin-top: 0;"><div id="section-4" style="font-size: 1.15em; font-weight: bold;">🔨 Section 4: Hardware &mdash; Meet Your Buttons</div></div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<h4 style="color: #6c757d;">Meet Your Buttons &mdash; The Parts Today's Code Touches</h4>
+
+<p><strong>Nothing gets added to the robot this lesson.</strong> It is the same machine you met in Lesson 1, unchanged. What grows is how much of it your code reaches: Lesson 1 used one button, one light, and the screen. Today's program uses <em>all three</em> buttons &mdash; and that is the whole hardware story.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+<tr>
+<th style="background: #1a5276; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Part</th>
+<th style="background: #1a5276; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">What your code does with it</th>
+<th style="background: #1a5276; color: white; padding: 10px; text-align: left; border: 1px solid #ddd;">Where to find it</th>
+</tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">Button A</td><td style="border: 1px solid #ddd; padding: 10px;">The one you already know. Now it switches the display to the About screen.</td><td style="border: 1px solid #ddd; padding: 10px;">Top board &mdash; the <strong>left</strong> of the three.</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">Button B <span style="color: #3a7d5c; font-weight: bold;">(new)</span></td><td style="border: 1px solid #ddd; padding: 10px;">Switches the display to the Controls screen.</td><td style="border: 1px solid #ddd; padding: 10px;">Top board &mdash; the <strong>centre</strong> of the three.</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">Button C <span style="color: #3a7d5c; font-weight: bold;">(new)</span></td><td style="border: 1px solid #ddd; padding: 10px;">Switches the display to the Status screen.</td><td style="border: 1px solid #ddd; padding: 10px;">Top board &mdash; the <strong>right</strong> of the three.</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">The OLED display</td><td style="border: 1px solid #ddd; padding: 10px;">Four screens this lesson instead of one message. Your program clears it and redraws it.</td><td style="border: 1px solid #ddd; padding: 10px;">Centre of the top board, under the clear window.</td></tr>
+<tr><td style="border: 1px solid #ddd; padding: 10px;">The yellow LED</td><td style="border: 1px solid #ddd; padding: 10px;">Switched on and off to confirm a press without looking at the screen.</td><td style="border: 1px solid #ddd; padding: 10px;">Top board, beside the display.</td></tr>
+</table>
+
+<p>Everything else on the board &mdash; the motors, the encoders, the line sensors, the proximity sensors, the gyro &mdash; is still powered and still idle, exactly as it was in Lesson 1. You have not been introduced yet.</p>
+
+<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+<strong>📘 Note</strong>
+<p style="margin: 8px 0 0 0;">One thing this lesson uses constantly is <em>not</em> a robot part: the <strong>Serial Monitor</strong>. It is a window on your computer, fed through the USB cable. The robot has no idea it exists &mdash; it just writes into the cable and keeps going. That is why a program can work perfectly with the Serial Monitor closed.</p>
+</div>
+
+<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+
+<!-- ============================================ -->
+
+<!-- SECTION 5: THE CODE -->
+
+<!-- ============================================ -->
+</div>
+
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-5" style="font-size: 1.15em; font-weight: bold;">💻 Section 5: The Code</div></div>
+<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
+
+<p>You have seen the shape of a program in Section 3. This section walks the seven sections one at a time, in the order they appear in the file, and says what each one is actually for.</p>
+
 
 <h4 style="color: #3a7d5c; margin-top: 25px;">Header Comment</h4>
 
@@ -1033,7 +1509,7 @@ display.print(F(<span style="color: #ce9178;">"Ready!"</span>)); <span style="co
 
 </div>
 
-<h3 id="section-3-2-timeline" style="color: #2e86ab; margin-top: 30px;">How setup() and loop() Work Together</h3>
+<h3 id="section-5-timeline" style="color: #2e86ab; margin-top: 30px;">How setup() and loop() Work Together</h3>
 
 <p>This is one of the most important concepts in Arduino programming. Here's what happens when you power on your robot:</p>
 
@@ -1087,443 +1563,62 @@ ledYellow(<span style="color: #b5cea8;">0</span>); <span style="color: #6a9955;"
 
 
 
-<h3 id="section-3-2-types" style="color: #2e86ab; margin-top: 30px;">3.2b Data Types: What Kind of Value?</h3>
-
-<p>Before we go further, one idea that quietly runs under everything: every variable has a <strong>data type</strong> that tells the robot what kind of value it holds. Pick the wrong type and your number gets silently chopped or your math goes sideways. Here are the five you will meet in this book.</p>
-
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 8px;">
-  <p style="margin: 0 0 12px 0; font-weight: bold; color: #1565c0;">&lt;/&gt; The five data types you'll meet</p>
-  <p style="margin: 0 0 15px 0; color: #1565c0;">A data type tells the robot what kind of value a variable holds. These five cover everything in this book.</p>
-  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code> &mdash; a whole number, no decimal &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int speed = 150;</code></div>
-  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> &mdash; true or false, a yes/no switch &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool isDone = false;</code></div>
-  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float</code> &mdash; a number with a decimal &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float kp = 0.5;</code></div>
-  <div style="background: white; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long</code> &mdash; a very big whole number &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long timer = 60000;</code></div>
-  <div style="background: white; padding: 10px 14px; border-radius: 6px;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">char</code> &mdash; a single character, like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">'A'</code> &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">char grade = 'B';</code></div>
-</div>
-
-<p>You will write almost everything in this lesson with <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>, and you will use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> too, so those two are worth a closer look now. The other three you will meet where they matter: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long</code> shows up in <strong>Lesson 5</strong> for timing, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float</code> appears once you start doing math with decimals, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">char</code> is here for completeness &mdash; this book rarely needs it.</p>
-
-<h4 style="color: #3a7d5c; margin-top: 25px;">int &mdash; the workhorse</h4>
-
-<p>An <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code> holds a whole number: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">150</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">0</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">-42</code>. No fractions. This is the type you reach for by default &mdash; motor speeds, counts, pin numbers, loop counters are all whole numbers, so they are all <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>s.</p>
-
-<p>The catch is the one you already saw in the warning above: an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code> cannot hold a decimal. If you try to put <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">2.5</code> into an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>, the robot does not round &mdash; it <strong>chops off</strong> everything after the decimal point and keeps <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">2</code>. That is not an error, so nothing warns you; you just get the wrong number. When you need the fraction, that is what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float</code> is for (Lesson 7).</p>
-
-<h4 style="color: #3a7d5c; margin-top: 25px;">bool &mdash; the yes/no switch</h4>
-
-<p>A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> (short for <em>Boolean</em>, named after mathematician George Boole) holds exactly one of two values: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">true</code> or <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">false</code>. Nothing else. Think of it as a light switch &mdash; on or off, with no in-between.</p>
-
-<p>That makes <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> perfect for questions the robot answers yes or no: <em>is the button pressed?</em> <em>have we finished the turn?</em> <em>is the battery low?</em> You will lean on <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> heavily once the robot starts making decisions &mdash; a variable like <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool foundLine = true;</code> is the robot remembering the answer to a yes/no question so it can act on it later.</p>
-
-<h3 id="section-3-2-if" style="color: #2e86ab; margin-top: 30px;">3.2c Making a Choice: the if Statement</h3>
-
-<p>A <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> holds the answer to a yes/no question. That raises an obvious next question: what <em>does</em> something about the answer? That job belongs to the <strong>if statement</strong>, and you have already run one — it was in the very first warm-up of this lesson, deciding whether to light the LED.</p>
-
-<p>Every program you have written so far has been a straight road: line 1, then line 2, then line 3, every time, no exceptions. An if statement puts a fork in that road:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonC.isPressed()) {   <span style="color: #6a9955;">// the yes/no question</span>
-  ledYellow(<span style="color: #b5cea8;">1</span>);            <span style="color: #6a9955;">// runs only when the answer is YES</span>
-} <span style="color: #569cd6;">else</span> {
-  ledYellow(<span style="color: #b5cea8;">0</span>);            <span style="color: #6a9955;">// runs only when the answer is NO</span>
-}</pre>
-
-</div>
-
-<p>Read it out loud and it says what it does: <em>if button C is being pressed, turn the LED on; otherwise, turn it off.</em> Three parts carry it:</p>
-
-<ul>
-<li>The <strong>condition</strong> in parentheses — a question with a yes/no answer. Exactly the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool</code> idea from 3.2b, asked at the moment it matters instead of stored in a variable.</li>
-<li>The <strong>braces</strong> — the lines that run when the answer is yes. Same code block from 3.1; nothing new.</li>
-<li><strong><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">else</code></strong> — optional. Leave it off and a &ldquo;no&rdquo; simply skips the block and carries on underneath. Include it and you have named a plan for both answers.</li>
-</ul>
-
-<p>That is genuinely all of it for now, and it is enough to read every program in this lesson. What it is <em>not</em> yet is enough to write your own from a blank line &mdash; that is Lesson 3, where you will turn a sentence like &ldquo;if the battery is low, warn me&rdquo; into working code and meet the one-character typo that breaks it silently. Lesson 4 then takes the if apart properly, wires it to the sensors, and shows you why every robot behavior you will ever build is made of these.</p>
-
-<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #3a5a3a;">💡 Tip</strong>
-<p style="margin-bottom: 0;">When you read someone else's if statement &mdash; including your own from last week &mdash; put the question in plain English first, out loud, before you look at what is inside the braces. Programmers who skip that step end up debugging the wrong half of the statement.</p>
-</div>
-
-<h3 id="section-3-2-logic" style="color: #2e86ab; margin-top: 30px;">3.2d Asking More Than One Question: <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">&amp;&amp;</code>, <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">||</code> and <code style="font-family: 'Courier New', monospace; font-size: 0.85em;">!</code></h3>
-
-<p>The if statement you just met asks <em>one</em> question. Robots rarely get to ask one. <em>Is the button pressed <strong>and</strong> is the battery good? Is the left sensor dark <strong>or</strong> the right one? Have we <strong>not</strong> found the line yet?</em> Three small operators do that joining, and every one of them reads exactly like the English word it replaces.</p>
-
-<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-<tr style="background-color: #1a5276; color: white;">
-<th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Operator</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Say it as</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">The whole thing is true when&hellip;</th>
-</tr>
-<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">&amp;&amp;</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>and</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>both</strong> sides are true. One false and the whole thing is false.</td></tr>
-<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">||</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>or</strong></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>either</strong> side is true. Both false is the only way to fail.</td></tr>
-<tr><td style="padding: 10px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; font-size: 0.9em;">!</code></td><td style="padding: 10px; border: 1px solid #ddd;"><strong>not</strong></td><td style="padding: 10px; border: 1px solid #ddd;">the one thing after it is <strong>false</strong>. It flips the answer over.</td></tr>
-</table>
-
-<p><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> is two ampersands, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> is two pipe characters &mdash; the key above Enter on most keyboards, shift-backslash. Writing one instead of two is a different operator entirely and will not do what you want.</p>
-
-<p><strong>Both must be true &mdash; <code>&amp;&amp;</code>.</strong> A range check is the everyday case: is this number inside a window?</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (count &gt; <span style="color: #b5cea8;">0</span> &amp;&amp; count &lt; <span style="color: #b5cea8;">10</span>) {
-  <span style="color: #6a9955;">// runs only for 1 through 9 — BOTH questions answered yes</span>
-}</pre>
-
-</div>
-
-<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #856404;">⚠️ WARNING — each side must be a whole question</strong>
-<p style="margin-bottom: 0;">English lets you say &ldquo;if count is above 0 and below 10.&rdquo; C++ does not. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (count &gt; 0 &amp;&amp; &lt; 10)</code> is an error, because <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&lt; 10</code> on its own is not a question &mdash; below <em>what</em>? Say the variable again on the right-hand side: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">count &gt; 0 &amp;&amp; count &lt; 10</code>. The good news is that this one is loud: the compiler stops and points at the line, unlike the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">=</code> trap waiting for you in Lesson 3.</p>
-</div>
-
-<p><strong>Either will do &mdash; <code>||</code>.</strong> Same shape, lower bar:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonB.isPressed() || buttonC.isPressed()) {
-  <span style="color: #6a9955;">// runs if EITHER button is down — or both</span>
-}</pre>
-
-</div>
-
-<p>Note that &ldquo;or&rdquo; in code is more generous than &ldquo;or&rdquo; in conversation. When someone offers you tea or coffee they mean one of them; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> is perfectly happy with both.</p>
-
-<p><strong>Flip the answer &mdash; <code>!</code>.</strong> Put it in front of a yes/no value and it reverses it. Remember the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">bool foundLine</code> from 3.2b:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (!foundLine) {
-  <span style="color: #6a9955;">// runs when foundLine is FALSE — "if we have NOT found the line"</span>
-}</pre>
-
-</div>
-
-<p>That single character is easy to miss when reading quickly, and it inverts the entire meaning of the line. When a condition behaves backwards, look for a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">!</code> you did not notice before you go looking for anything cleverer.</p>
-
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong style="color: #0d47a1;">📖 LEARN &mdash; C++ Stops Reading Once It Knows the Answer</strong>
-
-<p>There is one more thing about <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> that looks like trivia and is not. <strong>C++ reads a condition left to right, and quits the moment the answer is settled.</strong> Programmers call this <em>short-circuit evaluation</em>.</p>
-
-<p>Think about what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> needs: both sides true. So if the left side comes back <strong>false</strong>, the whole thing is already false &mdash; and whatever is on the right is <em>never looked at</em>:</p>
-
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (batteryOK() &amp;&amp; startRun()) {
-  <span style="color: #6a9955;">// If batteryOK() is false, startRun() NEVER RUNS.</span>
-  <span style="color: #6a9955;">// The robot does not start. No error. It just doesn't happen.</span>
-}</pre>
-
-<p>And <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">||</code> needs only one side true, so a <strong>true</strong> on the left settles it and the right side is skipped:</p>
-
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">if</span> (buttonA.isPressed() || buttonB.isPressed()) {
-  <span style="color: #6a9955;">// If A is down, B is never even checked.</span>
-}</pre>
-
-<p><strong>This cuts both ways, and you need to know both.</strong></p>
-
-<p><strong>It is a tool.</strong> Put the cheap or protective question first and the expensive or risky one second, and the second is protected by the first. Reading a sensor takes real time; checking a variable takes almost none. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (sensorEnabled &amp;&amp; readSensor() &gt; 500)</code> never reads the sensor when it is switched off. That ordering is deliberate, and you will see it throughout the later lessons.</p>
-
-<p><strong>It is a trap.</strong> If the right-hand side <em>does</em> something &mdash; moves a motor, advances a counter, updates the screen &mdash; then that something silently stops happening whenever the left side decides the question early. The bug looks impossible: the line is right there, it clearly runs, and yet the counter never moves.</p>
-
-<p style="margin-bottom: 0;"><strong>The habit that avoids all of it:</strong> keep conditions as pure <em>questions</em>. A condition should ask, not act. If a line needs to happen, put it inside the braces where you can see it &mdash; not hidden on the right-hand side of an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code>, where whether it runs at all depends on something else entirely.</p>
-
-</div>
-
-<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #3a5a3a;">💡 Tip &mdash; read the whole condition aloud as one sentence</strong>
-<p style="margin-bottom: 0;">&ldquo;If count is greater than zero <em>and</em> count is less than ten.&rdquo; If the sentence does not make sense out loud, the code will not make sense to the robot either. This is the fastest bug-finder you will ever own, it costs nothing, and it works on somebody else's code too. You will need <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">&amp;&amp;</code> in this lesson's challenges &mdash; more than one of them wants two buttons held at the same time.</p>
-</div>
-
-<h3 id="section-3-3" style="color: #2e86ab; margin-top: 30px;">3.3 The Two-Week Rule</h3>
-
-<p><strong>Write code as if the next person to read it is a total stranger who knows nothing about what you were thinking.</strong></p>
-
-<p>(That stranger is you, two weeks from now, having forgotten everything.)</p>
-
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong style="color: #0d47a1;">📖 LEARN — Why Professionals Obsess Over Readable Code</strong>
-
-<p>Here is a fact that surprises most new programmers: professional software engineers spend far more of their time <strong>reading</strong> code than writing it. Studies of real software teams consistently estimate that well over half of a professional’s hours go to reading, understanding, and maintaining code that already exists — not typing new lines. A line of code gets written once, but it gets <em>read</em> dozens or hundreds of times over its life: by teammates, by code reviewers, and by the original author months later, staring at their own work like a stranger wrote it.</p>
-
-<p>That is why an intent-driven comment is worth real money in the real world. Compare these two versions of the same line:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #6a9955;">// Version 1 — repeats what the code already says (useless):</span>
-<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MOTOR_SPEED = <span style="color: #b5cea8;">200</span>;  <span style="color: #6a9955;">// set speed to 200</span>
-
-<span style="color: #6a9955;">// Version 2 — explains WHY the value was chosen (gold):</span>
-<span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> MOTOR_SPEED = <span style="color: #b5cea8;">200</span>;  <span style="color: #6a9955;">// Cap speed so turns stay controllable on tile floors</span></pre>
-
-</div>
-
-<p>Version 2 answers the question a future reader will actually ask: <em>“Can I change this number?”</em> With Version 1, they have no idea. With Version 2, they know exactly what they are trading away if they raise it.</p>
-
-</div>
-
-<div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong>📘 Note: Comments Are for Future-You</strong>
-
-<p>When you write code, you understand it perfectly. Two weeks later? It might as well be written in ancient Egyptian.</p>
-
-<p>Good comments answer:</p>
-
-<ul>
-
-<li><strong>WHAT</strong> does this code do?</li>
-
-<li><strong>WHY</strong> is it here? (This is the important one!)</li>
-
-</ul>
-
-</div>
-
-<h4 style="color: #3a7d5c; margin-top: 25px;">Bad Comments vs. Good Comments</h4>
-
-<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-
-<thead>
-
-<tr>
-
-<th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #FCE4D6;">❌ Bad Comment</th>
-
-<th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #E2F0D9;">✅ Good Comment</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); // delay</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); // Wait 1 second for sensor to stabilize</code></td>
-
-</tr>
-
-<tr style="background-color: #f8f9fa;">
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">x = 5; // set x to 5</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">x = 5; // Number of retries before giving up</code></td>
-
-</tr>
-
-<tr>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">// do the thing</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">// Spin to calibrate sensors</code></td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<p>The bad comments just repeat what the code says. The good comments explain <strong>why</strong>.</p>
-
-<h3 id="section-3-4" style="color: #2e86ab; margin-top: 30px;">3.4 Common Pitfalls</h3>
-
-<p>These are the mistakes that trip up almost every beginner. Learn to recognize them now!</p>
-
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong style="color: #0d47a1;">📖 LEARN &mdash; The Semicolon, and Why the Error Points at the Wrong Line</strong>
-
-<p>The missing semicolon is the first error nearly everyone meets, and it has one confusing habit worth understanding before it wastes your afternoon.</p>
-
-<p>A semicolon ends a <strong>statement</strong> &mdash; one complete instruction. C++ ignores line breaks entirely; as far as the compiler is concerned your whole program could be a single enormous line. The semicolon is the only thing telling it where one instruction stops and the next begins.</p>
-
-<p><strong>So when you leave one out, the compiler does not notice at that line.</strong> It reads straight past the end of your line, still expecting the rest of the instruction, and only complains when it hits something that cannot possibly continue it &mdash; which is usually on the <em>next</em> line:</p>
-
-<pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">ledYellow(<span style="color: #b5cea8;">1</span>)      <span style="color: #6a9955;">// ← the missing ; is HERE</span>
-delay(<span style="color: #b5cea8;">1000</span>);      <span style="color: #6a9955;">// ← but the error points HERE</span></pre>
-
-<p style="background-color: #fffde7; border-left: 3px solid #fbc02d; padding: 10px 14px; border-radius: 4px;"><strong>The rule that saves you:</strong> when an error mentions a semicolon, look at the line <em>above</em> the one the compiler names. Nine times out of ten that is where the problem sits.</p>
-
-<p><strong>Building the habit.</strong> Type the semicolon as part of the statement, not as a separate afterthought &mdash; the same way you type the closing parenthesis right after the opening one. Fingers learn this faster than brains do, which is also the argument for typing the code in this book out by hand instead of copy-pasting it. And do not fight the compiler on it: a missing semicolon stops the build instantly and for free, which makes it the cheapest error you will ever have. Your editor will underline it in red before you even hit Build.</p>
-
-<p style="margin-bottom: 0;"><strong>Two places a semicolon does <em>not</em> go</strong>, both of which cause stranger problems than leaving one out. There is no semicolon after the closing brace of a function &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">void setup() { }</code> is finished. And a stray semicolon right after an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if</code> condition &mdash; <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (x &gt; 5);</code> &mdash; compiles perfectly and silently means "if x is greater than 5, do nothing at all," after which the braces below it run every time regardless. Same family as the one-liner trap from section 3.1: legal code, clean build, wrong robot.</p>
-
-</div>
-
-<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-
-<thead>
-
-<tr style="background-color: #3498db; color: white;">
-
-<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">What You Typed</th>
-
-<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Error Message</th>
-
-<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">What's Wrong</th>
-
-<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Fix</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000)</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">expected ';' before...</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Missing semicolon at end</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">;</code> → <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000);</code></td>
-
-</tr>
-
-<tr style="background-color: #f8f9fa;">
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; white-space: pre-wrap;">void setup() {
-  // code</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">expected '}' at end of input</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Missing closing brace</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Add <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code> to close the function</td>
-
-</tr>
-
-<tr>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ButtonA.isPressed()</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">'ButtonA' was not declared</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Wrong capitalization</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">buttonA.isPressed()</code></td>
-
-</tr>
-
-<tr style="background-color: #f8f9fa;">
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if buttonA.isPressed()</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">expected '(' before...</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Missing parentheses around condition</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">if (buttonA.isPressed())</code></td>
-
-</tr>
-
-<tr>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.println("Hello);</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">missing terminating " character</code></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Missing closing quote</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.println(F("Hello"));</code></td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong style="font-size: 1.15em;">⚠️ THE #1 ERROR YOU WILL MAKE: The Missing Semicolon</strong>
-
-<p>Every statement needs a semicolon. When one is missing, the compiler blends that line into the next one — and then complains about the <em>wrong line</em>. Here, the mistake is <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(100)</code> — but watch where the error points:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;">delay(<span style="color: #b5cea8;">100</span>)          <span style="color: #6a9955;">// ← line 8: THE ACTUAL MISTAKE (no semicolon)</span>
-ledYellow(<span style="color: #b5cea8;">1</span>);       <span style="color: #6a9955;">// ← line 9: an innocent line</span></pre>
-
-</div>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #f14c4c;">src/main.cpp:9:1: error: expected ';' before 'ledYellow'</span>
- ledYellow(1);
- ^~~~~~~~~</pre>
-
-</div>
-
-<p style="font-size: 1.1em;"><strong>THE RULE: THE COMPILER POINTS AT THE LINE <em>AFTER</em> THE MISTAKE. ALWAYS LOOK UP ONE LINE.</strong></p>
-
-<p>Burn this in now — it will save you hundreds of confused minutes this semester.</p>
-
-</div>
-
-<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong>💡 Pitfall 2: Mismatched Braces</strong>
-
-<p>Every <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">{</code> needs a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code>. One missing brace confuses the compiler so badly it often throws <em>several</em> errors at once — here, a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">}</code> was forgotten before <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">void loop()</code>:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #f14c4c;">src/main.cpp:4:13: error: a function-definition is not allowed here before '{' token</span>
- void loop() {
-             ^
-<span style="color: #f14c4c;">src/main.cpp:8:1: error: expected '}' at end of input</span></pre>
-
-</div>
-
-<p><strong>When you see an error avalanche, fix the FIRST error and rebuild</strong> — the rest usually vanish. Use VS Code’s bracket matching: click a brace and its partner lights up.</p>
-
-</div>
-
-<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong>💡 Pitfall 3: Case Sensitivity</strong>
-
-<p>C++ treats <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">buttonA</code>, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ButtonA</code>, and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">BUTTONA</code> as three completely different names. Get the capitalization wrong and the compiler claims the name doesn’t exist at all:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 20px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #f14c4c;">src/main.cpp:6:5: error: 'ButtonA' was not declared in this scope</span>
- if (ButtonA.isPressed()) {
-     ^~~~~~~</pre>
-
-</div>
-
-<p><strong>&quot;was not declared&quot; often means &quot;you spelled or capitalized it differently than where you created it.&quot;</strong> Check the capitalization before you check anything else.</p>
-
-</div>
-
-<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong>💡 Tip: Read Error Messages Carefully</strong>
-
-<p>Error messages tell you <strong>what's wrong</strong> and <strong>what line</strong> to look at. The actual error is often on the line <em>before</em> the one mentioned — check for missing semicolons or braces!</p>
-
-</div>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
 
 <!-- ============================================ -->
 
-<!-- PART 2: BUILD IT -->
+<!-- SECTION 6: BUILD STEPS -->
 
 <!-- ============================================ -->
-</div>
-<div style="background-color: #3a7d5c; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; margin: 22px 0 0;">
-    <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">PART 2 — Hardware & Code</div>
-    <div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">Sections 4–6: Set up and program your robot</div>
+<!-- ===== BRAIN CHECK 01 ===== -->
 </div>
 
-<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 0; margin-top: 0;"><div id="section-4" style="font-size: 1.15em; font-weight: bold;">🔨 Section 4: Getting Ready</div></div>
+<div id="brain-check-01" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</strong>
+
+<p>That is the reading done. Before you build a single line, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+
+<!-- QUIZVARIANT 2.1: In your own words, how would you explain the Code Anatomy to a friend? Name its sections in order. (answer: Header, Include, Objects, Constants, setup(), loop(), Helpers) -->
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Name the seven numbered sections of an Arduino sketch, in the order they appear in the file &mdash; and the one unnumbered row that sits among them. (&sect;3.1)</summary>
+
+<div style="margin-top: 12px;"><p><strong>Header Comment &rarr; Include &rarr; Hardware Objects &rarr; Constants &rarr; setup() &rarr; loop() &rarr; Helper Functions.</strong> The unnumbered row is <strong>Function Prototypes</strong>, which sits between Constants and setup().</p></div>
+
+</details>
+
+<!-- QUIZVARIANT 2.2: One of these two functions runs exactly once. Which, and when? (answer: setup(), at power-on or reset) -->
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. <code>setup()</code> and <code>loop()</code> &mdash; how many times does each one run, and when? (&sect;5)</summary>
+
+<div style="margin-top: 12px;"><p><code>setup()</code> runs <strong>once</strong>, at power-on or reset. <code>loop()</code> runs <strong>forever</strong> after that, over and over, for as long as the robot has power.</p></div>
+
+</details>
+
+<!-- QUIZVARIANT 2.3: What are the four parts of a function prototype? (answer: return type, name, parameters, semicolon) -->
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. What is a function prototype, and what does it tell the compiler? (&sect;3.1, &sect;6 Step 7)</summary>
+
+<div style="margin-top: 12px;"><p>A <strong>one-line preview</strong> of a function &mdash; its return type, its name, its parameters, ending in a semicolon. It tells the compiler <em>&quot;this function exists; the full definition is further down the file.&quot;</em></p></div>
+
+</details>
+
+<!-- QUIZVARIANT 2.4: Which comment style would you use to comment out twelve lines at once? (answer: a block comment) -->
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. Name the two kinds of comment C++ gives you, and the marks that start each one. (&sect;5)</summary>
+
+<div style="margin-top: 12px;"><p><strong>Line comments</strong> start with <code>//</code> and run to the end of that line. <strong>Block comments</strong> open with <code>/*</code> and close with <code>*/</code>, and can span as many lines as you like.</p></div>
+
+</details>
+
+<!-- QUIZVARIANT 2.5: Who is the &quot;stranger&quot; the Two-Week Rule tells you to write for? (answer: yourself, two weeks later) -->
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. State the Two-Week Rule, and say what a comment should explain &mdash; the WHAT or the WHY. (&sect;3.5)</summary>
+
+<div style="margin-top: 12px;"><p>Write code as if the next person to read it is a total stranger who knows nothing about what you were thinking &mdash; and that stranger is <strong>you, two weeks from now</strong>. A comment should explain the <strong>WHY</strong>; the code already says the WHAT.</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="1" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 01 done</button></p>
+</div>
+
+<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-6" style="font-size: 1.15em; font-weight: bold;">🔨 Section 6: Build It</div></div>
 <div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
 <div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 0 0 20px 0; border-radius: 4px;">
@@ -1594,63 +1689,6 @@ ledYellow(<span style="color: #b5cea8;">1</span>);       <span style="color: #6a
 <div style="text-align: center; margin: 20px 0;"><img src="https://weymuth.github.io/zumo/images/L02_GRAPHIC_2-09_folder_structure.svg" alt="Folder tree: Documents/PlatformIO containing ZUMO_Template (never work here), Smith_L01, Smith_L02 (this lesson), and an optional Smith_L02_C4 challenge copy" style="max-width: 100%; height: auto;"><div style="color: #666; font-size: 14px; margin-top: 8px;"><strong>[GRAPHIC 2.9]</strong> One copy per lesson — how your PlatformIO folder should look (File: L02_GRAPHIC_2-09_folder_structure.svg)</div></div>
 
 <p>Ready? Your fresh copy is open and healthy — let's build this lesson's program.</p>
-
-<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
-
-<!-- ============================================ -->
-
-<!-- SECTION 5: BUILD STEPS -->
-
-<!-- ============================================ -->
-<!-- ===== BRAIN CHECK 01 ===== -->
-</div>
-
-<div id="brain-check-01" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
-
-<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</strong>
-
-<p>That is the reading done. Before you build a single line, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
-
-<!-- QUIZVARIANT 2.1: In your own words, how would you explain the Code Anatomy to a friend? Name its sections in order. (answer: Header, Include, Objects, Constants, setup(), loop(), Helpers) -->
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Name the seven numbered sections of an Arduino sketch, in the order they appear in the file &mdash; and the one unnumbered row that sits among them. (&sect;3.1)</summary>
-
-<div style="margin-top: 12px;"><p><strong>Header Comment &rarr; Include &rarr; Hardware Objects &rarr; Constants &rarr; setup() &rarr; loop() &rarr; Helper Functions.</strong> The unnumbered row is <strong>Function Prototypes</strong>, which sits between Constants and setup().</p></div>
-
-</details>
-
-<!-- QUIZVARIANT 2.2: One of these two functions runs exactly once. Which, and when? (answer: setup(), at power-on or reset) -->
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. <code>setup()</code> and <code>loop()</code> &mdash; how many times does each one run, and when? (&sect;3.2)</summary>
-
-<div style="margin-top: 12px;"><p><code>setup()</code> runs <strong>once</strong>, at power-on or reset. <code>loop()</code> runs <strong>forever</strong> after that, over and over, for as long as the robot has power.</p></div>
-
-</details>
-
-<!-- QUIZVARIANT 2.3: What are the four parts of a function prototype? (answer: return type, name, parameters, semicolon) -->
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. What is a function prototype, and what does it tell the compiler? (&sect;3.1, &sect;3.2)</summary>
-
-<div style="margin-top: 12px;"><p>A <strong>one-line preview</strong> of a function &mdash; its return type, its name, its parameters, ending in a semicolon. It tells the compiler <em>&quot;this function exists; the full definition is further down the file.&quot;</em></p></div>
-
-</details>
-
-<!-- QUIZVARIANT 2.4: Which comment style would you use to comment out twelve lines at once? (answer: a block comment) -->
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. Name the two kinds of comment C++ gives you, and the marks that start each one. (&sect;3.2)</summary>
-
-<div style="margin-top: 12px;"><p><strong>Line comments</strong> start with <code>//</code> and run to the end of that line. <strong>Block comments</strong> open with <code>/*</code> and close with <code>*/</code>, and can span as many lines as you like.</p></div>
-
-</details>
-
-<!-- QUIZVARIANT 2.5: Who is the &quot;stranger&quot; the Two-Week Rule tells you to write for? (answer: yourself, two weeks later) -->
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. State the Two-Week Rule, and say what a comment should explain &mdash; the WHAT or the WHY. (&sect;3.3)</summary>
-
-<div style="margin-top: 12px;"><p>Write code as if the next person to read it is a total stranger who knows nothing about what you were thinking &mdash; and that stranger is <strong>you, two weeks from now</strong>. A comment should explain the <strong>WHY</strong>; the code already says the WHAT.</p></div>
-
-</details>
-
-<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="1" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 01 done</button></p>
-</div>
-
-<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-5" style="font-size: 1.15em; font-weight: bold;">🔨 Section 5: Build It</div></div>
-<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
 
 <p>You'll build this program in <strong>small steps</strong>. After each step, you'll test to make sure it works before moving on.</p>
 
@@ -2757,99 +2795,6 @@ DATE: [Today's Date]
 
 <!-- ============================================ -->
 
-<!-- SECTION 6: CUSTOMIZE IT -->
-
-<!-- ============================================ -->
-</div>
-<div style="background-color: #3a7d5c; color: white; padding: 13px 18px; border-radius: 8px 8px 0 0; margin-top: 24px;"><div id="section-6" style="font-size: 1.15em; font-weight: bold;">🔨 Section 6: Make It Yours</div></div>
-<div style="border: 2px solid #3a7d5c; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px;">
-
-<p>You have a working program! Now pick ONE customization to make it unique:</p>
-
-<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-
-<thead>
-
-<tr style="background-color: #3a7d5c; color: white;">
-
-<th style="background: #2a5a42; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Option</th>
-
-<th style="background: #2a5a42; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Description</th>
-
-<th style="background: #2a5a42; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Difficulty</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><strong>A: Add Color</strong></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledGreen()</code> or <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledRed()</code> for different buttons</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">⭐</td>
-
-</tr>
-
-<tr style="background-color: #f8f9fa;">
-
-<td style="padding: 12px; border: 1px solid #ddd;"><strong>B: Secret Screen</strong></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Hold A+C together to show a secret fourth screen</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">⭐⭐</td>
-
-</tr>
-
-<tr>
-
-<td style="padding: 12px; border: 1px solid #ddd;"><strong>C: Animated Welcome</strong></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Make the welcome screen appear one line at a time</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">⭐⭐</td>
-
-</tr>
-
-<tr style="background-color: #f8f9fa;">
-
-<td style="padding: 12px; border: 1px solid #ddd;"><strong>D: Press Counter</strong></td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">Count total button presses and show on Status screen</td>
-
-<td style="padding: 12px; border: 1px solid #ddd;">⭐⭐⭐</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-
-<strong>💡 Tip: Accessibility</strong>
-
-<p>You can use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.println()</code> to "narrate" what's happening on screen. This makes your program accessible to users who can't see the OLED display. For example:</p>
-
-<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 10px 0;">
-
-<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Showing About screen..."</span>));
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Program: Lesson 2 Demo"</span>));
-<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Version: 1.0"</span>));</pre>
-
-</div>
-
-<p>Now someone reading Serial Monitor gets the same information as someone watching the screen!</p>
-
-</div>
-
-<p><strong>Show your teacher when done!</strong></p>
-
-<p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
-
 <!-- ============================================ -->
 
 <!-- PART 3: TEST & CHALLENGES -->
@@ -3699,6 +3644,52 @@ delay(<span style="color: #b5cea8;">300</span>);   <span style="color: #6a9955;"
 </div>
 </div>
 
+<h4 style="color: #6c757d;">Make It Yours</h4>
+
+<p>You have a working program. Before you leave this lesson, pick <strong>one</strong> customization and make the program your own. These are not graded challenges &mdash; they are yours.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<thead>
+<tr>
+<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Option</th>
+<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Description</th>
+<th style="background: #1a5276; color: white; padding: 12px; text-align: left; border: 1px solid #ddd;">Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding: 12px; border: 1px solid #ddd;"><strong>A: Add Color</strong></td>
+<td style="padding: 12px; border: 1px solid #ddd;">Use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledGreen()</code> or <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">ledRed()</code> for different buttons</td>
+<td style="padding: 12px; border: 1px solid #ddd;">&#11088;</td>
+</tr>
+<tr style="background-color: #f8f9fa;">
+<td style="padding: 12px; border: 1px solid #ddd;"><strong>B: Animated Welcome</strong></td>
+<td style="padding: 12px; border: 1px solid #ddd;">Make the welcome screen appear one line at a time</td>
+<td style="padding: 12px; border: 1px solid #ddd;">&#11088;&#11088;</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+
+<strong>&#128161; Tip: Accessibility</strong>
+
+<p>You can use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Serial.println()</code> to "narrate" what's happening on screen. This makes your program accessible to users who can't see the OLED display. For example:</p>
+
+<div style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 10px 0;">
+
+<pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.9em; overflow-x: auto; color: #e8e8e8; line-height: 1.8;"><span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Showing About screen..."</span>));
+<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Program: Lesson 2 Demo"</span>));
+<span style="color: #4ec9b6;">Serial</span>.println(F(<span style="color: #ce9178;">"Version: 1.0"</span>));</pre>
+
+</div>
+
+<p>Now someone reading Serial Monitor gets the same information as someone watching the screen!</p>
+
+</div>
+
+<p><strong>Show your teacher when done!</strong></p>
+
 <h4 style="color: #6c757d;">Peer Review Activity</h4>
 
 <div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
@@ -3757,43 +3748,43 @@ delay(<span style="color: #b5cea8;">300</span>);   <span style="color: #6a9955;"
 
 <p>The program is working. These ask you to <em>apply</em> what you read, not just recall it &mdash; answer them, then click to compare.</p>
 
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. <strong>The break in Step 7.</strong> The build failed before you added the prototype. Why did the compiler object, and what did that one line fix? (&sect;3.1, &sect;5 Step 7)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. <strong>The break in Step 7.</strong> The build failed before you added the prototype. Why did the compiler object, and what did that one line fix? (&sect;3.1, &sect;6 Step 7)</summary>
 
 <div style="margin-top: 12px;"><p>The compiler reads top to bottom. When it reached the call inside <code>loop()</code>, <code>blinkLED</code> had not been defined yet &mdash; hence <code>error: 'blinkLED' was not declared in this scope</code>. The prototype announces the function early, so the call makes sense when the compiler meets it.</p></div>
 
 </details>
 
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. <strong>Two lives, two homes.</strong> A global hardware object and a local <code>int i</code> inside a loop: where does each live, and when does each stop existing? (&sect;3.2)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. <strong>Two lives, two homes.</strong> A global hardware object and a local <code>int i</code> inside a loop: where does each live, and when does each stop existing? (&sect;5)</summary>
 
 <div style="margin-top: 12px;"><p>The global object lives in <strong>SRAM</strong> for the entire run of the program &mdash; it is created before <code>setup()</code> and never goes away. The local <code>int i</code> lives on the <strong>stack</strong> and vanishes the moment its block ends, reclaiming its bytes.</p></div>
 
 </details>
 
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. <strong>The footnote jump.</strong> <code>loop()</code> calls <code>showStatusScreen()</code>. How does the chip know where to continue when the function finishes? (&sect;3.2, &sect;8A)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. <strong>The footnote jump.</strong> <code>loop()</code> calls <code>showStatusScreen()</code>. How does the chip know where to continue when the function finishes? (&sect;5, &sect;8A)</summary>
 
 <div style="margin-top: 12px;"><p>Before jumping, the chip saves the <strong>return address</strong> &mdash; the spot in <code>loop()</code> it was standing on. The function runs, and the saved address brings execution back to exactly the next instruction. Read the footnote, then return to your place in the sentence.</p></div>
 
 </details>
 
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. <strong>The Uno mystery.</strong> A friend&rsquo;s Uno prints garbage when the baud numbers disagree; your Zumo never does. Why? (&sect;5 Step 2)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. <strong>The Uno mystery.</strong> A friend&rsquo;s Uno prints garbage when the baud numbers disagree; your Zumo never does. Why? (&sect;6 Step 2)</summary>
 
 <div style="margin-top: 12px;"><p>Baud rate is the agreed speed of a serial conversation, and a real serial link garbles the text when the two ends disagree. The Zumo talks over <strong>native USB</strong>, which is not a baud-rate link at all &mdash; the number in <code>Serial.begin()</code> is ignored, so a mismatch cannot hurt you here.</p></div>
 
 </details>
 
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. <strong>The flickering screen.</strong> A teammate&rsquo;s OLED flickers wildly. What is the likely cause, and what does &quot;draw only when something changes&quot; mean? (&sect;5 Step 6)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. <strong>The flickering screen.</strong> A teammate&rsquo;s OLED flickers wildly. What is the likely cause, and what does &quot;draw only when something changes&quot; mean? (&sect;6 Step 6)</summary>
 
 <div style="margin-top: 12px;"><p>They are clearing and redrawing the display on every pass of <code>loop()</code>, thousands of times a second. Draw only when the value you are showing has actually changed &mdash; the screen holds what it was last given, so redrawing an identical frame buys nothing and costs a flicker.</p></div>
 
 </details>
 
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">6. <strong>WHAT vs. WHY.</strong> Write a good WHY comment for <code>const int MOTOR_SPEED = 200;</code> (&sect;3.3)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">6. <strong>WHAT vs. WHY.</strong> Write a good WHY comment for <code>const int MOTOR_SPEED = 200;</code> (&sect;3.5)</summary>
 
 <div style="margin-top: 12px;"><p>Anything that answers <em>&quot;can I change this number, and what do I give up?&quot;</em> &mdash; for example: <code>// Cap speed so turns stay controllable on tile floors</code>. A comment reading <code>// set speed to 200</code> only repeats the code and helps nobody.</p></div>
 
 </details>
 
-<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">7. <strong>The comment test.</strong> Delete every comment from your finished program. Would it still compile and run &mdash; and what would change? (&sect;3.2, &sect;3.3)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">7. <strong>The comment test.</strong> Delete every comment from your finished program. Would it still compile and run &mdash; and what would change? (&sect;5, &sect;3.5)</summary>
 
 <div style="margin-top: 12px;"><p>It compiles and runs <strong>identically</strong>: the compiler strips comments before it generates a single byte. Nothing changes today. What changes is two weeks from now, when you open the file and have to reconstruct every decision you made from the code alone.</p></div>
 
@@ -4506,7 +4497,7 @@ display.print(count);              <span style="color: #6a9955;">// a variable �
 <li>Use it on every string literal you print. Two extra characters, zero downside.</li>
 <li>It only works on text written between quotes &mdash; never on a variable or a computed value.</li>
 <li>Running out of SRAM gives you <strong>no error message</strong>. It gives you garbled text, random resets, and variables that change on their own.</li>
-<li>Full explanation in section 3.2; the memory ceiling itself is Lesson 16.</li>
+<li>Full explanation in Section 5; the memory ceiling itself is Lesson 16.</li>
 </ul>
 
 <h3 id="qr-errors" style="color: #6c757d; border-bottom: 2px solid #6c757d; padding-bottom: 8px;">Common Errors Quick Fix</h3>
@@ -4772,7 +4763,7 @@ display.print(count);              <span style="color: #6a9955;">// a variable �
 <!-- ===== BRAIN CHECK COLUMN END ===== -->
 
 <!-- ===== BUILD BANNER (hidden from students; keeps the §5b two-homes gate honest) =====
-     Version 02.16 &mdash; July 2026 &bull; LESSON 02 &middot; Mastering the Code
+     Version 03.0 &mdash; July 2026 &bull; LESSON 02 &middot; Mastering the Code
      ZUMO Callout Standard v1.0 Applied
 ===== -->
 </body>
