@@ -1,9 +1,48 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 78 — **THE ANCESTOR LIST IN THE BIBLE WAS ITSELF UNVERIFIED**: **L08 joined the Brain Check family** (**v04.7.0**), the eighth conversion. Bible **v8.64**. §25.8's floor gate finally written.)
-**Status:** **THREE OF THE FOUR UNSWEPT ANCESTORS §25.10e NAMED AT S77 WERE WRONG.** The rule was right; its evidence was not. **L08 *Check Yourself* does not exist** — `check yourself` appears twice in L08 and both are lowercase prose (§1's *"Compare to solution"* line and §6 Step 7's MY PLAN), neither a heading. L11's block is titled ***Skills Checklist***, not *Skills Check*. L15/L16 *Wrap-Up* is the **§10 section banner**, not a construct — and §25.9 separately records L15 as having no exit block at all. Meanwhile **L09 carries two live ancestors nobody ever listed** (*Technical Skills: Can you…?* and *Knowledge Check*). New **§25.10f: a scoping claim inherited from a handoff or from this Bible is a lead exactly like a grep result** — the failure mode is a case-insensitive keyword hit reported as a block without anyone reading it, which is §24.6c extended from the grep to the sentence that outlives it. **L08's real ancestor** was a three-item *Knowledge Check* under BC03's own name, so the eighth conversion was a redistribution job after all. **Exit-region audit: 3 manifested, ACCOUNTED 3, LOST 0** — the first pass reported LOST 1 and was wrong, because the migration had retyped a literal `×` as `&times;`; restored character-exact. **Per DJ ruling, Record Your Calibration stays a separate §10 subsection**, outside the Brain Check family, matching L03 and L09. **§25.8's floor gate is written** (book_gates v1.8, 22 gates) and control-run three ways. Two findings logged, not acted on: BC03's reveal type splits the family 4/4 (`quiz` in L01–L04, `solution` in L05–L08, and §20.1 strips only `solution`), and L06's BC01 sits at div depth 1 where the other seven sit at 0.
+**Date:** July 26, 2026 (Session 79 — **THE STRIP LIST IS A WHITELIST, SO A KEPT REVEAL TYPE IS A PUBLICATION CHANNEL**: a finished challenge answer was living inside a `hint` in **L01 Challenge 11** and reaching the AI Tutor; the four Brain Check blocks that had drifted to `solution` were hiding the wrong thing and are retyped `quiz`. Bible **v8.65**, book_gates **v1.9 (23 gates)**.)
+**Status:** **DJ RULING — WHAT WE HIDE FROM THE TUTOR IS CHALLENGE ANSWERS, NOT BRAIN CHECK ANSWERS.** BC01 was `quiz` in all eight converted lessons while BC03 had drifted to `solution` in L05–L08 — one construct, 12 `quiz` to 4 `solution`, never ruled in any §25 entry. §20.1 already names `quiz` for “knowledge-check answers” and **L09's live ancestor is already `quiz`**, so all four were retyped and the sixteen Brain Check blocks are now uniform; stripping BC03 bought little anyway, because every BC03 item cites the section holding its answer and the tutor receives that prose. Then the inverse defect: **L01 C11's complete battery-check answer** (threshold `4500` + the `LOW BATT!` body, filling the exact blank the card asks the student to fill) **sat inside a `hint` reveal**, which §20.1 KEEPS — shipped to the model through eight sessions of L01 edits. Fixed by **splitting, not retyping**: the coaching content stays `hint`, the worked code moves to a sibling `solution` reveal. **book_gates v1.9** gates the shape, control-run three ways. The first book-wide leak survey returned **73 candidates and was almost all false positives** — it read every §6.12a Template panel as finished code in open prose — so the shipped gate is narrow and the one verified leak was found by reading, not by the detector. **OPEN:** L02 `2.t4`'s `check` reveal holds the full worked code for a TRY IT the card tells students to translate themselves.
 
-**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.1** · L06 **v04.12.0** · L07 **v04.8.0** · L08 **v04.7.0** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.64** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.8 (22 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.1** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.2** · L06 **v04.12.1** · L07 **v04.8.1** · L08 **v04.7.1** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.65** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.9 (23 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+
+---
+
+## WHAT SHIPPED THIS BATCH (S79 — the strip list is a whitelist)
+
+**1. L01 v03.10.0 → v03.10.1 — the leak. Challenge 11 *Add a Battery Check*.**
+The card gives the student `if (voltage < ______)` and asks them to choose a threshold and write the
+warning. Its `hint` reveal contained the finished code: `if (voltage < 4500)`, `display.print("LOW BATT!")`,
+the buzzer call. §20.1 strips ONLY `data-reveal="solution"`, so a `hint` is a publication channel —
+the answer was reaching the tutor while looking withheld to a reader. **Split, not retyped:** the genuine
+coaching content (that `readBatteryMillivolts()` exists, the NiMH table 5,400 / 4,800 / 4,200 mV, the
+USB-falsifies-the-reading catch) stays `hint` so the tutor keeps coaching from it; the lead-in sentence plus
+the worked `<pre>` moved into a sibling `<details data-reveal="solution">` in L01's canonical markup, matched
+against cards 1.2 and 1.9. Nothing left the lesson — students still see both reveals.
+
+**2. Brain Check BC03 retyped `solution` → `quiz` in L05–L08, per DJ ruling.**
+L05 v04.9.2 (4 items) · L06 v04.12.1 (5) · L07 v04.8.1 (6) · L08 v04.7.1 (6). Attribute-only;
+proved by reversing the edit inside the BC03 bound and byte-comparing to source — identical in all four.
+**The family is now uniform: sixteen blocks, all `quiz`.**
+
+**3. book_gates v1.8 → v1.9 — `§20.1 no finished answer hidden behind a hint reveal` (23 gates).**
+Depth-bounds each tagged challenge, finds `<pre>` inside a `hint`, flags ≥ 3 finished statement lines with
+no blanks or landing markers. Control-run three ways per §24.6b: **unfixed source → FAILED**, catching
+1.11 and nothing else book-wide; **fixed tree → PASS**; **injected drift** (L03 3.1's solution retyped
+`hint`) **→ FAILED**.
+
+**4. The leak survey's own false-positive rate is the finding worth keeping.**
+The first detector flagged **73 candidates** across all 16 lessons. Almost all were §6.12a **Template
+panels** — legitimate fill-in code whose blanks are not written with the markers the detector looked for.
+The one real leak was found by reading a card, not by the sweep. §24.6c again, and the third session
+running where the checking step was wrong before the work was.
+
+**5. Bible v8.64 → v8.65** — §20.1 gains **rule (4)**: the strip list is a whitelist, so a
+finished code block belongs in a `solution` reveal even when the surrounding box is a hint, and the fix is to
+SPLIT the box rather than retype it.
+
+**OPEN — needs a DJ ruling:** L02 `2.t4`'s `check` reveal holds the complete worked code for a TRY IT box
+whose card says *“Now translate it yourself.”* `check` is KEPT by §20.1 design, so it reaches the
+tutor today. TRY IT boxes are not graded challenge cards, so this may be intentional.
 
 ---
 

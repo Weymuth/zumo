@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.8 (S78) — whole-book consistency gates.
+# book_gates.py v1.9 (S79) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -425,6 +425,63 @@ for f in sorted(set(found) - set(EXPECTED)):
 for f in sorted(set(EXPECTED) - set(found)):
     bad.append(f'MISSING page: {f}')
 gate('§12/§23 site layout: every page in its canonical place, no strays', bad)
+
+# ---- §20.1: a challenge answer must not hide behind a KEPT reveal type.
+# The tutor front-end strips ONLY <details data-reveal="solution">.  A finished,
+# fill-nothing-in code block inside a `hint` is therefore shipped to the model
+# while looking withheld to a reader.  Found live in L01 C11 at S79.
+_DIVT = re.compile(r'</?div\b', re.I)
+_LAND = ('<<<', 'GOES HERE', 'goes here', 'your code here', 'YOUR CODE HERE',
+         '______', '_____', '&larr;', '&#8592;', 'write your', 'YOUR ')
+
+
+def _card_extent(s, pos):
+    st = s.rfind('<div', 0, pos)
+    d = 0
+    for m in _DIVT.finditer(s, st):
+        d += 1 if m.group().lower().startswith('<div') else -1
+        if d == 0:
+            return st, m.end()
+    return st, len(s)
+
+
+def _enclosing_reveal(card, pre_start):
+    ctx, depth = None, 0
+    for m in re.finditer(r'<details[^>]*data-reveal="([a-z]+)"|<details|</details>',
+                         card[:pre_start]):
+        if m.group().startswith('</details'):
+            depth -= 1
+            if depth <= 0:
+                ctx, depth = None, 0
+        else:
+            depth += 1
+            if depth == 1:
+                ctx = m.group(1)
+    return ctx
+
+
+def _is_finished_code(code):
+    body = html.unescape(re.sub(r'<[^>]+>', '', code))
+    if any(k in code or k in body for k in _LAND):
+        return 0
+    return len([ln for ln in body.splitlines() if ln.strip().endswith((';', '{', '}'))])
+
+
+bad = []
+for f in files:
+    s = R[f]
+    for m in re.finditer(r'data-challenge="([^"]+)"', s):
+        a, b = _card_extent(s, m.start())
+        card = s[a:b]
+        for pm in re.finditer(r'<pre[^>]*>(.*?)</pre>', card, re.S):
+            if _enclosing_reveal(card, pm.start()) != 'hint':
+                continue
+            n = _is_finished_code(pm.group(1))
+            if n >= 3:
+                bad.append(f'{f} challenge {m.group(1)}: {n}-line finished code block '
+                           f'inside a data-reveal="hint" — reaches the tutor; type it "solution"')
+gate('§20.1 no finished answer hidden behind a hint reveal', bad)
+
 
 print()
 print('=' * 52)

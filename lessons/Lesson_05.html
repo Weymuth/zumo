@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.9.1 -->
+<!-- Lesson version: v04.9.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2023,25 +2023,25 @@ Zumo32U4ButtonB buttonB;
 <p>You built it and it runs. These ask whether you know <em>why</em> it runs.</p>
 
 
-<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Why do we use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">max(frontLeftValue, frontRightValue)</code>? (&sect;4.2)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Why do we use <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">max(frontLeftValue, frontRightValue)</code>? (&sect;4.2)</summary>
 
 <div style="margin-top: 12px;"><p>The front detector can be illuminated from either side. Taking the maximum ensures we detect objects even if they're slightly off-center (to the left or right of straight ahead).</p></div>
 
 </details>
 
-<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. Our helper functions live <em>below</em> loop(), in any order — why does the build still succeed? (&sect;5.5)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. Our helper functions live <em>below</em> loop(), in any order — why does the build still succeed? (&sect;5.5)</summary>
 
 <div style="margin-top: 12px;"><p>Because of the FUNCTION PROTOTYPES section. The compiler reads top to bottom and refuses to call a name it hasn't heard of — but a prototype is a promise: "this function exists; details below." Once every helper is declared up top, the definitions can sit anywhere in the file.</p></div>
 
 </details>
 
-<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. How is a <strong>threshold</strong> different from a <strong>sensor reading</strong>? (&sect;3.3, &sect;3.5)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. How is a <strong>threshold</strong> different from a <strong>sensor reading</strong>? (&sect;3.3, &sect;3.5)</summary>
 
 <div style="margin-top: 12px;"><p>A reading is what the world <em>is</em> &#8212; a number the hardware hands you, 0&#8211;6, that you do not get to choose. A threshold is a line <em>you</em> draw through those numbers to turn a measurement into a decision: <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">DETECTION_THRESHOLD = 1</code> is not something the sensor told you, it is your ruling on what counts as "something is there." Readings are facts; thresholds are judgments. That is why thresholds live at the top of the file as named constants &#8212; so you can change your mind in one place.</p></div>
 
 </details>
 
-<details data-reveal="solution" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. Why is using a for loop better than using multiple <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> calls? (&sect;5.15)</summary>
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. Why is using a for loop better than using multiple <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay()</code> calls? (&sect;5.15)</summary>
 
 <div style="margin-top: 12px;"><p>For loops let you repeat code without duplicating it. Instead of writing <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); display.print(F("3"));</code> then <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">delay(1000); display.print(F("2"));</code> and so on, you can use one loop that handles all iterations. This makes code shorter, easier to modify (change the count in one place), and less error-prone. Loops are a fundamental programming concept you'll use constantly!</p></div>
 
