@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.7 (S71) — whole-book consistency gates.
+# book_gates.py v1.8 (S78) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -386,6 +386,19 @@ for f in files:
         if boxes != tagged:
             bad.append(f'{L(f)}: BC02 has {boxes} checkbox items but {tagged} data-bc-skill tags (§25.10 skill gate)')
 gate('§25.2 converted lessons conform to the four exit blocks + §25.10 Brain Check', bad)
+
+# ---- §25.8: Brain Check 03 carries at least FOUR items (floor, no maximum — DJ ruling S77)
+bad = []
+for f in files:
+    s2 = R[f]
+    j3 = s2.find('id="brain-check-03"')
+    if j3 < 0:
+        continue                     # unconverted lessons are out of scope
+    blk3 = s2[j3:_close_of(s2, s2.rfind('<div', 0, j3 + 30), 'div')]
+    items = len(re.findall(r'<details data-reveal="\w+"', blk3))
+    if items < 4:
+        bad.append(f'{L(f)}: Brain Check 03 has {items} items, floor is 4 (§25.8)')
+gate('§25.8 Brain Check 03 carries at least four items', bad)
 
 # ---- §5b: every web tool carries a greppable in-file version line
 WEB_TOOLS = {'timer.html': 'Timer', 'tutor/tutor.html': 'Tutor',

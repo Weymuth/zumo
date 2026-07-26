@@ -1,13 +1,57 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 77 — **THE SWEEP THAT SCOPES THE WORK WAS ITSELF UNGATED**: **L07 joined the Brain Check family** (**v04.8.0**), the seventh conversion. Bible **v8.63**.)
-**Status:** **L07's §25.10b RETIRED-NAME SWEEP RETURNED ZERO AND THE LESSON HAD TWO LIVE ANCESTORS.** A 6-item *Self-Assessment* and a 7-item *Knowledge Check* — the second sitting under BC03's own live name — neither on §25.2's retired list, so the sweep that is supposed to scope a conversion saw nothing. Trusting it would have written four new blocks on top of two that already existed. The zero was only trustworthy because the same grep was control-run across the unconverted lessons and **did** fire (L09, L10, L11, L14). **New §25.10e: scope a conversion by READING §10 and asking what job each block does, never by grepping what it is called** — the same shape is live and unswept in **L08 *Check Yourself*, L11 *Skills Check*, L15/L16 *Wrap-Up***. **DJ ruled the §25.8 cap open**: *"keep more than 5 and we can weed them out later"* — Knowledge Check is now a **floor of 4 with no maximum**, ending a conflict dodged four times while L02 sat live at 7. **DJ also ruled nothing gets retired**: new root file **`ZUMO_PARKED_EXIT_ITEMS.md`** holds displaced-but-live items verbatim with provenance, the inverse of `ZUMO_SHELVED_CARDS.md`. One item did not come forward: the Self-Assessment asked students to tick *"Write include guards"* while §3.6 files include guards under 📘 *The Old Way* and teaches `#pragma once` — **a checklist item contradicting its own lesson**, parked with an honest recognition-shaped rewrite for later. BC02 = §2's nine objectives migrated per §25.5, so L07 never joins the reconciliation debt. All six BC03 citations content-verified; the practical seventh had no section anywhere in the lesson and **reshaped into BC04** rather than being cut. **Exit-region audit: 13 items manifested, ACCOUNTED 13, LOST 0.**
+**Date:** July 26, 2026 (Session 78 — **THE ANCESTOR LIST IN THE BIBLE WAS ITSELF UNVERIFIED**: **L08 joined the Brain Check family** (**v04.7.0**), the eighth conversion. Bible **v8.64**. §25.8's floor gate finally written.)
+**Status:** **THREE OF THE FOUR UNSWEPT ANCESTORS §25.10e NAMED AT S77 WERE WRONG.** The rule was right; its evidence was not. **L08 *Check Yourself* does not exist** — `check yourself` appears twice in L08 and both are lowercase prose (§1's *"Compare to solution"* line and §6 Step 7's MY PLAN), neither a heading. L11's block is titled ***Skills Checklist***, not *Skills Check*. L15/L16 *Wrap-Up* is the **§10 section banner**, not a construct — and §25.9 separately records L15 as having no exit block at all. Meanwhile **L09 carries two live ancestors nobody ever listed** (*Technical Skills: Can you…?* and *Knowledge Check*). New **§25.10f: a scoping claim inherited from a handoff or from this Bible is a lead exactly like a grep result** — the failure mode is a case-insensitive keyword hit reported as a block without anyone reading it, which is §24.6c extended from the grep to the sentence that outlives it. **L08's real ancestor** was a three-item *Knowledge Check* under BC03's own name, so the eighth conversion was a redistribution job after all. **Exit-region audit: 3 manifested, ACCOUNTED 3, LOST 0** — the first pass reported LOST 1 and was wrong, because the migration had retyped a literal `×` as `&times;`; restored character-exact. **Per DJ ruling, Record Your Calibration stays a separate §10 subsection**, outside the Brain Check family, matching L03 and L09. **§25.8's floor gate is written** (book_gates v1.8, 22 gates) and control-run three ways. Two findings logged, not acted on: BC03's reveal type splits the family 4/4 (`quiz` in L01–L04, `solution` in L05–L08, and §20.1 strips only `solution`), and L06's BC01 sits at div depth 1 where the other seven sit at 0.
 
-**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.1** · L06 **v04.12.0** · L07 **v04.8.0** · L08 **v04.6.2** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.63** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.7 (21 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.1** · L06 **v04.12.0** · L07 **v04.8.0** · L08 **v04.7.0** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.64** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.8 (22 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S77 — L07 joins the Brain Check family)
+## WHAT SHIPPED THIS BATCH (S78 — L08 joins the Brain Check family)
+
+**1. L08 v04.6.2 → v04.7.0 — the eighth conversion, scoped by reading §10 rather than by any list.**
+§25.10e's recorded ancestor for L08 (*Check Yourself*) does not exist. Reading §10 found what does: a
+three-item **Knowledge Check** under BC03's own live name, plus **no ☐ checklist anywhere** — L08's twenty
+box glyphs were nine §2 objectives and eleven §7 *Pass?* test cells.
+**BC01 Mental (5)** authored at the §5/§6 seam, div depth 0, §-ordered: bang-bang and the binary actuator
+it actually suits (§1) · the formula and its three parts (§3.1) · which motor gets the + (§3.2) · why the
+error must be signed (§5.1) · what `constrain()` protects (§5.3). **BC02 (9)** = §2's objectives migrated
+per §25.5 and **verified character-exact**, the only change `&#9744;` → `☐`. **BC03 (6)** = the three
+ancestors verbatim, now citing §3 · §3.1+§5.1 · §7.3, plus three authored: the two faces of a lost
+`extern` (§6 Step 4), why the visible branch must clear `gapStartTime` and what breaks on the *second*
+gap (§6 Step 8), and the one-question TRIM test (§6 Step 8). **BC04 (3)**, no reveals.
+
+**2. Achievability (§25.10) — all nine BC02 items pass, and the risky one was already covered.**
+Objective 5 gates on meeting the `extern` red build, which is chance-dependent: a student whose Step 3 was
+right goes straight to green. §6 Step 4 already ships the deliberate rep — *"Went green first try? Earn the
+encounter anyway: delete the `extern` keyword, build, read the error, put it back."* No new rep needed.
+
+**3. DJ ruling — Record Your Calibration stays separate.** It is data capture feeding TDP table A4, not
+recall, apply or reflection, so it keeps its own §10 subsection outside the Brain Check family. This
+matches **L03** (*My Robot's Calibration Data*) and **L09** (*Calibration Data Record*), which both keep
+theirs. L08's `10.1/10.2/10.3` numbering was dropped: *inferred* — L08 was the only lesson in the book
+using numbered §10 subsections, and all fifteen siblings are unnumbered.
+
+**4. Five mysteries tagged `8.m1`–`8.m5`** (§4.2), with `id="mystery-N"` to match L06/L07. They were
+invisible to the Tutor picker until now.
+
+**5. Bible v8.63 → v8.64 — §25.10e's ancestor list corrected, new §25.10f.**
+The corrected table lives in §25.10f; §25.10e now points at it rather than carrying a wrong list forward.
+
+**6. §25.8's floor gate written — book_gates v1.7 → v1.8 (22 gates).**
+`§25.8 Brain Check 03 carries at least four items`, asserted only in converted lessons. Control-run three
+ways per §24.6b: **FAILED** against an L05 stripped to three items, **PASSED** live, and proven
+non-vacuous by listing all eight converted lessons in scope while correctly excluding L09. Live counts:
+**L01 4 · L02 7 · L03 5 · L04 5 · L05 4 · L06 5 · L07 6 · L08 6** — L01 and L05 sit exactly on the floor,
+so the gate binds today rather than someday.
+
+**7. Preservation audit: 3 manifested, ACCOUNTED 3, LOST 0** — after a correction. The first pass reported
+LOST 1 on the arithmetic item; the content was present and the migration had retyped a literal `×` as
+`&times;`. Restored. Second session running where the verification grep was wrong before the work was.
+
+---
+
+## WHAT SHIPPED PREVIOUSLY (S77 — L07 joins the Brain Check family)
 
 **1. L07 v04.7.2 → v04.8.0 — the seventh conversion, and the first where the scoping sweep lied.**
 §25.10b's retired-name grep returned **zero across all five names**. L07 nonetheless held two live
