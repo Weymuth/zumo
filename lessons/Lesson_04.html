@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.6.2 -->
+<!-- Lesson version: v04.7.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +73,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Line Sensors</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Your Robot Cannot See &mdash; It Measures</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.6 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.7 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -610,6 +610,45 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 </div>
 
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">↑ Back to top</a></p>
+</div>
+
+<div id="brain-check-01" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</strong>
+
+<p>That is the reading done. Before you wake a single sensor, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Why do the sensors emit their own infrared light instead of just looking at the floor? (&sect;3.1)</summary>
+
+<div style="margin-top: 12px;"><p>So they control the lighting. By supplying their own IR and measuring what bounces back, the reading depends on the surface's reflectivity — not on how bright the room happens to be.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. A raw reading of 1400 comes in. Dark or light? (&sect;3.4)</summary>
+
+<div style="margin-top: 12px;"><p>You genuinely can't say — raw values only mean something relative to that sensor's personal range on that surface in that light. That's the “1400 problem,” and it's exactly why calibration exists.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. What does the calibration sweep actually produce, and where does it live? (&sect;3.4)</summary>
+
+<div style="margin-top: 12px;"><p>A per-sensor record book: brightest ever seen and darkest ever seen. It lives in RAM — so it vanishes at power-off, and every session starts with a fresh sweep.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. After calibration, what do 0 and 1000 mean? (&sect;3.4)</summary>
+
+<div style="margin-top: 12px;"><p>0 = “as bright as this sensor has ever seen on this surface,” 1000 = “as dark as it has ever seen.” Every sensor is graded on its own curve, so their numbers finally agree.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. In the three-sensor configuration, which box holds the center sensor — and why is that a trap? (&sect;5)</summary>
+
+<div style="margin-top: 12px;"><p>lineSensorValues[1]. The trap: index counts awake sensors from zero, it doesn't name the sensor — so the center sensor is [1] with three awake but [2] with five awake.</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="1" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 01 done</button></p>
 </div>
 
 <!-- Section 6: Build It -->
@@ -1687,50 +1726,87 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <p>Before you close the lid: an honest self-check. Tick what's true, read the answers <em>after</em> you've tried each question in your head, and be straight with yourself about the confidence line — it's information for you, not a grade.</p>
 
-<h4 style="color: #6c757d;">Technical Skills</h4>
-<ul style="list-style: none; padding-left: 10px;">
-<li>☐ I can locate all five sensor windows and number them from the robot's point of view</li>
-<li>☐ I can identify the two configuration jumpers and both of their positions</li>
-<li>☐ I can run a calibration sweep correctly (every window across the tape)</li>
-<li>☐ I can read sensors into an array and pull out one sensor's value by index</li>
-<li>☐ I wrote and ran code using initThreeSensors() and initFiveSensors() — and matched the jumpers to each</li>
-<li>☐ I can display live sensor data on the OLED and full data on the Serial Monitor</li>
-<li>☐ I integrated waitForStart() and checkBattery() and can say where each goes and why</li>
-<li>☐ I wrote at least one working if statement that made the robot act on a sensor</li>
-<li>☐ I can read a for loop and say how many times it runs — and why it stops where it does</li>
-</ul>
+<div id="brain-check-02" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<h4 style="color: #6c757d;">Conceptual Understanding — 10 questions, answers underneath</h4>
-<p style="margin: 12px 0 2px;"><strong>1. Why do the sensors emit their own infrared light instead of just looking at the floor?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>So they control the lighting. By supplying their own IR and measuring what bounces back, the reading depends on the surface's reflectivity — not on how bright the room happens to be.</em></p>
-<p style="margin: 12px 0 2px;"><strong>2. A raw reading of 1400 comes in. Dark or light?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>You genuinely can't say — raw values only mean something relative to that sensor's personal range on that surface in that light. That's the “1400 problem,” and it's exactly why calibration exists.</em></p>
-<p style="margin: 12px 0 2px;"><strong>3. What does the calibration sweep actually produce, and where does it live?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>A per-sensor record book: brightest ever seen and darkest ever seen. It lives in RAM — so it vanishes at power-off, and every session starts with a fresh sweep.</em></p>
-<p style="margin: 12px 0 2px;"><strong>4. After calibration, what do 0 and 1000 mean?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>0 = “as bright as this sensor has ever seen on this surface,” 1000 = “as dark as it has ever seen.” Every sensor is graded on its own curve, so their numbers finally agree.</em></p>
-<p style="margin: 12px 0 2px;"><strong>5. Your five-sensor code runs but sensors 2 and 4 ignore the tape. What happened?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>Hardware/software mismatch: initFiveSensors() promises the jumpers are on DN2/DN4, but they're still in the factory position. The code compiles fine — the compiler can't see jumpers.</em></p>
-<p style="margin: 12px 0 2px;"><strong>6. In the three-sensor configuration, which box holds the center sensor — and why is that a trap?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>lineSensorValues[1]. The trap: index counts awake sensors from zero, it doesn't name the sensor — so the center sensor is [1] with three awake but [2] with five awake.</em></p>
-<p style="margin: 12px 0 2px;"><strong>7. readLine() returns 2323 in five-sensor mode. Say what that means in plain English.</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>The line's center of darkness sits a little right of the robot's center — about 16% of the way from center (2000) toward the right edge (4000) — 323 of the 2000 units on that side, computed as a weighted average of all sensors.</em></p>
-<p style="margin: 12px 0 2px;"><strong>8. Why can readLine() report positions like 1500 — between two sensors?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>Because a line between sensors darkens both of them partially, and the weighted average blends those partial readings into an in-between answer. Five coarse eyes, one fine estimate.</em></p>
-<p style="margin: 12px 0 2px;"><strong>9. What did the five-sensor configuration buy you, and what did it cost?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>Bought: no blind gaps and a smoother, finer position estimate (your Section 7 table is the evidence). Cost: two shared pins reassigned by physically moving jumpers — and Lesson 5's programs expect those pins back.</em></p>
-<p style="margin: 12px 0 2px;"><strong>10. Why does waitForStart() go at the END of setup and checkBattery() at the TOP of loop?</strong></p>
-<p style="margin: 0 0 10px; color: #4d5358;"><em>The gate must be the last thing before the robot goes live, so all setup work happens while it's still safely parked. The battery check must run every pass so A+B answers instantly, no matter what the rest of loop is doing.</em></p>
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</strong>
 
-<h4 style="color: #6c757d;">Problem-Solving</h4>
-<ul style="list-style: none; padding-left: 10px;">
-<li>☐ When readings looked wrong, I checked the raw numbers on the Serial Monitor first</li>
-<li>☐ I ran the three-vs-five comparison as a fair test and recorded evidence</li>
-<li>☐ I diagnosed the deliberate mismatch in Step 7 (dead digits 2 and 4) and can explain it</li>
-<li>☐ I restored the jumpers and verified the restoration with a software test</li>
-</ul>
+<p style="margin: 8px 0 0; font-size: 0.9em; color: #5a6872;">Tap each one you can actually do &mdash; the Mark-done button unlocks when all thirteen are checked. The first list is what you <em>can do</em>; the second is what you <em>did</em>.</p>
 
-<p style="margin-top: 18px;"><strong>Confidence check</strong> — circle one: 😟 Lost &nbsp;·&nbsp; 😐 Shaky &nbsp;·&nbsp; 🙂 Solid &nbsp;·&nbsp; 😎 Could teach it</p>
+<div style="margin-top: 10px;">
+    <p style="margin: 10px 0 4px; font-weight: bold; color: #283593;">I can&hellip;</p>
+    <ul style="list-style: none; padding-left: 0; margin: 0;">
+        <li data-bc-skill="1" style="cursor: pointer;">☐ Locate all five sensor windows and number them from the robot's point of view</li>
+        <li data-bc-skill="2" style="cursor: pointer;">☐ Identify the two configuration jumpers and both of their positions</li>
+        <li data-bc-skill="3" style="cursor: pointer;">☐ Run a calibration sweep correctly (every window across the tape)</li>
+        <li data-bc-skill="4" style="cursor: pointer;">☐ Read sensors into an array and pull out one sensor's value by index</li>
+        <li data-bc-skill="5" style="cursor: pointer;">☐ Display live sensor data on the OLED and full data on the Serial Monitor</li>
+        <li data-bc-skill="6" style="cursor: pointer;">☐ Read a <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">for</code> loop and say how many times it runs &mdash; and why it stops where it does</li>
+    </ul>
+    <p style="margin: 14px 0 4px; font-weight: bold; color: #283593;">I have&hellip;</p>
+    <ul style="list-style: none; padding-left: 0; margin: 0;">
+        <li data-bc-skill="7" style="cursor: pointer;">☐ Written and run code using initThreeSensors() and initFiveSensors() &mdash; and matched the jumpers to each</li>
+        <li data-bc-skill="8" style="cursor: pointer;">☐ Integrated waitForStart() and checkBattery() and can say where each goes and why</li>
+        <li data-bc-skill="9" style="cursor: pointer;">☐ Written at least one working if statement that made the robot act on a sensor</li>
+        <li data-bc-skill="10" style="cursor: pointer;">☐ Checked the raw numbers on the Serial Monitor first when readings looked wrong</li>
+        <li data-bc-skill="11" style="cursor: pointer;">☐ Run the three-vs-five comparison as a fair test and recorded evidence</li>
+        <li data-bc-skill="12" style="cursor: pointer;">☐ Diagnosed the deliberate mismatch in Step 7 (dead digits 2 and 4) and can explain it</li>
+        <li data-bc-skill="13" style="cursor: pointer;">☐ Restored the jumpers and verified the restoration with a software test</li>
+    </ul>
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="2" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 02 done</button></p>
+</div>
+</div>
+
+
+<div id="brain-check-03" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+
+<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</strong>
+
+<p>Your sensors are calibrated, both configurations ran, and the jumpers are home. These ask you to <em>apply</em> what you read, not just recall it &mdash; answer them, then click to compare.</p>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">1. Your five-sensor code runs but sensors 2 and 4 ignore the tape. What happened? (&sect;4, &sect;6 Step 7)</summary>
+
+<div style="margin-top: 12px;"><p>Hardware/software mismatch: initFiveSensors() promises the jumpers are on DN2/DN4, but they're still in the factory position. The code compiles fine — the compiler can't see jumpers.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">2. readLine() returns 2323 in five-sensor mode. Say what that means in plain English. (&sect;3.5)</summary>
+
+<div style="margin-top: 12px;"><p>The line's center of darkness sits a little right of the robot's center — about 16% of the way from center (2000) toward the right edge (4000) — 323 of the 2000 units on that side, computed as a weighted average of all sensors.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">3. Why can readLine() report positions like 1500 — between two sensors? (&sect;3.5)</summary>
+
+<div style="margin-top: 12px;"><p>Because a line between sensors darkens both of them partially, and the weighted average blends those partial readings into an in-between answer. Five coarse eyes, one fine estimate.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">4. What did the five-sensor configuration buy you, and what did it cost? (&sect;3.2, &sect;3.6, &sect;7)</summary>
+
+<div style="margin-top: 12px;"><p>Bought: no blind gaps and a smoother, finer position estimate (your Section 7 table is the evidence). Cost: two shared pins reassigned by physically moving jumpers — and Lesson 5's programs expect those pins back.</p></div>
+
+</details>
+
+<details data-reveal="quiz" style="margin: 10px 0; padding: 12px 16px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;"><summary style="cursor: pointer; font-weight: bold; color: #5a6872;">5. Why does waitForStart() go at the END of setup and checkBattery() at the TOP of loop? (&sect;5)</summary>
+
+<div style="margin-top: 12px;"><p>The gate must be the last thing before the robot goes live, so all setup work happens while it's still safely parked. The battery check must run every pass so A+B answers instantly, no matter what the rest of loop is doing.</p></div>
+
+</details>
+
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="3" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 03 done</button></p>
+</div>
+
+
+<div id="brain-check-04" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
+    <strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</strong>
+    <p>No reveal on these &mdash; there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
+    <ol>
+        <li>What surprised you most about how these sensors actually work &mdash; the physics of the measurement, or the numbers they report?</li>
+        <li>Act Two changed the software before the hardware, on purpose. What did the gap between those two steps teach you that doing it in the &ldquo;right&rdquo; order would not have?</li>
+        <li>How confident are you with line sensors &mdash; still shaky, getting there, confident, or ready to follow a line? Say what would move you up one step.</li>
+    </ol>
+<p style="text-align: right; margin: 12px 0 0;"><button type="button" data-bc-btn="4" style="background-color: #3f51b5; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 0.85em; cursor: pointer;">Mark Brain Check 04 done</button></p>
+</div>
 
 <div style="background-color: #ede7f6; border-left: 4px solid #7e57c2; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
 <strong style="color: #4527a0;">🔮 WHAT'S NEXT — Lesson 5: Proximity Sensors</strong>
@@ -1935,8 +2011,98 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 </p>
 
 
+<!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
+<div id="brain-check-col" style="position: fixed; right: 10px; top: 50%; transform: translateY(-50%); z-index: 90; background-color: rgba(255,255,255,0.95); border: 1px solid #c5cae9; border-radius: 8px; padding: 8px 6px; display: flex; flex-direction: column; gap: 6px; align-items: center;" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
+    <img id="bc-emblem" src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="Brain Check progress" style="width: 30px; height: auto;">
+    <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">01</a>
+    <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">02</a>
+    <a href="#brain-check-03" data-bc-pill="3" aria-label="Brain Check 03" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">03</a>
+    <a href="#brain-check-04" data-bc-pill="4" aria-label="Brain Check 04" style="display: block; width: 32px; text-align: center; background-color: #3f51b5; color: white; text-decoration: none; border-radius: 4px; padding: 4px 0; font-size: 11px; font-weight: bold;">04</a>
+</div>
+<script>
+(function() {
+    var m = (window.location.pathname.match(/Lesson_(\d+)/) || []);
+    var key = 'bc_L' + (m[1] || '00');
+    var skey = key + '_sk';
+    var st, sk;
+    try { st = JSON.parse(window.localStorage.getItem(key)); } catch (e) { st = null; }
+    if (!st || Object.prototype.toString.call(st) !== '[object Array]' || st.length !== 4) st = [0, 0, 0, 0];
+    var skillEls = document.querySelectorAll('[data-bc-skill]');
+    try { sk = JSON.parse(window.localStorage.getItem(skey)); } catch (e) { sk = null; }
+    if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
+        sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
+    }
+    var GRAY = 'https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png';
+    var GREEN = 'https://weymuth.github.io/zumo/images/BrainGear_Complete.png';
+    function allSkills() {
+        if (!sk.length) return true;
+        for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
+        return true;
+    }
+    function paint() {
+        var all = st[0] && st[1] && st[2] && st[3];
+        for (var q = 0; q < skillEls.length; q++) {
+            var li = skillEls[q];
+            var txt = li.textContent.replace(/^[\u2610\u2611]\s*/, '');
+            li.textContent = (sk[q] ? '\u2611 ' : '\u2610 ') + txt;
+            li.style.color = sk[q] ? '#2e7d32' : '';
+        }
+        for (var i = 0; i < 4; i++) {
+            var n = i + 1;
+            var pill = document.querySelector('[data-bc-pill="' + n + '"]');
+            if (pill) {
+                pill.style.backgroundColor = st[i] ? '#4caf50' : '#3f51b5';
+                pill.textContent = st[i] ? '\u2713' : '0' + n;
+            }
+            var ico = document.querySelector('[data-bc-icon="' + n + '"]');
+            if (ico) ico.src = st[i] ? GREEN : GRAY;
+            var btn = document.querySelector('[data-bc-btn="' + n + '"]');
+            if (btn) {
+                var locked = (n === 2) && !st[i] && !allSkills();
+                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo'
+                                : (locked ? '\uD83D\uDD12 Check all ' + skillEls.length + ' skills to unlock'
+                                          : 'Mark Brain Check 0' + n + ' done');
+                btn.style.backgroundColor = st[i] ? '#4caf50' : (locked ? '#9e9e9e' : '#3f51b5');
+                btn.style.cursor = locked ? 'not-allowed' : 'pointer';
+                btn.title = locked ? 'Tap each skill in the list above first.' : '';
+            }
+        }
+        var em = document.getElementById('bc-emblem');
+        if (em) em.src = all ? GREEN : GRAY;
+    }
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== document && !(t.getAttribute && (t.getAttribute('data-bc-btn') || t.getAttribute('data-bc-skill')))) t = t.parentNode;
+        if (!t || t === document || !t.getAttribute) return;
+        var skn = t.getAttribute('data-bc-skill');
+        if (skn) {
+            var j = parseInt(skn, 10) - 1;
+            if (j >= 0 && j < sk.length) {
+                sk[j] = sk[j] ? 0 : 1;
+                try { window.localStorage.setItem(skey, JSON.stringify(sk)); } catch (e3) {}
+                paint();
+            }
+            return;
+        }
+        var i = parseInt(t.getAttribute('data-bc-btn'), 10) - 1;
+        if (i < 0 || i > 3) return;
+        if (i === 1 && !st[i] && !allSkills()) { return; }
+        st[i] = st[i] ? 0 : 1;
+        try { window.localStorage.setItem(key, JSON.stringify(st)); } catch (e2) {}
+        paint();
+    });
+    function fit() {
+        var c = document.getElementById('brain-check-col');
+        if (c) c.style.display = (window.innerWidth < 700) ? 'none' : 'flex';
+    }
+    window.addEventListener('resize', fit);
+    paint();
+    fit();
+})();
+</script>
+<!-- ===== BRAIN CHECK COLUMN END ===== -->
 <!-- ===== BUILD BANNER (hidden from students; keeps the §5b two-homes gate honest) =====
-     Version 04.6 &mdash; July 2026 &bull; LESSON 04 &middot; Line Sensors
+     Version 04.7 &mdash; July 2026 &bull; LESSON 04 &middot; Line Sensors
      ZUMO Callout Standard v1.0 Applied
 ===== -->
 </body>

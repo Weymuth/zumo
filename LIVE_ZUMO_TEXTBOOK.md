@@ -1,11 +1,58 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 73 — **TWO LESSONS CHANGED SHAPE**: L02's renumber cut (v03.0.0, the book's first major re-baseline) and **L03 joined the Brain Check family** (v03.14.0). Bible **v8.59**.)
-**Status:** **THE OUTLIER IS GONE AND THE FAMILY IS FIXED AT FOUR.** L02 had carried the code walkthrough inside §3, prep at §4, the build at §5, and a unique §6 "Make It Yours" pushing every later number one ahead — for the life of the book. §3.2 lifted out as ONE contiguous 29,833-character block and became **§5 The Code**; old §5 → §6 with *Getting Ready* folded into its opening; §3 closed to **3.1–3.6** (not 3.1–3.5 — `3.2d` turned out to be its own `<h3>`); **zero nav-pill edits**, the strip was already canonical. **L03's conversion needed almost no new authoring** — its STOP & PROCESS block was the pre-collapse ancestor of both halves of the family, and its own ten items split 5 recall → BC01 Mental at the §5/§6 seam, 5 apply → BC03 Knowledge Check. **The split changed mid-session on canon, not preference**: item 10 was headed for Reflection until its reveal turned out to be factual, and §25.2 says Reflection never reveals — placing it there would have meant deleting an answer to pass a gate. It also turned out to duplicate an existing Reflection prompt, which retired into it. **DJ's BC05 was priced and withdrawn**: the shared column is one 5,596-character block copied byte-identical into every converted lesson and its script is hardcoded to four, so L03's second checkbox list folded into **BC02** as labelled *I can…* / *I have…* groups, twelve `data-bc-skill` items — and the unlock generalised from 7-of-7 to 12-of-12 with no code change at all, because `allSkills()` counts elements rather than a constant. **The session's through-line is one rule**, now Bible **§25.10a**: a §-citation is verified by checking the cited section CONTAINS the answer, never by checking one is present — which is all the §25.2 gate can do. It caught a live defect in L02 (BC01 item 3 cited §3.2 for the function prototype; §3.2 never taught it) and it nearly missed that defect, because slicing a section by the next section anchor swallows the Brain Check sitting between them.
+**Date:** July 26, 2026 (Session 74 — **THE ANCESTOR WAS HIDING UNDER A RETIRED NAME**: **L04 joined the Brain Check family** (v04.7.0), the fourth conversion — and the one the queue had written off as an authoring job. Bible **v8.60**.)
+**Status:** **L04 WAS NEVER AN AUTHORING JOB, AND THE RETIRED-NAME LIST IS WHAT PROVED IT.** The S74 queue predicted L04 had no `STOP & PROCESS` ancestor to redistribute, so the fourth conversion would be mostly writing from scratch. Sweeping the *live* construct names returned nothing and confirmed that read. Sweeping §25.2's **RETIRED** list found a ten-item block titled **Conceptual Understanding** — second entry on that list — sitting in §10 with its answers already written, beside two checkbox lists in exactly L03's shape. Ten items split 5 recall → **BC01 Mental** at the §5/§6 seam, 5 apply → **BC03 Knowledge Check**; the 6 capability + 7 process checkboxes folded into **BC02** as *I can…* / *I have…* per §25.10a, thirteen `data-bc-skill` items — and **the unlock generalised again with zero JavaScript**, 12-of-12 to 13-of-13, because `allSkills()` counts elements. **Two of ten citations were wrong before they were written**: the 1400 problem is taught in §3.4 and not §3.1, and the index trap in §5 and not §3.3 — both caught by §25.10a's content check, which is now four-for-four at finding defects no gate can see. **The session's rule is §25.10b**: scope a conversion by the retired-name list, because a lesson that looks like it has nothing to redistribute usually has everything.
 
-**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.6.2** · L05 **v04.8.2** · L06 **v04.11.2** · L07 **v04.7.2** · L08 **v04.6.2** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.59** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.7 (21 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.0** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.8.2** · L06 **v04.11.2** · L07 **v04.7.2** · L08 **v04.6.2** · L09 **v05.4.2** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.60** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.7 (21 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
+
+## WHAT SHIPPED THIS BATCH (S74 — L04 joins the Brain Check family)
+
+**1. L04 v04.6.2 → v04.7.0 — the fourth conversion, and it was redistribution after all.** The S74
+queue said to expect no ancestor. There was one: **`Conceptual Understanding` — 10 questions, answers
+underneath**, a retired §25.2 name, holding every answer already written. Split on the recall/apply
+line: **BC01 Mental** gets items 1, 2, 3, 4, 6 (5, inside the gated 3–5 window) at the §5/§6
+seam, un-nested, div depth 1 — identical to L01/L02/L03. **BC03 Knowledge Check** gets 5, 7, 8, 9, 10.
+Answers were parsed out of the live file and re-emitted, never retyped; all ten survive character-exact.
+
+**2. BC02 folds two checklists, and the unlock scaled itself again.** `Technical Skills` (9 items) and
+`Problem-Solving` (4) became one BC02 under bold *I can…* (6 capability) / *I have…* (7 process),
+thirteen `data-bc-skill` items. Nothing deleted. `allSkills()` loops over elements, so **13-of-13 needed
+zero JavaScript** — the second time §25.10a's "check whether the mechanism already scales" has paid.
+
+**3. BC04 Reflection authored — L04 had none.** Three prompts, no reveal. It absorbs the retired
+emoji **Confidence check** ("circle one: Lost / Shaky / Solid / Could teach it"), rephrased to ask what
+would move the student up one step — the same ruling L03 took at S73, because a circled emoji is not
+something a notebook entry can carry.
+
+**4. Two citations were wrong before they were written, and §25.10a caught both.** Item 2 (the 1400
+problem) was assigned §3.1; §3.1 contains neither "1400" nor "raw" — the scenario opens
+§3.4, the Calibration subsection. Item 6 (the index trap) was assigned §3.3; §3.3 contains no
+"index" at all — §5 carries the item's own phrasing, *index counts awake sensors from zero; it does
+not name the sensor*. Item 9 widened to (§3.2, §3.6, §7): §3.6 has what five sensors buy,
+but the shared-pin cost is §3.2 and the evidence table is §7. **10/10 verified by content**, each
+§3.x sliced by the next `<h3>` — L04 has no subsection ids, so the heading is the boundary.
+
+**5. Two defects caught by post-conditions, not by gates.** The §25.10 skill gate counts the **literal
+☐ glyph**, not `&#9744;`; the first build emitted the entity and would have shipped BC02 reading 0
+boxes against 13 tags. And the file uses the straight apostrophe **649:3** over the curly — two
+migrated skill items had been given `&rsquo;`, reverted, because migrated prose keeps the source's own
+characters.
+
+**6. Bible v8.59 → v8.60 — new §25.10b.** Scope a conversion by the retired-name list, not the
+live one. The corollary: a handoff records what the last session saw, the retired-name grep records what is
+in the file — §24.6c says control-run every audit grep, this says run the right grep first. Also
+records the grammar cost of the §25.10a fold: tense and clause-order rewording are expected when source
+items carry their own subject; everything else migrates character-exact.
+
+**7. Verification.** 21/21 gates PASS, pill_sweep clean (5 pills L04, 0 old strings). §25.2 binds L04
+automatically — the gate self-scopes on `MENTAL KNOWLEDGE CHECK`, so no gate edit was needed. Four
+control runs, each with a landed-injection assert, each restoring clean: a stripped `data-bc-skill` fails
+with the exact `13 checkbox items but 12 data-bc-skill tags` · a stripped BC01 citation fails §25.2
+· reintroducing `Conceptual Understanding` fails on the retired name · a dropped `</div>` fails tag
+balance, structure and §25.2. Diff audit: 83 lines removed, all of them the four intended blocks plus
+three version lines, nothing else.
 
 ## WHAT SHIPPED THIS BATCH (S73, part 2 — L03 joins the Brain Check family)
 
