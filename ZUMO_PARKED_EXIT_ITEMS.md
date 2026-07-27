@@ -72,6 +72,26 @@ L07 arrived with **seven**; item 7 left BC03 by reshape (below), so the live cou
 The remaining six all carry verified §-citations, so there is no obvious weakest item. **The weeding pass
 needs a criterion, and none exists yet** — that is the open question below.
 
+### L09 — *Problem-Solving: Can you modify or extend…?*, 3 items (displaced S80, L09 v05.4.2 → v05.5.0)
+
+DJ approved folding this block into BC02 as a labelled group per §25.10a, but §25.10c's achievability
+rule overrides the fold: none of these is a baseline skill every student who did the lesson can claim,
+so behind BC02's Mark-done lock they would make the button unreachable. The block's **fourth** item was
+an explicit *Reflection:* duplicate of L09's live *Reflection: Draw Your State Diagram* and was retired
+into it (S73 L03 duplicate-Reflection precedent). These three remain, verbatim:
+
+1. Add a new `PAUSED` state that freezes the robot when button A is pressed and resumes on a second press.
+2. Extend `checkForIntersection()` to recognize a cross (+) intersection where the center sensors stay black through the junction.
+3. Combine debounced detection (Challenge 5) with encoder turns (Challenge 4) for a competition-ready navigator.
+
+**Why they are not yet mysteries.** DJ ruled at S80 to reshape them into mysteries 6–8 per §25.10c.
+Blocked on discovery, not on authoring: **every L09 construct links its own Maker payload kind** — all
+six challenges and all five mysteries — so a new mystery needs a new sabotaged 8-file payload registered
+in `newproject.html` (5.2 MB, edited by offset per §15) plus a payload byte-match gate run. And the
+deeper mismatch: a mystery is a planted *defect* and these three are *extensions*. Item 1 has nothing to
+sabotage. **Reshaping them as bonus challenges is the likelier correct target** — same payload cost, no
+invented bug. Needs a ruling before authoring.
+
 ---
 
 ## Open question this file exists to answer later
