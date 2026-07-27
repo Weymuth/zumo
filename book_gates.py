@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.12 (S82) — whole-book consistency gates.
+# book_gates.py v1.13 (S82) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -593,13 +593,43 @@ for f in files:
     for am in re.finditer(r'id="section-([0-9]+[a-z]?)"', s):
         if am.group(1) not in _CORE:
             continue
+        num = am.group(1).upper()
         gt = s.find('>', am.start())
-        want.append((am.group(1).upper(), _fence_title(s[gt + 1:s.find('<', gt)])))
+        title = _fence_title(s[gt + 1:s.find('<', gt)])
+        want.append((num, title))
+        # --- S82b: the anchor must SIT INSIDE its banner, and the fence must be
+        # --- ADJACENT to that banner with nothing but whitespace between them.
+        # --- The earlier ordered-list form verified content and order but not
+        # --- placement, and passed L06/L07 while their §5 anchor had fallen out
+        # --- of its banner into the content panel — a live layout defect that
+        # --- tag balance and the structural gates also passed.
+        wrap = s.rfind('<div', 0, s.rfind('<', 0, am.start()) + 1)
+        ln = s.count('\n', 0, am.start()) + 1
+        if 'background-color' not in s[wrap:wrap + 220]:
+            bad.append(f'{L(f)} line {ln}: §{num} anchor is not seated in a banner div')
+            continue
+        # The nearest preceding <div> is NOT necessarily the parent: L06/L07 §5 had a
+        # </div> between the banner and the anchor, closing the banner early and leaving
+        # the anchor in the content panel. Require the anchor to open IMMEDIATELY inside.
+        gap = s[s.find('>', wrap) + 1:s.rfind('<', 0, am.start())]
+        if gap.strip():
+            bad.append(f'{L(f)} line {ln}: §{num} anchor is not immediately inside its '
+                       f'banner — {gap.strip()[:44]!r} intervenes')
+            continue
+        before = s[:wrap].rstrip()
+        if not before.endswith('-->'):
+            bad.append(f'{L(f)} line {ln}: §{num} banner is not preceded by a fence '
+                       f'(found {before[-40:]!r})')
+            continue
+        fstart = before.rfind('<!--')
+        expect = f'<!-- {_EQ} SECTION {num}: {title} {_EQ} -->'
+        if before[fstart:] != expect:
+            bad.append(f'{L(f)} line {ln}: §{num} fence is {before[fstart:][:56]!r}, '
+                       f'expected {expect[:56]!r}')
     got = [(m.group(1).upper(), m.group(2)) for m in _FENCE.finditer(s)]
-    if got != want:
-        diff = [a for a in want if a not in got] or [a for a in got if a not in want]
-        bad.append(f'{L(f)}: {len(got)} fences vs {len(want)} anchors; first disagreement {diff[:1]}')
-gate('§6.8a section fence generated from the anchor spine', bad)
+    if len(got) != len(want):
+        bad.append(f'{L(f)}: {len(got)} canonical fences vs {len(want)} core anchors')
+gate('§6.8a section fence generated from the anchor spine, adjacent to a seated anchor', bad)
 print('=' * 52)
 
 if FAIL:

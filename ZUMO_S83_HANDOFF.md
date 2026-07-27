@@ -4,7 +4,7 @@
 1. Clone fresh: `git clone --depth 1 https://github.com/Weymuth/zumo.git`
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. `grep -oE "Bible version: v[0-9.]+" ZUMO_SUPER_BIBLE.md` — confirm internal.
-4. `python3 book_gates.py` — all **26** must PASS (gate file **v1.12**). Then
+4. `python3 book_gates.py` — all **26** must PASS (gate file **v1.13**). Then
    `python3 pill_sweep.py --audit lessons/Lesson_*.html`.
 5. `python3 lesson_inventory.py` (**v1.0.2**) — the structural census; then `--anomalies`.
    No exit code, no pass/fail by design (§24.6a) — it is there to be READ. **Expect exactly ONE
@@ -25,10 +25,10 @@
 
 ## LIVE STATE at S82 close — VERIFIED, gates 26/26 PASS
 L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** ·
-L06 **v04.12.2** · L07 **v04.8.2** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** ·
+L06 **v04.12.3** · L07 **v04.8.3** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** ·
 L11 **v02.7.3** · L12 **v01.7.4** · L13 **v02.6.3** · L14 **v02.8.3** · L15 **v02.6.3** ·
 L16 **v02.5.3** — all sixteen bumped, all minor, visible banners unchanged per §5b.
-Bible **v8.68** · Maker v2.45.1 · book_gates **v1.12 (26 gates)** · **lesson_inventory v1.0.2** ·
+Bible **v8.68.1** · Maker v2.45.1 · book_gates **v1.13 (26 gates)** · **lesson_inventory v1.0.2** ·
 Gate v1.6 · Harness v3.0 · pill_sweep v1.0
 
 **Structural census:** 1,025 headings · 174 section anchors · **174 section fences (`sfnc`)** ·
@@ -89,16 +89,39 @@ L01 and L16 which lack `section-8a`) plus 85 sub-anchors, 259 total. And a claim
 "tool disagrees in fourteen lessons" was a bad comparison on my side, counting every comment
 containing the word *section* including `TITLE SECTION`.
 
+### S82b — the loose gate was passing a live layout defect (Bible v8.68.1)
+A THIRD verification pass, on an independent parser (DOM traversal, sibling adjacency, `re` never
+imported), found **L06 and L07 §5 anchors were not inside their banner div**. The §5 banner had
+swallowed the PREVIOUS section's back-to-top link and closed early, leaving `<div id="section-5">` a
+bare sibling in the content panel. Rendered result: §5's coloured cap showed a back-to-top link where
+its title belongs, and the title appeared as bold text atop the white box. **Pre-existing** —
+confirmed against the untouched pre-S82 clone, where L05/L08 were already correct. §24.6 class: it
+passes tag balance BECAUSE the counts work out.
+
+Swept the CLASS per §24, not the instance: exactly **2 of 174** anchors were displaced, both §5, both
+repaired by reordering to L05's arrangement — same tag multiset, visible text asserted unchanged,
+anchor parent re-verified by re-parse. L06 **v04.12.3**, L07 **v04.8.3**.
+
+**book_gates v1.12 → v1.13.** The v8.68 gate compared document-ordered LISTS of fences and anchors, so
+content and order verified while PLACEMENT did not. Replaced with a per-anchor walk: anchor seated in a
+banner · fence adjacent with only whitespace between · **anchor opens IMMEDIATELY inside the banner**.
+That last clause is the one that catches it, because **the nearest preceding `<div>` is not the parent
+when a `</div>` intervenes** — the first tightening attempt still PASSED the re-introduced displacement
+for exactly that reason, and the injection was verified live before the gate was blamed. Control-run
+three ways: displacement FAILED naming the intervening element; a stray `<p>` between fence and banner
+FAILED; untouched copy PASSED.
+
 ## S83 QUEUE
-1. **S83 FIRST — L06's Brain Check 01, per DJ (*"let's fix l06 at the beginning of 83"*).** Now
-   fully scoped: BC01's in-body block is wrapped in the **§5 "Code Structure Overview" content
-   panel** (`border: 2px solid #3a7d5c`, PART 2 group green) at div depth 1, where the other eight
-   lessons put BC01 **directly under `<body>`**. The S82 handoff's "inside its §5 panel" was right.
-   **It is NOT the S71 white-on-white defect** — the wrapper is a section content panel, not a
-   banner carrying `color: white`, so no text is being lost; this is structural, not student-facing.
-   **Read before moving:** that panel holds 49 direct children, and L06 §5's banner region is
-   arranged oddly (a back-to-top `<p>` sits inside the banner div, which closes before the
-   `section-5` anchor div). Confirm what the panel legitimately owns before lifting BC01 out.
+1. **S83 FIRST — L06's Brain Check 01, per DJ (*"let's fix l06 at the beginning of 83"*).** BC01's
+   in-body block sits inside the **§5 "Code Structure Overview" CONTENT panel**
+   (`border: 2px solid #3a7d5c`) at div depth 1, where the other eight lessons put BC01 **directly
+   under `<body>`**. **This is a SEPARATE deviation from the §5 anchor displacement fixed in S82b and
+   was NOT moved by that repair** — re-verified after it. **It is NOT the S71 white-on-white defect**:
+   the wrapper is a content panel, not a banner carrying `color: white`, so no text is being lost.
+   **Read before moving:** the panel holds 49 direct children, and BC01 is authored at the §5/§6 seam
+   per §25.10, so decide whether it belongs outside §5's box (matching the other eight) or whether §5's
+   panel legitimately closes later. Confirm the target placement against a conforming lesson before
+   lifting.
 2. **S83 PRIMARY (displaced from S82) — fix the §20.1 gate's per-card bounding.** Unchanged and
    still approved. `lesson_inventory.py` computes the heading-bounded span correctly, so port that
    bounding in rather than writing a third regex. Two logged defects: (a) bounding bleeds — 3/8/17
@@ -166,9 +189,13 @@ L01's §4 Hardware, with Install moving down.
 
 ## PUSH LIST — S82 (twenty-one files)
 `lessons/Lesson_01.html` … `lessons/Lesson_16.html` (**all sixteen**) · `ZUMO_SUPER_BIBLE.md`
-(v8.68) · `book_gates.py` (v1.12) · `lesson_inventory.py` (v1.0.2) · `LIVE_ZUMO_TEXTBOOK.md` ·
+(v8.68.1) · `book_gates.py` (v1.13) · `lesson_inventory.py` (v1.0.2) · `LIVE_ZUMO_TEXTBOOK.md` ·
 `ZUMO_S83_HANDOFF.md`.
 No `git rm` lines. Maker untouched, no images, no payloads — **push order does not matter.**
+**S82b SECOND PUSH (six files, the S82 batch already landed as `fb70426`):**
+`lessons/Lesson_06.html` (v04.12.3) · `lessons/Lesson_07.html` (v04.8.3) · `ZUMO_SUPER_BIBLE.md`
+(v8.68.1) · `book_gates.py` (v1.13) · `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_S83_HANDOFF.md`.
+
 **After pushing:** fresh `git clone --depth 1` into a NEW directory, allow ~20–30 s for propagation,
 grep a version out of it, and run `book_gates.py` (26/26) against the clone.
 

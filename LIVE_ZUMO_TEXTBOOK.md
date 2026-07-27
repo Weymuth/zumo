@@ -1,13 +1,77 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 82 — **THE FENCE HAD NO RULE, WHICH IS WHY IT HAD NINE GAPS AND ONLY ONE WAS VISIBLE**: the `<!-- ===== SECTION N ===== -->` comment turned out to be uncanonized — zero rules in the Bible — and had drifted five ways across ten lessons while six carried none. `lesson_inventory.py`'s matcher required the `=` wrapper, so it was blind in five lessons and L09's missing §7 looked like the only fence gap in the book when there were **nine across seven lessons**. Per DJ the detector was NOT widened — the book was fixed: **100 legacy fences removed, 174 canonical written, one per core section anchor**, generated from the spine rather than repaired. New **§6.8a**, book_gates **v1.12 (26 gates)**, lesson_inventory **v1.0.2** splitting the conflated `fnce` column into `sfnc` (174) + `part` (41). Bible **v8.68**, gates **26/26 PASS**.)
+**Date:** July 26, 2026 (Session 82 — **THE FENCE HAD NO RULE, WHICH IS WHY IT HAD NINE GAPS AND ONLY ONE WAS VISIBLE**: the `<!-- ===== SECTION N ===== -->` comment turned out to be uncanonized — zero rules in the Bible — and had drifted five ways across ten lessons while six carried none. `lesson_inventory.py`'s matcher required the `=` wrapper, so it was blind in five lessons and L09's missing §7 looked like the only fence gap in the book when there were **nine across seven lessons**. Per DJ the detector was NOT widened — the book was fixed: **100 legacy fences removed, 174 canonical written, one per core section anchor**, generated from the spine rather than repaired. New **§6.8a**, book_gates **v1.13 (26 gates)**, lesson_inventory **v1.0.2** splitting the conflated `fnce` column into `sfnc` (174) + `part` (41). Bible **v8.68.1**, gates **26/26 PASS**.)
 **Status:** **A CONSTRUCT WITH NO RULE DRIFTS, AND THE INSTRUMENT THAT MEASURES IT INHERITS THE DRIFT AS ITS DEFINITION.** The fence was never canon, so ten lessons wrote it five ways and the tool matched the one style it happened to be built against — reporting a gap in L09 and silence everywhere else, which read as a census and was a **coverage illusion**. Offered a widened matcher, DJ ruled the other way (*"Why widen the fence. Can't we just fix the issues that are causing the fence issues"*), which is the §24 pattern: widening ratifies drift permanently. The payoff of generating rather than repairing is that **no per-instance judgement was needed** — L03's and L08's stale duplicates, L08's mislabelled `Section 7: Troubleshooting`, L06's `8.5`, and all nine gaps resolved in one pass off the `id="section-N"` spine. The title stays in the fence per DJ (*"Keep title in it"*), which is only safe because gate 26 regenerates and compares it: **L01's fence read `KEY CONCEPTS` while its own banner read *Background Theory*** — the title was already lying. Two paperwork corrections recorded under §24.6c: the handoff's *"§8 has TWO"* was a `SECTION 8`/`SECTION 8A` prefix artifact, and the prior Bible entry's *"fence comments, 75"* conflated 34 section fences with 41 PART banners. **NOT verified: the rendered Pages site** — fence comments do not render, so the risk is nil, but the sixteen version bumps are parse- and gate-verified only. **One standing lead remains** (L06 brain-check-01 div depth); the L09 §7 fence lead is closed by construction.
 
-**Versions:** L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** · L06 **v04.12.2** · L07 **v04.8.2** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** · L11 **v02.7.3** · L12 **v01.7.4** · L13 **v02.6.3** · L14 **v02.8.3** · L15 **v02.6.3** · L16 **v02.5.3** · Bible **v8.68** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.12 (26 gates)** · **lesson_inventory v1.0.2** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** · L06 **v04.12.3** · L07 **v04.8.3** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** · L11 **v02.7.3** · L12 **v01.7.4** · L13 **v02.6.3** · L14 **v02.8.3** · L15 **v02.6.3** · L16 **v02.5.3** · Bible **v8.68.1** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.13 (26 gates)** · **lesson_inventory v1.0.2** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
 ## WHAT SHIPPED THIS BATCH (S82 — the fence had no rule)
+
+**1. §6.8a THE SECTION FENCE IS GENERATED FROM THE ANCHOR SPINE** (Bible v8.68, DJ ruling). The
+`<!-- ===================== SECTION N: TITLE ===================== -->` comment had **never been
+canonized** — zero rules in the Bible before this session. It had drifted five ways across ten lessons
+(L01 at five equals, L09/L10 at twenty-one, L02 bare uppercase, L04/L06/L08 bare Title Case, L03/L05/L07
+mixed) and L11–L16 carried none at all.
+
+**2. The coverage illusion.** `lesson_inventory.py`'s matcher required the `=` wrapper, so it saw fences
+in three lessons and was **structurally blind in five**. Its fence-gap lead only fires on lessons fencing
+at least five sections, so L09's missing §7 read as the only gap in the book. The real count was **nine
+gaps across seven lessons** — L02 (§1 §4 §7), L03 (§6), L05 (§7), L07 (§6 §8 §10), L08 (§6 §8), L09 (§7)
+— plus stale duplicates in L03 (labelled `(NEW CANONICAL)`) and L08 (`Code Structure` + `Code Walkthrough`
+stacked before one banner), and L06's `8.5` where canon is `8A`.
+
+**3. Generated, not repaired.** DJ declined the widened matcher — *"Why widen the fence. Can't we just fix
+the issues that are causing the fence issues"* — so the fence is now derived from the `id="section-N"`
+spine: **100 legacy fences removed, 174 canonical written, one per core anchor** (ten in L01/L16, which
+have no `8a`; eleven in the other fourteen). Every gap, duplicate, mislabel and format variant resolved in
+one pass with **no per-instance judgement** — L08's wrong `Section 7: Troubleshooting` never needed
+diagnosing. Asserted per file: comment count drops by exactly the doomed set, non-comment content
+byte-identical, insertion point is a banner wrapper, no unsafe title characters. Every write built bytes,
+asserted them, and `os.replace`d a temp file (S81 truncation lesson).
+
+**4. The title stays, and is now drift-proof.** Per DJ (*"Keep title in it"*) the fence keeps its title,
+derived from the banner: entities decoded, icon dropped, `Section N:` prefix removed, truncated at the
+em-dash, uppercased. This is only safe because the gate regenerates and compares it — **L01's fence read
+`KEY CONCEPTS` while its own banner read *Background Theory***. The title was already lying.
+
+**5. book_gates v1.11 → v1.12, gate 26** `§6.8a section fence generated from the anchor spine`.
+Control-run three ways: unfixed source FAILED (79 non-canonical fences + 16 count/title mismatches), a
+deleted fence FAILED, and a fence left stale after its banner was reworded FAILED.
+
+**6. lesson_inventory v1.0.1 → v1.0.2** splits the conflated `fnce` column. It read **75**, which was 34
+section fences plus 41 §6.8 PART banners — two constructs under one label, in the very column that was
+split out at S81. Now `sfnc` (**174**, one per anchor) and `part` (**41**). Its source comment claiming
+"only six lessons carry any" is corrected: ten did.
+
+**7. §24.6c correction record.** The S82 handoff's *"L09 §7 has no SECTION fence comment and §8 has TWO"*
+was half right. The §7 gap was real. *"§8 has TWO"* was a **prefix artifact** — `SECTION 8`
+substring-matching `SECTION 8A`; L09 fenced ten distinct sections with zero duplicates.
+
+**8. Logged, not fixed.** L02, L06, L15 and L16 carry **zero** PART banner comments where §6.8 canonizes
+four. Surfaced by the new `part` column; the visible banners have not been checked.
+
+**9. S82b — THE LOOSE GATE WAS PASSING A LIVE LAYOUT DEFECT** (Bible v8.68.1). A third verification pass on
+an independent parser — DOM traversal, sibling adjacency, `re` never imported — found **L06 and L07 §5
+anchors were not inside their banner div**. The §5 banner had swallowed the *previous* section's back-to-top
+link and closed early, leaving `<div id="section-5">` a bare sibling in the content panel. On the page, §5's
+coloured cap showed a back-to-top link where its title belongs and the title rendered as bold text atop the
+white box. **Pre-existing**, confirmed against the untouched pre-S82 clone; L05/L08 were already correct.
+§24.6 class — it passes tag balance *because* the counts work out. Swept the class, not the instance:
+exactly **2 of 174** anchors were displaced, both §5, both repaired by reordering to L05's arrangement (same
+tag multiset, visible text asserted unchanged, anchor parent re-verified by re-parse).
+
+**10. book_gates v1.12 → v1.13 — the gate that missed it.** v8.68's gate compared document-ordered *lists*
+of fences and anchors, so content and order verified while placement did not. Replaced with a per-anchor
+walk: anchor seated in a banner · fence adjacent with only whitespace between · **anchor opens immediately
+inside the banner**. That last clause is what catches it — the nearest preceding `<div>` is NOT the parent
+when a `</div>` intervenes, and the first tightening attempt still passed the re-introduced displacement for
+exactly that reason. The injection was verified live before the gate was blamed. Control-run three ways:
+displacement FAILED naming the intervening element, a stray `<p>` between fence and banner FAILED, untouched
+copy PASSED. L06 **v04.12.3**, L07 **v04.8.3**.
+
+## WHAT SHIPPED PREVIOUSLY (S82 — the fence had no rule)
 
 **1. §6.8a THE SECTION FENCE IS GENERATED FROM THE ANCHOR SPINE** (Bible v8.68, DJ ruling). The
 `<!-- ===================== SECTION N: TITLE ===================== -->` comment had **never been
