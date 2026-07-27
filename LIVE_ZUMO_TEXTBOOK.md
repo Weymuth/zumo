@@ -1,13 +1,72 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 82 — **THE FENCE HAD NO RULE, WHICH IS WHY IT HAD NINE GAPS AND ONLY ONE WAS VISIBLE**: the `<!-- ===== SECTION N ===== -->` comment turned out to be uncanonized — zero rules in the Bible — and had drifted five ways across ten lessons while six carried none. `lesson_inventory.py`'s matcher required the `=` wrapper, so it was blind in five lessons and L09's missing §7 looked like the only fence gap in the book when there were **nine across seven lessons**. Per DJ the detector was NOT widened — the book was fixed: **100 legacy fences removed, 174 canonical written, one per core section anchor**, generated from the spine rather than repaired. New **§6.8a**, book_gates **v1.13 (26 gates)**, lesson_inventory **v1.0.2** splitting the conflated `fnce` column into `sfnc` (174) + `part` (41). Bible **v8.68.1**, gates **26/26 PASS**.)
-**Status:** **A CONSTRUCT WITH NO RULE DRIFTS, AND THE INSTRUMENT THAT MEASURES IT INHERITS THE DRIFT AS ITS DEFINITION.** The fence was never canon, so ten lessons wrote it five ways and the tool matched the one style it happened to be built against — reporting a gap in L09 and silence everywhere else, which read as a census and was a **coverage illusion**. Offered a widened matcher, DJ ruled the other way (*"Why widen the fence. Can't we just fix the issues that are causing the fence issues"*), which is the §24 pattern: widening ratifies drift permanently. The payoff of generating rather than repairing is that **no per-instance judgement was needed** — L03's and L08's stale duplicates, L08's mislabelled `Section 7: Troubleshooting`, L06's `8.5`, and all nine gaps resolved in one pass off the `id="section-N"` spine. The title stays in the fence per DJ (*"Keep title in it"*), which is only safe because gate 26 regenerates and compares it: **L01's fence read `KEY CONCEPTS` while its own banner read *Background Theory*** — the title was already lying. Two paperwork corrections recorded under §24.6c: the handoff's *"§8 has TWO"* was a `SECTION 8`/`SECTION 8A` prefix artifact, and the prior Bible entry's *"fence comments, 75"* conflated 34 section fences with 41 PART banners. **NOT verified: the rendered Pages site** — fence comments do not render, so the risk is nil, but the sixteen version bumps are parse- and gate-verified only. **One standing lead remains** (L06 brain-check-01 div depth); the L09 §7 fence lead is closed by construction.
+**Date:** July 26, 2026 (Session 83 — **BOTH LOGGED GATE DEFECTS WERE REAL, AND ONE OF THEM HAD ALREADY MANUFACTURED A QUEUE ITEM**: the §20.1 leak gate bounded each card with `rfind('<div')`, which is right for an element-bounded `<div data-challenge>` by accident and wrong for every heading-bounded `<h4>` — one injected block in L07 came back as **five findings**, `7.m1` through `7.m5`. Fixed by IMPORTING the span from `lesson_inventory.py` rather than writing a third regex. Second defect closed the same pass: `data-kind="mystery"` now has **no line threshold**, which was the sole reason L08 passed for eight sessions. The carried L02 `2.t4` item is **closed as an artifact of this very defect**. Census the fix made possible: **33 kept reveals hold `<pre>`, all 33 outside every construct, all §6/§8 teaching content, zero leaks.** L06's brain-check-01 lifted out of §5's panel — one misplaced `</div>`. Bible **v8.69**, book_gates **v1.14**, lesson_inventory **v1.0.3**, gates **26/26 PASS**, `--anomalies` now **empty**.)
+**Status:** **A GATE THAT NEVER FIRES IS NOT EVIDENCE OF A CLEAN BOOK — IT MAY ONLY BE EVIDENCE OF A BADLY AIMED GATE.** §20.1 had passed every session since S79 while carrying two logged defects, and the reason it kept passing was not that the book was clean but that its detector was pointed slightly wrong: a `rfind('<div')` window instead of a parse-tree span, and a ≥3-line floor under snippets that run 1–2. Neither is a rule change; both are the §24.6a lesson that a measurement inherits the shape of its instrument. The bounding is now IMPORTED from `lesson_inventory.py` so the two tools cannot disagree — the port is verified by reproducing the human-read **5/8/2** counts for L09 `9.m3`–`9.m5` against the old gate's fictional **3/8/17**. The most useful thing the fix produced was not a defect but a **correction**: the carried *"L02 `2.t4` holds the worked code"* item was the bounding bug's own output — `2.t4` is a one-line `<strong>` with zero `<details>`, and the window had reached seventeen lines past its end to borrow a §6 build-step `check`. It needed no ruling, only a working parser. With the population finally correct, **33 kept reveals hold code and every one is §6 build-along or §8 troubleshooting** — content the tutor SHOULD have — with **nothing in §9 and nothing past §10**. The flank that remains is recorded as a pair-rule, not fixed: an UNTAGGED challenge hiding its answer in a `hint` is invisible here, so §20.2's marker gate is the other half. L06's brain-check-01 answered its own standing question — §5's panel does not close later, it closed one element late — and **`--anomalies` is now empty for the first time**. Two LIVE.md defects repaired en route: the S82 narrative was present **twice**, the older copy stale. **NOT verified: the rendered Pages site** (sandbox blocks it); L06's fix does change rendering, so §5/§6 wants an eyeball.
 
-**Versions:** L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** · L06 **v04.12.3** · L07 **v04.8.3** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** · L11 **v02.7.3** · L12 **v01.7.4** · L13 **v02.6.3** · L14 **v02.8.3** · L15 **v02.6.3** · L16 **v02.5.3** · Bible **v8.68.1** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.13 (26 gates)** · **lesson_inventory v1.0.2** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** · L06 **v04.12.4** · L07 **v04.8.3** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** · L11 **v02.7.3** · L12 **v01.7.4** · L13 **v02.6.3** · L14 **v02.8.3** · L15 **v02.6.3** · L16 **v02.5.3** · Bible **v8.69** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.14 (26 gates)** · **lesson_inventory v1.0.3** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S82 — the fence had no rule)
+## WHAT SHIPPED THIS BATCH (S83 — the gate was aimed slightly wrong)
+
+**1. L06 brain-check-01 lifted out of §5's content panel** (S83 first item per DJ, *"let's fix l06 at the
+beginning of 83"*). BC01 was the **last of 49 direct children** of §5's `border: 2px solid #3a7d5c` panel,
+sitting *after* §5's own `↑ Back to top` link, with §6's banner the next element once the panel closed. That
+answers the standing question — §5 does **not** legitimately close later; its content ends at the back-to-top
+link and the `</div>` sat one element late, boxing BC01 in green in L06 and leaving it outside in the other
+eight. Reading order was already right, so the repair is **relocating one `</div>`** to reproduce L05's
+byte-pattern. Verified against four conforming lessons (L05/L07/L08/L09), all identical in shape. Asserts:
+anchors unique at count 1 · tag multisets unchanged · normalized visible text AND non-empty text-line
+sequence identical · re-parse confirms BC01's parent is `body`, previous sibling the panel whose last child
+is the back-to-top `<p>`, next sibling the banner seating `#section-6` · panel children down by exactly one.
+The first assert was **wrong, not the edit** — strict `get_text('\n')` equality tripped on two blank
+separator lines that move when nesting changes; diffed before overriding. L06 **v04.12.3 → v04.12.4**.
+`lesson_inventory --anomalies` is now **empty**.
+
+**2. §20.1's per-card bounding replaced with the parse-tree span** (Bible §20.1(5), v8.69). The gate used
+`rfind('<div')`, correct for an element-bounded `<div data-challenge>` **by accident** and wrong for every
+heading-bounded `<h4 data-challenge>`, which inherited its whole enclosing panel. Demonstrated rather than
+argued: one injected block in L07 `7.m3` came back as **five findings**, `7.m1`–`7.m5` — four false and the
+true one indistinguishable from them. Fixed by **importing the bounding from `lesson_inventory.py`** instead
+of writing a third regex, so the two tools share one definition. The port is verified by reproducing the
+read-verified **5/8/2** code-line counts for L09 `9.m3`–`9.m5` against the old gate's fictional **3/8/17**.
+
+**3. A mystery now has no line threshold.** §25.10g already makes a mystery's bug+fix reveal a `solution`,
+and its planted snippets run **1–2 lines** — so the ≥3-statement-line floor the challenge case needs was
+**the only reason L08 passed this gate for eight sessions** (S80). Any code inside a `data-kind="mystery"`
+kept reveal now fails. **A threshold is not an exemption**, and the control run proves it: `8.m1` retyped
+`solution`→`hint` **PASSES the old gate and FAILS the new one**.
+
+**4. book_gates v1.13 → v1.14, control-run five ways**, every injection asserted landed before the verdict
+was read (the S82 no-op lesson): untouched **PASS** · 4-line block in a heading-bounded mystery hint
+**FAILED naming `7.m3` only** where the old gate named five · `8.m1` retyped **FAILED** where the old gate
+**PASSED** · the original S79 shape re-injected into element-bounded card `1.11` **FAILED** · a deliberately
+broken port tripped a new **COVERAGE assert**, added because a gate whose population silently empties is an
+ungated rule.
+
+**5. §24.6c CORRECTION — the carried L02 `2.t4` item is CLOSED as an artifact of the bug in item 2.**
+`2.t4` is a `<strong>` spanning **one line** holding **zero `<details>`**. The old window opened its "card"
+four lines early and ran **seventeen lines past its end** to swallow a §6 Step-4 build-along `check` reveal
+owned by no construct at all. The code is real; it was never `2.t4`'s and it was never a challenge answer.
+S81 was right that `2.t4` holds no reveal — the reason is now known, and no DJ ruling was needed.
+
+**6. The census the correct bounding finally made possible.** Across all sixteen lessons, **33 kept reveals
+hold `<pre>` and all 33 sit outside every construct**: 31 §6 `check` blocks (L02 8 · L03 8 · L04 4 · L05 2 ·
+L06 9), one L02 §8 `troubleshoot`, and one L10 §6 `hint` (*"Stuck? The fix, spelled out"*) resolving a red
+build **the lesson instructed the student to plant**. Nothing in §9, nothing past §10 — **zero leaks**.
+These are teaching content and the tutor should have them. Recorded as a pair-rule: an **untagged** challenge
+hiding its answer in a `hint` is invisible to §20.1, so §20.2's marker gate is the other half of the
+guarantee.
+
+**7. `lesson_inventory.py` v1.0.2 → v1.0.3** — its §6.8a comment still read *"only 6 lessons carry any"*,
+stale **twice over**: that figure was the matcher artifact §6.8a was written to kill (ten carried them), and
+since S82 all sixteen carry 174. Data was right; the sentence outlived it.
+
+**8. LIVE.md repaired.** The S82 narrative was present **twice** — once as *THIS BATCH* (complete, with the
+S82b items 9–10) and once as *PREVIOUSLY* (the same text minus those items, i.e. stale). The redundant copy
+is removed. **No lesson content changed beyond L06, and no defect was found in the book.**
+
+## WHAT SHIPPED PREVIOUSLY (S82 — the fence had no rule)
 
 **1. §6.8a THE SECTION FENCE IS GENERATED FROM THE ANCHOR SPINE** (Bible v8.68, DJ ruling). The
 `<!-- ===================== SECTION N: TITLE ===================== -->` comment had **never been
@@ -70,51 +129,6 @@ when a `</div>` intervenes, and the first tightening attempt still passed the re
 exactly that reason. The injection was verified live before the gate was blamed. Control-run three ways:
 displacement FAILED naming the intervening element, a stray `<p>` between fence and banner FAILED, untouched
 copy PASSED. L06 **v04.12.3**, L07 **v04.8.3**.
-
-## WHAT SHIPPED PREVIOUSLY (S82 — the fence had no rule)
-
-**1. §6.8a THE SECTION FENCE IS GENERATED FROM THE ANCHOR SPINE** (Bible v8.68, DJ ruling). The
-`<!-- ===================== SECTION N: TITLE ===================== -->` comment had **never been
-canonized** — zero rules in the Bible before this session. It had drifted five ways across ten lessons
-(L01 at five equals, L09/L10 at twenty-one, L02 bare uppercase, L04/L06/L08 bare Title Case, L03/L05/L07
-mixed) and L11–L16 carried none at all.
-
-**2. The coverage illusion.** `lesson_inventory.py`'s matcher required the `=` wrapper, so it saw fences
-in three lessons and was **structurally blind in five**. Its fence-gap lead only fires on lessons fencing
-at least five sections, so L09's missing §7 read as the only gap in the book. The real count was **nine
-gaps across seven lessons** — L02 (§1 §4 §7), L03 (§6), L05 (§7), L07 (§6 §8 §10), L08 (§6 §8), L09 (§7)
-— plus stale duplicates in L03 (labelled `(NEW CANONICAL)`) and L08 (`Code Structure` + `Code Walkthrough`
-stacked before one banner), and L06's `8.5` where canon is `8A`.
-
-**3. Generated, not repaired.** DJ declined the widened matcher — *"Why widen the fence. Can't we just fix
-the issues that are causing the fence issues"* — so the fence is now derived from the `id="section-N"`
-spine: **100 legacy fences removed, 174 canonical written, one per core anchor** (ten in L01/L16, which
-have no `8a`; eleven in the other fourteen). Every gap, duplicate, mislabel and format variant resolved in
-one pass with **no per-instance judgement** — L08's wrong `Section 7: Troubleshooting` never needed
-diagnosing. Asserted per file: comment count drops by exactly the doomed set, non-comment content
-byte-identical, insertion point is a banner wrapper, no unsafe title characters. Every write built bytes,
-asserted them, and `os.replace`d a temp file (S81 truncation lesson).
-
-**4. The title stays, and is now drift-proof.** Per DJ (*"Keep title in it"*) the fence keeps its title,
-derived from the banner: entities decoded, icon dropped, `Section N:` prefix removed, truncated at the
-em-dash, uppercased. This is only safe because the gate regenerates and compares it — **L01's fence read
-`KEY CONCEPTS` while its own banner read *Background Theory***. The title was already lying.
-
-**5. book_gates v1.11 → v1.12, gate 26** `§6.8a section fence generated from the anchor spine`.
-Control-run three ways: unfixed source FAILED (79 non-canonical fences + 16 count/title mismatches), a
-deleted fence FAILED, and a fence left stale after its banner was reworded FAILED.
-
-**6. lesson_inventory v1.0.1 → v1.0.2** splits the conflated `fnce` column. It read **75**, which was 34
-section fences plus 41 §6.8 PART banners — two constructs under one label, in the very column that was
-split out at S81. Now `sfnc` (**174**, one per anchor) and `part` (**41**). Its source comment claiming
-"only six lessons carry any" is corrected: ten did.
-
-**7. §24.6c correction record.** The S82 handoff's *"L09 §7 has no SECTION fence comment and §8 has TWO"*
-was half right. The §7 gap was real. *"§8 has TWO"* was a **prefix artifact** — `SECTION 8`
-substring-matching `SECTION 8A`; L09 fenced ten distinct sections with zero duplicates.
-
-**8. Logged, not fixed.** L02, L06, L15 and L16 carry **zero** PART banner comments where §6.8 canonizes
-four. Surfaced by the new `part` column; the visible banners have not been checked.
 
 ## WHAT SHIPPED PREVIOUSLY (S81 — the instrument, and the label that contradicted its type)
 

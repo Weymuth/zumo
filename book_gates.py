@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.13 (S82) — whole-book consistency gates.
+# book_gates.py v1.14 (S83) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -8,6 +8,8 @@
 # When a new rule is canonized, add its gate here in the same session.
 
 import re, glob, html, os, sys, collections
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a third regex
 
 FAIL = []
 
@@ -430,19 +432,20 @@ gate('§12/§23 site layout: every page in its canonical place, no strays', bad)
 # The tutor front-end strips ONLY <details data-reveal="solution">.  A finished,
 # fill-nothing-in code block inside a `hint` is therefore shipped to the model
 # while looking withheld to a reader.  Found live in L01 C11 at S79.
-_DIVT = re.compile(r'</?div\b', re.I)
 _LAND = ('<<<', 'GOES HERE', 'goes here', 'your code here', 'YOUR CODE HERE',
          '______', '_____', '&larr;', '&#8592;', 'write your', 'YOUR ')
 
 
-def _card_extent(s, pos):
-    st = s.rfind('<div', 0, pos)
-    d = 0
-    for m in _DIVT.finditer(s, st):
-        d += 1 if m.group().lower().startswith('<div') else -1
-        if d == 0:
-            return st, m.end()
-    return st, len(s)
+# The card extent is the PARSE-TREE span from lesson_inventory (§24.6a), not a
+# rfind('<div') window.  A construct is bounded two ways in this book and the old
+# window only ever produced the first one by accident:
+#   ELEMENT-BOUNDED  <div data-challenge="9.1">   span = that div open..close
+#   HEADING-BOUNDED  <h4  data-challenge="9.m1">  span = heading .. FIRST of
+#                    (next heading at level <= its own / next construct / parent close)
+# With the window, every h4-borne marker inherited its enclosing PANEL: L09 9.m3-9.m5
+# reported 3/8/17 code lines where reading gives 5/8/2, and L02 2.t4 -- a one-line
+# <strong> holding zero <details> -- swallowed a §6 build-step `check` reveal 17 lines
+# past its own end, which is where the "2.t4 holds the worked code" claim came from.
 
 
 def _enclosing_reveal(card, pre_start):
@@ -468,18 +471,32 @@ def _is_finished_code(code):
 
 
 bad = []
+seen = 0
 for f in files:
     s = R[f]
-    for m in re.finditer(r'data-challenge="([^"]+)"', s):
-        a, b = _card_extent(s, m.start())
-        card = s[a:b]
+    inv = LI.build(f)
+    assert inv['bytes'] == len(s), f'{f}: inventory/gate read disagree'
+    for c in inv['constructs']:
+        seen += 1
+        card = s[c['start']:c['end']]
+        mystery = c['kind'] == 'mystery'
         for pm in re.finditer(r'<pre[^>]*>(.*?)</pre>', card, re.S):
             if _enclosing_reveal(card, pm.start()) != 'hint':
                 continue
             n = _is_finished_code(pm.group(1))
-            if n >= 3:
-                bad.append(f'{f} challenge {m.group(1)}: {n}-line finished code block '
+            # §25.10g: a mystery's bug+fix reveal is a `solution`, full stop.  Its planted
+            # snippets run 1-2 lines, so the >=3 threshold below is not an exemption --
+            # it is why L08 passed this gate on luck for eight sessions (S80).
+            if mystery and pm.group(1).strip():
+                bad.append(f'{f} mystery {c["marker"]}: code block inside a '
+                           f'data-reveal="hint" — §25.10g says a mystery reveal is a '
+                           f'"solution"; ANY code here reaches the tutor')
+            elif n >= 3:
+                bad.append(f'{f} challenge {c["marker"]}: {n}-line finished code block '
                            f'inside a data-reveal="hint" — reaches the tutor; type it "solution"')
+if seen < 100:
+    bad.append(f'COVERAGE: only {seen} constructs bounded book-wide — the span port is broken, '
+               f'so this gate is passing an empty population')
 gate('§20.1 no finished answer hidden behind a hint reveal', bad)
 
 

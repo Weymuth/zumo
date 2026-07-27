@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# lesson_inventory.py v1.0.2 (S81) — exhaustive structural ENUMERATION of the lesson files.
+# lesson_inventory.py v1.0.3 (S83) — exhaustive structural ENUMERATION of the lesson files.
 #
 # Usage:
 #   python3 lesson_inventory.py                     summary table, all 16 lessons
@@ -140,8 +140,13 @@ def build(path):
 
     # ---- SECTIONS: attributed from the id="section-N" anchors, which exist in all 16
     # lessons (and section-8a in exactly the 14 the §8A map names). The `<!-- ===== SECTION
-    # N ===== -->` fence comments are NOT the spine — only 6 lessons carry any at all — so
-    # they are enumerated separately below rather than used for attribution.
+    # N ===== -->` fence comments are NOT the spine and are enumerated separately below
+    # rather than used for attribution. NOTE the reason changed at S82 and this comment was
+    # left behind twice: pre-S82 the fences were unusable because they were SPARSE (the
+    # "only 6 lessons carry any" claim here was itself the matcher artifact §6.8a was
+    # written to kill — ten lessons carried them). Since §6.8a all sixteen carry one per
+    # core anchor, 174 book-wide, and they are still not the spine — now because they are
+    # GENERATED from it, so attributing sections to them would be circular.
     sections = []
     for n in nodes:
         m = re.fullmatch(r'section-(\d+)([a-z]?)', n['attrs'].get('id', '') or '')
@@ -292,7 +297,7 @@ def flat_lines(pre):
 
 # ---------------------------------------------------------------- reporting
 
-BANNER = ('lesson_inventory.py v1.0.2 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
+BANNER = ('lesson_inventory.py v1.0.3 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
           'No exit code, no PASS/FAIL. A parser is necessary and not sufficient: read the table.\n')
 
 
