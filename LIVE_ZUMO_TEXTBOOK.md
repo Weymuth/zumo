@@ -1,13 +1,58 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 81 — **THE INSTRUMENT, AND THE LABEL THAT CONTRADICTED ITS OWN TYPE**: new tool `lesson_inventory.py` **v1.0.1** parses each lesson into a full structural table so session work queries a table instead of grepping HTML — it reproduced the read-verified **5/8/2** mystery code-line counts where the §20.1 gate had reported 3/8/17. It then found that the nine mystery reveals §25.10g retyped `solution` at S80 still carried the label *“💡 Hint”*. Per DJ (*“If it's a hint, then say hint. If its a solution, then call it a solution.”*) all nine are relabelled *“💡 Answer”* — copying **L11, right for the third consecutive session**. Two live defects fixed alongside: **L12's unescaped `<Wire.h>`** rendered the filename away, and **L02 `2.t1` was the only `<details>` in the book with no `data-reveal` at all**. Bible **v8.67.1** (§25.11 + §25.12), book_gates **v1.11**, gates **25/25 PASS**.)
-**Status:** **A LABEL IS HALF THE PROMISE, AND AN ATTRIBUTE-ONLY EDIT ONLY MOVES THE OTHER HALF.** S80's retype was right about the type and left nine labels saying the opposite of it — a block typed `solution` is stripped from the tutor while its summary advertises a hint to the reader, so the two audiences got opposite messages from one element. **§25.11** canonizes label/type agreement; **§25.12** canonizes that a missing `data-reveal` is not a neutral default, because §20.1's strip list is a whitelist and an untyped reveal is therefore KEPT. Census of all 30 mystery reveals: L05/L06/L07 + L08 `8.m3` are `hint` + *Hint* and hold **no `<pre>` at all** (which is why §25.10g correctly left them alone); L11 ×4 already agreed; L08 ×4 + L09 ×5 were the drift. **L08 holds five copies of the identical summary string and one (`8.m3`) had to survive untouched**, so every edit was offset-scoped per §6.12c with a +2-byte assert. **`lesson_inventory.py` has no exit code and no pass/fail by design** — §24.6a says a parser is necessary and not sufficient, so its job is exhaustive enumeration meant to be READ. Its four leads were all read before reporting: two independently reproduced known queue items (L06 BC01 at div depth 1; L09's missing §7 fence comment), two were new and both real. **Verified on an independent parser**: every S81 figure was re-derived with lxml/libxml2 rather than Python's `html.parser`, and none moved. **NOT verified: the rendered Pages site** — L12's repaired sentence and the nine new labels are parse- and gate-verified only.
+**Date:** July 26, 2026 (Session 82 — **THE FENCE HAD NO RULE, WHICH IS WHY IT HAD NINE GAPS AND ONLY ONE WAS VISIBLE**: the `<!-- ===== SECTION N ===== -->` comment turned out to be uncanonized — zero rules in the Bible — and had drifted five ways across ten lessons while six carried none. `lesson_inventory.py`'s matcher required the `=` wrapper, so it was blind in five lessons and L09's missing §7 looked like the only fence gap in the book when there were **nine across seven lessons**. Per DJ the detector was NOT widened — the book was fixed: **100 legacy fences removed, 174 canonical written, one per core section anchor**, generated from the spine rather than repaired. New **§6.8a**, book_gates **v1.12 (26 gates)**, lesson_inventory **v1.0.2** splitting the conflated `fnce` column into `sfnc` (174) + `part` (41). Bible **v8.68**, gates **26/26 PASS**.)
+**Status:** **A CONSTRUCT WITH NO RULE DRIFTS, AND THE INSTRUMENT THAT MEASURES IT INHERITS THE DRIFT AS ITS DEFINITION.** The fence was never canon, so ten lessons wrote it five ways and the tool matched the one style it happened to be built against — reporting a gap in L09 and silence everywhere else, which read as a census and was a **coverage illusion**. Offered a widened matcher, DJ ruled the other way (*"Why widen the fence. Can't we just fix the issues that are causing the fence issues"*), which is the §24 pattern: widening ratifies drift permanently. The payoff of generating rather than repairing is that **no per-instance judgement was needed** — L03's and L08's stale duplicates, L08's mislabelled `Section 7: Troubleshooting`, L06's `8.5`, and all nine gaps resolved in one pass off the `id="section-N"` spine. The title stays in the fence per DJ (*"Keep title in it"*), which is only safe because gate 26 regenerates and compares it: **L01's fence read `KEY CONCEPTS` while its own banner read *Background Theory*** — the title was already lying. Two paperwork corrections recorded under §24.6c: the handoff's *"§8 has TWO"* was a `SECTION 8`/`SECTION 8A` prefix artifact, and the prior Bible entry's *"fence comments, 75"* conflated 34 section fences with 41 PART banners. **NOT verified: the rendered Pages site** — fence comments do not render, so the risk is nil, but the sixteen version bumps are parse- and gate-verified only. **One standing lead remains** (L06 brain-check-01 div depth); the L09 §7 fence lead is closed by construction.
 
-**Versions:** L01 **v03.10.2** · L02 **v03.0.1** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.2** · L06 **v04.12.1** · L07 **v04.8.1** · L08 **v04.7.3** · L09 **v05.5.1** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.3** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.67** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.11 (25 gates)** · **lesson_inventory v1.0.1 (NEW)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** · L06 **v04.12.2** · L07 **v04.8.2** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** · L11 **v02.7.3** · L12 **v01.7.4** · L13 **v02.6.3** · L14 **v02.8.3** · L15 **v02.6.3** · L16 **v02.5.3** · Bible **v8.68** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.12 (26 gates)** · **lesson_inventory v1.0.2** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S81 — the instrument, and the label that contradicted its type)
+## WHAT SHIPPED THIS BATCH (S82 — the fence had no rule)
+
+**1. §6.8a THE SECTION FENCE IS GENERATED FROM THE ANCHOR SPINE** (Bible v8.68, DJ ruling). The
+`<!-- ===================== SECTION N: TITLE ===================== -->` comment had **never been
+canonized** — zero rules in the Bible before this session. It had drifted five ways across ten lessons
+(L01 at five equals, L09/L10 at twenty-one, L02 bare uppercase, L04/L06/L08 bare Title Case, L03/L05/L07
+mixed) and L11–L16 carried none at all.
+
+**2. The coverage illusion.** `lesson_inventory.py`'s matcher required the `=` wrapper, so it saw fences
+in three lessons and was **structurally blind in five**. Its fence-gap lead only fires on lessons fencing
+at least five sections, so L09's missing §7 read as the only gap in the book. The real count was **nine
+gaps across seven lessons** — L02 (§1 §4 §7), L03 (§6), L05 (§7), L07 (§6 §8 §10), L08 (§6 §8), L09 (§7)
+— plus stale duplicates in L03 (labelled `(NEW CANONICAL)`) and L08 (`Code Structure` + `Code Walkthrough`
+stacked before one banner), and L06's `8.5` where canon is `8A`.
+
+**3. Generated, not repaired.** DJ declined the widened matcher — *"Why widen the fence. Can't we just fix
+the issues that are causing the fence issues"* — so the fence is now derived from the `id="section-N"`
+spine: **100 legacy fences removed, 174 canonical written, one per core anchor** (ten in L01/L16, which
+have no `8a`; eleven in the other fourteen). Every gap, duplicate, mislabel and format variant resolved in
+one pass with **no per-instance judgement** — L08's wrong `Section 7: Troubleshooting` never needed
+diagnosing. Asserted per file: comment count drops by exactly the doomed set, non-comment content
+byte-identical, insertion point is a banner wrapper, no unsafe title characters. Every write built bytes,
+asserted them, and `os.replace`d a temp file (S81 truncation lesson).
+
+**4. The title stays, and is now drift-proof.** Per DJ (*"Keep title in it"*) the fence keeps its title,
+derived from the banner: entities decoded, icon dropped, `Section N:` prefix removed, truncated at the
+em-dash, uppercased. This is only safe because the gate regenerates and compares it — **L01's fence read
+`KEY CONCEPTS` while its own banner read *Background Theory***. The title was already lying.
+
+**5. book_gates v1.11 → v1.12, gate 26** `§6.8a section fence generated from the anchor spine`.
+Control-run three ways: unfixed source FAILED (79 non-canonical fences + 16 count/title mismatches), a
+deleted fence FAILED, and a fence left stale after its banner was reworded FAILED.
+
+**6. lesson_inventory v1.0.1 → v1.0.2** splits the conflated `fnce` column. It read **75**, which was 34
+section fences plus 41 §6.8 PART banners — two constructs under one label, in the very column that was
+split out at S81. Now `sfnc` (**174**, one per anchor) and `part` (**41**). Its source comment claiming
+"only six lessons carry any" is corrected: ten did.
+
+**7. §24.6c correction record.** The S82 handoff's *"L09 §7 has no SECTION fence comment and §8 has TWO"*
+was half right. The §7 gap was real. *"§8 has TWO"* was a **prefix artifact** — `SECTION 8`
+substring-matching `SECTION 8A`; L09 fenced ten distinct sections with zero duplicates.
+
+**8. Logged, not fixed.** L02, L06, L15 and L16 carry **zero** PART banner comments where §6.8 canonizes
+four. Surfaced by the new `part` column; the visible banners have not been checked.
+
+## WHAT SHIPPED PREVIOUSLY (S81 — the instrument, and the label that contradicted its type)
 
 **1. NEW TOOL `lesson_inventory.py` v1.0.1** (repo root, §24.6a). One parse per lesson emitting the full
 structural table: every heading with `<hN>` level, div depth and line; every `<details>` with its
@@ -756,7 +801,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 ---
 
-## WHAT SHIPPED LAST BATCH (S62) — the split difficulty pill · L01–L03
+## WHAT SHIPPED PREVIOUSLY (S62) — the split difficulty pill · L01–L03
 
 **Why two axes.** A single pill has to lie whenever doing and grasping diverge. L03 C08 Auto-TRIM Preview asks for COMMENTS ONLY — trivial to do — but requires reasoning about encoder differentials three lessons before encoders exist. Rated ADVANCED it warned students off a card they could finish in ten minutes; rated EASY it hid the only hard thing about it. Split, it reads **Easy / Deep** and both are true.
 

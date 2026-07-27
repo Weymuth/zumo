@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# lesson_inventory.py v1.0.1 (S81) — exhaustive structural ENUMERATION of the lesson files.
+# lesson_inventory.py v1.0.2 (S81) — exhaustive structural ENUMERATION of the lesson files.
 #
 # Usage:
 #   python3 lesson_inventory.py                     summary table, all 16 lessons
@@ -292,7 +292,7 @@ def flat_lines(pre):
 
 # ---------------------------------------------------------------- reporting
 
-BANNER = ('lesson_inventory.py v1.0.1 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
+BANNER = ('lesson_inventory.py v1.0.2 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
           'No exit code, no PASS/FAIL. A parser is necessary and not sufficient: read the table.\n')
 
 
@@ -433,11 +433,23 @@ def view_anomalies(invs):
     w('  (a lead is not a defect — §24.6c: control-run and read before acting)')
 
 
+def _sf(inv):
+    return sum(1 for f in inv['fences'] if f['name'].startswith('SECTION'))
+
+
+def _pf(inv):
+    return sum(1 for f in inv['fences'] if f['name'].startswith('PART'))
+
+
 def summary(invs):
-    # "sect" = id="section-N" ANCHORS (the spine, all 16 lessons). "fnce" = the
-    # <!-- ===== SECTION N ===== --> comments, which only six lessons carry. These are
-    # two different numbers and the header said "fence" for the anchor count until v1.0.1.
-    w(f'{"L":<4}{"lines":>7}{"heads":>7}{"h3":>5}{"h4":>5}{"sect":>6}{"fnce":>6}{"cons":>6}'
+    # "sect" = id="section-N" ANCHORS (the spine, all 16 lessons). The fence comments are
+    # now SPLIT: "sfnc" = <!-- ===== SECTION N: TITLE ===== --> section fences (Bible §6.8a,
+    # canonized S82 — one per anchor in all 16), "part" = §6.8 PART banner comments. v1.0.2
+    # ran them together in one "fnce" column reading 75, which was 34 section fences plus 41
+    # PART banners — two constructs under one label. The pre-S82 claim that "only six lessons
+    # carry any" was an artifact of the matcher: ten lessons carried them, five in a bare
+    # format it could not see, which is why L09 looked like the only lesson with a fence gap.
+    w(f'{"L":<4}{"lines":>7}{"heads":>7}{"h3":>5}{"h4":>5}{"sect":>6}{"sfnc":>6}{"part":>6}{"cons":>6}'
       f'{"myst":>6}{"reveal":>8}{"sol":>5}{"hint":>6}{"quiz":>6}{"BC":>4}{"skill":>7}{"maxdd":>7}')
     for inv in invs:
         h3 = sum(1 for h in inv['headings'] if h['tag'] == 'h3')
@@ -447,7 +459,7 @@ def summary(invs):
         for r in inv['reveals']:
             t[r['type']] = t.get(r['type'], 0) + 1
         w(f'{inv["lesson"]:<4}{inv["lines"]:>7}{len(inv["headings"]):>7}{h3:>5}{h4:>5}'
-          f'{len(inv["sections"]):>6}{len(inv["fences"]):>6}{len(inv["constructs"]):>6}{myst:>6}'
+          f'{len(inv["sections"]):>6}{_sf(inv):>6}{_pf(inv):>6}{len(inv["constructs"]):>6}{myst:>6}'
           f'{len(inv["reveals"]):>8}{t.get("solution", 0):>5}{t.get("hint", 0):>6}'
           f'{t.get("quiz", 0):>6}{len(inv["braincheck"]["anchors"]):>4}'
           f'{inv["braincheck"]["skills"]:>7}{inv["max_div_depth"]:>7}')
@@ -455,7 +467,7 @@ def summary(invs):
     w(f'{"TOTAL":<4}{sum(i["lines"] for i in invs):>7}'
       f'{sum(len(i["headings"]) for i in invs):>7}{"":>5}{"":>5}'
       f'{sum(len(i["sections"]) for i in invs):>6}'
-      f'{sum(len(i["fences"]) for i in invs):>6}'
+      f'{sum(_sf(i) for i in invs):>6}{sum(_pf(i) for i in invs):>6}'
       f'{sum(len(i["constructs"]) for i in invs):>6}'
       f'{sum(1 for i in invs for c in i["constructs"] if c["kind"] == "mystery"):>6}'
       f'{sum(len(i["reveals"]) for i in invs):>8}')

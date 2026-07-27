@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.11 (S81) — whole-book consistency gates.
+# book_gates.py v1.12 (S82) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -550,6 +550,56 @@ for f in files:
         if t == 'hint' and any(w in label for w in _ANSWERY):
             bad.append(f'{L(f)} line {ln}: data-reveal="hint" but label promises an answer')
 gate('§25.11 reveal label agrees with reveal type', bad)
+
+# ---- §6.8a (S82 DJ ruling): THE SECTION FENCE IS GENERATED FROM THE ANCHOR SPINE.
+# ---- DJ, on being offered a widened detector: "Why widen the fence. Can't we just fix
+# ---- the issues that are causing the fence issues." The fence had never been canonized
+# ---- (zero rules in the Bible before v8.68), so it drifted five ways across ten lessons
+# ---- and lesson_inventory.py's narrow matcher was blind in five of them — which is why
+# ---- L09's missing §7 looked like the only fence gap when there were nine.
+# ---- The fence is DERIVED, so this gate compares the file against a regenerated
+# ---- expectation rather than against a vocabulary: number and title must both agree
+# ---- with the anchor the fence precedes, and any near-miss comment fails loudly.
+bad = []
+_EQ = '=' * 21
+_FENCE = re.compile(r'<!-- ' + re.escape(_EQ) + r' SECTION (\S+): (.*?) ' + re.escape(_EQ) + r' -->')
+_CORE = ('1', '2', '3', '4', '5', '6', '7', '8', '8a', '9', '10')
+
+
+def _fence_title(s):
+    t = html.unescape(s).strip()
+    while t and not t[0].isalnum():
+        t = t[1:].lstrip()
+    if t.lower().startswith('section'):
+        c = t.find(':')
+        if c >= 0:
+            t = t[c + 1:].strip()
+    for d in ('\u2014', '\u2013', ' - '):
+        if d in t:
+            t = t.split(d, 1)[0].strip()
+    return re.sub(r'\s+', ' ', t).upper()
+
+
+for f in files:
+    s = R[f]
+    for m in re.finditer(r'<!--(.*?)-->', s, re.S):
+        body = re.sub(r'\s+', ' ', m.group(1)).strip().strip('= ').strip()
+        p = body.split(None, 1)
+        if len(p) > 1 and p[0].upper() == 'SECTION' and not body.upper().startswith('TITLE'):
+            if not _FENCE.fullmatch(m.group(0)):
+                ln = s.count('\n', 0, m.start()) + 1
+                bad.append(f'{L(f)} line {ln}: non-canonical section fence: {body[:44]}')
+    want = []
+    for am in re.finditer(r'id="section-([0-9]+[a-z]?)"', s):
+        if am.group(1) not in _CORE:
+            continue
+        gt = s.find('>', am.start())
+        want.append((am.group(1).upper(), _fence_title(s[gt + 1:s.find('<', gt)])))
+    got = [(m.group(1).upper(), m.group(2)) for m in _FENCE.finditer(s)]
+    if got != want:
+        diff = [a for a in want if a not in got] or [a for a in got if a not in want]
+        bad.append(f'{L(f)}: {len(got)} fences vs {len(want)} anchors; first disagreement {diff[:1]}')
+gate('§6.8a section fence generated from the anchor spine', bad)
 print('=' * 52)
 
 if FAIL:
