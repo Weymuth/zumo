@@ -27,7 +27,7 @@
 L01 v03.10.2 · L02 **v03.0.1** · L03 v03.14.0 · L04 v04.7.0 · L05 v04.9.2 · L06 v04.12.1 ·
 L07 v04.8.1 · L08 **v04.7.3** · L09 **v05.5.1** · L10 v02.5.2 · L11 v02.7.2 · L12 **v01.7.3** ·
 L13 v02.6.2 · L14 v02.8.2 · L15 v02.6.2 · L16 v02.5.2
-Bible **v8.67** · Maker v2.45.1 · book_gates **v1.11 (25 gates)** · **lesson_inventory v1.0 (NEW)** ·
+Bible **v8.67.1** · Maker v2.45.1 · book_gates **v1.11 (25 gates)** · **lesson_inventory v1.0.1 (NEW)** ·
 Gate v1.6 · Harness v3.0 · pill_sweep v1.0
 
 Brain Check family: NINE of sixteen — L01–L09. Column byte-identical in all nine:
@@ -41,7 +41,7 @@ the nine new labels are parse- and gate-verified only** — they want DJ's eyeba
 
 ## DONE IN S81
 
-### 1. NEW TOOL `lesson_inventory.py` v1.0 — S81 PRIMARY (a), approved at S80
+### 1. NEW TOOL `lesson_inventory.py` v1.0.1 — S81 PRIMARY (a), approved at S80
 One parse per lesson → the full structural table. Views `--versions --sections --headings --constructs
 --reveals --braincheck --anomalies --json`, filterable to one lesson (`lesson_inventory.py 09`).
 **No exit code, no pass/fail** — §24.6a, a parser is necessary and not sufficient. Pass/fail is
@@ -162,8 +162,8 @@ Solution-disclosure · monetization/ebook · "Know Your Zumo" page — **note:**
 
 ## PUSH LIST — S81 (nine files)
 `lessons/Lesson_02.html` (v03.0.1) · `lessons/Lesson_08.html` (v04.7.3) · `lessons/Lesson_09.html`
-(v05.5.1) · `lessons/Lesson_12.html` (v01.7.3) · `ZUMO_SUPER_BIBLE.md` (v8.67) · `book_gates.py` (v1.11) ·
-`lesson_inventory.py` (**NEW**, repo root) · `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_S82_HANDOFF.md`.
+(v05.5.1) · `lessons/Lesson_12.html` (v01.7.3) · `ZUMO_SUPER_BIBLE.md` (v8.67.1) · `book_gates.py` (v1.11) ·
+`lesson_inventory.py` v1.0.1 (**NEW**, repo root) · `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_S82_HANDOFF.md`.
 No `git rm` lines. Maker untouched. Push order does not matter this batch — no images, no payloads.
 **After pushing:** fresh `git clone --depth 1` into a NEW directory, allow ~20–30 s for propagation, grep a
 version out of it, and run `book_gates.py` (25/25) against the clone.
