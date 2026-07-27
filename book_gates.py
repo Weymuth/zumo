@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.16 (S84) — whole-book consistency gates.
+# book_gates.py v1.17 (S85) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -785,6 +785,100 @@ for f in files:
 if converted != 9:
     bad.append(f'COVERAGE: {converted} converted lessons scanned, expected 9')
 gate('§25.10h Brain Check 01 seats above §6 at body level; 02-04 sit in the §10 panel', bad)
+
+# ---- §4.5: the bonus-block banner is generated from the three-family table.
+# Three families, one mark and one word each. Byte-canonicity and PLACEMENT are asserted
+# INDEPENDENTLY (the S84 lesson: an encoding drift must never be able to hide a misplaced
+# banner), and the count word is verified against the real card count.
+BONUS_MARK = {'practice': '&#128296;', 'observation': '&#128269;',
+              'sabotage': '&#128373;&#65039;'}
+BONUS_WORD = {'practice': 'Extra Practice', 'observation': 'Observation',
+              'sabotage': 'Sabotage'}
+BONUS_NUM = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7}
+BONUS_TABLE = {
+    '02': ('practice', 'Six', 'Code Challenges'),
+    '03': ('practice', 'Six', 'Motor Challenges'),
+    '04': ('observation', 'Five', 'Sensor Experiments'),
+    '05': ('observation', 'Six', 'Proximity Experiments'),
+    '06': ('observation', 'Five', 'Encoder Experiments'),
+    '07': ('observation', 'Five', 'Multi-File Experiments'),
+    '08': ('sabotage', 'Five', 'Line-Following Mysteries'),
+    '09': ('sabotage', 'Five', 'State-Machine Mysteries'),
+    '10': ('sabotage', 'Five', 'Obstacle Mysteries'),
+    '11': ('sabotage', 'Four', 'Gap Mysteries'),
+    '12': ('sabotage', 'Four', 'Gyro Mysteries'),
+    '13': ('sabotage', 'Four', 'Messed Up Files'),
+    '14': ('sabotage', 'Four', 'Messed Up Files'),
+    '15': ('sabotage', 'Four', 'Messed Up Files'),
+}
+BONUS_HELD = {'16'}          # DJ ruling S85: 2 cards, revisit at 4.
+NAVSIG = 'text-decoration: none; padding: 5px 12px'
+bad = []
+seen = 0
+for f in files:
+    lg, s2 = L(f), R[f]
+    if lg not in BONUS_TABLE:
+        if lg in BONUS_HELD and 'id="bonus-challenges"' in s2:
+            continue
+        if 'id="bonus-challenges"' in s2:
+            bad.append(f'{lg}: has a bonus block but is not in the family table')
+        continue
+    seen += 1
+    fam, count, noun = BONUS_TABLE[lg]
+
+    # (a) byte-canonicity of the banner block
+    want = ('<div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">'
+            f'{BONUS_MARK[fam]} {BONUS_WORD[fam]}: {count} {noun}</div>')
+    m = re.search(r'<div id="bonus-challenges".*?</div>', s2, re.S)
+    if not m:
+        bad.append(f'{lg}: no bonus banner div')
+        continue
+    if m.group(0) != want:
+        bad.append(f'{lg}: banner not byte-canonical\n           got  {m.group(0)}'
+                   f'\n           want {want}')
+
+    # (b) PLACEMENT, asserted independently of the bytes above
+    cap = s2.rfind('<div', 0, m.start())
+    capstyle = s2[cap:s2.find('>', cap)]
+    if '#6c757d' not in capstyle or 'border-radius: 8px 8px 0 0' not in capstyle:
+        bad.append(f'{lg}: bonus banner is not seated in a gray cap div')
+    after = s2[m.end():m.end() + 260]
+    if not re.match(r'\s*</div>\s*<div style="border: 2px solid #6c757d', after):
+        bad.append(f'{lg}: gray cap is not fused to the bordered bonus panel')
+
+    # (c) the count word is true
+    g = s2.find('id="glossary"')
+    seg = s2[m.end():g] if g > m.end() else s2[m.end():]
+    tagged = re.findall(r'<h[34][^>]*data-challenge="([^"]*)"', seg)
+    bnum = set(re.findall(r'\bB([1-9])\b\s*&mdash;', seg))
+    h4 = [x for x in re.findall(r'<h4[^>]*>(.*?)</h4>', seg, re.S)
+          if 'Reveal' not in x and 'verbatim' not in x]
+    real = len(tagged) or len(bnum) or len(h4)
+    if real != BONUS_NUM[count]:
+        bad.append(f'{lg}: banner claims {count} ({BONUS_NUM[count]}) '
+                   f'but the block holds {real} cards')
+
+    # (d) no stray or doubled mark, and the retired label is gone
+    inner = m.group(0)[m.group(0).find('>') + 1:-6]
+    for stray in ['\U0001f528', '\U0001f50d', '\U0001f9e9', '\U0001f575']:
+        if stray in inner:
+            bad.append(f'{lg}: raw UTF-8 mark survived in the banner')
+    if inner.count('&#128373;') > 1 or inner.count('&#128296;') > 1:
+        bad.append(f'{lg}: banner mark is doubled')
+    if 'Bonus' in inner:
+        bad.append(f'{lg}: banner still carries the retired label "Bonus"')
+
+    # (e) the nav pill carries the family word
+    navs = [mm for mm in re.finditer(r'<a href="#bonus-challenges"([^>]*)>([^<]*)</a>', s2)
+            if NAVSIG in mm.group(1)]
+    if len(navs) != 1:
+        bad.append(f'{lg}: expected exactly 1 bonus nav pill, found {len(navs)}')
+    elif navs[0].group(2) != BONUS_WORD[fam]:
+        bad.append(f'{lg}: nav pill reads {navs[0].group(2)!r}, '
+                   f'expected {BONUS_WORD[fam]!r}')
+if seen != 14:
+    bad.append(f'COVERAGE: {seen} lessons scanned against the family table, expected 14')
+gate('\u00a74.5  bonus banner generated from the three-family table, placement asserted', bad)
 
 print('=' * 52)
 
