@@ -9,7 +9,14 @@
 6. **Verify the push landed by grepping a version out of the clone, never by reading the commit message.**
    S79 opened on a tree missing S78's work; S80 opened on `f28ab4c` "Session80 push" which carried **S79's**
    deliverables. The label runs one ahead, reliably. The GitHub API (`/commits/{sha}`) lists changed files.
-7. **NEW — a grep is a lead; a parser is the witness.** S80's opening report was wrong three times because a
+7. **LIVE.md has TWO version homes in its header, not three.** The *"verify internal version"* banner
+   recorded in older paperwork **no longer exists in the file** — only `**Date:**` and `**Versions:**` carry
+   version claims. Do not hunt for a third.
+8. **Regenerating LIVE.md means the BODY too, not just the banner lines.** S80 pushed a LIVE.md whose header
+   read Session 80 while the newest `## WHAT SHIPPED THIS BATCH` block still read S79 — §12.6 staleness
+   inside the file that exists to prevent it. Caught only on the post-push triple-check. **Dump every `## `
+   header as a list and read it before declaring LIVE.md done.**
+9. **NEW — a grep is a lead; a parser is the witness.** S80's opening report was wrong three times because a
    keyword-filtered `<h4>` grep hid two live blocks and a single-line regex missed 28 headings. The HTML
    parser found 63. Enumerate structure with a parser before scoping anything.
 
@@ -66,14 +73,16 @@ attribute-only, by offset, with a +4-bytes-per-edit length assert. L08 → **v04
 unchanged per §5b).
 
 ## S81 QUEUE
-1. **OPEN RULING — L09's three parked *Problem-Solving* extensions.** Recorded verbatim in
+1. **RULED S80 — L09's three parked *Problem-Solving* extensions STAY PARKED.** DJ: *"No keep them in que."* Do not reopen unprompted; the analysis below is preserved for whenever it is picked up.
+   **Original finding —** Recorded verbatim in
    `ZUMO_PARKED_EXIT_ITEMS.md`. DJ ruled at S80 to reshape them into mysteries 6–8; that is blocked on a
    discovery, not on authoring. **Every L09 construct links its own Maker payload kind** — all six
    challenges and all five mysteries — so each new mystery needs a new sabotaged 8-file payload in
    `newproject.html` (**5.2 MB**, edited by offset per §15) plus a byte-match gate run. And a mystery is a
    planted *defect* while these three are *extensions* — item 1, "add a `PAUSED` state," has nothing to
    sabotage. **Bonus challenges are the likelier correct target: same payload cost, no invented bug.**
-2. **§20.1 GATE HAS TWO LOGGED DEFECTS, NEITHER FIXED.**
+2. **S81 PRIMARY — APPROVED BY DJ: fix the §20.1 gate's per-card bounding.** It is now the blocker on
+   bonus-challenge leak coverage in L02/L03 as well. **Two logged defects:**
    - **Its per-card bounding bleeds.** It reported 3/8/17-line blocks recurring across 9.m3/9.m4/9.m5;
      the truth is one block each at **5/8/2** lines. Same nested-card bounding defect that keeps
      bonus-challenge leak coverage SUSPECTED in L02/L03. **The failure was diagnosed by reading the three
@@ -106,7 +115,6 @@ unchanged per §5b).
     Noticed in passing, structure gate passes, unexamined.
 
 ## OPEN — NEEDS A DJ RULING
-- **The three parked L09 extensions** (queue item 1) — mysteries vs bonus challenges.
 - **L02 `2.t4`'s `check` reveal** — carried from S79, holds the full worked code for a TRY IT the card
   tells students to translate themselves. `check` is KEPT by §20.1. **The S80 mystery ruling is the
   nearest precedent and points the same way.**
@@ -128,10 +136,13 @@ quizzes (book first, then Canvas).
 Solution-disclosure · monetization/ebook · "Know Your Zumo" page — **note:** it has a home now, as L01's
 §4 Hardware, with Install moving down.
 
-## PUSH NOTE — files changed this session
-`lessons/Lesson_09.html` (v05.5.0) · `lessons/Lesson_08.html` (v04.7.2) ·
-`ZUMO_SUPER_BIBLE.md` (v8.66) · `ZUMO_PARKED_EXIT_ITEMS.md` · `LIVE_ZUMO_TEXTBOOK.md` ·
-`ZUMO_S81_HANDOFF.md`. **`book_gates.py` is UNCHANGED at v1.10** — the ruling fixed the book, not the gate.
+## PUSH NOTE — S80 shipped in TWO pushes
+**First push (landed, commit `12c44d8`, labelled "Session 81 Pushj" — labels run one ahead):**
+`lessons/Lesson_09.html` (v05.5.0) · `lessons/Lesson_08.html` (v04.7.2) · `ZUMO_SUPER_BIBLE.md` (v8.66) ·
+`ZUMO_PARKED_EXIT_ITEMS.md` · `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_S81_HANDOFF.md`.
+All six verified **md5-identical** to the delivered files, gates 24/24 PASS against a fresh clone.
+**Second push (the LIVE.md body fix):** `LIVE_ZUMO_TEXTBOOK.md` + this handoff. No version numbers moved.
+**`book_gates.py` is UNCHANGED at v1.10** — the ruling fixed the book, not the gate.
 
 ---
 *Written at S80 close, July 26 2026. The session's shape was that every instrument failed before the work

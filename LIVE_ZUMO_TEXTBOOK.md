@@ -7,7 +7,73 @@
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S79 — the strip list is a whitelist)
+## WHAT SHIPPED THIS BATCH (S80 — L09 joins the Brain Check family)
+
+**1. L09 v05.4.2 → v05.5.0 — the ninth conversion, and its ancestors were FOUR, not the two on record.**
+§25.10f recorded *Technical Skills: Can you…?* and *Knowledge Check*. The file also holds **Conceptual
+Understanding** (4 Q&A, answers in open prose, **no reveal at all**) and **Problem-Solving** (4). Both were
+missed because the scoping grep was keyword-filtered and because all three of the first constructs are
+`<h4>` — only *Knowledge Check*, the one block already correctly typed, is an `<h3>`. An HTML parser found
+**63 headings** where the single-line regex found 35.
+**BC01 Mental (5)** authored at the §5/§6 seam, div depth 0 — L09 had **no Mental ancestor whatsoever**
+(zero `check` reveals, zero pre-§6 `quiz`, zero TRY IT), so the S80 handoff's *"redistribution job, not an
+authoring job"* was wrong. §-ordered: the three calibrated bands (§3.1) · which two sensors carry the
+markers and which boxes they report into (§3.2, §3.3) · the four states (§3.4) · define an enum and what
+`state = 0` costs (§3.5) · the turn strategy this lesson uses and the one it refuses (§3.6).
+**BC02 (7)** = §2's **seven** objectives migrated per §25.5, character-exact, the only change `&#9744;` →
+`☐`. The live *Technical Skills* list held **five** items and was **not** the source — migrating it would
+have joined L09 to the L03/L04/L05 reconciliation debt.
+**BC03 (4)** — see item 2. **BC04 (3)** = L09's live *Reflection: Draw Your State Diagram* migrated plus two
+authored, no reveals. **Engineer's Log is NOT BC04's ancestor**; it survives as a separate block after BC04,
+as in all four prior conversions. *Calibration Data Record* stays outside the family per the S78 ruling.
+Five mysteries tagged `9.m1`–`9.m5` with `data-kind="mystery"` (§4.2).
+
+**2. BC03 — the duplicated ancestor inverted L05's finding, and verbatim migration would have FAILED a gate.**
+§25.10c says diff two duplicating ancestors item by item. Done: **Conceptual Understanding is a strict
+SUPERSET of Knowledge Check** — items 1–3 word-identical, and CU alone carries the enum question. So the
+handoff's prediction that *Knowledge Check* would "land correct by construction" was doubly wrong: at three
+items it **fails §25.8's floor of four**. Per DJ ruling (*"Fix and go with KC"*), BC03 = KC's three answers
+**verbatim, extracted byte-exact rather than retyped**, plus CU's enum item extended to KC's depth.
+**Neither ancestor carried a single §-citation**, so §25.2's name-your-section rule was authored in:
+§3.1 · §3.4 · §3.6 · §3.5. Shape is question-in-summary — the **6/8 majority** (L01–L06); L07/L08 use prose
+plus a "Show answer" summary and are the drift.
+
+**3. DJ RULING — the mystery reveal is a `solution`, not a `hint` (Bible §25.10g).** Tagging L09's mysteries
+made them visible to the §20.1 gate for the first time and it **failed**. Reading the three cards showed the
+flagged code was the *planted defect* — labelled in the file *"The planted constant:"* and *"as planted:"*,
+the exact phrases §11 (v8.17) names — so the instinct was to exempt mysteries from the gate. DJ instead
+asked *"Wouldn't we want it to have a solution drop down?"*, and that is the correct fix: §11 governs
+**display**, not reveal **type**, and §20.1 (v8.37) already said in writing that a debugging-mystery bug+fix
+reveal must be `solution` or it leaks. **L11 had been compliant since it was written** (four mysteries, all
+`solution`), so this was a drift against live precedent, not a coin-flip. Census: planted code inside a
+`hint` existed in exactly **two** lessons — **L08 (4 blocks)** and **L09 (5)**; L05/L06/L07 mysteries carry
+hints with no code, which is why it stayed invisible for nine sessions. **The gate had passed L08 on snippet
+length alone** — §20.1 requires ≥3 statement lines and L08's planted snippets run 1–2. Retyped
+attribute-only, edited by offset, with a +4-bytes-per-edit length assert. L08 → **v04.7.2**, visible banner
+unchanged per §5b. L09 now carries **zero** `hint` reveals: 9 `quiz`, 18 `solution`.
+**book_gates.py is UNCHANGED at v1.10** — the ruling fixed the book, not the gate.
+
+**4. Two §20.1 gate defects logged, neither fixed.** Its **per-card bounding bleeds**: it reported
+3/8/17-line blocks recurring across `9.m3`/`9.m4`/`9.m5` where the truth is one block each at **5/8/2**
+lines — the same nested-card bounding defect that keeps bonus-challenge leak coverage SUSPECTED in L02/L03.
+The failure was diagnosed by **reading the cards**; the gate's own line counts were fiction. It also has no
+notion of `data-kind="mystery"`, which nothing breaks under the current ruling but would need re-reasoning
+if the ruling inverts.
+
+**5. PARKED — L09's three *Problem-Solving* extensions**, recorded verbatim with provenance in
+`ZUMO_PARKED_EXIT_ITEMS.md`. DJ approved folding the block into BC02, but §25.10c's achievability rule
+overrides: none is a baseline skill, so behind BC02's Mark-done lock the button becomes unreachable. The
+block's fourth item was an explicit *Reflection:* duplicate of L09's live reflection block and was retired
+into it (S73 L03 precedent). DJ then ruled to reshape the three into mysteries 6–8; **blocked on discovery,
+not authoring** — every L09 construct links its own Maker payload kind, so each new mystery needs a new
+sabotaged 8-file payload in `newproject.html` (**5.2 MB**, edited by offset per §15) plus a byte-match gate
+run, and a mystery is a planted *defect* while these three are *extensions*. Item 1, *"add a `PAUSED`
+state,"* has nothing to sabotage. **Bonus challenges are the likelier target: same payload cost, no invented
+bug.** Needs a ruling.
+
+---
+
+## WHAT SHIPPED PREVIOUSLY (S79 — the strip list is a whitelist)
 
 **1. L01 v03.10.0 → v03.10.1 — the leak. Challenge 11 *Add a Battery Check*.**
 The card gives the student `if (voltage < ______)` and asks them to choose a threshold and write the
