@@ -22,6 +22,10 @@
 10. **A grep is a lead; a parser is the witness — and a parser built against observed practice
     inherits that practice as its definition.** See the S82 fence story below.
 11. **Never `open(path,'w')` on a source file.** Build bytes, assert, write `.tmp`, `os.replace`.
+12. **Read `PUSH_WORKFLOW.md` before writing any delivery instruction.** DJ pushes with **GitHub
+    Desktop** — copy files into the clone, tick the changed files, commit, push. Git CLI commands are
+    wrong for him. The zip exists (Option A in that file) to remove the rename step between versioned
+    delivery names and the repo's stable names.
 
 ## LIVE STATE at S82 close — VERIFIED, gates 26/26 PASS
 L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** ·
@@ -195,6 +199,22 @@ No `git rm` lines. Maker untouched, no images, no payloads — **push order does
 **S82b SECOND PUSH (six files, the S82 batch already landed as `fb70426`):**
 `lessons/Lesson_06.html` (v04.12.3) · `lessons/Lesson_07.html` (v04.8.3) · `ZUMO_SUPER_BIBLE.md`
 (v8.68.1) · `book_gates.py` (v1.13) · `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_S83_HANDOFF.md`.
+
+**⚠️ ONE DELETION RIDES THIS PUSH — `ZUMO_S82_HANDOFF.md`. A zip cannot delete (§12.2).**
+DJ works in **GitHub Desktop** (`PUSH_WORKFLOW.md`), not the git CLI, so **do not hand him `git rm`** —
+S82 did, and it was wrong for his workflow. In GitHub Desktop a deleted file appears in the **Changes**
+list as its own entry with its own **checkbox**; if that box is not ticked, the deletion stays out of the
+commit while every other change goes up. That is what happened at `fb70426`: DJ had already deleted the
+file locally (screenshot-confirmed) and a fresh clone of that tip still carried it.
+
+**THE RULE THIS ADDS: VERIFY A DELETION EXACTLY LIKE A VERSION — clone fresh and list the root. Never
+trust the local working tree, and never trust that a deletion rode along with a file-overwrite batch.**
+A deletion is the one change a zip delivery structurally cannot carry, which makes it the one change
+with no artifact backing it up.
+
+After this push the root should carry exactly ONE session handoff (`ZUMO_S83_HANDOFF.md`). Note
+`ZUMO_LEARNMODE_L04_HANDOFF.md` also matches "HANDOFF" but is a §19 learner-mode record, **not** a
+session handoff — leave it alone.
 
 **After pushing:** fresh `git clone --depth 1` into a NEW directory, allow ~20–30 s for propagation,
 grep a version out of it, and run `book_gates.py` (26/26) against the clone.
