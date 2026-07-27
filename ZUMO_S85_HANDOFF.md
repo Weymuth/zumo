@@ -4,7 +4,7 @@
 1. Clone fresh: `git clone --depth 1 https://github.com/Weymuth/zumo.git`
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. `grep -oE "Bible version: v[0-9.]+" ZUMO_SUPER_BIBLE.md` — confirm internal.
-4. `python3 book_gates.py` — all **27** must PASS (gate file **v1.15**). Then
+4. `python3 book_gates.py` — all **29** must PASS (gate file **v1.16**). Then
    `python3 pill_sweep.py --audit lessons/Lesson_*.html`.
 5. `python3 lesson_inventory.py` (**v1.0.4**) — the structural census; then `--anomalies`.
    No exit code, no pass/fail by design (§24.6a) — it is there to be READ. `--anomalies`
@@ -19,7 +19,10 @@
    OWN historical `**Versions:**` line (S63's, now ~line 926). **Assert on the HEADING, not the
    substring.**
 10. **Never `open(path,'w')` on a source file.** Build bytes, assert, write `.tmp`, `os.replace`.
-11. **Read `PUSH_WORKFLOW.md` before writing any delivery instruction.** DJ pushes with **GitHub
+11. **Read `PUSH_WORKFLOW.md` before writing any delivery instruction** — it now owns the
+    DELETION procedure (§12.2, moved there S84 because it had been living only in the handoff being
+    deleted). **Gate 28 asserts the root carries exactly one session handoff**, so a missed deletion
+    fails a gate rather than waiting to be noticed. DJ pushes with **GitHub
     Desktop** — copy files into the clone, tick the changed files, commit, push. Git CLI commands are
     wrong for him. **Never hand DJ `git rm`.**
 
@@ -30,16 +33,25 @@
     sixteen had four visible banners; two of the four "zero" lessons had comments the matcher
     could not see. Checking the premise cost one read and turned up a defect class nobody had
     named. **Read the item's own framing before you scope work to it.**
+14. **A QUOTED NORM IS A LEAD, LIKE A QUOTED FINDING.** The S83 handoff recorded the Brain Check
+    norm as *"BC01 under `<body>`, 8 of 9"*. It was 9/9 — the count predated S83's own L06 fix.
+    Recount a norm against the files before canonizing or gating it.
+15. **ASK WHAT A COMPONENT SITS ON, NOT ONLY WHETHER IT EXISTS.** Placement has now been the
+    unasserted half three times running: S82 the section anchor, S84 batch 1 the PART banner, S84
+    batch 2 the Brain Check. Every gate asked whether the block was present; none asked what it was
+    nested in.
+16. **A PROCEDURE STORED INSIDE THE ARTEFACT IT OPERATES ON IS NOT STORED.**
+
 13. **§24.6b IS NOT "ASSERT SOMETHING CHANGED".** It is *assert the injection landed in the shape
     you intended*, re-parsed and read back. S84's placement control PASSED on its first run with
     an innocent gate: the test extracted the block by truncating at its first `</div>`, which is
     the **title** div, so only a fragment moved and `blk in s2` passed on a surviving prefix.
 
-## LIVE STATE at S84 close — VERIFIED, gates 27/27 PASS
-L01 v03.10.4 · L02 v03.0.3 · L03 v03.14.2 · **L04 v04.8.0** · **L05 v04.10.0** · L06 v04.12.5 ·
+## LIVE STATE at S84 close — VERIFIED, gates 29/29 PASS
+L01 v03.10.4 · L02 v03.0.3 · **L03 v03.14.3** · **L04 v04.8.0** · **L05 v04.10.0** · L06 v04.12.5 ·
 L07 v04.8.4 · L08 v04.7.5 · L09 v05.5.3 · L10 v02.5.4 · L11 v02.7.4 · **L12 v01.8.0** ·
 **L13 v02.7.0** · **L14 v02.9.0** · L15 v02.6.4 · L16 v02.5.4 — **all sixteen changed this session.**
-Bible **v8.70** · Maker v2.45.1 · book_gates **v1.15 (27 gates)** · **lesson_inventory v1.0.4** ·
+Bible **v8.71** · Maker v2.45.1 · book_gates **v1.16 (29 gates)** · **lesson_inventory v1.0.4** ·
 **gen_part_banners v1.0 (NEW)** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0
 
 Bold five are MODERATE bumps (rendering changed, both visible banners moved per §5b). The other
@@ -77,16 +89,9 @@ DJ ruled all three open questions in one line: *"Fix them all. Add to bible if n
    INDEPENDENTLY so an encoding drift can never hide a misplaced banner.
 
 ## OPEN — NEEDS A DJ RULING
-1. **Brain Check placement has no rule** (surfaced S83 by fixing L06). Family norm is BC01 directly
-   under `<body>`, 8 of 9 — observed practice, zero canon, the §6.8a shape. A placement gate is the
-   obvious follow-on and wants a ruling first. **S84 makes this more pressing, not less: placement
-   was exactly the unasserted half that let five PART banners ship wrong.**
-2. **The weeding criterion** (old queue item 10) — §25.8 enforces the floor of 4; nothing says what
+1. **The weeding criterion** (old queue item 10) — §25.8 enforces the floor of 4; nothing says what
    makes a BC03 item weakest. L02 (7), L07 (6), L08 (6) are the candidates. **Blocks the weeding pass.**
-3. **L03's three non-divider PART comments** — `End Part 1 content` / `PART 2 build continues` /
-   `End Part 3 content`. Deliberately preserved by S84's sweep (they are notes, not dividers) and
-   they are the only instances of their kind in the book. Retire them, or leave them?
-4. **Carried:** `<title>`/strip tooltips vs hero title (L01/L02/L03/L08/L15) · L16 zero challenge
+2. **Carried:** `<title>`/strip tooltips vs hero title (L01/L02/L03/L08/L15) · L16 zero challenge
    cards (nineteen sessions now) · spiral marking format review · DJ tier pass + rolling depth read
    (L14 first) · copyright line (RoboLore, work-for-hire) · bonus-challenge pill + livery when they
    move to §9.
@@ -97,7 +102,7 @@ DJ ruled all three open questions in one line: *"Fix them all. Add to bible if n
 2. **OTHER GATES WORTH WRITING** (carried): placeholder gate (`{[A-Z_]+}` in an attribute value) ·
    §4.2 coverage gate (every bonus/mystery `<h4>` carries `data-challenge`) — **load-bearing** since
    S83 established §20.1 and §20.2 only cover the leak surface as a pair · within-lesson promise
-   gate (§25.10d) · §25.2 §-citation presence gate · **Brain Check placement gate (needs ruling 1)**.
+   gate (§25.10d) · §25.2 §-citation presence gate. *(Brain Check placement gate: DONE, gate 29.)*
 3. **RULED S80, STILL PARKED — L09's three *Problem-Solving* extensions.** DJ: *"No keep them in
    que."* Recorded verbatim in `ZUMO_PARKED_EXIT_ITEMS.md`. Blocked on payload work, not authoring:
    every L09 construct links its own Maker payload kind, so each needs a new sabotaged 8-file payload
@@ -137,28 +142,17 @@ real defects fixed) · the L04 PART 2 title item (fixed).
 Solution-disclosure · monetization/ebook · "Know Your Zumo" page — **note:** it has a home now, as
 L01's §4 Hardware, with Install moving down.
 
-## PUSH LIST — S84 (21 files)
-All sixteen `lessons/Lesson_NN.html` · `ZUMO_SUPER_BIBLE.md` (v8.70) · `book_gates.py` (v1.15) ·
-`lesson_inventory.py` (v1.0.4) · `gen_part_banners.py` (v1.0, NEW) · `LIVE_ZUMO_TEXTBOOK.md` ·
-`ZUMO_S85_HANDOFF.md`.
+## PUSH LIST — S84 batch 2 (6 files, batch 1 already pushed)
+`lessons/Lesson_03.html` (v03.14.3) · `ZUMO_SUPER_BIBLE.md` (v8.71) · `book_gates.py` (v1.16) ·
+`PUSH_WORKFLOW.md` · `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_S85_HANDOFF.md` (this file, replaced).
 Maker untouched, no images, no payloads — **push order does not matter.**
 
-**⚠️ ONE DELETION RIDES THIS PUSH — `ZUMO_S84_HANDOFF.md`. A zip cannot delete (§12.2).**
-In GitHub Desktop a deleted file appears in the **Changes** list as its own entry with its own
-**checkbox**. **If that box is not ticked the deletion stays out of the commit** while every other
-change goes up — which is exactly what happened at `fb70426`. Delete `ZUMO_S84_HANDOFF.md` locally,
-then confirm its checkbox is ticked before committing.
-
-**VERIFY A DELETION EXACTLY LIKE A VERSION — clone fresh and list the root.** Never trust the local
-working tree, and never trust that a deletion rode along with a file-overwrite batch. (This worked
-at S84 open: the root carried exactly one session handoff, so S83's deletion did land.)
-
-After this push the root should carry exactly ONE session handoff (`ZUMO_S85_HANDOFF.md`). Note
-`ZUMO_LEARNMODE_L04_HANDOFF.md` also matches "HANDOFF" but is a §19 learner-mode record, **not** a
-session handoff — leave it alone.
+**NO DELETION RIDES THIS PUSH.** The root already carries exactly one session handoff and this batch
+replaces it in place. Gate 28 will confirm it after the push.
 
 **After pushing:** fresh `git clone --depth 1` into a NEW directory, allow ~20–30 s for propagation,
-grep a version out of it, and run `book_gates.py` (27/27) against the clone.
+grep a version out of it, and run `book_gates.py` (29/29) against the clone — gate 28 now
+checks the handoff count for you.
 
 ---
 *Written at S84 close, July 27 2026. The session's shape was that the queue's top item was

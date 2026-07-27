@@ -1,13 +1,62 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 27, 2026 (Session 84 — **THE QUEUE'S BIGGEST STRUCTURAL ITEM HAD A FALSE PREMISE, AND UNDER IT SAT FIVE BANNERS CAPPING THE WRONG SECTION**: the item read *"L02/L06/L15/L16 carry zero PART banner comments"*. All sixteen lessons in fact carry four visible banners in the correct twelve colors, and half the zeros were a matcher artifact — `lesson_inventory` required the `=` wrapper, so L02's `PART 1: THE CHALLENGE` and L06's `PART 1 DIVIDER` counted as none. What the read DID find: **L12 PART 3, L13 PART 3+PART 4 and L14 PART 3+PART 4 each sat one section boundary early**, and because the cap is FUSED to the banner beneath it, L13 shipped a plum *"PART 4 — Challenges / Section 9"* welded onto §7's rose Calibration Ladder — visible on every page load, invisible to all 26 gates. Plus L04's PART 2 title (logged S72), L05's PART 2 and PART 4 subtitles claiming sections they do not own, and a comment construct drifted **eight formats across 51 instances**, several of them naming the wrong PART. Resolved as ONE GENERATE per the §6.8a precedent: **64 canonical blocks written, `part` 41 → 64**. Bible **v8.70**, book_gates **v1.15 (27 gates)**, lesson_inventory **v1.0.4**, gates **27/27 PASS**.)
-**Status:** **ALL SIXTEEN LESSONS PASS 27 GATES — AND THE GATE THAT FOUND THIS WAS NOT LOOKING FOR IT.** S83 closed on the rule that a gate which never fires may only be badly aimed. S84 is the companion: **a queue item is a lead too, and this one had been mis-scoped for two sessions.** Its premise — missing banners — was false, and checking it cost one read; what the same read turned up was a class of defect nobody had written down, because every existing gate asked whether the banner EXISTED and none asked what it sat on top of. Placement was the unasserted half, exactly as §6.8a's anchor placement was the unasserted half at S82. **The Bible's own snippet was the stale one** here: it specified a detached box (`border-radius: 8px; margin: 22px 0 10px`) against 64/64 live blocks at `8px 8px 0 0` / `22px 0 0`, and since those two properties are what fuse the cap to the section beneath, the snippet had been describing a component the book does not contain. The sweep is defined on the CONSTRUCT and not the lesson: **L02's `<!-- ==== -->` rule idiom legitimately yields 10 pre-existing adjacent rule pairs**, so the tempting cleanup — absorb any rule comment abutting a divider — would have eaten real content in the one lesson that uses them, which is why a cleanup rule is checked against its WORST lesson before adoption. **The most useful thing this session produced was a failed control**: the placement injection PASSED on its first run and the gate was innocent — the test had truncated the block at its first `</div>`, which is the *title* div, so only a fragment moved and the `blk in s2` assert passed on a surviving prefix. §24.6b is not "assert something changed", it is **assert the injection landed in the shape you intended**. **NOT verified: the rendered Pages site** (sandbox blocks weymuth.github.io) — five banners moved and two lessons' banner text changed, so L12/L13/L14 §6–§7 and L04/L05 want an eyeball.
+**Date:** July 27, 2026 (Session 84, batch 2 — **TWO RULES WRITTEN FOR DEFECTS THAT HAD ALREADY HAPPENED**: §25.10h canonizes Brain Check placement, which had no rule and drifted exactly once — L06's BC01 inside §5's panel, fixed S83 — and **the norm is 9/9, not the 8/9 the S83 handoff recorded**, because that figure was counted before S83's own fix landed. §12.2 moves the deletion procedure OUT of the session handoff and into `PUSH_WORKFLOW.md`: it had been documented only inside the very file being deleted, so it vanished at the moment it was needed and was missed twice — `fb70426`, and again in this session's first push, where all 21 overwrites landed cleanly and only the deletion stayed behind. **book_gates v1.16, 29 gates**, gates 28 and 29 both control-run against the historical defect they exist to catch. Also: L03's three non-divider PART notes retired (**v03.14.3**) — `End Part 3 content` sat 163 lines inside the untitled tail AFTER PART 4, already lying. Bible **v8.71**, gates **29/29 PASS**.)
+**Status:** **A PROCEDURE STORED INSIDE THE ARTEFACT IT OPERATES ON IS NOT STORED.** Batch 1 closed on the rule that a queue item's premise is a lead. Batch 2 is the same lesson applied to this project's own paperwork, twice over. The instruction for deleting the session handoff lived in the session handoff, so every session re-derived it from the copy about to be destroyed, and it has now failed twice in the identical way — **a push where every overwrite lands and only the deletion is missed looks exactly like a successful push**, which is what makes it recur. It is prose in `PUSH_WORKFLOW.md` now and a gate besides, because §24.2 says a rule without a gate only holds where someone happens to look. The Brain Check ruling is the same shape from the other direction: the construct had a unanimous practice and zero canon, and the one time it drifted, no gate could see it because every existing check asked whether the block EXISTED and none asked what it was nested in — **placement was the unasserted half for the third consecutive time** (S82 the section anchor, S84 batch 1 the PART banner, now the Brain Check). Both new gates were control-run against the real historical defect rather than a synthetic one, and gate 29 reproduces S83's L06 bug and names it in the terms S83 diagnosed it in. Recorded en route: **the "8 of 9" norm in the S83 handoff was already stale when written** — §24.6c now covers a quoted norm, not just a quoted finding. **NOT verified: the rendered Pages site** (sandbox blocks weymuth.github.io); batch 2 changes nothing visible, but batch 1's five moved banners and two text changes still want an eyeball.
 
-**Versions:** L01 **v03.10.4** · L02 **v03.0.3** · L03 **v03.14.2** · L04 **v04.8.0** · L05 **v04.10.0** · L06 **v04.12.5** · L07 **v04.8.4** · L08 **v04.7.5** · L09 **v05.5.3** · L10 **v02.5.4** · L11 **v02.7.4** · L12 **v01.8.0** · L13 **v02.7.0** · L14 **v02.9.0** · L15 **v02.6.4** · L16 **v02.5.4** · Bible **v8.70** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.15 (27 gates)** · **lesson_inventory v1.0.4** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.4** · L02 **v03.0.3** · L03 **v03.14.3** · L04 **v04.8.0** · L05 **v04.10.0** · L06 **v04.12.5** · L07 **v04.8.4** · L08 **v04.7.5** · L09 **v05.5.3** · L10 **v02.5.4** · L11 **v02.7.4** · L12 **v01.8.0** · L13 **v02.7.0** · L14 **v02.9.0** · L15 **v02.6.4** · L16 **v02.5.4** · Bible **v8.71** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.16 (29 gates)** · **lesson_inventory v1.0.4** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S84 — the queue item's premise was false, the defect under it was not)
+## WHAT SHIPPED THIS BATCH (S84 batch 2 — rules for defects that had already happened)
+
+**1. §25.10h — Brain Check placement is canon** (DJ: *"Yes, and add to bible"*). The family had a
+unanimous practice and no rule, which is the §6.8a shape, and it drifted exactly once.
+
+- **BC01** is a direct child of `<body>` and its **next sibling is the banner seating `#section-6`**.
+- **BC02/03/04** sit one div deep, inside the gray `#6c757d` §10 content panel.
+- **BC01's previous sibling is deliberately unspecified** — it legitimately varies (L01/L02 a §5
+  subsection banner, L03 a predict-first box, L04–L09 §5's green panel). Asserting it would gate an
+  accident rather than a rule.
+- Converted lessons only; nine today, L01–L09.
+
+**The norm is 9/9, not the 8/9 the S83 handoff recorded.** That figure was counted before S83's own
+L06 fix landed. **§24.6c now covers a quoted NORM, not just a quoted finding** — recount it against
+the files.
+
+**2. §12.2 — the deletion procedure moves out of the handoff.** It had been documented only inside
+the very file being deleted, so it disappeared at the moment it was needed and was re-authored from
+memory each session. It has now failed twice in the identical way (`fb70426`, and again in this
+session's first push). **A push where every overwrite lands and only the deletion is missed looks
+exactly like a successful push** — that is what makes it recur. The procedure is now a section in
+`PUSH_WORKFLOW.md`. **A procedure stored inside the artefact it operates on is not stored.**
+
+**3. book_gates v1.15 → v1.16, gates 28 and 29.** Both were control-run against the *real historical
+defect*, not a synthetic one:
+
+- **Gate 28** (§12.2) — the root carries exactly one `ZUMO_SNN_HANDOFF.md`, excluding §19
+  learner-mode records. Control-run both directions: two handoffs FAILED and named them, zero
+  FAILED, one PASSED.
+- **Gate 29** (§25.10h) — with a COVERAGE assert at nine converted lessons. Control-run three ways,
+  every injection re-parsed and confirmed in the intended shape before the verdict was read:
+  **L06's S83 defect re-introduced FAILED**, naming `brain-check-01 is 1 div(s) deep — it is inside
+  'border: 2px solid #3a7d5c…'` plus the lost §6 sibling · a BC03 lifted out of the gray panel
+  FAILED · a removed `brain-check-01` id tripped COVERAGE at 8.
+
+**Placement was the unasserted half for the third consecutive time** — S82 the section anchor, S84
+batch 1 the PART banner, now the Brain Check. Every existing check asked whether the block EXISTED;
+none asked what it was nested in. **Ask what a component sits on, not only whether it is there.**
+
+**4. L03's three non-divider PART notes retired** (`End Part 1 content` · `PART 2 build continues` ·
+`End Part 3 content`), per DJ ruling. The deciding evidence was not tidiness: **`End Part 3 content`
+sat at line 3810, where PART 4 had begun at 3014 and §10 at 3647** — it marked the end of PART 3
+from 163 lines inside the untitled tail *after* PART 4. It was already lying, the same failure §6.8
+was rewritten to eliminate. The other two were merely redundant, since a generated divider makes
+every boundary derivable. L03 **v03.14.3**, minor — the notes are invisible, so the visible banner is
+unchanged per §5b.
+
+---
+
+## WHAT SHIPPED PREVIOUSLY (S84 batch 1 — the queue item's premise was false, the defect under it was not)
 
 **1. §6.8 rewritten: the PART divider is GENERATED from the section spine** (DJ: *"Fix them all"* /
 *"Fix and have no drift"* / *"Yes"*). One pass over all sixteen lessons closed four defects that had been

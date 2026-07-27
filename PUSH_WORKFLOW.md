@@ -60,6 +60,36 @@ Two ways to make that painless:
 - **Option B:** keep individual versioned files; you rename as you copy (Windows: F2, or
   copy-paste the name from Claude's table).
 
+## Deletions — the one thing a file batch CANNOT carry
+
+**A zip or a file-copy batch can only ADD and OVERWRITE. It can never delete.** So when a push
+retires a file, the deletion is a separate act, and it is the step that gets missed — it has now
+been missed twice (commit `fb70426`, and again at S84). Both times every overwrite went up cleanly
+and only the deletion stayed behind, which is exactly what makes it easy to miss: the push *looks*
+successful.
+
+**Why it kept happening:** the procedure lived only in the session handoff — i.e. in the very file
+being deleted. It disappeared at the moment it was needed and got re-authored from scratch each
+session. That is why it now lives here instead.
+
+**The procedure:**
+
+1. **Delete the file in your local clone** (Windows Explorer / Finder — normal delete, not a rename).
+2. In GitHub Desktop, the deleted file appears in the **Changes** list as **its own entry with its
+   own checkbox**, usually marked with a red minus.
+3. **Tick that checkbox.** If it is unticked the deletion stays out of the commit while every other
+   change goes up.
+4. Commit and push as normal.
+
+**Verify a deletion exactly like a version — fresh clone, then list the root.** Never trust the
+local working tree, and never assume a deletion rode along with a file-overwrite batch.
+
+**The usual case is the session handoff.** After each push the repo root should carry exactly ONE
+`ZUMO_SNN_HANDOFF.md`. `book_gates.py` gate 28 (§12.2) now asserts this, so a missed deletion fails
+the gate at the next run instead of waiting to be noticed. Note `ZUMO_LEARNMODE_*_HANDOFF.md` also
+matches "HANDOFF" but is a §19 learner-mode record, **not** a session handoff — leave it alone, and
+the gate excludes it by construction.
+
 ## Verification is unchanged
 
 After you push, Claude still fresh-clones and md5-verifies every file, and checks WHICH

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.15 (S84) — whole-book consistency gates.
+# book_gates.py v1.16 (S84) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -727,6 +727,64 @@ for f in files:
 if seen_blocks != 64:
     bad.append(f'COVERAGE: {seen_blocks} PART blocks scanned book-wide, expected 64')
 gate('§6.8  PART divider block generated from the spine, byte-exact and correctly placed', bad)
+
+
+# ---- §12.2 the repo root carries exactly ONE session handoff (v8.71, S84 batch 2)
+# The deletion is the half of a push that a file-overwrite batch cannot carry, and it has
+# now been missed twice (fb70426, and again this session). The procedure lived only in the
+# session handoff — i.e. in the very file being deleted — so it vanished exactly when needed.
+bad = []
+_HO = sorted(g for g in glob.glob('ZUMO_S*_HANDOFF.md') if re.fullmatch(r'ZUMO_S\d+_HANDOFF\.md', g))
+if len(_HO) != 1:
+    bad.append(f'root carries {len(_HO)} session handoffs ({", ".join(_HO) or "none"}), expected 1'
+               + ('  — the prior one\'s deletion checkbox was probably not ticked' if len(_HO) > 1 else ''))
+_LM = [g for g in glob.glob('ZUMO_LEARNMODE_*_HANDOFF.md')]
+if _HO and any(h in _LM for h in _HO):
+    bad.append('a §19 learner-mode record was counted as a session handoff')
+gate('§12.2 repo root carries exactly one session handoff', bad)
+
+# ---- §25.10h Brain Check family placement (v8.71 — NEW, S84 batch 2, DJ ruling)
+# BC01 is a direct child of <body> whose NEXT SIBLING is the banner seating #section-6.
+# BC02/03/04 sit one div deep, inside the gray #6c757d §10 content panel.
+# Unanimous 9/9 across the converted lessons once S83 lifted L06's BC01 out of §5's panel —
+# which is the exact defect this gate exists to catch, and which no gate could see.
+# Previous-sibling is deliberately NOT asserted: it legitimately varies (L01/L02 a subsection
+# banner, L03 a predict box, L04-L09 §5's green panel).
+bad, converted = [], 0
+for f in files:
+    s = R[f]
+    if 'id="brain-check-01"' not in s:
+        continue                     # §25.2 governs converted lessons only; L10-L16 pending
+    converted += 1
+    soup = LI.BeautifulSoup(s, 'html.parser') if hasattr(LI, 'BeautifulSoup') else None
+    if soup is None:
+        from bs4 import BeautifulSoup as _BS
+        soup = _BS(s, 'html.parser')
+    for i in ('01', '02', '03', '04'):
+        el = soup.find(id=f'brain-check-{i}')
+        if el is None:
+            bad.append(f'{L(f)}: brain-check-{i} missing')
+            continue
+        depth = sum(1 for a in el.parents if a.name == 'div')
+        if i == '01':
+            if depth != 0:
+                where = el.parent.get('style', '')[:44] if el.parent else '?'
+                bad.append(f'{L(f)}: brain-check-01 is {depth} div(s) deep — it is inside '
+                           f'{where!r}, not a child of <body>')
+            nxt = el.find_next_sibling()
+            seats = nxt.find(id='section-6') if nxt else None
+            if seats is None:
+                bad.append(f'{L(f)}: brain-check-01 next sibling does not seat #section-6')
+        else:
+            if depth != 1:
+                bad.append(f'{L(f)}: brain-check-{i} is {depth} div(s) deep, expected 1')
+            st = el.parent.get('style', '') if el.parent else ''
+            if 'border: 2px solid #6c757d' not in st:
+                bad.append(f'{L(f)}: brain-check-{i} is not in the gray §10 panel '
+                           f'(host style {st[:44]!r})')
+if converted != 9:
+    bad.append(f'COVERAGE: {converted} converted lessons scanned, expected 9')
+gate('§25.10h Brain Check 01 seats above §6 at body level; 02-04 sit in the §10 panel', bad)
 
 print('=' * 52)
 
