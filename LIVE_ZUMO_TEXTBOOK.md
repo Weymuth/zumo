@@ -1,13 +1,81 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 83 — **BOTH LOGGED GATE DEFECTS WERE REAL, AND ONE OF THEM HAD ALREADY MANUFACTURED A QUEUE ITEM**: the §20.1 leak gate bounded each card with `rfind('<div')`, which is right for an element-bounded `<div data-challenge>` by accident and wrong for every heading-bounded `<h4>` — one injected block in L07 came back as **five findings**, `7.m1` through `7.m5`. Fixed by IMPORTING the span from `lesson_inventory.py` rather than writing a third regex. Second defect closed the same pass: `data-kind="mystery"` now has **no line threshold**, which was the sole reason L08 passed for eight sessions. The carried L02 `2.t4` item is **closed as an artifact of this very defect**. Census the fix made possible: **33 kept reveals hold `<pre>`, all 33 outside every construct, all §6/§8 teaching content, zero leaks.** L06's brain-check-01 lifted out of §5's panel — one misplaced `</div>`. Bible **v8.69**, book_gates **v1.14**, lesson_inventory **v1.0.3**, gates **26/26 PASS**, `--anomalies` now **empty**.)
-**Status:** **A GATE THAT NEVER FIRES IS NOT EVIDENCE OF A CLEAN BOOK — IT MAY ONLY BE EVIDENCE OF A BADLY AIMED GATE.** §20.1 had passed every session since S79 while carrying two logged defects, and the reason it kept passing was not that the book was clean but that its detector was pointed slightly wrong: a `rfind('<div')` window instead of a parse-tree span, and a ≥3-line floor under snippets that run 1–2. Neither is a rule change; both are the §24.6a lesson that a measurement inherits the shape of its instrument. The bounding is now IMPORTED from `lesson_inventory.py` so the two tools cannot disagree — the port is verified by reproducing the human-read **5/8/2** counts for L09 `9.m3`–`9.m5` against the old gate's fictional **3/8/17**. The most useful thing the fix produced was not a defect but a **correction**: the carried *"L02 `2.t4` holds the worked code"* item was the bounding bug's own output — `2.t4` is a one-line `<strong>` with zero `<details>`, and the window had reached seventeen lines past its end to borrow a §6 build-step `check`. It needed no ruling, only a working parser. With the population finally correct, **33 kept reveals hold code and every one is §6 build-along or §8 troubleshooting** — content the tutor SHOULD have — with **nothing in §9 and nothing past §10**. The flank that remains is recorded as a pair-rule, not fixed: an UNTAGGED challenge hiding its answer in a `hint` is invisible here, so §20.2's marker gate is the other half. L06's brain-check-01 answered its own standing question — §5's panel does not close later, it closed one element late — and **`--anomalies` is now empty for the first time**. Two LIVE.md defects repaired en route: the S82 narrative was present **twice**, the older copy stale. **NOT verified: the rendered Pages site** (sandbox blocks it); L06's fix does change rendering, so §5/§6 wants an eyeball.
+**Date:** July 27, 2026 (Session 84 — **THE QUEUE'S BIGGEST STRUCTURAL ITEM HAD A FALSE PREMISE, AND UNDER IT SAT FIVE BANNERS CAPPING THE WRONG SECTION**: the item read *"L02/L06/L15/L16 carry zero PART banner comments"*. All sixteen lessons in fact carry four visible banners in the correct twelve colors, and half the zeros were a matcher artifact — `lesson_inventory` required the `=` wrapper, so L02's `PART 1: THE CHALLENGE` and L06's `PART 1 DIVIDER` counted as none. What the read DID find: **L12 PART 3, L13 PART 3+PART 4 and L14 PART 3+PART 4 each sat one section boundary early**, and because the cap is FUSED to the banner beneath it, L13 shipped a plum *"PART 4 — Challenges / Section 9"* welded onto §7's rose Calibration Ladder — visible on every page load, invisible to all 26 gates. Plus L04's PART 2 title (logged S72), L05's PART 2 and PART 4 subtitles claiming sections they do not own, and a comment construct drifted **eight formats across 51 instances**, several of them naming the wrong PART. Resolved as ONE GENERATE per the §6.8a precedent: **64 canonical blocks written, `part` 41 → 64**. Bible **v8.70**, book_gates **v1.15 (27 gates)**, lesson_inventory **v1.0.4**, gates **27/27 PASS**.)
+**Status:** **ALL SIXTEEN LESSONS PASS 27 GATES — AND THE GATE THAT FOUND THIS WAS NOT LOOKING FOR IT.** S83 closed on the rule that a gate which never fires may only be badly aimed. S84 is the companion: **a queue item is a lead too, and this one had been mis-scoped for two sessions.** Its premise — missing banners — was false, and checking it cost one read; what the same read turned up was a class of defect nobody had written down, because every existing gate asked whether the banner EXISTED and none asked what it sat on top of. Placement was the unasserted half, exactly as §6.8a's anchor placement was the unasserted half at S82. **The Bible's own snippet was the stale one** here: it specified a detached box (`border-radius: 8px; margin: 22px 0 10px`) against 64/64 live blocks at `8px 8px 0 0` / `22px 0 0`, and since those two properties are what fuse the cap to the section beneath, the snippet had been describing a component the book does not contain. The sweep is defined on the CONSTRUCT and not the lesson: **L02's `<!-- ==== -->` rule idiom legitimately yields 10 pre-existing adjacent rule pairs**, so the tempting cleanup — absorb any rule comment abutting a divider — would have eaten real content in the one lesson that uses them, which is why a cleanup rule is checked against its WORST lesson before adoption. **The most useful thing this session produced was a failed control**: the placement injection PASSED on its first run and the gate was innocent — the test had truncated the block at its first `</div>`, which is the *title* div, so only a fragment moved and the `blk in s2` assert passed on a surviving prefix. §24.6b is not "assert something changed", it is **assert the injection landed in the shape you intended**. **NOT verified: the rendered Pages site** (sandbox blocks weymuth.github.io) — five banners moved and two lessons' banner text changed, so L12/L13/L14 §6–§7 and L04/L05 want an eyeball.
 
-**Versions:** L01 **v03.10.3** · L02 **v03.0.2** · L03 **v03.14.1** · L04 **v04.7.1** · L05 **v04.9.3** · L06 **v04.12.4** · L07 **v04.8.3** · L08 **v04.7.4** · L09 **v05.5.2** · L10 **v02.5.3** · L11 **v02.7.3** · L12 **v01.7.4** · L13 **v02.6.3** · L14 **v02.8.3** · L15 **v02.6.3** · L16 **v02.5.3** · Bible **v8.69** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.14 (26 gates)** · **lesson_inventory v1.0.3** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.4** · L02 **v03.0.3** · L03 **v03.14.2** · L04 **v04.8.0** · L05 **v04.10.0** · L06 **v04.12.5** · L07 **v04.8.4** · L08 **v04.7.5** · L09 **v05.5.3** · L10 **v02.5.4** · L11 **v02.7.4** · L12 **v01.8.0** · L13 **v02.7.0** · L14 **v02.9.0** · L15 **v02.6.4** · L16 **v02.5.4** · Bible **v8.70** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.15 (27 gates)** · **lesson_inventory v1.0.4** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S83 — the gate was aimed slightly wrong)
+## WHAT SHIPPED THIS BATCH (S84 — the queue item's premise was false, the defect under it was not)
+
+**1. §6.8 rewritten: the PART divider is GENERATED from the section spine** (DJ: *"Fix them all"* /
+*"Fix and have no drift"* / *"Yes"*). One pass over all sixteen lessons closed four defects that had been
+four separate things:
+
+- **Placement — five banners capped the wrong section.** L12 PART 3, L13 PART 3 + PART 4, L14 PART 3 + PART 4
+  each sat one section boundary early. `border-radius: 8px 8px 0 0` + `margin: 22px 0 0` FUSE the cap onto the
+  section banner directly beneath, so this is not a spacing nicety: L13 rendered a plum *"PART 4 — Challenges /
+  Section 9"* welded to the top of §7's rose Calibration Ladder. Byte-confirmed by line number before and after,
+  with L11 as the negative control (all four banners exactly five lines above their anchor).
+- **Content — three deviations.** L04 PART 2 titled *Hands-On Setup & Programming* (logged S72, unfixed for
+  twelve sessions) · L05 PART 2 claiming *Sections 4–7*, a section its own PART 3 also claims · L05 PART 4
+  claiming *Sections 9–10*, where §10 is ruled the untitled gray tail. L05 also shipped subtitle opacity `0.7`
+  on two blocks against a canonical `0.85` — the one encoding item that actually rendered differently.
+- **Encoding — six strata.** Literal em-dash in L01–L10 vs `&mdash;` in L11–L16 · bare unescaped `&` in 20
+  blocks · `&ndash;` in L10 only · the two opacity outliers. All rendered "fine"; all were drift.
+- **The comment — eight formats across 51 instances, and several were lying.** L02's read
+  `PART 1: THE CHALLENGE` above a banner reading *Theory & Concepts*, the same shape as L01's fence reading
+  `KEY CONCEPTS` against a *Background Theory* banner at S82. 51 swept, **64 canonical written**.
+
+Every field is derived — color/title/subtitle from the PART number, the `Sections 7–8A` vs `7–8` variant from
+whether `section-8a` exists, the seat from the spine — which is what made this a GENERATE with no per-instance
+judgement rather than 64 repairs. New tool **`gen_part_banners.py` v1.0** at repo root.
+
+**2. The queue item's premise was false, and that is the transferable part.** *"L02/L06/L15/L16 carry zero
+PART banner comments"* had been carried since S82 and flagged as the biggest unexamined structural item. All
+sixteen lessons carry four visible banners in the correct colors; L02 carries **3** comments and L06 **4**,
+both in an unwrapped format `lesson_inventory`'s matcher could not see — §6.8a's exact blindness, one construct
+over, in the same instrument. Only L15/L16 truly had none. **A handoff item enters the session as SUSPECTED
+(§24.6c) and that now explicitly includes its SCOPE, not just its verdict.**
+
+**3. The Bible's own snippet was the stale artefact.** §6.8 specified `border-radius: 8px; margin: 22px 0 10px`
+— a detached rounded box — against **64/64** live blocks at `8px 8px 0 0` / `22px 0 0`. Since those two
+properties are precisely what fuse the cap to the section beneath, the snippet described a component the book
+has never contained. Live form is canon; the snippet was corrected, not the book.
+
+**4. The sweep is defined on the construct, not the lesson.** Two neighbours had to survive it. L03 carries
+`End Part 1 content` / `PART 2 build continues` / `End Part 3 content`, which are notes and not dividers. L02
+carries its own `<!-- ==== -->` rule idiom bracketing every landmark, which legitimately produces **10
+pre-existing adjacent rule pairs** — so the tempting general cleanup, *absorb any rule comment abutting a
+divider*, would have eaten real content in the only lesson that uses them. The sweep matches the divider LABEL
+only, and the emptied sandwich it leaves is already L02's normal shape. **Check what a cleanup rule would
+delete in its worst lesson before adopting it.**
+
+**5. book_gates v1.14 → v1.15, gate 27** (§24.2, gated the same session). Regenerates the expectation and
+compares the whole block byte-for-byte, asserts each block's next fence is its OWN section, rejects any
+surviving divider-shaped comment, and carries a COVERAGE assert at 64. **Byte-canonicity and placement are
+asserted INDEPENDENTLY** — the first draft bailed out of the placement check on a byte failure, which would
+have let an encoding drift hide a misplaced banner, the S83 lesson that a gate must not be satisfied by the
+bug it should catch. Control-run **six** ways: untouched FAILED · re-introduced L13 displacement FAILED naming
+`PART 3 caps SECTION 6, expected SECTION 7` · L05 subtitle reverted FAILED · deleted comment FAILED ·
+`&mdash;` restored in L11 FAILED · whole block removed tripped shape AND COVERAGE.
+
+**6. The failed control is the session's best output.** The displacement injection PASSED on its first run.
+The gate was innocent: the test had extracted the block by truncating at its first `</div>` — which is the
+*title* div, not the block's close — so only a fragment was relocated, and the `blk in s2` assert passed
+because a prefix survived. Diagnosed by reading the injected file, per S82. **§24.6b is not "assert something
+changed"; it is assert the injection landed IN THE SHAPE YOU INTENDED, re-parsed and read back.**
+
+**7. `lesson_inventory` v1.0.3 → v1.0.4.** The `part` column is now byte-enforced by gate 27, so its matcher
+no longer rests on a format nothing guarantees. Census: **`part` 41 → 64**, four per lesson in all sixteen.
+Everything else unchanged — 1,025 headings · 174 anchors · 174 fences · 145 constructs · 403 reveals / 403
+typed · 30 mysteries — which is how the generate is known to have touched nothing but PART blocks.
+`--anomalies` remains empty.
+
+---
+
+## WHAT SHIPPED PREVIOUSLY (S83 — the gate was aimed slightly wrong)
 
 **1. L06 brain-check-01 lifted out of §5's content panel** (S83 first item per DJ, *"let's fix l06 at the
 beginning of 83"*). BC01 was the **last of 49 direct children** of §5's `border: 2px solid #3a7d5c` panel,

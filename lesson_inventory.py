@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# lesson_inventory.py v1.0.3 (S83) — exhaustive structural ENUMERATION of the lesson files.
+# lesson_inventory.py v1.0.4 (S83) — exhaustive structural ENUMERATION of the lesson files.
 #
 # Usage:
 #   python3 lesson_inventory.py                     summary table, all 16 lessons
@@ -297,7 +297,7 @@ def flat_lines(pre):
 
 # ---------------------------------------------------------------- reporting
 
-BANNER = ('lesson_inventory.py v1.0.3 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
+BANNER = ('lesson_inventory.py v1.0.4 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
           'No exit code, no PASS/FAIL. A parser is necessary and not sufficient: read the table.\n')
 
 
@@ -449,7 +449,11 @@ def _pf(inv):
 def summary(invs):
     # "sect" = id="section-N" ANCHORS (the spine, all 16 lessons). The fence comments are
     # now SPLIT: "sfnc" = <!-- ===== SECTION N: TITLE ===== --> section fences (Bible §6.8a,
-    # canonized S82 — one per anchor in all 16), "part" = §6.8 PART banner comments. v1.0.2
+    # canonized S82 — one per anchor in all 16), "part" = §6.8 PART divider comments
+    # (canonized S84 — 64 book-wide, four per lesson in all 16, byte-enforced by
+    # book_gates gate 27, so this matcher no longer rests on a format nothing
+    # guarantees; pre-S84 it read zero for L02 and L06, which each had comments in
+    # an unwrapped format — the §6.8a blindness one construct over). v1.0.4
     # ran them together in one "fnce" column reading 75, which was 34 section fences plus 41
     # PART banners — two constructs under one label. The pre-S82 claim that "only six lessons
     # carry any" was an artifact of the matcher: ten lessons carried them, five in a bare

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.14 (S83) — whole-book consistency gates.
+# book_gates.py v1.15 (S84) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -647,6 +647,87 @@ for f in files:
     if len(got) != len(want):
         bad.append(f'{L(f)}: {len(got)} canonical fences vs {len(want)} core anchors')
 gate('§6.8a section fence generated from the anchor spine, adjacent to a seated anchor', bad)
+
+# ---- §6.8: the PART divider block is GENERATED from the section spine (v8.70, S84)
+# Asserts the WHOLE block byte-identically, not just colour and count: the six encoding
+# strata found at S84 (bare &, &mdash; vs literal, &ndash;, subtitle opacity 0.7) all
+# rendered "fine" and all were drift. Placement is asserted too — L12/L13/L14 shipped
+# five banners capping the wrong section, fused to it by border-radius/margin.
+_PEQ = '=' * 21
+_PART_SPEC = {
+    1: ('#3498db', 'Theory &amp; Concepts', 'THEORY & CONCEPTS', '1',
+        'Sections 1\u20133: Learn the fundamentals'),
+    2: ('#3a7d5c', 'Hardware &amp; Code', 'HARDWARE & CODE', '4',
+        'Sections 4\u20136: Set up and program your robot'),
+    3: ('#c45d76', 'Testing &amp; Challenges', 'TESTING & CHALLENGES', '7', None),
+    4: ('#9b6a9e', 'Challenges', 'CHALLENGES', '9',
+        'Section 9: Apply what you have learned'),
+}
+_ANYPART = re.compile(
+    r'<div style="background-color: #[0-9a-fA-F]{6}; color: white; padding: 12px 20px; '
+    r'border-radius: 8px 8px 0 0; margin: 22px 0 0;">\s*'
+    r'<div style="font-size: 18px[^"]*">PART (\d+)[^<]*</div>\s*'
+    r'<div style="font-size: 12px[^"]*">[^<]*</div>\s*</div>')
+_DIVCMT = re.compile(r'^PART\s+\d+(?:\s+DIVIDER|\s*:\s*.+)?$', re.I)
+
+
+def _part_expect(n, has_8a):
+    color, title, upper, _sec, sub = _PART_SPEC[n]
+    if n == 3:
+        sub = ('Sections 7\u20138A: Verify and extend' if has_8a
+               else 'Sections 7\u20138: Verify and extend')
+    return (
+        f'<!-- {_PEQ} PART {n}: {upper} {_PEQ} -->\n'
+        f'<div style="background-color: {color}; color: white; padding: 12px 20px; '
+        f'border-radius: 8px 8px 0 0; margin: 22px 0 0;">\n'
+        f'    <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.5px;">'
+        f'PART {n} \u2014 {title}</div>\n'
+        f'    <div style="font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px;">'
+        f'{sub}</div>\n'
+        f'</div>\n')
+
+
+bad, seen_blocks = [], 0
+for f in files:
+    s = R[f]
+    has_8a = 'id="section-8a"' in s
+    found = _ANYPART.findall(s)
+    seen_blocks += len(found)
+    if sorted(int(x) for x in found) != [1, 2, 3, 4]:
+        bad.append(f'{L(f)}: PART blocks present are {sorted(found)}, expected 1-4')
+        continue
+    # Byte-canonicity and placement are checked INDEPENDENTLY. Chaining them (bail on a
+    # byte failure, skip the placement check) would let an encoding drift hide a misplaced
+    # banner — the S83 lesson that a gate must not be satisfied by the bug it should catch.
+    for n in (1, 2, 3, 4):
+        blk = _part_expect(n, has_8a)
+        c = s.count(blk)
+        if c != 1:
+            bad.append(f'{L(f)}: PART {n} block+comment is not byte-canonical '
+                       f'(exact matches: {c})')
+    for m in _ANYPART.finditer(s):
+        n = int(m.group(1))
+        i = m.end()
+        while i < len(s) and s[i] in ' \t\n':
+            i += 1
+        nxt = re.match(r'<!-- =+ SECTION ([0-9A-Za-z]+):', s[i:i + 120])
+        if not nxt:
+            bad.append(f'{L(f)}: PART {n} is not followed by a SECTION fence')
+        elif nxt.group(1) != _PART_SPEC[n][3]:
+            bad.append(f'{L(f)}: PART {n} caps SECTION {nxt.group(1)}, '
+                       f'expected SECTION {_PART_SPEC[n][3]}')
+    # no stray divider-shaped PART comment outside the four canonical ones
+    for m in re.finditer(r'<!--((?:(?!-->).)*?)-->', s, re.S):
+        body = m.group(1).strip().strip('=').strip()
+        if not re.search(r'\bPART\b', body, re.I) or not _DIVCMT.match(body):
+            continue
+        if not re.fullmatch(r'PART \d: [A-Z &]+', body):
+            bad.append(f'{L(f)}: stray PART divider comment {body!r}')
+# COVERAGE — a gate whose population silently empties is an ungated rule (S83)
+if seen_blocks != 64:
+    bad.append(f'COVERAGE: {seen_blocks} PART blocks scanned book-wide, expected 64')
+gate('§6.8  PART divider block generated from the spine, byte-exact and correctly placed', bad)
+
 print('=' * 52)
 
 if FAIL:
