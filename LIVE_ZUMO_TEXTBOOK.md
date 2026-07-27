@@ -1,13 +1,97 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 26, 2026 (Session 80 — **THE NINTH CONVERSION, AND A GATE THAT WAS RIGHT WHEN THE BOOK WAS WRONG**: L09 converted to the Brain Check family (**v05.5.0**); tagging its five mysteries made them visible to the §20.1 gate for the first time and it failed — correctly. Per DJ ruling (*"Wouldn't we want it to have a solution drop down?"*) the nine mystery reveals holding planted code in L08 and L09 are retyped `solution`. Bible **v8.66**, gates **24/24 PASS**.)
-**Status:** **L09 IS CONVERTED — AND ITS ANCESTORS WERE FOUR, NOT TWO.** §25.10f recorded *Technical Skills* and *Knowledge Check*; the file also holds *Conceptual Understanding* (4 Q&A, answers in open prose, no reveal) and *Problem-Solving* (4). Diffing the duplicates inverted L05's finding: **CU is a strict superset of KC** — items 1–3 word-identical, CU alone carrying the enum question — so migrating *Knowledge Check* verbatim, as the S80 handoff predicted would "land correct by construction," **would have failed §25.8's floor at three items**. Per DJ (*"Fix and go with KC"*) BC03 = KC's three answers verbatim + CU's enum item extended to depth, citing §3.1 · §3.4 · §3.6 · §3.5 — neither ancestor carried a single §-citation. BC01 = **5 authored** (L09 had no Mental ancestor at all). BC02 = §2's **seven** objectives character-exact per §25.5, not the five-item *Technical Skills* list. BC04 = L09's live *Reflection: Draw Your State Diagram* + 2 authored — **Engineer's Log is not BC04's ancestor** and survives separately, as in all four prior conversions. Then the gate: §20.1 flagged three mysteries, and reading them showed the flagged code was the *planted defect*, which §11 requires a mystery to display. **L11 had been typing its mysteries `solution` all along**, and §20.1 already said a mystery bug+fix reveal must be `solution` — so the drift was the book's, in exactly two lessons. **The gate had passed L08 for eight sessions on snippet length alone** (needs ≥3 statement lines; L08's planted snippets run 1–2). **OPEN:** §20.1's per-card bounding bleeds — it reported 3/8/17-line blocks across 9.m3–9.m5 where the truth is 5/8/2, one each. **PARKED:** L09's three *Problem-Solving* extensions, recorded verbatim — reshaping them into mysteries 6–8 needs a new sabotaged 8-file Maker payload each in a 5.2 MB file, and they are extensions, not defects.
+**Date:** July 26, 2026 (Session 81 — **THE INSTRUMENT, AND THE LABEL THAT CONTRADICTED ITS OWN TYPE**: new tool `lesson_inventory.py` **v1.0** parses each lesson into a full structural table so session work queries a table instead of grepping HTML — it reproduced the read-verified **5/8/2** mystery code-line counts where the §20.1 gate had reported 3/8/17. It then found that the nine mystery reveals §25.10g retyped `solution` at S80 still carried the label *“💡 Hint”*. Per DJ (*“If it's a hint, then say hint. If its a solution, then call it a solution.”*) all nine are relabelled *“💡 Answer”* — copying **L11, right for the third consecutive session**. Two live defects fixed alongside: **L12's unescaped `<Wire.h>`** rendered the filename away, and **L02 `2.t1` was the only `<details>` in the book with no `data-reveal` at all**. Bible **v8.67** (§25.11 + §25.12), book_gates **v1.11**, gates **25/25 PASS**.)
+**Status:** **A LABEL IS HALF THE PROMISE, AND AN ATTRIBUTE-ONLY EDIT ONLY MOVES THE OTHER HALF.** S80's retype was right about the type and left nine labels saying the opposite of it — a block typed `solution` is stripped from the tutor while its summary advertises a hint to the reader, so the two audiences got opposite messages from one element. **§25.11** canonizes label/type agreement; **§25.12** canonizes that a missing `data-reveal` is not a neutral default, because §20.1's strip list is a whitelist and an untyped reveal is therefore KEPT. Census of all 30 mystery reveals: L05/L06/L07 + L08 `8.m3` are `hint` + *Hint* and hold **no `<pre>` at all** (which is why §25.10g correctly left them alone); L11 ×4 already agreed; L08 ×4 + L09 ×5 were the drift. **L08 holds five copies of the identical summary string and one (`8.m3`) had to survive untouched**, so every edit was offset-scoped per §6.12c with a +2-byte assert. **`lesson_inventory.py` has no exit code and no pass/fail by design** — §24.6a says a parser is necessary and not sufficient, so its job is exhaustive enumeration meant to be READ. Its four leads were all read before reporting: two independently reproduced known queue items (L06 BC01 at div depth 1; L09's missing §7 fence comment), two were new and both real. **Verified on an independent parser**: every S81 figure was re-derived with lxml/libxml2 rather than Python's `html.parser`, and none moved. **NOT verified: the rendered Pages site** — L12's repaired sentence and the nine new labels are parse- and gate-verified only.
 
-**Versions:** L01 **v03.10.2** · L02 **v03.0.0** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.2** · L06 **v04.12.1** · L07 **v04.8.1** · L08 **v04.7.2** · L09 **v05.5.0** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.2** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.66** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.10 (24 gates)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.2** · L02 **v03.0.1** · L03 **v03.14.0** · L04 **v04.7.0** · L05 **v04.9.2** · L06 **v04.12.1** · L07 **v04.8.1** · L08 **v04.7.3** · L09 **v05.5.1** · L10 **v02.5.2** · L11 **v02.7.2** · L12 **v01.7.3** · L13 **v02.6.2** · L14 **v02.8.2** · L15 **v02.6.2** · L16 **v02.5.2** · Bible **v8.67** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.11 (25 gates)** · **lesson_inventory v1.0 (NEW)** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.0.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S80 — L09 joins the Brain Check family)
+## WHAT SHIPPED THIS BATCH (S81 — the instrument, and the label that contradicted its type)
+
+**1. NEW TOOL `lesson_inventory.py` v1.0** (repo root, §24.6a). One parse per lesson emitting the full
+structural table: every heading with `<hN>` level, div depth and line; every `<details>` with its
+`data-reveal` type AND its resolved parent construct; every `data-challenge` / `data-kind` / pill marker;
+all version homes; the section spine; the Brain Check family with its column fingerprint. Views
+`--versions --sections --headings --constructs --reveals --braincheck --anomalies --json`, filterable to
+one lesson.
+**It has NO exit code and NO pass/fail.** Per §24.6a a parser is necessary and not sufficient — L06/L07
+parsed clean and were still wrong — so the tool's job is exhaustive ENUMERATION meant to be read. Pass/fail
+belongs in `book_gates.py`.
+**The bounding is the point.** A construct is bounded two ways and the §20.1 gate only knows one:
+ELEMENT-BOUNDED (`<div data-challenge>`, open→close) and HEADING-BOUNDED (`<h4 data-challenge>`, heading →
+first of *next heading at level ≤ its own* / *next `data-challenge`* / *enclosing element's close*). Spans
+come from the parse tree, never a fixed-width window. **It returned 5/8/2 code lines for 9.m3/9.m4/9.m5 —
+the truth established at S80 by reading the cards, where the gate's own counts were fiction (3/8/17,
+recurring).** Section attribution uses the `id="section-N"` anchors, which exist in all 16 lessons (and
+`section-8a` in exactly the 14 the §8A map names); the `<!-- ===== SECTION N ===== -->` fence comments are
+NOT the spine — only six lessons carry any — so they are enumerated separately.
+Control-run five ways: totals reconcile against independent counts (145 constructs · 403 `<details>` · 30
+mysteries · 1,025 headings); L09's heading count matches three independent methods; run against the
+**pre-conversion** L09 it returns **63**, so the S80 handoff's 63 was correct at scoping time and 59 is
+correct now (the conversion consumed four headings — not a discrepancy); the mystery counts match a
+DIFFERENT algorithm (DOM sibling walk); and an injected `data-reveal` removal was caught with the untouched
+control clean.
+
+**2. §25.11 — THE NINE LABELS (DJ ruling: *“If it's a hint, then say hint. If its a solution, then call it
+a solution.”*)** The blocks §25.10g retyped at S80 were retyped **attribute-only**, which moved the type
+and left the label contradicting it. Nine reveals were typed `solution` while their summary read
+*“💡 Hint”* — L08 ×4 (`8.m1 8.m2 8.m4 8.m5`) and L09 ×5 (`9.m1`–`9.m5`). **L11 was the model for the
+third consecutive session**: its four mysteries are the only ones in the book where type and label already
+agreed (`solution` + *“💡 Answer”*), so the fix copies a live precedent instead of inventing wording.
+The kept hints were verified, not assumed: L05/L06/L07 and L08 `8.m3` are `hint` + *Hint* and contain **no
+`<pre>` at all**, which is exactly why §25.10g correctly left them typed `hint`.
+**L08 holds FIVE copies of the identical bare summary string and `8.m3` had to survive untouched**, so a
+string replace was invalid per §6.12c — each edit was located through its heading-bounded construct span
+with a +2-bytes-per-edit assert and a post-edit assert that `8.m3` still reads *Hint*.
+L08 **v04.7.2 → v04.7.3** · L09 **v05.5.0 → v05.5.1** (text-only, visible banners unchanged per §5b).
+
+**3. §25.12 — THE UNTYPED REVEAL.** L02 `2.t1`'s *“🔓 Answers”* block was **the only `<details>` in the
+book carrying no `data-reveal` at all** (403 elements, 402 typed — the one-count gap that surfaced it).
+§20.1's strip list is a **whitelist**, so an untyped reveal is KEPT: its worked answers to the three-build
+prediction exercise, including the compiler-vs-linker distinction, had been reaching the tutor. Typed
+`solution` on the precedent of **`2.t5`** in the same lesson — same `tryit` kind, same job, already
+`solution`. L02 **v03.0.0 → v03.0.1**.
+*Correction to the carried open item:* it names *L02 `2.t4`'s `check` reveal*, but **`2.t4` contains zero
+`<details>`**. That item is re-scoped to SUSPECTED per §24.6c and is NOT what was fixed here.
+
+**4. L12's UNESCAPED `<Wire.h>` — a live, student-facing defect.** §6 Step 5's Tip callout held a literal
+`<Wire.h>`, which the browser tokenises as an element, so the sentence rendered *“The #include  goes at the
+TOP of the file”* — the instruction lost the filename it is about. Invisible to the §24.6 parse gate
+because its `_STRICT` set does not cover unknown tags; the orphan open tag is silently swallowed.
+Confirmed by rendered-text extraction on an independent parser (lxml built a child element literally named
+`wire.h`; after the fix, zero children and the filename present). Escaped to match **`<pre>` #13 twelve
+lines above it**, which had been correct all along. Class-scanned book-wide: this is the only occurrence in
+prose — `newproject.html`'s ~400 similar strings are inside JS string literals and legal per the §8.11
+corollary. L12 **v01.7.2 → v01.7.3**.
+
+**5. book_gates v1.10 → v1.11 — gate 25, shipped same session per §24.2.**
+`§25.11 reveal label agrees with reveal type`. Deliberately NARROW per §24.6c: the book's label vocabulary
+is legitimately varied (62 *reveal solution*, 13 *Answer*, 9 *worked version*, plus the
+`catchup`/`troubleshoot`/`check` families), so it asserts only the two contradiction shapes verified by
+reading — a `solution` labelled with hint language, and a `hint` promising an answer or solution.
+Control-run three ways: unfixed source **FAILED** catching exactly the nine at exactly the reported lines
+and nothing else; fixed tree **PASS**; reverse drift injected into `8.m3`'s label **FAILED**.
+
+**6. VERIFIED ON AN INDEPENDENT PARSER (DJ: *“Double check with no grep”*).** Every S81 figure was
+re-derived with BeautifulSoup over **lxml (libxml2, a C implementation)** rather than Python's
+`html.parser` — pure DOM traversal, no regex, no grep, no line slicing. All nine claims AGREE: 145
+constructs · 403 `<details>` · 402 typed · 30 mysteries · 1,025 headings · L09 59 (h1=1 h3=34 h4=24) · one
+untyped reveal in L02 · nine mislabelled · L06 BC01 at depth 1 against eight at 0. Nothing was retracted.
+
+**7. FOUR LEADS FROM THE NEW TOOL, ALL READ BEFORE REPORTING.** Two independently reproduced known queue
+items — **L06 `brain-check-01` at div depth 1** against a family norm of 0 (the norm is computed as the
+modal depth per anchor, so the outlier surfaces alone), and **L09's missing §7 fence comment** (the
+`section-7` ANCHOR is present; only the fence comment is absent, and only lessons that fence ≥5 sections
+are reported, so L03/L07's sparse usage is correctly silent). Two were new and both were fixed above.
+
+**8. HOUSEKEEPING — six stale LIVE.md batch headings.** Found at S81 open by dumping every `## ` header as
+a list per the S81 handoff's own rule: S78, S75, S74, S73 ×2, S72 ×2 and S71 were all still headed *WHAT
+SHIPPED THIS BATCH*. All demoted to *PREVIOUSLY*; only the S81 block above carries the current label.
+
+---
+
+## WHAT SHIPPED PREVIOUSLY (S80 — L09 joins the Brain Check family)
 
 **1. L09 v05.4.2 → v05.5.0 — the ninth conversion, and its ancestors were FOUR, not the two on record.**
 §25.10f recorded *Technical Skills: Can you…?* and *Knowledge Check*. The file also holds **Conceptual
@@ -122,7 +206,7 @@ tutor today. TRY IT boxes are not graded challenge cards, so this may be intenti
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S78 — L08 joins the Brain Check family)
+## WHAT SHIPPED PREVIOUSLY (S78 — L08 joins the Brain Check family)
 
 **1. L08 v04.6.2 → v04.7.0 — the eighth conversion, scoped by reading §10 rather than by any list.**
 §25.10e's recorded ancestor for L08 (*Check Yourself*) does not exist. Reading §10 found what does: a
@@ -268,7 +352,7 @@ preservation audit: **12 exit-region items manifested before any edit, ACCOUNTED
 migrated question and answer character-exact. Diff audit: 34 lines removed, every one a version line, an
 intended block, or a mystery heading being retagged.
 
-## WHAT SHIPPED THIS BATCH (S75 — L05 joins the Brain Check family)
+## WHAT SHIPPED PREVIOUSLY (S75 — L05 joins the Brain Check family)
 
 **1. L05 v04.8.2 → v04.9.0 — the fifth conversion.** The §25.10b sweep returned `Conceptual Understanding` (6 questions, no answers) sitting above `Knowledge Check` (6 questions, with reveals). Normalised diff: **four pairs word-identical, two differing** — item 4 by cognitive level, item 6 by wording only. **BC01 Mental (5)** at the §5/§6 seam: 38 kHz (§3.1, authored) · value range (§3.2) · `DETECTION_THRESHOLD = 1` (§3.3) · function prototype (§5.5, the CU phrasing) · jumper move (§1, §7.3, authored). **BC03 Knowledge Check (4)**: `max()` (§4.2) · prototype/order (§5.5) · threshold vs reading (§3.3, §3.5) · for loop (§5.15). **BC02 (9)**: seven migrated *I can…* plus two folded *I have…*, unlock at 9-of-9, again with zero JavaScript. **BC04 (3)** authored.
 
@@ -284,7 +368,7 @@ intended block, or a mystery heading being retagged.
 
 **7. Verification.** 21/21 gates PASS, pill_sweep clean, column byte-identical across all five converted lessons (`8fa00744`, 5,596 chars). Four control runs, each with a landed-injection assert, each restoring byte-identical: a stripped `data-bc-skill` fails with the exact `9 checkbox items but 8 data-bc-skill tags` · a reintroduced `Conceptual Understanding` fails on the retired name · a stripped BC01 citation fails "Mental item names no §" · a dropped `</div>` fails both tag balance (165/164) and the parse gate.
 
-## WHAT SHIPPED THIS BATCH (S74 — L04 joins the Brain Check family)
+## WHAT SHIPPED PREVIOUSLY (S74 — L04 joins the Brain Check family)
 
 **1. L04 v04.6.2 → v04.7.0 — the fourth conversion, and it was redistribution after all.** The S74
 queue said to expect no ancestor. There was one: **`Conceptual Understanding` — 10 questions, answers
@@ -331,7 +415,7 @@ with the exact `13 checkbox items but 12 data-bc-skill tags` · a stripped BC01 
 balance, structure and §25.2. Diff audit: 83 lines removed, all of them the four intended blocks plus
 three version lines, nothing else.
 
-## WHAT SHIPPED THIS BATCH (S73, part 2 — L03 joins the Brain Check family)
+## WHAT SHIPPED PREVIOUSLY (S73, part 2 — L03 joins the Brain Check family)
 
 **7. L03 v03.13.2 → v03.14.0 — the third conversion, almost entirely redistribution.** L03's `STOP & PROCESS` block held **all ten** of the lesson's quiz reveals and was the pre-collapse ancestor of both halves of the family — its subtitle was literally *"Answer From Your Head, Then Check"*. Split by the §25.2 recall/apply line: **BC01 Mental** gets items 1, 2, 3, 5, 6 (5, inside the gated 3–5 window) at the §5/§6 seam; **BC03 Knowledge Check** gets 4, 7, 8, 9, 10 (5). Every item arrived already §-cited. Nothing authored from scratch.
 
@@ -343,7 +427,7 @@ three version lines, nothing else.
 
 **11. Verification.** 21/21 gates PASS, pill_sweep clean. **All twelve BC citations verified by content**, slicing each §3.x by the next subsection id: §3.4 *Why Robots Don't Drive Straight* carries the answer's own vocabulary (manufacturing, windings, friction, curve, slower), §3.10 carries "power switch" twice, and so on down. Two control runs with landed-injection asserts: stripping one `data-bc-skill` fails §25.2 with the exact count mismatch; reintroducing `STOP & PROCESS` fails on the retired name. Both restore clean.
 
-## WHAT SHIPPED THIS BATCH (S73)
+## WHAT SHIPPED PREVIOUSLY (S73)
 
 **1. L02 v02.16.0 → v03.0.0 — the structural renumber, cut.** §3.2 *Understanding Each Section* (29,833 chars) lifted whole into a new **§5 The Code**; new **§4 Hardware — Meet Your Buttons** authored in the empty slot (a Meet Your Buttons table naming A/B/C, the OLED and the yellow LED, an explicit "nothing gets added this lesson" opener per §4.4 Rule 1, and a 📘 Note that the Serial Monitor is not a robot part); old §5 Build It → **§6** with *Getting Ready* folded into its opening; old §6 *Make It Yours* retired as a section. Anchors, HTML comments and PART subtitles reconciled. **No nav-pill edit was required** — the strip was already canonical.
 
@@ -357,7 +441,7 @@ three version lines, nothing else.
 
 **6. Verification.** All **21 gates PASS**; `pill_sweep --audit` clean (6 pills, 0 old strings). Two control runs with landed-injection asserts per §24.6b/c: a dropped `</div>` in the new §5 fails 3 gates and restores clean; a stripped BC01 §-citation fails §25.2 and restores clean. Both prove the gates are reading the new content, and both confirm what the gate still cannot see — that a citation points at the *right* section.
 
-## WHAT SHIPPED THIS BATCH (S72, part 2 — structure)
+## WHAT SHIPPED PREVIOUSLY (S72, part 2 — structure)
 
 **6. Bible v8.57.1 → v8.58 — §4.4 THE SKELETON IS MANDATORY.** The Core 10 are not a menu. A skeleton section whose job comes up thin still appears and says so (§4 Hardware in a lesson that adds no parts). Lesson-unique material folds into the nearest section instead of becoming a new numbered one. "Does not apply" stubs everywhere: REJECTED, with the reason recorded. §8A: CONDITIONAL, unchanged. Both non-conformant lessons are tabled in the subsection, and the §15.2 dividend is recorded — renumbering L02 makes the *existing* Maker wording ("if Section 6 has N steps") true book-wide instead of patching canon to fit one outlier.
 
@@ -365,7 +449,7 @@ three version lines, nothing else.
 
 **8. L02 restructure: specified, measured, NOT cut.** Full plan in `ZUMO_L02_RESTRUCTURE_PLAN.md`.
 
-## WHAT SHIPPED THIS BATCH (S72)
+## WHAT SHIPPED PREVIOUSLY (S72)
 
 **1. L02 v02.15.2 → v02.16.0 — the first Brain Check conversion.** Four blocks in Type 10 livery with anchors `brain-check-01..04`, Mark-done toggles, the skill-gated BC02 (7 tappable ☐ items, `data-bc-skill`), and the byte-identical column block copied from L01. BC01 at the §4/§5 seam as a standalone block between panels (the L01 post-fix shape — never nested inside a banner div). Moderate bump: hidden comment + both visible banners.
 
@@ -377,7 +461,7 @@ three version lines, nothing else.
 
 **5. Two S71 paperwork drifts corrected in this regeneration:** the status prose read "book_gates v1.5→v1.6" against a live v1.7, and the S72 handoff's open ritual said the gate file was v1.6. Every version on the line above is grepped from its file.
 
-## WHAT SHIPPED THIS BATCH (S71)
+## WHAT SHIPPED PREVIOUSLY (S71)
 
 **1. Bible v8.54 → v8.55 — §25.10 BRAIN CHECK (new subsection) + §8 Type 10 Knowledge callout registered.** Family name, numbering, livery, anchors, the column, localStorage check-off semantics (tracker ≠ grade), icon-pair rules (gray-not-red rationale, no-dark-backing, colorblind-safe by glyph), and the rollout rule: blocks + column land together per lesson, never separately.
 
@@ -394,7 +478,7 @@ three version lines, nothing else.
 **7. Gated-item achievability (late-S71).** DJ's "BC02 will be the hardest" observation surfaced a gate-created defect: skill item 10 ("identify and fix an upload error") was un-checkable by any student whose build worked first try — the lock had promoted an unchecked box into a blocker on luck. Fix per DJ ruling: a 60-second Break-It-On-Purpose rep at the end of §6 Step 6 (power off → upload fails → read the error → power on, fix), so every student earns item 10. Canonized as §25.10 achievability (review rule). Bible v8.56→v8.57 · L01 v03.9.1→v03.9.2.
 
 
-## WHAT SHIPPED THIS BATCH (S70)
+## WHAT SHIPPED PREVIOUSLY (S70)
 
 **1. Bible v8.52 → v8.53 — §25 THE EXIT-REGION CONSTRUCTS, THE READING QUIZ & PAGE CANON (new section, nine subsections).** The four constructs and the recall-vs-apply split (§25.2) · the reading quiz — *easy if you read, hard if you didn't*, every item answerable from a single stated fact and naming its §, closed-book so items ship as rehearsal/variant **pairs**, 48–80 of them, authored inline as `QUIZVARIANT` comments while the § is open, **book first and Canvas after** (§25.3) · warm-ups L02–L16 and the spiral aiming rule (§25.4) · objectives rewritten *from* the Technical Skills checklists (§25.5) · header/footer/hidden-banner canon and the copyright reasoning (§25.6) · **§9 is the hands, §10 is the head** (§25.7) · caps (§25.8) · **§25.9 STILL OPEN**, written deliberately so this section cannot read as finished when it is not.
 
@@ -416,7 +500,7 @@ three version lines, nothing else.
 
 **10. index.html gained the site credits line** (§25.6a): `© 2026 RoboLore · Written and compiled by DJ Weymuth and Claude AI`, beneath the existing site line. The front door is where a copyright notice does its real work. The other three tool pages are deliberately left without chapter furniture — they are utilities, several rendering inside iframes.
 
-## WHAT SHIPPED THIS BATCH (S69)
+## WHAT SHIPPED PREVIOUSLY (S69)
 
 **1. L05 proximity prose reconciled to the S68 hardware truth (v04.7.1).** S68 redrew GRAPHIC 5.1 to side-facing detectors and added §3.4's series-wiring fact, but three prose sites still carried the old model. The live one that mattered: **§4.1's highlighted "Key insight" asserted that objects on the left "reflect more light from the left LEDs"** — direction attributed to which LED team fired, which is exactly the misconception §3.4 was written two paragraphs earlier to kill. Rewritten: the emitters flood, direction comes from **which detector answers**, and the one place an LED team does carry direction is the front detector read twice (§4.2). Also **§8A.1** said the front has "one IR receiver … with two forward IR emitters" — undercounting four emitters and hiding the series teams; now scoped to the blade pair with a §3.4 back-reference. **§4.2** moved to "LEFT-team" vocabulary and now bounds "slightly off center" at FRONT's ±19°, past which it is §3.4a's dead spot. **GRAPHIC 5.5 gained its missing body caption** — every neighbouring hardware figure had one.
 
@@ -432,7 +516,7 @@ three version lines, nothing else.
 
 **6. THE LESSON STRIP — book-wide, all 16 lessons (§6.5a, DJ ruling "Love c").** DJ's ask: no easy way to jump between lessons from inside one. Four options were prototyped on the real L05 header (prev/next pills · dropdown · number strip · titled drawer); DJ picked the strip. Every sticky nav now carries a second thin row — LESSON · 01–16 · ⌂ home — squares in neutral rgba-white so they never collide with the section color code, each with the lesson's canonical title as tooltip, current lesson a solid white square. Ships as **one byte-identical block in all 16 files**: static links (works with JS off) plus a self-hydrating script that derives the current lesson from the URL, bounded by `LESSON STRIP` marker comments. Renumber or L17 = one block edit re-applied. Explicitly outside the v8.21 nav-button ceiling, which governs the section-pill row only. **book_gates v1.2 → v1.3** adds `§6.5a lesson strip present and byte-identical in all 16` — control-run both directions per §24.6b: FAILED on the pre-strip clone (16 missing) and FAILED on an injected one-character drift ("differs") before being trusted. Moderate bump on all 16 lessons, both banners moved per §5b. All 17 gates PASS.
 
-## WHAT SHIPPED THIS BATCH (S68)
+## WHAT SHIPPED PREVIOUSLY (S68)
 
 **1. The panel-close repair (8 lessons).** L01, L12, L13, L14, L15, L16 — orphaned `</div>` after `</html>` relocated to close the Image Index panel before the footer, matching the L02/L11 reference shape. L06, L07 — close present but late, so the footer rendered *inside* the panel; L07 additionally had its footer above the Back-to-top and was reordered. Every edit count-preserving; div depth now returns to 0 at `</body>` in all 21 site files and nothing follows `</html>` anywhere.
 
@@ -458,7 +542,7 @@ three version lines, nothing else.
 ---
 
 
-## WHAT SHIPPED THIS BATCH (S67)
+## WHAT SHIPPED PREVIOUSLY (S67)
 
 **The assessment.** Book-wide challenge-move scan, L01→L16, means recomputed by script on the canonical 1–5/1–3 scales. Findings: nine spiral spines already live in the content (square ×5 touchpoints, counter ×6, battery, motion-profile, proportional, state-cycling, obstacle, centering, trust/debounce) — all unmarked past L06; spiral markers are absent L07–L16 (worse than the S66 log's "L10–L12"). Exactly one move helps the ramp; every other candidate was rejected with arithmetic (moving L04 C5 undoes S66's L04 fix; moving L10 C5 relocates the dip; pulling L08's tuning cards starves TDP table A4). Both docs are in the repo root.
 
@@ -474,7 +558,7 @@ three version lines, nothing else.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S66)
+## WHAT SHIPPED PREVIOUSLY (S66)
 
 **The scale correction.** The prior audit table's means only reproduce under a four-point doing mapping (Hard=3, Advanced=4); §6.12b's canonical order is five tiers with Tough=3. Recomputed 1–5, L04 was **2.80** — second-hardest doing in the book at position 4 of 16 — not the recorded 2.40. Every shape finding survived the rescale.
 
@@ -488,7 +572,7 @@ three version lines, nothing else.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S65)
+## WHAT SHIPPED PREVIOUSLY (S65)
 
 **L02 depth pass — five additions.** All five came from DJ's own read of the lesson. Brace style
 (Allman vs K&R, book is K&R at 837 vs 2) plus a ⚠️ WARNING on the one-liner trap — the second line that
@@ -587,7 +671,7 @@ L03/L05 before L06 teaches it — needs line-level verify. Canonized §24.5.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S64) — the split-pill sweep, complete
+## WHAT SHIPPED PREVIOUSLY (S64) — the split-pill sweep, complete
 
 **The sweep.** L04–L15, 59 pills, converted to the two-axis split pill. With S62's L01–L03 the book is
 now at **84 challenges / 15 lessons / 0 old pills**. Verified by `pill_sweep.py --audit`,
@@ -654,7 +738,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S63) — the robot icon family
+## WHAT SHIPPED PREVIOUSLY (S63) — the robot icon family
 
 **Pushed:** `images/glowbots/` — 42 files, flat. 25 bordered (5 robots × 1254/256/128/64/52, RGB) · 15 glow (5 × full-1186²/256/128, RGBA) · 2 QA contact sheets. Verified byte-identical to delivery by fresh clone at commit `12867ea`.
 
@@ -692,7 +776,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S61) — book-wide callout standardization · all 16 lessons
+## WHAT SHIPPED PREVIOUSLY (S61) — book-wide callout standardization · all 16 lessons
 
 **The sweep.** Every "Coach's Tip/Note" and drifted color-coded box across L01–L16 was re-typed by **function** onto the Bible §6.6a canonical system: **Tip 💡** = actionable "make it work / fix it" (`#f0f7f0`), **Note 📘** = enrichment "why / context" (`#eceff1`), **Warning ⚠️** = real caution/safety (`#fff8e1`). Reassignment was by function, not original icon (the book had Tip/Note inverted in places). Bare labels, no "Coach's". Book-wide totals: **77 Tip · 107 Note · 72 Warning.**
 
@@ -710,7 +794,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 ---
 
-## WHAT SHIPPED THIS BATCH — L14 v02.5.0 · L15 v02.3.0 · Maker v2.41
+## WHAT SHIPPED PREVIOUSLY — L14 v02.5.0 · L15 v02.3.0 · Maker v2.41
 
 **L14 (Competition Prep) — 3 challenges, hybrid.** C1 Wheel Test (MEDIUM) + C3 LoP Counter (TOUGH) → full Goal→Logic→Template cards; C2 Strict Mode (EASY) → prose card (three-line trick-question answer; panels would be hollow). Blanks verified to fill exactly to each solution.
 

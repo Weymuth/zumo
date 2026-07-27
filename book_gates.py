@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.10 (S79) — whole-book consistency gates.
+# book_gates.py v1.11 (S81) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -525,7 +525,33 @@ gate('§6.12c stacked sibling reveals agree on summary padding', bad)
 
 
 print()
+
+# ---- §25.11 (S81 DJ ruling): a reveal's VISIBLE LABEL must agree with its data-reveal
+# ---- TYPE. "If it's a hint, then say hint. If it's a solution, then call it a solution."
+# ---- Found live in nine mystery reveals (L08 x4, L09 x5) that S80 retyped to `solution`
+# ---- attribute-only, leaving the label reading "Hint" on a block the tutor now strips.
+# ---- L11 was the model again: solution + "Answer" in all four of its mysteries.
+# ---- Deliberately NARROW per §24.6c — the label vocabulary is legitimately varied
+# ---- (62 "reveal solution", 13 "Answer", 9 "worked version"), so this asserts only the
+# ---- one contradiction shape that was verified by reading, not a label whitelist.
+bad = []
+_HINTY = ('hint',)
+_ANSWERY = ('answer', 'solution', 'worked')
+for f in files:
+    for m in re.finditer(r'<details\b([^>]*)>\s*<summary\b[^>]*>(.*?)</summary>', R[f], re.S):
+        attrs, label = m.group(1), txt(m.group(2)).strip().lower()
+        tm = re.search(r'data-reveal="([^"]+)"', attrs)
+        if not tm:
+            continue
+        t = tm.group(1)
+        ln = R[f].count('\n', 0, m.start()) + 1
+        if t == 'solution' and any(w in label for w in _HINTY):
+            bad.append(f'{L(f)} line {ln}: data-reveal="solution" but label says hint')
+        if t == 'hint' and any(w in label for w in _ANSWERY):
+            bad.append(f'{L(f)} line {ln}: data-reveal="hint" but label promises an answer')
+gate('§25.11 reveal label agrees with reveal type', bad)
 print('=' * 52)
+
 if FAIL:
     print(f'{len(FAIL)} GATE(S) FAILED: {", ".join(FAIL)}')
     sys.exit(1)

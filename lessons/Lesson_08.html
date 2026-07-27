@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.7.2 -->
+<!-- Lesson version: v04.7.3 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2428,7 +2428,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <h4 style="color: #6c757d;" id="mystery-1" data-challenge="8.m1" data-kind="mystery">Mystery 1: Backwards Correction</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=backwards_correction" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — upload and start it <em>on a straight line, on the floor</em>. The instant it drifts a hair off center, it snaps <em>hard away</em> from the line and spirals off. Why away — and why so violently?</p>
 <details data-reveal="solution">
-    <summary>💡 Hint</summary>
+    <summary>💡 Answer</summary>
 <p>Two characters, one function. The planted lines in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine()</code>:</p>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;">  <span style="color: #569cd6;">int</span> leftSpeed = BASE_SPEED - correction;
   <span style="color: #569cd6;">int</span> rightSpeed = BASE_SPEED + correction;</pre>
@@ -2437,7 +2437,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <h4 style="color: #6c757d;" id="mystery-2" data-challenge="8.m2" data-kind="mystery">Mystery 2: The Straight-Liner</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=straight_liner" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — flawless on the straightaway, sails serenely off every curve, no correction whatsoever. Before opening any file: <strong>read the status screen</strong>. It has been telling you the answer the whole time.</p>
 <details data-reveal="solution">
-    <summary>💡 Hint</summary>
+    <summary>💡 Answer</summary>
 <p>The screen says <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Kp: 0.00</code>. The planted line:</p>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">float</span> currentKp = <span style="color: #b5cea8;">0.0</span>;           <span style="color: #7cbf6e;">// Live-tunable copy of KP</span></pre>
 <p>Gain zero &rarr; correction zero &rarr; a robot that only drives straight. Pressing C revives it <em>until the next reboot</em> &mdash; live tuning treats the symptom, the initializer is the disease. Restore <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">float currentKp = KP;</code>.</p>
@@ -2451,7 +2451,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <h4 style="color: #6c757d;" id="mystery-4" data-challenge="8.m4" data-kind="mystery">Mystery 4: The Eternal Gap</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=eternal_gap" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — <strong>floor only, spotter ready</strong> — this one does not stop on its own. It follows fine, but at the first gap it coasts straight… and keeps coasting. Forever. What gave up: the gap logic, or the number it was given?</p>
 <details data-reveal="solution">
-    <summary>💡 Hint</summary>
+    <summary>💡 Answer</summary>
 <p>The logic is perfect. The planted constant:</p>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">unsigned</span> <span style="color: #569cd6;">long</span> MAX_GAP_TIME = <span style="color: #b5cea8;">500000</span>;  <span style="color: #7cbf6e;">// Max milliseconds to cross a gap</span></pre>
 <p>500,000 ms is an <strong>eight-minute</strong> gap allowance &mdash; the timeout exists and can essentially never fire. A safety limit that can't trigger is indistinguishable from no safety at all; that's the whole lesson. Restore 500.</p>
@@ -2459,7 +2459,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <h4 style="color: #6c757d;" id="mystery-5" data-challenge="8.m5" data-kind="mystery">Mystery 5: The Blind Robot</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=8&amp;kind=blind_robot" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — calibration runs correctly this time — real spin and all — and it <em>still</em> declares LINE LOST instantly, parked on a jet-black line. Same symptom as Mystery 3, so: same cause? Prove your answer before you look.</p>
 <details data-reveal="solution">
-    <summary>💡 Hint</summary>
+    <summary>💡 Answer</summary>
 <p>Different culprit entirely. The planted constant:</p>
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> LINE_LOST_THRESHOLD = <span style="color: #b5cea8;">5001</span>;    <span style="color: #7cbf6e;">// Calibrated sum below this = no line</span></pre>
 <p>Five sensors &times; 1000 max = a highest possible sum of <strong>5000</strong>. The visibility test can never pass &mdash; not on any line, ever. Same symptom as Mystery 3, opposite end of the pipeline: one starves the reading, the other sets an impossible bar. <em>Same symptom &ne; same cause</em> is the most valuable sentence in debugging. Restore 200.</p>
