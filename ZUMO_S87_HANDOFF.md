@@ -8,7 +8,7 @@
 5. **Every version in this handoff is a LEAD.** Grep the files. The files win.
 
 ## LIVE AT S86 CLOSE
-Bible **v8.74** · book_gates **v1.18 (31 gates, 31/31 PASS)** · lesson_inventory **v1.0.5** ·
+Bible **v8.75** · book_gates **v1.18 (31 gates, 31/31 PASS)** · lesson_inventory **v1.0.5** ·
 **tutor v1.1.0** · gen_bonus_banner v1.1 · Maker v2.45.1 · pill_sweep v1.0 · Harness v3.0
 
 L01 v03.10.4 · L02 **v03.1.1** · L03 **v03.15.1** · L04 **v04.9.1** · L05 **v04.11.1** · L06 **v04.13.1** ·
@@ -108,6 +108,13 @@ challenge-card full redesign Part B (~80–100 cards to the L06 Goal→Logic→T
 Maker batch (bulk starters DL · `?lesson=N` gate · C## labels) · L01 VS Code multi-root step ·
 TDP template v3 (A5 Lab Log) · day-by-day grid + syllabus · L03 open items (1000 ms explainer, modulo
 explainer, two Coach's Tips, C01/C05/C06 starter `finished`-payload debt shared with L08/L09/L10).
+
+## READ FIRST — §24.8, THE RULE THIS SESSION IS ACTUALLY ABOUT
+Before believing ANY tool's report about the book: **if the answer were the OPPOSITE, would this instrument
+look different?** If not, the report is not evidence — it is the instrument's silence, and silence fits both
+answers. S86 produced five instances where the instrument, not the book, was wrong; the fifth was committed
+one message after §24.7 was written about the fourth. **Knowing the rule confers no immunity; running the
+test does.** Full table in Bible §24.8.
 
 ## LESSONS FROM S86 (the ones that cost time)
 - **A consumer sweep by attribute name misses every tool that consumes the PARSED value.** `book_gates.py`
