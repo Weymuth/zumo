@@ -8,7 +8,7 @@
 5. **Every version in this handoff is a LEAD.** Grep the files. The files win.
 
 ## LIVE AT S86 CLOSE
-Bible **v8.73** · book_gates **v1.18 (31 gates, 31/31 PASS)** · lesson_inventory **v1.0.5** ·
+Bible **v8.74** · book_gates **v1.18 (31 gates, 31/31 PASS)** · lesson_inventory **v1.0.5** ·
 **tutor v1.1.0** · gen_bonus_banner v1.1 · Maker v2.45.1 · pill_sweep v1.0 · Harness v3.0
 
 L01 v03.10.4 · L02 **v03.1.1** · L03 **v03.15.1** · L04 **v04.9.1** · L05 **v04.11.1** · L06 **v04.13.1** ·
@@ -65,10 +65,23 @@ reading it. **Any kind added to §4.5 must be added to `known[]` in the same edi
 cards, so this can no longer be forgotten — it is the nineteen-session-old *"L16 has zero challenge cards"*
 item wearing a different hat.
 
-**2. Rendered-Pages eyeball (DJ, not sandbox — weymuth.github.io is blocked here).**
-**S86 changed ZERO visible text**, so it adds nothing here. Still outstanding: S85's visible-text changes in
-14 lessons, and **S84 batch 1's five moved banners are STILL unverified** — L12 §6–§7, L13 §6–§7 / §7–§9,
-L14 §6–§7 / §7–§9, L04 PART 2, L05 PART 2 / PART 4.
+**2. Rendered-Pages eyeball — PARTLY CLOSED IN THE SANDBOX. Read §24.7 first.**
+**S86 changed ZERO visible text**, so it adds nothing here. **S84 batch 1's eight PART seams were rendered at
+S86 close and all eight are correct** — L04 P2→§4 · L05 P2→§4 · L05 P4→§9 · L12 P3→§7 · L13 P3→§7 ·
+**L13 P4→§9 (the plum-welded-onto-§7 defect is NOT present)** · L14 P3→§7 · L14 P4→§9. That is a STRONG LEAD,
+not a cleared eyeball: wkhtmltoimage is WebKit, older than Chrome, and remote images render as gaps because
+the image host is the blocked one. **Still outstanding: S85's visible-text changes across 14 lessons.**
+
+**§24.7 IS LOAD-BEARING — do not render without reading it.** Whole-page renders of these lessons go PURE
+BLACK in the tail with no error and a perfect-looking top (bottom quarter: L04/L05/L12 100%, L14 81%,
+L13 62%). Window every render with `--crop-y/--crop-h`, locate by colour (`background-color`, NOT
+`background`), and prove the window holds the target before reading it.
+
+**Egress:** DJ added `weymuth.github.io` to the allowlist during S86 and it did **not** take effect —
+`x-deny-reason: host_not_allowed` persisted while `api.github.com` returned 200. The container allowlist is
+evidently fixed at start, so **try again in a fresh conversation**; if it lands, images fill in and Pages
+deployment becomes checkable for the first time. Also noted: `Weymuth/RoboLore` returns 404 from the API
+(private or renamed) and cannot be cloned without auth.
 
 **3. The Sabotage family's internal order may be inverted against the difficulty goal.** Hidden-culprit hunts
 FIRST (L08–L10), shown-line mechanism LATER (L11–L16). May be deliberate. **Look at this during the difficulty
