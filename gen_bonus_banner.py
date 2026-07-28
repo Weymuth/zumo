@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""gen_bonus_banner.py v1.1 — generate the bonus-block banner + nav pill from one table.
+"""gen_bonus_banner.py v1.2 — generate the bonus-block banner + nav pill from one table.
 
 Bible §4.5: three families, one mark and one word each.
   practice    &#128296; (hammer)     "Extra Practice"
@@ -35,6 +35,15 @@ TABLE = {
 BANNER = ('<div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">'
           '{mark} {word}: {count} {noun}</div>')
 
+# The CAP is the gray div the banner is seated in.  It is family-independent and
+# identical in all 15 bonus blocks.  It lived outside this generator until S87,
+# when L03 was found shipping a `linear-gradient(135deg, #6c757d, #4d5358)` cap
+# with 12px padding and a 40px top margin -- which passed gate 30 for its whole
+# life because the check was a SUBSTRING test for '#6c757d', and a gradient
+# containing #6c757d satisfies it.  Generated and byte-gated from here on.
+CAP = ('<div style="background-color: #6c757d; color: white; padding: 13px 18px; '
+       'border-radius: 8px 8px 0 0; margin-top: 24px;">')
+
 def banner_for(lg):
     fam, count, noun, _ = TABLE[lg]
     return BANNER.format(mark=MARK[fam], word=WORD[fam], count=count, noun=noun)
@@ -48,6 +57,16 @@ def rewrite(path, lg, dry=True):
     # 1. the banner div
     m = re.search(r'<div id="bonus-challenges"[^>]*>.*?</div>', s, re.S)
     assert m, f'L{lg}: no bonus-challenges banner div'
+
+    # 1a. the cap div the banner sits in (locate from the banner's START, not from
+    #     the id= offset -- searching back from id= lands on the banner's own <div)
+    cw = s.rfind('<div', 0, m.start())
+    cap_open = s[cw:s.find('>', cw) + 1]
+    if cap_open != CAP:
+        s = s[:cw] + CAP + s[s.find('>', cw) + 1:]
+        notes.append(f'cap: {cap_open} -> canonical')
+        m = re.search(r'<div id="bonus-challenges"[^>]*>.*?</div>', s, re.S)
+        assert m, f'L{lg}: banner lost after cap rewrite'
     new_banner = banner_for(lg)
     if m.group(0) != new_banner:
         s = s[:m.start()] + new_banner + s[m.end():]
@@ -67,6 +86,8 @@ def rewrite(path, lg, dry=True):
 
     # ---- asserts: re-parse and read back (§24.6b, the S84 lesson)
     assert s.count('id="bonus-challenges"') == 1, f'L{lg}: banner id count != 1'
+    _cw = s.rfind('<div', 0, re.search(r'<div id="bonus-challenges"', s).start())
+    assert s[_cw:s.find('>', _cw) + 1] == CAP, f'L{lg}: cap did not land byte-exact'
     m2 = re.search(r'<div id="bonus-challenges"[^>]*>(.*?)</div>', s, re.S)
     assert m2 and m2.group(0) == new_banner, f'L{lg}: banner did not land byte-exact'
     txt = m2.group(1)

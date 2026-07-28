@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.18 (S85) — whole-book consistency gates.
+# book_gates.py v1.20 (S85) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -788,6 +788,9 @@ if converted != 9:
     bad.append(f'COVERAGE: {converted} converted lessons scanned, expected 9')
 gate('§25.10h Brain Check 01 seats above §6 at body level; 02-04 sit in the §10 panel', bad)
 
+BONUS_CAP = ('<div style="background-color: #6c757d; color: white; padding: 13px 18px; '
+             'border-radius: 8px 8px 0 0; margin-top: 24px;">')
+
 # ---- §4.5: the bonus-block banner is generated from the three-family table.
 # Three families, one mark and one word each. Byte-canonicity and PLACEMENT are asserted
 # INDEPENDENTLY (the S84 lesson: an encoding drift must never be able to hide a misplaced
@@ -851,11 +854,16 @@ for f in files:
         bad.append(f'{lg}: banner not byte-canonical\n           got  {m.group(0)}'
                    f'\n           want {want}')
 
-    # (b) PLACEMENT, asserted independently of the bytes above
+    # (b) PLACEMENT, asserted independently of the bytes above.
+    #     The cap is compared BYTE-EXACT, not by substring: a
+    #     `background: linear-gradient(135deg, #6c757d, #4d5358)` cap CONTAINS
+    #     '#6c757d' and passed the old substring test for its whole life (L03,
+    #     found S87).  A substring test cannot distinguish flat from gradient.
     cap = s2.rfind('<div', 0, m.start())
-    capstyle = s2[cap:s2.find('>', cap)]
-    if '#6c757d' not in capstyle or 'border-radius: 8px 8px 0 0' not in capstyle:
-        bad.append(f'{lg}: bonus banner is not seated in a gray cap div')
+    capopen = s2[cap:s2.find('>', cap) + 1]
+    if capopen != BONUS_CAP:
+        bad.append(f'{lg}: bonus cap div not byte-canonical\n           got  {capopen}'
+                   f'\n           want {BONUS_CAP}')
     after = s2[m.end():m.end() + 260]
     if not re.match(r'\s*</div>\s*<div style="border: 2px solid #6c757d', after):
         bad.append(f'{lg}: gray cap is not fused to the bordered bonus panel')
@@ -936,6 +944,42 @@ for f in files:
 if seen != 14:
     bad.append(f'COVERAGE: {seen} lessons scanned, expected 14')
 gate('\u00a74.2  every bonus card is tagged and its data-kind names its family', bad)
+
+
+# ---- §4.5a: every bonus block is announced in the flow of the lesson.
+#      Before S87 the FINISHED EARLY pointer existed in L02-L09 and was ABSENT in
+#      L10-L15, so in six lessons the only route into the bonus block was one nav
+#      pill among twelve to fourteen.  The livery had also drifted into three
+#      strata (2/2/4) that cut across the families rather than along them.
+#      Byte-canonical, like the cap: a substring test cannot see a drift.
+FE_BOX = ('<div style="background-color: #f8f9fa; border: 2px solid #6c757d; '
+          'border-radius: 10px; padding: 15px 20px; margin: 25px 0;">')
+bad = []
+seen = 0
+for f in files:
+    lg, s2 = L(f), R[f]
+    if lg not in BONUS_TABLE:
+        continue
+    seen += 1
+    n = s2.upper().count('FINISHED EARLY')
+    if n != 1:
+        bad.append(f'{lg}: expected exactly 1 FINISHED EARLY pointer, found {n}')
+        continue
+    i = s2.upper().find('FINISHED EARLY')
+    st = s2.rfind('<div', 0, i)
+    box = s2[st:s2.find('>', st) + 1]
+    if box != FE_BOX:
+        bad.append(f'{lg}: FINISHED EARLY box not byte-canonical\n           got  {box}'
+                   f'\n           want {FE_BOX}')
+    b = s2.find('id="bonus-challenges"')
+    if b < 0 or st > b:
+        bad.append(f'{lg}: FINISHED EARLY pointer does not precede the bonus block')
+    seg = s2[st:s2.find('</div>', i) + 6]
+    if 'href="#bonus-challenges"' not in seg:
+        bad.append(f'{lg}: FINISHED EARLY pointer carries no link to the bonus block')
+if seen != 14:
+    bad.append(f'COVERAGE: {seen} lessons checked for the pointer, expected 14')
+gate('\u00a74.5a every bonus block is announced by a canonical FINISHED EARLY pointer', bad)
 
 print('=' * 52)
 
