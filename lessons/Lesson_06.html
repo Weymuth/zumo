@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.13.0 -->
+<!-- Lesson version: v04.13.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2422,31 +2422,31 @@ Stop motors</pre>
 
 <p>Observation challenges — no new project folders, work with your main <strong>LastName_L06</strong> build running its dashboard (the Step 4–6 program, or grab <strong>Discovery 6.5</strong> from the Maker). Each one is a small experiment: <strong>predict, test, explain.</strong> The hints are there if you're stuck.</p>
 
-<h4 style="color: #6c757d;" id="mystery-1" data-challenge="6.m1" data-kind="mystery">Experiment 1: The Slipping Wheel</h4>
+<h4 style="color: #6c757d;" id="mystery-1" data-challenge="6.m1" data-kind="bonus-observation">Experiment 1: The Slipping Wheel</h4>
 <p>Put the robot on something slick — a smooth folder, a plastic binder cover. Run a 30&#8239;cm drive and measure what it <em>actually</em> traveled with the ruler. The screen says 30; the ruler says less. Which one is lying?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Neither — they answer different questions. The encoder counts <strong>wheel rotation</strong>, and the wheel really did rotate 30&#8239;cm worth. Travel is rotation <em>plus grip</em>. This gap is why competition robots cross-check encoders against other sensors.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-2" data-challenge="6.m2" data-kind="mystery">Experiment 2: The Air Drive</h4>
+<h4 style="color: #6c757d;" id="mystery-2" data-challenge="6.m2" data-kind="bonus-observation">Experiment 2: The Air Drive</h4>
 <p>Hold the robot in the air (fingers clear of the tracks!) and start a 50&#8239;cm drive. Predict: does it ever stop? Then watch the dashboard while it runs. Explain what "distance" meant to the robot during the flight.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>It stops right on schedule — the wheels spun 50&#8239;cm worth of counts while the robot went nowhere. Encoders measure the motor's side of the story, and in the air that story is fiction.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-3" data-challenge="6.m3" data-kind="mystery">Experiment 3: The Uneven Twins</h4>
+<h4 style="color: #6c757d;" id="mystery-3" data-challenge="6.m3" data-kind="bonus-observation">Experiment 3: The Uneven Twins</h4>
 <p>Run <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance(50)</code> three times. First clean. Then hold a finger <em>lightly</em> against the <strong>left</strong> track while it drives. Then the <strong>right</strong> track instead. Same drag, same distance requested — predict: does the robot stop short, overshoot, or land right, and does it matter <em>which</em> track you touch?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Drag the <strong>left</strong> track and the robot <strong>stops short</strong>: that track slips, the left encoder over-counts, and the loop quits early. Drag the <strong>right</strong> and it sails straight past the mark — because before Step 13 the gate was <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs(encoders.getCountsLeft())</code> and <em>nothing ever asked the right wheel anything.</em> That is not normal variance. That is a bug you can feel with one finger. <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">averageCounts()</code> asks both wheels, so a stiff track now costs you <em>half</em> the error instead of all of it.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-4" data-challenge="6.m4" data-kind="mystery">Experiment 4: The 440 Ruler</h4>
+<h4 style="color: #6c757d;" id="mystery-4" data-challenge="6.m4" data-kind="bonus-observation">Experiment 4: The 440 Ruler</h4>
 <p>Without running it, read <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance</code> and predict what happens if you call it with 500&#8239;cm. Now check the Note in Step 7. What is special about the number 32,767 — and what would the robot actually do?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>The target lives in an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>, which tops out at 32,767 on this chip. 500&#8239;cm &times; ~74.3 counts/cm &asymp; 37,000 — past the ceiling, the math silently wraps to a wrong (possibly tiny or negative) number. The robot barely moves, or the while-loop's finish line lands somewhere you never intended. Big numbers need bigger boxes — that's what <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">long</code> is for, in a later lesson.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-5" data-challenge="6.m5" data-kind="mystery">Experiment 5: The Backwards Counter</h4>
+<h4 style="color: #6c757d;" id="mystery-5" data-challenge="6.m5" data-kind="bonus-observation">Experiment 5: The Backwards Counter</h4>
 <p>Run the dashboard and pull the robot <em>backwards</em> along the ruler. Predict first: do the counts go up, or something else? Then explain why the lesson's functions wrap every count in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">abs()</code>.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>

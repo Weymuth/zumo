@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# lesson_inventory.py v1.0.4 (S83) — exhaustive structural ENUMERATION of the lesson files.
+# lesson_inventory.py v1.0.5 (S83) — exhaustive structural ENUMERATION of the lesson files.
 #
 # Usage:
 #   python3 lesson_inventory.py                     summary table, all 16 lessons
@@ -297,7 +297,7 @@ def flat_lines(pre):
 
 # ---------------------------------------------------------------- reporting
 
-BANNER = ('lesson_inventory.py v1.0.4 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
+BANNER = ('lesson_inventory.py v1.0.5 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
           'No exit code, no PASS/FAIL. A parser is necessary and not sufficient: read the table.\n')
 
 
@@ -453,7 +453,7 @@ def summary(invs):
     # (canonized S84 — 64 book-wide, four per lesson in all 16, byte-enforced by
     # book_gates gate 27, so this matcher no longer rests on a format nothing
     # guarantees; pre-S84 it read zero for L02 and L06, which each had comments in
-    # an unwrapped format — the §6.8a blindness one construct over). v1.0.4
+    # an unwrapped format — the §6.8a blindness one construct over). v1.0.5
     # ran them together in one "fnce" column reading 75, which was 34 section fences plus 41
     # PART banners — two constructs under one label. The pre-S82 claim that "only six lessons
     # carry any" was an artifact of the matcher: ten lessons carried them, five in a bare
@@ -463,7 +463,7 @@ def summary(invs):
     for inv in invs:
         h3 = sum(1 for h in inv['headings'] if h['tag'] == 'h3')
         h4 = sum(1 for h in inv['headings'] if h['tag'] == 'h4')
-        myst = sum(1 for c in inv['constructs'] if c['kind'] == 'mystery')
+        myst = sum(1 for c in inv['constructs'] if c['kind'] in ('bonus-observation', 'bonus-sabotage'))
         t = {}
         for r in inv['reveals']:
             t[r['type']] = t.get(r['type'], 0) + 1
@@ -478,7 +478,7 @@ def summary(invs):
       f'{sum(len(i["sections"]) for i in invs):>6}'
       f'{sum(_sf(i) for i in invs):>6}{sum(_pf(i) for i in invs):>6}'
       f'{sum(len(i["constructs"]) for i in invs):>6}'
-      f'{sum(1 for i in invs for c in i["constructs"] if c["kind"] == "mystery"):>6}'
+      f'{sum(1 for i in invs for c in i["constructs"] if c["kind"] in ("bonus-observation", "bonus-sabotage")):>6}'
       f'{sum(len(i["reveals"]) for i in invs):>8}')
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.17 (S85) — whole-book consistency gates.
+# book_gates.py v1.18 (S85) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -479,7 +479,9 @@ for f in files:
     for c in inv['constructs']:
         seen += 1
         card = s[c['start']:c['end']]
-        mystery = c['kind'] == 'mystery'
+        # §25.10g is a SABOTAGE rule: those reveals carry the planted line.  Observation
+        # reveals hold no code at all, so the zero-threshold branch must not chase them.
+        mystery = c['kind'] == 'bonus-sabotage'
         for pm in re.finditer(r'<pre[^>]*>(.*?)</pre>', card, re.S):
             if _enclosing_reveal(card, pm.start()) != 'hint':
                 continue
@@ -790,6 +792,18 @@ gate('§25.10h Brain Check 01 seats above §6 at body level; 02-04 sit in the §
 # Three families, one mark and one word each. Byte-canonicity and PLACEMENT are asserted
 # INDEPENDENTLY (the S84 lesson: an encoding drift must never be able to hide a misplaced
 # banner), and the count word is verified against the real card count.
+def _bonus_cards(s2, after):
+    """Count the cards in a bonus block.  ONE definition, used by gate 30 (is the banner's
+    count word true?) and gate 31 (is a HELD lesson still under the family floor?)."""
+    g = s2.find('id="glossary"')
+    seg = s2[after:g] if g > after else s2[after:]
+    tagged = re.findall(r'<h[34][^>]*data-challenge="([^"]*)"', seg)
+    bnum = set(re.findall(r'\bB([1-9])\b\s*&mdash;', seg))
+    h4 = [x for x in re.findall(r'<h4[^>]*>(.*?)</h4>', seg, re.S)
+          if 'Reveal' not in x and 'verbatim' not in x]
+    return len(tagged) or len(bnum) or len(h4)
+
+
 BONUS_MARK = {'practice': '&#128296;', 'observation': '&#128269;',
               'sabotage': '&#128373;&#65039;'}
 BONUS_WORD = {'practice': 'Extra Practice', 'observation': 'Observation',
@@ -847,13 +861,7 @@ for f in files:
         bad.append(f'{lg}: gray cap is not fused to the bordered bonus panel')
 
     # (c) the count word is true
-    g = s2.find('id="glossary"')
-    seg = s2[m.end():g] if g > m.end() else s2[m.end():]
-    tagged = re.findall(r'<h[34][^>]*data-challenge="([^"]*)"', seg)
-    bnum = set(re.findall(r'\bB([1-9])\b\s*&mdash;', seg))
-    h4 = [x for x in re.findall(r'<h4[^>]*>(.*?)</h4>', seg, re.S)
-          if 'Reveal' not in x and 'verbatim' not in x]
-    real = len(tagged) or len(bnum) or len(h4)
+    real = _bonus_cards(s2, m.end())
     if real != BONUS_NUM[count]:
         bad.append(f'{lg}: banner claims {count} ({BONUS_NUM[count]}) '
                    f'but the block holds {real} cards')
@@ -879,6 +887,55 @@ for f in files:
 if seen != 14:
     bad.append(f'COVERAGE: {seen} lessons scanned against the family table, expected 14')
 gate('\u00a74.5  bonus banner generated from the three-family table, placement asserted', bad)
+
+# ---- §4.2 COVERAGE: every bonus card is tagged, and its kind names its family.
+# Gate 4 asserts markers are UNIQUE, never PRESENT -- which is why 28 untagged cards
+# sat inside a 30/30 book for a year.  This gate rides gate 30's already-verified card
+# count: the banner count is true, so the tagged count must equal it.
+BONUS_KIND = {'practice': 'bonus-practice', 'observation': 'bonus-observation',
+              'sabotage': 'bonus-sabotage'}
+bad = []
+seen = 0
+for f in files:
+    lg, s2 = L(f), R[f]
+    if lg not in BONUS_TABLE:
+        # A held lesson is skipped BY NAME, never absorbed by COVERAGE -- and the hold
+        # expires by itself: DJ's S85 ruling was "revisit when it has four cards", so
+        # reaching the floor is what makes this gate speak up.
+        if lg in BONUS_HELD and 'id="bonus-challenges"' in s2:
+            mh = re.search(r'<div id="bonus-challenges".*?</div>', s2, re.S)
+            held = _bonus_cards(s2, mh.end()) if mh else 0
+            if held >= 4:
+                bad.append(f'{lg}: HELD out of the family by the S85 ruling at 2 cards, '
+                           f'but it now holds {held} -- the floor is 4, so bring it into '
+                           f'§4.5 (banner, pill, tagging) or re-rule the hold')
+            continue
+        if 'id="bonus-challenges"' in s2:
+            bad.append(f'{lg}: has a bonus block but is neither in the family table '
+                       f'nor held')
+        continue
+    seen += 1
+    fam, count, _ = BONUS_TABLE[lg]
+    m = re.search(r'<div id="bonus-challenges".*?</div>', s2, re.S)
+    if not m:
+        continue
+    g = s2.find('id="glossary"')
+    seg = s2[m.end():g] if g > m.end() else s2[m.end():]
+    want = BONUS_KIND[fam]
+    marked = re.findall(r'data-challenge="([^"]*)"', seg)
+    kinds = re.findall(r'data-kind="([^"]*)"', seg)
+    if len(marked) != BONUS_NUM[count]:
+        bad.append(f'{lg}: banner says {BONUS_NUM[count]} cards but only {len(marked)} '
+                   f'carry data-challenge -- an untagged card is invisible to the picker (§20.2)')
+    if len(kinds) != BONUS_NUM[count]:
+        bad.append(f'{lg}: {len(kinds)} data-kind in the block, expected {BONUS_NUM[count]}')
+    off = sorted(set(k for k in kinds if k != want))
+    if off:
+        bad.append(f'{lg}: block is family {fam!r}, expected every card {want!r}, '
+                   f'found {off}')
+if seen != 14:
+    bad.append(f'COVERAGE: {seen} lessons scanned, expected 14')
+gate('\u00a74.2  every bonus card is tagged and its data-kind names its family', bad)
 
 print('=' * 52)
 

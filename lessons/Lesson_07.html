@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.9.0 -->
+<!-- Lesson version: v04.9.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -3671,31 +3671,31 @@ Source files (.cpp) → <code style="font-family: 'Courier New', monospace; back
 
 <p>Break it on purpose — work in a <strong>spare copy</strong> of the finished build (Maker → CHALLENGES → any finished preload), because you'll be breaking things on purpose. Each one: <strong>predict, break, build, explain, undo.</strong> No robot needed for the first four.</p>
 
-<h4 style="color: #6c757d;" id="mystery-1" data-challenge="7.m1" data-kind="mystery">Experiment 1: The Missing Guard</h4>
+<h4 style="color: #6c757d;" id="mystery-1" data-challenge="7.m1" data-kind="bonus-observation">Experiment 1: The Missing Guard</h4>
 <p>Delete the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#pragma once</code> line from <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code>. Predict: red or green? Build. Now add a <em>second</em> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">#include &quot;RobotConfig.h&quot;</code> line to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.cpp</code> and build again. Explain both results.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>First build: <strong>green</strong> — each .cpp is compiled separately, and no single file included the header twice. Second build: <strong>red</strong>, <em>redefinition</em> — one file got two copies of every constant. The guard costs one line and makes double-include impossible; that's why it's the first line of every header.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-2" data-challenge="7.m2" data-kind="mystery">Experiment 2: The Broken Promise</h4>
+<h4 style="color: #6c757d;" id="mystery-2" data-challenge="7.m2" data-kind="bonus-observation">Experiment 2: The Broken Promise</h4>
 <p>Comment out the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">extern Zumo32U4OLED display;</code> line in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotSensors.h</code>. Before building, predict: <em>which files</em> go red, and with which Section 8 error?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>Every file that <em>uses</em> the display through the header — RobotHelpers.cpp, RobotMotion.cpp (if it prints), main.cpp — fails with <em>'display' was not declared in this scope</em> (Error 1). RobotSensors.cpp stays happy: it has the real object. The promise wasn't the object — but the whole project was leaning on it.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-3" data-challenge="7.m3" data-kind="mystery">Experiment 3: The Great Include Shuffle</h4>
+<h4 style="color: #6c757d;" id="mystery-3" data-challenge="7.m3" data-kind="bonus-observation">Experiment 3: The Great Include Shuffle</h4>
 <p>In <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code>, reverse the order of the four project includes — RobotMotion first, RobotConfig last. Predict: red or green?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p><strong>Green.</strong> Each header stands on its own: guards on top, and every header includes what <em>it</em> needs (RobotSensors.h pulls the Zumo library itself). Order-proof headers are a mark of good organization — if shuffling includes breaks a project, some header is secretly freeloading.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-4" data-challenge="7.m4" data-kind="mystery">Experiment 4: The Vanished File</h4>
+<h4 style="color: #6c757d;" id="mystery-4" data-challenge="7.m4" data-kind="bonus-observation">Experiment 4: The Vanished File</h4>
 <p>Rename <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.cpp</code> to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotMotion.txt</code> (right-click → Rename). Predict the error — and trickier: is it a <em>compiler</em> error or a <em>linker</em> error? Build, check, rename it back.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p><em>Undefined reference to 'driveDistance(float)'</em> — a <strong>linker</strong> error (Error 4). PlatformIO only compiles <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">.cpp</code> files, so the .txt was silently skipped; every file still <em>compiled</em> fine on the header's promise. The linker was the one left holding an empty bag.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-5" data-challenge="7.m5" data-kind="mystery">Experiment 5: The One-Number Tune-Up</h4>
+<h4 style="color: #6c757d;" id="mystery-5" data-challenge="7.m5" data-kind="bonus-observation">Experiment 5: The One-Number Tune-Up</h4>
 <p>Robot time. Run B (turn 90&deg;) four times and note the total drift. Now change <strong>only</strong> <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">WHEEL_BASE_MM</code> in <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">RobotConfig.h</code> — up 3 if it undershoots, down 3 if it overshoots — rebuild, repeat. Count: how many <em>files</em> did you touch? How many <em>behaviors</em> changed?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>

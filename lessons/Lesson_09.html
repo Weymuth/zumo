@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.6.0 -->
+<!-- Lesson version: v05.6.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1722,7 +1722,7 @@ driveDistance(____);   <span style="color: #7cbf6e;">// center the wheels on the
 
 <p>Detective work, state-machine edition. Each Maker link opens the <strong>finished build with one deliberate defect planted</strong>. The routine holds: upload, watch the symptom, <strong>predict the culprit before opening a file</strong>, find it, fix it, prove the fix. New this lesson: for every mystery, first ask <em>which STATE is misbehaving?</em> &mdash; that question alone eliminates three quarters of the code.</p>
 
-<h4 style="color: #6c757d;" id="mystery-1" data-challenge="9.m1" data-kind="mystery">Mystery 1: The Crawling Robot</h4>
+<h4 style="color: #6c757d;" id="mystery-1" data-challenge="9.m1" data-kind="bonus-sabotage">Mystery 1: The Crawling Robot</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=9&amp;kind=missing_break" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — it follows the line at a tenth of its old speed, lurching, beeping at nothing, the screen flashing blank announcements. Every state seems <em>almost</em> right. What single character is missing?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
@@ -1751,7 +1751,7 @@ driveDistance(____);   <span style="color: #7cbf6e;">// center the wheels on the
     }</pre>
 <p>No <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">break</code>. Every pass <strong>falls through</strong> into AT_INTERSECTION: stop, announce a decision that doesn’t exist, wait 600 ms, bounce through EXECUTING_TURN (which dispatches <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">NO_INTERSECTION</code> to nothing) and back. The robot drives one loop-pass per second of theater. A switch without breaks isn’t a state machine &mdash; it’s a waterfall. Restore the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">break;</code>.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-2" data-challenge="9.m2" data-kind="mystery">Mystery 2: The Mirror Maze</h4>
+<h4 style="color: #6c757d;" id="mystery-2" data-challenge="9.m2" data-kind="bonus-sabotage">Mystery 2: The Mirror Maze</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=9&amp;kind=mirror_dispatch" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — detection is flawless — every marker stops it, every announcement is correct — and then it turns the <em>wrong way</em>. Every single time. The screen says LEFT; the robot goes right. Where can a decision go wrong <em>after</em> it’s been made correctly?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
@@ -1761,7 +1761,7 @@ driveDistance(____);   <span style="color: #7cbf6e;">// center the wheels on the
       <span style="color: #569cd6;">else</span> <span style="color: #569cd6;">if</span> (pendingTurn == DEAD_END) turnAround();</pre>
 <p><code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">GO_LEFT</code> dispatches to <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">turnRight()</code> and vice versa. Detection, storage, and announcement were all perfect &mdash; the last three centimeters of the pipeline betrayed them. When a symptom is a perfect inversion, look at the <em>mapping</em>, not the logic. Swap the calls back.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-3" data-challenge="9.m3" data-kind="mystery">Mystery 3: The Paranoid Robot</h4>
+<h4 style="color: #6c757d;" id="mystery-3" data-challenge="9.m3" data-kind="bonus-sabotage">Mystery 3: The Paranoid Robot</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=9&amp;kind=paranoid_green" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — it U-turns at plain black crossings, announces DEAD END where there’s no green for a meter in any direction — markers it handles fine. What does a <em>black</em> line have to do to get mistaken for green?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
@@ -1773,7 +1773,7 @@ driveDistance(____);   <span style="color: #7cbf6e;">// center the wheels on the
 <span style="color: #569cd6;">const</span> <span style="color: #569cd6;">int</span> GREEN_HIGH_THRESHOLD = <span style="color: #b5cea8;">1001</span>; <span style="color: #7cbf6e;">// Calibrated value where green ends</span></pre>
 <p>The green band now ends at <strong>1001</strong> &mdash; and calibrated black tops out at 1000. Every black reading is inside the band, so a perpendicular black line under both outer sensors reads as green-on-both-sides: DEAD END. The band’s upper edge isn’t bureaucracy; it’s the only thing separating <em>marker</em> from <em>line</em>. Restore your surveyed value.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-4" data-challenge="9.m4" data-kind="mystery">Mystery 4: The One-Turn Wonder</h4>
+<h4 style="color: #6c757d;" id="mystery-4" data-challenge="9.m4" data-kind="bonus-sabotage">Mystery 4: The One-Turn Wonder</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=9&amp;kind=one_turn_wonder" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — first marker: perfect stop, perfect announcement, perfect turn &mdash; then it plays dead forever. B does nothing. Power-cycle, same story: one flawless turn, then statue. What did the robot forget to do after turning?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
@@ -1788,7 +1788,7 @@ driveDistance(____);   <span style="color: #7cbf6e;">// center the wheels on the
     }</pre>
 <p>The turn runs, <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">pendingTurn</code> clears&hellip; and the state never changes. Next pass: still EXECUTING_TURN, all three ifs false, nothing happens &mdash; forever. And the kill switch can’t save you, because B lives in FOLLOWING_LINE and the robot isn’t <em>in</em> that state. Every state must name its exit; restore <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">currentState = FOLLOWING_LINE;</code>.</p>
 </details>
-<h4 style="color: #6c757d;" id="mystery-5" data-challenge="9.m5" data-kind="mystery">Mystery 5: The Blind Corners</h4>
+<h4 style="color: #6c757d;" id="mystery-5" data-challenge="9.m5" data-kind="bonus-sabotage">Mystery 5: The Blind Corners</h4>
 <p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=9&amp;kind=blind_corners" target="_blank" style="color: #2e86ab; font-weight: bold;">→ load the sabotaged build</a> — green thresholds surveyed and verified, calibration perfect &mdash; and it sails through every marker without a twitch. Challenge 1’s debug tool says the values are fine. So which sensors is the verdict actually asking?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>

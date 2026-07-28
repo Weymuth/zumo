@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.8.0 -->
+<!-- Lesson version: v02.8.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1101,7 +1101,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <div style="border: 2px solid #6c757d; border-top: none; border-radius: 0 0 8px 8px; padding: 20px 25px; background: white;">
 
 <p>Four saboteurs, four builds, and here is the frightening part: <strong>two of the four compile to exactly 24,902 bytes &mdash; byte-identical to the correct build &mdash; and the other two land within 16 bytes of it.</strong> The file size cannot save you. The compiler will not warn you. Only reading the code &mdash; and knowing what each line is <em>for</em> &mdash; catches these. Each mystery shows you the planted line up front; your job is not to find the typo. It is to explain <strong>why this line produces that symptom.</strong> Every sabotaged build is in the Maker under <em>Lesson 13 &rarr; BONUS</em> if you want to watch the crime happen.</p>
-<h4 style="color: #6c757d; margin-top: 24px;">Mystery B1 &mdash; The Corkscrew</h4>
+<h4 data-challenge="13.m1" data-kind="bonus-sabotage" style="color: #6c757d; margin-top: 24px;">Mystery B1 &mdash; The Corkscrew</h4>
 <p>A classmate &ldquo;tidied&rdquo; <code>setup()</code>: <em>&ldquo;both calibrations, together &mdash; it&rsquo;s cleaner.&rdquo;</em> The planted change:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
   calibrateLineSensors();
   gyroSetup();   <span style="color: #7cbf6e;">// as planted: &quot;both calibrations, together&quot;</span>
@@ -1110,7 +1110,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <div style="margin-top: 12px;">
 <p><code>gyroSetup()</code> learns the gyro&rsquo;s <em>zero</em> &mdash; what &ldquo;not rotating&rdquo; reads like &mdash; by averaging 1,024 samples while the robot holds still. <code>calibrateLineSensors()</code> <strong>spins the robot.</strong> Run the spin first and the gyro learns its zero <em>mid-pirouette</em>: it now believes some real rotation rate is stillness, and subtracts that fiction from every turn forever after. Every corner inherits the same bias; the rows corkscrew. A spin cannot calibrate a gyro &mdash; canon since Lesson 12, and the reason the correct <code>setup()</code> zeroes the gyro <em>before</em> anything moves.</p></div></details>
 <p style="margin-bottom: 0;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=b1_corkscrew" style="color: #2e86ab; font-weight: bold;">Open B1 in the Project Maker</a></p>
-<h4 style="color: #6c757d; margin-top: 24px;">Mystery B2 &mdash; The Unspent Number</h4>
+<h4 data-challenge="13.m2" data-kind="bonus-sabotage" style="color: #6c757d; margin-top: 24px;">Mystery B2 &mdash; The Unspent Number</h4>
 <p>The victim tuned TRIM perfectly in 7C &mdash; and the rows in the zone still arc. Their <code>RobotConfig.h</code> shows <code>TRIM = 8</code>, honestly measured. The planted line, in <code>driveUntil()</code>:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
 motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span style="color: #7cbf6e;">// as planted</span>
 </pre>
@@ -1118,7 +1118,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span style="color: #7cbf6e;">// a
 <div style="margin-top: 12px;">
 <p>Compare against the real line: <code>setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED)</code>. The student&rsquo;s 8 is declared, tuned, believed in &mdash; and <strong>never reaches the motors.</strong> A declared blank the code never spends is a lie in the worksheet: the student adjusts the number, nothing changes, and they learn to distrust the instrument instead of the build.</p><p>Here is the part that should worry you: with <code>TRIM = 8</code> set, this build and the correct one are <em>still</em> byte-identical &mdash; 24,902 bytes each. We disassembled both to prove the difference is real: the correct build loads <strong>158</strong> into the left motor and 150 into the right; the sabotage loads <strong>150 and 150</strong>. One instruction&rsquo;s immediate value. The file size is blind to it; only the disassembly &mdash; or the arc on your floor &mdash; tells the truth.</p></div></details>
 <p style="margin-bottom: 0;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=b2_unspent" style="color: #2e86ab; font-weight: bold;">Open B2 in the Project Maker</a></p>
-<h4 style="color: #6c757d; margin-top: 24px;">Mystery B3 &mdash; The Stripes of Blindness</h4>
+<h4 data-challenge="13.m3" data-kind="bonus-sabotage" style="color: #6c757d; margin-top: 24px;">Mystery B3 &mdash; The Stripes of Blindness</h4>
 <p>&ldquo;I made the sweep twice as fast,&rdquo; says the saboteur, proudly. And the runs <em>are</em> faster &mdash; and the robot misses the silver ball about half the time, on a course where it used to score every run. The planted line:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
       driveDistance(ROW_STEP_CM * <span style="color: #b5cea8;">2</span>);   <span style="color: #7cbf6e;">// as planted: &quot;cover ground faster&quot;</span>
 </pre>
@@ -1126,7 +1126,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span style="color: #7cbf6e;">// a
 <div style="margin-top: 12px;">
 <p><code>ROW_STEP_CM</code> was sized in 7A so that adjacent rows&rsquo; prox coverage <em>overlaps</em> &mdash; no floor goes uninspected. Doubling the step opens a blind stripe between every pair of rows, exactly one step wide. The ball is found when it sits in a covered band and missed when it sits in a stripe &mdash; which is why the failure is <em>intermittent</em>, the cruelest kind. Speed was bought with coverage, and nobody was told the price. Halve the blind area or halve the runtime is a real engineering trade; making it <em>silently</em> is the sabotage.</p></div></details>
 <p style="margin-bottom: 0;"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=b3_stripes" style="color: #2e86ab; font-weight: bold;">Open B3 in the Project Maker</a></p>
-<h4 style="color: #6c757d; margin-top: 24px;">Mystery B4 &mdash; The Invisible Door</h4>
+<h4 data-challenge="13.m4" data-kind="bonus-sabotage" style="color: #6c757d; margin-top: 24px;">Mystery B4 &mdash; The Invisible Door</h4>
 <p>The subtlest of the four. A well-meaning classmate &ldquo;fixed&rdquo; <code>silverDetected()</code> to follow the book&rsquo;s oldest rule: <em>always use the calibrated read.</em> The planted line:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
   lineSensors.readCalibrated(raw);   <span style="color: #7cbf6e;">// as planted: &quot;calibrated is always better&quot;</span>
 </pre>
