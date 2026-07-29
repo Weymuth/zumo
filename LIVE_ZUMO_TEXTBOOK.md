@@ -1,13 +1,80 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 28, 2026 (Session 87 — **A SUBSTRING TEST CANNOT DISTINGUISH FLAT FROM GRADIENT.** The rendered-pages debt is CLOSED for the §4.5 batch: `weymuth.github.io` reached the sandbox for the first time, **all 21 pages verified byte-identical between GitHub Pages and repo HEAD**, and all **14 bonus banners were verified RENDERED** — text OCR'd against `gen_bonus_banner.py`'s own table, 14/14 MATCH, plus 14/14 nav pills and three distinct emoji signatures proving the glyphs resolve. The sweep found **L03's cap shipping a `linear-gradient(135deg, #6c757d, #4d5358)`** against a 14-lesson flat norm, which had **passed gate 30 for its whole life because the placement check was a SUBSTRING test for `#6c757d`** — satisfied by a gradient that contains it. It also found the **FINISHED EARLY pointer ABSENT in L10–L15**, so six lessons offered no in-flow route into their bonus block at all, with the livery drifted into **three strata (2/2/4) cutting ACROSS the families**. Both classes are now closed: six pointers authored from each lesson's own planted defects, all 14 normalised to **B** (DJ: *"B is fine"*) because `#6c757d` is the §10+end section-group color and B is therefore DERIVED from the nav scheme, where the 4-lesson plurality's `#e3f2ed`/`#3d8b6e` have ZERO Bible mentions — **the plurality was the least canonical option.** Both constructs assert ONE constant, so a RoboLore branding guide changes `BONUS_CAP` and `FE_BOX` and all 15 blocks repaint and re-prove. Bible **v8.76**, gates **32/32 PASS**.)
-**Status:** **THE INSTRUMENT WAS WRONG FIVE TIMES BEFORE THE BOOK WAS WRONG ONCE (§24.8 again).** wkhtmltoimage's whole-page paint stops at **exactly 32,766 px = 2¹⁵−2**, which is the mechanism behind §24.7's black tail; **crop windows repaint past it and are byte-identical across runs**, which is what makes a coordinate-free sweep trustworthy; **in-page geometry is unusable** — bimodal, identical at 15 s and 45 s, unchanged by width 1000 vs 2400, `clientWidth` reads 0 — so the sweep never touches it. My own controls misfired twice and are recorded as such: `git checkout` reverts to HEAD, which during an unpushed session is the DEFECT, and locating the cap by searching back from the `id=` offset lands on the banner's own `<div>` rather than the wrapper. **§24.6b paid a fourth session running.** Logged, NOT fixed: the mono font splits **Courier-first L02–L09 vs Consolas-first L01,L10–L16** at the same L09/L10 seam the pointer broke at, so code blocks change typeface mid-book and the majority variant is NOT what VS Code uses — which §22 ties them to; 17 font-family declarations for two roles; 47 font-sizes; 15 border-radii; 230 distinct colors of which **150 are in no rule**; and the back-to-top construct is drifted three ways with L10 missing it entirely before its bonus block. **S86's eight PART-seam readings were taken with this instrument before its bimodality was known and should be re-derived, not inherited.**
+**Date:** July 28, 2026 (Session 89 — **A GREP PROVES ONLY THAT A STRING YOU THOUGHT OF IS ABSENT.** Four pushes, all fresh-clone verified. **`BookComponentStandard.md` v01.0.1 is live at the repo root** with `images/icons/` (48 Bootstrap Icons + LICENSE), closing the §12.4 exposure that S88 left entirely unwritten — the standard's core is §4, **mark / callout / legend entry**, one mark table and three emitters, where the mark is identical in every wrapper because a legend CITES a family rather than instantiating it. **The S88 table was wrong in four places and every one was caught by grepping the files instead of trusting the handoff:** NOTE was called a phantom and has **113 live occurrences**; the 📖×3 collision members were LEARN/GLOSSARY/EXPLANATION, not LEARN/NOTE/EXPLANATION, and it crosses slate→bronze; families 22→**24**; marks 45→**48**. **The build banner is deleted from all 17 pages** in one atomic 18-file commit (old gates FAIL on new source, new gates PASS — proven), retiring `ZUMO Callout Standard v1.0 Applied`, a conformance stamp naming a document that never existed. Bible **v8.77**, book_gates **v1.21**, gates **32/32 PASS**.)
+**Status:** **A GATE THAT NEVER LOOKED AND A GATE THAT FOUND NOTHING PRINT THE SAME THING (§24.9, NEW).** `going_deeper.html` shipped a visible `Version 01.0` against a hidden `v01.1.0` — **live, and invisible because both §5b gates iterated `files` (16 lessons) while §25.6 iterated 17.** The comparison logic was correct the whole time; the one file that drifted was the one file it never ran on. Coverage sets are now stated and asserted. The harder half is that **v8.53 recorded IN THE OPEN** that the two-homes gate *"needed no edit — it greps raw source, and raw source includes comments"* — a gate named for visibility, with no notion of visibility, knowingly built upon for **19 sessions**. That is not S87/S88's shape of an instrument silently failing; it was seen, judged harmless, and made load-bearing. **DJ's triple-check before the Bible push found THREE defects a passing grep had certified clean** — a summary line placed before the item it summarised, two orphaned bullets, and a stale `hidden banners` reference missed on casing alone. Every one a correct string in the wrong place. Recorded against myself: **`book_gates.py` does not check the Bible** and I reported "32/32 PASS" after Bible edits as though it did; a per-file 📘 grep returned 0 across all 17 files because `$'\U0001F4D8'` does not expand under `/bin/sh`, where the truth is 113; and I called the §5b gate comparison-blind after reading its NAME when its body compares on line 47. **Both hand-authored legends in the book over-declare** — HOW THIS SECTION WORKS names six steps where four ship, the 12-icon Icon Legend covers 8 of 24 families — and generating both from the mark table fixes them by construction.
 
-**Versions:** L01 **v03.10.4** · L02 **v03.2.0** · L03 **v03.16.0** · L04 **v04.9.1** · L05 **v04.11.1** · L06 **v04.14.0** · L07 **v04.10.0** · L08 **v04.9.0** · L09 **v05.7.0** · L10 **v02.7.0** · L11 **v02.9.0** · L12 **v01.10.0** · L13 **v02.9.0** · L14 **v02.11.0** · L15 **v02.8.0** · L16 **v02.5.4** · Bible **v8.76** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.20 (32 gates)** · lesson_inventory **v1.0.5** · gen_bonus_banner **v1.2** · going_deeper **v01.1.0** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.1.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.5** · L02 **v03.2.1** · L03 **v03.16.1** · L04 **v04.9.2** · L05 **v04.11.2** · L06 **v04.14.1** · L07 **v04.10.1** · L08 **v04.9.1** · L09 **v05.7.1** · L10 **v02.7.1** · L11 **v02.9.1** · L12 **v01.10.1** · L13 **v02.9.1** · L14 **v02.11.1** · L15 **v02.8.1** · L16 **v02.5.5** · going_deeper **v01.1.1** · Bible **v8.77** · **BookComponentStandard v01.0.1** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.21 (32 gates)** · lesson_inventory **v1.0.5** · gen_bonus_banner **v1.2** · `images/icons/` **48 marks + LICENSE** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.1.0 · index v1.3.0**.
 
 ---
 
-## WHAT SHIPPED THIS BATCH (S84 batch 2 — rules for defects that had already happened)
+## WHAT SHIPPED THIS BATCH (S89 — the standard exists, and the banner that faked a gate is gone)
+
+**1. `BookComponentStandard.md` v01.0.1 — repo root, beside the Bible.** Everything S88 approved and
+left unwritten is on disk: the anti-circular stamp rule, one versioning scheme, scope (sections, nav
+and code-theme literals explicitly OUT), the collapse rule, the 8-role palette with the brass-title
+exception, Bootstrap Icons and its single LICENSE obligation, **24 families / 48 marks**, collisions
+plus a near-collision list, numbered marks, generation, gate design, change procedure.
+
+**The core is §4 — three primitives.** `mark(family)` is one glyph with no wrapper; `callout()` and
+`legend_entry()` wrap it. **The mark is identical in every wrapper**, not as a tolerance for two
+rendering contexts but because there is one mark and the wrappers differ. A legend CITES a family; a
+legend showing a different glyph than the callout it documents has failed at its only job.
+
+**2. The S88 family table was wrong in four places, all caught by grepping the files.**
+NOTE was recorded as a phantom (*"zero lessons carry 📘"*) and has **113 occurrences**, live in L01
+and L06. The 📖×3 collision members are **LEARN / GLOSSARY / EXPLANATION**, not LEARN/NOTE/
+EXPLANATION — and it crosses slate→bronze rather than sitting inside slate. Two families were
+missing entirely: **HOW THIS SECTION WORKS** (`pin-angle`, 7 occurrences L03–L09, off-palette
+`#eceff1`/`#607d8b`) and **WRITE IT** (`keyboard`, 7 occurrences L03–L09). NOTE takes **`sticky`**
+over `info-circle` — the set already holds four circle-outline marks and PITFALLS `slash-circle` is
+its nearest neighbour at 21.6px.
+
+**DJ raised `pencil` for WRITE IT and chose A after seeing it rendered:** MY PLAN keeps
+`pencil-square`, WRITE IT takes `keyboard`. The two are adjacent items in the same list and share the
+brass role, so glyph is their only separator — and the book's own point is *plan in prose, then code
+at the keyboard*. Two pencils erase the distinction the blocks exist to teach.
+
+**3. Both hand-authored legends over-declare.** HOW THIS SECTION WORKS names six steps; L08's §6
+carries THE GOAL 8× · MY PLAN 8× · Compare 8× · Build green 10× and **EXPLANATION and WRITE IT zero**.
+The 12-icon Icon Legend covers 8 of 24 families, declares 4 that are not callouts, and stops at L10.
+**Generating both from the mark table fixes them by construction** — which closes S88's parked
+legend item as a side effect rather than as separate work.
+
+**WRITE IT's wording splits at the L06/L07 seam by design** (`Translate it` → `Build from YOUR
+plan`), where the lesson hands planning to the student. **Three seam findings, three causes:** mono
+font at L09/L10 is drift, the FINISHED EARLY pointer at L10 was absence, this one is intentional.
+Do not flatten them.
+
+**4. The build banner is deleted from all 17 pages — 18 files, one atomic commit.** Old gates FAIL
+on the new source (2 gates), new gates PASS: proven, so the commit could not be split. It retired
+`ZUMO Callout Standard v1.0 Applied` with it — 17 assertions of a string that existed because a gate
+asserted it. Its real successor is the file in item 1.
+
+**A live defect surfaced and was fixed:** `going_deeper.html` shipped a visible `Version 01.0`
+against a hidden `v01.1.0`, **because both §5b gates iterated `files` (16 lessons) while §25.6
+iterated 17.** The gate's comparison was right all along and simply never ran on the defect. Control-
+run in both directions against the REAL defect, not a synthetic — FAILED naming it, PASSED on the fix.
+Also fixed: `L(f)` slices `f[15:17]` and returns `ml` for `going_deeper.html`, so the gate named the
+wrong file while reporting the defect. New `P(f)` helper. **book_gates v1.20 → v1.21.**
+
+**5. Bible v8.77 — §24.9 NEW.** §5b loses home 1b; §9's superseded *"BOTH VISIBLE HOMES"* addendum is
+kept as marked provenance with the current one-visible-banner rule beneath it; §25.6 retitled.
+§24.9 canonizes four rules: **coverage is stated and asserted, never inherited** · **a gate
+deliberately relied upon for a property it does not check is load-bearing on an accident** · **a rule
+restated in two sections is two rules** · **a conformance stamp must name a document that exists.**
+
+**§24.6c paid four times, all against the S89 handoff** — it cited §5b for a rule §5b superseded at
+v8.53 (the stale text was in §9), claimed §5b's format string contradicts its examples (the `vXX.XX`
+lives only in the v8.31 CHANGELOG, which is history and is not retro-edited), said three gates must
+change together when only two would have broken, and called 📘 a phantom. **A handoff is a lead.**
+
+Census proves the deletion clean: lines **39,865 → 39,792** (−73, exactly the 17 banners), every
+other counter byte-identical. Applied S89, all 17 MINOR (the block is invisible, so nothing renders
+differently and the visible banner stays put per §5b).
+
+---
+
+## WHAT SHIPPED PREVIOUSLY (S84 batch 2 — rules for defects that had already happened)
 
 **1. §25.10h — Brain Check placement is canon** (DJ: *"Yes, and add to bible"*). The family had a
 unanimous practice and no rule, which is the §6.8a shape, and it drifted exactly once.
