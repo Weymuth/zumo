@@ -28,7 +28,7 @@ import os
 import re
 import sys
 
-VERSION = 'v1.3'   # the only version home in this file
+VERSION = 'v1.4'   # the only version home in this file
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STANDARD = os.path.join(HERE, 'BookComponentStandard.md')
@@ -487,10 +487,12 @@ def selftest(S):
 
     # regeneration is byte-stable
     written, unchanged, _, _ = emit_marks(S, write=False)
-    check(not os.path.isdir(MARK_DIR) or not written,
+    have = os.path.isdir(MARK_DIR)
+    check(have and not written,
           f'marks/ is byte-identical to a fresh generation '
-          f'({len(written)} would change)' if os.path.isdir(MARK_DIR)
-          else 'marks/ not yet generated')
+          f'({len(written)} would change)' if have
+          else f'marks/ is MISSING -- the standard names {len(ship)} shipped marks, '
+               f'so absence is a defect, not a state')
 
     # icons/ untouched by the generator
     check(all(open(os.path.join(ICON_DIR, f), encoding='utf-8').read()

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.21 (S89) — whole-book consistency gates.
+# book_gates.py v1.22 (S91) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -1015,6 +1015,84 @@ for f in files:
 if seen != 14:
     bad.append(f'COVERAGE: {seen} lessons checked for the pointer, expected 14')
 gate('\u00a74.5a every bonus block is announced by a canonical FINISHED EARLY pointer', bad)
+
+# ---- §5.1 CALLOUT GEOMETRY, AGAINST A FROZEN BASELINE (v1.22 — NEW, S91, DJ ruling)
+# ---- The standard fixes the callout rule at `border-left: 4px solid`. 115 live blocks are
+# ---- off it — 112 at 5px, 3 at 3px — and 83 of those sit in L11/L12, authored entirely in a
+# ---- second design system. Shipping this ABSOLUTE would fail every run until the repaint,
+# ---- and the repaint is blocked on an unapproved semantic palette: a gate that cries wolf
+# ---- gets ignored (S90), and it would drag the other 32 down with it.
+# ---- So the existing debt is FROZEN as a baseline and anything NEW fails. This is NOT the
+# ---- S82 "widen the matcher" move DJ ruled against — widening would accept 5px forever and
+# ---- everywhere. A baseline names the debt that exists, rejects the 116th block, and is
+# ---- built to go to ZERO at the repaint, at which point the baseline empties and the gate
+# ---- becomes absolute. Signatures are (lesson, px, border, bg) so they survive line shifts.
+# ---- Note not all 115 are drift: `#1a5276`/`#f8f9fa` is one block per lesson in L01-L11 and
+# ---- `#6c757d`/`#f8f9fa` one per lesson in L12-L16 — uniform constructs that happen to be
+# ---- 5px. Geometry is read through lesson_inventory's parser (§24.10), never a regex here.
+GEOM_BASELINE = {
+    ('01', 5, '#1a5276', '#f8f9fa'): 1,
+    ('02', 3, '#fbc02d', '#fffde7'): 2,
+    ('02', 5, '#1a5276', '#f8f9fa'): 1,
+    ('03', 5, '#1a5276', '#f8f9fa'): 1,
+    ('03', 5, '#2e86ab', '#f4f9fc'): 1,
+    ('03', 5, '#c0392b', '#f8d7da'): 1,
+    ('03', 5, '#ffc107', '#fff8e1'): 1,
+    ('04', 5, '#1a5276', '#f8f9fa'): 1,
+    ('05', 5, '#1a5276', '#f8f9fa'): 1,
+    ('05', 5, '#607d8b', '#eceff1'): 1,
+    ('05', 5, '#ffc107', '#fff8e1'): 1,
+    ('06', 5, '#1a5276', '#f8f9fa'): 1,
+    ('06', 5, '#c0392b', '#fdecea'): 1,
+    ('07', 5, '#1a5276', '#f8f9fa'): 1,
+    ('08', 5, '#1a5276', '#f8f9fa'): 1,
+    ('09', 5, '#1a5276', '#f8f9fa'): 1,
+    ('10', 5, '#1a5276', '#f8f9fa'): 1,
+    ('11', 3, '#ccc', None): 1,
+    ('11', 5, '#1a5276', '#f8f9fa'): 1,
+    ('11', 5, '#27ae60', '#eafaf1'): 6,
+    ('11', 5, '#607d8b', '#eceff1'): 7,
+    ('11', 5, '#6b8e6b', '#f0f7f0'): 3,
+    ('11', 5, '#e74c3c', '#fdecea'): 5,
+    ('12', 5, '#27ae60', '#eafaf1'): 13,
+    ('12', 5, '#607d8b', '#eceff1'): 20,
+    ('12', 5, '#6b8e6b', '#f0f7f0'): 8,
+    ('12', 5, '#6c757d', '#f5eef8'): 4,
+    ('12', 5, '#6c757d', '#f8f9fa'): 1,
+    ('12', 5, '#e74c3c', '#fdecea'): 13,
+    ('12', 5, '#ffc107', '#fff8e1'): 1,
+    ('13', 5, '#6c757d', '#f8f9fa'): 1,
+    ('14', 5, '#6c757d', '#f8f9fa'): 1,
+    ('15', 5, '#2e86ab', '#f4f9fc'): 3,
+    ('15', 5, '#3a7d5c', '#eef7f1'): 1,
+    ('15', 5, '#6c757d', '#f8f9fa'): 1,
+    ('16', 5, '#3a7d5c', '#eef7f1'): 5,
+    ('16', 5, '#6c757d', '#f8f9fa'): 1,
+    ('16', 5, '#ffc107', '#fff8e1'): 1,
+}
+bad = []
+seen_lessons = set()
+live = collections.Counter()
+for f in sorted(glob.glob('lessons/Lesson_*.html')):
+    inv = LI.build(f)
+    seen_lessons.add(inv['lesson'])
+    if not inv['callouts']:
+        bad.append(f'L{inv["lesson"]}: parser returned ZERO callouts — coverage defect')
+    for c in inv['callouts']:
+        if c['px'] != 4:
+            live[(inv['lesson'], c['px'], c['border'], c['bg'])] += 1
+for sig, cnt in sorted(live.items()):
+    allowed = GEOM_BASELINE.get(sig, 0)
+    if cnt > allowed:
+        bad.append(f'L{sig[0]}: {cnt - allowed} NEW off-canon block(s) at {sig[1]}px '
+                   f'border {sig[2]} bg {sig[3]} (baseline {allowed}, found {cnt})')
+if len(seen_lessons) != 16:
+    bad.append(f'COVERAGE: {len(seen_lessons)} lessons parsed, expected 16')
+_shrunk = sum(GEOM_BASELINE.values()) - sum(live.values())
+gate('\u00a75.1 callout geometry: no NEW off-canon border width'
+     + (f' (debt {sum(live.values())}/{sum(GEOM_BASELINE.values())}, '
+        f'{_shrunk} retired — tighten the baseline)' if _shrunk > 0
+        else f' (frozen debt {sum(live.values())}, zero at the repaint)'), bad)
 
 print('=' * 52)
 
