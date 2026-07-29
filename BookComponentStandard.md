@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.0.1**
+**Standard version: v01.2.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -199,6 +199,18 @@ height: 1.35em; vertical-align: -0.3em
 `currentColor` does not resolve through `<img>`, so colour is baked at generation time. This
 is why the mark and its role are generated together from one table.
 
+**The library folder is the generator's input, not the shipped marks.** Two folders, and the
+distinction is load-bearing:
+
+- **`icons/`** — the unmodified library files, one `fill="currentColor"` each, plus the
+  `LICENSE` required above. The generator never writes here. This folder is asserted against
+  the table in §7.3.
+- **`marks/`** — generated output, one file per shipped mark, colour baked. Regenerating must
+  reproduce it byte-for-byte.
+
+A generator that writes over its own input destroys the only copy that can prove what it
+started from.
+
 ### 6.2 Outline by default
 
 Marks are outline variants. Fill variants are reserved for state changes, where the fill
@@ -208,7 +220,7 @@ itself is one of the required signals.
 
 ## 7. The families
 
-Twenty-four families. Forty-seven marks.
+Twenty-five families. Forty-eight marks.
 
 | Family | Icon | Role |
 |---|---|---|
@@ -236,6 +248,7 @@ Twenty-four families. Forty-seven marks.
 | THE LOGIC | `braces` | purple |
 | THE GOAL | `bullseye` | navy |
 | FINISHED EARLY? | `flag` | navy |
+| ENGINEER'S LOG | `journal-text` | brass |
 
 ### 7.1 Two-state families
 
@@ -243,11 +256,18 @@ Twenty-four families. Forty-seven marks.
 
 | State | Icon | Colour |
 |---|---|---|
-| incomplete | `bookmark` outline | slate `#3D5266` |
+| incomplete | `bookmark` outline | slate title `#364A5E` |
 | complete | `bookmark-check-fill` solid | deep navy `#0B1A2E` |
 
-Three signals separate the states — fill, added check, and colour — so §5.2 is satisfied by
-construction rather than by inspection.
+**Two signals separate the states — fill and the added check.** Colour does not separate them
+and never did: the two values measure **1.91:1** against each other, and the superseded pair
+(`#3D5266` / `#0B1A2E`) measured **2.16:1**. Both sit far below any threshold at which colour
+carries meaning. §5.2 is satisfied by fill and glyph alone.
+
+This entry previously read `#3D5266`, slate's *border*, and claimed colour as a third signal.
+It was the only mark in the standard not drawn from its role's title colour, and the exception
+was protecting a signal that measurement shows was never present. Corrected at v01.1.0: **every
+mark takes its role's title colour, with no exceptions.**
 
 ### 7.2 Supporting marks
 
@@ -261,15 +281,44 @@ Not callout families. Generated from the same table, same shipping form.
 **Prose markers:** `code` · `hammer` build · `play` test · `eye` see ·
 `arrow-right-circle` next
 
+**A supporting mark promoted to a family leaves the supporting list.** ENGINEER'S LOG was
+carried under Systems as *notebook*. The nav affordance and the callout name one thing — the
+student's engineering notebook — so they are one family, and the nav entry CITES it under §4.3
+rather than holding a second copy of the glyph. Two entries would have put one glyph on two
+grounds in two colours, which §4.1 forbids.
+
 **Systems:** `ticket-perforated` exit ticket · `stopwatch` timer · `chat-dots` tutor ·
 `box-seam` maker · `file-earmark-plus` going deeper · `images` image index ·
-`table` quick reference · `journal-text` notebook · `trophy` milestones
+`table` quick reference · `trophy` milestones
 
 **Battery levels:** `battery-full` full · `battery-half` half · `battery` low
 
+**Grounds.** Each group above sits on one ground, and the ground decides whether the group is
+in scope for this table.
+
+| Group | Ground | In scope |
+|---|---|---|
+| Bonus families | page tint | yes |
+| Challenge card | page tint | yes |
+| Prose markers | page tint | yes |
+| Battery levels | page tint | yes |
+| Systems | filled band | no |
+
+**Colour.** A supporting mark belongs to no family and therefore inherits no role. It takes
+its colour from what sits behind it:
+
+- **On the page colour or a role tint** — body text. Supporting marks are separated from one
+  another by glyph, never by colour, so §5.2 is satisfied without a role.
+- **On a filled band or any other coloured ground** — the mark belongs to whatever scheme owns
+  that ground, not to this table. It is out of scope here and must be generated with that
+  scheme, not ahead of it.
+
+The second case is not a deferral of convenience. A mark coloured before the ground it sits on
+has been decided is a guess that a later pass has to find and undo.
+
 ### 7.3 Mark inventory
 
-48 distinct icon files: 25 for the 24 families (BRAIN CHECK carries two), and 23 supporting
+48 distinct icon files: 26 for the 25 families (BRAIN CHECK carries two), and 22 supporting
 marks. The shipped icon folder holds exactly these and nothing else — a library ships
 thousands of icons; a book ships the ones it uses, so that the folder can be asserted
 against this table in both directions.
@@ -305,6 +354,9 @@ These are distinct but close, and any future assignment must not narrow the gap:
 
 - Four circle-outline marks ship: `play-circle`, `check-circle`, `slash-circle`,
   `arrow-right-circle`. Adding a fifth requires an explicit decision.
+- Two journal marks ship: GLOSSARY `journal-bookmark` and ENGINEER'S LOG `journal-text`. They
+  share an identical cover outline and binding spine and are separated by their interior mark
+  alone. A third journal requires an explicit decision.
 - MY PLAN `pencil-square` and WRITE IT `keyboard` are adjacent items in the same list and
   share the brass role. They are separated by glyph alone, and deliberately encode the
   book's own distinction between planning in prose and writing code.
