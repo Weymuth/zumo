@@ -1,11 +1,46 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 28, 2026 (Session 89 — **A GREP PROVES ONLY THAT A STRING YOU THOUGHT OF IS ABSENT.** Four pushes, all fresh-clone verified. **`BookComponentStandard.md` v01.0.1 is live at the repo root** with `images/icons/` (48 Bootstrap Icons + LICENSE), closing the §12.4 exposure that S88 left entirely unwritten — the standard's core is §4, **mark / callout / legend entry**, one mark table and three emitters, where the mark is identical in every wrapper because a legend CITES a family rather than instantiating it. **The S88 table was wrong in four places and every one was caught by grepping the files instead of trusting the handoff:** NOTE was called a phantom and has **113 live occurrences**; the 📖×3 collision members were LEARN/GLOSSARY/EXPLANATION, not LEARN/NOTE/EXPLANATION, and it crosses slate→bronze; families 22→**24**; marks 45→**48**. **The build banner is deleted from all 17 pages** in one atomic 18-file commit (old gates FAIL on new source, new gates PASS — proven), retiring `ZUMO Callout Standard v1.0 Applied`, a conformance stamp naming a document that never existed. Bible **v8.77**, book_gates **v1.21**, gates **32/32 PASS**.)
-**Status:** **A GATE THAT NEVER LOOKED AND A GATE THAT FOUND NOTHING PRINT THE SAME THING (§24.9, NEW).** `going_deeper.html` shipped a visible `Version 01.0` against a hidden `v01.1.0` — **live, and invisible because both §5b gates iterated `files` (16 lessons) while §25.6 iterated 17.** The comparison logic was correct the whole time; the one file that drifted was the one file it never ran on. Coverage sets are now stated and asserted. The harder half is that **v8.53 recorded IN THE OPEN** that the two-homes gate *"needed no edit — it greps raw source, and raw source includes comments"* — a gate named for visibility, with no notion of visibility, knowingly built upon for **19 sessions**. That is not S87/S88's shape of an instrument silently failing; it was seen, judged harmless, and made load-bearing. **DJ's triple-check before the Bible push found THREE defects a passing grep had certified clean** — a summary line placed before the item it summarised, two orphaned bullets, and a stale `hidden banners` reference missed on casing alone. Every one a correct string in the wrong place. Recorded against myself: **`book_gates.py` does not check the Bible** and I reported "32/32 PASS" after Bible edits as though it did; a per-file 📘 grep returned 0 across all 17 files because `$'\U0001F4D8'` does not expand under `/bin/sh`, where the truth is 113; and I called the §5b gate comparison-blind after reading its NAME when its body compares on line 47. **Both hand-authored legends in the book over-declare** — HOW THIS SECTION WORKS names six steps where four ship, the 12-icon Icon Legend covers 8 of 24 families — and generating both from the mark table fixes them by construction.
+**Date:** July 29, 2026 (Session 90 — **A STANDARD'S PROSE IS NOT EVIDENCE ABOUT THE BOOK.** Six pushes, all fresh-clone verified. **`gen_component.py` v1.3 is live at the repo root** — the component generator, built to §4's three primitives, parsing every colour, glyph, role, ground and count out of `BookComponentStandard.md`'s own tables. **41 marks generated to `images/marks/`, 8 deferred to the nav batch by reading the §7.2 Grounds table rather than by judgement.** `images/icons/` (49 + LICENSE) is the generator's INPUT and is never written. **The family table went 24 → 26:** ENGINEER'S LOG `journal-text` brass, a live book-wide callout the table never had, promoted from the Systems supporting list at zero new icon cost; and THE WALL `bricks` purple, the L11/L12 limit block that is neither WARNING nor SAFETY nor INSIGHT. **Heritage Blue is defined on disk and gated (§5.0)** — all five values were already the spine of §5, so §5 never had to move. **The section band ramp is approved and gated (§5.0.1)** — Frost, Mist, Fog, Harbor, Steel Blue, running light to dark. **NO LESSON FILE CHANGED IN S90.**)
+**Status:** **HUE CARRIES MEANING. LIGHTNESS CARRIES LOCATION. ONE AXIS EACH, NEVER BOTH.** The live §4–6 green section band `#3a7d5c` sits **5°** from the green TIP callout `#3F6B52`, and §7–8 pink `#c45d76` sits **22°** from red SAFETY — a green TIP inside a green band means green twice for unrelated reasons. §5.0.1 fixes it by construction and `--selftest` control-runs that exact case. **DJ'S DIRECTIVE HOLDS THE REPAINT:** the 26-family component table and the semantic palette are both UNAPPROVED, and no lesson may be repainted until they are — then all affected lessons in one coordinated batch, bumping only files whose HTML changes. **Survey findings behind that hold:** the book carries **1,048 callout blocks in four spellings**, of which **125 are off-canon geometry and nothing gates it**; 92 of those sit in L11 and L12, which were authored **entirely in a second design system** — only 6 of 24 and 3 of 73 blocks use canonical geometry. **DJ ruling S90: the spiral stars are DONE — Bible §18.2 stands untouched, and Standard §9's conflicting numbered-mark spec is left as written and NOT built.** Recorded against myself: I brought DJ a point-count question about a component he finished in S40 and locked in S43, because I read the standard's prose as evidence about the book. Also open, unfixed: **the lessons render on `#fafafa`/`#333`, not Parchment/Deep Navy** — every contrast figure in the standard is against the intended page, not the live one.
 
-**Versions:** L01 **v03.10.5** · L02 **v03.2.1** · L03 **v03.16.1** · L04 **v04.9.2** · L05 **v04.11.2** · L06 **v04.14.1** · L07 **v04.10.1** · L08 **v04.9.1** · L09 **v05.7.1** · L10 **v02.7.1** · L11 **v02.9.1** · L12 **v01.10.1** · L13 **v02.9.1** · L14 **v02.11.1** · L15 **v02.8.1** · L16 **v02.5.5** · going_deeper **v01.1.1** · Bible **v8.77** · **BookComponentStandard v01.0.1** · Maker **v2.45.1** · Gate v1.6 · Harness v3.0 · pill_sweep v1.0 · book_gates **v1.21 (32 gates)** · lesson_inventory **v1.0.5** · gen_bonus_banner **v1.2** · `images/icons/` **48 marks + LICENSE** · **web tools (version-lined in-file): timer v1.3.0 · Maker v2.45.1 · tutor v1.1.0 · index v1.3.0**.
+**Versions:** L01 **v03.10.5** · L02 **v03.2.1** · L03 **v03.16.1** · L04 **v04.9.2** · L05 **v04.11.2** · L06 **v04.14.1** · L07 **v04.10.1** · L08 **v04.9.1** · L09 **v05.7.1** · L10 **v02.7.1** · L11 **v02.9.1** · L12 **v01.10.1** · L13 **v02.9.1** · L14 **v02.11.1** · L15 **v02.8.1** · L16 **v02.5.5** · going_deeper **v01.1.1** — **no lesson changed in S90** · Bible **v8.77** · **BookComponentStandard v01.5.0** · **gen_component v1.3 (22 checks)** · Maker **v2.45.1** · book_gates **v1.21 (32 gates, 32/32 PASS)** · pill_sweep v1.0 · lesson_inventory **v1.0.5** · gen_bonus_banner **v1.2** · gen_part_banners v1.0 · Gate v1.6 · Harness v3.0 · `images/icons/` **49 marks + LICENSE (generator input)** · `images/marks/` **41 generated marks** · **web tools: timer v1.3.0 · Maker v2.45.1 · tutor v1.1.0 · index v1.3.0**.
 
 ---
+
+## WHAT SHIPPED THIS BATCH (S90 — the generator exists, and the palette stopped living in a chat window)
+
+**1. `gen_component.py` v1.3 — repo root.** §4's three primitives. `mark()` is one glyph with no
+wrapper; `callout()` and `legend_entry()` wrap it; the mark is byte-identical in both, asserted.
+No colour, glyph, role or geometry literal is restated in the generator. **A family now goes in as
+a table row with no code change** — that happened twice in S90.
+
+**2. `images/marks/` — 41 marks; `images/icons/` untouched.** Family marks take their role's TITLE
+colour; page-tint supporting marks take body text; the 8 Systems marks defer to the nav batch by
+parsing the §7.2 Grounds table. Regeneration is byte-stable.
+
+**3. Two new families.** ENGINEER'S LOG `journal-text` brass — live in all 16 lessons, absent from
+the table, promoted out of the Systems list at **zero new icon cost**. THE WALL `bricks` purple —
+the L11/L12 limit block: not WARNING (nothing was done wrong), not SAFETY (no hazard), not INSIGHT
+(a wall, not a door).
+
+**4. Heritage Blue on disk and gated — §5.0.** All five values were already §5's spine, so §5 never
+moved. Four roles structural, four semantic. Recorded: **titles are contrast-corrected derivations,
+not palette hexes — a title pulled back to its palette hex has been broken, not corrected.**
+
+**5. Section band ramp — §5.0.1, approved.** Frost `#CBD3DE` · Mist `#AFBCCE` · Fog `#96A8C0` ·
+Harbor `#7E95B4` · Steel `#6985AB`, light to dark, Deep Navy text throughout, no gradients, no
+accent marks. Four gates: one hue family, 30° clear of every semantic role, 4.5:1 text on every
+band, monotonic lightness.
+
+**6. Six defects fixed from DJ's triple-check.** The standard carried **three version homes**, two
+stale — including the §1 conformance stamp, which embedded a full version so every patch bump
+invalidated every stamp. The stamp now carries MAJOR.MINOR only and a gate holds it. Also: a
+misplaced family row, a paragraph splitting a group list, a wrong cross-reference, `v1.0` shipped
+three times with three contents, and count gates that would have **failed a correct document**.
+
+---
+
+## WHAT SHIPPED IN S89 (previous batch)
 
 ## WHAT SHIPPED THIS BATCH (S89 — the standard exists, and the banner that faked a gate is gone)
 
