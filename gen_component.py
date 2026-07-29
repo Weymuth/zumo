@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# gen_component.py v1.0
+# gen_component.py -- version in ONE home: the VERSION constant below.
 #
 # The RoboLore Book Component Standard generator.
 #
@@ -27,6 +27,8 @@ import os
 import re
 import sys
 
+VERSION = 'v1.1'   # the only version home in this file
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 STANDARD = os.path.join(HERE, 'BookComponentStandard.md')
 
@@ -39,6 +41,26 @@ MARK_DIR = os.path.join(HERE, 'images', 'marks')   # generator OUTPUT
 # =============================================================================
 # PARSING -- the standard is the source
 # =============================================================================
+
+_UNITS = ('zero one two three four five six seven eight nine ten eleven twelve thirteen '
+          'fourteen fifteen sixteen seventeen eighteen nineteen').split()
+_TENS = {'twenty': 20, 'thirty': 30, 'forty': 40, 'fifty': 50, 'sixty': 60,
+         'seventy': 70, 'eighty': 80, 'ninety': 90}
+
+
+def word_to_int(word):
+    """'Twenty-five' -> 25. None if unreadable, which is a GATE limit, not a defect."""
+    w = word.strip().lower().replace('\u2013', '-')
+    if w in _UNITS:
+        return _UNITS.index(w)
+    head, _, tail = w.partition('-')
+    if head in _TENS:
+        if not tail:
+            return _TENS[head]
+        if tail in _UNITS[1:10]:
+            return _TENS[head] + _UNITS.index(tail)
+    return None
+
 
 def _text():
     with open(STANDARD, encoding='utf-8') as fh:
@@ -308,7 +330,7 @@ def selftest(S):
     icons = {f[:-4] for f in os.listdir(ICON_DIR) if f.endswith('.svg')}
     named = set(ship) | set(defer)
 
-    print(f'\nBookComponentStandard {S["version"]}   gen_component v1.0\n')
+    print(f'\nBookComponentStandard {S["version"]}   gen_component {VERSION}\n')
 
     # §7.3 -- the folder is asserted against the table in BOTH directions
     check(named - icons == set(), f'§7.3 every named mark exists in icons/  '
@@ -318,15 +340,26 @@ def selftest(S):
     check(len(icons) == S['inventory_total'],
           f'§7.3 icons/ holds the declared count ({len(icons)} == {S["inventory_total"]})')
 
-    # the count is also stated in WORDS in §7 -- a second home for one number
-    words = {22: 'Twenty-two', 23: 'Twenty-three', 24: 'Twenty-four', 25: 'Twenty-five',
-             26: 'Twenty-six', 47: 'Forty-seven', 48: 'Forty-eight', 49: 'Forty-nine'}
-    check(S['declared_marks_word'] == words.get(S['inventory_total']),
-          f'§7 prose mark count agrees with §7.3 '
-          f'({S["declared_marks_word"]} vs {S["inventory_total"]})')
-    check(S['declared_family_word'] == words.get(len(S['families'])),
-          f'§7 prose family count agrees with the table '
-          f'({S["declared_family_word"]} vs {len(S["families"])})')
+    # the count is also stated in WORDS in §7 -- a second home for one number.
+    # Compare as INTEGERS. A lookup keyed on the current count would fail against a
+    # perfectly correct document the moment the count left the table, and a gate that
+    # cries wolf gets ignored.
+    for word, actual, what in ((S['declared_marks_word'], S['inventory_total'], 'mark'),
+                               (S['declared_family_word'], len(S['families']), 'family')):
+        parsed = word_to_int(word)
+        if parsed is None:
+            check(False, f'§7 prose {what} count: cannot read the number word {word!r} '
+                         f'-- gate cannot judge, not a document defect')
+        else:
+            check(parsed == actual,
+                  f'§7 prose {what} count agrees with its table ({word} vs {actual})')
+
+    # §1 -- the stamp is derived from the version line and must agree on MAJOR.MINOR
+    stamp = re.findall(r'RoboLore Book Component Standard (v\d+\.\d+)', _text())
+    real = re.match(r'(v\d+\.\d+)', S['version']).group(1)
+    bad = [s for s in stamp if s != real]
+    check(not bad, f'§1 every version stamp agrees with the version line '
+                   f'({real}; disagreeing: {bad or "none"})')
 
     # §10.1.2 -- every family has exactly one mark (BRAIN CHECK's two are states)
     multi = {n: f['icons'] for n, f in S['families'].items() if len(f['icons']) != 1}

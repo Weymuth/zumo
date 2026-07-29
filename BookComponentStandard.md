@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.2.0**
+**Standard version: v01.2.1**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -17,12 +17,21 @@ never as the rule.
 **Conformance stamp:** a file that conforms carries the string
 
 ```
-RoboLore Book Component Standard v01.0.1
+RoboLore Book Component Standard vMAJOR.MINOR
 ```
+
+**The stamp carries MAJOR.MINOR only.** A stamp that embedded the patch digit would be
+invalidated by every patch bump, so every stamped file would need re-stamping for a fix that
+changed nothing a stamp asserts — and the stamps would silently fall behind instead. This
+mirrors the two-homes rule the book's own canon already applies to its visible version banner.
 
 The stamp asserts conformance with a document that exists and can be read. A stamp that
 names no readable document is circular and is prohibited — it asserts a string that exists
 only because something asserts it.
+
+**One authority.** The version line at the top of this document is the only version authority.
+The stamp is derived from it and must agree with it on MAJOR.MINOR. Nothing else in this
+document may carry a version.
 
 **Predecessor.** This standard supersedes `ZUMO Callout Standard v1.0`, which named no
 document. The stamp and every occurrence of it are removed as part of adopting this standard.
@@ -236,6 +245,7 @@ Twenty-five families. Forty-eight marks.
 | DO THIS NOW | `play-circle` | brass |
 | MY PLAN | `pencil-square` | brass |
 | WRITE IT | `keyboard` | brass |
+| ENGINEER'S LOG | `journal-text` | brass |
 | TIP | `lightbulb` | green |
 | HINT | `compass` | green |
 | IF YOU'RE STUCK | `life-preserver` | green |
@@ -248,7 +258,6 @@ Twenty-five families. Forty-eight marks.
 | THE LOGIC | `braces` | purple |
 | THE GOAL | `bullseye` | navy |
 | FINISHED EARLY? | `flag` | navy |
-| ENGINEER'S LOG | `journal-text` | brass |
 
 ### 7.1 Two-state families
 
@@ -281,17 +290,17 @@ Not callout families. Generated from the same table, same shipping form.
 **Prose markers:** `code` · `hammer` build · `play` test · `eye` see ·
 `arrow-right-circle` next
 
-**A supporting mark promoted to a family leaves the supporting list.** ENGINEER'S LOG was
-carried under Systems as *notebook*. The nav affordance and the callout name one thing — the
-student's engineering notebook — so they are one family, and the nav entry CITES it under §4.3
-rather than holding a second copy of the glyph. Two entries would have put one glyph on two
-grounds in two colours, which §4.1 forbids.
-
 **Systems:** `ticket-perforated` exit ticket · `stopwatch` timer · `chat-dots` tutor ·
 `box-seam` maker · `file-earmark-plus` going deeper · `images` image index ·
 `table` quick reference · `trophy` milestones
 
 **Battery levels:** `battery-full` full · `battery-half` half · `battery` low
+
+**A supporting mark promoted to a family leaves the supporting list.** ENGINEER'S LOG was
+carried under Systems as *notebook*. The nav affordance and the callout name one thing — the
+student's engineering notebook — so they are one family, and the nav entry CITES it under §4.4
+rather than holding a second copy of the glyph. Two entries would have put one glyph on two
+grounds in two colours, which §4.1 forbids.
 
 **Grounds.** Each group above sits on one ground, and the ground decides whether the group is
 in scope for this table.
@@ -434,4 +443,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.0.1*
+*RoboLore Book Component Standard v01.2*
