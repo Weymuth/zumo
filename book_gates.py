@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.24 (S91) — whole-book consistency gates.
+# book_gates.py v1.25 (S91) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -1123,9 +1123,18 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
             continue
         seen += 1
         i = re.match(r'\s*', src[gt + 1:]).end() + gt + 1
-        if src.startswith('<strong', i):
-            bad.append(f'{L(f)} line {c["line"]}: callout title is <strong>, \u00a75.1 requires '
+        # S91 second pass: the first version rejected only a bare <strong>, so 120 <span>-led
+        # and 44 <b> titles walked straight through -- the same construct in three shapes.
+        # A <b> that is NOT followed by <br> or a block element is a sentence SUBJECT, not a
+        # title, and must be left alone; 22 of those are legitimate.
+        if src.startswith('<strong', i) or src.startswith('<span', i):
+            bad.append(f'{L(f)} line {c["line"]}: callout title is inline, \u00a75.1 requires '
                        f'the block form')
+        elif re.match(r'<b\b(?![a-z])', src[i:]):
+            m = re.match(r'<b\b(?![a-z])[^>]*>.*?</b>', src[i:], re.S)
+            if m and re.match(r'\s*(?:<br|<p\b|<ul\b|<ol\b|<div\b|<h[1-6]\b)', src[i + m.end():]):
+                bad.append(f'{L(f)} line {c["line"]}: callout title is <b>, \u00a75.1 requires '
+                           f'the block form')
 if seen < 900:
     bad.append(f'COVERAGE: only {seen} callouts inspected, expected 1000+')
 gate('\u00a75.1 callout title uses the block form, never a bare <strong>', bad)

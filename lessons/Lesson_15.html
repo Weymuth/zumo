@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.9.0 -->
+<!-- Lesson version: v02.10.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +72,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">The Present Isn't Enough</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">PID Control &mdash; and the Tuning Bench That Proves It</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.9 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.10 &mdash; July 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div style="background-color: #3498db; color: white; padding: 12px 20px; border-radius: 8px 8px 0 0; margin: 22px 0 0;">
@@ -298,7 +298,7 @@ discharge slowly, bright ones quickly &mdash; the timing <i>is</i> the measureme
 
 <p>And <code>initFiveSensors()</code> sets that timing ceiling to <b>2000 microseconds</b>. So:</p>
 <table style="border-collapse: collapse; width: 100%; margin: 18px 0; font-family: Helvetica, Arial, sans-serif; font-size: 0.94em;"><tr><th style="background: #3a7d5c; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Fact</th><th style="background: #3a7d5c; color: white; padding: 9px 11px; text-align: left; border: 1px solid #17496a;">Consequence</th></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">One <code>readLinePosition()</code> can block for up to <b>2000&nbsp;&micro;s</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Your loop takes roughly <b>2&ndash;3 milliseconds</b> per pass</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Black discharges slower than white</td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">The loop period is <b>not even constant</b> &mdash; it depends on what is under the robot</td></tr><tr><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;"><code>millis()</code> resolves to <b>1 millisecond</b></td><td style="padding: 9px 11px; border: 1px solid #cdd9e1; vertical-align: top;">Asked to measure a 2&nbsp;ms interval it answers &ldquo;2&rdquo;. Or &ldquo;3&rdquo;. Or <b>&ldquo;0&rdquo;</b>.</td></tr></table>
-<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  You cannot divide by zero.</b><br><br>
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">⚠️  You cannot divide by zero.</div><br>
 A derivative computed as <code>(error - lastError) / dt</code> where <code>dt</code> came from
 <code>millis()</code> is not &ldquo;a bit imprecise.&rdquo; On a fast pass it is <b>undefined</b>, and on every
 other pass it is quantized to 2 or 3 &mdash; a &plusmn;50% measurement error that has nothing to do with the
@@ -736,8 +736,8 @@ until something spends them.</div>
   <span style="color: #569cd6;">return</span> elapsed / <span style="color: #b5cea8;">1000000</span>.0;
 }
 </pre>
-<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  You just wrote a whole function and the program did not get one
-byte bigger. Why?</b><br><br>
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">⚠️  You just wrote a whole function and the program did not get one
+byte bigger. Why?</div><br>
 Because <b>nothing calls it.</b> The linker looked at <code>deltaTimeSec()</code>, saw that no code
 anywhere reaches it, and threw it away before it ever got into the binary. Your source file has a
 clock in it. Your <i>robot</i> does not.<br><br>
@@ -1139,7 +1139,7 @@ sneaking back in through a different door.</div>
 <h3 style="color: #c45d76; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">7.0 First: the rules of a fair test</h3>
 <p>Everything below is worthless if you skip this. Three gains, tuned by feel, on a track that
 keeps changing, with a battery that keeps dying, is not an experiment. It is a superstition.</p>
-<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️ The three rules. Break any one of them and your numbers mean nothing.</b>
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">⚠️ The three rules. Break any one of them and your numbers mean nothing.</div>
 <ol style="margin: 10px 0 0 0;">
 <li style="margin-bottom: 6px;"><b>Same track, same start line, every run.</b> Mark the start with tape.</li>
 <li style="margin-bottom: 6px;"><b>Same battery state.</b> You cannot compare a run on a fresh pack
@@ -1760,7 +1760,7 @@ that memory is wisdom or superstition depends entirely on what you attached it t
 <h3 style="color: #6c757d; border-bottom: 2px solid #d5e5ef; padding-bottom: 5px; margin-top: 30px;">Engineer&rsquo;s Log</h3>
 
 <div style="background: #f8f9fa; border-left: 5px solid #6c757d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<b>&#128211; ENGINEER&rsquo;S LOG #15 &mdash; feeds: Performance Evaluation</b><br>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128211; ENGINEER&rsquo;S LOG #15 &mdash; feeds: Performance Evaluation</div>
 <b>Record the hill-climb.</b> Your four gains, and the MAE / PEAK / WEAVE each set produced. What you tried, what you kept, <b>when you stopped and why.</b><br>
 <i>Why judges care: the template asks you to explain how test results were analyzed and how they changed the robot. The hill-climb <i>is</i> that answer &mdash; you just have to have written it down.</i></div>
 
@@ -1942,8 +1942,8 @@ shrinking, so the derivative is <b>negative</b>. The correct controller <i>adds<
 number, which <b>reduces</b> the correction &mdash; it brakes early. What does this one do with it?<br><br>
 <b>This is why a sabotage that only shows up when you turn a gain up is so dangerous: the bug hides
 behind the very knob you would use to find it.</b></div></details>
-<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><b>⚠️  The lesson of B1 and B4, and it applies to every program you
-will ever write:</b><br><br>
+<div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">⚠️  The lesson of B1 and B4, and it applies to every program you
+will ever write:</div><br>
 <b>The byte count proves nothing.</b> Both of those builds are exactly, to the byte, the size of the
 correct program. A file size is not a test. A clean compile is not a test. A robot that drives across
 the room is not a test.<br><br>
