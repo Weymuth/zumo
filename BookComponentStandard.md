@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.2.1**
+**Standard version: v01.3.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -229,7 +229,7 @@ itself is one of the required signals.
 
 ## 7. The families
 
-Twenty-five families. Forty-eight marks.
+Twenty-six families. Forty-nine marks.
 
 | Family | Icon | Role |
 |---|---|---|
@@ -256,6 +256,7 @@ Twenty-five families. Forty-eight marks.
 | SAFETY | `shield-exclamation` | red |
 | BRAIN CHECK | `bookmark` / `bookmark-check-fill` | purple |
 | THE LOGIC | `braces` | purple |
+| THE WALL | `bricks` | purple |
 | THE GOAL | `bullseye` | navy |
 | FINISHED EARLY? | `flag` | navy |
 
@@ -327,7 +328,7 @@ has been decided is a guess that a later pass has to find and undo.
 
 ### 7.3 Mark inventory
 
-48 distinct icon files: 26 for the 25 families (BRAIN CHECK carries two), and 22 supporting
+49 distinct icon files: 27 for the 26 families (BRAIN CHECK carries two), and 22 supporting
 marks. The shipped icon folder holds exactly these and nothing else — a library ships
 thousands of icons; a book ships the ones it uses, so that the folder can be asserted
 against this table in both directions.
@@ -366,6 +367,9 @@ These are distinct but close, and any future assignment must not narrow the gap:
 - Two journal marks ship: GLOSSARY `journal-bookmark` and ENGINEER'S LOG `journal-text`. They
   share an identical cover outline and binding spine and are separated by their interior mark
   alone. A third journal requires an explicit decision.
+- THE WALL `bricks` and quick reference `table` are the only rectangular-grid marks. They do
+  not share a context today — `table` is a Systems mark on a filled band — but any future
+  assignment must keep them apart.
 - MY PLAN `pencil-square` and WRITE IT `keyboard` are adjacent items in the same list and
   share the brass role. They are separated by glyph alone, and deliberately encode the
   book's own distinction between planning in prose and writing code.
@@ -443,4 +447,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.2*
+*RoboLore Book Component Standard v01.3*
