@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.4.0**
+**Standard version: v01.5.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -172,6 +172,42 @@ does not clear the contrast floor, so slate's title is `#364A5E`, a darkened Sla
 and brass share `#6A573D`, a darkened Antique Bronze. Only navy's title is a Heritage Blue hex,
 because Deep Navy already clears it. A title that has been pulled back to its palette hex has
 been broken, not corrected — see §7.1, where exactly that had happened.
+
+### 5.0.1 Section band ramp
+
+Wayfinding is not meaning. A reader asking *where am I* and a reader asking *what is this*
+are asking different questions, and answering both with hue makes one answer interfere with
+the other.
+
+**Hue carries meaning. Lightness carries location.** One axis each, never both.
+
+The section bands are therefore a single derived scale in Heritage Blue's own hue, not five
+peer colours. They run light to dark across the lesson arc, so the page opens light and
+deepens as the work does.
+
+| Band | Hex | Name |
+|---|---|---|
+| learn | `#CBD3DE` | Frost Blue |
+| build | `#AFBCCE` | Mist Blue |
+| verify | `#96A8C0` | Fog Blue |
+| extend | `#7E95B4` | Harbor Blue |
+| close | `#6985AB` | Steel Blue |
+
+**Rules the ramp must satisfy:**
+
+- Every band sits in Heritage Blue's hue family. A band is a step on one scale, not a colour
+  of its own.
+- **No band may land within 30° of any semantic role.** This is what keeps a green section
+  from arguing with a green callout inside it.
+- Deep Navy is the text colour on every band, and the bar the bands sit on. One text colour
+  throughout — a scale that needs the text to switch partway is two scales.
+- Lightness is monotonic across the ramp. A step that reverses is not a step.
+- No gradients on any banded surface.
+
+The ramp deliberately carries no accent marks. A brass or bronze edge measures under 1.4:1
+against the lighter steps and reads as dirt rather than emphasis; bronze and brass occupy the
+same lightness region the ramp passes through, so no shade of them separates across the whole
+scale.
 
 ---
 
@@ -478,4 +514,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.4*
+*RoboLore Book Component Standard v01.5*

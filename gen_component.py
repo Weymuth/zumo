@@ -23,11 +23,12 @@
 #   python3 gen_component.py --table         print the resolved mark table
 #   python3 gen_component.py --demo          emit one callout of each role
 
+import colorsys
 import os
 import re
 import sys
 
-VERSION = 'v1.2'   # the only version home in this file
+VERSION = 'v1.3'   # the only version home in this file
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STANDARD = os.path.join(HERE, 'BookComponentStandard.md')
@@ -46,6 +47,35 @@ _UNITS = ('zero one two three four five six seven eight nine ten eleven twelve t
           'fourteen fifteen sixteen seventeen eighteen nineteen').split()
 _TENS = {'twenty': 20, 'thirty': 30, 'forty': 40, 'fifty': 50, 'sixty': 60,
          'seventy': 70, 'eighty': 80, 'ninety': 90}
+
+
+def _rgb(h):
+    h = h.lstrip('#')
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def _lum(h):
+    def ch(c):
+        c /= 255
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = _rgb(h)
+    return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b)
+
+
+def contrast(a, b):
+    la, lb = _lum(a), _lum(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def hue(h):
+    r, g, b = (x / 255 for x in _rgb(h))
+    return colorsys.rgb_to_hls(r, g, b)[0] * 360
+
+
+def hue_gap(a, b):
+    d = abs(hue(a) - hue(b))
+    return min(d, 360 - d)
 
 
 def word_to_int(word):
@@ -110,7 +140,7 @@ def load_standard():
     S['version'] = _one(r'\*\*Standard version: (v[0-9.]+)\*\*', t, 'standard version')
 
     # --- §5.0 Heritage Blue ------------------------------------------------
-    hb_sec = _section(t, '### 5.0 Heritage Blue', 'Eight roles.')
+    hb_sec = _section(t, '### 5.0 Heritage Blue', '### 5.0.1 Section band ramp')
     heritage = {}
     for cells in _rows(hb_sec):
         if cells[0] == 'Name':
@@ -121,6 +151,16 @@ def load_standard():
     S['structural'] = re.findall(r'\*\*slate, bronze, brass, navy\*\*', hb_sec) and \
                       ['slate', 'bronze', 'brass', 'navy']
     assert S['structural'], '§5.0 does not name the four structural roles'
+
+    # --- §5.0.1 section band ramp -------------------------------------------
+    bnd_sec = _section(t, '### 5.0.1 Section band ramp', 'Eight roles.')
+    bands = []
+    for cells in _rows(bnd_sec):
+        if cells[0] == 'Band':
+            continue
+        bands.append({'band': cells[0], 'hex': _tick(cells[1]), 'name': cells[2]})
+    assert len(bands) == 5, f'§5.0.1: expected 5 bands, found {len(bands)}'
+    S['bands'] = bands
 
     # --- §5 palette --------------------------------------------------------
     # start AFTER §5.0, or the Heritage Blue table is read as role rows
@@ -381,6 +421,33 @@ def selftest(S):
                    f'({off or "none"})')
     check(S['page'] == S['heritage']['Parchment'] and S['body'] == S['heritage']['Deep Navy'],
           '§5.0 page is Parchment and body text is Deep Navy')
+
+    # §5.0.1 -- the ramp is one scale in one hue, and must stay clear of meaning
+    bands = S['bands']
+    navy = S['heritage']['Deep Navy']
+    hb_hue = hue(S['heritage']['Slate Blue'])
+    off_hue = {b['name']: round(hue_gap(b['hex'], S['heritage']['Slate Blue']))
+               for b in bands if hue_gap(b['hex'], S['heritage']['Slate Blue']) > 20}
+    check(not off_hue, f'§5.0.1 every band sits in the Heritage Blue hue family '
+                       f'({off_hue or "none"})')
+
+    sem_roles = [r for r in S['palette'] if r not in S['structural']]
+    clashes = {}
+    for b in bands:
+        for r in sem_roles:
+            g = hue_gap(b['hex'], S['palette'][r]['border'])
+            if g < 30:
+                clashes[f"{b['name']}/{r}"] = round(g)
+    check(not clashes, f'§5.0.1 no band within 30° of a semantic role ({clashes or "none"})')
+
+    bad_text = {b['name']: round(contrast(b['hex'], navy), 2)
+                for b in bands if contrast(b['hex'], navy) < 4.5}
+    check(not bad_text, f'§5.0.1 Deep Navy text clears 4.5:1 on every band '
+                        f'({bad_text or "none"})')
+
+    lums = [_lum(b['hex']) for b in bands]
+    check(all(x > y for x, y in zip(lums, lums[1:])),
+          '§5.0.1 ramp lightness is monotonic light to dark')
 
     # §1 -- the stamp is derived from the version line and must agree on MAJOR.MINOR
     stamp = re.findall(r'RoboLore Book Component Standard (v\d+\.\d+)', _text())
