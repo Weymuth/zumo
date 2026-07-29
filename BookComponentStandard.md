@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.0.0**
+**Standard version: v01.0.1**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -17,7 +17,7 @@ never as the rule.
 **Conformance stamp:** a file that conforms carries the string
 
 ```
-RoboLore Book Component Standard v01.0.0
+RoboLore Book Component Standard v01.0.1
 ```
 
 The stamp asserts conformance with a document that exists and can be read. A stamp that
@@ -265,6 +265,15 @@ Not callout families. Generated from the same table, same shipping form.
 `box-seam` maker · `file-earmark-plus` going deeper · `images` image index ·
 `table` quick reference · `journal-text` notebook · `trophy` milestones
 
+**Battery levels:** `battery-full` full · `battery-half` half · `battery` low
+
+### 7.3 Mark inventory
+
+48 distinct icon files: 25 for the 24 families (BRAIN CHECK carries two), and 23 supporting
+marks. The shipped icon folder holds exactly these and nothing else — a library ships
+thousands of icons; a book ships the ones it uses, so that the folder can be asserted
+against this table in both directions.
+
 ---
 
 ## 8. Collisions
@@ -373,4 +382,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.0.0*
+*RoboLore Book Component Standard v01.0.1*
