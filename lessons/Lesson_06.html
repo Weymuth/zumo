@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.15.1 -->
+<!-- Lesson version: v04.16.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -82,7 +82,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Encoders</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Teaching Your Robot to Measure</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.15 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 04.16 &mdash; July 2026</div>
 </div>
 
 <!-- Icon Legend -->
@@ -480,7 +480,7 @@
 <h3 id="section-4-2" style="color: #3a7d5c; margin-top: 30px;">4.2 Set Up Your Project</h3>
 
 <div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>📝 DO THIS NOW — Start a New Lesson (same ritual as always)</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📝 DO THIS NOW — Start a New Lesson (same ritual as always)</div>
     <ol>
         <li>Open the <a href="https://weymuth.github.io/zumo/newproject.html?lesson=6&amp;kind=main" target="_blank" style="color: #2e86ab; font-weight: bold;">ZUMO Project Maker</a> → confirm <strong>Lesson 06 — Main lesson build</strong>, click <strong>Download</strong>.</li>
         <li>Unzip and drag the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">LastName_L06</code> folder into <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">Documents/PlatformIO</code>.</li>
@@ -589,7 +589,7 @@
 
 <h3 id="code-6-3" style="color: #3a7d5c; margin-top: 30px;">5.3 Coding Concepts: The while Loop &mdash; Waiting Until Something Happens</h3>
 
-<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 16px; border-radius: 4px; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">for</code> loop from Lesson 4 <img src="https://weymuth.github.io/zumo/images/spiral_star_04.svg" alt="Spiral review from Lesson 04" style="height: 1.1em; vertical-align: middle; margin: 0 2px;">. Both repeat &mdash; but they answer different questions, and this lesson needs the one you have not met yet.</div>
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 16px; border-radius: 4px; font-size: 0.92em;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔁 Builds on:</div> the <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">for</code> loop from Lesson 4 <img src="https://weymuth.github.io/zumo/images/spiral_star_04.svg" alt="Spiral review from Lesson 04" style="height: 1.1em; vertical-align: middle; margin: 0 2px;">. Both repeat &mdash; but they answer different questions, and this lesson needs the one you have not met yet.</div>
 
 <p>Every function you are about to build has the same heart: <em>start the motors, then wait until the encoders say you have gone far enough.</em> That waiting is a <strong>while loop</strong>, and it is the tool you have been missing. A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">for</code> loop repeats a <strong>known number of times</strong> &mdash; once per sensor, eight times, three. A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">while</code> loop repeats <strong>as long as something stays true</strong>, however many times that turns out to be. You do not know in advance how many 10-millisecond checks it takes to roll 30&nbsp;cm; you only know when to stop.</p>
 
@@ -616,13 +616,13 @@ motors.setSpeeds(<span style="color: #b5cea8;">0</span>, <span style="color: #b5
 </table>
 
 <div style="background-color: #fdecea; border-left: 5px solid #c0392b; padding: 14px 18px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #922b21;">🚨 The danger every while loop carries: it must be able to end</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #922b21;">🚨 The danger every while loop carries: it must be able to end</div>
 <p>A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">for</code> loop counts to a finish line on its own. A <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">while</code> loop only stops when its condition goes false &mdash; so <strong>something inside the loop, or out in the world, has to be able to make that happen.</strong> The loop above ends because the wheels turn and the encoder count climbs toward <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">targetCounts</code>. Take that away and the loop runs forever, the robot frozen mid-function with no error and no clue why.</p>
 <p style="margin-bottom: 0;">Two ways to build the trap by accident: forget to start the motors before the loop (the count never climbs, so the condition never turns false), or compare against a target the count can never reach. When a robot hangs partway through a move, suspect the while condition first &mdash; ask "what in here is supposed to make this false, and is it actually happening?"</p>
 </div>
 
 <div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #2a5a42;">💡 Tip</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #2a5a42;">💡 Tip</div>
 <p style="margin-bottom: 0;">Whenever you write a <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">while</code>, before you move on, answer one question out loud: <em>what makes this stop?</em> If you cannot point at the exact thing that turns the condition false, you have written an infinite loop &mdash; you just have not run it yet.</p>
 </div>
 
@@ -665,7 +665,7 @@ int speed;
 <p>Reach for <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">?:</code> only when you are choosing between two values for one variable, as here. For anything longer, the full <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">if/else</code> is clearer &mdash; and clarity beats brevity every time someone has to read your code later, including you.</p>
 
 <div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #2a5a42;">💡 Tip</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #2a5a42;">💡 Tip</div>
 <p style="margin-bottom: 0;">If <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">?:</code> makes your head hurt on a given line, write the <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">if/else</code> instead &mdash; it compiles to the same thing and the robot cannot tell the difference. The one-liner is a convenience, never a requirement.</p>
 </div>
 
@@ -678,7 +678,7 @@ int speed;
 <p>Drive it and the robot wanders off into the room. The shape never closes.</p>
 
 <div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #37474f;">📘 Note</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #37474f;">📘 Note</div>
 <p style="margin-bottom: 0;">The 60° in a triangle is the <strong>interior</strong> angle — the angle <em>inside</em> the corner, measured between the two walls. Your robot is not inside the corner. It is driving along one wall and needs to swing onto the next one. That swing is the <strong>exterior</strong> angle, and it is what is left over: <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">180° − 60° = 120°</code>.</p>
 </div>
 
@@ -687,7 +687,7 @@ int speed;
 <p>There is a much easier way to think about it that skips interior angles entirely. Drive all the way around any closed shape and you finish facing the direction you began. You have turned one complete circle — <strong>360°</strong> — no matter how many corners it took. So share that 360° out evenly among the corners:</p>
 
 <div style="background-color: #f3e5f5; border-left: 4px solid #9c27b0; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #6a1b9a;">🔑 The Formula</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #6a1b9a;">🔑 The Formula</div>
 <p style="margin: 8px 0 0;">Turn at each corner = <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">360 ÷ number of sides</code></p>
 </div>
 
@@ -729,12 +729,12 @@ int speed;
 <p>The square still comes out 90°, which is why it worked. And notice the pattern: more sides means a gentler turn at each corner. Push it far enough — a hundred sides, turning 3.6° each time — and the shape stops looking like a polygon and starts looking like a circle. That is genuinely how a robot drives a circle in open-loop code.</p>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #1e6b34;">💡 Tip</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #1e6b34;">💡 Tip</div>
 <p style="margin-bottom: 0;">Write the division in your code rather than the answer — <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">float turnAngle = 360.0 / 5;</code> says <em>why</em> the number is 72 and survives you changing your mind about the shape. A bare <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">72</code> is a number nobody can check. Use <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">360.0</code>, not <code style="font-family: 'Consolas', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px;">360</code>: integer division would throw away the fraction on any shape that does not divide evenly, and a seven-sided shape needs the 51.43 it would silently discard.</p>
 </div>
 
 <div style="background-color: #e8d4c4; border-left: 4px solid #d4a574; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-<strong style="color: #8a5a2b;">🚀 Where this goes next</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #8a5a2b;">🚀 Where this goes next</div>
 <p style="margin-bottom: 0;">Your turns will not be perfect, and the shape will not quite close — that is not a mistake in the math above. Step 13 takes that exact failure apart, and Challenge 1 asks you to watch for it. The formula tells you what to command; the robot decides what it actually does.</p>
 </div>
 
@@ -744,7 +744,7 @@ int speed;
 
 <div id="brain-check-01" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</div>
 
 <p>That is the reading done. Before you put a single wheel on the floor, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
@@ -788,7 +788,7 @@ int speed;
 <p>Section 5 showed you the map. Now you build the machine — and for most steps, <strong>you write the code yourself</strong>: each hands you the plan in pseudo-code and points at the Quick Reference; you translate, then check the reveal.</p>
 
 <div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>📘 HOW THIS SECTION WORKS</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘 HOW THIS SECTION WORKS</div>
 <p>Discovery steps follow the same pattern:</p>
 <ol>
 <li><strong>📖 Explanation</strong> — what the code does and why</li>
@@ -801,12 +801,12 @@ int speed;
 </div>
 
 <div style="background-color: #e3f2ed; border-left: 4px solid #3d8b6e; padding: 15px; margin: 0 0 20px 0; border-radius: 4px;">
-    <strong>📦 Fell behind? File wrecked? The Maker has your back.</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📦 Fell behind? File wrecked? The Maker has your back.</div>
     <p style="margin: 8px 0 0 0;">The <a href="https://weymuth.github.io/zumo/newproject.html?lesson=6" target="_blank" style="color: #2e86ab; font-weight: bold;">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the entry named for the step you're about to start, and it opens a project already built up to that exact point. Missed a day? Broke your file beyond repair? Grab the right entry and keep moving — no shame, no retyping.</p>
 </div>
 
 <div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>📋 WHAT YOU NEED</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📋 WHAT YOU NEED</div>
     <ul style="margin-bottom: 0;">
         <li>VS Code with PlatformIO installed</li>
         <li>Zumo 32U4 robot connected via USB</li>
@@ -818,12 +818,12 @@ int speed;
 <h3 style="color: #3a7d5c; margin-top: 30px;">Step 1 — Make Your Project</h3>
 
 <div style="background-color: #ffe4cc; border-left: 4px solid #ff8c00; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>📝 DO THIS NOW</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📝 DO THIS NOW</div>
     <p style="margin-bottom: 0;">Do the Section 4.4 ritual: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=6&amp;kind=main" target="_blank" style="color: #2e86ab; font-weight: bold;">→ make LastName_L06 for me</a>, unzip it into <strong>Documents → PlatformIO → Projects</strong>, then File → Open Folder. The skeleton arrives with the STANDARD HELPERS pre-installed — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">waitForStart()</code> and <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">checkBattery()</code> — because today the robot drives itself.</p>
 </div>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Build (✓) shows <strong>SUCCESS</strong> before you've written a single line. Every red from here on is something <em>we</em> did — and we'll know exactly when we did it.</p>
 </div>
 
@@ -851,7 +851,7 @@ int speed;
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Build (✓). Nothing visible changes — the cast is hired, the script comes next.</p>
 </div>
 
@@ -901,7 +901,7 @@ int speed;
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Build (✓). If it went red with <em>was not declared</em> — you know this one; no walkthrough coming. Fix it and go green.</p>
 </div>
 
@@ -937,7 +937,7 @@ every loop:
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Upload — this checkpoint is the <strong>push test</strong>. Press A, then spin each track slowly by hand: its count climbs on the screen. Push the robot forward and both climb together. You just watched the odometry heartbeat.</p>
 </div>
 
@@ -967,7 +967,7 @@ counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Build (✓). Quiet step — the math is loaded, nothing uses it yet.</p>
 </div>
 
@@ -1013,7 +1013,7 @@ counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Upload. Put a ruler on the desk and push the robot <strong>exactly 10 cm</strong> — the screen should say ~10.0 cm. If it's wildly off, check your COUNTS_PER_CM formula against the reveal.</p>
 </div>
 
@@ -1035,7 +1035,7 @@ driveDistance(distanceCm):
 <p style="margin: 8px 0;"><strong>Now translate it yourself.</strong> The read-<em>and-reset</em> calls are in <a href="#qr-recipes" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Code Recipes</a>; motor commands in <a href="#qr-motors" style="color: #2e86ab; font-weight: bold;">⚡ Quick Reference → Motors</a>. Positive-or-negative in one line is the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">(condition) ? a : b</code> pick — both it and the abs() on the line above are unpacked in <a href="#code-6-4" style="color: #2e86ab; font-weight: bold;">Section 5.4</a>, just above.</p>
 
 <div style="background-color: #eceff1; border-left: 4px solid #607d8b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>📘 Note — the 440 cm ceiling</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘 Note — the 440 cm ceiling</div>
 <p style="margin-bottom: 0;">The target lives in an <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">int</code>, and on this chip an int tops out at 32,767. At ~74.3 counts per cm, that's about <strong>440 cm</strong>. Ask for more and the math silently wraps — the robot barely moves, or never stops. Keep single moves under 4 meters. (Observation experiment #4 turns this into a puzzle.)</p>
 </div>
 
@@ -1072,7 +1072,7 @@ driveDistance(distanceCm):
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Build (✓) — green, but <strong>don't upload yet</strong>: nothing calls the function, and the test harness comes next step. Robot on the floor before Step 8.</p>
 </div>
 
@@ -1101,7 +1101,7 @@ driveDistance(distanceCm):
 }</pre>
 
 <div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>⚠️ WARNING</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">⚠️ WARNING</div>
 <ul style="margin-bottom: 0;">
 <li>Robot on the <strong>floor</strong>, ~1 m clear path — never the desk</li>
 <li>Hands clear during the countdown</li>
@@ -1110,7 +1110,7 @@ driveDistance(distanceCm):
 </div>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Upload, press A at the gate, then A again for the run: 3-2-1, the robot drives <strong>30 cm ±2</strong> and stops. Measure it with the ruler. Off by a lot? Section 8 has the table.</p>
 </div>
 
@@ -1143,14 +1143,14 @@ counts per degree    = (turn circumference ÷ 360)
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Build (✓). If your squares in Section 9 come out crooked later, this wheel-base number is the first suspect — measure your own robot.</p>
 </div>
 
 <h3 style="color: #3a7d5c; margin-top: 30px;">Step 10 — BLUEPRINT BUILD: Write turnDegrees() Yourself</h3>
 
 <div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>🔍 INSIGHT — same shape, new math</strong><br>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔍 INSIGHT — same shape, new math</div>
 You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> write the code. This one comes with an unfair advantage — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">turnDegrees()</code> has the exact skeleton of the <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance()</code> you wrote in Step 7. Two differences: the target uses counts-per-<em>degree</em>, and the wheels spin in <em>opposite</em> directions. Write first; peek only to check.</p>
 </div>
 
@@ -1195,7 +1195,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Build (✓) goes green with the function written. If yours differs from the reveal but the logic matches the six comments — that's a win, not an error.</p>
 </div>
 
@@ -1243,7 +1243,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 </details>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Upload and run it <strong>four times in a row without moving the robot between runs</strong>: an L, four times, should bring it back to its start facing the way it began. Drift of a few degrees per turn is normal — tune WHEEL_BASE_MM.</p>
 </div>
 
@@ -1297,7 +1297,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <p style="text-align: center; font-style: italic; color: #555; margin-top: -10px;">The five moves, drawn out. Watch where it finishes &mdash; legs 3 and 5 cover the same 20 cm, so the robot ends up back at the corner it turned in.</p>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Press A, clear back, and watch: forward 30, right 90, forward 20, about-face, forward 20, <strong>COMPLETE!</strong> Compare your <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">main.cpp</code> top to bottom against Section 5's map, then run the Section 7 checklist.</p>
 </div>
 
@@ -1312,7 +1312,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <p><strong>It won't.</strong> Run it and watch. The robot ends up somewhere off to the side, aimed wrong, and the fourth corner never meets the first. Your distances were right. Your angles were right. <em>The square still has a gap.</em></p>
 
 <div style="background-color: #f0f7f0; border-left: 4px solid #6b8e6b; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>💡 Before you read on</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">💡 Before you read on</div>
     <p style="margin-bottom: 0;">Actually run it. Tape the start position to the floor and look at the gap. You are about to fix two bugs, and the fix lands harder if you have seen what it fixes.</p>
 </div>
 
@@ -1327,7 +1327,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <p>So your robot has been curving on every straight line since Step 7. And here is the cruel part:</p>
 
 <div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>⚠️ The encoders cannot see it</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">⚠️ The encoders cannot see it</div>
     <p style="margin-bottom: 0;">Encoders count <strong>rotation</strong>, not <strong>travel</strong>. A robot that curves 20&#176; to the left still spins exactly 30&#8239;cm worth of counts, reports success, and stops. <em>The dashboard says you drove straight. The floor says otherwise.</em> One arc is barely visible. Four arcs, one per side, and the square blows open.</p>
 </div>
 
@@ -1375,7 +1375,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <pre style="background-color: #1e1e1e; border: 1px solid #333; border-radius: 6px; padding: 15px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; color: #e8e8e8; line-height: 1.8;"><span style="color: #569cd6;">while</span> (averageCounts() &lt; targetCounts) {</pre>
 
 <div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>🧠 Wait — TRIM in the turn too?</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🧠 Wait — TRIM in the turn too?</div>
     <p style="margin-bottom: 0;"><strong>No.</strong> And this distinction is the whole point of the step.<br><br>
     In a <strong>turn</strong>, the wheels drive <em>against each other on purpose</em> — that is what a pivot is. There is no "straight" to correct. Adding TRIM would just bias the pivot. The encoders decide the angle, and they are the right judge.<br><br>
     But the <strong>averaging</strong> fix applies everywhere. A stiff wheel ruins a turn exactly as thoroughly as it ruins a straight line. <strong>TRIM is for straightness. Averaging is for honesty.</strong> They are different bugs and they need different fixes.</p>
@@ -1415,14 +1415,14 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 }</pre>
 
 <div style="background-color: #e2d5e8; border-left: 4px solid #9b6a9e; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>🔑 The rule, for the rest of this book</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔑 The rule, for the rest of this book</div>
     <p style="margin-bottom: 0;"><strong>OPEN LOOP needs TRIM.</strong> A straight line driven by counting — <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">driveDistance()</code> — is <em>blind</em>. It never checks whether it is actually going straight. TRIM is the only steering it has.<br><br>
     <strong>CLOSED LOOP does not.</strong> In Lesson 8 you will build <code style="font-family: 'Courier New', monospace; background: #e8e8e8; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">followLine()</code>, which reads the line <strong>50 times a second</strong> and corrects. It already fixes motor bias — that is its entire job. Adding TRIM there would make the robot fight its own controller.<br><br>
     Every time you write a straight line from now on, ask: <em>is anything watching?</em> If not, it needs TRIM.</p>
 </div>
 
 <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
-    <strong>✅ CHECKPOINT</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">✅ CHECKPOINT</div>
     <p style="margin-bottom: 0;">Set TRIM to your Lesson 3 number, upload, and run the square again. It should close — corner four landing on corner one, within a couple of centimeters. Still curving? Your TRIM sign is backwards: <strong>curves LEFT &rarr; raise TRIM. Curves RIGHT &rarr; lower it</strong> (negative is legal). Section 8 has the table.</p>
 </div>
 
@@ -2325,7 +2325,7 @@ Stop motors</pre>
 
 <div id="brain-check-02" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</div>
 
 <p>These are the six objectives this lesson opened with, in Section 2 &mdash; the same list, now asked back. Tap each one you can honestly claim. All six unlock the button.</p>
 
@@ -2343,7 +2343,7 @@ Stop motors</pre>
 
 <div id="brain-check-03" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
 
-<strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</div>
 
 <p>You built it and it drives. These ask whether you know <em>why</em> it drives.</p>
 
@@ -2381,7 +2381,7 @@ Stop motors</pre>
 </div>
 
 <div id="brain-check-04" style="background-color: #e8eaf6; border-left: 4px solid #3f51b5; padding: 15px 20px; margin: 25px 0; border-radius: 4px;">
-    <strong style="color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</strong>
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #283593;"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" style="height: 1.35em; vertical-align: -0.3em; margin-right: 6px;">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</div>
     <p>No reveal on these &mdash; there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
         <li>How does closed-loop control improve your robot's reliability compared to open-loop? Consider: What happens with open-loop control when batteries run low? When one wheel slips? When the floor surface changes? How does encoder feedback solve these problems?</li>

@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.6.0**
+**Standard version: v01.7.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -239,8 +239,27 @@ box:    background-color: {bg}; border-left: 4px solid {border};
 title:  font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: {title};
 ```
 
-Geometry is unchanged from prior practice. **Adopting this standard is a repaint, not a
-redesign.**
+**The title is a BLOCK element.** `<strong>` is not acceptable, because it is inline and
+therefore carries none of the three properties the spec names: the 8px gap under the title,
+the 1.05em size, and block display so the body starts on its own line without a `<br>`.
+
+**Correction, S91.** The sentence that stood here — *"Geometry is unchanged from prior
+practice"* — was **false for the title element**. The live book carried **794 titles as
+`<strong>` against 55 in this form**, so this section specified the minority shape while
+claiming it was the norm. Found by counting, not by reading; the claim had been approved
+the same day without being checked against the book (§24.10).
+
+Swept S91 on DJ's ruling (*"make all the strong categories div to keep it conical"*): 794
+titles converted, **119 now-redundant `<br>` removed** — each existed only to break an
+inline title. Structure only; every existing `color:` declaration and every other attribute
+carried over verbatim. `book_gates` gate 34 holds it.
+
+**The cost, recorded so nobody reverts it as a bug.** `<strong>` is semantic and a bold div
+is not, so 794 titles lost their emphasis cue for screen readers. The title remains the
+first text inside the block, so nothing became unreachable. DJ ruled the block form for
+consistency; this paragraph is the price of that ruling, not an argument against it.
+
+Otherwise geometry is unchanged. **Adopting this standard is a repaint, not a redesign.**
 
 ### 5.2 Colour is never the only signal
 
@@ -519,4 +538,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.6*
+*RoboLore Book Component Standard v01.7*

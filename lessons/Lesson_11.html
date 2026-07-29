@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.9.1 -->
+<!-- Lesson version: v02.10.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +73,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Time Lies, Distance Doesn't</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Encoder-Based Gap Crossing</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.9 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.10 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -90,7 +90,7 @@ You tested it, it passed, you put it on the shelf.</p>
 <p>Two weeks later you plug in a half-charged battery, put it on the <em>same track</em>,
 and it drives straight off the end of the line.</p>
 <p>Nothing changed. Not the code, not the track, not the robot. Only the battery.</p>
-<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>📘&#65039; The bug is in Lesson 8, and it has been there the whole time.</strong><br>Lesson 8 crosses gaps with a <strong>stopwatch</strong>: <code>MAX_GAP_TIME = 500</code> milliseconds. But a stopwatch measures <em>how long you drove</em>. It has no idea <em>how far you got</em>. A tired battery drives slower &mdash; so the same 500&nbsp;ms carries the robot less distance. The code did not break. The code was always broken. The full battery was hiding it.</div>
+<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘&#65039; The bug is in Lesson 8, and it has been there the whole time.</div>Lesson 8 crosses gaps with a <strong>stopwatch</strong>: <code>MAX_GAP_TIME = 500</code> milliseconds. But a stopwatch measures <em>how long you drove</em>. It has no idea <em>how far you got</em>. A tired battery drives slower &mdash; so the same 500&nbsp;ms carries the robot less distance. The code did not break. The code was always broken. The full battery was hiding it.</div>
 <p>This lesson fixes it in one move: <strong>stop counting time, start counting distance.</strong> You already own the hardware to do it &mdash; the encoders have been on the robot since Lesson 6.</p>
 <p style="text-align: right; margin-top: 25px;"><a href="#top" style="color: #2e86ab;">&uarr; Back to top</a></p>
 </div>
@@ -143,7 +143,7 @@ end of the line will keep driving until the battery dies.</p>
 <p>Read the condition: <code>millis() - gapStartTime &gt; MAX_GAP_TIME</code>.
 That is a <strong>stopwatch</strong>. It gives the robot 500 milliseconds of blindness, and then quits.</p>
 <p>Now ask the question that breaks it: <strong>how far does the robot travel in 500 milliseconds?</strong></p>
-<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; It depends on the battery. And that is fatal.</strong><br>A fresh battery drives the robot faster, so 500&nbsp;ms carries it <em>further</em>. A tired battery drives it slower, so the same 500&nbsp;ms carries it <em>less far</em>. You tuned <code>MAX_GAP_TIME</code> on a full charge. At half charge, that number is silently covering a shorter gap &mdash; and the robot gives up in the middle of a gap it crossed fine this morning.<br><br><strong>A stopwatch does not measure distance. It measures time and hopes speed was constant. Speed is never constant.</strong></div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128721; It depends on the battery. And that is fatal.</div>A fresh battery drives the robot faster, so 500&nbsp;ms carries it <em>further</em>. A tired battery drives it slower, so the same 500&nbsp;ms carries it <em>less far</em>. You tuned <code>MAX_GAP_TIME</code> on a full charge. At half charge, that number is silently covering a shorter gap &mdash; and the robot gives up in the middle of a gap it crossed fine this morning.<br><br><strong>A stopwatch does not measure distance. It measures time and hopes speed was constant. Speed is never constant.</strong></div>
 <h3 style="color: #3498db; margin-top: 30px;">3.3 Distance Is the Right Answer</h3>
 <p>Encoders do not care about your battery. They count <strong>wheel rotation</strong>.
 If the wheel turned, they counted it. If the wheel did not turn, they did not.
@@ -152,7 +152,7 @@ the slow one just took longer to get there.</p>
 <p>You have had this instrument since Lesson 6. <code>driveDistance()</code> already uses it.
 The conversion is already sitting in <code>RobotConfig.h</code>:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">const float COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0);</pre>
-<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>📘 The whole lesson, in one sentence.</strong><br>Lesson 8 asked <strong>"have I been blind for too LONG?"</strong> &mdash; a stopwatch.<br>Lesson 11 asks <strong>"have I been blind for too FAR?"</strong> &mdash; an odometer.<br><br>Same function. Same call site. Same name. <strong>One question changed.</strong></div>
+<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘 The whole lesson, in one sentence.</div>Lesson 8 asked <strong>"have I been blind for too LONG?"</strong> &mdash; a stopwatch.<br>Lesson 11 asks <strong>"have I been blind for too FAR?"</strong> &mdash; an odometer.<br><br>Same function. Same call site. Same name. <strong>One question changed.</strong></div>
 <div style="text-align: center; margin: 24px 0;"><img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-01_time_vs_distance.svg" alt="GRAPHIC 11.1 &mdash; The same gap, the same code, two batteries. Only the stopwatch cares." style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"><div style="font-size: 0.9em; color: #666; margin-top: 8px;">GRAPHIC 11.1 &mdash; The same gap, the same code, two batteries. Only the stopwatch cares.</div></div>
 <h3 style="color: #3498db; margin-top: 30px;">3.4 Two New States</h3>
 <p>In Lesson 10 you learned that a state machine gives each behavior a <em>name</em>.
@@ -191,13 +191,13 @@ the robot to roll forward a few centimeters &mdash; a fraction of a second &mdas
 go over too.</p>
 <p>But you just agreed the alarm is not allowed to fire until the robot has driven <em>further</em>
 than a legal gap. And a legal gap is <em>wider</em> than that few-centimeter head start.</p>
-<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; The alarm is not allowed to go off until the robot has already fallen.</strong><br>The distance you must travel before you are <em>permitted</em> to call it a cliff is <strong>larger</strong> than the distance you have <em>available</em> before the wheels leave the table. There is no threshold value that both crosses gaps and stops for cliffs. Not a badly chosen one. <strong>There is no such number.</strong><br><br><em>If you want to check that claim yourself, the full arithmetic is in Section 8A.4.</em></div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128721; The alarm is not allowed to go off until the robot has already fallen.</div>The distance you must travel before you are <em>permitted</em> to call it a cliff is <strong>larger</strong> than the distance you have <em>available</em> before the wheels leave the table. There is no threshold value that both crosses gaps and stops for cliffs. Not a badly chosen one. <strong>There is no such number.</strong><br><br><em>If you want to check that claim yourself, the full arithmetic is in Section 8A.4.</em></div>
 <div style="text-align: center; margin: 24px 0;"><img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-02_cliff_arithmetic.svg" alt="GRAPHIC 11.2 &mdash; 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen." style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"><div style="font-size: 0.9em; color: #666; margin-top: 8px;">GRAPHIC 11.2 &mdash; 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen.</div></div>
 <h4 style="color: #555; margin-top: 22px;">The answer is a piece of wood.</h4>
 <p>So we do not solve this in software. We solve it by <strong>running the robot on the floor</strong>,
 or by putting a <strong>physical barrier</strong> at the table edge.</p>
 <p>That is not giving up. That is engineering.</p>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9989; The lesson worth keeping.</strong><br>Sometimes the correct engineering answer is not a better algorithm. It is a piece of wood.<br><br>A good engineer does the arithmetic <em>first</em>, finds out the software cannot win, and spends four dollars on a rail instead of four weeks on a bug that was never fixable. Shipping a guard that <em>almost</em> works would be worse than shipping none &mdash; because then people trust it.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#9989; The lesson worth keeping.</div>Sometimes the correct engineering answer is not a better algorithm. It is a piece of wood.<br><br>A good engineer does the arithmetic <em>first</em>, finds out the software cannot win, and spends four dollars on a rail instead of four weeks on a bug that was never fixable. Shipping a guard that <em>almost</em> works would be worse than shipping none &mdash; because then people trust it.</div>
 <p>And notice what the arithmetic actually told us. It did not say <em>"impossible."</em>
 It said <strong>the sensor is in the wrong place</strong>. Mount a downward sensor on a boom that sticks out
 <em>in front of</em> the wheels, and the head start gets bigger &mdash; the inequality flips, and the
@@ -240,7 +240,7 @@ That is the kind of thing the math tells you, and guessing never does.</p>
 </tr>
 </table>
 <div style="text-align: center; margin: 24px 0;"><img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap." style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"><div style="font-size: 0.9em; color: #666; margin-top: 8px;">GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap.</div></div>
-<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>📘 No new wiring. No new jumpers. No new library.</strong><br>This is what good architecture buys you. In Lesson 7 you organized the code into modules. In Lesson 6 you built <code>averageCounts()</code>. Today you spend that work &mdash; the whole lesson is about <strong>asking a better question of hardware you already own.</strong></div>
+<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘 No new wiring. No new jumpers. No new library.</div>This is what good architecture buys you. In Lesson 7 you organized the code into modules. In Lesson 6 you built <code>averageCounts()</code>. Today you spend that work &mdash; the whole lesson is about <strong>asking a better question of hardware you already own.</strong></div>
 <p style="text-align: right; margin-top: 25px;"><a href="#top" style="color: #2e86ab;">&uarr; Back to top</a></p>
 </div>
 
@@ -265,7 +265,7 @@ float blindDistanceCm() {
   long travelled = averageCounts() - gapStartCounts;
   return travelled / COUNTS_PER_CM;
 }</pre>
-<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>📘&#65039; Why average BOTH wheels?</strong><br>Because <strong>one encoder can lie.</strong> If the left wheel slips on a smooth patch, it under-reports. If it catches on a seam, it over-reports. Either way, a robot that gates on one encoder is trusting a single witness.<br><br>Averaging both is not about precision. It is about <strong>honesty</strong>. This is the same rule <code>driveDistance()</code> and <code>turnDegrees()</code> have followed since Lesson 6.</div>
+<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘&#65039; Why average BOTH wheels?</div>Because <strong>one encoder can lie.</strong> If the left wheel slips on a smooth patch, it under-reports. If it catches on a seam, it over-reports. Either way, a robot that gates on one encoder is trusting a single witness.<br><br>Averaging both is not about precision. It is about <strong>honesty</strong>. This is the same rule <code>driveDistance()</code> and <code>turnDegrees()</code> have followed since Lesson 6.</div>
 <h3 style="color: #3a7d5c; margin-top: 30px;">5.2 The Function That Changed Its Mind</h3>
 <p>Here is the new <code>handleGap()</code>. Compare it to the Lesson 8 version in Section 3.2 &mdash; same name, same call site, same job:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// The SAME function you have called since Lesson 8. Same name, same
@@ -293,7 +293,7 @@ void handleGap() {
   // loop, and open loops need TRIM or they curve away into the carpet.
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
 }</pre>
-<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; Read the last line. That TRIM is not decoration.</strong><br>Inside a gap, <strong>P-control is asleep</strong>. There is no line to correct against, so <code>followLine()</code> has nothing to work with. This is an <strong>open loop</strong> &mdash; the robot is driving on faith.<br><br>And an open loop with mismatched motors <em>curves</em>. Nothing is holding the robot straight across that gap except the TRIM number you found in Lesson 6. Set it to 0 and watch the robot wander out of the gap sideways. <strong>Open loop needs TRIM. Closed loop does not.</strong></div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128721; Read the last line. That TRIM is not decoration.</div>Inside a gap, <strong>P-control is asleep</strong>. There is no line to correct against, so <code>followLine()</code> has nothing to work with. This is an <strong>open loop</strong> &mdash; the robot is driving on faith.<br><br>And an open loop with mismatched motors <em>curves</em>. Nothing is holding the robot straight across that gap except the TRIM number you found in Lesson 6. Set it to 0 and watch the robot wander out of the gap sideways. <strong>Open loop needs TRIM. Closed loop does not.</strong></div>
 <h3 style="color: #3a7d5c; margin-top: 30px;">5.3 The Two New States</h3>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">    case GAP_CROSSING: {
       if (killSwitchPressed()) break;
@@ -367,7 +367,7 @@ the state machine, the kill switch.</p>
 // never hardcode a raw count.
 const float GAP_MAX_CM = 0.0;   // &lt;-- YOUR NUMBER. Measure your widest gap in
                                 //     Section 7A, then add a little margin.</pre>
-<div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>💡&#65039; Leave it at 0.0 for now. That is not a mistake.</strong><br>You are going to <strong>measure</strong> this number in Section 7A, not guess it. A guessed threshold is the reason the old code was fragile. The robot is about to tell you the right answer &mdash; wait for it.</div>
+<div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">💡&#65039; Leave it at 0.0 for now. That is not a mistake.</div>You are going to <strong>measure</strong> this number in Section 7A, not guess it. A guessed threshold is the reason the old code was fragile. The robot is about to tell you the right answer &mdash; wait for it.</div>
 <h3 style="color: #3a7d5c; margin-top: 34px; padding: 10px 14px; background: #eafaf1; border-radius: 6px;">&#128193; Step 2b: Name the Two New States<span style="float:right; font-weight:normal; font-size:0.75em; color:#555;">RobotConfig.h</span></h3>
 <p>Still in <code>RobotConfig.h</code>. Find the <code>RobotState</code> enum and add two names:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">// ===== ROBOT STATES (UPDATED for Lesson 11) =====
@@ -395,7 +395,7 @@ enum RobotState {
 // Lesson 11 asks &quot;WHERE did the line disappear?&quot; and stores a DISTANCE.
 // Same question, better units.
 long gapStartCounts = 0;   // Encoder reading at the moment we went blind</pre>
-<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>📘 You now have BOTH instruments installed.</strong><br>The old <code>gapStartTime</code> stopwatch is still there, and the new <code>gapStartCounts</code> odometer sits next to it. That is deliberate &mdash; the stopwatch is still <em>running the robot</em> until Step 5. You retire it in Step 6, after nothing needs it any more.<br><br><strong>Never delete the working thing before the replacement works.</strong></div>
+<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘 You now have BOTH instruments installed.</div>The old <code>gapStartTime</code> stopwatch is still there, and the new <code>gapStartCounts</code> odometer sits next to it. That is deliberate &mdash; the stopwatch is still <em>running the robot</em> until Step 5. You retire it in Step 6, after nothing needs it any more.<br><br><strong>Never delete the working thing before the replacement works.</strong></div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 3</summary>
 <div style="margin-top: 12px;">
@@ -452,7 +452,7 @@ void handleGap() {
   // loop, and open loops need TRIM or they curve away into the carpet.
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
 }</pre>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9989; The function kept its name, its call site, and its job.</strong><br>Nothing that <em>calls</em> <code>handleGap()</code> had to change. The state machine does not know anything happened. You swapped the instrument inside the box and the rest of the robot never noticed.<br><br>That is what Lesson 7 bought you.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#9989; The function kept its name, its call site, and its job.</div>Nothing that <em>calls</em> <code>handleGap()</code> had to change. The state machine does not know anything happened. You swapped the instrument inside the box and the rest of the robot never noticed.<br><br>That is what Lesson 7 bought you.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 5</summary>
 <div style="margin-top: 12px;">
@@ -508,7 +508,7 @@ void handleGap() {
     case LINE_LOST:          display.print(F(&quot;LOST&quot;));      break;</pre>
 <p>Finally &mdash; <strong>delete this line</strong> from the top of <code>main.cpp</code>:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">unsigned long gapStartTime = 0;  // Lesson 8&#x27;s stopwatch - retired in Step 6</pre>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9989; The stopwatch has no readers left. Retire it.</strong><br>Nothing reads <code>gapStartTime</code> any more, so it can go. And here is a detail worth noticing: the finished program is <strong>smaller</strong> than the one you started with. The odometer version compiles to fewer bytes than the stopwatch version did.<br><br><strong>The better answer was also the cheaper one.</strong> That happens more often than you would think.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#9989; The stopwatch has no readers left. Retire it.</div>Nothing reads <code>gapStartTime</code> any more, so it can go. And here is a detail worth noticing: the finished program is <strong>smaller</strong> than the one you started with. The odometer version compiles to fewer bytes than the stopwatch version did.<br><br><strong>The better answer was also the cheaper one.</strong> That happens more often than you would think.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 6 (finished build)</summary>
 <div style="margin-top: 12px;">
@@ -558,7 +558,7 @@ const float GAP_MAX_CM = 999.0;</pre>
         showStatus();
         break;
       }</pre>
-<div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>💡 Run it across your real gap.</strong><br>The robot drives blind, finds the line, stops, and prints the gap width on the OLED. <strong>Write the number down.</strong> Run it three or four times &mdash; the readings will vary a little. Take the <em>biggest</em> one.</div>
+<div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">💡 Run it across your real gap.</div>The robot drives blind, finds the line, stops, and prints the gap width on the OLED. <strong>Write the number down.</strong> Run it three or four times &mdash; the readings will vary a little. Take the <em>biggest</em> one.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7A in the Project Maker</summary>
 <div style="margin-top: 12px;">
@@ -592,7 +592,7 @@ const int TRIM = 0;   // &lt;-- YOUR NUMBER (from Lesson 6)</pre>
 On a narrow gap it gets away with it. On a wide one it wanders off the line entirely
 and reports LINE LOST even though the line was right there.</p>
 <p>Now put your Lesson 6 TRIM number back. Run it again. Straight.</p>
-<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; This is the moment TRIM stops being homework.</strong><br>For three lessons TRIM has been a number you filled in once and forgot. Inside a gap it is <strong>the only thing steering the robot.</strong><br><br>P-control is asleep. There is no line. Nothing else is holding you straight. A gap is the one place where an open loop has nowhere to hide.</div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128721; This is the moment TRIM stops being homework.</div>For three lessons TRIM has been a number you filled in once and forgot. Inside a gap it is <strong>the only thing steering the robot.</strong><br><br>P-control is asleep. There is no line. Nothing else is holding you straight. A gap is the one place where an open loop has nowhere to hide.</div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7C in the Project Maker</summary>
 <div style="margin-top: 12px;">
@@ -621,8 +621,8 @@ count &mdash; the budget would already be spent, and the robot would quit instan
       display.print(blindDistanceCm(), 1);
       display.print(F("cm  "));
       handleGap();</pre>
-<div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>💡 Now you can see the number that decides your fate.</strong><br>Drive both gaps and watch the OLED. The count climbs, resets to zero at the second gap, and climbs again &mdash; that reset, happening in front of you, <em>is</em> the answer to the question this rung asked.</div>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9989; Leaving the state IS the reset.</strong><br>The odometer re-arms only when the robot enters <code>GAP_CROSSING</code> from somewhere else. Finding the line kicks you back to <code>FOLLOWING_LINE</code> &mdash; so the <em>next</em> gap comes in fresh, with a full budget.<br><br>One <code>if</code> statement is doing that. Make sure you can point at it.</div>
+<div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">💡 Now you can see the number that decides your fate.</div>Drive both gaps and watch the OLED. The count climbs, resets to zero at the second gap, and climbs again &mdash; that reset, happening in front of you, <em>is</em> the answer to the question this rung asked.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#9989; Leaving the state IS the reset.</div>The odometer re-arms only when the robot enters <code>GAP_CROSSING</code> from somewhere else. Finding the line kicks you back to <code>FOLLOWING_LINE</code> &mdash; so the <em>next</em> gap comes in fresh, with a full budget.<br><br>One <code>if</code> statement is doing that. Make sure you can point at it.</div>
 <p>The 7D build also puts the odometer <strong>on the screen</strong>. While the robot is blind, the bottom row reads <code>Blind: 6.4cm</code> and climbs. Watch it on the first gap, watch it go back to zero, and watch it climb again on the second. You are not taking the re-arm on faith &mdash; you are reading it:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">      // Still blind. Keep driving, keep counting - and SHOW the count,
       // so you can watch the budget burn down against a live course.
@@ -640,7 +640,7 @@ count &mdash; the budget would already be spent, and the robot would quit instan
 <p>First &mdash; you <strong>retired</strong> <code>gapStartTime</code> back in Step 6. To put the stopwatch back you have to bring the variable back too. In <code>main.cpp</code>, the two state variables now read:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">long gapStartCounts = 0;          // Encoder reading at the moment we went blind
 unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8&#x27;s stopwatch, put back</pre>
-<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>📘&#65039; This is temporary, and it is the only time the two instruments coexist.</strong><br>You are putting the old one back purely to watch it fail. Delete it again when you are done.</div>
+<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘&#65039; This is temporary, and it is the only time the two instruments coexist.</div>You are putting the old one back purely to watch it fail. Delete it again when you are done.</div>
 <p>Temporarily restore Lesson 8's timer version of <code>handleGap()</code>:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">void handleGap() {
   // ===== 7E: THE STOPWATCH, PUT BACK =====
@@ -665,7 +665,7 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8&#x27;s stopwatch, put bac
 <li>With a <strong>tired battery</strong>. The robot is slower now. It runs out of <em>time</em> before it runs out of <em>gap</em>, and quits halfway across.</li>
 </ol>
 <p>Then put the odometer version back and run the tired battery again. <strong>It crosses.</strong></p>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9989; The track did not change. The battery did. Only one version cared.</strong><br>That is the entire lesson, and you just watched it happen on your own desk.<br><br><strong>Time lies. Distance doesn't.</strong></div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#9989; The track did not change. The battery did. Only one version cared.</div>That is the entire lesson, and you just watched it happen on your own desk.<br><br><strong>Time lies. Distance doesn't.</strong></div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; 7E in the Project Maker</summary>
 <div style="margin-top: 12px;">
@@ -724,7 +724,7 @@ If it drifts, it sees the drift and fixes it. Mismatched motors do not matter &m
 <p><strong>Open loop:</strong> the robot acts and hopes. Inside a gap there is no line to measure,
 so there is nothing to correct against. If the motors are mismatched, the robot curves &mdash;
 and <em>nothing notices.</em></p>
-<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>📘 This is why TRIM lives where it lives.</strong><br>Every open-loop straight line in this book carries TRIM: <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive.<br><br>And <code>followLine()</code> <strong>deliberately does not</strong> &mdash; because P-control is already correcting bias 50 times a second, and TRIM would just be fighting its own controller.<br><br><strong>Open loop needs TRIM. Closed loop does not.</strong></div>
+<div style="background-color: #eceff1; border-left: 5px solid #607d8b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">📘 This is why TRIM lives where it lives.</div>Every open-loop straight line in this book carries TRIM: <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive.<br><br>And <code>followLine()</code> <strong>deliberately does not</strong> &mdash; because P-control is already correcting bias 50 times a second, and TRIM would just be fighting its own controller.<br><br><strong>Open loop needs TRIM. Closed loop does not.</strong></div>
 <h3 style="color: #c45d76; margin-top: 30px;">8A.2 Why Encoders Beat Timers</h3>
 <p>A timer measures the <em>independent</em> variable. An encoder measures the <em>dependent</em> one.</p>
 <p>You do not actually care how long the robot drove. You care how far it went. Time is only a
@@ -771,7 +771,7 @@ alarm TIME     = 10 cm / 25 cm/s
 you must wait 400 ms   before you are allowed to call it a cliff
 
 400 &gt; 180        &lt;-- the alarm fires 220 ms AFTER the robot has fallen</pre>
-<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#128721; There is no threshold that works. Not a badly chosen one &mdash; there is no such number.</strong><br>To sound the alarm in time, the trigger distance would have to be <strong>under 4.5 cm</strong>. But any trigger under 4.5&nbsp;cm fires in the middle of every legal 10&nbsp;cm gap. The two requirements are <strong>mutually exclusive</strong>.<br><br>Make the robot slower and both numbers shrink together &mdash; the ratio never changes. <strong>You cannot fix this by tuning.</strong></div>
+<div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128721; There is no threshold that works. Not a badly chosen one &mdash; there is no such number.</div>To sound the alarm in time, the trigger distance would have to be <strong>under 4.5 cm</strong>. But any trigger under 4.5&nbsp;cm fires in the middle of every legal 10&nbsp;cm gap. The two requirements are <strong>mutually exclusive</strong>.<br><br>Make the robot slower and both numbers shrink together &mdash; the ratio never changes. <strong>You cannot fix this by tuning.</strong></div>
 <h4 style="color: #555; margin-top: 22px;">Step 5 &mdash; So what WOULD fix it?</h4>
 <p>Look at the inequality again. Only one term is under your control:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">warning distance  &gt;  widest legal gap        &lt;-- what you NEED
@@ -782,7 +782,7 @@ you must wait 400 ms   before you are allowed to call it a cliff
 Mount a downward-facing sensor on a boom that sticks out <em>ahead of the wheels</em>,
 and the warning distance grows until it exceeds the gap width. The inequality flips.
 The same code that was impossible becomes trivial.</p>
-<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><strong>&#9989; This is what arithmetic is FOR.</strong><br>It did not just tell you "no." It told you <strong>exactly which term to change</strong>, and roughly how much you would have to change it by.<br><br>Guessing would have told you to write better code. The code was never the problem.</div>
+<div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#9989; This is what arithmetic is FOR.</div>It did not just tell you "no." It told you <strong>exactly which term to change</strong>, and roughly how much you would have to change it by.<br><br>Guessing would have told you to write better code. The code was never the problem.</div>
 <p style="text-align: right; margin-top: 25px;"><a href="#top" style="color: #2e86ab;">&uarr; Back to top</a></p>
 </div>
 
@@ -898,7 +898,7 @@ undo the sweep on failure - otherwise the next run starts crooked</pre>
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L11</strong> build — slow down as the gap budget burns.</p>
 </div>
-<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the deceleration leg of Lesson 7&rsquo;s trapezoidal profile <img src="https://weymuth.github.io/zumo/images/spiral_star_07.svg" alt="Spiral review from Lesson 07" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; speed as a function of progress, applied to a budget instead of a distance.</div>
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔁 Builds on:</div> the deceleration leg of Lesson 7&rsquo;s trapezoidal profile <img src="https://weymuth.github.io/zumo/images/spiral_star_07.svg" alt="Spiral review from Lesson 07" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; speed as a function of progress, applied to a budget instead of a distance.</div>
 <div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
 <h4 style="margin-top: 0;">🎯 THE GOAL</h4>
 <p style="margin: 0;">The robot charges across a gap at full <code>BASE_SPEED</code> and then stops dead when the budget runs out — a lurch. Make it slow down as the budget burns: full speed at 0% spent, half speed at 100%. The give-up should be a glide, not a slam.</p>
@@ -935,7 +935,7 @@ motors.setSpeeds(gapSpeed + ____, gapSpeed);    <span style="color: #6a9955;">//
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 0;">&#128193; <strong>Work in:</strong> your <strong>LastName_L11</strong> build &mdash; only <code>RobotConfig.h</code> changes between runs, and your real number goes back at the end &mdash; or a fresh copy at the &sect;7C state: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7c" target="_blank" style="color: #2e86ab; font-weight: bold;">&rarr; make this folder for me</a></p>
 </div>
-<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><strong>🔁 Builds on:</strong> TRIM from Lesson 3 <img src="https://weymuth.github.io/zumo/images/spiral_star_03.svg" alt="Spiral review from Lesson 03" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; the number you tuned in week one, now proven on an open loop where no line can cover for it.</div>
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔁 Builds on:</div> TRIM from Lesson 3 <img src="https://weymuth.github.io/zumo/images/spiral_star_03.svg" alt="Spiral review from Lesson 03" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; the number you tuned in week one, now proven on an open loop where no line can cover for it.</div>
 <div style="padding: 15px 20px; background: white;">
 <p style="margin-top: 0;">Section 7C showed you the effect: in a gap, TRIM is the only thing steering. This challenge makes you <strong>measure</strong> it &mdash; and checks a prediction you wrote down eight lessons ago.</p>
 <p><strong>The setup.</strong> Use your widest gap. Place a post-it at your starting point and line the robot's <strong>front blade</strong> up with its edge &mdash; put the robot in the same exact spot every run; the blade is the easiest consistent reference.</p>

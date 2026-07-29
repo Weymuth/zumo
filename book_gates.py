@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.22 (S91) — whole-book consistency gates.
+# book_gates.py v1.24 (S91) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -383,7 +383,15 @@ for f in files:
     s2 = R[f]
     if 'MENTAL KNOWLEDGE CHECK' not in s2:
         continue                      # not yet converted — §25 does not bind it
-    i = s2.find('MENTAL KNOWLEDGE CHECK')
+    # S91: bound by the id §25.10h canonizes, NOT by the nearest preceding <div>.
+    # rfind('<div') was correct only by accident -- it worked because the Brain Check
+    # TITLE happened to be a <strong>. The S91 title sweep made every title a <div>,
+    # so rfind landed on the title and the block collapsed to one line, reading 0 items
+    # in all nine lessons while the lessons were untouched. Same defect the Bible
+    # already recorded for §20.1(5) at S83, one gate over.
+    i = s2.find('id="brain-check-01"')
+    if i < 0:
+        i = s2.find('MENTAL KNOWLEDGE CHECK')
     st = s2.rfind('<div', 0, i)
     en = _close_of(s2, st, 'div')
     blk = s2[st:en]
@@ -1093,6 +1101,34 @@ gate('\u00a75.1 callout geometry: no NEW off-canon border width'
      + (f' (debt {sum(live.values())}/{sum(GEOM_BASELINE.values())}, '
         f'{_shrunk} retired — tighten the baseline)' if _shrunk > 0
         else f' (frozen debt {sum(live.values())}, zero at the repaint)'), bad)
+
+# ---- §5.1 THE CALLOUT TITLE IS A BLOCK ELEMENT, ONE FORM BOOK-WIDE (NEW, S91, DJ ruling)
+# ---- DJ: "Why would i want a div bold?" -- the answer is §5.1's three properties, which a
+# ---- bare <strong> carries none of: margin-bottom 8px, font-size 1.05em, and block display
+# ---- so the body needs no <br>. The live book had it backwards: 794 titles were <strong>
+# ---- against 55 in §5.1's form, while §5.1 claimed "Geometry is unchanged from prior
+# ---- practice." Swept S91 -- 794 converted, 119 now-redundant <br> removed.
+# ---- Recorded so nobody reverts it: <strong> is SEMANTIC and a bold div is not, so this
+# ---- costs the emphasis cue on 794 titles. The title is still the first text in the block,
+# ---- so nothing became unreachable. DJ ruled the div for consistency; §5.1 records the cost.
+bad = []
+seen = 0
+for f in sorted(glob.glob('lessons/Lesson_*.html')):
+    src = R[f]
+    lines = src.split('\n')
+    for c in LI.build(f)['callouts']:
+        off = sum(len(l) + 1 for l in lines[:c['line'] - 1])
+        gt = src.find('>', off)
+        if gt < 0:
+            continue
+        seen += 1
+        i = re.match(r'\s*', src[gt + 1:]).end() + gt + 1
+        if src.startswith('<strong', i):
+            bad.append(f'{L(f)} line {c["line"]}: callout title is <strong>, \u00a75.1 requires '
+                       f'the block form')
+if seen < 900:
+    bad.append(f'COVERAGE: only {seen} callouts inspected, expected 1000+')
+gate('\u00a75.1 callout title uses the block form, never a bare <strong>', bad)
 
 print('=' * 52)
 

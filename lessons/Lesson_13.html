@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.9.1 -->
+<!-- Lesson version: v02.10.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +73,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Rescue Zone</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">Flying on Instruments &mdash; Navigating Where the Line Cannot Go</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.9 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.10 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -90,7 +90,7 @@
 <p>In this lesson the robot drives through a doorway, and on the other side there is no line. Not a gap &mdash; Lesson 11 handled gaps, a few blind centimeters with the line waiting on the far side. <strong>Gone.</strong> An open floor with walls around it, somewhere inside it a victim to find, and nothing painted on the ground to follow.</p>
 <p>Pilots have a name for this. When the weather closes in and the window shows nothing but grey, they stop flying by what they see and start flying by what their instruments report. They call it <em>flying on instruments</em>, and it is a separate license, because it is a separate skill. Your robot already owns the instruments: encoders that count distance (Lesson 6), an odometer that survives a dying battery (Lesson 11), a gyro that catches slipping wheels in a lie (Lesson 12), and TRIM to hold a straight line with no line to hold (Lessons 3 and 6). Today they stop being safety nets and become the whole aircraft.</p>
 <div style="background-color: #e8f4f8; border-left: 4px solid #2e86ab; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128173; THE ONE IDEA</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128173; THE ONE IDEA</div>
 <p style="margin: 8px 0 0 0;">When the reference disappears, you navigate on your instruments &mdash; and you sense on the raw channel, because calibration can only describe the world it was shown.</p>
 </div>
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">&#8593; Back to top</a></p>
@@ -129,7 +129,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 <p>Walk through it. Calibration (that spin your robot does at startup) records the brightest and darkest thing it saw &mdash; <code>calmin</code> and the maximum &mdash; and then maps every future reading onto a 0-to-1000 scale between them. White floor reads 0. Black line reads 1000. Everything in between lands in between. It is a beautiful system, and it is why Lesson 8's line following works in morning light and afternoon light alike.</p>
 <p>But look at the clamp: <code>if (x &lt; 0) x = 0;</code>. A surface <em>brighter</em> than the calibration spin ever saw would compute a negative number &mdash; and the clamp rounds it up to exactly 0. <strong>The same 0 as plain white floor.</strong> Silver, the brightest thing on the course, reads as identical to the most ordinary thing on the course. The information is destroyed before your code ever sees the number.</p>
 <div style="background-color: #e8f5e9; border-left: 4px solid #3a7d5c; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128273; CALIBRATION IS A CONTRACT</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128273; CALIBRATION IS A CONTRACT</div>
 <p style="margin: 8px 0 0 0;">Calibration maps the world you <em>showed</em> it &mdash; white floor to black line &mdash; onto 0..1000, and clamps everything outside that world to the edges. It buys you comparability and it costs you range. Silver lives outside the contract.</p>
 </div>
 <div style="text-align: center; margin: 25px 0;"><img src="https://weymuth.github.io/zumo/images/L13_GRAPHIC_13-02_calibration_clamp.svg" alt="The calibrated scale clamping silver to zero" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"><div style="font-size: 0.9em; color: #666; margin-top: 8px;">GRAPHIC 13.2 &mdash; The clamp. Raw readings (left) keep silver, white, green and black distinct. The calibrated map (right) folds silver and white onto the same 0.</div></div>
@@ -170,7 +170,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 <h3 style="color: #2e86ab; margin-top: 30px;">4.3 The Black Ball &mdash; Read This Before You Blame Your Code</h3>
 <p>The rescue kit ships two victims: a silver ball and a black one. Here is the truth up front, because you will discover it in Section 7A anyway and you deserve to know it is not your fault:</p>
 <div style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#9888;&#65039; THE BLACK BALL IS NEARLY INVISIBLE TO THIS ROBOT</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#9888;&#65039; THE BLACK BALL IS NEARLY INVISIBLE TO THIS ROBOT</div>
 <p style="margin: 8px 0 0 0;">The front proximity sensor works by bouncing infrared light off things and counting how much comes back. A black ball <strong>absorbs</strong> infrared &mdash; the same physics that makes black tape read dark to the line sensors makes a black ball return almost nothing to the prox. In Section 7A you will hold each ball in front of the sensor and watch the counts: the silver ball announces itself across the zone; the black ball barely whispers at point-blank range. This robot will find silver victims and drive straight past black ones &mdash; not because your thresholds are wrong, but because <strong>the signal is not there to threshold</strong>.</p>
 </div>
 <p>Lesson 11 taught the discipline for exactly this moment: a physically impossible feature gets <em>cut from the code and taught as a limitation</em> &mdash; because a detector that "mostly" finds black balls is worse than none; a rescuer would trust it. So the code in this lesson hunts the silver victim, honestly and well. The black ball stays on the course as a standing question. Section 8A.3 does the engineering follow-up: what sensor <em>would</em> see it, and what it would cost. (Spoiler: this is why real rescue robots carry cameras.)</p>
@@ -246,7 +246,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 <p>Start from your finished Lesson 12 project &mdash; or pull a fresh copy from the Project Maker (<em>Lesson 12 &rarr; Finished</em>). Every step below compiles green on its own, and every step's byte count is printed so you can check your build against the book's. When a step adds code that nothing calls yet, the byte count <em>does not move</em> &mdash; the linker discards what is never used. That is not your edit vanishing; Step 5 proves it by calling the code and watching the bytes arrive.</p>
 <h3 style="color: #2e86ab; margin-top: 30px;">Step 1 &mdash; The Numbers, the Names, the Reasons</h3>
 <div style="background-color: #e8f4f8; border-left: 4px solid #2e86ab; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#127919; THE GOAL</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127919; THE GOAL</div>
 <p style="margin: 8px 0 0 0;">Everything tunable and everything nameable lands in <code>RobotConfig.h</code> first: four blanks, a <code>StopReason</code> enum, and three new robot states. No behavior changes &mdash; this step is pure vocabulary.</p>
 </div>
 <p>Open <code>RobotConfig.h</code> and add the whole rescue block at the bottom of the file:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
@@ -310,7 +310,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 };
 </pre>
 <div style="background-color: #e8f5e9; border-left: 4px solid #3a7d5c; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128297; COMPILE CHECK</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128297; COMPILE CHECK</div>
 <p style="margin: 8px 0 0 0;"><strong>24,534 bytes</strong> &mdash; byte-identical to your Lesson 12 finished build. Constants nothing reads and enum names nothing uses are <em>free</em>. Write that down; Step 5 cashes it in.</p>
 </div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -320,7 +320,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 </details>
 <h3 style="color: #2e86ab; margin-top: 30px;">Step 2 &mdash; The Doorman</h3>
 <div style="background-color: #e8f4f8; border-left: 4px solid #2e86ab; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#127919; THE GOAL</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127919; THE GOAL</div>
 <p style="margin: 8px 0 0 0;"><code>silverDetected()</code> &mdash; the raw-channel check from Section 3, living in <code>RobotSensors.cpp</code> where every sensor question belongs. Defined, declared, and deliberately not yet called.</p>
 </div>
 <p>Declare it at the bottom of <code>RobotSensors.h</code>:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
@@ -348,7 +348,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 </pre>
 <p>Why <em>all five</em> sensors? Because that is the strip's signature and nothing else's. A glare spot might blind one sensor; a worn patch of floor might brighten two. Only a strip of silver spanning the whole array pulls all five below the fence at the same instant. The AND of five noisy witnesses is a quiet, confident yes.</p>
 <div style="background-color: #e8f5e9; border-left: 4px solid #3a7d5c; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128297; COMPILE CHECK</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128297; COMPILE CHECK</div>
 <p style="margin: 8px 0 0 0;"><strong>24,534 bytes.</strong> Still identical &mdash; the function exists and nobody calls it, so the linker leaves it out of the build entirely. (We verified with <code>avr-nm</code>: the symbol is genuinely absent, not hiding.)</p>
 </div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -358,7 +358,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 </details>
 <h3 style="color: #2e86ab; margin-top: 30px;">Step 3 &mdash; Wire the Door</h3>
 <div style="background-color: #e8f4f8; border-left: 4px solid #2e86ab; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#127919; THE GOAL</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127919; THE GOAL</div>
 <p style="margin: 8px 0 0 0;">The door goes live: <code>FOLLOWING_LINE</code> checks for silver every loop, a stub <code>ENTERING_ZONE</code> state announces the find and stops, and the status screen learns the three new names. The banner finally says 13 while we are in the neighborhood.</p>
 </div>
 <p>First, housekeeping in <code>setup()</code> &mdash; two banner lines still introduced this project as Lesson 10 (they have been wrong since Lesson 11; today they get fixed):</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
@@ -427,7 +427,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
     }
 </pre>
 <div style="background-color: #e8f5e9; border-left: 4px solid #3a7d5c; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128297; COMPILE CHECK</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128297; COMPILE CHECK</div>
 <p style="margin: 8px 0 0 0;"><strong>24,714 bytes &mdash; up 180.</strong> The door is live: the silver check, the state transition, the announcement. One hundred eighty bytes is what "see the invisible" costs.</p>
 </div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -437,7 +437,7 @@ signed <span style="color: #569cd6;">int</span> x = <span style="color: #b5cea8;
 </details>
 <h3 style="color: #2e86ab; margin-top: 30px;">Step 4 &mdash; The Watchful Leg</h3>
 <div style="background-color: #e8f4f8; border-left: 4px solid #2e86ab; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#127919; THE GOAL</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127919; THE GOAL</div>
 <p style="margin: 8px 0 0 0;"><code>driveUntil()</code> in <code>RobotMotion.cpp</code> &mdash; <code>driveDistance()</code>&rsquo;s body with its eyes open. Defined, declared, not yet called. You know what the byte count will say.</p>
 </div>
 <p><code>RobotMotion.h</code> needs one include it never needed before &mdash; <code>driveUntil()</code> returns a <code>StopReason</code>, and that type lives in the config:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
@@ -495,7 +495,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 </pre>
 <p>Two lines deserve a second look. The kill-switch poll is <em>first</em> in the loop &mdash; inside a leg, mid-zone, B must work <strong>now</strong>, not after the wall. And the last line writes <code>lastLegCm</code> whatever happened: even a leg that ends early reports honestly how far it got. Step 6 turns that honest report into the victim detector.</p>
 <div style="background-color: #e8f5e9; border-left: 4px solid #3a7d5c; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128297; COMPILE CHECK</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128297; COMPILE CHECK</div>
 <p style="margin: 8px 0 0 0;"><strong>24,714 bytes.</strong> Flat again, same reason as Step 2 &mdash; and this is the last free step. Everything after this costs bytes, because everything after this <em>runs</em>.</p>
 </div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -505,7 +505,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 </details>
 <h3 style="color: #2e86ab; margin-top: 30px;">Step 5 &mdash; The Sweep (Walls Only)</h3>
 <div style="background-color: #e8f4f8; border-left: 4px solid #2e86ab; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#127919; THE GOAL</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127919; THE GOAL</div>
 <p style="margin: 8px 0 0 0;">The lawnmower goes live: sweep bookkeeping variables, a real <code>ENTERING_ZONE</code> hand-off, and a <code>SWEEPING_ZONE</code> state that mows wall-to-wall forever. No victim logic yet &mdash; first prove the pattern, then teach it to notice.</p>
 </div>
 <p>Three bookkeeping variables join the other robot state at the top of <code>main.cpp</code>:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
@@ -561,7 +561,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 </pre>
 <p>Trace <code>sweepDir</code> through two rows on paper before you trust it. Row one ends: turn right 90, step, turn right 90 &mdash; now facing back the way you came, one lane over. <code>sweepDir</code> flips. Row two ends: turn <em>left</em> 90, step, turn <em>left</em> 90. Right-right, left-left, right-right &mdash; that alternation is the entire lawnmower, and it is one multiplication: <code>90.0 * sweepDir</code>.</p>
 <div style="background-color: #e8f5e9; border-left: 4px solid #3a7d5c; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128297; COMPILE CHECK</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128297; COMPILE CHECK</div>
 <p style="margin: 8px 0 0 0;"><strong>24,946 bytes &mdash; up 232.</strong> There it is: <code>driveUntil()</code> finally has a caller, so the linker finally pays for it &mdash; Steps 4&rsquo;s "free" code just arrived in the build, alongside the sweep case itself. The flat steps were never missing code. They were code waiting for a reason.</p>
 </div>
 <details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
@@ -571,7 +571,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 </details>
 <h3 style="color: #2e86ab; margin-top: 30px;">Step 6 &mdash; The Witness</h3>
 <div style="background-color: #e8f4f8; border-left: 4px solid #2e86ab; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#127919; THE GOAL</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127919; THE GOAL</div>
 <p style="margin: 8px 0 0 0;">The odometer cross-examines the prox: a stop well short of the wall&rsquo;s last known address is a victim, and a new <code>VICTIM_FOUND</code> state celebrates it. This is the finished build.</p>
 </div>
 <p>One more bookkeeping line, under the sweep variables:</p><pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">
@@ -626,7 +626,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 </pre>
 <p>The closing comment is the design decision of the lesson: <strong>finding it is the rescue.</strong> This robot has no gripper, no arm, no way to carry anyone anywhere &mdash; and a rescue that <em>reports a verified location</em> is a real rescue; it is what search dogs and avalanche beacons do. The day a robot must carry the victim out is the day it needs an arm; Section 8A.3 prices that out.</p>
 <div style="background-color: #e8f5e9; border-left: 4px solid #3a7d5c; padding: 15px; margin: 20px 0; border-radius: 4px;">
-<strong>&#128297; COMPILE CHECK</strong>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128297; COMPILE CHECK</div>
 <p style="margin: 8px 0 0 0;"><strong>24,902 bytes &mdash; down 44, and this is the finished build.</strong> Read that again: the finished robot is <em>smaller</em> than Step 5. We disassembled both to find out why: the rewritten hand-off and the recompiled state switch came out 120 bytes tighter than the stubs they replaced, while the victim bookkeeping cost only 26. Code you delete pays you back &mdash; a preview of Lesson 16, where that becomes the whole game. Total cost of Lesson 13: 368 bytes over Lesson 12. A doorway, a sweep, and a witness &mdash; for less than four hundred bytes.</p>
 </div>
 <p style="text-align: right;"><a href="#top" style="color: #2e86ab;">&#8593; Back to top</a></p>
@@ -909,7 +909,7 @@ StopReason driveUntil(<span style="color: #569cd6;">float</span> maxCm) {
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — modify the <code>VICTIM_FOUND</code> state.</p>
 </div>
-<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><strong>🔁 Builds on:</strong> the state machine from Lesson 9 <img src="https://weymuth.github.io/zumo/images/spiral_star_09.svg" alt="Spiral review from Lesson 09" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; stepping around a victim is one more transition, and control goes back to the state that owns the sweep.</div>
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔁 Builds on:</div> the state machine from Lesson 9 <img src="https://weymuth.github.io/zumo/images/spiral_star_09.svg" alt="Spiral review from Lesson 09" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; stepping around a victim is one more transition, and control goes back to the state that owns the sweep.</div>
 <div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
 <h4 style="margin-top: 0;">🎯 THE GOAL</h4>
 <p style="margin: 0;">One victim is a demo; a rescue robot keeps working. After the celebration, step <em>around</em> the victim and hand control back to the sweep, so a zone with two silver balls ends with <code>Rescues: 2</code>. First answer the bookkeeping question: after stepping around a victim, should <code>lastRowCm</code> update?</p>
@@ -960,7 +960,7 @@ currentState = ____;               <span style="color: #6a9955;">// hand back to
 <div style="padding: 12px 20px; border-bottom: 1px solid #eee; background: #fffbe6;">
 <p style="margin: 0;">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — add an accumulator, then a report in the kill branch.</p>
 </div>
-<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><strong>🔁 Builds on:</strong> Count and Report from Lesson 10 <img src="https://weymuth.github.io/zumo/images/spiral_star_10.svg" alt="Spiral review from Lesson 10" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; the same bookkeeping habit, now with three numbers instead of one.</div>
+<div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0; border-radius: 0; font-size: 0.92em;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔁 Builds on:</div> Count and Report from Lesson 10 <img src="https://weymuth.github.io/zumo/images/spiral_star_10.svg" alt="Spiral review from Lesson 10" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; the same bookkeeping habit, now with three numbers instead of one.</div>
 <div style="padding: 15px 20px; border-bottom: 1px solid #eee; background: #f8f9fa;">
 <h4 style="margin-top: 0;">🎯 THE GOAL</h4>
 <p style="margin: 0;">When the kill switch ends a run, make the robot account for itself: rows completed, total centimeters swept, victims found. Everything you need is already being measured — this challenge is pure bookkeeping, and bookkeeping is most of real engineering.</p>
