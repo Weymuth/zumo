@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.7.0**
+**Standard version: v01.8.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -163,9 +163,14 @@ framing, neutral instructional UI, and branded surfaces.
 their kind may hold distinct functional colours where the colour supports meaning. They sit
 *beneath* Heritage Blue; they do not compete with it.
 
-Of the eight roles below, four are structural and carry a Heritage Blue border exactly —
-**slate, bronze, brass, navy**. Four are semantic — **green, amber, red, purple**. The page
+Of the seven roles below, four are structural and carry a Heritage Blue border exactly —
+**slate, bronze, brass, navy**. Three are semantic — **green, amber, purple**. The page
 colour is Parchment and body text is Deep Navy.
+
+**Red was retired at S91**, with the SAFETY family that was its only member (DJ ruling:
+*"get rid of safety and make them all warning"*). A role with no families is not a spare
+slot, it is an unasserted colour — so it left the table with its family. The seven SAFETY
+callouts were reassigned to WARNING in L01, L06, L07, L08 and L09.
 
 **Titles are contrast-corrected derivations, not palette hexes.** Slate Blue at title weight
 does not clear the contrast floor, so slate's title is `#3C4D60`, a darkened Slate Blue; bronze
@@ -211,7 +216,7 @@ scale.
 
 ---
 
-Eight roles. Backgrounds are 10% accent mixed into the book's page colour. Body text is
+Seven roles. Backgrounds are 10% accent mixed into the book's page colour. Body text is
 always the book's primary text colour.
 
 | Role | Background | Border | Title | Title contrast |
@@ -221,7 +226,6 @@ always the book's primary text colour.
 | brass | `#EFE4D2` | `#C3A36A` | `#725637` | 5.38 |
 | green | `#E2DECF` | `#3F6B52` | `#386049` | 5.30 |
 | amber | `#E9DDCA` | `#8A6420` | `#74541B` | 5.17 |
-| red | `#EAD9CC` | `#8C3A2E` | `#7F342A` | 6.30 |
 | purple | `#E5DBD3` | `#5B4B7A` | `#53446F` | 6.35 |
 | navy | `#DED7CC` | `#162337` | `#162337` | 11.05 |
 
@@ -315,9 +319,9 @@ itself is one of the required signals.
 
 ## 7. The families
 
-Twenty-six families. Forty-nine marks.
+Twenty-five families. Forty-eight marks.
 
-**APPROVED — DJ ruling, S91, 29 July 2026.** The roster below is canon: twenty-six families,
+**APPROVED — DJ ruling, S91, 29 July 2026.** The roster below is canon: twenty-five families,
 their marks, and their role assignments. THE WALL's name was raised for rename at the same
 ruling and DJ kept it. This records the roster only. **The semantic palette — green, amber,
 red, purple — is a separate gate and is NOT approved by this entry.**
@@ -344,7 +348,6 @@ red, purple — is a separate gate and is NOT approved by this entry.**
 | ANSWER | `unlock` | green |
 | WARNING | `exclamation-triangle` | amber |
 | COMMON PITFALLS | `slash-circle` | amber |
-| SAFETY | `shield-exclamation` | red |
 | BRAIN CHECK | `bookmark` / `bookmark-check-fill` | purple |
 | THE LOGIC | `braces` | purple |
 | THE WALL | `bricks` | purple |
@@ -419,7 +422,7 @@ has been decided is a guess that a later pass has to find and undo.
 
 ### 7.3 Mark inventory
 
-49 distinct icon files: 27 for the 26 families (BRAIN CHECK carries two), and 22 supporting
+48 distinct icon files: 26 for the 25 families (BRAIN CHECK carries two), and 22 supporting
 marks. The shipped icon folder holds exactly these and nothing else — a library ships
 thousands of icons; a book ships the ones it uses, so that the folder can be asserted
 against this table in both directions.
@@ -433,7 +436,7 @@ practice, not a new problem introduced by this standard.
 
 | Glyph | Meanings | Resolution |
 |---|---|---|
-| warning triangle | 3 | WARNING `exclamation-triangle` · PITFALLS `slash-circle` · SAFETY `shield-exclamation` |
+| warning triangle | 2 | WARNING `exclamation-triangle` · PITFALLS `slash-circle` |
 | open book | 3 | LEARN `book` · GLOSSARY `journal-bookmark` · EXPLANATION `chat-square-text` |
 | blue book | 2 | NOTE `sticky` · HOW THIS SECTION WORKS `pin-angle` |
 | pencil / memo | 2 | DO THIS NOW `play-circle` · MY PLAN `pencil-square` |
@@ -538,4 +541,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.7*
+*RoboLore Book Component Standard v01.8*

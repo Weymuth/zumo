@@ -28,7 +28,12 @@ import os
 import re
 import sys
 
-VERSION = 'v1.4'   # the only version home in this file
+VERSION = 'v1.5'   # the only version home in this file
+
+# The §5 palette boundary. S91: this was the literal 'Eight roles.' and retiring the red
+# role broke the parser -- a COUNT has no business inside a parsing anchor. Derived from
+# the document instead, so the sentence can say seven, five or nineteen.
+ROLE_HEADER = None   # resolved in load_standard() from the document itself
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STANDARD = os.path.join(HERE, 'BookComponentStandard.md')
@@ -153,7 +158,11 @@ def load_standard():
     assert S['structural'], '§5.0 does not name the four structural roles'
 
     # --- §5.0.1 section band ramp -------------------------------------------
-    bnd_sec = _section(t, '### 5.0.1 Section band ramp', 'Eight roles.')
+    global ROLE_HEADER
+    m = re.search(r'^[A-Z][a-z]+ roles\.', t, re.M)
+    assert m, '§5 does not open its role table with an "<N> roles." sentence'
+    ROLE_HEADER = m.group(0)
+    bnd_sec = _section(t, '### 5.0.1 Section band ramp', ROLE_HEADER)
     bands = []
     for cells in _rows(bnd_sec):
         if cells[0] == 'Band':
@@ -164,14 +173,20 @@ def load_standard():
 
     # --- §5 palette --------------------------------------------------------
     # start AFTER §5.0, or the Heritage Blue table is read as role rows
-    pal_sec = _section(t, 'Eight roles.', '### 5.1 Geometry')
+    pal_sec = _section(t, ROLE_HEADER, '### 5.1 Geometry')
     palette = {}
     for cells in _rows(pal_sec):
         if cells[0] == 'Role':
             continue
         role, bg, border, title = cells[0], _tick(cells[1]), _tick(cells[2]), _tick(cells[3])
         palette[role] = {'bg': bg, 'border': border, 'title': title}
-    assert len(palette) == 8, f'§5 palette: expected 8 roles, found {len(palette)}'
+    # S91: this asserted a literal 8 and broke the moment the red role was retired.
+    # §5 states its own count in words ("Seven roles."), so cross-check prose against
+    # table and let the document carry the number -- word_to_int, never a fixed map.
+    _rw = ROLE_HEADER.split()[0]
+    _rn = word_to_int(_rw)
+    assert _rn is not None, f'§5 role count word unreadable: {_rw!r}'
+    assert len(palette) == _rn, (f'§5 says {_rw.lower()} roles, table holds {len(palette)}')
     S['palette'] = palette
     S['page'] = _one(r'Page colour: `(#[0-9A-Fa-f]{6})`', pal_sec, 'page colour')
     S['body'] = _one(r'Body text: `(#[0-9A-Fa-f]{6})`', pal_sec, 'body text colour')
