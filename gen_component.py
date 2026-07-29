@@ -27,7 +27,7 @@ import os
 import re
 import sys
 
-VERSION = 'v1.1'   # the only version home in this file
+VERSION = 'v1.2'   # the only version home in this file
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STANDARD = os.path.join(HERE, 'BookComponentStandard.md')
@@ -109,8 +109,22 @@ def load_standard():
 
     S['version'] = _one(r'\*\*Standard version: (v[0-9.]+)\*\*', t, 'standard version')
 
+    # --- §5.0 Heritage Blue ------------------------------------------------
+    hb_sec = _section(t, '### 5.0 Heritage Blue', 'Eight roles.')
+    heritage = {}
+    for cells in _rows(hb_sec):
+        if cells[0] == 'Name':
+            continue
+        heritage[cells[0]] = _tick(cells[1])
+    assert len(heritage) == 5, f'§5.0: expected 5 Heritage Blue values, found {len(heritage)}'
+    S['heritage'] = heritage
+    S['structural'] = re.findall(r'\*\*slate, bronze, brass, navy\*\*', hb_sec) and \
+                      ['slate', 'bronze', 'brass', 'navy']
+    assert S['structural'], '§5.0 does not name the four structural roles'
+
     # --- §5 palette --------------------------------------------------------
-    pal_sec = _section(t, '## 5. The palette', '### 5.1 Geometry')
+    # start AFTER §5.0, or the Heritage Blue table is read as role rows
+    pal_sec = _section(t, 'Eight roles.', '### 5.1 Geometry')
     palette = {}
     for cells in _rows(pal_sec):
         if cells[0] == 'Role':
@@ -353,6 +367,20 @@ def selftest(S):
         else:
             check(parsed == actual,
                   f'§7 prose {what} count agrees with its table ({word} vs {actual})')
+
+    # §5.0 -- every Heritage Blue value must be in use, and the four structural
+    # roles must carry their Heritage Blue border EXACTLY. A palette that is
+    # declared but not used is a palette nothing is holding to.
+    hb = set(S['heritage'].values())
+    used = {c for r in S['palette'].values() for c in r.values()} | {S['page'], S['body']}
+    check(hb <= used, f'§5.0 every Heritage Blue value is in use '
+                      f'(unused: {sorted(hb - used) or "none"})')
+    off = {r: S['palette'][r]['border'] for r in S['structural']
+           if S['palette'][r]['border'] not in hb}
+    check(not off, f'§5.0 the four structural roles carry Heritage Blue borders '
+                   f'({off or "none"})')
+    check(S['page'] == S['heritage']['Parchment'] and S['body'] == S['heritage']['Deep Navy'],
+          '§5.0 page is Parchment and body text is Deep Navy')
 
     # §1 -- the stamp is derived from the version line and must agree on MAJOR.MINOR
     stamp = re.findall(r'RoboLore Book Component Standard (v\d+\.\d+)', _text())

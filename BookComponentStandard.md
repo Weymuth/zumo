@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.3.0**
+**Standard version: v01.4.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -143,6 +143,37 @@ Generation from the mark table makes both impossible by construction.
 ---
 
 ## 5. The palette
+
+### 5.0 Heritage Blue
+
+**Heritage Blue is the approved RoboLore palette. It is a named palette, not a single hex.**
+
+| Name | Hex |
+|---|---|
+| Deep Navy | `#0B1A2E` |
+| Slate Blue | `#3D5266` |
+| Antique Bronze | `#7B6240` |
+| Warm Brass | `#C9A463` |
+| Parchment | `#F5F2E9` |
+
+Heritage Blue governs **structural identity** — navigation, lesson and section headers, table
+framing, neutral instructional UI, and branded surfaces.
+
+**It does not replace semantic callout colour.** NOTE, TIP, INSIGHT, WARNING, THE WALL and
+their kind may hold distinct functional colours where the colour supports meaning. They sit
+*beneath* Heritage Blue; they do not compete with it.
+
+Of the eight roles below, four are structural and carry a Heritage Blue border exactly —
+**slate, bronze, brass, navy**. Four are semantic — **green, amber, red, purple**. The page
+colour is Parchment and body text is Deep Navy.
+
+**Titles are contrast-corrected derivations, not palette hexes.** Slate Blue at title weight
+does not clear the contrast floor, so slate's title is `#364A5E`, a darkened Slate Blue; bronze
+and brass share `#6A573D`, a darkened Antique Bronze. Only navy's title is a Heritage Blue hex,
+because Deep Navy already clears it. A title that has been pulled back to its palette hex has
+been broken, not corrected — see §7.1, where exactly that had happened.
+
+---
 
 Eight roles. Backgrounds are 10% accent mixed into the book's page colour. Body text is
 always the book's primary text colour.
@@ -447,4 +478,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.3*
+*RoboLore Book Component Standard v01.4*
