@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# lesson_inventory.py v1.0.5 (S83) — exhaustive structural ENUMERATION of the lesson files.
+# lesson_inventory.py v1.1.0 (S91) — exhaustive structural ENUMERATION of the lesson files.
 #
 # Usage:
 #   python3 lesson_inventory.py                     summary table, all 16 lessons
@@ -9,7 +9,8 @@
 #   python3 lesson_inventory.py --json > inv.json   machine-readable, for querying
 #   python3 lesson_inventory.py --anomalies         enumeration-derived oddities (still NOT a verdict)
 #
-#   Views: --versions --sections --headings --constructs --reveals --braincheck --anomalies
+#   Views: --versions --sections --headings --constructs --reveals --braincheck --callouts
+#          --anomalies --schemes
 #
 # WHAT THIS IS, AND WHAT IT IS NOT  (Bible §24.6a)
 # -----------------------------------------------
@@ -34,6 +35,7 @@
 # Every span below is computed from the parse tree, never from a fixed-width window.
 
 import sys, os, re, glob, json, hashlib
+import html as _html
 from html.parser import HTMLParser
 
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
@@ -125,6 +127,15 @@ class Tree(HTMLParser):
             node['end'] = len(self.src)
             node['unclosed'] = True
         return self
+
+
+# ---- CALLOUTS (§24.10, S91). The book marks a callout with a left border rule; the family
+# is carried by the (background, border, glyph) TRIPLE, not by a name — L11/L12 label theirs
+# with a bold lead SENTENCE and no family name at all. Collected off the node tree so the
+# glyph and label come from the element's OWN span; a text search for a family name matches
+# prose and reports the construct in lessons it is absent from (S91, THE WALL).
+CALLOUT_RE = re.compile(r'border-left:\s*(\d+)px\s+solid\s+([^;"]+)')
+CALLOUT_BG_RE = re.compile(r'background(?:-color)?:\s*([^;"]+)')
 
 
 SECTION_RE = re.compile(r'=+\s*(SECTION\s+[0-9]+[A-Z]?|PART\s+[0-9]+[^=]*?)\s*:?\s*([^=]*?)\s*=*$', re.I)
@@ -267,6 +278,30 @@ def build(path):
                         'md5': hashlib.md5(col.group(0).encode()).hexdigest()[:8],
                         'ends_with': col.group(0)[-3:]}
 
+    callouts = []
+    for nd in nodes:
+        m = CALLOUT_RE.search(nd['attrs'].get('style', ''))
+        if not m:
+            continue
+        body = src[nd['open_end']:nd['end'] or nd['open_end']]
+        txt = flat(body)
+        # Glyphs are literal characters in some lessons and NUMERIC ENTITIES in others
+        # (L11/L12 write &#128721;). flat() preserves entities by design, so unescape for
+        # glyph detection or the triple silently loses its third field. S91.
+        gtxt = _html.unescape(txt)
+        bg = CALLOUT_BG_RE.search(nd['attrs'].get('style', ''))
+        callouts.append({
+            'line': nd['line'], 'tag': nd['tag'], 'div_depth': nd['div_depth'],
+            'section': section_of(nd['start']),
+            'construct': (construct_of(nd['start']) or {}).get('marker'),
+            'px': int(m.group(1)),
+            'border': m.group(2).strip().lower(),
+            'bg': bg.group(1).strip().lower() if bg else None,
+            'glyph': next((c for c in gtxt if ord(c) > 0x2100), ''),
+            'label': txt[:70],
+            'bytes': (nd['end'] or nd['open_end']) - nd['start'],
+        })
+
     heads = [{'tag': n['tag'], 'line': n['line'], 'div_depth': n['div_depth'],
               'id': n['attrs'].get('id'), 'section': section_of(n['start']),
               'construct': (construct_of(n['start']) or {}).get('marker'),
@@ -284,6 +319,7 @@ def build(path):
         'constructs': constructs,
         'reveals': reveals,
         'braincheck': bc,
+        'callouts': callouts,
         'unclosed': [{'tag': n['tag'], 'line': n['line']} for n in nodes if n.get('unclosed')],
         'max_div_depth': max((n['div_depth'] for n in nodes), default=0),
     }
@@ -297,7 +333,7 @@ def flat_lines(pre):
 
 # ---------------------------------------------------------------- reporting
 
-BANNER = ('lesson_inventory.py v1.0.5 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
+BANNER = ('lesson_inventory.py v1.1.0 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
           'No exit code, no PASS/FAIL. A parser is necessary and not sufficient: read the table.\n')
 
 
@@ -379,6 +415,38 @@ def view_braincheck(inv):
         w(f'  column: {c["chars"]} chars  md5 {c["md5"]}  ends {c["ends_with"]!r}')
     else:
         w('  column: absent')
+
+
+def view_callouts(inv):
+    cs = inv['callouts']
+    w(f'--- CALLOUTS ({len(cs)}) --- family is the (bg, border, glyph) triple, not a name')
+    w(f'{"line":>6} {"sec":>5} {"dd":>3} {"px":>3} {"border":9} {"background":11} {"g":2} label')
+    for c in cs:
+        w(f'{c["line"]:>6} {str(c["section"] or "-"):>5} {c["div_depth"]:>3} {c["px"]:>3} '
+          f'{(c["border"] or "-"):9} {(c["bg"] or "-"):11} {c["glyph"] or " ":2} {c["label"][:42]}')
+
+
+def view_schemes(invs):
+    from collections import Counter, defaultdict
+    tri = Counter(); where = defaultdict(set); geom = Counter(); total = 0
+    for inv in invs:
+        for c in inv['callouts']:
+            total += 1
+            geom[c['px']] += 1
+            k = (c['bg'], c['border'], c['glyph'])
+            tri[k] += 1
+            where[k].add(inv['lesson'])
+    w(f'--- CALLOUT SCHEMES --- {total} blocks, {len(tri)} distinct (bg, border, glyph) triples')
+    w()
+    w('geometry:  ' + '  '.join(f'{k}px {v}' for k, v in sorted(geom.items())))
+    off = sum(v for k, v in geom.items() if k != 4)
+    w(f'off-canon geometry (not 4px): {off}')
+    w()
+    w(f'{"n":>5} {"L":>3}  {"background":11} {"border":9} {"g":2} lessons')
+    for k, c in tri.most_common():
+        ls = sorted(where[k])
+        w(f'{c:>5} {len(ls):>3}  {(k[0] or "-"):11} {(k[1] or "-"):9} {k[2] or " ":2} '
+          f'{",".join(ls) if len(ls) <= 8 else str(len(ls)) + " lessons"}')
 
 
 def view_anomalies(invs):
@@ -503,8 +571,14 @@ def main():
         return
 
     print(BANNER)
-    known = ['versions', 'sections', 'headings', 'constructs', 'reveals', 'braincheck']
+    known = ['versions', 'sections', 'headings', 'constructs', 'reveals', 'braincheck',
+             'callouts']
     want = [v for v in views if v in known]
+
+    if 'schemes' in views:
+        view_schemes(invs)
+        if not want:
+            return
 
     if 'anomalies' in views:
         view_anomalies(invs)
