@@ -31,11 +31,12 @@ except lines byte-identical to S87/S88. pill_sweep 16/16 SWEPT, 0 old pills.
 
 ---
 
-# FIRST JOB — DELETE `ZUMO_S89_HANDOFF.md`
+# HOUSEKEEPING — ALREADY DONE, VERIFY ONLY
 
-The root must carry exactly ONE `ZUMO_SNN_HANDOFF.md` (§12.2, gate 28). If S89's is still there
-alongside this one, **gate 28 is failing right now.** Procedure is in `PUSH_WORKFLOW.md` §Deletions —
-a file batch can only add and overwrite, never delete, and this step has been missed twice.
+`ZUMO_S89_HANDOFF.md` **was deleted in the S89 close push** and gate 28 passed on the pushed tree.
+Step 4 of the ritual re-confirms it; if `§12.2 repo root carries exactly one session handoff` PASSES,
+there is nothing to do here. (Recorded because the deletion had been missed twice before — `fb70426`
+and S84 — and was NOT missed this time. Procedure lives in `PUSH_WORKFLOW.md` §Deletions.)
 
 ---
 
