@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.20 (S85) — whole-book consistency gates.
+# book_gates.py v1.21 (S89) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -36,28 +36,60 @@ def L(f):
     return f[15:17]
 
 
+# The 17 book pages that carry a version banner: 16 lessons + going_deeper.
+# Stated explicitly and asserted, NOT inherited from whichever list is nearest.
+pages17 = files + (['going_deeper.html'] if os.path.exists('going_deeper.html') else [])
+
+
+def P(f):
+    """Label for any of the 17 pages. L() slices lesson filenames and returns
+    garbage for going_deeper.html — a gate that names the wrong file is a hazard."""
+    return 'going_deeper' if f == 'going_deeper.html' else 'L' + L(f)
+
+
+def visible(s):
+    """What the reader can actually see: HTML comments removed.
+
+    A gate that checks placement or visibility MUST strip what the reader
+    cannot see before matching, or it reports a condition it never tested.
+    """
+    return re.sub(r'<!--.*?-->', '', s, flags=re.S)
+
+
 R = {f: open(f, encoding='utf-8').read() for f in site}
 
-# ---- §5b: hidden full version present; both visible banners carry its major.minor
+# ---- §5b: hidden full version on line 1; exactly ONE visible banner carrying its major.minor
+# S89: the build banner was deleted from all 17 pages. It was a COMMENT, so the old
+# gate — which matched raw text and required exactly 2 hits — was counting a hidden
+# string as a visible banner. Comments are stripped first now.
+# S89: coverage moved from `files` (16) to `pages17` (17). going_deeper.html had drifted
+# to a visible 01.0 against a hidden 01.1.0 and survived because it was never walked.
 bad = []
-for f in files:
+if len(pages17) != 17:
+    bad.append(f'COVERAGE: expected 17 versioned pages, found {len(pages17)}')
+for f in pages17:
     s = R[f]
     hid = re.search(r'v(\d+\.\d+)\.\d+', s[:60])
-    vis = re.findall(r'Version (\d+\.\d+)', s)
-    if not hid or len(vis) != 2 or any(v != hid.group(1) for v in vis):
-        bad.append(f'{L(f)}: hidden={hid.group(1) if hid else None} visible={vis}')
-gate('§5b  version: hidden == both visible banners', bad)
+    vis = re.findall(r'Version (\d+\.\d+)', visible(s))
+    if not hid:
+        bad.append(f'{P(f)}: no hidden version comment on line 1')
+    elif len(vis) != 1:
+        bad.append(f'{P(f)}: expected exactly 1 visible banner, found {len(vis)}: {vis}')
+    elif vis[0] != hid.group(1):
+        bad.append(f'{P(f)}: hidden={hid.group(1)} but visible={vis[0]} — they must agree')
+gate('§5b  version: hidden == the one visible banner, all 17', bad)
 
-# ---- §5b addendum (S65): where BOTH banners carry a date, the dates must agree.
-# (L11–L16 footers carry no date by design — that is legal.)
+# ---- §5b: the one visible banner carries exactly one date.
+# S89: was an addendum about TWO banners agreeing. There is only one banner now,
+# so "agreement" is not the property — presence and uniqueness are.
 bad = []
-for f in files:
-    d = re.findall(r'Version \d+\.\d+(?: &mdash;| —) (\w+ \d{4})', R[f])
-    if len(d) >= 2 and len(set(d)) != 1:
-        bad.append(f'{L(f)}: {d}')
-    if len(d) == 0:
-        bad.append(f'{L(f)}: no dated banner at all')
-gate('§5b  date: dates agree where both banners carry one', bad)
+if len(pages17) != 17:
+    bad.append(f'COVERAGE: expected 17 versioned pages, found {len(pages17)}')
+for f in pages17:
+    d = re.findall(r'Version \d+\.\d+(?: &mdash;| —) (\w+ \d{4})', visible(R[f]))
+    if len(d) != 1:
+        bad.append(f'{P(f)}: expected exactly 1 dated visible banner, found {len(d)}: {d}')
+gate('§5b  date: exactly one dated visible banner, all 17', bad)
 
 # ---- §22: terminal blocks — [SUCCESS] green #6a9955, diagnostics red #f14c4c
 bad = []
@@ -283,7 +315,7 @@ if strips:
             bad.append(f'{L(f)}: lesson strip differs from L{L(ref_f)}')
 gate('§6.5a lesson strip present and byte-identical in all 16', bad)
 
-# ---- §25.6: header hero + footer + hidden build banner, identical across all 17 pages
+# ---- §25.6: header hero + footer, identical across all 17 pages (S89: build banner dropped)
 import hashlib
 
 PAGES = files + (['going_deeper.html'] if os.path.exists('going_deeper.html') else [])
@@ -331,13 +363,16 @@ for f in PAGES:
     a = s2.rfind('<p', 0, i)
     b = s2.find('</p>', i) + 4
     footers.setdefault(_skel(s2[a:b]), []).append(f)
-    if 'BUILD BANNER' not in s2 or 'ZUMO Callout Standard' not in s2:
-        bad.append(f'{f}: no hidden build banner')
+    # S89: the BUILD BANNER and 'ZUMO Callout Standard v1.0 Applied' assertions were
+    # removed here. The banner was a hidden third version home that the §5b gate was
+    # miscounting as visible. The callout-standard string named no document that existed
+    # — the gate asserted a string that existed only because the gate asserted it.
+    # Its successor is BookComponentStandard.md at the repo root.
 if len(heroes) > 1:
     bad.append(f'hero skeletons differ: { {k: [L(x) for x in v] for k, v in heroes.items()} }')
 if len(footers) > 1:
     bad.append(f'footer skeletons differ: { {k: [L(x) for x in v] for k, v in footers.items()} }')
-gate('§25.6 header/footer/hidden banner identical across all 17', bad)
+gate('§25.6 header/footer identical across all 17', bad)
 
 # ---- §25.2: where a lesson has converted to the four exit blocks, it must conform
 RETIRED = ['STOP &amp; PROCESS', 'Conceptual Understanding',
