@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.5.0**
+**Standard version: v01.6.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -150,11 +150,11 @@ Generation from the mark table makes both impossible by construction.
 
 | Name | Hex |
 |---|---|
-| Deep Navy | `#0B1A2E` |
-| Slate Blue | `#3D5266` |
-| Antique Bronze | `#7B6240` |
-| Warm Brass | `#C9A463` |
-| Parchment | `#F5F2E9` |
+| Deep Navy | `#162337` |
+| Slate Blue | `#43566B` |
+| Antique Bronze | `#8C6A43` |
+| Warm Brass | `#C3A36A` |
+| Parchment | `#F4EBDD` |
 
 Heritage Blue governs **structural identity** — navigation, lesson and section headers, table
 framing, neutral instructional UI, and branded surfaces.
@@ -168,8 +168,8 @@ Of the eight roles below, four are structural and carry a Heritage Blue border e
 colour is Parchment and body text is Deep Navy.
 
 **Titles are contrast-corrected derivations, not palette hexes.** Slate Blue at title weight
-does not clear the contrast floor, so slate's title is `#364A5E`, a darkened Slate Blue; bronze
-and brass share `#6A573D`, a darkened Antique Bronze. Only navy's title is a Heritage Blue hex,
+does not clear the contrast floor, so slate's title is `#3C4D60`, a darkened Slate Blue; bronze
+and brass share `#725637`, a darkened Antique Bronze. Only navy's title is a Heritage Blue hex,
 because Deep Navy already clears it. A title that has been pulled back to its palette hex has
 been broken, not corrected — see §7.1, where exactly that had happened.
 
@@ -191,7 +191,7 @@ deepens as the work does.
 | build | `#AFBCCE` | Mist Blue |
 | verify | `#96A8C0` | Fog Blue |
 | extend | `#7E95B4` | Harbor Blue |
-| close | `#6985AB` | Steel Blue |
+| close | `#708BAF` | Steel Blue |
 
 **Rules the ramp must satisfy:**
 
@@ -216,18 +216,18 @@ always the book's primary text colour.
 
 | Role | Background | Border | Title | Title contrast |
 |---|---|---|---|---|
-| slate | `#E3E2DC` | `#3D5266` | `#364A5E` | 7.04 |
-| bronze | `#E9E4D8` | `#7B6240` | `#6A573D` | 5.44 |
-| brass | `#F1EADC` | `#C9A463` | `#6A573D` | 5.44 |
-| green | `#E3E4DA` | `#3F6B52` | `#375F4D` | 5.63 |
-| amber | `#EAE4D5` | `#8A6420` | `#775922` | 5.12 |
-| red | `#EAE0D6` | `#8C3A2E` | `#79352E` | 6.83 |
-| purple | `#E6E1DE` | `#5B4B7A` | `#4F446F` | 6.78 |
-| navy | `#DEDCD6` | `#0B1A2E` | `#0B1A2E` | 12.75 |
+| slate | `#E2DCD2` | `#43566B` | `#3C4D60` | 6.36 |
+| bronze | `#EADECE` | `#8C6A43` | `#725637` | 5.11 |
+| brass | `#EFE4D2` | `#C3A36A` | `#725637` | 5.38 |
+| green | `#E2DECF` | `#3F6B52` | `#386049` | 5.30 |
+| amber | `#E9DDCA` | `#8A6420` | `#74541B` | 5.17 |
+| red | `#EAD9CC` | `#8C3A2E` | `#7F342A` | 6.30 |
+| purple | `#E5DBD3` | `#5B4B7A` | `#53446F` | 6.35 |
+| navy | `#DED7CC` | `#162337` | `#162337` | 11.05 |
 
-Page colour: `#F5F2E9`. Body text: `#0B1A2E`, contrast at or above 12.7:1 on every tint.
+Page colour: `#F4EBDD`. Body text: `#162337`, contrast at or above 11.0:1 on every tint.
 
-**Brass carries a bronze title.** Brass at title weight measures 2.57:1 and fails. Rather
+**Brass carries a bronze title.** Brass at title weight measures 1.90:1 and fails. Rather
 than lighten the role or lower the contrast requirement, brass borrows bronze's title colour.
 The palette bends to the standard, not the reverse.
 
@@ -298,6 +298,11 @@ itself is one of the required signals.
 
 Twenty-six families. Forty-nine marks.
 
+**APPROVED — DJ ruling, S91, 29 July 2026.** The roster below is canon: twenty-six families,
+their marks, and their role assignments. THE WALL's name was raised for rename at the same
+ruling and DJ kept it. This records the roster only. **The semantic palette — green, amber,
+red, purple — is a separate gate and is NOT approved by this entry.**
+
 | Family | Icon | Role |
 |---|---|---|
 | LEARN | `book` | slate |
@@ -333,11 +338,11 @@ Twenty-six families. Forty-nine marks.
 
 | State | Icon | Colour |
 |---|---|---|
-| incomplete | `bookmark` outline | slate title `#364A5E` |
-| complete | `bookmark-check-fill` solid | deep navy `#0B1A2E` |
+| incomplete | `bookmark` outline | slate title `#3C4D60` |
+| complete | `bookmark-check-fill` solid | deep navy `#162337` |
 
 **Two signals separate the states — fill and the added check.** Colour does not separate them
-and never did: the two values measure **1.91:1** against each other, and the superseded pair
+and never did: the two values measure **1.82:1** against each other, and the superseded pair
 (`#3D5266` / `#0B1A2E`) measured **2.16:1**. Both sit far below any threshold at which colour
 carries meaning. §5.2 is satisfied by fill and glyph alone.
 
@@ -514,4 +519,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.5*
+*RoboLore Book Component Standard v01.6*
