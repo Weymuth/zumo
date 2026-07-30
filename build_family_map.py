@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""build_family_map.py v1.0.1 (S95) - assigns every callout block to a family.
+"""build_family_map.py v1.0.2 (S96) - assigns every callout block to a family.
 
 Reproducible from a clean clone: run it from repo root, no prior step. It builds its
 own inventory by calling lesson_inventory.build() on all 16 lessons (v1.0.0 replaces
 a read of /tmp/inv.json, which meant a fresh session got FileNotFoundError).
+
+v1.0.2: the glyph+scheme fallback map emitted its family names as literals, and two of
+them carried the curly apostrophe (ENGINEER\u2019S LOG) that norm() folds on the INPUT
+side only. Map VALUES never pass back through norm(), so the one header-less block that
+resolves by scheme landed in a second bucket: 16 + 1 instead of 17, and 31 families
+instead of 30. Values now written straight, matching CANON. Control-run: only the two
+ENGINEER rows and the family count moved; assigned stayed 1033, unassigned stayed 15.
 
 v1.0.1: INSIGHT left the shared blue for teal #e9f7f5/#2da99d (S95, DJ ruling). The old
 🔍-on-blue key is REPLACED, not kept: after the split, a magnifier on LEARN's blue is a
@@ -60,13 +67,13 @@ GS={('🔑','#e7d4ff','#9b59b6'):'KEY TERM',('🔑','#f3e5f5','#9c27b0'):'KEY TE
 ('','#fff','#2e86ab'):'KEY TERM',('🛑','#fdecea','#e74c3c'):'THE WALL',
 ('⚠','#fff8e1','#ffc107'):'WARNING',('🔬','#eceff1','#607d8b'):'GOING DEEPER',
 ('📘','#eceff1','#607d8b'):'NOTE',('💾','#eceff1','#607d8b'):'NOTE',
-('📓','#eceff1','#607d8b'):'ENGINEER\u2019S LOG',('✅','#d4edda','#28a745'):'CHECKPOINT',
+('📓','#eceff1','#607d8b'):"ENGINEER'S LOG",('✅','#d4edda','#28a745'):'CHECKPOINT',
 ('ℹ','#d1ecf1','#17a2b8'):'NOTE',('💡','#f0f7f0','#6b8e6b'):'TIP',
 ('🔍','#e9f7f5','#2da99d'):'INSIGHT',('🏆','#d1ecf1','#17a2b8'):'REAL-WORLD CONNECTION',
 ('👀','#d1ecf1','#17a2b8'):'WHAT YOU SHOULD SEE',('📖','#e3f2fd','#2196f3'):'LEARN',
 ('·','#e3f2fd','#2196f3'):'LEARN',('','#e3f2fd','#2196f3'):'LEARN',
 ('🧩','#f8f9fa','#6c757d'):'MYSTERY',('📓','#f8f9fa','#6c757d'):'MYSTERY',
-('📓','#f8f9fa','#1a5276'):'ENGINEER\u2019S LOG',('🎯','#eef4f8','#2e86ab'):'(card header)',
+('📓','#f8f9fa','#1a5276'):"ENGINEER'S LOG",('🎯','#eef4f8','#2e86ab'):'(card header)',
 ('·','#eef4f8','#2e86ab'):'(card header)',('','#eef4f8','#2e86ab'):'(card header)',
 ('🎯','#e8f3ec','#3a7d5c'):'TRY THIS',('·','#f5eef8','#6c757d'):'THINK ABOUT IT',
 ('','#f5eef8','#6c757d'):'THINK ABOUT IT',('🚀','#e8d4c4','#d4a574'):'WHERE THIS GOES',
