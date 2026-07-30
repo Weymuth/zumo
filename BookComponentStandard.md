@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.9.0**
+**Standard version: v01.10.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -353,12 +353,24 @@ itself is one of the required signals.
 
 ## 7. The families
 
-Twenty-five families. Forty-eight marks.
+Twenty-six families. Forty-eight marks.
 
-**APPROVED — DJ ruling, S91, 29 July 2026.** The roster below is canon: twenty-five families,
+**APPROVED — DJ ruling, S91, 29 July 2026.** The roster below is canon: twenty-six families,
 their marks, and their role assignments. THE WALL's name was raised for rename at the same
 ruling and DJ kept it. This records the roster only. **The semantic palette — green, amber,
 red, purple — is a separate gate and is NOT approved by this entry.**
+
+**AMENDED — DJ ruling, S93, 29 July 2026: GOING DEEPER added, bronze.** GOING DEEPER is a
+**promotion out of §7.2 Systems**, at zero new icon cost — the second instance of the
+ENGINEER'S LOG move, and for the same reason: the nav affordance and the callout name one
+thing.
+
+**The count in the S91 paragraph above is a live count, not a frozen record.** S91 approved
+twenty-six families and forty-nine marks; when SAFETY was retired later the same day the
+paragraph was edited in place to twenty-five, so it has never held the number S91 ruled on.
+It is maintained here rather than frozen, because a roster paragraph that disagrees with the
+roster beneath it is worse than one that carries no history. The ruling it records is that
+**the roster below is canon** — that claim is unaffected by the count.
 
 | Family | Icon | Role |
 |---|---|---|
@@ -371,6 +383,7 @@ red, purple — is a separate gate and is NOT approved by this entry.**
 | KEY TERM | `key` | bronze |
 | GLOSSARY | `journal-bookmark` | bronze |
 | INSIGHT | `stars` | bronze |
+| GOING DEEPER | `file-earmark-plus` | bronze |
 | DO THIS NOW | `play-circle` | brass |
 | MY PLAN | `pencil-square` | brass |
 | WRITE IT | `keyboard` | brass |
@@ -420,8 +433,7 @@ Not callout families. Generated from the same table, same shipping form.
 `arrow-right-circle` next
 
 **Systems:** `ticket-perforated` exit ticket · `stopwatch` timer · `chat-dots` tutor ·
-`box-seam` maker · `file-earmark-plus` going deeper · `images` image index ·
-`table` quick reference · `trophy` milestones
+`box-seam` maker · `images` image index · `table` quick reference · `trophy` milestones
 
 **Battery levels:** `battery-full` full · `battery-half` half · `battery` low
 
@@ -430,6 +442,12 @@ carried under Systems as *notebook*. The nav affordance and the callout name one
 student's engineering notebook — so they are one family, and the nav entry CITES it under §4.4
 rather than holding a second copy of the glyph. Two entries would have put one glyph on two
 grounds in two colours, which §4.1 forbids.
+
+**GOING DEEPER is the second instance, promoted at S93 from Systems as *going deeper*.** The
+same test decides it: the nav affordance and the callout point at one destination — the Going
+Deeper page — so they are one family and the nav entry cites it. The callout had been running
+on NOTE's slate paint with a glyph in no table, which is what an unpromoted family looks like
+from inside the book: not a missing rule, a rule that had never been written down.
 
 **Grounds.** Each group above sits on one ground, and the ground decides whether the group is
 in scope for this table.
@@ -456,7 +474,7 @@ has been decided is a guess that a later pass has to find and undo.
 
 ### 7.3 Mark inventory
 
-48 distinct icon files: 26 for the 25 families (BRAIN CHECK carries two), and 22 supporting
+48 distinct icon files: 27 for the 26 families (BRAIN CHECK carries two), and 21 supporting
 marks. The shipped icon folder holds exactly these and nothing else — a library ships
 thousands of icons; a book ships the ones it uses, so that the folder can be asserted
 against this table in both directions.
@@ -575,4 +593,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.9*
+*RoboLore Book Component Standard v01.10*
