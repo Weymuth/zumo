@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""build_family_map.py v1.0.2 (S96) - assigns every callout block to a family.
+"""build_family_map.py v1.1.0 (S96) - assigns every callout block to a family.
 
 Reproducible from a clean clone: run it from repo root, no prior step. It builds its
 own inventory by calling lesson_inventory.build() on all 16 lessons (v1.0.0 replaces
 a read of /tmp/inv.json, which meant a fresh session got FileNotFoundError).
+
+v1.1.0: the 15 blocks the S94 map assigned but this script did not are now ruled (DJ, S96).
+assigned 1048/1048, unassigned 0, and every one of the 30 family counts equals
+ZUMO_S94_FAMILY_MAP.md exactly - the script now reproduces the document. Rules match on
+label PREFIX, never line number. Control-run: routing one block to the wrong family leaves
+the 1048 total untouched and shows up only in the per-family diff, so the total is not
+evidence on its own.
 
 v1.0.2: the glyph+scheme fallback map emitted its family names as literals, and two of
 them carried the curly apostrophe (ENGINEER\u2019S LOG) that norm() folds on the INPUT
@@ -59,6 +66,23 @@ RULE=[
  (lambda l,g,s: 'YOU ALREADY OWN THIS TOOL' in l.upper() or l.startswith('The desk and the bookshelf') or l.startswith('Reminder -') or l.startswith('INFO:') or l.startswith('The recipe, written out') or l.startswith('Recipe:'),'NOTE'),
  (lambda l,g,s: l.startswith('The rule that saves you') or l.startswith('The rule of thumb') or l.startswith('Clamp the memory'),'TIP'),
  (lambda l,g,s: l.startswith('OBJECTIVES'),                             'OBJECTIVES'),
+ # --- S96 rulings (DJ). Closes the 15 blocks the S94 map assigned but the generator did not.
+ # Matched on label prefix, not line number, so an edit above them does not break the rule.
+ (lambda l,g,s: l.startswith('A new kind of label'),                     'HOW THIS SECTION WORKS'),
+ (lambda l,g,s: l.startswith('Unit Conversion'),                         'NOTE'),
+ (lambda l,g,s: l.startswith('Which cells'),                             'NOTE'),
+ (lambda l,g,s: l.startswith('Watch your scope'),                        'NOTE'),
+ (lambda l,g,s: l.startswith("Why Today's Work Matters"),                'NOTE'),
+ (lambda l,g,s: l.startswith('Why TRIM here'),                           'NOTE'),
+ (lambda l,g,s: l.startswith('Where Does constrain()'),                  'KEY TERM'),
+ (lambda l,g,s: l.startswith('New operator'),                            'KEY TERM'),
+ (lambda l,g,s: l.startswith('Accuracy Note'),                           'TIP'),
+ (lambda l,g,s: l.startswith('Best Practice: Naming'),                   'TIP'),
+ (lambda l,g,s: l.startswith('Working Backward'),                        'THINK ABOUT IT'),
+ (lambda l,g,s: l.startswith('About PROTOTYPE'),                         'YOU MIGHT WONDER'),
+ (lambda l,g,s: l.startswith('Header vs Implementation'),                'INSIGHT'),
+ (lambda l,g,s: l.startswith('Why Signed Errors Matter'),                'LEARN'),
+ (lambda l,g,s: l.startswith('Did Your Robot Wiggle'),                   'CHECKPOINT'),
 ]
 # glyph+scheme fallback for header-less blocks in already-named families
 GS={('🔑','#e7d4ff','#9b59b6'):'KEY TERM',('🔑','#f3e5f5','#9c27b0'):'KEY TERM',
