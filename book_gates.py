@@ -18,6 +18,17 @@
 # at cd47f50 it independently rediscovered exactly those four with line numbers; a seeded
 # break in each NON-lesson page (index/timer/going_deeper/tutor) was caught, proving the glob
 # reaches past lessons/ — scope being the exact thing §12/§23 got wrong twice.
+# v1.29 (S97): NEW GATE 37 — no REFERENCED .svg carries an embedded raster. Three files
+# arrived in one session as PNG wrapped in an SVG envelope: valid XML, correct extension,
+# zero drawing elements, the whole picture one base64 <image>. The memory ladder shipped that
+# way at 4,879,809 B against the 4,517 B its true-vector replacement weighs — 1,080x — and it
+# was LIVE in Lesson 02. Gate 36 stayed green throughout: a reference that resolves says
+# nothing about what it resolves TO.
+#   SCOPING, deliberate: this fails only on SVGs a page REFERENCES. Raw exports are staged in
+# images/ before being wired up, and a gate that goes red on work-in-progress is a gate people
+# learn to ignore. Unreferenced offenders are COUNTED and PRINTED, never fatal. Measured before
+# choosing: strict would have failed on the two staged L05 sensor-array files the same day they
+# landed; scoped passes and reports them. Protect the book, not the staging area.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -27,7 +38,7 @@
 
 import re, glob, html, os, sys, collections
 
-VERSION = 'v1.28'   # the only version home in this file (S97)
+VERSION = 'v1.29'   # the only version home in this file (S97)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from html.parser import HTMLParser as _HTMLParser
 import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a third regex
@@ -1278,6 +1289,7 @@ _REF_RE = re.compile(
 from urllib.parse import unquote as _unquote
 
 bad, _seen = [], 0
+_REFERENCED = set()          # consumed by gate 37; built here so there is ONE resolver
 for _page in site:
     if not os.path.exists(_page):
         continue
@@ -1293,6 +1305,7 @@ for _page in site:
         else:
             _p = os.path.normpath(os.path.join(os.path.dirname(_page), _unquote(_u)))
         _seen += 1
+        _REFERENCED.add(_p.replace(os.sep, '/'))
         if not os.path.isfile(_p):
             _ln = _src.count('\n', 0, _m.start()) + 1
             # L() is the fixed slice f[15:17] and is meaningful ONLY for
@@ -1305,6 +1318,32 @@ if _seen != 216:
     bad.append(f'COVERAGE: {_seen} image references resolved, expected 216 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 gate('\u00a721   every image reference resolves to a file on disk', bad)
+
+
+# ---------------------------------------------------------------- gate 37 (S97)
+# No REFERENCED .svg carries an embedded raster.
+# Gate 36 proves a reference resolves; it says nothing about what it resolves TO.
+# An SVG can be a PNG in an envelope — valid XML, right extension, zero drawing
+# elements. Scoped to referenced files on purpose; see the header note.
+_svgs = sorted(f.replace(os.sep, '/') for f in glob.glob('images/**/*.svg', recursive=True))
+_staged, bad = [], []
+for _f in _svgs:
+    _s = open(_f, encoding='utf-8', errors='replace').read()
+    if 'base64' not in _s:
+        continue
+    _n = len(re.findall(r'data:image/[a-z]+;base64', _s))
+    _draw = len(re.findall(r'<(?:path|rect|text|circle|line|polygon|polyline|ellipse)\b', _s))
+    _kind = ('a bitmap in an SVG envelope — no vector content at all' if _draw == 0
+             else f'vector plus an embedded raster ({_draw} drawing elements)')
+    _msg = (f'{_f}: {os.path.getsize(_f):,} B, {_n} embedded raster(s) — {_kind}')
+    (bad if _f in _REFERENCED else _staged).append(_msg)
+gate('\u00a721.1 no referenced .svg carries an embedded raster', bad)
+if _staged:
+    print(f'         note: {len(_staged)} unreferenced .svg also '
+          f'{"carries" if len(_staged) == 1 else "carry"} embedded raster '
+          f'(staged, not fatal)')
+    for _m in _staged:
+        print(f'           - {_m}')
 
 print('=' * 52)
 
