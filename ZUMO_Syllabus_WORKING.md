@@ -1,5 +1,6 @@
 # Robotics — Zumo Autonomous Robot
 ### How This Class Works · Fall Trimester · Mercersburg Academy · Mr. Weymuth
+<!-- ZUMO_Syllabus_WORKING.md v1.0 — S96, Jul 30 2026 -->
 
 > **This is a working draft.** Sections marked _[TBD]_ aren't finalized yet. Everything else reflects decisions made as of this planning session. This document will grow into the student-facing syllabus.
 
@@ -71,9 +72,31 @@ _[Exact dates TBD once the class schedule is finalized.]_
 
 You keep one running engineering notebook for the whole trimester. It's not busywork — it's structured as a real **Technical Description Paper**, the kind teams submit at RoboCup competitions. You fill in a piece each lesson, and by the end it's a complete document.
 
-You'll make **one copy** of the notebook template at the start of the course and keep it in your own Drive all term. Details in the first week.
+Your notebook **is** your competition TDP — they are the same document. You do not write a paper at the end; you fill in a piece each lesson, and by Lesson 16 it is written.
 
-_[Notebook template + submission process TBD — being finalized.]_
+**Get it:** _[LINK TBD — the Google Doc copy of the TDP template]_
+
+**Set it up, once, on day one:**
+1. **File → Make a copy**
+2. Rename it: `TDP — Your Name`
+3. Keep it in your own Drive all term
+4. Share it with Mr. Weymuth (comment access is enough)
+
+**How it is built:**
+- **Part A — Standing Logs.** You add to these all term, not once: the work you did, one improvement idea per lesson, a failure log, your measured data tables, and your lab-time log.
+- **Part B — The TDP.** Eight sections. Each lesson's Engineer's Log entry drops into a section that is already marked for it.
+
+**Two rules that matter:**
+- **No source code.** Diagrams, tables, and prose only. Judges reward measured data over adjectives.
+- **Date every entry, and do not go back and edit old ones.** Your Lesson 1 "before" paragraph and your Lesson 16 "after" are supposed to disagree — the gap between them *is* your abstract.
+
+### How to Submit
+
+You keep one document all term; you never submit a new file.
+
+- **Weekly:** your notebook is checked in place. Nothing to upload — Mr. Weymuth opens your shared doc. Keep it current; an entry written three weeks late reads like one.
+- **At each milestone:** the relevant log entry must already be in the doc when you demo.
+- **At the end of term:** you submit the **link** in Canvas, one time. The document you have been filling in all term *is* the final submission.
 
 ---
 
@@ -90,6 +113,23 @@ _[Notebook template + submission process TBD — being finalized.]_
 
 ---
 
+## If You Fall Behind
+
+Milestones build on each other. A missed one makes the next harder, and the course does not slow down to wait. So the plan is: **catch up fast, on a known path, without drama.**
+
+**If you miss a reading quiz:** retake it before you build that day. You are not locked out of the course — you are asked to read first. Do it in open lab or a free period.
+
+**If you miss a milestone date:** it is not a zero and it is not forgotten.
+1. See Mr. Weymuth **within one class period.** Not next week.
+2. You agree on a catch-up date — normally the next open lab.
+3. You demo. Late milestones are graded on the same rubric, with a late penalty of _[AMOUNT TBD]_.
+
+**If you are behind by more than one milestone:** stop trying to do both at once. We will pick the one that unblocks the most and get that working first. Three **buffer periods** are built into the term for exactly this — they exist so that falling behind is recoverable, not fatal.
+
+**The one thing that does not work** is going quiet. Every problem in this course is smaller the day it happens than the week after.
+
+---
+
 ## Coming Prepared (the Materials grade)
 
 Every class, bring:
@@ -98,13 +138,112 @@ Every class, bring:
 - Your USB cord
 - Your jumpers
 
-_[Battery safety note TBD — eneloop NiMH canon.]_
+---
+
+## Batteries — Read This Once, Follow It All Term
+
+Your Zumo runs **four rechargeable NiMH AA cells — Panasonic eneloop.** Every battery number in this course is written for NiMH. Here is what your robot will tell you when you hold **A + B**:
+
+| Reading | What it means |
+|---|---|
+| ~5,400 mV | Fresh off the charger |
+| ~4,800 mV | The plateau — normal, healthy, most of the battery's life |
+| ~4,200 mV | Nearly empty. **Stop and swap.** |
+| ~6,300 mV | Somebody put alkalines in |
+
+**Three rules:**
+
+1. **Do not run below 4,200 mV.** Draining NiMH past ~1.05 V per cell damages the cells permanently. The robot will still move — that is the trap. Check before you run, not after your robot starts acting strange.
+2. **Do not stall the motors.** Holding the wheels by hand, or letting the robot push against a wall, drives current toward stall and can cause **thermal damage to the windings in seconds.** If your robot is pushing and not moving, cut power.
+3. **Never mix chemistries and never mix charge levels** in one robot. Four cells from the same pack, charged together.
+
+**About alkalines:** they are allowed, and they are honestly worse for this course. Alkaline is 6.0 V nominal, so a fresh set is slightly faster — but alkaline voltage **slides downhill the whole time you use it,** while NiMH holds a flat plateau and then drops. *The robot you tuned in first period is not the robot you get in seventh.* You will meet this exact physics again in Lesson 11, "Time Lies, Distance Doesn't."
+
+**Charging:** batteries charge _[WHERE TBD]_, and a charge takes _[HOW LONG TBD]_. Charged batteries are part of your Materials grade. Coming to class with a dead robot is coming to class without your robot.
 
 ---
 
 ## Outside Class
 
 Class time alone won't get you through your milestones — plan on some outside work. The lab is open **Monday–Thursday, 7:00–9:30 PM**, plus your free periods. Log your outside sessions in your notebook (date, time in/out, what you worked on) — that log is your Outside Work grade.
+
+---
+
+## In the Lab
+
+**Your robot is yours.** It is numbered and assigned to you. You do not borrow someone else's robot, and you do not lend yours. If a robot is damaged, tell Mr. Weymuth the same day — a damaged robot reported is a repair; a damaged robot discovered is a problem.
+
+**Shared tools go back.** Screwdrivers, tape, chargers, and course tape live in one place and return there before you leave. The last five minutes of every period are cleanup.
+
+**The floor is the test surface.** Robots run on the course, on the floor, or on a bench with a barrier. **Never on an open table edge.** A Zumo at speed cannot stop before a drop — there is no software fix for this, only a physical barrier. This is not a suggestion.
+
+**Food and drink stay away from robots and laptops.**
+
+**Open lab is a work session, not a hangout.** Sign in, log your time in your notebook, clean up, sign out.
+
+**Leave the room ready for the next person:** robots on the shelf, batteries on the charger, laptops closed, chairs in.
+
+---
+
+## Whose Code Is It? — Academic Honesty
+
+This is a **solo build.** Every robot on the shelf runs code its owner wrote. That is the whole point — the milestone demo proves *you* can do the thing.
+
+**Encouraged:**
+- Talking through a problem with another student at the whiteboard
+- Comparing behavior: *"my robot wobbles on left turns, does yours?"*
+- Telling someone **where** to look: *"check your TRIM sign"*
+
+**Not allowed:**
+- Copying code from another student's screen, file, or repo — in either direction
+- Handing your file to someone "just to look at"
+- Submitting a milestone demo of a robot running code you did not write
+
+**The line:** you may explain *how* something works. You may not supply the *what to type.* If you can explain your own code line by line when asked, you are fine. If you cannot, you are not — regardless of who typed it.
+
+### AI Tools
+
+**Use the course tutor.** It knows this robot. A general chatbot does not know your Zumo has 75:1 gearmotors, a 21×8 OLED, or that pins 20 and 4 are shared — so it invents plausible code that does not exist.
+
+**Turn off inline autocomplete for this project.** Command Palette → **"Disable AI Features (Workspace)."** This switches it off for your Zumo folder only; everything else on your machine is unaffected.
+
+Autocomplete is a different problem from a chatbot: it **inserts code without being asked.** Real things it has injected into this exact project:
+
+- `setMotorPower()` — does not exist. The real function is `setSpeeds()`.
+- `set motorSpeed()` — invented, with a space in the name.
+- `pololu/Zumo32U4@^1.3.0` in `platformio.ini` — wrong version. The correct pin is `pololu/Zumo32U4@2.0.1`. It breaks the build in a way that looks like *your* mistake.
+
+**If AI helped you, say so in your notebook** — one line: what you asked, what you kept, what you threw out. Documenting a tool you used is engineering. Hiding it is not.
+
+---
+
+## Day One — What You Leave With
+
+By the end of the first period you should have all of these. Check them off:
+
+**Hardware**
+- ☐ Zumo 32U4 robot, numbered and assigned to you
+- ☐ Four charged NiMH batteries
+- ☐ USB cable
+- ☐ Jumpers
+
+**Software**
+- ☐ VS Code installed
+- ☐ PlatformIO extension installed
+- ☐ **AI autocomplete disabled for this workspace** (Command Palette → "Disable AI Features (Workspace)")
+- ☐ Test upload completed — a program compiled and sent to the robot
+
+**Accounts & documents**
+- ☐ Canvas course opened; you can find the readings and the quizzes
+- ☐ Textbook bookmarked: **weymuth.github.io/zumo**
+- ☐ Project Maker bookmarked
+- ☐ **Your own copy of the TDP notebook made** (File → Make a copy), named with your name, saved in your Drive
+
+**Preflight — the four things to check every time your robot misbehaves**
+- ☐ Power switch is ON
+- ☐ Batteries are charged
+- ☐ USB cable is fully seated
+- ☐ You uploaded the program you think you uploaded
 
 ---
 
@@ -118,13 +257,10 @@ Class time alone won't get you through your milestones — plan on some outside 
 ---
 
 ## Still To Add _[working notes — not student-facing yet]_
-- Exact milestone due dates (pin to real calendar)
-- Notebook template link + how to submit
-- Battery safety specifics
-- Lab / classroom expectations (clean up, tool return, safety)
-- Academic honesty / working-together policy
-- What happens if you fall behind (catch-up path)
-- First-day setup checklist
+- Exact milestone due dates (pin to real calendar — blocked until ~Aug 24)
+- Notebook template Google Doc link
+- Battery charging location and charge time
+- Late-milestone penalty amount
 
 ---
-*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft*
+*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.0*
