@@ -24,11 +24,12 @@
 #   python3 gen_component.py --demo          emit one callout of each role
 
 import colorsys
+import math
 import os
 import re
 import sys
 
-VERSION = 'v1.5'   # the only version home in this file
+VERSION = 'v1.6'   # the only version home in this file
 
 # The §5 palette boundary. S91: this was the literal 'Eight roles.' and retiring the red
 # role broke the parser -- a COUNT has no business inside a parsing anchor. Derived from
@@ -143,6 +144,26 @@ def load_standard():
     S = {}
 
     S['version'] = _one(r'\*\*Standard version: (v[0-9.]+)\*\*', t, 'standard version')
+
+    # --- §9 numbered marks --------------------------------------------------
+    # Parsed, never hardcoded: §10 says all components come from one table, so a
+    # spec change must be a DOCUMENT edit and a re-run. Every field asserts
+    # exactly one match — a second home would be silent drift.
+    num_sec = _section(t, '## 9. Numbered marks', '## 10. Generation')
+    N = {}
+    N['outer'] = float(_one(r'outer radius\s+([0-9.]+)', num_sec, '§9 outer radius'))
+    N['inner'] = float(_one(r'inner radius\s+([0-9.]+)', num_sec, '§9 inner radius'))
+    N['fill'] = _one(r'fill\s+(#[0-9A-Fa-f]{6})\s+flat', num_sec, '§9 fill')
+    N['num_size'] = float(_one(r'number\s+font-size\s+([0-9.]+)', num_sec, '§9 number size'))
+    N['num_fill'] = _one(r'number\s+font-size[^#]*(#[0-9A-Fa-f]{6})', num_sec, '§9 number fill')
+    N['cx'] = float(_one(r'centring\s+x\s*=\s*([0-9.]+)', num_sec, '§9 centre x'))
+    N['cy'] = float(_one(r'centring\s+x\s*=\s*[0-9.]+,\s*y\s*=\s*([0-9.]+)', num_sec, '§9 centre y'))
+    N['x2'] = float(_one(r'two-digit\s+x\s*=\s*([0-9.]+)', num_sec, '§9 two-digit x'))
+    N['render'] = _one(r'render\s+([0-9.]+em)\s+inline', num_sec, '§9 render size')
+    assert 'Gradients are prohibited' in num_sec, \
+        '§9 no longer prohibits gradients — the generator assumes a flat fill'
+    assert N['inner'] < N['outer'], '§9 inner radius must be smaller than outer'
+    S['numbered'] = N
 
     # --- §5.0 Heritage Blue ------------------------------------------------
     hb_sec = _section(t, '### 5.0 Heritage Blue', '### 5.0.1 Section band ramp')
@@ -362,6 +383,57 @@ def recolour(svg, colour):
     return svg.replace('fill="currentColor"', f'fill="{colour}"')
 
 
+def numbered_mark(n, S):
+    """§9 -- a numbered mark: flat star polygon, number centred inside.
+
+    Generated from ONE rule, per §9's closing sentence: 'A set of hand-drawn
+    numbered files is replaced by one function.' Outer/inner radius is the
+    standard star-polygon parametrization, so §9's two radii ARE a star.
+
+    Gradients are prohibited (§9, and the RoboLore guideline behind it), which
+    is what retires the S40 gold-gradient asset.
+    """
+    N = S['numbered']
+    assert 1 <= n <= 99, f'numbered mark out of range: {n}'
+    pts = []
+    for i in range(10):
+        r = N['outer'] if i % 2 == 0 else N['inner']
+        a = math.radians(-90 + i * 36)
+        pts.append(f'{N["cx"] + r * math.cos(a):.2f},{N["cy"] + r * math.sin(a):.2f}')
+    box = round(N['cx'] * 2)
+    x = N['x2'] if n >= 10 else N['cx']
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {box} {box}" '
+            f'width="{box}" height="{box}" role="img" '
+            f'aria-label="Spiral review from Lesson {n:02d}">'
+            f'<polygon points="{" ".join(pts)}" fill="{N["fill"]}"/>'
+            f'<text x="{x:g}" y="{N["cy"]:g}" font-size="{N["num_size"]:g}" '
+            f'font-weight="bold" fill="{N["num_fill"]}" text-anchor="middle" '
+            f'dominant-baseline="central" '
+            f'font-family="Arial, Helvetica, sans-serif">{n:02d}</text>'
+            f'</svg>\n')
+
+
+def emit_numbered_marks(S, lo=1, hi=16, write=True):
+    """§9 -- write spiral_star_NN.svg for the lesson range.
+
+    Filenames and location are UNCHANGED from Bible §18.2, so no lesson edit is
+    needed: the files stop being hand-drawn INPUT and become generated OUTPUT,
+    exactly as icons/ -> marks/ already works.
+    """
+    written, unchanged = [], []
+    for n in range(lo, hi + 1):
+        out = numbered_mark(n, S)
+        dst = os.path.join(HERE, 'images', f'spiral_star_{n:02d}.svg')
+        if os.path.exists(dst) and open(dst, encoding='utf-8').read() == out:
+            unchanged.append(n)
+            continue
+        if write:
+            with open(dst, 'w', encoding='utf-8') as fh:
+                fh.write(out)
+        written.append(n)
+    return written, unchanged
+
+
 def emit_marks(S, write=True):
     ship, defer = resolve(S)
     if write:
@@ -518,6 +590,39 @@ def selftest(S):
     # §6 LICENSE obligation
     check(os.path.exists(os.path.join(ICON_DIR, 'LICENSE')),
           '§6 LICENSE kept alongside the icon assets')
+
+    # --- §9 numbered marks -------------------------------------------------
+    N = S['numbered']
+    check(all(k in N for k in ('outer', 'inner', 'fill', 'num_size',
+                               'num_fill', 'cx', 'cy', 'x2', 'render')),
+          '§9 numbered-mark spec parsed from the document, all fields present')
+
+    one, two = numbered_mark(3, S), numbered_mark(16, S)
+    check('gradient' not in (one + two).lower() and 'url(#' not in (one + two),
+          '§9 numbered mark carries no gradient')
+    check(f'fill="{N["fill"]}"' in one,
+          '§9 numbered mark uses the flat fill named in the document')
+    check(f'x="{N["cx"]:g}"' in one and f'x="{N["x2"]:g}"' in two,
+          '§9 two-digit x shift applied only to two-digit numbers')
+    check(one.count('<polygon') == 1 and one.count('<text') == 1,
+          '§9 numbered mark is one polygon and one text, nothing else')
+
+    # geometry: a 5-point star alternates outer/inner, so 10 vertices exactly
+    pts = re.search(r'points="([^"]+)"', one).group(1).split()
+    check(len(pts) == 10, '§9 numbered mark is a 5-point star (10 vertices)')
+
+    # the number must FIT: two bold digits at font-size F run about 1.1*F wide,
+    # and must sit inside the inner diameter or they overhang the star body.
+    check(1.1 * N['num_size'] <= 2 * N['inner'],
+          f'§9 two digits ({1.1 * N["num_size"]:.1f}) fit the inner '
+          f'diameter ({2 * N["inner"]:.1f})')
+
+    # §10.2 CONTROL RUN -- seed a gradient into the spec, the check must fire
+    probe = {**S, 'numbered': {**N, 'fill': 'url(#g)'}}
+    seeded = numbered_mark(3, probe)
+    check('url(#' in seeded,
+          '§9 control run: a seeded gradient fill reaches the output '
+          '(so the no-gradient check above is testing something real)')
 
     # §10.2 CONTROL RUN -- the gate must fail on the defect it exists to catch
     probe = dict(S)
