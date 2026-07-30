@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.26.3 (S95) — whole-book consistency gates.
+# book_gates.py v1.27 (S95) — whole-book consistency gates.
 # v1.26.1: §5.1 coverage 250 → 251. L01's AI-autocomplete block was on the one-off border
 # #ffb300; the S95 repaint snapped it to WARNING's #ffc107, which brings it INTO this gate's
 # scope (scheme + ⚠ glyph now agree). Its merged label was split into the canonical
@@ -18,6 +18,7 @@
 
 import re, glob, html, os, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from html.parser import HTMLParser as _HTMLParser
 import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a third regex
 
 FAIL = []
@@ -157,14 +158,52 @@ for f in files:
 gate('§6.12b pill two-axis parity', bad)
 
 # ---- structure: paired-tag balance across every site file
+# v1.27: this gate used to count `<tag\\b` against `</tag>` for a FIXED LIST OF SEVEN
+# tags. Two consequences, both found by the S95 triple-check with html.parser:
+#   1. `p` was not on the list, so TWO orphan `</p>` tags with no opening `<p>` sat in
+#      L06 and L15 through every 35/35 pass. Only 7 of the 41 paired tags in use were
+#      checked at all.
+#   2. The counting method reads inside HTML COMMENTS. index.html mentions `<h1>` in a
+#      comment explaining why the h1 is sr-only, which counts as 2/1 and would have
+#      failed the moment the list was widened. A false failure costs 3x a blank one.
+# So the method is replaced, not the list: a real parser, every paired tag, comments and
+# CDATA ignored for free, and crossed tags detected as well as unbalanced ones.
+_VOID = {'area','base','br','col','embed','hr','img','input','link','meta','param',
+         'source','track','wbr'}
+
+class _Balance(_HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=False)
+        self.stack = []; self.bad = []
+    def handle_starttag(self, t, a):
+        if t not in _VOID:
+            self.stack.append((t, self.getpos()[0]))
+    def handle_endtag(self, t):
+        if t in _VOID:
+            return
+        if not self.stack:
+            self.bad.append(f'orphan </{t}> line {self.getpos()[0]} (nothing open)')
+        elif self.stack[-1][0] == t:
+            self.stack.pop()
+        else:
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i][0] == t:
+                    self.bad.append(f'crossed </{t}> line {self.getpos()[0]}')
+                    del self.stack[i:]
+                    break
+            else:
+                self.bad.append(f'orphan </{t}> line {self.getpos()[0]} (no matching open)')
+
 bad = []
 for f in site:
-    s = R[f]
-    for tag in ['div', 'pre', 'details', 'table', 'iframe', 'strong', 'h3']:
-        o = len(re.findall(f'<{tag}\\b', s))
-        c = s.count(f'</{tag}>')
-        if o != c:
-            bad.append(f'{f}: {tag} {o}/{c}')
+    w = _Balance()
+    w.feed(R[f])
+    w.close()
+    for m in w.bad:
+        bad.append(f'{f}: {m}')
+    for t, ln in w.stack:
+        if t not in ('html', 'head', 'body'):
+            bad.append(f'{f}: unclosed <{t}> opened line {ln}')
 gate('tag balance (all site files)', bad)
 
 # ---- timers: every iframe has min+label; labels unique per lesson

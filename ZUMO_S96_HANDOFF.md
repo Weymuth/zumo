@@ -25,15 +25,15 @@ Fresh-clone verified at **`9ba2630`**. **35/35 gates pass.** Census **39,972**.
 Bible **v8.82** · `BookComponentStandard` **v01.10.0** · Maker **v2.45.1** ·
 `marks/` **41** · `icons/` **48 + LICENSE**.
 
-Instruments: `book_gates` **v1.26.3** (35 gates) · `lesson_inventory` **v1.1.1** ·
+Instruments: `book_gates` **v1.27** (35 gates) · `lesson_inventory` **v1.1.1** ·
 `gen_component` **v1.5** (ALL CHECKS PASS) · `pill_sweep` **v1.0** · `gate_payload_match` **v1.6** ·
 `build_family_map` **v1.0.1** · `build_mark_index` **v1.0.1** · `gen_bonus_banner` **v1.2** ·
 `gen_part_banners` **v1.0** · `going_deeper` **v01.1.1**.
 
 Lessons: L01 **v03.15.0** · L02 **v03.6.0** · L03 **v03.20.0** · L04 **v04.15.0** ·
-L05 **v04.15.0** · L06 **v04.19.0** · L07 **v04.15.0** · L08 **v04.14.0** · L09 **v05.12.0** ·
+L05 **v04.15.0** · L06 **v04.19.1** · L07 **v04.15.0** · L08 **v04.14.0** · L09 **v05.12.0** ·
 L10 **v02.11.0** · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 **v02.15.0** ·
-L15 v02.11.0 · L16 v02.7.0. *(Eleven lessons moved in S95.)*
+L15 **v02.11.1** · L16 v02.7.0. *(Eleven lessons moved in S95.)*
 
 Callout schemes **51 → 46** · one-off schemes **12 → 6** · off-canon widths **115 → 114** ·
 teal **31 blocks** · LEARN's blue **43**.
