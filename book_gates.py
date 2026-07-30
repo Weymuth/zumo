@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.26.2 (S95) — whole-book consistency gates.
+# book_gates.py v1.26.3 (S95) — whole-book consistency gates.
 # v1.26.1: §5.1 coverage 250 → 251. L01's AI-autocomplete block was on the one-off border
 # #ffb300; the S95 repaint snapped it to WARNING's #ffc107, which brings it INTO this gate's
 # scope (scheme + ⚠ glyph now agree). Its merged label was split into the canonical
@@ -1126,7 +1126,12 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
     lines = src.split('\n')
     for c in LI.build(f)['callouts']:
         off = sum(len(l) + 1 for l in lines[:c['line'] - 1])
-        gt = src.find('>', off)
+        # v1.26.3: anchor on the callout's OWN opening tag, not the first '>' after the line
+        # start. L14's THE ONE IDEA shares its line with the </div> that closes the block
+        # above it, so find('>') landed on THAT tag, the check ran one element late, and a
+        # bare <strong> title passed unseen. c['tag'] names the element; search for it.
+        _open = src.find('<' + c['tag'], off)
+        gt = src.find('>', _open) if _open >= 0 else src.find('>', off)
         if gt < 0:
             continue
         seen += 1
@@ -1178,7 +1183,12 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
             # NOT disagree; an assert that cannot fail is not evidence.
             continue
         off = sum(len(l) + 1 for l in lines[:c['line'] - 1])
-        gt = src.find('>', off)
+        # v1.26.3: anchor on the callout's OWN opening tag, not the first '>' after the line
+        # start. L14's THE ONE IDEA shares its line with the </div> that closes the block
+        # above it, so find('>') landed on THAT tag, the check ran one element late, and a
+        # bare <strong> title passed unseen. c['tag'] names the element; search for it.
+        _open = src.find('<' + c['tag'], off)
+        gt = src.find('>', _open) if _open >= 0 else src.find('>', off)
         if gt < 0:
             continue
         i = re.match(r'\s*', src[gt + 1:]).end() + gt + 1
