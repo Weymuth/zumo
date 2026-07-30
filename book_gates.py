@@ -9,6 +9,15 @@
 # S95 repaint moved it to #fdecea and normalised the rule to the canon 4px, so that debt is
 # PAID, not moved, and its baseline row is gone. DJ ruling: from S95 on, a repaint that lands
 # on one of the off-canon blocks normalises the width in the same edit.
+# v1.28 (S97): NEW GATE 36 — every image reference resolves to a file on disk. Found by
+# accident, not by any gate: Lesson_02 pointed at three .svg files and Lesson_05 at one that
+# existed nowhere on main (an incomplete .svg -> .png migration; the originals survived only
+# on the stranded branch Weymuth-patch-1). Four 404s were LIVE on the published site through a
+# full 35/35 pass, in two of the first five lessons a student opens. Nothing checked img src.
+# Control-run four ways before shipping: silent on the fixed tree; run against UNFIXED source
+# at cd47f50 it independently rediscovered exactly those four with line numbers; a seeded
+# break in each NON-lesson page (index/timer/going_deeper/tutor) was caught, proving the glob
+# reaches past lessons/ — scope being the exact thing §12/§23 got wrong twice.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -18,7 +27,7 @@
 
 import re, glob, html, os, sys, collections
 
-VERSION = 'v1.27.1'   # the only version home in this file (S96)
+VERSION = 'v1.28'   # the only version home in this file (S97)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from html.parser import HTMLParser as _HTMLParser
 import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a third regex
@@ -1253,6 +1262,49 @@ if seen != 251:
     bad.append(f'COVERAGE: {seen} labels inspected, expected 251 '
                f'(3 off-canon blocks are out of scope by ruling)')
 gate('\u00a75.1 callout label holds exactly the family word, matched to its scheme', bad)
+
+
+# ---------------------------------------------------------------- gate 36 (S97)
+# Every image reference resolves to a file on disk.
+# Two reference forms occur in the book, surveyed not assumed: 193 absolute site URLs
+# and 23 relative (favicon). A THIRD form appearing later would be invisible to this
+# matcher, so the resolved-count assert below is what makes that hole loud instead of
+# silent — if a page starts writing refs some other way, the count moves and the gate
+# says so. An assert that cannot fail is not evidence.
+_SITE_PREFIX = 'https://weymuth.github.io/zumo/'
+_REF_RE = re.compile(
+    r'(?:src|href|xlink:href)\s*=\s*["\']([^"\']+?\.(?:png|jpe?g|svg|gif|webp|ico))'
+    r'(?:[?#][^"\']*)?["\']', re.I)
+from urllib.parse import unquote as _unquote
+
+bad, _seen = [], 0
+for _page in site:
+    if not os.path.exists(_page):
+        continue
+    _src = open(_page, encoding='utf-8', errors='replace').read()
+    for _m in _REF_RE.finditer(_src):
+        _u = _m.group(1)
+        if _u.startswith(_SITE_PREFIX):
+            _p = _unquote(_u[len(_SITE_PREFIX):])
+        elif _u.startswith(('http://', 'https://', 'data:', '//')):
+            continue                       # off-site, not ours to resolve
+        elif _u.startswith('/'):
+            _p = _unquote(_u.lstrip('/'))
+        else:
+            _p = os.path.normpath(os.path.join(os.path.dirname(_page), _unquote(_u)))
+        _seen += 1
+        if not os.path.isfile(_p):
+            _ln = _src.count('\n', 0, _m.start()) + 1
+            # L() is the fixed slice f[15:17] and is meaningful ONLY for
+            # lessons/Lesson_NN.html; on index.html it returns ''. A gate that
+            # reports a defect it cannot name is half a gate. Caught by the S97
+            # scope control, which seeded breaks into the non-lesson pages.
+            _who = L(_page) if _page in files else _page
+            bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
+if _seen != 216:
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 216 — a reference '
+               f'was added, removed, or written in a form this gate cannot see')
+gate('\u00a721   every image reference resolves to a file on disk', bad)
 
 print('=' * 52)
 
