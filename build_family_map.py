@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""build_family_map.py v1.0.0 (S95) - assigns every callout block to a family.
+"""build_family_map.py v1.0.1 (S95) - assigns every callout block to a family.
 
 Reproducible from a clean clone: run it from repo root, no prior step. It builds its
 own inventory by calling lesson_inventory.build() on all 16 lessons (v1.0.0 replaces
 a read of /tmp/inv.json, which meant a fresh session got FileNotFoundError).
+
+v1.0.1: INSIGHT left the shared blue for teal #e9f7f5/#2da99d (S95, DJ ruling). The old
+🔍-on-blue key is REPLACED, not kept: after the split, a magnifier on LEARN's blue is a
+defect to surface, not a block to silently classify as INSIGHT.
 
 Label matching unescapes TWICE and normalises the curly apostrophe before comparing:
 §24.11 - an entity is not the character it encodes. ENGINEER'S LOG carries &rsquo;
@@ -58,7 +62,7 @@ GS={('🔑','#e7d4ff','#9b59b6'):'KEY TERM',('🔑','#f3e5f5','#9c27b0'):'KEY TE
 ('📘','#eceff1','#607d8b'):'NOTE',('💾','#eceff1','#607d8b'):'NOTE',
 ('📓','#eceff1','#607d8b'):'ENGINEER\u2019S LOG',('✅','#d4edda','#28a745'):'CHECKPOINT',
 ('ℹ','#d1ecf1','#17a2b8'):'NOTE',('💡','#f0f7f0','#6b8e6b'):'TIP',
-('🔍','#e3f2fd','#2196f3'):'INSIGHT',('🏆','#d1ecf1','#17a2b8'):'REAL-WORLD CONNECTION',
+('🔍','#e9f7f5','#2da99d'):'INSIGHT',('🏆','#d1ecf1','#17a2b8'):'REAL-WORLD CONNECTION',
 ('👀','#d1ecf1','#17a2b8'):'WHAT YOU SHOULD SEE',('📖','#e3f2fd','#2196f3'):'LEARN',
 ('·','#e3f2fd','#2196f3'):'LEARN',('','#e3f2fd','#2196f3'):'LEARN',
 ('🧩','#f8f9fa','#6c757d'):'MYSTERY',('📓','#f8f9fa','#6c757d'):'MYSTERY',

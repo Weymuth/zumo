@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.14.2 -->
+<!-- Lesson version: v03.15.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +72,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Sense, Decide, Act</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">And Everything That Comes First</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.14 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 03.15 &mdash; July 2026</div>
 </div>
 
 <!-- ===== ICON LEGEND ===== -->
@@ -191,7 +191,7 @@
 <tr><td style="border: 1px solid #ddd; padding: 10px;">Your Zumo 32U4</td><td style="border: 1px solid #ddd; padding: 10px;">Definitely!</td><td style="border: 1px solid #ddd; padding: 10px;">It will sense lines, decide which way to turn, and act on its own</td></tr>
 </table>
 
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; border-radius: 4px;">
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px; margin: 15px 0; border-radius: 4px;">
     <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔍 The Key Insight</div>
     <p>The magic of robotics isn't in the hardware — it's in the <strong>DECIDE</strong> step. That's where your code lives. Your program is the robot's decision-making brain, and that's exactly what you'll learn to write in this course.</p>
 </div>
@@ -598,14 +598,14 @@
 }</code></pre>
 
 <p>Three lines in this program do the heaviest lifting. You just read the whole thing — now slow down and reread these three the way an engineer would:</p>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT — The While-Loop Trapdoor</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT — The While-Loop Trapdoor</div>
     <p><code>while (!buttonA.getSingleDebouncedPress())</code> looks like a magic waiting spell, but it is really a rapid-fire question. The library call reports <code>true</code> if the button was just pressed and <code>false</code> if it was not. The <code>!</code> is the <strong>NOT operator</strong> — it flips that answer. While your finger is off the button, the check flips to <code>true</code>, so the loop runs again: check, wait 10 milliseconds, check again — about a hundred times every second. (The pace is set by the <code>delay(10)</code>, not the chip: the ATmega32U4 ticks 16 million times per second and could check far faster — we deliberately slow it down.) The instant you press Button A, the answer flips to <code>false</code>, the trapdoor opens, and the program falls through to the next line. The robot was never frozen; it was asking &quot;pressed yet?&quot; over and over, faster than you can blink.</p>
     <p>And one more word in that line earns its keep: <strong>Debounced</strong>. Inside the button is a tiny metal contact, and when you press it, that contact doesn’t close once — it physically <em>bounces</em>, chattering open and closed for a few milliseconds before it settles. Your finger never notices, but a chip checking sixteen million times a second absolutely does: without help, it would read one press as dozens of presses. &quot;Debouncing&quot; is the filter — here, built into the library call — that watches the chatter and reports one clean, single press. That’s the &quot;Single&quot; and the &quot;Debounced&quot; in <code>getSingleDebouncedPress()</code>: real engineering hiding in a function name.</p>
 </div>
 
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT — Anatomy of a For-Loop</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT — Anatomy of a For-Loop</div>
     <p><code>for (int i = 0; i &lt; 3; i++)</code> squeezes three separate jobs into one line: <strong>initialize</strong> (<code>int i = 0</code> — create a counter and start it at zero), <strong>check</strong> (<code>i &lt; 3</code> — before every pass, ask &quot;is the counter still under 3?&quot;), and <strong>increment</strong> (<code>i++</code> — after every pass, add one to the counter).</p>
     <p>Trace it exactly like the computer does: <code>i</code> is 0 — is 0 &lt; 3? Yes → blink #1, counter becomes 1. Is 1 &lt; 3? Yes → blink #2, counter becomes 2. Is 2 &lt; 3? Yes → blink #3, counter becomes 3. Is 3 &lt; 3? No → the loop ends and the program moves on to the motors. Change that one number and you change how many blinks you get — nothing else in the code has to move.</p>
     <p>One more detail hiding in that loop: <code>ledYellow(1)</code> has no name-dot. The built-in LEDs are so simple and so foundational that the library skips the object and gives them direct commands — <code>1</code> means on, <code>0</code> means off. Everything else on the robot follows the <em>name-dot-command</em> pattern; the LEDs are the deliberate exception.</p>

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.10.0 -->
+<!-- Lesson version: v02.11.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +74,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Obstacles</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">When the Course Fights Back</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.10 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 02.11 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== ICON LEGEND ===================== -->
@@ -134,8 +134,8 @@ You used it to detect an opponent. Today you use it to detect a wall.</p>
 <div style="background-color: #e7f0fa; border-left: 4px solid #2e86ab; padding: 10px 14px; margin: 0 0 16px; border-radius: 4px; font-size: 0.92em;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">🔁 Builds on:</div> Simple Obstacle Avoidance from Lesson 5 <img src="https://weymuth.github.io/zumo/images/spiral_star_05.svg" alt="Spiral review from Lesson 05" style="height: 1.1em; vertical-align: middle; margin: 0 2px;"> &mdash; see, stop, turn away. Today that reflex meets a line that disagrees with it.</div>
 
 <p>But the sensor is the easy half. The hard half is this:</p>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">Your robot is about to want <strong>two things at once.</strong> The line
     says <em>go forward</em>. The obstacle says <em>stop</em>. Both are true. Both are urgent. Your robot has to
     decide which one wins &mdash; and it has to decide the same way every single time, or it is not a robot,
@@ -248,8 +248,8 @@ proxSensors.countsFrontWithRightLeds();   <span style="color: #6a9955;">// works
     <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">the dead spot, now permanent.</div>
     <p style="margin-bottom: 0;">Lesson 5 &sect;3.4a showed you the two blind wedges &mdash; roughly 19&deg; to 72&deg; off each side of the nose &mdash; where no proximity detector is aimed. Back then the side receivers at least covered the flanks beyond them. Under five-down they do not. <strong>Everything outside FRONT&#8217;s &plusmn;19&deg; is now invisible, permanently</strong> &mdash; which is the deeper reason directional avoidance is off the table today. Not just &#8220;which side is it on?&#8221; but &#8220;is it even in the cone?&#8221; A block sitting 40&deg; off your nose reads a clean 0 from a sensor that is working perfectly.</p>
 </div>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">Read that carefully, because it changes the whole design. With one
     forward&#8209;facing sensor, your robot can answer <strong>&ldquo;is something in front of me?&rdquo;</strong>
     It <em>cannot</em> answer <strong>&ldquo;which side is it on?&rdquo;</strong> &mdash; and therefore it cannot
@@ -297,8 +297,8 @@ It cannot see the block at all once it turns away. So it does the only thing a b
 <td style="padding: 10px; border: 1px solid #ddd;">The plan is finished. The state machine takes over.</td></tr>
 </tbody></table>
 <img src="https://weymuth.github.io/zumo/images/L10_GRAPHIC_10-02_avoidance_box_five_phases.svg" alt="Top-down view of the avoidance box. Phase 1 TURN_AWAY spins right off the line, phase 2 DRIVE_PAST runs 20 cm parallel to it, phase 3 TURN_BACK spins left to face it again. Phases 4 SEEK_LINE and 5 COMPLETE are drawn OFF the path and marked MOVES NOTHING, because they turn no wheels; the drive back to the line belongs to a separate state, RETURNING_TO_LINE." style="width: 100%; max-width: 900px; display: block; margin: 20px auto;">
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p><strong>Two of those five phases do not drive the robot.</strong> Look again at
     <code>PHASE_SEEK_LINE</code> and <code>PHASE_COMPLETE</code> &mdash; one starts a stopwatch, the other just says
     &ldquo;I&rsquo;m done.&rdquo; Neither turns a wheel. That looks like a mistake. It is not, and it is worth
@@ -381,8 +381,8 @@ number that worked in class on Tuesday is wrong on Friday, and nothing in your c
 <p>You already own the fix. You built it in Lesson 6 and filed it in Lesson 7:</p>
 <pre style="background-color: #1e1e1e; color: #e8e8e8; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas','Monaco','Courier New',monospace; font-size: 0.9em; line-height: 1.8;">driveDistance(<span style="color: #b5cea8;">20.0</span>);    <span style="color: #6a9955;">// 20 CENTIMETERS. Not &quot;however far 800ms gets us.&quot;</span>
 turnDegrees(<span style="color: #b5cea8;">90.0</span>);      <span style="color: #6a9955;">// 90 DEGREES. Measured by encoders, not by a stopwatch.</span></pre>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">In Section 6 you will build the timed version <em>first</em>, on purpose,
     and watch it fail. Then you will replace it with the encoder version and count the lines. The fix is
     <strong>smaller than the problem</strong>. That is not a coincidence &mdash; it is what it feels like when you
@@ -563,8 +563,8 @@ That is the whole point of the architecture you built in Lesson 7 &mdash; new ca
   AVOIDING_OBSTACLE,   <span style="color: #6a9955;">// NEW: driving the avoidance maneuver</span>
   RETURNING_TO_LINE    <span style="color: #6a9955;">// NEW: maneuver done, hunting for the line again</span>
 };</pre>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">Look at what did <em>not</em> happen. You did not rewrite the state machine.
     You did not touch <code>FOLLOWING_LINE</code> or <code>EXECUTING_TURN</code>. You <strong>appended three names</strong>
     to a list. A state machine that can grow like this is the payoff for having built it properly in Lesson 9 &mdash;
@@ -808,8 +808,8 @@ meant.</p>
 <p>Declare in many places. Define in one. That is the whole rule.</p>
 </div>
 </details>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">You met this exact pattern in Lesson 7 when you built the extern block,
     and in Lesson 8 when a missing <code>extern</code> gave you a different flavor of the same complaint.
     This is the <strong>third time</strong>. It will not be the last. Adding a hardware object to a multi&#8209;file
@@ -1108,8 +1108,8 @@ people write first, and you are going to write it, run it, and watch exactly how
     stops a bit short of the line &mdash; and on fresh batteries it does all three <em>differently</em> than it
     did on tired ones. Nothing in your code changed. The <em>robot</em> changed.</p>
 </div>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">Count the <code>delay()</code> calls you just wrote. Every one of them is a
     window where your robot is <strong>deaf and blind</strong> &mdash; not reading the line, not reading proximity,
     <em>not listening to the kill switch you built in Step 6.</em> Press B during the maneuver. Nothing happens.
@@ -1165,8 +1165,8 @@ touched them since. Replace the whole timed maneuver with this:</p>
 <p>And look at what the new version <em>says</em>. Not &ldquo;run the motors for 800 milliseconds and
 hope.&rdquo; It says <code>driveDistance(20.0)</code> &mdash; <strong>go twenty centimeters</strong> &mdash; and the
 encoders make sure it happens whether the batteries are fresh, tired, or somewhere in between.</p>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">This is what it feels like to finally use the right abstraction. All that
     encoder machinery you built in Lesson 6 &mdash; <code>COUNTS_PER_CM</code>, <code>averageCounts()</code>, the whole
     thing &mdash; sat unused for two lessons. It was not busywork. It was <strong>a tool you were putting on the shelf
@@ -1253,8 +1253,8 @@ and much more annoying problem.</p>
     again, and now it is wrong in a new way. That is not calibrating. That is <strong>guessing with extra
     steps</strong> &mdash; and it is where an entire afternoon goes.</p>
 </div>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;"><strong>Calibrate ONE primitive at a time. Prove it. Then compose.</strong>
     A turn you have proven cannot be blamed for a bad drive. A drive you have proven cannot be blamed for a bad turn.
     When you finally run the whole maneuver and something is off, there is only <em>one</em> thing left it can be.</p>
@@ -1480,8 +1480,8 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 <span style="color: #569cd6;">void</span> loop() {
   <span style="color: #6a9955;">// Nothing.</span>
 }</pre>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">Look at <code>delay(300)</code>. It appears twice, it moves nothing, it reads
     no sensors. <strong>It is the most important line in this program.</strong> A robot that has been driving forward
     does not stop the instant you set the speeds to zero &mdash; it <em>coasts</em>. Start the turn while it is still
@@ -1656,8 +1656,8 @@ program is repetition.</p>
     <em>centimeters</em>, because the encoders are <strong>counting</strong>. You say <code>turnDegrees(90)</code>
     and it turns 90 <em>degrees</em>.</p>
 </div>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">You just spent four rungs hunting numbers this program does not need.
     <strong>That was not wasted time &mdash; that was the argument.</strong> Timed motion asks &ldquo;for how
     <em>long</em>?&rdquo; and the honest answer is <em>&ldquo;depends on the batteries, the floor, and the day.&rdquo;</em>
@@ -1731,8 +1731,8 @@ program is repetition.</p>
 <h4 style="color: #9a4459; margin-top: 24px;">🔴 <code>redefinition of &lsquo;Zumo32U4ProximitySensors proxSensors&rsquo;</code></h4>
 <p><strong>What is actually happening:</strong> You created the object <strong>twice</strong> &mdash; once in <code>RobotSensors.h</code> and once in <code>RobotSensors.cpp</code>. And because every file that includes the header gets its own copy, the linker ends up holding several proximity sensors and cannot tell which one you meant.</p>
 <p><strong>Fix:</strong> Put <code>extern</code> back on the header line. The header <strong>declares</strong> (<code>extern Zumo32U4ProximitySensors proxSensors;</code>); exactly one <code>.cpp</code> file <strong>defines</strong> (<code>Zumo32U4ProximitySensors proxSensors;</code>). <strong>Declare in many places. Define in one.</strong></p>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">You have now met this error three times &mdash; Lesson 7 when you built the
     extern block, Lesson 8 when a missing <code>extern</code> gave you the link&#8209;time flavor of it, and Step 4 today.
     It is not hazing. <strong>Adding a hardware object to a multi&#8209;file project <em>is</em> this error</strong>, and the
@@ -1799,8 +1799,8 @@ and the state name tells you where to look:</p>
 <tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><code>SEEKING</code></td><td style="padding: 10px; border: 1px solid #ddd;">hunting for the line</td><td style="padding: 10px; border: 1px solid #ddd;">the turn&#8209;back angle &mdash; it is looking in the wrong place</td></tr>
 <tr><td style="padding: 10px; border: 1px solid #ddd;"><code>STOPPED</code> + <code>LOST THE LINE</code></td><td style="padding: 10px; border: 1px solid #ddd;">it gave up, honestly</td><td style="padding: 10px; border: 1px solid #ddd;">&sect;7A. The turn is wrong, not the timeout.</td></tr>
 </tbody></table>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">Notice how much diagnostic power you get from <em>one word on a screen</em>.
     That is the state machine paying you back. A robot with a <code>bool isRunning</code> can only tell you
     &ldquo;yes&rdquo; or &ldquo;no.&rdquo; A robot with seven named states can tell you <em>what it thinks it is doing</em> &mdash;
@@ -1887,8 +1887,8 @@ distinction is the whole architecture:</p>
 <tr style="background-color: #f8f9fa;"><td style="padding: 10px; border: 1px solid #ddd;"><strong>Scope</strong></td><td style="padding: 10px; border: 1px solid #ddd;">The whole robot. Always meaningful.</td><td style="padding: 10px; border: 1px solid #ddd;">Only meaningful <em>inside</em> <code>AVOIDING_OBSTACLE</code>.</td></tr>
 <tr><td style="padding: 10px; border: 1px solid #ddd;"><strong>Analogy</strong></td><td style="padding: 10px; border: 1px solid #ddd;">Which chapter of the book you are in.</td><td style="padding: 10px; border: 1px solid #ddd;">Which paragraph of that chapter.</td></tr>
 </tbody></table>
-<div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #0d47a1;">🔍 INSIGHT</div>
+<div style="background-color: #e9f7f5; border-left: 4px solid #2da99d; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
+    <div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em; color: #165a53;">🔍 INSIGHT</div>
     <p style="margin-bottom: 0;">This is why <code>PHASE_SEEK_LINE</code> does not actually seek, and
     <code>PHASE_COMPLETE</code> does not actually complete anything. The <em>phases</em> are the plan. The real hunting
     is a big job &mdash; it needs its own timeout, its own line check, its own way to give up &mdash; and it does not belong
