@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-# book_gates.py v1.26.1 (S95) — whole-book consistency gates.
+# book_gates.py v1.26.2 (S95) — whole-book consistency gates.
 # v1.26.1: §5.1 coverage 250 → 251. L01's AI-autocomplete block was on the one-off border
 # #ffb300; the S95 repaint snapped it to WARNING's #ffc107, which brings it INTO this gate's
 # scope (scheme + ⚠ glyph now agree). Its merged label was split into the canonical
 # ⚠ WARNING label + separate title line. Control-run: the assert fired at 251/250 before
 # this bump, so the number is doing work.
+# v1.26.2: GEOM_BASELINE 115 → 114. L03's stop-motors block was 5px on #c0392b/#f8d7da; the
+# S95 repaint moved it to #fdecea and normalised the rule to the canon 4px, so that debt is
+# PAID, not moved, and its baseline row is gone. DJ ruling: from S95 on, a repaint that lands
+# on one of the off-canon blocks normalises the width in the same edit.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -1049,7 +1053,6 @@ GEOM_BASELINE = {
     ('02', 5, '#1a5276', '#f8f9fa'): 1,
     ('03', 5, '#1a5276', '#f8f9fa'): 1,
     ('03', 5, '#2e86ab', '#f4f9fc'): 1,
-    ('03', 5, '#c0392b', '#f8d7da'): 1,
     ('03', 5, '#ffc107', '#fff8e1'): 1,
     ('04', 5, '#1a5276', '#f8f9fa'): 1,
     ('05', 5, '#1a5276', '#f8f9fa'): 1,
