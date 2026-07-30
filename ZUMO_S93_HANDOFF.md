@@ -14,11 +14,17 @@
 
 ---
 
-# ⚠️ NOTHING IN S92 WAS PUSHED
+# S92 IS PUSHED AND FRESH-CLONE VERIFIED
 
-Everything below is applied and verified **in a local clone only**. Head is still `9bffbee`.
-The first job in S93 is to push, or to decide not to. **Do not treat S92's versions as live
-until a fresh clone confirms them.**
+Head **`ca36cf0`**. All 35 gates pass on the pushed tree · `gen_component --selftest` all checks
+pass · census **39,970 / 1,025 / 174 / 174 / 64 / 171 / 56 / 403** · 0 old pills · `images/icons/`
+48 · `images/marks/` 40 · §12.2 satisfied, one handoff in root.
+
+**The push took two commits, and the gate caught the gap.** The first (`514588e`) landed every
+file but left `ZUMO_S92_HANDOFF.md` in place, so §12.2 failed with two handoffs in the root; the
+second (`ca36cf0`) deleted it. **The missed item was the only one on the download list that was a
+DELETION rather than an upload** — there is no file to drag, so nothing prompts you. Worth
+remembering the next time a handoff swaps.
 
 ---
 
@@ -83,7 +89,7 @@ labels already all-caps and therefore already conformant. Both numbers correct.
 own `--selftest` caught a stale footer stamp at line 578 that the version bump missed — §1's
 "every version stamp agrees" check earning its keep.
 
-**6. Bible v8.78 → v8.79.** 15 lessons bumped MODERATE; **L16 unchanged at v02.7.0** (no §6.6a
+**6. Bible v8.78 → v8.79, then → v8.79.1 at close** (minor, record only — the two family renames were ruled AFTER the v8.79 entry was written and briefly lived only in this handoff). 15 lessons bumped MODERATE; **L16 unchanged at v02.7.0** (no §6.6a
 family callouts).
 
 ---
@@ -110,14 +116,47 @@ family callouts).
 
 # OPEN — NOT RESOLVED
 
-## SEE has two names and Option C makes the rename FORCED
-Icon Guide says `SEE`; the 20 live blocks say `WHAT YOU SHOULD SEE`. Under Option C the label
-must hold exactly one string, so this family **cannot ship until one name wins.** DJ finds "SEE"
-lame. Candidates surviving both collisions: **`WHAT YOU SHOULD SEE`** (zero label edits — retire
-the guide's short form), `EXPECTED`, `CONFIRM`. **"Check for yourself" was rejected** — reads as
-an instruction, and collides with `✅ CHECKPOINT` (63 blocks, biggest family).
-**DJ also raised `✋ YOUR TURN` to replace `📝 DO THIS NOW`** (34 labels + 10 legends) — warmer,
-same imperative job. **UNRULED.** It does NOT fit SEE.
+## SEE and DO THIS NOW are RULED; the scope is narrow and measured
+
+**DJ ruled both names at S92 close: `✋ YOUR TURN` and `WHAT YOU SHOULD SEE`.** ✋ is
+confirmed **unused book-wide, 0 occurrences**, so no collision. `WHAT YOU SHOULD SEE` wins as
+SEE's single name because 21 blocks already say it — **zero label edits**; the Icon Guide's short
+form `SEE` retires. Under Option C the label must hold exactly one string, so this rename was
+FORCED, not cosmetic. *"Check for yourself"* was rejected: it reads as an instruction, and
+collides with `✅ CHECKPOINT` (63 blocks, the biggest family).
+
+**NEITHER IS A GLYPH-WIDE SWEEP. 📝 is doing EIGHT jobs across 82 blocks:**
+
+| label on 📝 | blocks | in scope for YOUR TURN? |
+|---|---:|---|
+| `DO THIS NOW` (bare + suffixed) | ~54 | **YES** |
+| **`MY PLAN — yours, before any code`** | **20** | **NO — see below** |
+| `WHAT YOU NEED BEFORE STARTING` | 2 | no |
+| `DISCUSSION QUESTIONS` · `CODE SWAP` · `THE TUNING RITUAL` · `THE GREEN SURVEY` | 4 | no |
+
+👀 is the same shape: 28 callouts, **21 bare `WHAT YOU SHOULD SEE`** in scope; the other 7
+are `FUNCTIONALITY TEST`, `Preview:`, `The Reality Check`, `Healthy Battery Readings`, and the
+`Note:` block already ruled → Tip.
+
+**MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS.** The lesson callout asks the student to plan
+in prose *before any code* (L08: *"list the six settings a line follower needs in your own words —
+a name, a type, and a first-guess value for each"*), and **the Maker stamps a matching pseudo-code
+comment block into every generated `main.cpp` header — `newproject.html` records that L01 ships
+WITHOUT it.** So the lesson prompt and the generated comment block must keep saying the same
+thing. **Renaming MY PLAN to YOUR TURN would break book/generator agreement**, and a glyph-wide
+sweep would have done exactly that. YOUR TURN is *go do the thing*; MY PLAN is *write down what
+you'll do first* — two steps of one lesson, in order.
+
+MY PLAN is also painted **plum `#f3e5f5` / `#9b6a9e`** (PART 4's colour), carrying 📝 only
+by borrowing — the same borrowed-paint pattern as S92's 24 blocks, on a different axis. If it ever
+gets its own glyph, the Maker's injected block moves in the same batch.
+
+**Also found: `WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs** — 2 blocks on 📝, 2 on
+📋. One construct, two glyphs.
+
+**Do these renames AFTER the standard has the rows** (next section). Renaming SEE in the book
+before `BookComponentStandard` has a SEE row is S91's recorded failure — *a ruling applied to the
+book is not a ruling applied to the canon* — which is why §5.1 was wrong for thirty sessions.
 
 ## Three live constructs are absent from BookComponentStandard
 **SEE** (20 blocks) · **🛑** (18 blocks, L11/L12) · **the 🔬 hook** (7). SEE and 🛑 have zero
