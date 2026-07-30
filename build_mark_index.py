@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build_mark_index.py v1.0.0 (S94) — a visual index of images/marks/.
+"""build_mark_index.py v1.0.1 (S95) — a visual index of images/marks/.
 
 Reads every SVG in images/marks/, groups by the role colour baked into its fill,
 and emits a single standalone HTML sheet. Read-only: touches nothing in the repo.
@@ -12,6 +12,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 
 FAMILY = {
     'book': 'LEARN', 'sticky': 'NOTE', 'chat-square-text': 'EXPLANATION',
@@ -176,6 +177,9 @@ if __name__ == '__main__':
     marks = read_marks(root)
     assert len(marks) == 41, 'expected 41 marks, found %d' % len(marks)
     html = build(marks, refs=0)
-    out = sys.argv[2] if len(sys.argv) > 2 else 'ZUMO_MARK_INDEX.html'
+    # v1.0.1 (S95): the default output must NOT be repo root. ZUMO_MARK_INDEX.html in
+    # root is the stray that fails the §12/§23 site-layout gate, and regenerating it
+    # there is how it comes back. Pass an explicit path to put it anywhere else.
+    out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(tempfile.gettempdir(), 'ZUMO_MARK_INDEX.html')
     open(out, 'w', encoding='utf-8').write(html)
-    print('%d marks -> %s (%d bytes)' % (len(marks), out, len(html)))
+    print('%d marks -> %s (%d bytes)' % (len(marks), out, len(html.encode('utf-8'))))

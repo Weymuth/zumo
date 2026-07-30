@@ -1,5 +1,21 @@
-import json,re,html,collections
-d=json.load(open('/tmp/inv.json'))
+#!/usr/bin/env python3
+"""build_family_map.py v1.0.0 (S95) - assigns every callout block to a family.
+
+Reproducible from a clean clone: run it from repo root, no prior step. It builds its
+own inventory by calling lesson_inventory.build() on all 16 lessons (v1.0.0 replaces
+a read of /tmp/inv.json, which meant a fresh session got FileNotFoundError).
+
+Label matching unescapes TWICE and normalises the curly apostrophe before comparing:
+§24.11 - an entity is not the character it encodes. ENGINEER'S LOG carries &rsquo;
+and read as ZERO blocks in S94 until this was fixed. It has 17.
+"""
+import json,re,html,collections,glob,os,sys
+import lesson_inventory
+
+ROOT=sys.argv[1] if len(sys.argv)>1 and not sys.argv[1].startswith('-') else '.'
+_files=sorted(glob.glob(os.path.join(ROOT,'lessons','Lesson_*.html')))
+assert len(_files)==16, 'expected 16 lesson files under %s/lessons, found %d - run from repo root' % (ROOT,len(_files))
+d=[lesson_inventory.build(f) for f in _files]
 def norm(s):
     s=html.unescape(html.unescape(s or '')).replace('\u2019',"'").replace('\u2014','-')
     return re.sub(r'^[^A-Za-z"\u201c]+','',s).strip()
