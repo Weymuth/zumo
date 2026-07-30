@@ -52,7 +52,7 @@ unglamorous and is probably the highest-value paint work left.
 
 **No lesson file was changed. Everything below is an instrument, a document, or a ruling.**
 
-**1. All 1,048 callout blocks assigned to 30 families** — `ZUMO_S94_FAMILY_MAP.md`, reproducible via
+**1. All 1,048 callout blocks assigned to 30 families** — `ZUMO_FAMILY_MAP.md`, reproducible via
 `build_family_map.py`. Five families carry 57% of the book: KEY TERM 184 · NOTE 133 · CHECKPOINT 112
 · TIP 85 · WARNING 80. Nine new rows required; four roster families that had zero blocks now have
 work. The card header stays a §7.2 supporting mark, not a family (§4.1, the S93 🛑 precedent).

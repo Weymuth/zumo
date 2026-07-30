@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""build_family_map.py v1.1.0 (S96) - assigns every callout block to a family.
+"""build_family_map.py v1.1.1 (S96) - assigns every callout block to a family.
 
 Reproducible from a clean clone: run it from repo root, no prior step. It builds its
 own inventory by calling lesson_inventory.build() on all 16 lessons (v1.0.0 replaces
 a read of /tmp/inv.json, which meant a fresh session got FileNotFoundError).
 
+v1.1.1: reference renamed - the map is maintained, not a session artifact, so it is
+ZUMO_FAMILY_MAP.md. No behaviour change; the reference was always prose.
+
 v1.1.0: the 15 blocks the S94 map assigned but this script did not are now ruled (DJ, S96).
 assigned 1048/1048, unassigned 0, and every one of the 30 family counts equals
-ZUMO_S94_FAMILY_MAP.md exactly - the script now reproduces the document. Rules match on
+ZUMO_FAMILY_MAP.md exactly - the script now reproduces the document. Rules match on
 label PREFIX, never line number. Control-run: routing one block to the wrong family leaves
 the 1048 total untouched and shows up only in the per-family diff, so the total is not
 evidence on its own.
