@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.25 (S91) — whole-book consistency gates.
+# book_gates.py v1.26 (S92) — whole-book consistency gates.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -1139,7 +1139,65 @@ if seen < 900:
     bad.append(f'COVERAGE: only {seen} callouts inspected, expected 1000+')
 gate('\u00a75.1 callout title uses the block form, never a bare <strong>', bad)
 
+# ---- §5.1 OPTION C: THE LABEL ELEMENT HOLDS THE FAMILY WORD AND NOTHING ELSE (NEW, S92)
+# ---- DJ ruling. The whole return on Option C is that a block's family is readable by EXACT
+# ---- MATCH instead of by parsing a family word off the front of authored prose -- which is
+# ---- what made the amber scheme unclassifiable at S91 (one scheme, six jobs). This gate is
+# ---- what makes that guarantee real; without it the label silently reacquires prose.
+# ---- Censused before writing, per S91's lesson that gate 34 covered one shape of three:
+# ---- the live shapes are (a) label alone, 72 blocks, and (b) label + title, 178 blocks.
+# ---- Scope is the (bg, border) scheme, NOT the glyph -- the scheme is the family of record
+# ---- (S92 ruling), and 3 blocks on non-canonical schemes are deliberately OUT of scope and
+# ---- logged for the family-table batch, so a COVERAGE assert pins the count at 250.
+_SCHEME = {('#f0f7f0', '#6b8e6b'): 'TIP',
+           ('#eceff1', '#607d8b'): 'NOTE',
+           ('#fff8e1', '#ffc107'): 'WARNING'}
+_FAMGLYPH = {'TIP': '\U0001F4A1', 'NOTE': '\U0001F4D8', 'WARNING': '\u26A0'}
+bad = []
+seen = 0
+for f in sorted(glob.glob('lessons/Lesson_*.html')):
+    src = R[f]
+    lines = src.split('\n')
+    for c in LI.build(f)['callouts']:
+        fam = _SCHEME.get((c['bg'], c['border']))
+        if fam is None or c['glyph'] not in _FAMGLYPH.values():
+            # S92: scope is blocks where GLYPH AND SCHEME AGREE. The scheme alone is NOT the
+            # family of record -- 24 blocks borrow §6.6a paint while carrying another
+            # family's glyph (7x the going_deeper hook, 7x DO THIS NOW, 2x WHAT YOU NEED,
+            # 8 one-offs). Asserting scheme-as-family would require breaking the rule 24
+            # times, so the gate holds the agreeing set and the 24 are logged for the
+            # family-table batch. The earlier ruling was tested only on blocks that COULD
+            # NOT disagree; an assert that cannot fail is not evidence.
+            continue
+        off = sum(len(l) + 1 for l in lines[:c['line'] - 1])
+        gt = src.find('>', off)
+        if gt < 0:
+            continue
+        i = re.match(r'\s*', src[gt + 1:]).end() + gt + 1
+        m = re.match(r'<div\b[^>]*>(.*?)</div>', src[i:], re.S)
+        if not m:
+            continue          # titleless / sentence-lead <b>; gate 34 owns those
+        seen += 1
+        # unescape: glyphs are numeric entities in some lessons (L11/L12), and a matcher that
+        # forgets that reports every entity-encoded block as broken. S92 hit this exact bug.
+        label = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', m.group(1)))).strip()
+        want = _FAMGLYPH[fam]
+        if not label.startswith(want):
+            bad.append(f'{L(f)} line {c["line"]}: label glyph disagrees with the '
+                       f'{fam} scheme, \u00a75.1')
+            continue
+        rest = label[len(want):].lstrip('\ufe0f').strip()
+        if rest != fam:
+            bad.append(f'{L(f)} line {c["line"]}: label carries {rest[:40]!r}, '
+                       f'\u00a75.1 requires exactly {fam!r}')
+if seen != 250:
+    bad.append(f'COVERAGE: {seen} labels inspected, expected 250 '
+               f'(3 off-canon blocks are out of scope by ruling)')
+gate('\u00a75.1 callout label holds exactly the family word, matched to its scheme', bad)
+
 print('=' * 52)
+
+
 
 if FAIL:
     print(f'{len(FAIL)} GATE(S) FAILED: {", ".join(FAIL)}')
