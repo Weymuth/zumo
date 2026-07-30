@@ -1,11 +1,89 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 30, 2026 (Session 96 — **A CLEAN TOTAL IS NOT A CLEAN RESULT.** The 15 blocks the S94 map assigned but `build_family_map.py` could not reach are closed, and the generator now reproduces the document row-for-row. **The method is the finding:** nobody read 15 blocks and argued 15 times — the per-family shortfalls between generator and document **summed to exactly 15**, which recovered the target histogram before a single block was examined, turning "rule 15 blocks" into "find the assignment consistent with a known histogram." Two rulings were then **forced by arithmetic** (one plausible block, one open slot) and three **settled by glyph canon** — the Bible's post-S95 split assigns 📖 LEARN and 🔍 INSIGHT, so of the three blocks competing for those two slots, two matched their glyph exactly and the third (🧠) carried a glyph belonging to neither and was the one that had to leave the pair. **THE HISTOGRAM OUT-PREDICTED CLAUDE TWICE:** it correctly refused `Why Today's Work Matters → WHERE THIS GOES` because that family had no slot, and the block it forced into NOTE turned out to be the very block exposing the apostrophe bug. **AND THE VERIFICATION IS THE LESSON:** after encoding the rulings the script reported `assigned 1048/1048`, `unassigned 0`, `families 30` — every number a person would look at was correct — but a deliberately misrouted ruling left **all three of those numbers completely unchanged**, showing up only in the per-family diff. A block moving between families does not change the sum; the total is structurally blind to the exact defect it looks like it would catch. **SOMETHING A STUDENT READS SHIPPED:** the syllabus went from eight open items to four, six of seven new sections traceable to repo canon rather than invented. **AND TWO OF THE FOUR ITEMS WORKED NEEDED NO EDIT AT ALL** — both L03 Coach's Tips were already live under 💡 TIP and ⚠️ WARNING, and "Coach's Tip" names a component that was retired, its only trace an L02 HTML comment recording that an INSIGHT callout replaced it.)
-**Status:** ✅ **35/35 GATES PASS, clone-verified at `80721d7`. Five pushes this session, every one verified by fresh clone and md5.** Census **39,972** — **no lesson file was touched in S96.** Family map **1,048 / 1,048 assigned · 0 unassigned · 30 families**, generator and document in exact agreement. `ZUMO_S94_FAMILY_MAP.md` renamed **`ZUMO_FAMILY_MAP.md`** (maintained, not a session artifact) and regenerated — its table emitted from the generator's own run, not retyped, then re-parsed from disk and re-compared. **THE RENAME'S DELETION LANDED**, verified by fresh clone. `ZUMO_Syllabus_WORKING.md` is now **in the repo**, 6,758 → 14,825 bytes, `Still To Add` 8 → 4, zero original sections lost (asserted by heading-set diff, not assumed). **THE BLIND SPOT THAT BIT TWICE: `§12/§23` globs `**/*.html` only** — nothing would have caught the rename leaving both filenames in root, just as nothing caught `gitignore.txt` sitting there through a full 35/35 pass. The syllabus and the family map are both root `.md` files governed by no gate at all. **STILL OWED BY DJ:** a read of the syllabus's `In the Lab` section, the one section with zero repo backing.
+**Date:** July 30, 2026 (Session 97 — **A PASSING SUITE IS ONLY AS WIDE AS ITS GATES.** Four images were **404 on the published site** and had been through a full 35/35 pass: Lesson 02 pointed at three `.svg` files and Lesson 05 at one that existed nowhere on `main`, in three of the first five lessons a student opens, and **nothing in the suite had ever looked at an `<img src>`.** They were not found by an instrument — they were found by chasing a stray branch, `Weymuth-patch-1`, 302 commits behind, which turned out to be **the only surviving copy of the missing files**; a dead branch nobody had opened was load-bearing. The correction is TWO gates, and **the second exists because the first is not enough: a reference that resolves says nothing about what it resolves TO.** Gate 36 stayed green while `L02_GRAPHIC_2-08_memory_ladder.svg` shipped at **4,879,809 B** — a PNG in an SVG envelope, zero drawing elements, the same image embedded twice. **GATE 36 THEN PROVED ITSELF THE SAME AFTERNOON:** three L05 photographs were deleted in a push and it named all three with line numbers on its first run, minutes later, where this morning an identical defect had survived unnoticed for an unknown number of sessions. **THE GRID IS IN THE REPO** — 23 periods, and reading it against the lessons found two periods of Lesson 13 content labelled Lesson 12 and a Fall trimester that **could not deliver its own final milestone.** **AND I SHIPPED TWO WRONG THINGS:** a numbered-mark generator built on an inference reported as fact — §9 names two radii and NO SHAPE — and a first attempt at removing it that would have deleted 428 lines instead of 84 because `.index()` matched a comment appearing twice. Both caught by checking the result, neither catchable by reading the code.)
+**Status:** ✅ **37/37 GATES PASS, clone-verified at `a0fd093`. Nine pushes this session, every one verified by fresh clone and md5.** Census **39,972** — **no lesson file was touched in S97.** **`book_gates.py` v1.27.1 → v1.29**, adding `§21` (every image reference resolves to a file on disk) and `§21.1` (no REFERENCED `.svg` carries an embedded raster), each control-run four ways including against unfixed source where gate 36 independently rediscovered all four 404s with line numbers. **`ZUMO_Teacher_Daily_Grid_WORKING.md` v1.0 is now in the repo** — 23 periods + 3 buffers, Fall running through **L13 Step 3** per DJ ruling (*“Fall runs until they discover the silver line”* = `silverDetected()`, the Doorman), sized at two periods because L13 Steps 1–3 measure **191 lines** of build against L11's entire **188**. **LESSON 02'S DIAGRAM PAYLOAD IS 15,484 BYTES**, down from 10.27 MB at the worst point today. **The 16 spiral stars are flat** (`#7B6240` / `#F5F2E9`, zero gradients, 16,279 B) per DJ ruling that RoboLore forbids gradients — recoloured S40 assets, **not generated**, because `gen_component.py` v1.6's numbered-mark emitter produced a star 53% blunter than the book's with digits riding out of it, and was **WITHDRAWN in v1.6.1**. **THE PATTERN THAT COST THE MOST TIME: four two-part pushes each lost a half** — a file landing in `images/` without the root update, a deletion reported before it went up, a delete without its add, and three photos deleted without repointing the lesson. A rename in the same commit went through cleanly, so it is **add-plus-delete** that fails, because the deletion is a separate checkbox.
 
-**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.82** · BookComponentStandard v01.10.0 · gen_component v1.5 · Maker v2.45.1 · **book_gates v1.27.1** · lesson_inventory v1.1.1 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.2 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.3 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `1d62b4c`.**
+**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.82** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.29** · lesson_inventory v1.1.1 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.2 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.3 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `a0fd093`.**
 
 ---
+---
+
+## WHAT SHIPPED IN S97 (nine pushes, every one fresh-clone verified by md5)
+
+**1. `book_gates.py` v1.27.1 → v1.29 — gates 36 and 37.** `§21` every image reference resolves to a
+file on disk; `§21.1` no REFERENCED `.svg` carries an embedded raster. Gate 36 control-run four ways:
+silent on the fixed tree, and against the unfixed tree at `cd47f50` it named exactly the four broken
+refs with line numbers; a seeded break in each NON-lesson page (`index`, `timer`, `going_deeper`,
+`tutor/tutor`) was caught, proving the glob reaches past `lessons/`. That scope control exposed a
+defect in the integration itself — the suite's `L(f)` helper is the fixed slice `f[15:17]` and returns
+`''` on `index.html`, so the gate reported a defect it could not name. Gate 37 is **scoped to
+REFERENCED files deliberately**: raw exports are staged in `images/` before being wired up, and
+strict scoping would have failed on seven staged files the same day. Unreferenced offenders are
+counted and printed, never fatal.
+
+**2. Four recovered SVGs.** `L02_GRAPHIC_2-04_setup_loop_timeline.svg`, `_2-08_memory_ladder.svg`,
+`_2-09_folder_structure.svg` and `L05_GRAPHIC_5-01_robot_sees_obstacles.svg` were 404 on the live
+site. Recovered from `Weymuth-patch-1`, the only place they still existed. **The `.png` versions that
+sat beside them had never been referenced by anything** — the lessons asked for `.svg` throughout —
+so Lesson 02 was serving three broken images while 3.4 MB of unused rasterisations sat next to them.
+
+**3. `ZUMO_Teacher_Daily_Grid_WORKING.md` v1.0**, 9,030 B. Five corrections recorded in the file: the
+old Pd 20 taught Lesson 13 content under Lesson 12's name (L12 contains the word “silver” **zero
+times**; L13 holds `7B — The Silver Brake` and `8A.1 The Clamp, With Numbers`, the grid's phrase
+verbatim); Fall extended through L13 Step 3 so M6 becomes deliverable; two periods sized by
+measurement; the countdown column recomputed with its convention stated; and the L13 reading split at
+§5, because §5.1 `driveUntil()` is built for the sweep and belongs to Winter.
+
+**4. The 16 spiral stars, flat.** `#7B6240` with `#F5F2E9` digits, zero gradients, 16,279 B for the
+set. Filenames and `<img>` references unchanged, so **no lesson was edited**. Produced by recolouring
+the S40 assets with the polygon points and glyph transforms **asserted byte-identical** — ten digit
+glyphs harvested from the originals, so the letterforms are the approved ones.
+
+**5. `gen_component.py` v1.5 → v1.6.1 — a withdrawal.** v1.6 shipped a numbered-mark generator built
+on the reading that §9's two radii describe a star. **§9 names no shape.** Its 6.2/9.6 gives
+inner/outer **0.646** against the book's **0.421**, and `dominant-baseline="central"` is unreliable
+through `<img>` — measured, the digits sit **16% of the star's height too high**. Bible §18.2 had
+already ruled the digits must be VECTOR PATHS, *“renderer-proof”*, and that ruling was overridden
+after being flagged. v1.6.1 removes both emitters and keeps only the §9 PARSE. The first removal
+attempt would have deleted **428 lines instead of 84**, because `.index()` matched a comment that
+appears twice; the redo anchors from the end and asserts the slice contains `check(` and no `def `.
+
+**6. Three L05 photographs restored.** `L05_IMAGE_5-05a`, `5-05b` and `5-06` were deleted in a push
+while Lesson 05 still referenced them. **Gate 36 named all three with line numbers on its first
+run.** Recovered from history and verified 200 on the live site. Root cause: the replacements are
+`L05_GRAPHIC_5-08/5-09/5-10` and **IMAGE and GRAPHIC are separate number spaces** per §10, so the new
+graphics never occupied the old slots.
+
+**7. 3.27 MB of unreferenced files deleted**, plus the two superseded `_r01` sensor-array revisions
+and an `images/Archived Images/` duplicate.
+
+---
+
+## S97 — THE IMAGE PIPELINE, MEASURED
+
+**199 SVGs. 194 are true vector. 5 carry embedded raster, 7.27 MB, and every one is unreferenced.**
+Three of the five sit at **canonical names** (`L05_GRAPHIC_5-08/5-09/5-10`), promoted from `_r02`,
+which makes them look ready — they are not; dropping the suffix changed the name, not the contents.
+
+**GPT reported the sensor arrays fixed and they were not, but it did do work.** Measured r01 → r02:
+the embedded PNG is **byte-identical, same md5**, while the vector overlay went 54 → 28 and 66 → 28
+elements. It reworked the layer that was already fine and never touched the photograph. *“Fix the
+SVG”* is satisfiable by editing anything inside the file.
+
+**The instruction that works** — it produced every good output today — is that the file must contain
+**no `<image>` tag and no `data:image/…;base64` string**, with the subject redrawn as `<rect>`,
+`<circle>`, `<path>`, `<text>`. **The acceptance test is one line: search the file for `base64`.**
+Real vector files today ran 4–10 KB.
+
+**Naming, confirmed against all 155 files and unambiguous:** trailing **`_##`** is a spiral star (all
+16, zero exceptions); trailing **`_r##`** is a ChatGPT redo; a mid-name `N-NN` hyphen is the image
+number and cannot collide. **`_##` alone would have collided** — it matches every spiral star.
+Neither convention is recorded in the Bible or `BookComponentStandard`.
+
+**Image size does not matter and neither do pixel dimensions** — 121 of 192 `<img>` tags are
+responsive (`width: 100%`, `max-width: 100%`, `height: auto`). **The filename is the only thing that
+breaks**, and extension counts as part of it. Every image failure this session was a filename change.
+
 
 ## WHAT SHIPPED IN S96 (five pushes, every one fresh-clone verified by md5)
 
