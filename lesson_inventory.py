@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-# lesson_inventory.py v1.1.0 (S91) — exhaustive structural ENUMERATION of the lesson files.
+# lesson_inventory.py v1.1.1 (S94) — exhaustive structural ENUMERATION of the lesson files.
+#
+# v1.1.1 (S94): the visible-banner expectation was still the pre-S89 value of 2, so --anomalies
+#   printed a false lead for all sixteen lessons. §5b and book_gates have required exactly ONE
+#   visible banner since the build banner was deleted at S89. Corrected 2 -> 1. A uniform anomaly
+#   across every file is a lead about the INSTRUMENT, not the book (§24.8) — and sixteen false
+#   leads bought cover for the two real ones beside them (§24.11).
 #
 # Usage:
 #   python3 lesson_inventory.py                     summary table, all 16 lessons
@@ -333,7 +339,7 @@ def flat_lines(pre):
 
 # ---------------------------------------------------------------- reporting
 
-BANNER = ('lesson_inventory.py v1.1.0 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
+BANNER = ('lesson_inventory.py v1.1.1 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
           'No exit code, no PASS/FAIL. A parser is necessary and not sufficient: read the table.\n')
 
 
@@ -489,8 +495,8 @@ def view_anomalies(invs):
             if gap:
                 out.append(f'uses fence comments but none for: {", ".join(gap)}')
         vis = [v['value'] for v in inv['versions'] if v['home'] == 'visible banner']
-        if len(vis) != 2:
-            out.append(f'{len(vis)} visible banner(s), expected 2')
+        if len(vis) != 1:
+            out.append(f'{len(vis)} visible banner(s), expected 1')
         for a in inv['braincheck']['anchors']:
             norm = BC_NORM.get(a['id'])
             if norm is not None and a['div_depth'] != norm:
