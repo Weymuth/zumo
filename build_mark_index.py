@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""build_mark_index.py v1.0.1 (S95) — a visual index of images/marks/.
+"""build_mark_index.py — a visual index of images/marks/.
+VERSION below is the only version home.
 
 Reads every SVG in images/marks/, groups by the role colour baked into its fill,
 and emits a single standalone HTML sheet. Read-only: touches nothing in the repo.
@@ -9,6 +10,8 @@ the set can be judged as a set. It is also the only place the Heritage Blue role
 colours actually appear anywhere in the project.
 """
 import json
+
+VERSION = 'v1.0.2'   # the only version home in this file (S96)
 import os
 import re
 import sys

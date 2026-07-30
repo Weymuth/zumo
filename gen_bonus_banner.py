@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""gen_bonus_banner.py v1.2 — generate the bonus-block banner + nav pill from one table.
+"""gen_bonus_banner.py — generate the bonus-block banner + nav pill from one table.
+VERSION below is the only version home.
 
 Bible §4.5: three families, one mark and one word each.
   practice    &#128296; (hammer)     "Extra Practice"
@@ -9,6 +10,8 @@ Bible §4.5: three families, one mark and one word each.
 Per Bible §24.6b: build bytes, assert, write .tmp, os.replace. Never open(path,'w').
 """
 import os, re, sys
+
+VERSION = 'v1.2.1'   # the only version home in this file (S96)
 
 MARK = {'practice': '&#128296;', 'observation': '&#128269;', 'sabotage': '&#128373;&#65039;'}
 WORD = {'practice': 'Extra Practice', 'observation': 'Observation', 'sabotage': 'Sabotage'}

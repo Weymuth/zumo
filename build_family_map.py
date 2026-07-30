@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""build_family_map.py v1.1.1 (S96) - assigns every callout block to a family.
+"""build_family_map.py - assigns every callout block to a family.
+VERSION below is the only version home; the lines beginning vN are changelog, not homes.
 
 Reproducible from a clean clone: run it from repo root, no prior step. It builds its
 own inventory by calling lesson_inventory.build() on all 16 lessons (v1.0.0 replaces
@@ -31,6 +32,8 @@ Label matching unescapes TWICE and normalises the curly apostrophe before compar
 and read as ZERO blocks in S94 until this was fixed. It has 17.
 """
 import json,re,html,collections,glob,os,sys
+
+VERSION = 'v1.1.2'   # the only version home in this file (S96)
 import lesson_inventory
 
 ROOT=sys.argv[1] if len(sys.argv)>1 and not sys.argv[1].startswith('-') else '.'

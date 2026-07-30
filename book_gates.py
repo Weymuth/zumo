@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# book_gates.py v1.27 (S95) — whole-book consistency gates.
+# book_gates.py — whole-book consistency gates. VERSION below is the only version home.
 # v1.26.1: §5.1 coverage 250 → 251. L01's AI-autocomplete block was on the one-off border
 # #ffb300; the S95 repaint snapped it to WARNING's #ffc107, which brings it INTO this gate's
 # scope (scheme + ⚠ glyph now agree). Its merged label was split into the canonical
@@ -17,6 +17,8 @@
 # When a new rule is canonized, add its gate here in the same session.
 
 import re, glob, html, os, sys, collections
+
+VERSION = 'v1.27.1'   # the only version home in this file (S96)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from html.parser import HTMLParser as _HTMLParser
 import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a third regex

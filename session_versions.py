@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""session_versions.py v1.0 (S96) - reads every version from its own file and EMITS the
+"""session_versions.py v1.1 (S96) - reads every version from its own file and EMITS the
 canonical blocks that LIVE_ZUMO_TEXTBOOK.md and the session handoff both use.
 
 WHY THIS EXISTS. S96 produced three false alarms in one close-out, all from the same shape:
@@ -75,14 +75,14 @@ ARTEFACTS = [
     ('Maker',                 'newproject.html',          r'Maker version: (v[\d.]+)'),
     ('going_deeper',          'going_deeper.html',        r'Going Deeper version: (v[\d.]+)'),
     ('Syllabus',              'ZUMO_Syllabus_WORKING.md', r'ZUMO_Syllabus_WORKING\.md (v[\d.]+)'),
-    ('book_gates',            'book_gates.py',            r'# book_gates\.py (v[\d.]+)'),
+    ('book_gates',            'book_gates.py',            r"VERSION = '(v[\d.]+)'"),
     ('lesson_inventory',      'lesson_inventory.py',      r'# lesson_inventory\.py (v[\d.]+)'),
     ('gen_component',         'gen_component.py',         r"VERSION = '(v[\d.]+)'"),
     ('pill_sweep',            'pill_sweep.py',            r'pill sweep .*?  (v[\d.]+)'),
     ('gate_payload_match',    'gate_payload_match.py',    r'PAYLOAD BYTE-MATCH GATE .*?— (v[\d.]+)'),
-    ('build_family_map',      'build_family_map.py',      r'build_family_map\.py (v[\d.]+)'),
-    ('build_mark_index',      'build_mark_index.py',      r'build_mark_index\.py (v[\d.]+)'),
-    ('gen_bonus_banner',      'gen_bonus_banner.py',      r'gen_bonus_banner\.py (v[\d.]+)'),
+    ('build_family_map',      'build_family_map.py',      r"VERSION = '(v[\d.]+)'"),
+    ('build_mark_index',      'build_mark_index.py',      r"VERSION = '(v[\d.]+)'"),
+    ('gen_bonus_banner',      'gen_bonus_banner.py',      r"VERSION = '(v[\d.]+)'"),
     ('gen_part_banners',      'gen_part_banners.py',      r'gen_part_banners\.py  (v[\d.]+)'),
 ]
 
