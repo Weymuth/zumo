@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.13.0 -->
+<!-- Lesson version: v01.14.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +73,7 @@
 <h1 style="margin: 10px 0 6px 0; font-size: 2.3em;">Wheels Lie</h1>
 <div style="font-size: 1.1em; opacity: 0.92;">The Gyro &mdash; Measuring the Robot, Not the Wheels</div>
 <div style="font-size: 1em; opacity: 0.9; margin-top: 14px;">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 01.13 &mdash; July 2026</div>
+<div style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Version 01.14 &mdash; July 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -591,7 +591,7 @@ int getTurnAngle() {
 }</pre>
 <p><em>About those two giant numbers: they convert the gyro&rsquo;s raw readings into degrees using pure integer math &mdash; this function must run as often as possible, and integer math keeps every call cheap and exact. You do not need to derive that ratio to use it. You need to know what it does &mdash; and now you do.</em></p>
 <div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; font-size: 0.9em;">💡 TIP</div>
-<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">The #include <Wire.h> goes at the TOP of the file.</div>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">The #include &lt;Wire.h&gt; goes at the TOP of the file.</div>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127942; Build it now. The binary just grew by 800 bytes.</div>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live &mdash; the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup" style="background: #f8f9fa; border-radius: 6px; padding: 12px 15px; margin: 15px 0;">
 <summary style="cursor: pointer; font-weight: bold; color: #5a6872;">&#128230; CATCH-UP &mdash; Step 5</summary>
 <div style="margin-top: 12px;">
@@ -771,7 +771,7 @@ Do them in order; each one sets up the next.</p>
 <p><code>gyroOffset</code> now stays at <strong>0</strong> forever. The gyro has never measured its own lie,
 so it has nothing to subtract.</p>
 <div style="background-color: #f0f7f0; border-left: 5px solid #6b8e6b; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; font-size: 0.9em;">💡 TIP</div>
-<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">You also need <code>#include <Wire.h></code> at the top of <code>main.cpp</code>.</div>You are calling <code>Wire.begin()</code> directly now instead of letting <code>gyroSetup()</code> do it for you &mdash; so this file needs the header too.</div>
+<div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">You also need <code>#include &lt;Wire.h&gt;</code> at the top of <code>main.cpp</code>.</div>You are calling <code>Wire.begin()</code> directly now instead of letting <code>gyroSetup()</code> do it for you &mdash; so this file needs the header too.</div>
 <p>Build it. <strong>Put the robot down. Do not touch it.</strong></p>
 <div style="background-color: #fdecea; border-left: 5px solid #e74c3c; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#128721; The number climbs anyway.</div>The robot is <em>motionless</em>. The angle reading crawls upward &mdash; or downward &mdash; steadily, forever. Left alone for a minute it will confidently report that it has rotated a hundred degrees.<br><br>It has not moved at all.</div>
 <div style="background-color: #eafaf1; border-left: 5px solid #27ae60; padding: 14px 18px; margin: 18px 0; border-radius: 4px;"><div style="font-weight: bold; margin-bottom: 8px; font-size: 1.05em;">&#127942; And look at the byte count: 20,626 &rarr; 20,422. It got SMALLER.</div>The broken version is <strong>204 bytes cheaper</strong> than the correct one.<br><br><strong>The lie costs less than the truth.</strong> Honesty is not free &mdash; it is 204 bytes of code and a fifth of a second of your life, every boot, and it buys you a sensor you can believe.<br><br>Put the calibration back before you go on.</div>
