@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-# book_gates.py v1.26 (S92) — whole-book consistency gates.
+# book_gates.py v1.26.1 (S95) — whole-book consistency gates.
+# v1.26.1: §5.1 coverage 250 → 251. L01's AI-autocomplete block was on the one-off border
+# #ffb300; the S95 repaint snapped it to WARNING's #ffc107, which brings it INTO this gate's
+# scope (scheme + ⚠ glyph now agree). Its merged label was split into the canonical
+# ⚠ WARNING label + separate title line. Control-run: the assert fired at 251/250 before
+# this bump, so the number is doing work.
 # Usage:  python3 book_gates.py            (run from repo root)
 # Exit 0 = all gates pass. Exit 1 = failures listed.
 #
@@ -1190,8 +1195,8 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
         if rest != fam:
             bad.append(f'{L(f)} line {c["line"]}: label carries {rest[:40]!r}, '
                        f'\u00a75.1 requires exactly {fam!r}')
-if seen != 250:
-    bad.append(f'COVERAGE: {seen} labels inspected, expected 250 '
+if seen != 251:
+    bad.append(f'COVERAGE: {seen} labels inspected, expected 251 '
                f'(3 off-canon blocks are out of scope by ruling)')
 gate('\u00a75.1 callout label holds exactly the family word, matched to its scheme', bad)
 
