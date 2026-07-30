@@ -22,14 +22,14 @@
 
 # STATE
 
-Fresh-clone verified at **`298c508`**. Census **39,972**.
+Fresh-clone verified at **`1d62b4c`**. Census **39,972**.
 Bible **v8.82** · `BookComponentStandard` **v01.10.0** · Maker **v2.45.1** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 
 Instruments: `book_gates` **v1.27.1** · `lesson_inventory` **v1.1.1** ·
 `gen_component` **v1.5** · `pill_sweep` **v1.0** · `gate_payload_match` **v1.6** ·
 `build_family_map` **v1.1.2** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.2.1** ·
-`gen_part_banners` **v1.0** · `going_deeper` **v01.1.1**.
+`gen_part_banners` **v1.0** · `session_versions` **v1.3** · `going_deeper` **v01.1.1**.
 
 Lessons: L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0.
 
@@ -221,7 +221,7 @@ a substring test missed a name written in backticks. **None was a defect in the 
 grep; none was a read-through. The one check that never misfired was anchored to a position
 (`lines[5]`) rather than searching for text.
 
-**`session_versions.py` v1.2** reads all 14 artefacts + 16 lessons, each from ONE home in a
+**`session_versions.py` v1.3** reads all 14 artefacts + 16 lessons, each from ONE home in a
 bounded header window, and asserts the pattern matches **exactly once** — zero or two is a hard
 error naming the file, never a silent value. It then EMITS the LIVE.md Versions line and this
 STATE block, so the two cannot disagree. Version drift stops being detected and becomes
@@ -237,6 +237,15 @@ LIVE.md can never name the commit that contains LIVE.md.** A naive hand-comparis
 by that one field and reads as a defect; that happened once, immediately, on this close-out. Every
 ad-hoc comparison written in a shell during S96 produced a false alarm. This one is written once
 and control-run.
+
+**v1.3 closed two holes found at the very end of S96.** It now **reads its own version** - a
+version reader that cannot report its own version is the same shape as a gate that cannot fail -
+and `--check` **reports the sha relationship instead of hiding it**: LIVE.md names the commit it
+was verified at, HEAD moves past it on the close-out push, and a document can never name the
+commit that contains it. v1.2 silently normalised that away, and silence about a known-varying
+field is exactly how it ambushed the close-out. It is now printed and labelled as expected.
+`WINDOW` widened 40 -> 90 for this file's own constant; a wider window hides nothing, because
+`read_one` asserts EXACTLY ONE match and a second home errors loudly.
 
 **`--selftest` controls in BOTH directions.** §24.8 is normally asked one way — *would this look
 different if the answer were the opposite?* — which catches a false PASS. The mirror, *if there

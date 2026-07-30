@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""session_versions.py v1.2 (S96) - reads every version from its own file and EMITS the
+"""session_versions.py - reads every version from its own file and EMITS the
 canonical blocks that LIVE_ZUMO_TEXTBOOK.md and the session handoff both use.
 
 WHY THIS EXISTS. S96 produced three false alarms in one close-out, all from the same shape:
@@ -51,8 +51,12 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
+VERSION = 'v1.3'   # the only version home in this file (S96)
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
-WINDOW = 40          # header lines searched; a version home outside this is a defect, not a miss
+WINDOW = 90          # header lines searched. Widened in v1.3: this file's own constant sits
+                     # below its docstring. A wider window cannot hide anything - read_one
+                     # asserts EXACTLY ONE match, so a second home errors loudly.
 
 
 class VersionError(Exception):
@@ -84,6 +88,7 @@ ARTEFACTS = [
     ('Maker',                 'newproject.html',          r'Maker version: (v[\d.]+)'),
     ('going_deeper',          'going_deeper.html',        r'Going Deeper version: (v[\d.]+)'),
     ('Syllabus',              'ZUMO_Syllabus_WORKING.md', r'ZUMO_Syllabus_WORKING\.md (v[\d.]+)'),
+    ('session_versions',      'session_versions.py',      r"VERSION = '(v[\d.]+)'"),
     ('book_gates',            'book_gates.py',            r"VERSION = '(v[\d.]+)'"),
     ('lesson_inventory',      'lesson_inventory.py',      r'# lesson_inventory\.py (v[\d.]+)'),
     ('gen_component',         'gen_component.py',         r"VERSION = '(v[\d.]+)'"),
@@ -171,6 +176,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"{vals['gate_payload_match']} · build_family_map {vals['build_family_map']} · "
             f"build_mark_index {vals['build_mark_index']} · gen_bonus_banner "
             f"{vals['gen_bonus_banner']} · gen_part_banners {vals['gen_part_banners']} · "
+            f"session_versions {vals['session_versions']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -185,7 +191,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`pill_sweep` **{vals['pill_sweep']}** · `gate_payload_match` **{vals['gate_payload_match']}** ·\n"
             f"`build_family_map` **{vals['build_family_map']}** · `build_mark_index` "
             f"**{vals['build_mark_index']}** · `gen_bonus_banner` **{vals['gen_bonus_banner']}** ·\n"
-            f"`gen_part_banners` **{vals['gen_part_banners']}** · `going_deeper` **{vals['going_deeper']}**.\n\n"
+            f"`gen_part_banners` **{vals['gen_part_banners']}** · `session_versions` "
+            f"**{vals['session_versions']}** · `going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 
 
@@ -238,7 +245,12 @@ def check():
     if bad:
         print(f"\n  {bad} disagreement(s). Regenerate with --live / --handoff.")
         return 1
-    print("  LIVE.md and the handoff agree with every file. (sha excluded - it is not a version.)")
+    written_sha = re.search(r'`([0-9a-f]{7})`', written)
+    if written_sha and written_sha.group(1) != sha:
+        print(f"  note: LIVE.md was verified at {written_sha.group(1)}, HEAD is now {sha}. "
+              f"Expected -\n        a document cannot name the commit that contains it. "
+              f"Not drift; versions all agree.")
+    print("  LIVE.md and the handoff agree with every file on every version.")
     return 0
 
 
