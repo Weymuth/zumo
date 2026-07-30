@@ -1,7 +1,14 @@
-# S94 — the complete callout family map
+# The complete callout family map
 
 **All 1,048 callout blocks assigned. 30 families.** Every number parsed from the live lesson
-files with HTML entities decoded. Nothing pushed; nothing in the repo modified.
+files with HTML entities decoded.
+
+**Reproducible.** `build_family_map.py` **v1.1.0** emits this table row-for-row from a clean
+clone with no prior step: `assigned 1048 / 1048`, `families 30`, `UNASSIGNED: 0`. Between S94
+and S96 the document and the generator disagreed — the document was right, and the generator
+has been brought to it (S96). The table below is generated output, not hand-typed.
+
+*Written S94 · rulings completed and generator reconciled S96.*
 
 | Family | blocks | share | status |
 |---|---:|---:|---|
@@ -19,22 +26,52 @@ files with HTML entities decoded. Nothing pushed; nothing in the repo modified.
 | TRY THIS | 22 | 2.1% | **NEW row required** |
 | BUILDS ON | 22 | 2.1% | existing roster family |
 | MY PLAN | 20 | 1.9% | existing roster family |
+| ENGINEER'S LOG | 17 | 1.6% | existing roster family |
 | THE WALL | 17 | 1.6% | existing roster family |
 | STILL GREEN | 17 | 1.6% | **NEW row required** |
-| ENGINEER'S LOG | 17 | 1.6% | existing roster family |
 | WHERE THIS GOES | 14 | 1.3% | existing roster family |
 | WHAT YOU NEED | 13 | 1.2% | **NEW row required** |
 | IF YOU'RE STUCK | 9 | 0.9% | **roster family, was 0** |
 | (card header) | 9 | 0.9% | not a family — challenge-card header, §7.2 supporting marks |
 | GOING DEEPER | 7 | 0.7% | **roster family, was 0** |
-| REAL-WORLD CONNECTION | 7 | 0.7% | **NEW row required** |
 | THINK ABOUT IT | 7 | 0.7% | **NEW row required** |
+| REAL-WORLD CONNECTION | 7 | 0.7% | **NEW row required** |
 | MYSTERY | 5 | 0.5% | **NEW row required** |
-| ANSWER | 4 | 0.4% | existing roster family |
 | YOU MIGHT WONDER | 4 | 0.4% | **NEW row required** |
+| ANSWER | 4 | 0.4% | existing roster family |
 | HOW THIS SECTION WORKS | 2 | 0.2% | **roster family, was 0** |
 | COMMON PITFALLS | 1 | 0.1% | **roster family, was 0** |
 | OBJECTIVES | 1 | 0.1% | **NEW row required** |
+
+## The 15 blocks ruled in S96
+
+At S94 close, 30 families and 1,048 blocks were recorded here, but `build_family_map.py`
+could only reach **1,033**. The gap was never a taxonomy disagreement: this document already
+counted these 15, and the per-family shortfalls summed to exactly 15, which is how the target
+was recovered before a single block was read. DJ ruled them in S96.
+
+| Block | glyph | Label | Family | Basis |
+|---|---|---|---|---|
+| L02:3251 | 🔁 | A new kind of label: "Builds on:" | HOW THIS SECTION WORKS | forced — only block explaining a *book convention* rather than robot content, and the family had exactly one open slot |
+| L03:734 | 📐 | Unit Conversion: Millivolts to Volts | NOTE | DJ |
+| L03:772 | 🔋 | Which cells — and why the code says 4800 and 4200 | NOTE | DJ |
+| L03:983 | 📚 | Where Does constrain() Come From? | KEY TERM | DJ |
+| L03:1096 | 🔢 | Working Backward (TRIM imbalance %) | THINK ABOUT IT | hands the reader a formula to run on their own number rather than stating a fact |
+| L03:1249 | 📏 | Accuracy Note (readBatteryMillivolts ±10%) | TIP | DJ |
+| L03:3071 | 🧩 | About PROTOTYPE (declared-in-scope) | YOU MIGHT WONDER | answers an anticipated question before the reader hits it |
+| L03:3376 | 🆕 | New operator: % (modulo) | KEY TERM | forced — only term-introduction left, one open slot |
+| L03:3434 | 🧠 | Watch your scope | NOTE | residual — fits NOTE, but landed there partly as the block left standing |
+| L07:440 | 📋 | Best Practice: Naming Conventions | TIP | DJ |
+| L07:1070 | 🔍 | Header vs Implementation | INSIGHT | DJ, and 🔍 is INSIGHT's canonical glyph (Bible §, type 7a) |
+| L07:3645 | 🎯 | Why Today's Work Matters | NOTE | DJ — overrides the S94 forward-pointer ruling, which WHERE THIS GOES had no slot for |
+| L08:529 | 📖 | Why Signed Errors Matter | LEARN | 📖 is LEARN's canonical glyph (Bible §, type 7) |
+| L08:1315 | 🧠 | Why TRIM here — and NOT in followLine() | NOTE | DJ, after INSIGHT's single slot was spent |
+| L08:1584 | 🎉 | Did Your Robot Wiggle? | CHECKPOINT | already on CHECKPOINT's exact scheme `#d4edda`/`#28a745`, so zero repaint; the S94 success-green→INSIGHT precedent is moot post-teal |
+
+**How the split blocks were settled.** Three blocks competed for one LEARN slot and one INSIGHT
+slot: L07:1070 🔍, L08:529 📖, L08:1315 🧠. The Bible's post-S95 split already assigns the
+glyphs — **📖 LEARN, 🔍 INSIGHT** — so two resolved on extracted evidence and the third, carrying
+a glyph belonging to neither, was the one that had to leave the pair.
 
 ## Six new rows required
 
@@ -47,34 +84,51 @@ IF YOU'RE STUCK 0→9 · GOING DEEPER 0→7 · HOW THIS SECTION WORKS 0→2 · C
 
 ## What is NOT decided
 
-Naming is complete. **Paint is not.** Outstanding paint questions:
+Naming is complete. **Paint is not.**
 
-1. **LEARN and INSIGHT both sit dominant on `#e3f2fd`/`#2196f3`.** One must move. This is a
-   paint decision, deliberately not invented at the end of a long session.
+1. ~~LEARN and INSIGHT both sit dominant on `#e3f2fd`/`#2196f3`.~~ **RESOLVED S95** — INSIGHT
+   moved to teal `#e9f7f5`/`#2da99d`, 31 blocks across 10 lessons, 18 of which also carried a
+   deep-blue title moved to `#165a53`. The collision was **canon, not drift**: the Bible declared
+   "Learn / Insight" as one type while `BookComponentStandard`'s roster listed two families.
 2. **KEY TERM spans three purples** — `#9b59b6` ×136, `#9c27b0` ×33, `#9b6a9e` ×1 — and the
    third is MY PLAN's own colour, so a KEY TERM block and a MY PLAN block already share paint.
-3. **12 of the 51 schemes are one-offs**, several one hex from a neighbour (`#ffb300` vs
-   `#ffc107`, `#fff9e6` vs `#fef9e7`, `#e8f3ec` vs `#e3f2ed`). Those look like typos.
-4. **46 distinct glyphs, 12 used exactly once** — 🔎 🍽 📐 🔋 📚 🔢 📏 🆕 ≈ 🍳 🎉 🔌.
+3. ~~12 one-off schemes.~~ **Six retired in S95**; six remain, and only L11:170 is off-canon.
+   The other five each fold into a larger paint question rather than being typo-shaped.
+4. **46 distinct glyphs, 12 used exactly once.**
 5. **The label convention for KEY TERM's 184 blocks** — does the label carry the words
    "KEY TERM", or does the 🔑 mark alone identify it? Governs more blocks than anything else.
+6. **The Bible and `BookComponentStandard` have never been diffed** where they describe the same
+   thing. `BookComponentStandard` records **zero** live callout hexes; the Bible's KEY TERM row
+   names a pair live on 33 blocks while the dominant scheme carries 136.
 
-## Queue items found to be phantoms this session
+## Queue items found to be phantoms
 
-1. **L03/L08/L09/L10 `finished`-payload debt** — all four lessons have a `finished` payload,
-   every challenge row resolves, and S49 already ruled C01–C06 stay finished-preload.
-2. **L03 "1000 ms = 1 second" explainer** — already written: *"Every timing number in this
-   lesson is in milliseconds (ms) — thousandths of a second. So 1000 ms = 1 second."*
-3. **L03 modulo explainer** — already written: *"New operator: % (modulo) — the % operator
-   gives you the remainder of a division, not the divide itself. 7 % 3 is 1."*
+1. **L03/L08/L09/L10 `finished`-payload debt** (S94) — all four have a `finished` payload.
+2. **L03 "1000 ms = 1 second" explainer** (S94) — already written.
+3. **L03 modulo explainer** (S94) — already written; it is L03:3376 above.
+4. **L03 Coach's Tip, setup() fires at power-on** (S96) — already live as a 💡 TIP.
+5. **L03 Coach's Tip, AI autocomplete injects wrong code** (S96) — already live as a
+   ⚠️ WARNING, with the Command Palette fix in L01.
+6. **"Coach's Tip" is not a live family at all** (S96) — the only structural trace is an L02
+   HTML comment recording that an INSIGHT callout *replaced* an old "Coach's Note." The queue
+   carried work addressed to a component that had been retired.
 
 ## Corrections logged against my own earlier numbers
 
 - **ENGINEER'S LOG was reported as 0 blocks. It has 17.** The label carries `&rsquo;`, so the
   matcher missed every one — §24.11's lesson applied to my own analysis. Decode entities first.
+- **The generator split ENGINEER'S LOG across two buckets** and read 31 families instead of 30
+  (S96). `norm()` folds the curly apostrophe on the **input** side, but the glyph+scheme fallback
+  map hardcoded its **output** values curly, and map values never pass back through `norm()`.
+  The one header-less block resolving by scheme therefore landed in a bucket of its own. Fixed
+  in v1.0.2; the block was L07:3645.
+- **A clean total is not a clean result** (S96). Control-running one deliberately misrouted
+  ruling left `assigned 1048/1048` completely untouched — a block moving between families does
+  not change the sum. Only the per-family diff caught it. Any future gate on this data must
+  compare rows, not the total.
 - **The "5 collisions / 121 repaints" figures are void**, computed pre-entity-fix.
 - **WHAT YOU NEED was reported as 6 blocks. It has 13**, across four schemes and two glyphs.
-- **"104 blocks remaining" understated the job.** 420 blocks lacked a family label; the 104
-  were only those on schemes where nothing at all matched.
+- **"104 blocks remaining" understated the job.** 420 blocks lacked a family label.
 
-*S94 · rulings by DJ, placements by Claude where delegated · nothing pushed.*
+*Rulings by DJ, placements by Claude where delegated. Table generated by `build_family_map.py`
+v1.1.0; prose maintained by hand.*
