@@ -221,7 +221,7 @@ a substring test missed a name written in backticks. **None was a defect in the 
 grep; none was a read-through. The one check that never misfired was anchored to a position
 (`lines[5]`) rather than searching for text.
 
-**`session_versions.py` v1.1** reads all 14 artefacts + 16 lessons, each from ONE home in a
+**`session_versions.py` v1.2** reads all 14 artefacts + 16 lessons, each from ONE home in a
 bounded header window, and asserts the pattern matches **exactly once** — zero or two is a hard
 error naming the file, never a silent value. It then EMITS the LIVE.md Versions line and this
 STATE block, so the two cannot disagree. Version drift stops being detected and becomes
@@ -231,10 +231,17 @@ impossible.
 read and required to agree; a disagreement is a hard error. That rule existed on paper and
 nothing checked it.
 
+**`--check` is the only comparison anyone should write.** It compares LIVE.md and the
+handoff against the files and **normalises the commit sha away — the sha is not a version, and
+LIVE.md can never name the commit that contains LIVE.md.** A naive hand-comparison always differs
+by that one field and reads as a defect; that happened once, immediately, on this close-out. Every
+ad-hoc comparison written in a shell during S96 produced a false alarm. This one is written once
+and control-run.
+
 **`--selftest` controls in BOTH directions.** §24.8 is normally asked one way — *would this look
 different if the answer were the opposite?* — which catches a false PASS. The mirror, *if there
 were no defect, would this say so?*, catches a false FAIL and is what all three S96 alarms needed.
-Both controls pass. Building it hit both failure modes: a latent unbounded recursion (the control
+All three controls pass. Building it hit both failure modes: a latent unbounded recursion (the control
 spawned itself), and a control that **read the clean tree instead of the corrupted copy** because
 `ROOT` derives from `__file__`, not `cwd` — the same shape as S95's worthless first control run.
 **Verify the instrument is pointed where you think it is.**

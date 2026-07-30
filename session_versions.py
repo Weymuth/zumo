@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""session_versions.py v1.1 (S96) - reads every version from its own file and EMITS the
+"""session_versions.py v1.2 (S96) - reads every version from its own file and EMITS the
 canonical blocks that LIVE_ZUMO_TEXTBOOK.md and the session handoff both use.
 
 WHY THIS EXISTS. S96 produced three false alarms in one close-out, all from the same shape:
@@ -34,10 +34,19 @@ a '# name.py vX' comment, a '\"\"\"name.py vX' docstring, a VERSION constant, a 
 banner. That inconsistency is why hand-checking kept misfiring. This file does not fix it -
 it absorbs it in one place so nothing else has to know.
 
+THE SHA IS NOT A VERSION. --live and --handoff end with the commit they were verified at,
+and LIVE.md can never name the commit that CONTAINS LIVE.md - so a naive comparison of
+generated-now against written-then always differs by that one field and reads as a defect.
+That happened once, immediately, on the S96 close-out. --check exists so nobody compares
+these by hand again: it normalises the sha away and compares only versions. Every ad-hoc
+comparison written in a shell today produced a false alarm; this one is written once, has a
+control run, and is the only comparison anyone should use.
+
 usage:
   python3 session_versions.py              # human-readable table
   python3 session_versions.py --live       # the Versions: line for LIVE_ZUMO_TEXTBOOK.md
   python3 session_versions.py --handoff    # the STATE block for the handoff
+  python3 session_versions.py --check      # do LIVE.md + the handoff still match the files?
   python3 session_versions.py --selftest   # bidirectional control run
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
@@ -180,6 +189,59 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"Lessons: {ls}.")
 
 
+
+def _desha(text):
+    """A 7-hex commit hash is a verification fact, not a version. Normalise it away so a
+    comparison reports version drift and nothing else."""
+    return re.sub(r'`[0-9a-f]{7}`', '`SHA`', text)
+
+
+def _versions_in(text):
+    return dict(re.findall(r'([A-Za-z_][\w./]*) \*{0,2}(v[\d.]+)', text.replace('**', '')))
+
+
+def check():
+    """Compare LIVE.md's Versions line and the handoff's STATE block against the files.
+    Silent when clean; names every disagreement when not. Never compares the sha."""
+    vals, lessons, errs = gather()
+    if errs:
+        for e in errs:
+            print("  VERSION HOME ERROR", e)
+        return 1
+    marks, icons = assets()
+    cen, sha = census(), head_sha()
+    bad = 0
+
+    live_lines = open(os.path.join(ROOT, 'LIVE_ZUMO_TEXTBOOK.md'), encoding='utf-8').read().split('\n')
+    written = live_lines[5]
+    if not written.startswith('**Versions:**'):
+        print("  LIVE.md: line 6 is not the Versions line - the file changed shape")
+        return 1
+    gen = emit_live(vals, lessons, marks, icons, cen, sha)
+    w, g = _versions_in(_desha(written)), _versions_in(_desha(gen))
+    for k in sorted(set(w) | set(g)):
+        if w.get(k) != g.get(k):
+            print(f"  LIVE.md {k}: written={w.get(k)} files={g.get(k)}")
+            bad += 1
+
+    handoffs = [f for f in glob.glob(os.path.join(ROOT, 'ZUMO_S*_HANDOFF.md'))]
+    if len(handoffs) != 1:
+        print(f"  expected exactly one session handoff in root, found {len(handoffs)}")
+        return 1
+    hw = _versions_in(_desha(open(handoffs[0], encoding='utf-8').read()))
+    hg = _versions_in(_desha(emit_handoff(vals, lessons, marks, icons, cen, sha)))
+    for k in sorted(hg):
+        if k in hw and hw[k] != hg[k]:
+            print(f"  {os.path.basename(handoffs[0])} {k}: written={hw[k]} files={hg[k]}")
+            bad += 1
+
+    if bad:
+        print(f"\n  {bad} disagreement(s). Regenerate with --live / --handoff.")
+        return 1
+    print("  LIVE.md and the handoff agree with every file. (sha excluded - it is not a version.)")
+    return 0
+
+
 def selftest():
     """Bidirectional control run. Neither direction alone is evidence."""
     print("CONTROL B (false-fail): reader against untouched files - must be SILENT")
@@ -223,7 +285,31 @@ def selftest():
             return 1
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    print("\nBOTH CONTROLS PASS - the reader is silent when clean and loud when broken.")
+    print("CONTROL C (--check, both ways): clean must be silent, seeded drift must be loud")
+    if check() != 0:
+        print("   FAILED. --check reports drift on a clean tree.")
+        return 1
+    tmp2 = tempfile.mkdtemp()
+    try:
+        work = os.path.join(tmp2, 'repo')
+        shutil.copytree(ROOT, work, ignore=shutil.ignore_patterns('.git', '__pycache__'))
+        p = os.path.join(work, 'LIVE_ZUMO_TEXTBOOK.md')
+        L = open(p, encoding='utf-8').read().split('\n')
+        before = L[5]
+        L[5] = re.sub(r'(book_gates )v[\d.]+', r'\g<1>v9.99.9', L[5])
+        assert L[5] != before, "control C: could not seed a disagreement - the line changed shape"
+        open(p, 'w', encoding='utf-8').write('\n'.join(L))
+        probe = os.path.join(work, os.path.basename(__file__))
+        r = subprocess.run([sys.executable, probe, '--check'],
+                           capture_output=True, text=True, cwd=work)
+        if r.returncode == 0 or 'book_gates' not in r.stdout:
+            print("   FAILED. A seeded version disagreement did not surface.")
+            return 1
+        print("   seeded disagreement detected, exit 1\n")
+    finally:
+        shutil.rmtree(tmp2, ignore_errors=True)
+
+    print("ALL THREE CONTROLS PASS - silent when clean, loud when broken, both directions.")
     return 0
 
 
@@ -231,6 +317,8 @@ def main():
     arg = sys.argv[1] if len(sys.argv) > 1 else ''
     if arg == '--selftest':
         sys.exit(selftest())
+    if arg == '--check':
+        sys.exit(check())
     if arg == '--_probe':
         # internal: gather and report, never re-enter selftest. Without this the control
         # run spawns itself, and a seeded defect that failed to register would recurse.
