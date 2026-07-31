@@ -1480,12 +1480,12 @@ for _f in _svgs:                              # same population gate 37 walked, 
 # population empties and every check above passes vacuously. Both numbers are STATED, not
 # inherited, and both are expected to move when a graphic is added or removed — bump them
 # in the same edit, the way gate 36's reference count is maintained.
-if len(_vec) != 197:
-    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 197 — a file was '
+if len(_vec) != 196:
+    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 196 — a file was '
                f'added, removed, or now carries a raster (which moves it to gate 37)')
 _ngraphic = sum(1 for _f in _vec if 'GRAPHIC_' in os.path.basename(_f))
-if _ngraphic != 86:
-    bad.append(f'COVERAGE: {_ngraphic} GRAPHIC_ vector files walked, expected 86 — the label '
+if _ngraphic != 85:
+    bad.append(f'COVERAGE: {_ngraphic} GRAPHIC_ vector files walked, expected 85 — the label '
                f'check is the one that binds on every one of them, so this number is load-bearing')
 gate('\u00a721.2 drawn graphics keep live text and stay under the ceiling', bad)
 if _staged38:
