@@ -2,7 +2,13 @@
 # fit_raster_svg.py - normalise a raster-wrapped SVG to a byte budget.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98 convention).
-VERSION = 'v1.1'
+VERSION = 'v1.2'
+# v1.2 (S99): KEEP xlink:href, NOT href. v1.1 deduped the doubled payload by dropping
+#   xlink:href and keeping the plain href - and the plain href is SVG 2, while Illustrator's
+#   SVG parser is 1.1. Every file this tool touched opened in Illustrator as a MISSING LINK,
+#   named for the folder the document sat in, with the photograph gone. Browsers render both
+#   forms identically, so nothing caught it until DJ tried to edit one. Deduping was right;
+#   keeping the wrong survivor was not. Confirmed by converting one file and opening it.
 # v1.1 (S98): QUALITY IS THE RULE, SIZE IS THE CONSEQUENCE. v1.0 searched quality
 #   downward until the file fitted a byte budget, which meant the one file carrying TWO
 #   photographs got squeezed to q70 to protect a number — degrading the picture, which
@@ -117,9 +123,13 @@ def fit(path, quality=QUALITY, verbose=True):
             uri = 'data:image/%s;base64,%s' % (
                 mime, base64.b64encode(buf.getvalue()).decode())
             tag = im_info['tag']
-            # ONE payload: drop the duplicated legacy attribute, keep geometry byte-for-byte
+            # ONE payload, and it must be the xlink: form. Plain href on <image> is SVG 2;
+            # Illustrator parses SVG 1.1 and reports an unreadable href as a missing LINK.
+            # Drop every href variant, then write xlink:href back exactly once.
             new_tag = re.sub(r'\s*xlink:href="data:image/[^"]*"', '', tag)
-            new_tag = re.sub(r'href="data:image/[^"]*"', 'href="%s"' % uri, new_tag, count=1)
+            new_tag = re.sub(r'\s(?<!:)href="data:image/[^"]*"', '', new_tag)
+            new_tag = re.sub(r'(<image\b)', r'\1 xlink:href="%s"' % uri.replace('\\', '\\\\'),
+                             new_tag, count=1)
             assert src.count(tag) >= 1, 'fit: the <image> tag moved between passes'
             src = src.replace(tag, new_tag, 1)
         n = len(src.encode('utf-8'))
@@ -185,8 +195,17 @@ def selftest():
     if not (new and rep['dup'] == 1 and rep['alpha_waste'] == 1
             and rep['after'] < rep['before'] / 2):
         print('   FAILED'); ok = False
-    if new and 'xlink:href="data:' in new:
-        print('   FAILED - the duplicate payload survived'); ok = False
+    # THE SURVIVOR MUST BE xlink:href, EXACTLY ONCE. Counting both forms is the point:
+    # a control that only checked "one payload" passed happily while the wrong attribute
+    # was kept, and Illustrator could not open a single file this tool produced.
+    if new is not None:
+        n_x = new.count('xlink:href="data:')
+        n_p = len(re.findall(r'(?<![:\w-])href="data:', new))   # lookbehind already excludes xlink:
+        print(f'   surviving payload attributes: xlink:href={n_x}  plain href={n_p}')
+        if n_x != 1 or n_p != 0:
+            print('   FAILED - must be exactly one xlink:href and no plain href '
+                  '(plain href is SVG 2; Illustrator parses SVG 1.1 and sees a missing link)')
+            ok = False
     if new and ('width="1000"' not in new or 'x="0"' not in new):
         print('   FAILED - geometry was not preserved'); ok = False
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.3.1'
+VERSION = 'v1.7'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,31 @@ VERSION = 'v1.3.1'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.7 (S99): THE href RULE WAS BACKWARDS. v1.6 checked for one payload attribute and treated
+#   plain href as correct. Plain href on <image> is SVG 2; Illustrator parses SVG 1.1 and
+#   reports an href it cannot read as a MISSING LINK, naming the document's own folder. Every
+#   file the tooling produced was unopenable in Illustrator - which is DJ's editing path -
+#   while rendering perfectly in a browser, so nothing caught it for a whole session.
+#   Deduping the doubled payload was right; keeping the wrong survivor was not.
+# v1.6 (S99): THE RESOLUTION CHECK WAS MEASURING THE WRONG THING. It compared photo pixels to
+#   the <image> box in USER UNITS, which only equals the real ratio when the graphic happens to
+#   render at 1 CSS px per unit. A file with a 2000-unit viewBox was reported at 1.00x when a
+#   reader actually sees it at 1.82x, and one with a 916-unit viewBox was reported at a
+#   comfortable 2.00x while really being the SOFTER of the two at 1.67x. The check now scales
+#   the box through the viewBox to an assumed display width and reports both numbers.
+# v1.5 (S99): FALSE POSITIVE, AND AN EXPENSIVE ONE. v1.4 measured a <text> element by
+#   concatenating all of its itertext(), which merges <tspan> children that are SEPARATE
+#   RENDERED LINES. A correctly wrapped two-line label came back as one 522-unit line
+#   overflowing its panel by 239 units. DJ was sent to have a non-defect corrected.
+#   Each <tspan> carrying its own x or dy is now measured as its own line.
+#   The lesson is the project's own §24.6c: this check was never control-run against a file
+#   KNOWN to be correctly wrapped, so its first real finding was believed on sight.
+# v1.4 (S99): PORTABLE FONT LOOKUP. v1.3.1 hardcoded two Linux paths, so on macOS or Windows
+#   every text check was unavailable and the tool exited. It now searches Liberation Sans
+#   first (metric-identical to Arial) and falls back to the real Arial where the OS ships it -
+#   macOS /System/Library/Fonts/Supplemental, Windows C:/Windows/Fonts. It still refuses to
+#   run with no metric font rather than silently skipping the checks: a check that cannot fail
+#   is not evidence.
 # v1.3.1 (S99): --fixnote was leaking LOCAL instructions into the paste block. Findings that
 #   say 'run fit_raster_svg.py' are our job, not the author's - and telling a model to fix a
 #   file-size problem is the one instruction guaranteed to make it report success while
@@ -63,15 +88,32 @@ NS = '{http://www.w3.org/2000/svg}'
 # Liberation Sans is metric-compatible with Arial, which is what §17.3a recipe 1 mandates.
 # If it is missing we must FAIL LOUDLY rather than silently skip every text check - a check
 # that cannot fail is not evidence (§24.6b).
+_FONT_CANDIDATES = {
+    'regular': ('/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',   # Linux
+                '/usr/share/fonts/liberation-sans/LiberationSans-Regular.ttf',
+                '/System/Library/Fonts/Supplemental/Arial.ttf',                      # macOS
+                '/Library/Fonts/Arial.ttf',
+                'C:/Windows/Fonts/arial.ttf'),                                       # Windows
+    'bold':    ('/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
+                '/usr/share/fonts/liberation-sans/LiberationSans-Bold.ttf',
+                '/System/Library/Fonts/Supplemental/Arial Bold.ttf',
+                '/Library/Fonts/Arial Bold.ttf',
+                'C:/Windows/Fonts/arialbd.ttf'),
+}
 _FONTS = {}
-for _w, _p in (('regular', '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf'),
-               ('bold',    '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf')):
-    if os.path.exists(_p):
-        _FONTS[_w] = _p
+for _w, _paths in _FONT_CANDIDATES.items():
+    for _p in _paths:
+        if os.path.exists(_p):
+            _FONTS[_w] = _p
+            break
+if 'bold' not in _FONTS and 'regular' in _FONTS:
+    _FONTS['bold'] = _FONTS['regular']        # metrics differ slightly; better than no check
 
 # a drawn graphic's labels must survive on a machine that has none of the designer's fonts
 SAFE_FONTS = ('arial', 'helvetica', 'sans-serif', 'courier new', 'monospace', 'times', 'serif')
 MIN_PHOTO_SCALE = 2.0        # §17.3b: payload at ~2x its on-screen box
+DISPLAY_WIDTH_PX = 1100      # the book's image column. The <image> box is in USER UNITS,
+                             # so it must be scaled through the viewBox to get real pixels.
 PANEL_MIN_W, PANEL_MIN_H = 150, 60
 PANEL_PAD = 6
 
@@ -88,19 +130,53 @@ def _inh(el, attr):
 def _text_width(s, size, bold=False):
     key = 'bold' if bold else 'regular'
     if key not in _FONTS:
-        raise RuntimeError('Liberation Sans not installed - text metrics unavailable')
+        raise RuntimeError('no Arial-metric font found (Liberation Sans or Arial) - text checks '
+                           'cannot run. Linux: apt install fonts-liberation')
     return ImageFont.truetype(_FONTS[key], 200).getlength(s) * size / 200.0
 
 
-def _extent(t):
-    s = ''.join(t.itertext()).strip()
+def _lines(t):
+    """Yield (text, x0, x1, y, size) once per RENDERED LINE.
+
+    A <text> may hold <tspan> children, and any tspan with its own x or dy is a separate line.
+    Concatenating itertext() and measuring that as one string reports a correctly wrapped label
+    as a giant overflow - v1.4 did exactly that and cost a round trip to fix a non-defect.
+    """
     size = float(_inh(t, 'font-size') or 16)
     bold = (_inh(t, 'font-weight') or '400') in ('700', '800', '900', 'bold', 'bolder')
-    w = _text_width(s, size, bold)
-    x, y = float(t.get('x') or 0), float(t.get('y') or 0)
     anchor = _inh(t, 'text-anchor') or 'start'
-    x0 = x - w / 2 if anchor == 'middle' else (x - w if anchor == 'end' else x)
-    return s, x0, x0 + w, y, size
+    bx, by = float(t.get('x') or 0), float(t.get('y') or 0)
+
+    spans = [sp for sp in t.findall(f'{NS}tspan')
+             if sp.get('x') is not None or sp.get('dy') is not None]
+    rows = []
+    if spans:
+        cy = by
+        lead = ' '.join((t.text or '').split())
+        if lead:
+            rows.append((lead, bx, cy))
+        for sp in spans:
+            cy += float(sp.get('dy') or 0)
+            rows.append((' '.join((sp.text or '').split()),
+                         float(sp.get('x')) if sp.get('x') is not None else bx, cy))
+    else:
+        rows.append((' '.join(''.join(t.itertext()).split()), bx, by))
+
+    out = []
+    for txt, x, y in rows:
+        if not txt:
+            continue
+        w = _text_width(txt, size, bold)
+        x0 = x - w / 2 if anchor == 'middle' else (x - w if anchor == 'end' else x)
+        out.append((txt, x0, x0 + w, y, size))
+    return out
+
+
+def _extent(t):
+    ls = _lines(t)
+    if not ls:
+        return '', 0.0, 0.0, float(t.get('y') or 0), float(_inh(t, 'font-size') or 16)
+    return ls[0]
 
 
 def _seg_hits(p, q, test, steps=200):
@@ -127,9 +203,16 @@ def audit(path):
     ran.add('raster')
     for im_el in imgs:
         hrefs = [k for k in im_el.keys() if k.endswith('href')]
+        XL = '{http://www.w3.org/1999/xlink}href'
         if len(hrefs) > 1:
             out.append('payload stored twice (href AND xlink:href) - half the file is a '
                        'duplicate of itself; run fit_raster_svg.py --write')
+        elif hrefs and hrefs[0] != XL:
+            out.append('<image> uses a plain href. That is SVG 2 - Illustrator parses SVG 1.1 '
+                       'and will report this as a MISSING LINK with the photograph gone, while '
+                       'browsers render it fine. Use xlink:href (and declare xmlns:xlink).')
+        if hrefs and XL in hrefs and 'xlink' not in (root.nsmap or {}):
+            out.append('uses xlink:href but the xlink namespace is not declared on <svg>')
         uri = im_el.get(hrefs[0])
         if not uri or 'base64,' not in uri:
             out.append('<image> is LINKED, not embedded - this renders blank on the published '
@@ -139,12 +222,17 @@ def audit(path):
         pic = Image.open(io.BytesIO(raw))
         bw = float(im_el.get('width') or 0)
         bh = float(im_el.get('height') or 0)
-        if bw and bh:
-            scale = pic.size[0] / bw
+        vb = (root.get('viewBox') or '').split()
+        vbw = float(vb[2]) if len(vb) == 4 else bw
+        if bw and bh and vbw:
+            css_box = bw / vbw * DISPLAY_WIDTH_PX      # what the box is in real pixels
+            scale = pic.size[0] / css_box if css_box else 0
             if scale < MIN_PHOTO_SCALE:
-                out.append(f'photograph is {pic.size[0]}x{pic.size[1]} in a {bw:.0f}x{bh:.0f} box '
-                           f'= {scale:.2f}x - under the {MIN_PHOTO_SCALE:.0f}x floor, it will look '
-                           f'soft. This is the signature of an AI resample; re-place the original.')
+                need = int(MIN_PHOTO_SCALE * css_box)
+                out.append(f'photograph is {pic.size[0]}x{pic.size[1]} but its box renders about '
+                           f'{css_box:.0f} CSS px wide (box {bw:.0f} of a {vbw:.0f} viewBox at a '
+                           f'{DISPLAY_WIDTH_PX} px column) = {scale:.2f}x - under the '
+                           f'{MIN_PHOTO_SCALE:.0f}x floor. Needs a source at least {need} px wide.')
             ar_box, ar_pic = bw / bh, pic.size[0] / pic.size[1]
             if abs(ar_box - ar_pic) / ar_pic > 0.02:
                 out.append(f'box aspect {ar_box:.3f} vs photo aspect {ar_pic:.3f} - the picture is '
@@ -187,24 +275,22 @@ def audit(path):
             panels.append((x, y, x + w, y + h))
     panels.sort(key=lambda p: (p[2] - p[0]) * (p[3] - p[1]))     # smallest enclosing wins
     for t in root.findall(f'.//{NS}text'):
-        s, x0, x1, y, size = _extent(t)
-        if not s:
-            continue
-        ax = float(t.get('x') or 0)
-        for px0, py0, px1, py1 in panels:
-            if px0 <= ax <= px1 and py0 <= y <= py1:
-                if x0 < px0 + PANEL_PAD or x1 > px1 - PANEL_PAD:
-                    over = max(px0 + PANEL_PAD - x0, x1 - (px1 - PANEL_PAD))
-                    out.append(f'text overflows its panel by {over:.0f} units: '
-                               f'"{s[:44]}" spans {x0:.0f}..{x1:.0f} inside {px0:.0f}..{px1:.0f}')
-                break
+        for s, x0, x1, y, size in _lines(t):
+            ax = float(t.get('x') or 0)
+            for px0, py0, px1, py1 in panels:
+                if px0 <= ax <= px1 and py0 <= y <= py1:
+                    if x0 < px0 + PANEL_PAD or x1 > px1 - PANEL_PAD:
+                        over = max(px0 + PANEL_PAD - x0, x1 - (px1 - PANEL_PAD))
+                        out.append(f'text overflows its panel by {over:.0f} units: '
+                                   f'"{s[:44]}" spans {x0:.0f}..{x1:.0f} '
+                                   f'inside {px0:.0f}..{px1:.0f}')
+                    break
 
     # ---- 6. text colliding with text on the same line ---------------------------------------
     ran.add('collide_text')
     rows = {}
     for t in root.findall(f'.//{NS}text'):
-        s, x0, x1, y, size = _extent(t)
-        if s:
+        for s, x0, x1, y, size in _lines(t):
             rows.setdefault(round(y, 1), []).append((x0, x1, s))
     for y, items in rows.items():
         items.sort()
@@ -359,8 +445,21 @@ def _selftest():
 
     def dup(r):
         im = r.find(f'.//{NS}image')
-        im.set('{http://www.w3.org/1999/xlink}href', im.get('href'))
+        # read whichever form the reference uses - it is xlink:href now, and assuming
+        # plain href is what made this seeder crash the moment the rule was corrected
+        cur = next(im.get(k) for k in im.keys() if k.endswith('href'))
+        im.set('{http://www.w3.org/1999/xlink}href', cur)
+        im.set('href', cur)
     ok &= seeded('payload duplicated', dup, 'stored twice')
+
+    def plainhref(r):
+        im = r.find(f'.//{NS}image')
+        cur = next(im.get(k) for k in im.keys() if k.endswith('href'))
+        for k in list(im.keys()):
+            if k.endswith('href'):
+                del im.attrib[k]
+        im.set('href', cur)
+    ok &= seeded('plain href instead of xlink:href', plainhref, 'plain href')
 
     def badfont(r):
         for t in r.findall(f'.//{NS}text'):
