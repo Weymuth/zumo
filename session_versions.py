@@ -51,7 +51,20 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.3'   # the only version home in this file (S96)
+VERSION = 'v1.4.1'   # the only version home in this file (S96; v1.4 S98)
+# v1.4.1 (S98): fit_raster_svg registered as an artefact. A new instrument absent from
+#   ARTEFACTS has no reader, so its version could only be hand-typed - the exact failure
+#   this file exists to prevent.
+# v1.4 (S98): grep_trap(). A version home the tooling reads correctly can still be
+#   MISREAD BY A HUMAN, and was: a plain grep of book_gates.py returned v1.26.1 from a
+#   changelog comment while the live version was v1.29 - three releases stale, and it read
+#   exactly like an answer. Measured across all 15 artefacts: 2 misread that way
+#   (book_gates, build_family_map), both because the changelog sits ABOVE the home. Fixed
+#   by moving the home above the changelog in each; this check is what keeps it fixed.
+#   NOT fatal, and NOT applied to the labelled homes: the Bible carries per-session
+#   history and its first token is v8.63 BY DESIGN, which is exactly why the ritual's
+#   grep is ANCHORED to 'Bible version:'. Scoped to the VERSION-constant files, where a
+#   bare grep is a thing people actually do.
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 WINDOW = 90          # header lines searched. Widened in v1.3: this file's own constant sits
@@ -90,7 +103,7 @@ ARTEFACTS = [
     ('Syllabus',              'ZUMO_Syllabus_WORKING.md', r'ZUMO_Syllabus_WORKING\.md (v[\d.]+)'),
     ('session_versions',      'session_versions.py',      r"VERSION = '(v[\d.]+)'"),
     ('book_gates',            'book_gates.py',            r"VERSION = '(v[\d.]+)'"),
-    ('lesson_inventory',      'lesson_inventory.py',      r'# lesson_inventory\.py (v[\d.]+)'),
+    ('lesson_inventory',      'lesson_inventory.py',      r"VERSION = '(v[\d.]+)'"),
     ('gen_component',         'gen_component.py',         r"VERSION = '(v[\d.]+)'"),
     ('pill_sweep',            'pill_sweep.py',            r'pill sweep .*?  (v[\d.]+)'),
     ('gate_payload_match',    'gate_payload_match.py',    r'PAYLOAD BYTE-MATCH GATE .*?— (v[\d.]+)'),
@@ -98,6 +111,7 @@ ARTEFACTS = [
     ('build_mark_index',      'build_mark_index.py',      r"VERSION = '(v[\d.]+)'"),
     ('gen_bonus_banner',      'gen_bonus_banner.py',      r"VERSION = '(v[\d.]+)'"),
     ('gen_part_banners',      'gen_part_banners.py',      r'gen_part_banners\.py  (v[\d.]+)'),
+    ('fit_raster_svg',        'fit_raster_svg.py',        r"VERSION = '(v[\d.]+)'"),
 ]
 
 
@@ -177,6 +191,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"build_mark_index {vals['build_mark_index']} · gen_bonus_banner "
             f"{vals['gen_bonus_banner']} · gen_part_banners {vals['gen_part_banners']} · "
             f"session_versions {vals['session_versions']} · "
+            f"fit_raster_svg {vals['fit_raster_svg']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -192,7 +207,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`build_family_map` **{vals['build_family_map']}** · `build_mark_index` "
             f"**{vals['build_mark_index']}** · `gen_bonus_banner` **{vals['gen_bonus_banner']}** ·\n"
             f"`gen_part_banners` **{vals['gen_part_banners']}** · `session_versions` "
-            f"**{vals['session_versions']}** · `going_deeper` **{vals['going_deeper']}**.\n\n"
+            f"**{vals['session_versions']}** · `fit_raster_svg` **{vals['fit_raster_svg']}** ·\n"
+            f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 
 
@@ -252,6 +268,35 @@ def check():
               f"Not drift; versions all agree.")
     print("  LIVE.md and the handoff agree with every file on every version.")
     return 0
+
+
+TOKEN = re.compile(r'\bv\d+\.[\d.]*\d\b')
+
+
+def grep_trap():
+    """Would a PLAIN grep of this file return its live version?
+
+    read_one() is anchored and bounded, so the TOOLING is never wrong here. A person at a
+    terminal is, and a stale answer looks identical to a right one. Scoped to the files whose
+    home is a VERSION constant: for those, first-token and home should be the same line, and
+    a difference means a changelog line got prepended above the home.
+    """
+    out = []
+    for label, relpath, pattern in ARTEFACTS:
+        if "VERSION = '" not in pattern:
+            continue
+        path = os.path.join(ROOT, relpath)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding='utf-8', errors='replace').read()
+        first = TOKEN.search(text)
+        try:
+            true = read_one(relpath, pattern, label=label)
+        except VersionError:
+            continue
+        if first and first.group(0) != true:
+            out.append((label, relpath, first.group(0), true))
+    return out
 
 
 def selftest():
@@ -321,7 +366,35 @@ def selftest():
     finally:
         shutil.rmtree(tmp2, ignore_errors=True)
 
-    print("ALL THREE CONTROLS PASS - silent when clean, loud when broken, both directions.")
+    print("CONTROL D (grep_trap, both ways): clean must be silent, a prepended changelog loud")
+    live = grep_trap()
+    if live:
+        for lab, rel, first, true in live:
+            print(f"   FAILED on the clean tree: {rel} greps as {first}, home is {true}")
+        return 1
+    tmp3 = tempfile.mkdtemp()
+    try:
+        work = os.path.join(tmp3, "repo")
+        shutil.copytree(ROOT, work, ignore=shutil.ignore_patterns(
+            ".git", "__pycache__", "images", "tutor"))
+        p = os.path.join(work, "book_gates.py")
+        s = open(p, encoding="utf-8").read()
+        # seed by SHAPE, not by the literal version: a hardcoded 'v1.29' silently stops
+        # matching the day book_gates bumps, and the control would fail on its own anchor.
+        seeded = re.sub(r"(?m)^(VERSION = ')", "# v1.00.0 seeded control\\n\\1", s, count=1)
+        assert seeded != s, "control D: could not seed - book_gates home changed shape"
+        open(p, "w", encoding="utf-8").write(seeded)
+        probe = os.path.join(work, os.path.basename(__file__))
+        r = subprocess.run([sys.executable, probe, '--_grep'],
+                           capture_output=True, text=True, cwd=work)
+        if "book_gates.py returns v1.00.0" not in r.stdout:
+            print("   FAILED. A home buried under a changelog did not surface.")
+            return 1
+        print("   silent when clean, named the seeded file and both versions\n")
+    finally:
+        shutil.rmtree(tmp3, ignore_errors=True)
+
+    print("ALL FOUR CONTROLS PASS - silent when clean, loud when broken, both directions.")
     return 0
 
 
@@ -331,6 +404,13 @@ def main():
         sys.exit(selftest())
     if arg == '--check':
         sys.exit(check())
+    if arg == '--_grep':
+        # internal: grep_trap only. The full table calls assets(), which needs images/,
+        # and control D's work tree deliberately omits it - the first version of that
+        # control 'failed' for that reason alone, with nothing wrong in what it tested.
+        for _lab, _rel, _first, _true in grep_trap():
+            print(f'NOTE: a plain grep of {_rel} returns {_first}, not {_true}')
+        sys.exit(0)
     if arg == '--_probe':
         # internal: gather and report, never re-enter selftest. Without this the control
         # run spawns itself, and a seeded defect that failed to register would recurse.
@@ -356,6 +436,9 @@ def main():
         for k in sorted(lessons):
             print(f"  {k:24} {lessons[k]}")
         print(f"\n  census {cen:,} · marks/ {marks} · icons/ {icons} · HEAD {sha}")
+        for _lab, _rel, _first, _true in grep_trap():
+            print(f"\n  NOTE: a plain grep of {_rel} returns {_first}, not {_true} -"
+                  f" its home sits\n        below a changelog line.")
         print("\n  --live / --handoff to emit the canonical blocks")
 
 

@@ -1,9 +1,66 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 30, 2026 (Session 97 — **A PASSING SUITE IS ONLY AS WIDE AS ITS GATES.** Four images were **404 on the published site** and had been through a full 35/35 pass: Lesson 02 pointed at three `.svg` files and Lesson 05 at one that existed nowhere on `main`, in three of the first five lessons a student opens, and **nothing in the suite had ever looked at an `<img src>`.** They were not found by an instrument — they were found by chasing a stray branch, `Weymuth-patch-1`, 302 commits behind, which turned out to be **the only surviving copy of the missing files**; a dead branch nobody had opened was load-bearing. The correction is TWO gates, and **the second exists because the first is not enough: a reference that resolves says nothing about what it resolves TO.** Gate 36 stayed green while `L02_GRAPHIC_2-08_memory_ladder.svg` shipped at **4,879,809 B** — a PNG in an SVG envelope, zero drawing elements, the same image embedded twice. **GATE 36 THEN PROVED ITSELF THE SAME AFTERNOON:** three L05 photographs were deleted in a push and it named all three with line numbers on its first run, minutes later, where this morning an identical defect had survived unnoticed for an unknown number of sessions. **THE GRID IS IN THE REPO** — 23 periods, and reading it against the lessons found two periods of Lesson 13 content labelled Lesson 12 and a Fall trimester that **could not deliver its own final milestone.** **AND I SHIPPED TWO WRONG THINGS:** a numbered-mark generator built on an inference reported as fact — §9 names two radii and NO SHAPE — and a first attempt at removing it that would have deleted 428 lines instead of 84 because `.index()` matched a comment appearing twice. Both caught by checking the result, neither catchable by reading the code.)
-**Status:** ✅ **37/37 GATES PASS, clone-verified at `a0fd093`. Nine pushes this session, every one verified by fresh clone and md5.** Census **39,972** — **no lesson file was touched in S97.** **`book_gates.py` v1.27.1 → v1.29**, adding `§21` (every image reference resolves to a file on disk) and `§21.1` (no REFERENCED `.svg` carries an embedded raster), each control-run four ways including against unfixed source where gate 36 independently rediscovered all four 404s with line numbers. **`ZUMO_Teacher_Daily_Grid_WORKING.md` v1.0 is now in the repo** — 23 periods + 3 buffers, Fall running through **L13 Step 3** per DJ ruling (*“Fall runs until they discover the silver line”* = `silverDetected()`, the Doorman), sized at two periods because L13 Steps 1–3 measure **191 lines** of build against L11's entire **188**. **LESSON 02'S DIAGRAM PAYLOAD IS 15,484 BYTES**, down from 10.27 MB at the worst point today. **The 16 spiral stars are flat** (`#7B6240` / `#F5F2E9`, zero gradients, 16,279 B) per DJ ruling that RoboLore forbids gradients — recoloured S40 assets, **not generated**, because `gen_component.py` v1.6's numbered-mark emitter produced a star 53% blunter than the book's with digits riding out of it, and was **WITHDRAWN in v1.6.1**. **THE PATTERN THAT COST THE MOST TIME: four two-part pushes each lost a half** — a file landing in `images/` without the root update, a deletion reported before it went up, a delete without its add, and three photos deleted without repointing the lesson. A rename in the same commit went through cleanly, so it is **add-plus-delete** that fails, because the deletion is a separate checkbox.
+**Date:** July 30, 2026 (Session 98 — **A GATE CAN BE WRONG IN THE OTHER DIRECTION.** S97's §21.1 forbade any embedded raster in a referenced `.svg`, and that rule was itself the defect: it would have gone red on the first legitimate photo-plus-labels composite the book shipped. **A photograph cannot be redrawn.** Measured: all five staged raster-in-SVG files carry photographic content, and the one true-vector redraw DJ had seen — `zumo_32u4_oled_main_board_top_view_r02.svg`, 194 elements, zero raster — turned out to be a **cartoon of the board**, its 39 text runs the *silkscreen* rather than labels. DJ's ruling: *“Some of the images need to be raster wrapped svg. Otherwise they look like crap.”* They must also EMBED — an SVG loaded through `<img src>` runs in secure static mode and cannot fetch an external file, so the composite has no external-href option and a gate forbidding base64 forbids the asset class. **But 4.26 MB was never the price of one:** the uploaded board carried its payload TWICE in a single `<image>` (`href` and `xlink:href`, identical bytes, half the file a duplicate of itself) over an alpha channel measured **100% opaque**. Deduped and re-encoded it is **350,471 B, −91.8%, unchanged on screen.** **THE OTHER FINDING WAS MINE:** a plain grep of `book_gates.py` returned **v1.26.1** — a changelog line, three releases stale, reading exactly like an answer.)
+**Status:** ✅ **37/37 GATES PASS. Census 39,972 — no lesson file was touched in S98.** **`book_gates.py` v1.29.1 → v1.30, GATE 37 REWRITTEN** to the three things actually wrong — duplicated payload, a 500,000 B ceiling, a 3-element vector floor — and **control-run three ways: fires on a referenced fat file, fires on a raster-only envelope under the ceiling, and PASSES a referenced 350 KB composite**, which is the control that proves it permits what the book needs. **`fit_raster_svg.py` v1.1 is new:** quality pinned at **q92 and never traded**, size a warning, not a squeeze — v1.0 searched downward to hit a byte budget and crushed the one two-photo file to q70, which is the complaint that started the work. Across six files **11.89 MB → 1.67 MB, no redraw**; the two-photo `5-10` is the only one over the ceiling and is now told to **split, not degrade**. Its selftest caught a landmine before shipping: on its first run the tool *enlarged* a file, so it now refuses to write anything bigger than it found. **Four version homes normalised** — `lesson_inventory` v1.1.2 (which carried TWO homes, agreeing by luck), `build_family_map` v1.1.3, `book_gates`, and `session_versions` v1.4.1 with `grep_trap()` + CONTROL D so a home buried under a changelog is loud. **`lesson_inventory --anomalies` is now silent when clean** — the Brain Check line printed unconditionally inside the ANOMALIES header and had to be re-dismissed every session. **`Weymuth-patch-1` is no longer load-bearing:** `L03_IMAGE_3-14_astar_board.jpg` was removed from **main** on purpose (`9d5a85b`, *“remove redundant images”*) and recovers byte-identical from main's own history — the branch can go whenever DJ says.
 
-**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.82** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.29** · lesson_inventory v1.1.1 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.2 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.3 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `a0fd093`.**
+**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.82** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.30** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.4.1 · fit_raster_svg v1.1 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `90605b5`.**
+
+---
+---
+
+## WHAT SHIPPED IN S98
+
+**1. `book_gates.py` v1.29.1 → v1.30 — gate 37 rewritten.** The old `§21.1` read *no REFERENCED
+`.svg` carries an embedded raster*, which forbids the photo-plus-labels composite outright. It now
+checks the three separable defects S97 actually found, each threshold from a measurement:
+**duplicated payload** (one `<image>` holding the same base64 in `href` and `xlink:href` — present
+in 2 of 5 staged files, free to remove, invisible on screen); a **500,000 B ceiling** (a real fitted
+composite lands at 350 KB); and a **3-element vector floor** (S97's memory ladder had **zero** —
+a bitmap in an envelope claiming to be a diagram). Control-run three ways: **A** a referenced fat
+duplicated file → FAIL naming both faults; **B** a referenced *fitted* composite, 350,471 B with an
+embedded raster and 10 vector elements → **PASS, whole suite green**; **C** a raster-only SVG under
+the ceiling → FAIL on the floor, *“this is a photograph, not a graphic — ship it as .jpg/.png under
+an IMAGE_ name.”*
+
+**2. `fit_raster_svg.py` v1.1 — new.** Dedupes the double payload, drops an alpha channel carrying
+nothing, caps resolution at 2× the on-screen box, re-encodes at a **pinned q92**. Measured:
+board 4,262,718 → **350,471** · chassis 2,564,003 → **178,544** · 5-08 1,692,300 → **215,741** ·
+5-09 1,681,892 → **220,385** · 2-07 593,050 → **128,287** · 5-10 1,095,810 → 697,330 **over
+ceiling, split it**. Four controls, including CONTROL 4: content JPEG cannot help must be **left
+alone, never enlarged** — written because the first run inflated a file.
+
+**3. Version-home normalisation.** A plain grep of `book_gates.py` returned **v1.26.1** against a
+live v1.29. Measured across all 15 artefacts: **2 misread that way**, both with the changelog above
+the home. Homes moved above the changelog in `book_gates` (v1.30) and `build_family_map` (v1.1.3,
+output asserted **byte-identical**). `lesson_inventory` v1.1.2 carried **two** homes — the line-2
+comment the tooling reads and a hand-typed literal inside `BANNER`, agreeing by luck — now one
+constant with the banner derived from it. `session_versions` v1.4.1 adds `grep_trap()` and
+**CONTROL D**, scoped to the `VERSION = '…'` files: **the Bible greps as v8.63 first BY DESIGN**,
+which is why the ritual's Bible grep is anchored, and a guard that reddened on that is a guard
+people learn to ignore. `fit_raster_svg` registered as an artefact so its version is read, never
+typed.
+
+**4. `lesson_inventory.py` v1.1.2 — `--anomalies` is silent when clean.** The Brain Check
+family-norm line printed on every run inside the ANOMALIES header, so the view was never silent and
+the line had to be re-dismissed as *not a finding* at each session open. It was also redundant: the
+outlier message names the norm itself. Control-run with a seeded extra `<div>` — the outlier fires
+and names the norm.
+
+**5. `Weymuth-patch-1`, resolved.** The standing queue item said *do not delete, it is the only copy
+of `L03_IMAGE_3-14_astar_board.jpg`*. False. The file was added to **main** on Jul 11 (`7625a09`)
+and removed from **main** on Jul 15 by `9d5a85b`, *“remove redundant images”*, alongside
+`L07_GRAPHIC_7-16_six_file_architecture.svg` and three others — a deliberate cleanup, and an
+ancestor of main. Recovered from main's own history and **byte-matched** against the branch copy
+(`205eabf1…`, 245,460 B). There is also no gap it belongs in: **“astar” appears nowhere in the book**
+and L03 contains zero instances of A\*, pathfinding or maze. The branch is one commit ahead
+(`f97470b`, *Delete lessons/Lesson_13.html*) and **316 behind**.
+
+**6. Findings recorded, not acted on.** The staged `5-08`/`5-09` wrap **the same photographs already
+live** as `5-05a`/`5-05b` (matched-scale diff **2.07** and **2.09** against a different-subject
+control of **8.17**). Their panel prose says the sensors are *“installed”* and *“populated”* at
+positions 1/3/5 and promises *“right, front, and left coverage”* — where L05 says, in as many words,
+*the jumpers do not move the sensors — they choose which ones are wired up*, and 1/3/5 are
+downward-facing reflectance sensors. Lead, not verdict.
 
 ---
 ---

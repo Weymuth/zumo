@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-# book_gates.py — whole-book consistency gates. VERSION below is the only version home.
+# book_gates.py — whole-book consistency gates.
+# VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
+# file lands on the live version, not on a changelog line (S98).
+VERSION = 'v1.30'
+# v1.30 (S98): GATE 37 REWRITTEN. The old §21.1 forbade any embedded raster in a
+#   referenced .svg, which would have gone red on the first legitimate photo-plus-labels
+#   composite. It now checks the three things that were actually wrong: a duplicated
+#   payload, a byte ceiling, and a vector-content floor. Rationale at the gate.
+# v1.29.1 (S98): version home moved ABOVE the changelog. No gate changed. A plain grep of
+#   this file used to return v1.26.1 - a changelog line, three releases stale, and it read
+#   exactly like an answer. session_versions.py grep_trap() now keeps the home on top.
 # v1.26.1: §5.1 coverage 250 → 251. L01's AI-autocomplete block was on the one-off border
 # #ffb300; the S95 repaint snapped it to WARNING's #ffc107, which brings it INTO this gate's
 # scope (scheme + ⚠ glyph now agree). Its merged label was split into the canonical
@@ -38,7 +48,6 @@
 
 import re, glob, html, os, sys, collections
 
-VERSION = 'v1.29'   # the only version home in this file (S97)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from html.parser import HTMLParser as _HTMLParser
 import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a third regex
@@ -1320,30 +1329,64 @@ if _seen != 216:
 gate('\u00a721   every image reference resolves to a file on disk', bad)
 
 
-# ---------------------------------------------------------------- gate 37 (S97)
-# No REFERENCED .svg carries an embedded raster.
-# Gate 36 proves a reference resolves; it says nothing about what it resolves TO.
-# An SVG can be a PNG in an envelope — valid XML, right extension, zero drawing
-# elements. Scoped to referenced files on purpose; see the header note.
+# ---------------------------------------------------------------- gate 37 (S97, rewritten S98)
+# §21.1 was "no REFERENCED .svg carries an embedded raster", and that rule was WRONG —
+# it forbade an asset class this book needs. Measured in S98: every one of the five staged
+# raster-in-SVG files carries PHOTOGRAPHIC content (top-50 colours cover 9–48% of pixels),
+# and the one true-vector redraw of a board (…_top_view_r02.svg, 194 elements, zero raster)
+# turned out to be a CARTOON — its 39 text runs are the silkscreen, not labels. A photograph
+# of a populated PCB cannot be redrawn, and DJ's ruling is that these stay raster.
+#   They must also EMBED. An SVG loaded through <img src> runs in secure static mode and
+# cannot fetch an external file, so photo-plus-crisp-vector-labels in one file has no
+# external-href option. A gate forbidding base64 forbids the composite itself.
+#
+# What S97 actually found was not "a raster" but THREE separable defects, and this gate now
+# names each one. Every threshold below comes from measurement, not taste:
+#   DUP     one <image> carrying the payload TWICE, href= and xlink:href= both holding the
+#           full base64. Not two layers — identical bytes, one drawn image, double the file.
+#           Free to fix, invisible on screen, present in 2 of 5 staged files.
+#   CEILING the student-facing cost. fit_raster_svg.py takes the uploaded board photo from
+#           4,262,718 B to 350,471 B with no visible change, so a real composite lands well
+#           under this; 500,000 B leaves room without licensing a megabyte.
+#   FLOOR   the S97 defect proper: the memory ladder had ZERO drawing elements — a bitmap in
+#           an envelope, 4.9 MB, claiming to be a diagram. A composite has labels on it. A
+#           file with a raster and almost no vector is a PHOTOGRAPH and belongs at .jpg/.png
+#           under the IMAGE_ name, which is already this book's convention (IMAGE = photo,
+#           GRAPHIC = drawn).
+# Scoping is unchanged and deliberate: fatal for REFERENCED files, counted for staged ones.
+CEILING = 500_000
+FLOOR = 3
 _svgs = sorted(f.replace(os.sep, '/') for f in glob.glob('images/**/*.svg', recursive=True))
 _staged, bad = [], []
 for _f in _svgs:
     _s = open(_f, encoding='utf-8', errors='replace').read()
     if 'base64' not in _s:
         continue
-    _n = len(re.findall(r'data:image/[a-z]+;base64', _s))
+    _sz = os.path.getsize(_f)
     _draw = len(re.findall(r'<(?:path|rect|text|circle|line|polygon|polyline|ellipse)\b', _s))
-    _kind = ('a bitmap in an SVG envelope — no vector content at all' if _draw == 0
-             else f'vector plus an embedded raster ({_draw} drawing elements)')
-    _msg = (f'{_f}: {os.path.getsize(_f):,} B, {_n} embedded raster(s) — {_kind}')
+    _faults = []
+    for _tag in re.findall(r'<image\b[^>]*>', _s):
+        _uris = re.findall(r'href="(data:image/[a-z]+;base64,[^"]*)"', _tag)
+        if len(_uris) > 1 and len(set(_uris)) == 1:
+            _faults.append('payload stored twice in one <image> (href and xlink:href) — '
+                           'half this file is a duplicate of itself')
+            break
+    if _sz > CEILING:
+        _faults.append(f'{_sz:,} B, over the {CEILING:,} B ceiling — run fit_raster_svg.py')
+    if _draw < FLOOR:
+        _faults.append(f'{_draw} drawing element(s): this is a photograph, not a graphic — '
+                       f'ship it as .jpg/.png under an IMAGE_ name')
+    if not _faults:
+        continue
+    _msg = f'{_f}: ' + '; '.join(_faults)
     (bad if _f in _REFERENCED else _staged).append(_msg)
-gate('\u00a721.1 no referenced .svg carries an embedded raster', bad)
+gate('\u00a721.1 embedded rasters are deduped, under the ceiling, and carry vector content', bad)
 if _staged:
-    print(f'         note: {len(_staged)} unreferenced .svg also '
-          f'{"carries" if len(_staged) == 1 else "carry"} embedded raster '
+    print(f'         note: {len(_staged)} unreferenced .svg would fail this gate if wired in '
           f'(staged, not fatal)')
     for _m in _staged:
         print(f'           - {_m}')
+
 
 print('=' * 52)
 

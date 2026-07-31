@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
+# VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
+# lands on the live version, not on a changelog line (S98). The block below is prose,
+# not __doc__ — nothing in the repo reads __doc__ (checked).
+VERSION = 'v1.1.3'
+# v1.1.3 (S98): version home moved above the docstring changelog (same defect as book_gates;
+#   a plain grep returned v1.0.0). Output asserted byte-identical before and after.
 """build_family_map.py - assigns every callout block to a family.
-VERSION below is the only version home; the lines beginning vN are changelog, not homes.
+The lines beginning vN below are changelog, not version homes.
 
 Reproducible from a clean clone: run it from repo root, no prior step. It builds its
 own inventory by calling lesson_inventory.build() on all 16 lessons (v1.0.0 replaces
@@ -33,7 +39,6 @@ and read as ZERO blocks in S94 until this was fixed. It has 17.
 """
 import json,re,html,collections,glob,os,sys
 
-VERSION = 'v1.1.2'   # the only version home in this file (S96)
 import lesson_inventory
 
 ROOT=sys.argv[1] if len(sys.argv)>1 and not sys.argv[1].startswith('-') else '.'

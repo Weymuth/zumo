@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-# lesson_inventory.py v1.1.1 (S94) — exhaustive structural ENUMERATION of the lesson files.
+# lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
+# VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
+# file lands on the live version, not on a changelog line (S98).
+VERSION = 'v1.1.2'
 #
 # v1.1.1 (S94): the visible-banner expectation was still the pre-S89 value of 2, so --anomalies
 #   printed a false lead for all sixteen lessons. §5b and book_gates have required exactly ONE
@@ -339,7 +342,7 @@ def flat_lines(pre):
 
 # ---------------------------------------------------------------- reporting
 
-BANNER = ('lesson_inventory.py v1.1.1 — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
+BANNER = (f'lesson_inventory.py {VERSION} — ENUMERATION, NOT A VERDICT (Bible §24.6a).\n'
           'No exit code, no PASS/FAIL. A parser is necessary and not sufficient: read the table.\n')
 
 
@@ -465,9 +468,12 @@ def view_anomalies(invs):
         for a in inv['braincheck']['anchors']:
             seen.setdefault(a['id'], []).append(a['div_depth'])
     BC_NORM = {k: max(set(v), key=v.count) for k, v in seen.items()}
-    if BC_NORM:
-        w('  Brain Check family norm (modal div_depth): '
-          + '  '.join(f'{k}={v}' for k, v in sorted(BC_NORM.items())))
+    # v1.1.2: the norm was PRINTED here every run, inside the ANOMALIES header, so this
+    # view was never silent when clean and the line had to be re-dismissed as "not a
+    # finding" at every session open. It is not information this view owes the reader:
+    # the outlier message below names the norm itself ("family norm is {norm}"), so
+    # the header was redundant the moment it mattered and noise the rest of the time.
+    # An anomalies list that always prints something is a list people stop reading.
     for inv in invs:
         L, out = inv['lesson'], []
         for n in inv['unclosed']:
