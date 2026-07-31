@@ -47,6 +47,7 @@ failure mode.
   explicitly ask. Total `<path>` `d` data must stay under **5,000 characters** — outlining a
   single label costs 5,000–9,000, so this fires immediately.
 - `viewBox="0 0 1100 850"`, no `width`/`height` attributes.
+- A drawing has no `<image>` at all, so the `xlink:href` rule in Recipe 2 does not apply here.
 
 ---
 
@@ -60,8 +61,13 @@ failure mode.
   bytes with the **original MIME type** — `data:image/png;base64,…` for a PNG source,
   `data:image/jpeg;base64,…` for a JPEG source. **You do not transcode.** Format conversion and
   compression happen downstream in my own tooling, never in yours.
-- **One `href` attribute. Never also write `xlink:href`** — that stores the payload twice and
-  doubles the file.
+- **Exactly one payload attribute, and it must be `xlink:href`.** Declare the namespace on the
+  root: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">`.
+  Do **not** also write a plain `href` — two attributes store the payload twice and double the
+  file. And do **not** use plain `href` alone: that is SVG 2, while Illustrator parses SVG 1.1
+  and reports an href it cannot read as a **missing link with the photograph gone**. Browsers
+  render both forms identically, so this failure is invisible until someone opens the file to
+  edit it — which is exactly what these files are for.
 
 **The display box**
 
@@ -214,7 +220,8 @@ is worse than an admitted gap, because it stops me from running the check myself
 
 - Output filename and revision number correct
 - **Drawing:** no `<image>`, no base64, no outlined text, no `width`/`height`
-- **Photograph:** one `href` and no `xlink:href`; MIME type matches the source format
+- **Photograph:** exactly one `xlink:href`, no plain `href`, `xmlns:xlink` declared on the root;
+  MIME type matches the source format
 - Required font stacks present and leading their stacks
 - Callout and legend IDs unique and grouped per callout
 - Badge numbers anchored and vertically centred
