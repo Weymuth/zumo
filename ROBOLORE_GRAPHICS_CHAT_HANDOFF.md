@@ -80,6 +80,13 @@ failure mode.
 *(All of this has failed before: a 1200×503 source came back embedded at 300×300, letterboxed
 into a square box, and every label was then positioned against the distorted result.)*
 
+**Transparency.** If the source photograph has a knocked-out background, **flatten it onto
+the colour or panel it will sit on** before embedding. A real alpha channel cannot become a
+JPEG, so the payload stays PNG and runs roughly **seven times heavier** — measured, four
+composites arrived between 1.0 and 4.1 MB against a 500,000 B ceiling, and flattening took
+one of them from 2,732,428 B to 322,548 B with no visible change. Keep the alpha in your
+source file; drop it in the deliverable.
+
 **The label layer** — `<text>`, leader lines, highlight boxes. Nothing else.
 
 **Provenance.** Every embedded raster must say where it came from.
@@ -163,6 +170,10 @@ state indicators and instruction-bearing arrows use the functional palette, not 
 - **If the source has no revision suffix, deliver `_r01`. If it already ends in `_r##`, increment
   that number. Never append a second suffix** — `…_r01_r01.svg` is always wrong.
 - `_r##` means **staged, not live.**
+- **Never render the filename's revision suffix as visible text.** A graphic arrived with
+  `L06_GRAPHIC_6-06_encoder_locations_r02` set as a live `<text>` in its footer; promoted to
+  its canonical name, the page would still have said `_r02` to students. If you put the
+  filename in the artwork, use the canonical name with no suffix.
 
 ---
 

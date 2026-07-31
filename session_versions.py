@@ -51,7 +51,11 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.4.1'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.5'   # the only version home in this file (S96; v1.4 S98)
+# v1.5 (S99): flatten_alpha and svg_layout_audit registered. Two instruments were written
+#   this session and neither appeared in the block this file EMITS, so LIVE.md and the
+#   handoff would have recorded a toolchain that no longer matched the repo - the exact
+#   failure v1.4.1 registered fit_raster_svg to prevent, one session later.
 # v1.4.1 (S98): fit_raster_svg registered as an artefact. A new instrument absent from
 #   ARTEFACTS has no reader, so its version could only be hand-typed - the exact failure
 #   this file exists to prevent.
@@ -112,6 +116,8 @@ ARTEFACTS = [
     ('gen_bonus_banner',      'gen_bonus_banner.py',      r"VERSION = '(v[\d.]+)'"),
     ('gen_part_banners',      'gen_part_banners.py',      r'gen_part_banners\.py  (v[\d.]+)'),
     ('fit_raster_svg',        'fit_raster_svg.py',        r"VERSION = '(v[\d.]+)'"),
+    ('flatten_alpha',         'flatten_alpha.py',         r"VERSION = '(v[\d.]+)'"),
+    ('svg_layout_audit',      'svg_layout_audit.py',      r"VERSION = '(v[\d.]+)'"),
 ]
 
 
@@ -191,7 +197,8 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"build_mark_index {vals['build_mark_index']} · gen_bonus_banner "
             f"{vals['gen_bonus_banner']} · gen_part_banners {vals['gen_part_banners']} · "
             f"session_versions {vals['session_versions']} · "
-            f"fit_raster_svg {vals['fit_raster_svg']} · "
+            f"fit_raster_svg {vals['fit_raster_svg']} · flatten_alpha {vals['flatten_alpha']} · "
+            f"svg_layout_audit {vals['svg_layout_audit']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -208,6 +215,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"**{vals['build_mark_index']}** · `gen_bonus_banner` **{vals['gen_bonus_banner']}** ·\n"
             f"`gen_part_banners` **{vals['gen_part_banners']}** · `session_versions` "
             f"**{vals['session_versions']}** · `fit_raster_svg` **{vals['fit_raster_svg']}** ·\n"
+            f"`flatten_alpha` **{vals['flatten_alpha']}** · "
+            f"`svg_layout_audit` **{vals['svg_layout_audit']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 

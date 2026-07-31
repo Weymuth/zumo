@@ -1,9 +1,12 @@
-# GPT graphics work list — S99
+# GPT graphics work list — S99 (regenerated)
 
-**34 files.** Ordered worst-first by how far text runs outside its panel.
-Everything mechanical (font stacks, `xlink:href`, dead alpha) is fixed locally and is NOT in this list.
+**30 files**, from an audit of 110. Worst-first by how far text runs outside its panel.
 
-Send one file at a time. Attach the SVG, paste its block, and return the result here before moving on.
+Mechanical defects are NOT here — plain `href`, dead alpha, designer fonts and files over the
+gate 37 ceiling are all fixed locally by `svg_layout_audit`, `flatten_alpha` and `fit_raster_svg`.
+Everything below needs a human or a redraw.
+
+Send one file at a time. Attach the SVG, paste its block, bring the result back before moving on.
 
 ## L07_GRAPHIC_7-04_how_files_connect.svg
 *worst overflow: 105 units*
@@ -40,56 +43,21 @@ Send one file at a time. Attach the SVG, paste its block, and return the result 
 
 - text overflows its panel by 43 units: "Measure the diameter incorrectly, and every " spans 606..1097 inside 582..1060
 
-## L06_GRAPHIC_6-06_encoder_locations.svg
-*worst overflow: 36 units*
+## L07_GRAPHIC_7-15_platformio_file_tree.svg
+*worst overflow: 31 units*
 
-- text overflows its panel by 36 units: "ENCODER" spans 10..90 inside 40..682
-- text overflows its panel by 36 units: "ENCODER" spans 632..712 inside 40..682
-- text overlaps text at y=798: "Encoders measure the WHEEL" ends 413, "Everything in this lesson " starts 402
+- text overflows its panel by 15 units: "Put your header files (.h) here" spans 560..788 inside 1..779
+- text overflows its panel by 31 units: "Put your source files (.cpp) here" spans 560..804 inside 1..779
 
 ## L11_GRAPHIC_11-03_line_sensor_array.svg
 *worst overflow: 26 units*
 
 - text overflows its panel by 26 units: "Line sensors" spans 982..1078 inside 42..1058
 
-## L06_GRAPHIC_6-02_encoder_magnetic_disc.svg
-*worst overflow: 24 units*
-
-- text overflows its panel by 24 units: "N / S" spans -18..18 inside 0..1100
-
-## L01_GRAPHIC_1-10_zumo_hardware_labeled.svg
-*worst overflow: 21 units*
-
-- text overflows its panel by 14 units: "32U4" spans 560..603 inside 399..595
-- text overflows its panel by 21 units: "OLED" spans 560..610 inside 399..595
-- 28 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
-
 ## L06_GRAPHIC_6-04_drivetrain_gear_ratio.svg
 *worst overflow: 15 units*
 
 - text overflows its panel by 15 units: "motor turns per WHEEL turn" spans 844..1045 inside 824..1036
-
-## L04_GRAPHIC_4-05_readline_numberline.svg
-*worst overflow: 14 units*
-
-- text overflows its panel by 10 units: "1" spans -4..4 inside 0..960
-- text overflows its panel by 14 units: "[0]" spans -8..8 inside 0..960
-- text overflows its panel by 10 units: "2" spans -4..4 inside 0..960
-- text overflows its panel by 14 units: "[1]" spans -8..8 inside 0..960
-- text overflows its panel by 10 units: "3" spans -4..4 inside 0..960
-- text overflows its panel by 14 units: "[2]" spans -8..8 inside 0..960
-- text overflows its panel by 10 units: "4" spans -4..4 inside 0..960
-- text overflows its panel by 14 units: "[3]" spans -8..8 inside 0..960
-- text overflows its panel by 10 units: "5" spans -4..4 inside 0..960
-- text overflows its panel by 14 units: "[4]" spans -8..8 inside 0..960
-- text overlaps text at y=113: "1" ends 4, "2" starts -4
-- text overlaps text at y=113: "2" ends 4, "3" starts -4
-- text overlaps text at y=113: "3" ends 4, "4" starts -4
-- text overlaps text at y=113: "4" ends 4, "5" starts -4
-- text overlaps text at y=145: "[0]" ends 8, "[1]" starts -8
-- text overlaps text at y=145: "[1]" ends 8, "[2]" starts -8
-- text overlaps text at y=145: "[2]" ends 8, "[3]" starts -8
-- text overlaps text at y=145: "[3]" ends 8, "[4]" starts -8
 
 ## L06_GRAPHIC_6-10_function_anatomy.svg
 *worst overflow: 12 units*
@@ -143,10 +111,6 @@ Send one file at a time. Attach the SVG, paste its block, and return the result 
 
 - 5 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
 
-## L05_GRAPHIC_5-06_jumper_move_procedure_r01.svg
-
-- 5 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
-
 ## L05_GRAPHIC_5-07_the_dead_spot.svg
 
 - 3 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
@@ -165,6 +129,10 @@ Send one file at a time. Attach the SVG, paste its block, and return the result 
 - text overlaps text at y=770: "COUNTS_PER_CM" ends 356, "is wrong—not your robot. S" starts 352
 - 4 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
 
+## L06_IMAGE_6-11_encoder_hardware.svg
+
+- leader of callout-1 passes 1.4 units from the anchor dot of callout-3 (radius 7) - it runs across it
+
 ## L08_GRAPHIC_8-3_project_file_tree.svg
 
 - 3 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
@@ -180,7 +148,3 @@ Send one file at a time. Attach the SVG, paste its block, and return the result 
 ## L10_GRAPHIC_10-03_course_setup_clearance.svg
 
 - 4 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
-
-## zumo_chassis_with_dual_tracks_r01.svg
-
-- photograph is 1105x750 but its box renders about 839 CSS px wide (box 1105 of a 1448 viewBox at a 1100 px column) = 1.32x - under the 2x floor. Needs a source at least 1678 px wide.

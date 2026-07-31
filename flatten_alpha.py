@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.0'
+VERSION = 'v1.1'
 # ---------------------------------------------------------------------------------------------
 # flatten_alpha.py - drop a transparent photo onto the backdrop it actually sits on.
 #
@@ -26,6 +26,16 @@ VERSION = 'v1.0'
 # ENTRYPOINT IS flatten(path) -> (svg_text, report). Nothing is written unless --write.
 #
 # CHANGELOG
+# v1.1 (S99): HANDLE EVERY <image>, NOT JUST THE FIRST. v1.0 read imgs[0] and returned, so a
+#   two-photograph composite whose FIRST image was an ordinary JPEG was skipped entirely -
+#   'no alpha channel, nothing to flatten' - while the second sat there as a 2.7 MB transparent
+#   PNG, the whole reason the file was 4.1 MB and over the gate. A false negative on the exact
+#   defect this tool exists for, unnoticed because every file it had been shown until then
+#   carried exactly one photograph. CONTROL 4 covers it.
+#   NOTE: the behaviour shipped before this line did. The functional change landed in one edit
+#   and the version bump was in another that aborted, so the file ran as v1.1 while reporting
+#   v1.0 - caught only because session_versions was taught to read it. §5b: the version has one
+#   home and it must move in the SAME edit as the behaviour.
 # v1.0 (S99): new.
 # ---------------------------------------------------------------------------------------------
 import sys, os, io, base64, tempfile
@@ -107,66 +117,73 @@ def _render_without_photo(path, root_copy_src, width_px):
 
 
 def flatten(path, quality=QUALITY):
-    """Return (new_svg_text_or_None, report). Never writes."""
-    rep = {'before': os.path.getsize(path), 'reason': None, 'mode': None, 'fill': None}
+    """Return (new_svg_text_or_None, report). Never writes.
+
+    EVERY <image> is considered, not just the first. v1.0 read imgs[0] and returned, so a
+    composite whose first photograph was an ordinary JPEG was skipped whole while a 2.7 MB
+    transparent PNG sat beside it untouched.
+    """
+    rep = {'before': os.path.getsize(path), 'reason': None, 'mode': None, 'fill': None,
+           'n_images': 0, 'n_flattened': 0}
     tree = etree.parse(path)
     root = tree.getroot()
     imgs = root.findall(f'.//{NS}image')
+    rep['n_images'] = len(imgs)
     if not imgs:
         rep['reason'] = 'no embedded raster - nothing to flatten'
         return None, rep
-    im_el = imgs[0]
-    key, raw = _payload(im_el)
-    if raw is None:
-        rep['reason'] = 'image is linked, not embedded'
+
+    todo, skipped = [], []
+    for el in imgs:
+        _k, rw = _payload(el)
+        if rw is None:
+            skipped.append('linked, not embedded'); continue
+        pp = Image.open(io.BytesIO(rw))
+        if pp.mode not in ('RGBA', 'LA'):
+            skipped.append('no alpha'); continue
+        if pp.convert('RGBA').getchannel('A').getextrema()[0] == 255:
+            skipped.append("dead alpha - fit_raster_svg's job"); continue
+        todo.append([el, rw, pp.convert('RGBA')])
+    if not todo:
+        rep['reason'] = ('nothing to flatten across %d image(s): %s'
+                         % (len(imgs), '; '.join(sorted(set(skipped)))))
         return None, rep
-    pic = Image.open(io.BytesIO(raw))
-    if pic.mode not in ('RGBA', 'LA'):
-        rep['reason'] = 'payload has no alpha channel - nothing to flatten'
-        return None, rep
-    pic = pic.convert('RGBA')
-    lo, _hi = pic.getchannel('A').getextrema()
-    if lo == 255:
-        rep['reason'] = ('alpha is fully opaque and doing nothing - run fit_raster_svg.py '
-                         'instead, which drops a dead channel')
-        return None, rep
 
-    ix, iy = _num(im_el.get('x')), _num(im_el.get('y'))
-    iw, ih = _num(im_el.get('width')), _num(im_el.get('height'))
-    PW, PH = pic.size
-    fill, _rect = _backdrop(root, im_el)
-    rep['fill'] = fill
+    modes, fills, pb, pa = [], [], 0, 0
+    for entry in todo:
+        im_el, raw, pic = entry
+        ix, iy = _num(im_el.get('x')), _num(im_el.get('y'))
+        iw, _ih = _num(im_el.get('width')), _num(im_el.get('height'))
+        PW, PH = pic.size
+        fill, _rect = _backdrop(root, im_el)
+        fills.append(fill)
 
-    if fill and fill.startswith('#') and len(fill) in (4, 7):
-        h = fill.lstrip('#')
-        if len(h) == 3:
-            h = ''.join(c * 2 for c in h)
-        col = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
-        under = Image.new('RGB', (PW, PH), col)
-        rep['mode'] = f'flat colour {fill}'
-    else:
-        # gradient, pattern, or nothing found: composite onto the real rendered pixels
-        vb = (root.get('viewBox') or '').split()
-        vbw = _num(vb[2]) if len(vb) == 4 else iw
-        if not (iw and vbw):
-            rep['reason'] = 'cannot locate the image box in the viewBox'
-            return None, rep
-        scale = PW / iw
-        full = _render_without_photo(path, path, int(round(vbw * scale)))
-        x0, y0 = int(round(ix * scale)), int(round(iy * scale))
-        under = full.crop((x0, y0, x0 + PW, y0 + PH))
-        rep['mode'] = f'rendered backdrop ({fill or "no covering rect"})'
+        if fill and fill.startswith('#') and len(fill) in (4, 7):
+            h = fill.lstrip('#')
+            if len(h) == 3:
+                h = ''.join(c * 2 for c in h)
+            col = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+            under = Image.new('RGB', (PW, PH), col)
+            modes.append(f'flat colour {fill}')
+        else:
+            vb = (root.get('viewBox') or '').split()
+            vbw = _num(vb[2]) if len(vb) == 4 else iw
+            if not (iw and vbw):
+                rep['reason'] = 'cannot locate an image box in the viewBox'
+                return None, rep
+            scale = PW / iw
+            full = _render_without_photo(path, path, int(round(vbw * scale)))
+            x0, y0 = int(round(ix * scale)), int(round(iy * scale))
+            under = full.crop((x0, y0, x0 + PW, y0 + PH))
+            modes.append(f'rendered backdrop ({fill or "no covering rect"})')
 
-    flat = under.copy()
-    flat.paste(pic, mask=pic.getchannel('A'))
-    buf = io.BytesIO()
-    flat.save(buf, 'JPEG', quality=quality, optimize=True)
-    jpg = buf.getvalue()
+        flat = under.copy()
+        flat.paste(pic, mask=pic.getchannel('A'))
+        buf = io.BytesIO()
+        flat.save(buf, 'JPEG', quality=quality, optimize=True)
+        entry.append(buf.getvalue())
+        pb += len(raw); pa += len(buf.getvalue())
 
-    for k in list(im_el.keys()):
-        if k.endswith('href'):
-            del im_el.attrib[k]
-    # xlink form, always: plain href is SVG 2 and Illustrator cannot open it (S99)
     if 'xlink' not in (root.nsmap or {}):
         ns = dict(root.nsmap or {})
         ns['xlink'] = XLINK
@@ -177,13 +194,23 @@ def flatten(path, quality=QUALITY):
         for c in list(root):
             new.append(c)
         tree = etree.ElementTree(new)
+        fresh = new.findall(f'.//{NS}image')
+        for i, entry in enumerate(todo):
+            entry[0] = fresh[imgs.index(entry[0])] if entry[0] in imgs else fresh[i]
         root = new
-        im_el = root.find(f'.//{NS}image')
-    im_el.set(f'{{{XLINK}}}href', 'data:image/jpeg;base64,' + base64.b64encode(jpg).decode())
+
+    for im_el, _raw, _pic, jpg in todo:
+        for k in list(im_el.keys()):
+            if k.endswith('href'):
+                del im_el.attrib[k]
+        im_el.set(f'{{{XLINK}}}href', 'data:image/jpeg;base64,' + base64.b64encode(jpg).decode())
 
     out = etree.tostring(tree, encoding='utf-8', xml_declaration=True).decode('utf-8')
-    rep['payload_before'] = len(raw)
-    rep['payload_after'] = len(jpg)
+    rep['n_flattened'] = len(todo)
+    rep['mode'] = ' + '.join(modes)
+    rep['fill'] = fills[0] if fills else None
+    rep['payload_before'] = pb
+    rep['payload_after'] = pa
     rep['after'] = len(out.encode('utf-8'))
     return out, rep
 
@@ -281,6 +308,26 @@ def _selftest():
     print(f"   dead alpha       -> {r4['reason']}")
     if _n2 is not None:
         print('   FAILED - a dead alpha channel belongs to fit_raster_svg, not here'); ok = False
+
+    print('CONTROL 4 (TWO images, only the second transparent: must flatten the SECOND)')
+    op2 = Image.new('RGB', (200, 150), (30, 60, 90))            # image 1: no alpha at all
+    bo = io.BytesIO(); op2.save(bo, 'JPEG', quality=90)
+    u1 = 'data:image/jpeg;base64,' + base64.b64encode(bo.getvalue()).decode()
+    p4 = os.path.join(tmp, 'two.svg')
+    open(p4, 'w').write(
+        '<svg xmlns="http://www.w3.org/2000/svg" '
+        'xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 750">'
+        '<rect x="0" y="0" width="1000" height="750" fill="#ffffff"/>'
+        '<rect x="50" y="50" width="900" height="650" fill="#FBFBFC"/>'
+        f'<image x="600" y="100" width="200" height="150" xlink:href="{u1}"/>'
+        f'<image x="100" y="100" width="400" height="300" xlink:href="{uri}"/>'
+        '<text x="10" y="740">label</text></svg>')
+    n4, r4 = flatten(p4)
+    print(f"   images seen {r4['n_images']}   flattened {r4['n_flattened']}   mode {r4['mode']}")
+    if n4 is None or r4['n_images'] != 2 or r4['n_flattened'] != 1:
+        print('   FAILED - v1.0 skipped this whole file on the strength of imgs[0]'); ok = False
+    elif n4.count('data:image/jpeg') != 2:
+        print('   FAILED - both images must survive'); ok = False
 
     print('\n' + ('ALL CONTROLS PASS' if ok else '*** SELFTEST FAILED ***'))
     return ok
