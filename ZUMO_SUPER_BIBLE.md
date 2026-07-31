@@ -14,7 +14,9 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.84** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.79.1** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+**Bible version: v8.85** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.79.1** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+
+v8.85, S99, moderate — **§17.3b NEW: THE CREATE SIDE.** §17.3 named Photoshop -> Illustrator as the route for a photograph and never wrote the route, and §17.3a's Recipe 2 is a prompt for an AI holding a composite that already exists — so the one thing nobody had written was how to MAKE one. Found by DJ asking for it. The section is five steps, and **step 0 is the one that matters**: measured across the three staged composites, all three embed **PNG**, two carry an RGBA channel `fit_raster_svg.py` measures as dead, and one stores its payload twice — 438,626 / 1,266,035 / 960,966 B of payload that fit to 128,287 / 215,741 / 178,544 B. Preparing the photo as a JPEG with no alpha at ~2x the on-screen box is what makes the file arrive near its final size instead of being rescued from 10x. Also records what §17.3a implied and never said: a photo composite has **no fixed canvas** (Recipe 1's 1100x850 is for drawn graphics; the live composites run 2000x1200, 2000x1180 and 1448x1086), and **gate 38 skips any file containing a raster**, so outlined labels in a composite are legal by design. One live defect named in passing: `L05 5-10` sets its labels in `Inter,Arial,sans-serif` and Inter cannot load through `<img src>`, so it was designed against a font no reader will ever see.
 
 v8.84, S98, moderate — **§17.3a NEW: THE TWO RECIPES, AND GATE 38 BEHIND ONE OF THEM.** §17.3 said what the two asset classes ARE; this says what to ask for and what to check. Written the same day four referenced graphics — L06 6-09/6-10/6-12 and L07 7-02 — were found replaced with versions whose every label had been converted to OUTLINES: **23,066 B → 1,148,110 B, a 50x growth, +1.13 MB on the published site, and all four passed 37/37 for a week** because no gate looked at a drawn graphic's size or asked whether its text was still text. One rode in on the same commit as the gate suite's own update. The cause is defensible — a graphic drawn in Inter or JetBrains Mono renders wrong on a student's machine and outlines fix that — but **the cheaper fix is a common font stack**, and all five files came back at 6–11 KB with 32–42 live labels once asked for Arial/Courier New. Recipe 2 covers the photograph case and records that these files **open in Illustrator**, the embedded raster arriving as an ordinary image object. **Gate 38 (`§21.2`) now enforces Recipe 1**: a 60,000 B ceiling on drawn graphics and a flag on path-data-without-`<text>`, thresholds measured with the Mercersburg wordmark and the §18.2 spiral stars — both legitimately zero-text — an order of magnitude clear of the line.
 
@@ -1579,6 +1581,66 @@ by hand. Three things on the way back out:
 **Filename suffixes, confirmed against all 155 files (S97):** trailing `_##` = a spiral star (all 16,
 zero exceptions) · trailing `_r##` = a redo, **staged, not live** · mid-name `N-NN` is the image
 number and cannot collide. `IMAGE_` and `GRAPHIC_` remain separate number spaces per §17 and §10.
+
+
+#### 17.3b THE CREATE SIDE — BUILDING A PHOTO COMPOSITE IN ILLUSTRATOR (v8.85 — NEW, S99)
+
+**§17.3a Recipe 2 is what to ASK AN AI for when a composite already exists. This is how to MAKE one.**
+The gap was found by DJ in S99: §17.3 named "Photoshop → Illustrator" as the route and never wrote
+the route down, so the create side lived in chat while the export side was canon.
+
+**STEP 0 — PREPARE THE PHOTO FIRST. This is the step that decides the file size.**
+Measured across the three staged composites, S99: **all three embed PNG**, two of them RGBA whose
+alpha `fit_raster_svg.py` measures as carrying nothing, and one stores its payload twice.
+
+| file | embedded format | payload | after fit |
+|---|---|---|---|
+| `L02 2-07_ir_sensors_r02` | PNG RGBA 1750x190 | 438,626 B | 128,287 B |
+| `L05 5-08_three_sensor_array` | PNG RGBA 2048x479 | 1,266,035 B | 215,741 B |
+| `zumo_chassis_r01` | PNG RGB 1105x750, **stored twice** | 960,966 B | 178,544 B |
+
+So, in Photoshop, before anything else: **flatten to JPEG, not PNG** (PNG is lossless and stores a
+photograph terribly), **drop the alpha channel** unless something is genuinely transparent, and size
+the image to roughly **2x the on-screen box** — the same cap `fit_raster_svg.py` applies. A photo
+prepared this way arrives near its final size instead of being rescued from 10x.
+
+**STEP 1 — PLACE IT EMBEDDED.** `File > Place…`, select the photo, and **uncheck Link** in the
+dialog. If it is already placed as a link: `Window > Links`, select it, flyout menu, **Embed
+Image(s)**. §17.3's warning is the whole reason — a linked photo is a blank graphic on the published
+site and looks perfect on the machine that exported it.
+
+**STEP 2 — SIZE THE ARTBOARD TO THE PHOTO.** There is **no fixed canvas for a photo composite.**
+Recipe 1 fixes drawn graphics at `viewBox="0 0 1100 850"`; photo composites legitimately vary with
+their subject, and the live files run 2000x1200, 2000x1180 and 1448x1086. Do not force them.
+
+**STEP 3 — LABELS ON THEIR OWN LAYER**, above the photo: `<text>` callouts, leader lines, highlight
+boxes. Keeping them separate is what makes a later relabel cheap and what stops a re-export from
+disturbing the photograph.
+
+**STEP 4 — SAVE AS SVG.** `File > Save As > SVG` (or `Export As > SVG`). Four settings:
+- **Images: Embed** — never Link. See above; this is the one that fails silently and only in production.
+- **Fonts: Arial/Helvetica stack, or Convert To Outline.** On a photo composite outlines are cheap —
+  a handful of labels, not a whole diagram — so unlike Recipe 1 this is a real choice. **What is NOT
+  a choice is designing in a font nobody has:** `L05 5-10` ships its labels as
+  `Inter,Arial,sans-serif`, and Inter cannot load through `<img src>`, so every reader sees the Arial
+  fallback and a layout that shifted after it left Illustrator. Put the common font FIRST.
+- **Styling: Presentation Attributes** — keeps the label layer editable as ordinary attributes.
+- **Responsive: on** — omits `width`/`height` and keeps `viewBox`, which is what the book's
+  `width: 100%` image CSS wants.
+
+**STEP 5 — ONE COMMAND, ALWAYS:** `python3 fit_raster_svg.py FILE.svg --write`. It dedupes the
+double payload some exporters write into both `href` and `xlink:href`, drops a dead alpha channel,
+caps resolution and re-encodes at a pinned q92. **If step 0 was done properly it will find little to
+do, and that is the goal** — its CONTROL 4 proves it leaves a good JPEG alone rather than putting it
+through a second lossy generation.
+
+**GATE SCOPE, STATED SO IT IS NOT ASSUMED:** gate 38's drawn-graphic checks **skip any file
+containing a raster** — that population belongs to gate 37. A photo composite is therefore NOT
+checked for live text, and outlined labels in one are legal by design.
+
+*The Illustrator menu paths in steps 1 and 4 are recorded from DJ's workflow, not from the repo;
+verify them against the installed version before treating them as exact.*
+
 
 ---
 

@@ -2,7 +2,12 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.31'
+VERSION = 'v1.32'
+# v1.32 (S99): GATE 38 hole closed. v1.31's label check is a floor of ONE, so a graphic
+#   with 26 of 27 labels outlined passed it green — demonstrated, not argued, on an
+#   lxml-built injection. GRAPHIC_ names now carry a path-data ceiling too. Found by
+#   re-deriving gate 38's own numbers on xml.etree and lxml; all six figures agreed and
+#   the SEVENTH thing, the one nobody had measured, was the hole. Arithmetic at the gate.
 # v1.31 (S98): NEW GATE 38 — §21.2 a drawn graphic keeps live <text> and stays under a
 #   60,000 B ceiling. Four referenced graphics shipped with every label OUTLINED,
 #   +1.13 MB and a 50x growth, and passed 37/37 for a week; one rode in on the same
@@ -1427,6 +1432,18 @@ if _staged:
 # that reddens on work-in-progress is a gate people learn to ignore.
 VEC_CEILING = 60_000
 OUTLINE_PD = 50_000
+# GRAPHIC_PD closes a hole in v1.31 found by re-deriving that gate's own findings on a second
+# and third parser (S99). The label check above is a FLOOR OF ONE, so a graphic with 26 of its
+# 27 labels outlined and one left live satisfied it: measured, that file sat at 19,225 B with
+# 15,730 B of path data and passed the whole suite green. Threshold from arithmetic, not taste —
+# outlining a SINGLE label cost 5,190 B (L06 6-09, 38 labels) and 9,216 B (L07 7-02, 33 labels)
+# on the two real S98 defect files, while the largest path payload on any legitimate drawn
+# graphic in the book is 960 B and 55 of the 83 carry exactly zero. 5,000 B therefore sits 5.2x
+# above anything legitimate and still fires on the outlining of one label.
+#   The cost is stated: a future graphic built from genuinely path-heavy vector art — curved
+# arrows, traced silhouettes — could reach this honestly. That is a threshold to RAISE with a
+# measurement, not a reason to leave partial outlining ungated.
+GRAPHIC_PD = 5_000
 _vec, _staged38, bad = [], [], []
 for _f in _svgs:                              # same population gate 37 walked, complemented
     _s = open(_f, encoding='utf-8', errors='replace').read()
@@ -1446,6 +1463,11 @@ for _f in _svgs:                              # same population gate 37 walked, 
         _faults.append('named GRAPHIC_ but carries zero <text>: its labels have been converted '
                        'to outlines — re-export with live text in a common stack '
                        '(Arial / Courier New), per Bible §17.3a recipe 1')
+    if _isg and _pd > GRAPHIC_PD:
+        _faults.append(f'{_pd:,} B of path data on a drawn graphic, over the {GRAPHIC_PD:,} B '
+                       f'ceiling: labels appear to be outlined. The >=1 <text> floor above is '
+                       f'satisfied by a SINGLE surviving label, so it does not catch partial '
+                       f'outlining — this check is the half that does')
     if not _isg and _ntext == 0 and _pd > OUTLINE_PD:
         _faults.append(f'zero <text> over {_pd:,} B of path data — this looks like outlined '
                        f'text under a non-GRAPHIC_ name')
