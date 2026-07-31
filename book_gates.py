@@ -2,7 +2,11 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.30'
+VERSION = 'v1.31'
+# v1.31 (S98): NEW GATE 38 — §21.2 a drawn graphic keeps live <text> and stays under a
+#   60,000 B ceiling. Four referenced graphics shipped with every label OUTLINED,
+#   +1.13 MB and a 50x growth, and passed 37/37 for a week; one rode in on the same
+#   commit that carried this suite's own update. Thresholds at the gate, all measured.
 # v1.30 (S98): GATE 37 REWRITTEN. The old §21.1 forbade any embedded raster in a
 #   referenced .svg, which would have gone red on the first legitimate photo-plus-labels
 #   composite. It now checks the three things that were actually wrong: a duplicated
@@ -1385,6 +1389,87 @@ if _staged:
     print(f'         note: {len(_staged)} unreferenced .svg would fail this gate if wired in '
           f'(staged, not fatal)')
     for _m in _staged:
+        print(f'           - {_m}')
+
+
+# ---------------------------------------------------------------- gate 38 (S98)
+# §21.2 A DRAWN GRAPHIC KEEPS ITS TEXT AND STAYS SMALL.
+# Written for a defect that was LIVE for a week and passed 37/37 every run. Four referenced
+# graphics — L06 6-09, 6-10, 6-12 and L07 7-02 — came back from a redo with every label
+# converted to OUTLINES: 23,066 B -> 1,148,110 B, a 50x growth and +1.13 MB on the published
+# site. One of them rode in on 09a33f8, the same commit that carried the gate suite's own
+# update, and post-push verification missed it because it byte-matched the files on the push
+# list and never diffed the rest of the tree.
+#   The cause is defensible: a graphic drawn in Inter or JetBrains Mono renders wrong on a
+# student's machine, and outlining is a real fix for that. It is the WRONG fix — the cheap one
+# is a common font stack, and all five files came back at 6–11 KB with 32–42 LIVE labels once
+# asked for Arial/Courier New. Outlined text is also unselectable, unsearchable and invisible
+# to a screen reader, which is the same objection §17.3 raises against prose baked into pixels.
+#
+# Gate 37 owns the files that CONTAIN a raster. This gate owns the complement: true vector.
+# Three checks, every threshold measured against the whole book this session, none inherited:
+#   CEILING   60,000 B. The largest true-vector file in the book is the Mercersburg wordmark
+#             at 12,904 B and the largest GRAPHIC_ is 10,943 B, so this sits 4.6x above
+#             anything legitimate and 3.5x below the smaller of the two real defects
+#             (209,178 B and 319,014 B, restored from 0b3f070^ and used as control A).
+#   LABELS    a file named GRAPHIC_ carries at least one <text>. Measured: 83 GRAPHIC_ vector
+#             files, ZERO of them text-less, minimum label count 7. The two legitimate
+#             text-less families need no exemption because neither is named GRAPHIC_ — the
+#             wordmark is a logo and the §18.2 spiral stars carry vector-path digits BY RULING.
+#   OUTLINED  zero <text> AND more than 50,000 B of path data, for anything NOT named GRAPHIC_
+#             — the same defect arriving under a different filename. The largest legitimate
+#             text-less path payload in the book is the wordmark's 11,173 B (next: 2,396 B, an
+#             icon; the stars are all under 962 B); the defect files carry 197,247 B and
+#             304,159 B. The line sits 4.5x above the first and 3.9x below the second.
+#
+# Scoping mirrors gate 37 and for the same reason: fatal on files a page REFERENCES, counted
+# and printed for staged ones. Raw exports land in images/ before being wired up, and a gate
+# that reddens on work-in-progress is a gate people learn to ignore.
+VEC_CEILING = 60_000
+OUTLINE_PD = 50_000
+_vec, _staged38, bad = [], [], []
+for _f in _svgs:                              # same population gate 37 walked, complemented
+    _s = open(_f, encoding='utf-8', errors='replace').read()
+    if 'base64' in _s:
+        continue                              # gate 37's file, not this one's
+    _vec.append(_f)
+    _base = os.path.basename(_f)
+    _isg = 'GRAPHIC_' in _base
+    _sz = os.path.getsize(_f)
+    _ntext = len(re.findall(r'<text\b', _s))
+    _pd = sum(len(_m) for _m in re.findall(r'\bd\s*=\s*"([^"]*)"', _s))
+    _faults = []
+    if _sz > VEC_CEILING:
+        _faults.append(f'{_sz:,} B, over the {VEC_CEILING:,} B ceiling for a drawn graphic '
+                       f'(largest legitimate in the book is 12,904 B)')
+    if _isg and _ntext == 0:
+        _faults.append('named GRAPHIC_ but carries zero <text>: its labels have been converted '
+                       'to outlines — re-export with live text in a common stack '
+                       '(Arial / Courier New), per Bible §17.3a recipe 1')
+    if not _isg and _ntext == 0 and _pd > OUTLINE_PD:
+        _faults.append(f'zero <text> over {_pd:,} B of path data — this looks like outlined '
+                       f'text under a non-GRAPHIC_ name')
+    if not _faults:
+        continue
+    _msg = f'{_f}: ' + '; '.join(_faults)
+    (bad if _f in _REFERENCED else _staged38).append(_msg)
+
+# COVERAGE. An assert that cannot fail is not evidence (§24.6b): if the glob breaks, the
+# population empties and every check above passes vacuously. Both numbers are STATED, not
+# inherited, and both are expected to move when a graphic is added or removed — bump them
+# in the same edit, the way gate 36's reference count is maintained.
+if len(_vec) != 195:
+    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 195 — a file was '
+               f'added, removed, or now carries a raster (which moves it to gate 37)')
+_ngraphic = sum(1 for _f in _vec if 'GRAPHIC_' in os.path.basename(_f))
+if _ngraphic != 84:
+    bad.append(f'COVERAGE: {_ngraphic} GRAPHIC_ vector files walked, expected 84 — the label '
+               f'check is the one that binds on every one of them, so this number is load-bearing')
+gate('\u00a721.2 drawn graphics keep live text and stay under the ceiling', bad)
+if _staged38:
+    print(f'         note: {len(_staged38)} unreferenced .svg would fail this gate if wired in '
+          f'(staged, not fatal)')
+    for _m in _staged38:
         print(f'           - {_m}')
 
 
