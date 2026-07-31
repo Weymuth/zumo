@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.8'
+VERSION = 'v1.9'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,12 @@ VERSION = 'v1.8'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.9 (S99): FILE SIZE CHECKED AT LAST. Eight checks and not one of them looked at how big the
+#   file was, so a 3.65 MB composite - 7.3x over gate 37's referenced-file ceiling - audited
+#   CLEAN and would have gone fatal the moment a lesson pointed at it. The cause is always the
+#   same now that PSD sources carry knocked-out backgrounds: genuine alpha cannot become JPEG,
+#   so fit_raster_svg correctly refuses to shrink it and the only real fix is flattening onto
+#   the colour behind it. The check names that remedy rather than just the number.
 # v1.8 (S99): outlined-text check scoped to GRAPHIC_ names, matching gate 38. v1.7 fired on
 #   all 16 spiral stars and both Mercersburg wordmarks - 18 of 74 findings, every one a false
 #   positive. Those are legitimately text-free: the stars carry vector-path digits BY RULING
@@ -118,6 +124,7 @@ if 'bold' not in _FONTS and 'regular' in _FONTS:
 # a drawn graphic's labels must survive on a machine that has none of the designer's fonts
 SAFE_FONTS = ('arial', 'helvetica', 'sans-serif', 'courier new', 'monospace', 'times', 'serif')
 MIN_PHOTO_SCALE = 2.0        # §17.3b: payload at ~2x its on-screen box
+GATE37_CEILING = 500_000     # book_gates §21.1 - fatal for a file a lesson REFERENCES
 DISPLAY_WIDTH_PX = 1100      # the book's image column. The <image> box is in USER UNITS,
                              # so it must be scaled through the viewBox to get real pixels.
 PANEL_MIN_W, PANEL_MIN_H = 150, 60
@@ -248,6 +255,29 @@ def audit(path):
             if alpha.getextrema() == (255, 255):
                 out.append('photo carries a fully-opaque alpha channel doing nothing - '
                            'run fit_raster_svg.py --write')
+
+    # ---- 2b. the whole file against gate 37's ceiling ---------------------------------------
+    # Eight checks and none of them measured the file. A composite can pass every content check
+    # and still be fatal the instant a lesson references it.
+    ran.add('filesize')
+    total = os.path.getsize(path)
+    if imgs and total > GATE37_CEILING:
+        pic0 = None
+        try:
+            u = next(imgs[0].get(k) for k in imgs[0].keys() if k.endswith('href'))
+            pic0 = Image.open(io.BytesIO(base64.b64decode(u.split(',', 1)[1])))
+        except Exception:
+            pass
+        hint = ''
+        if pic0 is not None and pic0.mode in ('RGBA', 'LA'):
+            al = pic0.getchannel('A')
+            lo, hi = al.getextrema()
+            if lo < 255:
+                hint = (' The payload is a PNG with a REAL alpha channel, so fit_raster_svg.py '
+                        'cannot convert it to JPEG and will not get you under. Flatten the photo '
+                        'onto the colour that sits behind it, then embed as JPEG.')
+        out.append(f'{total:,} B - over gate 37\'s {GATE37_CEILING:,} B ceiling. This is FATAL '
+                   f'the moment a lesson references it.{hint}')
 
     # ---- 3. outlined text on a drawn graphic ------------------------------------------------
     ran.add('outlines')
@@ -394,7 +424,7 @@ def audit(path):
                        'your own photo just needs to say so.)')
 
     # ---- coverage: every check must have run, or a silent pass is not evidence ---------------
-    expected = {'viewbox', 'raster', 'outlines', 'fonts', 'overflow',
+    expected = {'viewbox', 'raster', 'filesize', 'outlines', 'fonts', 'overflow',
                 'collide_text', 'groups', 'collide_geom', 'credit'}
     if ran != expected:
         out.append(f'COVERAGE: only {len(ran)} of {len(expected)} checks ran '
