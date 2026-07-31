@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.1'
+VERSION = 'v1.3.1'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,25 @@ VERSION = 'v1.1'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.3.1 (S99): --fixnote was leaking LOCAL instructions into the paste block. Findings that
+#   say 'run fit_raster_svg.py' are our job, not the author's - and telling a model to fix a
+#   file-size problem is the one instruction guaranteed to make it report success while
+#   changing nothing. Those are now split out and shown only on our side.
+# v1.3 (S99): --fixnote added. The audit already computes every number a correction needs;
+#   having a human retype them into a chat window is where they get rounded, dropped, or
+#   guessed. --fixnote emits a paste-ready correction block: the findings verbatim with their
+#   measurements, an explicit list of what is ALREADY correct and must not be touched (the
+#   common failure is a fix that silently breaks something that was fine), and the next _r##
+#   filename. It deliberately never mentions file size - size is handled locally by
+#   fit_raster_svg.py, and telling a model to hit a byte budget makes it report success
+#   while returning the photograph unchanged.
+# v1.2 (S99): FALSE POSITIVE FIXED. v1.1 warned 'no callout-* groups' on ANY raster-bearing
+#   file. A photograph labelled with leader lines and no numbered badges is a perfectly good
+#   design and has nothing to group per-callout. The check now fires only when the file
+#   actually carries NUMBERED MARKERS - a circle with a short numeric label at its centre -
+#   which is the only case where per-callout grouping is what makes it editable.
+#   Caught on the first real file the tool was pointed at, which is the argument for pointing
+#   a new instrument at real work early rather than trusting a green selftest.
 # v1.1 (S99): credit check narrowed. v1.0 demanded a POLOLU credit on any raster-bearing
 #   file, which would have fired on screenshots and on photographs DJ shoots himself.
 #   It now asks for PROVENANCE of any kind - a credit line, or a <desc> that says what
@@ -197,9 +216,21 @@ def audit(path):
     # ---- 7. callout grouping and badge centring ---------------------------------------------
     ran.add('groups')
     groups = [g for g in root.findall(f'.//{NS}g') if (g.get('id') or '').startswith('callout-')]
-    if imgs and not groups:
-        out.append('no callout-* groups - if this graphic has numbered markers they are grouped '
-                   'by object type, so moving one marker means hunting its parts across the layer')
+    # Only complain about grouping if the file actually HAS numbered markers. A photograph
+    # labelled with plain leader lines has nothing to group per-callout and is not defective.
+    n_badges = 0
+    for circ in root.findall(f'.//{NS}circle'):
+        cx, cy, rad = (float(circ.get(k) or 0) for k in ('cx', 'cy', 'r'))
+        for t in root.findall(f'.//{NS}text'):
+            lab = ''.join(t.itertext()).strip()
+            if lab.isdigit() and len(lab) <= 2:
+                tx, ty = float(t.get('x') or 0), float(t.get('y') or 0)
+                if abs(tx - cx) <= rad and abs(ty - cy) <= rad * 1.6:
+                    n_badges += 1
+                    break
+    if n_badges >= 2 and not groups:
+        out.append(f'{n_badges} numbered markers but no callout-* groups - they are grouped by '
+                   f'object type, so moving one marker means hunting its parts across the layer')
     for g in groups:
         gid = g.get('id')
         circs = [e for e in g if e.tag == NS + 'circle']
@@ -356,12 +387,100 @@ def _selftest():
     return ok
 
 
+def _already_correct(path):
+    """What this file gets RIGHT - stated so a correction does not break it."""
+    root = etree.parse(path).getroot()
+    good = []
+    imgs = root.findall(f'.//{NS}image')
+    if imgs:
+        im = imgs[0]
+        hrefs = [k for k in im.keys() if k.endswith('href')]
+        uri = im.get(hrefs[0]) or ''
+        if len(hrefs) == 1:
+            good.append('a single href attribute and no xlink:href')
+        if 'base64,' in uri:
+            mime = uri.split(';')[0].split(':')[-1]
+            raw = base64.b64decode(uri.split(',', 1)[1])
+            pic = Image.open(io.BytesIO(raw))
+            good.append(f'the {mime.split("/")[-1].upper()} payload at {pic.size[0]}x{pic.size[1]}, '
+                        f'unmodified and not transcoded')
+            bw, bh = float(im.get('width') or 0), float(im.get('height') or 0)
+            if bw and bh:
+                good.append(f'the display box at {bw:.0f}x{bh:.0f} - '
+                            f'{pic.size[0] / bw:.2f}x resolution and an exact aspect match')
+        desc = root.find(f'{NS}desc')
+        if desc is not None and (desc.text or '').strip():
+            good.append('the provenance statement in <desc>')
+    fams = {e.get('font-family') for e in root.iter()
+            if isinstance(e.tag, str) and e.get('font-family')}
+    if fams and all(f.split(',')[0].strip().strip('"\'').lower() in SAFE_FONTS for f in fams):
+        good.append('the font stacks (' + '; '.join(sorted(fams)) + ')')
+    if not sum(len(pp.get('d') or '') for pp in root.findall(f'.//{NS}path')):
+        good.append(f'all {len(root.findall(f"{chr(46)}//{NS}text"))} labels as live <text>, '
+                    f'nothing outlined')
+    ids = [g.get('id') for g in root.findall(f'.//{NS}g') if g.get('id')]
+    if any((i or '').startswith('callout-') for i in ids):
+        good.append('the per-callout grouping')
+    return good
+
+
+def _next_rev(name):
+    stem, ext = os.path.splitext(os.path.basename(name))
+    m = re.search(r'_r(\d+)$', stem)
+    if m:
+        return f'{stem[:m.start()]}_r{int(m.group(1)) + 1:02d}{ext}'
+    return f'{stem}_r01{ext}'
+
+
+def fixnote(path):
+    findings = audit(path)
+    name = os.path.basename(path)
+    nxt = _next_rev(name)
+    if not findings:
+        return f'{name} audits clean - no correction needed.'
+    # Findings we fix locally must NOT go into the paste block: the author cannot run our
+    # tooling, and asking a model to fix file size makes it claim success while changing nothing.
+    LOCAL = ('fit_raster_svg', 'stored twice', 'alpha channel')
+    authors = [f for f in findings if not any(k in f for k in LOCAL)]
+    ours = [f for f in findings if any(k in f for k in LOCAL)]
+    if not authors:
+        note = f'{name} - nothing for the author to fix.'
+        if ours:
+            note += '\n\nHandled locally, do not send:\n' + '\n'.join(f'  - {f}' for f in ours)
+        return note
+    L = [f'{name} - {len(authors)} fix(es) needed, then re-deliver as {nxt}.', '']
+    L.append('DEFECTS, with measurements. Every number below is measured, not estimated:')
+    for i, f in enumerate(authors, 1):
+        L.append(f'  {i}. {" ".join(f.split())}')
+    L += ['', 'For any text that does not fit: rewrite it shorter or wrap it to more lines.',
+          'Do not shrink one caption below the size of its neighbours to force a fit.', '']
+    good = _already_correct(path)
+    if good:
+        L.append('CHANGE NOTHING ELSE. The following are already correct and must survive:')
+        for g in good:
+            L.append(f'  - {g}')
+        L.append('')
+    L += ['Do not re-encode, resample, resize, or re-render the photograph.',
+          'Do not adjust or optimise file size - that is handled downstream, not by you.',
+          '', f'Deliver as {nxt} with a download link.']
+    out_s = '\n'.join(L)
+    if ours:
+        out_s += ('\n\n--- BELOW THIS LINE IS FOR US, NOT FOR THE PASTE ---\n'
+                  + '\n'.join(f'  - {f}' for f in ours))
+    return out_s
+
+
 if __name__ == '__main__':
     if '--selftest' in sys.argv:
         sys.exit(0 if _selftest() else 1)
     if len(sys.argv) < 2:
         sys.exit(f'svg_layout_audit {VERSION}\nusage: svg_layout_audit.py FILE.svg [FILE.svg ...]'
+                 f'\n       svg_layout_audit.py FILE.svg --fixnote'
                  f'\n       svg_layout_audit.py --selftest KNOWN_CLEAN.svg')
+    if '--fixnote' in sys.argv:
+        for _p in [a for a in sys.argv[1:] if not a.startswith('--')]:
+            print(fixnote(_p))
+        sys.exit(0)
     total = 0
     for p in sys.argv[1:]:
         if p.startswith('--'):
