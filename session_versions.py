@@ -51,7 +51,17 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.5'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.6'   # the only version home in this file (S96; v1.4 S98)
+# v1.6 (S100): CONTROL C's clean direction ran check() against the LIVE tree and reported a
+#   non-zero exit as "FAILED. --check reports drift on a clean tree." It could not tell a
+#   wrong READER from a wrong BOOK, which is the one question it existed to answer, and it
+#   returned 1 before CONTROL D ran - so a duplicate handoff in the repo both misattributed
+#   to this tool AND silently skipped the last control in the suite. Now: a fixture made
+#   clean by construction (one handoff, LIVE.md line 6 and the handoff block both GENERATED
+#   from the emitter), both directions run inside it, and the live tree read afterwards as a
+#   labelled report that cannot mask what follows it.
+#   §24 corollary, alongside S99's "a control that does not ask WHICH is not a control":
+#   A CONTROL THAT DEPENDS ON THE STATE OF WHAT IT AUDITS IS NOT A CONTROL.
 # v1.5 (S99): flatten_alpha and svg_layout_audit registered. Two instruments were written
 #   this session and neither appeared in the block this file EMITS, so LIVE.md and the
 #   handoff would have recorded a toolchain that no longer matched the repo - the exact
@@ -308,6 +318,46 @@ def grep_trap():
     return out
 
 
+def _fixture_clean(work, probe):
+    """Make a COPIED tree clean by construction on every axis check() tests, so that
+    silence from --check inside it is evidence about the reader rather than a reading of
+    whatever state the live repo happens to be in on the day.
+
+    Three axes, because check() tests three: exactly one handoff in root; LIVE.md's
+    Versions line agreeing with the files; the handoff's versions agreeing with the files.
+    Each is normalised by GENERATING it from the emitter, never by hoping it is already so.
+    """
+    hs = glob.glob(os.path.join(work, 'ZUMO_S*_HANDOFF.md'))
+    assert hs, "fixture: the tree carries no session handoff to keep"
+
+    def _sess(p):
+        m = re.search(r'ZUMO_S(\d+)_HANDOFF', os.path.basename(p))
+        assert m, f"fixture: handoff name changed shape - {os.path.basename(p)}"
+        return int(m.group(1))
+
+    keep = max(hs, key=_sess)          # numeric, not lexical: S100 must beat S99
+    for p in hs:
+        if p != keep:
+            os.remove(p)
+
+    def _emit(flag):
+        r = subprocess.run([sys.executable, probe, flag],
+                           capture_output=True, text=True, cwd=work)
+        assert r.returncode == 0, f"fixture: {flag} did not emit - {r.stderr.strip()}"
+        return r.stdout
+
+    line = _emit('--live').strip().split('\n')[0]
+    assert line.startswith('**Versions:**'), \
+        "fixture: --live no longer emits the Versions line first"
+    p = os.path.join(work, 'LIVE_ZUMO_TEXTBOOK.md')
+    L = open(p, encoding='utf-8').read().split('\n')
+    assert L[5].startswith('**Versions:**'), "fixture: LIVE.md line 6 is not the Versions line"
+    L[5] = line
+    open(p, 'w', encoding='utf-8').write('\n'.join(L))
+
+    open(keep, 'w', encoding='utf-8').write(_emit('--handoff'))
+
+
 def selftest():
     """Bidirectional control run. Neither direction alone is evidence."""
     print("CONTROL B (false-fail): reader against untouched files - must be SILENT")
@@ -351,21 +401,49 @@ def selftest():
             return 1
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    print("CONTROL C (--check, both ways): clean must be silent, seeded drift must be loud")
-    if check() != 0:
-        print("   FAILED. --check reports drift on a clean tree.")
-        return 1
+    print("CONTROL C (--check, both ways, against a fixture BUILT clean)")
+    # S100. This control's clean direction used to be `if check() != 0` against the LIVE
+    # tree, printing "FAILED. --check reports drift on a clean tree." Two defects in one line.
+    #   MISATTRIBUTION - a duplicate handoff in the REPO printed as a fault in this TOOL.
+    #   MASKING        - it returned 1 before CONTROL D ever ran, so one unrelated repo
+    #                    defect silently skipped the last control in the suite. Observed:
+    #                    at S100 open, D did not execute and I could not tell it apart
+    #                    from D passing.
+    # A control whose clean direction depends on the state of the thing it audits is not a
+    # control. It cannot distinguish "the reader is wrong" from "the book is wrong", which
+    # is the only question it was built to answer. The fixture below is clean BY
+    # CONSTRUCTION, so silence inside it is evidence; the live tree is then read as a
+    # REPORT, which is all it ever was.
+    #
+    # The copy keeps images/: check() calls assets(), which counts images/marks and
+    # images/icons. Controls A and D exclude images deliberately and must keep doing so -
+    # see the --_grep note in main(), where that exclusion once produced a bogus failure.
     tmp2 = tempfile.mkdtemp()
     try:
         work = os.path.join(tmp2, 'repo')
         shutil.copytree(ROOT, work, ignore=shutil.ignore_patterns('.git', '__pycache__'))
+        probe = os.path.join(work, os.path.basename(__file__))
+        assert os.path.exists(probe), "control C: the script did not copy into the work tree"
+        _fixture_clean(work, probe)
+
+        r = subprocess.run([sys.executable, probe, '--check'],
+                           capture_output=True, text=True, cwd=work)
+        if r.returncode != 0:
+            print("   FAILED. --check is not silent on a tree built clean, so the READER\n"
+                  "   is wrong, not the book. What it said:")
+            for ln in (r.stdout.strip() or r.stderr.strip()).split('\n'):
+                print("     " + ln)
+            return 1
+        print("   silent on a fixture built clean")
+
+        # seed drift INTO that same known-clean fixture, so the two directions differ by
+        # exactly one edit and nothing else
         p = os.path.join(work, 'LIVE_ZUMO_TEXTBOOK.md')
         L = open(p, encoding='utf-8').read().split('\n')
         before = L[5]
         L[5] = re.sub(r'(book_gates )v[\d.]+', r'\g<1>v9.99.9', L[5])
         assert L[5] != before, "control C: could not seed a disagreement - the line changed shape"
         open(p, 'w', encoding='utf-8').write('\n'.join(L))
-        probe = os.path.join(work, os.path.basename(__file__))
         r = subprocess.run([sys.executable, probe, '--check'],
                            capture_output=True, text=True, cwd=work)
         if r.returncode == 0 or 'book_gates' not in r.stdout:
@@ -374,6 +452,15 @@ def selftest():
         print("   seeded disagreement detected, exit 1\n")
     finally:
         shutil.rmtree(tmp2, ignore_errors=True)
+
+    # The live tree, read as what it is: a report on the REPO, never a verdict on this
+    # tool, and never able to skip a control below it.
+    print("   live tree (report, not a control):")
+    live_rc = check()
+    if live_rc != 0:
+        print("   ^ that is a finding about the REPO. The controls above still stand.\n")
+    else:
+        print("")
 
     print("CONTROL D (grep_trap, both ways): clean must be silent, a prepended changelog loud")
     live = grep_trap()
