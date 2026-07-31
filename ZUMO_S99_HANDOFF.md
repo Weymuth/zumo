@@ -22,16 +22,19 @@
    `gen_component.load_standard()` — there is no `parse()`.
 9. **A CLONE CAN COME BACK STALE.** Poll `git ls-remote` before concluding a push failed — a
    cached clone reads exactly like a lost one.
+10. **AFTER A PUSH, DIFF THE WHOLE TREE, NOT JUST THE PUSH LIST.** S98: seven files were
+    byte-matched and the suite ran green, while a 327 KB outlined-text graphic rode in on the
+    same commit unnoticed. `git diff --stat <session-open-sha> origin/main` takes one second.
 
 ---
 
 # STATE
 
-Fresh-clone verified at **`09a33f8`**. Census **39,972**.
-Bible **v8.83** · `BookComponentStandard` **v01.10.0** · Maker **v2.45.1** ·
+Fresh-clone verified at **`0b8360d`**. Census **39,972**.
+Bible **v8.84** · `BookComponentStandard` **v01.10.0** · Maker **v2.45.1** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 
-Instruments: `book_gates` **v1.30** · `lesson_inventory` **v1.1.2** ·
+Instruments: `book_gates` **v1.31** · `lesson_inventory` **v1.1.2** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.0** · `gate_payload_match` **v1.6** ·
 `build_family_map` **v1.1.3** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.2.1** ·
 `gen_part_banners` **v1.0** · `session_versions` **v1.4.1** · `fit_raster_svg` **v1.1** ·
@@ -39,7 +42,7 @@ Instruments: `book_gates` **v1.30** · `lesson_inventory` **v1.1.2** ·
 
 Lessons: L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0.
 
-**Gate suite is 37.** No lesson file was edited in S98.
+**Gate suite is 38.** No lesson file was edited in S98.
 
 ---
 
@@ -86,7 +89,17 @@ that started the work. Six files: **11.89 MB → 1.67 MB**.
 
 **4. `lesson_inventory --anomalies` is silent when clean.**
 
-**6. Bible v8.83 — §17.3 NEW, "PHOTOGRAPHS ARE NOT DRAWINGS."** The export canon, written because
+**7. GATE 38 (`§21.2`) — drawn graphics keep their text and stay small.** Written because four
+referenced graphics were replaced with outlined-text versions (**+1.13 MB, 50×**) and **passed 37/37
+for a week**; one rode in on `09a33f8`, this suite's own commit. 60,000 B ceiling plus a
+path-data-without-`<text>` flag. Control-run three ways including **the real historical defect
+restored from `0b3f070`**. All four are now fixed at 6–11 KB with live text, and **zero
+outlined-text files remain book-wide**. Bible **v8.84** adds **§17.3a, the two recipes** — Recipe 1
+(drawn: live `<text>`, Arial/Courier New, viewBox 1100×850) proven on five files, Recipe 2
+(photograph: keep the embed, add labels only, md5 unchanged) plus the note that **these files open
+in Illustrator**, the embedded raster arriving as an ordinary image object.
+
+**6. Bible §17.3 NEW — "PHOTOGRAPHS ARE NOT DRAWINGS."** The export canon, written because
 §17 covered drawn graphics only and the gap is what produced a wrong gate. Records: IMAGE vs GRAPHIC
 **by subject**; Photoshop → Illustrator as the route; **Embed never Link** (a linked photo is a blank
 graphic on the published site — silent, production-only); **fonts** (live `<text>` renders with the
@@ -245,11 +258,23 @@ r01 before q92 becomes the standard.**
 
 | Action | File | Note |
 |---|---|---|
-| upload | `ZUMO_SUPER_BIBLE.md` | **v8.83** — §17.3 new |
+| ~~upload~~ **DONE** | `ZUMO_SUPER_BIBLE.md` | §17.3 — pushed and verified at `a2f24bc` |
 | upload | `LIVE_ZUMO_TEXTBOOK.md` | Versions line re-emitted |
 | upload | `ZUMO_S99_HANDOFF.md` | this file, STATE re-emitted |
 
 No deletion in the second push — the handoff filename is unchanged.
+
+**THIRD PUSH, same session:**
+
+| Action | File | Note |
+|---|---|---|
+| upload | `book_gates.py` | **v1.31** — gate 38 new, suite is now 38 |
+| upload | `ZUMO_SUPER_BIBLE.md` | **v8.84** — §17.3a, the two recipes |
+| upload | `LIVE_ZUMO_TEXTBOOK.md` | Versions line re-emitted |
+| upload | `ZUMO_S99_HANDOFF.md` | this file, STATE re-emitted |
+
+No deletion in the third push — the handoff filename is unchanged.
+
 
 ⚠️ **The deletion is a separate checkbox in GitHub Desktop, and four two-part pushes lost a half in
 S97.** After pushing, verify by fresh clone and confirm `python3 book_gates.py` returns **37/37**.

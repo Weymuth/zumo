@@ -14,7 +14,9 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.83** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.79.1** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+**Bible version: v8.84** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.79.1** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+
+v8.84, S98, moderate — **§17.3a NEW: THE TWO RECIPES, AND GATE 38 BEHIND ONE OF THEM.** §17.3 said what the two asset classes ARE; this says what to ask for and what to check. Written the same day four referenced graphics — L06 6-09/6-10/6-12 and L07 7-02 — were found replaced with versions whose every label had been converted to OUTLINES: **23,066 B → 1,148,110 B, a 50x growth, +1.13 MB on the published site, and all four passed 37/37 for a week** because no gate looked at a drawn graphic's size or asked whether its text was still text. One rode in on the same commit as the gate suite's own update. The cause is defensible — a graphic drawn in Inter or JetBrains Mono renders wrong on a student's machine and outlines fix that — but **the cheaper fix is a common font stack**, and all five files came back at 6–11 KB with 32–42 live labels once asked for Arial/Courier New. Recipe 2 covers the photograph case and records that these files **open in Illustrator**, the embedded raster arriving as an ordinary image object. **Gate 38 (`§21.2`) now enforces Recipe 1**: a 60,000 B ceiling on drawn graphics and a flag on path-data-without-`<text>`, thresholds measured with the Mercersburg wordmark and the §18.2 spiral stars — both legitimately zero-text — an order of magnitude clear of the line.
 
 v8.83, S98, moderate — **§17.3 NEW: PHOTOGRAPHS ARE NOT DRAWINGS.** §17 governed drawn graphics only, and the book had no written rule for the other kind, so gate 37 was written in S97 forbidding embedded rasters outright — a rule that would have gone red on the first legitimate photo-plus-labels composite. DJ ruling S98: *"Some of the images need to be raster wrapped svg. Otherwise they look like crap."* The new section records the IMAGE/GRAPHIC split by SUBJECT, the Photoshop → Illustrator route, and the two export settings that fail silently in production — **Embed not Link** (an `<img>`-loaded SVG runs in secure static mode and cannot fetch an external file, so a linked photo is a BLANK graphic on the site) and **fonts**, where live `<text>` renders with the viewer's fonts and an uninstalled face shifts the layout, the same trap §18.2 answered with vector paths. Also records the post-export step (`fit_raster_svg.py --write`, quality pinned, size a consequence) and the `_##` / `_r##` filename suffixes, which were recorded nowhere.
 
@@ -1522,6 +1524,57 @@ payload (the same base64 in both `href` and `xlink:href` — some exporters writ
 file), a byte ceiling, and a floor of vector elements below which the file is a photograph
 mislabelled as a graphic and belongs at `.jpg`/`.png` under an `IMAGE_` name. The thresholds live in
 `book_gates.py`; this section deliberately does not restate numbers that a gate already owns.
+
+#### 17.3a THE TWO RECIPES — PROVEN, S98
+
+**Both are one paste. Neither asks for a byte count** — an AI cannot hit one reliably and will
+report success without having tried (S97: it declared the sensor arrays fixed while the embedded
+PNG came back **byte-identical, same md5**). Size is handled locally, afterwards, by
+`fit_raster_svg.py`, with gates 37 and 38 as the backstop.
+
+**RECIPE 1 — A DRAWN GRAPHIC (flowchart, ladder, file tree, anatomy diagram).**
+Proven on five files in S98: L07 7-02, L07 7-04, L06 6-09, L06 6-10, L06 6-12.
+
+> Return the SVG with all text as live `<text>` elements — do not convert text to outlines or
+> paths. Use `font-family="Arial, Helvetica, sans-serif"` for body text and
+> `font-family="Courier New, monospace"` for code. Keep every rect, circle, line and polygon as
+> real elements. Use `viewBox="0 0 1100 850"` and fit the artwork to it.
+
+Check four things when it comes back, all mechanical:
+1. `<text>` elements present and roughly one per label
+2. path data near zero — a drawn graphic has almost none
+3. `viewBox` is `0 0 1100 850` (§17 canon)
+4. font-family reads Arial/Courier New, not Inter, JetBrains Mono, Segoe UI or Consolas
+
+**Result across the five: 829,096 B → 30,388 B on the three L06 files alone, 96.3% smaller, with
+38–42 live labels each.** Gate 38 now enforces all of this.
+
+**RECIPE 2 — A PHOTOGRAPH WITH LABELS (a populated board, the chassis, jumper positions).**
+The subject cannot be redrawn; §17.3 above explains why, and what happens when it is tried.
+
+> Attached is an SVG containing a photograph embedded as base64. Do not redraw the photograph. Do
+> not trace the board. Do not reproduce silkscreen text as vector. Keep the embedded image exactly
+> as it is, byte for byte, in place. Add only a label layer on top: `<text>` callouts, leader lines
+> and highlight boxes. Return the same SVG with that layer added and nothing else changed.
+
+Check two things, both one line:
+1. the file still contains `base64` — if it does not, the photograph was thrown away and redrawn
+2. the embedded image's **md5 is unchanged** — this is the test S97 failed
+
+Then: `python3 fit_raster_svg.py FILE.svg --write`.
+
+**THESE FILES OPEN IN ILLUSTRATOR.** A base64-embedded raster imports as an ordinary embedded image
+object, so the photo can be repositioned and the label layer edited with the normal tools — no XML
+by hand. Three things on the way back out:
+- **Export with Images: Embed, never Link.** A linked photo is a blank graphic on the published site
+  (§17.3 — secure static mode). This is the one setting that fails silently and only in production.
+- **Fonts: Arial/Courier New, or convert labels to outlines.** On a photo-plus-labels file outlines
+  are cheap — a handful of labels, not a whole diagram — so this is a real choice here, unlike
+  Recipe 1 where it cost 50x.
+- **Illustrator re-encodes the photo on export, which is expected.** The md5 test above applies only
+  to AI-returned files, never to an Illustrator round-trip. Run `fit_raster_svg.py --write`
+  afterwards; it also catches the duplicate payload some exporters write into both `href` and
+  `xlink:href`.
 
 **Filename suffixes, confirmed against all 155 files (S97):** trailing `_##` = a spiral star (all 16,
 zero exceptions) · trailing `_r##` = a redo, **staged, not live** · mid-name `N-NN` is the image

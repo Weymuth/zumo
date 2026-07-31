@@ -3,7 +3,7 @@
 **Date:** July 30, 2026 (Session 98 — **A GATE CAN BE WRONG IN THE OTHER DIRECTION.** S97's §21.1 forbade any embedded raster in a referenced `.svg`, and that rule was itself the defect: it would have gone red on the first legitimate photo-plus-labels composite the book shipped. **A photograph cannot be redrawn.** Measured: all five staged raster-in-SVG files carry photographic content, and the one true-vector redraw DJ had seen — `zumo_32u4_oled_main_board_top_view_r02.svg`, 194 elements, zero raster — turned out to be a **cartoon of the board**, its 39 text runs the *silkscreen* rather than labels. DJ's ruling: *“Some of the images need to be raster wrapped svg. Otherwise they look like crap.”* They must also EMBED — an SVG loaded through `<img src>` runs in secure static mode and cannot fetch an external file, so the composite has no external-href option and a gate forbidding base64 forbids the asset class. **But 4.26 MB was never the price of one:** the uploaded board carried its payload TWICE in a single `<image>` (`href` and `xlink:href`, identical bytes, half the file a duplicate of itself) over an alpha channel measured **100% opaque**. Deduped and re-encoded it is **350,471 B, −91.8%, unchanged on screen.** **THE OTHER FINDING WAS MINE:** a plain grep of `book_gates.py` returned **v1.26.1** — a changelog line, three releases stale, reading exactly like an answer.)
 **Status:** ✅ **37/37 GATES PASS. Census 39,972 — no lesson file was touched in S98.** **`book_gates.py` v1.29.1 → v1.30, GATE 37 REWRITTEN** to the three things actually wrong — duplicated payload, a 500,000 B ceiling, a 3-element vector floor — and **control-run three ways: fires on a referenced fat file, fires on a raster-only envelope under the ceiling, and PASSES a referenced 350 KB composite**, which is the control that proves it permits what the book needs. **`fit_raster_svg.py` v1.1 is new:** quality pinned at **q92 and never traded**, size a warning, not a squeeze — v1.0 searched downward to hit a byte budget and crushed the one two-photo file to q70, which is the complaint that started the work. Across six files **11.89 MB → 1.67 MB, no redraw**; the two-photo `5-10` is the only one over the ceiling and is now told to **split, not degrade**. Its selftest caught a landmine before shipping: on its first run the tool *enlarged* a file, so it now refuses to write anything bigger than it found. **Four version homes normalised** — `lesson_inventory` v1.1.2 (which carried TWO homes, agreeing by luck), `build_family_map` v1.1.3, `book_gates`, and `session_versions` v1.4.1 with `grep_trap()` + CONTROL D so a home buried under a changelog is loud. **`lesson_inventory --anomalies` is now silent when clean** — the Brain Check line printed unconditionally inside the ANOMALIES header and had to be re-dismissed every session. **`Weymuth-patch-1` is no longer load-bearing:** `L03_IMAGE_3-14_astar_board.jpg` was removed from **main** on purpose (`9d5a85b`, *“remove redundant images”*) and recovers byte-identical from main's own history — the branch can go whenever DJ says.
 
-**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.83** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.30** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.4.1 · fit_raster_svg v1.1 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `09a33f8`.**
+**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.84** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.31** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.4.1 · fit_raster_svg v1.1 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `0b8360d`.**
 
 ---
 ---
@@ -74,6 +74,23 @@ perfect on the machine that exported it; and **fonts**, where live `<text>` rend
 vector paths. Also records the post-export step (`fit_raster_svg.py --write`, quality pinned, size a
 consequence, split rather than degrade) and the `_##` / `_r##` filename suffixes, **recorded
 nowhere until now**.
+
+**8. GATE 38 (`§21.2`) — AND THE DEFECT IT WAS WRITTEN FOR, WHICH WAS LIVE ALL DAY.** Four
+referenced graphics — L06 6-09, 6-10, 6-12 and L07 7-02 — had every label converted to **outlines**:
+**23,066 B → 1,148,110 B, a 50× growth, +1.13 MB on the published site, and all four passed 37/37**,
+because nothing looked at a drawn graphic's size or asked whether its text was still text. **One of
+them rode in on commit `09a33f8` — the same commit that carried this suite's own update** — and
+post-push verification missed it, because that verification byte-matched the seven files on the push
+list and ran the gates, and never diffed the rest of the tree. The cause is defensible: a graphic
+drawn in Inter or JetBrains Mono renders wrong on a student's machine, and outlines are a real fix.
+**The cheaper fix was a common font stack**, and all five files came back at **6–11 KB with 32–42
+live labels** once asked for Arial/Courier New. **829,096 B → 30,388 B on the three L06 files alone,
+96.3% smaller.** Gate 38 sets a 60,000 B ceiling on drawn graphics and flags path-data-without-text;
+thresholds measured against the whole book, whose largest referenced vector file is **12,904 B**, and
+against the two legitimate zero-text families — the Mercersburg wordmark and the §18.2 spiral stars —
+both an order of magnitude clear of the line. Control-run three ways, including against **the real
+historical defect restored from `0b3f070`**, which it named with both faults. **Zero outlined-text
+files remain book-wide.** Bible **v8.84** adds §17.3a, the two proven recipes.
 
 ---
 ---
