@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.15'
+VERSION = 'v1.16'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,12 @@ VERSION = 'v1.15'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.16 (S99): say WHICH circle, and by how much. 'leader of callout-1 crosses the badge of
+#   callout-3' sent me looking at a badge 176 units away. The real overlap was callout-3's
+#   ANCHOR DOT - the 7-unit marker on the photograph - which the leader passes 1.4 units from.
+#   Both are circles in a callout group and the message treated them as one thing. A finding
+#   that names the wrong element costs the same as a wrong finding: you go and look at the
+#   wrong place. Badge and anchor are now distinguished and the clearance is reported.
 # v1.15 (S99): stop demanding text-anchor. Illustrator CONVERTS anchor="middle" into an
 #   explicit left-edge transform, which renders identically. v1.14 called that a defect, and
 #   acting on the finding - re-adding the anchor - DOUBLE-CORRECTED the position and shifted
@@ -499,8 +505,14 @@ def audit(path):
             if b[0] != gid and _seg_hits(p, q, lambda x, y, b=b: b[1] < x < b[3] and b[2] < y < b[4]):
                 out.append(f'leader of {gid} crosses the box of {b[0]}')
         for c in badges:
-            if c[0] != gid and _seg_hits(p, q, lambda x, y, c=c: math.hypot(x - c[1], y - c[2]) < c[3]):
-                out.append(f'leader of {gid} crosses the badge of {c[0]}')
+            if c[0] == gid:
+                continue
+            near = min(math.hypot(p[0] + (q[0] - p[0]) * i / 200 - c[1],
+                                  p[1] + (q[1] - p[1]) * i / 200 - c[2]) for i in range(201))
+            if near < c[3]:
+                what = 'badge' if c[3] > 10 else 'anchor dot'
+                out.append(f'leader of {gid} passes {near:.1f} units from the {what} of {c[0]} '
+                           f'(radius {c[3]:.0f}) - it runs across it')
     for i, b1 in enumerate(boxes):
         for b2 in boxes[i + 1:]:
             if b1[0] == b2[0]:
