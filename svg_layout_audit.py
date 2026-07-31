@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.9'
+VERSION = 'v1.14'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,37 @@ VERSION = 'v1.9'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.14 (S99): the raster checks honour transforms too. v1.13 taught _lines() about
+#   transform="translate() scale()" but left the <image> box reading its raw width. An
+#   Illustrator export placed a 1200-wide image under scale(.47) - a real box of 564 - and the
+#   resolution check reported 1.00x against a true 2.13x, on a file that was fine. Fixing one
+#   check for transforms and not its neighbour is half a fix.
+# v1.13 (S99): HONOUR transform="translate()". Illustrator exports text as
+#   <text transform="translate(38 31)"><tspan x="0" y="0">..</tspan></text> - the position
+#   lives in the transform, not in x/y. v1.12 read x/y only, so EVERY label in such a file
+#   collapsed to (0,0): 35 labels produced 69 findings, all of them nonsense, on a file that
+#   was fine. As DJ starts round-tripping graphics through Illustrator this becomes the normal
+#   shape of a file, so it is not an edge case.
+#   translate() and scale() on the element and its ancestors are now accumulated.
+# v1.12 (S99): CRASH FIX. A <text> inside a callout group with no x attribute (perfectly legal
+#   SVG - it defaults to 0, or inherits position from a tspan) made the badge-centring check
+#   raise TypeError, and the WHOLE audit died reporting nothing. A crash is worse than a false
+#   positive: a false positive wastes a round trip, a crash silently checks nothing at all.
+#   Every attribute read in that block is now tolerant, and a badge with no coordinates is
+#   skipped rather than assumed to be at the origin.
+# v1.11 (S99): baseline tolerance made PROPORTIONAL. A flat 1.5 units fired on dy=+9.0 against
+#   an ideal +10.65 on a 30px badge - 1.6 units, invisible, and three files reported it. The
+#   optical centre of a digit depends on the typeface's cap height, so the tolerance has to
+#   scale with the type: 12% of font-size, floored at 1.5. A 30px badge now allows 3.6 units
+#   and a genuinely uncentred number (the v1.7 regression, dy=0) still fires at 10.65.
+# v1.10 (S99): TWO FALSE-POSITIVE CLASSES, 9 of 10 findings on one real file.
+#   (a) Badge centring paired the number with circs[0]. A callout legitimately holds TWO
+#       circles - a small anchor dot on the photograph and the numbered badge beside it - so
+#       every number read as hundreds of units off-centre. Now paired with the NEAREST circle.
+#   (b) A badge deliberately straddles its panel's edge, so its number was reported as text
+#       overflowing. Text bounded by a circle is bounded by that circle, not the panel.
+#   Both were caught by reading a file the tool had just called broken ten ways. An audit that
+#   cries wolf is worse than none: DJ would have sent nine non-defects back to be 'fixed'.
 # v1.9 (S99): FILE SIZE CHECKED AT LAST. Eight checks and not one of them looked at how big the
 #   file was, so a 3.65 MB composite - 7.3x over gate 37's referenced-file ceiling - audited
 #   CLEAN and would have gone fatal the moment a lesson pointed at it. The cause is always the
@@ -131,6 +162,44 @@ PANEL_MIN_W, PANEL_MIN_H = 150, 60
 PANEL_PAD = 6
 
 
+_TR = None
+
+
+def _ctm(el):
+    """Accumulated (dx, dy, sx, sy) from this element and its ancestors.
+
+    Only translate() and scale() are handled - that is what Illustrator emits. A rotate() or a
+    general matrix() would need more, and is reported rather than silently mis-measured.
+    """
+    import re as _re
+    dx = dy = 0.0
+    sx = sy = 1.0
+    chain = []
+    n = el
+    while n is not None and isinstance(n.tag, str):
+        if n.get('transform'):
+            chain.append(n.get('transform'))
+        n = n.getparent()
+    for tr in reversed(chain):
+        for fn, args in _re.findall(r'(translate|scale|matrix|rotate)\s*\(([^)]*)\)', tr):
+            v = [float(q) for q in _re.split(r'[,\s]+', args.strip()) if q]
+            if fn == 'translate':
+                dx += v[0] * sx
+                dy += (v[1] if len(v) > 1 else 0.0) * sy
+            elif fn == 'scale':
+                sx *= v[0]
+                sy *= (v[1] if len(v) > 1 else v[0])
+    return dx, dy, sx, sy
+
+
+def _f(v):
+    """Tolerant float. SVG attributes are optional, and percentages are legal."""
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
 def _inh(el, attr):
     n = el
     while n is not None:
@@ -158,7 +227,10 @@ def _lines(t):
     size = float(_inh(t, 'font-size') or 16)
     bold = (_inh(t, 'font-weight') or '400') in ('700', '800', '900', 'bold', 'bolder')
     anchor = _inh(t, 'text-anchor') or 'start'
-    bx, by = float(t.get('x') or 0), float(t.get('y') or 0)
+    tdx, tdy, tsx, tsy = _ctm(t)
+    size *= tsy                                   # a scaled group scales the type with it
+    bx = (_f(t.get('x')) or 0.0) * tsx + tdx
+    by = (_f(t.get('y')) or 0.0) * tsy + tdy
 
     spans = [sp for sp in t.findall(f'{NS}tspan')
              if sp.get('x') is not None or sp.get('dy') is not None]
@@ -169,9 +241,9 @@ def _lines(t):
         if lead:
             rows.append((lead, bx, cy))
         for sp in spans:
-            cy += float(sp.get('dy') or 0)
+            cy += (_f(sp.get('dy')) or 0.0) * tsy
             rows.append((' '.join((sp.text or '').split()),
-                         float(sp.get('x')) if sp.get('x') is not None else bx, cy))
+                         (_f(sp.get('x')) * tsx + tdx) if sp.get('x') is not None else bx, cy))
     else:
         rows.append((' '.join(''.join(t.itertext()).split()), bx, by))
 
@@ -233,8 +305,9 @@ def audit(path):
             continue
         raw = base64.b64decode(uri.split(',', 1)[1])
         pic = Image.open(io.BytesIO(raw))
-        bw = float(im_el.get('width') or 0)
-        bh = float(im_el.get('height') or 0)
+        _idx, _idy, _isx, _isy = _ctm(im_el)
+        bw = (_f(im_el.get('width')) or 0.0) * _isx     # a scaled group scales the box
+        bh = (_f(im_el.get('height')) or 0.0) * _isy
         vb = (root.get('viewBox') or '').split()
         vbw = float(vb[2]) if len(vb) == 4 else bw
         if bw and bh and vbw:
@@ -312,7 +385,13 @@ def audit(path):
             x, y = float(rc.get('x') or 0), float(rc.get('y') or 0)
             panels.append((x, y, x + w, y + h))
     panels.sort(key=lambda p: (p[2] - p[0]) * (p[3] - p[1]))     # smallest enclosing wins
+    # A number sitting inside a badge is bounded by that badge, not by any panel it overhangs.
+    badges_xy = [(float(c.get('cx') or 0), float(c.get('cy') or 0), float(c.get('r') or 0))
+                 for c in root.findall(f'.//{NS}circle') if c.get('r')]
     for t in root.findall(f'.//{NS}text'):
+        tx, ty = float(t.get('x') or 0), float(t.get('y') or 0)
+        if any((tx - cx) ** 2 + (ty - cy) ** 2 <= (rr * 1.2) ** 2 for cx, cy, rr in badges_xy):
+            continue
         for s, x0, x1, y, size in _lines(t):
             ax = float(t.get('x') or 0)
             for px0, py0, px1, py1 in panels:
@@ -361,16 +440,33 @@ def audit(path):
         txts = [e for e in g if e.tag == NS + 'text']
         if not circs or not txts:
             continue
-        c, t = circs[0], txts[0]
-        size = float(_inh(t, 'font-size') or 16)
+        # Pair the number with the NEAREST circle. A callout often has an anchor dot on the
+        # photograph as well as its badge; circs[0] may be either.
+        t = min(txts, key=lambda e: len(''.join(e.itertext()).strip()) or 99)
+        # Every one of these is optional in valid SVG. v1.11 assumed all four were present and
+        # a single missing x killed the entire audit.
+        ls = _lines(t)
+        if not ls:
+            continue
+        _s0, _x0, _x1, ty, _sz = ls[0]
+        tx = (_x0 + _x1) / 2 if (_inh(t, 'text-anchor') == 'middle') else _x0
+        cdx, cdy, _csx, _csy = _ctm(circs[0])
+        circs = [e for e in circs if _f(e.get('cx')) is not None and _f(e.get('cy')) is not None]
+        if not circs:
+            continue
+        c = min(circs, key=lambda e: (_f(e.get('cx')) + _ctm(e)[0] - tx) ** 2
+                                     + (_f(e.get('cy')) + _ctm(e)[1] - ty) ** 2)
+        size = _f(_inh(t, 'font-size')) or 16.0
         if (_inh(t, 'text-anchor') or 'start') != 'middle':
             out.append(f'{gid}: badge number has no text-anchor="middle" - it starts at the '
                        f'circle centre and runs right instead of centring')
-        dx = abs(float(t.get('x')) - float(c.get('cx')))
-        dy = float(t.get('y')) - float(c.get('cy'))
+        ccx, ccy, _a, _b = _ctm(c)
+        dx = abs(tx - (_f(c.get('cx')) + ccx))
+        dy = ty - (_f(c.get('cy')) + ccy)
         if dx > 0.5:
             out.append(f'{gid}: badge number off-centre horizontally by {dx:.1f} units')
-        if abs(dy - 0.355 * size) > 1.5:
+        tol = max(1.5, 0.12 * size)      # cap height varies by typeface; scale with the type
+        if abs(dy - 0.355 * size) > tol:
             out.append(f'{gid}: badge number baseline dy={dy:+.1f}, expected '
                        f'{0.355 * size:+.1f} for {size:.0f}px (cap-height centring)')
 
