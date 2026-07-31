@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.14'
+VERSION = 'v1.15'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,12 @@ VERSION = 'v1.14'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.15 (S99): stop demanding text-anchor. Illustrator CONVERTS anchor="middle" into an
+#   explicit left-edge transform, which renders identically. v1.14 called that a defect, and
+#   acting on the finding - re-adding the anchor - DOUBLE-CORRECTED the position and shifted
+#   four badge numbers 5.6 units off their circles. The tool caused the defect it warned about.
+#   What matters is where the glyph LANDS, so the anchor check is gone and the measured centre
+#   is the only test. Tolerance 3 units: the round-trip lands within 1.1.
 # v1.14 (S99): the raster checks honour transforms too. v1.13 taught _lines() about
 #   transform="translate() scale()" but left the <image> box reading its raw width. An
 #   Illustrator export placed a 1200-wide image under scale(.47) - a real box of 564 - and the
@@ -457,13 +463,13 @@ def audit(path):
         c = min(circs, key=lambda e: (_f(e.get('cx')) + _ctm(e)[0] - tx) ** 2
                                      + (_f(e.get('cy')) + _ctm(e)[1] - ty) ** 2)
         size = _f(_inh(t, 'font-size')) or 16.0
-        if (_inh(t, 'text-anchor') or 'start') != 'middle':
-            out.append(f'{gid}: badge number has no text-anchor="middle" - it starts at the '
-                       f'circle centre and runs right instead of centring')
+        # No anchor check: measure where the glyph actually lands. Illustrator rewrites
+        # anchor="middle" as a left-edge transform, and both render the same.
         ccx, ccy, _a, _b = _ctm(c)
+        tx = (_x0 + _x1) / 2                      # rendered centre, however it was positioned
         dx = abs(tx - (_f(c.get('cx')) + ccx))
         dy = ty - (_f(c.get('cy')) + ccy)
-        if dx > 0.5:
+        if dx > 3.0:                              # round-trips land within ~1.1
             out.append(f'{gid}: badge number off-centre horizontally by {dx:.1f} units')
         tol = max(1.5, 0.12 * size)      # cap height varies by typeface; scale with the type
         if abs(dy - 0.355 * size) > tol:
@@ -559,7 +565,10 @@ def _selftest():
     def kill_anchor(r):
         g = r.find(f".//{NS}g[@id='callout-6']")
         [e for e in g if e.tag == NS + 'text'][0].set('text-anchor', 'start')
-    ok &= seeded('badge anchor removed', kill_anchor, 'text-anchor="middle"')
+    # The signal changed in v1.15: removing the anchor from a file that relies on it shifts the
+    # glyph, and the tool now reports the SHIFT rather than the missing attribute. Same defect,
+    # measured by its effect. Control the effect, not the implementation.
+    ok &= seeded('badge anchor removed', kill_anchor, 'off-centre horizontally')
 
     def widen(r):
         for t in r.findall(f'.//{NS}text'):
