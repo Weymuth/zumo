@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.7'
+VERSION = 'v1.8'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,12 @@ VERSION = 'v1.7'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.8 (S99): outlined-text check scoped to GRAPHIC_ names, matching gate 38. v1.7 fired on
+#   all 16 spiral stars and both Mercersburg wordmarks - 18 of 74 findings, every one a false
+#   positive. Those are legitimately text-free: the stars carry vector-path digits BY RULING
+#   (Bible §18.2) and a wordmark is a logo. Gate 38 already had this guard and the audit did
+#   not, which is the argument for reading the gate before writing a second checker of the
+#   same thing.
 # v1.7 (S99): THE href RULE WAS BACKWARDS. v1.6 checked for one payload attribute and treated
 #   plain href as correct. Plain href on <image> is SVG 2; Illustrator parses SVG 1.1 and
 #   reports an href it cannot read as a MISSING LINK, naming the document's own folder. Every
@@ -245,7 +251,9 @@ def audit(path):
 
     # ---- 3. outlined text on a drawn graphic ------------------------------------------------
     ran.add('outlines')
-    if not imgs:
+    # Scope: book FIGURES only. Logos and the §18.2 spiral stars are text-free by ruling,
+    # and gate 38 draws exactly this line by keying on the GRAPHIC_ name.
+    if not imgs and 'GRAPHIC_' in base:
         n_text = len(root.findall(f'.//{NS}text'))
         pd = sum(len(p.get('d') or '') for p in root.findall(f'.//{NS}path'))
         if n_text == 0:
