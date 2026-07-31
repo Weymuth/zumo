@@ -14,7 +14,9 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.82** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.79.1** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+**Bible version: v8.83** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.79.1** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+
+v8.83, S98, moderate — **§17.3 NEW: PHOTOGRAPHS ARE NOT DRAWINGS.** §17 governed drawn graphics only, and the book had no written rule for the other kind, so gate 37 was written in S97 forbidding embedded rasters outright — a rule that would have gone red on the first legitimate photo-plus-labels composite. DJ ruling S98: *"Some of the images need to be raster wrapped svg. Otherwise they look like crap."* The new section records the IMAGE/GRAPHIC split by SUBJECT, the Photoshop → Illustrator route, and the two export settings that fail silently in production — **Embed not Link** (an `<img>`-loaded SVG runs in secure static mode and cannot fetch an external file, so a linked photo is a BLANK graphic on the site) and **fonts**, where live `<text>` renders with the viewer's fonts and an uninstalled face shifts the layout, the same trap §18.2 answered with vector paths. Also records the post-export step (`fit_raster_svg.py --write`, quality pinned, size a consequence) and the `_##` / `_r##` filename suffixes, which were recorded nowhere.
 
 v8.82, S95, moderate — **INSIGHT LEAVES THE SHARED BLUE FOR TEAL, AND THE CALLOUT TABLE SPLITS TYPE 7 INTO TWO ROWS.** The table below has always declared **Learn / Insight as ONE type** with two glyphs on `#e3f2fd`/`#2196f3`, while `BookComponentStandard`'s roster has listed them as **two families with different roles** (LEARN slate, INSIGHT bronze). The two documents have disagreed for sessions and nobody noticed, because the roster renders on zero pixels — the S94 family map followed the roster, which is where "one must move" came from. **DJ ruling, S95: add teal and update the Bible.** INSIGHT moves to `#e9f7f5`/`#2da99d`, hue 174, chosen from the four unoccupied hue arcs in the live palette: it is the only candidate whose border-against-panel contrast (**2.62**) sits inside the book's existing register of 2.46–3.57, and its derived mark fill `#1f7a71` clears **4.68:1** against its own panel, so INSIGHT's mark can ship as a plain `<img src>` under the S94 derived-fill route. **31 blocks repainted across 10 lessons**, all already canon 4px; **18 of them also carried a deep-blue title `#0d47a1`**, moved to `#165a53` (7.28:1, matching the 7.56 the blue held) — a blue title on a teal panel would have undone the split. LEARN keeps the blue and is untouched, 37 blocks. `build_family_map` v1.0.0→**v1.0.1**, with the magnifier-on-blue key **replaced rather than kept**: after the split, a 🔍 on LEARN's blue is a defect to surface, not a block to classify silently. **§26 STAYS PARKED and needed no ruling** — `BookComponentStandard` records **zero** live callout hexes, so teal is not a §5.0 change and invents no Heritage Blue role. **STAGE TWO IS NOT DONE AND IS NOT A PHANTOM:** two live blocks are labelled `Learn/Insight` (L03:3636, L09:1342), §25.10's Problem-Solving item names the shared hex pair by hand, and §18's data-type callout gives the same blue a third job — each needs a side, and each is a meaning call DJ has not yet made.
 
@@ -1475,6 +1477,55 @@ House style for every book diagram. Lived only in memory until S39.
 
 ### 17.2 QA EVERY SVG BEFORE SHIPPING
 Render to PNG with `cairosvg` and eyeball it. A malformed path or an over-stretched line passes a syntax check but looks broken. Present previews to DJ for sign-off on any new or changed graphic.
+
+
+### 17.3 PHOTOGRAPHS ARE NOT DRAWINGS — PRODUCTION AND EXPORT CANON (v8.83 — NEW, S98)
+
+**§17.1 and §17.2 govern DRAWN graphics. This governs the other kind.** A book asset is one of two
+things and the two are made, named, and checked differently:
+
+| | subject | file | made in |
+|---|---|---|---|
+| **GRAPHIC** | a diagram — flowchart, ladder, file tree, timeline | true vector, **no raster of any kind** | drawn markup per §17 |
+| **IMAGE** | a photograph — a populated board, the chassis, jumper positions | photo, **embedded**, plus an optional vector label layer | Photoshop → Illustrator |
+
+**A PHOTOGRAPH CANNOT BE REDRAWN, AND ATTEMPTS TO DO SO PRODUCE A CARTOON.** S98 measured this:
+every staged raster-in-SVG file carried photographic content, and the one true-vector redraw of the
+main board (`…_top_view_r02.svg`, 194 elements, zero raster) turned out to be a traced imitation —
+its 39 `<text>` runs were the board's **silkscreen**, not labels. DJ ruling, S98: *"Some of the
+images need to be raster wrapped svg. Otherwise they look like crap."* Do not re-litigate this by
+asking an AI to "fix" a photograph; asking is what produces the cartoon.
+
+**THE EMBED IS MANDATORY, NOT A PREFERENCE.** An SVG loaded through `<img src>` — which is how every
+book image is loaded — runs in the browser's **secure static mode** and cannot fetch any external
+resource. A linked image renders as **nothing** on the published site while looking perfect on the
+machine that exported it. This is the single most dangerous setting in the pipeline because it fails
+silently and only in production.
+
+**ILLUSTRATOR EXPORT — the two settings that bite:**
+1. **Images: Embed, never Link.** See above. A linked photo is a blank graphic on the site.
+2. **Fonts: use a common stack (Arial/Helvetica) or convert labels to outlines.** Live `<text>` in an
+   `<img>`-loaded SVG renders with the **viewer's** fonts — no webfont can load. An uninstalled font
+   falls back and the layout shifts. This is the same trap §18.2 hit with the spiral-star digits,
+   where the ruling was vector paths precisely because they are renderer-proof. Outlines cost
+   editability; that is the trade, and it is deliberate.
+
+**AFTER EVERY EXPORT, ONE COMMAND:** `python3 fit_raster_svg.py FILE.svg --write`. It dedupes the
+payload, drops a dead alpha channel, caps resolution at 2× the on-screen box and re-encodes at a
+**pinned q92**. **Quality is the rule; size is the consequence** — never lower quality to hit a size.
+A file that is still over the ceiling at full quality is carrying too much and should be **split**,
+not degraded. Expect Illustrator to re-encode the photo on export; that is fine and expected, and is
+why an md5-unchanged test applies only to AI-returned files, never to an Illustrator round-trip.
+
+**Gate 37 (`§21.1`) is the backstop** and enforces three things on referenced files: no duplicated
+payload (the same base64 in both `href` and `xlink:href` — some exporters write both, doubling the
+file), a byte ceiling, and a floor of vector elements below which the file is a photograph
+mislabelled as a graphic and belongs at `.jpg`/`.png` under an `IMAGE_` name. The thresholds live in
+`book_gates.py`; this section deliberately does not restate numbers that a gate already owns.
+
+**Filename suffixes, confirmed against all 155 files (S97):** trailing `_##` = a spiral star (all 16,
+zero exceptions) · trailing `_r##` = a redo, **staged, not live** · mid-name `N-NN` is the image
+number and cannot collide. `IMAGE_` and `GRAPHIC_` remain separate number spaces per §17 and §10.
 
 ---
 

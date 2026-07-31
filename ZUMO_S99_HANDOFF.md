@@ -27,8 +27,8 @@
 
 # STATE
 
-Fresh-clone verified at **`90605b5`**. Census **39,972**.
-Bible **v8.82** · `BookComponentStandard` **v01.10.0** · Maker **v2.45.1** ·
+Fresh-clone verified at **`09a33f8`**. Census **39,972**.
+Bible **v8.83** · `BookComponentStandard` **v01.10.0** · Maker **v2.45.1** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 
 Instruments: `book_gates` **v1.30** · `lesson_inventory` **v1.1.2** ·
@@ -85,6 +85,13 @@ that started the work. Six files: **11.89 MB → 1.67 MB**.
 (which carried TWO homes, agreeing by luck), plus `grep_trap()` + CONTROL D in `session_versions`.
 
 **4. `lesson_inventory --anomalies` is silent when clean.**
+
+**6. Bible v8.83 — §17.3 NEW, "PHOTOGRAPHS ARE NOT DRAWINGS."** The export canon, written because
+§17 covered drawn graphics only and the gap is what produced a wrong gate. Records: IMAGE vs GRAPHIC
+**by subject**; Photoshop → Illustrator as the route; **Embed never Link** (a linked photo is a blank
+graphic on the published site — silent, production-only); **fonts** (live `<text>` renders with the
+viewer's fonts, so use a common stack or convert to outlines); `fit_raster_svg.py --write` after
+every export; and the `_##` / `_r##` suffixes.
 
 **5. `Weymuth-patch-1` is no longer load-bearing** — see the queue below.
 
@@ -157,9 +164,10 @@ that.
 **Canon debts, growing:**
 - Bible §18.2 vs `BookComponentStandard` §9 on the spiral star (gradient vs flat, font text vs
   vector path) · §9 names no shape · §9 names no font-family.
-- **§21.1's new form is not in the Bible.** The ceiling, the floor and the dedupe rule live only in
-  `book_gates.py` and this file.
-- The `_##` / `_r##` / `IMAGE_` vs `GRAPHIC_` conventions are recorded nowhere.
+- **§21.1's numeric thresholds are still only in `book_gates.py`.** §17.3 (S98) now names the three
+  checks and deliberately does not restate the numbers a gate already owns — if that is the wrong
+  call, the ceiling and floor belong in the Bible beside them.
+- ~~The `_##` / `_r##` / `IMAGE_` vs `GRAPHIC_` conventions are recorded nowhere.~~ **PAID — §17.3, S98.**
 - §25.6's header example reads `Version 02.7` for L11 · **§25.10e is misfiled**, line 1 of the Bible
   above its own title · **9 new roster rows still not activated in `BookComponentStandard.md`.**
 
@@ -232,6 +240,16 @@ r01 before q92 becomes the standard.**
 | upload | `LIVE_ZUMO_TEXTBOOK.md` | regenerated at S98 close, versions EMITTED |
 | upload | `ZUMO_S99_HANDOFF.md` | this file |
 | **delete** | `ZUMO_S98_HANDOFF.md` | §12.2 — exactly one handoff in root, gate 28 enforces it |
+
+**SECOND PUSH, same session (the Bible edit came after the first):**
+
+| Action | File | Note |
+|---|---|---|
+| upload | `ZUMO_SUPER_BIBLE.md` | **v8.83** — §17.3 new |
+| upload | `LIVE_ZUMO_TEXTBOOK.md` | Versions line re-emitted |
+| upload | `ZUMO_S99_HANDOFF.md` | this file, STATE re-emitted |
+
+No deletion in the second push — the handoff filename is unchanged.
 
 ⚠️ **The deletion is a separate checkbox in GitHub Desktop, and four two-part pushes lost a half in
 S97.** After pushing, verify by fresh clone and confirm `python3 book_gates.py` returns **37/37**.
