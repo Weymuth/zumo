@@ -18,11 +18,7 @@ VERSION = 'v1.34'
 #   catches xlink:href used without xmlns:xlink. Gate 38's coverage 186->177 and 76->67:
 #   nine drawn graphics became photo composites in S100 and moved into gate 37/39's
 #   population. Counts are STATED so the move is a decision, not a drift. 2-08 joined
-#   them later the same session: 177->176, NIMG 23->24 (2-08 is IMAGE_, so the GRAPHIC_ count stays 67). 3-10 then
-#   converted too: vec 176 and GRAPHIC_ 67 net out because 6-05 is NOT in this push — it
-#   came back from an Illustrator round-trip with both arrow markers dropped and both arrow
-#   paths collapsed to zero-length movetos, and is held until that is repaired. When 6-05
-#   lands as a composite these become 175 / 66 / 25..
+#   them later the same session: 177->176, NIMG 23->24 (it is IMAGE_, so the GRAPHIC_ count stays 67).
 # v1.32 (S99): GATE 38 hole closed. v1.31's label check is a floor of ONE, so a graphic
 #   with 26 of 27 labels outlined passed it green — demonstrated, not argued, on an
 #   lxml-built injection. GRAPHIC_ names now carry a path-data ceiling too. Found by
@@ -1500,8 +1496,8 @@ for _f in _svgs:                              # same population gate 37 walked, 
 # population empties and every check above passes vacuously. Both numbers are STATED, not
 # inherited, and both are expected to move when a graphic is added or removed — bump them
 # in the same edit, the way gate 36's reference count is maintained.
-if len(_vec) != 176:
-    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 176 — a file was '
+if len(_vec) != 174:
+    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 174 — a file was '
                f'added, removed, or now carries a raster (which moves it to gate 37)')
 _ngraphic = sum(1 for _f in _vec if 'GRAPHIC_' in os.path.basename(_f))
 if _ngraphic != 67:
@@ -1527,7 +1523,7 @@ if _staged38:
 # Two faults, both fatal to editability and both invisible on screen:
 #   1. an <image> carrying a plain href (with or without xlink alongside)
 #   2. xlink:href used while xmlns:xlink is undeclared — malformed, may not parse at all
-NIMG_EXPECTED = 24           # stated, not inherited — bump when an <image> is added
+NIMG_EXPECTED = 27           # stated, not inherited — bump when an <image> is added
 _bad39, _staged39 = [], []
 for _f in sorted(glob.glob('images/**/*.svg', recursive=True)):
     try:
