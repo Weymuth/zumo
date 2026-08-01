@@ -94,6 +94,36 @@ invented bug. Needs a ruling before authoring.
 
 ---
 
+## GRAPHIC 11.2 — "BASE_SPEED 150" is not book canon  *(logged S100)*
+
+A GPT redesign of `L11_GRAPHIC_11-02_cliff_arithmetic.svg` labels its speed row
+**"Robot speed at BASE_SPEED 150: 25 cm/s."** Every other number in that graphic matches
+Lesson 11 §8A.4 exactly — 4.5 cm warning, 180 ms, 10 cm gap, 400 ms, the 220 ms deficit, and
+the "there is no such number" ruling, all verbatim. **`BASE_SPEED 150` appears nowhere in any
+lesson.** L11 sources the figure differently: *"Section 8A.4 ran the cliff arithmetic on a demo
+robot — 25 cm/s, 4.5 cm of warning, 10 cm gaps."* It is a measured speed on one demo robot, not
+a value derived from a named constant.
+
+**Why it matters, and why it is not urgent.** The cliff proof is *ratio-based* — going slower
+shrinks both numbers and the ratio never changes, which is the whole §8A.6 point. So the
+argument survives any speed. But a student who sets `BASE_SPEED` to 150, measures something
+other than 25 cm/s, and concludes the proof is broken has been misled by a label, not by the
+maths.
+
+**Options when this is taken up:**
+1. Drop the clause — "Robot speed: 25 cm/s" — cheapest, matches L11's own framing.
+2. Say "demo robot" — "Robot speed (demo robot): 25 cm/s" — mirrors §8A.4 wording exactly.
+3. Make it true — measure cm/s at a stated `BASE_SPEED` on the fleet and canonize the pair in
+   L11 plus the Resource section. This is the only option that adds knowledge, and it is a
+   BENCH item: it needs the robot, a tape measure and a stopwatch.
+
+**Do not fix this in the graphic alone.** If option 3 is ever chosen, the number has to land in
+the lesson prose first and the graphic second, or the two disagree the moment someone re-reads
+§8A.4. Recorded so the reasoning is not re-derived.
+
+
+---
+
 ## Open question this file exists to answer later
 
 Is §25.8's cap of 5 a **ceiling**, a **floor**, or **advisory**? As of S77 the Bible says ceiling
