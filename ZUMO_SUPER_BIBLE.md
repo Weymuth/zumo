@@ -14,7 +14,9 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.89.1** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.89.1** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+**Bible version: v8.90** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.90** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+
+v8.90, S103, moderate — **§27 NEW: THE BOOK IS A WEBSITE, NOT A CANVAS PASTE.** DJ ruling: *"There will be no pasting html text into canvas. Then I don't have to worry about updates."* Lessons live at ONE address — the published site — and Canvas **links** to them, keeping quizzes, grades, syllabus and submissions. **The justification is a copy nobody could measure:** `site_parity.py` compares the repo against Pages and found a live 404 nothing else could see; **nothing has ever compared Pages against Canvas.** Every lesson edit obliged a re-paste, and a re-paste that did not happen was invisible to all 40 gates and to the author. A 3.58 MB book existed twice with instrumentation on one copy. **What this retires:** §6's *"all styling is true inline"* exists ONLY because Canvas strips `<style>` and `class=` — measured cost of that constraint at S103 is **25,036 inline `style=""` attributes, ~67,000 declarations, 44% of lesson bytes (1.56 MB of 3.58 MB), 2,828 `font-family` declarations where a stylesheet needs one, and 473 absolute `weymuth.github.io` links** forced because a pasted page has no directory to be relative to. **§26's repaint was never too hard — it was priced against the wrong delivery model:** `#f8f9fa` at 641, `#fffbe6` at 87 and the 27 live accents become declarations instead of sweeps. **Verified before ruling, not asserted after: ZERO of the 40 gates enforce Canvas-safety** — no gate references `class=`, `<style>` or Canvas, so the suite survives untouched. §27.4 rules that Canvas links point at the **index**, not at sixteen deep links, which would rebuild the update problem this ruling solves; that also caps the exposure from a possible later move to robolore.com (DJ, S103: *"a later decision"*). **§17.3's SVG font rule is untouched** — an `<img>`-loaded graphic still cannot fetch a webfont. **The migration is NOT done by this ruling**: the 422 Consolas-first lesson code stacks were proposed as a sweep and **parked**, because in a stylesheet they are one line. *Do not sweep what the migration deletes.* §6's inline rule carries a conditional pointer and is not rewritten (§26.7).
 
 v8.89.1, S103, minor — record only, no book change — **THE VERSION LINE WAS THE ONE HOME AND IT DISAGREED WITH ITSELF.** Two defects in this document's own bookkeeping, both found while writing §24.12, both fixed here. **(1) v8.88 had no changelog entry** — §26.9 shipped in S102 and the changelog line did not, so the list ran v8.87 → v8.89 with the live version sitting on a number that appeared nowhere beneath it. Backfilled above from §26.9's own text; nothing re-ruled. **(2) The `Current:` field inside the version line read `v8.79.1` while the header read v8.89** — nine versions stale, *inside the line this Bible designates as the single home for its version*. Both are now asserted mechanically: `session_versions.py` **v1.9.1 → v1.10** gains **CONTROL F**, which requires the header version, the `Current:` field and the newest changelog entry to agree, and fails loudly in both directions. **The lesson is §24.9's, arriving from a new side: a value is not verified because it lives in a designated home. `session_versions` read the header and never once read the rest of the line it was reading.**
 
@@ -562,7 +564,7 @@ WHY, and it is not theoretical: the sentence this replaces read *"Current: timer
 
 > This section **supersedes** the entire v7 "HTML Style Guide" (v7 §6). The old serif body, flat `#2c3e50` nav, `135deg`/`to right` gradients, and Part-colored dividers are **retired**. Reference implementation for the skin: `Lesson_09` (as rebuilt). All lessons conform to this.
 
-**All styling is true inline** — every element carries its own `style=""`. No `<style>` blocks, no CSS classes (Canvas strips them).
+**All styling is true inline** — every element carries its own `style=""`. No `<style>` blocks, no CSS classes (Canvas strips them). ⚠️ **CONDITIONAL AS OF S103 — see §27.** This rule exists ONLY because Canvas strips `<style>` and `class=`. DJ ruled S103 that lessons are no longer pasted into Canvas, so the constraint has no remaining cause. It still governs every lesson file **until the migration converts them**; do not author against the post-migration model in a file that has not been converted.
 
 ### 6.1 Body
 
@@ -2835,3 +2837,96 @@ is that its own canon must be rewritten to permit it is the ruling to re-examine
 - **§7's token list is narrower than the book uses** — `#c586c0` (50) and `#b5cea8` (2,264) are live and unnamed.
 - **The two code-palette drifts** — type cyan `#4ec9b6`→`#4EC9B0` (295), error red `#f14c4c`→`#D46554` (14).
 - **§26.5's filing hazards still stand for everything except §26.1.** DJ stated the five himself, so that ruling cites him. Every OTHER claim in this section still cites files that are uncommitted.
+
+---
+
+## 27. THE BOOK IS A WEBSITE, NOT A CANVAS PASTE (v8.90 — NEW SECTION, S103, DJ ruling)
+
+**DJ ruling, S103: *"There will be no pasting html text into canvas. Then I don't have to worry about updates."***
+
+**THE RULING, in one line.** The lessons live at **one** address — the published site — and Canvas
+**links** to them. Canvas keeps everything it is actually good at: **reading quizzes, grades, the
+syllabus, milestone submissions**. It stops being a second copy of the book.
+
+### 27.1 Why — the copy nobody could measure
+
+`site_parity.py` exists because a clone is not the site (§24, S101). It compares the repository
+against what Pages serves, and it found a live 404 nothing else could see. **Nothing has ever
+compared the site against Canvas.** Every lesson edit obliged a re-paste, and a re-paste that did
+not happen was invisible to all 40 gates, to every instrument, and to the author. A 3.58 MB book
+existed twice with an instrument on one copy and none on the other.
+
+**One copy, one push, one truth.** That is the ruling's entire justification and it is sufficient
+on its own.
+
+### 27.2 What this retires — inline-only was never a preference
+
+The rule *"all styling is true inline; no `<style>` blocks, no CSS classes"* (§6) exists **only**
+because Canvas strips `<style>` and `class=`. Remove Canvas from the delivery path and the
+constraint has no remaining reason to exist.
+
+**Measured at S103, the price that constraint has been charging:**
+
+| | Measured |
+|---|---|
+| Inline `style=""` attributes across 16 lessons | **25,036** |
+| CSS declarations inside them | **~67,000** |
+| Share of lesson bytes that is inline style | **44%** — 1.56 MB of 3.58 MB |
+| `font-family` declarations in the lessons | **2,828**, where a stylesheet needs **1** |
+| Absolute `weymuth.github.io` links, forced because a pasted page has no directory to be relative to | **473** across all 16 files |
+
+**And the arc it unblocks.** §26's repaint has been parked since S91 for being a sweep across
+sixteen files. In a stylesheet it is a variable. `#f8f9fa` at 641 instances, `#fffbe6` at 87, the
+27 live 4px accents against §8's documented 11 — every one of those becomes a declaration instead
+of a sweep. **§26 was not too hard. It was priced against the wrong delivery model.**
+
+### 27.3 What it does NOT touch, verified rather than assumed
+
+**Zero of the 40 gates enforce Canvas-safety.** Checked at S103: no gate references `class=`,
+`<style>`, or Canvas in any coverage set. The gate suite survives the migration untouched. This
+was verified before the ruling was written, not asserted after it.
+
+Interactive tools already ship as Pages-hosted iframes (`timer.html`, `newproject.html`) precisely
+because Canvas stripped `<script>`. They are unaffected and get simpler, not harder.
+
+### 27.4 Canvas links point at the INDEX, not at sixteen lessons
+
+A Canvas item per lesson, each deep-linked to `…/lessons/Lesson_NN.html`, rebuilds the update
+problem this ruling just solved: sixteen links to re-edit on any move or rename. **Link Canvas to
+the index page and let the book do its own navigation.** One link to maintain, whatever happens
+downstream.
+
+This matters because a domain move is live but unruled — DJ, S103: *"eventually we might host the
+book on robolore.com, but that is a later decision."* The 473 absolute links above are the
+exposure. They are converted to relative during the migration, after which the book is
+domain-agnostic and no redirect is load-bearing.
+
+### 27.5 Fonts — what actually changes
+
+An `<img>`-loaded SVG still cannot fetch a webfont (§17.3, §17.3a) and **that rule is untouched by
+this section.** Graphics stay on `Arial, Helvetica, sans-serif` / `Courier New, monospace`.
+
+What changes is the **page**. A brand typeface becomes the font that actually ships instead of a
+declaration that silently falls back — which under Canvas it always was. Until the migration
+lands, the lesson pages' shipping font *is* the fallback, and it should be chosen as such.
+
+**Recorded so it is not swept twice:** at S103 the lesson HTML carried **2,828** font declarations
+in **8** distinct stacks, of which **0 lacked a working fallback** — nothing is broken, only
+inconsistent (2,316 code stacks lead with Courier New, 422 with Consolas). A sweep to reconcile
+those 422 was proposed and **parked**, because in a stylesheet it is one line. **Do not sweep what
+the migration deletes.**
+
+### 27.6 Passages that rest on the retired constraint
+
+These are **not wrong**; they are conditional on a delivery model now retired, and per §26.7 they
+are annotated rather than rewritten as the migration reaches them:
+
+- **§6** — *"All styling is true inline… no `<style>` blocks, no CSS classes (Canvas strips them)"*
+- **§6** — the self-stacking grid requirement, chosen because Canvas strips `<style>`
+- **§5b / §18.3** — inline colour forced on repaint
+- **§11** — *"Markup (inline styles only — Canvas-safe)"*
+- the web-tools paragraph naming what Canvas strips, and the iframe rule that follows from it
+
+**The migration is real work and is NOT done by this ruling.** 25,036 attributes and 473 links do
+not convert themselves. What this section fixes is the *decision*; the sweep is scheduled work with
+its own instrument and its own controls, like every other sweep in this book.
