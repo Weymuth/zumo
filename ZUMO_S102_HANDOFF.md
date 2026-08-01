@@ -170,6 +170,14 @@ scope C is not as clean a boundary as it sounds.**
 - Guard `flatten_alpha`'s `cairosvg` import.
 - `pill_sweep` and `gen_part_banners` still have no selftest.
 
+**Image changed in S101, no version owed —** `L01_IMAGE_1-18_kr_c_programming_book.png`, **573×573 → 430×573**,
+DJ re-cropped it to remove whitespace on each side. Referenced once in L01 under `max-width: 100%`, so nothing
+reflowed. **L01 correctly stays v03.15.0:** §9's image-bump rule covers inserting art, removing a figure,
+renumbering a placeholder, or editing a caption or the Image Index — all changes to the LESSON FILE. Re-cropping
+an asset the lesson references by unchanged name changes nothing in `Lesson_01.html`. **The book has no version
+home for an image-only change, and `site_parity` is the only instrument that would ever notice one** — by bytes,
+never by reason. Recorded here rather than ruled; it is a gap, not a defect.
+
 **Images:** `L06_GRAPHIC_6-05` still HELD — DJ's Illustrator round-trip destroyed both arrows
 (markers dropped, paths collapsed to zero-length movetos); **ask what the viewBox and text-count
 changes were meant to do before rebuilding.** · six gradient SVG banners (now folded into the 13) ·
