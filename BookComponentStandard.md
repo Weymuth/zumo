@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.11.0**
+**Standard version: v01.12.1**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -35,6 +35,36 @@ document may carry a version.
 
 **Predecessor.** This standard supersedes `ZUMO Callout Standard v1.0`, which named no
 document. The stamp and every occurrence of it are removed as part of adopting this standard.
+
+### 1.1 Precedence — this standard is DOWNSTREAM of RoboLore brand canon
+
+**The RoboLore brand record is upstream. This document applies it and may never redefine it.**
+
+Two layers, two owners:
+
+| Layer | Owner | Examples |
+|---|---|---|
+| **Brand** | RoboLore canon (`BRANDING/`) | the palette hexes, typography, wordmark, composition percentages, identity prohibitions |
+| **Book** | this document | callout families, marks, the section band ramp, depicted-physical-colour application, the legend |
+
+**What this forbids.** This standard may not state a brand hex as its own decision, may not
+restate an upstream rule in different words, and may not resolve a disagreement about a brand
+value in its own favour. Where it needs a brand value it cites the upstream file.
+
+**Why this rule exists, stated plainly so it is not repeated.** §26 of the book's canon parked
+the entire paint arc for five sessions because this document and `BRANDING/ColorPalette.md`
+both defined Heritage Blue, with different hexes, and **neither claimed precedence over the
+other**. Every argument in that park was about which of two equal claimants was right. That
+question is now unanswerable by construction: on a brand value there is one claimant.
+
+**The failure was never that two documents existed.** They describe different things and both
+are needed. The failure was that two documents defined the same thing with no stated direction
+of authority. Merging them would trade a solvable precedence problem for an unsolvable scope
+problem — one file carrying lockup clear-space rules next to callout glyph tables.
+
+**When upstream is silent.** Unruled space is not forbidden space. This standard may rule in it
+and must mark the ruling as book-local and provisional, so that an upstream ruling supersedes
+rather than collides. §5.0.2 is such a ruling.
 
 ---
 
@@ -251,7 +281,8 @@ whose rarest-colour budget is 2–6%. Omitting the colour entirely removes the o
 student has to identify the object by.
 
 So the graphic uses the palette and the words carry the fact: the goal-tile strip is drawn in
-**Forge Red `#D46554`** while the caption says *red tape*.
+**Forge Red `#D46554`** while the caption says *red tape*. Forge Red is a **functional**
+colour, not a member of Heritage Blue (Bible §26.9) — this section spends it, it does not define it.
 
 **The green.** `#6a9955` — the only green with canon standing on both sides. It is Bible §22's
 locked SUCCESS colour, DJ-ruled and deliberately identical to a `//` comment, and it is
@@ -625,4 +656,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.11*
+*RoboLore Book Component Standard v01.12*
