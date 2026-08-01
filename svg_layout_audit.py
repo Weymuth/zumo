@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.18'
+VERSION = 'v1.18.1'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,9 @@ VERSION = 'v1.18'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.18.1 (S102): DETERMINISM. The font check iterated a SET, so finding order varied
+#   between processes and the generated work list never reproduced byte-for-byte.
+#   Sorted now. Found by regenerating in a fresh clone and diffing, not by reading.
 # v1.18 (S102): ROTATION, found by double-checking v1.17's own output against renders.
 #   _ctm carries translate() and scale() only, so a rotate() label was measured as though
 #   it lay flat. 10-07's "Turn complete" is rotate(90) - 14 units wide on the page, reported
@@ -618,7 +621,13 @@ def audit(path):
             m = re.search(r'font-family:\s*([^;]+)', e.get('style'))
             if m:
                 stacks.add(m.group(1))
-    for fam in {s for s in stacks if s}:
+    # SORTED, not set order. Python randomises string hashing per process, so iterating the
+    # set emitted this file's findings in a different order on every run - and
+    # GPT_WORKLIST regenerated with a different byte count each time. A generate that does
+    # not reproduce cannot be diffed, and 'has anything changed since last session?' stops
+    # being answerable. No file ever moved rank; the defect was invisible until the output
+    # was regenerated twice and compared.
+    for fam in sorted({s for s in stacks if s}):
         first = fam.split(',')[0].strip().strip('"\'').lower()
         if first not in SAFE_FONTS:
             out.append(f'font stack leads with "{first}" - it cannot load through <img src>, so '
