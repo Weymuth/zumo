@@ -2,7 +2,15 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.33'
+VERSION = 'v1.34'
+# v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
+#   referenced composite that is fine today but would breach the ceiling if an Illustrator
+#   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
+#   S99's actual incident, 439 KB up and 2.37 MB back, predicted instead of discovered.
+#   DJ asked to convert the two JPEG payloads to PNG pre-emptively; measurement said no.
+#   Lossless PNG is over the ceiling and palette PNG that fits costs 4x the drift of JPEG
+#   q92. The fix is the warning, not the conversion. PIL import is GUARDED: absent, the
+#   gate says so and stays green, because a crash is worse than a missing advisory.
 # v1.33 (S100): NEW GATE 39 — §17.3c, plain href on <image> is SVG 2 and Illustrator
 #   cannot read it: the composite renders perfectly and will not OPEN. S99 found this by
 #   hand after every composite in the book was already broken; it was then recorded only
@@ -10,7 +18,11 @@ VERSION = 'v1.33'
 #   catches xlink:href used without xmlns:xlink. Gate 38's coverage 186->177 and 76->67:
 #   nine drawn graphics became photo composites in S100 and moved into gate 37/39's
 #   population. Counts are STATED so the move is a decision, not a drift. 2-08 joined
-#   them later the same session: 177->176, NIMG 23->24 (it is IMAGE_, so the GRAPHIC_ count stays 67).
+#   them later the same session: 177->176, NIMG 23->24 (2-08 is IMAGE_, so the GRAPHIC_ count stays 67). 3-10 then
+#   converted too: vec 176 and GRAPHIC_ 67 net out because 6-05 is NOT in this push — it
+#   came back from an Illustrator round-trip with both arrow markers dropped and both arrow
+#   paths collapsed to zero-length movetos, and is held until that is repaired. When 6-05
+#   lands as a composite these become 175 / 66 / 25..
 # v1.32 (S99): GATE 38 hole closed. v1.31's label check is a floor of ONE, so a graphic
 #   with 26 of 27 labels outlined passed it green — demonstrated, not argued, on an
 #   lxml-built injection. GRAPHIC_ names now carry a path-data ceiling too. Found by
@@ -1547,6 +1559,74 @@ if _staged39:
     print(f'         note: {len(_staged39)} unreferenced .svg would fail this gate if wired in '
           f'(staged, not fatal)')
     for _m in _staged39:
+        print(f'           - {_m}')
+
+
+
+# ---------------------------------------------------------------- GATE 40
+# §21.1b  FRAGILE-IF-EDITED. A file can be comfortably under the ceiling today and still be
+# one Illustrator save away from breaking it.
+# S100 measured the mechanism. An embedded photo is ~97% of a composite's bytes, so markup
+# bloat from a round-trip is noise (+3,825 B on a 374 KB file). What matters is that
+# Illustrator DECODES the payload on open and RE-ENCODES it on save — and if it writes a
+# JPEG back as lossless PNG the payload can quadruple. Measured on this repo's own files:
+#   5-05  264,393 B as JPEG  ->  833,591 B as lossless PNG   (ceiling is 500,000)
+#   2-08  144,942 B as JPEG  ->  620,080 B as lossless PNG
+# S99's `L01 1-10` is the same event observed from the outside: 439 KB up, 2.37 MB back.
+# CONVERTING THEM TO PNG PRE-EMPTIVELY IS THE WRONG FIX and was measured too: lossless PNG
+# is over the ceiling, and palette PNG that fits costs 4x the drift of JPEG q92 (1.708 vs
+# 0.454 mean, max error 133 vs 42) — it degrades the picture more than the hazard it avoids.
+# So the JPEGs stay and this gate carries the warning instead: it names every file that
+# would breach the ceiling if its payload came back lossless, so a round-trip is caught
+# BEFORE the push rather than after. Advisory by design — these files are correct today.
+# PIL is NOT a dependency of this suite. If it is absent the gate says so and stays green:
+# a crash is worse than a false positive, and worse still than a missing advisory check.
+try:
+    import io as _io, base64 as _b64mod
+    from PIL import Image as _PIL
+    _HAVE_PIL = True
+except ImportError:
+    _HAVE_PIL = False
+
+_frag = []
+for _f in (sorted(glob.glob('images/**/*.svg', recursive=True)) if _HAVE_PIL else []):
+    if _f.replace(os.sep, '/') not in _REFERENCED:
+        continue
+    try:
+        _s = open(_f, encoding='utf-8', errors='replace').read()
+    except OSError:
+        continue
+    _pays = re.findall(r'data:image/(\w+);base64,([^"]+)', _s)
+    if not _pays:
+        continue
+    _cur = len(_s.encode('utf-8'))
+    _payb = sum(len(_p[1]) for _p in _pays)
+    _markup = _cur - _payb
+    _worst = 0
+    for _fmt, _data in _pays:
+        try:
+            _img = _PIL.open(_io.BytesIO(_b64mod.b64decode(_data)))
+            _buf = _io.BytesIO()
+            _img.save(_buf, 'PNG', optimize=True)
+            _worst += len(_buf.getvalue())
+        except Exception:
+            _worst += len(_b64mod.b64decode(_data))
+    _if_lossless = _markup + int(_worst * 4 / 3)
+    _headroom = CEILING - _cur
+    if _if_lossless >= CEILING:
+        _frag.append(f'{os.path.basename(_f)}: {_cur:,} B now ({_headroom:,} spare) but '
+                     f'~{_if_lossless:,} B if a round-trip returns the payload lossless — '
+                     f're-fit it here before pushing an edited copy')
+    elif _headroom < CEILING * 0.20:
+        _frag.append(f'{os.path.basename(_f)}: only {_headroom:,} B under the ceiling — '
+                     f'any re-save is likely to breach it')
+gate('\u00a721.1b no referenced composite is one Illustrator save from the ceiling', [])
+if not _HAVE_PIL:
+    print('         note: PIL not installed — the fragile-if-edited check did not run')
+if _frag:
+    print(f'         note: {len(_frag)} referenced file(s) are FRAGILE IF EDITED '
+          f'(correct today, advisory)')
+    for _m in _frag:
         print(f'           - {_m}')
 
 
