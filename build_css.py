@@ -38,7 +38,10 @@ exit 0 = clean. exit 1 = a control failed or --check found a difference.
 """
 import re, os, sys, glob, collections
 
-VERSION = 'v1.0'          # the only version home in this file (S104)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lesson_inventory as LI      # ONE expander, shared (the S83 rule)
+
+VERSION = 'v1.1'          # the only version home in this file (S104)
 SOURCES = ['lessons/Lesson_01.html']
 OUT = 'css/book.css'
 
@@ -114,7 +117,11 @@ def collect(paths):
     count = collections.Counter()
     tags = collections.defaultdict(collections.Counter)
     for p in paths:
-        s = open(p, encoding='utf-8', errors='replace').read()
+        # S104: read through the expander. Once a lesson is CONVERTED its inline styles are
+        # gone, and a generator that could not read its own converted source would emit an
+        # empty stylesheet on the next run - --check would then 'pass' by comparing nothing
+        # to nothing. Expanding first makes the build idempotent across the conversion.
+        s = LI.expand_classes(open(p, encoding='utf-8', errors='replace').read())
         for m in _STYLED.finditer(s):
             c = canon(m.group(2))
             count[c] += 1
@@ -209,7 +216,8 @@ def selftest():
 
     print('CONTROL A (coverage): every styled element in the source is accounted for')
     total = sum(n for _, n, _ in rows)
-    raw = sum(len(_STYLED.findall(open(p, encoding='utf-8').read())) for p in SOURCES)
+    raw = sum(len(_STYLED.findall(LI.expand_classes(open(p, encoding='utf-8').read())))
+              for p in SOURCES)
     print(f'   {total:,} attribute(s) over {len(rows)} rule(s); source holds {raw:,}')
     if total != raw or total == 0:
         print('   FAILED. The collector does not see every styled element.')
@@ -241,19 +249,29 @@ def selftest():
     else:
         print(f'   {len(chosen)} rules, {len(set(chosen.values()))} distinct class names')
 
-    print('CONTROL D (no-op): run 1 cannot change a pixel - every selector is class-scoped '
-          'and the lessons carry no class attributes')
+    print('CONTROL D (scope): every selector is class-scoped, and every page carrying '
+          'these classes links the stylesheet')
+    # v1.0 asserted "0 class= attributes exist" - true during run 1 and FALSE the moment a
+    # lesson is converted. An assertion that expires is worse than none: it fails on success.
+    # What actually has to hold afterwards is that nothing is styled by a bare tag selector,
+    # and that no page uses a class without linking the file that defines it.
     naked = [l for l in text.splitlines() if l.endswith(' {') and not l.startswith('.')]
-    cls_in_book = sum(len(re.findall(r'class\s*=', open(f, encoding='utf-8').read()))
-                      for f in sorted(glob.glob('lessons/Lesson_*.html')))
+    orphan = []
+    for f in sorted(glob.glob('lessons/Lesson_*.html')):
+        body = open(f, encoding='utf-8').read()
+        if re.search(r'\sclass="', body) and OUT not in body:
+            orphan.append(f)
     if naked:
         print(f'   FAILED. {len(naked)} selector(s) are not class-scoped: {naked[:3]}')
         ok = False
-    elif cls_in_book:
-        print(f'   FAILED. {cls_in_book} class= attribute(s) already exist - not a no-op.')
+    elif orphan:
+        print(f'   FAILED. {orphan} use classes without linking {OUT}.')
         ok = False
     else:
-        print('   every selector is class-scoped; 0 class= attributes across all 16 lessons')
+        conv = sum(len(re.findall(r'\sclass="', open(f, encoding='utf-8').read()))
+                   for f in sorted(glob.glob('lessons/Lesson_*.html')))
+        print(f'   every selector class-scoped; {conv} class attribute(s) live, '
+              f'every host page links {OUT}')
 
     print('CONTROL E (determinism): a second build must be byte-identical')
     if build()[0] != text:

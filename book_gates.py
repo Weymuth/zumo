@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.34.5'
+VERSION = 'v1.35.0'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -122,7 +122,10 @@ def visible(s):
     return re.sub(r'<!--.*?-->', '', s, flags=re.S)
 
 
-R = {f: open(f, encoding='utf-8').read() for f in site}
+# §27 (S104): read through the class expander so a gate sees the same CSS whether the
+# lesson still carries inline styles or has been converted. ONE definition, shared with
+# lesson_inventory (the S83 rule: import the definition, never write a third regex).
+R = {f: LI.expand_classes(open(f, encoding='utf-8').read()) for f in site}
 
 # ---- §5b: hidden full version on line 1; exactly ONE visible banner carrying its major.minor
 # S89: the build banner was deleted from all 17 pages. It was a COMMENT, so the old
@@ -1648,6 +1651,45 @@ if _frag:
           f'(correct today, advisory)')
     for _m in _frag:
         print(f'           - {_m}')
+
+
+# ---- §27 (S104): every class a lesson uses must have a rule in css/book.css.
+# THE MIGRATION CREATES THIS FAILURE MODE AND NOTHING ELSE CATCHES IT. Measured, not
+# assumed: typing one callout's class as `callout-typo` dropped L01's callout census from
+# 83 to 82 and ALL 40 GATES STAYED GREEN. Before the migration a mistyped inline style
+# left the element visibly wrong and still fully parseable; after it, a mistyped class
+# makes the element INVISIBLE to every instrument that reads CSS. An element that
+# vanishes is worse than one that is wrong, because only one of the two gets found.
+# The reverse direction - a rule no page uses - is REPORTED, never fatal: rules are
+# generated for a whole lesson before its conversion lands, and a gate that goes red on
+# work in progress is a gate people learn to ignore (the gate 37 precedent).
+# SCOPE, and it is the whole correctness of this gate: only pages that LINK book.css.
+# Measured first - tutor, newproject, timer, index and going_deeper each carry their own
+# <style> block and 194 class attributes between them (§25.6a: the tool pages are not
+# chapters). Scoping to `site` failed on all five of them, correctly reporting classes
+# that were never book.css's business. Keying on the <link> is self-maintaining: a page
+# enters this gate the moment it is converted, and nothing has to be remembered.
+bad = []
+_used = collections.Counter()
+_scope = [f for f in site if 'css/book.css' in open(f, encoding='utf-8').read()]
+for f in _scope:
+    for m in re.finditer(r'\sclass="([^"]*)"', open(f, encoding='utf-8').read()):
+        for c in m.group(1).split():
+            _used[c] += 1
+_css = LI.load_css()
+if _used and not _css:
+    bad.append(f'{sum(_used.values())} class attribute(s) in use and css/book.css is absent '
+               f'or empty - every one of them resolves to nothing')
+for c in sorted(_used):
+    if c not in _css:
+        bad.append(f'class "{c}" is used {_used[c]}x and has NO rule in css/book.css - the '
+                   f'elements carrying it are invisible to every CSS-reading gate')
+gate('\u00a727  every class in use resolves to a rule in css/book.css', bad)
+_unused = sorted(set(_css) - set(_used))
+if _unused:
+    print(f'         note: {len(_unused)} generated rule(s) not yet used by any page '
+          f'(staged for a lesson not converted yet, not a failure)')
+
 
 
 
