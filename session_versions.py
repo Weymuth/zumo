@@ -51,7 +51,13 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.6'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.7'   # the only version home in this file (S96; v1.4 S98)
+# v1.7 (S100): site_parity registered. Written this same session and NOT in the block this
+#   file emits - the third time in three sessions a new instrument was missed (v1.4.1
+#   fit_raster_svg, v1.5 flatten_alpha + svg_layout_audit, now this). The registry is the
+#   thing that gets forgotten, so the fix is a CONTROL, not more care: control E compares
+#   ARTEFACTS against the .py files actually in root and names any that carry a VERSION
+#   constant but are not registered.
 # v1.6 (S100): CONTROL C's clean direction ran check() against the LIVE tree and reported a
 #   non-zero exit as "FAILED. --check reports drift on a clean tree." It could not tell a
 #   wrong READER from a wrong BOOK, which is the one question it existed to answer, and it
@@ -128,6 +134,7 @@ ARTEFACTS = [
     ('fit_raster_svg',        'fit_raster_svg.py',        r"VERSION = '(v[\d.]+)'"),
     ('flatten_alpha',         'flatten_alpha.py',         r"VERSION = '(v[\d.]+)'"),
     ('svg_layout_audit',      'svg_layout_audit.py',      r"VERSION = '(v[\d.]+)'"),
+    ('site_parity',           'site_parity.py',           r"VERSION = '(v[\d.]+)'"),
 ]
 
 
@@ -209,6 +216,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"session_versions {vals['session_versions']} · "
             f"fit_raster_svg {vals['fit_raster_svg']} · flatten_alpha {vals['flatten_alpha']} · "
             f"svg_layout_audit {vals['svg_layout_audit']} · "
+            f"site_parity {vals['site_parity']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -226,7 +234,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`gen_part_banners` **{vals['gen_part_banners']}** · `session_versions` "
             f"**{vals['session_versions']}** · `fit_raster_svg` **{vals['fit_raster_svg']}** ·\n"
             f"`flatten_alpha` **{vals['flatten_alpha']}** · "
-            f"`svg_layout_audit` **{vals['svg_layout_audit']}** ·\n"
+            f"`svg_layout_audit` **{vals['svg_layout_audit']}** · "
+            f"`site_parity` **{vals['site_parity']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 
@@ -490,7 +499,29 @@ def selftest():
     finally:
         shutil.rmtree(tmp3, ignore_errors=True)
 
-    print("ALL FOUR CONTROLS PASS - silent when clean, loud when broken, both directions.")
+    print("CONTROL E (registry completeness): a root .py with a VERSION constant must be "
+          "REGISTERED")
+    # Three sessions running, a new instrument was written and left out of ARTEFACTS, so its
+    # version never reached LIVE.md or the handoff and the recorded toolchain silently stopped
+    # matching the repo. Care did not fix it twice; this asks the question mechanically.
+    import glob as _glob
+    _registered = {rel for _lab, rel, _pat in ARTEFACTS}
+    _unregistered = []
+    for _f in sorted(_glob.glob('*.py')):
+        try:
+            _src = open(_f, encoding='utf-8', errors='replace').read()
+        except OSError:
+            continue
+        if re.search(r"^VERSION = '", _src, re.M) and _f not in _registered:
+            _unregistered.append(_f)
+    if _unregistered:
+        for _u in _unregistered:
+            print(f"   FAILED. {_u} declares a VERSION but is not in ARTEFACTS - its version "
+                  f"will never be emitted.")
+        return 1
+    print(f"   all {len(_registered)} registered; no root .py carries an unregistered VERSION\n")
+
+    print("ALL FIVE CONTROLS PASS - silent when clean, loud when broken, both directions.")
     return 0
 
 
