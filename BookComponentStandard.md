@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.10.0**
+**Standard version: v01.11.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -234,6 +234,38 @@ Page colour: `#F4EBDD`. Body text: `#162337`, contrast at or above 11.0:1 on eve
 **Brass carries a bronze title.** Brass at title weight measures 1.90:1 and fails. Rather
 than lighten the role or lower the contrast requirement, brass borrows bronze's title colour.
 The palette bends to the standard, not the reverse.
+
+### 5.0.2 Depicted physical colour (DJ ruling, S102)
+
+**A colour that exists on a real object is depicted in the book palette. The real-world colour
+is stated in prose where the student needs it.**
+
+The competition field is full of colour that carries meaning off the page — red goal tape,
+green intersection markers, silver and black victims, red and green evacuation triangles. Each
+is a physical fact a student must recognise on a table, and each is a hue this palette does not
+contain.
+
+Both alternatives are worse than the ruling. Reproducing every real hue imports an unbounded
+set of saturated colours into a palette whose own saturation ceiling is Warm Brass at 49% and
+whose rarest-colour budget is 2–6%. Omitting the colour entirely removes the one property the
+student has to identify the object by.
+
+So the graphic uses the palette and the words carry the fact: the goal-tile strip is drawn in
+**Forge Red `#D46554`** while the caption says *red tape*.
+
+**The green.** `#6a9955` — the only green with canon standing on both sides. It is Bible §22's
+locked SUCCESS colour, DJ-ruled and deliberately identical to a `//` comment, and it is
+`InstructionalGraphicStandards` §7's syntax green, so it is already approved upstream for
+instructional graphics. It ships 788 times. Nothing else qualifies: `#7cbf6e` (1,466),
+`#3a7d5c` (487) and `#2a5a42` (108) are all live and **none is named anywhere in this standard
+or in the Bible** — frequency is not canon.
+
+At 3.33:1 on white it clears the 3:1 floor for non-text graphical objects, which is what a
+25 mm marker square is. **It does not clear 4.5:1 and must not carry label text.** A green
+marker needing a printed word beside it puts that word in `#3D5266`, not in the green.
+
+This governs depiction only. It does not admit a green to the brand palette, and it does not
+pre-empt the unruled semantic set that governs the 1,048 callouts.
 
 ### 5.1 Geometry
 
@@ -593,4 +625,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.10*
+*RoboLore Book Component Standard v01.11*
