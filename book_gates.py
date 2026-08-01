@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.34.2'
+VERSION = 'v1.34.3'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -1348,8 +1348,8 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 217:
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 217 — a reference '
+if _seen != 218:
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 218 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 gate('\u00a721   every image reference resolves to a file on disk', bad)
 
