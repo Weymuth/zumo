@@ -134,3 +134,35 @@ against §25.8 as it stands, it would fail L02 and L07 on its first run.
 
 ---
 *Opened S77 · Zumo 32U4 · Mercersburg Academy · evaluate, then prune*
+
+---
+
+## PARKED S104 — collapse IMAGE + GRAPHIC into one FIGURE number space
+
+**DJ, S104: "Let's revisit Figure # after the 8th."** Recorded with its price so the decision is
+not re-derived from scratch.
+
+**The proposal.** Retire the two-space scheme (§10, v8.20) and number every figure once as
+`FIGURE N.M`.
+
+**The case for it.** The split is not a file-format distinction — `L02_IMAGE_2-06_oled_about_
+screen.svg` is an SVG. It appears to encode *photographed/screenshotted* vs *drawn*, which is a
+production fact, not a reader-facing one. A student reading "Figure 7.9" does not care how it was
+made. Two number spaces are maintained to record something only the asset's author needs.
+
+**The price, measured S104:**
+
+| | Count |
+|---|---|
+| IMAGE tag instances / GRAPHIC tag instances | 104 / 127 |
+| IMAGE files / GRAPHIC files | 38 / 88 |
+| **Numbers used by BOTH spaces (each needs a renumber)** | **18** |
+| Of those, colliding at file level | 12 — L05 ×4, L02 ×3 |
+
+A renumber moves the tag, the filename, the `src`, the index row and every cross-lesson reference
+together. L04's own prose states *"[IMAGE 4.1] and [GRAPHIC 4.1] are two different figures, by
+design"* and would need rewriting.
+
+**Why parked rather than declined.** It is right and the timing is wrong: it competes directly
+with 20 outstanding figures five weeks before the course starts. Post-Sept-8 it is a clean
+generated arc — the renumbers can be emitted and gated like every other sweep.

@@ -1,12 +1,49 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 1, 2026 (Session 103 — **THE SESSION THAT PRICED THE CONSTRAINT.** §26's repaint was never too hard; it was priced against a delivery model nobody had examined. DJ ruled the book is a **website** Canvas links to, not HTML pasted into Canvas — Bible §27. 39 unsafe font stacks in `images/` went to **0**. Two Bible bookkeeping defects that a grep had missed for nine versions were found, fixed, and are now asserted by a parser.)
-**Status:** ✅ **40/40 GATES PASS · SEVEN CONTROLS · PARITY · Census 39,978.** No lesson file changed. Bible **v8.90** — §27 the Canvas ruling, §24.12 generated artefacts, v8.88's missing changelog entry backfilled, the nine-versions-stale `Current:` field repaired. `font_stack_sweep` v1.0 new; `session_versions` v1.12 gains CONTROL F and CONTROL G; `build_worklist` v1.1 writes an unversioned `GPT_WORKLIST.md`.
+**Date:** August 1, 2026 (Session 104 — **THE SESSION THE MIGRATION STARTED, AND ONE LESSON PRICED IT.** L01 converted end to end: 1,111 of 1,150 inline `style=""` attributes became classes against a generated stylesheet, render-identical **by construction** and 24% smaller. Six CSS-reading gates kept working through one shared expander rather than six edits. Gate 41 exists because the migration creates a failure mode nothing else could see — a mistyped class makes an element INVISIBLE where a mistyped inline style only made it wrong. L15's IMAGE/GRAPHIC contradiction fixed and proved to be the whole class. L07 cleared with five figures built from real GCC diagnostics. `image_audit.py` replaces the stale hand-maintained shot list: **20 outstanding of 145 planned**.)
+**Status:** ✅ **41/41 GATES PASS · SEVEN CONTROLS · PARITY · Census 39,979.** Bible **v8.91** — §27.7 records the migration's first lesson: one stylesheet not sixteen (689 distinct strings, 92.5% shared), `css/` not `images/`, the three byte-exact-across-lessons blocks held back, class names provisional and generated because the semantic set is not designed yet. New: `build_css` v1.1, `image_audit` v1.1, gate 41, `lesson_inventory.expand_classes()`. L01 **v03.15.2** · L07 **v04.16.0** · L15 **v02.11.2**.
 
-**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.90** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.12 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `5de157f`.**
+**Versions:** L01 v03.15.2 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.16.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.2 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,979** · Bible **v8.91** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.35.1** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.1 · image_audit v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `95e1203`.**
 
 ---
 ---
+
+## WHAT SHIPPED IN S104
+
+**The migration began, and DJ ruled two runs.** Run 1 links the stylesheet and is a **no-op by
+construction** — all 16 lessons carry zero `class=` and zero `<style>`, so class-scoped rules match
+nothing until run 2 adds the classes. It proves only that `css/` publishes, that Pages serves
+`text/css`, and that `site_parity` sees it. Run 2 converted L01: **1,111 of 1,150** attributes,
+**39 held** because the §6.5a strip, §25.6 header/footer and §6.8 PART dividers are compared
+byte-exact ACROSS lessons and must convert book-wide in one pass. Render identity is asserted, not
+inspected: 1,150 elements in document order carry canonically equal declarations. 204,356 →
+**154,731 B**.
+
+**One function instead of six edits.** Six gates read CSS values out of the markup and all six went
+dark on a converted lesson. `lesson_inventory.expand_classes()` expands classes back to
+declarations for reading, and `book_gates` reads through it — the S83 rule, import the definition.
+
+**Gate 41 exists because the migration creates the defect.** Typing one callout's class as
+`callout-typo` dropped L01's callout census **83 → 82 with all 40 gates green**. An element that
+vanishes is worse than one that is wrong, because only one of the two gets found.
+
+**L15, and the sweep that proved it was alone.** Three figures retyped IMAGE → GRAPHIC (§10:
+separate number spaces, so the tag contradicted its own filename). Reverse-substitution reproduces
+the pre-edit file byte-for-byte. A book-wide detector, control-run against the unfixed tree, then
+found **zero** others.
+
+**L07 cleared.** Five figures built with diagnostics reproduced in the sandbox with g++. The layout
+auditor called 7-11 clean twice while its arrow pointed at the wrong file — §24.6a, found by
+rendering and reading.
+
+**`image_audit.py` replaces a hand-maintained document.** The Image Index ships in five schemas and
+only ten lessons carry a Status column, so "the status column is the record" was never true. It
+measures instead what the lessons themselves plan and land: **20 outstanding of 145**. Its own two
+false findings are recorded inside it.
+
+**The lesson: write controls for the world the change creates.** Two `build_css` controls expired
+on success. `image_audit`'s determinism control passed in-process where the hash seed cannot vary,
+on a generator that was not deterministic. Both fixed; both recorded.
 
 ## WHAT SHIPPED IN S103
 
@@ -1583,7 +1620,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 **Verified:** div and span balance unchanged; a line-by-line diff audit confirmed every changed line is either a slash or a version comment, zero unexpected edits.
 
-**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.90** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.12 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `5de157f`.**
+**Versions:** L01 v03.15.2 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.16.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.2 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,979** · Bible **v8.91** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.35.1** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.1 · image_audit v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `95e1203`.**
 
 **Not applied:** DJ floated halving again to 2px — deferred, not done.
 

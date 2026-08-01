@@ -100,3 +100,34 @@ version landed. Nothing about the safety net changes — only your click count.
 GitHub Desktop shows the full diff of every changed file *before* commit.
 If a diff looks insane (e.g. a 5 MB file showing as 2 bytes — the old truncation signature),
 **don't commit** — right-click the file → Discard changes, and tell Claude.
+
+## Matched pairs — some files cannot be pushed one at a time (S104)
+
+`book_gates.py` calls `lesson_inventory.expand_classes()`. On S104 the gate file landed and the
+parser did not, and the pushed tree could not run a single gate:
+
+```
+AttributeError: module 'lesson_inventory' has no attribute 'expand_classes'
+```
+
+Nothing rendered wrong, so nothing looked wrong. **A partial push of a matched pair is invisible
+until something is run.** Known pairs: `book_gates.py` + `lesson_inventory.py`;
+`build_css.py` + `css/book.css`; `image_audit.py` + `IMAGE_WORKLIST.md`; any instrument +
+`session_versions.py` when the instrument is newly registered.
+
+## Verify the DOWNLOADS, not just the push (S104)
+
+S104 lost two pushes to stale browser downloads: older copies of the same filenames went up, and
+one file landed as `lesson_inventory (1).py` — committed, unregistered, one character from the
+real parser. Before committing, md5 each staged file against the list given in chat. A `(1)` in a
+filename is the tell.
+
+**After every push, not just at session open:**
+
+```
+python3 book_gates.py              # 41/41
+python3 session_versions.py --selftest
+python3 site_parity.py             # PARITY
+```
+
+`session_versions --selftest` CONTROL E is what caught the stray in seconds.
