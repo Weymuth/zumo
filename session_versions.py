@@ -51,7 +51,12 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.7'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.9'   # the only version home in this file (S96; v1.4 S98)
+# v1.9 (S102): regex_audit registered.
+# v1.8 (S102): build_worklist registered. GPT_WORKLIST_S99.md was hand-assembled, so when
+#   its ordering came under doubt there was nothing to re-run - the list that directs the
+#   graphics chat's work could not be checked. It is a generate now, and a generate needs a
+#   version home like every other instrument.
 # v1.7 (S100): site_parity registered. Written this same session and NOT in the block this
 #   file emits - the third time in three sessions a new instrument was missed (v1.4.1
 #   fit_raster_svg, v1.5 flatten_alpha + svg_layout_audit, now this). The registry is the
@@ -135,6 +140,8 @@ ARTEFACTS = [
     ('flatten_alpha',         'flatten_alpha.py',         r"VERSION = '(v[\d.]+)'"),
     ('svg_layout_audit',      'svg_layout_audit.py',      r"VERSION = '(v[\d.]+)'"),
     ('site_parity',           'site_parity.py',           r"VERSION = '(v[\d.]+)'"),
+    ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
+    ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
 ]
 
 
@@ -217,6 +224,8 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"fit_raster_svg {vals['fit_raster_svg']} · flatten_alpha {vals['flatten_alpha']} · "
             f"svg_layout_audit {vals['svg_layout_audit']} · "
             f"site_parity {vals['site_parity']} · "
+            f"build_worklist {vals['build_worklist']} · "
+            f"regex_audit {vals['regex_audit']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -236,6 +245,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`flatten_alpha` **{vals['flatten_alpha']}** · "
             f"`svg_layout_audit` **{vals['svg_layout_audit']}** · "
             f"`site_parity` **{vals['site_parity']}** ·\n"
+            f"`build_worklist` **{vals['build_worklist']}** ·\\n"
+            f"`regex_audit` **{vals['regex_audit']}** ·\\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 

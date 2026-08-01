@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.17'
+VERSION = 'v1.18'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,16 @@ VERSION = 'v1.17'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.18 (S102): ROTATION, found by double-checking v1.17's own output against renders.
+#   _ctm carries translate() and scale() only, so a rotate() label was measured as though
+#   it lay flat. 10-07's "Turn complete" is rotate(90) - 14 units wide on the page, reported
+#   as 95 wide and 79 past its panel, which ranked the file 3rd on the graphics work list.
+#   Six <text> across four files are affected (5-07, 6-11, 8-1, 10-07). They are now SKIPPED
+#   and the skip is REPORTED, because a checker that silently stops checking is the thing
+#   §24.6b exists to forbid. Full rotated-AABB support is the better fix and is not done.
+#   Also: the overflow floor is now proportional. Agreement with rendered ink is ~1%, so a
+#   fixed 2-unit floor could not tell 9-6's 11-unit measurement error on a 945-unit line
+#   from a real 11-unit overflow on a short one.
 # v1.17 (S102): THE TOOL WAS CSS-BLIND. _inh() read presentation ATTRIBUTES only, so
 #   font-size in a style="" attribute or in a <style> class rule was invisible and every such
 #   label fell back to the 16px default. 371 of 2,469 <text> elements across 17 files - 15% of
@@ -244,6 +254,11 @@ PANEL_PAD = 6
 # 9-1, 14-03) and agreed to 0.3, 0.1, 1.7, 1.3 and 0.9 units. Anything under 2.0 is inside that
 # band, and a 1-unit "overflow" sends a human to look at nothing - which costs 3x a blank.
 MIN_OVERFLOW = 2.0
+# ...and a PROPORTIONAL floor beside it. Absolute agreement with rendered ink is ~1%, so
+# the error grows with the string: on 9-6's 945-unit line the estimate sat 11 units high,
+# which is 1.2% and not a defect. A fixed floor cannot tell those apart from a real 11-unit
+# overflow on a short label, so the floor scales.
+OVERFLOW_REL = 0.015
 
 
 _TR = None
@@ -392,6 +407,26 @@ def _family_kind(stack):
         if n in ('arial', 'helvetica', 'sans-serif', 'verdana', 'tahoma'):
             return 'sans'
     return 'sans'
+
+
+def _rotated(el):
+    """True if this element or an ancestor carries a transform _ctm cannot represent.
+
+    _ctm accumulates translate() and scale() only. A rotate() or matrix() turns a label off the
+    horizontal, and every check below measures horizontal extent - so measuring one of these as
+    though it were flat does not produce a slightly-wrong number, it produces a fictional one.
+    10-07's "Turn complete" is rotate(90): 14 units wide on the page, reported as 95 wide and
+    79 units past its panel, which put the file 3rd on a work list. A wrong finding costs 3x a
+    blank one, so these are SKIPPED and SAID OUT LOUD rather than guessed at.
+    """
+    n = el
+    while n is not None:
+        if isinstance(n.tag, str):
+            tf = n.get('transform') or ''
+            if 'rotate' in tf or 'matrix' in tf or 'skew' in tf:
+                return True
+        n = n.getparent()
+    return False
 
 
 def _text_width(s, size, bold=False, italic=False, family='sans', letter_spacing=0.0):
@@ -602,7 +637,11 @@ def audit(path):
     # A number sitting inside a badge is bounded by that badge, not by any panel it overhangs.
     badges_xy = [(float(c.get('cx') or 0), float(c.get('cy') or 0), float(c.get('r') or 0))
                  for c in root.findall(f'.//{NS}circle') if c.get('r')]
+    skipped_rot = 0
     for t in root.findall(f'.//{NS}text'):
+        if _rotated(t):
+            skipped_rot += 1
+            continue
         tx, ty = float(t.get('x') or 0), float(t.get('y') or 0)
         if any((tx - cx) ** 2 + (ty - cy) ** 2 <= (rr * 1.2) ** 2 for cx, cy, rr in badges_xy):
             continue
@@ -612,12 +651,18 @@ def audit(path):
                 if px0 <= ax <= px1 and py0 <= y <= py1:
                     if x0 < px0 + PANEL_PAD or x1 > px1 - PANEL_PAD:
                         over = max(px0 + PANEL_PAD - x0, x1 - (px1 - PANEL_PAD))
-                        if over < MIN_OVERFLOW:
+                        # the floor scales with the string: measured relative error against
+                        # rendered ink runs to ~1.3%, so on a 900-unit line a 10-unit "overflow"
+                        # is inside the instrument, not a defect in the file
+                        if over < max(MIN_OVERFLOW, OVERFLOW_REL * (x1 - x0)):
                             break
                         out.append(f'text overflows its panel by {over:.0f} units: '
                                    f'"{s[:44]}" spans {x0:.0f}..{x1:.0f} '
                                    f'inside {px0:.0f}..{px1:.0f}')
                     break
+    if skipped_rot:
+        out.append(f'{skipped_rot} rotated/skewed <text> NOT checked for overflow or collision - '
+                   f'this tool measures horizontal extent only. Eyeball them.')
 
     # ---- 6. text colliding with text on the same line ---------------------------------------
     ran.add('collide_text')
