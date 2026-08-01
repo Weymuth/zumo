@@ -51,7 +51,19 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.10'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.12'   # the only version home in this file (S96; v1.4 S98)
+# v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
+#   syllabus. v1.11's G excused 'Syllabus' because it is emitted under its FILENAME - true
+#   of --live, false of --handoff, where it appeared under neither name. The exemption
+#   written to accommodate one block silently excused a real gap in the other, which is the
+#   exact defect class G exists to catch. DJ ruling: it belongs in both. Syllabus added to
+#   the handoff template; G now checks key OR filename with NO exemptions at all.
+# v1.11 (S103): CONTROL G - REGISTERED IS NOT EMITTED. font_stack_sweep passed CONTROL E
+#   (it WAS in ARTEFACTS) and still never reached LIVE.md or the handoff, because both emit
+#   templates name every instrument BY HAND. Same drift CONTROL E exists to stop, one layer
+#   downstream. Found while closing S103 by READING the emitted block - not by any control,
+#   which is the S102 lesson again: compare the output against something. CONTROL G asserts
+#   every ARTEFACTS key appears in BOTH emitted blocks; font_stack_sweep added to both.
 # v1.10 (S103): CONTROL F - the Bible's version bookkeeping is now PARSED, not grepped.
 #   Two defects shipped past this tool because it read ONE value off a line carrying TWO:
 #   v8.88 had no changelog entry beneath it, and 'Current:' sat NINE versions stale inside
@@ -234,6 +246,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"site_parity {vals['site_parity']} · "
             f"build_worklist {vals['build_worklist']} · "
             f"regex_audit {vals['regex_audit']} · "
+            f"font_stack_sweep {vals['font_stack_sweep']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -242,7 +255,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
     ls = ' · '.join(f"{k} {lessons[k]}" for k in sorted(lessons))
     return (f"Fresh-clone verified at **`{sha}`**. Census **{cen:,}**.\n"
             f"Bible **{vals['Bible']}** · `BookComponentStandard` **{vals['BookComponentStandard']}** · "
-            f"Maker **{vals['Maker']}** ·\n`marks/` **{marks}** · `icons/` **{icons}** incl. LICENSE.\n\n"
+            f"Maker **{vals['Maker']}** ·\n`marks/` **{marks}** · `icons/` **{icons}** incl. LICENSE.\n"
+            f"`ZUMO_Syllabus_WORKING.md` **{vals['Syllabus']}**.\n\n"
             f"Instruments: `book_gates` **{vals['book_gates']}** · `lesson_inventory` "
             f"**{vals['lesson_inventory']}** ·\n`gen_component` **{vals['gen_component']}** · "
             f"`pill_sweep` **{vals['pill_sweep']}** · `gate_payload_match` **{vals['gate_payload_match']}** ·\n"
@@ -255,6 +269,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`site_parity` **{vals['site_parity']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
+            f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 
@@ -658,7 +673,38 @@ def selftest():
     finally:
         shutil.rmtree(_tmpf, ignore_errors=True)
 
-    print("ALL SIX CONTROLS PASS - silent when clean, loud when broken, both directions.")
+    print("CONTROL G (registered is not emitted): every ARTEFACTS key must appear in BOTH "
+          "emitted blocks")
+    # CONTROL E asks whether a tool is REGISTERED. font_stack_sweep was, and still never
+    # reached LIVE.md or the handoff, because both emit templates name each instrument BY
+    # HAND. Registration and emission are two different questions and only one was asked.
+    # Found while closing S103 by reading the emitted block, not by any control - which is
+    # the S102 lesson again: compare the output against something, do not trust the code.
+    _missing = []
+    _vals, _lessons, _errs = gather()
+    if _errs:
+        print(f"   SKIPPED: gather() reported {len(_errs)} error(s) - CONTROL A/B own that")
+        _missing = None
+    else:
+        for _name, _fn in (('--live', emit_live), ('--handoff', emit_handoff)):
+            _out = _fn(_vals, _lessons, 0, 0, 0, 'deadbee')
+            for _lab, _rel, _pat in ARTEFACTS:
+                # NO EXEMPTIONS. The first draft of this control excused 'Syllabus' on the
+                # grounds that it is emitted under its filename - true of --live, FALSE of
+                # --handoff, where it appeared under neither. An exemption that is not itself
+                # checked is a hole, which is the very defect this control exists to catch.
+                # DJ ruling S103: "to be safe shouldn't it be in both places?" - so it is,
+                # and the exemption is gone rather than narrowed.
+                if _lab not in _out and _rel not in _out:
+                    _missing.append(f"{_lab} missing from {_name}")
+    if _missing:
+        for _m in _missing:
+            print(f"   FAILED. {_m} - it is registered but will never be seen.")
+        return 1
+    if _missing is not None:
+        print("   every registered artefact appears in both emitted blocks\n")
+
+    print("ALL SEVEN CONTROLS PASS - silent when clean, loud when broken, both directions.")
     return 0
 
 
