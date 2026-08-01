@@ -45,11 +45,31 @@ Points are awarded per hazard **when the robot has reached the next tile in sequ
 | Tile with one or more **gaps** | **10** |
 | Tile with one or more **speed bumps** | **10** |
 | **Intersection** or **dead end** (correct path) | **10** |
-| **Ramp** — per ramp *tile* | **10** |
+| **Ramp** | **10** — ⚠️ see 2.1a, the rules contradict themselves |
 | **Obstacle** (bricks, blocks, weights) | **20** |
 | **Seesaw** tile | **20** |
 
 Hazards inside the evacuation zone are **not** scored.
+
+### 2.1a The ramp contradiction — UNRESOLVED UPSTREAM, ask your referee
+
+**The 2026 rules state both answers and do not reconcile them.**
+
+- **§5.6.1** — *a ramp as a hazard accounts for all inclined tiles that make up one ramp*, at
+  **10 points per ramp**.
+- **§3.7.4** — ramp points are awarded **for each individual ramp tile**.
+
+A three-tile ramp is therefore worth either 10 or 30 points depending on which line the referee
+reads. This is not a transcription error in this file and it is not new: teams raised the identical
+contradiction against the 2025 edition on the RCJ forum, and again against 2026. It has survived at
+least two editions unresolved.
+
+**Earlier versions of this file stated "per ramp tile" as settled fact. That was one reading of an
+ambiguous rule presented as though the rule were clear** — the exact failure this document exists to
+prevent. Recorded rather than ruled.
+
+**What to teach:** ask the referee before the scoring run, in the same breath as declaring your LoP
+procedure. It costs one sentence and it is worth up to 20 points on a single ramp.
 
 ### 2.2 Tile points — and how a Lack of Progress decays them
 
@@ -212,7 +232,7 @@ An honest accounting, for the textbook's own claims:
 | Gaps (10) | ✅ Yes — Lesson 11 |
 | Intersections / dead ends (10) | ✅ Yes — Lesson 9 |
 | Speed bumps (10) | ⚠️ Untested — ≤ 1 cm, likely driveable |
-| Ramps (10/tile) | ⚠️ Untested — up to 25° |
+| Ramps (10 per ramp *or* per tile — see 2.1a) | ⚠️ Untested — up to 25° |
 | Obstacles (20) | ✅ Yes — Lesson 10 |
 | Seesaws (20) | ⚠️ Untested |
 | Entering the evacuation zone | ✅ Yes — silver detection, Lesson 13 |
