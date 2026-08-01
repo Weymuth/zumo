@@ -1,12 +1,47 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 1, 2026 (Session 102 — **THE SESSION THAT CHECKED ITS OWN INSTRUMENTS.** Eight defects found; reading code found none of them. Every one came from comparing an output against a render, a fresh clone, or a regeneration. `svg_layout_audit` v1.16 → v1.19 closed four blind spots — CSS, absolute `tspan y`, `rotate()`, and two phantom finding classes. Forge Red reversed to a FUNCTIONAL colour (Bible §26.9): the palette stays five and one upstream file changes instead of eight.)
-**Status:** ✅ **40/40 GATES PASS · Census 39,978.** L02 → v03.7.0 (the `2-05` diagram gained the FUNCTION PROTOTYPES row its own caption named; a 404ing download button repointed). L14 → v02.16.0 (new tile-patterns graphic; the ramp row stopped teaching one side of a rules contradiction as fact). `11-02` 1,724,271 → 263,221 B. Two new instruments: `build_worklist`, `regex_audit`.
+**Date:** August 1, 2026 (Session 103 — **THE SESSION THAT PRICED THE CONSTRAINT.** §26's repaint was never too hard; it was priced against a delivery model nobody had examined. DJ ruled the book is a **website** Canvas links to, not HTML pasted into Canvas — Bible §27. 39 unsafe font stacks in `images/` went to **0**. Two Bible bookkeeping defects that a grep had missed for nine versions were found, fixed, and are now asserted by a parser.)
+**Status:** ✅ **40/40 GATES PASS · SEVEN CONTROLS · PARITY · Census 39,978.** No lesson file changed. Bible **v8.90** — §27 the Canvas ruling, §24.12 generated artefacts, v8.88's missing changelog entry backfilled, the nine-versions-stale `Current:` field repaired. `font_stack_sweep` v1.0 new; `session_versions` v1.12 gains CONTROL F and CONTROL G; `build_worklist` v1.1 writes an unversioned `GPT_WORKLIST.md`.
 
-**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.88** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.9.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.0 · regex_audit v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4aafdc8`.**
+**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.90** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.12 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `5de157f`.**
 
 ---
 ---
+
+## WHAT SHIPPED IN S103
+
+**The ruling. Bible §27 — THE BOOK IS A WEBSITE, NOT A CANVAS PASTE.** DJ: *"There will be no
+pasting html text into canvas. Then I don't have to worry about updates."* Lessons live at one
+address; Canvas keeps quizzes, grades, syllabus and submissions, and links to the **index**, not
+to sixteen lessons. The justification is a copy nobody could measure: `site_parity` compares
+repo↔Pages and **nothing ever compared Pages↔Canvas**, so a re-paste that did not happen was
+invisible to all 40 gates. **§26's repaint was never too hard — it was priced against the wrong
+delivery model.** Measured cost of the retired constraint: 25,036 inline `style=""` attributes,
+~67,000 declarations, **44% of lesson bytes**, 2,828 `font-family` declarations where a stylesheet
+needs one, 473 absolute links. **Zero of the 40 gates enforce Canvas-safety** — verified before
+the ruling was written. The migration is scheduled work and is NOT done by the ruling.
+
+**Fonts. 39 unsafe stacks → 0**, 154 declarations across 24 SVGs, via new `font_stack_sweep.py`
+v1.0 (five controls; per-file assert that no byte outside a `font-family` value moved; weight and
+style survive because Illustrator declares them separately, verified in 1-10 and 8-1 first).
+Work-list local-fix backlog **54 findings / 25 files → 15 / 5**. Visually neutral — those files
+load through `<img src>` and the browser was already falling back.
+
+**Bible bookkeeping, and the parser that now guards it.** v8.88 had **no changelog entry**;
+`Current:` read **v8.79.1** while the header read v8.89, *inside the line the Bible designates as
+its one home*. Both got past `session_versions` for nine versions because it **grepped one value
+off a line carrying two**. `session_versions` **v1.12**: CONTROL F parses the declaration line
+whole and the changelog in file order; CONTROL G asserts every registered artefact reaches BOTH
+emitted blocks. Both were proved against the real defects re-seeded exactly as found.
+
+**§24.12 — a generated artefact is registered in canon and its filename carries no session.**
+`GPT_WORKLIST.md` and `ZUMO_FAMILY_MAP.md`, never hand-edited. Root had held `GPT_WORKLIST_S99.md`
+*and* `GPT_WORKLIST_S102.md`, the S99 one known-bad and still looking live. Both retired.
+
+**The lesson, and it is mine twice.** I verified CONTROL G with a check that could not distinguish
+the two answers (§24.8), and shipped G with an exemption that was true of one emitted block and
+false of the other — **an exemption that is not itself checked is a hole**, which is the exact
+defect class G exists to catch. DJ caught it by asking whether it should just be in both places.
 
 ## WHAT SHIPPED IN S102
 
@@ -1548,7 +1583,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 **Verified:** div and span balance unchanged; a line-by-line diff audit confirmed every changed line is either a slash or a version comment, zero unexpected edits.
 
-**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.88** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.9.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.0 · regex_audit v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4aafdc8`.**
+**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.90** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.12 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `5de157f`.**
 
 **Not applied:** DJ floated halving again to 2px — deferred, not done.
 
