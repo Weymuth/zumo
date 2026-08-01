@@ -36,7 +36,7 @@ exit 0 = clean. exit 1 = a control failed or --check found a difference.
 """
 import re, os, sys, glob, collections
 
-VERSION = 'v1.0'          # the only version home in this file (S104)
+VERSION = 'v1.1'          # the only version home in this file (S104)
 OUT = 'IMAGE_WORKLIST.md'
 
 TAG_RE = re.compile(r'\[(IMAGE|GRAPHIC|VIDEO)\s+(\d+)\.(\d+)([a-z]?)\]')
@@ -64,8 +64,14 @@ def audit(paths=None):
         src = open(f, encoding='utf-8', errors='replace').read()
         refs = set(SRC_RE.findall(src))
         referenced |= refs
+        # KIND IS PART OF THE SORT KEY, and leaving it out cost a real defect: [IMAGE 4.1]
+        # and [VIDEO 4.1] share the key (4, 1, ''), so their order fell out of SET iteration
+        # and flipped between processes. The written file and the next --check disagreed at
+        # random. CONTROL E had "proved" determinism by auditing twice in ONE process, where
+        # the hash seed is fixed - a check that could not distinguish the two answers (§24.8).
         seen = sorted({(m.group(1), int(m.group(2)), int(m.group(3)), m.group(4))
-                       for m in TAG_RE.finditer(src)}, key=lambda t: (t[1], t[2], t[3]))
+                       for m in TAG_RE.finditer(src)},
+                      key=lambda t: (t[1], t[2], t[3], t[0]))
         for kind, a, b, suf in seen:
             tag = f'{kind} {a}.{b}{suf}'
             planned.append((host, tag))
@@ -171,12 +177,26 @@ def selftest():
     else:
         print('   L10 IMAGE 10.1, served by L05\'s photo, is not reported outstanding')
 
-    print('CONTROL E (determinism): a second audit must be identical')
-    if emit(*audit()) != emit(planned, outstanding, orphans, dupes):
-        print('   FAILED. Output depends on iteration order.')
+    print('CONTROL E (determinism): a SECOND PROCESS must emit the same bytes')
+    # In-process repetition is not a determinism test. PYTHONHASHSEED is fixed for the life
+    # of a process, so set-iteration order cannot vary and the check passes on a generator
+    # that is not deterministic at all - which is exactly what happened here.
+    import subprocess, hashlib
+    mine = hashlib.md5(emit(planned, outstanding, orphans, dupes).encode()).hexdigest()
+    theirs = set()
+    for seed in ('0', '1', '12345'):
+        env = dict(os.environ, PYTHONHASHSEED=seed)
+        r = subprocess.run([sys.executable, '-c',
+                            'import image_audit as I,hashlib,sys;'
+                            'sys.stdout.write(hashlib.md5('
+                            'I.emit(*I.audit()).encode()).hexdigest())'],
+                           capture_output=True, text=True, env=env, cwd=os.getcwd())
+        theirs.add(r.stdout.strip())
+    if theirs != {mine}:
+        print(f'   FAILED. Emission varies with the hash seed: {sorted(theirs)}')
         ok = False
     else:
-        print('   second audit is byte-identical')
+        print(f'   three hash seeds, one output ({mine[:12]})')
 
     print('\n' + ('ALL CONTROLS PASS' if ok else 'CONTROLS FAILED'))
     return 0 if ok else 1

@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.13'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.14'   # the only version home in this file (S96; v1.4 S98)
 # v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
 #   syllabus. v1.11's G excused 'Syllabus' because it is emitted under its FILENAME - true
 #   of --live, false of --handoff, where it appeared under neither name. The exemption
@@ -160,6 +160,7 @@ ARTEFACTS = [
     ('svg_layout_audit',      'svg_layout_audit.py',      r"VERSION = '(v[\d.]+)'"),
     ('site_parity',           'site_parity.py',           r"VERSION = '(v[\d.]+)'"),
     ('build_css',             'build_css.py',             r"VERSION = '(v[\d.]+)'"),
+    ('image_audit',           'image_audit.py',           r"VERSION = '(v[\d.]+)'"),
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
@@ -246,6 +247,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"svg_layout_audit {vals['svg_layout_audit']} · "
             f"site_parity {vals['site_parity']} · "
             f"build_css {vals['build_css']} · "
+            f"image_audit {vals['image_audit']} · "
             f"build_worklist {vals['build_worklist']} · "
             f"regex_audit {vals['regex_audit']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
@@ -270,6 +272,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`svg_layout_audit` **{vals['svg_layout_audit']}** · "
             f"`site_parity` **{vals['site_parity']}** ·\n"
             f"`build_css` **{vals['build_css']}** ·\n"
+            f"`image_audit` **{vals['image_audit']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"

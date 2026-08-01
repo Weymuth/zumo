@@ -2,7 +2,7 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.1.2'
+VERSION = 'v1.2.0'
 #
 # v1.1.1 (S94): the visible-banner expectation was still the pre-S89 value of 2, so --anomalies
 #   printed a false lead for all sixteen lessons. §5b and book_gates have required exactly ONE
@@ -150,8 +150,58 @@ CALLOUT_BG_RE = re.compile(r'background(?:-color)?:\s*([^;"]+)')
 SECTION_RE = re.compile(r'=+\s*(SECTION\s+[0-9]+[A-Z]?|PART\s+[0-9]+[^=]*?)\s*:?\s*([^=]*?)\s*=*$', re.I)
 
 
+# ---------------------------------------------------------------------------
+# §27 MIGRATION SUPPORT (S104). The book is moving from inline style="" to a
+# stylesheet. Six gates and this parser's own callout detector read CSS VALUES
+# out of the markup, so a converted lesson would show them nothing - and the
+# §5.1 coverage assert proved it, reporting ZERO callouts for a converted L01.
+#
+# The fix is ONE function, not six edits: before anything reads a page, expand
+# every class back into the declarations it stands for. The instrument then
+# sees the same CSS it always saw, whatever the file's conversion state, and no
+# gate needs to learn about classes at all.
+#
+# DIRECTION MATTERS. This expands FOR READING ONLY and never writes. An element
+# carrying BOTH style and class keeps its inline copy last, because that is the
+# order the browser resolves them in.
+#
+# A class with no rule expands to nothing, so a typo'd or deleted class makes
+# its gate fail rather than pass quietly - the failure mode this has to have.
+CSS_PATH = 'css/book.css'
+_RULE_RE = re.compile(r'\.([A-Za-z0-9_-]+)\s*\{([^}]*)\}', re.S)
+_CLASS_RE = re.compile(r'\sclass="([^"]*)"')
+
+
+def load_css(path=CSS_PATH):
+    """-> {class: 'decl; decl'} from the generated stylesheet. Missing file = {}."""
+    try:
+        src = open(path, encoding='utf-8').read()
+    except OSError:
+        return {}
+    out = {}
+    for m in _RULE_RE.finditer(src):
+        ds = [' '.join(d.split()) for d in m.group(2).split(';') if d.strip()]
+        out[m.group(1)] = '; '.join(ds)
+    return out
+
+
+def expand_classes(src, css=None):
+    """Replace every class="..." with the style="" it stands for, for READING."""
+    css = load_css() if css is None else css
+    if not css:
+        return src
+
+    def one(m):
+        decls = [css[c] for c in m.group(1).split() if c in css]
+        if not decls:
+            return m.group(0)
+        return ' style="' + '; '.join(decls) + ';"'
+    return _CLASS_RE.sub(one, src)
+
+
 def build(path):
     src = open(path, encoding='utf-8').read()
+    src = expand_classes(src)
     tree = Tree(src)
     tree.feed(src)
     tree.close()

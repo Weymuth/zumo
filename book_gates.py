@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.35.0'
+VERSION = 'v1.35.1'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -1351,8 +1351,8 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 218:
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 218 — a reference '
+if _seen != 223:
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 223 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -1523,8 +1523,8 @@ for _f in _svgs:                              # same population gate 37 walked, 
 # population empties and every check above passes vacuously. Both numbers are STATED, not
 # inherited, and both are expected to move when a graphic is added or removed — bump them
 # in the same edit, the way gate 36's reference count is maintained.
-if len(_vec) != 174:
-    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 174 — a file was '
+if len(_vec) != 179:
+    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 179 — a file was '
                f'added, removed, or now carries a raster (which moves it to gate 37)')
 _ngraphic = sum(1 for _f in _vec if 'GRAPHIC_' in os.path.basename(_f))
 if _ngraphic != 67:
