@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.18.1'
+VERSION = 'v1.19'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,18 @@ VERSION = 'v1.18.1'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.19 (S102): TWO BLIND SPOTS, both found by auditing a real file and then render-checking
+#   the tool's own output instead of believing it.
+#   (a) SMALL CONTAINERS. Only rects >= 150x60 counted as bounding boxes, so a label on a
+#       126x38 section pill was measured against the panel behind it. 11-02's SIDE VIEW and
+#       TOP VIEW were reported as overflowing by 9 and 4 units; render says ink 51.4..154.6
+#       inside a pill spanning 40..166. It overflows nothing.
+#   (b) PHANTOM BADGES. Any group holding a circle and a text was assumed to be a numbered
+#       badge. A leader callout has an anchor DOT plus a label box - 11-02's callout-4 is
+#       r=4.5 with FRONT CLIFF SENSORS 136 units away, and the tool reported that label as a
+#       badge number off-centre by 136 with a wrong baseline. A badge number is now required
+#       to be short, alphanumeric, and to actually land inside its circle.
+#   Four of five findings on one file were false. A wrong finding costs 3x a blank one.
 # v1.18.1 (S102): DETERMINISM. The font check iterated a SET, so finding order varied
 #   between processes and the generated work list never reproduced byte-for-byte.
 #   Sorted now. Found by regenerating in a fresh clone and diffing, not by reading.
@@ -643,6 +655,28 @@ def audit(path):
             x, y = float(rc.get('x') or 0), float(rc.get('y') or 0)
             panels.append((x, y, x + w, y + h))
     panels.sort(key=lambda p: (p[2] - p[0]) * (p[3] - p[1]))     # smallest enclosing wins
+    # ...but a PANEL is not the only thing that can bound a label. A section tab, a coloured
+    # pill, a legend chip - all are filled boxes far under PANEL_MIN_W, and a label sitting on
+    # one is bounded by IT, not by the panel it happens to sit on top of. 11-02 puts "SIDE VIEW"
+    # on a 126x38 blue pill at the panel's corner; the pill is 24 units under the panel
+    # threshold, so the label was measured against the panel behind it and reported as
+    # overflowing by 9 units. It overflows nothing. Render-verified: ink 51.4..154.6 inside a
+    # pill spanning 40..166.
+    holders = []
+    for rc in root.findall(f'.//{NS}rect'):
+        if not rc.get('fill') or rc.get('fill') == 'none':
+            continue
+        w, h = float(rc.get('width') or 0), float(rc.get('height') or 0)
+        if w <= 0 or h <= 0 or (w >= PANEL_MIN_W and h >= PANEL_MIN_H):
+            continue                       # panels are handled above; this is the small stuff
+        x, y = float(rc.get('x') or 0), float(rc.get('y') or 0)
+        holders.append((x, y, x + w, y + h))
+
+    def _held(x0, x1, ycent, size):
+        """Is this line fully inside a small filled box? Then that box is its container."""
+        top, bot = ycent - 0.80 * size, ycent + 0.25 * size
+        return any(hx0 <= x0 and x1 <= hx1 and hy0 <= top and bot <= hy1
+                   for hx0, hy0, hx1, hy1 in holders)
     # A number sitting inside a badge is bounded by that badge, not by any panel it overhangs.
     badges_xy = [(float(c.get('cx') or 0), float(c.get('cy') or 0), float(c.get('r') or 0))
                  for c in root.findall(f'.//{NS}circle') if c.get('r')]
@@ -659,6 +693,8 @@ def audit(path):
             for px0, py0, px1, py1 in panels:
                 if px0 <= ax <= px1 and py0 <= y <= py1:
                     if x0 < px0 + PANEL_PAD or x1 > px1 - PANEL_PAD:
+                        if _held(x0, x1, y, size):
+                            break          # bounded by its own pill/tab, not by this panel
                         over = max(px0 + PANEL_PAD - x0, x1 - (px1 - PANEL_PAD))
                         # the floor scales with the string: measured relative error against
                         # rendered ink runs to ~1.3%, so on a 900-unit line a 10-unit "overflow"
@@ -713,6 +749,15 @@ def audit(path):
         # Pair the number with the NEAREST circle. A callout often has an anchor dot on the
         # photograph as well as its badge; circs[0] may be either.
         t = min(txts, key=lambda e: len(''.join(e.itertext()).strip()) or 99)
+        # A group with a circle and a text is NOT automatically a numbered badge. A leader
+        # callout has an anchor DOT on the photograph plus a label box, and 11-02's callout-4
+        # is exactly that: r=4.5 with the words FRONT CLIFF SENSORS 136 units away. v1.18 called
+        # that label a badge number and reported it off-centre by 136 and mis-baselined - two
+        # confident numbers about a badge that does not exist. A badge number is SHORT and it
+        # sits INSIDE its circle; anything else is a dot with a caption.
+        _label = ''.join(t.itertext()).strip()
+        if len(_label) > 3 or not _label[:1].isalnum():
+            continue
         # Every one of these is optional in valid SVG. v1.11 assumed all four were present and
         # a single missing x killed the entire audit.
         ls = _lines(t)
@@ -733,6 +778,9 @@ def audit(path):
         tx = (_x0 + _x1) / 2                      # rendered centre, however it was positioned
         dx = abs(tx - (_f(c.get('cx')) + ccx))
         dy = ty - (_f(c.get('cy')) + ccy)
+        _r = _f(c.get('r')) or 0.0
+        if dx > _r or abs(dy) > 2 * _r:
+            continue                              # the text is not in the circle: a dot, not a badge
         if dx > 3.0:                              # round-trips land within ~1.1
             out.append(f'{gid}: badge number off-centre horizontally by {dx:.1f} units')
         tol = max(1.5, 0.12 * size)      # cap height varies by typeface; scale with the type
@@ -893,6 +941,61 @@ def _selftest():
         rc = [e for e in g if e.tag == NS + 'rect'][0]
         rc.set('x', '150'); rc.set('y', '262')
     ok &= seeded('two highlight boxes overlapped', collide, 'overlaps')
+
+    # ---- v1.19 controls: the two blind spots, tested in BOTH directions ---------------------
+    import tempfile
+
+    def synth(name, body):
+        d = tempfile.mkdtemp()
+        fp = os.path.join(d, name)
+        with open(fp, 'w', encoding='utf-8') as fh:
+            fh.write('<svg xmlns="http://www.w3.org/2000/svg" '
+                     'xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 900 500" '
+                     'font-family="Arial, Helvetica, sans-serif">'
+                     '<rect x="40" y="40" width="700" height="400" fill="#FFFFFF"/>'
+                     + body + '</svg>')
+        return fp
+
+    # (a) a label on a SMALL pill must be SILENT - the v1.19 fix
+    pill = synth('pill.svg',
+                 '<rect x="40" y="40" width="126" height="38" fill="#0E5AA7"/>'
+                 '<text x="103" y="66" font-size="20" fill="#FFFFFF" '
+                 'text-anchor="middle">SIDE VIEW</text>')
+    if any('overflows' in f for f in audit(pill)):
+        print('   FAIL  CONTROL: a label inside its own pill was called an overflow'); ok = False
+    else:
+        print('   OK    CONTROL: a label bounded by a small pill is not an overflow')
+
+    # (a-inverse) a label that ESCAPES its pill must still be LOUD
+    esc = synth('esc.svg',
+                '<rect x="40" y="40" width="126" height="38" fill="#0E5AA7"/>'
+                '<text x="700" y="66" font-size="20" fill="#111111">'
+                'this label is far outside every box it could belong to</text>')
+    if not any('overflows' in f for f in audit(esc)):
+        print('   FAIL  CONTROL: a genuine overflow went silent - the pill rule is too broad')
+        ok = False
+    else:
+        print('   OK    CONTROL: a label outside every box is still reported')
+
+    # (b) an anchor DOT plus a long label must be SILENT - not a badge
+    dot = synth('dot.svg',
+                '<g id="callout-4"><circle cx="300" cy="200" r="4.5" fill="#0E5AA7"/>'
+                '<text x="500" y="200" font-size="14" text-anchor="middle">FRONT SENSORS</text>'
+                '</g>')
+    if any('badge number' in f for f in audit(dot)):
+        print('   FAIL  CONTROL: an anchor dot was read as a numbered badge'); ok = False
+    else:
+        print('   OK    CONTROL: an anchor dot with a caption is not a badge')
+
+    # (b-inverse) a REAL badge, genuinely off-centre, must still be LOUD
+    badge = synth('badge.svg',
+                  '<g id="callout-1"><circle cx="300" cy="200" r="14" fill="#0E5AA7"/>'
+                  '<text x="309" y="205" font-size="14" fill="#FFFFFF" '
+                  'text-anchor="middle">3</text></g>')
+    if not any('badge number' in f for f in audit(badge)):
+        print('   FAIL  CONTROL: a real off-centre badge number went silent'); ok = False
+    else:
+        print('   OK    CONTROL: a real off-centre badge number is still reported')
 
     print('\n' + ('ALL CONTROLS PASS - silent when clean, loud when broken.'
                   if ok else '*** SELFTEST FAILED ***'))

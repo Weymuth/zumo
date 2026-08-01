@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.34.3'
+VERSION = 'v1.34.4'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -1496,12 +1496,12 @@ for _f in _svgs:                              # same population gate 37 walked, 
 # population empties and every check above passes vacuously. Both numbers are STATED, not
 # inherited, and both are expected to move when a graphic is added or removed — bump them
 # in the same edit, the way gate 36's reference count is maintained.
-if len(_vec) != 175:
-    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 175 — a file was '
+if len(_vec) != 174:
+    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 174 — a file was '
                f'added, removed, or now carries a raster (which moves it to gate 37)')
 _ngraphic = sum(1 for _f in _vec if 'GRAPHIC_' in os.path.basename(_f))
-if _ngraphic != 68:
-    bad.append(f'COVERAGE: {_ngraphic} GRAPHIC_ vector files walked, expected 68 — the label '
+if _ngraphic != 67:
+    bad.append(f'COVERAGE: {_ngraphic} GRAPHIC_ vector files walked, expected 67 — the label '
                f'check is the one that binds on every one of them, so this number is load-bearing')
 gate('\u00a721.2 drawn graphics keep live text and stay under the ceiling', bad)
 if _staged38:
@@ -1523,7 +1523,7 @@ if _staged38:
 # Two faults, both fatal to editability and both invisible on screen:
 #   1. an <image> carrying a plain href (with or without xlink alongside)
 #   2. xlink:href used while xmlns:xlink is undeclared — malformed, may not parse at all
-NIMG_EXPECTED = 26           # stated, not inherited — bump when an <image> is added
+NIMG_EXPECTED = 27           # stated, not inherited — bump when an <image> is added
 _bad39, _staged39 = [], []
 for _f in sorted(glob.glob('images/**/*.svg', recursive=True)):
     try:
