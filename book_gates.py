@@ -1523,7 +1523,7 @@ if _staged38:
 # Two faults, both fatal to editability and both invisible on screen:
 #   1. an <image> carrying a plain href (with or without xlink alongside)
 #   2. xlink:href used while xmlns:xlink is undeclared — malformed, may not parse at all
-NIMG_EXPECTED = 27           # stated, not inherited — bump when an <image> is added
+NIMG_EXPECTED = 26           # stated, not inherited — bump when an <image> is added
 _bad39, _staged39 = [], []
 for _f in sorted(glob.glob('images/**/*.svg', recursive=True)):
     try:
