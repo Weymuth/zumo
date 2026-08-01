@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.9'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.9.1'   # the only version home in this file (S96; v1.4 S98)
 # v1.9 (S102): regex_audit registered.
 # v1.8 (S102): build_worklist registered. GPT_WORKLIST_S99.md was hand-assembled, so when
 #   its ordering came under doubt there was nothing to re-run - the list that directs the
@@ -245,8 +245,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`flatten_alpha` **{vals['flatten_alpha']}** · "
             f"`svg_layout_audit` **{vals['svg_layout_audit']}** · "
             f"`site_parity` **{vals['site_parity']}** ·\n"
-            f"`build_worklist` **{vals['build_worklist']}** ·\\n"
-            f"`regex_audit` **{vals['regex_audit']}** ·\\n"
+            f"`build_worklist` **{vals['build_worklist']}** ·\n"
+            f"`regex_audit` **{vals['regex_audit']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 

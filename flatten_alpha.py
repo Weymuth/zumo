@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.1'
+VERSION = 'v1.2'
 # ---------------------------------------------------------------------------------------------
 # flatten_alpha.py - drop a transparent photo onto the backdrop it actually sits on.
 #
@@ -232,6 +232,7 @@ def verify(before_path, after_text, width=1100):
 
 
 def _selftest():
+    _skipped = []
     """Controls both ways: a flat backdrop, a gradient backdrop, and files that must be REFUSED."""
     ok = True
     tmp = tempfile.mkdtemp()
@@ -273,20 +274,29 @@ def _selftest():
         print('   FAILED - must re-embed as JPEG under xlink:href'); ok = False
 
     print('CONTROL 2 (gradient backdrop: no single colour can match, must render)')
-    grad = ('<defs><linearGradient id="g"><stop offset="0" stop-color="#ffffff"/>'
-            '<stop offset="1" stop-color="#cccccc"/></linearGradient></defs>')
-    p2 = build(grad, 'url(#g)', 'grad.svg')
-    new2, rep2 = flatten(p2)
-    if new2 is None or 'rendered backdrop' not in (rep2['mode'] or ''):
-        print(f"   FAILED - fell back to a flat fill: {rep2}"); ok = False
+    if cairosvg is None:
+        # SKIP, LOUDLY. This control is the only one that needs a renderer, and until v1.2 its
+        # RuntimeError aborted the whole selftest - so on a fresh sandbox the remaining controls
+        # never ran and the operator saw a traceback instead of a result. A checker that cannot
+        # run a check must say which check it skipped, not take the rest of the suite down.
+        print('   SKIPPED - cairosvg is not installed, so the gradient path was NOT tested.')
+        print('            pip install cairosvg --break-system-packages, then re-run.')
+        _skipped.append('CONTROL 2 gradient backdrop')
     else:
-        print(f"   mode: {rep2['mode']}   {rep2['before']:,} -> {rep2['after']:,} B")
-        v = verify(p2, new2)
-        if v:
-            print(f"   drift vs the transparent original: mean {v['mean']:.3f}, "
-                  f"{v['over12']:,}/{v['total']:,} pixels over 12")
-            if v['mean'] > 3.0:
-                print('   FAILED - the flatten visibly changed the page'); ok = False
+      grad = ('<defs><linearGradient id="g"><stop offset="0" stop-color="#ffffff"/>'
+              '<stop offset="1" stop-color="#cccccc"/></linearGradient></defs>')
+      p2 = build(grad, 'url(#g)', 'grad.svg')
+      new2, rep2 = flatten(p2)
+      if new2 is None or 'rendered backdrop' not in (rep2['mode'] or ''):
+          print(f"   FAILED - fell back to a flat fill: {rep2}"); ok = False
+      else:
+          print(f"   mode: {rep2['mode']}   {rep2['before']:,} -> {rep2['after']:,} B")
+          v = verify(p2, new2)
+          if v:
+              print(f"   drift vs the transparent original: mean {v['mean']:.3f}, "
+                    f"{v['over12']:,}/{v['total']:,} pixels over 12")
+              if v['mean'] > 3.0:
+                  print('   FAILED - the flatten visibly changed the page'); ok = False
 
     print('CONTROL 3 (must REFUSE what is not its job)')
     novec = os.path.join(tmp, 'novec.svg')
@@ -329,7 +339,10 @@ def _selftest():
     elif n4.count('data:image/jpeg') != 2:
         print('   FAILED - both images must survive'); ok = False
 
-    print('\n' + ('ALL CONTROLS PASS' if ok else '*** SELFTEST FAILED ***'))
+    if _skipped:
+        print('\n*** NOT FULLY TESTED: ' + ', '.join(_skipped) + ' ***')
+    print('\n' + (('ALL CONTROLS PASS' + (' (with skips)' if _skipped else ''))
+                  if ok else '*** SELFTEST FAILED ***'))
     return ok
 
 

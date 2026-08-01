@@ -1,12 +1,38 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 1, 2026 (Session 101 — **HERITAGE BLUE IS RULED AND §26 IS UN-PARKED.** DJ stated RoboLore's five himself — `#0B1A2E` · `#3D5266` · `#7B6240` · `#C9A463` · `#F5F2E9` — which dissolved the citation problem the park was built on. All ten of `ColorPalette.md`'s published contrast ratios were recomputed independently and reproduce to **0.018 total absolute error**; navy's title contrast re-derived from that base lands on **12.75**, the standard's own pre-S91 figure — a fifth independent test that S91 changed the base and hand-patched downstream. **A correction to this Bible's own argument, per §24.6c:** `BookComponentStandard` §5.0's numbers are NOT sloppy — its 11.05 / 6.36 / 5.11 reproduce EXACTLY against its own tints. Both palettes are internally consistent; the case for RoboLore's rests on provenance alone, and framing it otherwise was a wrong finding at 3× cost. **The session's largest find was not ruled on at all:** `#f8f9fa`, **641 instances**, a cool grey on what will be a warm page — a bigger surface than everything argued about, and nobody had looked at it.)
-**Status:** ✅ **40/40 GATES PASS · Census 39,972 — NO LESSON FILE WAS TOUCHED IN S101.** A rulings session; nothing renders differently yet. **NINE DECISIONS, all recorded in `ZUMO_SUPER_BIBLE.md` §26.8** (§26.1–§26.7 left unedited as the record of how it was settled): (1) Heritage Blue = RoboLore's five. (2) **Brand/semantic SPLIT** — Heritage Blue governs branding and page-level structure, a separate functional set governs the callouts; already RoboLore canon, since `InstructionalGraphicStandards` §6 names **callouts** explicitly. **`BookComponentStandard` §5's seven-role table RETIRES** — it put four brand colours into callout roles, the exact thing §6 forbids; §5.0.1's band ramp survives, because wayfinding is structure. (3) The semantic set is **UNRULED, not forbidden** — §7 is scoped to code graphics, and purple was rejected from the BRAND system only, so the book's 136-block `#9b59b6` survives by default. (4) **Forge Red `#D46554` is a SIXTH colour** (danger); §22's `#f14c4c` retires; Warning `#CCA700` and Danger stay **distinct states**. (5) **NO GRADIENTS ANYWHERE** — retires §6.2, §6.2a, §6.4's title block and §8's second Checkpoint form; measured at **7 distinct strings, 134 instances, 17 pages plus 13 SVGs**, which is a generate, not a sweep. (6) Challenge-card headers → bronze `#7B6240` + parchment `#F5F2E9`, **5.12:1**, chosen from a rendered specimen after brass at 7.47 was reversed on the **2–6% rarest-colour budget**. (7) **Repaint scope C: brand layer only — all 1,048 callouts untouched.** (8) **§18.2's star spec was stale** — all 16 `spiral_star_*.svg` already conform to §9 (bronze fill, parchment number, zero gradients), so the standing §18.2-vs-§9 canon debt **CLOSES** in §9's favour. (9) **The book's code palette already conformed and nobody knew** — five of seven §7 tokens EXACT with no coordination; two drift (`#4ec9b6`→`#4EC9B0`, 295; `#f14c4c`→`#D46554`, 14) and two more are live and unnamed by §7.
+**Date:** August 1, 2026 (Session 102 — **THE SESSION THAT CHECKED ITS OWN INSTRUMENTS.** Eight defects found; reading code found none of them. Every one came from comparing an output against a render, a fresh clone, or a regeneration. `svg_layout_audit` v1.16 → v1.19 closed four blind spots — CSS, absolute `tspan y`, `rotate()`, and two phantom finding classes. Forge Red reversed to a FUNCTIONAL colour (Bible §26.9): the palette stays five and one upstream file changes instead of eight.)
+**Status:** ✅ **40/40 GATES PASS · Census 39,978.** L02 → v03.7.0 (the `2-05` diagram gained the FUNCTION PROTOTYPES row its own caption named; a 404ing download button repointed). L14 → v02.16.0 (new tile-patterns graphic; the ramp row stopped teaching one side of a rules contradiction as fact). `11-02` 1,724,271 → 263,221 B. Two new instruments: `build_worklist`, `regex_audit`.
 
-**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.87** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.7 · fit_raster_svg v1.2 · flatten_alpha v1.1 · svg_layout_audit v1.16 · site_parity v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `63f38e2`.**
+**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.88** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.9.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.0 · regex_audit v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4aafdc8`.**
 
 ---
 ---
+
+## WHAT SHIPPED IN S102
+
+**Instruments.** `svg_layout_audit` **v1.16 → v1.19** — CSS cascade resolution (371 of 2,469 labels
+had been measured at a size that was not theirs), mono/serif/italic metrics, letter-spacing,
+absolute `tspan y`, `rotate()` refused-and-reported rather than mis-measured, a proportional error
+floor set from five render-verified files, deterministic output, small containers, and phantom
+badges. **`build_worklist` v1.0** and **`regex_audit` v1.0**, both new, both with bidirectional
+controls. `book_gates` **v1.34.5** — §21 now walks any file referenced out of `images/`, not only
+image extensions. `flatten_alpha` **v1.2**, `session_versions` **v1.9.1**.
+
+**Canon.** Bible **v8.88** — §26.9 reverses §26.8(7): **Forge Red is FUNCTIONAL, not a sixth brand
+colour.** `InstructionalGraphicStandards` §6 says brand colours identify RoboLore and functional
+colours communicate meaning; danger is meaning. The palette stays five, §7's prohibition needs no
+amendment, and eight upstream files stay correct. §26.8(7) is annotated, not rewritten (§26.7).
+`BookComponentStandard` **v01.12.1** — §1.1 Precedence and §5.0.2 Depicted physical colour.
+`ROBOCUP_RESCUE_LINE_2026.md` §2.1a records the ramp contradiction instead of picking a side.
+
+**Book.** L14 **v02.16.0** — `L14_GRAPHIC_14-05_tile_patterns.svg`, nine tiles of original artwork,
+wired into §3.3. L02 **v03.7.0** — `2-05` gained its missing row; the download button no longer
+404s. `10-02`, `10-01` and `11-02` all resolved; `11-02` came under the gate-37 ceiling by
+`fit_raster_svg` then `flatten_alpha`, no design change.
+
+**The lesson.** Two of my own controls reproduced the bug they were testing for — an isolation
+render stripped the `<style>` block, and a composite scan returned the same number for three
+different strings. **Control the control.**
 
 ## WHAT SHIPPED IN S101
 
@@ -1522,7 +1548,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 **Verified:** div and span balance unchanged; a line-by-line diff audit confirmed every changed line is either a slash or a version comment, zero unexpected edits.
 
-**Versions:** L01 v03.6.1 · L02 v02.10.1 · L03 v03.10.1 — hidden comment only; visible banners (`Version 03.6` / `02.10` / `03.10`) left alone, since a cosmetic change is a minor bump per §5b.
+**Versions:** L01 v03.15.0 · L02 v03.7.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.16.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,978** · Bible **v8.88** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34.5** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.9.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.0 · build_worklist v1.0 · regex_audit v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4aafdc8`.**
 
 **Not applied:** DJ floated halving again to 2px — deferred, not done.
 

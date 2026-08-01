@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.34.4'
+VERSION = 'v1.34.5'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -1351,6 +1351,30 @@ for _page in site:
 if _seen != 218:
     bad.append(f'COVERAGE: {_seen} image references resolved, expected 218 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
+# S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
+# link to any other extension in images/ was therefore invisible, and one rotted in the live
+# book: Lesson 02 rendered a blue "Download the Sketch Anatomy diagram (PDF)" button pointing at
+# a file that had been removed. Gates passed, site_parity passed - it walks the same list - and
+# a student clicking it got a 404. Two such links exist in the whole book, so this assert is
+# nearly free, and it is the difference between knowing and happening to look.
+_ANY_REF_RE = re.compile(r'href\s*=\s*["\']([^"\']*?/images/[^"\']+?)["\']', re.I)
+for _page in site:
+    if not os.path.exists(_page):
+        continue
+    _src = open(_page, encoding='utf-8', errors='replace').read()
+    for _m in _ANY_REF_RE.finditer(_src):
+        _u = _m.group(1)
+        if _u.startswith(_SITE_PREFIX):
+            _p = _unquote(_u[len(_SITE_PREFIX):])
+        elif _u.startswith(('http://', 'https://', 'data:', '//')):
+            continue
+        else:
+            _p = os.path.normpath(os.path.join(os.path.dirname(_page), _unquote(_u)))
+        if not os.path.isfile(_p):
+            _ln = _src.count('\n', 0, _m.start()) + 1
+            _who = L(_page) if _page in files else _page
+            bad.append(f'{_who} line {_ln}: link -> {_p} does not exist '
+                       f'(a download button pointing at nothing)')
 gate('\u00a721   every image reference resolves to a file on disk', bad)
 
 
