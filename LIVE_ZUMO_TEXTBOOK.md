@@ -1,9 +1,52 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** July 30, 2026 (Session 98 — **A GATE CAN BE WRONG IN THE OTHER DIRECTION.** S97's §21.1 forbade any embedded raster in a referenced `.svg`, and that rule was itself the defect: it would have gone red on the first legitimate photo-plus-labels composite the book shipped. **A photograph cannot be redrawn.** Measured: all five staged raster-in-SVG files carry photographic content, and the one true-vector redraw DJ had seen — `zumo_32u4_oled_main_board_top_view_r02.svg`, 194 elements, zero raster — turned out to be a **cartoon of the board**, its 39 text runs the *silkscreen* rather than labels. DJ's ruling: *“Some of the images need to be raster wrapped svg. Otherwise they look like crap.”* They must also EMBED — an SVG loaded through `<img src>` runs in secure static mode and cannot fetch an external file, so the composite has no external-href option and a gate forbidding base64 forbids the asset class. **But 4.26 MB was never the price of one:** the uploaded board carried its payload TWICE in a single `<image>` (`href` and `xlink:href`, identical bytes, half the file a duplicate of itself) over an alpha channel measured **100% opaque**. Deduped and re-encoded it is **350,471 B, −91.8%, unchanged on screen.** **THE OTHER FINDING WAS MINE:** a plain grep of `book_gates.py` returned **v1.26.1** — a changelog line, three releases stale, reading exactly like an answer.)
-**Status:** ✅ **38/38 GATES PASS. Census 39,972 — no lesson file was touched in S98.** **`book_gates.py` v1.29.1 → v1.30, GATE 37 REWRITTEN** to the three things actually wrong — duplicated payload, a 500,000 B ceiling, a 3-element vector floor — and **control-run three ways: fires on a referenced fat file, fires on a raster-only envelope under the ceiling, and PASSES a referenced 350 KB composite**, which is the control that proves it permits what the book needs. **`fit_raster_svg.py` v1.1 is new:** quality pinned at **q92 and never traded**, size a warning, not a squeeze — v1.0 searched downward to hit a byte budget and crushed the one two-photo file to q70, which is the complaint that started the work. Across six files **11.89 MB → 1.67 MB, no redraw**; the two-photo `5-10` is the only one over the ceiling and is now told to **split, not degrade**. Its selftest caught a landmine before shipping: on its first run the tool *enlarged* a file, so it now refuses to write anything bigger than it found. **Four version homes normalised** — `lesson_inventory` v1.1.2 (which carried TWO homes, agreeing by luck), `build_family_map` v1.1.3, `book_gates`, and `session_versions` v1.4.1 with `grep_trap()` + CONTROL D so a home buried under a changelog is loud. **`lesson_inventory --anomalies` is now silent when clean** — the Brain Check line printed unconditionally inside the ANOMALIES header and had to be re-dismissed every session. **`Weymuth-patch-1` is no longer load-bearing:** `L03_IMAGE_3-14_astar_board.jpg` was removed from **main** on purpose (`9d5a85b`, *“remove redundant images”*) and recovers byte-identical from main's own history — the branch can go whenever DJ says.
+**Date:** August 1, 2026 (Session 100 — **A CLONE IS NOT THE SITE.** Lesson 3 was serving a 3,467,471 B TRIM diagram under the name `L03_GRAPHIC_3-16_three_turn_types.svg`, and `L03_IMAGE_3-01_motor_gearbox_in_frame.jpg` was returning a **live 404**. Every instrument was GREEN throughout: they all read the clone, and the clone was correct — gate 21 passed because the reference resolved, to a file on disk that was the right picture. The browser rendered a perfectly good image of the wrong thing. **I checked the repo, said "nothing was deleted, the file is intact", and was wrong about the only thing that mattered — what a student's browser actually receives.** DJ found it by looking at the page. **`site_parity.py` v1.0 is new** and compares the published site to the repo for every referenced image; it is deliberately NOT a gate, because `book_gates.py` is offline by contract and a network dependency turns "no wifi" into "the book is broken". **Also measured: the Illustrator round-trip.** Markup bloat is trivial (+3,825 B on a 374 KB file); payload re-encoding is the danger, because the photo is ~97% of a composite and a JPEG re-saved as lossless PNG can quadruple. **DJ asked to convert two JPEG payloads to PNG pre-emptively; measurement said no and it was not done** — lossless is over the ceiling and palette PNG costs 4× the drift. The fix is the warning, not the conversion.)
+**Status:** ✅ **40/40 GATES PASS · `site_parity` reports PARITY · Census 39,972 — no lesson file was touched in S100.** **TWO NEW GATES.** **Gate 39 (§17.3c)** moves the plain-`href` rule into the suite: it is SVG 2, Illustrator parses SVG 1.1, and the composite renders perfectly while refusing to OPEN. S99 found that by hand and then recorded it only in `svg_layout_audit`, **which the suite does not run — advisory is how it regressed.** Control-run five ways; it immediately named 5 staged files still carrying the defect. **Gate 40 (§21.1b, advisory)** names every referenced composite that is fine today but would breach the ceiling if a round-trip returned its payload lossless — **11 files**, including `L01 1-10` at ~1,938,090 B, which is S99's actual incident *predicted* rather than discovered; its PIL import is guarded so a missing library reports itself instead of taking down all 40 gates. **`session_versions` v1.5 → v1.7, two separate defects.** CONTROL C's clean direction ran against the LIVE tree, so a duplicate handoff printed as a fault in the TOOL *and* returned 1 before CONTROL D ever ran — **D did not execute at session open and that was indistinguishable from D passing**; it now runs both directions inside a fixture built clean by construction. Then **`site_parity` was left out of ARTEFACTS — the third new instrument in three sessions to be missed**, so CONTROL E now asks the question mechanically instead of relying on care. **20 graphics rebuilt or refitted, ~25 MB of payload removed**, every one renamed because **not one arrived under the name its lesson references**.
 
-**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.86** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.32** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.5 · fit_raster_svg v1.2 · flatten_alpha v1.1 · svg_layout_audit v1.16 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `55055ba`.**
+**Versions:** L01 v03.15.0 · L02 v03.6.0 · L03 v03.20.0 · L04 v04.15.0 · L05 v04.15.0 · L06 v04.19.1 · L07 v04.15.0 · L08 v04.14.0 · L09 v05.12.0 · L10 v02.11.0 · L11 v02.12.0 · L12 v01.14.0 · L13 v02.12.0 · L14 v02.15.0 · L15 v02.11.1 · L16 v02.7.0 · going_deeper v01.1.1 — census **39,972** · Bible **v8.86** · BookComponentStandard v01.10.0 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.34** · lesson_inventory v1.1.2 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.7 · fit_raster_svg v1.2 · flatten_alpha v1.1 · svg_layout_audit v1.16 · site_parity v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `485bb34`.**
+
+---
+---
+
+## WHAT SHIPPED IN S100
+
+**1. `site_parity.py` v1.0 — new, and it exists because of a live defect.** Lesson 3 served a trim
+diagram under the three-turns name and 404'd on `L03_IMAGE_3-01`. Nothing could see it: every
+instrument reads the clone, and the clone was right. Compares Content-Length against repo byte
+count for all 127 referenced images, `--deep` to hash. Four controls, both directions; network
+failure reports as *unknown*, never as a finding. **Run AFTER a push**, with the fresh-clone
+verification `PUSH_WORKFLOW.md` already requires.
+
+**2. `book_gates.py` v1.32 → v1.34 — gates 39 and 40.** Detailed above. Coverage constants now
+174 true-vector / 67 GRAPHIC_ vector / 26 raster-carrying, all STATED, re-derived independently
+with lxml and agreeing exactly.
+
+**3. `session_versions.py` v1.5 → v1.7 — CONTROL C rebuilt, CONTROL E added.**
+**§24 corollary: a control that depends on the state of what it audits is not a control.**
+
+**4. Twenty graphics.** 5-01, 5-07, 13-01, 5-05, 10-02, 10-03, 3-08, 3-10, 2-08, 2-06, 2-07 refitted
+from 1.9–3.5 MB down to 40–374 KB; 3-09, 3-17, 3-18, 9-3 banner gradients flattened to `#0B1A2E`;
+5-06 redesigned and verified against L05 canon; 3-16 restored; 3-01 restored; 6-04 given parchment,
+a real track wheel, brass gears sampled from DJ's Pololu photo, a drawn N20 motor and three stages
+aligned to a common band.
+
+**5. The white border — three diagnoses.** Not a halo (measured *darker* than background); not
+only the matte fringe (real, patched 1400 → 77 px); it was **the photo's opaque square punching a
+rectangle through the artwork**. My "seamless" call in between was a bad measurement — four samples
+per file where the answer varies around the perimeter. 164 samples found the cuts instantly.
+**§24 corollary: a mean over an area cannot see a defect on a perimeter** — `flatten_alpha` scored
+0.408 on a visibly defective file because the rim was 4,200 px of 935,000.
+
+**6. `svg_layout_audit`'s text-width estimator is wrong and was not fixed.** Verified against
+rendered pixels: it inflates real overflows 2–5× and **flips the verdict on two files that
+actually fit** (6-04 by 11.5 units, 6-05 by 30.5). **`GPT_WORKLIST_S99.md` is ordered by that
+estimator and the graphics chat is working from it** — re-deriving it by render is the highest-value
+instrument work open.
+
+**7. Held back: `L06_GRAPHIC_6-05`.** DJ's Illustrator edit returned with both arrow markers dropped
+and both arrow paths collapsed to zero-length movetos. The live file is still the original 12,868 B
+version; the parchment and wheel work never landed. Ask what the other edits intended before
+rebuilding.
 
 ---
 ---
