@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.16'
+VERSION = 'v1.17'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -20,6 +20,31 @@ VERSION = 'v1.16'
 # ENTRYPOINT IS audit(path) -> list[str]. There is no main() worth calling from code.
 #
 # CHANGELOG
+# v1.17 (S102): THE TOOL WAS CSS-BLIND. _inh() read presentation ATTRIBUTES only, so
+#   font-size in a style="" attribute or in a <style> class rule was invisible and every such
+#   label fell back to the 16px default. 371 of 2,469 <text> elements across 17 files - 15% of
+#   the book's labels - were being measured at a size that was not theirs, in BOTH directions:
+#   a .title{font-size:36px} measured as 16 under-reports by 2.25x, and 6-04's
+#   class="mono" style="font-size:12px" measured as 16px sans over-reported by 7% (and only
+#   that little because two errors partly cancelled - 16/12 inflation against mono being wider
+#   than sans).
+#   THE METRIC ITSELF WAS NEVER WRONG. Verified against isolated renders: estimated vs rendered
+#   ink came out 1.01, 1.01, 0.99. The S101 note that this estimator "inflates real overflows
+#   2-5x" was a wrong finding and is retracted here. Of its three cited proofs, 10-02 was
+#   correct (est 81, rendered 80.7), 6-05 was correct and if anything UNDER-reported (est 43,
+#   rendered 45.8), and only 6-04 was a genuine false positive - caused by this CSS blindness,
+#   not by font metrics. Re-derive any worklist ordered by the old numbers.
+#   Now resolved with real cascade order - inline style="" beats a <style> class rule beats a
+#   presentation attribute - then inherited up the ancestor chain. Only .class selectors are
+#   supported because only .class selectors exist in the corpus (295 of them, zero of any other
+#   shape); anything else is REPORTED as unsupported rather than silently mis-resolved, because
+#   a resolver that quietly returns the wrong size is the bug this entry exists to fix.
+#   Also now honoured, all previously invisible: font-family (mono and serif are measured with
+#   mono and serif metrics, not Arial's), font-style italic, font-weight, and letter-spacing
+#   in px or em.
+#   The FONT-SAFETY check is CSS-aware too, and that is a second defect class it could never
+#   see: stacks declared in <style> lead with "Inter" 98 times and "JetBrains Mono" 14 times.
+#   Neither loads through <img src>, which is exactly what §17.3b forbids.
 # v1.16 (S99): say WHICH circle, and by how much. 'leader of callout-1 crosses the badge of
 #   callout-3' sent me looking at a badge 176 units away. The real overlap was callout-3's
 #   ANCHOR DOT - the 7-unit marker on the photograph - which the leader passes 1.4 units from.
@@ -143,26 +168,68 @@ NS = '{http://www.w3.org/2000/svg}'
 # Liberation Sans is metric-compatible with Arial, which is what §17.3a recipe 1 mandates.
 # If it is missing we must FAIL LOUDLY rather than silently skip every text check - a check
 # that cannot fail is not evidence (§24.6b).
+# Liberation Mono is metric-compatible with Courier New and Liberation Serif with Times, which
+# is what the mono and serif stacks in the corpus actually fall back to once the designer's
+# first choice (JetBrains Mono, Inter) fails to load through <img src>. Measuring a monospace
+# label with Arial's metrics was one half of the v1.17 bug.
 _FONT_CANDIDATES = {
-    'regular': ('/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',   # Linux
-                '/usr/share/fonts/liberation-sans/LiberationSans-Regular.ttf',
-                '/System/Library/Fonts/Supplemental/Arial.ttf',                      # macOS
-                '/Library/Fonts/Arial.ttf',
-                'C:/Windows/Fonts/arial.ttf'),                                       # Windows
-    'bold':    ('/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
-                '/usr/share/fonts/liberation-sans/LiberationSans-Bold.ttf',
-                '/System/Library/Fonts/Supplemental/Arial Bold.ttf',
-                '/Library/Fonts/Arial Bold.ttf',
-                'C:/Windows/Fonts/arialbd.ttf'),
+    ('sans', False, False): ('/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+                             '/usr/share/fonts/liberation-sans/LiberationSans-Regular.ttf',
+                             '/System/Library/Fonts/Supplemental/Arial.ttf',
+                             '/Library/Fonts/Arial.ttf',
+                             'C:/Windows/Fonts/arial.ttf'),
+    ('sans', True, False):  ('/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
+                             '/usr/share/fonts/liberation-sans/LiberationSans-Bold.ttf',
+                             '/System/Library/Fonts/Supplemental/Arial Bold.ttf',
+                             '/Library/Fonts/Arial Bold.ttf',
+                             'C:/Windows/Fonts/arialbd.ttf'),
+    ('sans', False, True):  ('/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf',
+                             '/System/Library/Fonts/Supplemental/Arial Italic.ttf',
+                             'C:/Windows/Fonts/ariali.ttf'),
+    ('sans', True, True):   ('/usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf',
+                             '/System/Library/Fonts/Supplemental/Arial Bold Italic.ttf',
+                             'C:/Windows/Fonts/arialbi.ttf'),
+    ('mono', False, False): ('/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf',
+                             '/System/Library/Fonts/Supplemental/Courier New.ttf',
+                             'C:/Windows/Fonts/cour.ttf'),
+    ('mono', True, False):  ('/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf',
+                             '/System/Library/Fonts/Supplemental/Courier New Bold.ttf',
+                             'C:/Windows/Fonts/courbd.ttf'),
+    ('mono', False, True):  ('/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf',
+                             'C:/Windows/Fonts/couri.ttf'),
+    ('mono', True, True):   ('/usr/share/fonts/truetype/liberation/LiberationMono-BoldItalic.ttf',
+                             'C:/Windows/Fonts/courbi.ttf'),
+    ('serif', False, False): ('/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf',
+                              '/System/Library/Fonts/Supplemental/Times New Roman.ttf',
+                              'C:/Windows/Fonts/times.ttf'),
+    ('serif', True, False):  ('/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf',
+                              'C:/Windows/Fonts/timesbd.ttf'),
+    ('serif', False, True):  ('/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf',
+                              'C:/Windows/Fonts/timesi.ttf'),
+    ('serif', True, True):   ('/usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf',
+                              'C:/Windows/Fonts/timesbi.ttf'),
 }
 _FONTS = {}
-for _w, _paths in _FONT_CANDIDATES.items():
+for _k, _paths in _FONT_CANDIDATES.items():
     for _p in _paths:
         if os.path.exists(_p):
-            _FONTS[_w] = _p
+            _FONTS[_k] = _p
             break
-if 'bold' not in _FONTS and 'regular' in _FONTS:
-    _FONTS['bold'] = _FONTS['regular']        # metrics differ slightly; better than no check
+
+
+def _face(family='sans', bold=False, italic=False):
+    """Best available face, degrading along axes rather than giving up.
+
+    A missing italic must not silently become 'no text check at all' - degrading to the roman
+    of the SAME FAMILY keeps the width within a percent, whereas falling back to sans for a
+    monospace label is the v1.17 bug all over again. Family is therefore the last axis dropped.
+    """
+    for key in ((family, bold, italic), (family, bold, False),
+                (family, False, italic), (family, False, False),
+                ('sans', bold, italic), ('sans', bold, False), ('sans', False, False)):
+        if key in _FONTS:
+            return _FONTS[key]
+    return None
 
 # a drawn graphic's labels must survive on a machine that has none of the designer's fonts
 SAFE_FONTS = ('arial', 'helvetica', 'sans-serif', 'courier new', 'monospace', 'times', 'serif')
@@ -172,6 +239,11 @@ DISPLAY_WIDTH_PX = 1100      # the book's image column. The <image> box is in US
                              # so it must be scaled through the viewBox to get real pixels.
 PANEL_MIN_W, PANEL_MIN_H = 150, 60
 PANEL_PAD = 6
+# Smaller than the instrument's own error is not a finding. Once v1.17 resolved CSS, predicted
+# extents were checked against browser-equivalent renders on five files (10-02, 6-05, 6-04,
+# 9-1, 14-03) and agreed to 0.3, 0.1, 1.7, 1.3 and 0.9 units. Anything under 2.0 is inside that
+# band, and a 1-unit "overflow" sends a human to look at nothing - which costs 3x a blank.
+MIN_OVERFLOW = 2.0
 
 
 _TR = None
@@ -212,21 +284,126 @@ def _f(v):
         return None
 
 
+_CSS_CACHE = {}
+
+
+def _css_index(root):
+    """Parse every <style> block into ordered (class, declarations) pairs.
+
+    Returns (rules, unsupported). Only .class selectors are handled, because a survey of the
+    corpus found 295 .class selectors and zero of any other shape. Anything else is collected
+    and REPORTED - never silently ignored - since a resolver that quietly returns the wrong
+    size is precisely the defect v1.17 exists to fix.
+    """
+    tree = root.getroottree()
+    if id(tree) in _CSS_CACHE:
+        return _CSS_CACHE[id(tree)][1:]
+    rules, unsupported = [], []
+    css = '\n'.join((s.text or '') for s in root.iter(f'{NS}style'))
+    css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
+    for m in re.finditer(r'([^{}]+)\{([^{}]*)\}', css):
+        decls = {}
+        for d in m.group(2).split(';'):
+            if ':' in d:
+                k, v = d.split(':', 1)
+                decls[k.strip().lower()] = v.strip()
+        for sel in m.group(1).split(','):
+            sel = sel.strip()
+            if not sel:
+                continue
+            if re.fullmatch(r'\.[A-Za-z_][\w-]*', sel):
+                rules.append((sel[1:], decls))
+            else:
+                unsupported.append(sel)
+    # hold the tree so its id() cannot be recycled under us while the cache is live
+    _CSS_CACHE[id(tree)] = (tree, rules, unsupported)
+    return rules, unsupported
+
+
+def _own(el, name):
+    """This element's own value for a property, in CSS cascade order.
+
+    inline style="" beats a <style> class rule beats a presentation attribute. Among several
+    class rules the LAST DECLARED wins, which is document order and not class-attribute order.
+    """
+    st = el.get('style')
+    if st:
+        for d in st.split(';'):
+            if ':' in d:
+                k, v = d.split(':', 1)
+                if k.strip().lower() == name:
+                    return v.strip()
+    cls = el.get('class')
+    if cls:
+        want = set(cls.split())
+        hit = None
+        for cname, decls in _css_index(el.getroottree().getroot())[0]:
+            if cname in want and name in decls:
+                hit = decls[name]
+        if hit is not None:
+            return hit
+    return el.get(name)
+
+
 def _inh(el, attr):
+    """Resolve a property here, else inherit it from the nearest ancestor that sets one.
+
+    An element's OWN presentation attribute beats a value inherited from an ancestor, which is
+    why the cascade is applied per-element on the way up rather than gathered first.
+    """
     n = el
     while n is not None:
-        if n.get(attr):
-            return n.get(attr)
+        v = _own(n, attr) if isinstance(n.tag, str) else None
+        if v:
+            return v
         n = n.getparent()
     return None
 
 
-def _text_width(s, size, bold=False):
-    key = 'bold' if bold else 'regular'
-    if key not in _FONTS:
+def _px(v, size=16.0):
+    """A CSS length in px or em. Returns None for anything else rather than guessing."""
+    if not v:
+        return None
+    v = v.strip().lower()
+    try:
+        if v.endswith('px'):
+            return float(v[:-2])
+        if v.endswith('em'):
+            return float(v[:-2]) * size
+        return float(v)
+    except ValueError:
+        return None
+
+
+def _family_kind(stack):
+    """Which metric family a stack lands in once the designer's first choice fails to load.
+
+    Inter and JetBrains Mono do not travel through <img src>, so what a reader actually gets is
+    the first GENERIC or system name in the stack. Judge by the whole stack, not its head.
+    """
+    if not stack:
+        return 'sans'
+    for name in stack.split(','):
+        n = name.strip().strip('"\'').lower()
+        if n in ('courier new', 'monospace', 'consolas', 'courier'):
+            return 'mono'
+        if n in ('times', 'times new roman', 'serif', 'georgia'):
+            return 'serif'
+        if n in ('arial', 'helvetica', 'sans-serif', 'verdana', 'tahoma'):
+            return 'sans'
+    return 'sans'
+
+
+def _text_width(s, size, bold=False, italic=False, family='sans', letter_spacing=0.0):
+    path = _face(family, bold, italic)
+    if path is None:
         raise RuntimeError('no Arial-metric font found (Liberation Sans or Arial) - text checks '
                            'cannot run. Linux: apt install fonts-liberation')
-    return ImageFont.truetype(_FONTS[key], 200).getlength(s) * size / 200.0
+    w = ImageFont.truetype(path, 200).getlength(s) * size / 200.0
+    # letter-spacing adds a gap BETWEEN glyphs; the trailing one does not widen the ink
+    if letter_spacing and len(s) > 1:
+        w += letter_spacing * (len(s) - 1)
+    return w
 
 
 def _lines(t):
@@ -236,8 +413,13 @@ def _lines(t):
     Concatenating itertext() and measuring that as one string reports a correctly wrapped label
     as a giant overflow - v1.4 did exactly that and cost a round trip to fix a non-defect.
     """
-    size = float(_inh(t, 'font-size') or 16)
-    bold = (_inh(t, 'font-weight') or '400') in ('700', '800', '900', 'bold', 'bolder')
+    size = _px(_inh(t, 'font-size'))
+    if size is None:
+        size = 16.0
+    bold = (_inh(t, 'font-weight') or '400') in ('600', '700', '800', '900', 'bold', 'bolder')
+    italic = (_inh(t, 'font-style') or 'normal').strip().lower().startswith('italic')
+    family = _family_kind(_inh(t, 'font-family'))
+    lsp = _px(_inh(t, 'letter-spacing'), size) or 0.0
     anchor = _inh(t, 'text-anchor') or 'start'
     tdx, tdy, tsx, tsy = _ctm(t)
     size *= tsy                                   # a scaled group scales the type with it
@@ -245,7 +427,7 @@ def _lines(t):
     by = (_f(t.get('y')) or 0.0) * tsy + tdy
 
     spans = [sp for sp in t.findall(f'{NS}tspan')
-             if sp.get('x') is not None or sp.get('dy') is not None]
+             if sp.get('x') is not None or sp.get('dy') is not None or sp.get('y') is not None]
     rows = []
     if spans:
         cy = by
@@ -253,7 +435,15 @@ def _lines(t):
         if lead:
             rows.append((lead, bx, cy))
         for sp in spans:
-            cy += (_f(sp.get('dy')) or 0.0) * tsy
+            # ABSOLUTE y wins over relative dy - a wrapped label written as
+            # <tspan x=".." y="468"> is the normal hand-authored form, and v1.16 read only dy,
+            # so every such line collapsed onto the first baseline and the collision check
+            # then reported the label as overlapping ITSELF. Blind to one of two legal forms
+            # is the same defect as v1.17's CSS blindness, found the same way: on a real file.
+            if sp.get('y') is not None:
+                cy = (_f(sp.get('y')) or 0.0) * tsy + tdy
+            else:
+                cy += (_f(sp.get('dy')) or 0.0) * tsy
             rows.append((' '.join((sp.text or '').split()),
                          (_f(sp.get('x')) * tsx + tdx) if sp.get('x') is not None else bx, cy))
     else:
@@ -263,7 +453,7 @@ def _lines(t):
     for txt, x, y in rows:
         if not txt:
             continue
-        w = _text_width(txt, size, bold)
+        w = _text_width(txt, size, bold, italic, family, lsp * tsx)
         x0 = x - w / 2 if anchor == 'middle' else (x - w if anchor == 'end' else x)
         out.append((txt, x0, x0 + w, y, size))
     return out
@@ -380,8 +570,20 @@ def audit(path):
 
     # ---- 4. fonts ---------------------------------------------------------------------------
     ran.add('fonts')
-    for fam in {e.get('font-family') for e in root.iter()
-                if isinstance(e.tag, str) and e.get('font-family')}:
+    rules, unsupported = _css_index(root)
+    if unsupported:
+        out.append(f'{len(unsupported)} CSS selector(s) this tool does not resolve '
+                   f'({", ".join(sorted(set(unsupported))[:4])}) - every text measurement in '
+                   f'this file may be against the wrong size. Reported, not guessed at.')
+    stacks = {e.get('font-family') for e in root.iter()
+              if isinstance(e.tag, str) and e.get('font-family')}
+    stacks |= {d['font-family'] for _c, d in rules if 'font-family' in d}
+    for e in root.iter():                       # inline style="" declarations
+        if isinstance(e.tag, str) and e.get('style') and 'font-family' in e.get('style'):
+            m = re.search(r'font-family:\s*([^;]+)', e.get('style'))
+            if m:
+                stacks.add(m.group(1))
+    for fam in {s for s in stacks if s}:
         first = fam.split(',')[0].strip().strip('"\'').lower()
         if first not in SAFE_FONTS:
             out.append(f'font stack leads with "{first}" - it cannot load through <img src>, so '
@@ -410,6 +612,8 @@ def audit(path):
                 if px0 <= ax <= px1 and py0 <= y <= py1:
                     if x0 < px0 + PANEL_PAD or x1 > px1 - PANEL_PAD:
                         over = max(px0 + PANEL_PAD - x0, x1 - (px1 - PANEL_PAD))
+                        if over < MIN_OVERFLOW:
+                            break
                         out.append(f'text overflows its panel by {over:.0f} units: '
                                    f'"{s[:44]}" spans {x0:.0f}..{x1:.0f} '
                                    f'inside {px0:.0f}..{px1:.0f}')
