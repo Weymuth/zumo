@@ -51,7 +51,14 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.9.1'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.10'   # the only version home in this file (S96; v1.4 S98)
+# v1.10 (S103): CONTROL F - the Bible's version bookkeeping is now PARSED, not grepped.
+#   Two defects shipped past this tool because it read ONE value off a line carrying TWO:
+#   v8.88 had no changelog entry beneath it, and 'Current:' sat NINE versions stale inside
+#   the very declaration line this tool was reading. A single-line grep cannot see a second
+#   value on the line it matched. bible_consistency() parses the declaration line whole and
+#   the changelog in file order, and requires header == Current == newest entry. Three
+#   seeded breaks, plus a clean fixture, plus the live tree. font_stack_sweep registered.
 # v1.9 (S102): regex_audit registered.
 # v1.8 (S102): build_worklist registered. GPT_WORKLIST_S99.md was hand-assembled, so when
 #   its ordering came under doubt there was nothing to re-run - the list that directs the
@@ -141,6 +148,7 @@ ARTEFACTS = [
     ('svg_layout_audit',      'svg_layout_audit.py',      r"VERSION = '(v[\d.]+)'"),
     ('site_parity',           'site_parity.py',           r"VERSION = '(v[\d.]+)'"),
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
+    ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
 ]
 
@@ -378,6 +386,67 @@ def _fixture_clean(work, probe):
     open(keep, 'w', encoding='utf-8').write(_emit('--handoff'))
 
 
+def bible_consistency(path='ZUMO_SUPER_BIBLE.md'):
+    """PARSE the Bible's version bookkeeping and return a list of disagreements.
+
+    Deliberately NOT a grep. Bible 24.10 makes the parser the default instrument and
+    allows grep only to read ONE line of KNOWN format -- and the defect this exists to
+    catch was a SECOND value on that same line, which is precisely what a single-line
+    grep cannot see. session_versions read 'Bible version: v8.88' correctly for nine
+    versions while 'Current: **v8.79.1**' sat eleven words to its right, unread.
+
+    Returns [] when the header version, the Current: field and the newest changelog
+    entry all agree. Never raises on a missing field; a field that is absent is
+    reported as absent, because silence would be indistinguishable from agreement.
+    """
+    problems = []
+    try:
+        lines = open(path, encoding='utf-8', errors='replace').read().splitlines()
+    except OSError as e:
+        return [f'{path}: cannot read ({e})']
+
+    header = current = None
+    header_line = None
+    changelog = []          # (line_no, version) in file order
+
+    for n, line in enumerate(lines, 1):
+        st = line.strip()
+        # The declaration line: the ONE home. Parse the WHOLE line, not its first match.
+        if header is None and st.startswith('**Bible version:'):
+            header_line = n
+            m = re.search(r'\*\*Bible version:\s*v([\d.]+)\*\*', line)
+            if m:
+                header = m.group(1)
+            c = re.search(r'Current:\s*\*\*v([\d.]+)\*\*', line)
+            if c:
+                current = c.group(1)
+            continue
+        # A changelog entry opens its own line: "v8.89, S103, moderate - ..."
+        m = re.match(r'v([\d.]+),\s*S\d+,\s*(major|moderate|minor)\b', st)
+        if m:
+            changelog.append((n, m.group(1)))
+
+    if header is None:
+        problems.append(f'{path}: no "**Bible version: vX.Y**" declaration found')
+        return problems
+    if not changelog:
+        problems.append(f'{path}: no changelog entries found to check the header against')
+        return problems
+
+    newest = changelog[0][1]
+    if newest != header:
+        problems.append(
+            f'{path}:{header_line} header says v{header} but the newest changelog entry '
+            f'(line {changelog[0][0]}) is v{newest} - a version with no entry beneath it')
+    if current is None:
+        problems.append(f'{path}:{header_line} the declaration line has no "Current:" field')
+    elif current != header:
+        problems.append(
+            f'{path}:{header_line} header says v{header} but "Current:" on the SAME LINE '
+            f'says v{current} - the one home disagrees with itself')
+    return problems
+
+
 def selftest():
     """Bidirectional control run. Neither direction alone is evidence."""
     print("CONTROL B (false-fail): reader against untouched files - must be SILENT")
@@ -532,7 +601,64 @@ def selftest():
         return 1
     print(f"   all {len(_registered)} registered; no root .py carries an unregistered VERSION\n")
 
-    print("ALL FIVE CONTROLS PASS - silent when clean, loud when broken, both directions.")
+    print("CONTROL F (Bible self-consistency, both ways): header, Current: and the newest "
+          "changelog entry must agree")
+    # TWO defects shipped past this tool because it read one value off a line carrying two.
+    # v8.88 had no changelog entry, and Current: sat nine versions stale INSIDE the
+    # declaration line. Both are cheap to assert and neither ever was.
+    _live = bible_consistency('ZUMO_SUPER_BIBLE.md')
+    if _live:
+        for _p in _live:
+            print(f"   FAILED (clean direction). {_p}")
+        return 1
+    print("   clean direction: the live Bible agrees with itself")
+
+    _tmpf = tempfile.mkdtemp()
+    try:
+        _fix = os.path.join(_tmpf, 'ZUMO_SUPER_BIBLE.md')
+        # A fixture built CLEAN, then broken one way at a time. Bible 24.6b: a control
+        # that never sees the clean state cannot tell a catch from a false alarm.
+        _clean = ('# Bible\n\n'
+                  '**Bible version: v9.02** - blah blah. Current: **v9.02**\n\n'
+                  'v9.02, S200, moderate - newest entry.\n\n'
+                  'v9.01, S199, moderate - older entry.\n')
+        open(_fix, 'w', encoding='utf-8').write(_clean)
+        if bible_consistency(_fix):
+            print("   FAILED. A clean fixture was reported as broken:",
+                  bible_consistency(_fix))
+            return 1
+        print("   clean fixture: silent")
+
+        # BREAK 1 - header ahead of the changelog (the v8.88 defect exactly)
+        open(_fix, 'w', encoding='utf-8').write(
+            _clean.replace('**Bible version: v9.02**', '**Bible version: v9.03**'))
+        _r = bible_consistency(_fix)
+        if not any('no entry beneath it' in x for x in _r):
+            print("   FAILED. A header with no changelog entry was NOT caught.")
+            return 1
+        print("   break 1 (header ahead of changelog): caught")
+
+        # BREAK 2 - Current: stale on the same line (the v8.79.1 defect exactly)
+        open(_fix, 'w', encoding='utf-8').write(
+            _clean.replace('Current: **v9.02**', 'Current: **v8.79.1**'))
+        _r = bible_consistency(_fix)
+        if not any('disagrees with itself' in x for x in _r):
+            print("   FAILED. A stale Current: field on the declaration line was NOT caught.")
+            return 1
+        print("   break 2 (stale Current: on the same line): caught")
+
+        # BREAK 3 - Current: removed entirely. Absent must not read as agreeing.
+        open(_fix, 'w', encoding='utf-8').write(
+            _clean.replace(' Current: **v9.02**', ''))
+        _r = bible_consistency(_fix)
+        if not any('no "Current:" field' in x for x in _r):
+            print("   FAILED. A MISSING Current: field was silently treated as agreement.")
+            return 1
+        print("   break 3 (Current: absent): caught, not mistaken for agreement\n")
+    finally:
+        shutil.rmtree(_tmpf, ignore_errors=True)
+
+    print("ALL SIX CONTROLS PASS - silent when clean, loud when broken, both directions.")
     return 0
 
 
