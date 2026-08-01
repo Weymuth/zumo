@@ -1,0 +1,296 @@
+#!/usr/bin/env python3
+"""build_css.py - emit css/book.css from the lessons' own inline styles.
+
+WHY THIS EXISTS. Bible §27 retired the Canvas-paste delivery model, so the book is a website
+and the 25,036 inline style="" attributes become a stylesheet. This is the S104 first step:
+Lesson 01 only, by DJ ruling.
+
+§24.12: THIS IS A GENERATED ARTEFACT. css/book.css is never hand-edited. If a rule is wrong,
+this file is wrong. That is also what makes the class names cheap to change - a rename is one
+line in NAMES plus a re-emit, not a sweep.
+
+THE NAMING IS DELIBERATELY PROVISIONAL AND DELIBERATELY UGLY WHERE IT HAS TO BE.
+The semantic set - 27 accents for 30 families - is item 1 of the paint arc and is NOT started.
+So a name is English only where the declaration block alone PROVES the role (a <pre> with a
+#1e1e1e background is a code block; that is not a judgement call). Anything whose meaning would
+have to be guessed from a hex carries the hex: .callout-2196f3, .tok-6a9955. §8 documents 11 of
+27 families and LEARN and INSIGHT still share #e3f2fd/#2196f3, so a confident English name here
+would be a claim this repo cannot currently support - and a wrong name propagates into sixteen
+lessons. The hex is not a placeholder for a name nobody has chosen; it is the true statement
+available today.
+
+RUN 1 IS A NO-OP BY CONSTRUCTION. All 16 lessons carry ZERO class= attributes and ZERO <style>
+blocks (Canvas stripped both), so every rule below is class-scoped and matches nothing until
+run 2 adds the classes. Linking it changes no pixel. That is the point: run 1 proves the file
+publishes, that Pages serves it, and that site_parity sees it, and proves nothing about
+whether any rule is right.
+
+THE PROPERTY THAT MAKES RUN 2 SAFE, asserted in --selftest: for every styled element in the
+source lesson, the class it will receive carries declarations CANONICALLY EQUAL to the inline
+string it replaces. If that holds for all 1,150, the strip renders identically by construction
+rather than by inspection.
+
+usage:
+  python3 build_css.py              # write css/book.css
+  python3 build_css.py --check      # emit to memory, diff against disk, never write
+  python3 build_css.py --selftest   # controls, both directions
+exit 0 = clean. exit 1 = a control failed or --check found a difference.
+"""
+import re, os, sys, glob, collections
+
+VERSION = 'v1.0'          # the only version home in this file (S104)
+SOURCES = ['lessons/Lesson_01.html']
+OUT = 'css/book.css'
+
+_STYLED = re.compile(r'<(\w+)\b[^>]*?style="([^"]*)"', re.S)
+
+
+def canon(value):
+    """One canonical form for a style string: declarations trimmed, single-spaced after the
+    colon, sorted case-insensitively. Property ORDER is not meaningful in a declaration block
+    with no duplicate properties, and L01 carries one pair that differs by order alone - 168
+    raw strings, 167 canonical. Sorting collapses that pair instead of shipping two identical
+    rules under two names."""
+    ds = [' '.join(d.split()) for d in value.split(';') if d.strip()]
+    ds = [re.sub(r'\s*:\s*', ': ', d) for d in ds]
+    return '; '.join(sorted(ds, key=str.lower))
+
+
+def decls(c):
+    return [d.strip() for d in c.split(';') if d.strip()]
+
+
+def prop(c, name):
+    for d in decls(c):
+        k, _, v = d.partition(':')
+        if k.strip().lower() == name:
+            return v.strip()
+    return None
+
+
+def role(tag, c):
+    """The role a declaration block PROVES, or None. Every branch here is decided by the CSS
+    itself, never by where the element sits or what it is called."""
+    has = lambda n: prop(c, n) is not None
+    bl = prop(c, 'border-left') or ''
+    bg = (prop(c, 'background-color') or prop(c, 'background') or '').lower()
+    m = re.match(r'4px solid (#[0-9a-f]{3,8})', bl, re.I)
+    if m and bg.startswith('#'):
+        return 'callout-' + m.group(1).lstrip('#').lower()
+    if tag == 'pre' and '#1e1e1e' in bg:
+        return 'code-block'
+    if tag == 'code' and has('background'):
+        return 'code-inline'
+    if tag in ('span',) and len(decls(c)) == 1 and prop(c, 'color'):
+        return 'tok-' + prop(c, 'color').lstrip('#').lower().replace('(', '').replace(')', '') \
+            .replace(',', '-').replace(' ', '')
+    if tag == 'table' and prop(c, 'border-collapse'):
+        return 'table'
+    if tag == 'th':
+        return 'th'
+    if tag == 'td':
+        return 'td'
+    if tag == 'img':
+        return 'img'
+    if tag == 'details':
+        return 'details'
+    if tag == 'summary':
+        return 'summary'
+    if tag == 'body':
+        return 'page'
+    if tag == 'nav':
+        return 'nav'
+    if tag == 'button':
+        return 'button'
+    if tag == 'a':
+        return 'link'
+    return tag
+
+
+def collect(paths):
+    """-> ordered list of (canonical, count, {tag: n}). Order is descending count then the
+    canonical string, so the emitted file is DETERMINISTIC: same input, same bytes, same
+    names. A generator whose output depends on dict iteration order cannot be diffed."""
+    count = collections.Counter()
+    tags = collections.defaultdict(collections.Counter)
+    for p in paths:
+        s = open(p, encoding='utf-8', errors='replace').read()
+        for m in _STYLED.finditer(s):
+            c = canon(m.group(2))
+            count[c] += 1
+            tags[c][m.group(1).lower()] += 1
+    return [(c, n, dict(tags[c])) for c, n in
+            sorted(count.items(), key=lambda kv: (-kv[1], kv[0]))]
+
+
+def signal(c, taken=''):
+    """A short, deterministic, CLAIM-FREE distinguisher for rules whose role repeats. It is
+    read off the declarations in a fixed priority - accent, then background, then colour, then
+    the first declaration - so `.div-3` becomes `.div-bg-fffbe6`, which a human reading run 2's
+    diff can actually recognise. It asserts nothing about meaning."""
+    def hexof(v):
+        m = re.search(r'#([0-9a-fA-F]{3,8})', v or '')
+        return m.group(1).lower() if m else None
+    cands = []
+    for p in ('border-left', 'border', 'border-top'):
+        h = hexof(prop(c, p))
+        if h:
+            cands.append(h)
+    h = hexof(prop(c, 'background') or prop(c, 'background-color'))
+    if h:
+        cands.append('bg-' + h)
+    h = hexof(prop(c, 'color'))
+    if h:
+        cands.append('c-' + h)
+    for cd in cands:                      # a signal already inside the role name says nothing
+        if cd.split('-')[-1] not in taken:
+            return cd
+    d = decls(c)[0] if decls(c) else 'x'
+    k, _, v = d.partition(':')
+    k = ''.join(w[0] for w in k.strip().split('-'))
+    v = re.sub(r'[^0-9a-z]+', '', v.strip().lower())[:8] or 'x'
+    return f'{k}-{v}'
+
+
+def names(rows):
+    """-> {canonical: class}. A role used once takes the bare role name. A role that repeats
+    takes role-SIGNAL, never role-2, because an ordinal carries no information into run 2 and
+    renumbers itself the moment another lesson is added. An ordinal is the last resort only."""
+    base = {}
+    for c, n, tg in rows:
+        tag = max(tg.items(), key=lambda kv: kv[1])[0]
+        base[c] = role(tag, c)
+    freq = collections.Counter(base.values())
+    chosen, used = {}, collections.Counter()
+    for c, n, tg in rows:
+        r = base[c]
+        name = r if freq[r] == 1 else f'{r}-{signal(c, r)}'
+        used[name] += 1
+        chosen[c] = name if used[name] == 1 else f'{name}-{used[name]}'
+    return chosen
+
+
+def emit(rows, chosen):
+    src = ', '.join(SOURCES)
+    out = [
+        '/* css/book.css - GENERATED by build_css.py ' + VERSION + '. DO NOT HAND-EDIT (Bible',
+        ' * §24.12). Source: ' + src + '.',
+        ' *',
+        ' * Bible §27: the book is a website, not a Canvas paste. These rules are the lessons\'',
+        ' * own inline declarations, deduplicated and named. Class names are PROVISIONAL - the',
+        ' * semantic set (27 accents / 30 families) is not designed yet, so a name is English',
+        ' * only where the declarations prove the role, and carries the hex otherwise.',
+        ' *',
+        f' * {len(rows)} rules covering {sum(n for _, n, _ in rows):,} inline attributes.',
+        ' */',
+        '',
+    ]
+    for c, n, tg in rows:
+        tl = ', '.join(f'{k}×{v}' for k, v in sorted(tg.items(), key=lambda kv: -kv[1]))
+        out.append(f'/* ×{n}  {tl} */')
+        out.append(f'.{chosen[c]} {{')
+        for d in decls(c):
+            out.append(f'  {d};')
+        out.append('}')
+        out.append('')
+    return '\n'.join(out)
+
+
+def build(paths=None):
+    """ENTRYPOINT. Returns (text, rows, chosen) and writes nothing."""
+    rows = collect(paths or SOURCES)
+    chosen = names(rows)
+    return emit(rows, chosen), rows, chosen
+
+
+def selftest():
+    ok = True
+    text, rows, chosen = build()
+
+    print('CONTROL A (coverage): every styled element in the source is accounted for')
+    total = sum(n for _, n, _ in rows)
+    raw = sum(len(_STYLED.findall(open(p, encoding='utf-8').read())) for p in SOURCES)
+    print(f'   {total:,} attribute(s) over {len(rows)} rule(s); source holds {raw:,}')
+    if total != raw or total == 0:
+        print('   FAILED. The collector does not see every styled element.')
+        ok = False
+
+    print('CONTROL B (the run-2 guarantee): each element\'s class must carry ITS OWN '
+          'declarations')
+    bad = 0
+    for p in SOURCES:
+        s = open(p, encoding='utf-8').read()
+        for m in _STYLED.finditer(s):
+            c = canon(m.group(2))
+            cls = chosen.get(c)
+            body = re.search(r'\.' + re.escape(cls) + r' \{\n(.*?)\n\}', text, re.S)
+            got = canon(' '.join(l.strip() for l in body.group(1).splitlines())) if body else ''
+            if got != c:
+                bad += 1
+    if bad:
+        print(f'   FAILED. {bad} element(s) would be repainted, not preserved.')
+        ok = False
+    else:
+        print(f'   all {total:,} elements map to a rule equal to their inline string')
+
+    print('CONTROL C (injective): two different declaration sets must not share a class')
+    if len(set(chosen.values())) != len(chosen):
+        dupes = [k for k, v in collections.Counter(chosen.values()).items() if v > 1]
+        print(f'   FAILED. Class collision: {dupes[:5]}')
+        ok = False
+    else:
+        print(f'   {len(chosen)} rules, {len(set(chosen.values()))} distinct class names')
+
+    print('CONTROL D (no-op): run 1 cannot change a pixel - every selector is class-scoped '
+          'and the lessons carry no class attributes')
+    naked = [l for l in text.splitlines() if l.endswith(' {') and not l.startswith('.')]
+    cls_in_book = sum(len(re.findall(r'class\s*=', open(f, encoding='utf-8').read()))
+                      for f in sorted(glob.glob('lessons/Lesson_*.html')))
+    if naked:
+        print(f'   FAILED. {len(naked)} selector(s) are not class-scoped: {naked[:3]}')
+        ok = False
+    elif cls_in_book:
+        print(f'   FAILED. {cls_in_book} class= attribute(s) already exist - not a no-op.')
+        ok = False
+    else:
+        print('   every selector is class-scoped; 0 class= attributes across all 16 lessons')
+
+    print('CONTROL E (determinism): a second build must be byte-identical')
+    if build()[0] != text:
+        print('   FAILED. Output depends on iteration order.')
+        ok = False
+    else:
+        print('   second build is byte-identical')
+
+    print('CONTROL F (loud on a real change): dropping one declaration must be visible')
+    victim = rows[0][0]
+    probe = emit([(canon('; '.join(decls(victim)[1:])), rows[0][1], rows[0][2])] + rows[1:],
+                 {**chosen, canon('; '.join(decls(victim)[1:])): chosen[victim]})
+    if probe == text:
+        print('   FAILED. A dropped declaration produced identical output.')
+        ok = False
+    else:
+        print('   a dropped declaration changes the emitted file')
+
+    print('\n' + ('ALL CONTROLS PASS' if ok else 'CONTROLS FAILED'))
+    return 0 if ok else 1
+
+
+if __name__ == '__main__':
+    if '--selftest' in sys.argv:
+        sys.exit(selftest())
+    text, rows, chosen = build()
+    if '--check' in sys.argv:
+        cur = open(OUT, encoding='utf-8').read() if os.path.exists(OUT) else None
+        if cur == text:
+            print(f'{OUT} is current ({len(rows)} rules)')
+            sys.exit(0)
+        print(f'{OUT} DIFFERS from what the sources generate - re-run without --check')
+        sys.exit(1)
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    tmp = OUT + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as fh:
+        fh.write(text)
+    os.replace(tmp, OUT)
+    print(f'wrote {OUT}: {len(rows)} rules, '
+          f'{sum(n for _, n, _ in rows):,} inline attributes covered')

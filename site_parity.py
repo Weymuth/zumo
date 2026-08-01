@@ -36,31 +36,78 @@ exit 0 = the site matches the repo. exit 1 = a mismatch or a 404.
 """
 import re, os, sys, glob, hashlib, urllib.request, urllib.error
 
-VERSION = 'v1.0'   # the only version home in this file (S100)
+VERSION = 'v1.1'   # the only version home in this file (S100; v1.1 S104)
 
-BASE = 'https://weymuth.github.io/zumo/images/'
+SITE = 'https://weymuth.github.io/zumo/'
+BASE = SITE + 'images/'          # kept: v1.0's name, still used by the fetch controls
 TIMEOUT = 20
+
+# Asset directories this instrument is responsible for. A published asset that is not under
+# one of these is not something the site serves on the book's behalf.
+ASSET_DIRS = ('images/', 'css/')
+
+# S104: v1.0 matched `src="..../images/NAME"` only, and globbed lessons/ + root. Three
+# scope holes, all measured against the live repo before this rewrite:
+#   1. tutor/tutor.html was NEVER SCANNED, though the docstring claimed gate 36's scope
+#      and gate 36's own `site` list names it. One image reached only from there.
+#   2. index.html writes `src="images/NAME"` with NO leading slash - two references, both
+#      invisible, and one of them is the site's own masthead mark.
+#   3. TWO href-borne references into images/ in Lesson 02 - the exact class S102 had to
+#      add to gate 36 after a download button rotted into a live 404. Parity could not see
+#      either one.
+# The rewrite resolves any src= or href= landing under ASSET_DIRS to a SITE-RELATIVE PATH,
+# so a stylesheet at css/book.css is covered by construction rather than by a second code
+# path. A stylesheet is the one asset whose failure to publish breaks every page at once.
+
+_REF_RE = re.compile(r'(?:src|href)\s*=\s*"([^"?#]+)[^"]*"', re.I)
+
+
+def pages():
+    """Gate 36's scope, named the same way it names it - not a glob that approximates it."""
+    p = sorted(glob.glob('lessons/Lesson_*.html')) + [
+        'going_deeper.html', 'index.html', 'tutor/tutor.html',
+        'newproject.html', 'timer.html']
+    return [f for f in p if os.path.exists(f)]
+
+
+def resolve(page, url):
+    """-> site-relative path under an ASSET_DIR, or None. Three reference forms are live in
+    this book (absolute Pages URL, ../images/ from lessons/, bare images/ from root) and all
+    three must land on the same string."""
+    if url.startswith(('data:', '//', 'mailto:')):
+        return None
+    if url.startswith(('http://', 'https://')):
+        if not url.startswith(SITE):
+            return None
+        path = url[len(SITE):]
+    else:
+        path = os.path.normpath(
+            os.path.join(os.path.dirname(page), url)).replace(os.sep, '/')
+    path = path.lstrip('/')
+    return path if path.startswith(ASSET_DIRS) else None
 
 
 def referenced():
-    """Every images/ filename any page references. ONE resolver, mirroring gate 36's scope:
-    lessons and every top-level page, because §12/§23 scope was got wrong twice before."""
+    """Every ASSET_DIRS path any page references, as a site-relative path."""
     out = set()
-    for page in sorted(glob.glob('lessons/*.html') + glob.glob('*.html')):
+    for page in pages():
         try:
             s = open(page, encoding='utf-8', errors='replace').read()
         except OSError:
             continue
-        for m in re.finditer(r'src="[^"]*?/images/([^"?#]+)"', s):
-            out.add(m.group(1))
+        for m in _REF_RE.finditer(s):
+            r = resolve(page, m.group(1))
+            if r:
+                out.add(r)
     return sorted(out)
 
 
 def fetch(name, want_bytes=False):
-    """Returns (status, size, blob). status 0 = OK, else the HTTP code or -1 for a network
-    error. Never raises: an unreachable site must report as unknown, not crash the run."""
+    """`name` is a SITE-RELATIVE PATH (images/x.svg, css/book.css). Returns (status, size,
+    blob). status 0 = OK, else the HTTP code or -1 for a network error. Never raises: an
+    unreachable site must report as unknown, not crash the run."""
     try:
-        with urllib.request.urlopen(BASE + name, timeout=TIMEOUT) as r:
+        with urllib.request.urlopen(SITE + name, timeout=TIMEOUT) as r:
             blob = r.read()
             return 0, len(blob), (blob if want_bytes else None)
     except urllib.error.HTTPError as e:
@@ -72,12 +119,12 @@ def fetch(name, want_bytes=False):
 def check(deep=False):
     names = referenced()
     if not names:
-        print('  no referenced images found - run from the repo root')
+        print('  no referenced assets found - run from the repo root')
         return 1
-    print(f'  {len(names)} referenced image(s); comparing the published site to this clone')
+    print(f'  {len(names)} referenced asset(s); comparing the published site to this clone')
     bad, unreachable = [], 0
     for n in names:
-        local = os.path.join('images', n)
+        local = n
         if not os.path.exists(local):
             bad.append(f'{n}: referenced but NOT IN THE REPO - the reference will 404 '
                        f'(this is gate 36 territory; listed here because it is also live)')
@@ -111,12 +158,15 @@ def selftest():
     """Both directions. A checker that only ever says PASS is not evidence (§24.8)."""
     ok = True
 
-    print('CONTROL A (resolver): the reference scan must find images, and reach past lessons/')
+    print('CONTROL A (resolver): the scan must reach every page gate 36 reaches')
     names = referenced()
-    pages = sorted(glob.glob('lessons/*.html') + glob.glob('*.html'))
-    print(f'   {len(names)} referenced image(s) across {len(pages)} page(s)')
-    if len(names) < 50 or len(pages) < 17:
-        print('   FAILED. The glob under-reaches - scope is the thing this repo gets wrong.')
+    pg = pages()
+    print(f'   {len(names)} referenced asset(s) across {len(pg)} page(s)')
+    if len(names) < 50 or len(pg) < 21:
+        print('   FAILED. The scan under-reaches - scope is the thing this repo gets wrong.')
+        ok = False
+    if 'tutor/tutor.html' not in pg:
+        print('   FAILED. tutor/tutor.html is in gate 36 scope and must be in this one.')
         ok = False
 
     print('CONTROL B (false-pass): a name that cannot exist must report, not pass quietly')
@@ -132,13 +182,13 @@ def selftest():
     print('CONTROL C (false-fail): a known-good file must match itself')
     probe = None
     for n in names:
-        p = os.path.join('images', n)
+        p = n
         if os.path.exists(p) and os.path.getsize(p) < 400_000:
             probe = n
             break
     if probe:
         st, rsz, _ = fetch(probe)
-        lsz = os.path.getsize(os.path.join('images', probe))
+        lsz = os.path.getsize(probe)
         if st == -1:
             print('   network unreachable - control C inconclusive, not a pass')
         elif st == 0 and rsz == lsz:
@@ -157,6 +207,89 @@ def selftest():
             ok = False
         else:
             print('   strict equality on byte counts confirmed')
+
+    print('CONTROL E (a stylesheet is covered BY CONSTRUCTION, not by a second code path)')
+    css = resolve('lessons/Lesson_01.html', '../css/book.css')
+    css2 = resolve('index.html', 'css/book.css')
+    css3 = resolve('lessons/Lesson_01.html', SITE + 'css/book.css')
+    if css == css2 == css3 == 'css/book.css':
+        print('   all three reference forms resolve to css/book.css')
+    else:
+        print(f'   FAILED. {css!r} / {css2!r} / {css3!r} - a stylesheet would go unchecked.')
+        ok = False
+    if resolve('lessons/Lesson_01.html', '../lessons/Lesson_02.html') is not None:
+        print('   FAILED. A page link was taken for an asset.')
+        ok = False
+    else:
+        print('   a page-to-page link is NOT collected')
+
+    print('CONTROL F (v1.0 vs v1.1, run as RESOLVERS over the real pages - not as strings)')
+    def _v10():
+        """v1.0's resolver verbatim: its glob and its regex, so the diff is the real hole."""
+        o = set()
+        for p in sorted(glob.glob('lessons/*.html') + glob.glob('*.html')):
+            s = open(p, encoding='utf-8', errors='replace').read()
+            for m in re.finditer(r'src="[^"]*?/images/([^"?#]+)"', s):
+                o.add('images/' + m.group(1))
+        return o
+    was, now = _v10(), set(referenced())
+    lost = sorted(was - now)
+    if lost:
+        print(f'   FAILED. v1.1 DROPPED {len(lost)} reference(s) v1.0 saw: {lost[:3]}')
+        ok = False
+    else:
+        print(f'   nothing v1.0 saw was lost ({len(was)} carried forward)')
+    want = {'images/Mercersburg_Academy_Robotics_dark.svg': 'reached only from tutor/ + a '
+            'no-slash index ref',
+            'images/Zumo_Robot_Mark.png': 'index.html writes it with no leading slash',
+            'images/L02_GRAPHIC_2-05_sketch_anatomy_card.png': 'href-borne, not src'}
+    for path, why in want.items():
+        if path in now and path not in was:
+            print(f'   caught, unchecked until now ({why})')
+        elif path in was:
+            print(f'   INCONCLUSIVE: v1.0 saw {path} - not one of the holes.')
+            ok = False
+        else:
+            print(f'   FAILED: {path} still unresolved.')
+            ok = False
+
+    print('CONTROL G (end-to-end on a STYLESHEET, both directions, in a scratch tree)')
+    import tempfile, shutil
+    here = os.getcwd()
+    tmp = tempfile.mkdtemp()
+    try:
+        os.makedirs(os.path.join(tmp, 'lessons'))
+        open(os.path.join(tmp, 'lessons', 'Lesson_01.html'), 'w').write(
+            '<link rel="stylesheet" href="../css/book.css">')
+        os.chdir(tmp)
+        # G1 - referenced, absent from the repo. Offline branch, no network needed.
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc1 = check()
+        if rc1 == 1 and 'css/book.css' in buf.getvalue() and 'NOT IN THE REPO' in buf.getvalue():
+            print('   G1 a stylesheet missing from the repo is REPORTED')
+        else:
+            print('   FAILED. G1 passed a missing stylesheet quietly.')
+            ok = False
+        # G2 - present in the repo, absent from the site. This is the migration's real hazard:
+        # sixteen pages render unstyled and every offline gate stays green.
+        os.makedirs('css')
+        open('css/book.css', 'w').write('/* scratch */')
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc2 = check()
+        out = buf.getvalue()
+        if 'unreachable' in out:
+            print('   G2 network unreachable - inconclusive, NOT a pass')
+        elif rc2 == 1 and 'css/book.css' in out:
+            print('   G2 a stylesheet the site does not serve is REPORTED')
+        else:
+            print('   FAILED. G2 passed an unpublished stylesheet.')
+            ok = False
+    finally:
+        os.chdir(here)
+        shutil.rmtree(tmp, ignore_errors=True)
 
     print('\n' + ('ALL CONTROLS PASS' if ok else 'CONTROLS FAILED'))
     return 0 if ok else 1
