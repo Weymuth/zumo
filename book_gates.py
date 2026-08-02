@@ -2,7 +2,20 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.37'
+VERSION = 'v1.38'
+# v1.38 (S106): NEW GATES 44 (§27.12) + 45 (§27.13) — the migration's two unguarded
+#   invariants. 44: a page that links css/book.css carries no inline style attribute.
+#   Seeding one <p style="color: #ff00aa"> into L05 left ALL 43 preceding gates green;
+#   the element renders correctly while re-opening the hole the whole migration closed.
+#   45: css/book.css regenerates byte-identically from the lessons. This is the guard on
+#   §27.8a/b — regenerate without re-stripping and 46 class names keep their spelling and
+#   change their meaning, invisible to gate 41. Gate 43's digest catches the regeneration,
+#   but §26's repaint MOVES that baseline by design, and a moved baseline is a spent gate;
+#   45 re-derives instead of remembering, so a repaint does not spend it. Control-run in
+#   both directions: 43 fires and 45 is blind on a hand-edited stylesheet (CONTROL B), 45
+#   fires and all 43 are green on one element retyped to a different resolvable class
+#   (CONTROL C). Neither subsumes the other. `strip_inline --verify` was OFFERED and NOT
+#   added: it is gate 41's assertion computed twice and never fired independently of it.
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -1753,6 +1766,67 @@ else:
 gate('\u00a727.11 the stylesheet matches its baseline (664 rules / 2,434 declarations)', bad)
 
 
+# ---- GATE 44 (§27.12): a converted page carries NO inline style attribute.
+# MEASURED, NOT ASSUMED (S106 CONTROL A): pasting one <p style="color: #ff00aa;
+# font-size: 13px;"> into Lesson 05 left ALL 43 PRECEDING GATES GREEN. The migration's
+# whole premise -- that a declaration lives once, in css/book.css -- has, until now, been
+# guarded by nothing at all. Every future hand-edit, every pasted block from an old
+# lesson, every AI-suggested snippet re-opens the hole silently, and the element renders
+# CORRECTLY while doing it, so nobody looks.
+# SCOPE is keyed on the <link>, the same self-maintaining rule as gate 41 and for the same
+# reason (§25.6a): going_deeper (7), index (1), newproject (2) and tutor (7) carry their
+# own <style> blocks and their own inline attributes, and none of that is book.css's
+# business. A page enters this gate the moment it is converted; nothing has to be
+# remembered.
+_conv = [f for f in site if 'css/book.css' in open(f, encoding='utf-8').read()]
+bad = []
+for f in _conv:
+    src = open(f, encoding='utf-8').read()
+    for m in re.finditer(r'\sstyle="([^"]*)"', src):
+        ln = src.count('\n', 0, m.start()) + 1
+        bad.append(f'{f} line {ln}: inline style="{m.group(1)[:60]}" — this page links '
+                   f'css/book.css, so its styling belongs in a rule (§27.12)')
+gate('\u00a727.12 no converted page carries an inline style attribute', bad)
+
+# ---- GATE 45 (§27.13): css/book.css regenerates byte-identically from the lessons.
+# THIS IS THE GUARD ON HAZARD (a), AND IT IS THE ONE THAT SURVIVES A MOVED BASELINE.
+# §27.8b's sequence is restore -> regenerate -> apply. Stop after step 2 and the lessons
+# still carry the OLD names against a stylesheet that renamed 57 of them, 46 of which KEPT
+# THEIR SPELLING -- so gate 41 sees only the ones that vanished and the page silently
+# repaints. Gate 43 catches the regeneration by digest, but §26's repaint REQUIRES moving
+# that baseline deliberately; the moment it moves, gate 43 is spent and hazard (a) is
+# unguarded again. This gate is not spent by a repaint, because it re-derives rather than
+# remembers.
+# THE TWO GATES ARE COMPLEMENTARY, MEASURED IN BOTH DIRECTIONS (S106):
+#   CONTROL B  deleting one `color: white;` from css/book.css -> gate 43 FAILS, this gate
+#              is BLIND (build_css reads the stylesheet through expand_classes, so the
+#              damage propagates into the comparison — §24.8, the S105 finding).
+#   CONTROL C  retyping ONE element from a resolvable class to a DIFFERENT resolvable
+#              class -> all 43 preceding gates GREEN, this gate FAILS.
+#   CONTROL D  regenerating with a changed SOURCES and skipping the re-strip -> this gate
+#              FAILS (with gate 41, which caught 20 dead names in that particular shape).
+# Neither subsumes the other. Keep both.
+# WHY `strip_inline --verify` IS NOT HERE, so it is not re-offered: it computes gate 41's
+# assertion a second way. Across all four controls it never fired independently of gate 41.
+# An assert that cannot fail is not evidence (§24).
+# A RED HERE DURING A REPAINT IS CORRECT: mid-sequence the tree really is inconsistent.
+# It goes green when step 3 lands, and that is the signal the repaint is complete.
+import build_css as BC            # import the definition, do not re-implement it (S83)
+bad = []
+try:
+    _text, _rows, _chosen = BC.build()
+    _cur = open('css/book.css', encoding='utf-8').read() if os.path.exists('css/book.css') else None
+    if _cur is None:
+        bad.append('css/book.css is missing but the lessons generate ' + str(len(_rows)) + ' rules')
+    elif _cur != _text:
+        bad.append(f'css/book.css does NOT match what the lessons generate '
+                   f'({len(_rows)} rules regenerated) — either a lesson carries styling the '
+                   f'stylesheet does not know about, or the stylesheet was regenerated '
+                   f'without re-running strip_inline --apply (§27.8b: restore -> regenerate '
+                   f'-> apply). Run build_css.py --check to see it directly.')
+except Exception as e:                       # a crash here must not take the suite down
+    bad.append(f'could not regenerate: {type(e).__name__}: {e}')
+gate('\u00a727.13 css/book.css regenerates byte-identically from the lessons', bad)
 
 
 print('=' * 52)
