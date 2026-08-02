@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.12.2 -->
+<!-- Lesson version: v02.12.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +47,7 @@
         <a href="Lesson_14.html" title="Competition Prep" class="link-bc-rgba2552">14</a>
         <a href="Lesson_15.html" title="Advanced PID Control" class="link-bc-rgba2552">15</a>
         <a href="Lesson_16.html" title="Engineering Showcase" class="link-bc-rgba2552">16</a>
-        <a href="https://weymuth.github.io/zumo/going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
+        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
     </div>
     <script>
     (function() {
@@ -156,7 +156,7 @@ The conversion is already sitting in <code>RobotConfig.h</code>:</p>
 <pre class="code-block-bg-1e1e1e">const float COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0);</pre>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">The whole lesson, in one sentence.</div>Lesson 8 asked <strong>"have I been blind for too LONG?"</strong> &mdash; a stopwatch.<br>Lesson 11 asks <strong>"have I been blind for too FAR?"</strong> &mdash; an odometer.<br><br>Same function. Same call site. Same name. <strong>One question changed.</strong></div>
-<div class="div-m-24px0"><img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-01_time_vs_distance.svg" alt="GRAPHIC 11.1 &mdash; The same gap, the same code, two batteries. Only the stopwatch cares." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.1 &mdash; The same gap, the same code, two batteries. Only the stopwatch cares.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-01_time_vs_distance.svg" alt="GRAPHIC 11.1 &mdash; The same gap, the same code, two batteries. Only the stopwatch cares." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.1 &mdash; The same gap, the same code, two batteries. Only the stopwatch cares.</div></div>
 <h3 class="h3-c-3498db">3.4 Two New States</h3>
 <p>In Lesson 10 you learned that a state machine gives each behavior a <em>name</em>.
 Gap crossing needs two new ones:</p>
@@ -165,7 +165,7 @@ Gap crossing needs two new ones:</p>
 <li><code>LINE_LOST</code> &mdash; drove the whole budget, never found the line. Stop and say so.</li>
 </ul>
 <p>The difference between them is <strong>one number</strong>: how far you have gone since the line vanished.</p>
-<div class="div-m-24px0"><img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-04_gap_state_machine.svg" alt="GRAPHIC 11.4 &mdash; GAP_CROSSING and LINE_LOST. The difference between them is one number." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.4 &mdash; GAP_CROSSING and LINE_LOST. The difference between them is one number.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-04_gap_state_machine.svg" alt="GRAPHIC 11.4 &mdash; GAP_CROSSING and LINE_LOST. The difference between them is one number." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.4 &mdash; GAP_CROSSING and LINE_LOST. The difference between them is one number.</div></div>
 <h3 class="h3-c-3498db">3.5 Why We Cannot Code Our Way Off the Table</h3>
 <p>Here is a question every robotics student asks, and it deserves a real answer:</p>
 <p class="p-ccc">
@@ -195,7 +195,7 @@ go over too.</p>
 <p>But you just agreed the alarm is not allowed to fire until the robot has driven <em>further</em>
 than a legal gap. And a legal gap is <em>wider</em> than that few-centimeter head start.</p>
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; The alarm is not allowed to go off until the robot has already fallen.</div>The distance you must travel before you are <em>permitted</em> to call it a cliff is <strong>larger</strong> than the distance you have <em>available</em> before the wheels leave the table. There is no threshold value that both crosses gaps and stops for cliffs. Not a badly chosen one. <strong>There is no such number.</strong><br><br><em>If you want to check that claim yourself, the full arithmetic is in Section 8A.4.</em></div>
-<div class="div-m-24px0"><img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-02_cliff_arithmetic.svg" alt="GRAPHIC 11.2 &mdash; 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.2 &mdash; 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-02_cliff_arithmetic.svg" alt="GRAPHIC 11.2 &mdash; 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.2 &mdash; 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen.</div></div>
 <h4 class="h4-c-555">The answer is a piece of wood.</h4>
 <p>So we do not solve this in software. We solve it by <strong>running the robot on the floor</strong>,
 or by putting a <strong>physical barrier</strong> at the table edge.</p>
@@ -242,7 +242,7 @@ That is the kind of thing the math tells you, and guessing never does.</p>
 <td class="td-ddd">Reports the measured gap width in Section 7A.</td>
 </tr>
 </table>
-<div class="div-m-24px0"><img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap.</div></div>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">No new wiring. No new jumpers. No new library.</div>This is what good architecture buys you. In Lesson 7 you organized the code into modules. In Lesson 6 you built <code>averageCounts()</code>. Today you spend that work &mdash; the whole lesson is about <strong>asking a better question of hardware you already own.</strong></div>
 <p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
@@ -355,7 +355,7 @@ the state machine, the kill switch.</p>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 1</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1-2">&#128193; Step 2: Add the Gap Budget<span class="span-c-555">RobotConfig.h</span></h3>
 <p>Open <code>RobotConfig.h</code>. Find the Lesson 8 line-following block, and add this <em>underneath</em> it:</p>
@@ -392,7 +392,7 @@ enum RobotState {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 2</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1-2">&#128193; Step 3: Add the Odometer Variable<span class="span-c-555">main.cpp</span></h3>
 <p>Open <code>main.cpp</code>. Find the state variables at the top and add one more:</p>
@@ -406,7 +406,7 @@ long gapStartCounts = 0;   // Encoder reading at the moment we went blind</pre>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 3</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1-2">&#128193; Step 4: Build the Odometer<span class="span-c-555">main.cpp</span></h3>
 <p>Add these two functions. Put them right below <code>killSwitchPressed()</code>:</p>
@@ -430,7 +430,7 @@ float blindDistanceCm() {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 4</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1-2">&#128193; Step 5: Rewrite handleGap()<span class="span-c-555">main.cpp</span></h3>
 <p>This is the lesson. Find <code>handleGap()</code> and replace the <strong>whole function</strong>:</p>
@@ -463,7 +463,7 @@ void handleGap() {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 5</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1-2">&#128193; Step 6: Add the Two States &mdash; and Retire the Stopwatch<span class="span-c-555">main.cpp</span></h3>
 <p>First, add the two new cases to the <code>loop()</code> switch, just before <code>case EXECUTING_TURN</code>:</p>
@@ -519,7 +519,7 @@ void handleGap() {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 6 (finished build)</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 11 build in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 11 build in Project Maker</a></p></div>
 </details>
 <p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
 </div>
@@ -570,7 +570,7 @@ const float GAP_MAX_CM = 999.0;</pre>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7A in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A &mdash; Make the Robot a Ruler</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A &mdash; Make the Robot a Ruler</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7B &mdash; One Gap, Your Number<span class="span-c-555">the blank goes live</span></h3>
 <p>Put the code back the way Section 6 had it. Now fill in the blank with what you measured:</p>
@@ -588,7 +588,7 @@ const float GAP_MAX_CM = 0.0;   // &lt;-- YOUR NUMBER. Try your 7A reading + 2.<
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7B in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B &mdash; One Gap, Your Number</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B &mdash; One Gap, Your Number</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7C &mdash; TRIM Under Blindness<span class="span-c-555">the open loop bites</span></h3>
 <p>Open <code>RobotConfig.h</code>. Find your TRIM line and zero it out:</p>
@@ -604,7 +604,7 @@ and reports LINE LOST even though the line was right there.</p>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7C in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C &mdash; TRIM Under Blindness</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C &mdash; TRIM Under Blindness</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7D &mdash; Two Gaps in a Row<span class="span-c-555">does the odometer re-arm?</span></h3>
 <p>Put a <em>second</em> gap in the track, a few centimeters after the first.</p>
@@ -642,7 +642,7 @@ count &mdash; the budget would already be spent, and the robot would quit instan
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7D in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D &mdash; Two Gaps in a Row</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D &mdash; Two Gaps in a Row</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7E &mdash; The Payoff &mdash; Put the Stopwatch Back<span class="span-c-555">prove the lesson</span></h3>
 <p>This is the experiment the whole lesson was built for. Do not skip it.</p>
@@ -679,7 +679,7 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8&#x27;s stopwatch, put bac
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7E in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Payoff</a></p></div>
+<p><a href="../newproject.html?lesson=11&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Payoff</a></p></div>
 </details>
 <p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
 </div>
@@ -849,7 +849,7 @@ The same code that was impossible becomes trivial.</p>
       if (retreat &gt; 1.0) {           // only worth doing if we really moved
         driveDistance(-retreat);     // negative = backward
         gapStartCounts = averageCounts();   // we are home; re-zero
-      }</pre><p class="p-mt-10px">Note the <code>retreat &gt; 1.0</code> guard &mdash; there is no point reversing 2&nbsp;mm, and re-zeroing the odometer afterward keeps the next gap honest.</p><p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c1_backup" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+      }</pre><p class="p-mt-10px">Note the <code>retreat &gt; 1.0</code> guard &mdash; there is no point reversing 2&nbsp;mm, and re-zeroing the odometer afterward keeps the next gap honest.</p><p class="p-mt-10px"><a href="../newproject.html?lesson=11&amp;kind=c1_backup" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 <div id="challenge-2" class="div-7d5283" data-challenge="11.2" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
 <div class="div-bg-7d5283"><strong>Challenge 2: The Hunt</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
@@ -902,14 +902,14 @@ undo the sweep on failure - otherwise the next run starts crooked</pre>
         turnDegrees(30);            // undo the sweep - face front again
         currentState = STOPPED;
         showStatus();
-      }</pre><p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c2_hunt" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+      }</pre><p class="p-mt-10px"><a href="../newproject.html?lesson=11&amp;kind=c2_hunt" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 <div id="challenge-3" class="div-7d5283" data-challenge="11.3" data-kind="challenge" data-difficulty="hard" data-grasp="deep">
 <div class="div-bg-7d5283"><strong>Challenge 3: The Speed Budget</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L11</strong> build — slow down as the gap budget burns.</p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the deceleration leg of Lesson 7&rsquo;s trapezoidal profile <img src="https://weymuth.github.io/zumo/images/spiral_star_07.svg" alt="Spiral review from Lesson 07" class="img-h-11em"> &mdash; speed as a function of progress, applied to a budget instead of a distance.</div>
+<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the deceleration leg of Lesson 7&rsquo;s trapezoidal profile <img src="../images/spiral_star_07.svg" alt="Spiral review from Lesson 07" class="img-h-11em"> &mdash; speed as a function of progress, applied to a budget instead of a distance.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
 <p class="p-m-0">The robot charges across a gap at full <code>BASE_SPEED</code> and then stops dead when the budget runs out — a lurch. Make it slow down as the budget burns: full speed at 0% spent, half speed at 100%. The give-up should be a glide, not a slam.</p>
@@ -938,15 +938,15 @@ motors.setSpeeds(gapSpeed + ____, gapSpeed);    <span class="tok-6a9955">// stil
   float spent = blindDistanceCm() / GAP_MAX_CM;   // 0.0 -&gt; 1.0
   spent = constrain(spent, 0.0, 1.0);
   int gapSpeed = BASE_SPEED - (BASE_SPEED / 2) * spent;
-  motors.setSpeeds(gapSpeed + TRIM, gapSpeed);</pre><p class="p-mt-10px">The TRIM still rides on the left motor. Slowing down does not make the loop any less open &mdash; it just makes the mistake cheaper.</p><p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=c3_speed" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+  motors.setSpeeds(gapSpeed + TRIM, gapSpeed);</pre><p class="p-mt-10px">The TRIM still rides on the left motor. Slowing down does not make the loop any less open &mdash; it just makes the mistake cheaper.</p><p class="p-mt-10px"><a href="../newproject.html?lesson=11&amp;kind=c3_speed" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
 <div id="challenge-4" class="div-7d5283" data-challenge="11.4" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
 <div class="div-bg-7d5283"><strong>Challenge 4: Prove Your TRIM</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">&#128193; <strong>Work in:</strong> your <strong>LastName_L11</strong> build &mdash; only <code>RobotConfig.h</code> changes between runs, and your real number goes back at the end &mdash; or a fresh copy at the &sect;7C state: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=cal_7c" target="_blank" class="link-c-2e86ab">&rarr; make this folder for me</a></p>
+<p class="p-m-0">&#128193; <strong>Work in:</strong> your <strong>LastName_L11</strong> build &mdash; only <code>RobotConfig.h</code> changes between runs, and your real number goes back at the end &mdash; or a fresh copy at the &sect;7C state: <a href="../newproject.html?lesson=11&amp;kind=cal_7c" target="_blank" class="link-c-2e86ab">&rarr; make this folder for me</a></p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> TRIM from Lesson 3 <img src="https://weymuth.github.io/zumo/images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em"> &mdash; the number you tuned in week one, now proven on an open loop where no line can cover for it.</div>
+<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> TRIM from Lesson 3 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em"> &mdash; the number you tuned in week one, now proven on an open loop where no line can cover for it.</div>
 <div class="div-b-white">
 <p class="h4-mt-0">Section 7C showed you the effect: in a gap, TRIM is the only thing steering. This challenge makes you <strong>measure</strong> it &mdash; and checks a prediction you wrote down eight lessons ago.</p>
 <p><strong>The setup.</strong> Use your widest gap. Place a post-it at your starting point and line the robot's <strong>front blade</strong> up with its edge &mdash; put the robot in the same exact spot every run; the blade is the easiest consistent reference.</p>
@@ -1019,7 +1019,7 @@ Why does <em>THIS</em> line produce <em>THAT</em> symptom?</p>
 sometimes it runs long. On a clean floor it is <em>almost</em> fine. On carpet it is a disaster.</p>
 <p><strong>Q:</strong> Why does surface texture change the behavior of a line that never mentions the surface?</p>
 <details data-reveal="solution" class="callout-6c757d-bg-faf6fd"><summary class="summary-c-6c757d-2">&#128161; Answer</summary><div class="div-mt-12px"><p>The robot is now trusting a <strong>single witness</strong>. If the left wheel slips, it under-counts, so <code>blindDistanceCm()</code> reports <em>less</em> distance than the robot really travelled &mdash; and the budget never runs out at the right place. If the left wheel catches on a seam, it over-counts, and the robot quits early.</p><p>On smooth tile, both wheels behave, and the bug hides. On carpet, they do not.</p><p><strong>This is why the rule is average BOTH.</strong> Not for precision &mdash; for honesty. The average is wrong by <em>half</em> of any single-wheel error, and more importantly, it <em>cannot</em> be wrong by the full amount. A second witness bounds the lie.</p></div></details>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=b1_onewheel" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b1_onewheel" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 <h3 class="h3-bg-f5eef8" id="mystery-2" data-challenge="11.m2" data-kind="bonus-sabotage">&#128373;&#65039; Mystery 2: The Gap That Only Works Once</h3>
 <p><strong>The planted line</strong> &mdash; inside <code>handleGap()</code>:</p>
 <pre class="code-block-bg-1e1e1e">  if (currentState != GAP_CROSSING) {
@@ -1029,7 +1029,7 @@ sometimes it runs long. On a clean floor it is <em>almost</em> fine. On carpet i
 reporting an enormous blind distance the robot obviously did not travel.</p>
 <p><strong>Q:</strong> The robot did not move. Where did that huge distance come from?</p>
 <details data-reveal="solution" class="callout-6c757d-bg-faf6fd"><summary class="summary-c-6c757d-2">&#128161; Answer</summary><div class="div-mt-12px"><p><code>gapStartCounts</code> is never updated &mdash; it is still <code>0</code>, its startup value. So <code>blindDistanceCm()</code> is not measuring "distance since the line vanished." It is measuring <strong>distance since the robot was switched on</strong>.</p><p>By the time the robot reaches the second gap, it has driven a metre of line. That whole metre is now counted as "blind" distance &mdash; wildly over budget, so <code>LINE_LOST</code> fires on the first loop iteration.</p><p>The first gap worked purely because the robot had not driven far <em>yet</em>. <strong>A bug that works once is the most dangerous kind.</strong> It passes your first test.</p></div></details>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=b2_norearm" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b2_norearm" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 <h3 class="h3-bg-f5eef8" id="mystery-3" data-challenge="11.m3" data-kind="bonus-sabotage">&#128373;&#65039; Mystery 3: The Blank That Does Nothing</h3>
 <p><strong>The planted line</strong> &mdash; the last line of <code>handleGap()</code>:</p>
 <pre class="code-block-bg-1e1e1e">  motors.setSpeeds(BASE_SPEED, BASE_SPEED);        // &lt;-- PLANTED</pre>
@@ -1039,7 +1039,7 @@ find <code>TRIM</code>, and start tuning it. You try 5. You try 15. You try &min
 <p><strong>Q:</strong> You are changing a number the code declares and the comment tells you to fill in.
 Why does the robot completely ignore it?</p>
 <details data-reveal="solution" class="callout-6c757d-bg-faf6fd"><summary class="summary-c-6c757d-2">&#128161; Answer</summary><div class="div-mt-12px"><p>Because <code>TRIM</code> is declared, but never <strong>spent</strong>. It is not in the <code>setSpeeds()</code> call. The value goes nowhere. The variable exists purely to be read by humans.</p><p>This one is worse than a crash, and it is worth understanding why. A crash tells you something is wrong. This bug <strong>lets you tune for twenty minutes and lose faith in the instrument</strong> &mdash; you conclude TRIM does not work, or that your robot is broken, or that you are bad at this.</p><p><strong>A blank the code never reads is a lie.</strong> If a lesson gives you a number to fill in, that number must actually reach the motors. Check the call site, not just the declaration.</p></div></details>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=b3_trim" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b3_trim" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
 <h3 class="h3-bg-f5eef8" id="mystery-4" data-challenge="11.m4" data-kind="bonus-sabotage">&#128373;&#65039; Mystery 4: Centimeters That Are Not Centimeters</h3>
 <p><strong>The planted line</strong> &mdash; inside <code>blindDistanceCm()</code>:</p>
 <pre class="code-block-bg-1e1e1e">float blindDistanceCm() {
@@ -1050,7 +1050,7 @@ Why does the robot completely ignore it?</p>
 Every time. Even with <code>GAP_MAX_CM</code> set to 50.</p>
 <p><strong>Q:</strong> Fifty is a big number. Why is the budget gone immediately?</p>
 <details data-reveal="solution" class="callout-6c757d-bg-faf6fd"><summary class="summary-c-6c757d-2">&#128161; Answer</summary><div class="div-mt-12px"><p>The division by <code>COUNTS_PER_CM</code> is missing, so the function returns raw <strong>encoder counts</strong> while the name and the comparison both claim <strong>centimeters</strong>.</p><p>There are about <strong>74 counts in one centimeter</strong>. So a budget of "50" is spent after 50 counts &mdash; roughly <strong>7 millimeters</strong> of travel. The robot is over budget almost before it has moved.</p><p>The compiler cannot help you here. Counts and centimeters are both just numbers to it. <strong>Units live in your head, and in the function name &mdash; and a function whose name lies is worse than one with no name at all.</strong></p></div></details>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=11&amp;kind=b4_counts" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b4_counts" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 <p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
 </div>
 

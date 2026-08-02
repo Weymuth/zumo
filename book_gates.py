@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.35.1'
+VERSION = 'v1.35.2'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -291,14 +291,19 @@ for m in re.finditer(r'href="([^"#][^"]*)"', R['index.html']):
         bad.append(f'index.html -> {u} MISSING')
 gate('index.html relative links resolve', bad)
 
-# ---- links: going_deeper references use canonical URLs
+# ---- links: going_deeper references use canonical RELATIVE URLs (S105)
+# The absolute form was allowed while the book hard-coded its own domain. §27.10 removed
+# all 496 self-references, so the canonical form is now relative-to-the-page and the
+# absolute form is a REGRESSION, not an alternative. Depth is derived from the page, not
+# guessed: lessons/ sit one level down, root pages do not.
 bad = []
 for f in site:
+    want = '../going_deeper.html' if f.startswith('lessons/') else 'going_deeper.html'
     for m in re.finditer(r'href="([^"]*going_deeper[^"]*)"', R[f]):
-        if m.group(1) not in ('going_deeper.html',
-                              'https://weymuth.github.io/zumo/going_deeper.html'):
-            bad.append(f'{f}: {m.group(1)}')
-gate('going_deeper links canonical', bad)
+        u = m.group(1).split('#')[0]
+        if u != want:
+            bad.append(f'{f}: {m.group(1)} (expected {want})')
+gate('going_deeper links canonical and relative', bad)
 
 # ---- §24: cross-lesson promises — a forward-ref's topic must exist in the target lesson
 bad = []

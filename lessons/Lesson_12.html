@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.14.2 -->
+<!-- Lesson version: v01.14.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +47,7 @@
         <a href="Lesson_14.html" title="Competition Prep" class="link-bc-rgba2552">14</a>
         <a href="Lesson_15.html" title="Advanced PID Control" class="link-bc-rgba2552">15</a>
         <a href="Lesson_16.html" title="Engineering Showcase" class="link-bc-rgba2552">16</a>
-        <a href="https://weymuth.github.io/zumo/going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
+        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
     </div>
     <script>
     (function() {
@@ -181,7 +181,7 @@ The math really was correct. Every single component performed exactly as designe
 
 <p>The <em>rubber</em> failed. And no encoder anywhere has a rubber sensor.</p>
 <figure class="div-m-24px0">
-<img src="https://weymuth.github.io/zumo/images/L12_GRAPHIC_12-01_encoder_vs_gyro.svg" alt="Encoder watches the wheel; gyro watches the chassis" class="img-ddd">
+<img src="../images/L12_GRAPHIC_12-01_encoder_vs_gyro.svg" alt="Encoder watches the wheel; gyro watches the chassis" class="img-ddd">
 <figcaption class="figcaption"><strong>GRAPHIC 12.1</strong> &mdash; The encoder is bolted to the motor. The gyro is bolted to the chassis. On a slick floor, only one of them is still answering the question you asked.</figcaption></figure>
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; This is a structural limit, not a tuning problem.</div>You cannot fix this with a better constant. You cannot fix it with a smarter algorithm. You cannot fix it by counting more carefully.<br><br><strong>The information is not present in the encoder signal at all.</strong> A slipping wheel and a gripping wheel produce the <em>identical</em> stream of counts. There is no clever way to tell them apart, because there is nothing to tell apart &mdash; the two cases are the same to the sensor.<br><br>To detect slip you need a <strong>second instrument, watching something else.</strong></div>
 <h3 class="h3-c-3498db-3">3.3 The Gyro Watches the Robot</h3>
@@ -255,7 +255,7 @@ and then subtract it, forever after.</p>
 sits absolutely still, averages all 1,024 readings, and stores the result as
 <code>gyroOffset</code>. From that moment on, every reading gets that offset subtracted:</p>
 <figure class="div-m-24px0">
-<img src="https://weymuth.github.io/zumo/images/L12_GRAPHIC_12-02_measuring_the_lie.svg" alt="Calibration: 1024 samples, average the bias, subtract it forever" class="img-ddd">
+<img src="../images/L12_GRAPHIC_12-02_measuring_the_lie.svg" alt="Calibration: 1024 samples, average the bias, subtract it forever" class="img-ddd">
 <figcaption class="figcaption"><strong>GRAPHIC 12.2</strong> &mdash; Read it 1,024 times while it is still. Average them. That average is the lie &mdash; subtract it from every reading for the rest of the run.</figcaption></figure>
 <pre class="code-block-bg-1e1e1e">void gyroUpdate() {
   imu.readGyro();
@@ -473,7 +473,7 @@ You are about to modify a working robot, and you want to be certain it was worki
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 1</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 2: Create the IMU Object<span class="span-c-555">RobotSensors.h + .cpp</span></h3>
 <p>The gyro is hardware, so it gets an object &mdash; exactly like <code>motors</code>,
@@ -489,7 +489,7 @@ Add this under the other object definitions:</p>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 2</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 3: Add the Calibration Constant<span class="span-c-555">RobotConfig.h</span></h3>
 <p>Open <code>RobotConfig.h</code>. Add this at the bottom:</p>
@@ -507,7 +507,7 @@ const int GYRO_CAL_SAMPLES = 1024;</pre>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 3</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 4: Declare the Four Gyro Functions<span class="span-c-555">RobotSensors.h</span></h3>
 <p>Back to <code>RobotSensors.h</code>. Add the four prototypes:</p>
@@ -524,7 +524,7 @@ int  getTurnAngle();
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 4</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 5: Write the Four Gyro Functions<span class="span-c-555">RobotSensors.cpp</span></h3>
 <p>This is the big one &mdash; the only step in the lesson with real substance to type.
@@ -596,7 +596,7 @@ int getTurnAngle() {
 <div class="div-27ae60"><div class="div-fs-105em">&#127942; Build it now. The binary just grew by 800 bytes.</div>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live &mdash; the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 5</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 6: Declare the Honest Turn<span class="span-c-555">RobotMotion.h</span></h3>
 <p>The gyro is a sensor, so its four functions lived in <code>RobotSensors</code>.
@@ -619,7 +619,7 @@ void turnDegreesGyro(float degrees);
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 6</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_6" class="link-c-2e86ab">Open Step 6 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=step_6" class="link-c-2e86ab">Open Step 6 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 7: Write the Honest Turn<span class="span-c-555">RobotMotion.cpp</span></h3>
 <p>Open <code>RobotMotion.cpp</code>. Add this at the bottom:</p>
@@ -670,7 +670,7 @@ and the linker will not carry dead weight to a chip this small. The ATmega32U4 h
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 7</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=step_7" class="link-c-2e86ab">Open Step 7 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=step_7" class="link-c-2e86ab">Open Step 7 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 8: Switch the Turns &mdash; and Calibrate at Boot<span class="span-c-555">RobotMotion.cpp + main.cpp</span></h3>
 <p>Two edits, and the lesson lands.</p>
@@ -706,7 +706,7 @@ Find <code>setup()</code>. Add this <strong>immediately before</strong> the
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 8 (finished build)</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 12 build in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 12 build in Project Maker</a></p></div>
 </details>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
 </div>
@@ -748,7 +748,7 @@ Do them in order; each one sets up the next.</p>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7A in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A &mdash; The Gyro With the Motors Off</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A &mdash; The Gyro With the Motors Off</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7B &mdash; Delete the Calibration<span class="span-c-555">the lie is cheaper than the truth</span></h3>
 <p>Same sketch as 7A. One change, in <code>setup()</code>: <strong>do not call
@@ -779,7 +779,7 @@ so it has nothing to subtract.</p>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7B in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B &mdash; Delete the Calibration</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B &mdash; Delete the Calibration</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7C &mdash; The Lie, Caught in the Act<span class="span-c-555">&#127919; the point of the lesson</span></h3>
 <p>This is the rung the whole lesson exists for.</p>
@@ -820,7 +820,7 @@ encoders. The <strong>gyro</strong> is along for the ride, watching, steering no
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7C in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C &mdash; The Lie, Caught in the Act</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C &mdash; The Lie, Caught in the Act</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7D &mdash; The Honest Turn, Same Surface<span class="span-c-555">close on the robot, not the wheels</span></h3>
 <p>Same delrin. Same 90 degrees. One difference: <strong>the gyro is now driving.</strong></p>
@@ -842,10 +842,10 @@ encoders. The <strong>gyro</strong> is along for the ride, watching, steering no
 <div class="div-27ae60"><div class="div-fs-105em">&#127942; The robot turns 90 degrees. On the slick surface. Every time.</div>The wheels are still slipping &mdash; you can <em>hear</em> them slipping, and the turn takes noticeably longer than it did on carpet.<br><br><strong>The robot does not care.</strong> It keeps spinning the motors until the <em>chassis</em> has come around 90 degrees, and then it stops. Slip does not make it wrong. Slip just makes it slow.</div><details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7D in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D &mdash; The Honest Turn</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D &mdash; The Honest Turn</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7E &mdash; The Lesson 6 Square<span class="span-c-555">&#127942; the payoff</span></h3>
-<div class="callout-2e86ab-bg-e7f0fa-2"><div class="div-fs-105em">🔁 Builds on:</div> the square from Lesson 6 <img src="https://weymuth.github.io/zumo/images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> &mdash; same four sides, same four corners, new instrument watching them.</div>
+<div class="callout-2e86ab-bg-e7f0fa-2"><div class="div-fs-105em">🔁 Builds on:</div> the square from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> &mdash; same four sides, same four corners, new instrument watching them.</div>
 <p>In <strong>Lesson 6</strong> you drove a square. It did not close. The robot came back
 somewhere near where it started, pointing somewhere near the right direction, and you fixed most
 of it with <code>TRIM</code>.</p>
@@ -882,7 +882,7 @@ of it with <code>TRIM</code>.</p>
 <div class="div-6b8e6b"><div class="div-fs-09em">💡 TIP</div>
 <div class="div-fs-105em">Run A on carpet. Then run C on carpet.</div>Both squares close. Both are decent. On carpet, the encoder is a good instrument and the gyro is a good instrument, and they mostly agree.<br><br><strong>Now move to the delrin.</strong></div>
 <figure class="div-m-24px0">
-<img src="https://weymuth.github.io/zumo/images/L12_GRAPHIC_12-03_the_square_that_closes.svg" alt="Encoder square collapses on delrin; gyro square closes" class="img-ddd">
+<img src="../images/L12_GRAPHIC_12-03_the_square_that_closes.svg" alt="Encoder square collapses on delrin; gyro square closes" class="img-ddd">
 <figcaption class="figcaption"><strong>GRAPHIC 12.3</strong> &mdash; Button A (encoder) and Button C (gyro), same slick surface. Four corners, four errors &mdash; and errors in dead reckoning add up. They do not cancel.</figcaption></figure>
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; Button A on delrin: the square collapses.</div>Each corner slips a little. The robot turns 60&deg; instead of 90&deg;. Four corners, four errors, and <strong>the errors add up</strong> &mdash; they do not cancel.<br><br>The robot finishes its four sides and its four turns having driven something closer to a <em>pentagon that gave up</em>, and it ends up nowhere near where it started, pointing nowhere near where it began.<br><br>And the encoder is <strong>completely satisfied</strong>. As far as it is concerned, it drove a perfect square.</div>
 <div class="div-27ae60"><div class="div-fs-105em">&#127942; Button C on delrin: the square closes.</div>Same slippery surface. Same slipping wheels. Same motors, same speed, same 30&nbsp;cm sides.<br><br><strong>The robot comes home.</strong><br><br>Every corner is a real 90 degrees, because every corner was measured on the <em>robot</em> instead of the wheels. The slip is still happening &mdash; it just cannot lie to you any more.</div>
@@ -896,7 +896,7 @@ could not know.</strong></p>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7E in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Lesson 6 Square</a></p></div>
+<p><a href="../newproject.html?lesson=12&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Lesson 6 Square</a></p></div>
 </details>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
 </div>
@@ -1073,7 +1073,7 @@ void turnToHeading(int targetHeading) {
 }</pre>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">What HEADING_TOLERANCE is for.</div>The robot will never land on <em>exactly</em> 90.000&deg;. It will overshoot to 92, come back to 88, and hunt back and forth forever if you demand perfection.<br><br><strong>Tolerance is how close is close enough.</strong> Too tight and it oscillates and never settles. Too loose and your turns are sloppy. Start at 3 and find your own number.</div>
-<p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c1_heading" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c1_heading" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
 <div id="challenge-2" class="div-7d5283" data-challenge="12.2" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
@@ -1150,7 +1150,7 @@ const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
   delay(4000);
 }</pre>
 <div class="div-27ae60"><div class="div-fs-105em">&#127942; Read that code again and notice what it is doing.</div>It is <strong>using one sensor to audit another</strong>. Not to replace it &mdash; to <em>check</em> it.<br><br>Run it on carpet: <code>Clean</code>. Run it on delrin: <code>SLIP!</code> and the buzzer goes off.<br><br>Your robot can now detect a condition that <strong>neither of its sensors can detect alone.</strong></div>
-<p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c2_slipalarm" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c2_slipalarm" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
 <div id="challenge-3" class="div-7d5283" data-challenge="12.3" data-kind="challenge" data-difficulty="hard" data-grasp="moderate">
@@ -1238,7 +1238,7 @@ bool turnDegreesGyroSafe(float degrees) {
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; Note what it does NOT do when it gives up.</div>It does not shrug and carry on as if the turn worked. It <strong>stops the motors, screams, and halts</strong>.<br><br>A robot that knows it failed and keeps going is <em>more</em> dangerous than one that never knew. If the turn did not happen, every single thing the robot does afterward is based on a false idea of which way it is pointing.<br><br><strong>Stop. Do not pretend.</strong></div>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">Choosing TURN_TIMEOUT_MS.</div>Too short and a legitimately slow turn on the delrin gets killed as a false alarm. Too long and a genuinely stuck robot sits there grinding its motors.<br><br>Time your slowest <em>real</em> turn on the slipperiest surface you have. Then add margin. Start at 3000.</div>
-<p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=c3_stuckguard" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c3_stuckguard" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
 
@@ -1267,7 +1267,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <p><strong>The symptom:</strong> The robot boots, spins briefly, and then behaves erratically for the entire run. Turns overshoot wildly, or barely happen at all. Every turn is wrong, and wrong by a <em>consistent</em> amount.</p>
 <div class="div-6c757d-5">
 <div class="div-fs-105em">Ask yourself:</div> The calibration loop is averaging 1,024 readings to learn what &quot;not moving&quot; feels like. What is the robot <em>doing</em> during those 1,024 readings? So what does the gyro conclude that &quot;still&quot; means &mdash; and what does it now subtract from every reading, forever?</div>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=b1_spinning_cal" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b1_spinning_cal" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 </div></div>
 <div class="div-6c757d-6">
 <div data-challenge="12.m2" data-kind="bonus-sabotage" class="div-bg-6c757d-2">&#128373;&#65039; Mystery B2 &mdash; The Turn That Never Ends<span class="span-f-right">23,882 bytes</span></div>
@@ -1282,7 +1282,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <p><strong>The symptom:</strong> The robot starts a turn and <strong>never stops turning</strong>. It spins until you cut the power.</p>
 <div class="div-6c757d-5">
 <div class="div-fs-105em">Ask yourself:</div> A gyro reports a <em>rate</em>, not an angle. Something has to add the rate up over time. If nobody ever adds anything up, what does <code>getTurnAngle()</code> keep returning? And is <code>0 &lt; 90</code> ever going to become false?<br><br><em>Note the byte count: this build is 648 bytes SMALLER than the correct one. Deleting code makes the program smaller. It does not make it work.</em></div>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=b2_no_update" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b2_no_update" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 </div></div>
 <div class="div-6c757d-6">
 <div data-challenge="12.m3" data-kind="bonus-sabotage" class="div-bg-6c757d-2">&#128373;&#65039; Mystery B3 &mdash; The First Turn Works<span class="span-f-right">24,530 bytes</span></div>
@@ -1296,7 +1296,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <p><strong>The symptom:</strong> The <strong>first</strong> turn is perfect. Every turn after it finishes <strong>instantly</strong> &mdash; the motors barely twitch before the robot declares the turn complete.</p>
 <div class="div-6c757d-5">
 <div class="div-fs-105em">Ask yourself:</div> <code>gyroReset()</code> sets the running angle back to zero. If it only ever runs once, at boot &mdash; what does the running total say <em>after</em> the first 90&deg; turn is finished?<br><br>Now the second turn starts. It checks <code>abs(getTurnAngle()) &lt; 90</code>. The angle is <em>already</em> 90. How long does that loop run?</div>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=b3_reset_hoisted" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b3_reset_hoisted" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
 </div></div>
 <div class="div-6c757d-6">
 <div data-challenge="12.m4" data-kind="bonus-sabotage" class="div-bg-6c757d-2">&#128373;&#65039; Mystery B4 &mdash; The Helpful TRIM<span class="span-f-right">24,534 bytes</span></div>
@@ -1307,7 +1307,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <p><strong>The symptom:</strong> Turns are subtly, stubbornly off &mdash; and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
 <div class="div-6c757d-5">
 <div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>open loop</strong> &mdash; a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,534</strong>. That is <em>exactly</em> the size of the correct build &mdash; not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 </div></div>
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; What B4 should teach you for the rest of your life</div>Three of these four mysteries change the program&#x27;s size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
@@ -1472,7 +1472,7 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 </tbody></table>
 <div class="callout-607d8b-bg-eceff1-4">
 <div class="div-fs-105em">🔬 Curious how any of this actually works?</div>
-<p class="p-mb-0">The <strong>Going Deeper</strong> page opens up the machinery behind two things this lesson leans on &mdash; the <em>linker</em> that noticed your unused function and threw it away, and the fixed-point arithmetic behind &sect;8A.3's gyro units. None of it is assigned, and none of it is on a quiz &mdash; it is there for when you want it. <a href="https://weymuth.github.io/zumo/going_deeper.html" class="link-c-2e86ab">Open Going Deeper &rarr;</a></p>
+<p class="p-mb-0">The <strong>Going Deeper</strong> page opens up the machinery behind two things this lesson leans on &mdash; the <em>linker</em> that noticed your unused function and threw it away, and the fixed-point arithmetic behind &sect;8A.3's gyro units. None of it is assigned, and none of it is on a quiz &mdash; it is there for when you want it. <a href="../going_deeper.html" class="link-c-2e86ab">Open Going Deeper &rarr;</a></p>
 </div>
 
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>

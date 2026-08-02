@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.12.2 -->
+<!-- Lesson version: v02.12.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +47,7 @@
         <a href="Lesson_14.html" title="Competition Prep" class="link-bc-rgba2552">14</a>
         <a href="Lesson_15.html" title="Advanced PID Control" class="link-bc-rgba2552">15</a>
         <a href="Lesson_16.html" title="Engineering Showcase" class="link-bc-rgba2552">16</a>
-        <a href="https://weymuth.github.io/zumo/going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
+        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
     </div>
     <script>
     (function() {
@@ -133,7 +133,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <div class="div-fs-105em">&#128273; CALIBRATION IS A CONTRACT</div>
 <p class="p-m-8px000">Calibration maps the world you <em>showed</em> it &mdash; white floor to black line &mdash; onto 0..1000, and clamps everything outside that world to the edges. It buys you comparability and it costs you range. Silver lives outside the contract.</p>
 </div>
-<div class="div-m-25px0"><img src="https://weymuth.github.io/zumo/images/L13_GRAPHIC_13-02_calibration_clamp.svg" alt="The calibrated scale clamping silver to zero" class="img-br-8px"><div class="div-c-666-2">GRAPHIC 13.2 &mdash; The clamp. Raw readings (left) keep silver, white, green and black distinct. The calibrated map (right) folds silver and white onto the same 0.</div></div>
+<div class="div-m-25px0"><img src="../images/L13_GRAPHIC_13-02_calibration_clamp.svg" alt="The calibrated scale clamping silver to zero" class="img-br-8px"><div class="div-c-666-2">GRAPHIC 13.2 &mdash; The clamp. Raw readings (left) keep silver, white, green and black distinct. The calibrated map (right) folds silver and white onto the same 0.</div></div>
 <p>So how do you see silver? You go <em>under</em> the calibration, to the channel it is built on: <code>lineSensors.read()</code> &mdash; the <strong>raw</strong> read. Raw values are decay times in microseconds: the sensor shines infrared at the floor and times how fast its detector discharges. A bright surface bounces back more light, the detector discharges faster, and the number is <em>smaller</em>. On the raw channel, <strong>brighter = lower</strong> &mdash; and silver reads lower than white ever does. The gap between them is real, measurable, and yours to find in Section 7A.</p>
 <p>One more thing before you object that this breaks a book-wide rule. Since Lesson 8 this book has hammered one nail: <em>use <code>readCalibrated()</code>, never raw <code>read()</code></em>. That rule stands &mdash; for line work. The rule was never "calibrated is holy." The rule is <strong>match the channel to the question</strong>:</p>
 <ul>
@@ -226,7 +226,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 </pre>
 <p>Read <code>STOP_PROX</code>'s comment twice: <em>"wall or victim, the CALLER decides."</em> The primitive reports facts; the state machine interprets them. That split &mdash; measurement below, judgment above &mdash; is the same one that keeps <code>RobotSensors.cpp</code> from ever setting a motor speed. It is what lets Section 6 test each layer alone.</p>
 <h3 class="h3-c-2e86ab">5.2 The Lawnmower Sweep</h3>
-<div class="div-m-25px0"><img src="https://weymuth.github.io/zumo/images/L13_GRAPHIC_13-01_lawnmower_sweep.svg" alt="Lawnmower sweep pattern with wall-reset rows" class="img-br-8px"><div class="div-c-666-2">GRAPHIC 13.1 &mdash; The sweep. Every row runs wall-to-wall; every wall contact zeroes the accumulated drift. The prox looks ahead of the robot, so rows can be coarser than the robot is wide.</div></div>
+<div class="div-m-25px0"><img src="../images/L13_GRAPHIC_13-01_lawnmower_sweep.svg" alt="Lawnmower sweep pattern with wall-reset rows" class="img-br-8px"><div class="div-c-666-2">GRAPHIC 13.1 &mdash; The sweep. Every row runs wall-to-wall; every wall contact zeroes the accumulated drift. The prox looks ahead of the robot, so rows can be coarser than the robot is wide.</div></div>
 <p>Mow a lawn and you already know the algorithm: run to the far edge, turn, step over one mower-width, turn again, run back. The sweep is exactly that, built from parts you already own &mdash; <code>driveUntil()</code> for the rows, <code>turnDegreesGyro()</code> for the corners, <code>driveDistance()</code> for the sidestep. Look at the geometry of what the walls contribute: a row does not end after a <em>guessed</em> distance; it ends <strong>when the wall says so</strong>. Every pass, whatever error TRIM let through and whatever the gyro's corners smeared, the wall wipes the slate. Dead reckoning that gets corrected forty times a run is dead reckoning you can trust.</p>
 <p>And here is the payoff of a sweep whose rows have <em>consistent length</em>: the row itself becomes a measuring stick. The walls do not move. This row should run about as long as the last one did. So when the prox fires and the odometer says the leg is twenty centimeters <em>short</em> of where the wall stood last pass &mdash; the thing ahead is not the wall. <strong>The prox says "something ahead"; the odometer says which something.</strong> Lesson 12 taught you the pattern: when one sensor cannot answer alone, find a second sensor that can call its bluff. The gyro cross-examined the encoders. Now the odometer cross-examines the prox. This is the third time the book has played this card, and it will not be the last &mdash; sensor fusion is the whole future of this field.</p>
 <h3 class="h3-c-2e86ab">5.3 Four Blanks, Four Measurements</h3>
@@ -318,7 +318,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 1</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 2 &mdash; The Doorman</h3>
 <div class="callout-2e86ab-bg-e8f4f8">
@@ -356,7 +356,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 2</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 3 &mdash; Wire the Door</h3>
 <div class="callout-2e86ab-bg-e8f4f8">
@@ -435,7 +435,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 3</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 4 &mdash; The Watchful Leg</h3>
 <div class="callout-2e86ab-bg-e8f4f8">
@@ -503,7 +503,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 4</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 5 &mdash; The Sweep (Walls Only)</h3>
 <div class="callout-2e86ab-bg-e8f4f8">
@@ -569,7 +569,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 5</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 6 &mdash; The Witness</h3>
 <div class="callout-2e86ab-bg-e8f4f8">
@@ -648,7 +648,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; CATCH-UP &mdash; Step 6 (finished build)</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 13 build in Project Maker</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 13 build in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">7A &mdash; The Surface Meter</h3>
 <p>The motors never run in this rung. <em>You</em> are the drivetrain: roll the robot by hand over every surface the course owns, hold each ball in front of its nose, and write down what the numbers say. This rung replaces <code>main.cpp</code> entirely (Maker: <em>Lesson 13 &rarr; 7A Surface Meter</em>):</p><pre class="code-block-bg-1e1e1e">
@@ -728,7 +728,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7A in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A &mdash; The Surface Meter</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A &mdash; The Surface Meter</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">7B &mdash; The Silver Brake</h3>
 <p>Your Step 3 build <em>is</em> this rung (Maker: <em>Lesson 13 &rarr; 7B Silver Brake</em>) &mdash; the door detector wired to a stub that announces and stops. One blank is live: <code>SILVER_RAW_MAX</code>, fresh from the 7A table. Run the robot down the line and over the strip. Then, as always, <strong>test both failure directions</strong>:</p>
@@ -741,7 +741,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7B in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B &mdash; The Silver Brake</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B &mdash; The Silver Brake</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">7C &mdash; One Leg, One Turn</h3>
 <p>The atom of the sweep: a single watchful leg, then a single gyro corner. If the atom is right, the sweep is a for-loop away; if the atom is wrong, no amount of sweeping will hide it. This rung also replaces <code>main.cpp</code> (Maker: <em>Lesson 13 &rarr; 7C Leg and Turn</em>):</p><pre class="code-block-bg-1e1e1e">
@@ -810,7 +810,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7C in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C &mdash; One Leg, One Turn</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C &mdash; One Leg, One Turn</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">7D &mdash; The Full Sweep</h3>
 <p>The finished build (Maker: <em>Lesson 13 &rarr; Finished</em>), all four blanks filled, silver ball on the floor. Line &rarr; strip &rarr; announcement &rarr; rows &rarr; and somewhere mid-row, the stop that is not a wall: <strong>VICTIM FOUND</strong>, with the distance on the screen.</p>
@@ -818,7 +818,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7D in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D &mdash; The Full Sweep</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D &mdash; The Full Sweep</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">7E &mdash; The Payoff: Fire the Gyro</h3>
 <p>Lesson 12 proved the gyro beats the encoders <em>on one turn</em>. Here is what that is worth across a whole job. This rung is the finished build with exactly one change &mdash; the sweep&rsquo;s corners go back to the encoder turn (Maker: <em>Lesson 13 &rarr; 7E Encoder Turns</em>):</p><pre class="code-block-bg-1e1e1e">
@@ -873,7 +873,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">&#128230; 7E in the Project Maker</summary>
 <div class="div-mt-12px">
-<p><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Payoff</a></p></div>
+<p><a href="../newproject.html?lesson=13&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Payoff</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">8A.1 The Clamp, With Numbers</h3>
 <p>Say calibration recorded <code>calmin = 400</code> (white floor, raw) and a maximum of 2400 (black tape). Now the robot rolls onto silver and a sensor reads a raw 250 &mdash; brighter than white, so a <em>smaller</em> decay time. The library computes <code>x = (250 - 400) * 1000 / 2000 = -75</code>. Negative &mdash; genuinely outside the calibrated world, and the sign carries the information &ldquo;brighter than anything you showed me.&rdquo; Then the clamp executes: <code>if (x &lt; 0) x = 0</code>. The &minus;75 becomes 0. White floor also computes to 0. <strong>The subtraction knew; the clamp forgot.</strong> On the raw channel the two numbers were 250 and 400 &mdash; a gulf you can drive a threshold through, which is exactly what <code>SILVER_RAW_MAX</code> is.</p>
@@ -911,7 +911,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <div class="div-bg-fffbe6">
 <p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — modify the <code>VICTIM_FOUND</code> state.</p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the state machine from Lesson 9 <img src="https://weymuth.github.io/zumo/images/spiral_star_09.svg" alt="Spiral review from Lesson 09" class="img-h-11em"> &mdash; stepping around a victim is one more transition, and control goes back to the state that owns the sweep.</div>
+<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the state machine from Lesson 9 <img src="../images/spiral_star_09.svg" alt="Spiral review from Lesson 09" class="img-h-11em"> &mdash; stepping around a victim is one more transition, and control goes back to the state that owns the sweep.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
 <p class="p-m-0">One victim is a demo; a rescue robot keeps working. After the celebration, step <em>around</em> the victim and hand control back to the sweep, so a zone with two silver balls ends with <code>Rescues: 2</code>. First answer the bookkeeping question: after stepping around a victim, should <code>lastRowCm</code> update?</p>
@@ -954,7 +954,7 @@ currentState = ____;               <span class="tok-6a9955">// hand back to the 
       currentState = SWEEPING_ZONE;
       <span class="tok-569cd6-c-569cd6">break</span>;
 </pre>
-<p>And the bookkeeping answer: <strong>no.</strong> <code>lastRowCm</code> is the wall&rsquo;s address, and the victim is not the wall. Update it and the next row&rsquo;s victim test compares against a corrupted ruler &mdash; the very ruler that caught this victim.</p><p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c1_sweep" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+<p>And the bookkeeping answer: <strong>no.</strong> <code>lastRowCm</code> is the wall&rsquo;s address, and the victim is not the wall. Update it and the next row&rsquo;s victim test compares against a corrupted ruler &mdash; the very ruler that caught this victim.</p><p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c1_sweep" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
 <div id="challenge-2" class="div-7d5283" data-challenge="13.2" data-kind="challenge" data-difficulty="tough" data-grasp="light">
@@ -962,7 +962,7 @@ currentState = ____;               <span class="tok-6a9955">// hand back to the 
 <div class="div-bg-fffbe6">
 <p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — add an accumulator, then a report in the kill branch.</p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> Count and Report from Lesson 10 <img src="https://weymuth.github.io/zumo/images/spiral_star_10.svg" alt="Spiral review from Lesson 10" class="img-h-11em"> &mdash; the same bookkeeping habit, now with three numbers instead of one.</div>
+<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> Count and Report from Lesson 10 <img src="../images/spiral_star_10.svg" alt="Spiral review from Lesson 10" class="img-h-11em"> &mdash; the same bookkeeping habit, now with three numbers instead of one.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
 <p class="p-m-0">When the kill switch ends a run, make the robot account for itself: rows completed, total centimeters swept, victims found. Everything you need is already being measured — this challenge is pure bookkeeping, and bookkeeping is most of real engineering.</p>
@@ -1018,7 +1018,7 @@ display.print(F(&quot;Rescues: &quot;)); display.print(rescueCount);</pre>
         <span class="tok-569cd6-c-569cd6">break</span>;
       }
 </pre>
-<p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c2_report" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c2_report" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
 <div id="challenge-3" class="div-7d5283" data-challenge="13.3" data-kind="challenge" data-difficulty="hard" data-grasp="moderate">
@@ -1076,7 +1076,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
         <span class="tok-569cd6-c-569cd6">break</span>;
       }
 </pre>
-<p>Without the flag, a genuinely close wall triggers the retry forever &mdash; sidestep, remeasure, sidestep, remeasure &mdash; a robot pacing the zone edge for eternity. One retry converts &ldquo;possibly wrong once&rdquo; into &ldquo;confirmed twice,&rdquo; and that is all the confidence a measurement can buy.</p><p class="p-mt-10px"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=c3_rowzero" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+<p>Without the flag, a genuinely close wall triggers the retry forever &mdash; sidestep, remeasure, sidestep, remeasure &mdash; a robot pacing the zone edge for eternity. One retry converts &ldquo;possibly wrong once&rdquo; into &ldquo;confirmed twice,&rdquo; and that is all the confidence a measurement can buy.</p><p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c3_rowzero" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
 
@@ -1116,7 +1116,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <p>Now every sweep corner overshoots by the same weird amount, and the rows corkscrew across the zone. The line follower is fine. 7C&rsquo;s single turn is <em>not</em> fine. Why does the order of two setup calls bend every corner in the run?</p><details data-reveal="mechanism" class="details-dee2e6-4"><summary class="summary-c-6c757d">Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p><code>gyroSetup()</code> learns the gyro&rsquo;s <em>zero</em> &mdash; what &ldquo;not rotating&rdquo; reads like &mdash; by averaging 1,024 samples while the robot holds still. <code>calibrateLineSensors()</code> <strong>spins the robot.</strong> Run the spin first and the gyro learns its zero <em>mid-pirouette</em>: it now believes some real rotation rate is stillness, and subtracts that fiction from every turn forever after. Every corner inherits the same bias; the rows corkscrew. A spin cannot calibrate a gyro &mdash; canon since Lesson 12, and the reason the correct <code>setup()</code> zeroes the gyro <em>before</em> anything moves.</p></div></details>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=b1_corkscrew" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b1_corkscrew" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 <h4 data-challenge="13.m2" data-kind="bonus-sabotage" class="h4-c-6c757d-3">Mystery B2 &mdash; The Unspent Number</h4>
 <p>The victim tuned TRIM perfectly in 7C &mdash; and the rows in the zone still arc. Their <code>RobotConfig.h</code> shows <code>TRIM = 8</code>, honestly measured. The planted line, in <code>driveUntil()</code>:</p><pre class="code-block-bg-1e1e1e">
 motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as planted</span>
@@ -1124,7 +1124,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <details data-reveal="solution" class="details-dee2e6-4"><summary class="summary-c-6c757d">Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p>Compare against the real line: <code>setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED)</code>. The student&rsquo;s 8 is declared, tuned, believed in &mdash; and <strong>never reaches the motors.</strong> A declared blank the code never spends is a lie in the worksheet: the student adjusts the number, nothing changes, and they learn to distrust the instrument instead of the build.</p><p>Here is the part that should worry you: with <code>TRIM = 8</code> set, this build and the correct one are <em>still</em> byte-identical &mdash; 24,902 bytes each. We disassembled both to prove the difference is real: the correct build loads <strong>158</strong> into the left motor and 150 into the right; the sabotage loads <strong>150 and 150</strong>. One instruction&rsquo;s immediate value. The file size is blind to it; only the disassembly &mdash; or the arc on your floor &mdash; tells the truth.</p></div></details>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=b2_unspent" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b2_unspent" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 <h4 data-challenge="13.m3" data-kind="bonus-sabotage" class="h4-c-6c757d-3">Mystery B3 &mdash; The Stripes of Blindness</h4>
 <p>&ldquo;I made the sweep twice as fast,&rdquo; says the saboteur, proudly. And the runs <em>are</em> faster &mdash; and the robot misses the silver ball about half the time, on a course where it used to score every run. The planted line:</p><pre class="code-block-bg-1e1e1e">
       driveDistance(ROW_STEP_CM * <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// as planted: &quot;cover ground faster&quot;</span>
@@ -1132,7 +1132,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <details data-reveal="solution" class="details-dee2e6-4"><summary class="summary-c-6c757d">Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p><code>ROW_STEP_CM</code> was sized in 7A so that adjacent rows&rsquo; prox coverage <em>overlaps</em> &mdash; no floor goes uninspected. Doubling the step opens a blind stripe between every pair of rows, exactly one step wide. The ball is found when it sits in a covered band and missed when it sits in a stripe &mdash; which is why the failure is <em>intermittent</em>, the cruelest kind. Speed was bought with coverage, and nobody was told the price. Halve the blind area or halve the runtime is a real engineering trade; making it <em>silently</em> is the sabotage.</p></div></details>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=b3_stripes" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b3_stripes" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
 <h4 data-challenge="13.m4" data-kind="bonus-sabotage" class="h4-c-6c757d-3">Mystery B4 &mdash; The Invisible Door</h4>
 <p>The subtlest of the four. A well-meaning classmate &ldquo;fixed&rdquo; <code>silverDetected()</code> to follow the book&rsquo;s oldest rule: <em>always use the calibrated read.</em> The planted line:</p><pre class="code-block-bg-1e1e1e">
   lineSensors.readCalibrated(raw);   <span class="tok-7cbf6e">// as planted: &quot;calibrated is always better&quot;</span>
@@ -1171,7 +1171,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <div class="div-6c757d-2">
 
 <p><em>Everything below is quoted from the compiled, verified source &mdash; not paraphrased.</em></p>
-<p class="p-mb-0"><a href="https://weymuth.github.io/zumo/newproject.html?lesson=13&amp;kind=b4_door" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
+<p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b4_door" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 <h3 class="h3-c-2e86ab">New in Lesson 13</h3>
 <table class="table-bc-collapse">
 <tr class="tr-bg-6c757d">

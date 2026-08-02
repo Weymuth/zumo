@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.15.2 -->
+<!-- Lesson version: v04.15.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +46,7 @@
         <a href="Lesson_14.html" title="Competition Prep" class="link-bc-rgba2552">14</a>
         <a href="Lesson_15.html" title="Advanced PID Control" class="link-bc-rgba2552">15</a>
         <a href="Lesson_16.html" title="Engineering Showcase" class="link-bc-rgba2552">16</a>
-        <a href="https://weymuth.github.io/zumo/going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
+        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
     </div>
     <script>
     (function() {
@@ -167,7 +167,7 @@
 
 <p>The physics of the measurement is beautifully simple. A white or light surface reflects most of the infrared light back up into the phototransistor. A black surface — like electrical tape — absorbs almost all of it, so very little returns. Measure the bounce, and you know the darkness of the floor under that window. Do it with five windows in a row, and you know <em>where</em> a dark line sits beneath the robot.</p>
 
-<img src="https://weymuth.github.io/zumo/images/L04_GRAPHIC_4-03_reflectance_bounce.svg" alt="The bounce: over white, the IR beam reflects strongly back to the detector (fast drain, low number); over black tape, most IR is absorbed and only a weak return reaches the detector (slow drain, high number)" class="img-d-block-4">
+<img src="../images/L04_GRAPHIC_4-03_reflectance_bounce.svg" alt="The bounce: over white, the IR beam reflects strongly back to the detector (fast drain, low number); over black tape, most IR is absorbed and only a weak return reaches the detector (slow drain, high number)" class="img-d-block-4">
 
 <p>Now for the clever part: <em>how</em> the robot measures the bounce. There is no light-meter chip in these sensors. Instead, the microcontroller plays a timing game with each phototransistor, thousands of times per second:</p>
 
@@ -217,7 +217,7 @@
 
 <p>Read that table slowly, because the whole lesson lives inside it. Line sensors 1, 3, and 5 are <em>always</em> wired — that is why they work out of the box. Line sensors 2 and 4 each share a wire with one of the side proximity receivers, and a jumper the size of a grain of rice sits on each shared wire like a railroad switch, routing the wire to one sensor or the other. The front proximity receiver keeps its own dedicated wire no matter what — the robot never gives up its forward vision.</p>
 
-<img src="https://weymuth.github.io/zumo/images/L04_GRAPHIC_4-04_pin_sharing_map.svg" alt="Pin-sharing map, factory position: pins 18, 21, 12 wire permanently to sensors 1, 3, 5; pin 20 routes through a jumper to the LEFT proximity receiver (sensor 2 disconnected) and pin 4 through a jumper to the RIGHT proximity receiver (sensor 4 disconnected); sliding both jumpers to the DN side enables five-sensor mode" class="img-d-block-2">
+<img src="../images/L04_GRAPHIC_4-04_pin_sharing_map.svg" alt="Pin-sharing map, factory position: pins 18, 21, 12 wire permanently to sensors 1, 3, 5; pin 20 routes through a jumper to the LEFT proximity receiver (sensor 2 disconnected) and pin 4 through a jumper to the RIGHT proximity receiver (sensor 4 disconnected); sliding both jumpers to the DN side enables five-sensor mode" class="img-d-block-2">
 
 <!-- BENCH-TEST FLAG (DJ, Session 17): the practical consequence of the DN2/DN4 jumper position for
      side proximity sensing in 5-line mode is DISPUTED pending DJ bench test. The paragraph below
@@ -225,7 +225,7 @@
      until the bench verdict is in. -->
 <p>Your robots arrive from the factory with both jumpers set to the <strong>proximity side</strong>: three line sensors down, three proximity receivers out. Move both jumpers to the line-sensor side and all five line sensors come alive. What exactly that costs you in proximity sensing is a question we will put to the test with real hardware rather than settle on paper — but one fact is already certain and non-negotiable: <strong>Lesson 5's programs are written for the factory jumper position.</strong> That is why this lesson ends by putting the jumpers back.</p>
 
-<img src="https://weymuth.github.io/zumo/images/L04_IMAGE_4-04_jumpers_in_five_sensor_position.jpg" alt="The two configuration jumpers slid to the DN (line-sensor) side, enabling all five line sensors — the Act Two position you move to in Section 6." class="img-d-block-3">
+<img src="../images/L04_IMAGE_4-04_jumpers_in_five_sensor_position.jpg" alt="The two configuration jumpers slid to the DN (line-sensor) side, enabling all five line sensors — the Act Two position you move to in Section 6." class="img-d-block-3">
 <p class="p-c-888"><em>Both jumpers moved to the line-sensor (DN) side — the five-sensor position. You make this move in Section 6, not now.</em></p>
 
 <div class="callout-2da99d-bg-e9f7f5">
@@ -281,7 +281,7 @@
 
 <p>Position = (120,000 + 1,700,000 + 1,920,000) ÷ (120 + 850 + 640) = 3,740,000 ÷ 1,610 ≈ <strong>2323</strong>. The line's darkness is centered a little right of sensor 3 — leaning toward sensor 4, which matches the readings: sensor 4 is fairly dark, sensor 2 barely. Notice something remarkable: the answer 2323 is a position <em>between</em> sensors. The weighted average lets five sensors report line positions with far finer grain than five separate yes/no votes ever could.</p>
 
-<img src="https://weymuth.github.io/zumo/images/L04_GRAPHIC_4-05_readline_numberline.svg" alt="readLine position number line, 0 to 4000: five sensors at home values 0, 1000, 2000, 3000, 4000, each labeled with its physical number and array box index; the Section 3.5 worked example value 2323 is flagged a little right of center" class="img-d-block-4">
+<img src="../images/L04_GRAPHIC_4-05_readline_numberline.svg" alt="readLine position number line, 0 to 4000: five sensors at home values 0, 1000, 2000, 3000, 4000, each labeled with its physical number and array box index; the Section 3.5 worked example value 2323 is flagged a little right of center" class="img-d-block-4">
 
 <p>Three fine-print behaviors of <code class="code-inline-bg-e8e8e8-2">readLine()</code> are worth knowing now, because each one will explain something you'll see on the bench:</p>
 
@@ -334,7 +334,7 @@
 
 <p>You should see a neat row of <strong>five small rectangular windows</strong> — the reflectance sensors from Section 3.1. Each window is one emitter/detector pair. They sit just behind the blade so the robot reads the floor slightly ahead of its tracks: it sees the line a moment before it drives over it, which is exactly what steering will need in Lesson 8.</p>
 
-<img src="https://weymuth.github.io/zumo/images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="The five line sensors and their positions: far-left, left, center, right, far-right (array slots 0 through 4). Temporary diagram standing in for the underside photo." class="img-d-block-3">
+<img src="../images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="The five line sensors and their positions: far-left, left, center, right, far-right (array slots 0 through 4). Temporary diagram standing in for the underside photo." class="img-d-block-3">
 <p class="p-c-888"><em>Diagram of the five sensor positions (temporary — underside photo coming).</em></p>
 
 <p>Now number them — and be careful, because this is where left and right love to betray people. Sensor numbers are defined from the <strong>robot's own point of view</strong>: sensor 1 is the robot's far-left eye, sensor 5 its far-right. Held the way you are holding it now — on its back, blade toward you — the robot's left conveniently lines up with <strong>your</strong> left: sensor 1 is the leftmost window from where you sit, sensor 5 the rightmost, sensor 3 dead center. But flip the robot any other way (say, rolling it sideways with the blade pointing away) and the row mirrors. When in doubt, come back to this pose: <em>on its back, blade toward you</em>.</p>
@@ -348,7 +348,7 @@
 
 <p>Stay in the same pose and look at the front sensor board — the separate small circuit board that carries the sensor windows. Somewhere on it sit <strong>two tiny plastic jumper blocks</strong>, each straddling two of three metal pins. These are the railroad switches from the Section 3.2 table. Each jumper has two possible positions, and the positions are labeled on the board: one jumper chooses between <strong>DN2</strong> (line sensor 2) and <strong>LFT</strong> (left proximity receiver); the other chooses between <strong>DN4</strong> (line sensor 4) and <strong>RGT</strong> (right proximity receiver).</p>
 
-<img src="https://weymuth.github.io/zumo/images/L04_IMAGE_4-02_close_up_of_the_front_sensor_array.jpg" alt="Close-up of the front sensor array underside: the two blue configuration jumpers in the factory (proximity) position, one at each end of the sensor pin row." class="img-d-block-3">
+<img src="../images/L04_IMAGE_4-02_close_up_of_the_front_sensor_array.jpg" alt="Close-up of the front sensor array underside: the two blue configuration jumpers in the factory (proximity) position, one at each end of the sensor pin row." class="img-d-block-3">
 
 <p>Right now, both jumpers should be sitting on the <strong>proximity side</strong> — the factory position, three line sensors and three proximity receivers. Compare yours against the photo above and confirm it. If a jumper is missing or already moved, tell your instructor before going further; this lesson assumes everyone starts from the factory position.</p>
 
@@ -377,14 +377,14 @@
 <div class="callout-ff8c00-bg-ffe4cc">
 <div class="div-fs-105em">📝 DO THIS NOW — Start a New Lesson (same ritual as always)</div>
 <ol>
-<li>Open the <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=main" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> → confirm <strong>Lesson 04 — Main lesson build</strong>, click Download.</li>
+<li>Open the <a href="../newproject.html?lesson=4&amp;kind=main" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> → confirm <strong>Lesson 04 — Main lesson build</strong>, click Download.</li>
 <li>Unzip and drag the <strong>LastName_L04</strong> folder into <strong>Documents/PlatformIO</strong>.</li>
 <li>VS Code: <strong>File → Open Folder</strong> → your new folder (close Lesson 3's folder first).</li>
 <li>Check the header comment the Maker pre-filled, then <strong>Build</strong> (✓) — healthy before you write a line.</li>
 </ol>
 <p class="p-c-666-5">No internet? Copy your <strong>ZUMO_Template</strong>, rename it <code class="code-inline-bg-e8e8e8">LastName_L04</code> by hand — and <strong>paste in the STANDARD HELPERS block</strong> from Section 5.6 (the Maker adds it automatically; the plain template doesn't have it).</p>
 <div class="div-m-22px0">
-<img src="https://weymuth.github.io/zumo/images/L04_GRAPHIC_4-02_project_file_tree.svg" alt="The Lesson 4 PlatformIO project tree: src/main.cpp, include/, lib/, platformio.ini" class="img-h-auto-3">
+<img src="../images/L04_GRAPHIC_4-02_project_file_tree.svg" alt="The Lesson 4 PlatformIO project tree: src/main.cpp, include/, lib/, platformio.ini" class="img-h-auto-3">
 <div class="div-c-666"><strong>[GRAPHIC 4.2]</strong> Your Lesson 4 project &mdash; what each folder is for (File: L04_GRAPHIC_4-02_project_file_tree.svg)</div>
 </div>
 
@@ -623,7 +623,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <div id="brain-check-01" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</div>
 
 <p>That is the reading done. Before you wake a single sensor, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
@@ -684,7 +684,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <div class="callout-2e86ab-bg-e7f1fb">
     <div class="div-c-1a5276">📦 Fell behind? File wrecked?</div>
-    <p class="p-m-8px000">The <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the entry named for the step you're about to build, and it opens a project already caught up to that exact point. Missed a day? Broke your file beyond repair? Grab the right entry and keep moving &mdash; no shame, no retyping.</p>
+    <p class="p-m-8px000">The <a href="../newproject.html?lesson=4" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the entry named for the step you're about to build, and it opens a project already caught up to that exact point. Missed a day? Broke your file beyond repair? Grab the right entry and keep moving &mdash; no shame, no retyping.</p>
 </div>
 
 <h3 class="h4-c-3a7d5c">ACT ONE — Three Sensors</h3>
@@ -1055,7 +1055,7 @@ Serial Monitor: full values plus the position.
 <p><strong>Question:</strong> can the line disappear under the robot?</p>
 
 <ol>
-<li><strong>Flash the Act One program</strong> (three sensors — flip <code class="code-inline-bg-e8e8e8">NUM_SENSORS</code> back to 3, <code class="code-inline-bg-e8e8e8">initThreeSensors()</code>, three-value <code class="code-inline-bg-e8e8e8">showReadings()</code> — or keep a saved copy of each version — the <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=act_one" target="_blank" class="link-c-2e86ab">Project Maker has Act One</a> and <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=act_two" target="_blank" class="link-c-2e86ab">Act Two</a> preloaded as separate folders). Sweep, press A.</li>
+<li><strong>Flash the Act One program</strong> (three sensors — flip <code class="code-inline-bg-e8e8e8">NUM_SENSORS</code> back to 3, <code class="code-inline-bg-e8e8e8">initThreeSensors()</code>, three-value <code class="code-inline-bg-e8e8e8">showReadings()</code> — or keep a saved copy of each version — the <a href="../newproject.html?lesson=4&amp;kind=act_one" target="_blank" class="link-c-2e86ab">Project Maker has Act One</a> and <a href="../newproject.html?lesson=4&amp;kind=act_two" target="_blank" class="link-c-2e86ab">Act Two</a> preloaded as separate folders). Sweep, press A.</li>
 <li>Slide the line into the gap between sensors 1 and 3, using the Step 6 technique, until the dashboard reads all-white. Line hidden: <strong>yes / no?</strong></li>
 <li><strong>Flash the Act Two program</strong> (five sensors). Sweep, press A.</li>
 <li>Try to hide the line in that same gap — or anywhere under the row. Watch digits 2 and 4 in particular. Line hidden: <strong>yes / no?</strong></li>
@@ -1150,7 +1150,7 @@ Serial Monitor: full values plus the position.
 
 <p>Everything so far has been sensing and showing. But the entire point of giving a robot eyes is so it can <strong>act</strong> on what it sees — and acting on information requires something new: a way for code to take <em>different paths</em> depending on a value. That tool is the <strong>if statement</strong>, and it is arguably the single most important concept in all of programming. Every behavior your robot will ever have — stop at the line, chase the light, avoid the wall, win the match — is if statements all the way down. The challenges in Section 9 use it immediately; this section makes sure you own it completely.</p>
 
-<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> the if statement you first read in Lesson 2 <img src="https://weymuth.github.io/zumo/images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em"> and first wrote yourself in Lesson 3, Section 5.5 <img src="https://weymuth.github.io/zumo/images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em">. This is the full treatment — the same tool, now wired to sensors that change their mind forty times a second.</div>
+<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> the if statement you first read in Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em"> and first wrote yourself in Lesson 3, Section 5.5 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em">. This is the full treatment — the same tool, now wired to sensors that change their mind forty times a second.</div>
 
 <p>Then it does the same for the <strong>for loop</strong> — the tool you have already been using since Step 4 without anyone taking it apart for you. An if statement lets code choose. A for loop lets code <em>repeat</em>. Section 9 asks for both, and two of its challenges ask for them <em>together</em>.</p>
 
@@ -1160,7 +1160,7 @@ Serial Monitor: full values plus the position.
 
 <p>You already know the shape. An if statement puts a fork in an otherwise straight road: <em>"IF this condition is true, run these lines. Otherwise, skip them."</em> You make hundreds of these forks a day without noticing — <em>if it's raining, take the umbrella; if the light is red, stop.</em> Lesson 3 had you writing them against a number you typed yourself; from here on the number arrives from a sensor and changes while the robot is moving, which is where this gets interesting. Start with the anatomy, because every piece of it matters once the values stop holding still:</p>
 
-<img src="https://weymuth.github.io/zumo/images/L04_GRAPHIC_4-01_if_anatomy.svg" alt="Anatomy of an if statement: the condition in parentheses is a yes/no question; the opening brace starts the conditional block; the action lines run only when the condition is true; the closing brace ends the block" class="img-d-block-3">
+<img src="../images/L04_GRAPHIC_4-01_if_anatomy.svg" alt="Anatomy of an if statement: the condition in parentheses is a yes/no question; the opening brace starts the conditional block; the action lines run only when the condition is true; the closing brace ends the block" class="img-d-block-3">
 
 <p>Three parts, always the same three parts. <strong>The condition</strong>, in parentheses — a question with a yes/no answer, usually built from a comparison: <code class="code-inline-bg-e8e8e8">&gt;</code> greater than, <code class="code-inline-bg-e8e8e8">&lt;</code> less than, <code class="code-inline-bg-e8e8e8">==</code> equal to (two equals signs — one is assignment, and that typo is a classic). <strong>The braces</strong>, which fence off the conditional block. <strong>The action</strong> — everything inside the fence, which runs only on "yes."</p>
 
@@ -1249,7 +1249,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <p>Then Act Two woke sensors 2 and 4. <strong>Five sensors.</strong> Every one of those copied blocks would have to be found and duplicated again — and every place in your program that walked the array would need the same surgery, and the one you missed would fail silently. Instead you changed a single character: <code class="code-inline-bg-e8e8e8">NUM_SENSORS = 3</code> became <code class="code-inline-bg-e8e8e8">5</code>. The loop asked for the new number and kept working. <em>That</em> is what the loop bought you, and you already spent it today without noticing.</p>
 
 <div class="div-m-22px0">
-<img src="https://weymuth.github.io/zumo/images/L04_GRAPHIC_4-06_for_anatomy.svg" alt="Anatomy of a for loop: the START part creates the counter uint8_t i = 0 and runs once; the CONTINUE IF part tests i less than NUM_SENSORS before every lap; the UPDATE part runs i++ after each lap; the order each lap is start once, check, run body, update, check again" class="img-h-auto-5">
+<img src="../images/L04_GRAPHIC_4-06_for_anatomy.svg" alt="Anatomy of a for loop: the START part creates the counter uint8_t i = 0 and runs once; the CONTINUE IF part tests i less than NUM_SENSORS before every lap; the UPDATE part runs i++ after each lap; the order each lap is start once, check, run body, update, check again" class="img-h-auto-5">
 <div class="div-c-666"><strong>[GRAPHIC 4.6]</strong> The three parts of a for loop &mdash; and why Act Two did not break it (File: L04_GRAPHIC_4-06_for_anatomy.svg)</div>
 </div>
 
@@ -1400,7 +1400,7 @@ A <strong>deadband</strong> is a tolerance around the target inside which you ta
 <div id="challenge-1" class="div-7d5283" data-challenge="4.1" data-kind="challenge" data-difficulty="easy" data-grasp="light">
 <div class="div-bg-7d5283"><strong>Challenge 1: Line Light</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-fs-095em">📁 <strong>Work in:</strong> your main <strong>LastName_L04</strong> build — this challenge adds to it — or a fresh copy that opens <strong>preloaded with the finished three-sensor program</strong>: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_light" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-fs-095em">📁 <strong>Work in:</strong> your main <strong>LastName_L04</strong> build — this challenge adds to it — or a fresh copy that opens <strong>preloaded with the finished three-sensor program</strong>: <a href="../newproject.html?lesson=4&amp;kind=line_light" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" class="link-c-2e86ab">The if statement</a> · <a href="#qr-linesensors" class="link-c-2e86ab">Line sensor functions</a> · <a href="#qr-display" class="link-c-2e86ab">Display</a> · <a href="#qr-leds" class="link-c-2e86ab">LEDs</a> &mdash; the display work goes in <em>both</em> branches</p>
 </div>
 <div class="div-p-0">
@@ -1431,7 +1431,7 @@ else:
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=3&amp;label=Challenge+1" title="3-minute countdown timer for Challenge 1" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
+<iframe src="../timer.html?v=4&amp;min=3&amp;label=Challenge+1" title="3-minute countdown timer for Challenge 1" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 <p><strong>Hints:</strong> center sensor = <code class="code-inline-bg-e8e8e8">lineSensorValues[1]</code> · clear the message by printing spaces · the display work goes in <em>both</em> branches.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code class="code-inline-bg-e8e8e8-4">lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code class="code-inline-bg-e8e8e8-4">ledYellow(1)/ledYellow(0)</code> <span class="tok-666">LED on/off</span> · <code class="code-inline-bg-e8e8e8-4">display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code class="code-inline-bg-e8e8e8-4">display.print(F("LINE!"))</code> <span class="tok-666">print / F("     ") to erase</span></p>
 </div>
@@ -1456,7 +1456,7 @@ else:
 <div id="challenge-2" class="div-7d5283" data-challenge="4.2" data-kind="challenge" data-difficulty="easy" data-grasp="deep">
 <div class="div-bg-7d5283"><strong>Challenge 2: The Line Counter</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — this challenge replaces your loop. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=line_counter" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — this challenge replaces your loop. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="../newproject.html?lesson=4&amp;kind=line_counter" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-if" class="link-c-2e86ab">The if statement</a> · <a href="#qr-linesensors" class="link-c-2e86ab">Line sensor functions</a> · <a href="#qr-scales" class="link-c-2e86ab">Value scales</a> &mdash; two thresholds, one boolean memory</p>
 </div>
 <div class="div-p-0">
@@ -1485,7 +1485,7 @@ each loop, read the center sensor:
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+2" title="4-minute countdown timer for Challenge 2" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
+<iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+2" title="4-minute countdown timer for Challenge 2" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 <p><strong>The trap (and the whole point):</strong> "if dark, add one" counts hundreds per crossing — the loop runs ten times a second and the line is under the sensor for many loops. You need to count <em>arrivals</em>, not <em>presence</em>: add one only at the moment the sensor <strong>goes from white to dark</strong>. Track where you were with a <code class="code-inline-bg-e8e8e8">bool</code> variable.</p>
 <p><strong>Bonus polish:</strong> use two different thresholds — count at &gt;600, release at &lt;400 — so a reading that jitters around one cutoff can't double-count. (That trick has a name: <em>hysteresis</em>. It's in the glossary.)</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code class="code-inline-bg-e8e8e8-4">lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code class="code-inline-bg-e8e8e8-4">display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code class="code-inline-bg-e8e8e8-4">display.print(count)</code> <span class="tok-666">print a number</span></p>
@@ -1517,7 +1517,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <div id="challenge-3" class="div-7d5283" data-challenge="4.3" data-kind="challenge" data-difficulty="easy" data-grasp="moderate">
 <div class="div-bg-7d5283"><strong>Challenge 3: The Position Pointer</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=position_pointer" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="../newproject.html?lesson=4&amp;kind=position_pointer" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" class="link-c-2e86ab">Line sensor functions</a> · <a href="#qr-configs" class="link-c-2e86ab">The two configurations</a> · <a href="#qr-display" class="link-c-2e86ab">Display</a> &mdash; three sensors, so the scale is 0–2000</p>
 </div>
 <div class="div-p-0">
@@ -1546,7 +1546,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+3" title="4-minute countdown timer for Challenge 3" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
+<iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+3" title="4-minute countdown timer for Challenge 3" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 <p><strong>Hints:</strong> <code class="code-inline-bg-e8e8e8">readLine()</code> gives 0–2000 (three sensors) · you need to squash 0–2000 down to a column number 0–7 · then print 8 characters: seven spaces and one <code class="code-inline-bg-e8e8e8">^</code>, with an if deciding which is which.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code class="code-inline-bg-e8e8e8-4">display.gotoXY(col,row)</code> <span class="tok-666">move cursor</span> · <code class="code-inline-bg-e8e8e8-4">display.print(F("..."))</code> <span class="tok-666">print text</span></p>
 </div>
@@ -1570,7 +1570,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <div id="challenge-4" class="div-7d5283" data-challenge="4.4" data-kind="challenge" data-difficulty="tough" data-grasp="moderate">
 <div class="div-bg-7d5283"><strong>Challenge 4: Edge Guard</strong> <span class="span-ai-stretch"><span class="span-bg-b85425">Tough</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — motors change everything. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=edge_guard" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — motors change everything. It opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="../newproject.html?lesson=4&amp;kind=edge_guard" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-linesensors" class="link-c-2e86ab">Line sensor functions</a> · <a href="#qr-if" class="link-c-2e86ab">The if statement</a> &mdash; declare the motors object first — it's in <a href="#qr-hardware" class="link-c-2e86ab">Hardware objects</a></p>
 </div>
 <div class="div-p-0">
@@ -1596,7 +1596,7 @@ each loop: read all sensors — is ANY sensor over the line?
 <span class="tok-6a9955">// if lineSeen -> setSpeeds(0,0); else creep forward</span></pre>
 </div>
 <div class="div-bb-1pxsolid">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+4" title="4-minute countdown timer for Challenge 4" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
+<iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+4" title="4-minute countdown timer for Challenge 4" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 <p><strong>New ingredient:</strong> motors are back — add <code class="code-inline-bg-e8e8e8">Zumo32U4Motors motors;</code> to your hardware objects. Keep the speed gentle (<code class="code-inline-bg-e8e8e8">80</code> is plenty). "Any sensor" means checking all three boxes of the array — a <code class="code-inline-bg-e8e8e8">for</code> loop with an if inside beats writing three ifs.</p>
 <p><strong>Safety notes:</strong> this robot moves by itself — clear runway, and appreciate that <code class="code-inline-bg-e8e8e8">waitForStart()</code> is now doing exactly the job it was hired for. If it curves as it creeps, your Lesson 3 TRIM values fix that.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code class="code-inline-bg-e8e8e8-4">lineSensorValues[0] / [2]</code> <span class="tok-666">the edge sensors</span> · <code class="code-inline-bg-e8e8e8-4">ledYellow(1)/ledRed(1)</code> <span class="tok-666">warn</span> · <code class="code-inline-bg-e8e8e8-4">motors.setSpeeds(0,0)</code> <span class="tok-666">stop</span></p>
@@ -1633,7 +1633,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <div id="challenge-5" class="div-7d5283" data-challenge="4.5" data-kind="challenge" data-difficulty="hard" data-grasp="deep">
 <div class="div-bg-7d5283"><strong>Challenge 5: The Centering Game</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="https://weymuth.github.io/zumo/newproject.html?lesson=4&amp;kind=centering_game" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-fs-095em">📁 <strong>Work in:</strong> a new copy — it opens <strong>preloaded with the finished three-sensor program</strong>, ready to modify: <a href="../newproject.html?lesson=4&amp;kind=centering_game" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-linesensors" class="link-c-2e86ab">Line sensor functions</a> · <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-configs" class="link-c-2e86ab">The two configurations</a> &mdash; center of the 0–2000 scale is 1000; correct <em>toward</em> the line</p>
 </div>
 <div class="div-p-0">
@@ -1662,7 +1662,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
-<iframe src="https://weymuth.github.io/zumo/timer.html?v=4&amp;min=4&amp;label=Challenge+5" title="4-minute countdown timer for Challenge 5" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
+<iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+5" title="4-minute countdown timer for Challenge 5" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 <p><strong>Think it through before coding:</strong> position below center → the line is to the robot's <em>left</em> → pivot left (left track backward, right track forward). Above center → mirror it. Near center → stop. "Near" matters: demand <em>exactly</em> 1000 and the robot will vibrate forever around the target — give it a tolerance band (a <em>deadband</em>) and it settles.</p>
 <p><strong>Why this is the advanced card:</strong> you are closing the full loop — sense → compute error → correct — which is, in miniature, the architecture of line following (Lesson 8) and PID control (Lesson 15). You're not preparing to do robotics anymore. This IS robotics.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code class="code-inline-bg-e8e8e8-4">motors.setSpeeds(L,R)</code> <span class="tok-666">drive</span> · <code class="code-inline-bg-e8e8e8-4">center of range ≈ 1000</code> <span class="tok-666">the target</span></p>
@@ -1745,7 +1745,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <div id="brain-check-02" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</div>
 
 <p class="p-c-5a6872">Tap each one you can actually do &mdash; the Mark-done button unlocks when all thirteen are checked. The first list is what you <em>can do</em>; the second is what you <em>did</em>.</p>
 
@@ -1776,7 +1776,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <div id="brain-check-03" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</div>
 
 <p>Your sensors are calibrated, both configurations ran, and the jumpers are home. These ask you to <em>apply</em> what you read, not just recall it &mdash; answer them, then click to compare.</p>
 
@@ -1815,7 +1815,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 
 <div id="brain-check-04" class="callout-3f51b5">
-    <div class="div-c-283593"><img src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</div>
+    <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</div>
     <p>No reveal on these &mdash; there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
         <li>What surprised you most about how these sensors actually work &mdash; the physics of the measurement, or the numbers they report?</li>
@@ -2030,7 +2030,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
 <div id="brain-check-col" class="div-c5cae9" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
-    <img id="bc-emblem" src="https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png" alt="Brain Check progress" class="img-h-auto-2">
+    <img id="bc-emblem" src="../images/BrainGear_Incomplete.png" alt="Brain Check progress" class="img-h-auto-2">
     <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" class="link-bg-3f51b5">01</a>
     <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" class="link-bg-3f51b5">02</a>
     <a href="#brain-check-03" data-bc-pill="3" aria-label="Brain Check 03" class="link-bg-3f51b5">03</a>
@@ -2049,8 +2049,8 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
     if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
         sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
     }
-    var GRAY = 'https://weymuth.github.io/zumo/images/BrainGear_Incomplete.png';
-    var GREEN = 'https://weymuth.github.io/zumo/images/BrainGear_Complete.png';
+    var GRAY = '../images/BrainGear_Incomplete.png';
+    var GREEN = '../images/BrainGear_Complete.png';
     function allSkills() {
         if (!sk.length) return true;
         for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
