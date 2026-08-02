@@ -11,7 +11,7 @@ Per Bible §24.6b: build bytes, assert, write .tmp, os.replace. Never open(path,
 """
 import os, re, sys
 
-VERSION = 'v1.2.1'   # the only version home in this file (S96)
+VERSION = 'v1.3.0'   # the only version home in this file (S108)
 
 MARK = {'practice': '&#128296;', 'observation': '&#128269;', 'sabotage': '&#128373;&#65039;'}
 WORD = {'practice': 'Extra Practice', 'observation': 'Observation', 'sabotage': 'Sabotage'}
@@ -35,8 +35,14 @@ TABLE = {
     # L16 HELD OUT by DJ ruling: 2 cards, revisit when it has 4.
 }
 
-BANNER = ('<div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">'
-          '{mark} {word}: {count} {noun}</div>')
+# S108, banner scheme F1: the family MARK is gone from the cap. Bible §4.5 ruled the mark
+# derived from the family; S107 ruled NO ICONS ON ANY OF THE 237 CAPS, bonus included, and
+# supersedes it. The three families survive in the WORD, which is what carried §4.5's harm
+# argument anyway -- a student sent hunting a defect that isn't there is misled by
+# "Sabotage", not by a magnifying glass. MARK is kept below, unused, for provenance.
+BANNER = ('<div id="bonus-challenges">'
+          '<span style="display: block; font-size: 0.78em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.8; margin-bottom: 3px;">{word}</span>'
+          '<span style="display: block; font-size: 1.28em; font-weight: 700; letter-spacing: -0.021em;">{count} {noun}</span></div>')
 
 # The CAP is the gray div the banner is seated in.  It is family-independent and
 # identical in all 15 bonus blocks.  It lived outside this generator until S87,
@@ -49,7 +55,7 @@ CAP = ('<div style="background-color: #6c757d; color: white; padding: 13px 18px;
 
 def banner_for(lg):
     fam, count, noun, _ = TABLE[lg]
-    return BANNER.format(mark=MARK[fam], word=WORD[fam], count=count, noun=noun)
+    return BANNER.format(word=WORD[fam], count=count, noun=noun)
 
 def rewrite(path, lg, dry=True):
     s = open(path, encoding='utf-8').read()
@@ -94,10 +100,12 @@ def rewrite(path, lg, dry=True):
     m2 = re.search(r'<div id="bonus-challenges"[^>]*>(.*?)</div>', s, re.S)
     assert m2 and m2.group(0) == new_banner, f'L{lg}: banner did not land byte-exact'
     txt = m2.group(1)
-    assert MARK[fam] in txt and txt.count('&#128373;') <= 1, f'L{lg}: mark wrong or doubled'
+    # S108: the mark assert INVERTS. It used to demand the family glyph was present; the
+    # cap now carries none, so it demands none survived -- entity or raw, any family.
     assert WORD[fam] in txt, f'L{lg}: family word missing'
-    for stray in ['🔨', '🔍', '🧩', '&#128296;&#128296;']:
-        assert stray not in txt, f'L{lg}: raw/duplicate mark survived: {stray}'
+    for stray in ['&#128296;', '&#128269;', '&#128373;', '&#65039;',
+                  '🔨', '🔍', '🕵', '🧩']:
+        assert stray not in txt, f'L{lg}: a mark survived the cap: {stray}'
     navs = [mm for mm in re.finditer(r'<a href="#bonus-challenges"([^>]*)>([^<]*)</a>', s)
             if NAVSIG in mm.group(1)]
     assert len(navs) == 1 and navs[0].group(2) == WORD[fam], \
@@ -113,7 +121,7 @@ def rewrite(path, lg, dry=True):
 
 if __name__ == '__main__':
     dry = '--write' not in sys.argv
-    print(f'gen_bonus_banner v1.1 — {"DRY RUN" if dry else "WRITING"}\n')
+    print(f'gen_bonus_banner {VERSION} — {"DRY RUN" if dry else "WRITING"}\n')
     changed = 0
     for lg in sorted(TABLE):
         p = f'lessons/Lesson_{lg}.html'

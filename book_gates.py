@@ -2,7 +2,14 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.38.2'
+VERSION = 'v1.39.0'
+# v1.39.0 (S108): the F1 banner pilot. _fence_title() now knows TWO cap shapes - the legacy
+#   one-line 'icon Section N: Name - Tail' and F1's eyebrow/headline span pair - because F1
+#   DELETES the em dash the old rule split on, and the sixteen lessons are mixed until the
+#   rollout. The end-matter gate accepts id="figures" as well as id="image-index" and now
+#   REPORTS a missing anchor instead of silently continuing, which is how it would have gone
+#   quiet on every converted lesson. CSS baseline moved deliberately, +2 rules / +11 decls.
+#   All four changes control-run both directions against L03 (new shape) and L04 (legacy).
 # v1.38.2 (S106): §21 coverage 223 -> 224 and the §27.11 digest moved, both because
 #   L02 IMAGE 2.2 was wired in. Rule and declaration counts did NOT move.
 # v1.38.1 (S106): §17.3c coverage 27 -> 28, L02_IMAGE_2-02 joined the book.
@@ -408,9 +415,14 @@ gate('structure: HTML parses to the intended shape', bad)
 bad = []
 _d = re.compile(r'<div\b[^>]*>|</div\s*>')
 for f in files:
-    i = R[f].find('id="image-index"')
-    if i < 0:
+    # S108: "Image Index" is becoming "Figures", id and all. While the sixteen are
+    # mixed this gate must find EITHER, or it goes silent on the converted lessons
+    # and reports PASS on a file it never opened.
+    _im = re.search(r'id="(image-index|figures)"', R[f])
+    if not _im:
+        bad.append(f'{L(f)}: no end-matter index anchor (image-index / figures)')
         continue
+    i = _im.start()
     j = R[f].find('border-top: none', i)
     j = R[f].rfind('<div', 0, j)
     depth = 0; close = None
@@ -422,7 +434,7 @@ for f in files:
         bad.append(f'{L(f)}: Image Index panel never closes'); continue
     inside = R[f][j:close]
     if re.search(r'<hr\b|linear-gradient\(135deg, #6c757d', inside):
-        bad.append(f'{L(f)}: lesson end matter is sealed INSIDE the Image Index panel')
+        bad.append(f'{L(f)}: lesson end matter is sealed INSIDE the Figures panel')
 gate('structure: end matter sits outside the section panel', bad)
 
 # ---- §6.5a: the lesson strip is present in every lesson and byte-identical book-wide.
@@ -757,6 +769,30 @@ _CORE = ('1', '2', '3', '4', '5', '6', '7', '8', '8a', '9', '10')
 
 
 def _fence_title(s):
+    """Derive a fence title from a cap's INNER HTML.  TWO SHAPES (S108, F1).
+
+    legacy   <div id="section-3" style="...">[icon] Section 3: Background Theory
+             &mdash; How Motors Make Robots Move</div>
+    F1       <div id="section-3"><span>Section 3 &middot; Theory</span>
+             <span>How Motors Make Robots Move</span></div>
+
+    The legacy rule split on the em dash and kept the first half.  F1 DELETES the
+    dash, so that rule returns the whole banner on a converted lesson and the empty
+    string on the old call site -- it must know both while the sixteen lessons are
+    mixed.  Under F1 the section NAME rides in the eyebrow after the middot; where
+    the eyebrow carries no name (bare caps: 1, 2, 8, 8a, 9, 10) the headline IS the
+    name.  That keeps the fence DERIVED, which is this gate's whole premise.
+    """
+    spans = re.findall(r'<span\b[^>]*>(.*?)</span>', s, re.S)
+    if spans:
+        eyebrow = html.unescape(spans[0]) if len(spans) > 1 else ''
+        t = ''
+        for d in ('\u00b7', '\u2022', '|'):
+            if d in eyebrow:
+                t = eyebrow.split(d, 1)[1].strip()
+                break
+        t = t or html.unescape(spans[-1]).strip()
+        return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', t)).strip().upper()
     t = html.unescape(s).strip()
     while t and not t[0].isalnum():
         t = t[1:].lstrip()
@@ -785,7 +821,8 @@ for f in files:
             continue
         num = am.group(1).upper()
         gt = s.find('>', am.start())
-        title = _fence_title(s[gt + 1:s.find('<', gt)])
+        # to the anchor's own </div>, not to the first '<': F1 puts child spans there.
+        title = _fence_title(s[gt + 1:s.find('</div>', gt)])
         want.append((num, title))
         # --- S82b: the anchor must SIT INSIDE its banner, and the fence must be
         # --- ADJACENT to that banner with nothing but whitespace between them.
@@ -1015,8 +1052,9 @@ for f in files:
     fam, count, noun = BONUS_TABLE[lg]
 
     # (a) byte-canonicity of the banner block
-    want = ('<div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">'
-            f'{BONUS_MARK[fam]} {BONUS_WORD[fam]}: {count} {noun}</div>')
+    want = ('<div id="bonus-challenges">'
+            f'<span style="display: block; font-size: 0.78em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.8; margin-bottom: 3px;">{BONUS_WORD[fam]}</span>'
+            f'<span style="display: block; font-size: 1.28em; font-weight: 700; letter-spacing: -0.021em;">{count} {noun}</span></div>')
     m = re.search(r'<div id="bonus-challenges".*?</div>', s2, re.S)
     if not m:
         bad.append(f'{lg}: no bonus banner div')
@@ -1751,9 +1789,21 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 664, 2434, 'f0a1500a18f563fa'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 665, 2443, '715db240ff943354'
 #   S106: digest only. Wiring ONE figure into L02 changed the frequency ranking, which
 #   reorders rules and their usage comments. Same 664 rules, same 2,434 declarations.
+#   S108: +2 rules / +11 declarations, the F1 eyebrow (7) and headline (4) spans, from the
+#   L03 pilot alone. The other fifteen lessons were restored, regenerated against and
+#   re-applied in the same cycle and came back BYTE-IDENTICAL — measured, md5, all 15 —
+#   so the frequency-rank rename that cost 46 names at S105 did not fire here.
+#   ROLLED OUT SAME SESSION: the other fifteen moved the DIGEST ONLY - still 666 rules and
+#   2,445 declarations, because L03 had already created both F1 rules and the fifteen simply
+#   raised their usage counts. Frequency ranking reorders the emitted comments; nothing
+#   renamed. That is the S105 hazard measured and absent, not assumed.
+#   Then the bonus banner joined F1 and a rule DIED: `font-size: 1.15em; font-weight: bold;`
+#   was the old cap's inner style, and the bonus banner was its LAST consumer once the 222
+#   section caps had moved. 666 -> 665 rules, 2,445 -> 2,443 declarations. A dropped name is
+#   the one kind of build_css change gate 41 can see on its own; this one is accounted for.
 bad = []
 if os.path.exists('css/book.css'):
     _css = open('css/book.css', encoding='utf-8').read()
