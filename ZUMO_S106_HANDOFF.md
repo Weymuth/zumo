@@ -51,7 +51,7 @@ Instruments: `book_gates` **v1.35.2** · `lesson_inventory` **v1.2.0** ·
 
 Lessons: L01 v03.15.5 · L02 v03.7.3 · L03 v03.20.3 · L04 v04.15.3 · L05 v04.15.3 · L06 v04.19.4 · L07 v04.16.3 · L08 v04.14.3 · L09 v05.12.3 · L10 v02.11.3 · L11 v02.12.3 · L12 v01.14.3 · L13 v02.12.3 · L14 v02.16.3 · L15 v02.11.5 · L16 v02.7.3.
 
-**41/41 gates · seven controls · every lesson converted.** Census 39,979 → **39,994**
+**42/42 gates · seven controls · every lesson converted.** Census 39,979 → **39,994**
 (+15, the fifteen `<link>` lines).
 
 ---
@@ -213,7 +213,7 @@ lessons, leaves classes pointing at rules that changed meaning — and gate 41 w
 |---|---|---|
 
 | upload | `lessons/Lesson_01.html` … `Lesson_16.html` | all 16, converted, minor-bumped |
-| upload | `book_gates.py` | **v1.35.2** — going_deeper gate now requires relative |
+| upload | `book_gates.py` | **v1.36** — 42 gates; NEW gate 42 (§27.10) |
 
 | upload | `session_versions.py` | **v1.14.1** |
 | upload | `ZUMO_SUPER_BIBLE.md` | **v8.94** — §27.8, §27.9, §27.10 |

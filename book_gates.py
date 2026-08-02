@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.35.2'
+VERSION = 'v1.36'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -1694,6 +1694,29 @@ _unused = sorted(set(_css) - set(_used))
 if _unused:
     print(f'         note: {len(_unused)} generated rule(s) not yet used by any page '
           f'(staged for a lesson not converted yet, not a failure)')
+
+# ---- GATE 42 (§27.10): no page names its own domain.
+# THIS GATE EXISTS BECAUSE THE OTHERS CANNOT SEE THE DEFECT. §21's resolver deliberately
+# understands the absolute prefix, so reverting one image src to
+# https://weymuth.github.io/zumo/... resolves to the same file and passes every one of the
+# 41 gates that preceded this one -- measured by seeding exactly that, not assumed. A broken
+# RELATIVE path is caught by §21; a reverted ABSOLUTE one was invisible.
+# Scope is deliberately wider than href/src: the Brain Check gear swap assigns img.src from a
+# STRING LITERAL inside a <script>, and 18 of those hid from the S105 sweep for exactly that
+# reason. This matches the domain anywhere in the file, in any syntax, so a third reference
+# shape cannot open the hole again.
+# Off-site hosts are NOT in scope. Domain-agnostic means the book does not name ITS OWN host.
+_OWN = re.compile(r'https?://weymuth\.github\.io')
+bad = []
+for f in site:
+    if not os.path.exists(f):
+        continue
+    src = open(f, encoding='utf-8', errors='replace').read()
+    for m in _OWN.finditer(src):
+        ln = src.count('\n', 0, m.start()) + 1
+        ctx = src[max(0, m.start() - 30):m.start() + 70].replace('\n', ' ')
+        bad.append(f'{f} line {ln}: names its own domain -> ...{ctx}...')
+gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 
 
 
