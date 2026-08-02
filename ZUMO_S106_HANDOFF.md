@@ -32,7 +32,7 @@
 # STATE
 
 Fresh-clone verified at **`3633119`**. Census **39,994**.
-Bible **v8.92** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.1** ·
+Bible **v8.92.1** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.1** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
 
@@ -41,7 +41,7 @@ Instruments: `book_gates` **v1.35.1** · `lesson_inventory` **v1.2.0** ·
 `build_family_map` **v1.1.3** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.2.1** ·
 `gen_part_banners` **v1.0** · `session_versions` **v1.14.1** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.19** · `site_parity` **v1.1** ·
-`build_css` **v1.2** ·
+`build_css` **v1.2.1** ·
 `image_audit` **v1.1** ·
 `strip_inline` **v1.0** ·
 `build_worklist` **v1.1** ·
@@ -217,9 +217,9 @@ lessons, leaves classes pointing at rules that changed meaning — and gate 41 w
 | upload | `css/book.css` | 664 rules — **atomic with all 16 lessons** |
 | upload | `lessons/Lesson_01.html` … `Lesson_16.html` | all 16, converted, minor-bumped |
 | upload | `strip_inline.py` | **v1.0 NEW** |
-| upload | `build_css.py` | **v1.2** |
+| upload | `build_css.py` | **v1.2.1** |
 | upload | `session_versions.py` | **v1.14.1** |
-| upload | `ZUMO_SUPER_BIBLE.md` | **v8.92** — §27.8 |
+| upload | `ZUMO_SUPER_BIBLE.md` | **v8.92.1** — §27.8 |
 | upload | `ZUMO_S106_HANDOFF.md` | this file |
 | upload | `LIVE_ZUMO_TEXTBOOK.md` | **regenerate LAST**, versions EMITTED not typed |
 | **delete** | `ZUMO_S105_HANDOFF.md` | §12.2 — gate 28 enforces exactly one |

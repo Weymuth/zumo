@@ -41,7 +41,7 @@ import re, os, sys, glob, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lesson_inventory as LI      # ONE expander, shared (the S83 rule)
 
-VERSION = 'v1.2'          # the only version home in this file (S105)
+VERSION = 'v1.2.1'        # the only version home in this file (S105)
 # v1.2 (S105): SOURCES widened to all 16 lessons for the book-wide conversion.
 #   WIDENING THIS LIST RENAMES RULES. Naming is frequency-ranked across the corpus, so at
 #   S105 46 of L01's 167 names kept their SPELLING and changed their MEANING, and 11
@@ -65,6 +65,16 @@ def canon(value):
     ds = [' '.join(d.split()) for d in value.split(';') if d.strip()]
     ds = [re.sub(r'\s*:\s*', ': ', d) for d in ds]
     return '; '.join(sorted(ds, key=str.lower))
+
+
+# S105: ONE spelling for the colon. preferred() returns an AUTHORED string, and the book
+# authored 62,602 declarations as "prop: value" against 1,139 as "prop:value" - so a faithful
+# emitter shipped both spellings into one generated file. Whitespace around a CSS colon is not
+# meaningful, so this is presentation only, but a generated artefact has no excuse to be
+# inconsistent. Spaced wins on the count AND on the gates: emitting unspaced broke five of
+# them (§22, §25.2, §25.10h, §4.5, §4.5a), which assert literal "prop: value" strings.
+# NOTE this normalises the SEPARATOR only - declaration ORDER still comes from preferred().
+_SPACED = re.compile(r'\s*:\s*')
 
 
 def decls(c):
@@ -222,7 +232,7 @@ def emit(rows, chosen):
         out.append(f'/* ×{n}  {tl} */')
         out.append(f'.{chosen[c]} {{')
         for d in decls(preferred(rw)):
-            out.append(f'  {d};')
+            out.append(f'  {_SPACED.sub(": ", d, count=1)};')
         out.append('}')
         out.append('')
     return '\n'.join(out)
