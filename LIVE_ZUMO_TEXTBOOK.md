@@ -1,12 +1,55 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 2, 2026 (Session 107 — **A DESIGN SESSION, AND A PREMISE THAT WAS FOUR SESSIONS STALE.** Claude opened by telling DJ the book is delivered through Canvas and that the inline-style constraint is live; both were retired at S103 by Bible §27 — and Claude had quoted `build_css.py`, whose docstring says so, in the same reply. The ritual verifies VERSIONS, and version agreement cannot detect a wrong premise. Corrected in memory. The session then produced `ZUMO_S107_BANNER_RULINGS.md`: type treatment **E** (Inter, headings 700, Apple's negative tracking, `#1d1d1f` body — heavy at the top of the hierarchy, after DJ rejected a lighter build as *"too light"*), banner scheme **F1** (small eyebrow, large headline, derived by one rule), **no icons on any of the 237 caps** — superseding §6.5's LOCKED *"cap KEEPS the leading icon"* and §4.5's family mark — and **every title and tail for all 237 caps, ruled lesson by lesson**. Two root orphan SVGs deleted: byte-identical copies of `images/` files that passed all 45 gates, and that S106's offered filename-pattern orphan gate would NOT have caught.)
-**Status:** ✅ **45/45 GATES PASS · Census 39,993 · NO lesson or instrument version changed.** S107 was a ruling session: one root document added, two orphans deleted. `ZUMO_S107_BANNER_RULINGS.md` is the authority for the banner/typography arc and **none of it is applied** — the repo still renders 237 emoji caps and a Windows-only body font. **S108's first job is L03 alone**, the S104 pattern, because gates 26, 27, 41, 43, 44, 45 and §5b all move together. Two claims retracted per §24.6c: `<h3>` count is not a proxy for section content (L08 §4, L11 §4 and L13 §3 were reported empty and hold 523, 867 and 3,371 characters), and L03's mismatched callout radii are ruled correct by §6.5a, not a defect.
+**Date:** August 2, 2026 (Session 108 — **THE BANNER ARC WAS APPLIED, THE BAND RAMP WAS NOT.** All 237 caps moved to scheme F1 — an eyebrow above a headline, *headline = the most descriptive string available, eyebrow = everything before it* — and every one of the 237 leading emoji came off, bonus block included, superseding §6.5's LOCKED *"Cap KEEPS the leading icon"* and §4.5's derived family mark. Type treatment E's body half landed: Inter served the way `index.html` already serves it, and the **Windows-only Segoe UI stack retired** after eleven sessions in which `font_stack_sweep` reported 0 rewrites across 207 files because it scanned SVGs and never opened `css/book.css`. DJ ruled the section content panel from a rendered specimen — it had shipped in two forms split at the L09/L10 seam in all five colour groups, invisible to every gate — and 104 panels unified. The Heritage Blue band ramp was piloted on L03, fired seven gates, and was reverted: it **cannot be piloted on one lesson**, because five constructs are byte-compared across all sixteen.)
+**Status:** ✅ **45/45 GATES PASS · Census 40,025 · Bible v8.97 · four pushes, all verified clean.** Every claim re-verified through the PARSER at DJ's instruction, not regex: 237 caps found by DOM id, 237 headlines, 189 eyebrows, 0 glyphs, 174/174 fences re-derived from the live spans, 16/16 §5b two-homes agreeing. **The one thing to carry forward: verifying on the working tree is not verifying the push** — the panel unification re-spelled classes in L02–L09, eight lessons nobody edited, and a nine-file push would have shipped a class with no rule behind it. Caught only because DJ said *"double check first."*
 
-**Versions:** L01 v03.15.5 · L02 v03.7.4 · L03 v03.20.3 · L04 v04.15.3 · L05 v04.15.3 · L06 v04.19.4 · L07 v04.16.3 · L08 v04.14.3 · L09 v05.12.3 · L10 v02.11.3 · L11 v02.12.3 · L12 v01.14.3 · L13 v02.12.3 · L14 v02.16.3 · L15 v02.11.5 · L16 v02.7.3 · going_deeper v01.1.1 — census **39,993** · Bible **v8.96** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.38.2** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4d7695f`.**
+**Versions:** L01 v03.18.0 · L02 v03.10.1 · L03 v03.23.1 · L04 v04.18.1 · L05 v04.18.1 · L06 v04.22.1 · L07 v04.20.1 · L08 v04.18.1 · L09 v05.15.1 · L10 v02.15.0 · L11 v02.16.0 · L12 v01.18.0 · L13 v02.16.0 · L14 v02.20.0 · L15 v02.16.0 · L16 v02.11.0 · going_deeper v01.2.0 — census **40,025** · Bible **v8.97** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.39.0** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.3.0 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `d9332d2`.**
 
 ---
 ---
+
+## WHAT SHIPPED IN S108
+
+**237 CAPS, NONE OF THEM WEARING AN ICON.** All 237 carried a leading emoji at session open and
+zero do now. 189 carry an eyebrow; the other 48 are Glossary, Quick Reference and Figures × 16.
+The section NAME moves — eyebrow where a written headline exists, headline where it does not —
+so §6.8a's fence had to learn both shapes. **The fence stays DERIVED**, which is that gate's
+whole premise: L01 once shipped a fence reading `KEY CONCEPTS` above a *Background Theory*
+banner, and a hard-coded fence vocabulary would reinstate exactly that gap.
+
+**THE INSTRUMENT THAT COULD NOT SEE THE FILE COULD NOT CLEAR IT.** `font_stack_sweep` reported
+0 rewrites across 207 files for its entire life while `.page` requested `'Segoe UI', Tahoma,
+Geneva, Verdana` — so every reader on a Mac, iPad, Chromebook or Android had been served a
+typeface nobody chose. The sweep scanned SVGs and never opened `css/book.css`. Fixed, v1.1.0,
+and control-run against the pre-session stylesheet where it names Segoe correctly. Pointed at a
+stylesheet it then proposed `Inter → Arial`, so a face the site actually serves is exempt in
+`.css` context only.
+
+**DJ FOUND THE PANEL SPLIT BY EYE AND THE MEASUREMENT AGREED.** The section content box shipped
+in two forms — 18px with no background in L01–L09, `20px 25px` on white in L10–L16 — at the
+identical seam in all five colour groups, ~240 panels, invisible to every gate. Ruling A from a
+rendered specimen: 104 panels moved and **five duplicate rules collapsed, one per colour**.
+
+**THE RAMP PILOT FAILED USEFULLY.** §5.0.1's Heritage Blue band ramp on L03 alone fired seven
+gates. Five constructs are byte-compared across all sixteen — lesson strip, hero, PART dividers,
+bonus cap, FINISHED EARLY box — and three more gates hard-code `#6c757d`. Rules went 660 → 694
+as L03 diverged, re-creating the duplicate-rule state Panel A had just collapsed. It is a
+book-wide change with instrument work first. DJ's rulings are banked: the five ramp steps, cap
+text to Deep Navy, and **h3 subheadings to bronze `#725637`** — where the current h3 blue at
+contrast 3.15 is below the 4.5 floor, so that is a live defect and not only taste.
+
+**TWO PROCESS FAILURES, BOTH MINE, BOTH RECORDED.** A shallow clone served a stale HEAD twice
+while the remote was ahead, and I nearly told DJ a fix had not landed when it had — `git
+ls-remote HEAD` is now step 1 of the ritual. And during a revert I dropped a class-form file
+into a tree whose stylesheet had already moved, violating §27.8b's own ordering rule;
+`strip_inline` reported 2 unrestorable classes and the tree was rebuilt from the pushed clone.
+
+**`going_deeper.html` v01.2.0** — six anchor ids added at last, so a lesson can finally deep-link
+to one entry instead of dropping a student at the top of a 27 KB page. Entry 5 retitled *Using
+Fixed Point*. Four lesson pointers deep-linked; L02, L12 and L16 correctly stay at the top
+because each names two or three entries. It also landed in `lessons/` on the first push — the
+§25.6a defect — and gate 22 caught it.
+
 
 ## WHAT SHIPPED IN S107
 

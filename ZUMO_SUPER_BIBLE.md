@@ -14,7 +14,7 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.96** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.96** (v8.96, S106, moderate — **§27.12 + §27.13 NEW: THE MIGRATION'S TWO UNGUARDED INVARIANTS.** **§27.12** — a page that links `css/book.css` carries NO inline `style=""`. Measured: pasting one `<p style="color: #ff00aa; font-size: 13px;">` into L05 left **all 43 preceding gates green**, and the element renders correctly while doing it, so nobody looks. Every hand-edit, pasted block and AI-suggested snippet re-opens the hole the migration closed. Scope keyed on the `<link>`, the §25.6a rule, so the four tool pages' own inline styles stay out. **§27.13** — `css/book.css` must regenerate byte-identically from the lessons. This is the guard on §27.8a/b: stop after *regenerate* and skip *apply*, and 46 class names keep their spelling while changing meaning, invisible to gate 41. **Gate 43 cannot cover it, because §26's repaint MOVES gate 43's baseline by design and a moved baseline is a spent gate**; §27.13 re-derives instead of remembering, so a repaint does not spend it. **Complementarity measured in both directions:** a hand-deleted `color: white;` fires 43 and is INVISIBLE to 45 (build_css reads the stylesheet through `expand_classes` — §24.8); one element retyped to a *different resolvable class* leaves all 43 green and fires 45. Neither subsumes the other. **`strip_inline --verify` was offered and NOT added**: it computes gate 41's assertion a second way and never fired independently of it across four controls — an assert that cannot fail is not evidence. `book_gates` **v1.38, 45 gates**.) Prior: **v8.95** (v8.95, S105, moderate — **§27.11 NEW: THE STYLESHEET IS BASELINED, BECAUSE THE MIGRATION MADE IT A SINGLE POINT OF FAILURE.** A declaration used to live in 25,036 places; it now lives once, and **nothing validated `css/book.css` at all**. `build_css --check` cannot: it rebuilds from lessons read through `expand_classes`, which reads the stylesheet — damage it and the expansion is damaged identically, so `--check` says *current*, exit 0. **Measured: deleting one `color: white;` left all 42 gates green and `--check` clean** while the lesson strip's links went dark-on-dark in all sixteen lessons. **Gate 43** baselines 664 rules / 2,434 declarations / a body digest; control-run against a dropped declaration, a changed hex and an injected rule, loud on all three, silent on a generator version bump. **The baseline is meant to move** — §26's repaint moves it, as §21's moved 218→223. General lesson: **consolidation creates a single point of failure, and the instrument that built the artefact cannot be the instrument that guards it.** `book_gates` **v1.37, 43 gates**.) Prior: **v8.94** (v8.94, S105, moderate — **§27.10 NEW: THE BOOK IS DOMAIN-AGNOSTIC.** 478 absolute `href`/`src` attributes plus **18 JavaScript `img.src` string assignments** — 496 total, all in the sixteen lessons — made relative-to-the-page. **The 18 JS refs were invisible to every attribute-shaped search** and surfaced only because the sweep's REMAINDER was audited rather than assumed. Seven off-site references remain and must (Google Fonts 4, template zip 2, jszip CDN 1): domain-agnostic means the book does not name its own host. The going_deeper gate no longer allow-lists the absolute form — it derives expected depth from the page and was control-run against both regression shapes. **NEW gate 42** fails on the domain appearing anywhere in any page in any syntax — it exists because reverting one image `src` to absolute passed all 41 preceding gates, measured by seeding it. `book_gates` **v1.36, 42 gates**.
+**Bible version: v8.97** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.97** (v8.97, S108, moderate — **THE BANNER ARC IS APPLIED.** §6.5's LOCKED *"Cap KEEPS the leading icon"* is **SUPERSEDED: no icons on any of the 237 caps**, bonus block included; all 237 carried a leading emoji and now none does, verified by DOM lookup rather than regex. **NEW §6.5b** — every cap is an EYEBROW above a HEADLINE, *headline = the most descriptive string available, eyebrow = everything before it*; 189 of 237 carry an eyebrow, the other 48 are Glossary / Quick Reference / Figures × 16. The fence rule extends §6.8a: fence = the eyebrow's name after the middot, else the headline, so the fence stays DERIVED — `_fence_title()` knows both shapes and was control-run against a converted lesson and a legacy one. **NEW §6.5a-T** — type treatment E: Inter served the way the front door already serves it, `.page` line-height 1.7→1.65 and `#333`→`#1d1d1f`, and the Windows-only Segoe UI stack RETIRED after eleven sessions in which `font_stack_sweep` reported 0 rewrites because it never opened `css/book.css`. **§4.5's derived family mark is superseded**, word retained, `gen_bonus_banner` v1.3.0, its mark assert INVERTED rather than deleted. **§6.9: `image-index` → `figures`** in three passages. **§6.5 Box CONFIRMED and unified** — the panel had shipped in two forms split at the L09/L10 seam in all five colour groups, invisible to every gate; 104 panels moved and five duplicate rules collapsed. `book_gates` **v1.39.0**, `font_stack_sweep` **v1.1.0**, `gen_bonus_banner` **v1.3.0**, `going_deeper` **v01.2.0** with six anchor ids at last. **THE RAMP WAS PILOTED AND REVERTED:** §5.0.1's Heritage Blue band ramp cannot be applied to one lesson, because five constructs are byte-compared across all sixteen — lesson strip, hero, PART dividers, bonus cap, FINISHED EARLY box — and three gates hard-code `#6c757d`. It is a book-wide change with instrument work FIRST.) Prior: **v8.96** (v8.96, S106, moderate — **§27.12 + §27.13 NEW: THE MIGRATION'S TWO UNGUARDED INVARIANTS.** **§27.12** — a page that links `css/book.css` carries NO inline `style=""`. Measured: pasting one `<p style="color: #ff00aa; font-size: 13px;">` into L05 left **all 43 preceding gates green**, and the element renders correctly while doing it, so nobody looks. Every hand-edit, pasted block and AI-suggested snippet re-opens the hole the migration closed. Scope keyed on the `<link>`, the §25.6a rule, so the four tool pages' own inline styles stay out. **§27.13** — `css/book.css` must regenerate byte-identically from the lessons. This is the guard on §27.8a/b: stop after *regenerate* and skip *apply*, and 46 class names keep their spelling while changing meaning, invisible to gate 41. **Gate 43 cannot cover it, because §26's repaint MOVES gate 43's baseline by design and a moved baseline is a spent gate**; §27.13 re-derives instead of remembering, so a repaint does not spend it. **Complementarity measured in both directions:** a hand-deleted `color: white;` fires 43 and is INVISIBLE to 45 (build_css reads the stylesheet through `expand_classes` — §24.8); one element retyped to a *different resolvable class* leaves all 43 green and fires 45. Neither subsumes the other. **`strip_inline --verify` was offered and NOT added**: it computes gate 41's assertion a second way and never fired independently of it across four controls — an assert that cannot fail is not evidence. `book_gates` **v1.38, 45 gates**.) Prior: **v8.95** (v8.95, S105, moderate — **§27.11 NEW: THE STYLESHEET IS BASELINED, BECAUSE THE MIGRATION MADE IT A SINGLE POINT OF FAILURE.** A declaration used to live in 25,036 places; it now lives once, and **nothing validated `css/book.css` at all**. `build_css --check` cannot: it rebuilds from lessons read through `expand_classes`, which reads the stylesheet — damage it and the expansion is damaged identically, so `--check` says *current*, exit 0. **Measured: deleting one `color: white;` left all 42 gates green and `--check` clean** while the lesson strip's links went dark-on-dark in all sixteen lessons. **Gate 43** baselines 664 rules / 2,434 declarations / a body digest; control-run against a dropped declaration, a changed hex and an injected rule, loud on all three, silent on a generator version bump. **The baseline is meant to move** — §26's repaint moves it, as §21's moved 218→223. General lesson: **consolidation creates a single point of failure, and the instrument that built the artefact cannot be the instrument that guards it.** `book_gates` **v1.37, 43 gates**.) Prior: **v8.94** (v8.94, S105, moderate — **§27.10 NEW: THE BOOK IS DOMAIN-AGNOSTIC.** 478 absolute `href`/`src` attributes plus **18 JavaScript `img.src` string assignments** — 496 total, all in the sixteen lessons — made relative-to-the-page. **The 18 JS refs were invisible to every attribute-shaped search** and surfaced only because the sweep's REMAINDER was audited rather than assumed. Seven off-site references remain and must (Google Fonts 4, template zip 2, jszip CDN 1): domain-agnostic means the book does not name its own host. The going_deeper gate no longer allow-lists the absolute form — it derives expected depth from the page and was control-run against both regression shapes. **NEW gate 42** fails on the domain appearing anywhere in any page in any syntax — it exists because reverting one image `src` to absolute passed all 41 preceding gates, measured by seeding it. `book_gates` **v1.36, 42 gates**.
 
 ### 27.13 The stylesheet must regenerate from the lessons, and that is the guard a repaint cannot spend (S106)
 
@@ -94,6 +94,8 @@ artefact it guards.
 built the artefact cannot be the instrument that guards it.** Both halves were true of gate 41
 (§27) and are true again here. Every future consolidation should be read this way before it
 ships, not after. Lesson bytes 2,582,947 → **2,569,059**. Census unchanged 39,994; visible text identical in all twenty pages. All 16 lessons minor-bumped.) Prior: **v8.93** (v8.93, S105, moderate — **§27.9 NEW: THE HOLD RELEASED. ZERO INLINE STYLES BOOK-WIDE.** The four byte-exact-across-lesson block types (§6.5a strip 320 · §25.6 hero 96 + footer 16 · §6.8 PART dividers 192) converted in one pass. The book now carries **25,036 classes and no `style=""` attribute at all**. Released by measurement: the 624 attributes carry only **16 distinct strings**, each appearing an exact multiple of 16 (proof of book-wide uniformity), and **all 16 round-trip byte-exact** through the stylesheet — only true because §27.8c fixed declaration order and §27.8d fixed colon spacing. `strip_inline` **v1.1** adds `--include-held`, gated on a `roundtrips()` precondition that REFUSES and names offenders; CONTROL I proves both directions. Lesson bytes 2,638,947 → **2,582,947**. Census unchanged 39,994. All 16 lessons minor-bumped.) Prior: **v8.92.1** (**v8.92.1, S105, minor — §27.8d: DJ ruled ONE colon spelling for the generated stylesheet; spaced, which is 98% of the source and the only one the gates accept (unspaced broke five). Lessons byte-unchanged. `build_css` v1.2.1.** Prior entry: v8.92, S105, moderate — **§27.8 NEW: THE MIGRATION COMPLETES ITS SWEEP.** All 16 lessons converted: **24,412** inline attributes to classes against a 664-rule `css/book.css`, **624 held** (39 per lesson, every lesson) — 24,412 + 624 = **25,036**, the §27 census exactly. Zero unmapped, zero dead classes, 41/41 gates. Render identity proved by construction AND independently: 25,036 styled elements compared in document order, declaration sets identical, visible text identical bar one `<link>` per lesson. Census 39,979 → **39,994**. Lesson bytes 3,534,934 → **2,638,947**, 25% smaller. **Three ways a widened build bites, all measured:** (a) widening `SOURCES` renamed 57 of L01's 167 classes and **46 kept their spelling while changing meaning** — invisible to gate 41, so every converted lesson must be re-stripped whenever `SOURCES` changes; (b) `expand_classes` reads the stylesheet from disk and leaves an unresolvable class in place, so regenerating before restoring strands 74 L01 elements permanently — the order **restore → regenerate → apply** is forced; (c) `canon()` sorts while §4.5/§6.8/§25.6 assert authored order, which broke a whole class of gates at once and revealed a **fifth** held block type the S104 hold list missed (the §4.5 bonus banner) — fixed in the generator via `build_css.preferred()`, not by holding blocks until the gates went green. **`strip_inline.py` v1.0 NEW**, eight controls, the tool S104 did not commit; `build_css` v1.2; `session_versions` v1.14.1 after its own CONTROL A was found seeding a literal version string that expired on a bump. All 16 lessons minor-bumped.) Prior: **v8.91** (v8.91, S104, moderate — **§27.7 NEW: THE MIGRATION BEGINS, AND ONE LESSON PRICED IT.** L01 converted end to end: 1,111 of 1,150 inline attributes became classes, 39 held because three constructs are compared byte-exact across lessons (§6.5a strip, §25.6 header/footer, §6.8 PART dividers). **One stylesheet, not sixteen** — 689 distinct declaration strings, 92.5% of instances shared across lessons. **`lesson_inventory.expand_classes()`** so six CSS-reading gates keep working whatever a file's conversion state; **gate 41** because a mistyped class makes an element INVISIBLE where a mistyped inline style only made it wrong — proved by dropping L01's callout census 83→82 with all 40 gates green. Render identity asserted by construction, not inspection. Also S104: **L15's three figures retyped IMAGE→GRAPHIC** (§10 separate number spaces — the tag contradicted its own filename), and a book-wide sweep proved L15 was the entire class. **`image_audit.py` v1.1 NEW** replaces the hand-maintained `IMAGE_SHOT_LIST.md`: 20 outstanding of 145 planned. Its two false findings are recorded in the tool — a cross-lesson tag keyed to the wrong lesson, and ten "type mismatches" that were legitimate separate-number-space figures, killed by reading. **Five L07 figures built** from GCC diagnostics reproduced in the sandbox, clearing L07. `book_gates` v1.35.1 (41 gates), `lesson_inventory` v1.2.0, `build_css` v1.1, `image_audit` v1.1, `session_versions` v1.14, `site_parity` v1.1. L01 **v03.15.2** · L07 **v04.16.0** · L15 **v02.11.2**.) Prior: **v8.90** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+
+v8.97, S108, moderate — **THE BANNER ARC IS APPLIED, AND THE BAND RAMP IS NOT.** §6.5's LOCKED *"Cap KEEPS the leading icon"* is **SUPERSEDED: no icons on any of the 237 caps**, bonus block included. All 237 carried a leading emoji; zero do now, **verified by DOM lookup rather than regex** — 237 caps found by id, 237 headlines, 189 eyebrows, 0 glyphs. **NEW §6.5b, THE CAP IS TWO LINES:** *headline = the most descriptive string available, eyebrow = everything before it*. The section NAME therefore MOVES — eyebrow when a written headline exists, headline when it does not — so §6.8a's fence had to learn both shapes. **The fence rule extends §6.8a:** fence = the eyebrow's name after the middot, else the headline, which keeps it DERIVED; a hard-coded fence vocabulary would reinstate the exact gap §6.8a was written to close, when L01 shipped `KEY CONCEPTS` above a *Background Theory* banner. `_fence_title()` control-run in both directions against a converted lesson and a legacy one. **NEW §6.5a-T, TYPE TREATMENT E:** Inter served the way `index.html` already serves it, `.page` line-height 1.7→1.65, `#333`→`#1d1d1f`, and the **Windows-only Segoe UI stack RETIRED** — every non-Windows reader had been getting Tahoma or Geneva for the life of the book while `font_stack_sweep` reported **0 rewrites across 207 files**, because it scanned SVGs and never opened `css/book.css`. Fixed, v1.1.0, control-run against the pre-session stylesheet. Its rewrite map then proposed `Inter → Arial`, so **a face the site actually serves is exempt in `.css` context only**. **§4.5's derived family mark superseded**, word retained — the harm argument was always carried by the WORD; `gen_bonus_banner` v1.3.0, and its mark assert **INVERTED rather than deleted**, because a gate that stops checking is worse than one that fails. **§6.9 `image-index` → `figures`**, three passages. **§6.5 Box CONFIRMED AND UNIFIED (DJ ruling A, chosen from a rendered specimen):** the panel had shipped in TWO forms — 18px/no-background in L01–L09, `20px 25px`/white in L10–L16 — split at the identical seam in all five colour groups and invisible to every gate; 104 panels moved and **five duplicate rules collapsed, one per colour**. `going_deeper` **v01.2.0**: six anchor ids added at last, entry 5 retitled *Using Fixed Point*, four lesson pointers deep-linked (the other three name two or three entries each and correctly stay at the top). **THE HERITAGE BLUE BAND RAMP WAS PILOTED ON L03 AND REVERTED.** Seven gates fired, and the finding is structural: **the ramp cannot be piloted on one lesson**, because five constructs are byte-compared across all sixteen — lesson strip (§6.5a), hero (§25.6), PART dividers (§6.8), bonus cap (§4.5) and the FINISHED EARLY box (§4.5a) — and three more gates hard-code `#6c757d`. It is a book-wide change with instrument work FIRST. **TWO METHOD LESSONS.** (1) **Verifying on the working tree is not verifying the push:** the panel unification retired five rules, which reordered `build_css`'s frequency ranking and **re-spelled classes in L02–L09, lessons that were never edited**; a nine-file push would have shipped `div-3498db-3` with no rule behind it. Caught only by rebuilding pushed-clone + staged files and running the gates there. (2) **A shallow clone served a stale HEAD twice** while the remote was already ahead — §12.4's *caches lie*, now with a remedy: `git ls-remote HEAD` before trusting any verification clone. `book_gates` **v1.39.0** (CSS baseline moved four times, each move accounted for in the file). Applied S108, all 16 lessons.
 
 v8.96, S106, moderate — **§27.12 + §27.13 NEW: THE MIGRATION'S TWO UNGUARDED INVARIANTS.** **§27.12** — a page that links `css/book.css` carries NO inline `style=""`. Measured: pasting one `<p style="color: #ff00aa; font-size: 13px;">` into L05 left **all 43 preceding gates green**, and the element renders correctly while doing it, so nobody looks. Every hand-edit, pasted block and AI-suggested snippet re-opens the hole the migration closed. Scope keyed on the `<link>`, the §25.6a rule, so the four tool pages' own inline styles stay out. **§27.13** — `css/book.css` must regenerate byte-identically from the lessons. This is the guard on §27.8a/b: stop after *regenerate* and skip *apply*, and 46 class names keep their spelling while changing meaning, invisible to gate 41. **Gate 43 cannot cover it, because §26's repaint MOVES gate 43's baseline by design and a moved baseline is a spent gate**; §27.13 re-derives instead of remembering, so a repaint does not spend it. **Complementarity measured in both directions:** a hand-deleted `color: white;` fires 43 and is INVISIBLE to 45 (build_css reads the stylesheet through `expand_classes` — §24.8); one element retyped to a *different resolvable class* leaves all 43 green and fires 45. Neither subsumes the other. **`strip_inline --verify` was offered and NOT added**: it computes gate 41's assertion a second way and never fired independently of it across four controls — an assert that cannot fail is not evidence. `book_gates` **v1.38, 45 gates**.
 
@@ -277,7 +279,10 @@ The old `_Rebuilt_` / `_Canvas` / `_StandardCallouts_StickyNav` suffixes are **r
 - Appears in nav as a button ("8A. Concepts" or similar), dusty rose color `#c45d76`.
 - 8A is part of **PART 3** (dusty rose, with §7/§8). PART 3 subtitle = "Sections 7–8A: Verify and extend". (§9 is now its own PART 4 in plum — see §6.8.)
 - `<h2 id="section-8a">` carries the dusty rose color `#c45d76` (8A stays rose; only §9 moved to plum).
-- Section ID order: `1, 2, 3, 4, 5, 6, 7, 8, 8a, 9, 10, glossary, quick-ref, image-index`.
+- Section ID order: `1, 2, 3, 4, 5, 6, 7, 8, 8a, 9, 10, glossary, quick-ref, figures`.
+  *(v8.97, S108: `image-index` → `figures`, and the visible title "Image Index" → "Figures".
+  Applied to all 16. Does NOT touch `[IMAGE 3.9]` / `[GRAPHIC 3.9]` captions, filenames,
+  `IMAGE_WORKLIST.md` or the two number spaces — the IMAGE+GRAPHIC merge stays parked.)*
 
 **Presence rule (CONDITIONAL):** 8A is present ONLY when a lesson isolates a genuine reusable coding pattern — NOT in every lesson. **8A MAP:** PRESENT in L2, L3, L4, L5, L6, L7, L8, L9, L10, L11, L12; ABSENT in L1, L13, L14, L15. (L2–L5 verified present July 2, 2026.) Lessons without 8A use PART 3 subtitle "Sections 7–8: Verify and extend". §9 Challenges (PART 4, plum) is present in every lesson including those without 8A. A "Functions Reference" may become §8A (L12) OR fold into Quick Reference (L14) — author's per-lesson call.
 
@@ -470,6 +475,29 @@ Canonical form, byte-exact:
 ```
 <div id="bonus-challenges" style="font-size: 1.15em; font-weight: bold;">{MARK} {WORD}: {Count} {Noun}</div>
 ```
+
+⚠️ **SUPERSEDED S108, v8.97 — THE MARK COMES OFF, THE WORD STAYS.** §6.5 now rules NO ICONS
+ON ANY OF THE 237 CAPS, bonus block included, and the bonus banner joins §6.5b's eyebrow /
+headline pair. The form above is left standing per §26.7. Current canonical form, byte-exact,
+emitted by `gen_bonus_banner.py` **v1.3.0** and asserted by gate 31:
+
+```
+<div id="bonus-challenges"><span style="{EYEBROW}">{WORD}</span><span style="{HEADLINE}">{Count} {Noun}</span></div>
+```
+
+**The three families are unharmed.** §4.5's argument was never about the glyph — a student sent
+hunting a defect that is not there is misled by the WORD *Sabotage*, and the word is still on
+the banner and still on the nav pill. The `mark` column above is now provenance only; `MARK`
+survives in the generator, unused, for the same reason.
+
+**The generator's mark assert INVERTED rather than being deleted.** It used to require the
+family glyph to be present; it now requires that none survived — entity or raw, any family.
+A gate that stops checking is worse than one that fails, so it kept its job and reversed its
+polarity. Control-run both directions at S108: a mark pasted back into L09's eyebrow FAILED,
+L09 reverted whole to the one-line form FAILED, untouched PASSED.
+
+**L16 is still held out of the table** (2 cards, DJ ruling S85) and was converted by hand to
+`Bonus` / `The Sabotage Files`.
 
 **The nav pill carries the family word too**, and so does any prose link naming the section — a pill saying
 "Bonus" over a section called Sabotage is the §6.8a shape of lying furniture. The pill sits OUTSIDE the
@@ -757,9 +785,91 @@ Every section (and every end-matter block: Glossary, Quick Reference, Image Inde
 
 - **Cap:** solid PART color, white bold title (≈1.15em), rounded top only (`8px 8px 0 0`), `margin-top: 24px`. The `id` lives on the inner title div (anchor target).
 - **Box:** `border: 2px solid <PARTcolor>; border-top: none; border-radius: 0 0 8px 8px; padding: 18px; margin-bottom: 16px`. Caps the section content; back-to-top link sits inside.
+  - **CONFIRMED AND UNIFIED S108, v8.97 (DJ ruling A).** The book had shipped TWO forms of this
+    box — the one above in L01–L09, and `padding: 20px 25px; background: white` with no
+    `margin-bottom` in L10–L16 — split at the identical seam in ALL FIVE colour groups and
+    invisible to every gate. 104 panels moved to the form above and **five duplicate rules
+    collapsed, one per colour where there had been two** (`css/book.css` 665 → 660). DJ chose
+    it on a rendered specimen, not a table. Type treatment E's 26px inset is NOT adopted.
 - **Section-group colors (match the nav buttons):** §1–3 `#3498db` blue · §4–6 `#3a7d5c` green · §7/§8/§8A `#c45d76` dusty rose · **§9 `#9b6a9e` plum** · §10 + Glossary/Quick-Ref/Image-Index `#6c757d` gray. Each group owns ONE color; every element in it (cap, nav button, PART banner, challenge cards, table headers in that section) wears that color.
 - **Cap KEEPS the leading icon** (`📖 🔨 ▶️ ⚠️ 🔑 🏆 📋` etc.); only the title-block h1 has no icon.
+  - ⚠️ **SUPERSEDED S108, v8.97 — NO ICONS ON ANY CAP.** DJ ruled at S107 that all 237 caps
+    are bare, bonus block included, and it was applied book-wide at S108: 237 caps carried a
+    leading emoji, zero were bare, and now the reverse is true (verified by DOM lookup, not
+    regex — 237/237). The rule above is left standing per §26.7, because a record edited in
+    place is not a record. **What the icons were carrying is now carried by the EYEBROW** —
+    see §6.5b. What this closed: six banners rendering their icon twice, the white-mark
+    problem in `BookComponentStandard` §7, the bullseye/book collision at §2/§3, and §8's
+    🔧/⚠️ split. The 41 marks in `images/marks/` remain UNWIRED and are a separate arc.
 - The cap `id` must match the visible "Section N:" label and the nav anchor.
+
+### 6.5a-T TYPE TREATMENT "E" (NEW, v8.97, S108, DJ ruling)
+
+The book is served **Inter**, the way `index.html` and `going_deeper.html` already serve it —
+`fonts.googleapis.com`, weights 400/500/600/700, a `preconnect` plus a stylesheet link in every
+lesson head. This is legal only because §27 retired the Canvas-paste model; web fonts were not
+available under it.
+
+**RETIRED: `.page { font-family: 'Segoe UI', Tahoma, Geneva, Verdana }`.** Segoe UI is
+Windows-only, so every reader on a Mac, iPad, Chromebook or Android had been served Tahoma or
+Geneva — a typeface nobody chose — for the life of the book. `font_stack_sweep` reported **0
+rewrites across 207 files** the entire time, because it scanned SVGs and never opened
+`css/book.css`. Fixed at S108, v1.1.0; control-run against the pre-session stylesheet, where it
+names `Segoe UI` correctly.
+
+| property | was | is |
+|---|---|---|
+| `.page` font-family | `'Segoe UI', Tahoma, Geneva, Verdana` | `'Inter', -apple-system, sans-serif` |
+| `.page` line-height | `1.7` | `1.65` |
+| `.page` color | `#333` | `#1d1d1f` |
+| cap headline | 1.15em bold | 1.28em / 700 / `-0.021em` (§6.5b) |
+
+All three body properties lived in ONE rule, so the whole visible change was three declarations
+plus two link tags × 16. Census moved 39,993 → 40,025, exactly +32 — two lines per file.
+
+**NOT adopted, and deliberately so:** E's padding 18px→26px, callout margins 20→26px and table
+cells 12→14px. `padding: 12px` occurs **925 times** across every construct in the book, so
+those cannot be reached by string match. The section content panel is the exception — it is ten
+named rules — and DJ ruled it separately to 18px (§6.5 Box). **The 2px border, 8px radius and
+full table grid are UNCHANGED by ruling**; a lighter treatment was built and rejected.
+
+**A face the site actually serves is not a substitution risk.** `font_stack_sweep`'s rewrite map
+was written for SVGs, where no web font can be relied on, and proposed `Inter → Arial` the
+moment it opened a stylesheet. Web-served faces are exempt in `.css` context ONLY, and the
+exemption list is a claim checkable against the link tags.
+
+### 6.5b THE CAP IS TWO LINES — EYEBROW AND HEADLINE (NEW, v8.97, S108, DJ ruling)
+
+Every cap renders as **an eyebrow above a headline**, never one line.
+
+> **Headline = the most descriptive string available. Eyebrow = everything before it.**
+
+- **Eyebrow** — `0.78em`, weight 600, `letter-spacing: 0.1em`, uppercase, `opacity: 0.8`,
+  `margin-bottom: 3px`. Carries `Section N`, and where the section has a NAME as well as a
+  written title, `Section N &middot; Name`.
+- **Headline** — `1.28em`, weight **700**, `letter-spacing: -0.021em`.
+- Caps with no `Section N` — Glossary, Quick Reference, Figures — ship the headline span
+  ALONE. 189 of the 237 carry an eyebrow; the other 48 are these three × 16.
+
+**The section NAME therefore moves.** It sits in the eyebrow when a written headline exists
+(§3–§7) and IS the headline when one does not (§2, §8, §8A, §9, §10). Visually uniform,
+structurally two shapes — and §6.8a's fence has to know both.
+
+**THE FENCE RULE (extends §6.8a).** The fence title is **the eyebrow's name after the
+middot, or the headline where the eyebrow carries no name.** This keeps the fence DERIVED,
+which is §6.8a's entire premise — L01 once shipped a fence reading `KEY CONCEPTS` above a
+banner reading *Background Theory*, and a hard-coded fence vocabulary would reinstate exactly
+that gap. `_fence_title()` in `book_gates.py` knows both shapes and was control-run in both
+directions against a converted lesson and a legacy one.
+
+**KNOWN FAILURE MODE OF THE MECHANICAL SPLIT.** Where the tail is the LESS interesting half,
+the split promotes the dry part. Found once (L04 §8A, *"Deciding and Repeating — If Statements
+and For Loops"*), resolved by dropping the tail. Watch any cap where a dash appears.
+
+**“Opening Hook” and “Introduction” are AUTHORING LABELS** and were removed from §1 in L03,
+L14, L15 and L16 — they had leaked into student-facing text. The other twelve §1 fences were
+already lesson-specific, so this did not make the book less uniform; it made four files match
+the twelve.
 - **Sub-headings + table headers adopt the SECTION GROUP COLOR** (LOCKED — supersedes the old global blue h3 / navy table-header). Each section's internal headings and table headers wear that section's color:
   - **h3** (subsections, e.g. "5.3 …") → the section group color (§1–3 `#3498db`, §4–6 `#3a7d5c`, §7/8/8A `#c45d76`, §9 `#9b6a9e`, §10+end `#6c757d`).
   - **h4** (sub-subsections) → also the section group color (same as h3 — NOT a separate green).
@@ -885,7 +995,7 @@ Per DJ (*"Why widen the fence. Can't we just fix the issues that are causing the
 
 ### 6.9 Standard Section IDs
 
-`#section-1` … `#section-10`, plus `#section-8a` (if present), `#glossary`, `#quick-ref`, `#image-index`. Body carries `id="top"`.
+`#section-1` … `#section-10`, plus `#section-8a` (if present), `#glossary`, `#quick-ref`, `#figures`. Body carries `id="top"`. *(v8.97: was `#image-index`.)*
 
 ### 6.10 Back-to-top links
 
@@ -1279,7 +1389,7 @@ Keep `[IMAGE X.Y]` format (X = lesson number, Y = image number). Image Index mus
 - [ ] 10 sections present; 8A only if the lesson has a reusable coding pattern (present: L6–L12; absent: L1, L13–L15; verify L2–L5), placed between 8 and 9
 - [ ] End-matter caps use icon set: 📖 Glossary / ⚡ Quick Reference / 🖼️ Image Index
 - [ ] **Glossary entries use the canon term-card format** (`#e7d4ff` bg / `#9b59b6` border / `8px`); no stray glossary purples (`#f3e5f5`, `#f3e8f9`, `#7b2d8e`, `#9c27b0`) in the glossary region.
-- [ ] Section IDs in clean order: 1,2,3,4,5,6,7,8,8a,9,10,glossary,quick-ref,image-index
+- [ ] Section IDs in clean order: 1,2,3,4,5,6,7,8,8a,9,10,glossary,quick-ref,figures
 - [ ] Nav anchors all UNIQUE and all resolve; "Back to top" + cross-refs resolve
 - [ ] Cap `id` matches visible "Section N" label + nav anchor
 - [ ] Exit Ticket = 3-h4 with correct callout colors
