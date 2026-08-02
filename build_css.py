@@ -41,8 +41,16 @@ import re, os, sys, glob, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lesson_inventory as LI      # ONE expander, shared (the S83 rule)
 
-VERSION = 'v1.1'          # the only version home in this file (S104)
-SOURCES = ['lessons/Lesson_01.html']
+VERSION = 'v1.2'          # the only version home in this file (S105)
+# v1.2 (S105): SOURCES widened to all 16 lessons for the book-wide conversion.
+#   WIDENING THIS LIST RENAMES RULES. Naming is frequency-ranked across the corpus, so at
+#   S105 46 of L01's 167 names kept their SPELLING and changed their MEANING, and 11
+#   vanished. Only the 11 were visible to gate 41 - a name that still resolves repaints the
+#   page with every gate green. AND THE ORDER MATTERS: expand_classes reads book.css from
+#   disk and leaves an unresolvable class in place, so regenerating BEFORE restoring an
+#   already-converted lesson strands every element carrying a dropped name (74 in L01).
+#   The sequence is strip_inline --restore, then this, then strip_inline --apply.
+SOURCES = sorted(glob.glob('lessons/Lesson_*.html'))
 OUT = 'css/book.css'
 
 _STYLED = re.compile(r'<(\w+)\b[^>]*?style="([^"]*)"', re.S)
@@ -69,6 +77,21 @@ def prop(c, name):
         if k.strip().lower() == name:
             return v.strip()
     return None
+
+
+def preferred(raw):
+    """-> the raw declaration ORDER a rule is emitted in: the most common spelling in the
+    group, ties broken by the string so the output is deterministic.
+
+    WHY NOT SORTED. canon() sorts for GROUPING, which is right - order is not meaningful to
+    a browser. But the gates are not browsers. §4.5, §6.8 and §25.6 assert authored style
+    strings BYTE-EXACT against their generators, and every one of them broke the moment the
+    stylesheet handed back alphabetised declarations. Emitting the authored order makes the
+    expander round-trip byte-exact for 664 of 770 raw spellings, which is the difference
+    between five held block types and one rule. The remaining 106 are groups that were
+    ALREADY spelled two ways in the book; they converge on the majority spelling, which is
+    render-identical by definition since canon() grouped them."""
+    return max(sorted(raw), key=lambda r: raw[r])
 
 
 def role(tag, c):
@@ -116,6 +139,7 @@ def collect(paths):
     names. A generator whose output depends on dict iteration order cannot be diffed."""
     count = collections.Counter()
     tags = collections.defaultdict(collections.Counter)
+    raws = collections.defaultdict(collections.Counter)
     for p in paths:
         # S104: read through the expander. Once a lesson is CONVERTED its inline styles are
         # gone, and a generator that could not read its own converted source would emit an
@@ -126,7 +150,8 @@ def collect(paths):
             c = canon(m.group(2))
             count[c] += 1
             tags[c][m.group(1).lower()] += 1
-    return [(c, n, dict(tags[c])) for c, n in
+            raws[c][m.group(2)] += 1
+    return [(c, n, dict(tags[c]), raws[c]) for c, n in
             sorted(count.items(), key=lambda kv: (-kv[1], kv[0]))]
 
 
@@ -164,12 +189,12 @@ def names(rows):
     takes role-SIGNAL, never role-2, because an ordinal carries no information into run 2 and
     renumbers itself the moment another lesson is added. An ordinal is the last resort only."""
     base = {}
-    for c, n, tg in rows:
+    for c, n, tg, rw in rows:
         tag = max(tg.items(), key=lambda kv: kv[1])[0]
         base[c] = role(tag, c)
     freq = collections.Counter(base.values())
     chosen, used = {}, collections.Counter()
-    for c, n, tg in rows:
+    for c, n, tg, rw in rows:
         r = base[c]
         name = r if freq[r] == 1 else f'{r}-{signal(c, r)}'
         used[name] += 1
@@ -188,15 +213,15 @@ def emit(rows, chosen):
         ' * semantic set (27 accents / 30 families) is not designed yet, so a name is English',
         ' * only where the declarations prove the role, and carries the hex otherwise.',
         ' *',
-        f' * {len(rows)} rules covering {sum(n for _, n, _ in rows):,} inline attributes.',
+        f' * {len(rows)} rules covering {sum(r[1] for r in rows):,} inline attributes.',
         ' */',
         '',
     ]
-    for c, n, tg in rows:
+    for c, n, tg, rw in rows:
         tl = ', '.join(f'{k}×{v}' for k, v in sorted(tg.items(), key=lambda kv: -kv[1]))
         out.append(f'/* ×{n}  {tl} */')
         out.append(f'.{chosen[c]} {{')
-        for d in decls(c):
+        for d in decls(preferred(rw)):
             out.append(f'  {d};')
         out.append('}')
         out.append('')
@@ -215,7 +240,7 @@ def selftest():
     text, rows, chosen = build()
 
     print('CONTROL A (coverage): every styled element in the source is accounted for')
-    total = sum(n for _, n, _ in rows)
+    total = sum(r[1] for r in rows)
     raw = sum(len(_STYLED.findall(LI.expand_classes(open(p, encoding='utf-8').read())))
               for p in SOURCES)
     print(f'   {total:,} attribute(s) over {len(rows)} rule(s); source holds {raw:,}')
@@ -282,8 +307,9 @@ def selftest():
 
     print('CONTROL F (loud on a real change): dropping one declaration must be visible')
     victim = rows[0][0]
-    probe = emit([(canon('; '.join(decls(victim)[1:])), rows[0][1], rows[0][2])] + rows[1:],
-                 {**chosen, canon('; '.join(decls(victim)[1:])): chosen[victim]})
+    cut = '; '.join(decls(preferred(rows[0][3]))[1:])
+    probe = emit([(canon(cut), rows[0][1], rows[0][2], {cut: 1})] + rows[1:],
+                 {**chosen, canon(cut): chosen[victim]})
     if probe == text:
         print('   FAILED. A dropped declaration produced identical output.')
         ok = False
@@ -311,4 +337,4 @@ if __name__ == '__main__':
         fh.write(text)
     os.replace(tmp, OUT)
     print(f'wrote {OUT}: {len(rows)} rules, '
-          f'{sum(n for _, n, _ in rows):,} inline attributes covered')
+          f'{sum(r[1] for r in rows):,} inline attributes covered')

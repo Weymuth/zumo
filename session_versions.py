@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.14'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.14.1'   # the only version home in this file (S96; v1.4 S98)
 # v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
 #   syllabus. v1.11's G excused 'Syllabus' because it is emitted under its FILENAME - true
 #   of --live, false of --handoff, where it appeared under neither name. The exemption
@@ -161,6 +161,7 @@ ARTEFACTS = [
     ('site_parity',           'site_parity.py',           r"VERSION = '(v[\d.]+)'"),
     ('build_css',             'build_css.py',             r"VERSION = '(v[\d.]+)'"),
     ('image_audit',           'image_audit.py',           r"VERSION = '(v[\d.]+)'"),
+    ('strip_inline',          'strip_inline.py',          r"VERSION = '(v[\d.]+)'"),
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
@@ -248,6 +249,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"site_parity {vals['site_parity']} · "
             f"build_css {vals['build_css']} · "
             f"image_audit {vals['image_audit']} · "
+            f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
             f"regex_audit {vals['regex_audit']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
@@ -273,6 +275,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`site_parity` **{vals['site_parity']}** ·\n"
             f"`build_css` **{vals['build_css']}** ·\n"
             f"`image_audit` **{vals['image_audit']}** ·\n"
+            f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
@@ -490,10 +493,16 @@ def selftest():
         p = os.path.join(work, 'ZUMO_SUPER_BIBLE.md')
         s = open(p, encoding='utf-8').read()
         open(p, 'w', encoding='utf-8').write(s.replace('Bible version: v', 'Bible VERSION: v', 1))
+        # S105: this seed named 'v03.20.0' as a LITERAL and stopped seeding anything the
+        # moment L03 bumped - the control then reported a clean tree and FAILED loudly,
+        # which is the right direction but the wrong reason. Seed by PATTERN so the control
+        # cannot expire on a version bump (S104's rule: write controls for the world the
+        # change creates).
         p = os.path.join(work, 'lessons', 'Lesson_03.html')
         s = open(p, encoding='utf-8').read()
-        open(p, 'w', encoding='utf-8').write(s.replace('Lesson version: v03.20.0',
-                                                       'Lesson version: v09.99.9', 1))
+        s2, n = re.subn(r'Lesson version: v[0-9.]+', 'Lesson version: v09.99.9', s, count=1)
+        assert n == 1, 'control run: nothing was seeded, so nothing could be detected'
+        open(p, 'w', encoding='utf-8').write(s2)
         # run the COPY inside the corrupted tree. Running the original with cwd=work reads
         # the original's files, because ROOT is derived from __file__ and not from cwd -
         # the control would then test the clean tree and report a false pass.
