@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.36'
+VERSION = 'v1.37'
 # v1.34 (S100): NEW GATE 40 — §21.1b fragile-if-edited. Advisory, never fatal. Names every
 #   referenced composite that is fine today but would breach the ceiling if an Illustrator
 #   round-trip returned its payload lossless. It flags L01 1-10 at ~1,938,090 B — which is
@@ -1717,6 +1717,40 @@ for f in site:
         ctx = src[max(0, m.start() - 30):m.start() + 70].replace('\n', ' ')
         bad.append(f'{f} line {ln}: names its own domain -> ...{ctx}...')
 gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
+
+# ---- GATE 43 (§27.11): the stylesheet itself is baselined.
+# THE MIGRATION MOVED EVERY DECLARATION INTO ONE FILE AND LEFT IT UNGUARDED. Before S105 a
+# declaration lived in 25,036 places in the lessons; now it lives once, in css/book.css, and
+# NOTHING validated that file. build_css --check cannot: it rebuilds from the lessons read
+# through expand_classes, which reads css/book.css -- damage the stylesheet and the expansion
+# is damaged identically, so the regenerated output matches the damaged file and --check says
+# "current", exit 0. Measured, not argued: deleting one `color: white;` left all 42 gates green
+# and --check clean, while the lesson strip's links lost their colour in all sixteen lessons.
+# An instrument that reads its own output as input cannot see its input change (§24.8).
+#
+# So this gate holds the ONE thing not derived from the file it is checking: a baseline.
+# It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
+# that is the point. A baseline that never moves is a baseline nobody is checking.
+import hashlib as _hl
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 664, 2434, '0f58856939eeff63'
+bad = []
+if os.path.exists('css/book.css'):
+    _css = open('css/book.css', encoding='utf-8').read()
+    _body = _css[_css.index('*/') + 2:]          # skip the generated header: it carries VERSION
+    _r = len(re.findall(r'^\.[A-Za-z0-9_-]+ \{', _body, re.M))
+    _d = len(re.findall(r'^  [a-z-]+: ', _body, re.M))
+    _g = _hl.sha256(_body.encode()).hexdigest()[:16]
+    if _r != CSS_RULES:
+        bad.append(f'css/book.css has {_r} rules, baseline {CSS_RULES}')
+    if _d != CSS_DECLS:
+        bad.append(f'css/book.css has {_d} declarations, baseline {CSS_DECLS} — a rule '
+                   f'gained or lost a property and no other instrument can see it')
+    if _g != CSS_DIGEST:
+        bad.append(f'css/book.css digest {_g}, baseline {CSS_DIGEST} — content changed; if '
+                   f'deliberate, re-run build_css.py and move the baseline in this file')
+else:
+    bad.append('css/book.css is missing')
+gate('\u00a727.11 the stylesheet matches its baseline (664 rules / 2,434 declarations)', bad)
 
 
 
