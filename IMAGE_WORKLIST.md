@@ -64,7 +64,3 @@ A figure is PLANNED when a lesson prints its tag and LANDED when an `<img>` in t
 - `spiral_star_14.svg`
 - `spiral_star_15.svg`
 - `spiral_star_16.svg`
-
-## Copies of an `images/` file sitting in `lessons/`
-
-- `lessons/L01_GRAPHIC_1-10_zumo_hardware_labeled.svg` — **DIFFERENT BYTES** (05719c44717b vs images/ 54034f17dcd3)

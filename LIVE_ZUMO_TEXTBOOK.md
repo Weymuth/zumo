@@ -1,12 +1,74 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 1, 2026 (Session 105 — **THE SWEEP. ALL SIXTEEN LESSONS CONVERTED.** 24,412 inline `style=""` attributes became classes against a 664-rule stylesheet, 624 held (39 per lesson, every lesson); 24,412 + 624 = 25,036, the §27 census exactly. Render identity proved by construction AND independently against the pre-conversion tree: declaration sets identical across 25,036 elements in document order, visible text identical bar one `<link>` per lesson. Lesson bytes 25% smaller. Three hazards found that no gate could see — a widened `SOURCES` renaming 57 classes with 46 keeping their spelling; an ordering trap that strands 74 elements permanently; and `canon()`'s sort breaking every gate that asserts authored order, which revealed a FIFTH held block type. The last was fixed in the generator, not by extending the hold list.)
-**Status:** ✅ **43/43 GATES PASS · NINE CONTROLS · ZERO INLINE STYLES · DOMAIN-AGNOSTIC · Census 39,994.** Bible **v8.95** — §27.8 records the sweep and its three hazards (§27.8a widening `SOURCES` renames rules and the rename is mostly invisible to gate 41; §27.8b restore → regenerate → apply is forced because `expand_classes` leaves an unresolvable class in place; §27.8c `canon()` sorts while the gates assert authored order — fix the generator, not the instances). New: `strip_inline` v1.0 (eight controls), `build_css` v1.2.1, `session_versions` v1.14.1. All 16 lessons minor-bumped. `css/book.css` 167 → 664 rules.
+**Date:** August 2, 2026 (Session 106 — **TWO NEW GATES, AND A FILE NOBODY COULD SEE.** §27.12 fails on any inline `style=` in a converted page — seeding one left all 43 preceding gates green — and it caught a real `--apply` run missing `--include-held` on its first day, not a seeded control. §27.13 asserts `css/book.css` regenerates byte-identically from the lessons: the guard on hazard (a) that §26’s repaint cannot spend, because a repaint MOVES gate 43’s baseline and a moved baseline is a spent gate. `strip_inline --verify` was offered and refused — it computes gate 41’s assertion twice. L02 IMAGE 2.2 built, redesigned to A/B/C badges, and wired; outstanding 20 → 19. Consolas removed book-wide, 14 bogus quoted font families killed in 7 files, and five staged rasters converted to `xlink:href` — the only real "won’t open", everything else a dismissable dialog. Three findings were caught wrong before shipping: 84 phantom missing-viewBoxes, 65 phantom font defects that were 7, and a 99-file Helvetica sweep falsified by two throwaway probes.)
+**Status:** ✅ **45/45 GATES PASS · ZERO INLINE STYLES · ZERO CONSOLAS IN ANY SVG · Census 39,993.** Bible **v8.96** — §27.12 and §27.13. `book_gates` **v1.38.2** (§21 coverage 223→224, §27.11 digest moved; rule and declaration counts unchanged). L02 **v03.7.4**. Two orphan SVGs deleted from `lessons/` — copies of `images/` files that no page referenced and therefore no gate checked; the L02 one was the PRE-FIX Consolas copy, which is why the same error kept appearing after the fix shipped three times. **A file that nothing references is not harmless — it is a file no instrument checks.**
 
-**Versions:** L01 v03.15.5 · L02 v03.7.3 · L03 v03.20.3 · L04 v04.15.3 · L05 v04.15.3 · L06 v04.19.4 · L07 v04.16.3 · L08 v04.14.3 · L09 v05.12.3 · L10 v02.11.3 · L11 v02.12.3 · L12 v01.14.3 · L13 v02.12.3 · L14 v02.16.3 · L15 v02.11.5 · L16 v02.7.3 · going_deeper v01.1.1 — census **39,994** · Bible **v8.95** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.37** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `3aca857`.**
+**Versions:** L01 v03.15.5 · L02 v03.7.4 · L03 v03.20.3 · L04 v04.15.3 · L05 v04.15.3 · L06 v04.19.4 · L07 v04.16.3 · L08 v04.14.3 · L09 v05.12.3 · L10 v02.11.3 · L11 v02.12.3 · L12 v01.14.3 · L13 v02.12.3 · L14 v02.16.3 · L15 v02.11.5 · L16 v02.7.3 · going_deeper v01.1.1 — census **39,993** · Bible **v8.96** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.38.2** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `a15c277`.**
 
 ---
 ---
+
+## WHAT SHIPPED IN S106
+
+**THE INSTRUMENTS CHECKED THE FIRST FACE IN A FONT STACK AND NOTHING ELSE.** `font_stack_sweep`
+reported 0 rewrites and `svg_layout_audit` reported CLEAN on a file Illustrator refused to open.
+The offending name — `Consolas`, Windows-only — sat in **position two** of
+`"Courier New", Consolas, monospace`, and both instruments read position one and stopped. DJ found
+it by double-clicking. The same blindness hid a second shape: inside a `<style>` block,
+`font-family: "Courier New, monospace", …` requests a single font **literally named**
+`Courier New, monospace`. Its first face is spelled with the right letters, so it passed —
+**14 declarations across 7 files, all live.**
+
+**AND DJ WAS OPENING A FILE NO GATE COULD SEE.** Two orphan SVGs sat in `lessons/`, copies of
+`images/` files referenced by nothing, therefore invisible to §21. The L02 one was the PRE-FIX
+copy. The fix shipped three times and the error kept coming back because the file being opened
+was not the file being fixed. `image_audit` was the only instrument that ever saw them, and only
+because it compares bytes instead of following references.
+
+**GATE 44 (§27.12) CAUGHT A REAL MISTAKE ON ITS FIRST DAY.** Not a seeded control: `strip_inline
+--apply` was run without `--include-held`, which restored 624 held attributes as inline and left
+them there. The gate fired with 624. Seeding one `<p style="color: #ff00aa">` into L05 had already
+proved the hole — **all 43 preceding gates stayed green**, and the element renders correctly while
+re-opening what the whole migration closed.
+
+**GATE 45 (§27.13) IS THE GUARD A REPAINT CANNOT SPEND.** §27.11 says its own baseline is *meant to
+move* — and §26's repaint is precisely the operation that moves it, so the commit that moves those
+three constants is the commit that disarms gate 43. Gate 45 re-derives instead of remembering.
+Measured in both directions: a hand-deleted `color: white;` fires 43 and is invisible to 45; one
+element retyped to a **different resolvable class** leaves all 43 green and fires 45. Neither
+subsumes the other.
+
+**WIRING ONE FIGURE FORCED THE FULL §27.8b CYCLE.** Adding L02's IMAGE 2.2 changed class usage,
+which changed `build_css`'s frequency ranking, which desynced the stylesheet — gate 45 red on the
+first attempt. **restore → regenerate → apply --include-held.** Blast radius when run correctly:
+**one lesson.** `css/book.css` reordered two rules and dropped `.div-2196f3`, whose last use in the
+book was the placeholder that figure replaced.
+
+**THE FIGURE ITSELF.** Arrived 2.4 MB with an alpha PNG payload, PostScript-name fonts, and the L01
+template's filename baked into its own footer. `flatten_alpha` → `fit_raster_svg` →
+`font_stack_sweep` took it to **433 KB**. Redesigned against GPT's proposal: badges carry **A B C**
+instead of 1 2 3, so a student no longer reads "3", finds "3", and only then learns it is Button C.
+`Middle` → `Center`, because L02 ships `// Center button`. Layout verified from rendered pixels,
+not from the gates — which is where the design bugs actually were: a tspan row that collapsed to
+107 px of ink where 219 was expected, then overflowed its box by 18 px. Both invisible to every
+instrument in the repo.
+
+**THREE FINDINGS CAUGHT WRONG BEFORE THEY SHIPPED.** *84 files missing a viewBox* — the test read
+the first `>` in the file, which is the XML declaration; real answer **0**. *65 files with a bogus
+font family* — counted string matches, not declarations; in an **attribute** the quotes are XML and
+the value is valid, so **57 of the 65 needed nothing**; real answer **7**. *Naming Helvetica
+triggers the dialog* — falsified by probe: `Arial, Helvetica, sans-serif` and `Arial, sans-serif`
+both opened silently. **A 99-file sweep avoided by two throwaway files** — which then got pushed
+into `images/` because they were presented in the same download list as real deliverables, and gate
+21.2 caught them at 181 vs 179. **A test file must never sit next to a file that must ship.**
+
+**THE ONLY REAL FAILURE WAS §17.3c.** Five staged rasters carried a plain `href` on `<image>`,
+which is SVG 2 — Illustrator reports MISSING LINK and the artwork cannot be edited. Converted to
+`xlink:href` with `xmlns:xlink` declared. Every one of the 13 SVG edits this session was proved
+**pixel-identical** by render-diff. The remaining Helvetica dialog is a warning, not a failure, and
+is **parked**: 22 files request font-weight 500/600/800 and macOS Helvetica has faces only for 400
+and 700, which matches the wording, but the probes that would confirm it were built and not run.
+
 
 ## WHAT SHIPPED IN S105
 
