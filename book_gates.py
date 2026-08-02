@@ -2,7 +2,9 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.38.1'
+VERSION = 'v1.38.2'
+# v1.38.2 (S106): §21 coverage 223 -> 224 and the §27.11 digest moved, both because
+#   L02 IMAGE 2.2 was wired in. Rule and declaration counts did NOT move.
 # v1.38.1 (S106): §17.3c coverage 27 -> 28, L02_IMAGE_2-02 joined the book.
 # v1.38 (S106): NEW GATES 44 (§27.12) + 45 (§27.13) — the migration's two unguarded
 #   invariants. 44: a page that links css/book.css carries no inline style attribute.
@@ -1370,8 +1372,8 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 223:
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 223 — a reference '
+if _seen != 224:                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired in
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 224 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -1749,7 +1751,9 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 664, 2434, '0f58856939eeff63'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 664, 2434, 'f0a1500a18f563fa'
+#   S106: digest only. Wiring ONE figure into L02 changed the frequency ranking, which
+#   reorders rules and their usage comments. Same 664 rules, same 2,434 declarations.
 bad = []
 if os.path.exists('css/book.css'):
     _css = open('css/book.css', encoding='utf-8').read()
