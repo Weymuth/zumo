@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file returns the version and not a changelog line.
-VERSION = 'v1.0'
+VERSION = 'v1.1.0'
 # v1.0 (S103): NEW. Rewrites font-family declarations whose FIRST choice is a designer
 #   face into the canon stacks. Bible 17.3a Recipe 1 check 4 and the RoboLore graphics
 #   handoff 5 both already name the replacements; this instrument does not rule, it applies.
@@ -33,6 +33,20 @@ MAP = {
     'menlo':            MONO,
     'sf mono':          MONO,
 }
+
+# S108: A FACE THE SITE ACTUALLY SERVES IS NOT A SUBSTITUTION RISK.
+# MAP was written for SVGs, where no web font can be relied on, so it rewrites every named
+# face to a system stack. That is right for an SVG and WRONG for css/book.css, which now
+# joins the scan: index.html, going_deeper.html and all sixteen lessons load Inter from
+# fonts.googleapis.com, so proposing Inter -> Arial there would undo the thing the link tag
+# exists to do. Exempt only in a stylesheet, and only for faces the repo can be shown to
+# serve -- an exemption list is a claim, and this one is checkable against the link tags.
+WEB_SERVED = {'inter'}
+
+
+def _exempt(face, path):
+    return path.endswith('.css') and face in WEB_SERVED
+
 
 DECL = re.compile(r'(font-family\s*[:=]\s*)("([^"]*)"|\'([^\']*)\'|([^;"\'>}]+))', re.I)
 
@@ -127,8 +141,13 @@ def main(argv):
     if '--selftest' in argv:
         return selftest()
     write = '--write' in argv
-    paths = [a for a in argv[1:] if not a.startswith('-')] or sorted(
-        glob.glob('images/**/*.svg', recursive=True))
+    # S108: css/book.css JOINS THE DEFAULT SCAN. The Windows-only Segoe UI stack that
+    # every non-Windows reader had been silently substituting away from lived in .page,
+    # in this file, and this sweep reported 0 rewrites for its whole life because it only
+    # ever opened SVGs. An instrument that cannot see a file cannot clear it (24.8).
+    paths = [a for a in argv[1:] if not a.startswith('-')] or (
+        sorted(glob.glob('images/**/*.svg', recursive=True))
+        + [f for f in ['css/book.css'] if os.path.exists(f)])
 
     tot_files = 0
     tot_hits = 0
@@ -139,6 +158,8 @@ def main(argv):
         with open(p, encoding='utf-8', errors='strict') as fh:
             src = fh.read()
         new, hits = rewrite(src)
+        hits = [h for h in hits
+                if not _exempt(str(h[0]).strip().strip('\'"').lower(), p)]
         if not hits:
             continue
         tot_files += 1

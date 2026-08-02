@@ -1789,7 +1789,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 665, 2443, '715db240ff943354'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 665, 2443, '9e6bbcb84c9c9ae5'
 #   S106: digest only. Wiring ONE figure into L02 changed the frequency ranking, which
 #   reorders rules and their usage comments. Same 664 rules, same 2,434 declarations.
 #   S108: +2 rules / +11 declarations, the F1 eyebrow (7) and headline (4) spans, from the
@@ -1804,6 +1804,9 @@ CSS_RULES, CSS_DECLS, CSS_DIGEST = 665, 2443, '715db240ff943354'
 #   was the old cap's inner style, and the bonus banner was its LAST consumer once the 222
 #   section caps had moved. 666 -> 665 rules, 2,445 -> 2,443 declarations. A dropped name is
 #   the one kind of build_css change gate 41 can see on its own; this one is accounted for.
+#   Then type treatment E: .page swapped the Windows-only Segoe stack for Inter, line-height
+#   1.7 -> 1.65 and #333 -> #1d1d1f. Same 665 rules, same 2,443 declarations, same NAME -
+#   digest only. The rule kept `.page` because its declarations still prove the role.
 bad = []
 if os.path.exists('css/book.css'):
     _css = open('css/book.css', encoding='utf-8').read()
