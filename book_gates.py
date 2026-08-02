@@ -2,7 +2,8 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.38'
+VERSION = 'v1.38.1'
+# v1.38.1 (S106): §17.3c coverage 27 -> 28, L02_IMAGE_2-02 joined the book.
 # v1.38 (S106): NEW GATES 44 (§27.12) + 45 (§27.13) — the migration's two unguarded
 #   invariants. 44: a page that links css/book.css carries no inline style attribute.
 #   Seeding one <p style="color: #ff00aa"> into L05 left ALL 43 preceding gates green;
@@ -1568,7 +1569,10 @@ if _staged38:
 # Two faults, both fatal to editability and both invisible on screen:
 #   1. an <image> carrying a plain href (with or without xlink alongside)
 #   2. xlink:href used while xmlns:xlink is undeclared — malformed, may not parse at all
-NIMG_EXPECTED = 27           # stated, not inherited — bump when an <image> is added
+NIMG_EXPECTED = 28           # stated, not inherited — bump when an <image> is added
+#   27 -> 28 at S106: L02_IMAGE_2-02_zumo_buttons_labeled.svg joined the book. The gate
+#   caught it entering on a fresh clone — the file's own xlink was correct, so the ONLY
+#   thing that saw a new composite arrive was this stated count.
 _bad39, _staged39 = [], []
 for _f in sorted(glob.glob('images/**/*.svg', recursive=True)):
     try:

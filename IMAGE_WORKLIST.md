@@ -10,7 +10,7 @@ A figure is PLANNED when a lesson prints its tag and LANDED when an `<img>` in t
 
 | Lesson | Tag | State |
 |---|---|---|
-| L02 | IMAGE 2.2 | no asset |
+| L02 | IMAGE 2.2 | on disk, unwired: L02_IMAGE_2-02_zumo_buttons_labeled.svg |
 | L02 | IMAGE 2.5 | no asset |
 | L03 | VIDEO 3.1 | video |
 | L03 | IMAGE 3.2 | no asset |
@@ -33,7 +33,7 @@ A figure is PLANNED when a lesson prints its tag and LANDED when an `<img>` in t
 
 ## Unreferenced files in `images/`
 
-30 file(s) on disk that no page points at. Not a defect by itself - staging is legitimate - but every one is either future work or litter.
+31 file(s) on disk that no page points at. Not a defect by itself - staging is legitimate - but every one is either future work or litter.
 
 - `BrainGear_Complete.png`
 - `ChatGPT Image Jul 21, 2026, 08_10_56 PM.png`
@@ -43,6 +43,7 @@ A figure is PLANNED when a lesson prints its tag and LANDED when an `<img>` in t
 - `ChatGPT Image Jul 29, 2026, 10_57_13 AM.png`
 - `L02_GRAPHIC_2-05_sketch_anatomy_card.png`
 - `L02_GRAPHIC_2-07_ir_sensors.svg`
+- `L02_IMAGE_2-02_zumo_buttons_labeled.svg`
 - `L02_IMAGE_2-07_ir_sensors_r02.svg`
 - `L02_IMAGE_2-07_ir_sensors_r13.svg`
 - `L03_IMAGE_3-01_motor_gearbox_in_frame.png`
