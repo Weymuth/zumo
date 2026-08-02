@@ -49,7 +49,13 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lesson_inventory as LI
 import build_css as BC
 
-VERSION = 'v1.0'          # the only version home in this file (S105)
+VERSION = 'v1.1'          # the only version home in this file (S105)
+# v1.1 (S105): --include-held, for the ONE pass that converts the four byte-exact-across-lesson
+#   block types book-wide. It is gated on a precondition, not on a promise: every held string
+#   must round-trip BYTE-EXACT through the stylesheet, because §6.5a/§25.6/§6.8/§4.5 assert
+#   those strings literally and read through expand_classes. If even one does not, the flag
+#   refuses. Precedent: §4.5's bonus banner was never held and its gate passes for exactly this
+#   reason -- expansion hands the literal back unchanged.
 
 LESSONS = sorted(glob.glob('lessons/Lesson_*.html'))
 LINK = '<link rel="stylesheet" href="../css/book.css">'
@@ -106,10 +112,30 @@ def _in(spans, pos):
     return any(a <= pos < b for a, b in spans)
 
 
-def convert(src, label, name_of):
+def roundtrips(paths, name_of, css=None):
+    """-> (ok, [strings that do NOT round-trip]). The precondition for --include-held.
+
+    A held block is held because a gate compares it byte-exact ACROSS lessons and reads through
+    expand_classes. Converting it is safe if and only if expansion hands back the identical
+    string. This asks that question of the real stylesheet rather than assuming it."""
+    css = LI.load_css() if css is None else css
+    seen, bad = {}, []
+    for p in paths:
+        s = open(p, encoding='utf-8').read()
+        for a, b in held_spans(LI.expand_classes(s), label_of(p)):
+            for v in _STYLE.findall(LI.expand_classes(s)[a:b]):
+                seen[v] = 1
+    for v in seen:
+        cls = name_of.get(BC.canon(v))
+        if cls is None or '; '.join(css[cls].split('; ')) + ';' != v:
+            bad.append(v)
+    return (not bad), bad
+
+
+def convert(src, label, name_of, include_held=False):
     """-> (text, converted, held, unmapped). Value-only; nothing else moves."""
     s = LI.expand_classes(src)
-    spans = held_spans(s, label)
+    spans = [] if include_held else held_spans(s, label)
     conv = held = 0
     unmapped = []
 
@@ -150,14 +176,20 @@ def label_of(path):
     return 'LESSON ' + m.group(1) if m else ''
 
 
-def build(paths=None):
+def build(paths=None, include_held=False):
     """ENTRYPOINT. -> {path: (text, converted, held, unmapped)}. Writes nothing."""
     paths = paths or LESSONS
     _, _, chosen = BC.build(BC.SOURCES)
+    if include_held:
+        ok, bad = roundtrips(paths, chosen)
+        if not ok:
+            raise SystemExit('--include-held REFUSED: %d held string(s) do not round-trip '
+                             'byte-exact, so a gate asserting them literally would break:\n  '
+                             % len(bad) + '\n  '.join(v[:100] for v in bad[:5]))
     out = {}
     for p in paths:
         src = open(p, encoding='utf-8').read()
-        t, c, h, u = convert(src, label_of(p), chosen)
+        t, c, h, u = convert(src, label_of(p), chosen, include_held)
         out[p] = (link(t), c, h, u)
     return out
 
@@ -236,6 +268,25 @@ def selftest():
     check('G: and does not cry wolf on a live one',
           dead_classes('<p class="tok-red">a</p>', CSS), [])
 
+    print('CONTROL I (--include-held is gated, not trusted): a string the stylesheet')
+    print('          cannot hand back must make the flag REFUSE')
+    import tempfile
+    fake_css = {'ok': 'color: red', 'bent': 'color: blue'}
+    saved = globals()['held_spans']
+    try:
+        globals()['held_spans'] = lambda s, lab: [(0, len(s))]   # treat everything as held
+        d = tempfile.mkdtemp()
+        f = os.path.join(d, 'Lesson_01.html')
+        open(f, 'w').write('<p style="color: red;">x</p>')
+        good, bad_g = roundtrips([f], {'color: red': 'ok'}, fake_css)
+        check('I: a byte-exact string passes the precondition', (good, bad_g), (True, []))
+        open(f, 'w').write('<p style="color: blue">x</p>')   # no trailing ; - rule returns one
+        bent, bad_b = roundtrips([f], {'color: blue': 'bent'}, fake_css)
+        check('I: a string the stylesheet cannot return is REFUSED', bent, False)
+        check('I: and it is named', len(bad_b), 1)
+    finally:
+        globals()['held_spans'] = saved
+
     print('CONTROL H (the hold is derived, not counted): L01 lives and holds 39')
     if os.path.exists('lessons/Lesson_01.html'):
         s = LI.expand_classes(open('lessons/Lesson_01.html', encoding='utf-8').read())
@@ -283,8 +334,9 @@ def main(argv):
         return 1 if bad else 0
 
     apply = '--apply' in argv
-    res = build(paths)
-    print(f'strip_inline {VERSION}   mode: {"APPLY" if apply else "PLAN"}   '
+    res = build(paths, '--include-held' in argv)
+    print(f'strip_inline {VERSION}   mode: {"APPLY" if apply else "PLAN"}'
+          f'{" +HELD" if "--include-held" in argv else ""}   '
           f'{len(paths)} file(s)\n')
     print(f'  {"file":26} {"convert":>8} {"held":>6} {"unmapped":>9}   bytes')
     tot = collections.Counter()

@@ -31,8 +31,8 @@
 
 # STATE
 
-Fresh-clone verified at **`3633119`**. Census **39,994**.
-Bible **v8.92.1** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.1** ·
+Fresh-clone verified at **`b2a133e`**. Census **39,994**.
+Bible **v8.93** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.1** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
 
@@ -43,13 +43,13 @@ Instruments: `book_gates` **v1.35.1** · `lesson_inventory` **v1.2.0** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.19** · `site_parity` **v1.1** ·
 `build_css` **v1.2.1** ·
 `image_audit` **v1.1** ·
-`strip_inline` **v1.0** ·
+`strip_inline` **v1.1** ·
 `build_worklist` **v1.1** ·
 `regex_audit` **v1.0** ·
 `font_stack_sweep` **v1.0** ·
 `going_deeper` **v01.1.1**.
 
-Lessons: L01 v03.15.3 · L02 v03.7.1 · L03 v03.20.1 · L04 v04.15.1 · L05 v04.15.1 · L06 v04.19.2 · L07 v04.16.1 · L08 v04.14.1 · L09 v05.12.1 · L10 v02.11.1 · L11 v02.12.1 · L12 v01.14.1 · L13 v02.12.1 · L14 v02.16.1 · L15 v02.11.3 · L16 v02.7.1.
+Lessons: L01 v03.15.4 · L02 v03.7.2 · L03 v03.20.2 · L04 v04.15.2 · L05 v04.15.2 · L06 v04.19.3 · L07 v04.16.2 · L08 v04.14.2 · L09 v05.12.2 · L10 v02.11.2 · L11 v02.12.2 · L12 v01.14.2 · L13 v02.12.2 · L14 v02.16.2 · L15 v02.11.4 · L16 v02.7.2.
 
 **41/41 gates · seven controls · every lesson converted.** Census 39,979 → **39,994**
 (+15, the fifteen `<link>` lines).
@@ -121,11 +121,8 @@ documented in the file header.
 
 # THE MIGRATION — WHAT REMAINS
 
-1. **The held blocks, book-wide, in one generated pass.** 624 attributes: §6.5a strip (20) ·
-   §25.6 hero (6) + footer (1) · §6.8 PART dividers (4 × 3), per lesson. Cheapest conversion
-   in the book — one block × 16 files, from generators that already exist. **This is the next
-   step and it is small.**
-2. Then **§26's repaint**, which is what all of this was for. `#f8f9fa` 641 · `#fffbe6` 87 ·
+1. ~~The held blocks~~ — **DONE S105.** Zero inline styles remain book-wide.
+2. **§26's repaint**, which is what all of this was for. `#f8f9fa` 641 · `#fffbe6` 87 ·
    `#4ec9b6` 294 → `#4EC9B0` · `#f14c4c` 14 → `#D46554` · 9 roster rows · 41 marks unwired ·
    LEARN/INSIGHT still sharing `#e3f2fd`/`#2196f3` · KEY TERM's purple colliding with MY PLAN.
    **Now a stylesheet edit, not a 25,000-attribute sweep.**
@@ -214,12 +211,12 @@ lessons, leaves classes pointing at rules that changed meaning — and gate 41 w
 
 | Action | File | Note |
 |---|---|---|
-| upload | `css/book.css` | 664 rules — **atomic with all 16 lessons** |
+
 | upload | `lessons/Lesson_01.html` … `Lesson_16.html` | all 16, converted, minor-bumped |
-| upload | `strip_inline.py` | **v1.0 NEW** |
-| upload | `build_css.py` | **v1.2.1** |
+| upload | `strip_inline.py` | **v1.1 NEW** — `--include-held` |
+
 | upload | `session_versions.py` | **v1.14.1** |
-| upload | `ZUMO_SUPER_BIBLE.md` | **v8.92.1** — §27.8 |
+| upload | `ZUMO_SUPER_BIBLE.md` | **v8.93** — §27.8, §27.9 |
 | upload | `ZUMO_S106_HANDOFF.md` | this file |
 | upload | `LIVE_ZUMO_TEXTBOOK.md` | **regenerate LAST**, versions EMITTED not typed |
 | **delete** | `ZUMO_S105_HANDOFF.md` | §12.2 — gate 28 enforces exactly one |

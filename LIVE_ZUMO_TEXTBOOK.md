@@ -1,14 +1,35 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** August 1, 2026 (Session 105 — **THE SWEEP. ALL SIXTEEN LESSONS CONVERTED.** 24,412 inline `style=""` attributes became classes against a 664-rule stylesheet, 624 held (39 per lesson, every lesson); 24,412 + 624 = 25,036, the §27 census exactly. Render identity proved by construction AND independently against the pre-conversion tree: declaration sets identical across 25,036 elements in document order, visible text identical bar one `<link>` per lesson. Lesson bytes 25% smaller. Three hazards found that no gate could see — a widened `SOURCES` renaming 57 classes with 46 keeping their spelling; an ordering trap that strands 74 elements permanently; and `canon()`'s sort breaking every gate that asserts authored order, which revealed a FIFTH held block type. The last was fixed in the generator, not by extending the hold list.)
-**Status:** ✅ **41/41 GATES PASS · SEVEN CONTROLS · EVERY LESSON CONVERTED · Census 39,994.** Bible **v8.92.1** — §27.8 records the sweep and its three hazards (§27.8a widening `SOURCES` renames rules and the rename is mostly invisible to gate 41; §27.8b restore → regenerate → apply is forced because `expand_classes` leaves an unresolvable class in place; §27.8c `canon()` sorts while the gates assert authored order — fix the generator, not the instances). New: `strip_inline` v1.0 (eight controls), `build_css` v1.2.1, `session_versions` v1.14.1. All 16 lessons minor-bumped. `css/book.css` 167 → 664 rules.
+**Status:** ✅ **41/41 GATES PASS · NINE CONTROLS · ZERO INLINE STYLES BOOK-WIDE · Census 39,994.** Bible **v8.93** — §27.8 records the sweep and its three hazards (§27.8a widening `SOURCES` renames rules and the rename is mostly invisible to gate 41; §27.8b restore → regenerate → apply is forced because `expand_classes` leaves an unresolvable class in place; §27.8c `canon()` sorts while the gates assert authored order — fix the generator, not the instances). New: `strip_inline` v1.0 (eight controls), `build_css` v1.2.1, `session_versions` v1.14.1. All 16 lessons minor-bumped. `css/book.css` 167 → 664 rules.
 
-**Versions:** L01 v03.15.3 · L02 v03.7.1 · L03 v03.20.1 · L04 v04.15.1 · L05 v04.15.1 · L06 v04.19.2 · L07 v04.16.1 · L08 v04.14.1 · L09 v05.12.1 · L10 v02.11.1 · L11 v02.12.1 · L12 v01.14.1 · L13 v02.12.1 · L14 v02.16.1 · L15 v02.11.3 · L16 v02.7.1 · going_deeper v01.1.1 — census **39,994** · Bible **v8.92.1** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.35.1** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.0 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `3633119`.**
+**Versions:** L01 v03.15.4 · L02 v03.7.2 · L03 v03.20.2 · L04 v04.15.2 · L05 v04.15.2 · L06 v04.19.3 · L07 v04.16.2 · L08 v04.14.2 · L09 v05.12.2 · L10 v02.11.2 · L11 v02.12.2 · L12 v01.14.2 · L13 v02.12.2 · L14 v02.16.2 · L15 v02.11.4 · L16 v02.7.2 · going_deeper v01.1.1 — census **39,994** · Bible **v8.93** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.35.1** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `b2a133e`.**
 
 ---
 ---
 
 ## WHAT SHIPPED IN S105
+
+**THE MIGRATION IS DONE. 25,036 classes, zero `style=""` attributes.** The four block types held
+through the sweep — §6.5a strip (320), §25.6 hero (96) + footer (16), §6.8 PART dividers (192) —
+converted book-wide in one pass after the push. Lesson bytes **2,638,947 → 2,582,947**; total
+**3,534,934 → 2,582,947, 27% smaller**. Census unchanged at 39,994. Independent parser over the
+whole population: 25,036 elements, **zero mismatches**, visible text identical in all sixteen.
+
+**The hold was released by measurement, not by assumption.** Those blocks are compared byte-exact
+ACROSS lessons and read through `expand_classes`, so converting one lesson at a time is exactly
+what §6.5a/§25.6/§6.8 exist to catch. Two measured facts made a single pass safe: the 624
+attributes carry only **16 distinct strings**, each appearing an exact multiple of 16 — they were
+already uniform book-wide — and **all 16 round-trip byte-exact** through the stylesheet, which is
+only true because §27.8c fixed declaration order and §27.8d fixed colon spacing. §4.5's bonus
+banner was never held and its byte-exact gate passes for the same reason: the precedent was
+already in the tree.
+
+**`strip_inline` v1.1 — `--include-held`, gated on a precondition rather than a promise.** It runs
+`roundtrips()` first and REFUSES, naming offenders, if any held string cannot be handed back
+unchanged. CONTROL I proves both directions. `css/book.css` **unchanged** — every held string
+already had a rule.
+
 
 **The sweep. All sixteen lessons.** 24,412 inline attributes converted, **624 held** — 39 per
 lesson, every lesson, no exceptions — and 24,412 + 624 = **25,036**, the §27 census exactly. Zero
@@ -1672,7 +1693,7 @@ in L01 and L12–L16 — malformed but browser-tolerated, balanced so no depth w
 
 **Verified:** div and span balance unchanged; a line-by-line diff audit confirmed every changed line is either a slash or a version comment, zero unexpected edits.
 
-**Versions:** L01 v03.15.3 · L02 v03.7.1 · L03 v03.20.1 · L04 v04.15.1 · L05 v04.15.1 · L06 v04.19.2 · L07 v04.16.1 · L08 v04.14.1 · L09 v05.12.1 · L10 v02.11.1 · L11 v02.12.1 · L12 v01.14.1 · L13 v02.12.1 · L14 v02.16.1 · L15 v02.11.3 · L16 v02.7.1 · going_deeper v01.1.1 — census **39,994** · Bible **v8.92.1** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.35.1** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.0 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `3633119`.**
+**Versions:** L01 v03.15.4 · L02 v03.7.2 · L03 v03.20.2 · L04 v04.15.2 · L05 v04.15.2 · L06 v04.19.3 · L07 v04.16.2 · L08 v04.14.2 · L09 v05.12.2 · L10 v02.11.2 · L11 v02.12.2 · L12 v01.14.2 · L13 v02.12.2 · L14 v02.16.2 · L15 v02.11.4 · L16 v02.7.2 · going_deeper v01.1.1 — census **39,994** · Bible **v8.93** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.35.1** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `b2a133e`.**
 
 **Not applied:** DJ floated halving again to 2px — deferred, not done.
 
