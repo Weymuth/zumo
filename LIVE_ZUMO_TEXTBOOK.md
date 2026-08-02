@@ -1,12 +1,52 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 2, 2026 (Session 106 — **TWO NEW GATES, AND A FILE NOBODY COULD SEE.** §27.12 fails on any inline `style=` in a converted page — seeding one left all 43 preceding gates green — and it caught a real `--apply` run missing `--include-held` on its first day, not a seeded control. §27.13 asserts `css/book.css` regenerates byte-identically from the lessons: the guard on hazard (a) that §26’s repaint cannot spend, because a repaint MOVES gate 43’s baseline and a moved baseline is a spent gate. `strip_inline --verify` was offered and refused — it computes gate 41’s assertion twice. L02 IMAGE 2.2 built, redesigned to A/B/C badges, and wired; outstanding 20 → 19. Consolas removed book-wide, 14 bogus quoted font families killed in 7 files, and five staged rasters converted to `xlink:href` — the only real "won’t open", everything else a dismissable dialog. Three findings were caught wrong before shipping: 84 phantom missing-viewBoxes, 65 phantom font defects that were 7, and a 99-file Helvetica sweep falsified by two throwaway probes.)
-**Status:** ✅ **45/45 GATES PASS · ZERO INLINE STYLES · ZERO CONSOLAS IN ANY SVG · Census 39,993.** Bible **v8.96** — §27.12 and §27.13. `book_gates` **v1.38.2** (§21 coverage 223→224, §27.11 digest moved; rule and declaration counts unchanged). L02 **v03.7.4**. Two orphan SVGs deleted from `lessons/` — copies of `images/` files that no page referenced and therefore no gate checked; the L02 one was the PRE-FIX Consolas copy, which is why the same error kept appearing after the fix shipped three times. **A file that nothing references is not harmless — it is a file no instrument checks.**
+**Date:** August 2, 2026 (Session 107 — **A DESIGN SESSION, AND A PREMISE THAT WAS FOUR SESSIONS STALE.** Claude opened by telling DJ the book is delivered through Canvas and that the inline-style constraint is live; both were retired at S103 by Bible §27 — and Claude had quoted `build_css.py`, whose docstring says so, in the same reply. The ritual verifies VERSIONS, and version agreement cannot detect a wrong premise. Corrected in memory. The session then produced `ZUMO_S107_BANNER_RULINGS.md`: type treatment **E** (Inter, headings 700, Apple's negative tracking, `#1d1d1f` body — heavy at the top of the hierarchy, after DJ rejected a lighter build as *"too light"*), banner scheme **F1** (small eyebrow, large headline, derived by one rule), **no icons on any of the 237 caps** — superseding §6.5's LOCKED *"cap KEEPS the leading icon"* and §4.5's family mark — and **every title and tail for all 237 caps, ruled lesson by lesson**. Two root orphan SVGs deleted: byte-identical copies of `images/` files that passed all 45 gates, and that S106's offered filename-pattern orphan gate would NOT have caught.)
+**Status:** ✅ **45/45 GATES PASS · Census 39,993 · NO lesson or instrument version changed.** S107 was a ruling session: one root document added, two orphans deleted. `ZUMO_S107_BANNER_RULINGS.md` is the authority for the banner/typography arc and **none of it is applied** — the repo still renders 237 emoji caps and a Windows-only body font. **S108's first job is L03 alone**, the S104 pattern, because gates 26, 27, 41, 43, 44, 45 and §5b all move together. Two claims retracted per §24.6c: `<h3>` count is not a proxy for section content (L08 §4, L11 §4 and L13 §3 were reported empty and hold 523, 867 and 3,371 characters), and L03's mismatched callout radii are ruled correct by §6.5a, not a defect.
 
-**Versions:** L01 v03.15.5 · L02 v03.7.4 · L03 v03.20.3 · L04 v04.15.3 · L05 v04.15.3 · L06 v04.19.4 · L07 v04.16.3 · L08 v04.14.3 · L09 v05.12.3 · L10 v02.11.3 · L11 v02.12.3 · L12 v01.14.3 · L13 v02.12.3 · L14 v02.16.3 · L15 v02.11.5 · L16 v02.7.3 · going_deeper v01.1.1 — census **39,993** · Bible **v8.96** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.38.2** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `a15c277`.**
+**Versions:** L01 v03.15.5 · L02 v03.7.4 · L03 v03.20.3 · L04 v04.15.3 · L05 v04.15.3 · L06 v04.19.4 · L07 v04.16.3 · L08 v04.14.3 · L09 v05.12.3 · L10 v02.11.3 · L11 v02.12.3 · L12 v01.14.3 · L13 v02.12.3 · L14 v02.16.3 · L15 v02.11.5 · L16 v02.7.3 · going_deeper v01.1.1 — census **39,993** · Bible **v8.96** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.1 · **book_gates v1.38.2** · lesson_inventory v1.2.0 · pill_sweep v1.0 · gate_payload_match v1.6 · build_family_map v1.1.3 · build_mark_index v1.0.2 · gen_bonus_banner v1.2.1 · gen_part_banners v1.0 · session_versions v1.14.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.19 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · font_stack_sweep v1.0 · `ZUMO_Syllabus_WORKING.md` v1.0 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4d7695f`.**
 
 ---
 ---
+
+## WHAT SHIPPED IN S107
+
+**THE RITUAL CANNOT CATCH A STALE PREMISE.** It verifies versions — LIVE.md,
+`session_versions --check`, 45 gates. Every downstream conclusion S107 opened with was
+correctly derived from a delivery model retired at S103. Bible §27.6 already enumerates the
+passages resting on that retired constraint and rules them annotated-not-rewritten per §26.7,
+so the canon was clean and the reader was not.
+
+**THE ORPHAN PATTERN MOVED UP ONE DIRECTORY.** Two SVGs in the repo ROOT, byte-identical to
+their `images/` originals, dragged in by the S106 close push. **All 45 gates passed with them
+present** — §21 follows references and nothing referenced them. The gate offered at S106 keys
+on `PUSH_ME*` / `MD5*` / `* (1)*`; these filenames were legitimate. Re-scope it to **any file
+outside `images/` whose bytes match a file inside `images/`** — `image_audit` already computes
+the hashes.
+
+**THE BOOK HAS NO DESIGN LANGUAGE AND ITS FRONT DOOR DOES.** `index.html` and
+`going_deeper.html` each carry a twelve-token `:root` and load Inter. `css/book.css` carries
+**172 distinct colours and zero custom properties**, and the sixteen lessons set
+`'Segoe UI', Tahoma, Geneva, Verdana` — a Windows-only first face, so every reader on a Mac,
+iPad, Chromebook or Android has been getting a typeface nobody chose. `font_stack_sweep` never
+saw it: the instrument scans SVGs and does not open `css/book.css`. That reframes §26 — it is
+not "pick colours", it is "give the book the token layer its own front door already has".
+
+**237 CAPS, ALL RULED.** Type **E**, banner **F1**, no icons anywhere, and a title and tail for
+every one — §1 and §8A lesson-specific, §2/§9/§10 deliberately bare, §4 on a six-value eyebrow
+scheme because six lessons are not about hardware at all. "Image Index" becomes **Figures**
+with its id. Full detail in `ZUMO_S107_BANNER_RULINGS.md`.
+
+**THE RULING PASS FOUND WHAT NO GATE SEES.** L14 and L15 shipped byte-identical §8A titles.
+L13, L14 and L15 shipped byte-identical §5 tails. Six banners render their icon twice. Four §1s
+carried authoring labels — "Opening Hook —", "Introduction —" ×3 — in student-facing text.
+`going_deeper.html` has no anchor ids, so no lesson can deep-link to any of its six entries.
+
+**TWO RETRACTIONS, RECORDED NOT DROPPED.** `<h3>` count was used as a proxy for whether a
+section has content and reported three sections empty; all three are full, and L13 §3 quotes
+four lines of Pololu library source to prove silver tape is invisible to a calibrated sensor.
+And L03's adjacent 8px/4px callout radii were called accumulated drift when §6.5a rules exactly
+that pairing correct.
+
 
 ## WHAT SHIPPED IN S106
 
