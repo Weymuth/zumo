@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.24.0 -->
+<!-- Lesson version: v03.24.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -707,7 +707,7 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span> + <span class="tok-b5cea8">
 
 <div class="div-333-2">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">int</span> voltage = readBatteryMillivolts(); <span class="tok-6a9955">// Returns voltage in millivolts</span>
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">int</span> voltage = readBatteryMillivolts(); <span class="tok-6a9955">// Returns voltage in millivolts</span>
 <span class="tok-6a9955">// Fresh NiMH (4 cells) ≈ 5400 mV</span>
 <span class="tok-6a9955">// Healthy plateau  ≈ 4800 mV</span>
 <span class="tok-6a9955">// Recharge below   ≈ 4200 mV</span></pre>
@@ -949,9 +949,9 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <div class="div-333-2">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">int</span> speed = <span class="tok-b5cea8">380</span>;
-<span class="tok-569cd6-c-569cd6">int</span> trim = <span class="tok-b5cea8">30</span>;
-<span class="tok-569cd6-c-569cd6">int</span> leftSpeed = speed + trim; <span class="tok-6a9955">// 410 - TOO HIGH!</span>
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">int</span> speed = <span class="tok-b5cea8">380</span>;
+<span class="tok-569cd6">int</span> trim = <span class="tok-b5cea8">30</span>;
+<span class="tok-569cd6">int</span> leftSpeed = speed + trim; <span class="tok-6a9955">// 410 - TOO HIGH!</span>
 <span class="tok-6a9955">// Use constrain to keep it safe:</span>
 leftSpeed = constrain(speed + trim, -<span class="tok-b5cea8">400</span>, <span class="tok-b5cea8">400</span>); <span class="tok-6a9955">// Now it's 400</span></pre>
 
@@ -1223,7 +1223,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <div class="div-333-2">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">int</span> batteryMV = readBatteryMillivolts();</pre>
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">int</span> batteryMV = readBatteryMillivolts();</pre>
 
 </div>
 
@@ -1436,8 +1436,8 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
 <p><strong>Start with the sentence.</strong> Say what you want in plain English, with the word &ldquo;if&rdquo; in it: <em>&ldquo;If the test speed is above 400, print a warning.&rdquo;</em> Now translate it left to right &mdash; the sentence and the code are in the same order:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">if</span> (testSpeed &gt; <span class="tok-b5cea8">400</span>) {
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Too fast for this classroom!"</span>));
+<pre class="code-block-333"><span class="tok-569cd6">if</span> (testSpeed &gt; <span class="tok-b5cea8">400</span>) {
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Too fast for this classroom!"</span>));
 }</pre>
 
 <p>The only genuinely new piece is the middle: <code class="code-inline-bg-e8e8e8">testSpeed &gt; 400</code>. That is a <strong>comparison</strong>, and it is how a number becomes a yes/no answer the if can use. Six of them cover everything you will need:</p>
@@ -1460,7 +1460,7 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 <div class="div-c-922b21">🚨 The one-character trap: <code class="code-inline-bg-f5c6c0">=</code> is not <code class="code-inline-bg-f5c6c0">==</code></div>
 <p>One equals sign <strong>assigns</strong>: <em>put this value in that box.</em> Two equals signs <strong>compare</strong>: <em>are these two the same?</em> Different jobs, one keystroke apart &mdash; and this is the most expensive typo in the language, because <b>neither direction is an error</b>. Both compile. Both run. Both do the wrong thing quietly.</p>
 <p><strong>Direction 1 &mdash; you meant to compare and typed one equals:</strong></p>
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">if</span> (trimValue = <span class="tok-b5cea8">5</span>) {     <span class="tok-6a9955">// WRONG: this ASSIGNS 5 to trimValue</span>
+<pre class="code-block-333"><span class="tok-569cd6">if</span> (trimValue = <span class="tok-b5cea8">5</span>) {     <span class="tok-6a9955">// WRONG: this ASSIGNS 5 to trimValue</span>
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }</pre>
 <p>Two things just went wrong, and the screen tells you about neither. Your TRIM was overwritten with 5. And the if now tests the value 5, which C++ treats as true &mdash; so the block runs <strong>every single time</strong>, forever, no matter what TRIM was.</p>
@@ -1472,12 +1472,12 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
 <p><strong>Two more shapes, and you have the full set.</strong> Add <code class="code-inline-bg-e8e8e8">else</code> when there is a plan for &ldquo;no,&rdquo; and chain <code class="code-inline-bg-e8e8e8">else if</code> when there are more than two outcomes:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">if</span> (testSpeed &gt; <span class="tok-b5cea8">400</span>) {
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Too fast"</span>));
-} <span class="tok-569cd6-c-569cd6">else if</span> (testSpeed &lt; <span class="tok-b5cea8">50</span>) {
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Too slow to move"</span>));
-} <span class="tok-569cd6-c-569cd6">else</span> {
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Good testing speed"</span>));
+<pre class="code-block-333"><span class="tok-569cd6">if</span> (testSpeed &gt; <span class="tok-b5cea8">400</span>) {
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Too fast"</span>));
+} <span class="tok-569cd6">else if</span> (testSpeed &lt; <span class="tok-b5cea8">50</span>) {
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Too slow to move"</span>));
+} <span class="tok-569cd6">else</span> {
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Good testing speed"</span>));
 }</pre>
 
 <p>They are checked top to bottom and <strong>exactly one branch runs</strong> &mdash; the first one whose answer is yes. Once a branch fires, the rest are skipped without even being asked. That is why order matters: put the narrowest condition first, or a broader one above it will answer for it.</p>
@@ -1709,7 +1709,7 @@ DATE: [Today's Date]
 
 <div class="div-333-2">
 
-<pre class="pre-c-e8e8e8"><span class="tok-c586c0-c-c586c0">#include</span> <span class="tok-ce9178-c-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-c-e8e8e8"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 <span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
@@ -1770,9 +1770,9 @@ DATE: [Today's Date]
 <div class="div-333-2">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// ===== CONFIGURATION =====</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> BASE_SPEED = <span class="tok-b5cea8">200</span>; <span class="tok-6a9955">// Base motor speed for testing</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TEST_DURATION = <span class="tok-b5cea8">2000</span>; <span class="tok-6a9955">// How long to run motors (ms)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TRIM_STEP = <span class="tok-b5cea8">5</span>; <span class="tok-6a9955">// How much TRIM changes per press</span></pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BASE_SPEED = <span class="tok-b5cea8">200</span>; <span class="tok-6a9955">// Base motor speed for testing</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TEST_DURATION = <span class="tok-b5cea8">2000</span>; <span class="tok-6a9955">// How long to run motors (ms)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TRIM_STEP = <span class="tok-b5cea8">5</span>; <span class="tok-6a9955">// How much TRIM changes per press</span></pre>
 
 </div>
 
@@ -1820,9 +1820,9 @@ DATE: [Today's Date]
 <div class="div-333-2">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// ===== STATE VARIABLES =====</span>
-<span class="tok-569cd6-c-569cd6">int</span> trimValue = <span class="tok-b5cea8">0</span>; <span class="tok-6a9955">// Current TRIM (-50 to +50 typical)</span>
-<span class="tok-569cd6-c-569cd6">int</span> testCount = <span class="tok-b5cea8">0</span>; <span class="tok-6a9955">// How many tests we've run</span>
-<span class="tok-569cd6-c-569cd6">bool</span> instructionsPrinted = <span class="tok-569cd6-c-569cd6">false</span>; <span class="tok-6a9955">// Set true after the banner prints</span></pre>
+<span class="tok-569cd6">int</span> trimValue = <span class="tok-b5cea8">0</span>; <span class="tok-6a9955">// Current TRIM (-50 to +50 typical)</span>
+<span class="tok-569cd6">int</span> testCount = <span class="tok-b5cea8">0</span>; <span class="tok-6a9955">// How many tests we've run</span>
+<span class="tok-569cd6">bool</span> instructionsPrinted = <span class="tok-569cd6">false</span>; <span class="tok-6a9955">// Set true after the banner prints</span></pre>
 
 </div>
 
@@ -1879,32 +1879,32 @@ updateDisplay()
 Shows current TRIM value, battery voltage, and instructions.
 Called whenever settings change.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> updateDisplay() {
+<span class="tok-569cd6">void</span> updateDisplay() {
   display.clear();
   display.setLayout21x8();
   <span class="tok-6a9955">// Title</span>
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"=== TRIM FINDER ==="</span>));
+  display.print(F(<span class="tok-ce9178">"=== TRIM FINDER ==="</span>));
   <span class="tok-6a9955">// Current TRIM value (big and obvious)</span>
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"TRIM: "</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (trimValue >= <span class="tok-b5cea8">0</span>) display.print(F(<span class="tok-ce9178-c-ce9178">" "</span>)); <span class="tok-6a9955">// Align positive numbers</span>
+  display.print(F(<span class="tok-ce9178">"TRIM: "</span>));
+  <span class="tok-569cd6">if</span> (trimValue >= <span class="tok-b5cea8">0</span>) display.print(F(<span class="tok-ce9178">" "</span>)); <span class="tok-6a9955">// Align positive numbers</span>
   display.print(trimValue);
   <span class="tok-6a9955">// Battery voltage</span>
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
-  <span class="tok-569cd6-c-569cd6">int</span> mv = readBatteryMillivolts();
+  display.print(F(<span class="tok-ce9178">"Battery: "</span>));
+  <span class="tok-569cd6">int</span> mv = readBatteryMillivolts();
   display.print(mv / <span class="tok-b5cea8">1000</span>); <span class="tok-6a9955">// Whole volts</span>
-  display.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
+  display.print(F(<span class="tok-ce9178">"."</span>));
   display.print((mv % <span class="tok-b5cea8">1000</span>) / <span class="tok-b5cea8">100</span>); <span class="tok-6a9955">// Tenths</span>
-  display.print(F(<span class="tok-ce9178-c-ce9178">"V"</span>));
+  display.print(F(<span class="tok-ce9178">"V"</span>));
   <span class="tok-6a9955">// Test count</span>
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">5</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Tests run: "</span>));
+  display.print(F(<span class="tok-ce9178">"Tests run: "</span>));
   display.print(testCount);
   <span class="tok-6a9955">// Button hints</span>
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"A:- B:TEST C:+"</span>));
+  display.print(F(<span class="tok-ce9178">"A:- B:TEST C:+"</span>));
 }</pre>
 
 </div>
@@ -1955,7 +1955,7 @@ blinkConfirm()
 --------------
 Quick LED blink to confirm button press.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> blinkConfirm() {
+<span class="tok-569cd6">void</span> blinkConfirm() {
   ledYellow(<span class="tok-b5cea8">1</span>);
   delay(<span class="tok-b5cea8">50</span>);
   ledYellow(<span class="tok-b5cea8">0</span>);
@@ -1965,15 +1965,15 @@ printTrimAdvice()
 -----------------
 Prints helpful advice based on current TRIM value.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> printTrimAdvice() {
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"Current TRIM: "</span>));
+<span class="tok-569cd6">void</span> printTrimAdvice() {
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"Current TRIM: "</span>));
   <span class="tok-4ec9b6">Serial</span>.println(trimValue);
-  <span class="tok-569cd6-c-569cd6">if</span> (trimValue > <span class="tok-b5cea8">0</span>) {
-    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">" (Boosting LEFT motor - use if robot curves LEFT)"</span>));
-  } <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (trimValue &lt; <span class="tok-b5cea8">0</span>) {
-    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">" (Cutting LEFT motor - use if robot curves RIGHT)"</span>));
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">" (No correction - motors balanced)"</span>));
+  <span class="tok-569cd6">if</span> (trimValue > <span class="tok-b5cea8">0</span>) {
+    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">" (Boosting LEFT motor - use if robot curves LEFT)"</span>));
+  } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (trimValue &lt; <span class="tok-b5cea8">0</span>) {
+    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">" (Cutting LEFT motor - use if robot curves RIGHT)"</span>));
+  } <span class="tok-569cd6">else</span> {
+    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">" (No correction - motors balanced)"</span>));
   }
 }
 <span class="tok-6a9955">/*
@@ -1983,34 +1983,34 @@ The full instruction banner + battery reading.
 Called from loop() the moment the Serial Monitor
 connects. (Why not setup()? See Step 11.)
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> printInstructions() {
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">""</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"========================================"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">" LESSON 3 - TRIM FINDER"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"========================================"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">""</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"INSTRUCTIONS:"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"1. Press B to run a motor test"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"2. Watch which way the robot curves"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"3. Curves LEFT? Press C to increase TRIM"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"   Curves RIGHT? Press A to decrease TRIM"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"4. Repeat until robot drives straight"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"5. WRITE DOWN your final TRIM value!"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">""</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Hold A+C together to reset TRIM to 0"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">""</span>));
-  <span class="tok-569cd6-c-569cd6">int</span> mv = readBatteryMillivolts();
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
+<span class="tok-569cd6">void</span> printInstructions() {
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">""</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"========================================"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">" LESSON 3 - TRIM FINDER"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"========================================"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">""</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"INSTRUCTIONS:"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"1. Press B to run a motor test"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"2. Watch which way the robot curves"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"3. Curves LEFT? Press C to increase TRIM"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"   Curves RIGHT? Press A to decrease TRIM"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"4. Repeat until robot drives straight"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"5. WRITE DOWN your final TRIM value!"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">""</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Hold A+C together to reset TRIM to 0"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">""</span>));
+  <span class="tok-569cd6">int</span> mv = readBatteryMillivolts();
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"Battery: "</span>));
   <span class="tok-4ec9b6">Serial</span>.print(mv);
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">" mV ("</span>));
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">" mV ("</span>));
   <span class="tok-4ec9b6">Serial</span>.print(mv / <span class="tok-b5cea8">1000</span>);
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"."</span>));
   <span class="tok-4ec9b6">Serial</span>.print((mv % <span class="tok-b5cea8">1000</span>) / <span class="tok-b5cea8">100</span>);
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">" V)"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">""</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">" V)"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">""</span>));
   printTrimAdvice();
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">""</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Ready! Press B to begin testing..."</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">""</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Ready! Press B to begin testing..."</span>));
 }</pre>
 
 </div>
@@ -2069,50 +2069,50 @@ runMotorTest()
 Runs motors for TEST_DURATION milliseconds using current TRIM.
 Displays countdown on OLED and logs to Serial.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> runMotorTest() {
+<span class="tok-569cd6">void</span> runMotorTest() {
   <span class="tok-6a9955">// Calculate actual motor speeds with TRIM</span>
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + trimValue;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED;
+  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + trimValue;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED;
   <span class="tok-6a9955">// Keep speeds in valid range</span>
   leftSpeed = constrain(leftSpeed, -<span class="tok-b5cea8">400</span>, <span class="tok-b5cea8">400</span>);
   rightSpeed = constrain(rightSpeed, -<span class="tok-b5cea8">400</span>, <span class="tok-b5cea8">400</span>);
   <span class="tok-6a9955">// Show what we're about to do</span>
   display.clear();
   display.setLayout21x8();
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"MOTOR TEST"</span>));
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"L: "</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178">"MOTOR TEST"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178">"L: "</span>));
   display.print(leftSpeed);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"R: "</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>); display.print(F(<span class="tok-ce9178">"R: "</span>));
   display.print(rightSpeed);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">5</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"TRIM: "</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">5</span>); display.print(F(<span class="tok-ce9178">"TRIM: "</span>));
   display.print(trimValue);
   <span class="tok-6a9955">// Log to Serial</span>
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">""</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"===== MOTOR TEST ====="</span>));
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"Left speed: "</span>)); <span class="tok-4ec9b6">Serial</span>.println(leftSpeed);
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"Right speed: "</span>)); <span class="tok-4ec9b6">Serial</span>.println(rightSpeed);
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"TRIM value: "</span>)); <span class="tok-4ec9b6">Serial</span>.println(trimValue);
-  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"Duration: "</span>)); <span class="tok-4ec9b6">Serial</span>.print(TEST_DURATION);
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">" ms"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">""</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"===== MOTOR TEST ====="</span>));
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"Left speed: "</span>)); <span class="tok-4ec9b6">Serial</span>.println(leftSpeed);
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"Right speed: "</span>)); <span class="tok-4ec9b6">Serial</span>.println(rightSpeed);
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"TRIM value: "</span>)); <span class="tok-4ec9b6">Serial</span>.println(trimValue);
+  <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"Duration: "</span>)); <span class="tok-4ec9b6">Serial</span>.print(TEST_DURATION);
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">" ms"</span>));
   <span class="tok-6a9955">// Countdown before starting (SAFETY!)</span>
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"Starting in 3..."</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"Starting in 3..."</span>));
   delay(<span class="tok-b5cea8">1000</span>);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"Starting in 2..."</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"Starting in 2..."</span>));
   delay(<span class="tok-b5cea8">1000</span>);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"Starting in 1..."</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"Starting in 1..."</span>));
   delay(<span class="tok-b5cea8">1000</span>);
   <span class="tok-6a9955">// START MOTORS</span>
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">">>> RUNNING &lt;&lt;&lt; "</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Motors ON"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">">>> RUNNING &lt;&lt;&lt; "</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Motors ON"</span>));
   motors.setSpeeds(leftSpeed, rightSpeed);
   delay(TEST_DURATION);
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); <span class="tok-6a9955">// STOP!</span>
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"Motors OFF"</span>));
-  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"======================"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Motors OFF"</span>));
+  <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"======================"</span>));
   <span class="tok-6a9955">// Update test counter</span>
   testCount++;
   <span class="tok-6a9955">// Show results prompt</span>
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"Done! L/R curve?"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"Done! L/R curve?"</span>));
   delay(<span class="tok-b5cea8">1500</span>);
   <span class="tok-6a9955">// Return to main display</span>
   updateDisplay();
@@ -2164,7 +2164,7 @@ Displays countdown on OLED and logs to Serial.
 <div class="div-333-2">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// ===== SETUP =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   <span class="tok-4ec9b6">Serial</span>.begin(<span class="tok-b5cea8">115200</span>);
   <span class="tok-6a9955">// No banner here! Printing at boot is invisible: the USB</span>
   <span class="tok-6a9955">// port drops during reset, and the Serial Monitor only</span>
@@ -2224,46 +2224,46 @@ Displays countdown on OLED and logs to Serial.
 <div class="div-333-2">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// ===== LOOP =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   <span class="tok-6a9955">// The instant the Serial Monitor connects, print the banner (once)</span>
-  <span class="tok-569cd6-c-569cd6">if</span> (!instructionsPrinted && <span class="tok-4ec9b6">Serial</span>) {
+  <span class="tok-569cd6">if</span> (!instructionsPrinted && <span class="tok-4ec9b6">Serial</span>) {
     printInstructions();
-    instructionsPrinted = <span class="tok-569cd6-c-569cd6">true</span>;
+    instructionsPrinted = <span class="tok-569cd6">true</span>;
   }
 
   <span class="tok-6a9955">// Check for A+C held together (reset TRIM)</span>
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.isPressed()) {
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.isPressed()) {
     trimValue = <span class="tok-b5cea8">0</span>;
     blinkConfirm();
     delay(<span class="tok-b5cea8">100</span>);
     blinkConfirm(); <span class="tok-6a9955">// Double blink for reset</span>
-    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"[RESET] TRIM set to 0"</span>));
+    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"[RESET] TRIM set to 0"</span>));
     printTrimAdvice();
     updateDisplay();
     delay(<span class="tok-b5cea8">500</span>); <span class="tok-6a9955">// Debounce</span>
   }
   <span class="tok-6a9955">// Button A: Decrease TRIM</span>
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (buttonA.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) {
     trimValue -= TRIM_STEP;
     trimValue = constrain(trimValue, -<span class="tok-b5cea8">50</span>, <span class="tok-b5cea8">50</span>);
     blinkConfirm();
-    <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"[BTN A] TRIM decreased to "</span>));
+    <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"[BTN A] TRIM decreased to "</span>));
     <span class="tok-4ec9b6">Serial</span>.println(trimValue);
     printTrimAdvice();
     updateDisplay();
   }
   <span class="tok-6a9955">// Button B: Run motor test</span>
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     blinkConfirm();
-    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">"[BTN B] Starting motor test..."</span>));
+    <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"[BTN B] Starting motor test..."</span>));
     runMotorTest();
   }
   <span class="tok-6a9955">// Button C: Increase TRIM</span>
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (buttonC.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (buttonC.getSingleDebouncedPress()) {
     trimValue += TRIM_STEP;
     trimValue = constrain(trimValue, -<span class="tok-b5cea8">50</span>, <span class="tok-b5cea8">50</span>);
     blinkConfirm();
-    <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178-c-ce9178">"[BTN C] TRIM increased to "</span>));
+    <span class="tok-4ec9b6">Serial</span>.print(F(<span class="tok-ce9178">"[BTN C] TRIM increased to "</span>));
     <span class="tok-4ec9b6">Serial</span>.println(trimValue);
     printTrimAdvice();
     updateDisplay();
@@ -2879,8 +2879,8 @@ Displays countdown on OLED and logs to Serial.
 <pre class="code-block-333-4"><span class="tok-6a9955">// ❌ Magic number — what is 205? why 200? where do I change it?</span>
 motors.setSpeeds(<span class="tok-b5cea8">205</span>, <span class="tok-b5cea8">200</span>);
 <span class="tok-6a9955">// ✅ Calibration constants — named, tunable, in one place</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> BASE_SPEED = <span class="tok-b5cea8">200</span>;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TRIM_STEP  = <span class="tok-b5cea8">5</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BASE_SPEED = <span class="tok-b5cea8">200</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TRIM_STEP  = <span class="tok-b5cea8">5</span>;
 motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 
 <p>Both run identically. The difference is for the <em>human</em>: when you need to change the speed, you change one named line at the top instead of hunting for stray numbers.</p>
@@ -2914,7 +2914,7 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 
 <p>Calibration constants exist because of a workflow you'll repeat all year:</p>
 
-<pre class="code-block-333-4"><span class="tok-b5cea8">1</span>. Set a starting value      (<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TRIM_STEP = <span class="tok-b5cea8">5</span>;)
+<pre class="code-block-333-4"><span class="tok-b5cea8">1</span>. Set a starting value      (<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TRIM_STEP = <span class="tok-b5cea8">5</span>;)
 <span class="tok-b5cea8">2</span>. Run the robot, observe    (does it drive straight?)
 <span class="tok-b5cea8">3</span>. Adjust the value          (too coarse? TRIM_STEP = <span class="tok-b5cea8">2</span>)
 <span class="tok-b5cea8">4</span>. Repeat until good enough</pre>
@@ -2960,8 +2960,8 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 
 <p>An <strong>array</strong> is one name holding a numbered row of values. The <code class="code-inline-bg-e8e8e8">[]</code> after the name is what makes it a row instead of a single value:</p>
 
-<pre class="code-block-333-4"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;   <span class="tok-6a9955">// how many slots — worth naming, you will need it</span></pre>
+<pre class="code-block-333-4"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;   <span class="tok-6a9955">// how many slots — worth naming, you will need it</span></pre>
 
 <p>You read one slot by its number, in square brackets:</p>
 
@@ -2979,15 +2979,15 @@ TEST_SPEEDS[<span class="tok-b5cea8">3</span>]   <span class="tok-6a9955">// 300
 
 <p>The payoff is that the slot number can be a <em>variable</em>. One line then reads a different speed depending on what that variable holds:</p>
 
-<pre class="code-block-333-4"><span class="tok-569cd6-c-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>;
-<span class="tok-569cd6-c-569cd6">int</span> currentSpeed = TEST_SPEEDS[speedIndex];   <span class="tok-6a9955">// 200 — because speedIndex is 1</span></pre>
+<pre class="code-block-333-4"><span class="tok-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>;
+<span class="tok-569cd6">int</span> currentSpeed = TEST_SPEEDS[speedIndex];   <span class="tok-6a9955">// 200 — because speedIndex is 1</span></pre>
 
 <h3 class="h3-c-00474b">8A.6 Wrapping Around: the <code class="code-inline-bg-e8e8e8">%</code> Operator</h3>
 
 <p>Once an index can move, it has to come back. Advance <code class="code-inline-bg-e8e8e8">speedIndex</code> four times on a four-slot array and it is pointing at slot 4, which does not exist. The obvious fix needs an <code class="code-inline-bg-e8e8e8">if</code>:</p>
 
 <pre class="code-block-333-4">speedIndex = speedIndex + <span class="tok-b5cea8">1</span>;
-<span class="tok-569cd6-c-569cd6">if</span> (speedIndex &gt;= NUM_SPEEDS) {
+<span class="tok-569cd6">if</span> (speedIndex &gt;= NUM_SPEEDS) {
     speedIndex = <span class="tok-b5cea8">0</span>;
 }</pre>
 
@@ -3042,7 +3042,7 @@ write runSpinTest():
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the two speeds — opposite signs make it spin.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">void</span> runSpinTest() {
+<pre class="code-block-333-2"><span class="tok-569cd6">void</span> runSpinTest() {
   motors.setSpeeds(____, ____);   <span class="tok-6a9955">// one wheel forward, one backward = spin</span>
   delay(<span class="tok-b5cea8">1000</span>);
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -3063,7 +3063,7 @@ write runSpinTest():
 
 <div class="div-333-5">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">void</span> runSpinTest() {
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">void</span> runSpinTest() {
   <span class="tok-6a9955">// Spin right: left forward, right backward</span>
   motors.setSpeeds(<span class="tok-b5cea8">150</span>, -<span class="tok-b5cea8">150</span>); <span class="tok-6a9955">// Positive left, negative right</span>
   delay(<span class="tok-b5cea8">1000</span>);
@@ -3101,12 +3101,12 @@ write runSpinTest():
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the live read and the floor threshold.</p>
 <pre class="code-block-333-2"><span class="tok-6a9955">// at the start of updateDisplay():</span>
-<span class="tok-569cd6-c-569cd6">int</span> mv = ____;              <span class="tok-6a9955">// live battery reading</span>
-<span class="tok-569cd6-c-569cd6">if</span> (mv &lt; ____) {            <span class="tok-6a9955">// NiMH nearly-empty floor</span>
+<span class="tok-569cd6">int</span> mv = ____;              <span class="tok-6a9955">// live battery reading</span>
+<span class="tok-569cd6">if</span> (mv &lt; ____) {            <span class="tok-6a9955">// NiMH nearly-empty floor</span>
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   display.print(F("!! LOW BATTERY !!"));
-  <span class="tok-569cd6-c-569cd6">return</span>;                   <span class="tok-6a9955">// skip the normal display</span>
+  <span class="tok-569cd6">return</span>;                   <span class="tok-6a9955">// skip the normal display</span>
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
@@ -3136,14 +3136,14 @@ write runSpinTest():
 <div class="div-333-5">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// In updateDisplay(), add at the start:</span>
-<span class="tok-569cd6-c-569cd6">int</span> mv = readBatteryMillivolts();
-<span class="tok-569cd6-c-569cd6">if</span> (mv &lt; <span class="tok-b5cea8">4200</span>) {
+<span class="tok-569cd6">int</span> mv = readBatteryMillivolts();
+<span class="tok-569cd6">if</span> (mv &lt; <span class="tok-b5cea8">4200</span>) {
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"!! LOW BATTERY !!"</span>));
+  display.print(F(<span class="tok-ce9178">"!! LOW BATTERY !!"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Replace batteries"</span>));
-  <span class="tok-569cd6-c-569cd6">return</span>; <span class="tok-6a9955">// Skip normal display</span>
+  display.print(F(<span class="tok-ce9178">"Replace batteries"</span>));
+  <span class="tok-569cd6">return</span>; <span class="tok-6a9955">// Skip normal display</span>
 }</pre>
 
 </div>
@@ -3174,7 +3174,7 @@ constrain(value, low, high) hands back a value that can never leave the range</p
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the function that clamps each speed to the cap.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the cap</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the cap</span>
 <span class="tok-6a9955">// in setup(), before driving:</span>
 motors.setSpeeds(
   ____(LEFT_SPEED,  -MAX_SPEED, MAX_SPEED),   <span class="tok-6a9955">// clamp to the cap</span>
@@ -3220,10 +3220,10 @@ motors.setSpeeds(
 <div class="div-333-5">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// Three constants at the top of the file:</span>
-<span class="tok-569cd6-c-569cd6">const int</span> LEFT_SPEED  = <span class="tok-b5cea8">150</span>;   <span class="tok-6a9955">// try 150, then 200, then 250</span>
-<span class="tok-569cd6-c-569cd6">const int</span> RIGHT_SPEED = <span class="tok-b5cea8">150</span>;
-<span class="tok-569cd6-c-569cd6">const int</span> MAX_SPEED   = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the cap</span>
-<span class="tok-569cd6-c-569cd6">const int</span> RUN_MS      = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 1000 (1 s) and adjust.</span>
+<span class="tok-569cd6">const int</span> LEFT_SPEED  = <span class="tok-b5cea8">150</span>;   <span class="tok-6a9955">// try 150, then 200, then 250</span>
+<span class="tok-569cd6">const int</span> RIGHT_SPEED = <span class="tok-b5cea8">150</span>;
+<span class="tok-569cd6">const int</span> MAX_SPEED   = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the cap</span>
+<span class="tok-569cd6">const int</span> RUN_MS      = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 1000 (1 s) and adjust.</span>
 
 <span class="tok-6a9955">// In setup(), after waitForButtonA():</span>
 motors.setSpeeds(
@@ -3263,8 +3263,8 @@ instead step up one rung at a time, pausing STEP_MS between:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the two middle rungs of the climb.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> STEP_MS   = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// <-- YOUR NUMBER (try 200)</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> STEP_MS   = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// <-- YOUR NUMBER (try 200)</span>
 motors.setSpeeds(<span class="tok-b5cea8">50</span>,  <span class="tok-b5cea8">50</span>);   delay(STEP_MS);
 motors.setSpeeds(____, ____); delay(STEP_MS);   <span class="tok-6a9955">// next rung</span>
 motors.setSpeeds(____, ____); delay(STEP_MS);   <span class="tok-6a9955">// next rung</span>
@@ -3302,8 +3302,8 @@ motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span class="tok-6a9955">// sto
 
 <div class="div-333-5">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">const int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the top of the climb</span>
-<span class="tok-569cd6-c-569cd6">const int</span> STEP_MS   = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 200 and adjust.</span>
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">const int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the top of the climb</span>
+<span class="tok-569cd6">const int</span> STEP_MS   = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 200 and adjust.</span>
 
 <span class="tok-6a9955">// In setup() - write the climb out by hand, one rung at a time:</span>
 motors.setSpeeds(<span class="tok-b5cea8">50</span>,  <span class="tok-b5cea8">50</span>);   delay(STEP_MS);
@@ -3343,11 +3343,11 @@ each press -> index = (index + 1) % NUM_SPEEDS   (modulo wraps back to 0)</pre>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the index you read and the wrap divisor.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;
-<span class="tok-569cd6-c-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>;
+<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;
+<span class="tok-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>;
 <span class="tok-6a9955">// current speed:</span>
-<span class="tok-569cd6-c-569cd6">int</span> currentSpeed = TEST_SPEEDS[____];        <span class="tok-6a9955">// this slot</span>
+<span class="tok-569cd6">int</span> currentSpeed = TEST_SPEEDS[____];        <span class="tok-6a9955">// this slot</span>
 <span class="tok-6a9955">// advance, wrapping to the start:</span>
 speedIndex = (speedIndex + <span class="tok-b5cea8">1</span>) % ____;</pre>
 </div>
@@ -3373,11 +3373,11 @@ Why it matters here: a remainder can never be as big as the number you divide by
 <div class="div-333-5">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// Add to globals:</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;
-<span class="tok-569cd6-c-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>; <span class="tok-6a9955">// Start at 200</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;
+<span class="tok-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>; <span class="tok-6a9955">// Start at 200</span>
 <span class="tok-6a9955">// In runMotorTest(), replace BASE_SPEED with:</span>
-<span class="tok-569cd6-c-569cd6">int</span> currentSpeed = TEST_SPEEDS[speedIndex];
+<span class="tok-569cd6">int</span> currentSpeed = TEST_SPEEDS[speedIndex];
 <span class="tok-6a9955">// At end of runMotorTest():</span>
 speedIndex = (speedIndex + <span class="tok-b5cea8">1</span>) % NUM_SPEEDS;</pre>
 
@@ -3408,8 +3408,8 @@ initialise trimValue from it, so the robot starts corrected instead of at 0</pre
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill in the TRIM value you found on the bench.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> MY_TRIM = ____;   <span class="tok-6a9955">// <-- the value you measured</span>
-<span class="tok-569cd6-c-569cd6">int</span> trimValue = MY_TRIM;    <span class="tok-6a9955">// start corrected, not at 0</span></pre>
+<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MY_TRIM = ____;   <span class="tok-6a9955">// <-- the value you measured</span>
+<span class="tok-569cd6">int</span> trimValue = MY_TRIM;    <span class="tok-6a9955">// start corrected, not at 0</span></pre>
 </div>
 <div class="div-bb-1pxsolid">
 <p><strong>Hint:</strong> Create a constant for your TRIM and initialize with it.</p>
@@ -3427,8 +3427,8 @@ initialise trimValue from it, so the robot starts corrected instead of at 0</pre
 <div class="div-333-5">
 
 <pre class="pre-c-e8e8e8"><span class="tok-6a9955">// Change the state variable:</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> MY_TRIM = <span class="tok-b5cea8">15</span>; <span class="tok-6a9955">// Your value!</span>
-<span class="tok-569cd6-c-569cd6">int</span> trimValue = MY_TRIM; <span class="tok-6a9955">// Start with it</span></pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MY_TRIM = <span class="tok-b5cea8">15</span>; <span class="tok-6a9955">// Your value!</span>
+<span class="tok-569cd6">int</span> trimValue = MY_TRIM; <span class="tok-6a9955">// Start with it</span></pre>
 
 </div>
 
@@ -3458,9 +3458,9 @@ tune TURN_TIME until the fourth corner lands you back on the tape</pre>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the turn time, the side count, and the TRIM on the straight.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">void</span> driveSquare() {
-  <span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_TIME = ____;   <span class="tok-6a9955">// <-- tune for exactly 90 degrees</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> side = <span class="tok-b5cea8">0</span>; side &lt; ____; side++) {   <span class="tok-6a9955">// four sides</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">void</span> driveSquare() {
+  <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_TIME = ____;   <span class="tok-6a9955">// <-- tune for exactly 90 degrees</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> side = <span class="tok-b5cea8">0</span>; side &lt; ____; side++) {   <span class="tok-6a9955">// four sides</span>
     motors.setSpeeds(DRIVE_SPEED + ____, DRIVE_SPEED);   <span class="tok-6a9955">// straight, WITH trim</span>
     delay(DRIVE_TIME);
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); delay(<span class="tok-b5cea8">200</span>);
@@ -3501,12 +3501,12 @@ tune TURN_TIME until the fourth corner lands you back on the tape</pre>
 
 <div class="div-333-5">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">void</span> driveSquare() {
-  <span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">200</span>;
-  <span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_SPEED = <span class="tok-b5cea8">150</span>;
-  <span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DRIVE_TIME = <span class="tok-b5cea8">1000</span>;
-  <span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_TIME = <span class="tok-b5cea8">350</span>; <span class="tok-6a9955">// Adjust for 90°!</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> side = <span class="tok-b5cea8">0</span>; side &lt; <span class="tok-b5cea8">4</span>; side++) {
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">void</span> driveSquare() {
+  <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">200</span>;
+  <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_SPEED = <span class="tok-b5cea8">150</span>;
+  <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_TIME = <span class="tok-b5cea8">1000</span>;
+  <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_TIME = <span class="tok-b5cea8">350</span>; <span class="tok-6a9955">// Adjust for 90°!</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> side = <span class="tok-b5cea8">0</span>; side &lt; <span class="tok-b5cea8">4</span>; side++) {
     <span class="tok-6a9955">// Drive forward with TRIM</span>
     motors.setSpeeds(DRIVE_SPEED + trimValue, DRIVE_SPEED);
     delay(DRIVE_TIME);
@@ -3833,7 +3833,7 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <div class="div-333">
 
-<pre class="pre-c-e8e8e8"><span class="tok-c586c0-c-c586c0">#include</span> <span class="tok-ce9178-c-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-c-e8e8e8"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
@@ -3841,24 +3841,24 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 <span class="tok-4ec9b6">Zumo32U4ButtonC</span> buttonC;
 <span class="tok-4ec9b6">Zumo32U4OLED</span> display;
 
-<span class="tok-569cd6-c-569cd6">int</span> testSpeed = <span class="tok-b5cea8">100</span>;
+<span class="tok-569cd6">int</span> testSpeed = <span class="tok-b5cea8">100</span>;
 
-<span class="tok-569cd6-c-569cd6">void</span> showSpeed() {
+<span class="tok-569cd6">void</span> showSpeed() {
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Spd "</span>));
+  display.print(F(<span class="tok-ce9178">"Spd "</span>));
   display.print(testSpeed);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"B=run"</span>));
+  display.print(F(<span class="tok-ce9178">"B=run"</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   showSpeed();
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.getSingleDebouncedPress()) { testSpeed -= <span class="tok-b5cea8">5</span>; showSpeed(); }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.getSingleDebouncedPress()) { testSpeed += <span class="tok-b5cea8">5</span>; showSpeed(); }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) { testSpeed -= <span class="tok-b5cea8">5</span>; showSpeed(); }
+  <span class="tok-569cd6">if</span> (buttonC.getSingleDebouncedPress()) { testSpeed += <span class="tok-b5cea8">5</span>; showSpeed(); }
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     motors.setSpeeds(testSpeed, testSpeed);
     delay(<span class="tok-b5cea8">1000</span>);
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -3899,23 +3899,23 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <div class="div-333">
 
-<pre class="pre-c-e8e8e8"><span class="tok-c586c0-c-c586c0">#include</span> <span class="tok-ce9178-c-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-c-e8e8e8"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
 
-<span class="tok-569cd6-c-569cd6">void</span> driveForward() {
+<span class="tok-569cd6">void</span> driveForward() {
   motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">200</span>);
   delay(<span class="tok-b5cea8">1500</span>);
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   <span class="tok-6a9955">// YOUR FIX GOES HERE (two lines)</span>
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     driveForward();
   }
 }</pre>
@@ -3941,25 +3941,25 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <div class="div-333">
 
-<pre class="pre-c-e8e8e8"><span class="tok-c586c0-c-c586c0">#include</span> <span class="tok-ce9178-c-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-c-e8e8e8"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
 <span class="tok-4ec9b6">Zumo32U4ButtonC</span> buttonC;
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.getSingleDebouncedPress()) {   <span class="tok-6a9955">// A = slam stop</span>
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) {   <span class="tok-6a9955">// A = slam stop</span>
     motors.setSpeeds(<span class="tok-b5cea8">400</span>, <span class="tok-b5cea8">400</span>);
     delay(<span class="tok-b5cea8">1500</span>);
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.getSingleDebouncedPress()) {   <span class="tok-6a9955">// C = ramp-down stop</span>
+  <span class="tok-569cd6">if</span> (buttonC.getSingleDebouncedPress()) {   <span class="tok-6a9955">// C = ramp-down stop</span>
     motors.setSpeeds(<span class="tok-b5cea8">400</span>, <span class="tok-b5cea8">400</span>);
     delay(<span class="tok-b5cea8">1500</span>);
-    <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> s = <span class="tok-b5cea8">400</span>; s &gt;= <span class="tok-b5cea8">0</span>; s -= <span class="tok-b5cea8">20</span>) {
+    <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> s = <span class="tok-b5cea8">400</span>; s &gt;= <span class="tok-b5cea8">0</span>; s -= <span class="tok-b5cea8">20</span>) {
       motors.setSpeeds(s, s);
       delay(<span class="tok-b5cea8">50</span>);
     }
@@ -3984,16 +3984,16 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <div class="div-333">
 
-<pre class="pre-c-e8e8e8"><span class="tok-c586c0-c-c586c0">#include</span> <span class="tok-ce9178-c-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-c-e8e8e8"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     motors.setSpeeds(<span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">120</span>);   <span class="tok-6a9955">// right-hand circle</span>
     delay(<span class="tok-b5cea8">2600</span>);
     motors.setSpeeds(<span class="tok-b5cea8">120</span>, <span class="tok-b5cea8">250</span>);   <span class="tok-6a9955">// left-hand circle</span>
@@ -4020,24 +4020,24 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <div class="div-333">
 
-<pre class="pre-c-e8e8e8"><span class="tok-c586c0-c-c586c0">#include</span> <span class="tok-ce9178-c-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-c-e8e8e8"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
 <span class="tok-4ec9b6">Zumo32U4ButtonC</span> buttonC;
 
-<span class="tok-569cd6-c-569cd6">void</span> runAt(<span class="tok-569cd6-c-569cd6">int</span> spd) {
+<span class="tok-569cd6">void</span> runAt(<span class="tok-569cd6">int</span> spd) {
   motors.setSpeeds(spd, spd);
   delay(<span class="tok-b5cea8">2000</span>);
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">100</span>);   <span class="tok-6a9955">// A = speed 100</span>
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">200</span>);   <span class="tok-6a9955">// C = speed 200</span>
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">100</span>);   <span class="tok-6a9955">// A = speed 100</span>
+  <span class="tok-569cd6">if</span> (buttonC.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">200</span>);   <span class="tok-6a9955">// C = speed 200</span>
 }</pre>
 
 </div>
@@ -4148,7 +4148,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <div class="div-333-2">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">int</span> mv = readBatteryMillivolts(); <span class="tok-6a9955">// Returns millivolts (±10% accuracy)</span>
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">int</span> mv = readBatteryMillivolts(); <span class="tok-6a9955">// Returns millivolts (±10% accuracy)</span>
 <span class="tok-6a9955">// Convert: Volts = mv / 1000</span>
 <span class="tok-6a9955">// NiMH, 4 cells (what our robots run):</span>
 <span class="tok-6a9955">//   Fresh:  ~5400 mV   Plateau: ~4800 mV</span>
@@ -4174,14 +4174,14 @@ constrain(200, -400, 400) → 200 // In range, unchanged</pre>
 
 <div class="div-333-2">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;
 <span class="tok-6a9955">// Slots are numbered from ZERO:</span>
 TEST_SPEEDS[<span class="tok-b5cea8">0</span>]  <span class="tok-6a9955">// 150  (first)</span>
 TEST_SPEEDS[<span class="tok-b5cea8">3</span>]  <span class="tok-6a9955">// 300  (last — one less than the count)</span>
 <span class="tok-6a9955">// The slot number can be a variable:</span>
-<span class="tok-569cd6-c-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>;
-<span class="tok-569cd6-c-569cd6">int</span> currentSpeed = TEST_SPEEDS[speedIndex];  <span class="tok-6a9955">// 200</span>
+<span class="tok-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>;
+<span class="tok-569cd6">int</span> currentSpeed = TEST_SPEEDS[speedIndex];  <span class="tok-6a9955">// 200</span>
 <span class="tok-6a9955">// TEST_SPEEDS[4] is NOT an error — it returns garbage. See 8A.5.</span></pre>
 
 </div>
@@ -4205,10 +4205,10 @@ speedIndex = (speedIndex + <span class="tok-b5cea8">1</span>) % NUM_SPEEDS;  <sp
 
 <div class="div-333-2">
 
-<pre class="pre-c-e8e8e8"><span class="tok-569cd6-c-569cd6">int</span> trimValue = <span class="tok-b5cea8">15</span>; <span class="tok-6a9955">// Your robot's value</span>
+<pre class="pre-c-e8e8e8"><span class="tok-569cd6">int</span> trimValue = <span class="tok-b5cea8">15</span>; <span class="tok-6a9955">// Your robot's value</span>
 <span class="tok-6a9955">// Apply TRIM to motors:</span>
-<span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + trimValue;
-<span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED;
+<span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + trimValue;
+<span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED;
 motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
 </div>

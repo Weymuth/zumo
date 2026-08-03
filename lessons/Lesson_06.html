@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.23.0 -->
+<!-- Lesson version: v04.23.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -590,14 +590,14 @@
 
 <p>Every function you are about to build has the same heart: <em>start the motors, then wait until the encoders say you have gone far enough.</em> That waiting is a <strong>while loop</strong>, and it is the tool you have been missing. A <code class="code-inline-bg-e8e8e8-3">for</code> loop repeats a <strong>known number of times</strong> &mdash; once per sensor, eight times, three. A <code class="code-inline-bg-e8e8e8-3">while</code> loop repeats <strong>as long as something stays true</strong>, however many times that turns out to be. You do not know in advance how many 10-millisecond checks it takes to roll 30&nbsp;cm; you only know when to stop.</p>
 
-<pre class="code-block-333-5"><span class="tok-569cd6-c-569cd6">while</span> (<span class="tok-dcdcaa-c-dcdcaa">condition is still true</span>) {
+<pre class="code-block-333-5"><span class="tok-569cd6">while</span> (<span class="tok-dcdcaa">condition is still true</span>) {
   <span class="tok-7cbf6e">// do this, then check the condition again</span>
 }</pre>
 
 <p>The order is the whole idea, and it is worth walking once: check the condition; if true, run the body once; then go back and check <em>again</em>; keep going until the check finally comes back false; then move on to whatever is below the closing brace. Here is the exact loop at the centre of <code class="code-inline-bg-e8e8e8-3">driveDistance()</code>, the function you write in Step 7:</p>
 
 <pre class="code-block-333-5">motors.setSpeeds(speed, speed);            <span class="tok-7cbf6e">// start rolling</span>
-<span class="tok-569cd6-c-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
+<span class="tok-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
   delay(<span class="tok-b5cea8">10</span>);                              <span class="tok-7cbf6e">// hold here, re-checking 100x a second</span>
 }
 motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);                  <span class="tok-7cbf6e">// the count finally reached target — stop</span></pre>
@@ -635,7 +635,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <pre class="code-block-333-5"><span class="tok-7cbf6e">// WITHOUT abs — the backward bug</span>
 int targetCounts = -30 * COUNTS_PER_CM;   <span class="tok-7cbf6e">// a NEGATIVE target</span>
-<span class="tok-569cd6-c-569cd6">while</span> (encoderCount &lt; targetCounts) { ... }   <span class="tok-7cbf6e">// already true — loop never runs, robot never moves</span></pre>
+<span class="tok-569cd6">while</span> (encoderCount &lt; targetCounts) { ... }   <span class="tok-7cbf6e">// already true — loop never runs, robot never moves</span></pre>
 
 <p>The count starts at 0. A negative target is already below 0, so <code class="code-inline-bg-e8e8e8-3">0 &lt; targetCounts</code> is false on the very first check and the loop exits before the wheels turn. Wrap the distance in <code class="code-inline-bg-e8e8e8-3">abs()</code> and the target is always a positive number the count can climb to, whichever way the robot drives:</p>
 
@@ -653,9 +653,9 @@ int targetCounts = -30 * COUNTS_PER_CM;   <span class="tok-7cbf6e">// a NEGATIVE
 
 <pre class="code-block-333-5"><span class="tok-7cbf6e">// the same choice, the long way</span>
 int speed;
-<span class="tok-569cd6-c-569cd6">if</span> (distanceCm &gt; 0) {
+<span class="tok-569cd6">if</span> (distanceCm &gt; 0) {
   speed = DRIVE_SPEED;
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
   speed = -DRIVE_SPEED;
 }</pre>
 
@@ -877,24 +877,24 @@ int speed;
 <span class="tok-7cbf6e">Live dashboard: the raw count from each wheel.</span>
 <span class="tok-7cbf6e">Spin a wheel by hand and watch its number move.</span>
 <span class="tok-7cbf6e">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> displayEncoderCounts() {
-  <span class="tok-569cd6-c-569cd6">int</span> leftCount = encoders.getCountsLeft();
-  <span class="tok-569cd6-c-569cd6">int</span> rightCount = encoders.getCountsRight();
+<span class="tok-569cd6">void</span> displayEncoderCounts() {
+  <span class="tok-569cd6">int</span> leftCount = encoders.getCountsLeft();
+  <span class="tok-569cd6">int</span> rightCount = encoders.getCountsRight();
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"ENCODER COUNTS"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"ENCODER COUNTS"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"L: "</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"L: "</span>));
   display.print(leftCount);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"R: "</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"R: "</span>));
   display.print(rightCount);
 }</pre>
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== FUNCTION PROTOTYPES =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> waitForStart();
-<span class="tok-569cd6-c-569cd6">void</span> checkBattery();
-<span class="tok-569cd6-c-569cd6">void</span> displayEncoderCounts();
-<span class="tok-569cd6-c-569cd6">void</span> driveDistance(<span class="tok-569cd6-c-569cd6">float</span> distanceCm);
-<span class="tok-569cd6-c-569cd6">void</span> turnDegrees(<span class="tok-569cd6-c-569cd6">float</span> degrees);</pre>
+<span class="tok-569cd6">void</span> waitForStart();
+<span class="tok-569cd6">void</span> checkBattery();
+<span class="tok-569cd6">void</span> displayEncoderCounts();
+<span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> distanceCm);
+<span class="tok-569cd6">void</span> turnDegrees(<span class="tok-569cd6">float</span> degrees);</pre>
 </div>
 </details>
 
@@ -922,11 +922,11 @@ every loop:
 <details data-reveal="check" class="details-dee2e6">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> setup() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> setup() {
   display.setLayout21x8();
   waitForStart();
 }</pre>
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
   displayEncoderCounts();
   delay(<span class="tok-b5cea8">50</span>);
@@ -957,10 +957,10 @@ counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== CONFIGURATION =====</span>
 <span class="tok-7cbf6e">// ----- Distance Measurement -----</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> COUNTS_PER_ROTATION = <span class="tok-b5cea8">909.7</span>;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> WHEEL_DIAMETER_MM = <span class="tok-b5cea8">39.0</span>;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> WHEEL_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_DIAMETER_MM;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / <span class="tok-b5cea8">10.0</span>);</pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_ROTATION = <span class="tok-b5cea8">909.7</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_DIAMETER_MM = <span class="tok-b5cea8">39.0</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_DIAMETER_MM;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / <span class="tok-b5cea8">10.0</span>);</pre>
 </div>
 </details>
 
@@ -991,21 +991,21 @@ counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 <span class="tok-7cbf6e">Live dashboard: raw counts plus the distance they add</span>
 <span class="tok-7cbf6e">up to, using the COUNTS_PER_CM math from Section 5.</span>
 <span class="tok-7cbf6e">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> displayEncoderCounts() {
-  <span class="tok-569cd6-c-569cd6">int</span> leftCount = encoders.getCountsLeft();
-  <span class="tok-569cd6-c-569cd6">int</span> rightCount = encoders.getCountsRight();
-  <span class="tok-569cd6-c-569cd6">float</span> distanceCm = ((leftCount + rightCount) / <span class="tok-b5cea8">2.0</span>) / COUNTS_PER_CM;
+<span class="tok-569cd6">void</span> displayEncoderCounts() {
+  <span class="tok-569cd6">int</span> leftCount = encoders.getCountsLeft();
+  <span class="tok-569cd6">int</span> rightCount = encoders.getCountsRight();
+  <span class="tok-569cd6">float</span> distanceCm = ((leftCount + rightCount) / <span class="tok-b5cea8">2.0</span>) / COUNTS_PER_CM;
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"L: "</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"L: "</span>));
   display.print(leftCount);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"R: "</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"R: "</span>));
   display.print(rightCount);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Distance:"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Distance:"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
   display.print(distanceCm, <span class="tok-b5cea8">1</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">" cm"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">" cm"</span>));
 }</pre>
 </div>
 </details>
@@ -1042,7 +1042,7 @@ driveDistance(distanceCm):
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// ----- Motor Control -----</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">150</span>;</pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">150</span>;</pre>
 <pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">driveDistance(distanceCm)</span>
 <span class="tok-7cbf6e">-------------------------</span>
@@ -1050,18 +1050,18 @@ driveDistance(distanceCm):
 <span class="tok-7cbf6e">negative = backward. Blocks until the distance is done.</span>
 <span class="tok-7cbf6e">(Heads-up: int math caps the target near 440 cm.)</span>
 <span class="tok-7cbf6e">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> driveDistance(<span class="tok-569cd6-c-569cd6">float</span> distanceCm) {
+<span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> distanceCm) {
   <span class="tok-7cbf6e">// Reset encoders to start counting from zero</span>
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-7cbf6e">// Calculate target</span>
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
+  <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-7cbf6e">// Set direction based on positive/negative distance</span>
-  <span class="tok-569cd6-c-569cd6">int</span> speed = (distanceCm &gt; <span class="tok-b5cea8">0</span>) ? DRIVE_SPEED : -DRIVE_SPEED;
+  <span class="tok-569cd6">int</span> speed = (distanceCm &gt; <span class="tok-b5cea8">0</span>) ? DRIVE_SPEED : -DRIVE_SPEED;
   <span class="tok-7cbf6e">// Start driving</span>
   motors.setSpeeds(speed, speed);
   <span class="tok-7cbf6e">// Wait until we've traveled far enough</span>
-  <span class="tok-569cd6-c-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
+  <span class="tok-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
     delay(<span class="tok-b5cea8">10</span>);
   }
   <span class="tok-7cbf6e">// Stop!</span>
@@ -1079,23 +1079,23 @@ driveDistance(distanceCm):
 
 <p>Time to move. This loop is test-harness choreography — press A, count down, drive, report — so it's a copy step. Replace your whole <code class="code-inline-bg-e8e8e8">loop()</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Press A: 30cm"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Press A: 30cm"</span>));
   buttonA.waitForButton();
   <span class="tok-7cbf6e">// 3-2-1 countdown - hands clear!</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">3</span>; i &gt; <span class="tok-b5cea8">0</span>; i--) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">3</span>; i &gt; <span class="tok-b5cea8">0</span>; i--) {
     display.clear();
-    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Starting: "</span>));
+    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Starting: "</span>));
     display.print(i);
     delay(<span class="tok-b5cea8">1000</span>);
   }
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Driving 30cm..."</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Driving 30cm..."</span>));
   driveDistance(<span class="tok-b5cea8">30</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Done!"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Done!"</span>));
   delay(<span class="tok-b5cea8">1000</span>);
 }</pre>
 
@@ -1134,9 +1134,9 @@ counts per degree    = (turn circumference ÷ 360)
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// ----- Turning -----</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> WHEEL_BASE_MM = <span class="tok-b5cea8">85.0</span>;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_BASE_MM;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / <span class="tok-b5cea8">360.0</span>) *
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_BASE_MM = <span class="tok-b5cea8">85.0</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_BASE_MM;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / <span class="tok-b5cea8">360.0</span>) *
                                 (COUNTS_PER_ROTATION / WHEEL_CIRCUMFERENCE_MM);</pre>
 </div>
 </details>
@@ -1172,19 +1172,19 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <span class="tok-7cbf6e">Pivot in place. Positive = right, negative = left.</span>
 <span class="tok-7cbf6e">Same skeleton as driveDistance() - new math, opposite wheels.</span>
 <span class="tok-7cbf6e">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> turnDegrees(<span class="tok-569cd6-c-569cd6">float</span> degrees) {
+<span class="tok-569cd6">void</span> turnDegrees(<span class="tok-569cd6">float</span> degrees) {
   <span class="tok-7cbf6e">// Reset encoders</span>
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-7cbf6e">// Calculate target counts for this turn</span>
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(degrees) * COUNTS_PER_DEGREE;
+  <span class="tok-569cd6">int</span> targetCounts = abs(degrees) * COUNTS_PER_DEGREE;
   <span class="tok-7cbf6e">// Set wheel directions: positive = turn right</span>
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = (degrees &gt; <span class="tok-b5cea8">0</span>) ? DRIVE_SPEED : -DRIVE_SPEED;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = -leftSpeed; <span class="tok-7cbf6e">// Opposite direction!</span>
+  <span class="tok-569cd6">int</span> leftSpeed = (degrees &gt; <span class="tok-b5cea8">0</span>) ? DRIVE_SPEED : -DRIVE_SPEED;
+  <span class="tok-569cd6">int</span> rightSpeed = -leftSpeed; <span class="tok-7cbf6e">// Opposite direction!</span>
   <span class="tok-7cbf6e">// Start turning</span>
   motors.setSpeeds(leftSpeed, rightSpeed);
   <span class="tok-7cbf6e">// Wait until we've turned enough</span>
-  <span class="tok-569cd6-c-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
+  <span class="tok-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
     delay(<span class="tok-b5cea8">10</span>);
   }
   <span class="tok-7cbf6e">// Stop!</span>
@@ -1215,27 +1215,27 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <details data-reveal="check" class="details-dee2e6">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Press A: L test"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Press A: L test"</span>));
   buttonA.waitForButton();
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">3</span>; i &gt; <span class="tok-b5cea8">0</span>; i--) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">3</span>; i &gt; <span class="tok-b5cea8">0</span>; i--) {
     display.clear();
-    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Starting: "</span>));
+    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Starting: "</span>));
     display.print(i);
     delay(<span class="tok-b5cea8">1000</span>);
   }
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Forward 20cm..."</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Forward 20cm..."</span>));
   driveDistance(<span class="tok-b5cea8">20</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Turn 90..."</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Turn 90..."</span>));
   turnDegrees(<span class="tok-b5cea8">90</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Done!"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Done!"</span>));
   delay(<span class="tok-b5cea8">1000</span>);
 }</pre>
 </div>
@@ -1250,44 +1250,44 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <p>The victory lap: a five-move choreography proving distance and turns compose into navigation. Pure sequencing — copy it over your <code class="code-inline-bg-e8e8e8">loop()</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Press A: demo"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Press A: demo"</span>));
   buttonA.waitForButton();
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">3</span>; i &gt; <span class="tok-b5cea8">0</span>; i--) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">3</span>; i &gt; <span class="tok-b5cea8">0</span>; i--) {
     display.clear();
-    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Starting: "</span>));
+    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Starting: "</span>));
     display.print(i);
     delay(<span class="tok-b5cea8">1000</span>);
   }
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"1: Fwd 30cm"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"1: Fwd 30cm"</span>));
   delay(<span class="tok-b5cea8">500</span>);
   driveDistance(<span class="tok-b5cea8">30</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"2: Turn 90"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"2: Turn 90"</span>));
   delay(<span class="tok-b5cea8">500</span>);
   turnDegrees(<span class="tok-b5cea8">90</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"3: Fwd 20cm"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"3: Fwd 20cm"</span>));
   delay(<span class="tok-b5cea8">500</span>);
   driveDistance(<span class="tok-b5cea8">20</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"4: Turn 180"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"4: Turn 180"</span>));
   delay(<span class="tok-b5cea8">500</span>);
   turnDegrees(<span class="tok-b5cea8">180</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"5: Fwd 20cm"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"5: Fwd 20cm"</span>));
   delay(<span class="tok-b5cea8">500</span>);
   driveDistance(<span class="tok-b5cea8">20</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"COMPLETE!"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"COMPLETE!"</span>));
   delay(<span class="tok-b5cea8">2000</span>);
 }</pre>
 
@@ -1339,7 +1339,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <span class="tok-6a9955">// number&quot; does NOT drive straight. TRIM is added to the LEFT motor.</span>
 <span class="tok-6a9955">//   Robot curves LEFT  -&gt; RAISE TRIM (speeds the left wheel up)</span>
 <span class="tok-6a9955">//   Robot curves RIGHT -&gt; LOWER TRIM (it can go negative)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TRIM = 0;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER from Lesson 3</span></pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TRIM = 0;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER from Lesson 3</span></pre>
 
 <p>Then spend it — in <code class="code-inline-bg-e8e8e8">driveDistance()</code>, on the <strong>left</strong> motor:</p>
 
@@ -1349,7 +1349,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <p>Now look at the loop that decides when to stop:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {</pre>
+<pre class="code-block-333"><span class="tok-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {</pre>
 
 <p>The <strong>left</strong> wheel. Only ever the left wheel. The right wheel has been spinning this whole time and <em>nothing has ever asked it anything.</em></p>
 
@@ -1365,15 +1365,15 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <span class="tok-6a9955">other side never gets noticed - the move ends early or late, and</span>
 <span class="tok-6a9955">nothing warns you.</span>
 <span class="tok-6a9955">*/</span>
-<span class="tok-569cd6-c-569cd6">static</span> <span class="tok-569cd6-c-569cd6">long</span> averageCounts() {
-  <span class="tok-569cd6-c-569cd6">long</span> left  = abs(encoders.getCountsLeft());
-  <span class="tok-569cd6-c-569cd6">long</span> right = abs(encoders.getCountsRight());
-  <span class="tok-569cd6-c-569cd6">return</span> (left + right) / 2;
+<span class="tok-569cd6">static</span> <span class="tok-569cd6">long</span> averageCounts() {
+  <span class="tok-569cd6">long</span> left  = abs(encoders.getCountsLeft());
+  <span class="tok-569cd6">long</span> right = abs(encoders.getCountsRight());
+  <span class="tok-569cd6">return</span> (left + right) / 2;
 }</pre>
 
 <p>Then use it as the gate in <strong>both</strong> <code class="code-inline-bg-e8e8e8">driveDistance()</code> <strong>and</strong> <code class="code-inline-bg-e8e8e8">turnDegrees()</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {</pre>
+<pre class="code-block-333"><span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {</pre>
 
 <div class="callout-17a2b8-bg-d1ecf1">
     <div class="div-fs-105em">🧠 Wait — TRIM in the turn too?</div>
@@ -1384,32 +1384,32 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <h4 class="h4-c-433014">The finished functions</h4>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> driveDistance(<span class="tok-569cd6-c-569cd6">float</span> distanceCm) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span class="tok-569cd6-c-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
+  <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
+  <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
   <span class="tok-6a9955">// TRIM keeps it STRAIGHT. The encoders only count rotation - they</span>
   <span class="tok-6a9955">// cannot tell you the robot curved. Without TRIM, this drives an ARC.</span>
   motors.setSpeeds(speed + TRIM, speed);
   <span class="tok-6a9955">// Wait until we&#x27;ve traveled far enough - AVERAGE both wheels</span>
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10);
   }
   motors.setSpeeds(0, 0);
 }</pre>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> turnDegrees(<span class="tok-569cd6-c-569cd6">float</span> degrees) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> turnDegrees(<span class="tok-569cd6">float</span> degrees) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(degrees) * COUNTS_PER_DEGREE;
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = (degrees &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = -leftSpeed;
+  <span class="tok-569cd6">int</span> targetCounts = abs(degrees) * COUNTS_PER_DEGREE;
+  <span class="tok-569cd6">int</span> leftSpeed = (degrees &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
+  <span class="tok-569cd6">int</span> rightSpeed = -leftSpeed;
   <span class="tok-6a9955">// NO TRIM here - the wheels are fighting on purpose, and the</span>
   <span class="tok-6a9955">// encoders decide the angle.</span>
   motors.setSpeeds(leftSpeed, rightSpeed);
   <span class="tok-6a9955">// Wait until we&#x27;ve turned enough - AVERAGE both wheels</span>
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10);
   }
   motors.setSpeeds(0, 0);
@@ -1547,8 +1547,8 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <h3 class="h3-c-00474b">Worked Example: Function with Parameter</h3>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// DEFINITION - takes a parameter</span>
-<span class="tok-569cd6-c-569cd6">void</span> blinkLED(<span class="tok-569cd6-c-569cd6">int</span> times) {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i < times; i++) {
+<span class="tok-569cd6">void</span> blinkLED(<span class="tok-569cd6">int</span> times) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i < times; i++) {
     ledYellow(<span class="tok-b5cea8">1</span>);
     delay(<span class="tok-b5cea8">200</span>);
     ledYellow(<span class="tok-b5cea8">0</span>);
@@ -1564,7 +1564,7 @@ blinkLED(<span class="tok-b5cea8">10</span>); <span class="tok-7cbf6e">// Blinks
 
 <p>Fill in the blank to create a function that drives forward a given distance, then turns right 90°:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> driveAndTurn(_______ distance) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> driveAndTurn(_______ distance) {
   driveDistance(distance);
   turnDegrees(<span class="tok-b5cea8">90</span>);
 }</pre>
@@ -1635,21 +1635,21 @@ END REPEAT</pre>
 
 <p><strong>Step 1:</strong> Create a new function called <code class="code-inline-bg-e8e8e8-3">driveSquare()</code> in the Helper Functions section (AFTER <code class="code-inline-bg-e8e8e8-3">turnDegrees()</code>):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> driveSquare() {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; ____; i++) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> driveSquare() {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; ____; i++) {
     driveDistance(____);
     turnDegrees(____);
     delay(<span class="tok-b5cea8">300</span>);
 }
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Square done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Square done!"</span>));
 }</pre>
 
 <p><strong>Step 2:</strong> In <code class="code-inline-bg-e8e8e8-3">loop()</code>, REPLACE the existing code with a call to your new function:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
 driveSquare(); <span class="tok-7cbf6e">// Call your new function!</span>
-<span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
+<span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
 }</pre>
 
 </div>
@@ -1658,18 +1658,18 @@ driveSquare(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 <summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> driveSquare() {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> driveSquare() {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
     driveDistance(<span class="tok-b5cea8">30</span>);
     turnDegrees(<span class="tok-b5cea8">90</span>);
     delay(<span class="tok-b5cea8">300</span>);
 }
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Square done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Square done!"</span>));
 }
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   driveSquare();
-  <span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { }
+  <span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { }
 }</pre>
 
 <p><strong>Key concept:</strong> A square has 4 sides and 4 corners, so we repeat 4 times. By putting the code in a separate function, you avoid duplicate <code class="code-inline-bg-e8e8e8-3">loop()</code> errors!</p>
@@ -1719,21 +1719,21 @@ END REPEAT</pre>
 
 <p><strong>Step 1:</strong> Create a new function called <code class="code-inline-bg-e8e8e8-3">driveTriangle()</code> in the Helper Functions section (AFTER <code class="code-inline-bg-e8e8e8-3">turnDegrees()</code>):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> driveTriangle() {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; ____; i++) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> driveTriangle() {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; ____; i++) {
     driveDistance(____);
     turnDegrees(____);
     delay(<span class="tok-b5cea8">300</span>);
 }
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Triangle done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Triangle done!"</span>));
 }</pre>
 
 <p><strong>Step 2:</strong> In <code class="code-inline-bg-e8e8e8-3">loop()</code>, REPLACE the existing code with a call to your new function:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
 driveTriangle(); <span class="tok-7cbf6e">// Call your new function!</span>
-<span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
+<span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
 }</pre>
 
 </div>
@@ -1742,18 +1742,18 @@ driveTriangle(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 <summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> driveTriangle() {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">3</span>; i++) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> driveTriangle() {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">3</span>; i++) {
     driveDistance(<span class="tok-b5cea8">25</span>);
     turnDegrees(<span class="tok-b5cea8">120</span>);
     delay(<span class="tok-b5cea8">300</span>);
 }
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Triangle done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Triangle done!"</span>));
 }
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   driveTriangle();
-  <span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { }
+  <span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { }
 }</pre>
 
 <p><strong>Key concept:</strong> The exterior angle of an equilateral triangle is 120° (not the interior angle of 60°). The robot turns through the OUTSIDE of the shape!</p>
@@ -1804,23 +1804,23 @@ END REPEAT</pre>
 
 <p><strong>Step 1:</strong> Create a new function called <code class="code-inline-bg-e8e8e8-3">drivePentagon()</code> in the Helper Functions section (AFTER <code class="code-inline-bg-e8e8e8-3">turnDegrees()</code>):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> drivePentagon() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> drivePentagon() {
   <span class="tok-7cbf6e">// Calculate: 360 / 5 = ____</span>
-  <span class="tok-569cd6-c-569cd6">float</span> turnAngle = ____;
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; ____; i++) {
+  <span class="tok-569cd6">float</span> turnAngle = ____;
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; ____; i++) {
     driveDistance(<span class="tok-b5cea8">20</span>);
     turnDegrees(turnAngle);
     delay(<span class="tok-b5cea8">300</span>);
 }
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Pentagon done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Pentagon done!"</span>));
 }</pre>
 
 <p><strong>Step 2:</strong> In <code class="code-inline-bg-e8e8e8-3">loop()</code>, REPLACE the existing code with a call to your new function:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
 drivePentagon(); <span class="tok-7cbf6e">// Call your new function!</span>
-<span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
+<span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
 }</pre>
 
 </div>
@@ -1829,19 +1829,19 @@ drivePentagon(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 <summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> drivePentagon() {
-  <span class="tok-569cd6-c-569cd6">float</span> turnAngle = <span class="tok-b5cea8">72</span>; <span class="tok-7cbf6e">// 360 / 5 = 72</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> drivePentagon() {
+  <span class="tok-569cd6">float</span> turnAngle = <span class="tok-b5cea8">72</span>; <span class="tok-7cbf6e">// 360 / 5 = 72</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
     driveDistance(<span class="tok-b5cea8">20</span>);
     turnDegrees(turnAngle);
     delay(<span class="tok-b5cea8">300</span>);
 }
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Pentagon done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Pentagon done!"</span>));
 }
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   drivePentagon();
-  <span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { }
+  <span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { }
 }</pre>
 
 <p><strong>Key concept:</strong> For any regular polygon: exterior angle = 360° ÷ number of sides</p>
@@ -1905,30 +1905,30 @@ Display final position</pre>
 
 <p><strong>Step 1:</strong> Create a new function called <code class="code-inline-bg-e8e8e8-3">lineDrill()</code> in the Helper Functions section (AFTER <code class="code-inline-bg-e8e8e8-3">turnDegrees()</code>):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> lineDrill() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> lineDrill() {
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Fwd 40cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Fwd 40cm"</span>));
   driveDistance(____);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Back 20cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Back 20cm"</span>));
   driveDistance(____); <span class="tok-7cbf6e">// How do you go backward?</span>
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Fwd 40cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Fwd 40cm"</span>));
   driveDistance(____);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Done!"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Net: 60cm fwd"</span>));
+  display.print(F(<span class="tok-ce9178">"Net: 60cm fwd"</span>));
 }</pre>
 
 <p><strong>Step 2:</strong> In <code class="code-inline-bg-e8e8e8-3">loop()</code>, REPLACE the existing code with a call to your new function:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
 lineDrill(); <span class="tok-7cbf6e">// Call your new function!</span>
-<span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
+<span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { } <span class="tok-7cbf6e">// Stop after one run</span>
 }</pre>
 
 </div>
@@ -1937,27 +1937,27 @@ lineDrill(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 <summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> lineDrill() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> lineDrill() {
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Fwd 40cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Fwd 40cm"</span>));
   driveDistance(<span class="tok-b5cea8">40</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Back 20cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Back 20cm"</span>));
   driveDistance(-<span class="tok-b5cea8">20</span>); <span class="tok-7cbf6e">// Negative = backward!</span>
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Fwd 40cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Fwd 40cm"</span>));
   driveDistance(<span class="tok-b5cea8">40</span>);
   delay(<span class="tok-b5cea8">500</span>);
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Done!"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Net: 60cm fwd"</span>));
+  display.print(F(<span class="tok-ce9178">"Net: 60cm fwd"</span>));
 }
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   lineDrill();
-  <span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { }
+  <span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { }
 }</pre>
 
 <p><strong>Key concept:</strong> The <code class="code-inline-bg-e8e8e8-3">driveDistance()</code> function handles negative values by reversing motor direction. This is more efficient than turning 180°, driving, then turning back!</p>
@@ -2011,34 +2011,34 @@ Display total distance</pre>
 <p><strong>Step 1:</strong> Add these global variables at the top of your file, in the CONFIGURATION section (AFTER the constants):</p>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// ----- Odometer Tracking -----</span>
-<span class="tok-569cd6-c-569cd6">float</span> totalDistance = <span class="tok-b5cea8">0</span>;
-<span class="tok-569cd6-c-569cd6">int</span> prevLeft = <span class="tok-b5cea8">0</span>;
-<span class="tok-569cd6-c-569cd6">int</span> prevRight = <span class="tok-b5cea8">0</span>;</pre>
+<span class="tok-569cd6">float</span> totalDistance = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">int</span> prevLeft = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">int</span> prevRight = <span class="tok-b5cea8">0</span>;</pre>
 
 <p><strong>Step 2:</strong> Create a new function called <code class="code-inline-bg-e8e8e8-3">updateOdometer()</code> in the Helper Functions section (AFTER <code class="code-inline-bg-e8e8e8-3">turnDegrees()</code>):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> updateOdometer() {
-  <span class="tok-569cd6-c-569cd6">int</span> currLeft = encoders.getCountsLeft();
-  <span class="tok-569cd6-c-569cd6">int</span> currRight = encoders.getCountsRight();
-  <span class="tok-569cd6-c-569cd6">int</span> deltaLeft = currLeft - ________;
-  <span class="tok-569cd6-c-569cd6">int</span> deltaRight = currRight - ________;
+<pre class="code-block-333"><span class="tok-569cd6">void</span> updateOdometer() {
+  <span class="tok-569cd6">int</span> currLeft = encoders.getCountsLeft();
+  <span class="tok-569cd6">int</span> currRight = encoders.getCountsRight();
+  <span class="tok-569cd6">int</span> deltaLeft = currLeft - ________;
+  <span class="tok-569cd6">int</span> deltaRight = currRight - ________;
   <span class="tok-7cbf6e">// Add ABSOLUTE values to total</span>
-  <span class="tok-569cd6-c-569cd6">float</span> deltaCm = (_______(deltaLeft) + _______(deltaRight)) / <span class="tok-b5cea8">2</span>.<span class="tok-b5cea8">0</span> / COUNTS_PER_CM;
+  <span class="tok-569cd6">float</span> deltaCm = (_______(deltaLeft) + _______(deltaRight)) / <span class="tok-b5cea8">2</span>.<span class="tok-b5cea8">0</span> / COUNTS_PER_CM;
   totalDistance += deltaCm;
   <span class="tok-7cbf6e">// Update previous values</span>
   prevLeft = ________;
   prevRight = ________;
   <span class="tok-7cbf6e">// Display</span>
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Odometer:"</span>));
+  display.print(F(<span class="tok-ce9178">"Odometer:"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
   display.print(totalDistance, <span class="tok-b5cea8">1</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">" cm"</span>));
+  display.print(F(<span class="tok-ce9178">" cm"</span>));
 }</pre>
 
 <p><strong>Step 3:</strong> In <code class="code-inline-bg-e8e8e8-3">loop()</code>, REPLACE the existing code with a call to your new function:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
 updateOdometer(); <span class="tok-7cbf6e">// Call your new function!</span>
 delay(<span class="tok-b5cea8">50</span>); <span class="tok-7cbf6e">// Small delay for display refresh</span>
 }</pre>
@@ -2050,26 +2050,26 @@ delay(<span class="tok-b5cea8">50</span>); <span class="tok-7cbf6e">// Small del
 <summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// In CONFIGURATION section:</span>
-<span class="tok-569cd6-c-569cd6">float</span> totalDistance = <span class="tok-b5cea8">0</span>;
-<span class="tok-569cd6-c-569cd6">int</span> prevLeft = <span class="tok-b5cea8">0</span>;
-<span class="tok-569cd6-c-569cd6">int</span> prevRight = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">float</span> totalDistance = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">int</span> prevLeft = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">int</span> prevRight = <span class="tok-b5cea8">0</span>;
 <span class="tok-7cbf6e">// In HELPER FUNCTIONS section:</span>
-<span class="tok-569cd6-c-569cd6">void</span> updateOdometer() {
-  <span class="tok-569cd6-c-569cd6">int</span> currLeft = encoders.getCountsLeft();
-  <span class="tok-569cd6-c-569cd6">int</span> currRight = encoders.getCountsRight();
-  <span class="tok-569cd6-c-569cd6">int</span> deltaLeft = currLeft - prevLeft;
-  <span class="tok-569cd6-c-569cd6">int</span> deltaRight = currRight - prevRight;
-  <span class="tok-569cd6-c-569cd6">float</span> deltaCm = (abs(deltaLeft) + abs(deltaRight)) / <span class="tok-b5cea8">2</span>.<span class="tok-b5cea8">0</span> / COUNTS_PER_CM;
+<span class="tok-569cd6">void</span> updateOdometer() {
+  <span class="tok-569cd6">int</span> currLeft = encoders.getCountsLeft();
+  <span class="tok-569cd6">int</span> currRight = encoders.getCountsRight();
+  <span class="tok-569cd6">int</span> deltaLeft = currLeft - prevLeft;
+  <span class="tok-569cd6">int</span> deltaRight = currRight - prevRight;
+  <span class="tok-569cd6">float</span> deltaCm = (abs(deltaLeft) + abs(deltaRight)) / <span class="tok-b5cea8">2</span>.<span class="tok-b5cea8">0</span> / COUNTS_PER_CM;
   totalDistance += deltaCm;
   prevLeft = currLeft;
   prevRight = currRight;
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Odometer:"</span>));
+  display.print(F(<span class="tok-ce9178">"Odometer:"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
   display.print(totalDistance, <span class="tok-b5cea8">1</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">" cm"</span>));
+  display.print(F(<span class="tok-ce9178">" cm"</span>));
 }
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   updateOdometer();
   delay(<span class="tok-b5cea8">50</span>);
 }</pre>
@@ -2128,16 +2128,16 @@ Stop motors</pre>
 <span class="tok-6a9955">Same as driveDistance(), but eases off in the last 25%.</span>
 <span class="tok-6a9955">TRIM and averageCounts() come along - it is still an OPEN loop.</span>
 <span class="tok-6a9955">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> driveDistanceSmooth(<span class="tok-569cd6-c-569cd6">float</span> distanceCm) {
+<span class="tok-569cd6">void</span> driveDistanceSmooth(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span class="tok-569cd6-c-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
+  <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
+  <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
   motors.setSpeeds(speed + TRIM, speed);
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
-    <span class="tok-569cd6-c-569cd6">long</span> currentCounts = averageCounts();
-    <span class="tok-569cd6-c-569cd6">if</span> (currentCounts &gt; targetCounts * ____) {
-      <span class="tok-569cd6-c-569cd6">int</span> slowSpeed = speed / ____;
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">long</span> currentCounts = averageCounts();
+    <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * ____) {
+      <span class="tok-569cd6">int</span> slowSpeed = speed / ____;
       motors.setSpeeds(slowSpeed + TRIM, slowSpeed);
     }
     delay(10);
@@ -2147,13 +2147,13 @@ Stop motors</pre>
 
 <p><strong>Step 2:</strong> Test it! In <code class="code-inline-bg-e8e8e8-3">loop()</code>, call your new function instead of the original:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Smooth 50cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Smooth 50cm"</span>));
   driveDistanceSmooth(<span class="tok-b5cea8">50</span>); <span class="tok-7cbf6e">// Use your new smooth version!</span>
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Done!"</span>));
-  <span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { }
+  display.print(F(<span class="tok-ce9178">"Done!"</span>));
+  <span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { }
 }</pre>
 
 <p><strong>Step 3:</strong> Compare! Try the same distance with regular <code class="code-inline-bg-e8e8e8-3">driveDistance(50)</code> vs <code class="code-inline-bg-e8e8e8-3">driveDistanceSmooth(50)</code>. Measure where the robot stops each time!</p>
@@ -2170,16 +2170,16 @@ Stop motors</pre>
 <span class="tok-6a9955">Same as driveDistance(), but eases off in the last 25%.</span>
 <span class="tok-6a9955">TRIM and averageCounts() come along - it is still an OPEN loop.</span>
 <span class="tok-6a9955">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> driveDistanceSmooth(<span class="tok-569cd6-c-569cd6">float</span> distanceCm) {
+<span class="tok-569cd6">void</span> driveDistanceSmooth(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span class="tok-569cd6-c-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
+  <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
+  <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
   motors.setSpeeds(speed + TRIM, speed);
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
-    <span class="tok-569cd6-c-569cd6">long</span> currentCounts = averageCounts();
-    <span class="tok-569cd6-c-569cd6">if</span> (currentCounts &gt; targetCounts * 0.75) {
-      <span class="tok-569cd6-c-569cd6">int</span> slowSpeed = speed / 2;
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">long</span> currentCounts = averageCounts();
+    <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * 0.75) {
+      <span class="tok-569cd6">int</span> slowSpeed = speed / 2;
       motors.setSpeeds(slowSpeed + TRIM, slowSpeed);
     }
     delay(10);
@@ -2243,16 +2243,16 @@ Stop motors</pre>
 <span class="tok-6a9955">------------------------------</span>
 <span class="tok-6a9955">Starts at half speed, then opens up after 25%.</span>
 <span class="tok-6a9955">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> driveDistanceAccel(<span class="tok-569cd6-c-569cd6">float</span> distanceCm) {
+<span class="tok-569cd6">void</span> driveDistanceAccel(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span class="tok-569cd6-c-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
-  <span class="tok-569cd6-c-569cd6">int</span> currentSpeed = DRIVE_SPEED / ____;
+  <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
+  <span class="tok-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
+  <span class="tok-569cd6">int</span> currentSpeed = DRIVE_SPEED / ____;
   motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
-    <span class="tok-569cd6-c-569cd6">long</span> currentCounts = averageCounts();
-    <span class="tok-569cd6-c-569cd6">if</span> (currentCounts &gt; targetCounts * ____) {
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">long</span> currentCounts = averageCounts();
+    <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * ____) {
       currentSpeed = ____________;
       motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
     }
@@ -2263,13 +2263,13 @@ Stop motors</pre>
 
 <p><strong>Step 2:</strong> Test it! In <code class="code-inline-bg-e8e8e8-3">loop()</code>, call your new function:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Accel 50cm"</span>));
+  display.print(F(<span class="tok-ce9178">"Accel 50cm"</span>));
   driveDistanceAccel(<span class="tok-b5cea8">50</span>); <span class="tok-7cbf6e">// Use your new accelerating version!</span>
   display.clear();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Done!"</span>));
-  <span class="tok-569cd6-c-569cd6">while</span>(<span class="tok-569cd6-c-569cd6">true</span>) { }
+  display.print(F(<span class="tok-ce9178">"Done!"</span>));
+  <span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { }
 }</pre>
 
 <p><strong>Step 3:</strong> Watch the robot carefully! You should notice it starts slowly, then speeds up after the first quarter of the distance.</p>
@@ -2285,16 +2285,16 @@ Stop motors</pre>
 <span class="tok-6a9955">------------------------------</span>
 <span class="tok-6a9955">Starts at half speed, then opens up after 25%.</span>
 <span class="tok-6a9955">*/</span>
-<span class="tok-569cd6-c-569cd6">void</span> driveDistanceAccel(<span class="tok-569cd6-c-569cd6">float</span> distanceCm) {
+<span class="tok-569cd6">void</span> driveDistanceAccel(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span class="tok-569cd6-c-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
-  <span class="tok-569cd6-c-569cd6">int</span> currentSpeed = DRIVE_SPEED / 2;
+  <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
+  <span class="tok-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
+  <span class="tok-569cd6">int</span> currentSpeed = DRIVE_SPEED / 2;
   motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
-    <span class="tok-569cd6-c-569cd6">long</span> currentCounts = averageCounts();
-    <span class="tok-569cd6-c-569cd6">if</span> (currentCounts &gt; targetCounts * 0.25) {
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">long</span> currentCounts = averageCounts();
+    <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * 0.25) {
       currentSpeed = DRIVE_SPEED;
       motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
     }
@@ -2569,13 +2569,13 @@ Stop motors</pre>
 
 <p><strong>Read only:</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">int</span> left = encoders.getCountsLeft();
-<span class="tok-569cd6-c-569cd6">int</span> right = encoders.getCountsRight();</pre>
+<pre class="code-block-333"><span class="tok-569cd6">int</span> left = encoders.getCountsLeft();
+<span class="tok-569cd6">int</span> right = encoders.getCountsRight();</pre>
 
 <p><strong>Read AND reset:</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">int</span> left = encoders.getCountsAndResetLeft();
-<span class="tok-569cd6-c-569cd6">int</span> right = encoders.getCountsAndResetRight();</pre>
+<pre class="code-block-333"><span class="tok-569cd6">int</span> left = encoders.getCountsAndResetLeft();
+<span class="tok-569cd6">int</span> right = encoders.getCountsAndResetRight();</pre>
 
 </div>
 

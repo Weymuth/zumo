@@ -35,15 +35,15 @@
 
 # STATE
 
-Fresh-clone verified at **`4558257`**. Census **40,013**.
+Fresh-clone verified at **`8ae3857`**. Census **40,013**.
 Bible **v8.100** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
 
-Instruments: `book_gates` **v1.41.0** · `lesson_inventory` **v1.2.0** ·
+Instruments: `book_gates` **v1.42.1** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
-`build_family_map` **v1.1.3** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
-`gen_part_banners` **v1.2** · `session_versions` **v1.15** · `fit_raster_svg` **v1.2** ·
+`build_family_map` **v1.3.1** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
+`gen_part_banners` **v1.2** · `session_versions` **v1.15.1** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
 `build_css` **v1.2.1** ·
 `image_audit` **v1.1** ·
@@ -52,12 +52,13 @@ Instruments: `book_gates` **v1.41.0** · `lesson_inventory` **v1.2.0** ·
 `regex_audit` **v1.0** ·
 `build_palette` **v1.1** ·
 `class_sweep` **v1.0** ·
+`color_index` **v1.0** ·
 `font_stack_sweep` **v1.2.0** ·
-`going_deeper` **v01.4.0**.
+`going_deeper` **v01.4.1**.
 
-Lessons: L01 v03.19.0 · L02 v03.11.0 · L03 v03.24.0 · L04 v04.19.0 · L05 v04.19.0 · L06 v04.23.0 · L07 v04.21.0 · L08 v04.19.0 · L09 v05.16.0 · L10 v02.16.0 · L11 v02.17.0 · L12 v01.19.0 · L13 v02.17.0 · L14 v02.21.0 · L15 v02.17.0 · L16 v02.12.0.
+Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.24.1 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.21.1 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.16.1 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.21.1 · L15 v02.17.1 · L16 v02.12.1.
 
-**46/46 gates.** `--anomalies` silent · family map 1048/1048 · `regex_audit` 0 leads ·
+**47/47 gates.** `--anomalies` silent · family map 1048/1048 · `regex_audit` 0 leads ·
 `build_css --check` current at 650 rules · 0 dead classes · `build_palette --check` matches
 the ruling · both banner generators green.
 

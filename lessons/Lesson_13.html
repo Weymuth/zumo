@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.17.0 -->
+<!-- Lesson version: v02.17.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,12 +121,12 @@
 <p>The rescue zone's doorway is a strip of silver tape laid across the line. Silver is <em>more</em> reflective than white paper &mdash; shinier than anything your robot has ever driven over. You would think the brightest thing on the course would be the easiest thing to see.</p>
 <p>It is the only thing on the course your calibrated sensors <strong>cannot</strong> see. Here is why, and this is not a metaphor &mdash; it is four lines from the Pololu library source, the actual code that runs inside <code>readCalibrated()</code>:</p>
 <pre class="code-block-bg-1e1e1e">
-signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8">0</span>;
-<span class="tok-569cd6-c-569cd6">if</span>(denominator != <span class="tok-b5cea8">0</span>)
-    x = (((signed <span class="tok-569cd6-c-569cd6">long</span>)sensor_values[i]) - calmin) * <span class="tok-b5cea8">1000</span> / denominator;
-<span class="tok-569cd6-c-569cd6">if</span>(x &lt; <span class="tok-b5cea8">0</span>)
+signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">if</span>(denominator != <span class="tok-b5cea8">0</span>)
+    x = (((signed <span class="tok-569cd6">long</span>)sensor_values[i]) - calmin) * <span class="tok-b5cea8">1000</span> / denominator;
+<span class="tok-569cd6">if</span>(x &lt; <span class="tok-b5cea8">0</span>)
     x = <span class="tok-b5cea8">0</span>;          <span class="tok-7cbf6e">// &lt;-- brighter than the calibrated minimum? You read ZERO.</span>
-<span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span>(x &gt; <span class="tok-b5cea8">1000</span>)
+<span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span>(x &gt; <span class="tok-b5cea8">1000</span>)
     x = <span class="tok-b5cea8">1000</span>;
 </pre>
 <p>Walk through it. Calibration (that spin your robot does at startup) records the brightest and darkest thing it saw &mdash; <code>calmin</code> and the maximum &mdash; and then maps every future reading onto a 0-to-1000 scale between them. White floor reads 0. Black line reads 1000. Everything in between lands in between. It is a beautiful system, and it is why Lesson 8's line following works in morning light and afternoon light alike.</p>
@@ -220,7 +220,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <span class="tok-7cbf6e">// ===== WHY DID THE LEG END? (NEW for Lesson 13) =====</span>
 <span class="tok-7cbf6e">// driveUntil() drives a straight line that can end three ways.</span>
 <span class="tok-7cbf6e">// A primitive that reports WHY it stopped is worth two that don't.</span>
-<span class="tok-569cd6-c-569cd6">enum</span> StopReason {
+<span class="tok-569cd6">enum</span> StopReason {
   STOP_DISTANCE,   <span class="tok-7cbf6e">// Drove the full budget - saw nothing</span>
   STOP_PROX,       <span class="tok-7cbf6e">// Something ahead - wall or victim, the CALLER decides</span>
   STOP_KILL        <span class="tok-7cbf6e">// B pressed - stop everything</span>
@@ -262,34 +262,34 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <span class="tok-7cbf6e">// Silver reads BRIGHTER than anything you calibrated on. On the raw</span>
 <span class="tok-7cbf6e">// channel, brighter = LOWER. Measure silver and white in Section 7A,</span>
 <span class="tok-7cbf6e">// then set this BETWEEN them.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> SILVER_RAW_MAX = <span class="tok-b5cea8">0</span>;      <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7A measures it.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SILVER_RAW_MAX = <span class="tok-b5cea8">0</span>;      <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7A measures it.</span>
                                    <span class="tok-7cbf6e">//     (0 means the door is invisible -</span>
                                    <span class="tok-7cbf6e">//     nothing can read brighter than 0.)</span>
 
 <span class="tok-7cbf6e">// You already have CLOSE_THRESHOLD. Why a new number? Because a wall</span>
 <span class="tok-7cbf6e">// is not an obstacle. You stop for obstacles to AVOID them. You stop</span>
 <span class="tok-7cbf6e">// at walls to TURN. Different job, different distance, different number.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> WALL_STOP_COUNT = <span class="tok-b5cea8">0</span>;     <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7A measures it.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> WALL_STOP_COUNT = <span class="tok-b5cea8">0</span>;     <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7A measures it.</span>
                                    <span class="tok-7cbf6e">//     (0 ends every leg instantly - the</span>
                                    <span class="tok-7cbf6e">//     sweep will not move until you fill this in.)</span>
 
 <span class="tok-7cbf6e">// Sideways step between sweep rows. The prox sees AHEAD of the robot,</span>
 <span class="tok-7cbf6e">// so rows can be coarser than the robot is wide - but every centimeter</span>
 <span class="tok-7cbf6e">// you add is floor the sweep never looks at.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> ROW_STEP_CM = <span class="tok-b5cea8">0.0</span>;     <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 15 and work from there.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> ROW_STEP_CM = <span class="tok-b5cea8">0.0</span>;     <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 15 and work from there.</span>
 
 <span class="tok-7cbf6e">// A row that ends THIS much shorter than the last row did not reach</span>
 <span class="tok-7cbf6e">// the wall. Something is standing in front of it.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> VICTIM_SHORT_CM = <span class="tok-b5cea8">0.0</span>; <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 15 and work from there.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> VICTIM_SHORT_CM = <span class="tok-b5cea8">0.0</span>; <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 15 and work from there.</span>
 
 <span class="tok-7cbf6e">// Longest possible row. NOT a blank - a safety cap. If the prox somehow</span>
 <span class="tok-7cbf6e">// misses the wall, this ends the row before the robot grinds against it.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> MAX_ROW_CM = <span class="tok-b5cea8">300.0</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MAX_ROW_CM = <span class="tok-b5cea8">300.0</span>;
 
 <span class="tok-7cbf6e">// ===== WHY DID THE LEG END? (NEW for Lesson 13) =====</span>
 <span class="tok-7cbf6e">// driveUntil() drives a straight line that can end three ways.</span>
 <span class="tok-7cbf6e">// A primitive that reports WHY it stopped is worth two that don't.</span>
-<span class="tok-569cd6-c-569cd6">enum</span> StopReason {
+<span class="tok-569cd6">enum</span> StopReason {
   STOP_DISTANCE,   <span class="tok-7cbf6e">// Drove the full budget - saw nothing</span>
   STOP_PROX,       <span class="tok-7cbf6e">// Something ahead - wall or victim, the CALLER decides</span>
   STOP_KILL        <span class="tok-7cbf6e">// B pressed - stop everything</span>
@@ -298,7 +298,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <p>Then find the <code>RobotState</code> enum and grow it by three. (The comments on the Lesson 11 lines change from NEW to From &mdash; they have seniority now.)</p><pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== ROBOT STATES (UPDATED for Lesson 11) =====</span>
 <span class="tok-7cbf6e">// One name for &quot;what is the robot doing right now&quot;</span>
-<span class="tok-569cd6-c-569cd6">enum</span> RobotState {
+<span class="tok-569cd6">enum</span> RobotState {
   STOPPED,             <span class="tok-7cbf6e">// Motors off, waiting for B</span>
   FOLLOWING_LINE,      <span class="tok-7cbf6e">// P-control driving - Lesson 8's whole job</span>
   AT_INTERSECTION,     <span class="tok-7cbf6e">// Stopped on a marker, announcing the decision</span>
@@ -329,7 +329,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 </div>
 <p>Declare it at the bottom of <code>RobotSensors.h</code>:</p><pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== RESCUE ZONE SENSING (NEW for Lesson 13) =====</span>
-<span class="tok-569cd6-c-569cd6">bool</span> silverDetected();
+<span class="tok-569cd6">bool</span> silverDetected();
 </pre>
 <p>And define it at the bottom of <code>RobotSensors.cpp</code>. Read the comment block like it owes you money &mdash; it is Section 3 compressed to eight lines:</p><pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== RESCUE ZONE SENSING (NEW for Lesson 13) =====</span>
@@ -339,15 +339,15 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 <span class="tok-7cbf6e">// Anything brighter than the calibrated minimum reads exactly 0: the</span>
 <span class="tok-7cbf6e">// same 0 as plain white. To see outside the calibrated world you must</span>
 <span class="tok-7cbf6e">// go UNDER the calibration, to the raw channel - where brighter = LOWER.</span>
-<span class="tok-569cd6-c-569cd6">bool</span> silverDetected() {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> raw[<span class="tok-b5cea8">5</span>];
+<span class="tok-569cd6">bool</span> silverDetected() {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> raw[<span class="tok-b5cea8">5</span>];
   lineSensors.read(raw);   <span class="tok-7cbf6e">// RAW - deliberately NOT readCalibrated()</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
-    <span class="tok-569cd6-c-569cd6">if</span> (raw[i] &gt;= SILVER_RAW_MAX) {
-      <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">false</span>;        <span class="tok-7cbf6e">// this sensor is not silver-bright</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+    <span class="tok-569cd6">if</span> (raw[i] &gt;= SILVER_RAW_MAX) {
+      <span class="tok-569cd6">return</span> <span class="tok-569cd6">false</span>;        <span class="tok-7cbf6e">// this sensor is not silver-bright</span>
     }
   }
-  <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">true</span>;             <span class="tok-7cbf6e">// ALL FIVE brighter than silver - that is the strip</span>
+  <span class="tok-569cd6">return</span> <span class="tok-569cd6">true</span>;             <span class="tok-7cbf6e">// ALL FIVE brighter than silver - that is the strip</span>
 }
 </pre>
 <p>Why <em>all five</em> sensors? Because that is the strip's signature and nothing else's. A glare spot might blind one sensor; a worn patch of floor might brighten two. Only a strip of silver spanning the whole array pulls all five below the fence at the same instant. The AND of five noisy witnesses is a quiet, confident yes.</p>
@@ -371,19 +371,19 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
   display.print(F(&quot;===== Lesson 13 =====&quot;));
 </pre>
 <p>Teach <code>showStatus()</code> the three new names &mdash; add these after the <code>LINE_LOST</code> case:</p><pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> ENTERING_ZONE:      display.print(F(&quot;ZONE!&quot;));     <span class="tok-569cd6-c-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
-    <span class="tok-569cd6-c-569cd6">case</span> SWEEPING_ZONE:      display.print(F(&quot;SWEEPING&quot;));  <span class="tok-569cd6-c-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
-    <span class="tok-569cd6-c-569cd6">case</span> VICTIM_FOUND:       display.print(F(&quot;VICTIM!&quot;));   <span class="tok-569cd6-c-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
+    <span class="tok-569cd6">case</span> ENTERING_ZONE:      display.print(F(&quot;ZONE!&quot;));     <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
+    <span class="tok-569cd6">case</span> SWEEPING_ZONE:      display.print(F(&quot;SWEEPING&quot;));  <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
+    <span class="tok-569cd6">case</span> VICTIM_FOUND:       display.print(F(&quot;VICTIM!&quot;));   <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
 </pre>
 <p>Now the check itself. Here is the full <code>FOLLOWING_LINE</code> case as it stands after the edit &mdash; the silver check slots in as the new PRIORITY 2, and everything below it renumbers. <strong>Placement is load-bearing</strong>, and the comment explains the trap: on the calibrated channel silver clamps to 0 on all five sensors, which makes <code>isLineVisible()</code> report... <em>no line</em>. To your Lesson 11 code, the rescue zone's doorway is indistinguishable from a gap &mdash; and <code>handleGap()</code> would drive straight through the most important marker on the course, hunting for a line that is never coming back. The raw check must get there first:</p><pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;   <span class="tok-7cbf6e">// B = STOP - now one helper, used everywhere</span>
+    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+      <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;   <span class="tok-7cbf6e">// B = STOP - now one helper, used everywhere</span>
 
       <span class="tok-7cbf6e">// PRIORITY 1 - a crash is worse than a missed turn. Check it FIRST.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (checkForObstacle()) {
+      <span class="tok-569cd6">if</span> (checkForObstacle()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
         currentState = OBSTACLE_DETECTED;
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
       <span class="tok-7cbf6e">// PRIORITY 2 - the rescue zone door. Check it BEFORE isLineVisible():</span>
@@ -391,31 +391,31 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
       <span class="tok-7cbf6e">// the door reads as a GAP - a hole in the world - and handleGap()</span>
       <span class="tok-7cbf6e">// would drive straight through it, hunting for a line that is not</span>
       <span class="tok-7cbf6e">// coming back.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (silverDetected()) {
+      <span class="tok-569cd6">if</span> (silverDetected()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
         currentState = ENTERING_ZONE;
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         followLine();
 
         <span class="tok-7cbf6e">// PRIORITY 3 - the course is asking for a turn</span>
         IntersectionType seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION) {
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION) {
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
           pendingTurn = seen;
           currentState = AT_INTERSECTION;
         }
-      } <span class="tok-569cd6-c-569cd6">else</span> {
+      } <span class="tok-569cd6">else</span> {
         <span class="tok-7cbf6e">// PRIORITY 4 - nothing special: just drive</span>
         handleGap();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <p>And the stub state &mdash; for now, detecting the door <em>is</em> the whole trick:</p><pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> ENTERING_ZONE: {
+    <span class="tok-569cd6">case</span> ENTERING_ZONE: {
       display.setLayout21x8();
       display.clear();
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
@@ -427,7 +427,7 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
       <span class="tok-7cbf6e">// stop. The room behind it comes in Step 5.</span>
       currentState = STOPPED;
       showStatus();
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <div class="callout-3a7d5c-bg-e8f5e9">
@@ -450,15 +450,15 @@ signed <span class="tok-569cd6-c-569cd6">int</span> x = <span class="tok-b5cea8"
 </pre>
 <p>Declare it at the bottom of the header:</p><pre class="code-block-bg-1e1e1e">
 /*
-driveUntil()               NEW <span class="tok-569cd6-c-569cd6">for</span> Lesson <span class="tok-b5cea8">13</span>
+driveUntil()               NEW <span class="tok-569cd6">for</span> Lesson <span class="tok-b5cea8">13</span>
 --------------
 driveDistance()'s watchful twin. Same TRIM, same encoder average -
-but it POLLS <span class="tok-569cd6-c-569cd6">while</span> it drives, and it can stop early.
+but it POLLS <span class="tok-569cd6">while</span> it drives, and it can stop early.
 Returns WHY it stopped (a StopReason). Writes HOW FAR it actually
 went to lastLegCm, in centimeters.
 */
-StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm);
-<span class="tok-569cd6-c-569cd6">extern</span> <span class="tok-569cd6-c-569cd6">float</span> lastLegCm;   <span class="tok-7cbf6e">// How far the last leg actually went</span>
+StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm);
+<span class="tok-569cd6">extern</span> <span class="tok-569cd6">float</span> lastLegCm;   <span class="tok-7cbf6e">// How far the last leg actually went</span>
 </pre>
 <p>And the function itself, at the bottom of <code>RobotMotion.cpp</code>. Put it next to <code>driveDistance()</code> in your head as you type &mdash; same encoder reset, same TRIM, same both-wheel average. The differences are exactly three: the poll, the early exits, and the report:</p><pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== DRIVE UNTIL (NEW for Lesson 13) =====</span>
@@ -467,12 +467,12 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm);
 <span class="tok-7cbf6e">// TRIM, same averageCounts() gate - plus one poll inside the loop and</span>
 <span class="tok-7cbf6e">// a report at the end. A blind primitive, made watchful.</span>
 
-<span class="tok-569cd6-c-569cd6">float</span> lastLegCm = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// How far the last leg actually went</span>
+<span class="tok-569cd6">float</span> lastLegCm = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// How far the last leg actually went</span>
 
-StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
+StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
+  <span class="tok-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
 
   <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 6). There is no line to correct</span>
   <span class="tok-7cbf6e">// against in the zone - this is an OPEN loop, and open loops need</span>
@@ -480,21 +480,21 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);
 
   StopReason reason = STOP_DISTANCE;
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
-    <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// the kill switch outranks everything</span>
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// the kill switch outranks everything</span>
       reason = STOP_KILL;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
-    <span class="tok-569cd6-c-569cd6">if</span> (readFrontProx() &gt;= WALL_STOP_COUNT) {  <span class="tok-7cbf6e">// something ahead - wall OR victim</span>
+    <span class="tok-569cd6">if</span> (readFrontProx() &gt;= WALL_STOP_COUNT) {  <span class="tok-7cbf6e">// something ahead - wall OR victim</span>
       reason = STOP_PROX;                      <span class="tok-7cbf6e">// the CALLER decides which</span>
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
     delay(<span class="tok-b5cea8">10</span>);
   }
 
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   lastLegCm = averageCounts() / COUNTS_PER_CM;   <span class="tok-7cbf6e">// report how far we got</span>
-  <span class="tok-569cd6-c-569cd6">return</span> reason;
+  <span class="tok-569cd6">return</span> reason;
 }
 </pre>
 <p>Two lines deserve a second look. The kill-switch poll is <em>first</em> in the loop &mdash; inside a leg, mid-zone, B must work <strong>now</strong>, not after the wall. And the last line writes <code>lastLegCm</code> whatever happened: even a leg that ends early reports honestly how far it got. Step 6 turns that honest report into the victim detector.</p>
@@ -514,12 +514,12 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 </div>
 <p>Three bookkeeping variables join the other robot state at the top of <code>main.cpp</code>:</p><pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== SWEEP STATE (NEW for Lesson 13) =====</span>
-<span class="tok-569cd6-c-569cd6">float</span> lastRowCm = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// How long the LAST row was - the wall's last known address</span>
-<span class="tok-569cd6-c-569cd6">int</span>   sweepDir  = <span class="tok-b5cea8">1</span>;   <span class="tok-7cbf6e">// Which way the end-of-row turn goes (+1 right, -1 left)</span>
-<span class="tok-569cd6-c-569cd6">int</span>   rowCount  = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// Rows completed so far. Row zero is the leap of faith.</span>
+<span class="tok-569cd6">float</span> lastRowCm = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// How long the LAST row was - the wall's last known address</span>
+<span class="tok-569cd6">int</span>   sweepDir  = <span class="tok-b5cea8">1</span>;   <span class="tok-7cbf6e">// Which way the end-of-row turn goes (+1 right, -1 left)</span>
+<span class="tok-569cd6">int</span>   rowCount  = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// Rows completed so far. Row zero is the leap of faith.</span>
 </pre>
 <p><code>ENTERING_ZONE</code> stops being a stub &mdash; replace its ending so it resets the books and hands off to the sweep. Read the comment about row zero; Section 8A.2 has the full story:</p><pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> ENTERING_ZONE: {
+    <span class="tok-569cd6">case</span> ENTERING_ZONE: {
       display.setLayout21x8();
       display.clear();
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
@@ -536,18 +536,18 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
       rowCount = <span class="tok-b5cea8">0</span>;
       currentState = SWEEPING_ZONE;
       showStatus();
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <p>And the sweep itself. One <em>whole row</em> per pass through the case &mdash; leg, record, corner, sidestep, corner, flip:</p><pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> SWEEPING_ZONE: {
+    <span class="tok-569cd6">case</span> SWEEPING_ZONE: {
       <span class="tok-7cbf6e">// One whole row per pass through this case.</span>
       StopReason reason = driveUntil(MAX_ROW_CM);
 
-      <span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_KILL) {
+      <span class="tok-569cd6">if</span> (reason == STOP_KILL) {
         currentState = STOPPED;
         showStatus();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
       <span class="tok-7cbf6e">// The wall (or the full budget - if the prox missed, MAX_ROW_CM</span>
@@ -560,7 +560,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
       driveDistance(ROW_STEP_CM);
       turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);
       sweepDir = -sweepDir;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <p>Trace <code>sweepDir</code> through two rows on paper before you trust it. Row one ends: turn right 90, step, turn right 90 &mdash; now facing back the way you came, one lane over. <code>sweepDir</code> flips. Row two ends: turn <em>left</em> 90, step, turn <em>left</em> 90. Right-right, left-left, right-right &mdash; that alternation is the entire lawnmower, and it is one multiplication: <code>90.0 * sweepDir</code>.</p>
@@ -579,17 +579,17 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <p class="p-m-8px000">The odometer cross-examines the prox: a stop well short of the wall&rsquo;s last known address is a victim, and a new <code>VICTIM_FOUND</code> state celebrates it. This is the finished build.</p>
 </div>
 <p>One more bookkeeping line, under the sweep variables:</p><pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">int</span>   rescueCount = <span class="tok-b5cea8">0</span>; <span class="tok-7cbf6e">// Victims found</span>
+<span class="tok-569cd6">int</span>   rescueCount = <span class="tok-b5cea8">0</span>; <span class="tok-7cbf6e">// Victims found</span>
 </pre>
 <p>Inside <code>SWEEPING_ZONE</code>, between the kill check and the wall bookkeeping, insert the question this whole lesson has been building toward &mdash; here is the case&rsquo;s midsection after the edit:</p><pre class="code-block-bg-1e1e1e">
       <span class="tok-7cbf6e">// Wall, or victim? Ask the ODOMETER. The walls do not move: this</span>
       <span class="tok-7cbf6e">// row should run about as long as the last one did. Stopped well</span>
       <span class="tok-7cbf6e">// SHORT of that - something is standing in the way. The prox says</span>
       <span class="tok-7cbf6e">// &quot;thing ahead&quot;; the odometer says WHICH thing.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
+      <span class="tok-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
           lastLegCm &lt; lastRowCm - VICTIM_SHORT_CM) {
         currentState = VICTIM_FOUND;
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
       <span class="tok-7cbf6e">// The wall (or the full budget - if the prox missed, MAX_ROW_CM</span>
@@ -601,7 +601,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 </pre>
 <p>Look at the guard conditions, because each one is real engineering. <code>reason == STOP_PROX</code>: a leg that ended on distance budget says nothing about victims. <code>rowCount &gt; 0</code>: row zero has no previous row to compare against &mdash; the leap of faith (Section 8A.2). And the comparison itself, <code>lastLegCm &lt; lastRowCm - VICTIM_SHORT_CM</code>: not merely <em>shorter</em>, but shorter <em>by more than the margin</em>, because gyro corners smear a few centimeters of honest noise into every row and you must not call that noise a victim.</p>
 <p>Finally, the celebration state:</p><pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> VICTIM_FOUND: {
+    <span class="tok-569cd6">case</span> VICTIM_FOUND: {
       rescueCount++;
       display.setLayout21x8();
       display.clear();
@@ -625,7 +625,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
       <span class="tok-7cbf6e">// robot must CARRY the victim out is the day it needs an arm.</span>
       <span class="tok-7cbf6e">// (Section 8 has more to say about that.)</span>
       currentState = STOPPED;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <p>The closing comment is the design decision of the lesson: <strong>finding it is the rescue.</strong> This robot has no gripper, no arm, no way to carry anyone anywhere &mdash; and a rescue that <em>reports a verified location</em> is a real rescue; it is what search dogs and avalanche beacons do. The day a robot must carry the victim out is the day it needs an arm; Section 8A.3 prices that out.</p>
@@ -669,7 +669,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <span class="tok-7cbf6e">// Notice what is MISSING from setup(): the calibration spin. The raw</span>
 <span class="tok-7cbf6e">// channel does not need one. That is the whole point of Section 3.</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   Serial.begin(<span class="tok-b5cea8">115200</span>);
   delay(<span class="tok-b5cea8">500</span>);
   Serial.println(F(&quot;=== Lesson 13 - 7A Surface Meter ===&quot;));
@@ -686,14 +686,14 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
   waitForStart();
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> raw[<span class="tok-b5cea8">5</span>];
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> raw[<span class="tok-b5cea8">5</span>];
   lineSensors.read(raw);   <span class="tok-7cbf6e">// RAW - the channel Section 3 explains</span>
 
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   display.print(F(&quot;RAW  (brighter=LOWER)&quot;));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
     display.print(raw[i]);
     display.print(F(&quot; &quot;));
   }
@@ -757,7 +757,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
 <span class="tok-7cbf6e">// turn. If the atom is right, the sweep is a for-loop away. If the</span>
 <span class="tok-7cbf6e">// atom is wrong, no amount of sweeping will hide it.</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   Serial.begin(<span class="tok-b5cea8">115200</span>);
   delay(<span class="tok-b5cea8">500</span>);
   Serial.println(F(&quot;=== Lesson 13 - 7C Leg and Turn ===&quot;));
@@ -782,8 +782,8 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
   display.print(F(&quot;B: run one atom&quot;));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     display.clear();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
     display.print(F(&quot;Leg...&quot;));
@@ -791,9 +791,9 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
     StopReason reason = driveUntil(MAX_ROW_CM);
 
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-    <span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_PROX)          display.print(F(&quot;Stop: PROX&quot;));
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_DISTANCE) display.print(F(&quot;Stop: BUDGET&quot;));
-    <span class="tok-569cd6-c-569cd6">else</span>                              display.print(F(&quot;Stop: KILL&quot;));
+    <span class="tok-569cd6">if</span> (reason == STOP_PROX)          display.print(F(&quot;Stop: PROX&quot;));
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (reason == STOP_DISTANCE) display.print(F(&quot;Stop: BUDGET&quot;));
+    <span class="tok-569cd6">else</span>                              display.print(F(&quot;Stop: KILL&quot;));
 
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
     display.print(F(&quot;Leg: &quot;));
@@ -832,7 +832,7 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
       driveDistance(ROW_STEP_CM);
       turnDegrees(<span class="tok-b5cea8">90.0</span> * sweepDir);
       sweepDir = -sweepDir;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
 </pre>
 <p>Run it on the smooth zone floor and watch the rows. Each encoder corner is off by a few degrees the wheels never felt; each row inherits every corner before it; by row five the "parallel" rows are a fan, and the sweep is inspecting the same patch of floor twice while leaving another patch forever unvisited. Now put <code>turnDegreesGyro</code> back and run again: rows like ruled paper.</p>
 <p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> &mdash; the wheels, which the floor lies to, or the gyro, which measures the robot itself. The byte counts of these two builds differ by just <strong>64 bytes</strong> &mdash; 24,902 against 24,966, the price of keeping both turn functions alive in the binary &mdash; and nothing in either number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
@@ -937,7 +937,7 @@ driveDistance(ROW_STEP_CM);
 turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);
 sweepDir = ____;                   <span class="tok-6a9955">// flip the sweep direction</span>
 currentState = ____;               <span class="tok-6a9955">// hand back to the sweep</span>
-<span class="tok-569cd6-c-569cd6">break</span>;
+<span class="tok-569cd6">break</span>;
 <span class="tok-6a9955">// (do NOT touch lastRowCm)</span></pre>
 </div>
 <details data-reveal="solution" class="details-b-none">
@@ -954,7 +954,7 @@ currentState = ____;               <span class="tok-6a9955">// hand back to the 
       turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);
       sweepDir = -sweepDir;
       currentState = SWEEPING_ZONE;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
 </pre>
 <p>And the bookkeeping answer: <strong>no.</strong> <code>lastRowCm</code> is the wall&rsquo;s address, and the victim is not the wall. Update it and the next row&rsquo;s victim test compares against a corrupted ruler &mdash; the very ruler that caught this victim.</p><p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c1_sweep" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
@@ -979,7 +979,7 @@ when the run ends by the kill switch:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the three blanks — one accumulator, fed each leg, spent in the report.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">float</span> totalSweptCm = ____;   <span class="tok-6a9955">// start the logbook empty</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">float</span> totalSweptCm = ____;   <span class="tok-6a9955">// start the logbook empty</span>
 
 <span class="tok-6a9955">// each leg the sweep drives:</span>
 totalSweptCm += ____;        <span class="tok-6a9955">// add this leg's distance</span>
@@ -993,12 +993,12 @@ display.print(F(&quot;Rescues: &quot;)); display.print(rescueCount);</pre>
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
 <p>One accumulator with the sweep variables:</p><pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">float</span> totalSweptCm = <span class="tok-b5cea8">0</span>; <span class="tok-7cbf6e">// CHALLENGE 2: every centimeter the sweep drove</span>
+<span class="tok-569cd6">float</span> totalSweptCm = <span class="tok-b5cea8">0</span>; <span class="tok-7cbf6e">// CHALLENGE 2: every centimeter the sweep drove</span>
 </pre>
 <p>Then feed it every leg and spend it in the kill branch:</p><pre class="code-block-bg-1e1e1e">
       totalSweptCm += lastLegCm;   <span class="tok-7cbf6e">// CHALLENGE 2: the logbook</span>
 
-      <span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_KILL) {
+      <span class="tok-569cd6">if</span> (reason == STOP_KILL) {
         <span class="tok-7cbf6e">// CHALLENGE 2: the sweep report - what did the run cost?</span>
         display.setLayout21x8();
         display.clear();
@@ -1017,7 +1017,7 @@ display.print(F(&quot;Rescues: &quot;)); display.print(rescueCount);</pre>
         delay(<span class="tok-b5cea8">4000</span>);
         currentState = STOPPED;
         showStatus();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 </pre>
 <p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c2_report" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
@@ -1045,23 +1045,23 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the three blanks — the flag is what makes it one-shot.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">bool</span> rowZeroRetried = ____;   <span class="tok-6a9955">// row zero gets ONE benefit of the doubt</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">bool</span> rowZeroRetried = ____;   <span class="tok-6a9955">// row zero gets ONE benefit of the doubt</span>
 
 <span class="tok-6a9955">// ahead of the victim test:</span>
-<span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount == <span class="tok-b5cea8">0</span> &amp;&amp; !____) {   <span class="tok-6a9955">// first row, not yet retried</span>
+<span class="tok-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount == <span class="tok-b5cea8">0</span> &amp;&amp; !____) {   <span class="tok-6a9955">// first row, not yet retried</span>
   rowZeroRetried = ____;       <span class="tok-6a9955">// spend the one retry</span>
   driveDistance(-<span class="tok-b5cea8">10.0</span>);
   turnDegreesGyro(<span class="tok-b5cea8">90.0</span>);
   driveDistance(ROW_STEP_CM);
   turnDegreesGyro(-<span class="tok-b5cea8">90.0</span>);      <span class="tok-6a9955">// sidestep, SAME heading - still row zero</span>
-  <span class="tok-569cd6-c-569cd6">break</span>;
+  <span class="tok-569cd6">break</span>;
 }</pre>
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
 <p>A one-shot flag with the sweep variables:</p><pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">bool</span>  rowZeroRetried = <span class="tok-569cd6-c-569cd6">false</span>; <span class="tok-7cbf6e">// CHALLENGE 3: row zero gets ONE benefit of the doubt</span>
+<span class="tok-569cd6">bool</span>  rowZeroRetried = <span class="tok-569cd6">false</span>; <span class="tok-7cbf6e">// CHALLENGE 3: row zero gets ONE benefit of the doubt</span>
 </pre>
 <p>And the retry, inserted ahead of the victim test:</p><pre class="code-block-bg-1e1e1e">
       <span class="tok-7cbf6e">// CHALLENGE 3: row zero cannot classify - there is no last row</span>
@@ -1069,13 +1069,13 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
       <span class="tok-7cbf6e">// one benefit of the doubt: back off, sidestep, and run row zero</span>
       <span class="tok-7cbf6e">// again from a new lane. If it stops short AGAIN, believe the</span>
       <span class="tok-7cbf6e">// wall really is that close.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount == <span class="tok-b5cea8">0</span> &amp;&amp; !rowZeroRetried) {
-        rowZeroRetried = <span class="tok-569cd6-c-569cd6">true</span>;
+      <span class="tok-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount == <span class="tok-b5cea8">0</span> &amp;&amp; !rowZeroRetried) {
+        rowZeroRetried = <span class="tok-569cd6">true</span>;
         driveDistance(-<span class="tok-b5cea8">10.0</span>);
         turnDegreesGyro(<span class="tok-b5cea8">90.0</span>);
         driveDistance(ROW_STEP_CM);
         turnDegreesGyro(-<span class="tok-b5cea8">90.0</span>);   <span class="tok-7cbf6e">// sidestep, SAME heading - still row zero</span>
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 </pre>
 <p>Without the flag, a genuinely close wall triggers the retry forever &mdash; sidestep, remeasure, sidestep, remeasure &mdash; a robot pacing the zone edge for eternity. One retry converts &ldquo;possibly wrong once&rdquo; into &ldquo;confirmed twice,&rdquo; and that is all the confidence a measurement can buy.</p><p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c3_rowzero" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
@@ -1188,23 +1188,23 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 </table>
 <h3 class="h3-c-2e86ab">The doorman, verbatim</h3>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">bool</span> silverDetected() {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> raw[<span class="tok-b5cea8">5</span>];
+<span class="tok-569cd6">bool</span> silverDetected() {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> raw[<span class="tok-b5cea8">5</span>];
   lineSensors.read(raw);   <span class="tok-7cbf6e">// RAW - deliberately NOT readCalibrated()</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
-    <span class="tok-569cd6-c-569cd6">if</span> (raw[i] &gt;= SILVER_RAW_MAX) {
-      <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">false</span>;        <span class="tok-7cbf6e">// this sensor is not silver-bright</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+    <span class="tok-569cd6">if</span> (raw[i] &gt;= SILVER_RAW_MAX) {
+      <span class="tok-569cd6">return</span> <span class="tok-569cd6">false</span>;        <span class="tok-7cbf6e">// this sensor is not silver-bright</span>
     }
   }
-  <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">true</span>;             <span class="tok-7cbf6e">// ALL FIVE brighter than silver - that is the strip</span>
+  <span class="tok-569cd6">return</span> <span class="tok-569cd6">true</span>;             <span class="tok-7cbf6e">// ALL FIVE brighter than silver - that is the strip</span>
 }
 </pre>
 <h3 class="h3-c-2e86ab">The watchful leg, verbatim</h3>
 <pre class="code-block-bg-1e1e1e">
-StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
+StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6-c-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
+  <span class="tok-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
 
   <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 6). There is no line to correct</span>
   <span class="tok-7cbf6e">// against in the zone - this is an OPEN loop, and open loops need</span>
@@ -1212,21 +1212,21 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);
 
   StopReason reason = STOP_DISTANCE;
-  <span class="tok-569cd6-c-569cd6">while</span> (averageCounts() &lt; targetCounts) {
-    <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// the kill switch outranks everything</span>
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// the kill switch outranks everything</span>
       reason = STOP_KILL;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
-    <span class="tok-569cd6-c-569cd6">if</span> (readFrontProx() &gt;= WALL_STOP_COUNT) {  <span class="tok-7cbf6e">// something ahead - wall OR victim</span>
+    <span class="tok-569cd6">if</span> (readFrontProx() &gt;= WALL_STOP_COUNT) {  <span class="tok-7cbf6e">// something ahead - wall OR victim</span>
       reason = STOP_PROX;                      <span class="tok-7cbf6e">// the CALLER decides which</span>
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
     delay(<span class="tok-b5cea8">10</span>);
   }
 
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   lastLegCm = averageCounts() / COUNTS_PER_CM;   <span class="tok-7cbf6e">// report how far we got</span>
-  <span class="tok-569cd6-c-569cd6">return</span> reason;
+  <span class="tok-569cd6">return</span> reason;
 }
 </pre>
 <h3 class="h3-c-2e86ab">The witness, verbatim</h3>
@@ -1235,10 +1235,10 @@ StopReason driveUntil(<span class="tok-569cd6-c-569cd6">float</span> maxCm) {
       <span class="tok-7cbf6e">// row should run about as long as the last one did. Stopped well</span>
       <span class="tok-7cbf6e">// SHORT of that - something is standing in the way. The prox says</span>
       <span class="tok-7cbf6e">// &quot;thing ahead&quot;; the odometer says WHICH thing.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
+      <span class="tok-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
           lastLegCm &lt; lastRowCm - VICTIM_SHORT_CM) {
         currentState = VICTIM_FOUND;
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 </pre>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>

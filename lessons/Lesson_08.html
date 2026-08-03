@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.19.0 -->
+<!-- Lesson version: v04.19.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -230,10 +230,10 @@ If the line is centered, go straight.</pre>
 
 <p>Before P-Control, you probably wrote something like this:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">if</span> (position &lt; <span class="tok-b5cea8">2000</span>) {
+<pre class="code-block-333"><span class="tok-569cd6">if</span> (position &lt; <span class="tok-b5cea8">2000</span>) {
 <span class="tok-7cbf6e">// Line is left → turn left (HARD)</span>
 motors.setSpeeds(<span class="tok-b5cea8">100</span>, <span class="tok-b5cea8">300</span>);
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
 <span class="tok-7cbf6e">// Line is right → turn right (HARD)</span>
 motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">100</span>);
 }</pre>
@@ -505,8 +505,8 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
     <strong>Mathematical Formula:</strong>
     <pre class="code-block-333">correction = Kp × (position − setpoint)</pre>
     <strong>Arduino Code:</strong>
-    <pre class="code-block-333"><span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-<span class="tok-569cd6-c-569cd6">int</span> correction = Kp * error;</pre>
+    <pre class="code-block-333"><span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+<span class="tok-569cd6">int</span> correction = Kp * error;</pre>
 </div>
 
 <h3 class="h3-c-433014">5.1 The Error Signal</h3>
@@ -564,8 +564,8 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <p>The correction is a steering adjustment added to one motor and subtracted from the other:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
-<span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;</pre>
+<pre class="code-block-333"><span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
+<span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;</pre>
 
 <div class="callout-6b8e6b-bg-f0f7f0">
     <div class="div-fs-09em">💡 TIP</div>
@@ -762,47 +762,47 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <span class="tok-7cbf6e">// Encoder counts per complete wheel rotation</span>
 <span class="tok-7cbf6e">// (12 counts/motor rotation x 75.81 gear ratio = 909.7)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> COUNTS_PER_ROTATION = <span class="tok-b5cea8">909.7</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_ROTATION = <span class="tok-b5cea8">909.7</span>;
 
 <span class="tok-7cbf6e">// Wheel diameter in millimeters (measure yours!)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> WHEEL_DIAMETER_MM = <span class="tok-b5cea8">39.0</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_DIAMETER_MM = <span class="tok-b5cea8">39.0</span>;
 
 <span class="tok-7cbf6e">// Wheel circumference = pi x diameter</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> WHEEL_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_DIAMETER_MM;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_DIAMETER_MM;
 
 <span class="tok-7cbf6e">// Encoder counts per centimeter of travel</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / <span class="tok-b5cea8">10.0</span>);
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / <span class="tok-b5cea8">10.0</span>);
 
 <span class="tok-7cbf6e">// ===== TURNING PROPERTIES =====</span>
 <span class="tok-7cbf6e">// Distance between wheel centers - this is a CALIBRATION value!</span>
 <span class="tok-7cbf6e">// Start at 85.0 (physical measurement), then tune up until 90 degree</span>
 <span class="tok-7cbf6e">// turns are accurate. Typical tuned values: 98-115 depending on</span>
 <span class="tok-7cbf6e">// surface and wheel wear.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> WHEEL_BASE_MM = <span class="tok-b5cea8">85.0</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_BASE_MM = <span class="tok-b5cea8">85.0</span>;
 
 <span class="tok-7cbf6e">// Circumference of the turn circle</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_BASE_MM;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_BASE_MM;
 
 <span class="tok-7cbf6e">// Encoder counts per degree of rotation</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / <span class="tok-b5cea8">360.0</span>) *
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / <span class="tok-b5cea8">360.0</span>) *
                                 (COUNTS_PER_ROTATION / WHEEL_CIRCUMFERENCE_MM);
 
 <span class="tok-7cbf6e">// ===== SPEED SETTINGS =====</span>
 <span class="tok-7cbf6e">// Adjust these to change robot behavior</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">150</span>;   <span class="tok-7cbf6e">// Speed for straight driving (0-400)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_SPEED = <span class="tok-b5cea8">150</span>;    <span class="tok-7cbf6e">// Speed for turning (0-400)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">150</span>;   <span class="tok-7cbf6e">// Speed for straight driving (0-400)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_SPEED = <span class="tok-b5cea8">150</span>;    <span class="tok-7cbf6e">// Speed for turning (0-400)</span>
 
 <span class="tok-7cbf6e">// ===== BATTERY THRESHOLDS =====</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> BATTERY_GOOD = <span class="tok-b5cea8">4800</span>; <span class="tok-7cbf6e">// millivolts - fully charged</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> BATTERY_LOW = <span class="tok-b5cea8">4200</span>;  <span class="tok-7cbf6e">// millivolts - charge soon</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BATTERY_GOOD = <span class="tok-b5cea8">4800</span>; <span class="tok-7cbf6e">// millivolts - fully charged</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BATTERY_LOW = <span class="tok-b5cea8">4200</span>;  <span class="tok-7cbf6e">// millivolts - charge soon</span>
 
 <span class="tok-7cbf6e">// ===== LINE FOLLOWING CONSTANTS (NEW for Lesson 8) =====</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> LINE_CENTER = <span class="tok-b5cea8">2000</span>;            <span class="tok-7cbf6e">// Setpoint - line under middle sensor (0-4000 range)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> BASE_SPEED = <span class="tok-b5cea8">150</span>;              <span class="tok-7cbf6e">// Forward speed when centered (0-400)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KP = <span class="tok-b5cea8">0.1</span>;                    <span class="tok-7cbf6e">// Proportional gain (tune this!)</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">300</span>;               <span class="tok-7cbf6e">// Speed limit after correction</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> LINE_LOST_THRESHOLD = <span class="tok-b5cea8">200</span>;     <span class="tok-7cbf6e">// Calibrated sum below this = no line</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> MAX_GAP_TIME = <span class="tok-b5cea8">500</span>;  <span class="tok-7cbf6e">// Max milliseconds to cross a gap</span></pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> LINE_CENTER = <span class="tok-b5cea8">2000</span>;            <span class="tok-7cbf6e">// Setpoint - line under middle sensor (0-4000 range)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BASE_SPEED = <span class="tok-b5cea8">150</span>;              <span class="tok-7cbf6e">// Forward speed when centered (0-400)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KP = <span class="tok-b5cea8">0.1</span>;                    <span class="tok-7cbf6e">// Proportional gain (tune this!)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">300</span>;               <span class="tok-7cbf6e">// Speed limit after correction</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> LINE_LOST_THRESHOLD = <span class="tok-b5cea8">200</span>;     <span class="tok-7cbf6e">// Calibrated sum below this = no line</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> MAX_GAP_TIME = <span class="tok-b5cea8">500</span>;  <span class="tok-7cbf6e">// Max milliseconds to cross a gap</span></pre>
 </div>
 </details>
 
@@ -862,10 +862,10 @@ extern Zumo32U4ButtonC buttonC;
 extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Lesson 8</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> initLineSensors();
-<span class="tok-569cd6-c-569cd6">void</span> calibrateLineSensors();
-<span class="tok-569cd6-c-569cd6">int</span> readLinePosition();
-<span class="tok-569cd6-c-569cd6">bool</span> isLineVisible();</pre>
+<span class="tok-569cd6">void</span> initLineSensors();
+<span class="tok-569cd6">void</span> calibrateLineSensors();
+<span class="tok-569cd6">int</span> readLinePosition();
+<span class="tok-569cd6">bool</span> isLineVisible();</pre>
 </div>
 </details>
 
@@ -904,8 +904,8 @@ extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Les
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">*/</span>
 #include &lt;Zumo32U4.h&gt;
-#include <span class="tok-ce9178-c-ce9178">"RobotSensors.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
+#include <span class="tok-ce9178">"RobotSensors.h"</span>
+#include <span class="tok-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
 
 <span class="tok-7cbf6e">// ===== HARDWARE OBJECT DEFINITIONS =====</span>
 <span class="tok-7cbf6e">// These are the REAL objects - created exactly ONCE</span>
@@ -919,19 +919,19 @@ Zumo32U4ButtonC buttonC;
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
 Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this file CREATES it</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
-<span class="tok-569cd6-c-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
+<span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> initLineSensors() {
+<span class="tok-569cd6">void</span> initLineSensors() {
   lineSensors.initFiveSensors();
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> calibrateLineSensors() {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">100</span>; i++) {
-    <span class="tok-569cd6-c-569cd6">if</span> (i &lt; <span class="tok-b5cea8">50</span>) {
+<span class="tok-569cd6">void</span> calibrateLineSensors() {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">100</span>; i++) {
+    <span class="tok-569cd6">if</span> (i &lt; <span class="tok-b5cea8">50</span>) {
       motors.setSpeeds(-<span class="tok-b5cea8">100</span>, <span class="tok-b5cea8">100</span>);  <span class="tok-7cbf6e">// Spin left</span>
-    } <span class="tok-569cd6-c-569cd6">else</span> {
+    } <span class="tok-569cd6">else</span> {
       motors.setSpeeds(<span class="tok-b5cea8">100</span>, -<span class="tok-b5cea8">100</span>);  <span class="tok-7cbf6e">// Spin right</span>
     }
     lineSensors.calibrate();
@@ -991,8 +991,8 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">*/</span>
 #include &lt;Zumo32U4.h&gt;
-#include <span class="tok-ce9178-c-ce9178">"RobotSensors.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
+#include <span class="tok-ce9178">"RobotSensors.h"</span>
+#include <span class="tok-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
 
 <span class="tok-7cbf6e">// ===== HARDWARE OBJECT DEFINITIONS =====</span>
 <span class="tok-7cbf6e">// These are the REAL objects - created exactly ONCE</span>
@@ -1006,19 +1006,19 @@ Zumo32U4ButtonC buttonC;
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
 Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this file CREATES it</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
-<span class="tok-569cd6-c-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
+<span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> initLineSensors() {
+<span class="tok-569cd6">void</span> initLineSensors() {
   lineSensors.initFiveSensors();
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> calibrateLineSensors() {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">100</span>; i++) {
-    <span class="tok-569cd6-c-569cd6">if</span> (i &lt; <span class="tok-b5cea8">50</span>) {
+<span class="tok-569cd6">void</span> calibrateLineSensors() {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">100</span>; i++) {
+    <span class="tok-569cd6">if</span> (i &lt; <span class="tok-b5cea8">50</span>) {
       motors.setSpeeds(-<span class="tok-b5cea8">100</span>, <span class="tok-b5cea8">100</span>);  <span class="tok-7cbf6e">// Spin left</span>
-    } <span class="tok-569cd6-c-569cd6">else</span> {
+    } <span class="tok-569cd6">else</span> {
       motors.setSpeeds(<span class="tok-b5cea8">100</span>, -<span class="tok-b5cea8">100</span>);  <span class="tok-7cbf6e">// Spin right</span>
     }
     lineSensors.calibrate();
@@ -1026,18 +1026,18 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }
 
-<span class="tok-569cd6-c-569cd6">int</span> readLinePosition() {
+<span class="tok-569cd6">int</span> readLinePosition() {
   lastPosition = lineSensors.readLine(sensorValues);
-  <span class="tok-569cd6-c-569cd6">return</span> lastPosition;
+  <span class="tok-569cd6">return</span> lastPosition;
 }
 
-<span class="tok-569cd6-c-569cd6">bool</span> isLineVisible() {
+<span class="tok-569cd6">bool</span> isLineVisible() {
   lineSensors.readCalibrated(sensorValues);  <span class="tok-7cbf6e">// Calibrated: 0 = white, 1000 = black</span>
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
     sum += sensorValues[i];
   }
-  <span class="tok-569cd6-c-569cd6">return</span> sum &gt; LINE_LOST_THRESHOLD;
+  <span class="tok-569cd6">return</span> sum &gt; LINE_LOST_THRESHOLD;
 }</pre>
 </div>
 </details>
@@ -1071,75 +1071,75 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <details data-reveal="solution" class="details-dee2e6">
 <summary class="summary-c-5a6872">🔓 Compare with a worked main.cpp at this step (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333">#include <span class="tok-ce9178-c-ce9178">"RobotConfig.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotSensors.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotHelpers.h"</span>
+<pre class="code-block-333">#include <span class="tok-ce9178">"RobotConfig.h"</span>
+#include <span class="tok-ce9178">"RobotSensors.h"</span>
+#include <span class="tok-ce9178">"RobotHelpers.h"</span>
 
 <span class="tok-7cbf6e">// ===== LINE FOLLOWING STATE =====</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKp = KP;            <span class="tok-7cbf6e">// Live-tunable copy of KP</span>
-<span class="tok-569cd6-c-569cd6">bool</span> isRunning = <span class="tok-569cd6-c-569cd6">false</span>;          <span class="tok-7cbf6e">// Is the robot following right now?</span>
+<span class="tok-569cd6">float</span> currentKp = KP;            <span class="tok-7cbf6e">// Live-tunable copy of KP</span>
+<span class="tok-569cd6">bool</span> isRunning = <span class="tok-569cd6">false</span>;          <span class="tok-7cbf6e">// Is the robot following right now?</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> showStatus() {
+<span class="tok-569cd6">void</span> showStatus() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(isRunning ? F(<span class="tok-ce9178-c-ce9178">"RUNNING"</span>) : F(<span class="tok-ce9178-c-ce9178">"STOPPED"</span>));
+  display.print(isRunning ? F(<span class="tok-ce9178">"RUNNING"</span>) : F(<span class="tok-ce9178">"STOPPED"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Kp: "</span>));
+  display.print(F(<span class="tok-ce9178">"Kp: "</span>));
   display.print(currentKp, <span class="tok-b5cea8">2</span>);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"A- B:Go C+"</span>));
+  display.print(F(<span class="tok-ce9178">"A- B:Go C+"</span>));
 }
 
 <span class="tok-7cbf6e">// ===== SETUP =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   Serial.begin(<span class="tok-b5cea8">115200</span>);
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> serialStart = millis();
-  <span class="tok-569cd6-c-569cd6">while</span> (!Serial &amp;&amp; (millis() - serialStart &lt; <span class="tok-b5cea8">2000</span>)) {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> serialStart = millis();
+  <span class="tok-569cd6">while</span> (!Serial &amp;&amp; (millis() - serialStart &lt; <span class="tok-b5cea8">2000</span>)) {
     delay(<span class="tok-b5cea8">10</span>); <span class="tok-7cbf6e">// Wait up to 2s for USB serial connection</span>
   }
   delay(<span class="tok-b5cea8">500</span>);
-  Serial.println(F(<span class="tok-ce9178-c-ce9178">"=== Lesson 8: Line Following ==="</span>));
+  Serial.println(F(<span class="tok-ce9178">"=== Lesson 8: Line Following ==="</span>));
 
 <span class="tok-7cbf6e">  // ===== BATTERY REPORT =====</span>
-  <span class="tok-569cd6-c-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
-  <span class="tok-569cd6-c-569cd6">int</span> battWhole = batteryVoltage / <span class="tok-b5cea8">1000</span>;
-  <span class="tok-569cd6-c-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % <span class="tok-b5cea8">100</span>;
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
+  <span class="tok-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
+  <span class="tok-569cd6">int</span> battWhole = batteryVoltage / <span class="tok-b5cea8">1000</span>;
+  <span class="tok-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % <span class="tok-b5cea8">100</span>;
+  Serial.print(F(<span class="tok-ce9178">"Battery: "</span>));
   Serial.print(battWhole);
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) Serial.print(F(<span class="tok-ce9178-c-ce9178">"0"</span>));
+  Serial.print(F(<span class="tok-ce9178">"."</span>));
+  <span class="tok-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) Serial.print(F(<span class="tok-ce9178">"0"</span>));
   Serial.print(battDecimal);
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"V ("</span>));
+  Serial.print(F(<span class="tok-ce9178">"V ("</span>));
   Serial.print(batteryVoltage);
-  Serial.println(F(<span class="tok-ce9178-c-ce9178">"mV)"</span>));
+  Serial.println(F(<span class="tok-ce9178">"mV)"</span>));
 
   display.clear();
   display.setLayout21x8();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"===== Lesson 8 ====="</span>));
+  display.print(F(<span class="tok-ce9178">"===== Lesson 8 ====="</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
+  display.print(F(<span class="tok-ce9178">"Battery: "</span>));
   display.print(battWhole);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) display.print(F(<span class="tok-ce9178-c-ce9178">"0"</span>));
+  display.print(F(<span class="tok-ce9178">"."</span>));
+  <span class="tok-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) display.print(F(<span class="tok-ce9178">"0"</span>));
   display.print(battDecimal);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"V"</span>));
+  display.print(F(<span class="tok-ce9178">"V"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Status: "</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (batteryVoltage &gt;= BATTERY_GOOD) {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"GOOD"</span>));
+  display.print(F(<span class="tok-ce9178">"Status: "</span>));
+  <span class="tok-569cd6">if</span> (batteryVoltage &gt;= BATTERY_GOOD) {
+    display.print(F(<span class="tok-ce9178">"GOOD"</span>));
     ledGreen(<span class="tok-b5cea8">1</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (batteryVoltage &gt;= BATTERY_LOW) {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"LOW"</span>));
+  } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (batteryVoltage &gt;= BATTERY_LOW) {
+    display.print(F(<span class="tok-ce9178">"LOW"</span>));
     ledYellow(<span class="tok-b5cea8">1</span>);
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">4</span>), <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">15</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"CHARGE!"</span>));
+  } <span class="tok-569cd6">else</span> {
+    display.print(F(<span class="tok-ce9178">"CHARGE!"</span>));
     ledRed(<span class="tok-b5cea8">1</span>);
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">3</span>), <span class="tok-b5cea8">500</span>, <span class="tok-b5cea8">15</span>);
   }
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Kp: "</span>));
+  display.print(F(<span class="tok-ce9178">"Kp: "</span>));
   display.print(currentKp, <span class="tok-b5cea8">2</span>);
   delay(<span class="tok-b5cea8">2500</span>);
   ledGreen(<span class="tok-b5cea8">0</span>);
@@ -1157,26 +1157,26 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Place robot on line"</span>));
+  display.print(F(<span class="tok-ce9178">"Place robot on line"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Press B to calibrate"</span>));
+  display.print(F(<span class="tok-ce9178">"Press B to calibrate"</span>));
   buttonB.waitForButton();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Calibrating..."</span>));
+  display.print(F(<span class="tok-ce9178">"Calibrating..."</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"(spinning)"</span>));
+  display.print(F(<span class="tok-ce9178">"(spinning)"</span>));
   delay(<span class="tok-b5cea8">500</span>);
   calibrateLineSensors();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Calibration done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Calibration done!"</span>));
   delay(<span class="tok-b5cea8">1000</span>);
   showStatus();
 }
 
 <span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   checkBattery();  <span class="tok-7cbf6e">// A+B battery report (standard helper)</span>
 }</pre>
 </div>
@@ -1206,28 +1206,28 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <details data-reveal="solution" class="details-dee2e6">
 <summary class="summary-c-5a6872">🔓 Compare: followLine() and the new loop() (the rest of the file is exactly as Step 6 built it)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> followLine() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-  <span class="tok-569cd6-c-569cd6">int</span> correction = currentKp * error;
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+<pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> correction = currentKp * error;
+  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
 }</pre>
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// B = start/stop  (A and C get their jobs in Step 8)</span>
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (!isRunning) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (!isRunning) {
     checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
   }
 
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     isRunning = !isRunning;
-    <span class="tok-569cd6-c-569cd6">if</span> (isRunning) {
+    <span class="tok-569cd6">if</span> (isRunning) {
 <span class="tok-7cbf6e">      // 3-2-1 countdown before starting</span>
-      <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
+      <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
         display.setLayout21x8();
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1237,16 +1237,16 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
       }
       display.clear();
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"GO!"</span>));
+      display.print(F(<span class="tok-ce9178">"GO!"</span>));
       buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);
       delay(<span class="tok-b5cea8">500</span>);
-    } <span class="tok-569cd6-c-569cd6">else</span> {
+    } <span class="tok-569cd6">else</span> {
       motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
     }
     showStatus();
   }
 
-  <span class="tok-569cd6-c-569cd6">if</span> (isRunning) {
+  <span class="tok-569cd6">if</span> (isRunning) {
     followLine();
   }
 }</pre>
@@ -1283,23 +1283,23 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <summary class="summary-c-5a6872">🔓 Compare: the full state block, handleGap(), and the finished loop()</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== LINE FOLLOWING STATE =====</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKp = KP;            <span class="tok-7cbf6e">// Live-tunable copy of KP</span>
-<span class="tok-569cd6-c-569cd6">bool</span> isRunning = <span class="tok-569cd6-c-569cd6">false</span>;          <span class="tok-7cbf6e">// Is the robot following right now?</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> gapStartTime = <span class="tok-b5cea8">0</span>;  <span class="tok-7cbf6e">// When did the line disappear?</span></pre>
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> handleGap() {
-  <span class="tok-569cd6-c-569cd6">if</span> (gapStartTime == <span class="tok-b5cea8">0</span>) {
+<span class="tok-569cd6">float</span> currentKp = KP;            <span class="tok-7cbf6e">// Live-tunable copy of KP</span>
+<span class="tok-569cd6">bool</span> isRunning = <span class="tok-569cd6">false</span>;          <span class="tok-7cbf6e">// Is the robot following right now?</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> gapStartTime = <span class="tok-b5cea8">0</span>;  <span class="tok-7cbf6e">// When did the line disappear?</span></pre>
+<pre class="code-block-333"><span class="tok-569cd6">void</span> handleGap() {
+  <span class="tok-569cd6">if</span> (gapStartTime == <span class="tok-b5cea8">0</span>) {
     gapStartTime = millis();
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
+  <span class="tok-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-    isRunning = <span class="tok-569cd6-c-569cd6">false</span>;
+    isRunning = <span class="tok-569cd6">false</span>;
     display.setLayout21x8();
     display.clear();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">"LINE LOST!"</span>));
+    display.print(F(<span class="tok-ce9178">"LINE LOST!"</span>));
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">"Press B to retry"</span>));
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    display.print(F(<span class="tok-ce9178">"Press B to retry"</span>));
+    <span class="tok-569cd6">return</span>;
   }
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);   <span class="tok-6a9955">// Blind AND straight = TRIM</span>
 }</pre>
@@ -1312,22 +1312,22 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 </div>
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// A = Kp down   B = start/stop   C = Kp up</span>
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">if</span> (!isRunning) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (!isRunning) {
     checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
   }
 
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !isRunning) {
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !isRunning) {
     currentKp -= <span class="tok-b5cea8">0.02</span>;
-    <span class="tok-569cd6-c-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
+    <span class="tok-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
     showStatus();
     delay(<span class="tok-b5cea8">200</span>);
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     isRunning = !isRunning;
-    <span class="tok-569cd6-c-569cd6">if</span> (isRunning) {
+    <span class="tok-569cd6">if</span> (isRunning) {
 <span class="tok-7cbf6e">      // 3-2-1 countdown before starting</span>
-      <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
+      <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
         display.setLayout21x8();
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1337,26 +1337,26 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
       }
       display.clear();
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"GO!"</span>));
+      display.print(F(<span class="tok-ce9178">"GO!"</span>));
       buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);
       delay(<span class="tok-b5cea8">500</span>);
-    } <span class="tok-569cd6-c-569cd6">else</span> {
+    } <span class="tok-569cd6">else</span> {
       motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
     }
     showStatus();
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !isRunning) {
+  <span class="tok-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !isRunning) {
     currentKp += <span class="tok-b5cea8">0.02</span>;
-    <span class="tok-569cd6-c-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
+    <span class="tok-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
     showStatus();
     delay(<span class="tok-b5cea8">200</span>);
   }
 
-  <span class="tok-569cd6-c-569cd6">if</span> (isRunning) {
-    <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+  <span class="tok-569cd6">if</span> (isRunning) {
+    <span class="tok-569cd6">if</span> (isLineVisible()) {
       gapStartTime = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// Line is back - reset the gap timer</span>
       followLine();
-    } <span class="tok-569cd6-c-569cd6">else</span> {
+    } <span class="tok-569cd6">else</span> {
       handleGap();
     }
   }
@@ -1868,16 +1868,16 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-f5f5f5">
     <strong>Current approach (hardcoded):</strong>
-    <pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> followLine() {
-    <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-    <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-    <span class="tok-569cd6-c-569cd6">int</span> correction = currentKp * error;  <span class="tok-7cbf6e">// ← uses global currentKp</span>
+    <pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+    <span class="tok-569cd6">int</span> position = readLinePosition();
+    <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+    <span class="tok-569cd6">int</span> correction = currentKp * error;  <span class="tok-7cbf6e">// ← uses global currentKp</span>
 }</pre>
     <strong>Better approach (parameterized):</strong>
-    <pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> followLine(<span class="tok-569cd6-c-569cd6">float</span> kp) {
-    <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-    <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-    <span class="tok-569cd6-c-569cd6">int</span> correction = kp * error;  <span class="tok-7cbf6e">// ← uses parameter kp</span>
+    <pre class="code-block-333"><span class="tok-569cd6">void</span> followLine(<span class="tok-569cd6">float</span> kp) {
+    <span class="tok-569cd6">int</span> position = readLinePosition();
+    <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+    <span class="tok-569cd6">int</span> correction = kp * error;  <span class="tok-7cbf6e">// ← uses parameter kp</span>
 }</pre>
 </div>
 
@@ -1890,27 +1890,27 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <p><code class="code-inline-bg-e8e8e8-2">readLinePosition()</code> returns an integer. But how do you know if that value is valid? What if the line was lost? Advanced code checks return values:</p>
 
 <div class="div-bg-f5f5f5">
-    <pre class="code-block-333"><span class="tok-569cd6-c-569cd6">int</span> readLinePosition() {
+    <pre class="code-block-333"><span class="tok-569cd6">int</span> readLinePosition() {
     lineSensors.read(sensorValues);
-    <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
-    <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+    <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
+    <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
         sum += sensorValues[i];
     }
     <span class="tok-7cbf6e">// Return -1 to signal "no line detected"</span>
-    <span class="tok-569cd6-c-569cd6">if</span> (sum &lt; LINE_LOST_THRESHOLD) {
-        <span class="tok-569cd6-c-569cd6">return</span> -<span class="tok-b5cea8">1</span>;
+    <span class="tok-569cd6">if</span> (sum &lt; LINE_LOST_THRESHOLD) {
+        <span class="tok-569cd6">return</span> -<span class="tok-b5cea8">1</span>;
     }
-    <span class="tok-569cd6-c-569cd6">return</span> lineSensors.readLine(sensorValues);
+    <span class="tok-569cd6">return</span> lineSensors.readLine(sensorValues);
 }</pre>
 </div>
 
 <div class="callout-4caf50-bg-e8f5e9-3">
     <div class="div-fs-105em">✅ Checkpoint</div>
     <p>In your <code class="code-inline-bg-e8e8e8-2">main.cpp</code>, you should check:</p>
-    <pre class="code-block-333"><span class="tok-569cd6-c-569cd6">int</span> pos = readLinePosition();
-<span class="tok-569cd6-c-569cd6">if</span> (pos == -<span class="tok-b5cea8">1</span>) {
+    <pre class="code-block-333"><span class="tok-569cd6">int</span> pos = readLinePosition();
+<span class="tok-569cd6">if</span> (pos == -<span class="tok-b5cea8">1</span>) {
     <span class="tok-7cbf6e">// Handle lost line</span>
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
     <span class="tok-7cbf6e">// Use the position</span>
 }</pre>
 </div>
@@ -1951,18 +1951,18 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <p>The complete pattern you've implemented in this lesson:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> handleRobotControl() {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> handleRobotControl() {
     <span class="tok-7cbf6e">// 1. READ the current state</span>
-    <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
+    <span class="tok-569cd6">int</span> position = readLinePosition();
     <span class="tok-7cbf6e">// 2. CALCULATE error</span>
-    <span class="tok-569cd6-c-569cd6">int</span> error = position - SETPOINT;
+    <span class="tok-569cd6">int</span> error = position - SETPOINT;
     <span class="tok-7cbf6e">// 3. APPLY proportional formula</span>
-    <span class="tok-569cd6-c-569cd6">int</span> correction = Kp * error;
+    <span class="tok-569cd6">int</span> correction = Kp * error;
     <span class="tok-7cbf6e">// 4. CLAMP the output</span>
     correction = constrain(correction, -MAX_CORRECTION, MAX_CORRECTION);
     <span class="tok-7cbf6e">// 5. CONVERT to motor commands</span>
-    <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
-    <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+    <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
+    <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
     <span class="tok-7cbf6e">// 6. SEND to motors</span>
     motors.setSpeeds(leftSpeed, rightSpeed);
 }</pre>
@@ -1984,7 +1984,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <p>When you press buttons A and C to adjust Kp, you're running a <strong>manual feedback loop</strong>:</p>
 
 <pre class="code-block-333"><span class="tok-b5cea8">1.</span> OBSERVE: Robot oscillates (error is visible)
-<span class="tok-b5cea8">2.</span> HYPOTHESIZE: <span class="tok-ce9178-c-ce9178">"Kp is too high"</span>
+<span class="tok-b5cea8">2.</span> HYPOTHESIZE: <span class="tok-ce9178">"Kp is too high"</span>
 <span class="tok-b5cea8">3.</span> EXPERIMENT: Press A to decrease Kp
 <span class="tok-b5cea8">4.</span> MEASURE: Watch robot behavior improve
 <span class="tok-b5cea8">5.</span> REPEAT until stable</pre>
@@ -2038,7 +2038,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <pre class="code-block-333"><span class="tok-b5cea8">1.</span> Start with tuned Kp
 <span class="tok-b5cea8">2.</span> Increase BASE_SPEED by <span class="tok-b5cea8">25</span>
 <span class="tok-b5cea8">3.</span> Test on track with curves
-<span class="tok-b5cea8">4.</span> If robot loses line, previous speed was <span class="tok-569cd6-c-569cd6">max</span>
+<span class="tok-b5cea8">4.</span> If robot loses line, previous speed was <span class="tok-569cd6">max</span>
 <span class="tok-b5cea8">5.</span> Record your fastest reliable speed</pre>
 
 </div>
@@ -2165,12 +2165,12 @@ CALL it right after followLine() while running</pre>
 
 <p>Map the line position onto the 20-column display, then draw the bar at that column. Fill the range and the column.</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> drawPositionBar() {
-  <span class="tok-569cd6-c-569cd6">int</span> pos = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, ____, <span class="tok-b5cea8">0</span>, ____);
+<pre class="code-block-333"><span class="tok-569cd6">void</span> drawPositionBar() {
+  <span class="tok-569cd6">int</span> pos = readLinePosition();
+  <span class="tok-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, ____, <span class="tok-b5cea8">0</span>, ____);
   display.clear();
   display.gotoXY(____, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"|"</span>));
+  display.print(F(<span class="tok-ce9178">"|"</span>));
 }</pre>
 
 </div>
@@ -2179,12 +2179,12 @@ CALL it right after followLine() while running</pre>
 
 <summary>🔓 Click to reveal a worked version</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> drawPositionBar() {
-  <span class="tok-569cd6-c-569cd6">int</span> pos = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4000</span>, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">20</span>);
+<pre class="code-block-333"><span class="tok-569cd6">void</span> drawPositionBar() {
+  <span class="tok-569cd6">int</span> pos = readLinePosition();
+  <span class="tok-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4000</span>, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">20</span>);
   display.clear();
   display.gotoXY(col, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"|"</span>));
+  display.print(F(<span class="tok-ce9178">"|"</span>));
 }</pre>
 
 <p>Call it from the visible branch, right after <code class="code-inline-bg-e8e8e8">followLine();</code> &mdash; and expect slightly lazier steering with the bar on: every OLED redraw costs the loop a few milliseconds. That trade-off is real engineering, not a bug.</p>
@@ -2238,21 +2238,21 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <p>Pick a gentle / medium / aggressive K<sub>p</sub> from how far off-center you are, then steer with it. Fill the three gains and the term that does the steering.</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> adaptiveFollowLine() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-  <span class="tok-569cd6-c-569cd6">int</span> absError = abs(error);
-  <span class="tok-569cd6-c-569cd6">float</span> adaptiveKp;
-  <span class="tok-569cd6-c-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">500</span>) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> adaptiveFollowLine() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> absError = abs(error);
+  <span class="tok-569cd6">float</span> adaptiveKp;
+  <span class="tok-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">500</span>) {
     adaptiveKp = ____;   <span class="tok-7cbf6e">// Gentle - nearly centered</span>
-  } <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">1000</span>) {
+  } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">1000</span>) {
     adaptiveKp = ____;   <span class="tok-7cbf6e">// Medium - drifting</span>
-  } <span class="tok-569cd6-c-569cd6">else</span> {
+  } <span class="tok-569cd6">else</span> {
     adaptiveKp = ____;   <span class="tok-7cbf6e">// Aggressive - way off</span>
   }
-  <span class="tok-569cd6-c-569cd6">int</span> correction = ____ * error;
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+  <span class="tok-569cd6">int</span> correction = ____ * error;
+  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -2264,21 +2264,21 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <summary>🔓 Click to reveal a worked version</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> adaptiveFollowLine() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-  <span class="tok-569cd6-c-569cd6">int</span> absError = abs(error);
-  <span class="tok-569cd6-c-569cd6">float</span> adaptiveKp;
-  <span class="tok-569cd6-c-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">500</span>) {
+<pre class="code-block-333"><span class="tok-569cd6">void</span> adaptiveFollowLine() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> absError = abs(error);
+  <span class="tok-569cd6">float</span> adaptiveKp;
+  <span class="tok-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">500</span>) {
     adaptiveKp = <span class="tok-b5cea8">0.08</span>;   <span class="tok-7cbf6e">// Gentle - nearly centered</span>
-  } <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">1000</span>) {
+  } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">1000</span>) {
     adaptiveKp = <span class="tok-b5cea8">0.15</span>;   <span class="tok-7cbf6e">// Medium - drifting</span>
-  } <span class="tok-569cd6-c-569cd6">else</span> {
+  } <span class="tok-569cd6">else</span> {
     adaptiveKp = <span class="tok-b5cea8">0.25</span>;   <span class="tok-7cbf6e">// Aggressive - way off</span>
   }
-  <span class="tok-569cd6-c-569cd6">int</span> correction = adaptiveKp * error;
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+  <span class="tok-569cd6">int</span> correction = adaptiveKp * error;
+  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -2338,24 +2338,24 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <p>Two new dials in <code class="code-inline-bg-e8e8e8">RobotConfig.h</code>, next to the other line-following constants:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KS = ____;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> MIN_SPEED = ____;    <span class="tok-7cbf6e">// The floor - never crawl slower than this</span></pre>
+<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KS = ____;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MIN_SPEED = ____;    <span class="tok-7cbf6e">// The floor - never crawl slower than this</span></pre>
 
 <p>Then two new lines inside <code class="code-inline-bg-e8e8e8">followLine()</code> in <code class="code-inline-bg-e8e8e8">main.cpp</code> &mdash; everything else stays exactly as it is:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> followLine() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-  <span class="tok-569cd6-c-569cd6">int</span> correction = currentKp * error;
+<pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> correction = currentKp * error;
 
   <span class="tok-7cbf6e">// THE THROTTLE P - speed falls as the error grows</span>
-  <span class="tok-569cd6-c-569cd6">int</span> speed = BASE_SPEED - ____________;
-  <span class="tok-569cd6-c-569cd6">if</span> (speed &lt; MIN_SPEED) {
+  <span class="tok-569cd6">int</span> speed = BASE_SPEED - ____________;
+  <span class="tok-569cd6">if</span> (speed &lt; MIN_SPEED) {
     speed = ____________;
   }
 
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = speed + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = speed - correction;
+  <span class="tok-569cd6">int</span> leftSpeed = speed + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = speed - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -2369,24 +2369,24 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <p><code class="code-inline-bg-e8e8e8">RobotConfig.h</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KS = <span class="tok-b5cea8">0.03</span>;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> MIN_SPEED = <span class="tok-b5cea8">100</span>;    <span class="tok-7cbf6e">// The floor - never crawl slower than this</span></pre>
+<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KS = <span class="tok-b5cea8">0.03</span>;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MIN_SPEED = <span class="tok-b5cea8">100</span>;    <span class="tok-7cbf6e">// The floor - never crawl slower than this</span></pre>
 
 <p><code class="code-inline-bg-e8e8e8">main.cpp</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">void</span> followLine() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-  <span class="tok-569cd6-c-569cd6">int</span> correction = currentKp * error;
+<pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> correction = currentKp * error;
 
   <span class="tok-7cbf6e">// THE THROTTLE P - speed falls as the error grows</span>
-  <span class="tok-569cd6-c-569cd6">int</span> speed = BASE_SPEED - KS * abs(error);
-  <span class="tok-569cd6-c-569cd6">if</span> (speed &lt; MIN_SPEED) {
+  <span class="tok-569cd6">int</span> speed = BASE_SPEED - KS * abs(error);
+  <span class="tok-569cd6">if</span> (speed &lt; MIN_SPEED) {
     speed = MIN_SPEED;
   }
 
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = speed + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = speed - correction;
+  <span class="tok-569cd6">int</span> leftSpeed = speed + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = speed - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -2430,8 +2430,8 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>Two characters, one function. The planted lines in <code class="code-inline-bg-e8e8e8">followLine()</code>:</p>
-<pre class="code-block-333">  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED - correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED + correction;</pre>
+<pre class="code-block-333">  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED - correction;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED + correction;</pre>
 <p>The signs are swapped, so every correction steers <em>away</em> from the line &mdash; which grows the error, which grows the correction. Proportional control with the sign flipped isn't weak, it's a runaway. Swap the signs back.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-2" data-challenge="8.m2" data-kind="bonus-sabotage">Mystery 2: The Straight-Liner</h4>
@@ -2439,7 +2439,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The screen says <code class="code-inline-bg-e8e8e8">Kp: 0.00</code>. The planted line:</p>
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">float</span> currentKp = <span class="tok-b5cea8">0.0</span>;           <span class="tok-7cbf6e">// Live-tunable copy of KP</span></pre>
+<pre class="code-block-333"><span class="tok-569cd6">float</span> currentKp = <span class="tok-b5cea8">0.0</span>;           <span class="tok-7cbf6e">// Live-tunable copy of KP</span></pre>
 <p>Gain zero &rarr; correction zero &rarr; a robot that only drives straight. Pressing C revives it <em>until the next reboot</em> &mdash; live tuning treats the symptom, the initializer is the disease. Restore <code class="code-inline-bg-e8e8e8">float currentKp = KP;</code>.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-3" data-challenge="8.m3" data-kind="bonus-sabotage">Mystery 3: The Uncalibrated Run</h4>
@@ -2453,7 +2453,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The logic is perfect. The planted constant:</p>
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> MAX_GAP_TIME = <span class="tok-b5cea8">500000</span>;  <span class="tok-7cbf6e">// Max milliseconds to cross a gap</span></pre>
+<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> MAX_GAP_TIME = <span class="tok-b5cea8">500000</span>;  <span class="tok-7cbf6e">// Max milliseconds to cross a gap</span></pre>
 <p>500,000 ms is an <strong>eight-minute</strong> gap allowance &mdash; the timeout exists and can essentially never fire. A safety limit that can't trigger is indistinguishable from no safety at all; that's the whole lesson. Restore 500.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-5" data-challenge="8.m5" data-kind="bonus-sabotage">Mystery 5: The Blind Robot</h4>
@@ -2461,7 +2461,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>Different culprit entirely. The planted constant:</p>
-<pre class="code-block-333"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> LINE_LOST_THRESHOLD = <span class="tok-b5cea8">5001</span>;    <span class="tok-7cbf6e">// Calibrated sum below this = no line</span></pre>
+<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> LINE_LOST_THRESHOLD = <span class="tok-b5cea8">5001</span>;    <span class="tok-7cbf6e">// Calibrated sum below this = no line</span></pre>
 <p>Five sensors &times; 1000 max = a highest possible sum of <strong>5000</strong>. The visibility test can never pass &mdash; not on any line, ever. Same symptom as Mystery 3, opposite end of the pipeline: one starves the reading, the other sets an impossible bar. <em>Same symptom &ne; same cause</em> is the most valuable sentence in debugging. Restore 200.</p>
 </details>
 

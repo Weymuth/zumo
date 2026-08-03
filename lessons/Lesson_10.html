@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.16.0 -->
+<!-- Lesson version: v02.16.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -510,13 +510,13 @@ That is the whole point of the architecture you built in Lesson 7 &mdash; new ca
 
 <pre class="code-block-bg-1e1e1e">ObstacleAvoidance/
   include/
-    RobotConfig.h      &lt;-- <span class="tok-569cd6-c-569cd6">new</span> constants, <span class="tok-569cd6-c-569cd6">new</span> states, <span class="tok-569cd6-c-569cd6">new</span> phases
-    RobotSensors.h     &lt;-- <span class="tok-569cd6-c-569cd6">new</span>: extern proxSensors, <span class="tok-b5cea8">3</span> <span class="tok-569cd6-c-569cd6">new</span> prototypes
+    RobotConfig.h      &lt;-- <span class="tok-569cd6">new</span> constants, <span class="tok-569cd6">new</span> states, <span class="tok-569cd6">new</span> phases
+    RobotSensors.h     &lt;-- <span class="tok-569cd6">new</span>: extern proxSensors, <span class="tok-b5cea8">3</span> <span class="tok-569cd6">new</span> prototypes
     RobotMotion.h      (unchanged)
     RobotHelpers.h     (unchanged)
   src/
-    main.cpp           &lt;-- <span class="tok-569cd6-c-569cd6">new</span>: <span class="tok-b5cea8">3</span> <span class="tok-569cd6-c-569cd6">new</span> states, arbitration, kill <span class="tok-569cd6-c-569cd6">switch</span>
-    RobotSensors.cpp   &lt;-- <span class="tok-569cd6-c-569cd6">new</span>: the proxSensors OBJECT + <span class="tok-b5cea8">3</span> <span class="tok-569cd6-c-569cd6">new</span> functions
+    main.cpp           &lt;-- <span class="tok-569cd6">new</span>: <span class="tok-b5cea8">3</span> <span class="tok-569cd6">new</span> states, arbitration, kill <span class="tok-569cd6">switch</span>
+    RobotSensors.cpp   &lt;-- <span class="tok-569cd6">new</span>: the proxSensors OBJECT + <span class="tok-b5cea8">3</span> <span class="tok-569cd6">new</span> functions
     RobotMotion.cpp    (unchanged)
     RobotHelpers.cpp   (unchanged)</pre>
 <div class="callout-2196f3-bg-e3f2fd">
@@ -546,7 +546,7 @@ That is the whole point of the architecture you built in Lesson 7 &mdash; new ca
 <p>Here is the enum you are extending. The first four you already have. The last three are today.</p>
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== ROBOT STATES (UPDATED for Lesson 10) =====</span>
 <span class="tok-6a9955">// One name for &quot;what is the robot doing right now&quot;</span>
-<span class="tok-569cd6-c-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
+<span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
   STOPPED,             <span class="tok-6a9955">// Motors off, waiting for B</span>
   FOLLOWING_LINE,      <span class="tok-6a9955">// P-control driving - Lesson 8&#x27;s whole job</span>
   AT_INTERSECTION,     <span class="tok-6a9955">// Stopped on a marker, announcing the decision</span>
@@ -565,7 +565,7 @@ That is the whole point of the architecture you built in Lesson 7 &mdash; new ca
 <h4 class="h4-c-0e1a2c">And a second, smaller enum: the phases</h4>
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== AVOIDANCE PHASES (NEW for Lesson 10) =====</span>
 <span class="tok-6a9955">// ONE state (AVOIDING_OBSTACLE) takes FIVE steps. This names them.</span>
-<span class="tok-569cd6-c-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
+<span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
   PHASE_TURN_AWAY,   <span class="tok-6a9955">// 1. Turn away from the line</span>
   PHASE_DRIVE_PAST,  <span class="tok-6a9955">// 2. Drive forward, past the obstacle</span>
   PHASE_TURN_BACK,   <span class="tok-6a9955">// 3. Turn back toward the line</span>
@@ -608,20 +608,20 @@ see <a href="#section-8a" class="link-c-2e86ab-2">Section 8A</a>.</p>
 <span class="tok-6a9955">// Wake the FRONT proximity sensor only.</span>
 <span class="tok-6a9955">// You spent pins 20 and 4 on line sensors in Lesson 5 - the left and</span>
 <span class="tok-6a9955">// right receivers are gone. initFrontSensor() asks for what you still have.</span>
-<span class="tok-569cd6-c-569cd6">void</span> initProxSensors() {
+<span class="tok-569cd6">void</span> initProxSensors() {
   proxSensors.initFrontSensor();
 }
 
 <span class="tok-6a9955">// Two LED banks light the SAME front sensor. Take the stronger echo.</span>
-<span class="tok-569cd6-c-569cd6">int</span> readFrontProx() {
+<span class="tok-569cd6">int</span> readFrontProx() {
   proxSensors.read();
-  <span class="tok-569cd6-c-569cd6">return</span> max(proxSensors.countsFrontWithLeftLeds(),
+  <span class="tok-569cd6">return</span> max(proxSensors.countsFrontWithLeftLeds(),
              proxSensors.countsFrontWithRightLeds());
 }
 
 <span class="tok-6a9955">// Is something close enough that we must act?</span>
-<span class="tok-569cd6-c-569cd6">bool</span> checkForObstacle() {
-  <span class="tok-569cd6-c-569cd6">return</span> readFrontProx() &gt;= CLOSE_THRESHOLD;
+<span class="tok-569cd6">bool</span> checkForObstacle() {
+  <span class="tok-569cd6">return</span> readFrontProx() &gt;= CLOSE_THRESHOLD;
 }</pre>
 <div class="callout-607d8b-bg-eceff1-2">
     <div class="div-c-3a5a3a">📘 NOTE</div>
@@ -687,18 +687,18 @@ Thresholds, distances, states, phases &mdash; all of it, in the file where robot
 <p>Add these three blocks to the end of <code>RobotConfig.h</code>:</p>
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
 <span class="tok-6a9955">// The proximity scale is 0-6, NOT 0-1000. Same names as Lesson 5.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DETECTION_THRESHOLD = <span class="tok-b5cea8">1</span>;   <span class="tok-6a9955">// Anything at all is out there</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">3</span>;       <span class="tok-6a9955">// Close enough to stop and avoid</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> VERY_CLOSE_THRESHOLD = <span class="tok-b5cea8">5</span>;  <span class="tok-6a9955">// Too close - you waited too long</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DETECTION_THRESHOLD = <span class="tok-b5cea8">1</span>;   <span class="tok-6a9955">// Anything at all is out there</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">3</span>;       <span class="tok-6a9955">// Close enough to stop and avoid</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> VERY_CLOSE_THRESHOLD = <span class="tok-b5cea8">5</span>;  <span class="tok-6a9955">// Too close - you waited too long</span>
 
 <span class="tok-6a9955">// ===== AVOIDANCE MANEUVER (NEW for Lesson 10) =====</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> AVOID_TURN_DEGREES = <span class="tok-b5cea8">90.0</span>;   <span class="tok-6a9955">// Quarter turn, away from the line</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> AVOID_PAST_CM = <span class="tok-b5cea8">20.0</span>;        <span class="tok-6a9955">// Far enough to clear the obstacle</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> RETURN_TIMEOUT = <span class="tok-b5cea8">5000</span>;  <span class="tok-6a9955">// Give up hunting after 5 seconds</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> AVOID_TURN_DEGREES = <span class="tok-b5cea8">90.0</span>;   <span class="tok-6a9955">// Quarter turn, away from the line</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> AVOID_PAST_CM = <span class="tok-b5cea8">20.0</span>;        <span class="tok-6a9955">// Far enough to clear the obstacle</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> RETURN_TIMEOUT = <span class="tok-b5cea8">5000</span>;  <span class="tok-6a9955">// Give up hunting after 5 seconds</span>
 
 <span class="tok-6a9955">// ===== AVOIDANCE PHASES (NEW for Lesson 10) =====</span>
 <span class="tok-6a9955">// ONE state (AVOIDING_OBSTACLE) takes FIVE steps. This names them.</span>
-<span class="tok-569cd6-c-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
+<span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
   PHASE_TURN_AWAY,   <span class="tok-6a9955">// 1. Turn away from the line</span>
   PHASE_DRIVE_PAST,  <span class="tok-6a9955">// 2. Drive forward, past the obstacle</span>
   PHASE_TURN_BACK,   <span class="tok-6a9955">// 3. Turn back toward the line</span>
@@ -708,7 +708,7 @@ Thresholds, distances, states, phases &mdash; all of it, in the file where robot
 <p>And <strong>replace</strong> your <code>RobotState</code> enum &mdash; three new names on the end:</p>
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== ROBOT STATES (UPDATED for Lesson 10) =====</span>
 <span class="tok-6a9955">// One name for &quot;what is the robot doing right now&quot;</span>
-<span class="tok-569cd6-c-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
+<span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
   STOPPED,             <span class="tok-6a9955">// Motors off, waiting for B</span>
   FOLLOWING_LINE,      <span class="tok-6a9955">// P-control driving - Lesson 8&#x27;s whole job</span>
   AT_INTERSECTION,     <span class="tok-6a9955">// Stopped on a marker, announcing the decision</span>
@@ -743,9 +743,9 @@ Thresholds, distances, states, phases &mdash; all of it, in the file where robot
 <pre class="code-block-bg-1e1e1e">extern <span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NEW for Lesson 10</span></pre>
 <p>Second, promise the three functions exist. Add to the bottom:</p>
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> initProxSensors();
-<span class="tok-569cd6-c-569cd6">int</span> readFrontProx();
-<span class="tok-569cd6-c-569cd6">bool</span> checkForObstacle();</pre>
+<span class="tok-569cd6">void</span> initProxSensors();
+<span class="tok-569cd6">int</span> readFrontProx();
+<span class="tok-569cd6">bool</span> checkForObstacle();</pre>
 <div class="callout-9c27b0-bg-f3e5f5">
     <div class="div-c-6a1b9a">🔑 extern</div>
     <p class="p-mb-0">A promise that a variable or object <strong>exists somewhere else</strong>. It says &ldquo;trust me, this thing is real &mdash; let me use it.&rdquo; The header <em>declares</em> it; exactly one <code>.cpp</code> file <em>defines</em> it. Declare in many places, define in one.</p>
@@ -811,8 +811,8 @@ meant.</p>
 <p>With <code>extern</code> restored, the top of <code>RobotSensors.cpp</code> reads like this &mdash; the new object sits with the hardware it belongs to:</p>
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== PROXIMITY HARDWARE (NEW for Lesson 10) =====</span>
 <span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NO extern - this file CREATES it</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-6a9955">// Array to store the five readings</span>
-<span class="tok-569cd6-c-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-6a9955">// Last known line position</span></pre>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-6a9955">// Array to store the five readings</span>
+<span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-6a9955">// Last known line position</span></pre>
 <div class="callout-607d8b-bg-eceff1-2">
     <div class="div-c-3a5a3a">📘 NOTE</div>
     <p class="p-mb-0">Note what is <em>not</em> here: no <code>extern</code>. This file is the one
@@ -824,20 +824,20 @@ meant.</p>
 <span class="tok-6a9955">// Wake the FRONT proximity sensor only.</span>
 <span class="tok-6a9955">// You spent pins 20 and 4 on line sensors in Lesson 5 - the left and</span>
 <span class="tok-6a9955">// right receivers are gone. initFrontSensor() asks for what you still have.</span>
-<span class="tok-569cd6-c-569cd6">void</span> initProxSensors() {
+<span class="tok-569cd6">void</span> initProxSensors() {
   proxSensors.initFrontSensor();
 }
 
 <span class="tok-6a9955">// Two LED banks light the SAME front sensor. Take the stronger echo.</span>
-<span class="tok-569cd6-c-569cd6">int</span> readFrontProx() {
+<span class="tok-569cd6">int</span> readFrontProx() {
   proxSensors.read();
-  <span class="tok-569cd6-c-569cd6">return</span> max(proxSensors.countsFrontWithLeftLeds(),
+  <span class="tok-569cd6">return</span> max(proxSensors.countsFrontWithLeftLeds(),
              proxSensors.countsFrontWithRightLeds());
 }
 
 <span class="tok-6a9955">// Is something close enough that we must act?</span>
-<span class="tok-569cd6-c-569cd6">bool</span> checkForObstacle() {
-  <span class="tok-569cd6-c-569cd6">return</span> readFrontProx() &gt;= CLOSE_THRESHOLD;
+<span class="tok-569cd6">bool</span> checkForObstacle() {
+  <span class="tok-569cd6">return</span> readFrontProx() &gt;= CLOSE_THRESHOLD;
 }</pre>
 <div class="callout-4caf50-bg-e8f5e9">
     <div class="div-c-2e7d32">✅ CHECKPOINT</div>
@@ -862,9 +862,9 @@ logic on top of it, <strong>put the number on the screen and look at it.</strong
   initProxSensors();</pre>
 <p>Second, add a live readout to the bottom of <code>showStatus()</code>:</p>
 <pre class="code-block-bg-1e1e1e">  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Prox: &quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Prox: &quot;</span>));
   display.print(readFrontProx());   <span class="tok-6a9955">// NEW for Lesson 10 - is the sensor alive?</span>
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;  &quot;</span>));</pre>
+  display.print(F(<span class="tok-ce9178">&quot;  &quot;</span>));</pre>
 <div class="callout-ff8c00-bg-ffe4cc-2">
     <div class="div-c-c45a00">📝 DO THIS NOW</div>
     <p>Upload. Leave the robot <strong>stopped</strong>. Now put your hand slowly in front of it and watch
@@ -899,17 +899,17 @@ Off the line. Into open floor. Based on a sensor reading you have known about fo
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== THE KILL SWITCH (NEW for Lesson 10) =====</span>
 <span class="tok-6a9955">// Built BEFORE any new driving code. Every state that moves the robot</span>
 <span class="tok-6a9955">// calls this FIRST. If it returns true, that state must stop immediately.</span>
-<span class="tok-569cd6-c-569cd6">bool</span> killSwitchPressed() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+<span class="tok-569cd6">bool</span> killSwitchPressed() {
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
     currentState = STOPPED;
     showStatus();
-    <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">true</span>;
+    <span class="tok-569cd6">return</span> <span class="tok-569cd6">true</span>;
   }
-  <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">false</span>;
+  <span class="tok-569cd6">return</span> <span class="tok-569cd6">false</span>;
 }</pre>
 <p>Then, at the top of <em>every</em> state that moves the robot, one line:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;   <span class="tok-6a9955">// B = STOP - now one helper, used everywhere</span></pre>
+<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;   <span class="tok-6a9955">// B = STOP - now one helper, used everywhere</span></pre>
 <div class="callout-ffc107-bg-fff8e1-2">
     <div class="div-c-856404">⚠️ WARNING</div>
     <p class="p-mb-0"><strong>This is a permanent policy, not a Lesson 10 rule.</strong>
@@ -940,9 +940,9 @@ bookmark, and the hunt needs somewhere to keep its stopwatch:</p>
 <span class="tok-4ec9b6">RobotState</span> currentState = STOPPED;               <span class="tok-6a9955">// What the robot is doing right now</span>
 <span class="tok-4ec9b6">IntersectionType</span> pendingTurn = NO_INTERSECTION;  <span class="tok-6a9955">// The decision waiting to be executed</span>
 <span class="tok-4ec9b6">AvoidPhase</span> avoidPhase = PHASE_TURN_AWAY;         <span class="tok-6a9955">// NEW for Lesson 10 - which step of the maneuver</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> returnStartTime = <span class="tok-b5cea8">0</span>;               <span class="tok-6a9955">// NEW for Lesson 10 - when did the hunt begin?</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKp = KP;            <span class="tok-6a9955">// Live-tunable copy of KP</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> gapStartTime = <span class="tok-b5cea8">0</span>;  <span class="tok-6a9955">// When did the line disappear?</span></pre>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> returnStartTime = <span class="tok-b5cea8">0</span>;               <span class="tok-6a9955">// NEW for Lesson 10 - when did the hunt begin?</span>
+<span class="tok-569cd6">float</span> currentKp = KP;            <span class="tok-6a9955">// Live-tunable copy of KP</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> gapStartTime = <span class="tok-b5cea8">0</span>;  <span class="tok-6a9955">// When did the line disappear?</span></pre>
 <div class="callout-2196f3-bg-e3f2fd">
     <div class="div-c-0d47a1">📖 LEARN</div>
     <p class="p-mb-0">These are <strong>globals</strong> on purpose. A variable declared inside
@@ -951,32 +951,32 @@ bookmark, and the hunt needs somewhere to keep its stopwatch:</p>
     forgets which step it was on and starts the plan over, forever.</p>
 </div>
 <p>Now replace your <code>FOLLOWING_LINE</code> case:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;   <span class="tok-6a9955">// B = STOP - now one helper, used everywhere</span>
+<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+      <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;   <span class="tok-6a9955">// B = STOP - now one helper, used everywhere</span>
 
       <span class="tok-6a9955">// PRIORITY 1 - a crash is worse than a missed turn. Check it FIRST.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (checkForObstacle()) {
+      <span class="tok-569cd6">if</span> (checkForObstacle()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// Stop FIRST - then think</span>
         currentState = OBSTACLE_DETECTED;
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         gapStartTime = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// Line is back - reset the gap timer</span>
         followLine();
 
         <span class="tok-6a9955">// PRIORITY 2 - the course is asking for a turn</span>
         <span class="tok-4ec9b6">IntersectionType</span> seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION) {
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION) {
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// Stop FIRST - then think</span>
           pendingTurn = seen;
           currentState = AT_INTERSECTION;
         }
-      } <span class="tok-569cd6-c-569cd6">else</span> {
+      } <span class="tok-569cd6">else</span> {
         <span class="tok-6a9955">// PRIORITY 3 - nothing special: just drive</span>
         handleGap();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }</pre>
 <p>Read the comments. <strong>Priority 1 is the obstacle</strong>, and it is checked before anything
 else &mdash; before the line, before the markers &mdash; because a crash is worse than a missed turn.
@@ -984,19 +984,19 @@ And the moment it fires, <code>break</code> stops the rest of the case from runn
 is not tidiness. It is the arbitration.</p>
 
 <p>Then add the new state that catches the decision:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6-c-569cd6">case</span> OBSTACLE_DETECTED: {
-      <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;
+<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> OBSTACLE_DETECTED: {
+      <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       display.setLayout21x8();
       display.clear();
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-      display.print(F(<span class="tok-ce9178-c-ce9178">&quot;OBSTACLE!&quot;</span>));
+      display.print(F(<span class="tok-ce9178">&quot;OBSTACLE!&quot;</span>));
       buzzer.playNote(NOTE_A(<span class="tok-b5cea8">4</span>), <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">15</span>);
       delay(<span class="tok-b5cea8">600</span>);   <span class="tok-6a9955">// Long enough for a human to see the call</span>
 
       avoidPhase = PHASE_TURN_AWAY;      <span class="tok-6a9955">// Rewind the maneuver to step 1</span>
       currentState = AVOIDING_OBSTACLE;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }</pre>
 <div class="callout-607d8b-bg-eceff1-2">
     <div class="div-c-3a5a3a">📘 NOTE</div>
@@ -1022,70 +1022,70 @@ is not tidiness. It is the arbitration.</p>
 
 <p>Build it the way your instincts tell you to &mdash; with <code>delay()</code>. This is the version most
 people write first, and you are going to write it, run it, and watch exactly how it lets you down.</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6-c-569cd6">case</span> AVOIDING_OBSTACLE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;
+<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE: {
+      <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       <span class="tok-6a9955">// ONE state. FIVE steps. The phase variable remembers which one.</span>
-      <span class="tok-569cd6-c-569cd6">switch</span> (avoidPhase) {
+      <span class="tok-569cd6">switch</span> (avoidPhase) {
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_TURN_AWAY:
+        <span class="tok-569cd6">case</span> PHASE_TURN_AWAY:
           motors.setSpeeds(TURN_SPEED, -TURN_SPEED);   <span class="tok-6a9955">// Spin right</span>
           delay(<span class="tok-b5cea8">400</span>);                                  <span class="tok-6a9955">// ...for 400ms. Is that 90 degrees?</span>
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
           avoidPhase = PHASE_DRIVE_PAST;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_DRIVE_PAST:
+        <span class="tok-569cd6">case</span> PHASE_DRIVE_PAST:
           motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);
           delay(<span class="tok-b5cea8">800</span>);                                  <span class="tok-6a9955">// ...for 800ms. How far is that?</span>
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
           avoidPhase = PHASE_TURN_BACK;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_TURN_BACK:
+        <span class="tok-569cd6">case</span> PHASE_TURN_BACK:
           motors.setSpeeds(-TURN_SPEED, TURN_SPEED);   <span class="tok-6a9955">// Spin left</span>
           delay(<span class="tok-b5cea8">400</span>);
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
           avoidPhase = PHASE_SEEK_LINE;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_SEEK_LINE:
+        <span class="tok-569cd6">case</span> PHASE_SEEK_LINE:
           returnStartTime = millis();      <span class="tok-6a9955">// Start the clock on the hunt</span>
           avoidPhase = PHASE_COMPLETE;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_COMPLETE:
+        <span class="tok-569cd6">case</span> PHASE_COMPLETE:
           currentState = RETURNING_TO_LINE;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }</pre>
 <p>And the state that hunts for the line afterward:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6-c-569cd6">case</span> RETURNING_TO_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;
+<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> RETURNING_TO_LINE: {
+      <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// Blind AND straight = TRIM</span>
 
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         gapStartTime = <span class="tok-b5cea8">0</span>;
         currentState = FOLLOWING_LINE;
         showStatus();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
       <span class="tok-6a9955">// Do not hunt forever. If the line never comes back, stop.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (millis() - returnStartTime &gt; RETURN_TIMEOUT) {
+      <span class="tok-569cd6">if</span> (millis() - returnStartTime &gt; RETURN_TIMEOUT) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         currentState = STOPPED;
         display.setLayout21x8();
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-        display.print(F(<span class="tok-ce9178-c-ce9178">&quot;LOST THE LINE&quot;</span>));
+        display.print(F(<span class="tok-ce9178">&quot;LOST THE LINE&quot;</span>));
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-        display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Press B to retry&quot;</span>));
+        display.print(F(<span class="tok-ce9178">&quot;Press B to retry&quot;</span>));
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }</pre>
 <div class="callout-ff8c00-bg-ffe4cc-2">
     <div class="div-c-c45a00">📝 DO THIS NOW</div>
@@ -1115,37 +1115,37 @@ people write first, and you are going to write it, run it, and watch exactly how
 <h3 class="h3-c-433014">Step 8 (continued) &mdash; The Fix Is Smaller Than the Problem</h3>
 <p>You already own the tools. You built them in Lesson 6 and filed them in Lesson 7 and have not
 touched them since. Replace the whole timed maneuver with this:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6-c-569cd6">case</span> AVOIDING_OBSTACLE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;
+<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE: {
+      <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       <span class="tok-6a9955">// ONE state. FIVE steps. The phase variable remembers which one.</span>
-      <span class="tok-569cd6-c-569cd6">switch</span> (avoidPhase) {
+      <span class="tok-569cd6">switch</span> (avoidPhase) {
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_TURN_AWAY:
+        <span class="tok-569cd6">case</span> PHASE_TURN_AWAY:
           turnDegrees(AVOID_TURN_DEGREES);    <span class="tok-6a9955">// 90 degrees. Measured, not guessed.</span>
           avoidPhase = PHASE_DRIVE_PAST;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_DRIVE_PAST:
+        <span class="tok-569cd6">case</span> PHASE_DRIVE_PAST:
           driveDistance(AVOID_PAST_CM);       <span class="tok-6a9955">// 20 cm. Measured, not guessed.</span>
           avoidPhase = PHASE_TURN_BACK;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_TURN_BACK:
+        <span class="tok-569cd6">case</span> PHASE_TURN_BACK:
           turnDegrees(-AVOID_TURN_DEGREES);   <span class="tok-6a9955">// Back the other way. Negative = left.</span>
           avoidPhase = PHASE_SEEK_LINE;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_SEEK_LINE:
+        <span class="tok-569cd6">case</span> PHASE_SEEK_LINE:
           returnStartTime = millis();      <span class="tok-6a9955">// Start the clock on the hunt</span>
           avoidPhase = PHASE_COMPLETE;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
 
-        <span class="tok-569cd6-c-569cd6">case</span> PHASE_COMPLETE:
+        <span class="tok-569cd6">case</span> PHASE_COMPLETE:
           currentState = RETURNING_TO_LINE;
-          <span class="tok-569cd6-c-569cd6">break</span>;
+          <span class="tok-569cd6">break</span>;
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }</pre>
 <div class="callout-17a2b8-bg-d1ecf1-2">
     <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE</div>
@@ -1181,18 +1181,18 @@ encoders make sure it happens whether the batteries are fresh, tired, or somewhe
 <p>Everything is built. The last edit is small: teach <code>showStatus()</code> the three new state
 names, so the display can tell you what the robot is thinking.</p>
 <pre class="code-block-bg-1e1e1e">  <span class="tok-6a9955">// NEW for Lesson 10 - name the state. Seven names, one switch.</span>
-  <span class="tok-569cd6-c-569cd6">switch</span> (currentState) {
-    <span class="tok-569cd6-c-569cd6">case</span> STOPPED:            display.print(F(<span class="tok-ce9178-c-ce9178">&quot;STOPPED&quot;</span>));   <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE:     display.print(F(<span class="tok-ce9178-c-ce9178">&quot;FOLLOWING&quot;</span>)); <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> AT_INTERSECTION:    display.print(F(<span class="tok-ce9178-c-ce9178">&quot;INTERSECT&quot;</span>)); <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> EXECUTING_TURN:     display.print(F(<span class="tok-ce9178-c-ce9178">&quot;TURNING&quot;</span>));   <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> OBSTACLE_DETECTED:  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;OBSTACLE!&quot;</span>)); <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> AVOIDING_OBSTACLE:  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;AVOIDING&quot;</span>));  <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> RETURNING_TO_LINE:  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;SEEKING&quot;</span>));   <span class="tok-569cd6-c-569cd6">break</span>;
+  <span class="tok-569cd6">switch</span> (currentState) {
+    <span class="tok-569cd6">case</span> STOPPED:            display.print(F(<span class="tok-ce9178">&quot;STOPPED&quot;</span>));   <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> FOLLOWING_LINE:     display.print(F(<span class="tok-ce9178">&quot;FOLLOWING&quot;</span>)); <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> AT_INTERSECTION:    display.print(F(<span class="tok-ce9178">&quot;INTERSECT&quot;</span>)); <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> EXECUTING_TURN:     display.print(F(<span class="tok-ce9178">&quot;TURNING&quot;</span>));   <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> OBSTACLE_DETECTED:  display.print(F(<span class="tok-ce9178">&quot;OBSTACLE!&quot;</span>)); <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE:  display.print(F(<span class="tok-ce9178">&quot;AVOIDING&quot;</span>));  <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> RETURNING_TO_LINE:  display.print(F(<span class="tok-ce9178">&quot;SEEKING&quot;</span>));   <span class="tok-569cd6">break</span>;
   }</pre>
 <p>And while you are in there, rename the two banners in <code>setup()</code> &mdash; you are not running Lesson 9 any more:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178-c-ce9178">&quot;=== Lesson 10: Obstacles ===&quot;</span>));
-display.print(F(<span class="tok-ce9178-c-ce9178">&quot;===== Lesson 10 =====&quot;</span>));</pre>
+<pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">&quot;=== Lesson 10: Obstacles ===&quot;</span>));
+display.print(F(<span class="tok-ce9178">&quot;===== Lesson 10 =====&quot;</span>));</pre>
 <p>Now put it all on the course at once.</p>
 <div class="callout-ff8c00-bg-ffe4cc-2">
     <div class="div-c-c45a00">📝 DO THIS NOW</div>
@@ -1276,32 +1276,32 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 </div>
 <h3 class="h3-c-00474b">7A &mdash; One Turn. Nothing Else.</h3>
 <p>This program turns the robot 90 degrees and stops. That is the entire program.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotConfig.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotSensors.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotHelpers.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotMotion.h&quot;</span>
+<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
 
 <span class="tok-6a9955">// ===== 7A: FIND THE TIME FOR 90 DEGREES =====</span>
 <span class="tok-6a9955">// ONE turn. Nothing else moves. Change TURN_MS, upload, watch, repeat.</span>
 <span class="tok-6a9955">// You are hunting for the number that makes the robot land on 90 degrees.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 400 and work from there.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 400 and work from there.</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;90 DEG TEST&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;90 DEG TEST&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;TURN_MS = &quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;TURN_MS = &quot;</span>));
   display.print(TURN_MS);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Line it up. Press A.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Line it up. Press A.&quot;</span>));
 
   waitForStart();
 
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Turning...&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Turning...&quot;</span>));
 
   motors.setSpeeds(TURN_SPEED, -TURN_SPEED);   <span class="tok-6a9955">// Spin right</span>
   delay(TURN_MS);
@@ -1309,14 +1309,14 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Is it 90 deg?&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Is it 90 deg?&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Too far? Lower it.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Too far? Lower it.&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Not far? Raise it.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Not far? Raise it.&quot;</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   <span class="tok-6a9955">// Nothing. One turn, one look, one decision.</span>
 }</pre>
 <div class="callout-ff8c00-bg-ffe4cc-2">
@@ -1345,31 +1345,31 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 </details>
 <h3 class="h3-c-00474b">7B &mdash; One Straight Run. No Turning.</h3>
 <p>The other half. Drive forward 30&nbsp;cm. Do not turn. Stop.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotConfig.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotSensors.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotHelpers.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotMotion.h&quot;</span>
+<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
 
 <span class="tok-6a9955">// ===== 7B: FIND THE TIME FOR 30 CM =====</span>
 <span class="tok-6a9955">// ONE straight run. No turning. Change DRIVE_MS, upload, measure, repeat.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DRIVE_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 1200 and work from there.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 1200 and work from there.</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;30 CM TEST&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;30 CM TEST&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;DRIVE_MS = &quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;DRIVE_MS = &quot;</span>));
   display.print(DRIVE_MS);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Mark start. Press A.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Mark start. Press A.&quot;</span>));
 
   waitForStart();
 
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Driving...&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Driving...&quot;</span>));
 
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// TRIM: your straightness number</span>
   delay(DRIVE_MS);
@@ -1377,14 +1377,14 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Measure it.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Measure it.&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Short? Raise DRIVE_MS&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Short? Raise DRIVE_MS&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Long? Lower it.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Long? Lower it.&quot;</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   <span class="tok-6a9955">// Nothing. One run, one ruler, one decision.</span>
 }</pre>
 <div class="callout-ff8c00-bg-ffe4cc-2">
@@ -1423,19 +1423,19 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 <h3 class="h3-c-00474b">7C &mdash; One Corner</h3>
 <p>You have a proven turn and a proven drive. Join them <strong>once</strong> &mdash; drive, then turn
 &mdash; and check the result before you ever ask for four of them.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotConfig.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotSensors.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotHelpers.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotMotion.h&quot;</span>
+<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
 
 <span class="tok-6a9955">// ===== 7C: ONE CORNER =====</span>
 <span class="tok-6a9955">// Your two tuned numbers, together, ONE time. Drive 30 cm, turn 90 degrees.</span>
 <span class="tok-6a9955">// If ONE corner is wrong, FOUR corners will be four times as wrong.</span>
 <span class="tok-6a9955">// Do not loop until this is right.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DRIVE_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR number from 7B</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_MS = <span class="tok-b5cea8">0</span>;       <span class="tok-6a9955">// &lt;-- YOUR number from 7A</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR number from 7B</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_MS = <span class="tok-b5cea8">0</span>;       <span class="tok-6a9955">// &lt;-- YOUR number from 7A</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> driveOneCorner() {
+<span class="tok-569cd6">void</span> driveOneCorner() {
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// TRIM: your straightness number</span>
   delay(DRIVE_MS);
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1446,15 +1446,15 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;ONE CORNER&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;ONE CORNER&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Mark start + heading&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Mark start + heading&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Press A.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Press A.&quot;</span>));
 
   waitForStart();
 
@@ -1462,14 +1462,14 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;30 cm out?&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;30 cm out?&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Turned 90 deg?&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Turned 90 deg?&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;BOTH must be yes.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;BOTH must be yes.&quot;</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   <span class="tok-6a9955">// Nothing.</span>
 }</pre>
 <div class="callout-2da99d-bg-e9f7f5">
@@ -1501,18 +1501,18 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 program is repetition.</p>
 
 <p>So do not write the corner four times. <strong>Loop it.</strong></p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotConfig.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotSensors.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotHelpers.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotMotion.h&quot;</span>
+<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
 
 <span class="tok-6a9955">// ===== 7D: THE SQUARE =====</span>
 <span class="tok-6a9955">// You built ONE corner and proved it. A square is that corner, four times.</span>
 <span class="tok-6a9955">// This is a LOOP. You do not write the corner four times - you REPEAT it.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DRIVE_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR number from 7B</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_MS = <span class="tok-b5cea8">0</span>;       <span class="tok-6a9955">// &lt;-- YOUR number from 7A</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR number from 7B</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_MS = <span class="tok-b5cea8">0</span>;       <span class="tok-6a9955">// &lt;-- YOUR number from 7A</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> driveOneCorner() {
+<span class="tok-569cd6">void</span> driveOneCorner() {
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// TRIM: your straightness number</span>
   delay(DRIVE_MS);
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1524,24 +1524,24 @@ program is repetition.</p>
   delay(<span class="tok-b5cea8">300</span>);
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;THE SQUARE&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;THE SQUARE&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Mark the start!&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Mark the start!&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Press A.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Press A.&quot;</span>));
 
   waitForStart();
 
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> corner = <span class="tok-b5cea8">1</span>; corner &lt;= <span class="tok-b5cea8">4</span>; corner++) {   <span class="tok-6a9955">// FOUR corners. One loop.</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> corner = <span class="tok-b5cea8">1</span>; corner &lt;= <span class="tok-b5cea8">4</span>; corner++) {   <span class="tok-6a9955">// FOUR corners. One loop.</span>
     display.clear();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Corner &quot;</span>));
+    display.print(F(<span class="tok-ce9178">&quot;Corner &quot;</span>));
     display.print(corner);
-    display.print(F(<span class="tok-ce9178-c-ce9178">&quot; of 4&quot;</span>));
+    display.print(F(<span class="tok-ce9178">&quot; of 4&quot;</span>));
 
     driveOneCorner();
   }
@@ -1549,12 +1549,12 @@ program is repetition.</p>
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Back at the start?&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Back at the start?&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Measure the gap.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Measure the gap.&quot;</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   <span class="tok-6a9955">// Nothing.</span>
 }</pre>
 <div class="callout-2196f3-bg-e3f2fd">
@@ -1592,39 +1592,39 @@ program is repetition.</p>
 </details>
 <h3 class="h3-c-00474b">7E &mdash; The Same Square, With Encoders</h3>
 <p>Same square. Read this one <em>before</em> you upload it.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotConfig.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotSensors.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotHelpers.h&quot;</span>
-<span class="tok-c586c0-c-c586c0">#include </span><span class="tok-ce9178-c-ce9178">&quot;RobotMotion.h&quot;</span>
+<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
+<span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
 
 <span class="tok-6a9955">// ===== 7E: THE SAME SQUARE - WITH ENCODERS =====</span>
 <span class="tok-6a9955">// Same shape. Same 30 cm. Same 90 degrees. No stopwatch anywhere.</span>
 <span class="tok-6a9955">// You did not tune these numbers. You did not have to.</span>
-<span class="tok-569cd6-c-569cd6">void</span> driveOneCorner() {
+<span class="tok-569cd6">void</span> driveOneCorner() {
   driveDistance(<span class="tok-b5cea8">30.0</span>);   <span class="tok-6a9955">// 30 cm - the WHEELS say when</span>
   delay(<span class="tok-b5cea8">300</span>);
   turnDegrees(<span class="tok-b5cea8">90.0</span>);     <span class="tok-6a9955">// 90 degrees - the WHEELS say when</span>
   delay(<span class="tok-b5cea8">300</span>);
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;SQUARE - ENCODERS&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;SQUARE - ENCODERS&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Same start mark.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Same start mark.&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Press A.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Press A.&quot;</span>));
 
   waitForStart();
 
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> corner = <span class="tok-b5cea8">1</span>; corner &lt;= <span class="tok-b5cea8">4</span>; corner++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> corner = <span class="tok-b5cea8">1</span>; corner &lt;= <span class="tok-b5cea8">4</span>; corner++) {
     display.clear();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Corner &quot;</span>));
+    display.print(F(<span class="tok-ce9178">&quot;Corner &quot;</span>));
     display.print(corner);
-    display.print(F(<span class="tok-ce9178-c-ce9178">&quot; of 4&quot;</span>));
+    display.print(F(<span class="tok-ce9178">&quot; of 4&quot;</span>));
 
     driveOneCorner();
   }
@@ -1632,12 +1632,12 @@ program is repetition.</p>
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Compare the gap.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Compare the gap.&quot;</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">&quot;Now you know why.&quot;</span>));
+  display.print(F(<span class="tok-ce9178">&quot;Now you know why.&quot;</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
+<span class="tok-569cd6">void</span> loop() {
   <span class="tok-6a9955">// Nothing.</span>
 }</pre>
 <div class="callout-17a2b8-bg-d1ecf1-2">
@@ -1835,17 +1835,17 @@ variable that remembers <em>which one you are on.</em></p>
 <pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">AvoidPhase</span> avoidPhase = PHASE_TURN_AWAY;         <span class="tok-6a9955">// NEW for Lesson 10 - which step of the maneuver</span>
 
 <span class="tok-6a9955">// ...inside the AVOIDING_OBSTACLE state...</span>
-<span class="tok-569cd6-c-569cd6">switch</span> (avoidPhase) {
+<span class="tok-569cd6">switch</span> (avoidPhase) {
 
-  <span class="tok-569cd6-c-569cd6">case</span> PHASE_TURN_AWAY:
+  <span class="tok-569cd6">case</span> PHASE_TURN_AWAY:
     turnDegrees(AVOID_TURN_DEGREES);  <span class="tok-6a9955">// 90 degrees. Measured, not guessed.</span>
     avoidPhase = PHASE_DRIVE_PAST;
-    <span class="tok-569cd6-c-569cd6">break</span>;
+    <span class="tok-569cd6">break</span>;
 
-  <span class="tok-569cd6-c-569cd6">case</span> PHASE_DRIVE_PAST:
+  <span class="tok-569cd6">case</span> PHASE_DRIVE_PAST:
     driveDistance(AVOID_PAST_CM);     <span class="tok-6a9955">// 20 cm. Measured, not guessed.</span>
     avoidPhase = PHASE_TURN_BACK;
-    <span class="tok-569cd6-c-569cd6">break</span>;
+    <span class="tok-569cd6">break</span>;
 
   <span class="tok-6a9955">// ...and so on, one phase per pass of loop()</span>
 }</pre>
@@ -1926,14 +1926,14 @@ Lesson 10 project &mdash; and each one is a real problem, not a busywork exercis
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6-c-569cd6">case</span> OBSTACLE_DETECTED: {
-  <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6-c-569cd6">break</span>;
+<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">case</span> OBSTACLE_DETECTED: {
+  <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
-  <span class="tok-569cd6-c-569cd6">int</span> howClose = readFrontProx();      <span class="tok-6a9955">// 0-6. How much trouble are we in?</span>
+  <span class="tok-569cd6">int</span> howClose = readFrontProx();      <span class="tok-6a9955">// 0-6. How much trouble are we in?</span>
 
-  <span class="tok-569cd6-c-569cd6">if</span> (howClose &gt;= VERY_CLOSE_THRESHOLD) {
+  <span class="tok-569cd6">if</span> (howClose &gt;= VERY_CLOSE_THRESHOLD) {
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">5</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);   <span class="tok-6a9955">// HIGH - that was close</span>
-  } <span class="tok-569cd6-c-569cd6">else</span> {
+  } <span class="tok-569cd6">else</span> {
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">4</span>), <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">15</span>);   <span class="tok-6a9955">// normal - caught it in time</span>
   }
   <span class="tok-6a9955">// ...rest of the state...</span>
@@ -1961,7 +1961,7 @@ Lesson 10 project &mdash; and each one is a real problem, not a busywork exercis
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6-c-569cd6">int</span> obstacleCount = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// global - survives between loop() passes</span>
+<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">int</span> obstacleCount = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// global - survives between loop() passes</span>
 
 <span class="tok-6a9955">// ...in OBSTACLE_DETECTED, when you commit to the maneuver:</span>
 obstacleCount++;
@@ -1969,14 +1969,14 @@ obstacleCount++;
 <span class="tok-6a9955">// ...and in PHASE_TURN_AWAY. NOTE THE BRACES { } around the case body -</span>
 <span class="tok-6a9955">// you are DECLARING a variable inside a case, and C++ will not allow that</span>
 <span class="tok-6a9955">// without them. Leave them off and you get: &quot;jump to case label&quot;.</span>
-<span class="tok-569cd6-c-569cd6">case</span> PHASE_TURN_AWAY: {
-  <span class="tok-569cd6-c-569cd6">float</span> away = AVOID_TURN_DEGREES;
-  <span class="tok-569cd6-c-569cd6">if</span> (obstacleCount % <span class="tok-b5cea8">2</span> == <span class="tok-b5cea8">0</span>) {
+<span class="tok-569cd6">case</span> PHASE_TURN_AWAY: {
+  <span class="tok-569cd6">float</span> away = AVOID_TURN_DEGREES;
+  <span class="tok-569cd6">if</span> (obstacleCount % <span class="tok-b5cea8">2</span> == <span class="tok-b5cea8">0</span>) {
     away = -away;              <span class="tok-6a9955">// every OTHER obstacle, go the other way</span>
   }
   turnDegrees(away);
   avoidPhase = PHASE_DRIVE_PAST;
-  <span class="tok-569cd6-c-569cd6">break</span>;
+  <span class="tok-569cd6">break</span>;
 }</pre>
 </div>
 <details data-reveal="hint" class="details-b-none">
@@ -2023,7 +2023,7 @@ obstacleCount++;
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// In RobotConfig.h - a new phase, at the FRONT of the enum:</span>
-<span class="tok-569cd6-c-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
+<span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
   PHASE_BACK_OFF,    <span class="tok-6a9955">// NEW - only used when we are dangerously close</span>
   PHASE_TURN_AWAY,
   PHASE_DRIVE_PAST,
@@ -2159,7 +2159,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <details data-reveal="solution" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">🔓 What is actually wrong</summary>
 <div class="div-mt-12px">
-<p><strong>The planted constant:</strong></p><pre class="code-block-bg-1e1e1e"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> AVOID_PAST_CM = <span class="tok-b5cea8">5.0</span>;         <span class="tok-6a9955">// Far enough to clear the obstacle</span></pre>
+<p><strong>The planted constant:</strong></p><pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> AVOID_PAST_CM = <span class="tok-b5cea8">5.0</span>;         <span class="tok-6a9955">// Far enough to clear the obstacle</span></pre>
 <p>The robot goes around <em>part</em> of the obstacle, comes back to the line, and finds itself facing the same block it never actually got past.</p><p><strong>The lesson:</strong> the maneuver was not broken &mdash; it was <em>too small</em>. A loop like this usually means a distance, not a logic error. And notice the robot never complains: from its point of view it is succeeding perfectly, over and over.</p></div>
 </details>
     <p class="p-mb-0"><a href="../newproject.html?lesson=10&amp;kind=bonus_b3" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
@@ -2188,7 +2188,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <details data-reveal="solution" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">🔓 What is actually wrong</summary>
 <div class="div-mt-12px">
-<p><strong>PHASE_TURN_BACK, as planted:</strong></p><pre class="code-block-bg-1e1e1e">        <span class="tok-569cd6-c-569cd6">case</span> PHASE_TURN_BACK:
+<p><strong>PHASE_TURN_BACK, as planted:</strong></p><pre class="code-block-bg-1e1e1e">        <span class="tok-569cd6">case</span> PHASE_TURN_BACK:
           turnDegrees(AVOID_TURN_DEGREES);    <span class="tok-6a9955">// Back the other way. Negative = left.</span></pre>
 <p>Read the comment, then read the code. The comment says <em>&ldquo;Negative = left&rdquo;</em> &mdash; and the call is <strong>positive</strong>. The robot turned 90&deg; away and then another 90&deg; the <em>same</em> way, so it is now 180&deg; from where it started, driving away from everything.</p><p><strong>The lesson:</strong> one minus sign. It compiles, it runs, it drives a perfectly confident shape &mdash; and the shape is wrong. This is why you tape the floor and watch the robot, instead of reading the code and assuming.</p></div>
 </details>
@@ -2272,7 +2272,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <tr><td class="td-ddd"><code>followLine()</code></td><td class="td-ddd">❌ <strong>never</strong></td><td class="td-ddd"><strong>Closed loop.</strong> The P&#8209;controller corrects bias 50&times;/sec. TRIM would fight it.</td></tr>
 </tbody></table>
 <h4 class="h4-c-4d535f">The Seven States</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6-c-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
+<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
   STOPPED,             <span class="tok-6a9955">// Motors off, waiting for B</span>
   FOLLOWING_LINE,      <span class="tok-6a9955">// P-control driving - Lesson 8&#x27;s whole job</span>
   AT_INTERSECTION,     <span class="tok-6a9955">// Stopped on a marker, announcing the decision</span>
@@ -2282,7 +2282,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
   RETURNING_TO_LINE    <span class="tok-6a9955">// NEW: maneuver done, hunting for the line again</span>
 };</pre>
 <h4 class="h4-c-4d535f">The Five Phases</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6-c-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
+<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
   PHASE_TURN_AWAY,   <span class="tok-6a9955">// 1. Turn away from the line</span>
   PHASE_DRIVE_PAST,  <span class="tok-6a9955">// 2. Drive forward, past the obstacle</span>
   PHASE_TURN_BACK,   <span class="tok-6a9955">// 3. Turn back toward the line</span>

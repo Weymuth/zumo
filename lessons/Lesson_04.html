@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.19.0 -->
+<!-- Lesson version: v04.19.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -419,9 +419,9 @@
 <span class="tok-4ec9b6">Zumo32U4LineSensors</span> lineSensors;
 
 <span class="tok-6a9955">// ===== CONSTANTS =====</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">3</span>;                <span class="tok-6a9955">// Act One: sensors 1, 3, 5</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> CAL_TIME_MS = <span class="tok-b5cea8">5000</span>;        <span class="tok-6a9955">// calibration sweep window</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> DISPLAY_INTERVAL_MS = <span class="tok-b5cea8">100</span>; <span class="tok-6a9955">// refresh rate for readings</span></pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">3</span>;                <span class="tok-6a9955">// Act One: sensors 1, 3, 5</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> CAL_TIME_MS = <span class="tok-b5cea8">5000</span>;        <span class="tok-6a9955">// calibration sweep window</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> DISPLAY_INTERVAL_MS = <span class="tok-b5cea8">100</span>; <span class="tok-6a9955">// refresh rate for readings</span></pre>
 
 <p>Four objects this time. The display and the two buttons you know; <code class="code-inline-bg-e8e8e8">buttonB</code> earns its seat because the STANDARD HELPERS use the A+B combination for the battery check (Section 5.6). The new face is <strong><code class="code-inline-bg-e8e8e8">Zumo32U4LineSensors lineSensors;</code></strong> — your handle on the entire reflectance array. Every sensor operation in this lesson goes through this one object: waking sensors, calibrating them, reading them raw or calibrated, and computing the line position.</p>
 
@@ -461,7 +461,7 @@
 <p>Lesson 3 promised that the line sensors would hand you data "as an array." Here is that moment. One reading produces three numbers at once (five in Act Two) — one per sensor. Rather than juggling three separate variables, the program declares a single <strong>array</strong>:</p>
 
 <pre class="code-block-333-3"><span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
 
 <p>An array is a row of numbered boxes stored under one name. <code class="code-inline-bg-e8e8e8">lineSensorValues[NUM_SENSORS]</code> creates <code class="code-inline-bg-e8e8e8">NUM_SENSORS</code> boxes; a call like <code class="code-inline-bg-e8e8e8">lineSensors.read(lineSensorValues)</code> fills all of them in one shot. You then open an individual box with its <strong>index</strong> in square brackets — and here is the rule that catches everyone at least once: <strong>the boxes are numbered starting from ZERO.</strong> The first box is <code class="code-inline-bg-e8e8e8">lineSensorValues[0]</code>, not <code class="code-inline-bg-e8e8e8">[1]</code>.</p>
 
@@ -503,11 +503,11 @@ waitForStart()
 SAFETY GATE: nothing moves until Button A is pressed.
 Call it at the END of setup(), always.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> waitForStart() {
+<span class="tok-569cd6">void</span> waitForStart() {
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Press A"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Press A"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"to start"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"to start"</span>));
   buttonA.waitForButton();
   display.clear();
   delay(<span class="tok-b5cea8">500</span>);  <span class="tok-6a9955">// time to get your hands clear</span>
@@ -519,15 +519,15 @@ checkBattery()
 Hold A + B together at any time to see the battery.
 Call it at the TOP of loop().
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> checkBattery() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonB.isPressed()) {
+<span class="tok-569cd6">void</span> checkBattery() {
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonB.isPressed()) {
     display.clear();
-    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Battery"</span>));
+    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Battery"</span>));
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-    <span class="tok-569cd6-c-569cd6">int</span> mv = readBatteryMillivolts();
+    <span class="tok-569cd6">int</span> mv = readBatteryMillivolts();
     display.print(mv);
-    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">" mV"</span>));
-    <span class="tok-569cd6-c-569cd6">while</span> (buttonA.isPressed() || buttonB.isPressed()) {
+    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">" mV"</span>));
+    <span class="tok-569cd6">while</span> (buttonA.isPressed() || buttonB.isPressed()) {
       <span class="tok-6a9955">// wait for release</span>
     }
     delay(<span class="tok-b5cea8">200</span>);
@@ -556,18 +556,18 @@ Shows each sensor its personal brightest and darkest.
 Slide the robot side to side across the line until the
 countdown ends. Every window must cross the tape.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> calibrateSensors() {
+<span class="tok-569cd6">void</span> calibrateSensors() {
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Sweep!"</span>));
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> startTime = millis();
-  <span class="tok-569cd6-c-569cd6">while</span> (millis() - startTime &lt; CAL_TIME_MS) {
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Sweep!"</span>));
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> startTime = millis();
+  <span class="tok-569cd6">while</span> (millis() - startTime &lt; CAL_TIME_MS) {
     lineSensors.calibrate();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
     display.print((CAL_TIME_MS - (millis() - startTime)) / <span class="tok-b5cea8">1000</span> + <span class="tok-b5cea8">1</span>);
-    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">" sec "</span>));
+    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">" sec "</span>));
   }
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Cal done"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Cal done"</span>));
   delay(<span class="tok-b5cea8">750</span>);
   display.clear();
 }</pre>
@@ -584,18 +584,18 @@ showReadings()
 OLED: three calibrated values squeezed to 0-99 (value / 10).
 Serial Monitor: the full 0-1000 values, tab-separated.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> showReadings() {
+<span class="tok-569cd6">void</span> showReadings() {
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
-    <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> scaled = lineSensorValues[i] / <span class="tok-b5cea8">10</span>;
-    <span class="tok-569cd6-c-569cd6">if</span> (scaled &gt; <span class="tok-b5cea8">99</span>) scaled = <span class="tok-b5cea8">99</span>;
-    <span class="tok-569cd6-c-569cd6">if</span> (scaled &lt; <span class="tok-b5cea8">10</span>) display.print(<span class="tok-ce9178-c-ce9178">'0'</span>);
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> scaled = lineSensorValues[i] / <span class="tok-b5cea8">10</span>;
+    <span class="tok-569cd6">if</span> (scaled &gt; <span class="tok-b5cea8">99</span>) scaled = <span class="tok-b5cea8">99</span>;
+    <span class="tok-569cd6">if</span> (scaled &lt; <span class="tok-b5cea8">10</span>) display.print(<span class="tok-ce9178">'0'</span>);
     display.print(scaled);
-    <span class="tok-569cd6-c-569cd6">if</span> (i &lt; NUM_SENSORS - <span class="tok-b5cea8">1</span>) display.print(<span class="tok-ce9178-c-ce9178">' '</span>);
+    <span class="tok-569cd6">if</span> (i &lt; NUM_SENSORS - <span class="tok-b5cea8">1</span>) display.print(<span class="tok-ce9178">' '</span>);
   }
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
     <span class="tok-4ec9b6">Serial</span>.print(lineSensorValues[i]);
-    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178-c-ce9178">'\t'</span>);
+    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178">'\t'</span>);
   }
   <span class="tok-4ec9b6">Serial</span>.println();
 }</pre>
@@ -709,12 +709,12 @@ scratch pad →  one global array, a slot per active sensor —
 <span class="tok-4ec9b6">Zumo32U4LineSensors</span> lineSensors;
 
 <span class="tok-6a9955">// ===== CONSTANTS =====</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">3</span>;                <span class="tok-6a9955">// Act One: sensors 1, 3, 5</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> CAL_TIME_MS = <span class="tok-b5cea8">5000</span>;        <span class="tok-6a9955">// calibration sweep window</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> DISPLAY_INTERVAL_MS = <span class="tok-b5cea8">100</span>; <span class="tok-6a9955">// refresh rate for readings</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">3</span>;                <span class="tok-6a9955">// Act One: sensors 1, 3, 5</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> CAL_TIME_MS = <span class="tok-b5cea8">5000</span>;        <span class="tok-6a9955">// calibration sweep window</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> DISPLAY_INTERVAL_MS = <span class="tok-b5cea8">100</span>; <span class="tok-6a9955">// refresh rate for readings</span>
 
 <span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
 </div>
 </details>
 
@@ -742,7 +742,7 @@ scratch pad →  one global array, a slot per active sensor —
 <details data-reveal="check" class="details-dee2e6">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">void</span> setup() {
+<pre class="code-block-333-3"><span class="tok-569cd6">void</span> setup() {
   <span class="tok-4ec9b6">Serial</span>.begin(<span class="tok-b5cea8">115200</span>);
   lineSensors.initThreeSensors();   <span class="tok-6a9955">// wake sensors 1, 3, 5</span>
   waitForStart();
@@ -775,12 +775,12 @@ scratch pad →  one global array, a slot per active sensor —
 <details data-reveal="check" class="details-dee2e6">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333-3"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
   lineSensors.read(lineSensorValues);   <span class="tok-6a9955">// RAW readings, 0-2000 microseconds</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
     <span class="tok-4ec9b6">Serial</span>.print(lineSensorValues[i]);
-    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178-c-ce9178">'\t'</span>);
+    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178">'\t'</span>);
   }
   <span class="tok-4ec9b6">Serial</span>.println();
   delay(DISPLAY_INTERVAL_MS);
@@ -816,7 +816,7 @@ scratch pad →  one global array, a slot per active sensor —
 
 <p>Now make the readings honest. First, add one call in <code class="code-inline-bg-e8e8e8">setup()</code>, between the sensor init and the safety gate:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">void</span> setup() {
+<pre class="code-block-333-3"><span class="tok-569cd6">void</span> setup() {
   <span class="tok-4ec9b6">Serial</span>.begin(<span class="tok-b5cea8">115200</span>);
   lineSensors.initThreeSensors();   <span class="tok-6a9955">// wake sensors 1, 3, 5</span>
   calibrateSensors();
@@ -826,10 +826,10 @@ scratch pad →  one global array, a slot per active sensor —
 <p><strong>Build. It fails.</strong> Red squiggle, and the terminal says something like <code class="code-inline-bg-e8e8e8">'calibrateSensors' was not declared in this scope</code>. Good — you have seen this exact error before, on purpose, in Lesson 2 Step 7. The compiler read <code class="code-inline-bg-e8e8e8">setup()</code> top-to-bottom, hit a name it had never heard of, and quit. The fix is the same as it was then: a <strong>function prototype</strong> up top, and the function itself down in helpers. Since we're about to need <code class="code-inline-bg-e8e8e8">showReadings()</code> too, declare <em>both</em> prototypes now — one trip:</p>
 
 <pre class="code-block-333-3"><span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> calibrateSensors();
-<span class="tok-569cd6-c-569cd6">void</span> showReadings();
-<span class="tok-569cd6-c-569cd6">void</span> waitForStart();
-<span class="tok-569cd6-c-569cd6">void</span> checkBattery();</pre>
+<span class="tok-569cd6">void</span> calibrateSensors();
+<span class="tok-569cd6">void</span> showReadings();
+<span class="tok-569cd6">void</span> waitForStart();
+<span class="tok-569cd6">void</span> checkBattery();</pre>
 
 <p>Then add the two functions to the HELPER FUNCTIONS section, above the STANDARD HELPERS block:</p>
 
@@ -840,18 +840,18 @@ Shows each sensor its personal brightest and darkest.
 Slide the robot side to side across the line until the
 countdown ends. Every window must cross the tape.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> calibrateSensors() {
+<span class="tok-569cd6">void</span> calibrateSensors() {
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Sweep!"</span>));
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> startTime = millis();
-  <span class="tok-569cd6-c-569cd6">while</span> (millis() - startTime &lt; CAL_TIME_MS) {
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Sweep!"</span>));
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> startTime = millis();
+  <span class="tok-569cd6">while</span> (millis() - startTime &lt; CAL_TIME_MS) {
     lineSensors.calibrate();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
     display.print((CAL_TIME_MS - (millis() - startTime)) / <span class="tok-b5cea8">1000</span> + <span class="tok-b5cea8">1</span>);
-    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">" sec "</span>));
+    display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">" sec "</span>));
   }
   display.clear();
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"Cal done"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"Cal done"</span>));
   delay(<span class="tok-b5cea8">750</span>);
   display.clear();
 }
@@ -862,25 +862,25 @@ showReadings()
 OLED: three calibrated values squeezed to 0-99 (value / 10).
 Serial Monitor: the full 0-1000 values, tab-separated.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> showReadings() {
+<span class="tok-569cd6">void</span> showReadings() {
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
-    <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> scaled = lineSensorValues[i] / <span class="tok-b5cea8">10</span>;
-    <span class="tok-569cd6-c-569cd6">if</span> (scaled &gt; <span class="tok-b5cea8">99</span>) scaled = <span class="tok-b5cea8">99</span>;
-    <span class="tok-569cd6-c-569cd6">if</span> (scaled &lt; <span class="tok-b5cea8">10</span>) display.print(<span class="tok-ce9178-c-ce9178">'0'</span>);
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+    <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> scaled = lineSensorValues[i] / <span class="tok-b5cea8">10</span>;
+    <span class="tok-569cd6">if</span> (scaled &gt; <span class="tok-b5cea8">99</span>) scaled = <span class="tok-b5cea8">99</span>;
+    <span class="tok-569cd6">if</span> (scaled &lt; <span class="tok-b5cea8">10</span>) display.print(<span class="tok-ce9178">'0'</span>);
     display.print(scaled);
-    <span class="tok-569cd6-c-569cd6">if</span> (i &lt; NUM_SENSORS - <span class="tok-b5cea8">1</span>) display.print(<span class="tok-ce9178-c-ce9178">' '</span>);
+    <span class="tok-569cd6">if</span> (i &lt; NUM_SENSORS - <span class="tok-b5cea8">1</span>) display.print(<span class="tok-ce9178">' '</span>);
   }
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
     <span class="tok-4ec9b6">Serial</span>.print(lineSensorValues[i]);
-    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178-c-ce9178">'\t'</span>);
+    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178">'\t'</span>);
   }
   <span class="tok-4ec9b6">Serial</span>.println();
 }</pre>
 
 <p>And switch <code class="code-inline-bg-e8e8e8">loop()</code> from raw to calibrated:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333-3"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
   lineSensors.readCalibrated(lineSensorValues);
   showReadings();
@@ -943,7 +943,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 <div class="div-mt-15px">
 <p><strong>7a.</strong> One constant:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">5</span>;                <span class="tok-6a9955">// Act Two: all five sensors</span></pre>
+<pre class="code-block-333-3"><span class="tok-569cd6">const</span> <span class="tok-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">5</span>;                <span class="tok-6a9955">// Act Two: all five sensors</span></pre>
 
 <p><strong>7b.</strong> One line in <code class="code-inline-bg-e8e8e8">setup()</code>:</p>
 
@@ -951,7 +951,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <p><strong>7c.</strong> Replace <code class="code-inline-bg-e8e8e8">showReadings()</code> with the five-sensor version (and update its prototype to match — it takes a parameter now):</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">void</span> showReadings(<span class="tok-569cd6-c-569cd6">int</span> position);</pre>
+<pre class="code-block-333-3"><span class="tok-569cd6">void</span> showReadings(<span class="tok-569cd6">int</span> position);</pre>
 
 <pre class="code-block-333-3"><span class="tok-6a9955">/*
 showReadings(position)
@@ -960,28 +960,28 @@ OLED row 0: five calibrated values squeezed to one digit each (0-9).
 OLED row 1: the line position, 0-4000 (2000 = dead center).
 Serial Monitor: full values plus the position.
 */</span>
-<span class="tok-569cd6-c-569cd6">void</span> showReadings(<span class="tok-569cd6-c-569cd6">int</span> position) {
+<span class="tok-569cd6">void</span> showReadings(<span class="tok-569cd6">int</span> position) {
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
     display.print(lineSensorValues[i] / <span class="tok-b5cea8">101</span>);   <span class="tok-6a9955">// 0-1000 -&gt; single digit 0-9</span>
   }
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"P:"</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"P:"</span>));
   display.print(position);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"   "</span>));   <span class="tok-6a9955">// wipe leftover digits</span>
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"   "</span>));   <span class="tok-6a9955">// wipe leftover digits</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
     <span class="tok-4ec9b6">Serial</span>.print(lineSensorValues[i]);
-    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178-c-ce9178">'\t'</span>);
+    <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-ce9178">'\t'</span>);
   }
-  <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"pos="</span>));
+  <span class="tok-4ec9b6">Serial</span>.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"pos="</span>));
   <span class="tok-4ec9b6">Serial</span>.println(position);
 }</pre>
 
 <p><strong>7d.</strong> And <code class="code-inline-bg-e8e8e8">loop()</code> now asks for the position:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">void</span> loop() {
+<pre class="code-block-333-3"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
-  <span class="tok-569cd6-c-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
+  <span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
   showReadings(position);
   delay(DISPLAY_INTERVAL_MS);
 }</pre>
@@ -1161,9 +1161,9 @@ Serial Monitor: full values plus the position.
 
 <p>Often "skip it" isn't enough — you want a plan for both answers. <code class="code-inline-bg-e8e8e8">else</code> attaches the "no" plan:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">if</span> (sensorValue &gt; <span class="tok-b5cea8">500</span>) {
+<pre class="code-block-333-3"><span class="tok-569cd6">if</span> (sensorValue &gt; <span class="tok-b5cea8">500</span>) {
   ledYellow(<span class="tok-b5cea8">1</span>);   <span class="tok-6a9955">// dark detected - LED ON</span>
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
   ledYellow(<span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// light detected - LED OFF</span>
 }</pre>
 
@@ -1180,9 +1180,9 @@ Serial Monitor: full values plus the position.
 
 <pre class="code-block-333-3">lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">500</span>) {
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">500</span>) {
   ledYellow(<span class="tok-b5cea8">1</span>);   <span class="tok-6a9955">// dark detected - LED ON</span>
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
   ledYellow(<span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// light detected - LED OFF</span>
 }</pre>
 
@@ -1192,14 +1192,14 @@ Serial Monitor: full values plus the position.
 
 <p><strong>Goal:</strong> the display announces which zone the line is in — LEFT, CENTER, or RIGHT. <strong>What we know:</strong> with three sensors, <code class="code-inline-bg-e8e8e8">readLine()</code> gives 0–2000 with 1000 as dead center. Three zones need a <em>chain</em> of decisions — <code class="code-inline-bg-e8e8e8">else if</code> glues them together:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
+<pre class="code-block-333-3"><span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
 display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-<span class="tok-569cd6-c-569cd6">if</span> (position &lt; <span class="tok-b5cea8">750</span>) {
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"LEFT  "</span>));
-} <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (position &gt; <span class="tok-b5cea8">1250</span>) {
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"RIGHT "</span>));
-} <span class="tok-569cd6-c-569cd6">else</span> {
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"CENTER"</span>));
+<span class="tok-569cd6">if</span> (position &lt; <span class="tok-b5cea8">750</span>) {
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"LEFT  "</span>));
+} <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (position &gt; <span class="tok-b5cea8">1250</span>) {
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"RIGHT "</span>));
+} <span class="tok-569cd6">else</span> {
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"CENTER"</span>));
 }</pre>
 
 <p>Read the chain top to bottom, the way the robot does: <em>below 750? Say LEFT and stop. Otherwise, above 1250? Say RIGHT and stop. Otherwise — it must be in the middle band — say CENTER.</em> Exactly one branch fires. The trailing spaces in <code class="code-inline-bg-e8e8e8">"LEFT&nbsp;&nbsp;"</code> are doing quiet, honest work: they overwrite leftover letters from a longer previous word on the 8-character row.</p>
@@ -1211,14 +1211,14 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <p>Complete this code so the <strong>red</strong> LED turns on when the <strong>left</strong> sensor (sensor 1) sees the line:</p>
 <pre class="code-block-333-3">lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6-c-569cd6">if</span> (_________ &gt; <span class="tok-b5cea8">500</span>) {
+<span class="tok-569cd6">if</span> (_________ &gt; <span class="tok-b5cea8">500</span>) {
   _________;
 }</pre>
 <details data-reveal="solution" class="details-ddd"><summary class="summary-bg-f8f9fa-3">🔓 Click to reveal the answer</summary>
 <div class="div-p-020px15p">
 <pre class="code-block-333-3">lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">0</span>] &gt; <span class="tok-b5cea8">500</span>) {
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">0</span>] &gt; <span class="tok-b5cea8">500</span>) {
   ledRed(<span class="tok-b5cea8">1</span>);
 }</pre>
 <p class="p-mb-0"><strong>Explanation:</strong> sensor 1 is the <em>first awake sensor</em>, so in the three-sensor configuration it lives in box <code class="code-inline-bg-e8e8e8">[0]</code> — index counts from zero. If you wrote <code class="code-inline-bg-e8e8e8">[1]</code>, you just met the number-one Lesson 4 bug from Section 5.5 — better here than in a competition.</p>
@@ -1230,9 +1230,9 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 
 <p>You have already written one of these. Back in Step 4 you typed this into <code class="code-inline-bg-e8e8e8">loop()</code>, and it worked, and nobody explained it:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+<pre class="code-block-333-3"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
   Serial.print(lineSensorValues[i]);
-  Serial.print(<span class="tok-ce9178-c-ce9178">'\t'</span>);
+  Serial.print(<span class="tok-ce9178">'\t'</span>);
 }</pre>
 
 <p>Here is what it saved you, and it is an argument this lesson can make better than any other in the book. Without a loop, printing three sensors means writing the same two lines three times, once for box <code class="code-inline-bg-e8e8e8">[0]</code>, once for <code class="code-inline-bg-e8e8e8">[1]</code>, once for <code class="code-inline-bg-e8e8e8">[2]</code>. Tedious, but survivable.</p>
@@ -1271,12 +1271,12 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 
 <p>An if statement chooses. A for loop repeats. Put one inside the other and you get the shape most real robot code is made of — and you already own an example of it. This is <code class="code-inline-bg-e8e8e8">showReadings()</code> from Section 5.8, the function drawing your OLED right now:</p>
 
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> scaled = lineSensorValues[i] / <span class="tok-b5cea8">10</span>;
-  <span class="tok-569cd6-c-569cd6">if</span> (scaled &gt; <span class="tok-b5cea8">99</span>) scaled = <span class="tok-b5cea8">99</span>;
-  <span class="tok-569cd6-c-569cd6">if</span> (scaled &lt; <span class="tok-b5cea8">10</span>) display.print(<span class="tok-ce9178-c-ce9178">'0'</span>);
+<pre class="code-block-333-3"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> scaled = lineSensorValues[i] / <span class="tok-b5cea8">10</span>;
+  <span class="tok-569cd6">if</span> (scaled &gt; <span class="tok-b5cea8">99</span>) scaled = <span class="tok-b5cea8">99</span>;
+  <span class="tok-569cd6">if</span> (scaled &lt; <span class="tok-b5cea8">10</span>) display.print(<span class="tok-ce9178">'0'</span>);
   display.print(scaled);
-  <span class="tok-569cd6-c-569cd6">if</span> (i &lt; NUM_SENSORS - <span class="tok-b5cea8">1</span>) display.print(<span class="tok-ce9178-c-ce9178">' '</span>);
+  <span class="tok-569cd6">if</span> (i &lt; NUM_SENSORS - <span class="tok-b5cea8">1</span>) display.print(<span class="tok-ce9178">' '</span>);
 }</pre>
 
 <p>Three ifs, all inside one loop, each answering a question about <em>this lap only</em>. The last one is the interesting one: <code class="code-inline-bg-e8e8e8">i &lt; NUM_SENSORS - 1</code> is true on every lap except the final one, so a space goes <em>between</em> the numbers and never after the last. That single line is why your display reads <code class="code-inline-bg-e8e8e8">42 87 13</code> and not <code class="code-inline-bg-e8e8e8">42 87 13 </code> with a stray gap pushing the row one character too wide.</p>
@@ -1290,7 +1290,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <p>Now try to count something. Slide a strip of tape under the center sensor and count how many times it passes. The obvious code is a disaster:</p>
 
 <pre class="code-block-bg-1e1e1e-4"><span class="tok-6a9955">// WRONG - this counts hundreds per crossing</span>
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>) {
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>) {
     crossings++;
 }</pre>
 
@@ -1309,13 +1309,13 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <p>So keep a flag that records where you were, and compare it to where you are:</p>
 
 <pre class="code-block-bg-1e1e1e-4"><span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
-<span class="tok-569cd6-c-569cd6">bool</span> onLine = <span class="tok-569cd6-c-569cd6">false</span>;      <span class="tok-6a9955">// where I was last time</span>
-<span class="tok-569cd6-c-569cd6">int</span>  crossings = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">bool</span> onLine = <span class="tok-569cd6">false</span>;      <span class="tok-6a9955">// where I was last time</span>
+<span class="tok-569cd6">int</span>  crossings = <span class="tok-b5cea8">0</span>;
 
 <span class="tok-6a9955">// inside loop():</span>
-<span class="tok-569cd6-c-569cd6">bool</span> nowDark = (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>);   <span class="tok-6a9955">// where I am now</span>
+<span class="tok-569cd6">bool</span> nowDark = (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>);   <span class="tok-6a9955">// where I am now</span>
 
-<span class="tok-569cd6-c-569cd6">if</span> (nowDark &amp;&amp; !onLine) {   <span class="tok-6a9955">// dark now, light before -> just ARRIVED</span>
+<span class="tok-569cd6">if</span> (nowDark &amp;&amp; !onLine) {   <span class="tok-6a9955">// dark now, light before -> just ARRIVED</span>
     crossings++;
 }
 onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday</span></pre>
@@ -1333,7 +1333,7 @@ onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday<
 
 <p>Some questions are not "is it dark?" but "how far off am I?" Ask the line sensors for a position with <code class="code-inline-bg-e8e8e8">readLine()</code> and you get a number from 0 to 2000, with 1000 meaning dead center. Subtract, and you have the most useful quantity in robotics:</p>
 
-<pre class="code-block-bg-1e1e1e-4"><span class="tok-569cd6-c-569cd6">int</span> error = position - <span class="tok-b5cea8">1000</span>;   <span class="tok-6a9955">// how far off centre, and which way</span></pre>
+<pre class="code-block-bg-1e1e1e-4"><span class="tok-569cd6">int</span> error = position - <span class="tok-b5cea8">1000</span>;   <span class="tok-6a9955">// how far off centre, and which way</span></pre>
 
 <p>That single subtraction carries two facts at once. Its <strong>size</strong> says how wrong you are; its <strong>sign</strong> says which way. Position 1400 gives <code class="code-inline-bg-e8e8e8">error = 400</code>; position 600 gives <code class="code-inline-bg-e8e8e8">error = -400</code>. Equally wrong, opposite directions — which is exactly what you need to know to correct it.</p>
 
@@ -1411,14 +1411,14 @@ else:
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the center-sensor index and the tape threshold.</p>
 <pre class="code-block-333-2">lineSensors.readCalibrated(lineSensorValues);
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[____] &gt; ____) {   <span class="tok-6a9955">// center sensor over tape?</span>
+<span class="tok-569cd6">if</span> (lineSensorValues[____] &gt; ____) {   <span class="tok-6a9955">// center sensor over tape?</span>
   ledYellow(<span class="tok-b5cea8">1</span>);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"LINE!"</span>));
-} <span class="tok-569cd6-c-569cd6">else</span> {
+  display.print(F(<span class="tok-ce9178">"LINE!"</span>));
+} <span class="tok-569cd6">else</span> {
   ledYellow(<span class="tok-b5cea8">0</span>);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"     "</span>));
+  display.print(F(<span class="tok-ce9178">"     "</span>));
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
@@ -1430,14 +1430,14 @@ else:
 <div class="div-p-020px15p">
 <pre class="code-block-333-3">lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>) {
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>) {
   ledYellow(<span class="tok-b5cea8">1</span>);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"LINE!"</span>));
-} <span class="tok-569cd6-c-569cd6">else</span> {
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"LINE!"</span>));
+} <span class="tok-569cd6">else</span> {
   ledYellow(<span class="tok-b5cea8">0</span>);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"     "</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"     "</span>));
 }</pre>
 <p class="p-mb-0">Both branches touch the display — one writes the word, the other erases it with five spaces. Miss the erase and "LINE!" sticks forever after its first appearance.</p>
 </div>
@@ -1467,11 +1467,11 @@ each loop, read the center sensor:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the “not already on the line” half of the arrival test.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">bool</span> onLine = <span class="tok-569cd6-c-569cd6">false</span>;
-<span class="tok-569cd6-c-569cd6">int</span> crossings = <span class="tok-b5cea8">0</span>;
+<pre class="code-block-333-2"><span class="tok-569cd6">bool</span> onLine = <span class="tok-569cd6">false</span>;
+<span class="tok-569cd6">int</span> crossings = <span class="tok-b5cea8">0</span>;
 <span class="tok-6a9955">// in loop():</span>
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span> &amp;&amp; ____) {   <span class="tok-6a9955">// over the line AND not already on it</span>
-  onLine = <span class="tok-569cd6-c-569cd6">true</span>;
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span> &amp;&amp; ____) {   <span class="tok-6a9955">// over the line AND not already on it</span>
+  onLine = <span class="tok-569cd6">true</span>;
   crossings++;
 }</pre>
 </div>
@@ -1484,21 +1484,21 @@ each loop, read the center sensor:
 <details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
 <pre class="code-block-333-3"><span class="tok-6a9955">// with the other globals:</span>
-<span class="tok-569cd6-c-569cd6">bool</span> onLine = <span class="tok-569cd6-c-569cd6">false</span>;
-<span class="tok-569cd6-c-569cd6">int</span> crossings = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">bool</span> onLine = <span class="tok-569cd6">false</span>;
+<span class="tok-569cd6">int</span> crossings = <span class="tok-b5cea8">0</span>;
 
 <span class="tok-6a9955">// inside loop(), after checkBattery():</span>
 lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span> &amp;&amp; !onLine) {
-  onLine = <span class="tok-569cd6-c-569cd6">true</span>;                    <span class="tok-6a9955">// the line just ARRIVED</span>
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span> &amp;&amp; !onLine) {
+  onLine = <span class="tok-569cd6">true</span>;                    <span class="tok-6a9955">// the line just ARRIVED</span>
   crossings = crossings + <span class="tok-b5cea8">1</span>;
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   display.print(crossings);
-  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178-c-ce9178">"   "</span>));
+  display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"   "</span>));
 }
-<span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &lt; <span class="tok-b5cea8">400</span> &amp;&amp; onLine) {
-  onLine = <span class="tok-569cd6-c-569cd6">false</span>;                   <span class="tok-6a9955">// the line has fully LEFT</span>
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &lt; <span class="tok-b5cea8">400</span> &amp;&amp; onLine) {
+  onLine = <span class="tok-569cd6">false</span>;                   <span class="tok-6a9955">// the line has fully LEFT</span>
 }</pre>
 <p class="p-mb-0">The <code class="code-inline-bg-e8e8e8">&amp;&amp; !onLine</code> is the arrival detector: dark AND we weren't already on it. The gap between 600 and 400 is the hysteresis band — inside it, nothing changes state, so jitter can't ring the counter.</p>
 </div>
@@ -1526,13 +1526,13 @@ for each of the 8 columns:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the divisor that squashes 0–2000 into 8 columns.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
+<pre class="code-block-333-2"><span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
 display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-<span class="tok-569cd6-c-569cd6">for</span> (uint8_t c = <span class="tok-b5cea8">0</span>; c &lt; <span class="tok-b5cea8">8</span>; c++) {
-  <span class="tok-569cd6-c-569cd6">if</span> (c == position / ____) {   <span class="tok-6a9955">// 0-2000 -> columns 0-7</span>
-    display.print(<span class="tok-ce9178-c-ce9178">'^'</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    display.print(<span class="tok-ce9178-c-ce9178">' '</span>);
+<span class="tok-569cd6">for</span> (uint8_t c = <span class="tok-b5cea8">0</span>; c &lt; <span class="tok-b5cea8">8</span>; c++) {
+  <span class="tok-569cd6">if</span> (c == position / ____) {   <span class="tok-6a9955">// 0-2000 -> columns 0-7</span>
+    display.print(<span class="tok-ce9178">'^'</span>);
+  } <span class="tok-569cd6">else</span> {
+    display.print(<span class="tok-ce9178">' '</span>);
   }
 }</pre>
 </div>
@@ -1543,14 +1543,14 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 </div>
 <details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
+<pre class="code-block-333-3"><span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
 
 display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-<span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> c = <span class="tok-b5cea8">0</span>; c &lt; <span class="tok-b5cea8">8</span>; c++) {
-  <span class="tok-569cd6-c-569cd6">if</span> (c == position / <span class="tok-b5cea8">251</span>) {   <span class="tok-6a9955">// 0-2000 squashed to column 0-7</span>
-    display.print(<span class="tok-ce9178-c-ce9178">'^'</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    display.print(<span class="tok-ce9178-c-ce9178">' '</span>);
+<span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> c = <span class="tok-b5cea8">0</span>; c &lt; <span class="tok-b5cea8">8</span>; c++) {
+  <span class="tok-569cd6">if</span> (c == position / <span class="tok-b5cea8">251</span>) {   <span class="tok-6a9955">// 0-2000 squashed to column 0-7</span>
+    display.print(<span class="tok-ce9178">'^'</span>);
+  } <span class="tok-569cd6">else</span> {
+    display.print(<span class="tok-ce9178">' '</span>);
   }
 }</pre>
 <p class="p-mb-0">Why 251? Dividing by 250 would let position 2000 produce column 8 — one past the row's edge. 2000 / 251 = 7, so the pointer stays on the display at full right. Off-by-one guards like this are half of real programming.</p>
@@ -1579,10 +1579,10 @@ each loop: read all sensors — is ANY sensor over the line?
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the creep speed and the flag you set when a line is seen.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> CREEP_SPEED = ____;   <span class="tok-6a9955">// slow</span>
-<span class="tok-569cd6-c-569cd6">bool</span> lineSeen = <span class="tok-569cd6-c-569cd6">false</span>;
-<span class="tok-569cd6-c-569cd6">for</span> (uint8_t i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
-  <span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[i] &gt; LINE_SEEN) lineSeen = ____;   <span class="tok-6a9955">// any sensor over the line</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CREEP_SPEED = ____;   <span class="tok-6a9955">// slow</span>
+<span class="tok-569cd6">bool</span> lineSeen = <span class="tok-569cd6">false</span>;
+<span class="tok-569cd6">for</span> (uint8_t i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span class="tok-569cd6">if</span> (lineSensorValues[i] &gt; LINE_SEEN) lineSeen = ____;   <span class="tok-6a9955">// any sensor over the line</span>
 }
 <span class="tok-6a9955">// if lineSeen -> setSpeeds(0,0); else creep forward</span></pre>
 </div>
@@ -1598,22 +1598,22 @@ each loop: read all sensors — is ANY sensor over the line?
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 
 <span class="tok-6a9955">// constants: add</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> CREEP_SPEED = <span class="tok-b5cea8">80</span>;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> LINE_SEEN = <span class="tok-b5cea8">600</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CREEP_SPEED = <span class="tok-b5cea8">80</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> LINE_SEEN = <span class="tok-b5cea8">600</span>;
 
 <span class="tok-6a9955">// inside loop(), after checkBattery():</span>
 lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6-c-569cd6">bool</span> lineSeen = <span class="tok-569cd6-c-569cd6">false</span>;
-<span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
-  <span class="tok-569cd6-c-569cd6">if</span> (lineSensorValues[i] &gt; LINE_SEEN) {
-    lineSeen = <span class="tok-569cd6-c-569cd6">true</span>;
+<span class="tok-569cd6">bool</span> lineSeen = <span class="tok-569cd6">false</span>;
+<span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
+  <span class="tok-569cd6">if</span> (lineSensorValues[i] &gt; LINE_SEEN) {
+    lineSeen = <span class="tok-569cd6">true</span>;
   }
 }
 
-<span class="tok-569cd6-c-569cd6">if</span> (lineSeen) {
+<span class="tok-569cd6">if</span> (lineSeen) {
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);       <span class="tok-6a9955">// freeze at the line</span>
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
   motors.setSpeeds(CREEP_SPEED, CREEP_SPEED);
 }</pre>
 <p class="p-mb-0">The for loop asks every awake sensor the same question and remembers if <em>anyone</em> said yes. This exact shape — read all, decide once, act — is the skeleton of every autonomous behavior you will ever write.</p>
@@ -1642,13 +1642,13 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the centre value and the error calculation.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> CENTER = ____;      <span class="tok-6a9955">// middle of the 0-2000 scale</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DEADBAND = <span class="tok-b5cea8">100</span>;
-<span class="tok-569cd6-c-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
-<span class="tok-569cd6-c-569cd6">int</span> error = position - ____;   <span class="tok-6a9955">// how far off centre</span>
-<span class="tok-569cd6-c-569cd6">if</span> (abs(error) &lt; DEADBAND) {
+<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CENTER = ____;      <span class="tok-6a9955">// middle of the 0-2000 scale</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DEADBAND = <span class="tok-b5cea8">100</span>;
+<span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
+<span class="tok-569cd6">int</span> error = position - ____;   <span class="tok-6a9955">// how far off centre</span>
+<span class="tok-569cd6">if</span> (abs(error) &lt; DEADBAND) {
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);      <span class="tok-6a9955">// centred - stop</span>
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
   <span class="tok-6a9955">// pivot toward the line</span>
 }</pre>
 </div>
@@ -1664,19 +1664,19 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 
 <span class="tok-6a9955">// constants: add</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> TURN_SPEED = <span class="tok-b5cea8">100</span>;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> CENTER = <span class="tok-b5cea8">1000</span>;      <span class="tok-6a9955">// three-sensor scale: 0-2000</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> DEADBAND = <span class="tok-b5cea8">100</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_SPEED = <span class="tok-b5cea8">100</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CENTER = <span class="tok-b5cea8">1000</span>;      <span class="tok-6a9955">// three-sensor scale: 0-2000</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DEADBAND = <span class="tok-b5cea8">100</span>;
 
 <span class="tok-6a9955">// inside loop(), after checkBattery():</span>
-<span class="tok-569cd6-c-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
-<span class="tok-569cd6-c-569cd6">int</span> error = position - CENTER;
+<span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
+<span class="tok-569cd6">int</span> error = position - CENTER;
 
-<span class="tok-569cd6-c-569cd6">if</span> (error &lt; -DEADBAND) {
+<span class="tok-569cd6">if</span> (error &lt; -DEADBAND) {
   motors.setSpeeds(-TURN_SPEED, TURN_SPEED);   <span class="tok-6a9955">// line is left -&gt; pivot left</span>
-} <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (error &gt; DEADBAND) {
+} <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (error &gt; DEADBAND) {
   motors.setSpeeds(TURN_SPEED, -TURN_SPEED);   <span class="tok-6a9955">// line is right -&gt; pivot right</span>
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);                      <span class="tok-6a9955">// centered - hold</span>
 }</pre>
 <p class="p-mb-0">The pivot directions follow the Lesson 3 rule — a robot turns toward its slower (here, backward) track. <code class="code-inline-bg-e8e8e8">error</code> is a concept worth savoring: one signed number that says both <em>which way</em> and <em>how far</em>. In Lesson 15, PID does nothing but stare at this exact number — you've just met the main character early.</p>
@@ -1962,11 +1962,11 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <p>Raw: <strong>0–2000</strong> µs, meaning varies per sensor · Calibrated: <strong>0 = brightest seen → 1000 = darkest seen</strong>, per-sensor fair · Position: <strong>0 = far left → max = far right</strong>, max = (sensors − 1) × 1000. Line lost → position snaps to 0 or max, by last-seen side.</p>
 
 <h4 id="qr-if" class="h4-c-6f7582">The if statement</h4>
-<pre class="code-block-333-3"><span class="tok-569cd6-c-569cd6">if</span> (condition) {
+<pre class="code-block-333-3"><span class="tok-569cd6">if</span> (condition) {
   <span class="tok-6a9955">// runs only when condition is true</span>
-} <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (otherCondition) {
+} <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (otherCondition) {
   <span class="tok-6a9955">// first no, second yes</span>
-} <span class="tok-569cd6-c-569cd6">else</span> {
+} <span class="tok-569cd6">else</span> {
   <span class="tok-6a9955">// all questions answered no</span>
 }
 

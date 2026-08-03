@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.42.0'
+VERSION = 'v1.42.1'
 # v1.41.0 (S112): GATE 46, §27.14 - every link and every id resolves. 1,237 links and 705
 # ids across twenty pages had NO gate at all. Control-run on four shapes: dead in-page
 # anchor, duplicate id, missing file, dead cross-page fragment - each named individually,
@@ -1826,7 +1826,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 650, 2371, '72d754e71e7743f7'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, '8751935027bed6d1'
 #   S111c: THE REPAINT. The §6.5 band system moved to the eight-band palette ruled in
 #   ZUMO_S111_VISUAL_RULING.md - 2,460 elements across the sixteen lessons plus
 #   going_deeper, all 134 gradients flattened per v8.87's absolute ban, and the 87
@@ -1847,6 +1847,15 @@ CSS_RULES, CSS_DECLS, CSS_DIGEST = 650, 2371, '72d754e71e7743f7'
 #   lessons lose exactly 3 styled elements each, L02 loses 4 and gains 121 (its code
 #   block), L11-L16 are untouched, and ZERO elements gained a styling they did not have.
 #   656 -> 650, 2,396 -> 2,371.
+#   S112: 650 -> 646, 2,371 -> 2,367. NOT a repaint. Eight values were spelled in BOTH cases
+#   ('#4CAF50' and '#4caf50'), which CSS reads as one colour and every raw-string comparison
+#   in this file reads as two - the S111 case trap, found by color_index.py v1.0. Lowercasing
+#   25 occurrences in the lesson source merged four duplicate rule PAIRS, and the survivors
+#   absorbed exactly one element each (2576->2577, 698->699, 49->50, 8->9), which is the
+#   proof the drop is the merge and nothing else. Four class names also SHORTENED
+#   (.tok-569cd6-c-569cd6 -> .tok-569cd6) because the collision that lengthened them is gone;
+#   the old names no longer resolve, so a stale reference fails gate 41 rather than hiding.
+#   Cycle was restore -> edit -> build_css -> apply --include-held (Bible §27.8b).
 #   S111: [IMAGE 2.5] retired. L02's completed program became a LIVE CODE BLOCK in the
 #   Quick Reference instead of a screenshot, so the dashed placeholder box lost its last
 #   consumer and `.div-3498db-2` died - 7 declarations, which is exactly the drop.

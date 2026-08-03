@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.17.0 -->
+<!-- Lesson version: v02.17.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,9 +92,9 @@
 <p>Back in Lesson 8 you wrote four lines of code that made the robot follow a line, and they
 worked. Here they are again, unchanged, still running inside your project today:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-<span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-<span class="tok-569cd6-c-569cd6">int</span> correction = currentKp * error;
+<span class="tok-569cd6">int</span> position = readLinePosition();
+<span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+<span class="tok-569cd6">int</span> correction = currentKp * error;
 motors.setSpeeds(BASE_SPEED + correction, BASE_SPEED - correction);
 </pre>
 <p>That is <b>proportional control</b>. It asks exactly one question &mdash; <i>how far off am I,
@@ -155,9 +155,9 @@ history (I), and its rate of change (D).</div>
 <h3 class="h3-c-1f2a3d-2">3.2 P &mdash; the present</h3>
 <p>You already own this one. Lesson 8 wrote it.</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();      <span class="tok-7cbf6e">// 0 - 4000, center is 2000</span>
-<span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;    <span class="tok-7cbf6e">// how far off, and which way</span>
-<span class="tok-569cd6-c-569cd6">float</span> p = currentKp * error;           <span class="tok-7cbf6e">// steer in proportion</span>
+<span class="tok-569cd6">int</span> position = readLinePosition();      <span class="tok-7cbf6e">// 0 - 4000, center is 2000</span>
+<span class="tok-569cd6">int</span> error = position - LINE_CENTER;    <span class="tok-7cbf6e">// how far off, and which way</span>
+<span class="tok-569cd6">float</span> p = currentKp * error;           <span class="tok-7cbf6e">// steer in proportion</span>
 </pre>
 <p><b>The problem with P alone:</b> it knows where you are and nothing else. So it drives at
 full correction right up until the moment you arrive &mdash; and then you sail straight past. Correct
@@ -170,8 +170,8 @@ You <i>still</i> hit the wall, because nobody told you how fast you were closing
 <h3 class="h3-c-1f2a3d-2">3.3 D &mdash; the future</h3>
 <p>The derivative term looks at how fast the error is <i>changing</i>:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">float</span> derivative = (error - lastError) / dt;   <span class="tok-7cbf6e">// how fast the error is closing</span>
-<span class="tok-569cd6-c-569cd6">float</span> d = currentKd * derivative;
+<span class="tok-569cd6">float</span> derivative = (error - lastError) / dt;   <span class="tok-7cbf6e">// how fast the error is closing</span>
+<span class="tok-569cd6">float</span> d = currentKd * derivative;
 lastError = error;                            <span class="tok-7cbf6e">// today becomes the past</span>
 </pre>
 <div class="div-2e86ab-3"><b>&#128273; KEY TERM &mdash; Derivative:</b> the rate of change of a value over
@@ -194,7 +194,7 @@ that lasts a block.</div>
 <p>The integral term adds <b>memory</b>. It accumulates the error over time:</p>
 <pre class="code-block-bg-1e1e1e">
 integral = integral + (error * dt);   <span class="tok-7cbf6e">// add up every moment you were wrong</span>
-<span class="tok-569cd6-c-569cd6">float</span> i = currentKi * integral;
+<span class="tok-569cd6">float</span> i = currentKi * integral;
 </pre>
 <div class="div-2e86ab-3"><b>&#128273; KEY TERM &mdash; Integral:</b> the accumulated sum of a value over
 time &mdash; the <i>area under the error curve</i>. It answers &ldquo;how much total wrongness has piled up?&rdquo;</div>
@@ -285,7 +285,7 @@ for this job</b>, and you are about to find out why.</p>
 <h3 class="h3-c-433014-2">4.1 D and I are rates. A rate needs a dt.</h3>
 <p>Look again at the two new terms:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">float</span> derivative = (error - lastError) / dt;   <span class="tok-7cbf6e">// divided by time</span>
+<span class="tok-569cd6">float</span> derivative = (error - lastError) / dt;   <span class="tok-7cbf6e">// divided by time</span>
 integral = integral + (error * dt);           <span class="tok-7cbf6e">// multiplied by time</span>
 </pre>
 <p>Both of them are <b>divided by or multiplied by <code>dt</code></b> &mdash; the length of one
@@ -335,12 +335,12 @@ about every 70 minutes. That sounds like a landmine. It is not &mdash; <b>as lon
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// micros() resolves to 4 microseconds. It is the only clock on this robot</span>
 <span class="tok-7cbf6e">// that can see this loop.</span>
-<span class="tok-569cd6-c-569cd6">float</span> deltaTimeSec() {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> now = micros();
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
+<span class="tok-569cd6">float</span> deltaTimeSec() {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> now = micros();
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
   lastMicros = now;
-  <span class="tok-569cd6-c-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
-  <span class="tok-569cd6-c-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
+  <span class="tok-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
+  <span class="tok-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
 }
 </pre>
 <p>Unsigned subtraction wraps the same way the counter does, so <code>now - lastMicros</code>
@@ -377,33 +377,33 @@ them get a better controller.</b></div>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// KP is already above. Lesson 8 put it there.</span>
 
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KD = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Section 7C finds it.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KD = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Section 7C finds it.</span>
                         <span class="tok-7cbf6e">// 7B gives you Ku and Tu. Start at KP * Tu / 8.</span>
 
 <span class="tok-7cbf6e">// The derivative DIVIDES BY dt. If dt is ever zero, the controller</span>
 <span class="tok-7cbf6e">// detonates. This is a floor, and it is an ENGINEERING LIMIT, not a</span>
 <span class="tok-7cbf6e">// blank: 100 us sits far below this loop's real period (~2000 us), so</span>
 <span class="tok-7cbf6e">// it can only fire if something is already badly wrong.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> DT_MIN_US = 100;   <span class="tok-7cbf6e">// microseconds</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> DT_MIN_US = 100;   <span class="tok-7cbf6e">// microseconds</span>
 
 <span class="tok-7cbf6e">// ===== THE TUNING RIG (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// You cannot tune what you cannot score. "That looked smoother" is not</span>
 <span class="tok-7cbf6e">// a measurement. Every run is the same length, because two gains are</span>
 <span class="tok-7cbf6e">// only comparable if the runs were.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> TUNING_RUN_MS = 10000;   <span class="tok-7cbf6e">// 0 = no bell, run until B</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> TUNING_RUN_MS = 10000;   <span class="tok-7cbf6e">// 0 = no bell, run until B</span>
 
 <span class="tok-7cbf6e">// ===== SPEED CONTROL (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// The LINE loop gets P and D.</span>
 <span class="tok-7cbf6e">// The SPEED loop gets the I - because a tired battery is a CONSTANT</span>
 <span class="tok-7cbf6e">// error with no honest excuse, and I is the only term that can see it.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> TARGET_SPEED_CMS = <span class="tok-b5cea8">25</span>.0;  <span class="tok-7cbf6e">// The speed you ASKED for</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KP_SPEED = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7E finds it. Try 2 and work from there.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KI_SPEED = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7E finds it. Try 0.5 and work from there.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TARGET_SPEED_CMS = <span class="tok-b5cea8">25</span>.0;  <span class="tok-7cbf6e">// The speed you ASKED for</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KP_SPEED = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7E finds it. Try 2 and work from there.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KI_SPEED = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. 7E finds it. Try 0.5 and work from there.</span>
 
 <span class="tok-7cbf6e">// A ceiling on what the speed loop may add to BASE_SPEED. An integrator</span>
 <span class="tok-7cbf6e">// with no ceiling is a runaway: it keeps adding, forever, until the</span>
 <span class="tok-7cbf6e">// motors saturate and it can no longer come back down.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> SPEED_TRIM_MAX = 80;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SPEED_TRIM_MAX = 80;
 </pre>
 <div class="div-m-16px0"><b>Three blanks, and every one of them is spent.</b> <code>KD</code>,
 <code>KP_SPEED</code>, <code>KI_SPEED</code> all ship as <code>0</code> with the starting guess in
@@ -414,34 +414,34 @@ right for your robot on your track is not the number that is right for mine.</di
 <i>last</i> error. I needs to remember <i>every</i> error. Both need to remember <i>when</i>.</p>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE PID STATE (NEW for Lesson 15) =====</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
-<span class="tok-569cd6-c-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
-<span class="tok-569cd6-c-569cd6">float</span> dtSec     = 0;          <span class="tok-7cbf6e">// How long THIS pass took. One clock, two loops.</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
+<span class="tok-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
+<span class="tok-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
+<span class="tok-569cd6">float</span> dtSec     = 0;          <span class="tok-7cbf6e">// How long THIS pass took. One clock, two loops.</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
 </pre>
 <h3 class="h3-c-433014-2">5.4 followLine(), upgraded</h3>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> followLine() {
+<span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
 
   dtSec = deltaTimeSec();   <span class="tok-7cbf6e">// ONE clock read per pass</span>
 
   <span class="tok-7cbf6e">// P - THE PRESENT. How far off am I right now?</span>
-  <span class="tok-569cd6-c-569cd6">float</span> p = currentKp * error;
+  <span class="tok-569cd6">float</span> p = currentKp * error;
 
   <span class="tok-7cbf6e">// D - THE FUTURE. How fast is the error closing?</span>
   <span class="tok-7cbf6e">// If I am already racing back toward the line, D eases off the wheel</span>
   <span class="tok-7cbf6e">// BEFORE I sail past it. P can never do that: P knows where I am, not</span>
   <span class="tok-7cbf6e">// where I am HEADED. This is the term that kills the weave.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
+  <span class="tok-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
 
   lastError = error;   <span class="tok-7cbf6e">// the present becomes the past</span>
 
-  <span class="tok-569cd6-c-569cd6">int</span> correction = (<span class="tok-569cd6-c-569cd6">int</span>)(p + d);
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed  = currentBase + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = currentBase - correction;
+  <span class="tok-569cd6">int</span> correction = (<span class="tok-569cd6">int</span>)(p + d);
+  <span class="tok-569cd6">int</span> leftSpeed  = currentBase + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = currentBase - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -460,50 +460,50 @@ them work. <b>You cannot tune what you cannot score.</b></p>
 <span class="tok-7cbf6e">//   MAE   - mean |error|.  How far off the robot LIVED.</span>
 <span class="tok-7cbf6e">//   PEAK  - max  |error|.  The worst single moment.</span>
 <span class="tok-7cbf6e">//   WEAVE - error sign-flips per second. How much it HUNTED.</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> runStart = 0;
-<span class="tok-569cd6-c-569cd6">long</span> runSumAbs   = 0;
-<span class="tok-569cd6-c-569cd6">long</span> runSamples  = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  runPeak     = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  runCross    = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  runLastSign = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  knob        = 0;   <span class="tok-7cbf6e">// which gain the buttons are turning</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> runStart = 0;
+<span class="tok-569cd6">long</span> runSumAbs   = 0;
+<span class="tok-569cd6">long</span> runSamples  = 0;
+<span class="tok-569cd6">int</span>  runPeak     = 0;
+<span class="tok-569cd6">int</span>  runCross    = 0;
+<span class="tok-569cd6">int</span>  runLastSign = 0;
+<span class="tok-569cd6">int</span>  knob        = 0;   <span class="tok-7cbf6e">// which gain the buttons are turning</span>
 </pre>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE SCORER (NEW for Lesson 15) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> runReset() {
+<span class="tok-569cd6">void</span> runReset() {
   runSumAbs = 0; runSamples = 0; runPeak = 0; runCross = 0; runLastSign = 0;
   runStart = millis();
 }
 
 <span class="tok-7cbf6e">// Called once per pass, with the error followLine() just computed.</span>
-<span class="tok-569cd6-c-569cd6">void</span> runSample(<span class="tok-569cd6-c-569cd6">int</span> error) {
-  <span class="tok-569cd6-c-569cd6">int</span> a = abs(error);
+<span class="tok-569cd6">void</span> runSample(<span class="tok-569cd6">int</span> error) {
+  <span class="tok-569cd6">int</span> a = abs(error);
   runSumAbs += a;
   runSamples++;
-  <span class="tok-569cd6-c-569cd6">if</span> (a &gt; runPeak) runPeak = a;
-  <span class="tok-569cd6-c-569cd6">int</span> sign = (error &gt; <span class="tok-b5cea8">0</span>) - (error &lt; <span class="tok-b5cea8">0</span>);
-  <span class="tok-569cd6-c-569cd6">if</span> (sign != <span class="tok-b5cea8">0</span> &amp;&amp; runLastSign != <span class="tok-b5cea8">0</span> &amp;&amp; sign != runLastSign) runCross++;
-  <span class="tok-569cd6-c-569cd6">if</span> (sign != <span class="tok-b5cea8">0</span>) runLastSign = sign;
+  <span class="tok-569cd6">if</span> (a &gt; runPeak) runPeak = a;
+  <span class="tok-569cd6">int</span> sign = (error &gt; <span class="tok-b5cea8">0</span>) - (error &lt; <span class="tok-b5cea8">0</span>);
+  <span class="tok-569cd6">if</span> (sign != <span class="tok-b5cea8">0</span> &amp;&amp; runLastSign != <span class="tok-b5cea8">0</span> &amp;&amp; sign != runLastSign) runCross++;
+  <span class="tok-569cd6">if</span> (sign != <span class="tok-b5cea8">0</span>) runLastSign = sign;
 }
 
 <span class="tok-7cbf6e">// The selected gain. Same row on every screen.</span>
-<span class="tok-569cd6-c-569cd6">void</span> showKnob() {
+<span class="tok-569cd6">void</span> showKnob() {
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  <span class="tok-569cd6-c-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { display.print(F(<span class="tok-ce9178-c-ce9178">"Kp  "</span>)); display.print(currentKp, <span class="tok-b5cea8">2</span>); }
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { display.print(F(<span class="tok-ce9178-c-ce9178">"Kd  "</span>)); display.print(currentKd, <span class="tok-b5cea8">3</span>); }
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { display.print(F(<span class="tok-ce9178-c-ce9178">"KpS "</span>)); display.print(currentKpSpeed, <span class="tok-b5cea8">2</span>); }
-  <span class="tok-569cd6-c-569cd6">else</span>                { display.print(F(<span class="tok-ce9178-c-ce9178">"KiS "</span>)); display.print(currentKiSpeed, <span class="tok-b5cea8">2</span>); }
-  display.print(F(<span class="tok-ce9178-c-ce9178">"     "</span>));
+  <span class="tok-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { display.print(F(<span class="tok-ce9178">"Kp  "</span>)); display.print(currentKp, <span class="tok-b5cea8">2</span>); }
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { display.print(F(<span class="tok-ce9178">"Kd  "</span>)); display.print(currentKd, <span class="tok-b5cea8">3</span>); }
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { display.print(F(<span class="tok-ce9178">"KpS "</span>)); display.print(currentKpSpeed, <span class="tok-b5cea8">2</span>); }
+  <span class="tok-569cd6">else</span>                { display.print(F(<span class="tok-ce9178">"KiS "</span>)); display.print(currentKiSpeed, <span class="tok-b5cea8">2</span>); }
+  display.print(F(<span class="tok-ce9178">"     "</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> showScore() {
-  <span class="tok-569cd6-c-569cd6">long</span>  mae  = runSamples ? (runSumAbs / runSamples) : 0;
-  <span class="tok-569cd6-c-569cd6">float</span> secs = runSamples ? (millis() - runStart) / <span class="tok-b5cea8">1000.0</span> : <span class="tok-b5cea8">1</span>.0;
+<span class="tok-569cd6">void</span> showScore() {
+  <span class="tok-569cd6">long</span>  mae  = runSamples ? (runSumAbs / runSamples) : 0;
+  <span class="tok-569cd6">float</span> secs = runSamples ? (millis() - runStart) / <span class="tok-b5cea8">1000.0</span> : <span class="tok-b5cea8">1</span>.0;
   display.setLayout21x8();
   display.clear();
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"MAE   "</span>)); display.print(mae);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"PEAK  "</span>)); display.print(runPeak);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"WEAVE "</span>)); display.print(runCross / secs, <span class="tok-b5cea8">1</span>);
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178">"MAE   "</span>)); display.print(mae);
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"PEAK  "</span>)); display.print(runPeak);
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178">"WEAVE "</span>)); display.print(runCross / secs, <span class="tok-b5cea8">1</span>);
 
   <span class="tok-7cbf6e">// Ziegler-Nichols, computed on the robot.</span>
   <span class="tok-7cbf6e">// At the Kp where it oscillates and will NOT settle (that is Ku), the</span>
@@ -512,19 +512,19 @@ them work. <b>You cannot tune what you cannot score.</b></p>
   <span class="tok-7cbf6e">//</span>
   <span class="tok-7cbf6e">// It is a STARTING POINT, not an answer. Z-N is famously aggressive.</span>
   <span class="tok-7cbf6e">// It puts you in the right ZIP code. You still have to hill-climb.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> weave = runCross / secs;
-  <span class="tok-569cd6-c-569cd6">if</span> (weave &gt; <span class="tok-b5cea8">0.2</span>) {
-    <span class="tok-569cd6-c-569cd6">float</span> tu = <span class="tok-b5cea8">2.0</span> / weave;
+  <span class="tok-569cd6">float</span> weave = runCross / secs;
+  <span class="tok-569cd6">if</span> (weave &gt; <span class="tok-b5cea8">0.2</span>) {
+    <span class="tok-569cd6">float</span> tu = <span class="tok-b5cea8">2.0</span> / weave;
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">"TRY Kd "</span>)); display.print(currentKp * <span class="tok-b5cea8">0.6</span> * tu / <span class="tok-b5cea8">8.0</span>, <span class="tok-b5cea8">3</span>);
+    display.print(F(<span class="tok-ce9178">"TRY Kd "</span>)); display.print(currentKp * <span class="tok-b5cea8">0.6</span> * tu / <span class="tok-b5cea8">8.0</span>, <span class="tok-b5cea8">3</span>);
   }
 
   showKnob();
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"LOWER MAE = BETTER"</span>));
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"A- C+ holdA tapC B"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>); display.print(F(<span class="tok-ce9178">"LOWER MAE = BETTER"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"A- C+ holdA tapC B"</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> endRun() {
+<span class="tok-569cd6">void</span> endRun() {
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   currentState = RUN_REPORT;   <span class="tok-7cbf6e">// B stops the RUN. It does not cancel the SCORE.</span>
   showScore();
@@ -540,25 +540,25 @@ will spend an afternoon chasing noise.</div>
 <span class="tok-7cbf6e">//   A             = turn the selected gain DOWN</span>
 <span class="tok-7cbf6e">//   C             = turn the selected gain UP</span>
 <span class="tok-7cbf6e">//   hold A, tap C = select the NEXT gain</span>
-<span class="tok-569cd6-c-569cd6">void</span> adjustKnobs() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
+<span class="tok-569cd6">void</span> adjustKnobs() {
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
     knob = (knob + <span class="tok-b5cea8">1</span>) % 4;
     showKnob();
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    <span class="tok-569cd6">return</span>;
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp      &lt; <span class="tok-b5cea8">0.02</span>) currentKp      = <span class="tok-b5cea8">0</span>.02; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd      &lt; <span class="tok-b5cea8">0</span>)    currentKd      = 0; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed -= <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6-c-569cd6">if</span> (currentKpSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKpSpeed = 0; }
-    <span class="tok-569cd6-c-569cd6">else</span>                { currentKiSpeed -= <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6-c-569cd6">if</span> (currentKiSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKiSpeed = 0; }
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
+    <span class="tok-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp      &lt; <span class="tok-b5cea8">0.02</span>) currentKp      = <span class="tok-b5cea8">0</span>.02; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd      &lt; <span class="tok-b5cea8">0</span>)    currentKd      = 0; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed -= <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6">if</span> (currentKpSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKpSpeed = 0; }
+    <span class="tok-569cd6">else</span>                { currentKiSpeed -= <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6">if</span> (currentKiSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKiSpeed = 0; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp      &gt; <span class="tok-b5cea8">1.0</span>)  currentKp      = <span class="tok-b5cea8">1</span>.0; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd      &gt; <span class="tok-b5cea8">0.5</span>)  currentKd      = <span class="tok-b5cea8">0</span>.5; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed += <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6-c-569cd6">if</span> (currentKpSpeed &gt; <span class="tok-b5cea8">20.0</span>) currentKpSpeed = <span class="tok-b5cea8">20</span>.0; }
-    <span class="tok-569cd6-c-569cd6">else</span>                { currentKiSpeed += <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6-c-569cd6">if</span> (currentKiSpeed &gt; <span class="tok-b5cea8">5.0</span>)  currentKiSpeed = <span class="tok-b5cea8">5</span>.0; }
+  <span class="tok-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
+    <span class="tok-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp      &gt; <span class="tok-b5cea8">1.0</span>)  currentKp      = <span class="tok-b5cea8">1</span>.0; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd      &gt; <span class="tok-b5cea8">0.5</span>)  currentKd      = <span class="tok-b5cea8">0</span>.5; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed += <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6">if</span> (currentKpSpeed &gt; <span class="tok-b5cea8">20.0</span>) currentKpSpeed = <span class="tok-b5cea8">20</span>.0; }
+    <span class="tok-569cd6">else</span>                { currentKiSpeed += <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6">if</span> (currentKiSpeed &gt; <span class="tok-b5cea8">5.0</span>)  currentKiSpeed = <span class="tok-b5cea8">5</span>.0; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
@@ -583,14 +583,14 @@ is designed to fail).</div>
 <span class="tok-7cbf6e">// four separate places is a bug with a four-day fuse.</span>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// So put it IN THE DOORWAY. Now there is exactly one way in.</span>
-<span class="tok-569cd6-c-569cd6">void</span> resetPID() {
+<span class="tok-569cd6">void</span> resetPID() {
   lastError  = 0;
   speedIntegral   = 0;   <span class="tok-7cbf6e">// forget the past - it was not your fault</span>
   lastSpeedCounts = averageCounts();   <span class="tok-7cbf6e">// and do not bill us for the distance we drove while away</span>
   lastMicros = micros();   <span class="tok-7cbf6e">// do not bill D for the time we spent away</span>
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> enterFollowing() {
+<span class="tok-569cd6">void</span> enterFollowing() {
   resetPID();
   currentState = FOLLOWING_LINE;
   showStatus();
@@ -605,11 +605,11 @@ fuse: it works today, and it fails the first time somebody adds a fifth door.</d
 <span class="tok-7cbf6e">// ===== THE SPEED LOOP (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// How fast are we ACTUALLY going? Ask the encoders. Same averageCounts()</span>
 <span class="tok-7cbf6e">// from Lesson 6, same COUNTS_PER_CM. You already own this instrument.</span>
-<span class="tok-569cd6-c-569cd6">float</span> measureSpeedCmPerSec(<span class="tok-569cd6-c-569cd6">float</span> dt) {
-  <span class="tok-569cd6-c-569cd6">long</span> now = averageCounts();
-  <span class="tok-569cd6-c-569cd6">long</span> moved = now - lastSpeedCounts;
+<span class="tok-569cd6">float</span> measureSpeedCmPerSec(<span class="tok-569cd6">float</span> dt) {
+  <span class="tok-569cd6">long</span> now = averageCounts();
+  <span class="tok-569cd6">long</span> moved = now - lastSpeedCounts;
   lastSpeedCounts = now;
-  <span class="tok-569cd6-c-569cd6">return</span> (moved / COUNTS_PER_CM) / dt;
+  <span class="tok-569cd6">return</span> (moved / COUNTS_PER_CM) / dt;
 }
 
 <span class="tok-7cbf6e">// HERE is where the I term finally earns its keep.</span>
@@ -627,19 +627,19 @@ fuse: it works today, and it fails the first time somebody adds a fifth door.</d
 <span class="tok-7cbf6e">// On the LINE, that grudge was a liability: a curve holds a steady error</span>
 <span class="tok-7cbf6e">// ON PURPOSE, and I mistook the answer for a mistake.</span>
 <span class="tok-7cbf6e">// On the BATTERY, the grudge is the whole point.</span>
-<span class="tok-569cd6-c-569cd6">void</span> updateSpeedLoop(<span class="tok-569cd6-c-569cd6">float</span> dt) {
-  <span class="tok-569cd6-c-569cd6">float</span> actual = measureSpeedCmPerSec(dt);
-  <span class="tok-569cd6-c-569cd6">float</span> error = TARGET_SPEED_CMS - actual;
+<span class="tok-569cd6">void</span> updateSpeedLoop(<span class="tok-569cd6">float</span> dt) {
+  <span class="tok-569cd6">float</span> actual = measureSpeedCmPerSec(dt);
+  <span class="tok-569cd6">float</span> error = TARGET_SPEED_CMS - actual;
 
   speedIntegral += error * dt;
 
   <span class="tok-7cbf6e">// Clamp the MEMORY, not just the output. An integrator you only clamp on</span>
   <span class="tok-7cbf6e">// the way out keeps growing on the inside, and then refuses to come back</span>
   <span class="tok-7cbf6e">// down when you finally need it to. That is integral WINDUP.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> iMax = SPEED_TRIM_MAX / (currentKiSpeed &gt; <span class="tok-b5cea8">0.01</span> ? currentKiSpeed : <span class="tok-b5cea8">0.01</span>);
+  <span class="tok-569cd6">float</span> iMax = SPEED_TRIM_MAX / (currentKiSpeed &gt; <span class="tok-b5cea8">0.01</span> ? currentKiSpeed : <span class="tok-b5cea8">0.01</span>);
   speedIntegral = constrain(speedIntegral, -iMax, iMax);
 
-  speedTrim = (<span class="tok-569cd6-c-569cd6">int</span>)(currentKpSpeed * error + currentKiSpeed * speedIntegral);
+  speedTrim = (<span class="tok-569cd6">int</span>)(currentKpSpeed * error + currentKiSpeed * speedIntegral);
   speedTrim = constrain(speedTrim, -SPEED_TRIM_MAX, SPEED_TRIM_MAX);
 
   currentBase = constrain(BASE_SPEED + speedTrim, <span class="tok-b5cea8">0</span>, MAX_SPEED);
@@ -647,12 +647,12 @@ fuse: it works today, and it fails the first time somebody adds a fifth door.</d
 </pre>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE SPEED LOOP STATE (NEW for Lesson 15) =====</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKpSpeed = KP_SPEED;
-<span class="tok-569cd6-c-569cd6">float</span> currentKiSpeed = KI_SPEED;
-<span class="tok-569cd6-c-569cd6">float</span> speedIntegral  = 0;   <span class="tok-7cbf6e">// THE PAST. This is the term that remembers.</span>
-<span class="tok-569cd6-c-569cd6">int</span>   speedTrim      = 0;   <span class="tok-7cbf6e">// What the speed loop is adding right now</span>
-<span class="tok-569cd6-c-569cd6">long</span>  lastSpeedCounts = 0;
-<span class="tok-569cd6-c-569cd6">int</span>   currentBase = BASE_SPEED;   <span class="tok-7cbf6e">// BASE_SPEED is what you ASKED for.</span>
+<span class="tok-569cd6">float</span> currentKpSpeed = KP_SPEED;
+<span class="tok-569cd6">float</span> currentKiSpeed = KI_SPEED;
+<span class="tok-569cd6">float</span> speedIntegral  = 0;   <span class="tok-7cbf6e">// THE PAST. This is the term that remembers.</span>
+<span class="tok-569cd6">int</span>   speedTrim      = 0;   <span class="tok-7cbf6e">// What the speed loop is adding right now</span>
+<span class="tok-569cd6">long</span>  lastSpeedCounts = 0;
+<span class="tok-569cd6">int</span>   currentBase = BASE_SPEED;   <span class="tok-7cbf6e">// BASE_SPEED is what you ASKED for.</span>
                                   <span class="tok-7cbf6e">// currentBase is what it TAKES to get it.</span>
 </pre>
 <p>Notice what <code>measureSpeedCmPerSec()</code> is built out of: <code>averageCounts()</code>
@@ -689,7 +689,7 @@ before you touch anything, and write the number down. <b>That number is your con
 <h3 class="h3-c-433014-2">Step 2 &mdash; The new constants &nbsp;<span class="span-c-607d8b">(25,640 bytes &mdash; unchanged)</span></h3>
 <p>Add the block from 5.2 to <code>RobotConfig.h</code>, and add the new state to the enum:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">enum</span> RobotState {
+<span class="tok-569cd6">enum</span> RobotState {
   STOPPED,             <span class="tok-7cbf6e">// Motors off, waiting for B</span>
   FOLLOWING_LINE,      <span class="tok-7cbf6e">// P-control driving - Lesson 8's whole job</span>
   AT_INTERSECTION,     <span class="tok-7cbf6e">// Stopped on a marker, announcing the decision</span>
@@ -732,12 +732,12 @@ until something spends them.</div>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// micros() resolves to 4 microseconds. It is the only clock on this robot</span>
 <span class="tok-7cbf6e">// that can see this loop.</span>
-<span class="tok-569cd6-c-569cd6">float</span> deltaTimeSec() {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> now = micros();
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
+<span class="tok-569cd6">float</span> deltaTimeSec() {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> now = micros();
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
   lastMicros = now;
-  <span class="tok-569cd6-c-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
-  <span class="tok-569cd6-c-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
+  <span class="tok-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
+  <span class="tok-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
 }
 </pre>
 <div class="callout-ffc107-bg-fff8e1-3"><div class="div-fs-09em">⚠️ WARNING</div>
@@ -756,27 +756,27 @@ happens to you by accident.</div>
 <h3 class="h3-c-433014-2">Step 4 &mdash; followLine() becomes PD &nbsp;<span class="span-c-607d8b">(25,802 bytes, <b>+162</b>)</span></h3>
 <p>Now replace the body of <code>followLine()</code>. Same name. Same call sites. Nothing else in the project changes.</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> followLine() {
+<span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
 
   dtSec = deltaTimeSec();   <span class="tok-7cbf6e">// ONE clock read per pass</span>
 
   <span class="tok-7cbf6e">// P - THE PRESENT. How far off am I right now?</span>
-  <span class="tok-569cd6-c-569cd6">float</span> p = currentKp * error;
+  <span class="tok-569cd6">float</span> p = currentKp * error;
 
   <span class="tok-7cbf6e">// D - THE FUTURE. How fast is the error closing?</span>
   <span class="tok-7cbf6e">// If I am already racing back toward the line, D eases off the wheel</span>
   <span class="tok-7cbf6e">// BEFORE I sail past it. P can never do that: P knows where I am, not</span>
   <span class="tok-7cbf6e">// where I am HEADED. This is the term that kills the weave.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
+  <span class="tok-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
 
   lastError = error;   <span class="tok-7cbf6e">// the present becomes the past</span>
 
-  <span class="tok-569cd6-c-569cd6">int</span> correction = (<span class="tok-569cd6-c-569cd6">int</span>)(p + d);
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed  = BASE_SPEED + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+  <span class="tok-569cd6">int</span> correction = (<span class="tok-569cd6">int</span>)(p + d);
+  <span class="tok-569cd6">int</span> leftSpeed  = BASE_SPEED + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -795,12 +795,12 @@ start tuning.</div>
 <h3 class="h3-c-433014-2">Step 5 &mdash; The bench &nbsp;<span class="span-c-607d8b">(27,098 bytes, <b>+1,296</b>)</span></h3>
 <p>Add the scoreboard globals and the scorer from 5.5, and the knob UI from 5.6. Then wire them into <code>loop()</code>. In <code>STOPPED</code>, the old A/C handling gets replaced by one call:</p>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> STOPPED: {
+    <span class="tok-569cd6">case</span> STOPPED: {
       checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
 
       adjustKnobs();   <span class="tok-7cbf6e">// NEW for Lesson 15 - A- C+ , hold A and tap C to pick the gain</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
-        <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> count = 3; count &gt; 0; count--) {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
+        <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = 3; count &gt; 0; count--) {
           display.setLayout21x8();
           display.clear();
           display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -810,24 +810,24 @@ start tuning.</div>
         }
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-        display.print(F(<span class="tok-ce9178-c-ce9178">"GO!"</span>));
+        display.print(F(<span class="tok-ce9178">"GO!"</span>));
         buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);
         delay(<span class="tok-b5cea8">500</span>);
         runReset();                     <span class="tok-7cbf6e">// a fresh scorecard</span>
         currentState = FOLLOWING_LINE;
         showStatus();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <p>The scorer at this stage has only <b>two</b> gains to turn &mdash; the speed loop does not exist yet:</p>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// The selected gain. Same row on every screen.</span>
-<span class="tok-569cd6-c-569cd6">void</span> showKnob() {
+<span class="tok-569cd6">void</span> showKnob() {
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">0</span>) { display.print(F(<span class="tok-ce9178-c-ce9178">"Kp "</span>)); display.print(currentKp, <span class="tok-b5cea8">2</span>); }
-  <span class="tok-569cd6-c-569cd6">else</span>           { display.print(F(<span class="tok-ce9178-c-ce9178">"Kd "</span>)); display.print(currentKd, <span class="tok-b5cea8">3</span>); }
-  display.print(F(<span class="tok-ce9178-c-ce9178">"     "</span>));
+  <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">0</span>) { display.print(F(<span class="tok-ce9178">"Kp "</span>)); display.print(currentKp, <span class="tok-b5cea8">2</span>); }
+  <span class="tok-569cd6">else</span>           { display.print(F(<span class="tok-ce9178">"Kd "</span>)); display.print(currentKd, <span class="tok-b5cea8">3</span>); }
+  display.print(F(<span class="tok-ce9178">"     "</span>));
 }
 </pre>
 <pre class="code-block-bg-1e1e1e">
@@ -835,21 +835,21 @@ start tuning.</div>
 <span class="tok-7cbf6e">//   A             = turn the selected gain DOWN</span>
 <span class="tok-7cbf6e">//   C             = turn the selected gain UP</span>
 <span class="tok-7cbf6e">//   hold A, tap C = select the NEXT gain</span>
-<span class="tok-569cd6-c-569cd6">void</span> adjustKnobs() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
+<span class="tok-569cd6">void</span> adjustKnobs() {
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
     knob = (knob + <span class="tok-b5cea8">1</span>) % 2;
     showKnob();
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    <span class="tok-569cd6">return</span>;
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">0</span>) { currentKp -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0</span>.02; }
-    <span class="tok-569cd6-c-569cd6">else</span>           { currentKd -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd &lt; <span class="tok-b5cea8">0</span>)    currentKd = 0; }
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
+    <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">0</span>) { currentKp -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0</span>.02; }
+    <span class="tok-569cd6">else</span>           { currentKd -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd &lt; <span class="tok-b5cea8">0</span>)    currentKd = 0; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">0</span>) { currentKp += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1</span>.0; }
-    <span class="tok-569cd6-c-569cd6">else</span>           { currentKd += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd &gt; <span class="tok-b5cea8">0.5</span>) currentKd = <span class="tok-b5cea8">0</span>.5; }
+  <span class="tok-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
+    <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">0</span>) { currentKp += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1</span>.0; }
+    <span class="tok-569cd6">else</span>           { currentKd += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd &gt; <span class="tok-b5cea8">0.5</span>) currentKd = <span class="tok-b5cea8">0</span>.5; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
@@ -857,61 +857,61 @@ start tuning.</div>
 </pre>
 <p>And <code>showStatus()</code> gives up its hard-wired <code>Kp:</code> line &mdash; the knob row now shows whichever gain you have selected:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> showStatus() {
+<span class="tok-569cd6">void</span> showStatus() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   <span class="tok-7cbf6e">// NEW for Lesson 10 - name the state. Seven names, one switch.</span>
-  <span class="tok-569cd6-c-569cd6">switch</span> (currentState) {
-    <span class="tok-569cd6-c-569cd6">case</span> STOPPED:            display.print(F(<span class="tok-ce9178-c-ce9178">"STOPPED"</span>));   <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE:     display.print(F(<span class="tok-ce9178-c-ce9178">"FOLLOWING"</span>)); <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> AT_INTERSECTION:    display.print(F(<span class="tok-ce9178-c-ce9178">"INTERSECT"</span>)); <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> EXECUTING_TURN:     display.print(F(<span class="tok-ce9178-c-ce9178">"TURNING"</span>));   <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> OBSTACLE_DETECTED:  display.print(F(<span class="tok-ce9178-c-ce9178">"OBSTACLE!"</span>)); <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> AVOIDING_OBSTACLE:  display.print(F(<span class="tok-ce9178-c-ce9178">"AVOIDING"</span>));  <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> RETURNING_TO_LINE:  display.print(F(<span class="tok-ce9178-c-ce9178">"SEEKING"</span>));   <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> GAP_CROSSING:       display.print(F(<span class="tok-ce9178-c-ce9178">"GAP"</span>));       <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> LINE_LOST:          display.print(F(<span class="tok-ce9178-c-ce9178">"LOST"</span>));      <span class="tok-569cd6-c-569cd6">break</span>;
-    <span class="tok-569cd6-c-569cd6">case</span> ENTERING_ZONE:      display.print(F(<span class="tok-ce9178-c-ce9178">"ZONE!"</span>));     <span class="tok-569cd6-c-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
-    <span class="tok-569cd6-c-569cd6">case</span> SWEEPING_ZONE:      display.print(F(<span class="tok-ce9178-c-ce9178">"SWEEPING"</span>));  <span class="tok-569cd6-c-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
-    <span class="tok-569cd6-c-569cd6">case</span> VICTIM_FOUND:       display.print(F(<span class="tok-ce9178-c-ce9178">"VICTIM!"</span>));   <span class="tok-569cd6-c-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
-    <span class="tok-569cd6-c-569cd6">case</span> RUN_REPORT:         display.print(F(<span class="tok-ce9178-c-ce9178">"SCORE"</span>));     <span class="tok-569cd6-c-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 15</span>
+  <span class="tok-569cd6">switch</span> (currentState) {
+    <span class="tok-569cd6">case</span> STOPPED:            display.print(F(<span class="tok-ce9178">"STOPPED"</span>));   <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> FOLLOWING_LINE:     display.print(F(<span class="tok-ce9178">"FOLLOWING"</span>)); <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> AT_INTERSECTION:    display.print(F(<span class="tok-ce9178">"INTERSECT"</span>)); <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> EXECUTING_TURN:     display.print(F(<span class="tok-ce9178">"TURNING"</span>));   <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> OBSTACLE_DETECTED:  display.print(F(<span class="tok-ce9178">"OBSTACLE!"</span>)); <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE:  display.print(F(<span class="tok-ce9178">"AVOIDING"</span>));  <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> RETURNING_TO_LINE:  display.print(F(<span class="tok-ce9178">"SEEKING"</span>));   <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> GAP_CROSSING:       display.print(F(<span class="tok-ce9178">"GAP"</span>));       <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> LINE_LOST:          display.print(F(<span class="tok-ce9178">"LOST"</span>));      <span class="tok-569cd6">break</span>;
+    <span class="tok-569cd6">case</span> ENTERING_ZONE:      display.print(F(<span class="tok-ce9178">"ZONE!"</span>));     <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
+    <span class="tok-569cd6">case</span> SWEEPING_ZONE:      display.print(F(<span class="tok-ce9178">"SWEEPING"</span>));  <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
+    <span class="tok-569cd6">case</span> VICTIM_FOUND:       display.print(F(<span class="tok-ce9178">"VICTIM!"</span>));   <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
+    <span class="tok-569cd6">case</span> RUN_REPORT:         display.print(F(<span class="tok-ce9178">"SCORE"</span>));     <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 15</span>
   }
   showKnob();                      <span class="tok-7cbf6e">// NEW for Lesson 15 - the selected gain</span>
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"A- C+ B:Go Px:"</span>));
+  display.print(F(<span class="tok-ce9178">"A- C+ B:Go Px:"</span>));
   display.print(readFrontProx());   <span class="tok-7cbf6e">// NEW for Lesson 10 - is the sensor alive?</span>
-  display.print(F(<span class="tok-ce9178-c-ce9178">"  "</span>));
+  display.print(F(<span class="tok-ce9178">"  "</span>));
 }
 </pre>
 <p>Then a new case, and two new lines in the one you already have:</p>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> RUN_REPORT: {
+    <span class="tok-569cd6">case</span> RUN_REPORT: {
       <span class="tok-7cbf6e">// The run is over. Here is what it cost you.</span>
       adjustKnobs();
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = run it again. Same track, same bell.</span>
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = run it again. Same track, same bell.</span>
         runReset();
         currentState = FOLLOWING_LINE;
         showStatus();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (killSwitchPressed()) { endRun(); <span class="tok-569cd6-c-569cd6">break</span>; }   <span class="tok-7cbf6e">// B = STOP - you still get the score</span>
+    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+      <span class="tok-569cd6">if</span> (killSwitchPressed()) { endRun(); <span class="tok-569cd6">break</span>; }   <span class="tok-7cbf6e">// B = STOP - you still get the score</span>
 
       <span class="tok-7cbf6e">// THE BELL. Every run is the same length, or two scores mean nothing.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (TUNING_RUN_MS &gt; <span class="tok-b5cea8">0</span> &amp;&amp; millis() - runStart &gt;= TUNING_RUN_MS) {
+      <span class="tok-569cd6">if</span> (TUNING_RUN_MS &gt; <span class="tok-b5cea8">0</span> &amp;&amp; millis() - runStart &gt;= TUNING_RUN_MS) {
         endRun();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
       <span class="tok-7cbf6e">// PRIORITY 1 - a crash is worse than a missed turn. Check it FIRST.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (checkForObstacle()) {
+      <span class="tok-569cd6">if</span> (checkForObstacle()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
         currentState = OBSTACLE_DETECTED;
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
       <span class="tok-7cbf6e">// PRIORITY 2 - the rescue zone door. Check it BEFORE isLineVisible():</span>
@@ -919,28 +919,28 @@ start tuning.</div>
       <span class="tok-7cbf6e">// the door reads as a GAP - a hole in the world - and handleGap()</span>
       <span class="tok-7cbf6e">// would drive straight through it, hunting for a line that is not</span>
       <span class="tok-7cbf6e">// coming back.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (silverDetected()) {
+      <span class="tok-569cd6">if</span> (silverDetected()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
         currentState = ENTERING_ZONE;
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         followLine();
         runSample(lastError);   <span class="tok-7cbf6e">// followLine() just wrote it. Score the pass.</span>
 
         <span class="tok-7cbf6e">// PRIORITY 3 - the course is asking for a turn</span>
         IntersectionType seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION) {
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION) {
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
           pendingTurn = seen;
           currentState = AT_INTERSECTION;
         }
-      } <span class="tok-569cd6-c-569cd6">else</span> {
+      } <span class="tok-569cd6">else</span> {
         <span class="tok-7cbf6e">// PRIORITY 4 - nothing special: just drive</span>
         handleGap();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <div class="div-m-16px0"><b>Read what the kill switch does now.</b> B still stops the robot instantly
@@ -966,12 +966,12 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
 <span class="tok-7cbf6e">// four separate places is a bug with a four-day fuse.</span>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// So put it IN THE DOORWAY. Now there is exactly one way in.</span>
-<span class="tok-569cd6-c-569cd6">void</span> resetPID() {
+<span class="tok-569cd6">void</span> resetPID() {
   lastError  = 0;
   lastMicros = micros();   <span class="tok-7cbf6e">// do not bill D for the time we spent away</span>
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> enterFollowing() {
+<span class="tok-569cd6">void</span> enterFollowing() {
   resetPID();
   currentState = FOLLOWING_LINE;
   showStatus();
@@ -979,28 +979,28 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
 </pre>
 <p>Now find every place that says <code>currentState = FOLLOWING_LINE;</code> followed by <code>showStatus();</code> &mdash; there are <b>four</b> &mdash; and replace each pair with a single call:</p>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> EXECUTING_TURN: {
-      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();
+    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
+      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();
       pendingTurn = NO_INTERSECTION;
       enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
   
-    <span class="tok-569cd6-c-569cd6">case</span> ENTERING_ZONE: {
+    <span class="tok-569cd6">case</span> ENTERING_ZONE: {
       display.setLayout21x8();
       display.clear();
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"RESCUE ZONE"</span>));
+      display.print(F(<span class="tok-ce9178">"RESCUE ZONE"</span>));
       buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">15</span>);
-      <span class="tok-569cd6-c-569cd6">if</span> (!COMPETITION_MODE) delay(<span class="tok-b5cea8">600</span>);   <span class="tok-7cbf6e">// demo pause - free in practice, 0.6s in a match</span>
+      <span class="tok-569cd6">if</span> (!COMPETITION_MODE) delay(<span class="tok-b5cea8">600</span>);   <span class="tok-7cbf6e">// demo pause - free in practice, 0.6s in a match</span>
 </pre>
 <p>The other three:</p>
 <pre class="code-block-bg-1e1e1e">
       adjustKnobs();   <span class="tok-7cbf6e">// NEW for Lesson 15 - A- C+ , hold A and tap C to pick the gain</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
-        <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> count = 3; count &gt; 0; count--) {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
+        <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = 3; count &gt; 0; count--) {
           display.setLayout21x8();
           display.clear();
           display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1010,38 +1010,38 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
         }
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-        display.print(F(<span class="tok-ce9178-c-ce9178">"GO!"</span>));
+        display.print(F(<span class="tok-ce9178">"GO!"</span>));
         buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);
         delay(<span class="tok-b5cea8">500</span>);
         runReset();                     <span class="tok-7cbf6e">// a fresh scorecard</span>
         enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> RUN_REPORT: {
+    <span class="tok-569cd6">case</span> RUN_REPORT: {
       <span class="tok-7cbf6e">// The run is over. Here is what it cost you.</span>
       adjustKnobs();
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = run it again. Same track, same bell.</span>
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = run it again. Same track, same bell.</span>
         runReset();
         enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <pre class="code-block-bg-1e1e1e">
       <span class="tok-7cbf6e">// Found it! The gap is over. Hand control back to P-control.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 </pre>
 <pre class="code-block-bg-1e1e1e">
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 </pre>
 <div class="div-m-16px0"><b>Sixty-eight bytes to close a hole you cannot see yet.</b> Cross a gap and
@@ -1061,25 +1061,25 @@ cannot.</b></div>
 <span class="tok-7cbf6e">//   A             = turn the selected gain DOWN</span>
 <span class="tok-7cbf6e">//   C             = turn the selected gain UP</span>
 <span class="tok-7cbf6e">//   hold A, tap C = select the NEXT gain</span>
-<span class="tok-569cd6-c-569cd6">void</span> adjustKnobs() {
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
+<span class="tok-569cd6">void</span> adjustKnobs() {
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
     knob = (knob + <span class="tok-b5cea8">1</span>) % 4;
     showKnob();
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    <span class="tok-569cd6">return</span>;
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp      &lt; <span class="tok-b5cea8">0.02</span>) currentKp      = <span class="tok-b5cea8">0</span>.02; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd      &lt; <span class="tok-b5cea8">0</span>)    currentKd      = 0; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed -= <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6-c-569cd6">if</span> (currentKpSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKpSpeed = 0; }
-    <span class="tok-569cd6-c-569cd6">else</span>                { currentKiSpeed -= <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6-c-569cd6">if</span> (currentKiSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKiSpeed = 0; }
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
+    <span class="tok-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp      &lt; <span class="tok-b5cea8">0.02</span>) currentKp      = <span class="tok-b5cea8">0</span>.02; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd      &lt; <span class="tok-b5cea8">0</span>)    currentKd      = 0; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed -= <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6">if</span> (currentKpSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKpSpeed = 0; }
+    <span class="tok-569cd6">else</span>                { currentKiSpeed -= <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6">if</span> (currentKiSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKiSpeed = 0; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp      &gt; <span class="tok-b5cea8">1.0</span>)  currentKp      = <span class="tok-b5cea8">1</span>.0; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd      &gt; <span class="tok-b5cea8">0.5</span>)  currentKd      = <span class="tok-b5cea8">0</span>.5; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed += <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6-c-569cd6">if</span> (currentKpSpeed &gt; <span class="tok-b5cea8">20.0</span>) currentKpSpeed = <span class="tok-b5cea8">20</span>.0; }
-    <span class="tok-569cd6-c-569cd6">else</span>                { currentKiSpeed += <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6-c-569cd6">if</span> (currentKiSpeed &gt; <span class="tok-b5cea8">5.0</span>)  currentKiSpeed = <span class="tok-b5cea8">5</span>.0; }
+  <span class="tok-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
+    <span class="tok-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp      &gt; <span class="tok-b5cea8">1.0</span>)  currentKp      = <span class="tok-b5cea8">1</span>.0; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd      &gt; <span class="tok-b5cea8">0.5</span>)  currentKd      = <span class="tok-b5cea8">0</span>.5; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed += <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6">if</span> (currentKpSpeed &gt; <span class="tok-b5cea8">20.0</span>) currentKpSpeed = <span class="tok-b5cea8">20</span>.0; }
+    <span class="tok-569cd6">else</span>                { currentKiSpeed += <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6">if</span> (currentKiSpeed &gt; <span class="tok-b5cea8">5.0</span>)  currentKiSpeed = <span class="tok-b5cea8">5</span>.0; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
@@ -1099,7 +1099,7 @@ cannot.</b></div>
 <span class="tok-7cbf6e">// four separate places is a bug with a four-day fuse.</span>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// So put it IN THE DOORWAY. Now there is exactly one way in.</span>
-<span class="tok-569cd6-c-569cd6">void</span> resetPID() {
+<span class="tok-569cd6">void</span> resetPID() {
   lastError  = 0;
   speedIntegral   = 0;   <span class="tok-7cbf6e">// forget the past - it was not your fault</span>
   lastSpeedCounts = averageCounts();   <span class="tok-7cbf6e">// and do not bill us for the distance we drove while away</span>
@@ -1108,12 +1108,12 @@ cannot.</b></div>
 </pre>
 <p>Third &mdash; and this is the one line that matters &mdash; <code>followLine()</code> stops steering around a <i>fixed</i> base speed and starts steering around the speed the loop is actually holding:</p>
 <pre class="code-block-bg-1e1e1e">
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed  = currentBase + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = currentBase - correction;
+  <span class="tok-569cd6">int</span> leftSpeed  = currentBase + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = currentBase - correction;
 </pre>
 <p>and the speed loop runs once per pass, on the clock <code>followLine()</code> already read:</p>
 <pre class="code-block-bg-1e1e1e">
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         followLine();
         runSample(lastError);   <span class="tok-7cbf6e">// followLine() just wrote it. Score the pass.</span>
         updateSpeedLoop(dtSec); <span class="tok-7cbf6e">// and followLine() just timed it. One clock, two loops.</span>
@@ -1170,23 +1170,23 @@ calibrated a square.</li>
 <span class="tok-7cbf6e">//   dt us - how long ONE pass through this loop actually took</span>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// Write dt down. Then look at what millis() would have said about it.</span>
-<span class="tok-569cd6-c-569cd6">void</span> stripChart() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
+<span class="tok-569cd6">void</span> stripChart() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
   dtSec = deltaTimeSec();
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> us = (<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span>)(dtSec * <span class="tok-b5cea8">1000000.0</span>);
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> us = (<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span>)(dtSec * <span class="tok-b5cea8">1000000.0</span>);
 
   display.setLayout21x8();
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"STRIP CHART      "</span>));
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"ERR   "</span>)); display.print(error);   display.print(F(<span class="tok-ce9178-c-ce9178">"     "</span>));
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"dERR  "</span>)); display.print(error - lastError); display.print(F(<span class="tok-ce9178-c-ce9178">"     "</span>));
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">5</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"dt us "</span>)); display.print(us);      display.print(F(<span class="tok-ce9178-c-ce9178">"     "</span>));
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"dt ms "</span>)); display.print(us / <span class="tok-b5cea8">1000</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"  &lt;- millis"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178">"STRIP CHART      "</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178">"ERR   "</span>)); display.print(error);   display.print(F(<span class="tok-ce9178">"     "</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>); display.print(F(<span class="tok-ce9178">"dERR  "</span>)); display.print(error - lastError); display.print(F(<span class="tok-ce9178">"     "</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">5</span>); display.print(F(<span class="tok-ce9178">"dt us "</span>)); display.print(us);      display.print(F(<span class="tok-ce9178">"     "</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>); display.print(F(<span class="tok-ce9178">"dt ms "</span>)); display.print(us / <span class="tok-b5cea8">1000</span>); display.print(F(<span class="tok-ce9178">"  &lt;- millis"</span>));
   lastError = error;
 }
 </pre>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> STOPPED: {
+    <span class="tok-569cd6">case</span> STOPPED: {
       stripChart();    <span class="tok-7cbf6e">// 7A: motors stay off. Push the robot by hand and read.</span>
       checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
 </pre>
@@ -1278,16 +1278,16 @@ something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b><
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== 7D: THE I TERM, ON THE LINE (Lesson 15, section 7D) =====</span>
 <span class="tok-7cbf6e">// This rung is DESIGNED TO FAIL. Turn it on. Run a curve. Watch.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KI_LINE = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 0.5. Then try 2.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KI_LINE = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 0.5. Then try 2.</span>
 </pre>
 <p>one global &mdash; the memory the line loop should not have:</p>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE PID STATE (NEW for Lesson 15) =====</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
-<span class="tok-569cd6-c-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
-<span class="tok-569cd6-c-569cd6">float</span> dtSec     = 0;
-<span class="tok-569cd6-c-569cd6">float</span> lineIntegral = 0;   <span class="tok-7cbf6e">// 7D: the memory the LINE loop should not have          // How long THIS pass took. One clock, two loops.</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
+<span class="tok-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
+<span class="tok-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
+<span class="tok-569cd6">float</span> dtSec     = 0;
+<span class="tok-569cd6">float</span> lineIntegral = 0;   <span class="tok-7cbf6e">// 7D: the memory the LINE loop should not have          // How long THIS pass took. One clock, two loops.</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
 </pre>
 <p>a line in the doorway, so the ghost of the last curve does not follow you into the next one:</p>
 <pre class="code-block-bg-1e1e1e">
@@ -1303,7 +1303,7 @@ something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b><
 <span class="tok-7cbf6e">// four separate places is a bug with a four-day fuse.</span>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// So put it IN THE DOORWAY. Now there is exactly one way in.</span>
-<span class="tok-569cd6-c-569cd6">void</span> resetPID() {
+<span class="tok-569cd6">void</span> resetPID() {
   lastError    = 0;
   lineIntegral = 0;
   lastMicros = micros();   <span class="tok-7cbf6e">// do not bill D for the time we spent away</span>
@@ -1311,14 +1311,14 @@ something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b><
 </pre>
 <p>and three lines inside <code>followLine()</code>:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> followLine() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
+<span class="tok-569cd6">void</span> followLine() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
 
   dtSec = deltaTimeSec();
 
-  <span class="tok-569cd6-c-569cd6">float</span> p = currentKp * error;
-  <span class="tok-569cd6-c-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
+  <span class="tok-569cd6">float</span> p = currentKp * error;
+  <span class="tok-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
 
   <span class="tok-7cbf6e">// 7D - THE PAST, on the line. Every pass, add the error to a running</span>
   <span class="tok-7cbf6e">// total. The theory says this erases the small steady offset that P</span>
@@ -1329,13 +1329,13 @@ something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b><
   <span class="tok-7cbf6e">// between an error it should fix and an answer it should leave alone.</span>
   <span class="tok-7cbf6e">// It keeps adding. And when the curve ends, it is still turning.</span>
   lineIntegral += error * dtSec;
-  <span class="tok-569cd6-c-569cd6">float</span> i = KI_LINE * lineIntegral;
+  <span class="tok-569cd6">float</span> i = KI_LINE * lineIntegral;
 
   lastError = error;
 
-  <span class="tok-569cd6-c-569cd6">int</span> correction = (<span class="tok-569cd6-c-569cd6">int</span>)(p + i + d);
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed  = BASE_SPEED + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+  <span class="tok-569cd6">int</span> correction = (<span class="tok-569cd6">int</span>)(p + i + d);
+  <span class="tok-569cd6">int</span> leftSpeed  = BASE_SPEED + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -1483,12 +1483,12 @@ in followLine(), before computing p:
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Pick the gain from the error, then compute p. The corner gain stays a bench-tuned blank.</p>
 <pre class="code-block-333-2"><span class="tok-6a9955">// RobotConfig.h:</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span>   CORNER_ERROR = <span class="tok-b5cea8">600</span>;   <span class="tok-6a9955">// above this |error|, not a straight</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KP_CORNER    = <span class="tok-b5cea8">0.0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span>   CORNER_ERROR = <span class="tok-b5cea8">600</span>;   <span class="tok-6a9955">// above this |error|, not a straight</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KP_CORNER    = <span class="tok-b5cea8">0.0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
 
 <span class="tok-6a9955">// followLine(), replace the P line:</span>
-<span class="tok-569cd6-c-569cd6">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? ____ : ____;
-<span class="tok-569cd6-c-569cd6">float</span> p  = kp * error;</pre>
+<span class="tok-569cd6">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? ____ : ____;
+<span class="tok-569cd6">float</span> p  = kp * error;</pre>
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
@@ -1496,16 +1496,16 @@ in followLine(), before computing p:
 <div class="div-e0a800"><b>SOLUTION &mdash; add to RobotConfig.h:</b></div>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== CHALLENGE 1: GAIN SCHEDULING =====</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span>   CORNER_ERROR = 600;   <span class="tok-7cbf6e">// Above this, you are not on a straight</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> KP_CORNER    = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span>   CORNER_ERROR = 600;   <span class="tok-7cbf6e">// Above this, you are not on a straight</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KP_CORNER    = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
 </pre>
 <div class="div-e0a800"><b>and in <code>followLine()</code>, replace the P line:</b></div>
 <pre class="code-block-bg-1e1e1e">
   <span class="tok-7cbf6e">// P - THE PRESENT. How far off am I right now?</span>
   <span class="tok-7cbf6e">// CHALLENGE 1 - one gain does not fit a whole track. A Kp gentle</span>
   <span class="tok-7cbf6e">// enough for a straight is too lazy for a hairpin.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? KP_CORNER : currentKp;
-  <span class="tok-569cd6-c-569cd6">float</span> p = kp * error;
+  <span class="tok-569cd6">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? KP_CORNER : currentKp;
+  <span class="tok-569cd6">float</span> p = kp * error;
 </pre>
 <div class="div-m-16px0"><b>The catch, and it is worth finding out the hard way:</b> the moment the
 error crosses <code>CORNER_ERROR</code>, the gain <i>jumps</i>. A discontinuity in a controller is a
@@ -1535,15 +1535,15 @@ in followLine(), where D is computed:
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">The blend is the whole trick — mostly the old belief, a little of the new reading.</p>
 <pre class="code-block-333-2"><span class="tok-6a9955">// RobotConfig.h:</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> D_FILTER = <span class="tok-b5cea8">0.0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. 0 = none, try 0.7.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> D_FILTER = <span class="tok-b5cea8">0.0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. 0 = none, try 0.7.</span>
 
 <span class="tok-6a9955">// a global to remember the smoothed value:</span>
-<span class="tok-569cd6-c-569cd6">float</span> dFiltered = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">float</span> dFiltered = <span class="tok-b5cea8">0</span>;
 
 <span class="tok-6a9955">// followLine(), the D line:</span>
-<span class="tok-569cd6-c-569cd6">float</span> dRaw = (error - lastError) / dtSec;
+<span class="tok-569cd6">float</span> dRaw = (error - lastError) / dtSec;
 dFiltered  = D_FILTER * ____ + (<span class="tok-b5cea8">1.0</span> - D_FILTER) * ____;
-<span class="tok-569cd6-c-569cd6">float</span> d    = currentKd * dFiltered;</pre>
+<span class="tok-569cd6">float</span> d    = currentKd * dFiltered;</pre>
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
@@ -1553,16 +1553,16 @@ dFiltered  = D_FILTER * ____ + (<span class="tok-b5cea8">1.0</span> - D_FILTER) 
 <span class="tok-7cbf6e">// ===== CHALLENGE 2: FILTER THE DERIVATIVE =====</span>
 <span class="tok-7cbf6e">// D is a rate. Sensor noise is a rate too - a huge one. D cannot tell</span>
 <span class="tok-7cbf6e">// them apart, so it amplifies both. 0 = no filter, 0.9 = heavy filter.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> D_FILTER = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 0.7.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> D_FILTER = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 0.7.</span>
 </pre>
 <div class="div-e0a800"><b>a global to remember the smoothed value:</b></div>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE PID STATE (NEW for Lesson 15) =====</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
-<span class="tok-569cd6-c-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
-<span class="tok-569cd6-c-569cd6">float</span> dtSec     = 0;
-<span class="tok-569cd6-c-569cd6">float</span> dFiltered = 0;   <span class="tok-7cbf6e">// CHALLENGE 2 - the smoothed derivative          // How long THIS pass took. One clock, two loops.</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
+<span class="tok-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
+<span class="tok-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
+<span class="tok-569cd6">float</span> dtSec     = 0;
+<span class="tok-569cd6">float</span> dFiltered = 0;   <span class="tok-7cbf6e">// CHALLENGE 2 - the smoothed derivative          // How long THIS pass took. One clock, two loops.</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
 </pre>
 <div class="div-e0a800"><b>and the D line in <code>followLine()</code>:</b></div>
 <pre class="code-block-bg-1e1e1e">
@@ -1572,9 +1572,9 @@ dFiltered  = D_FILTER * ____ + (<span class="tok-b5cea8">1.0</span> - D_FILTER) 
   <span class="tok-7cbf6e">// where I am HEADED. This is the term that kills the weave.</span>
   <span class="tok-7cbf6e">// CHALLENGE 2 - a low-pass filter. Keep most of what you believed</span>
   <span class="tok-7cbf6e">// last pass, and mix in a little of what you see now.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> dRaw = (error - lastError) / dtSec;
+  <span class="tok-569cd6">float</span> dRaw = (error - lastError) / dtSec;
   dFiltered = D_FILTER * dFiltered + (<span class="tok-b5cea8">1.0</span> - D_FILTER) * dRaw;
-  <span class="tok-569cd6-c-569cd6">float</span> d = currentKd * dFiltered;
+  <span class="tok-569cd6">float</span> d = currentKd * dFiltered;
 </pre>
 <div class="callout-ffc107-bg-fff8e1-3"><b>⚠️  Nothing is free.</b> The filter also delays the derivative &mdash; you
 are, by definition, acting on slightly stale information. Turn <code>D_FILTER</code> up toward 0.95
@@ -1603,10 +1603,10 @@ print it on the score screen</pre>
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">One global, one comparison, one clear, one print.</p>
 <pre class="code-block-333-2"><span class="tok-6a9955">// a global - the slowest pass so far:</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> dtWorstUs = <span class="tok-b5cea8">0</span>;
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> dtWorstUs = <span class="tok-b5cea8">0</span>;
 
 <span class="tok-6a9955">// in deltaTimeSec(), after computing elapsed:</span>
-<span class="tok-569cd6-c-569cd6">if</span> (elapsed &gt; ____) dtWorstUs = elapsed;
+<span class="tok-569cd6">if</span> (elapsed &gt; ____) dtWorstUs = elapsed;
 
 <span class="tok-6a9955">// clear in runReset():        dtWorstUs = 0;</span>
 <span class="tok-6a9955">// print on the score screen:  display.print(dtWorstUs);</span></pre>
@@ -1620,14 +1620,14 @@ print it on the score screen</pre>
 <span class="tok-7cbf6e">//   MAE   - mean |error|.  How far off the robot LIVED.</span>
 <span class="tok-7cbf6e">//   PEAK  - max  |error|.  The worst single moment.</span>
 <span class="tok-7cbf6e">//   WEAVE - error sign-flips per second. How much it HUNTED.</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> runStart = 0;
-<span class="tok-569cd6-c-569cd6">long</span> runSumAbs   = 0;
-<span class="tok-569cd6-c-569cd6">long</span> runSamples  = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  runPeak     = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  runCross    = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  runLastSign = 0;
-<span class="tok-569cd6-c-569cd6">int</span>  knob        = 0;   <span class="tok-7cbf6e">// which gain the buttons are turning</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> dtWorstUs = 0;   <span class="tok-7cbf6e">// CHALLENGE 3 - the slowest pass of the run</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> runStart = 0;
+<span class="tok-569cd6">long</span> runSumAbs   = 0;
+<span class="tok-569cd6">long</span> runSamples  = 0;
+<span class="tok-569cd6">int</span>  runPeak     = 0;
+<span class="tok-569cd6">int</span>  runCross    = 0;
+<span class="tok-569cd6">int</span>  runLastSign = 0;
+<span class="tok-569cd6">int</span>  knob        = 0;   <span class="tok-7cbf6e">// which gain the buttons are turning</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> dtWorstUs = 0;   <span class="tok-7cbf6e">// CHALLENGE 3 - the slowest pass of the run</span>
 </pre>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE CLOCK (NEW for Lesson 15) =====</span>
@@ -1646,19 +1646,19 @@ print it on the score screen</pre>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// micros() resolves to 4 microseconds. It is the only clock on this robot</span>
 <span class="tok-7cbf6e">// that can see this loop.</span>
-<span class="tok-569cd6-c-569cd6">float</span> deltaTimeSec() {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> now = micros();
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
+<span class="tok-569cd6">float</span> deltaTimeSec() {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> now = micros();
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
   lastMicros = now;
-  <span class="tok-569cd6-c-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
-  <span class="tok-569cd6-c-569cd6">if</span> (elapsed &gt; dtWorstUs) dtWorstUs = elapsed;   <span class="tok-7cbf6e">// CHALLENGE 3</span>
-  <span class="tok-569cd6-c-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
+  <span class="tok-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
+  <span class="tok-569cd6">if</span> (elapsed &gt; dtWorstUs) dtWorstUs = elapsed;   <span class="tok-7cbf6e">// CHALLENGE 3</span>
+  <span class="tok-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
 }
 </pre>
 <div class="div-e0a800"><b>clear it when the run resets, and print it on the score screen:</b></div>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE SCORER (NEW for Lesson 15) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> runReset() {
+<span class="tok-569cd6">void</span> runReset() {
   runSumAbs = 0; runSamples = 0; runPeak = 0; runCross = 0; runLastSign = 0;
   runStart = millis();
   dtWorstUs = 0;
@@ -1666,9 +1666,9 @@ print it on the score screen</pre>
 </pre>
 <pre class="code-block-bg-1e1e1e">
   showKnob();
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"dtMAX "</span>)); display.print(dtWorstUs);
-  display.print(F(<span class="tok-ce9178-c-ce9178">" us"</span>));
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"A- C+ holdA tapC B"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>); display.print(F(<span class="tok-ce9178">"dtMAX "</span>)); display.print(dtWorstUs);
+  display.print(F(<span class="tok-ce9178">" us"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"A- C+ holdA tapC B"</span>));
 }
 </pre>
 <div class="div-m-16px0"><b>Read the number, then go and find out what caused it.</b> Something in
@@ -1810,12 +1810,12 @@ They are <b>identical</b>.</div>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// micros() resolves to 4 microseconds. It is the only clock on this robot</span>
 <span class="tok-7cbf6e">// that can see this loop.</span>
-<span class="tok-569cd6-c-569cd6">float</span> deltaTimeSec() {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> now = millis();
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
+<span class="tok-569cd6">float</span> deltaTimeSec() {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> now = millis();
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> elapsed = now - lastMicros;   <span class="tok-7cbf6e">// unsigned math survives rollover</span>
   lastMicros = now;
-  <span class="tok-569cd6-c-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
-  <span class="tok-569cd6-c-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
+  <span class="tok-569cd6">if</span> (elapsed &lt; DT_MIN_US) elapsed = DT_MIN_US;
+  <span class="tok-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
 }
 </pre>
 <details data-reveal="hint" class="details-m-12px0"><summary class="summary-c-2e86ab">
@@ -1832,26 +1832,26 @@ pull.<br><br>
 <b>Program size: 28,050 bytes &mdash; 16 bytes
 <i>bigger</i> than correct.</b></div>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> followLine() {
+<span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
 
   dtSec = deltaTimeSec();   <span class="tok-7cbf6e">// ONE clock read per pass</span>
 
   <span class="tok-7cbf6e">// P - THE PRESENT. How far off am I right now?</span>
-  <span class="tok-569cd6-c-569cd6">float</span> p = currentKp * error;
+  <span class="tok-569cd6">float</span> p = currentKp * error;
 
   <span class="tok-7cbf6e">// D - THE FUTURE. How fast is the error closing?</span>
   <span class="tok-7cbf6e">// If I am already racing back toward the line, D eases off the wheel</span>
   <span class="tok-7cbf6e">// BEFORE I sail past it. P can never do that: P knows where I am, not</span>
   <span class="tok-7cbf6e">// where I am HEADED. This is the term that kills the weave.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
+  <span class="tok-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
 
 
-  <span class="tok-569cd6-c-569cd6">int</span> correction = (<span class="tok-569cd6-c-569cd6">int</span>)(p + d);
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed  = currentBase + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = currentBase - correction;
+  <span class="tok-569cd6">int</span> correction = (<span class="tok-569cd6">int</span>)(p + d);
+  <span class="tok-569cd6">int</span> leftSpeed  = currentBase + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = currentBase - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
@@ -1884,14 +1884,14 @@ smaller than correct.</b></div>
 <span class="tok-7cbf6e">// four separate places is a bug with a four-day fuse.</span>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// So put it IN THE DOORWAY. Now there is exactly one way in.</span>
-<span class="tok-569cd6-c-569cd6">void</span> resetPID() {
+<span class="tok-569cd6">void</span> resetPID() {
   lastError  = 0;
   speedIntegral   = 0;   <span class="tok-7cbf6e">// forget the past - it was not your fault</span>
   lastSpeedCounts = averageCounts();   <span class="tok-7cbf6e">// and do not bill us for the distance we drove while away</span>
   lastMicros = micros();   <span class="tok-7cbf6e">// do not bill D for the time we spent away</span>
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> enterFollowing() {
+<span class="tok-569cd6">void</span> enterFollowing() {
   currentState = FOLLOWING_LINE;
   showStatus();
 }
@@ -1915,27 +1915,27 @@ you tested a PD one.<br><br>
 <b>Program size: 28,034 bytes. The correct program is 28,034 bytes.
 IDENTICAL.</b></div>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> followLine() {
+<span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
 
   dtSec = deltaTimeSec();   <span class="tok-7cbf6e">// ONE clock read per pass</span>
 
   <span class="tok-7cbf6e">// P - THE PRESENT. How far off am I right now?</span>
-  <span class="tok-569cd6-c-569cd6">float</span> p = currentKp * error;
+  <span class="tok-569cd6">float</span> p = currentKp * error;
 
   <span class="tok-7cbf6e">// D - THE FUTURE. How fast is the error closing?</span>
   <span class="tok-7cbf6e">// If I am already racing back toward the line, D eases off the wheel</span>
   <span class="tok-7cbf6e">// BEFORE I sail past it. P can never do that: P knows where I am, not</span>
   <span class="tok-7cbf6e">// where I am HEADED. This is the term that kills the weave.</span>
-  <span class="tok-569cd6-c-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
+  <span class="tok-569cd6">float</span> d = currentKd * (error - lastError) / dtSec;
 
   lastError = error;   <span class="tok-7cbf6e">// the present becomes the past</span>
 
-  <span class="tok-569cd6-c-569cd6">int</span> correction = (<span class="tok-569cd6-c-569cd6">int</span>)(p - d);
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed  = currentBase + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = currentBase - correction;
+  <span class="tok-569cd6">int</span> correction = (<span class="tok-569cd6">int</span>)(p - d);
+  <span class="tok-569cd6">int</span> leftSpeed  = currentBase + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = currentBase - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);

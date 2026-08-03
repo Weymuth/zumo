@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.17.0 -->
+<!-- Lesson version: v02.17.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -831,10 +831,10 @@ The same code that was impossible becomes trivial.</p>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">driveDistance() takes centimeters, and negative means backward. Read the distance BEFORE you stop the motors.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">case</span> LINE_LOST: {
-  <span class="tok-569cd6-c-569cd6">float</span> retreat = ____;              <span class="tok-6a9955">// how far we came in blind (read BEFORE stopping)</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">case</span> LINE_LOST: {
+  <span class="tok-569cd6">float</span> retreat = ____;              <span class="tok-6a9955">// how far we came in blind (read BEFORE stopping)</span>
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  <span class="tok-569cd6-c-569cd6">if</span> (retreat &gt; <span class="tok-b5cea8">1.0</span>) {               <span class="tok-6a9955">// only worth it if we really moved</span>
+  <span class="tok-569cd6">if</span> (retreat &gt; <span class="tok-b5cea8">1.0</span>) {               <span class="tok-6a9955">// only worth it if we really moved</span>
     driveDistance(____);             <span class="tok-6a9955">// negative = backward</span>
     gapStartCounts = averageCounts();   <span class="tok-6a9955">// we are home; re-zero</span>
   }</pre>
@@ -873,13 +873,13 @@ undo the sweep on failure - otherwise the next run starts crooked</pre>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">A small loop does the sweep. The turn amounts are the blanks: right 30, then left 60, then 30 to straighten.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> sweep = <span class="tok-b5cea8">0</span>; sweep &lt; <span class="tok-b5cea8">2</span>; sweep++) {
+<pre class="code-block-333-2"><span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> sweep = <span class="tok-b5cea8">0</span>; sweep &lt; <span class="tok-b5cea8">2</span>; sweep++) {
     turnDegrees(sweep == <span class="tok-b5cea8">0</span> ? ____ : ____);   <span class="tok-6a9955">// right 30, then left 60</span>
-    <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+    <span class="tok-569cd6">if</span> (isLineVisible()) {
       currentState = FOLLOWING_LINE;
       showStatus();
-      <span class="tok-569cd6-c-569cd6">return</span>;
+      <span class="tok-569cd6">return</span>;
     }
   }
   turnDegrees(____);          <span class="tok-6a9955">// undo the sweep - face front again</span>
@@ -926,9 +926,9 @@ drive at gapSpeed + TRIM   &lt;- still open loop, KEEP the TRIM</pre>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Scale the speed by how much budget is spent — and keep the TRIM: you are still open loop here, if anything more so.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6-c-569cd6">float</span> spent = blindDistanceCm() / GAP_MAX_CM;   <span class="tok-6a9955">// 0.0 -&gt; 1.0</span>
+<pre class="code-block-333-2"><span class="tok-569cd6">float</span> spent = blindDistanceCm() / GAP_MAX_CM;   <span class="tok-6a9955">// 0.0 -&gt; 1.0</span>
 spent = constrain(spent, ____, ____);
-<span class="tok-569cd6-c-569cd6">int</span> gapSpeed = BASE_SPEED - (BASE_SPEED / <span class="tok-b5cea8">2</span>) * ____;
+<span class="tok-569cd6">int</span> gapSpeed = BASE_SPEED - (BASE_SPEED / <span class="tok-b5cea8">2</span>) * ____;
 motors.setSpeeds(gapSpeed + ____, gapSpeed);    <span class="tok-6a9955">// still open loop - keep TRIM</span></pre>
 </div>
 <details data-reveal="solution" class="details-b-none">

@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.16.0 -->
+<!-- Lesson version: v05.16.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -563,12 +563,12 @@ enum IntersectionType {
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// Green markers read BETWEEN white and black on the calibrated</span>
 <span class="tok-7cbf6e">// 0-1000 scale. Find YOUR band in Section 7.1, then tune these.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> GREEN_LOW_THRESHOLD = <span class="tok-b5cea8">300</span>;   <span class="tok-7cbf6e">// Calibrated value where green starts</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> GREEN_HIGH_THRESHOLD = <span class="tok-b5cea8">700</span>;  <span class="tok-7cbf6e">// Calibrated value where green ends</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_LOW_THRESHOLD = <span class="tok-b5cea8">300</span>;   <span class="tok-7cbf6e">// Calibrated value where green starts</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_HIGH_THRESHOLD = <span class="tok-b5cea8">700</span>;  <span class="tok-7cbf6e">// Calibrated value where green ends</span>
 
 <span class="tok-7cbf6e">// ===== INTERSECTION TYPES (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// What the marker said - the decision the course is asking for</span>
-<span class="tok-569cd6-c-569cd6">enum</span> IntersectionType {
+<span class="tok-569cd6">enum</span> IntersectionType {
   NO_INTERSECTION,   <span class="tok-7cbf6e">// Plain line - keep driving</span>
   GO_LEFT,           <span class="tok-7cbf6e">// Green marker on the left side</span>
   GO_RIGHT,          <span class="tok-7cbf6e">// Green marker on the right side</span>
@@ -577,7 +577,7 @@ enum IntersectionType {
 
 <span class="tok-7cbf6e">// ===== ROBOT STATES (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// One name for "what is the robot doing right now"</span>
-<span class="tok-569cd6-c-569cd6">enum</span> RobotState {
+<span class="tok-569cd6">enum</span> RobotState {
   STOPPED,           <span class="tok-7cbf6e">// Motors off, waiting for B</span>
   FOLLOWING_LINE,    <span class="tok-7cbf6e">// P-control driving - Lesson 8's whole job</span>
   AT_INTERSECTION,   <span class="tok-7cbf6e">// Stopped on a marker, announcing the decision</span>
@@ -626,7 +626,7 @@ enum IntersectionType {
 <span class="tok-7cbf6e">*/</span>
 #pragma once
 #include &lt;Zumo32U4.h&gt;
-#include <span class="tok-ce9178-c-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW for Lesson 9: prototypes below use IntersectionType</span>
+#include <span class="tok-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW for Lesson 9: prototypes below use IntersectionType</span>
 
 <span class="tok-7cbf6e">// ===== EXTERN HARDWARE DECLARATIONS =====</span>
 <span class="tok-7cbf6e">// These tell other files "these objects exist"</span>
@@ -641,13 +641,13 @@ extern Zumo32U4ButtonC buttonC;
 extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Lesson 8</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> initLineSensors();
-<span class="tok-569cd6-c-569cd6">void</span> calibrateLineSensors();
-<span class="tok-569cd6-c-569cd6">int</span> readLinePosition();
-<span class="tok-569cd6-c-569cd6">bool</span> isLineVisible();
+<span class="tok-569cd6">void</span> initLineSensors();
+<span class="tok-569cd6">void</span> calibrateLineSensors();
+<span class="tok-569cd6">int</span> readLinePosition();
+<span class="tok-569cd6">bool</span> isLineVisible();
 
 <span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
-<span class="tok-569cd6-c-569cd6">bool</span> isGreen(<span class="tok-569cd6-c-569cd6">int</span> sensorValue);
+<span class="tok-569cd6">bool</span> isGreen(<span class="tok-569cd6">int</span> sensorValue);
 IntersectionType checkForIntersection();</pre>
 </div>
 </details>
@@ -679,8 +679,8 @@ IntersectionType checkForIntersection();</pre>
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
 
 <span class="tok-7cbf6e">// Is this ONE calibrated reading inside the green band?</span>
-<span class="tok-569cd6-c-569cd6">bool</span> isGreen(<span class="tok-569cd6-c-569cd6">int</span> sensorValue) {
-  <span class="tok-569cd6-c-569cd6">return</span> (sensorValue &gt;= GREEN_LOW_THRESHOLD &amp;&amp;
+<span class="tok-569cd6">bool</span> isGreen(<span class="tok-569cd6">int</span> sensorValue) {
+  <span class="tok-569cd6">return</span> (sensorValue &gt;= GREEN_LOW_THRESHOLD &amp;&amp;
           sensorValue &lt;= GREEN_HIGH_THRESHOLD);
 }
 
@@ -688,13 +688,13 @@ IntersectionType checkForIntersection();</pre>
 IntersectionType checkForIntersection() {
   lineSensors.readCalibrated(sensorValues);   <span class="tok-7cbf6e">// 0 = white, 1000 = black</span>
 
-  <span class="tok-569cd6-c-569cd6">bool</span> leftGreen  = isGreen(sensorValues[<span class="tok-b5cea8">0</span>]);   <span class="tok-7cbf6e">// outermost LEFT sensor</span>
-  <span class="tok-569cd6-c-569cd6">bool</span> rightGreen = isGreen(sensorValues[<span class="tok-b5cea8">4</span>]);   <span class="tok-7cbf6e">// outermost RIGHT sensor</span>
+  <span class="tok-569cd6">bool</span> leftGreen  = isGreen(sensorValues[<span class="tok-b5cea8">0</span>]);   <span class="tok-7cbf6e">// outermost LEFT sensor</span>
+  <span class="tok-569cd6">bool</span> rightGreen = isGreen(sensorValues[<span class="tok-b5cea8">4</span>]);   <span class="tok-7cbf6e">// outermost RIGHT sensor</span>
 
-  <span class="tok-569cd6-c-569cd6">if</span> (leftGreen &amp;&amp; rightGreen) <span class="tok-569cd6-c-569cd6">return</span> DEAD_END;
-  <span class="tok-569cd6-c-569cd6">if</span> (leftGreen)               <span class="tok-569cd6-c-569cd6">return</span> GO_LEFT;
-  <span class="tok-569cd6-c-569cd6">if</span> (rightGreen)              <span class="tok-569cd6-c-569cd6">return</span> GO_RIGHT;
-  <span class="tok-569cd6-c-569cd6">return</span> NO_INTERSECTION;
+  <span class="tok-569cd6">if</span> (leftGreen &amp;&amp; rightGreen) <span class="tok-569cd6">return</span> DEAD_END;
+  <span class="tok-569cd6">if</span> (leftGreen)               <span class="tok-569cd6">return</span> GO_LEFT;
+  <span class="tok-569cd6">if</span> (rightGreen)              <span class="tok-569cd6">return</span> GO_RIGHT;
+  <span class="tok-569cd6">return</span> NO_INTERSECTION;
 }</pre>
 </div>
 </details>
@@ -732,16 +732,16 @@ IntersectionType checkForIntersection() {
 <summary class="summary-c-5a6872">🔓 Compare with a worked version (both new blocks)</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION TURNS (NEW for Lesson 9) =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> turnLeft();
-<span class="tok-569cd6-c-569cd6">void</span> turnRight();
-<span class="tok-569cd6-c-569cd6">void</span> turnAround();</pre>
+<span class="tok-569cd6">void</span> turnLeft();
+<span class="tok-569cd6">void</span> turnRight();
+<span class="tok-569cd6">void</span> turnAround();</pre>
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION TURNS (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// Three one-liners riding on Lesson 6's encoder machinery.</span>
 <span class="tok-7cbf6e">// turnDegrees canon: positive = right, negative = left.</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> turnLeft()   { turnDegrees(-<span class="tok-b5cea8">90</span>); }
-<span class="tok-569cd6-c-569cd6">void</span> turnRight()  { turnDegrees(<span class="tok-b5cea8">90</span>);  }
-<span class="tok-569cd6-c-569cd6">void</span> turnAround() { turnDegrees(<span class="tok-b5cea8">180</span>); }</pre>
+<span class="tok-569cd6">void</span> turnLeft()   { turnDegrees(-<span class="tok-b5cea8">90</span>); }
+<span class="tok-569cd6">void</span> turnRight()  { turnDegrees(<span class="tok-b5cea8">90</span>);  }
+<span class="tok-569cd6">void</span> turnAround() { turnDegrees(<span class="tok-b5cea8">180</span>); }</pre>
 </div>
 </details>
 
@@ -779,107 +779,107 @@ IntersectionType checkForIntersection() {
 <details data-reveal="solution" class="details-dee2e6">
 <summary class="summary-c-5a6872">🔓 Compare with a worked main.cpp at this step (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333">#include <span class="tok-ce9178-c-ce9178">"RobotConfig.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotSensors.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotHelpers.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotMotion.h"</span>   <span class="tok-7cbf6e">// NEW for Lesson 9 - main finally drives the turns</span>
+<pre class="code-block-333">#include <span class="tok-ce9178">"RobotConfig.h"</span>
+#include <span class="tok-ce9178">"RobotSensors.h"</span>
+#include <span class="tok-ce9178">"RobotHelpers.h"</span>
+#include <span class="tok-ce9178">"RobotMotion.h"</span>   <span class="tok-7cbf6e">// NEW for Lesson 9 - main finally drives the turns</span>
 
 <span class="tok-7cbf6e">// ===== ROBOT STATE =====</span>
 RobotState currentState = STOPPED;               <span class="tok-7cbf6e">// What the robot is doing right now</span>
 IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The decision waiting to be executed</span>
-<span class="tok-569cd6-c-569cd6">float</span> currentKp = KP;            <span class="tok-7cbf6e">// Live-tunable copy of KP</span>
-<span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> gapStartTime = <span class="tok-b5cea8">0</span>;  <span class="tok-7cbf6e">// When did the line disappear?</span>
+<span class="tok-569cd6">float</span> currentKp = KP;            <span class="tok-7cbf6e">// Live-tunable copy of KP</span>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> gapStartTime = <span class="tok-b5cea8">0</span>;  <span class="tok-7cbf6e">// When did the line disappear?</span>
 
-<span class="tok-569cd6-c-569cd6">void</span> showStatus() {
+<span class="tok-569cd6">void</span> showStatus() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(currentState == STOPPED ? F(<span class="tok-ce9178-c-ce9178">"STOPPED"</span>) : F(<span class="tok-ce9178-c-ce9178">"RUNNING"</span>));
+  display.print(currentState == STOPPED ? F(<span class="tok-ce9178">"STOPPED"</span>) : F(<span class="tok-ce9178">"RUNNING"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Kp: "</span>));
+  display.print(F(<span class="tok-ce9178">"Kp: "</span>));
   display.print(currentKp, <span class="tok-b5cea8">2</span>);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"A- B:Go/Stop C+"</span>));
+  display.print(F(<span class="tok-ce9178">"A- B:Go/Stop C+"</span>));
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> followLine() {
-  <span class="tok-569cd6-c-569cd6">int</span> position = readLinePosition();
-  <span class="tok-569cd6-c-569cd6">int</span> error = position - LINE_CENTER;
-  <span class="tok-569cd6-c-569cd6">int</span> correction = currentKp * error;
-  <span class="tok-569cd6-c-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
-  <span class="tok-569cd6-c-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+<span class="tok-569cd6">void</span> followLine() {
+  <span class="tok-569cd6">int</span> position = readLinePosition();
+  <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+  <span class="tok-569cd6">int</span> correction = currentKp * error;
+  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
+  <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
   leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
 }
 
-<span class="tok-569cd6-c-569cd6">void</span> handleGap() {
-  <span class="tok-569cd6-c-569cd6">if</span> (gapStartTime == <span class="tok-b5cea8">0</span>) {
+<span class="tok-569cd6">void</span> handleGap() {
+  <span class="tok-569cd6">if</span> (gapStartTime == <span class="tok-b5cea8">0</span>) {
     gapStartTime = millis();
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
+  <span class="tok-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
     currentState = STOPPED;   <span class="tok-7cbf6e">// The state machine absorbed the old bool</span>
     display.setLayout21x8();
     display.clear();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">"LINE LOST!"</span>));
+    display.print(F(<span class="tok-ce9178">"LINE LOST!"</span>));
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">"Press B to retry"</span>));
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    display.print(F(<span class="tok-ce9178">"Press B to retry"</span>));
+    <span class="tok-569cd6">return</span>;
   }
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
 }
 
 <span class="tok-7cbf6e">// ===== SETUP =====</span>
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   Serial.begin(<span class="tok-b5cea8">115200</span>);
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> serialStart = millis();
-  <span class="tok-569cd6-c-569cd6">while</span> (!Serial &amp;&amp; (millis() - serialStart &lt; <span class="tok-b5cea8">2000</span>)) {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> serialStart = millis();
+  <span class="tok-569cd6">while</span> (!Serial &amp;&amp; (millis() - serialStart &lt; <span class="tok-b5cea8">2000</span>)) {
     delay(<span class="tok-b5cea8">10</span>); <span class="tok-7cbf6e">// Wait up to 2s for USB serial connection</span>
   }
   delay(<span class="tok-b5cea8">500</span>);
-  Serial.println(F(<span class="tok-ce9178-c-ce9178">"=== Lesson 9: Intersections ==="</span>));
+  Serial.println(F(<span class="tok-ce9178">"=== Lesson 9: Intersections ==="</span>));
 
 <span class="tok-7cbf6e">  // ===== BATTERY REPORT =====</span>
-  <span class="tok-569cd6-c-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
-  <span class="tok-569cd6-c-569cd6">int</span> battWhole = batteryVoltage / <span class="tok-b5cea8">1000</span>;
-  <span class="tok-569cd6-c-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % <span class="tok-b5cea8">100</span>;
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
+  <span class="tok-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
+  <span class="tok-569cd6">int</span> battWhole = batteryVoltage / <span class="tok-b5cea8">1000</span>;
+  <span class="tok-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % <span class="tok-b5cea8">100</span>;
+  Serial.print(F(<span class="tok-ce9178">"Battery: "</span>));
   Serial.print(battWhole);
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) Serial.print(F(<span class="tok-ce9178-c-ce9178">"0"</span>));
+  Serial.print(F(<span class="tok-ce9178">"."</span>));
+  <span class="tok-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) Serial.print(F(<span class="tok-ce9178">"0"</span>));
   Serial.print(battDecimal);
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"V ("</span>));
+  Serial.print(F(<span class="tok-ce9178">"V ("</span>));
   Serial.print(batteryVoltage);
-  Serial.println(F(<span class="tok-ce9178-c-ce9178">"mV)"</span>));
+  Serial.println(F(<span class="tok-ce9178">"mV)"</span>));
 
   display.clear();
   display.setLayout21x8();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"===== Lesson 9 ====="</span>));
+  display.print(F(<span class="tok-ce9178">"===== Lesson 9 ====="</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
+  display.print(F(<span class="tok-ce9178">"Battery: "</span>));
   display.print(battWhole);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) display.print(F(<span class="tok-ce9178-c-ce9178">"0"</span>));
+  display.print(F(<span class="tok-ce9178">"."</span>));
+  <span class="tok-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) display.print(F(<span class="tok-ce9178">"0"</span>));
   display.print(battDecimal);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"V"</span>));
+  display.print(F(<span class="tok-ce9178">"V"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Status: "</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (batteryVoltage &gt;= BATTERY_GOOD) {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"GOOD"</span>));
+  display.print(F(<span class="tok-ce9178">"Status: "</span>));
+  <span class="tok-569cd6">if</span> (batteryVoltage &gt;= BATTERY_GOOD) {
+    display.print(F(<span class="tok-ce9178">"GOOD"</span>));
     ledGreen(<span class="tok-b5cea8">1</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (batteryVoltage &gt;= BATTERY_LOW) {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"LOW"</span>));
+  } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (batteryVoltage &gt;= BATTERY_LOW) {
+    display.print(F(<span class="tok-ce9178">"LOW"</span>));
     ledYellow(<span class="tok-b5cea8">1</span>);
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">4</span>), <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">15</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"CHARGE!"</span>));
+  } <span class="tok-569cd6">else</span> {
+    display.print(F(<span class="tok-ce9178">"CHARGE!"</span>));
     ledRed(<span class="tok-b5cea8">1</span>);
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">3</span>), <span class="tok-b5cea8">500</span>, <span class="tok-b5cea8">15</span>);
   }
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Kp: "</span>));
+  display.print(F(<span class="tok-ce9178">"Kp: "</span>));
   display.print(currentKp, <span class="tok-b5cea8">2</span>);
   delay(<span class="tok-b5cea8">2500</span>);
   ledGreen(<span class="tok-b5cea8">0</span>);
@@ -897,46 +897,46 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Place robot on line"</span>));
+  display.print(F(<span class="tok-ce9178">"Place robot on line"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Press B to calibrate"</span>));
+  display.print(F(<span class="tok-ce9178">"Press B to calibrate"</span>));
   buttonB.waitForButton();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Calibrating..."</span>));
+  display.print(F(<span class="tok-ce9178">"Calibrating..."</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"(spinning)"</span>));
+  display.print(F(<span class="tok-ce9178">"(spinning)"</span>));
   delay(<span class="tok-b5cea8">500</span>);
   calibrateLineSensors();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Calibration done!"</span>));
+  display.print(F(<span class="tok-ce9178">"Calibration done!"</span>));
   delay(<span class="tok-b5cea8">1000</span>);
   showStatus();
 }
 
 <span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// One switch, four states - two get bodies today, two arrive in Steps 7-8</span>
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">switch</span> (currentState) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">switch</span> (currentState) {
 
-    <span class="tok-569cd6-c-569cd6">case</span> STOPPED: {
+    <span class="tok-569cd6">case</span> STOPPED: {
       checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
 
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed()) {   <span class="tok-7cbf6e">// A = Kp down</span>
+      <span class="tok-569cd6">if</span> (buttonA.isPressed()) {   <span class="tok-7cbf6e">// A = Kp down</span>
         currentKp -= <span class="tok-b5cea8">0.02</span>;
-        <span class="tok-569cd6-c-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
+        <span class="tok-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
         showStatus();
         delay(<span class="tok-b5cea8">200</span>);
       }
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed()) {   <span class="tok-7cbf6e">// C = Kp up</span>
+      <span class="tok-569cd6">if</span> (buttonC.isPressed()) {   <span class="tok-7cbf6e">// C = Kp up</span>
         currentKp += <span class="tok-b5cea8">0.02</span>;
-        <span class="tok-569cd6-c-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
+        <span class="tok-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
         showStatus();
         delay(<span class="tok-b5cea8">200</span>);
       }
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
-        <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
+        <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
           display.setLayout21x8();
           display.clear();
           display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -946,23 +946,23 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
         }
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-        display.print(F(<span class="tok-ce9178-c-ce9178">"GO!"</span>));
+        display.print(F(<span class="tok-ce9178">"GO!"</span>));
         buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);
         delay(<span class="tok-b5cea8">500</span>);
         currentState = FOLLOWING_LINE;
         showStatus();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 
-    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
+    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         currentState = STOPPED;
         showStatus();
       }
 <span class="tok-7cbf6e">      // Driving arrives in Step 7 - the kill switch came FIRST on purpose</span>
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
   }
 }</pre>
@@ -995,26 +995,26 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// Two live states; the marker stops us cold - the decision brain is Step 8</span>
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">switch</span> (currentState) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">switch</span> (currentState) {
 
-    <span class="tok-569cd6-c-569cd6">case</span> STOPPED: {
+    <span class="tok-569cd6">case</span> STOPPED: {
       checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
 
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed()) {   <span class="tok-7cbf6e">// A = Kp down</span>
+      <span class="tok-569cd6">if</span> (buttonA.isPressed()) {   <span class="tok-7cbf6e">// A = Kp down</span>
         currentKp -= <span class="tok-b5cea8">0.02</span>;
-        <span class="tok-569cd6-c-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
+        <span class="tok-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
         showStatus();
         delay(<span class="tok-b5cea8">200</span>);
       }
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed()) {   <span class="tok-7cbf6e">// C = Kp up</span>
+      <span class="tok-569cd6">if</span> (buttonC.isPressed()) {   <span class="tok-7cbf6e">// C = Kp up</span>
         currentKp += <span class="tok-b5cea8">0.02</span>;
-        <span class="tok-569cd6-c-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
+        <span class="tok-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
         showStatus();
         delay(<span class="tok-b5cea8">200</span>);
       }
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
-        <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
+        <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
           display.setLayout21x8();
           display.clear();
           display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1024,37 +1024,37 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
         }
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-        display.print(F(<span class="tok-ce9178-c-ce9178">"GO!"</span>));
+        display.print(F(<span class="tok-ce9178">"GO!"</span>));
         buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);
         delay(<span class="tok-b5cea8">500</span>);
         currentState = FOLLOWING_LINE;
         showStatus();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 
-    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
+    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         currentState = STOPPED;
         showStatus();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         gapStartTime = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// Line is back - reset the gap timer</span>
         followLine();
 
         IntersectionType seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION) {
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION) {
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
           pendingTurn = seen;
           currentState = AT_INTERSECTION;
         }
-      } <span class="tok-569cd6-c-569cd6">else</span> {
+      } <span class="tok-569cd6">else</span> {
         handleGap();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 
   }
@@ -1092,36 +1092,36 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <summary class="summary-c-5a6872">🔓 Compare: showDecision() and the finished loop()</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// Announce what the marker said - big enough to read from standing height</span>
-<span class="tok-569cd6-c-569cd6">void</span> showDecision() {
+<span class="tok-569cd6">void</span> showDecision() {
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       display.print(F(<span class="tok-ce9178-c-ce9178">"&lt;&lt; GO LEFT"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_RIGHT) display.print(F(<span class="tok-ce9178-c-ce9178">"GO RIGHT &gt;&gt;"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == DEAD_END) display.print(F(<span class="tok-ce9178-c-ce9178">"DEAD END - U TURN"</span>));
+  <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       display.print(F(<span class="tok-ce9178">"&lt;&lt; GO LEFT"</span>));
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) display.print(F(<span class="tok-ce9178">"GO RIGHT &gt;&gt;"</span>));
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) display.print(F(<span class="tok-ce9178">"DEAD END - U TURN"</span>));
 }</pre>
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// One switch, four states - the whole robot brain reads top to bottom</span>
-<span class="tok-569cd6-c-569cd6">void</span> loop() {
-  <span class="tok-569cd6-c-569cd6">switch</span> (currentState) {
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">switch</span> (currentState) {
 
-    <span class="tok-569cd6-c-569cd6">case</span> STOPPED: {
+    <span class="tok-569cd6">case</span> STOPPED: {
       checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
 
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed()) {   <span class="tok-7cbf6e">// A = Kp down</span>
+      <span class="tok-569cd6">if</span> (buttonA.isPressed()) {   <span class="tok-7cbf6e">// A = Kp down</span>
         currentKp -= <span class="tok-b5cea8">0.02</span>;
-        <span class="tok-569cd6-c-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
+        <span class="tok-569cd6">if</span> (currentKp &lt; <span class="tok-b5cea8">0.02</span>) currentKp = <span class="tok-b5cea8">0.02</span>;
         showStatus();
         delay(<span class="tok-b5cea8">200</span>);
       }
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed()) {   <span class="tok-7cbf6e">// C = Kp up</span>
+      <span class="tok-569cd6">if</span> (buttonC.isPressed()) {   <span class="tok-7cbf6e">// C = Kp up</span>
         currentKp += <span class="tok-b5cea8">0.02</span>;
-        <span class="tok-569cd6-c-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
+        <span class="tok-569cd6">if</span> (currentKp &gt; <span class="tok-b5cea8">1.0</span>) currentKp = <span class="tok-b5cea8">1.0</span>;
         showStatus();
         delay(<span class="tok-b5cea8">200</span>);
       }
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
-        <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
+        <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = <span class="tok-b5cea8">3</span>; count &gt; <span class="tok-b5cea8">0</span>; count--) {
           display.setLayout21x8();
           display.clear();
           display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1131,55 +1131,55 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
         }
         display.clear();
         display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-        display.print(F(<span class="tok-ce9178-c-ce9178">"GO!"</span>));
+        display.print(F(<span class="tok-ce9178">"GO!"</span>));
         buzzer.playNote(NOTE_C(<span class="tok-b5cea8">6</span>), <span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">15</span>);
         delay(<span class="tok-b5cea8">500</span>);
         currentState = FOLLOWING_LINE;
         showStatus();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 
-    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
+    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         currentState = STOPPED;
         showStatus();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         gapStartTime = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// Line is back - reset the gap timer</span>
         followLine();
 
         IntersectionType seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION) {
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION) {
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
           pendingTurn = seen;
           currentState = AT_INTERSECTION;
         }
-      } <span class="tok-569cd6-c-569cd6">else</span> {
+      } <span class="tok-569cd6">else</span> {
         handleGap();
       }
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 
-    <span class="tok-569cd6-c-569cd6">case</span> AT_INTERSECTION: {
+    <span class="tok-569cd6">case</span> AT_INTERSECTION: {
       showDecision();
       buzzer.playNote(NOTE_A(<span class="tok-b5cea8">4</span>), <span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">15</span>);
       delay(<span class="tok-b5cea8">600</span>);   <span class="tok-7cbf6e">// Long enough for a human to read the call</span>
       currentState = EXECUTING_TURN;
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 
-    <span class="tok-569cd6-c-569cd6">case</span> EXECUTING_TURN: {
-      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();
+    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
+      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();
       pendingTurn = NO_INTERSECTION;
       currentState = FOLLOWING_LINE;
       showStatus();
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
   }
 }</pre>
@@ -1205,14 +1205,14 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <ol>
 <li>Add this <strong>TEMPORARY</strong> block at the top of the STOPPED case (right after <code class="code-inline-bg-e8e8e8">checkBattery();</code>):</li>
 </ol><pre class="code-block-333"><span class="tok-7cbf6e">      // TEMPORARY - Green Survey (remove after Section 7.1)</span>
-      <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> v[<span class="tok-b5cea8">5</span>];
+      <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> v[<span class="tok-b5cea8">5</span>];
       lineSensors.readCalibrated(v);
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
       display.print(v[<span class="tok-b5cea8">0</span>]);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"   "</span>));
+      display.print(F(<span class="tok-ce9178">"   "</span>));
       display.gotoXY(<span class="tok-b5cea8">10</span>, <span class="tok-b5cea8">6</span>);
       display.print(v[<span class="tok-b5cea8">4</span>]);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"   "</span>));</pre><ol start="2" class="p-mb-0">
+      display.print(F(<span class="tok-ce9178">"   "</span>));</pre><ol start="2" class="p-mb-0">
 <li>Upload. A → <strong>B calibrate on your course</strong> (white floor + black line — calibration defines the scale the survey reads in).</li>
 <li>While STOPPED, the bottom row shows live calibrated values from the two outer sensors. Slide <strong>white</strong>, <strong>green</strong>, then <strong>black</strong> under them; record all six numbers in Section 10's Calibration Data Record.</li>
 <li>Expect white near 0 and black near 1000. Green lands somewhere between — <em>your</em> number is the only one that matters, and left and right may differ slightly.</li>
@@ -1406,21 +1406,21 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Throttle the print to a readable rate, read the <em>calibrated</em> values, and reuse the lesson’s detector for the verdict.</p>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// C1: print the five calibrated values + verdict, twice a second</span>
-<span class="tok-569cd6-c-569cd6">void</span> debugSensors() {
-  <span class="tok-569cd6-c-569cd6">static</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> lastPrint = <span class="tok-b5cea8">0</span>;
-  <span class="tok-569cd6-c-569cd6">if</span> (millis() - lastPrint &lt; ____) <span class="tok-569cd6-c-569cd6">return</span>;
+<span class="tok-569cd6">void</span> debugSensors() {
+  <span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastPrint = <span class="tok-b5cea8">0</span>;
+  <span class="tok-569cd6">if</span> (millis() - lastPrint &lt; ____) <span class="tok-569cd6">return</span>;
   lastPrint = millis();
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
   lineSensors.____(vals);
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
     Serial.print(vals[i]);
-    Serial.print(F(<span class="tok-ce9178-c-ce9178">" "</span>));
+    Serial.print(F(<span class="tok-ce9178">" "</span>));
   }
   IntersectionType seen = ____;
-  <span class="tok-569cd6-c-569cd6">if</span> (seen == GO_LEFT)            Serial.println(F(<span class="tok-ce9178-c-ce9178">"&lt;- GO_LEFT"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (seen == GO_RIGHT)      Serial.println(F(<span class="tok-ce9178-c-ce9178">"GO_RIGHT -&gt;"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (seen == DEAD_END)      Serial.println(F(<span class="tok-ce9178-c-ce9178">"DEAD_END"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span>                            Serial.println(F(<span class="tok-ce9178-c-ce9178">"-"</span>));
+  <span class="tok-569cd6">if</span> (seen == GO_LEFT)            Serial.println(F(<span class="tok-ce9178">"&lt;- GO_LEFT"</span>));
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (seen == GO_RIGHT)      Serial.println(F(<span class="tok-ce9178">"GO_RIGHT -&gt;"</span>));
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (seen == DEAD_END)      Serial.println(F(<span class="tok-ce9178">"DEAD_END"</span>));
+  <span class="tok-569cd6">else</span>                            Serial.println(F(<span class="tok-ce9178">"-"</span>));
 }</pre>
 
 </div>
@@ -1428,21 +1428,21 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre class="code-block-333"><span class="tok-7cbf6e">// C1: print the five calibrated values + verdict, twice a second</span>
-<span class="tok-569cd6-c-569cd6">void</span> debugSensors() {
-  <span class="tok-569cd6-c-569cd6">static</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> lastPrint = <span class="tok-b5cea8">0</span>;
-  <span class="tok-569cd6-c-569cd6">if</span> (millis() - lastPrint &lt; <span class="tok-b5cea8">500</span>) <span class="tok-569cd6-c-569cd6">return</span>;
+<span class="tok-569cd6">void</span> debugSensors() {
+  <span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastPrint = <span class="tok-b5cea8">0</span>;
+  <span class="tok-569cd6">if</span> (millis() - lastPrint &lt; <span class="tok-b5cea8">500</span>) <span class="tok-569cd6">return</span>;
   lastPrint = millis();
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
   lineSensors.readCalibrated(vals);
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
     Serial.print(vals[i]);
-    Serial.print(F(<span class="tok-ce9178-c-ce9178">" "</span>));
+    Serial.print(F(<span class="tok-ce9178">" "</span>));
   }
   IntersectionType seen = checkForIntersection();
-  <span class="tok-569cd6-c-569cd6">if</span> (seen == GO_LEFT)            Serial.println(F(<span class="tok-ce9178-c-ce9178">"&lt;- GO_LEFT"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (seen == GO_RIGHT)      Serial.println(F(<span class="tok-ce9178-c-ce9178">"GO_RIGHT -&gt;"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (seen == DEAD_END)      Serial.println(F(<span class="tok-ce9178-c-ce9178">"DEAD_END"</span>));
-  <span class="tok-569cd6-c-569cd6">else</span>                            Serial.println(F(<span class="tok-ce9178-c-ce9178">"-"</span>));
+  <span class="tok-569cd6">if</span> (seen == GO_LEFT)            Serial.println(F(<span class="tok-ce9178">"&lt;- GO_LEFT"</span>));
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (seen == GO_RIGHT)      Serial.println(F(<span class="tok-ce9178">"GO_RIGHT -&gt;"</span>));
+  <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (seen == DEAD_END)      Serial.println(F(<span class="tok-ce9178">"DEAD_END"</span>));
+  <span class="tok-569cd6">else</span>                            Serial.println(F(<span class="tok-ce9178">"-"</span>));
 }</pre>
 <p>And the one-line call, first thing in the STOPPED case:</p>
 <pre class="code-block-333">      checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
@@ -1476,10 +1476,10 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <p>Light one LED per turn direction. Fill in which LED goes with which way.</p>
 
-<pre class="code-block-333">    <span class="tok-569cd6-c-569cd6">case</span> AT_INTERSECTION: {
-      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       ____(<span class="tok-b5cea8">1</span>);
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_RIGHT) ____(<span class="tok-b5cea8">1</span>);
-      <span class="tok-569cd6-c-569cd6">else</span>                              ____(<span class="tok-b5cea8">1</span>);
+<pre class="code-block-333">    <span class="tok-569cd6">case</span> AT_INTERSECTION: {
+      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       ____(<span class="tok-b5cea8">1</span>);
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) ____(<span class="tok-b5cea8">1</span>);
+      <span class="tok-569cd6">else</span>                              ____(<span class="tok-b5cea8">1</span>);
       
       showDecision();</pre>
 
@@ -1487,10 +1487,10 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333">    <span class="tok-569cd6-c-569cd6">case</span> AT_INTERSECTION: {
-      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       ledYellow(<span class="tok-b5cea8">1</span>);
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_RIGHT) ledGreen(<span class="tok-b5cea8">1</span>);
-      <span class="tok-569cd6-c-569cd6">else</span>                              ledRed(<span class="tok-b5cea8">1</span>);
+<pre class="code-block-333">    <span class="tok-569cd6">case</span> AT_INTERSECTION: {
+      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       ledYellow(<span class="tok-b5cea8">1</span>);
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) ledGreen(<span class="tok-b5cea8">1</span>);
+      <span class="tok-569cd6">else</span>                              ledRed(<span class="tok-b5cea8">1</span>);
       
       showDecision();</pre>
 <p>And the cleanup in EXECUTING_TURN, right after the dispatch:</p>
@@ -1526,13 +1526,13 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Turn most of the way on encoders, then creep until the CENTER sensor is back on black. Fill the turn, the sensor index, and the black threshold.</p>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// C3: turn most of the way on encoders, then creep until the line is back</span>
-<span class="tok-569cd6-c-569cd6">void</span> turnLeftWithSeek() {
+<span class="tok-569cd6">void</span> turnLeftWithSeek() {
   turnDegrees(-____);   <span class="tok-7cbf6e">// Step 1: most of the turn, precise and repeatable</span>
   motors.setSpeeds(-TURN_SPEED / <span class="tok-b5cea8">2</span>, TURN_SPEED / <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// Step 2: slow creep</span>
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
-  <span class="tok-569cd6-c-569cd6">do</span> {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
+  <span class="tok-569cd6">do</span> {
     lineSensors.readCalibrated(vals);
-  } <span class="tok-569cd6-c-569cd6">while</span> (vals[____] &lt; ____);   <span class="tok-7cbf6e">// Step 3: stop when the CENTER sensor is on black</span>
+  } <span class="tok-569cd6">while</span> (vals[____] &lt; ____);   <span class="tok-7cbf6e">// Step 3: stop when the CENTER sensor is on black</span>
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }</pre>
 
@@ -1541,17 +1541,17 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre class="code-block-333"><span class="tok-7cbf6e">// C3: turn most of the way on encoders, then creep until the line is back</span>
-<span class="tok-569cd6-c-569cd6">void</span> turnLeftWithSeek() {
+<span class="tok-569cd6">void</span> turnLeftWithSeek() {
   turnDegrees(-<span class="tok-b5cea8">60</span>);   <span class="tok-7cbf6e">// Step 1: most of the turn, precise and repeatable</span>
   motors.setSpeeds(-TURN_SPEED / <span class="tok-b5cea8">2</span>, TURN_SPEED / <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// Step 2: slow creep</span>
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
-  <span class="tok-569cd6-c-569cd6">do</span> {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> vals[<span class="tok-b5cea8">5</span>];
+  <span class="tok-569cd6">do</span> {
     lineSensors.readCalibrated(vals);
-  } <span class="tok-569cd6-c-569cd6">while</span> (vals[<span class="tok-b5cea8">2</span>] &lt; <span class="tok-b5cea8">600</span>);   <span class="tok-7cbf6e">// Step 3: stop when the CENTER sensor is on black</span>
+  } <span class="tok-569cd6">while</span> (vals[<span class="tok-b5cea8">2</span>] &lt; <span class="tok-b5cea8">600</span>);   <span class="tok-7cbf6e">// Step 3: stop when the CENTER sensor is on black</span>
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }</pre>
 <p>The single dispatch change:</p>
-<pre class="code-block-333">      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeftWithSeek();   <span class="tok-7cbf6e">// C3 in action</span></pre>
+<pre class="code-block-333">      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeftWithSeek();   <span class="tok-7cbf6e">// C3 in action</span></pre>
 </details>
 </div>
 </div>
@@ -1583,7 +1583,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// C4: distance from the sensor array back to the wheel axle.</span>
 <span class="tok-7cbf6e">// Measure YOUR robot - this puts the wheels over the junction.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> MARKER_ADVANCE_CM = ____;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MARKER_ADVANCE_CM = ____;
 
 <span class="tok-7cbf6e">// in EXECUTING_TURN, BEFORE the turn:</span>
 driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junction</span></pre>
@@ -1594,11 +1594,11 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
     <summary>🔓 Click to reveal a worked version</summary>
 <pre class="code-block-333"><span class="tok-7cbf6e">// C4: distance from the sensor array back to the wheel axle.</span>
 <span class="tok-7cbf6e">// Measure YOUR robot - this puts the wheels over the junction.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">float</span> MARKER_ADVANCE_CM = <span class="tok-b5cea8">4.0</span>;</pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MARKER_ADVANCE_CM = <span class="tok-b5cea8">4.0</span>;</pre>
 <p>And the first line of EXECUTING_TURN:</p>
-<pre class="code-block-333">    <span class="tok-569cd6-c-569cd6">case</span> EXECUTING_TURN: {
+<pre class="code-block-333">    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
       driveDistance(MARKER_ADVANCE_CM);   <span class="tok-7cbf6e">// C4: center the wheels on the junction</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       
+      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       
       ...</pre>
 </details>
 </div>
@@ -1629,13 +1629,13 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <p>Count consecutive matching reads; fire only after three in a row. Fill the “same as last time” test and the threshold.</p>
 
-<pre class="code-block-333">        <span class="tok-569cd6-c-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
-        <span class="tok-569cd6-c-569cd6">static</span> <span class="tok-569cd6-c-569cd6">int</span> seenCount = <span class="tok-b5cea8">0</span>;
+<pre class="code-block-333">        <span class="tok-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
+        <span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> seenCount = <span class="tok-b5cea8">0</span>;
         IntersectionType seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION &amp;&amp; seen == ____) seenCount++;
-        <span class="tok-569cd6-c-569cd6">else</span> seenCount = (seen != NO_INTERSECTION) ? <span class="tok-b5cea8">1</span> : <span class="tok-b5cea8">0</span>;
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION &amp;&amp; seen == ____) seenCount++;
+        <span class="tok-569cd6">else</span> seenCount = (seen != NO_INTERSECTION) ? <span class="tok-b5cea8">1</span> : <span class="tok-b5cea8">0</span>;
         lastSeen = seen;
-        <span class="tok-569cd6-c-569cd6">if</span> (seenCount &gt;= ____) {   <span class="tok-7cbf6e">// C5: three matching reads = a real marker</span>
+        <span class="tok-569cd6">if</span> (seenCount &gt;= ____) {   <span class="tok-7cbf6e">// C5: three matching reads = a real marker</span>
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
           pendingTurn = seen;
           seenCount = <span class="tok-b5cea8">0</span>;
@@ -1647,13 +1647,13 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333">        <span class="tok-569cd6-c-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
-        <span class="tok-569cd6-c-569cd6">static</span> <span class="tok-569cd6-c-569cd6">int</span> seenCount = <span class="tok-b5cea8">0</span>;
+<pre class="code-block-333">        <span class="tok-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
+        <span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> seenCount = <span class="tok-b5cea8">0</span>;
         IntersectionType seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION &amp;&amp; seen == lastSeen) seenCount++;
-        <span class="tok-569cd6-c-569cd6">else</span> seenCount = (seen != NO_INTERSECTION) ? <span class="tok-b5cea8">1</span> : <span class="tok-b5cea8">0</span>;
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION &amp;&amp; seen == lastSeen) seenCount++;
+        <span class="tok-569cd6">else</span> seenCount = (seen != NO_INTERSECTION) ? <span class="tok-b5cea8">1</span> : <span class="tok-b5cea8">0</span>;
         lastSeen = seen;
-        <span class="tok-569cd6-c-569cd6">if</span> (seenCount &gt;= <span class="tok-b5cea8">3</span>) {   <span class="tok-7cbf6e">// C5: three matching reads = a real marker</span>
+        <span class="tok-569cd6">if</span> (seenCount &gt;= <span class="tok-b5cea8">3</span>) {   <span class="tok-7cbf6e">// C5: three matching reads = a real marker</span>
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
           pendingTurn = seen;
           seenCount = <span class="tok-b5cea8">0</span>;
@@ -1691,24 +1691,24 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <p>An all-black row is an unmarked crossing — take the right. Fill the all-black test and the direction.</p>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
-  <span class="tok-569cd6-c-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) sum += sensorValues[i];
-  <span class="tok-569cd6-c-569cd6">if</span> (sum &gt; ____) <span class="tok-569cd6-c-569cd6">return</span> ____;   <span class="tok-7cbf6e">// right-hand rule: always take the right</span></pre>
+  <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) sum += sensorValues[i];
+  <span class="tok-569cd6">if</span> (sum &gt; ____) <span class="tok-569cd6">return</span> ____;   <span class="tok-7cbf6e">// right-hand rule: always take the right</span></pre>
 
 </div>
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
 <pre class="code-block-333"><span class="tok-7cbf6e">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
-  <span class="tok-569cd6-c-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
-  <span class="tok-569cd6-c-569cd6">for</span> (<span class="tok-569cd6-c-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) sum += sensorValues[i];
-  <span class="tok-569cd6-c-569cd6">if</span> (sum &gt; <span class="tok-b5cea8">4200</span>) <span class="tok-569cd6-c-569cd6">return</span> GO_RIGHT;   <span class="tok-7cbf6e">// right-hand rule: always take the right</span></pre>
+  <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) sum += sensorValues[i];
+  <span class="tok-569cd6">if</span> (sum &gt; <span class="tok-b5cea8">4200</span>) <span class="tok-569cd6">return</span> GO_RIGHT;   <span class="tok-7cbf6e">// right-hand rule: always take the right</span></pre>
 <p>And the new timeout policy inside <code class="code-inline-bg-e8e8e8">handleGap()</code>:</p>
-<pre class="code-block-333">  <span class="tok-569cd6-c-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
+<pre class="code-block-333">  <span class="tok-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
     turnAround();             <span class="tok-7cbf6e">// C6: a vanished line is a dead end - go back</span>
     gapStartTime = <span class="tok-b5cea8">0</span>;
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    <span class="tok-569cd6">return</span>;
   }</pre>
 </details>
 </div>
@@ -1732,25 +1732,25 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The FOLLOWING_LINE case as planted &mdash; read to the very end:</p>
-<pre class="code-block-333">    <span class="tok-569cd6-c-569cd6">case</span> FOLLOWING_LINE: {
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
+<pre class="code-block-333">    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         currentState = STOPPED;
         showStatus();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         gapStartTime = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// Line is back - reset the gap timer</span>
         followLine();
 
         IntersectionType seen = checkForIntersection();
-        <span class="tok-569cd6-c-569cd6">if</span> (seen != NO_INTERSECTION) {
+        <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION) {
           motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// Stop FIRST - then think</span>
           pendingTurn = seen;
           currentState = AT_INTERSECTION;
         }
-      } <span class="tok-569cd6-c-569cd6">else</span> {
+      } <span class="tok-569cd6">else</span> {
         handleGap();
       }
     }</pre>
@@ -1761,9 +1761,9 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The planted dispatch in EXECUTING_TURN:</p>
-<pre class="code-block-333">      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       turnRight();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_RIGHT) turnLeft();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();</pre>
+<pre class="code-block-333">      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnRight();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnLeft();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();</pre>
 <p><code class="code-inline-bg-e8e8e8">GO_LEFT</code> dispatches to <code class="code-inline-bg-e8e8e8">turnRight()</code> and vice versa. Detection, storage, and announcement were all perfect &mdash; the last three centimeters of the pipeline betrayed them. When a symptom is a perfect inversion, look at the <em>mapping</em>, not the logic. Swap the calls back.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-3" data-challenge="9.m3" data-kind="bonus-sabotage">Mystery 3: The Paranoid Robot</h4>
@@ -1774,8 +1774,8 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// Green markers read BETWEEN white and black on the calibrated</span>
 <span class="tok-7cbf6e">// 0-1000 scale. Find YOUR band in Section 7.1, then tune these.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> GREEN_LOW_THRESHOLD = <span class="tok-b5cea8">300</span>;   <span class="tok-7cbf6e">// Calibrated value where green starts</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span> GREEN_HIGH_THRESHOLD = <span class="tok-b5cea8">1001</span>; <span class="tok-7cbf6e">// Calibrated value where green ends</span></pre>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_LOW_THRESHOLD = <span class="tok-b5cea8">300</span>;   <span class="tok-7cbf6e">// Calibrated value where green starts</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_HIGH_THRESHOLD = <span class="tok-b5cea8">1001</span>; <span class="tok-7cbf6e">// Calibrated value where green ends</span></pre>
 <p>The green band now ends at <strong>1001</strong> &mdash; and calibrated black tops out at 1000. Every black reading is inside the band, so a perpendicular black line under both outer sensors reads as green-on-both-sides: DEAD END. The band’s upper edge isn’t bureaucracy; it’s the only thing separating <em>marker</em> from <em>line</em>. Restore your surveyed value.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-4" data-challenge="9.m4" data-kind="bonus-sabotage">Mystery 4: The One-Turn Wonder</h4>
@@ -1783,13 +1783,13 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>EXECUTING_TURN as planted:</p>
-<pre class="code-block-333">    <span class="tok-569cd6-c-569cd6">case</span> EXECUTING_TURN: {
-      <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
-      <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();
+<pre class="code-block-333">    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
+      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();
       pendingTurn = NO_INTERSECTION;
       showStatus();
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }</pre>
 <p>The turn runs, <code class="code-inline-bg-e8e8e8">pendingTurn</code> clears&hellip; and the state never changes. Next pass: still EXECUTING_TURN, all three ifs false, nothing happens &mdash; forever. And the kill switch can’t save you, because B lives in FOLLOWING_LINE and the robot isn’t <em>in</em> that state. Every state must name its exit; restore <code class="code-inline-bg-e8e8e8">currentState = FOLLOWING_LINE;</code>.</p>
 </details>
@@ -1798,8 +1798,8 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The planted lines in <code class="code-inline-bg-e8e8e8">checkForIntersection()</code>:</p>
-<pre class="code-block-333">  <span class="tok-569cd6-c-569cd6">bool</span> leftGreen  = isGreen(sensorValues[<span class="tok-b5cea8">1</span>]);   <span class="tok-7cbf6e">// outermost LEFT sensor</span>
-  <span class="tok-569cd6-c-569cd6">bool</span> rightGreen = isGreen(sensorValues[<span class="tok-b5cea8">3</span>]);   <span class="tok-7cbf6e">// outermost RIGHT sensor</span></pre>
+<pre class="code-block-333">  <span class="tok-569cd6">bool</span> leftGreen  = isGreen(sensorValues[<span class="tok-b5cea8">1</span>]);   <span class="tok-7cbf6e">// outermost LEFT sensor</span>
+  <span class="tok-569cd6">bool</span> rightGreen = isGreen(sensorValues[<span class="tok-b5cea8">3</span>]);   <span class="tok-7cbf6e">// outermost RIGHT sensor</span></pre>
 <p>Sensors <code class="code-inline-bg-e8e8e8">[1]</code> and <code class="code-inline-bg-e8e8e8">[3]</code> ride just off the line’s shoulders &mdash; markers sit out at the edges, under <code class="code-inline-bg-e8e8e8">[0]</code> and <code class="code-inline-bg-e8e8e8">[4]</code>. The comments still say <em>outermost</em>; the indexes stopped agreeing. Geometry is part of the contract: restore <code class="code-inline-bg-e8e8e8">[0]</code> and <code class="code-inline-bg-e8e8e8">[4]</code>.</p>
 </details>
 
@@ -1947,17 +1947,17 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <h3 id="qr-functions" class="h3-c-4d535f">Key Functions</h3>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// Green Detection (RobotSensors)</span>
-<span class="tok-569cd6-c-569cd6">bool</span> isGreen(<span class="tok-569cd6-c-569cd6">int</span> sensorValue);          <span class="tok-7cbf6e">// Inside the calibrated green band?</span>
+<span class="tok-569cd6">bool</span> isGreen(<span class="tok-569cd6">int</span> sensorValue);          <span class="tok-7cbf6e">// Inside the calibrated green band?</span>
 IntersectionType checkForIntersection();<span class="tok-7cbf6e">// Calibrated read, outer sensors [0]/[4]</span>
 lineSensors.readCalibrated(sensorValues); <span class="tok-7cbf6e">// The read behind it: 0 = white, 1000 = black</span>
 
 <span class="tok-7cbf6e">// Turn Execution (RobotMotion) - one-line wrappers on Lesson 6</span>
-<span class="tok-569cd6-c-569cd6">void</span> turnLeft();    <span class="tok-7cbf6e">// turnDegrees(-90)</span>
-<span class="tok-569cd6-c-569cd6">void</span> turnRight();   <span class="tok-7cbf6e">// turnDegrees(90)</span>
-<span class="tok-569cd6-c-569cd6">void</span> turnAround();  <span class="tok-7cbf6e">// turnDegrees(180)</span>
+<span class="tok-569cd6">void</span> turnLeft();    <span class="tok-7cbf6e">// turnDegrees(-90)</span>
+<span class="tok-569cd6">void</span> turnRight();   <span class="tok-7cbf6e">// turnDegrees(90)</span>
+<span class="tok-569cd6">void</span> turnAround();  <span class="tok-7cbf6e">// turnDegrees(180)</span>
 
 <span class="tok-7cbf6e">// Display (main.cpp)</span>
-<span class="tok-569cd6-c-569cd6">void</span> showDecision(); <span class="tok-7cbf6e">// Announce pendingTurn, big and readable</span></pre>
+<span class="tok-569cd6">void</span> showDecision(); <span class="tok-7cbf6e">// Announce pendingTurn, big and readable</span></pre>
 
 <h3 id="qr-motor" class="h3-c-4d535f">Turn Directions</h3>
 
@@ -1973,7 +1973,7 @@ counted on encoders - battery sag and TRIM cannot bend it</pre>
 
 <pre class="code-block-333">do {
   <span class="tok-7cbf6e">// body - always runs at least once</span>
-} <span class="tok-569cd6-c-569cd6">while</span> (condition);   <span class="tok-7cbf6e">// note the semicolon</span>
+} <span class="tok-569cd6">while</span> (condition);   <span class="tok-7cbf6e">// note the semicolon</span>
 
 <span class="tok-7cbf6e">// while: test first, so the body may never run</span>
 <span class="tok-7cbf6e">// do..while: act first, so the body always runs once</span></pre>

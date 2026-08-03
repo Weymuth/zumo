@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.12.0 -->
+<!-- Lesson version: v02.12.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -411,7 +411,7 @@ are trying to shrink. Same scoreboard, same sensors &mdash; different bell:</p>
 <span class="tok-7cbf6e">// you are trying to make smaller.</span>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// Same scoreboard. Same sensors. Different bell.</span>
-<span class="tok-569cd6-c-569cd6">enum</span> RunMode {
+<span class="tok-569cd6">enum</span> RunMode {
   MODE_TUNING,   <span class="tok-7cbf6e">// Lesson 15's bell: TUNING_RUN_MS, then stop and score.</span>
   MODE_COURSE    <span class="tok-7cbf6e">// No bell. Run the whole course. B ends it. LAP is the score.</span>
 };
@@ -423,10 +423,10 @@ RunMode currentMode = MODE_TUNING;   <span class="tok-7cbf6e">// hold C, tap A t
 </pre>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// Which bell is armed. Same row on every screen. (NEW for Lesson 16)</span>
-<span class="tok-569cd6-c-569cd6">void</span> showMode() {
+<span class="tok-569cd6">void</span> showMode() {
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">5</span>);
-  display.print(currentMode == MODE_COURSE ? F(<span class="tok-ce9178-c-ce9178">"MODE COURSE"</span>) : F(<span class="tok-ce9178-c-ce9178">"MODE TUNING"</span>));
-  display.print(F(<span class="tok-ce9178-c-ce9178">"    "</span>));
+  display.print(currentMode == MODE_COURSE ? F(<span class="tok-ce9178">"MODE COURSE"</span>) : F(<span class="tok-ce9178">"MODE TUNING"</span>));
+  display.print(F(<span class="tok-ce9178">"    "</span>));
 }
 </pre>
 <div class="callout-607d8b-bg-eceff1-3"><b>📘 Design pattern worth stealing:</b> the mode does not change what is <i>measured</i>
@@ -442,9 +442,9 @@ robot did <i>before</i>, and what it did <i>after</i>, on the same course, from 
 <span class="tok-7cbf6e">// LAP says how fast. MAE says how well. A robot that got faster by</span>
 <span class="tok-7cbf6e">// weaving harder did not get better - it got luckier, and the next</span>
 <span class="tok-7cbf6e">// course will collect the debt.</span>
-<span class="tok-569cd6-c-569cd6">struct</span> RunScore {
-  <span class="tok-569cd6-c-569cd6">float</span> lap;   <span class="tok-7cbf6e">// seconds, start to B</span>
-  <span class="tok-569cd6-c-569cd6">int</span>   mae;   <span class="tok-7cbf6e">// mean |error| over the run</span>
+<span class="tok-569cd6">struct</span> RunScore {
+  <span class="tok-569cd6">float</span> lap;   <span class="tok-7cbf6e">// seconds, start to B</span>
+  <span class="tok-569cd6">int</span>   mae;   <span class="tok-7cbf6e">// mean |error| over the run</span>
 };
 </pre>
 <pre class="code-block-bg-1e1e1e">
@@ -460,7 +460,7 @@ RunScore baseline = { <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8
 one function:</p>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// This run becomes the "before" row of your table. (NEW for Lesson 16)</span>
-<span class="tok-569cd6-c-569cd6">void</span> saveBaseline() {
+<span class="tok-569cd6">void</span> saveBaseline() {
   baseline.lap = runSamples ? (millis() - runStart) / <span class="tok-b5cea8">1000</span>.<span class="tok-b5cea8">0</span> : 0;
   baseline.mae = runSamples ? (runSumAbs / runSamples) : 0;
 }
@@ -486,8 +486,8 @@ written and read as one object, with a <b>fingerprint</b> riding inside it.</p>
 <span class="tok-7cbf6e">// 0xFF, which would load as garbage gains and a nonsense baseline. So we</span>
 <span class="tok-7cbf6e">// write a byte we chose, and refuse to trust the block unless we find it.</span>
 <span class="tok-7cbf6e">// Change this number and the robot forgets everything - on purpose.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">int</span>           EEPROM_ADDR  = 0;
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">char</span> EEPROM_MAGIC = 0x16;   <span class="tok-7cbf6e">// "Lesson 16 wrote this"</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span>           EEPROM_ADDR  = 0;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">char</span> EEPROM_MAGIC = 0x16;   <span class="tok-7cbf6e">// "Lesson 16 wrote this"</span>
 </pre>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE BLOCK THAT OUTLIVES THE BATTERY (NEW for Lesson 16) =====</span>
@@ -495,13 +495,13 @@ written and read as one object, with a <b>fingerprint</b> riding inside it.</p>
 <span class="tok-7cbf6e">// copy it byte for byte - which is exactly why the magic byte has to be</span>
 <span class="tok-7cbf6e">// INSIDE it. A layout is only trustworthy if the fingerprint travelled</span>
 <span class="tok-7cbf6e">// with it.</span>
-<span class="tok-569cd6-c-569cd6">struct</span> Saved {
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">char</span> magic;
-  <span class="tok-569cd6-c-569cd6">float</span> kp, kd, kpSpeed, kiSpeed;
+<span class="tok-569cd6">struct</span> Saved {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">char</span> magic;
+  <span class="tok-569cd6">float</span> kp, kd, kpSpeed, kiSpeed;
   RunScore baseline;
 };
 
-<span class="tok-569cd6-c-569cd6">void</span> saveSettings() {
+<span class="tok-569cd6">void</span> saveSettings() {
   Saved s;
   s.magic    = EEPROM_MAGIC;
   s.kp       = currentKp;
@@ -514,16 +514,16 @@ written and read as one object, with a <b>fingerprint</b> riding inside it.</p>
 
 <span class="tok-7cbf6e">// Returns false if this EEPROM has never been written by Lesson 16.</span>
 <span class="tok-7cbf6e">// A robot with no saved settings is not broken - it is NEW.</span>
-<span class="tok-569cd6-c-569cd6">bool</span> loadSettings() {
+<span class="tok-569cd6">bool</span> loadSettings() {
   Saved s;
   EEPROM.get(EEPROM_ADDR, s);
-  <span class="tok-569cd6-c-569cd6">if</span> (s.magic != EEPROM_MAGIC) <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">false</span>;
+  <span class="tok-569cd6">if</span> (s.magic != EEPROM_MAGIC) <span class="tok-569cd6">return</span> <span class="tok-569cd6">false</span>;
   currentKp      = s.kp;
   currentKd      = s.kd;
   currentKpSpeed = s.kpSpeed;
   currentKiSpeed = s.kiSpeed;
   baseline       = s.baseline;
-  <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">true</span>;
+  <span class="tok-569cd6">return</span> <span class="tok-569cd6">true</span>;
 }
 
 <span class="tok-7cbf6e">// ===== THE SOCKET (NEW for Lesson 16 - and then it's yours) =====</span>
@@ -538,14 +538,14 @@ written and read as one object, with a <b>fingerprint</b> riding inside it.</p>
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// It receives dt because almost everything worth doing needs it, and</span>
 <span class="tok-7cbf6e">// recomputing a clock you already own would be paying twice.</span>
-<span class="tok-569cd6-c-569cd6">void</span> runEnhancement(<span class="tok-569cd6-c-569cd6">float</span> dt) {
-  <span class="tok-569cd6-c-569cd6">if</span> (!ENHANCEMENT_ON) <span class="tok-569cd6-c-569cd6">return</span>;   <span class="tok-7cbf6e">// the inherited robot, untouched</span>
+<span class="tok-569cd6">void</span> runEnhancement(<span class="tok-569cd6">float</span> dt) {
+  <span class="tok-569cd6">if</span> (!ENHANCEMENT_ON) <span class="tok-569cd6">return</span>;   <span class="tok-7cbf6e">// the inherited robot, untouched</span>
 
   <span class="tok-7cbf6e">// ================= YOUR CAPSTONE GOES HERE =================</span>
   <span class="tok-7cbf6e">//</span>
   <span class="tok-7cbf6e">// (void)dt keeps the compiler quiet until you use it. Delete it</span>
   <span class="tok-7cbf6e">// the moment you write your first real line.</span>
-  (<span class="tok-569cd6-c-569cd6">void</span>)dt;
+  (<span class="tok-569cd6">void</span>)dt;
   <span class="tok-7cbf6e">//</span>
   <span class="tok-7cbf6e">// ===========================================================</span>
 }
@@ -570,7 +570,7 @@ by a lesson. This one is different &mdash; the book installs the socket and walk
 <span class="tok-7cbf6e">// true = the robot you are about to build. The A/B comparison in</span>
 <span class="tok-7cbf6e">// Section 7 flips this one flag - nothing else - so the ONLY difference</span>
 <span class="tok-7cbf6e">// between the two runs is YOUR CODE.</span>
-<span class="tok-569cd6-c-569cd6">const</span> <span class="tok-569cd6-c-569cd6">bool</span> ENHANCEMENT_ON = <span class="tok-569cd6-c-569cd6">false</span>;   <span class="tok-7cbf6e">// &lt;-- YOUR SWITCH</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">bool</span> ENHANCEMENT_ON = <span class="tok-569cd6">false</span>;   <span class="tok-7cbf6e">// &lt;-- YOUR SWITCH</span>
 </pre>
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// ===== THE SOCKET (NEW for Lesson 16 - and then it's yours) =====</span>
@@ -585,14 +585,14 @@ by a lesson. This one is different &mdash; the book installs the socket and walk
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// It receives dt because almost everything worth doing needs it, and</span>
 <span class="tok-7cbf6e">// recomputing a clock you already own would be paying twice.</span>
-<span class="tok-569cd6-c-569cd6">void</span> runEnhancement(<span class="tok-569cd6-c-569cd6">float</span> dt) {
-  <span class="tok-569cd6-c-569cd6">if</span> (!ENHANCEMENT_ON) <span class="tok-569cd6-c-569cd6">return</span>;   <span class="tok-7cbf6e">// the inherited robot, untouched</span>
+<span class="tok-569cd6">void</span> runEnhancement(<span class="tok-569cd6">float</span> dt) {
+  <span class="tok-569cd6">if</span> (!ENHANCEMENT_ON) <span class="tok-569cd6">return</span>;   <span class="tok-7cbf6e">// the inherited robot, untouched</span>
 
   <span class="tok-7cbf6e">// ================= YOUR CAPSTONE GOES HERE =================</span>
   <span class="tok-7cbf6e">//</span>
   <span class="tok-7cbf6e">// (void)dt keeps the compiler quiet until you use it. Delete it</span>
   <span class="tok-7cbf6e">// the moment you write your first real line.</span>
-  (<span class="tok-569cd6-c-569cd6">void</span>)dt;
+  (<span class="tok-569cd6">void</span>)dt;
   <span class="tok-7cbf6e">//</span>
   <span class="tok-7cbf6e">// ===========================================================</span>
 }
@@ -601,7 +601,7 @@ by a lesson. This one is different &mdash; the book installs the socket and walk
 <code>followLine()</code> steers, before the scoreboard samples &mdash; so whatever you build is measured
 by the same instrument that measured the robot you inherited:</p>
 <pre class="code-block-bg-1e1e1e">
-      <span class="tok-569cd6-c-569cd6">if</span> (isLineVisible()) {
+      <span class="tok-569cd6">if</span> (isLineVisible()) {
         followLine();
         runEnhancement(dtSec);  <span class="tok-7cbf6e">// NEW for Lesson 16 - YOUR code, on the same clock</span>
         runSample(lastError);   <span class="tok-7cbf6e">// followLine() just wrote it. Score the pass.</span>
@@ -640,20 +640,20 @@ Then replace <code>showScore()</code> with the mode-aware version, in full:</p>
 <span class="tok-7cbf6e">// A tuning run wants MAE, PEAK and WEAVE - the shape of the wobble.</span>
 <span class="tok-7cbf6e">// A course run wants LAP - the number on the stopwatch. Printing all</span>
 <span class="tok-7cbf6e">// five would not fit, and would bury the one you came for.</span>
-<span class="tok-569cd6-c-569cd6">void</span> showScore() {
-  <span class="tok-569cd6-c-569cd6">long</span>  mae  = runSamples ? (runSumAbs / runSamples) : 0;
-  <span class="tok-569cd6-c-569cd6">float</span> secs = runSamples ? (millis() - runStart) / <span class="tok-b5cea8">1000</span>.<span class="tok-b5cea8">0</span> : <span class="tok-b5cea8">1</span>.0;
+<span class="tok-569cd6">void</span> showScore() {
+  <span class="tok-569cd6">long</span>  mae  = runSamples ? (runSumAbs / runSamples) : 0;
+  <span class="tok-569cd6">float</span> secs = runSamples ? (millis() - runStart) / <span class="tok-b5cea8">1000</span>.<span class="tok-b5cea8">0</span> : <span class="tok-b5cea8">1</span>.0;
   display.setLayout21x8();
   display.clear();
 
-  <span class="tok-569cd6-c-569cd6">if</span> (currentMode == MODE_COURSE) {
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"LAP   "</span>)); display.print(secs, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"s"</span>));
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"MAE   "</span>)); display.print(mae);
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"PEAK  "</span>)); display.print(runPeak);
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"MAE   "</span>)); display.print(mae);
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"PEAK  "</span>)); display.print(runPeak);
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"WEAVE "</span>)); display.print(runCross / secs, <span class="tok-b5cea8">1</span>);
+  <span class="tok-569cd6">if</span> (currentMode == MODE_COURSE) {
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178">"LAP   "</span>)); display.print(secs, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"s"</span>));
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"MAE   "</span>)); display.print(mae);
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178">"PEAK  "</span>)); display.print(runPeak);
+  } <span class="tok-569cd6">else</span> {
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178">"MAE   "</span>)); display.print(mae);
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"PEAK  "</span>)); display.print(runPeak);
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178">"WEAVE "</span>)); display.print(runCross / secs, <span class="tok-b5cea8">1</span>);
 
     <span class="tok-7cbf6e">// Ziegler-Nichols, computed on the robot.</span>
     <span class="tok-7cbf6e">// At the Kp where it oscillates and will NOT settle (that is Ku), the</span>
@@ -662,17 +662,17 @@ Then replace <code>showScore()</code> with the mode-aware version, in full:</p>
     <span class="tok-7cbf6e">//</span>
     <span class="tok-7cbf6e">// It is a STARTING POINT, not an answer. Z-N is famously aggressive.</span>
     <span class="tok-7cbf6e">// It puts you in the right ZIP code. You still have to hill-climb.</span>
-    <span class="tok-569cd6-c-569cd6">float</span> weave = runCross / secs;
-    <span class="tok-569cd6-c-569cd6">if</span> (weave &gt; <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">2</span>) {
-      <span class="tok-569cd6-c-569cd6">float</span> tu = <span class="tok-b5cea8">2</span>.<span class="tok-b5cea8">0</span> / weave;
+    <span class="tok-569cd6">float</span> weave = runCross / secs;
+    <span class="tok-569cd6">if</span> (weave &gt; <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">2</span>) {
+      <span class="tok-569cd6">float</span> tu = <span class="tok-b5cea8">2</span>.<span class="tok-b5cea8">0</span> / weave;
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"TRY Kd "</span>)); display.print(currentKp * <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">6</span> * tu / <span class="tok-b5cea8">8</span>.<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
+      display.print(F(<span class="tok-ce9178">"TRY Kd "</span>)); display.print(currentKp * <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">6</span> * tu / <span class="tok-b5cea8">8</span>.<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
     }
   }
 
   showKnob();
   showMode();
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"A- C+ holdA tapC B"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"A- C+ holdA tapC B"</span>));
 }
 </pre>
 <p>Then teach the buttons the new gesture &mdash; <b>hold C, tap A</b> flips the bell. Here is the whole updated knob UI; the new toggle sits at the very top:</p>
@@ -681,34 +681,34 @@ Then replace <code>showScore()</code> with the mode-aware version, in full:</p>
 <span class="tok-7cbf6e">//   A             = turn the selected gain DOWN</span>
 <span class="tok-7cbf6e">//   C             = turn the selected gain UP</span>
 <span class="tok-7cbf6e">//   hold A, tap C = select the NEXT gain</span>
-<span class="tok-569cd6-c-569cd6">void</span> adjustKnobs() {
+<span class="tok-569cd6">void</span> adjustKnobs() {
   <span class="tok-7cbf6e">// NEW for Lesson 16 - hold C, tap A = switch the bell.</span>
   <span class="tok-7cbf6e">// Checked FIRST, because "C is down" is also how you turn a gain UP,</span>
   <span class="tok-7cbf6e">// and the gesture that means TWO things has to be tested before the</span>
   <span class="tok-7cbf6e">// gesture that means one.</span>
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed() &amp;&amp; buttonA.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">if</span> (buttonC.isPressed() &amp;&amp; buttonA.getSingleDebouncedPress()) {
     currentMode = (currentMode == MODE_TUNING) ? MODE_COURSE : MODE_TUNING;
     showMode();
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    <span class="tok-569cd6">return</span>;
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; buttonC.getSingleDebouncedPress()) {
     knob = (knob + <span class="tok-b5cea8">1</span>) % 4;
     showKnob();
-    <span class="tok-569cd6-c-569cd6">return</span>;
+    <span class="tok-569cd6">return</span>;
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp      &lt; <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">02</span>) currentKp      = <span class="tok-b5cea8">0</span>.02; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd      &lt; <span class="tok-b5cea8">0</span>)    currentKd      = 0; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed -= <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6-c-569cd6">if</span> (currentKpSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKpSpeed = 0; }
-    <span class="tok-569cd6-c-569cd6">else</span>                { currentKiSpeed -= <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6-c-569cd6">if</span> (currentKiSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKiSpeed = 0; }
+  <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; !buttonC.isPressed()) {
+    <span class="tok-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      -= <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp      &lt; <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">02</span>) currentKp      = <span class="tok-b5cea8">0</span>.02; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      -= <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd      &lt; <span class="tok-b5cea8">0</span>)    currentKd      = 0; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed -= <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6">if</span> (currentKpSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKpSpeed = 0; }
+    <span class="tok-569cd6">else</span>                { currentKiSpeed -= <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6">if</span> (currentKiSpeed &lt; <span class="tok-b5cea8">0</span>)    currentKiSpeed = 0; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
-  <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
-    <span class="tok-569cd6-c-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6-c-569cd6">if</span> (currentKp      &gt; <span class="tok-b5cea8">1</span>.<span class="tok-b5cea8">0</span>)  currentKp      = <span class="tok-b5cea8">1</span>.0; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6-c-569cd6">if</span> (currentKd      &gt; <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">5</span>)  currentKd      = <span class="tok-b5cea8">0</span>.5; }
-    <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed += <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6-c-569cd6">if</span> (currentKpSpeed &gt; <span class="tok-b5cea8">20</span>.<span class="tok-b5cea8">0</span>) currentKpSpeed = <span class="tok-b5cea8">20</span>.0; }
-    <span class="tok-569cd6-c-569cd6">else</span>                { currentKiSpeed += <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6-c-569cd6">if</span> (currentKiSpeed &gt; <span class="tok-b5cea8">5</span>.<span class="tok-b5cea8">0</span>)  currentKiSpeed = <span class="tok-b5cea8">5</span>.0; }
+  <span class="tok-569cd6">if</span> (buttonC.isPressed() &amp;&amp; !buttonA.isPressed()) {
+    <span class="tok-569cd6">if</span>      (knob == <span class="tok-b5cea8">0</span>) { currentKp      += <span class="tok-b5cea8">0</span>.02;  <span class="tok-569cd6">if</span> (currentKp      &gt; <span class="tok-b5cea8">1</span>.<span class="tok-b5cea8">0</span>)  currentKp      = <span class="tok-b5cea8">1</span>.0; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">1</span>) { currentKd      += <span class="tok-b5cea8">0</span>.005; <span class="tok-569cd6">if</span> (currentKd      &gt; <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">5</span>)  currentKd      = <span class="tok-b5cea8">0</span>.5; }
+    <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (knob == <span class="tok-b5cea8">2</span>) { currentKpSpeed += <span class="tok-b5cea8">0</span>.50;  <span class="tok-569cd6">if</span> (currentKpSpeed &gt; <span class="tok-b5cea8">20</span>.<span class="tok-b5cea8">0</span>) currentKpSpeed = <span class="tok-b5cea8">20</span>.0; }
+    <span class="tok-569cd6">else</span>                { currentKiSpeed += <span class="tok-b5cea8">0</span>.10;  <span class="tok-569cd6">if</span> (currentKiSpeed &gt; <span class="tok-b5cea8">5</span>.<span class="tok-b5cea8">0</span>)  currentKiSpeed = <span class="tok-b5cea8">5</span>.0; }
     showKnob();
     delay(<span class="tok-b5cea8">200</span>);
   }
@@ -720,10 +720,10 @@ the bell check becomes:</p>
       <span class="tok-7cbf6e">// THE BELL. Every TUNING run is the same length, or two scores mean</span>
       <span class="tok-7cbf6e">// nothing. A COURSE run has no bell - the course decides when it ends,</span>
       <span class="tok-7cbf6e">// and you press B on the goal tile. (UPDATED for Lesson 16)</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (currentMode == MODE_TUNING &amp;&amp; TUNING_RUN_MS &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
+      <span class="tok-569cd6">if</span> (currentMode == MODE_TUNING &amp;&amp; TUNING_RUN_MS &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
           millis() - runStart &gt;= TUNING_RUN_MS) {
         endRun();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 </pre>
 <div class="div-m-16px0"><b>Why the toggle is tested FIRST inside <code>adjustKnobs()</code>:</b> &ldquo;C is
@@ -741,59 +741,59 @@ it every time. You will meet this bug again in every UI you ever build.</div>
 global and <code>saveBaseline()</code> to <code>main.cpp</code> (Section 5.2, in full).</p>
 <p>Inside <code>showScore()</code>, the course branch grows the delta row:</p>
 <pre class="code-block-bg-1e1e1e">
-  <span class="tok-569cd6-c-569cd6">if</span> (currentMode == MODE_COURSE) {
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"LAP   "</span>)); display.print(secs, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"s"</span>));
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"MAE   "</span>)); display.print(mae);
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"PEAK  "</span>)); display.print(runPeak);
+  <span class="tok-569cd6">if</span> (currentMode == MODE_COURSE) {
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>); display.print(F(<span class="tok-ce9178">"LAP   "</span>)); display.print(secs, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"s"</span>));
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"MAE   "</span>)); display.print(mae);
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>); display.print(F(<span class="tok-ce9178">"PEAK  "</span>)); display.print(runPeak);
 
     <span class="tok-7cbf6e">// THE ONLY LINE THAT MATTERS. (NEW for Lesson 16)</span>
     <span class="tok-7cbf6e">// Not "is this run good" - is this run BETTER THAN THE ONE BEFORE IT.</span>
     <span class="tok-7cbf6e">// Negative is better in both columns: less time, less error.</span>
-    <span class="tok-569cd6-c-569cd6">if</span> (baseline.mae &gt; <span class="tok-b5cea8">0</span>) {
+    <span class="tok-569cd6">if</span> (baseline.mae &gt; <span class="tok-b5cea8">0</span>) {
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"d"</span>));   display.print(secs - baseline.lap, <span class="tok-b5cea8">1</span>);
-      display.print(F(<span class="tok-ce9178-c-ce9178">"s  d"</span>)); display.print((<span class="tok-569cd6-c-569cd6">int</span>)(mae - baseline.mae));
+      display.print(F(<span class="tok-ce9178">"d"</span>));   display.print(secs - baseline.lap, <span class="tok-b5cea8">1</span>);
+      display.print(F(<span class="tok-ce9178">"s  d"</span>)); display.print((<span class="tok-569cd6">int</span>)(mae - baseline.mae));
     }
 </pre>
 <p>&hellip;and the bottom of the scorecard grows the BASE row:</p>
 <pre class="code-block-bg-1e1e1e">
   showKnob();
   showMode();
-  <span class="tok-569cd6-c-569cd6">if</span> (baseline.mae &gt; <span class="tok-b5cea8">0</span>) {
+  <span class="tok-569cd6">if</span> (baseline.mae &gt; <span class="tok-b5cea8">0</span>) {
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">"BASE "</span>)); display.print(baseline.lap, <span class="tok-b5cea8">1</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">"s "</span>)); display.print(baseline.mae);
+    display.print(F(<span class="tok-ce9178">"BASE "</span>)); display.print(baseline.lap, <span class="tok-b5cea8">1</span>);
+    display.print(F(<span class="tok-ce9178">"s "</span>)); display.print(baseline.mae);
   }
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"A- C+ holdA tapC B"</span>));
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">7</span>); display.print(F(<span class="tok-ce9178">"A- C+ holdA tapC B"</span>));
 }
 
 <span class="tok-7cbf6e">// This run becomes the "before" row of your table. (NEW for Lesson 16)</span>
-<span class="tok-569cd6-c-569cd6">void</span> saveBaseline() {
+<span class="tok-569cd6">void</span> saveBaseline() {
   baseline.lap = runSamples ? (millis() - runStart) / <span class="tok-b5cea8">1000</span>.<span class="tok-b5cea8">0</span> : 0;
   baseline.mae = runSamples ? (runSumAbs / runSamples) : 0;
 }
 </pre>
 <p>Last, the report screen learns the capture gesture. The new <code>RUN_REPORT</code>:</p>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> RUN_REPORT: {
+    <span class="tok-569cd6">case</span> RUN_REPORT: {
       <span class="tok-7cbf6e">// The run is over. Here is what it cost you.</span>
       <span class="tok-7cbf6e">//</span>
       <span class="tok-7cbf6e">// ONE button read, three outcomes. (UPDATED for Lesson 16)</span>
       <span class="tok-7cbf6e">// getSingleDebouncedPress() consumes the press - call it twice and the</span>
       <span class="tok-7cbf6e">// second call sees nothing. So ask ONCE, then decide what it meant by</span>
       <span class="tok-7cbf6e">// looking at what else is being held down.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
-        <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed()) {       <span class="tok-7cbf6e">// hold A, tap B = THIS RUN IS THE BASELINE</span>
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+        <span class="tok-569cd6">if</span> (buttonA.isPressed()) {       <span class="tok-7cbf6e">// hold A, tap B = THIS RUN IS THE BASELINE</span>
           saveBaseline();
           showScore();
-        } <span class="tok-569cd6-c-569cd6">else</span> {                         <span class="tok-7cbf6e">// B alone = run it again, same track, same bell</span>
+        } <span class="tok-569cd6">else</span> {                         <span class="tok-7cbf6e">// B alone = run it again, same track, same bell</span>
           runReset();
           enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
         }
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
       adjustKnobs();
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <div class="div-m-16px0"><b>One button read, three outcomes.</b> <code>getSingleDebouncedPress()</code>
@@ -818,10 +818,10 @@ that again. Ten. The runway is gone. Nothing about the code is wrong &mdash; and
 </div>
 
 <pre class="code-block-bg-1e1e1e">
-#include <span class="tok-ce9178-c-ce9178">"RobotConfig.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotSensors.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotHelpers.h"</span>
-#include <span class="tok-ce9178-c-ce9178">"RobotMotion.h"</span>   <span class="tok-7cbf6e">// NEW for Lesson 9 - main finally drives the turns</span>
+#include <span class="tok-ce9178">"RobotConfig.h"</span>
+#include <span class="tok-ce9178">"RobotSensors.h"</span>
+#include <span class="tok-ce9178">"RobotHelpers.h"</span>
+#include <span class="tok-ce9178">"RobotMotion.h"</span>   <span class="tok-7cbf6e">// NEW for Lesson 9 - main finally drives the turns</span>
 #include &lt;EEPROM.h&gt;        <span class="tok-7cbf6e">// NEW for Lesson 16 - memory that survives the switch</span>
 </pre>
 <p><code>setup()</code> asks the EEPROM what the robot knows, before the first screen:</p>
@@ -831,41 +831,41 @@ that again. Ten. The runway is gone. Nothing about the code is wrong &mdash; and
   display.setLayout21x8();
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  <span class="tok-569cd6-c-569cd6">if</span> (loadSettings()) {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"SETTINGS RESTORED"</span>));
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"Kp "</span>)); display.print(currentKp, <span class="tok-b5cea8">2</span>);
-    display.print(F(<span class="tok-ce9178-c-ce9178">" Kd "</span>)); display.print(currentKd, <span class="tok-b5cea8">3</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"NO SAVED SETTINGS"</span>));
-    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178-c-ce9178">"using RobotConfig.h"</span>));
+  <span class="tok-569cd6">if</span> (loadSettings()) {
+    display.print(F(<span class="tok-ce9178">"SETTINGS RESTORED"</span>));
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"Kp "</span>)); display.print(currentKp, <span class="tok-b5cea8">2</span>);
+    display.print(F(<span class="tok-ce9178">" Kd "</span>)); display.print(currentKd, <span class="tok-b5cea8">3</span>);
+  } <span class="tok-569cd6">else</span> {
+    display.print(F(<span class="tok-ce9178">"NO SAVED SETTINGS"</span>));
+    display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>); display.print(F(<span class="tok-ce9178">"using RobotConfig.h"</span>));
   }
   delay(<span class="tok-b5cea8">1500</span>);
 </pre>
 <p>And the report screen learns its third outcome &mdash; <b>hold C, tap B</b> writes the block:</p>
 <pre class="code-block-bg-1e1e1e">
-    <span class="tok-569cd6-c-569cd6">case</span> RUN_REPORT: {
+    <span class="tok-569cd6">case</span> RUN_REPORT: {
       <span class="tok-7cbf6e">// The run is over. Here is what it cost you.</span>
       <span class="tok-7cbf6e">//</span>
       <span class="tok-7cbf6e">// ONE button read, three outcomes. (UPDATED for Lesson 16)</span>
       <span class="tok-7cbf6e">// getSingleDebouncedPress() consumes the press - call it twice and the</span>
       <span class="tok-7cbf6e">// second call sees nothing. So ask ONCE, then decide what it meant by</span>
       <span class="tok-7cbf6e">// looking at what else is being held down.</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
-        <span class="tok-569cd6-c-569cd6">if</span> (buttonA.isPressed()) {       <span class="tok-7cbf6e">// hold A, tap B = THIS RUN IS THE BASELINE</span>
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+        <span class="tok-569cd6">if</span> (buttonA.isPressed()) {       <span class="tok-7cbf6e">// hold A, tap B = THIS RUN IS THE BASELINE</span>
           saveBaseline();
           showScore();
-        } <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (buttonC.isPressed()) { <span class="tok-7cbf6e">// hold C, tap B = WRITE IT TO EEPROM</span>
+        } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (buttonC.isPressed()) { <span class="tok-7cbf6e">// hold C, tap B = WRITE IT TO EEPROM</span>
           saveSettings();                 <span class="tok-7cbf6e">// (UPDATED for Lesson 16)</span>
           display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
-          display.print(F(<span class="tok-ce9178-c-ce9178">"SAVED TO EEPROM   "</span>));
-        } <span class="tok-569cd6-c-569cd6">else</span> {                         <span class="tok-7cbf6e">// B alone = run it again, same track, same bell</span>
+          display.print(F(<span class="tok-ce9178">"SAVED TO EEPROM   "</span>));
+        } <span class="tok-569cd6">else</span> {                         <span class="tok-7cbf6e">// B alone = run it again, same track, same bell</span>
           runReset();
           enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
         }
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
       adjustKnobs();
-      <span class="tok-569cd6-c-569cd6">break</span>;
+      <span class="tok-569cd6">break</span>;
     }
 </pre>
 <p>Type all of it. Build it.</p>
@@ -894,63 +894,63 @@ run all year &mdash; the OLED took over that job in Lesson 3.</p>
 <p>Habits cost flash. This one costs <b>704 bytes</b>. Delete this entire block from the top of
 <code>setup()</code>:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   Serial.begin(<span class="tok-b5cea8">115200</span>);
-  <span class="tok-569cd6-c-569cd6">unsigned</span> <span class="tok-569cd6-c-569cd6">long</span> serialStart = millis();
-  <span class="tok-569cd6-c-569cd6">while</span> (!Serial &amp;&amp; (millis() - serialStart &lt; <span class="tok-b5cea8">2000</span>)) {
+  <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> serialStart = millis();
+  <span class="tok-569cd6">while</span> (!Serial &amp;&amp; (millis() - serialStart &lt; <span class="tok-b5cea8">2000</span>)) {
     delay(<span class="tok-b5cea8">10</span>); <span class="tok-7cbf6e">// Wait up to 2s for USB serial connection</span>
   }
   delay(<span class="tok-b5cea8">500</span>);
-  Serial.println(F(<span class="tok-ce9178-c-ce9178">"=== Lesson <span class="tok-b5cea8">14</span>: Competition Prep ==="</span>));
+  Serial.println(F(<span class="tok-ce9178">"=== Lesson <span class="tok-b5cea8">14</span>: Competition Prep ==="</span>));
 
   <span class="tok-7cbf6e">// ===== BATTERY REPORT =====</span>
-  <span class="tok-569cd6-c-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
-  <span class="tok-569cd6-c-569cd6">int</span> battWhole = batteryVoltage / 1000;
-  <span class="tok-569cd6-c-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % 100;
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
+  <span class="tok-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
+  <span class="tok-569cd6">int</span> battWhole = batteryVoltage / 1000;
+  <span class="tok-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % 100;
+  Serial.print(F(<span class="tok-ce9178">"Battery: "</span>));
   Serial.print(battWhole);
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) Serial.print(F(<span class="tok-ce9178-c-ce9178">"<span class="tok-b5cea8">0</span>"</span>));
+  Serial.print(F(<span class="tok-ce9178">"."</span>));
+  <span class="tok-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) Serial.print(F(<span class="tok-ce9178">"<span class="tok-b5cea8">0</span>"</span>));
   Serial.print(battDecimal);
-  Serial.print(F(<span class="tok-ce9178-c-ce9178">"V ("</span>));
+  Serial.print(F(<span class="tok-ce9178">"V ("</span>));
   Serial.print(batteryVoltage);
-  Serial.println(F(<span class="tok-ce9178-c-ce9178">"mV)"</span>));
+  Serial.println(F(<span class="tok-ce9178">"mV)"</span>));
 </pre>
 <p>&hellip;keeping only the battery <i>math</i> (the OLED still shows it). The new top of
 <code>setup()</code>:</p>
 <pre class="code-block-bg-1e1e1e">
-<span class="tok-569cd6-c-569cd6">void</span> setup() {
+<span class="tok-569cd6">void</span> setup() {
   <span class="tok-7cbf6e">// ===== BATTERY REPORT =====</span>
-  <span class="tok-569cd6-c-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
-  <span class="tok-569cd6-c-569cd6">int</span> battWhole = batteryVoltage / 1000;
-  <span class="tok-569cd6-c-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % 100;
+  <span class="tok-569cd6">int</span> batteryVoltage = readBatteryMillivolts();
+  <span class="tok-569cd6">int</span> battWhole = batteryVoltage / 1000;
+  <span class="tok-569cd6">int</span> battDecimal = (batteryVoltage / <span class="tok-b5cea8">10</span>) % 100;
 
   display.clear();
   display.setLayout21x8();
-  display.print(F(<span class="tok-ce9178-c-ce9178">"===== Lesson <span class="tok-b5cea8">14</span> ====="</span>));
+  display.print(F(<span class="tok-ce9178">"===== Lesson <span class="tok-b5cea8">14</span> ====="</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Battery: "</span>));
+  display.print(F(<span class="tok-ce9178">"Battery: "</span>));
   display.print(battWhole);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"."</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) display.print(F(<span class="tok-ce9178-c-ce9178">"<span class="tok-b5cea8">0</span>"</span>));
+  display.print(F(<span class="tok-ce9178">"."</span>));
+  <span class="tok-569cd6">if</span> (battDecimal &lt; <span class="tok-b5cea8">10</span>) display.print(F(<span class="tok-ce9178">"<span class="tok-b5cea8">0</span>"</span>));
   display.print(battDecimal);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"V"</span>));
+  display.print(F(<span class="tok-ce9178">"V"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Status: "</span>));
-  <span class="tok-569cd6-c-569cd6">if</span> (batteryVoltage &gt;= BATTERY_GOOD) {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"GOOD"</span>));
+  display.print(F(<span class="tok-ce9178">"Status: "</span>));
+  <span class="tok-569cd6">if</span> (batteryVoltage &gt;= BATTERY_GOOD) {
+    display.print(F(<span class="tok-ce9178">"GOOD"</span>));
     ledGreen(<span class="tok-b5cea8">1</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> <span class="tok-569cd6-c-569cd6">if</span> (batteryVoltage &gt;= BATTERY_LOW) {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"LOW"</span>));
+  } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (batteryVoltage &gt;= BATTERY_LOW) {
+    display.print(F(<span class="tok-ce9178">"LOW"</span>));
     ledYellow(<span class="tok-b5cea8">1</span>);
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">4</span>), <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">15</span>);
-  } <span class="tok-569cd6-c-569cd6">else</span> {
-    display.print(F(<span class="tok-ce9178-c-ce9178">"CHARGE!"</span>));
+  } <span class="tok-569cd6">else</span> {
+    display.print(F(<span class="tok-ce9178">"CHARGE!"</span>));
     ledRed(<span class="tok-b5cea8">1</span>);
     buzzer.playNote(NOTE_A(<span class="tok-b5cea8">3</span>), <span class="tok-b5cea8">500</span>, <span class="tok-b5cea8">15</span>);
   }
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Kp: "</span>));
+  display.print(F(<span class="tok-ce9178">"Kp: "</span>));
   display.print(currentKp, <span class="tok-b5cea8">2</span>);
   delay(<span class="tok-b5cea8">2500</span>);
   ledGreen(<span class="tok-b5cea8">0</span>);
@@ -968,9 +968,9 @@ run all year &mdash; the OLED took over that job in Lesson 3.</p>
   <span class="tok-7cbf6e">// that moving IS still - and it will be wrong for the whole run.</span>
   display.clear();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"Gyro calibrating"</span>));
+  display.print(F(<span class="tok-ce9178">"Gyro calibrating"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178-c-ce9178">"HOLD STILL"</span>));
+  display.print(F(<span class="tok-ce9178">"HOLD STILL"</span>));
   gyroSetup();
 
   <span class="tok-7cbf6e">// ===== SELF-TEST (NEW for Lesson 14) =====</span>
@@ -1279,10 +1279,10 @@ until you press B, however long that is.<br><br>
       <span class="tok-7cbf6e">// THE BELL. Every TUNING run is the same length, or two scores mean</span>
       <span class="tok-7cbf6e">// nothing. A COURSE run has no bell - the course decides when it ends,</span>
       <span class="tok-7cbf6e">// and you press B on the goal tile. (UPDATED for Lesson 16)</span>
-      <span class="tok-569cd6-c-569cd6">if</span> (currentMode == MODE_COURSE &amp;&amp; TUNING_RUN_MS &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
+      <span class="tok-569cd6">if</span> (currentMode == MODE_COURSE &amp;&amp; TUNING_RUN_MS &gt; <span class="tok-b5cea8">0</span> &amp;&amp;
           millis() - runStart &gt;= TUNING_RUN_MS) {
         endRun();
-        <span class="tok-569cd6-c-569cd6">break</span>;
+        <span class="tok-569cd6">break</span>;
       }
 </pre>
 <details data-reveal="hint" class="details-m-12px0"><summary class="summary-c-2e86ab">Show the hint</summary><div class="div-m-16px0">Read the comment, then read the condition, and notice they disagree &mdash; the
@@ -1302,16 +1302,16 @@ the EEPROM with a reader &mdash; and the robot refuses to remember them anyway.<
 <pre class="code-block-bg-1e1e1e">
 <span class="tok-7cbf6e">// Returns false if this EEPROM has never been written by Lesson 16.</span>
 <span class="tok-7cbf6e">// A robot with no saved settings is not broken - it is NEW.</span>
-<span class="tok-569cd6-c-569cd6">bool</span> loadSettings() {
+<span class="tok-569cd6">bool</span> loadSettings() {
   Saved s;
   EEPROM.get(EEPROM_ADDR, s);
-  <span class="tok-569cd6-c-569cd6">if</span> (s.magic != 0x15) <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">false</span>;
+  <span class="tok-569cd6">if</span> (s.magic != 0x15) <span class="tok-569cd6">return</span> <span class="tok-569cd6">false</span>;
   currentKp      = s.kp;
   currentKd      = s.kd;
   currentKpSpeed = s.kpSpeed;
   currentKiSpeed = s.kiSpeed;
   baseline       = s.baseline;
-  <span class="tok-569cd6-c-569cd6">return</span> <span class="tok-569cd6-c-569cd6">true</span>;
+  <span class="tok-569cd6">return</span> <span class="tok-569cd6">true</span>;
 }
 
 <span class="tok-7cbf6e">// ===== THE SOCKET (NEW for Lesson 16 - and then it's yours) =====</span>
@@ -1326,14 +1326,14 @@ the EEPROM with a reader &mdash; and the robot refuses to remember them anyway.<
 <span class="tok-7cbf6e">//</span>
 <span class="tok-7cbf6e">// It receives dt because almost everything worth doing needs it, and</span>
 <span class="tok-7cbf6e">// recomputing a clock you already own would be paying twice.</span>
-<span class="tok-569cd6-c-569cd6">void</span> runEnhancement(<span class="tok-569cd6-c-569cd6">float</span> dt) {
-  <span class="tok-569cd6-c-569cd6">if</span> (!ENHANCEMENT_ON) <span class="tok-569cd6-c-569cd6">return</span>;   <span class="tok-7cbf6e">// the inherited robot, untouched</span>
+<span class="tok-569cd6">void</span> runEnhancement(<span class="tok-569cd6">float</span> dt) {
+  <span class="tok-569cd6">if</span> (!ENHANCEMENT_ON) <span class="tok-569cd6">return</span>;   <span class="tok-7cbf6e">// the inherited robot, untouched</span>
 
   <span class="tok-7cbf6e">// ================= YOUR CAPSTONE GOES HERE =================</span>
   <span class="tok-7cbf6e">//</span>
   <span class="tok-7cbf6e">// (void)dt keeps the compiler quiet until you use it. Delete it</span>
   <span class="tok-7cbf6e">// the moment you write your first real line.</span>
-  (<span class="tok-569cd6-c-569cd6">void</span>)dt;
+  (<span class="tok-569cd6">void</span>)dt;
   <span class="tok-7cbf6e">//</span>
   <span class="tok-7cbf6e">// ===========================================================</span>
 }
