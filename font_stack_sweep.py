@@ -1,7 +1,18 @@
 #!/usr/bin/env python3
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file returns the version and not a changelog line.
-VERSION = 'v1.1.0'
+VERSION = 'v1.2.0'
+# v1.2.0 (S110): THE VALUE PARSER COULD NOT READ A QUOTED MULTI-FACE STACK, and the
+#   consequence was a CORRUPTING WRITE, not merely a miscount. DECL's alternation tried
+#   "..." then '...' then a bare run, so `'Consolas','Monaco','Courier New',monospace`
+#   matched only the FIRST QUOTED FACE and the rest of the stack was left dangling outside
+#   the match. A --write pass would have produced
+#       font-family: 'Courier New, monospace','Monaco','Courier New',monospace
+#   and, on `'Consolas', monospace`, a family LITERALLY NAMED "Courier New, monospace",
+#   which no browser resolves. The tool sits in the session-open ritual and had reported
+#   `8 x Consolas` as bare for seven sessions - a false finding that CONTRADICTED a standing
+#   note ("15 declarations, all with a fallback, zero bare"). The note was right and the
+#   instrument was wrong. Value now parsed whole, faces split on commas OUTSIDE quotes.
 # v1.0 (S103): NEW. Rewrites font-family declarations whose FIRST choice is a designer
 #   face into the canon stacks. Bible 17.3a Recipe 1 check 4 and the RoboLore graphics
 #   handoff 5 both already name the replacements; this instrument does not rule, it applies.
@@ -44,38 +55,74 @@ MAP = {
 WEB_SERVED = {'inter'}
 
 
-def _exempt(face, path):
-    return path.endswith('.css') and face in WEB_SERVED
+def _exempt(value, path):
+    """S110: this took a FACE and was called with a whole VALUE. It only ever agreed
+    because the old parser truncated a quoted stack to its first face — so fixing the
+    parser silently un-exempted `'Inter', -apple-system, sans-serif` in the stylesheet.
+    An exemption keyed on the first face is what was always meant."""
+    return path.endswith('.css') and _first(value) in WEB_SERVED
 
 
-DECL = re.compile(r'(font-family\s*[:=]\s*)("([^"]*)"|\'([^\']*)\'|([^;"\'>}]+))', re.I)
+# The VALUE is everything up to the declaration terminator. Quotes are part of the value,
+# never a boundary of it -- treating a quote as a boundary is what truncated the stack.
+DECL = re.compile(r"""(font-family\s*[:=]\s*)((?:[^;>}"']|"[^"]*"|'[^']*')+)""", re.I)
+
+def faces(value):
+    """Split a font-family value into faces, splitting on commas OUTSIDE quotes."""
+    out, buf, q = [], '', None
+    for ch in value:
+        if q:
+            if ch == q:
+                q = None
+            else:
+                buf += ch
+        elif ch in '"\'':
+            q = ch
+        elif ch == ',':
+            out.append(buf.strip()); buf = ''
+        else:
+            buf += ch
+    if buf.strip():
+        out.append(buf.strip())
+    return [f for f in out if f]
 
 
 def _first(value):
-    return value.split(',')[0].strip().strip('"\'').lower()
+    f = faces(value)
+    return f[0].lower() if f else ''
+
 
 
 def rewrite(text):
-    """Return (new_text, list of (old_value, new_value)). Value-only, delimiter preserved."""
+    """Return (new_text, list of (old_value, new_value)). Value-only; the DELIMITER is
+    preserved for an XML attribute and dropped for a CSS declaration, because they are
+    not the same thing. `font-family="X"` uses the quote as the attribute delimiter and
+    must keep it; `font-family: 'X'` quotes a FAMILY NAME, and a canon stack contains a
+    comma, so re-quoting it would declare one family literally named
+    "Courier New, monospace" - which no browser resolves."""
     hits = []
 
     def sub(m):
-        lead, whole, dq, sq, bare = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5)
-        value = dq if dq is not None else (sq if sq is not None else bare)
-        target = MAP.get(_first(value))
+        lead, raw = m.group(1), m.group(2)
+        # peel trailing whitespace AND a self-closing slash: `font-family="X"/>` ends the
+        # match at `/`, so the closing quote is not the last character and the delimiter
+        # would go undetected. font-family values never contain a slash.
+        trail, val = '', raw
+        while val and val[-1] in ' \t\n/':
+            trail = val[-1] + trail
+            val = val[:-1]
+        is_attr = '=' in lead
+        delim = None
+        if len(val) >= 2 and val[0] in '"\'' and val[-1] == val[0] and val[0] not in val[1:-1]:
+            delim, val = val[0], val[1:-1]
+        target = MAP.get(_first(val))
         if target is None:
             return m.group(0)
-        # already correct in substance -- do not churn the byte
-        if value.strip() == target:
-            return m.group(0)
-        hits.append((value.strip(), target))
-        if dq is not None:
-            return lead + '"' + target + '"'
-        if sq is not None:
-            # canon stacks contain no apostrophe, so a single-quoted home stays single-quoted
-            return lead + "'" + target + "'"
-        # bare value in a <style> block: preserve any trailing whitespace the declaration had
-        trail = bare[len(bare.rstrip()):]
+        if faces(val) == faces(target):
+            return m.group(0)          # already correct in substance - do not churn
+        hits.append((val.strip(), target))
+        if is_attr and delim:
+            return lead + delim + target + delim + trail
         return lead + target + trail
 
     return DECL.sub(sub, text), hits
@@ -127,6 +174,46 @@ def selftest():
     check('CONTROL D: font-style survives the family rewrite',
           'font-style: italic' in out_e and 'Arial, Helvetica, sans-serif' in out_e, True)
 
+    # CONTROL F -- THE DEFECT THIS VERSION EXISTS FOR. A quoted multi-face CSS stack
+    # must rewrite to ONE clean value: no faces left dangling after the replacement, and
+    # no comma-bearing family name left inside quotes.
+    stack = ".code{font-family: 'Consolas','Monaco','Courier New',monospace;}"
+    out_f, hits_f = rewrite(stack)
+    val_f = out_f.split('font-family:')[1].split(';')[0].strip()
+    check('CONTROL F: quoted multi-face stack yields one clean value',
+          (faces(val_f), '"' in val_f or "'" in val_f, len(hits_f)),
+          (['Courier New', 'monospace'], False, 1))
+    quoted_one = ".code{font-family: 'Consolas', monospace;}"
+    out_g = rewrite(quoted_one)[0]
+    check('CONTROL F: no family is left literally named "Courier New, monospace"',
+          "'Courier New, monospace'" in out_g, False)
+
+    # CONTROL G -- every rewritten value parses to EXACTLY the target's face list, so a
+    # leftover face can never survive a substitution anywhere in the corpus.
+    import glob as _g
+    leftovers = []
+    for _p in sorted(_g.glob('images/*.svg')) + ['css/book.css']:
+        try:
+            _src = open(_p, encoding='utf-8', errors='replace').read()
+        except OSError:
+            continue
+        _new, _h = rewrite(_src)
+        for _m in DECL.finditer(_new):
+            _v = _m.group(2).rstrip(' \t\n/').strip('"\'')
+            if MAP.get(_first(_v)) and faces(_v) != faces(MAP[_first(_v)]):
+                leftovers.append((_p, _v))
+    check('CONTROL G: no leftover faces after a whole-corpus rewrite', leftovers, [])
+
+    # CONTROL H -- control of the control: the v1.1.0 parser MUST fail CONTROL F, or this
+    # version fixed nothing. Its alternation tried a quoted run before a bare one, so it
+    # matched only the first quoted face.
+    _old = re.compile(r'(font-family\s*[:=]\s*)("([^"]*)"|\'([^\']*)\'|([^;"\'>}]+))', re.I)
+    _m = _old.search(stack)
+    _oldval = _m.group(3) if _m.group(3) is not None else (
+        _m.group(4) if _m.group(4) is not None else _m.group(5))
+    check('CONTROL H: the old parser read only the first quoted face',
+          (_oldval, faces(_oldval)), ('Consolas', ['Consolas']))
+
     # CONTROL E -- idempotence: a second pass must change nothing
     twice, hits_t = rewrite(out)
     check('CONTROL E: second pass is a no-op', (twice == out, hits_t), (True, []))
@@ -158,8 +245,9 @@ def main(argv):
         with open(p, encoding='utf-8', errors='strict') as fh:
             src = fh.read()
         new, hits = rewrite(src)
-        hits = [h for h in hits
-                if not _exempt(str(h[0]).strip().strip('\'"').lower(), p)]
+        # pass the RAW value: pre-stripping quotes here left an unbalanced quote that
+        # the face splitter then read as an opening delimiter (S110).
+        hits = [h for h in hits if not _exempt(h[0], p)]
         if not hits:
             continue
         tot_files += 1
