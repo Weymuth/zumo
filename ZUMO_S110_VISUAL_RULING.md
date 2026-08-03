@@ -4,7 +4,7 @@
 the session (§24.13 — a set that lives only in prose is not recorded).**
 
 Every hex below is EMITTED from the derivation script, not typed. Every contrast figure is
-computed, and the asserts listed in §5 all pass.
+computed, and the asserts listed in §6 all pass.
 
 ---
 
@@ -22,7 +22,13 @@ D was ruled first and then withdrawn once its brand link was measured rather tha
 **Hue gap is the test**, because lightening a colour moves lightness and chroma enormously
 and hue barely at all.
 
-| direction | mean hue gap to nearest canon hue | bands within 20° |
+**Every hue and ΔE figure in this document is CIELAB** — LCh hue and ΔE76. That matters,
+because the counts are metric-dependent: recomputed in HSV the ruled palette scores **4/6**
+and warm earth **2/6**. The ranking survives the change of instrument (the ruled palette is
+twice as aligned either way); the exact counts do not, and quoting them bare would be a
+count with no named instrument (§24.10).
+
+| direction | mean CIELAB hue gap to nearest canon hue | bands within 20° (CIELAB) |
 |---|---:|---:|
 | A warm earth (S109 ruling) | 39.4° | 1/6 |
 | B deep earth | 39.6° | 1/6 |
@@ -63,8 +69,10 @@ collide with Theory. Recorded because it will look arbitrary later.
 
 ## 4. The structural finding, which outlives this ruling
 
-**Heritage Blue is five colours but only TWO hue families** — Deep Navy 276° and Slate Blue
-260° are 16° apart; Antique Bronze 77° and Warm Brass 82° are 5° apart. **Six section
+**Heritage Blue is five colours but only TWO hue families.** In CIELAB, Deep Navy 276° and
+Slate Blue 260° are 15.6° apart; Antique Bronze 77° and Warm Brass 82° are 4.8° apart. The
+same collapse is confirmed in HSV, where the gaps are 5.0° and 3.7° — different numbers,
+same finding, which is why it is stated as a finding at all. **Six section
 groups cannot be separated by hue out of two hues.** They separate by LIGHTNESS, which is
 exactly what §5.0.1's band ramp already said — one hue, lightness carries location. A
 Heritage-focused book is a lightness ramp by construction, not by preference.
@@ -74,7 +82,22 @@ book would no longer have five blue bands. **The five specific blues stay dead. 
 PRINCIPLE is now load-bearing again**, and `BAND_END` remains the mechanism. Do not read
 S109's supersession as retiring lightness-as-wayfinding.
 
-## 5. Asserts that pass
+## 5. The generator
+
+**`build_palette.py` v1.0** (repo root) derives this palette; entrypoint **`build()`**.
+No band hex exists as a literal anywhere — the only colour literals are the five canon
+values plus Forge Red, each of which is present in `ZUMO_SUPER_BIBLE.md`. `--check`
+re-derives and compares against §3 of this file, so the table cannot drift from its
+generator; `--css` emits the custom properties for `build_css.py` when the repaint starts.
+Eight controls, including a known answer this file cannot supply (canon navy on parchment
+reproduces `ColorPalette.md`'s stated **15.61**, computed 15.6146).
+
+**Verified by a second instrument, not by re-reading:** the palette was rasterised and the
+stripe colours read back out of the pixels — all thirteen backgrounds reach the screen at
+the derived hex, and contrast recomputed from measured pixels matches the derivation to
+**0.0000**.
+
+## 6. Asserts that pass
 
 white on every band floor **5.06** · callout text on every tint floor
 **7.61** · body on parchment **15.03** · bronze headings on parchment
@@ -86,7 +109,7 @@ The code-panel figure is new to H2 and was not a risk in any earlier direction: 
 band is the darkest colour in the book outside the editor itself. 15.5 is separable and is
 the tightest pair in the palette — if a band is ever re-lit, that is the one to re-measure.
 
-## 6. Unchanged from `ZUMO_S109_VISUAL_SPEC.md`
+## 7. Unchanged from `ZUMO_S109_VISUAL_SPEC.md`
 
 Colour is not a code · six groups, five expandable plus unnumbered Troubleshoot · vertical
 left rail on `<details>` with no JavaScript · no section numbers in the nav · the 4×4 lesson
