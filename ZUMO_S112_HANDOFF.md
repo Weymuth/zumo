@@ -35,12 +35,12 @@
 
 # STATE
 
-Fresh-clone verified at **`185e086`**. Census **40,013**.
-Bible **v8.99** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
+Fresh-clone verified at **`893b8b6`**. Census **40,013**.
+Bible **v8.100** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
 
-Instruments: `book_gates` **v1.40.0** · `lesson_inventory` **v1.2.0** ·
+Instruments: `book_gates` **v1.41.0** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
 `build_family_map` **v1.1.3** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.15** · `fit_raster_svg` **v1.2** ·
@@ -57,7 +57,7 @@ Instruments: `book_gates` **v1.40.0** · `lesson_inventory` **v1.2.0** ·
 
 Lessons: L01 v03.19.0 · L02 v03.11.0 · L03 v03.24.0 · L04 v04.19.0 · L05 v04.19.0 · L06 v04.23.0 · L07 v04.21.0 · L08 v04.19.0 · L09 v05.16.0 · L10 v02.16.0 · L11 v02.17.0 · L12 v01.19.0 · L13 v02.17.0 · L14 v02.21.0 · L15 v02.17.0 · L16 v02.12.0.
 
-**45/45 gates.** `--anomalies` silent · family map 1048/1048 · `regex_audit` 0 leads ·
+**46/46 gates.** `--anomalies` silent · family map 1048/1048 · `regex_audit` 0 leads ·
 `build_css --check` current at 650 rules · 0 dead classes · `build_palette --check` matches
 the ruling · both banner generators green.
 
@@ -147,6 +147,25 @@ palette DJ never saw.
 
 ---
 
+# S112 SO FAR — GATE 46 IS IN
+
+**§27.14: every link and every id resolves.** 1,237 links, 705 ids, 20 pages, and nothing had
+ever checked any of them. Parser-based (§24.10). Control-run on four shapes — dead in-page
+anchor, duplicate id, missing file, dead cross-page fragment — with a RESOLVING cross-page
+fragment planted beside the dead one so the branch runs both ways.
+
+**Two things recorded in the gate itself:**
+- Its first version reported **223 broken links**, all of them Maker URLs like
+  `../newproject.html?lesson=1&kind=c01` — the query string read as part of the filename.
+- **WHERE A GATE SITS IN THE FILE IS PART OF THE GATE.** Appended below the summary and its
+  `sys.exit(1)`, it printed PASS *after* `ALL GATES PASS` on a clean tree and **never ran at
+  all** on a failing one. A gate that executes only when everything else passes cannot catch
+  anything in a failing suite. Caught by the control run, not by reading.
+
+`book_gates` **v1.41.0, 46 gates** · Bible **v8.100** No lesson file changed.
+
+---
+
 # S112 QUEUE
 
 ## Ruled, not yet done
@@ -165,7 +184,7 @@ palette DJ never saw.
 - **`3.2` vs `3.5`** — before/after split, or one figure and a deleted row.
 - **Rule the 12 callout families**, then the NOTE per-block pass (133 blocks, four destinations).
 - **Nav `<details>` carry no `data-reveal`** — §25.12 exists because one untyped `<details>` slipped.
-- **Selftest-coverage gate** and **gate 46 (links/ids)** — both offered, neither built.
+- **Selftest-coverage gate** — offered, not built. (Gate 46 SHIPPED, see above.)
 
 ## Canon debts
 §21.1's thresholds live only in `book_gates.py` · §25.6 header example · §25.10e misfiled ·

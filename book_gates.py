@@ -2,7 +2,14 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.40.0'
+VERSION = 'v1.41.0'
+# v1.41.0 (S112): GATE 46, §27.14 - every link and every id resolves. 1,237 links and 705
+# ids across twenty pages had NO gate at all. Control-run on four shapes: dead in-page
+# anchor, duplicate id, missing file, dead cross-page fragment - each named individually,
+# with a RESOLVING cross-page fragment planted beside the dead one so the branch is
+# exercised both ways. WHERE THE BLOCK SITS IS PART OF THE GATE: appended below the summary
+# it printed PASS after 'ALL GATES PASS' on a clean tree and never ran at all on a failing
+# one, because sys.exit fired first.
 # v1.40.0 (S111): THE REPAINT. BAND_END #6c757d -> #6f7582 and the four PART spine colours
 # moved to the eight-band palette; §27.11's baseline moved twice (the [IMAGE 2.5] retirement,
 # then the icon legend + repaint) and both moves carry their accounting; GEOM_BASELINE keys
@@ -1959,6 +1966,89 @@ try:
 except Exception as e:                       # a crash here must not take the suite down
     bad.append(f'could not regenerate: {type(e).__name__}: {e}')
 gate('\u00a727.13 css/book.css regenerates byte-identically from the lessons', bad)
+
+# ---- WHERE THIS BLOCK SITS IS PART OF THE GATE. It was first appended to the END of the
+# ---- file, BELOW the summary and its sys.exit(1). On a clean tree it ran and printed PASS
+# ---- after 'ALL GATES PASS', so its verdict was outside the summary; on the control run it
+# ---- never ran at all, because sys.exit fired first. A gate that only executes when every
+# ---- other gate passes cannot catch anything in a failing suite (S24.8: the instrument
+# ---- could not distinguish the two answers). Caught by the control, not by reading.
+
+# ---- GATE 46 (§27.14): every LINK and every ID resolves.
+# ---- NEW S112. The book carries 1,237 <a href> and 705 ids across twenty pages and NOTHING
+# ---- checked them. Two gates come close and neither covers this: `index.html relative links
+# ---- resolve` walks one page, and `going_deeper links canonical and relative` checks the SHAPE
+# ---- of a href, not whether its target exists. A dead in-page anchor is the most invisible
+# ---- defect the book can have -- the link renders, the cursor changes, the page simply does
+# ---- not move -- and it is created by exactly the work this session did most of: renaming an
+# ---- id, deleting a block, retiring a figure row.
+# ----
+# ---- PARSER, not regex (§24.10): ids and hrefs come from HTMLParser, because an `id=` inside
+# ---- a code block or an escaped attribute is not an id and a substring search cannot tell.
+# ----
+# ---- ONE FALSE FINDING IS ALREADY RECORDED HERE, per §24.6c. The first version of this check
+# ---- reported 223 broken links. Every one was a Maker URL of the form
+# ---- `../newproject.html?lesson=1&kind=c01` -- the query string was being treated as part of
+# ---- the filename. The book was right and the instrument was wrong, and the number was large
+# ---- enough to look like a real finding. A query string is stripped before resolution.
+bad = []
+import html.parser as _hp
+
+
+class _IdHref(_hp.HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.ids, self.hrefs = [], []
+
+    def handle_starttag(self, tag, attrs):
+        d = dict(attrs)
+        if d.get('id') is not None:
+            self.ids.append(d['id'])
+        if tag == 'a' and d.get('href') is not None:
+            self.hrefs.append(d['href'])
+
+
+_PAGES = sorted(glob.glob('lessons/Lesson_*.html')) + \
+         [p for p in ('index.html', 'going_deeper.html', 'newproject.html', 'timer.html')
+          if os.path.exists(p)]
+_ids, _hrefs = {}, {}
+for _f in _PAGES:
+    _p = _IdHref()
+    _p.feed(open(_f, encoding='utf-8', errors='replace').read())
+    _ids[_f], _hrefs[_f] = _p.ids, _p.hrefs
+_idset = {f: set(v) for f, v in _ids.items()}
+
+for _f, _v in _ids.items():
+    for _k, _n in collections.Counter(_v).items():
+        if _n > 1:
+            bad.append(f'{_f}: id "{_k}" appears {_n} times — a duplicate id makes every '
+                       f'link to it land on whichever the browser saw first')
+for _f, _v in _hrefs.items():
+    for _h in _v:
+        if _h.startswith('#'):
+            if _h[1:] not in _idset[_f]:
+                bad.append(f'{_f}: href "{_h}" — no such id on this page')
+        elif _h.startswith(('http', 'mailto:', 'javascript:')) or not _h:
+            continue
+        else:
+            _path, _, _frag = _h.partition('#')
+            _tgt = _path.partition('?')[0]          # the query string is NOT the filename
+            _cand = os.path.normpath(os.path.join(os.path.dirname(_f), _tgt)) if _tgt else _f
+            if not os.path.exists(_cand):
+                bad.append(f'{_f}: href "{_h}" — no file at {_cand}')
+            elif _frag:
+                if _cand not in _idset:
+                    _q = _IdHref()
+                    _q.feed(open(_cand, encoding='utf-8', errors='replace').read())
+                    _idset[_cand] = set(_q.ids)
+                if _frag not in _idset[_cand]:
+                    bad.append(f'{_f}: href "{_h}" — no id "{_frag}" in {_cand}')
+# COVERAGE: a gate whose population silently empties is an ungated rule (S83).
+_nlinks = sum(len(v) for v in _hrefs.values())
+if len(_PAGES) < 17 or _nlinks < 1000:
+    bad.append(f'COVERAGE: {len(_PAGES)} pages / {_nlinks} links parsed — expected 17+ and 1,000+')
+gate(f'\u00a727.14 every link and id resolves ({_nlinks:,} links, '
+     f'{sum(len(v) for v in _ids.values()):,} ids, {len(_PAGES)} pages)', bad)
 
 
 print('=' * 52)
