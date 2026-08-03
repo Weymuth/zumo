@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.14.1'   # the only version home in this file (S96; v1.4 S98)
+VERSION = 'v1.15'     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
 # v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
 #   syllabus. v1.11's G excused 'Syllabus' because it is emitted under its FILENAME - true
 #   of --live, false of --handoff, where it appeared under neither name. The exemption
@@ -165,6 +165,8 @@ ARTEFACTS = [
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
+    ('build_palette',         'build_palette.py',         r"VERSION = '(v[\d.]+)'"),
+    ('class_sweep',           'class_sweep.py',           r"VERSION = '(v[\d.]+)'"),
 ]
 
 
@@ -252,6 +254,8 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
             f"regex_audit {vals['regex_audit']} · "
+            f"build_palette {vals['build_palette']} · "
+            f"class_sweep {vals['class_sweep']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
@@ -278,6 +282,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
+            f"`build_palette` **{vals['build_palette']}** ·\n"
+            f"`class_sweep` **{vals['class_sweep']}** ·\n"
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
@@ -294,6 +300,21 @@ def _versions_in(text):
     return dict(re.findall(r'([A-Za-z_][\w./]*) \*{0,2}(v[\d.]+)', text.replace('**', '')))
 
 
+# Root scripts that carry NO version by design: one-off utilities and surgery tools,
+# not instruments. Listed rather than ignored, because ROSTER_COVERAGE below fails on
+# anything that is in neither list — a roster that only checks what it already names
+# cannot notice a missing instrument, which is exactly how build_palette.py and
+# class_sweep.py sat unregistered and invisible to --check for a whole session (S110).
+UNVERSIONED = {'engine.py', 'extract_project.py', 'sweep_option_c.py'}
+
+
+def roster_coverage():
+    """-> list of root .py files in neither ARTEFACTS nor UNVERSIONED."""
+    rostered = {rel for _, rel, _ in ARTEFACTS}
+    found = {os.path.basename(p) for p in glob.glob(os.path.join(ROOT, '*.py'))}
+    return sorted(found - rostered - UNVERSIONED)
+
+
 def check():
     """Compare LIVE.md's Versions line and the handoff's STATE block against the files.
     Silent when clean; names every disagreement when not. Never compares the sha."""
@@ -305,6 +326,12 @@ def check():
     marks, icons = assets()
     cen, sha = census(), head_sha()
     bad = 0
+
+    unrostered = roster_coverage()
+    for f in unrostered:
+        print("  ROSTER: %s is in the repo root and in no version roster - add it to"
+              " ARTEFACTS, or to UNVERSIONED if it carries no version by design" % f)
+    bad += len(unrostered)
 
     live_lines = open(os.path.join(ROOT, 'LIVE_ZUMO_TEXTBOOK.md'), encoding='utf-8').read().split('\n')
     written = live_lines[5]
