@@ -2,7 +2,7 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.3'
+VERSION = 'v1.3.1'
 # v1.1.3 (S98): version home moved above the docstring changelog (same defect as book_gates;
 #   a plain grep returned v1.0.0). Output asserted byte-identical before and after.
 """build_family_map.py - assigns every callout block to a family.
@@ -152,6 +152,12 @@ RULE=[
  # --- WHAT YOU SHOULD SEE  (2) ---
  (lambda l,g,s,_p='The robot turns 90 degrees. On the slick sur': l.startswith(_p), 'WHAT YOU SHOULD SEE'), # L12:844
  (lambda l,g,s,_p='Button C on delrin: the square closes. Same ': l.startswith(_p), 'WHAT YOU SHOULD SEE'), # L12:890
+ # --- THINK ABOUT IT  (1) ---
+ # DJ ruling S112. The last block in the book resolved by neither label nor glyph. It had
+ # been filed STILL GREEN since the map existed, by COLOUR alone, and STILL GREEN is the
+ # byte-count-report family - a rhetorical question is not a byte-count report. The S111
+ # repaint did not break this assignment, it exposed that the assignment was never earned.
+ (lambda l,g,s,_p='How long does one pass through your loop act': l.startswith(_p), 'THINK ABOUT IT'), # L15:295
  # --- REAL-WORLD CONNECTION  (1) ---
  (lambda l,g,s,_p='The Triple Crown. Fastest, champion, AND bes': l.startswith(_p), 'REAL-WORLD CONNECTION'), # L16:1212
 ]

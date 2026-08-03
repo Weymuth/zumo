@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.41.0'
+VERSION = 'v1.42.0'
 # v1.41.0 (S112): GATE 46, §27.14 - every link and every id resolves. 1,237 links and 705
 # ids across twenty pages had NO gate at all. Control-run on four shapes: dead in-page
 # anchor, duplicate id, missing file, dead cross-page fragment - each named individually,
@@ -493,6 +493,7 @@ gate('§6.5a lesson strip present and byte-identical in all 16', bad)
 
 # ---- §25.6: header hero + footer, identical across all 17 pages (S89: build banner dropped)
 import hashlib
+import subprocess
 
 PAGES = files + (['going_deeper.html'] if os.path.exists('going_deeper.html') else [])
 
@@ -2050,6 +2051,37 @@ if len(_PAGES) < 17 or _nlinks < 1000:
 gate(f'\u00a727.14 every link and id resolves ({_nlinks:,} links, '
      f'{sum(len(v) for v in _ids.values()):,} ids, {len(_PAGES)} pages)', bad)
 
+
+# ---- §24.14 (S112): the callout family map assigns every block.
+# WHY A GATE. `build_family_map.py` reported 1047/1048 for a whole session and the suite
+# stayed green, because the generator was never wired in. The S111 repaint moved one hex and
+# a block fell out of a COLOUR-keyed fallback; nothing could say so.
+# WHERE THIS SITS IS PART OF THE GATE (S112): above the summary and its sys.exit, so it runs
+# on a FAILING tree too. Appended below them it would print PASS after ALL GATES PASS and
+# never execute at all when another gate failed.
+# It shells out deliberately - the generator is a script, and re-implementing its matcher
+# here would be the third regex §24 forbids. Both the exit code AND the parsed line are
+# checked: a crashed generator must not read as a silent pass.
+bad = []
+_r = subprocess.run([sys.executable, 'build_family_map.py'], capture_output=True, text=True)
+if _r.returncode != 0:
+    bad.append(f'build_family_map.py exited {_r.returncode} - the map did not build')
+else:
+    _m = re.search(r'assigned (\d+) / (\d+)\s+families (\d+)', _r.stdout)
+    if not _m:
+        bad.append('build_family_map.py printed no "assigned N / M" line - output shape changed')
+    else:
+        _a, _t, _fam = (int(x) for x in _m.groups())
+        if _a != _t:
+            bad.append(f'{_t - _a} callout block(s) unassigned ({_a}/{_t})')
+            for _ln in _r.stdout.splitlines():
+                if _ln.startswith('   L'):
+                    bad.append(_ln.strip())
+        if _t < 1000:
+            bad.append(f'COVERAGE: only {_t} blocks parsed - expected 1,000+')
+        if _fam < 25:
+            bad.append(f'COVERAGE: only {_fam} families - expected 25+')
+gate('\u00a724.14 every callout block resolves to a family', bad)
 
 print('=' * 52)
 

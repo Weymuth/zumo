@@ -51,9 +51,16 @@ has been brought to it (S96). The table below is generated output, not hand-type
 > generated and none are wired in, so a taxonomy resting on emoji was resting on something
 > already scheduled for replacement. The remaining glyph tier is explicitly a stopgap.
 >
-> **STILL OPEN:** `assigned 1047 / 1048`. The orphan is L15:295, outside the 39 and
-> unruled. Gate 47 cannot be written until it is — a gate written to 1047 would be written
-> to the sweep instead of to the ruling.
+> **CLOSED, AND GATED.** L15:295 is ruled **THINK ABOUT IT** (DJ) — it asks the reader a
+> question immediately before the section that answers it. It had been filed STILL GREEN by
+> COLOUR alone since the map existed, and STILL GREEN is the byte-count-report family. The
+> map now reads **`assigned 1048 / 1048`, `UNASSIGNED: 0`**, THINK ABOUT IT 7 → **8**.
+>
+> **`book_gates` v1.42.0 adds §24.14 as gate 47**, so the count can never drift unwatched
+> again. Control-run three ways: the L15 rule removed **FAILED naming L15:295**; a crashed
+> generator **FAILED on the exit code** rather than reading as a silent pass; and with an
+> unrelated gate failing it **still executed** — because where a gate sits in the file is
+> part of the gate.
 
 *Written S94 · rulings completed and generator reconciled S96 · annotated S112 · colour table deleted S112.*
 
