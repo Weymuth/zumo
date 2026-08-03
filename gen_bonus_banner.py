@@ -10,8 +10,9 @@ Bible §4.5: three families, one mark and one word each.
 Per Bible §24.6b: build bytes, assert, write .tmp, os.replace. Never open(path,'w').
 """
 import os, re, sys
+import lesson_inventory as LI
 
-VERSION = 'v1.3.0'   # the only version home in this file (S108)
+VERSION = 'v1.4.0'   # the only version home in this file (S108; v1.4.0 S110)
 
 MARK = {'practice': '&#128296;', 'observation': '&#128269;', 'sabotage': '&#128373;&#65039;'}
 WORD = {'practice': 'Extra Practice', 'observation': 'Observation', 'sabotage': 'Sabotage'}
@@ -58,7 +59,12 @@ def banner_for(lg):
     return BANNER.format(word=WORD[fam], count=count, noun=noun)
 
 def rewrite(path, lg, dry=True):
-    s = open(path, encoding='utf-8').read()
+    # S110: read through the SAME expander book_gates uses. This tool matched the bonus
+    # nav pill by an INLINE-STYLE signature ('text-decoration: none; padding: 5px 12px'),
+    # which the S103 class migration deleted from every lesson -- so every run since then
+    # ended in `L02: expected exactly 1 nav pill, found 0`. Nothing in the ritual runs this
+    # file, so the crash was never seen. Same defect and same cause as gen_part_banners.
+    s = LI.expand_classes(open(path, encoding='utf-8').read())
     orig = s
     fam = TABLE[lg][0]
     notes = []
@@ -119,8 +125,55 @@ def rewrite(path, lg, dry=True):
         os.replace(tmp, path)
     return notes, s != orig
 
+def selftest():
+    ok = True
+
+    def rep(label, passed, detail=''):
+        nonlocal ok
+        ok = ok and passed
+        print('   %-5s %s%s' % ('OK' if passed else 'FAIL', label, ('  ' + detail) if detail else ''))
+
+    print('CONTROL A (it runs at all): every run since S103 died on the first lesson')
+    err = None
+    try:
+        for lg in sorted(TABLE):
+            rewrite(f'lessons/Lesson_{lg}.html', lg, dry=True)
+    except Exception as e:
+        err = e
+    rep('rewrite() completes on all %d table lessons' % len(TABLE), err is None,
+        repr(err) if err else '')
+
+    print('CONTROL B (the fix CHANGED something): the pill signature must be absent from')
+    print('  the raw file and present once in the expanded one')
+    raw = open('lessons/Lesson_02.html', encoding='utf-8').read()
+    exp = LI.expand_classes(raw)
+    sig = 'text-decoration: none; padding: 5px 12px'
+    rep('signature raw 0, expanded >0', raw.count(sig) == 0 and exp.count(sig) > 0,
+        'raw %d expanded %d' % (raw.count(sig), exp.count(sig)))
+
+    print('CONTROL C (--write is refused): emitting the inline form breaches 27.12')
+    import subprocess
+    r = subprocess.run([sys.executable, __file__, '--write'], capture_output=True, text=True)
+    rep('--write exits non-zero and says why',
+        r.returncode != 0 and 'REFUSED' in r.stdout, 'exit %d' % r.returncode)
+
+    print('CONTROL D (the corpus is already canonical): nothing should want changing')
+    changed = sum(rewrite(f'lessons/Lesson_{lg}.html', lg, dry=True)[1] for lg in sorted(TABLE))
+    rep('0 of %d lessons differ' % len(TABLE), changed == 0, '%d differ' % changed)
+
+    print('\n%s' % ('ALL CONTROLS PASS' if ok else 'CONTROLS FAILED'))
+    return 0 if ok else 1
+
+
 if __name__ == '__main__':
-    dry = '--write' not in sys.argv
+    if '--selftest' in sys.argv:
+        sys.exit(selftest())
+    if '--write' in sys.argv:
+        print('REFUSED. --write emits inline style="" attributes, which Bible 27.12 forbids\n'
+              'in any page that links css/book.css and gate 41 catches. Repair a bonus\n'
+              'banner through restore -> regenerate -> apply. This tool is a CHECKER now.')
+        sys.exit(1)
+    dry = True
     print(f'gen_bonus_banner {VERSION} — {"DRY RUN" if dry else "WRITING"}\n')
     changed = 0
     for lg in sorted(TABLE):
