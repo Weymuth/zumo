@@ -100,9 +100,21 @@ students meet the interaction in Lesson 1.
 1. **Nav `<details>` carry no `data-reveal`.** The AI Tutor queries `<details>` and §20.1 strips
    by type, so nav elements would be a new untyped case. **§25.12 exists because exactly one
    untyped `<details>` slipped through before.** Needs a ruling before build.
-2. **`div-d-flex-2` scope unverified.** If that class is used outside the nav, flipping it to
-   column affects other blocks — the same over-reach that killed the ramp pilot. A ten-minute
-   measurement, not yet done.
+2. ~~**`div-d-flex-2` scope unverified.**~~ **MEASURED S110 — safe to flip, but flip TWO
+   classes, not one.** `div-d-flex-2` is used 7 times in 7 lessons and every one is the nav
+   (L02–L08); there is no over-reach. But the nav is split: L01 and L09–L16 use
+   **`div-ai-center`** instead, 9 uses in 9 lessons, also nav-only. The two rules differ by a
+   single declaration, `align-items: center`, which was rendered both ways against the real
+   14-anchor L09 nav and is **pixel-identical** — inert here. (Control: the same comparison
+   flipped to column changed the block 54px → 378px, so it can detect a difference.)
+   **Therefore §3's cost stands with one correction: the rail is TWO selectors, not one, and
+   lesson files remain zero.** Unifying them would mean editing 9 lessons to drop an inert
+   declaration, which costs more than writing the selector twice.
+
+   *Recorded because it nearly became a wrong finding:* a first pass matched `div-ai-center`
+   with a `\b` boundary, which also matches inside **`div-ai-center-2`** — a different class
+   carrying L10's five MYSTERY headers — and reported five phantom non-nav uses. `-` is not a
+   word character. Class audits must match whole class tokens, never substrings (§24.6c).
 3. ~~**§8's in-page banner still reads "Section 8"** while the nav says "Troubleshoot".~~
    **RESOLVED S109 by ruling 7** — the nav carries no numbers at all, so the nav/page split is
    uniform and deliberate rather than a single inconsistency. Kept here as the record of why.
