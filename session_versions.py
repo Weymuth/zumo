@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.15'     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
+VERSION = 'v1.15.1'     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
 # v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
 #   syllabus. v1.11's G excused 'Syllabus' because it is emitted under its FILENAME - true
 #   of --live, false of --handoff, where it appeared under neither name. The exemption
@@ -166,6 +166,7 @@ ARTEFACTS = [
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
     ('build_palette',         'build_palette.py',         r"VERSION = '(v[\d.]+)'"),
+    ('color_index',           'color_index.py',           r"VERSION = '(v[\d.]+)'"),
     ('class_sweep',           'class_sweep.py',           r"VERSION = '(v[\d.]+)'"),
 ]
 
@@ -256,6 +257,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"regex_audit {vals['regex_audit']} · "
             f"build_palette {vals['build_palette']} · "
             f"class_sweep {vals['class_sweep']} · "
+            f"color_index {vals['color_index']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
@@ -284,6 +286,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
             f"`build_palette` **{vals['build_palette']}** ·\n"
             f"`class_sweep` **{vals['class_sweep']}** ·\n"
+            f"`color_index` **{vals['color_index']}** ·\n"
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
