@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.6.1, S56 (re-pinned S110)
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.7, S56 (S110: runs on stable filenames)
 v1.6.1 (S110) RE-PINNED. The five L01 fingerprints had been stale since S61 and nobody
 could see it, because this gate needs `Lesson_NN_Topic_` filenames and the book stabilised
 on `Lesson_NN.html` - so it did not fail, it CRASHED on the first file and was simply never
@@ -261,6 +261,12 @@ def main():
     mk = open(maker_path, encoding='utf-8').read()
     js = re.search(r'<script>(.*)</script>', mk, re.S).group(1)
     fails, notes = [], []
+    import glob as _glob
+    _present = len(_glob.glob(os.path.join('lessons', 'Lesson_*.html')))
+    if _present and len(lesson_paths) < _present:
+        fails.append('COVERAGE: %d lesson file(s) in lessons/ but only %d passed in - a gate '
+                     'that checks a subset and reports PASS is not a gate'
+                     % (_present, len(lesson_paths)))
 
     open('/tmp/_gate.js', 'w').write(js)
     r = subprocess.run(['node', '--check', '/tmp/_gate.js'], capture_output=True, text=True)
@@ -278,8 +284,18 @@ def main():
         pass  # per-lesson resolution below
 
     lessons = {}
+    # S110: this required a `Lesson_NN_Topic_` name and the book stabilised on
+    # `Lesson_NN.html`, so the gate CRASHED on the first file instead of failing and was
+    # simply never run again. A matcher written against a shape nothing produces is the
+    # same defect as pill_sweep's `width: 4px` and gen_part_banners' inline block - four
+    # instruments in one session. Both spellings are accepted; a name that is neither is
+    # NAMED, never skipped, because a skipped input is a gate that silently stops gating.
     for p in lesson_paths:
-        n = re.search(r'Lesson_0?(\d+)_', os.path.basename(p)).group(1)
+        mm = re.search(r'Lesson_0?(\d+)(?:_|\.html$)', os.path.basename(p))
+        if not mm:
+            fails.append('UNPARSEABLE LESSON FILENAME: %s' % os.path.basename(p))
+            continue
+        n = mm.group(1)
         lessons[n] = p
 
     for L, path in sorted(lessons.items(), key=lambda x: int(x[0])):
