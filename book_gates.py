@@ -2,7 +2,18 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.39.0'
+VERSION = 'v1.39.2'
+# v1.39.2 (S109): BAND_END. The §10+ section band was typed literally in ELEVEN places -
+#   five inline sites plus six GEOM_BASELINE keys - so §5.0.1's ramp could not land as an
+#   edit. Now one name. Refactor asserted BEHAVIOUR-NEUTRAL: gate output byte-identical
+#   before and after. But byte-identical is also what a DEAD constant produces (§24.8),
+#   so it was control-run by flipping BAND_END to DJ's Steel #708BAF: FOUR gates fail -
+#   §25.10h, §4.5, §4.5a and §5.1. The S108 handoff named THREE and missed §5.1, whose
+#   GEOM_BASELINE keys would have fired mid-ramp with no warning. That is the count.
+# v1.39.1 (S109): gate 27.11's printed label was hard-coded and stale (664/2,434) while
+#   its constants tested 660/2,418 - right test, wrong name. The label is now derived
+#   from CSS_RULES/CSS_DECLS. No test logic changed; control-run against a perturbed
+#   baseline confirms the name follows the constant and the gate still fails loudly.
 # v1.39.0 (S108): the F1 banner pilot. _fence_title() now knows TWO cap shapes - the legacy
 #   one-line 'icon Section N: Name - Tail' and F1's eyebrow/headline span pair - because F1
 #   DELETES the em dash the old rule split on, and the sixteen lessons are mixed until the
@@ -99,6 +110,17 @@ import re, glob, html, os, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from html.parser import HTMLParser as _HTMLParser
 import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a third regex
+
+# ---- §5.0.1 SECTION BAND COLOURS. One home, because the ramp cannot be piloted.
+# ---- S108 proved five constructs are byte-compared across all sixteen lessons and move
+# ---- together or not at all (lesson strip §6.5a, hero §25.6, PART dividers §6.8, bonus cap
+# ---- §4.5, FINISHED EARLY box §4.5a), while THREE more gates typed the §10+ band literally.
+# ---- Eleven sites, one colour, no name -- so DJ's banked Steel ruling could not land as an
+# ---- edit. Naming it does not change a single verdict (asserted byte-identical below the
+# ---- refactor); it makes the ramp a one-line change and makes the blast radius greppable.
+# ---- DJ's banked ramp, NOT yet applied: Frost #CBD3DE §1-3 · Mist #AFBCCE §4-6 ·
+# ---- Fog #96A8C0 §7/8/8A · Harbor #7E95B4 §9 · Steel #708BAF §10+.
+BAND_END = '#6c757d'                   # §10+ TODAY. The ramp moves this to Steel #708BAF.
 
 FAIL = []
 
@@ -433,7 +455,7 @@ for f in files:
     if close is None:
         bad.append(f'{L(f)}: Image Index panel never closes'); continue
     inside = R[f][j:close]
-    if re.search(r'<hr\b|linear-gradient\(135deg, #6c757d', inside):
+    if re.search(r'<hr\b|linear-gradient\(135deg, '+re.escape(BAND_END), inside):
         bad.append(f'{L(f)}: lesson end matter is sealed INSIDE the Figures panel')
 gate('structure: end matter sits outside the section panel', bad)
 
@@ -989,14 +1011,14 @@ for f in files:
             if depth != 1:
                 bad.append(f'{L(f)}: brain-check-{i} is {depth} div(s) deep, expected 1')
             st = el.parent.get('style', '') if el.parent else ''
-            if 'border: 2px solid #6c757d' not in st:
+            if 'border: 2px solid '+BAND_END not in st:
                 bad.append(f'{L(f)}: brain-check-{i} is not in the gray §10 panel '
                            f'(host style {st[:44]!r})')
 if converted != 9:
     bad.append(f'COVERAGE: {converted} converted lessons scanned, expected 9')
 gate('§25.10h Brain Check 01 seats above §6 at body level; 02-04 sit in the §10 panel', bad)
 
-BONUS_CAP = ('<div style="background-color: #6c757d; color: white; padding: 13px 18px; '
+BONUS_CAP = ('<div style="background-color: '+BAND_END+'; color: white; padding: 13px 18px; '
              'border-radius: 8px 8px 0 0; margin-top: 24px;">')
 
 # ---- §4.5: the bonus-block banner is generated from the three-family table.
@@ -1074,7 +1096,7 @@ for f in files:
         bad.append(f'{lg}: bonus cap div not byte-canonical\n           got  {capopen}'
                    f'\n           want {BONUS_CAP}')
     after = s2[m.end():m.end() + 260]
-    if not re.match(r'\s*</div>\s*<div style="border: 2px solid #6c757d', after):
+    if not re.match(r'\s*</div>\s*<div style="border: 2px solid '+re.escape(BAND_END), after):
         bad.append(f'{lg}: gray cap is not fused to the bordered bonus panel')
 
     # (c) the count word is true
@@ -1161,7 +1183,7 @@ gate('\u00a74.2  every bonus card is tagged and its data-kind names its family',
 #      pill among twelve to fourteen.  The livery had also drifted into three
 #      strata (2/2/4) that cut across the families rather than along them.
 #      Byte-canonical, like the cap: a substring test cannot see a drift.
-FE_BOX = ('<div style="background-color: #f8f9fa; border: 2px solid #6c757d; '
+FE_BOX = ('<div style="background-color: #f8f9fa; border: 2px solid '+BAND_END+'; '
           'border-radius: 10px; padding: 15px 20px; margin: 25px 0;">')
 bad = []
 seen = 0
@@ -1230,17 +1252,17 @@ GEOM_BASELINE = {
     ('12', 5, '#27ae60', '#eafaf1'): 13,
     ('12', 5, '#607d8b', '#eceff1'): 20,
     ('12', 5, '#6b8e6b', '#f0f7f0'): 8,
-    ('12', 5, '#6c757d', '#f5eef8'): 4,
-    ('12', 5, '#6c757d', '#f8f9fa'): 1,
+    ('12', 5, BAND_END, '#f5eef8'): 4,
+    ('12', 5, BAND_END, '#f8f9fa'): 1,
     ('12', 5, '#e74c3c', '#fdecea'): 13,
     ('12', 5, '#ffc107', '#fff8e1'): 1,
-    ('13', 5, '#6c757d', '#f8f9fa'): 1,
-    ('14', 5, '#6c757d', '#f8f9fa'): 1,
+    ('13', 5, BAND_END, '#f8f9fa'): 1,
+    ('14', 5, BAND_END, '#f8f9fa'): 1,
     ('15', 5, '#2e86ab', '#f4f9fc'): 3,
     ('15', 5, '#3a7d5c', '#eef7f1'): 1,
-    ('15', 5, '#6c757d', '#f8f9fa'): 1,
+    ('15', 5, BAND_END, '#f8f9fa'): 1,
     ('16', 5, '#3a7d5c', '#eef7f1'): 5,
-    ('16', 5, '#6c757d', '#f8f9fa'): 1,
+    ('16', 5, BAND_END, '#f8f9fa'): 1,
     ('16', 5, '#ffc107', '#fff8e1'): 1,
 }
 bad = []
@@ -1789,7 +1811,12 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 660, 2418, '4e995885cb017f92'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 657, 2403, 'aae201019e74aa86'
+#   S109: six INSIGHT blocks carrying the canonical magnifier wore five non-canon paints
+#   (L02 x2, L03 x1, L07 x3). Repainted to #e9f7f5/#2da99d. THREE rules died - #dce4f2,
+#   #fff3e0 and #d5e8d4 lost their last consumer - while #f0f7f0 and #d1ecf1 SURVIVED
+#   because they are other families' canon. 660 -> 657, 2,418 -> 2,403. A drop of exactly
+#   three is the shape to expect; five would have meant the sweep hit the wrong blocks.
 #   S106: digest only. Wiring ONE figure into L02 changed the frequency ranking, which
 #   reorders rules and their usage comments. Same 664 rules, same 2,434 declarations.
 #   S108: +2 rules / +11 declarations, the F1 eyebrow (7) and headline (4) spans, from the
@@ -1830,7 +1857,12 @@ if os.path.exists('css/book.css'):
                    f'deliberate, re-run build_css.py and move the baseline in this file')
 else:
     bad.append('css/book.css is missing')
-gate('\u00a727.11 the stylesheet matches its baseline (664 rules / 2,434 declarations)', bad)
+#   S109: the LABEL was hard-coded and had gone stale — it still read 664/2,434 while the
+#   constants above tested 660/2,418, so the gate was testing the right numbers under the
+#   wrong name. It is now DERIVED from CSS_RULES/CSS_DECLS: move the baseline and the name
+#   moves with it. A label is not a finding (§24.6c), but a stale one teaches a wrong number.
+gate(f'\u00a727.11 the stylesheet matches its baseline '
+     f'({CSS_RULES} rules / {CSS_DECLS:,} declarations)', bad)
 
 
 # ---- GATE 44 (§27.12): a converted page carries NO inline style attribute.
