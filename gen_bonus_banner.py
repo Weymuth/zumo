@@ -12,7 +12,8 @@ Per Bible §24.6b: build bytes, assert, write .tmp, os.replace. Never open(path,
 import os, re, sys
 import lesson_inventory as LI
 
-VERSION = 'v1.4.0'   # the only version home in this file (S108; v1.4.0 S110)
+VERSION = 'v1.4.1'   # the only version home in this file (S108; v1.4.0 S110; v1.4.1 S111 -
+                     # CAP repainted to the §10+ band, S111 repaint)
 
 MARK = {'practice': '&#128296;', 'observation': '&#128269;', 'sabotage': '&#128373;&#65039;'}
 WORD = {'practice': 'Extra Practice', 'observation': 'Observation', 'sabotage': 'Sabotage'}
@@ -47,11 +48,11 @@ BANNER = ('<div id="bonus-challenges">'
 
 # The CAP is the gray div the banner is seated in.  It is family-independent and
 # identical in all 15 bonus blocks.  It lived outside this generator until S87,
-# when L03 was found shipping a `linear-gradient(135deg, #6c757d, #4d5358)` cap
+# when L03 was found shipping a `linear-gradient(135deg, #6f7582, #4d535f)` cap
 # with 12px padding and a 40px top margin -- which passed gate 30 for its whole
-# life because the check was a SUBSTRING test for '#6c757d', and a gradient
-# containing #6c757d satisfies it.  Generated and byte-gated from here on.
-CAP = ('<div style="background-color: #6c757d; color: white; padding: 13px 18px; '
+# life because the check was a SUBSTRING test for '#6f7582', and a gradient
+# containing #6f7582 satisfies it.  Generated and byte-gated from here on.
+CAP = ('<div style="background-color: #6f7582; color: white; padding: 13px 18px; '
        'border-radius: 8px 8px 0 0; margin-top: 24px;">')
 
 def banner_for(lg):

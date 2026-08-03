@@ -2,7 +2,14 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.39.2'
+VERSION = 'v1.40.0'
+# v1.40.0 (S111): THE REPAINT. BAND_END #6c757d -> #6f7582 and the four PART spine colours
+# moved to the eight-band palette; §27.11's baseline moved twice (the [IMAGE 2.5] retirement,
+# then the icon legend + repaint) and both moves carry their accounting; GEOM_BASELINE keys
+# followed BAND_END automatically because S109 had already made it a constant. THE TRAP:
+# build_palette emits UPPERCASE hexes and every value parsed out of the book is lowercase.
+# The mismatch PASSED §5.1 and failed four other gates, which sent the first diagnosis in the
+# wrong direction. All literals here are lowercase and the repaint was normalised to match.
 # v1.39.2 (S109): BAND_END. The §10+ section band was typed literally in ELEVEN places -
 #   five inline sites plus six GEOM_BASELINE keys - so §5.0.1's ramp could not land as an
 #   edit. Now one name. Refactor asserted BEHAVIOUR-NEUTRAL: gate output byte-identical
@@ -120,7 +127,7 @@ import lesson_inventory as LI          # §20.1 bounding: ONE definition, not a 
 # ---- refactor); it makes the ramp a one-line change and makes the blast radius greppable.
 # ---- DJ's banked ramp, NOT yet applied: Frost #CBD3DE §1-3 · Mist #AFBCCE §4-6 ·
 # ---- Fog #96A8C0 §7/8/8A · Harbor #7E95B4 §9 · Steel #708BAF §10+.
-BAND_END = '#6c757d'                   # §10+ TODAY. The ramp moves this to Steel #708BAF.
+BAND_END = '#6f7582'                   # §10+ band, S111 repaint (was #6c757d)
 
 FAIL = []
 
@@ -887,12 +894,12 @@ gate('§6.8a section fence generated from the anchor spine, adjacent to a seated
 # five banners capping the wrong section, fused to it by border-radius/margin.
 _PEQ = '=' * 21
 _PART_SPEC = {
-    1: ('#3498db', 'Theory &amp; Concepts', 'THEORY & CONCEPTS', '1',
+    1: ('#1f2a3d', 'Theory &amp; Concepts', 'THEORY & CONCEPTS', '1',
         'Sections 1\u20133: Learn the fundamentals'),
-    2: ('#3a7d5c', 'Hardware &amp; Code', 'HARDWARE & CODE', '4',
+    2: ('#433014', 'Hardware &amp; Code', 'HARDWARE & CODE', '4',
         'Sections 4\u20136: Set up and program your robot'),
-    3: ('#c45d76', 'Testing &amp; Challenges', 'TESTING & CHALLENGES', '7', None),
-    4: ('#9b6a9e', 'Challenges', 'CHALLENGES', '9',
+    3: ('#00474b', 'Testing &amp; Challenges', 'TESTING & CHALLENGES', '7', None),
+    4: ('#7a5905', 'Challenges', 'CHALLENGES', '9',
         'Section 9: Apply what you have learned'),
 }
 _ANYPART = re.compile(
@@ -1088,7 +1095,7 @@ for f in files:
     # (b) PLACEMENT, asserted independently of the bytes above.
     #     The cap is compared BYTE-EXACT, not by substring: a
     #     `background: linear-gradient(135deg, #6c757d, #4d5358)` cap CONTAINS
-    #     '#6c757d' and passed the old substring test for its whole life (L03,
+    #     '#6f7582' and passed the old substring test for its whole life (L03,
     #     found S87).  A substring test cannot distinguish flat from gradient.
     cap = s2.rfind('<div', 0, m.start())
     capopen = s2[cap:s2.find('>', cap) + 1]
@@ -1227,24 +1234,24 @@ gate('\u00a74.5a every bonus block is announced by a canonical FINISHED EARLY po
 # ---- `#6c757d`/`#f8f9fa` one per lesson in L12-L16 — uniform constructs that happen to be
 # ---- 5px. Geometry is read through lesson_inventory's parser (§24.10), never a regex here.
 GEOM_BASELINE = {
-    ('01', 5, '#1a5276', '#f8f9fa'): 1,
+    ('01', 5, '#0e1a2c', '#f8f9fa'): 1,
     ('02', 3, '#fbc02d', '#fffde7'): 2,
-    ('02', 5, '#1a5276', '#f8f9fa'): 1,
-    ('03', 5, '#1a5276', '#f8f9fa'): 1,
+    ('02', 5, '#0e1a2c', '#f8f9fa'): 1,
+    ('03', 5, '#0e1a2c', '#f8f9fa'): 1,
     ('03', 5, '#2e86ab', '#f4f9fc'): 1,
     ('03', 5, '#ffc107', '#fff8e1'): 1,
-    ('04', 5, '#1a5276', '#f8f9fa'): 1,
-    ('05', 5, '#1a5276', '#f8f9fa'): 1,
+    ('04', 5, '#0e1a2c', '#f8f9fa'): 1,
+    ('05', 5, '#0e1a2c', '#f8f9fa'): 1,
     ('05', 5, '#607d8b', '#eceff1'): 1,
     ('05', 5, '#ffc107', '#fff8e1'): 1,
-    ('06', 5, '#1a5276', '#f8f9fa'): 1,
+    ('06', 5, '#0e1a2c', '#f8f9fa'): 1,
     ('06', 5, '#c0392b', '#fdecea'): 1,
-    ('07', 5, '#1a5276', '#f8f9fa'): 1,
-    ('08', 5, '#1a5276', '#f8f9fa'): 1,
-    ('09', 5, '#1a5276', '#f8f9fa'): 1,
-    ('10', 5, '#1a5276', '#f8f9fa'): 1,
+    ('07', 5, '#0e1a2c', '#f8f9fa'): 1,
+    ('08', 5, '#0e1a2c', '#f8f9fa'): 1,
+    ('09', 5, '#0e1a2c', '#f8f9fa'): 1,
+    ('10', 5, '#0e1a2c', '#f8f9fa'): 1,
     ('11', 3, '#ccc', None): 1,
-    ('11', 5, '#1a5276', '#f8f9fa'): 1,
+    ('11', 5, '#0e1a2c', '#f8f9fa'): 1,
     ('11', 5, '#27ae60', '#eafaf1'): 6,
     ('11', 5, '#607d8b', '#eceff1'): 7,
     ('11', 5, '#6b8e6b', '#f0f7f0'): 3,
@@ -1259,9 +1266,9 @@ GEOM_BASELINE = {
     ('13', 5, BAND_END, '#f8f9fa'): 1,
     ('14', 5, BAND_END, '#f8f9fa'): 1,
     ('15', 5, '#2e86ab', '#f4f9fc'): 3,
-    ('15', 5, '#3a7d5c', '#eef7f1'): 1,
+    ('15', 5, '#433014', '#eef7f1'): 1,
     ('15', 5, BAND_END, '#f8f9fa'): 1,
-    ('16', 5, '#3a7d5c', '#eef7f1'): 5,
+    ('16', 5, '#433014', '#eef7f1'): 5,
     ('16', 5, BAND_END, '#f8f9fa'): 1,
     ('16', 5, '#ffc107', '#fff8e1'): 1,
 }
@@ -1811,7 +1818,33 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 657, 2403, 'aae201019e74aa86'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 650, 2371, '72d754e71e7743f7'
+#   S111c: THE REPAINT. The §6.5 band system moved to the eight-band palette ruled in
+#   ZUMO_S111_VISUAL_RULING.md - 2,460 elements across the sixteen lessons plus
+#   going_deeper, all 134 gradients flattened per v8.87's absolute ban, and the 87
+#   challenge-card headers to the §9 band. Callouts were NOT touched: 933 callout style
+#   attributes were protected BY DECLARATION STRING, because four of the five old group
+#   hexes are also used by nine callout rules and a hex-level substitution would have
+#   repainted them with no gate noticing. Rule COUNT is unchanged at 650 - a repaint moves
+#   values, not structure - and the digest is the whole finding.
+
+#   S111b: the ICON LEGEND is retired from the ten lessons that carried one (L11-L16
+#   never had it, which is why the construct was already inconsistent). Six rules lost
+#   their last consumer - div-2e86ab-7, div-c-495057, div-d-flex-3, div-dee2e6-6,
+#   h3-c-1a5276, h3-c-2e86ab-2 - carrying 23 declarations. The other TWO of the 25 are
+#   the S105 hazard and were checked rather than assumed: retiring six rules re-ranked
+#   the frequency order, so div-dee2e6-2/-3/-4 and div-2e86ab-6 kept their spelling and
+#   changed their meaning (6->5, 5->4, 5->3, 4->6). Verified SAFE by a different method -
+#   expanding every class back to declarations and diffing per element - where the ten
+#   lessons lose exactly 3 styled elements each, L02 loses 4 and gains 121 (its code
+#   block), L11-L16 are untouched, and ZERO elements gained a styling they did not have.
+#   656 -> 650, 2,396 -> 2,371.
+#   S111: [IMAGE 2.5] retired. L02's completed program became a LIVE CODE BLOCK in the
+#   Quick Reference instead of a screenshot, so the dashed placeholder box lost its last
+#   consumer and `.div-3498db-2` died - 7 declarations, which is exactly the drop.
+#   657 -> 656, 2,403 -> 2,396. A drop of one rule and seven declarations is the shape to
+#   expect when a single-consumer placeholder retires; anything else means a class was
+#   re-spelled and fifteen untouched lessons moved with it (the S105 hazard).
 #   S109: six INSIGHT blocks carrying the canonical magnifier wore five non-canon paints
 #   (L02 x2, L03 x1, L07 x3). Repainted to #e9f7f5/#2da99d. THREE rules died - #dce4f2,
 #   #fff3e0 and #d5e8d4 lost their last consumer - while #f0f7f0 and #d1ecf1 SURVIVED

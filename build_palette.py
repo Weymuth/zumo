@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build_palette.py v1.0 — the ruled palette is DERIVED, never typed.
+"""build_palette.py v1.1 — the ruled palette is DERIVED, never typed.
 
 Entrypoint is build() — not palette(), not main().     (S110)
 
@@ -16,7 +16,15 @@ from the generator the way a hand-typed list would.
 """
 import math, re, sys, os
 
-VERSION = 'v1.0'
+VERSION = 'v1.1'
+
+# Bands whose requested chroma sRGB cannot hold at their ruled lightness. A clip
+# is not a defect - it is a fact about the gamut - but an UNDECLARED one is the
+# fiction CONTROL D exists to catch, so the set is named and any new member fails.
+# Testing asks 25.5 at L* 26 and carries 19.4. Lowering the request to 0.70 makes
+# the numbers agree and moves the band to #004648, which is NOT the hex DJ ruled
+# on; the ruled hex is kept and the clip is recorded instead.
+EXPECTED_CLIPS = ['Testing']
 
 # ---------------------------------------------------------------- canon INPUTS
 # RoboLore Heritage Blue, DJ-stated, Bible §26.4 item 1. These five plus Forge
@@ -36,21 +44,58 @@ FLOOR = 4.5
 
 # ------------------------------------------------------- the ruled transform
 # S110: bands are canon colours re-lit. Six groups out of two hue families means
-# the six separate by LIGHTNESS, not hue — §5.0.1's ramp principle.
-GROUPS = ['Theory & Concepts', 'Hardware & Code', 'Testing',
-          'Troubleshoot', 'Challenges', 'Wrap Up & Reference']
+# the six separate by LIGHTNESS, not hue - §5.0.1's ramp principle.
+#
+# S111 CHANGES, all DJ-ruled from rendered specimens:
+#   1. THE +18 deg WRAP UP ROTATION IS DROPPED. It bought dE76 0.33 against
+#      Theory - re-derived, not quoted - so it was an invented hue paying for
+#      nothing. Wrap Up is Deep Navy re-lit at NEAR-NEUTRAL chroma instead.
+#   2. HERITAGE SLATE BLUE LEAVES THE BAND SET. Deep Navy and Slate Blue are
+#      15.6 deg apart, and at this chroma 15.6 deg is invisible: Theory and
+#      Testing read as one colour at two lightnesses (dE76 8.7, the tightest
+#      pair in the set, and DJ found it by eye). Leave-one-out over all nine
+#      candidates: dropping Slate Blue takes the tightest pair to 18.9,
+#      dropping Theory to 17.5, dropping ANY OTHER band leaves it at 9.4, and
+#      dropping Hardware makes it WORSE at 5.3 - Hardware is the band standing
+#      between them in the ramp. Only removing a navy helps, because the
+#      crowding IS the two navies.
+#   3. TESTING TAKES A NEW TEAL at hue 200, 37 deg clear of anything else.
+#   4. TWO NEW HUES: rose 337 and green 148. Amber was measured and REJECTED -
+#      20.4 deg from WARNING and its band landed dE76 11.6 from Challenges.
+#   5. CHROMA DAMPING 0.62 -> 0.90. This is a deliberate step back from the
+#      S110 sun-faded look and it is not a tweak: 0.62 was what made the
+#      bronzes read as dirt and kept the teal from being teal. It also
+#      IMPROVED separation, tightest pair 15.4 -> 22.2, because damping was
+#      flattening the bands toward each other.
+#   6. CHROMA IS NOW PER BAND. Rose and green stay at 0.62 - they are accents
+#      with no section assigned yet, deliberately quieter than the wayfinding
+#      bands. Challenge goes to 1.20, the most brass available: real Warm
+#      Brass is L* 69 and white on it is 2.34, so a band carrying white cap
+#      text CANNOT be brass. 1.20 is also the gamut ceiling - see CONTROL H.
+GROUPS = ['Theory & Concepts', 'Hardware & Code', 'Testing', 'Troubleshoot',
+          'Rose', 'Challenges', 'Green', 'Wrap Up & Reference']
+# (name, source hex, hue override or None). Rose and Green name COLOURS, not
+# section groups: what they label is UNRULED as of S111 and must be decided
+# before either can appear on a page.
 SOURCE = {
-    'Theory & Concepts':   ('Deep Navy',        CANON['Deep Navy']),
-    'Hardware & Code':     ('Antique Bronze',   CANON['Antique Bronze']),
-    'Testing':             ('Slate Blue',       CANON['Slate Blue']),
-    'Troubleshoot':        ('Forge Red',        FORGE_RED),
-    'Challenges':          ('Warm Brass',       CANON['Warm Brass']),
-    'Wrap Up & Reference': ('Deep Navy +18\u00b0', CANON['Deep Navy']),
+    'Theory & Concepts':   ('Deep Navy',      CANON['Deep Navy'],      None),
+    'Hardware & Code':     ('Antique Bronze', CANON['Antique Bronze'], None),
+    'Testing':             ('Teal 200',       CANON['Slate Blue'],     200.0),
+    'Troubleshoot':        ('Forge Red',      FORGE_RED,               None),
+    'Rose':                ('Rose 337',       FORGE_RED,               337.0),
+    'Challenges':          ('Warm Brass',     CANON['Warm Brass'],     None),
+    'Green':               ('Hunter Green',   CANON['Slate Blue'],     148.0),
+    'Wrap Up & Reference': ('Deep Navy',      CANON['Deep Navy'],      None),
 }
-BAND_L0, BAND_STEP, BAND_CX = 35.0, 4.6, 0.62
+BAND_L0, BAND_STEP, BAND_CX = 33.0, 4.6, 0.90
+BAND_CX_PER = {'Rose': 0.62, 'Green': 0.62, 'Challenges': 1.20}
+WRAP_NEUTRAL_C = 8.0           # Wrap Up closes the book; it is not a third navy
 TINT_L, TINT_CX = 93.5, 0.32
 TEXT_L, TEXT_CX = 31.0, 0.80
-WRAP_HUE_SHIFT = 18.0          # keeps Wrap Up off Theory; see ruling §3
+# A hue override needs a chroma to ride on, so an override borrows its source's
+# chroma and lightness and keeps only the hue. Stated because reading SOURCE
+# alone would suggest Testing is still Slate Blue, and it is not.
+SRC_L, SRC_C = 45.0, 35.0      # the neutral source for a hue-override band
 
 PAGE = CANON['Parchment']
 HEADINGS = CANON['Antique Bronze']
@@ -122,19 +167,27 @@ def hue_gap(a, b):
     return min(d, 360 - d)
 
 # --------------------------------------------------------------- THE ENTRYPOINT
-def build(wrap_shift=WRAP_HUE_SHIFT, band_l0=BAND_L0, floor=FLOOR):
-    """Derive the ruled palette. Returns an ordered list of dicts, one per group.
+def build(band_l0=BAND_L0, band_cx=BAND_CX, floor=FLOOR):
+    """Derive the ruled palette. Returns an ordered list of dicts, one per band.
     Parameters exist so the selftest can perturb the transform; production callers
     pass nothing."""
     out = []
+    n = len(GROUPS)
     for i, g in enumerate(GROUPS):
-        label, src = SOURCE[g]
-        L, C, h = rgb_to_lch(hex_to_rgb(src))
-        if g == 'Wrap Up & Reference':
-            h = (h + wrap_shift) % 360
-        chroma = max(6.0, C * BAND_CX)
+        label, src, hue = SOURCE[g]
+        if hue is None:
+            L, C, h = rgb_to_lch(hex_to_rgb(src))
+        else:
+            # THE ROUND TRIP IS LOAD-BEARING, not tidiness. Asking for C=35 at
+            # L=45 hue 200 is out of sRGB, so the honest source chroma is
+            # whatever survives the trip through a real colour. Reading SRC_C
+            # straight moved Testing #00474B -> #00494D and Green ...55 -> ...56
+            # against the specimen DJ ruled on - a palette he never saw (S111).
+            L, C, h = rgb_to_lch(hex_to_rgb(rgb_to_hex(lch_to_rgb(SRC_L, SRC_C, hue))))
+        cx = BAND_CX_PER.get(g, band_cx)
+        chroma = WRAP_NEUTRAL_C if g == 'Wrap Up & Reference' else max(6.0, C * cx)
         band = None
-        target = band_l0 + (i - 2.5) * BAND_STEP
+        target = band_l0 + (i - (n - 1) / 2.0) * BAND_STEP
         for step in range(600):                      # darken until the floor is met
             cand = lch_to_rgb(target - step * 0.25, chroma, h)
             if contrast(cand, hex_to_rgb(CAP_TEXT)) >= floor:
@@ -142,19 +195,24 @@ def build(wrap_shift=WRAP_HUE_SHIFT, band_l0=BAND_L0, floor=FLOOR):
                 break
         if band is None:
             raise AssertionError('no band clears the floor for %s' % g)
-        tint = lch_to_rgb(TINT_L, max(3.0, C * BAND_CX * TINT_CX), h)
+        tint = lch_to_rgb(TINT_L, max(3.0, C * cx * TINT_CX), h)
         text = None
         for step in range(600):
-            cand = lch_to_rgb(TEXT_L - step * 0.25, max(7.0, C * BAND_CX * TEXT_CX), h)
+            cand = lch_to_rgb(TEXT_L - step * 0.25, max(7.0, C * cx * TEXT_CX), h)
             if contrast(cand, tint) >= floor:
                 text = cand
                 break
         if text is None:
             raise AssertionError('no callout text clears the floor for %s' % g)
+        # A REQUESTED chroma sRGB cannot hold is a FICTION, not a setting (S111).
+        # Challenge was pushed to 1.35 and 1.50 and both landed on the same colour
+        # as 1.20; the number in the file would have described nothing. Record what
+        # the band ACTUALLY carries so CONTROL H can compare the two.
         out.append(dict(group=g, source=label, band=rgb_to_hex(band),
                         tint=rgb_to_hex(tint), text=rgb_to_hex(text),
                         cap_contrast=contrast(band, hex_to_rgb(CAP_TEXT)),
-                        text_contrast=contrast(text, tint)))
+                        text_contrast=contrast(text, tint),
+                        chroma_asked=chroma, chroma_got=rgb_to_lch(band)[1]))
     return out
 
 
@@ -216,7 +274,7 @@ def emit_css(pal):
     return '\n'.join(lines)
 
 # ------------------------------------------------------------------- the check
-RULING = 'ZUMO_S110_VISUAL_RULING.md'
+RULING = 'ZUMO_S111_VISUAL_RULING.md'   # S110's is SUPERSEDED, kept as record
 
 def check(path=RULING):
     """Re-derive and compare against the table published in the ruling document.
@@ -277,30 +335,47 @@ def selftest():
            n_hard == 6 and n_ruled == 0,
            'at 12:1 %d of 6 move, at the ruled 4.5 the search binds on %d' % (n_hard, n_ruled))
 
-    print('CONTROL D (the shift is LIVE, not a dead constant): zeroing WRAP_HUE_SHIFT')
-    print('  must change the Wrap Up BAND HEX. Tested on the hex, not on band')
-    print('  separation - separation here is carried by LIGHTNESS, so it barely moves')
-    print('  when the hue does, and testing it would have passed a dead constant.')
-    z = build(wrap_shift=0.0)
-    a_rgb, z_rgb = hex_to_rgb(strict[5]['band']), hex_to_rgb(z[5]['band'])
-    t_rgb = hex_to_rgb(strict[0]['band'])
-    report('zeroing the shift changes the Wrap Up band',
-           strict[5]['band'] != z[5]['band'],
-           '%s -> %s' % (strict[5]['band'], z[5]['band']))
-    print('        what the shift BUYS, measured: Theory-vs-WrapUp \u0394E76 %.1f with it,'
-          % de76(t_rgb, a_rgb))
-    print('        %.1f without. Separation is carried by lightness, not by this hue.'
-          % de76(t_rgb, z_rgb))
+    print('CONTROL D (a REQUESTED chroma sRGB cannot hold is a fiction): every')
+    print('  band must ACTUALLY carry the chroma the transform asked for. This')
+    print('  replaces S110\'s +18 deg control, which tested a constant that no')
+    print('  longer exists. It is live: Challenge at 1.35 and 1.50 both land on')
+    print('  the same colour as 1.20, so a larger number in the file would have')
+    print('  described nothing at all.')
+    clipped = sorted(p['group'] for p in strict
+                     if p['chroma_got'] < p['chroma_asked'] - 1.0)
+    report('the clip set is exactly the DECLARED one', clipped == EXPECTED_CLIPS,
+           'clipped %s  declared %s' % (clipped, EXPECTED_CLIPS))
+    over = build(band_cx=2.0)
+    n_over = sum(1 for p in over if p['chroma_got'] < p['chroma_asked'] - 1.0)
+    report('the clip detector FIRES when chroma is pushed out of gamut',
+           n_over > 0, 'at cx 2.0, %d of %d bands clip' % (n_over, len(over)))
 
     print('CONTROL E (the alignment measure can say NO): warm earth, the palette')
     print('  this one replaced, must NOT score as Heritage-aligned')
+    # S111 RE-AIMED. S110 asserted the ruled palette scored 5/6 within 20 deg of a
+    # canon hue. That is no longer the goal and asserting it would gate the ruling
+    # out of existence: three bands are DELIBERATELY non-canon hues (teal 200,
+    # rose 337, green 148), so the set now scores 4 of 8 by construction. What the
+    # control still has to prove is that the measure can say NO - otherwise it is
+    # an assert that cannot fail (S24.8). Both halves are checked.
     warm = ['#844A31', '#6D572A', '#48602B', '#A34A32', '#2E615D', '#824664']
     canon_hues = [rgb_to_lch(hex_to_rgb(v))[2] for k, v in CANON.items() if k != 'Parchment']
     w = sum(1 for b in warm
             if min(hue_gap(rgb_to_lch(hex_to_rgb(b))[2], c) for c in canon_hues) <= 20)
-    r = metrics(strict)['within20']
-    report('warm earth 1/6, ruled palette 5/6', w == 1 and r == 5,
-           'warm %d/6  ruled %d/6' % (w, r))
+    # Forge Red is the SIXTH palette colour (S26.4) and lives in FORGE_RED, not in
+    # CANON, so a reference set built from CANON alone scores Troubleshoot 41.7 deg
+    # off its own source. That was a definition gap in the control, not drift in
+    # the palette - caught here, and worth stating because the same omission would
+    # silently mis-score any future Forge-Red-derived band.
+    ref_hues = canon_hues + [rgb_to_lch(hex_to_rgb(FORGE_RED))[2]]
+    heritage = [p for p in strict if SOURCE[p['group']][2] is None]
+    hk = sum(1 for p in heritage
+             if min(hue_gap(rgb_to_lch(hex_to_rgb(p['band']))[2], c)
+                    for c in ref_hues) <= 20)
+    report('warm earth still scores 1/6, and every Heritage-sourced band is on canon hue',
+           w == 1 and hk == len(heritage),
+           'warm %d/6  heritage-sourced %d/%d  whole set %d/8'
+           % (w, hk, len(heritage), metrics(strict)['within20']))
 
     print('CONTROL F (determinism): a SECOND derivation emits identical bytes')
     report('two runs agree', emit_markdown(build()) == emit_markdown(build()))
@@ -355,7 +430,11 @@ def main():
             for b in bad:
                 print('  ' + b)
             return 1
-        print('%s matches the derivation (6 groups, 18 hexes)' % RULING)
+        # DERIVED, not typed. It shipped reading '6 groups, 18 hexes' against an
+        # eight-band palette - the same stale-label defect S109 found in gate 27.11.
+        _p = build()
+        print('%s matches the derivation (%d bands, %d hexes)'
+              % (RULING, len(_p), len(_p) * 3))
         return 0
     print('build_palette.py %s - the ruled palette, derived from Heritage canon\n' % VERSION)
     print(emit_markdown(pal))

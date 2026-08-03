@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-gen_part_banners.py  v1.1  (S84; v1.1 S110)
+gen_part_banners.py  v1.2  (S84; v1.1 S110; v1.2 S111 — the four PART spine colours
+moved to the eight-band palette ruled in ZUMO_S111_VISUAL_RULING.md)
 
 Bible §6.8 — the PART divider block is GENERATED from the section spine, not maintained.
 
@@ -32,10 +33,10 @@ EN = "\u2013"   # literal en-dash, per the §6.8 Bible snippet
 
 # n -> (color, title-with-entities, UPPERCASE comment title, anchor section)
 PARTS = {
-    1: ("#3498db", f"Theory &amp; Concepts",     "THEORY & CONCEPTS",     "1"),
-    2: ("#3a7d5c", f"Hardware &amp; Code",       "HARDWARE & CODE",       "4"),
-    3: ("#c45d76", f"Testing &amp; Challenges",  "TESTING & CHALLENGES",  "7"),
-    4: ("#9b6a9e", f"Challenges",                "CHALLENGES",            "9"),
+    1: ("#1f2a3d", f"Theory &amp; Concepts",     "THEORY & CONCEPTS",     "1"),
+    2: ("#433014", f"Hardware &amp; Code",       "HARDWARE & CODE",       "4"),
+    3: ("#00474b", f"Testing &amp; Challenges",  "TESTING & CHALLENGES",  "7"),
+    4: ("#7a5905", f"Challenges",                "CHALLENGES",            "9"),
 }
 SUBS = {
     1: f"Sections 1{EN}3: Learn the fundamentals",
