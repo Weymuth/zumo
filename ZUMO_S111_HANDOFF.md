@@ -79,6 +79,27 @@ each failed in a different way that nobody saw:
 | `gen_bonus_banner` | matched the nav pill by an inline-style signature | run by nothing; died on `found 0` |
 | `font_stack_sweep` | value parser truncated a quoted stack | in the ritual, DRY RUN only — a `--write` would have corrupted `book.css` |
 
+**S110 ADDENDUM — the table above was CORRECTED by differential execution.** Reading each
+tool's patterns produced *"five instruments, one cause"*, which is wrong. Running every
+PRE-migration tool against the pre-migration corpus AND against today's separates them:
+
+| tool | old corpus | new corpus | cause |
+|---|---|---|---|
+| `gen_part_banners` | exit 0 | CRASH | the migration |
+| `gen_bonus_banner` | exit 0 | CRASH | the migration |
+| `sweep_option_c` | exit 0 | CRASH | the migration — **already repaired before S110** |
+| `pill_sweep` | `SWEPT` | `*** MIXED ***` | the migration, **by lying, not crashing** |
+| `gate_payload_match` | CRASH | CRASH | **not the migration** — filenames stabilised July 13 |
+| `font_stack_sweep` | exit 0 | exit 0 | **not the migration** — its bug is on `css/book.css`, a NEW artifact |
+
+**Three causes, not one.** And the method has a blind spot worth carrying: keyed on exit
+code it finds 3 of 4, because a tool that degrades to a FALSE REPORT exits 0 in both trees.
+Compare OUTPUT, not status (§24.8).
+
+**How to re-run it:** `git worktree add --detach /tmp/pre <pre-change-sha>`, copy that era's
+`*.py` over a clone of HEAD, run every tool in both trees, diff the output. No grep, no
+regex, no reading a matcher and guessing what it matches.
+
 **The rule this yields:** when a book-wide representation changes, the question is not *"did the
 gates still pass"* — they did, all of them, every session. The question is **which readers of that
 representation were taught about the change**. A tool nothing runs cannot report that it is dead.
