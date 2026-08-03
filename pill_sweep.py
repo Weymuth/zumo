@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-S64 pill sweep — structural converter.  v1.0
+S64 pill sweep — structural converter.  v1.1
 
 Matches an old-style difficulty pill by STRUCTURE (a <span> whose style contains
 the old inline-block signature, whose text is a known tier label, sitting inside a
@@ -8,7 +8,16 @@ challenge block) rather than by an exact style string. L04-L16 carry 9 distinct
 style strings for the same visual pill -- CSS property ORDER drifted between
 lessons -- so an exact-match replace silently matches nothing on most lessons.
 
+S110: the audit's "swept" detector counted the inline string `width: 4px`, which the
+S103 class migration deleted from every lesson. It therefore reported *** MIXED *** on
+15 of 16 lessons - an alarm that fires on everything says nothing, and it had been
+printing in the session-open ritual unread. The detector is now migration-aware: it
+counts the INLINE signature or the CLASS signature, and names which form it found, so
+the next migration is visible instead of silent.
+
 Usage:  python3 pill_sweep.py <lesson_html> <ratings_file>
+        python3 pill_sweep.py --audit lessons/Lesson_*.html
+        python3 pill_sweep.py --selftest
 ratings_file: one line per challenge -> "<cid> <doing> <grasp>"
 Dry-run by default; pass --write to save.
 """
@@ -43,6 +52,27 @@ def split_pill(d, g):
 
 OLD_PILL = re.compile(
     r'<span style="display: inline-block;[^"]*border-radius: 12px;[^"]*"[^>]*>\s*([A-Za-z]+)\s*</span>')
+
+
+INLINE_SIG = 'width: 4px'                 # pre-S103: the skewed spacer, inline
+CLASS_SIG = 'span-ai-stretch'             # post-S103: the split-pill wrapper class
+
+
+def class_token(s, tok):
+    """Whole-token class match. A substring match would count `span-ai-stretch-2`
+    as `span-ai-stretch`; `-` is not a word character, so \b does NOT do this."""
+    return len(re.findall(r'class="[^"]*(?<![-\w])' + re.escape(tok) + r'(?![-\w])', s))
+
+
+def swept_pills(s):
+    """-> (count, form). Counts the split pill in whichever form the corpus carries."""
+    inline = s.count(INLINE_SIG)
+    classed = class_token(s, CLASS_SIG)
+    if inline and classed:
+        return inline + classed, 'both'
+    if classed:
+        return classed, 'class'
+    return inline, ('inline' if inline else 'none')
 
 
 def challenge_blocks(s):
@@ -138,12 +168,13 @@ def audit(paths):
     """Report pill inventory + style-string strata across lessons. Read-only."""
     from collections import Counter
     strata = Counter()
-    print(f"{'file':28s} {'old':>4s} {'new':>4s} {'diff':>5s} {'grasp':>6s}  status")
+    forms = set()
+    print(f"{'file':28s} {'old':>4s} {'new':>4s} {'diff':>5s} {'grasp':>6s} {'form':>7s}  status")
     for p in paths:
         s = open(p).read()
         blocks = challenge_blocks(s)
         old = len([m for m in OLD_PILL.finditer(s) if m.group(1).upper() in TIERS])
-        new = s.count('width: 4px')
+        new, form = swept_pills(s)
         nd = len(re.findall(r'data-difficulty=', s))
         ng = len(re.findall(r'data-grasp=', s))
         for m in OLD_PILL.finditer(s):
@@ -157,13 +188,106 @@ def audit(paths):
             st = "not swept"
         else:
             st = "*** MIXED ***"
-        print(f"{p.split('/')[-1]:28s} {old:4d} {new:4d} {nd:5d} {ng:6d}  {st}")
-    print(f"\ndistinct old-pill style strings still live: {len(strata)}")
+        forms.add(form if blocks else '-')
+        print(f"{p.split('/')[-1]:28s} {old:4d} {new:4d} {nd:5d} {ng:6d} {form:>7s}  {st}")
+    live = {f for f in forms if f != '-'}
+    mixed_form = len(live) > 1 or 'both' in live
+    print(f"\npill form in use: {', '.join(sorted(live)) or 'none'}"
+          + ("   <-- MIGRATION IN PROGRESS, two forms live" if mixed_form else ""))
+    print(f"distinct old-pill style strings still live: {len(strata)}")
     for i, (k, v) in enumerate(strata.most_common(), 1):
         print(f"  [{i}] x{v:3d}  {k[13:110]}")
 
 
+def selftest():
+    """Controls, not re-reads. The failure mode of the S110 detector fix is an alarm
+    that never fires instead of one that always fires, so MIXED is planted and must
+    still be reachable."""
+    import glob, tempfile, os, io, contextlib
+    ok = True
+
+    def rep(label, passed, detail=''):
+        nonlocal ok
+        ok = ok and passed
+        print('   %-5s %s%s' % ('OK' if passed else 'FAIL', label, ('  ' + detail) if detail else ''))
+
+    def run_audit(paths):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            audit(paths)
+        return buf.getvalue()
+
+    def synth(n_old, n_new, form='class'):
+        """A minimal file with n_old unswept and n_new swept challenges."""
+        out = []
+        for i in range(1, n_old + n_new + 1):
+            swept = i > n_old
+            pill = (('<span class="span-ai-stretch"><span></span></span>' if form == 'class'
+                     else '<span style="width: 4px;"></span>') if swept else
+                    '<span style="display: inline-block; padding: 2px; border-radius: 12px;">Easy</span>')
+            out.append('<div id="challenge-%d" data-difficulty="easy"%s>%s</div>'
+                       % (i, ' data-grasp="light"' if swept else '', pill))
+        return '\n'.join(out)
+
+    def write(text):
+        f = tempfile.NamedTemporaryFile('w', suffix='.html', delete=False)
+        f.write(text); f.close(); return f.name
+
+    print('CONTROL A (the fix changed something): the OLD detector must call the live')
+    print('  corpus MIXED and the NEW one must not - otherwise nothing was fixed')
+    live = sorted(glob.glob('lessons/Lesson_*.html'))
+    if not live:
+        rep('corpus present', False, 'no lessons/ found - run from the repo root'); return 1
+    old_style = sum(1 for p in live if open(p).read().count(INLINE_SIG) == 0
+                    and len(challenge_blocks(open(p).read())) > 0)
+    new_out = run_audit(live)
+    rep('old detector would flag 15, new detector flags 0',
+        old_style == 15 and '*** MIXED ***' not in new_out,
+        'stale-signature lessons %d, MIXED lines now %d' % (old_style, new_out.count('MIXED')))
+
+    print('CONTROL B (MIXED is still REACHABLE): a genuinely half-swept file must trip it')
+    t = write(synth(2, 2)); out = run_audit([t]); os.unlink(t)
+    rep('half-swept file reports MIXED', '*** MIXED ***' in out)
+
+    print('CONTROL C (not-swept is still reachable): an all-old file must say so')
+    t = write(synth(3, 0)); out = run_audit([t]); os.unlink(t)
+    rep('all-old file reports not swept', 'not swept' in out)
+
+    print('CONTROL D (both forms detected): inline and class signatures both count')
+    t1 = write(synth(0, 3, 'class')); t2 = write(synth(0, 3, 'inline'))
+    o1, o2 = run_audit([t1]), run_audit([t2]); os.unlink(t1); os.unlink(t2)
+    rep('class form swept', 'SWEPT' in o1 and 'class' in o1)
+    rep('inline form swept', 'SWEPT' in o2 and 'inline' in o2)
+
+    print('CONTROL E (a migration in progress is VISIBLE, not silent)')
+    t = write(synth(0, 2, 'class') + '\n' + synth(0, 2, 'inline').replace('challenge-1', 'challenge-3').replace('challenge-2', 'challenge-4'))
+    out = run_audit([t]); os.unlink(t)
+    rep('two live forms are announced', 'MIGRATION IN PROGRESS' in out)
+
+    print('CONTROL F (whole-token class matching): the counter must not match a longer name')
+    rep('span-ai-stretch-2 is not span-ai-stretch',
+        class_token('<i class="span-ai-stretch-2">', CLASS_SIG) == 0
+        and class_token('<i class="span-ai-stretch">', CLASS_SIG) == 1)
+
+    print('CONTROL G (split_pill is well formed): every tier pair balances its spans')
+    bad = [(d, g) for d in DOING for g in GRASP
+           if split_pill(d, g).count('<span') != split_pill(d, g).count('</span>')]
+    rep('all %d tier pairs balanced' % (len(DOING) * len(GRASP)), not bad, str(bad[:3]))
+
+    print('CONTROL H (challenge_blocks spans the file): blocks are contiguous and ordered')
+    s3 = open(live[2]).read(); b = challenge_blocks(s3)
+    contig = all(b[i][2] == b[i + 1][1] for i in range(len(b) - 1)) and b[-1][2] == len(s3)
+    rep('blocks contiguous, ids ascending',
+        contig and [c for c, _, _ in b] == sorted(c for c, _, _ in b), '%d blocks' % len(b))
+
+    print('\n%s' % ('ALL CONTROLS PASS - MIXED and "not swept" both still reachable.'
+                     if ok else 'CONTROLS FAILED'))
+    return 0 if ok else 1
+
+
 if __name__ == '__main__':
+    if '--selftest' in sys.argv:
+        sys.exit(selftest())
     if '--audit' in sys.argv:
         audit([a for a in sys.argv[1:] if not a.startswith('--')])
         sys.exit(0)
