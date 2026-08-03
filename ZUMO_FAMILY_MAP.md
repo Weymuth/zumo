@@ -62,7 +62,26 @@ has been brought to it (S96). The table below is generated output, not hand-type
 > unrelated gate failing it **still executed** — because where a gate sits in the file is
 > part of the gate.
 
-*Written S94 · rulings completed and generator reconciled S96 · annotated S112 · colour table deleted S112.*
+> **S113 — THE BOOK GAINED A CALLOUT, AND THE BASELINE MOVED WITH IT.** L03's `[IMAGE 3.4]`
+> placeholder — a planned screenshot of the build result — became a real **WHAT YOU SHOULD
+> SEE** callout carrying a §22 terminal block. That is one more callout than the book had, so
+> **WHAT YOU SHOULD SEE 27 → 28** and the total **1048 → 1049**. `build_family_map.py`
+> **v1.3.1 → v1.3.2**.
+>
+> **Controlled before the literal was touched:** the generator was run at the identical
+> version against the pre-edit tree and the post-edit tree, and the ONLY two lines that differ
+> are that family count and the total. The other **29 family counts are byte-identical**, so
+> the delta is the one added block and nothing else.
+>
+> **RECORDED FOR A RULING — the denominator is a FROZEN BASELINE, not a parse of the book.**
+> It is a literal in `build_family_map.py`, which is why the pre-bump run printed `assigned
+> 1049 / 1048` — a line that reads like a count and is not one. Every callout added anywhere
+> in the book from now on fails gate 47 until someone edits that literal. Parsing the true
+> total (`assigned + len(unk)`) and asserting the baseline as its own check is the obvious
+> fix, and it is deliberately NOT taken here: it changes what gate 47 means, and that is DJ's
+> ruling.
+
+*Written S94 · rulings completed and generator reconciled S96 · annotated S112 · colour table deleted S112 · baseline moved S113.*
 
 | Family | blocks | share | status |
 |---|---:|---:|---|

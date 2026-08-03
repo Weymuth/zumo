@@ -2,7 +2,18 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.3.1'
+VERSION = 'v1.3.2'
+# v1.3.2 (S113): baseline 1048 -> 1049. L03's [IMAGE 3.4] placeholder became a real
+#   WHAT YOU SHOULD SEE callout carrying a §22 terminal block, so the book has one more
+#   callout than it did. Control-run against the pre-edit tree with this same version:
+#   the ONLY lines that move are WHAT YOU SHOULD SEE 27 -> 28 and the total; the other
+#   29 family counts are byte-identical, so the delta is the one added block and nothing
+#   else. NOTE FOR DJ: this denominator is a FROZEN BASELINE, not a parse of the book -
+#   the label 'assigned 1049 / 1048' reads like a count and is not one. Every future
+#   callout added anywhere in the book will fail gate 47 until this literal is edited.
+#   Parsing the true total (assigned + len(unk)) and asserting the baseline separately
+#   is the obvious fix and is NOT taken here - it changes what gate 47 means, and that
+#   is DJ's ruling to make.
 # v1.1.3 (S98): version home moved above the docstring changelog (same defect as book_gates;
 #   a plain grep returned v1.0.0). Output asserted byte-identical before and after.
 """build_family_map.py - assigns every callout block to a family.
@@ -193,7 +204,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1048   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1049   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))

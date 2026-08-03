@@ -2,7 +2,9 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.42.1'
+VERSION = 'v1.42.2'
+# v1.42.2 (S113): §27.11 digest baseline moved, deliberately, for one content change.
+#   Rules and declarations did not move; only the digest. See the note at the constant.
 # v1.41.0 (S112): GATE 46, §27.14 - every link and every id resolves. 1,237 links and 705
 # ids across twenty pages had NO gate at all. Control-run on four shapes: dead in-page
 # anchor, duplicate id, missing file, dead cross-page fragment - each named individually,
@@ -1826,7 +1828,13 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, '8751935027bed6d1'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, 'ebf5f2035124ccd6'
+#   S113: digest ONLY. 646 rules and 2,367 declarations are UNCHANGED - not one rule was
+#   added, removed or altered. L03's [IMAGE 3.4] placeholder became a WHAT YOU SHOULD SEE
+#   callout, so five usage counts moved (span 831->832, div 728->729, pre 279->280,
+#   .p-mb-0 337->338, .callout-17a2b8-bg-d1ecf1 30->31, .div-2196f3 10->9) and three rules
+#   changed POSITION, because build_css orders by usage count. Diffed in full before the
+#   baseline was touched: those counts and those positions are the whole delta.
 #   S111c: THE REPAINT. The §6.5 band system moved to the eight-band palette ruled in
 #   ZUMO_S111_VISUAL_RULING.md - 2,460 elements across the sixteen lessons plus
 #   going_deeper, all 134 gradients flattened per v8.87's absolute ban, and the 87
