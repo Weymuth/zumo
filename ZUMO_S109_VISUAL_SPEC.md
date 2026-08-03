@@ -3,6 +3,13 @@
 **Session 109. Ruled in conversation, nothing applied. This document exists so the decisions
 survive the session.**
 
+> **⚠️ SUPERSEDED IN PART, S110 — see `ZUMO_S110_VISUAL_RULING.md`.** §2's warm-earth
+> palette table is replaced: DJ ruled a sun-faded palette whose bands come from Heritage
+> canon. Warm earth measured **1 of 6 bands within 20° of a canon hue**; the replacement
+> measures 5 of 6. **Everything else in this document stands** — colour is not a code, the
+> six groups, the rail, the `<details>` mechanism, the numbers-off-the-nav ruling, the
+> measured cost, and all six open items in §4. Annotated, not rewritten, per §26.7.
+
 Written per §24.13, canonized earlier in this same session: a set that lives only in prose is not
 recorded. Six linked decisions were made here and every one of them existed only in chat until
 this file. Every hex below was contrast-checked in code, not chosen by eye.
