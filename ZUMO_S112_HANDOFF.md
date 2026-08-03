@@ -35,7 +35,7 @@
 
 # STATE
 
-Fresh-clone verified at **`893b8b6`**. Census **40,013**.
+Fresh-clone verified at **`4558257`**. Census **40,013**.
 Bible **v8.100** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
@@ -53,7 +53,7 @@ Instruments: `book_gates` **v1.41.0** · `lesson_inventory` **v1.2.0** ·
 `build_palette` **v1.1** ·
 `class_sweep` **v1.0** ·
 `font_stack_sweep` **v1.2.0** ·
-`going_deeper` **v01.3.0**.
+`going_deeper` **v01.4.0**.
 
 Lessons: L01 v03.19.0 · L02 v03.11.0 · L03 v03.24.0 · L04 v04.19.0 · L05 v04.19.0 · L06 v04.23.0 · L07 v04.21.0 · L08 v04.19.0 · L09 v05.16.0 · L10 v02.16.0 · L11 v02.17.0 · L12 v01.19.0 · L13 v02.17.0 · L14 v02.21.0 · L15 v02.17.0 · L16 v02.12.0.
 
@@ -164,13 +164,33 @@ fragment planted beside the dead one so the branch runs both ways.
 
 `book_gates` **v1.41.0, 46 gates** · Bible **v8.100** No lesson file changed.
 
+## Going Deeper is on the book's settings
+
+It was the only page in the book with a **dark** design system — and the S111 repaint made that
+worse before it made it better: dropping Theory's `#1f2a3d` on its hero gave **contrast 1.31
+against `--bg` and 1.17 against `--surface`**, so the hero stopped being a distinguishable
+element at all. Its own `--accent #4f8ff7` and `--accent-dim #3a6bc5` sit at hue 282° and 285°,
+both in Deep Navy's family, so the page was blue on blue on blue.
+
+**The conversion was small because the page is well built** — 35 `var()` references reading from
+12 custom properties. All eleven live ones remapped, every value clearing 4.5: `--accent` to the
+§1–3 band 12.88, `--green` to hunter green 4.90, `--yellow` to the §9 brass 5.76, `--orange` to
+Forge Red 8.15, `--text-dim` 5.37. **`--purple` DELETED — it styled nothing.** Four rules
+hard-coded a dark panel outside `:root` and each got a deliberate destination: `code` and `pre`
+to `#1e1e1e` per §22, `th` to the accent with white text (the lessons' table-header pattern),
+`.callout` to Green's tint. Zero dark values remain. **going_deeper v01.3.0 → v01.4.0.**
+
+**NOT DONE, DELIBERATELY:** the page still does NOT link `css/book.css` and keeps its own 47
+rules. Making it share the stylesheet means widening `build_css.SOURCES`, and `strip_inline`'s
+header records what that cost at S105 — **46 of L01's 167 class names kept their spelling and
+changed their meaning**, invisible to gate 41. One page is not worth that. It now carries the
+same VALUES without sharing the FILE.
+
 ---
 
 # S112 QUEUE
 
 ## Ruled, not yet done
-- **Going Deeper is too blue** (DJ, on the repainted page). Its hero took Theory's band and it
-  has no `css/book.css` link, so it carries its own paint.
 - **Callout colours get re-examined** (DJ: *"we will need to look at the callout colors again"*).
   This is the 1,048-block arc v8.87's Scope C deliberately deferred.
 - **`[IMAGE 3.4]` and `[IMAGE 3.6]` → §22 terminal blocks.** 3.6 still needs REAL numbers from a
