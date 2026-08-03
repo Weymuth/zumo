@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.6, S56
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.6.1, S56 (re-pinned S110)
+v1.6.1 (S110) RE-PINNED. The five L01 fingerprints had been stale since S61 and nobody
+could see it, because this gate needs `Lesson_NN_Topic_` filenames and the book stabilised
+on `Lesson_NN.html` - so it did not fail, it CRASHED on the first file and was simply never
+run. Run it with topic-suffixed symlinks. Traced in git: `8ab0c42` set the pinned values and
+`63a9bfb` ("Session 61 - Coaches Callout") changed them, re-rating five headers - c01/c06/c09
+MEDIUM->EASY and c10 HARD->MEDIUM, all four matching their cards. c11 was MISSED by that
+sweep and still read [MEDIUM] against a card reading easy; corrected S110 by DJ ruling
+("C11 is easy"), which also closed a one-character box overhang on that title line.
 v1.6 BOXED-HEADER FINGERPRINTS. v1.5 made boxed instruction headers advisory so a
 self-contained challenge file would not fail the gate for carrying its own working
 instructions. That left a hole: an advisory line could be EDITED and the gate still
@@ -151,17 +159,17 @@ def maker_templates(js):
 # [line_count, md5]. Regenerate deliberately with --update-fp after an intended change.
 BOXED_FP = {
     "1": {
-        "c01": [101, "9a19defc17a54a2c2064885b3c92b8ab"],
+        "c01": [101, "18235f95f23222444948eb03bac1105a"],
         "c02": [33, "08ca58452dffb720dc61f39f47588c22"],
         "c03": [30, "55a68a42210fda651876a117a0714372"],
         "c04": [36, "0a11103c26a3194fbc3b551a41cc7107"],
         "c05": [34, "fb80eeb4ef1218ad5b73f81307df7ccb"],
-        "c06": [42, "3e23bd39ae126185bbd529a80fac16f9"],
+        "c06": [42, "afd96d945f3ee1ed69ee2086f4c82ed8"],
         "c07": [72, "8cc29c06520d2c3014a40216a0d7335a"],
         "c08": [76, "9552ea0166fdcf891238ea9811418188"],
-        "c09": [48, "fed732800ae0f97364bbc2bfac479b56"],
-        "c10": [60, "e72b11b9e0b2c8034e18835baa4f5d27"],
-        "c11": [103, "f66db059cec915d2a20cbb3a33416c18"],
+        "c09": [48, "fdff4a941ccde2251078b9a28d0d1dfe"],
+        "c10": [60, "5526d7ddde7a0245e4cce25d5ff424d6"],
+        "c11": [103, "a3f567f251f20d0d9acddf2d7088ba4b"],
     },
 }
 

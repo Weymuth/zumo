@@ -36,13 +36,13 @@
 
 # STATE
 
-Fresh-clone verified at **`1f489b1`**. Census **40,025**.
-Bible **v8.98** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.1** ·
+Fresh-clone verified at **`790d5aa`**. Census **40,025**.
+Bible **v8.98** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
 
 Instruments: `book_gates` **v1.39.2** · `lesson_inventory` **v1.2.0** ·
-`gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.6** ·
+`gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.6.1** ·
 `build_family_map` **v1.1.3** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.0** ·
 `gen_part_banners` **v1.1** · `session_versions` **v1.15** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
@@ -259,3 +259,27 @@ construction (S108).
 | upload | `ZUMO_S111_HANDOFF.md` | this file |
 | upload | `LIVE_ZUMO_TEXTBOOK.md` | **regenerate LAST**, versions EMITTED not typed |
 | **delete** | `ZUMO_S110_HANDOFF.md` | §12.2 — gate 28 enforces exactly one |
+
+
+---
+
+# ADDENDUM — post-close, same session
+
+**`gate_payload_match` had not run since the filenames stabilised.** It needs
+`Lesson_NN_Topic_` and the book settled on `Lesson_NN.html`, so it CRASHED on the first file
+rather than failing. **Run it with topic-suffixed symlinks:**
+
+    for f in lessons/Lesson_*.html; do n=$(basename "$f" .html); ln -s "$PWD/$f" "/tmp/lnk/${n}_topic.html"; done
+    python3 gate_payload_match.py newproject.html /tmp/lnk/Lesson_*.html
+
+First run: **FAIL (5)**, all L01 boxed-header fingerprints, **EXECUTABLE CODE drift 0**.
+Traced in git rather than guessed: `8ab0c42` set the pins; `63a9bfb` *(Session 61 — Coaches
+Callout)* re-rated five headers — c01/c06/c09 `MEDIUM→EASY`, c10 `HARD→MEDIUM` — **all four
+already agreeing with their cards**. **c11 was missed by that sweep**, still reading
+`[MEDIUM]` against a card reading `easy`. DJ ruling: *"C11 is easy."* Corrected; the edit
+also closed a one-character box overhang, so every line in that box now renders at 62.
+Fingerprints re-pinned, provenance written into the tool. **GATE: PASS.**
+
+**Open, needs DJ:** the symlink dance is a workaround. Either the gate learns the stable
+filename, or the ritual carries the symlink step — but a canon gate that cannot start is
+not a gate.
