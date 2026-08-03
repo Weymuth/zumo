@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.19'
+VERSION = 'v1.20'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -282,8 +282,13 @@ _TR = None
 def _ctm(el):
     """Accumulated (dx, dy, sx, sy) from this element and its ancestors.
 
-    Only translate() and scale() are handled - that is what Illustrator emits. A rotate() or a
-    general matrix() would need more, and is reported rather than silently mis-measured.
+    Only translate() and scale() are handled - that is what Illustrator emits.
+
+    S110 CORRECTION: this docstring used to claim a rotate() or matrix() 'is reported rather
+    than silently mis-measured'. It is not reported HERE - _ctm matches both in its regex and
+    then drops them with no branch and no word. The reporting lives in _rotated(), and v1.18
+    wired _rotated() into the TEXT check only. Say what the function does, not what the
+    module does somewhere else.
     """
     import re as _re
     dx = dy = 0.0
@@ -295,7 +300,11 @@ def _ctm(el):
             chain.append(n.get('transform'))
         n = n.getparent()
     for tr in reversed(chain):
-        for fn, args in _re.findall(r'(translate|scale|matrix|rotate)\s*\(([^)]*)\)', tr):
+        # S110: this used to match matrix|rotate and then drop them with no branch, which
+        # is what regex_audit flags - a pattern that captures more than the code handles.
+        # Rotation is handled by _rotated()/_quarter_turns() at the call sites; matching it
+        # here only made the reader think this function knew about it.
+        for fn, args in _re.findall(r'(translate|scale)\s*\(([^)]*)\)', tr):
             v = [float(q) for q in _re.split(r'[,\s]+', args.strip()) if q]
             if fn == 'translate':
                 dx += v[0] * sx
@@ -422,6 +431,33 @@ def _family_kind(stack):
         if n in ('arial', 'helvetica', 'sans-serif', 'verdana', 'tahoma'):
             return 'sans'
     return 'sans'
+
+
+def _quarter_turns(el):
+    """Total rotation as a count of quarter turns, or None if it is not axis-aligned.
+
+    A 90 or 270 turn swaps an element's on-page width and height; a 180 leaves them. That is
+    exactly enough to measure a rotated <image> correctly instead of skipping it, and it is
+    NOT the general rotated-AABB problem, which stays undone. Returns None for any angle off
+    the axes, for matrix() and for skew() - those are still refused rather than guessed at.
+    """
+    import re as _re
+    total = 0.0
+    n = el
+    while n is not None and isinstance(n.tag, str):
+        tf = n.get('transform') or ''
+        if 'matrix' in tf or 'skew' in tf:
+            return None
+        for a in _re.findall(r'rotate\s*\(([^)]*)\)', tf):
+            v = [q for q in _re.split(r'[,\s]+', a.strip()) if q]
+            try:
+                total += float(v[0])
+            except (ValueError, IndexError):
+                return None
+        n = n.getparent()
+    if abs(total % 90.0) > 1e-6:
+        return None
+    return int(round(total / 90.0)) % 4
 
 
 def _rotated(el):
@@ -560,10 +596,31 @@ def audit(path):
         _idx, _idy, _isx, _isy = _ctm(im_el)
         bw = (_f(im_el.get('width')) or 0.0) * _isx     # a scaled group scales the box
         bh = (_f(im_el.get('height')) or 0.0) * _isy
+        # S110: the resolution check below divides the box width by the viewBox width, so a
+        # quarter-turned <image> was measured on the wrong edge. v1.18 guarded <text> against
+        # this and left <image> unguarded; 3 images in the corpus sit under a rotation, and on
+        # the two at 90 degrees the box read 16% too wide, which UNDERSTATES the resolution
+        # ratio by 14% and biases the check toward a false 'under the floor'. Silent today,
+        # which is why it needed measuring rather than waiting for a complaint.
+        if _rotated(im_el):
+            qt = _quarter_turns(im_el)
+            if qt is None:
+                out.append('<image> sits under a rotate()/matrix() this tool cannot represent, '
+                           'so its resolution and aspect were NOT checked (§24.6b: a checker '
+                           'that silently stops checking is worse than one that says so)')
+                continue
+        # The swap belongs to the RESOLUTION check only. That one divides the on-page box
+        # width by the viewBox width, so a quarter turn matters. The ASPECT check below
+        # compares the element's own box against the photo's own aspect - both rotate
+        # together, so swapping there INVERTS a correct comparison. Measured: swapping for
+        # both produced two new false 'letterboxed or distorted' findings on 10-02 and 10-03.
+        pw, ph = bw, bh
+        if _rotated(im_el) and _quarter_turns(im_el) % 2:
+            pw, ph = bh, bw
         vb = (root.get('viewBox') or '').split()
         vbw = float(vb[2]) if len(vb) == 4 else bw
         if bw and bh and vbw:
-            css_box = bw / vbw * DISPLAY_WIDTH_PX      # what the box is in real pixels
+            css_box = pw / vbw * DISPLAY_WIDTH_PX      # on-page width, quarter turns applied
             scale = pic.size[0] / css_box if css_box else 0
             if scale < MIN_PHOTO_SCALE:
                 need = int(MIN_PHOTO_SCALE * css_box)
@@ -996,6 +1053,43 @@ def _selftest():
         print('   FAIL  CONTROL: a real off-centre badge number went silent'); ok = False
     else:
         print('   OK    CONTROL: a real off-centre badge number is still reported')
+
+    # ---- S110: quarter-turned <image> ------------------------------------------------
+    # v1.18 guarded <text> against rotation and left <image> unguarded. The whole-corpus
+    # findings are IDENTICAL before and after this fix, which is also exactly what a DEAD
+    # change produces (§24.8) - so the path is exercised here directly.
+    from lxml import etree as _et
+
+    def _img(tf):
+        x = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">'
+             '<g transform="%s"><image width="100" height="50" x="0" y="0"/></g></svg>' % tf)
+        return _et.fromstring(x.encode()).find('.//{http://www.w3.org/2000/svg}image')
+
+    cases = [('rotate(90)', 1), ('rotate(180)', 2), ('rotate(270)', 3),
+             ('translate(10,10) rotate(90)', 1), ('rotate(45)', None),
+             ('matrix(1,0,0,1,5,5)', None), ('skewX(10)', None)]
+    bad = [(tf, _quarter_turns(_img(tf)), want) for tf, want in cases
+           if _quarter_turns(_img(tf)) != want]
+    if bad:
+        print('   FAIL  CONTROL: _quarter_turns misread %s' % (bad,)); ok = False
+    else:
+        print('   OK    CONTROL: quarter turns read, 45 deg / matrix / skew refused as None')
+
+    # the swap must apply to the RESOLUTION edge and NOT to the aspect comparison -
+    # swapping both inverted a correct check and produced two false findings in the corpus
+    e90 = _img('rotate(90)')
+    w = _f(e90.get('width')); h = _f(e90.get('height'))
+    pw = h if _quarter_turns(e90) % 2 else w
+    if (pw, w / h) != (50.0, 2.0):
+        print('   FAIL  CONTROL: on-page width %s or box aspect %s wrong' % (pw, w / h)); ok = False
+    else:
+        print('   OK    CONTROL: a quarter turn moves the measured EDGE, not the box aspect')
+
+    e0 = _img('translate(5,5)')
+    if _quarter_turns(e0) != 0 or _rotated(e0):
+        print('   FAIL  CONTROL: an unrotated image was treated as rotated'); ok = False
+    else:
+        print('   OK    CONTROL: an unrotated image is untouched by the new path')
 
     print('\n' + ('ALL CONTROLS PASS - silent when clean, loud when broken.'
                   if ok else '*** SELFTEST FAILED ***'))
