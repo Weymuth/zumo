@@ -2,7 +2,7 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.1.3'
+VERSION = 'v1.3'
 # v1.1.3 (S98): version home moved above the docstring changelog (same defect as book_gates;
 #   a plain grep returned v1.0.0). Output asserted byte-identical before and after.
 """build_family_map.py - assigns every callout block to a family.
@@ -94,31 +94,84 @@ RULE=[
  (lambda l,g,s: l.startswith('Header vs Implementation'),                'INSIGHT'),
  (lambda l,g,s: l.startswith('Why Signed Errors Matter'),                'LEARN'),
  (lambda l,g,s: l.startswith('Did Your Robot Wiggle'),                   'CHECKPOINT'),
+ # ===== S112: the 39 blocks that used to be resolved by HEX =====
+ # DJ ruling, from reading every one of them. Each is placed by WHAT IT SAYS.
+ #
+ # The colour table these replace is DELETED below. It had resolved 252 blocks, and it
+ # concealed a real split: thirteen L12 blocks wore one glyph and one green and were THREE
+ # families - eight conceptual payoffs, three byte-count build reports, two observed-
+ # behaviour blocks. S94 had already ruled a byte-count report is STILL GREEN and 16
+ # elsewhere are filed that way; these three read as INSIGHT purely because they shared
+ # paint with their neighbours. The ruling was right, the colour overrode it, and nothing
+ # but reading them would ever have shown it.
+ #
+ # Every prefix below was checked to match EXACTLY ONE block book-wide before being written.
+ # Family comes from CONTENT, so the mark and the colour are both OUTPUTS of the family -
+ # which is the order that survives the emoji-to-mark conversion.
+ # --- KEY TERM  (10) ---
+ (lambda l,g,s,_p='IMU (Inertial Measurement Unit) The chip on ': l.startswith(_p), 'KEY TERM'), # L12:1352
+ (lambda l,g,s,_p='Gyroscope Measures rotation rate - how fast ': l.startswith(_p), 'KEY TERM'), # L12:1353
+ (lambda l,g,s,_p='Bias / Drift The rotation a gyro reports whe': l.startswith(_p), 'KEY TERM'), # L12:1354
+ (lambda l,g,s,_p='Calibration (of a gyro) Measuring the bias b': l.startswith(_p), 'KEY TERM'), # L12:1355
+ (lambda l,g,s,_p='Integration (accumulation) Adding up a rate ': l.startswith(_p), 'KEY TERM'), # L12:1356
+ (lambda l,g,s,_p='Dead reckoning Working out where you are fro': l.startswith(_p), 'KEY TERM'), # L12:1357
+ (lambda l,g,s,_p='Wheel slip The wheel turns but the robot doe': l.startswith(_p), 'KEY TERM'), # L12:1358
+ (lambda l,g,s,_p='Open loop / Closed loop Open: command it and': l.startswith(_p), 'KEY TERM'), # L12:1359
+ (lambda l,g,s,_p='I2C A two-wire bus ( SDA , SCL ) that chips ': l.startswith(_p), 'KEY TERM'), # L12:1360
+ (lambda l,g,s,_p='Fixed-point Storing a fractional value in an': l.startswith(_p), 'KEY TERM'), # L12:1361
+ # --- LEARN  (4) ---
+ (lambda l,g,s,_p="The five data types you'll meet A data type ": l.startswith(_p), 'LEARN'), # L02:691
+ (lambda l,g,s,_p='A bool that outlives one trip through the lo': l.startswith(_p), 'LEARN'), # L04:1301
+ (lambda l,g,s,_p='abs() - throw away the sign, keep the size a': l.startswith(_p), 'LEARN'), # L04:1342
+ (lambda l,g,s,_p='The deadband - a band where the robot does n': l.startswith(_p), 'LEARN'), # L04:1354
+ # --- CHECKPOINT  (5) ---
+ (lambda l,g,s,_p='Setup & Display ☐ Robot power is ON ☐ OLED s': l.startswith(_p), 'CHECKPOINT'), # L03:2494
+ (lambda l,g,s,_p='Serial Monitor ☐ Welcome banner appears the ': l.startswith(_p), 'CHECKPOINT'), # L03:2514
+ (lambda l,g,s,_p='Button Tests ☐ Button A: Each press decrease': l.startswith(_p), 'CHECKPOINT'), # L03:2530
+ (lambda l,g,s,_p='Motor Test (Button B) ☐ Press shows test par': l.startswith(_p), 'CHECKPOINT'), # L03:2548
+ (lambda l,g,s,_p='Motor Behavior ☐ Both motors spin when test ': l.startswith(_p), 'CHECKPOINT'), # L03:2572
+ # --- INSIGHT  (14) ---
+ (lambda l,g,s,_p='The lesson worth keeping. Sometimes the corr': l.startswith(_p), 'INSIGHT'), # L11:205
+ (lambda l,g,s,_p='The function kept its name, its call site, a': l.startswith(_p), 'INSIGHT'), # L11:464
+ (lambda l,g,s,_p='The stopwatch has no readers left. Retire it': l.startswith(_p), 'INSIGHT'), # L11:520
+ (lambda l,g,s,_p='Leaving the state IS the reset. The odometer': l.startswith(_p), 'INSIGHT'), # L11:636
+ (lambda l,g,s,_p='The track did not change. The battery did. O': l.startswith(_p), 'INSIGHT'), # L11:680
+ (lambda l,g,s,_p='This is what arithmetic is FOR. It did not j': l.startswith(_p), 'INSIGHT'), # L11:798
+ (lambda l,g,s,_p='This is the deepest idea in the lesson. You ': l.startswith(_p), 'INSIGHT'), # L12:281
+ (lambda l,g,s,_p='The IMU is the only free sensor on this robo': l.startswith(_p), 'INSIGHT'), # L12:325
+ (lambda l,g,s,_p='You just upgraded every turn in the entire b': l.startswith(_p), 'INSIGHT'), # L12:455
+ (lambda l,g,s,_p='You have written the truth. The robot is sti': l.startswith(_p), 'INSIGHT'), # L12:671
+ (lambda l,g,s,_p='Neither sensor can detect slip. Together, th': l.startswith(_p), 'INSIGHT'), # L12:948
+ (lambda l,g,s,_p='The overflow bug IS the feature. Turn 360° a': l.startswith(_p), 'INSIGHT'), # L12:967
+ (lambda l,g,s,_p='Read that code again and notice what it is d': l.startswith(_p), 'INSIGHT'), # L12:1154
+ (lambda l,g,s,_p='The one sentence to walk out with A sensor c': l.startswith(_p), 'INSIGHT'), # L12:1334
+ # --- STILL GREEN  (3) ---
+ (lambda l,g,s,_p='Build it now. The binary just grew by 800 by': l.startswith(_p), 'STILL GREEN'), # L12:598
+ (lambda l,g,s,_p='Build it. 21,342 → 24,534 bytes. +3,192. Tha': l.startswith(_p), 'STILL GREEN'), # L12:705
+ (lambda l,g,s,_p='And look at the byte count: 20,626 → 20,422.': l.startswith(_p), 'STILL GREEN'), # L12:780
+ # --- WHAT YOU SHOULD SEE  (2) ---
+ (lambda l,g,s,_p='The robot turns 90 degrees. On the slick sur': l.startswith(_p), 'WHAT YOU SHOULD SEE'), # L12:844
+ (lambda l,g,s,_p='Button C on delrin: the square closes. Same ': l.startswith(_p), 'WHAT YOU SHOULD SEE'), # L12:890
+ # --- REAL-WORLD CONNECTION  (1) ---
+ (lambda l,g,s,_p='The Triple Crown. Fastest, champion, AND bes': l.startswith(_p), 'REAL-WORLD CONNECTION'), # L16:1212
 ]
-# glyph+scheme fallback for header-less blocks in already-named families
-GS={('🔑','#e7d4ff','#9b59b6'):'KEY TERM',('🔑','#f3e5f5','#9c27b0'):'KEY TERM',
-('🔑','#f4f9fc','#2e86ab'):'KEY TERM',('🔑','#e2d5e8','#9b6a9e'):'INSIGHT',
-('🔑','#e8f5e9','#3a7d5c'):'KEY TERM',('·','#fff','#2e86ab'):'KEY TERM',
-('','#fff','#2e86ab'):'KEY TERM',('🛑','#fdecea','#e74c3c'):'THE WALL',
-('⚠','#fff8e1','#ffc107'):'WARNING',('🔬','#eceff1','#607d8b'):'GOING DEEPER',
-('📘','#eceff1','#607d8b'):'NOTE',('💾','#eceff1','#607d8b'):'NOTE',
-('📓','#eceff1','#607d8b'):"ENGINEER'S LOG",('✅','#d4edda','#28a745'):'CHECKPOINT',
-('ℹ','#d1ecf1','#17a2b8'):'NOTE',('💡','#f0f7f0','#6b8e6b'):'TIP',
-('🔍','#e9f7f5','#2da99d'):'INSIGHT',('🏆','#d1ecf1','#17a2b8'):'REAL-WORLD CONNECTION',
-('👀','#d1ecf1','#17a2b8'):'WHAT YOU SHOULD SEE',('📖','#e3f2fd','#2196f3'):'LEARN',
-('·','#e3f2fd','#2196f3'):'LEARN',('','#e3f2fd','#2196f3'):'LEARN',
-('🧩','#f8f9fa','#6c757d'):'MYSTERY',('📓','#f8f9fa','#6c757d'):'MYSTERY',
-('📓','#f8f9fa','#1a5276'):"ENGINEER'S LOG",('🎯','#eef4f8','#2e86ab'):'(card header)',
-('·','#eef4f8','#2e86ab'):'(card header)',('','#eef4f8','#2e86ab'):'(card header)',
-('🎯','#e8f3ec','#3a7d5c'):'TRY THIS',('·','#f5eef8','#6c757d'):'THINK ABOUT IT',
-('','#f5eef8','#6c757d'):'THINK ABOUT IT',('🚀','#e8d4c4','#d4a574'):'WHERE THIS GOES',
-('🔮','#ede7e1','#7d6b5e'):'WHERE THIS GOES',('📦','#e3f2ed','#3d8b6e'):"IF YOU'RE STUCK",
-('🔌','#e3f2ed','#3d8b6e'):"IF YOU'RE STUCK",('📦','#e7f1fb','#2e86ab'):"IF YOU'RE STUCK",
-('✅','#eafaf1','#27ae60'):'INSIGHT',('🏆','#eafaf1','#27ae60'):'INSIGHT',
-('🔩','#e8f5e9','#3a7d5c'):'STILL GREEN',('🔧','#e8f5e9','#3a7d5c'):'NOTE',
-('🔨','#eef7f1','#3a7d5c'):'STILL GREEN',('·','#eef7f1','#3a7d5c'):'STILL GREEN',
-('','#eef7f1','#3a7d5c'):'STILL GREEN',('💭','#e8f4f8','#2e86ab'):'INSIGHT',
-('🎯','#e8f4f8','#2e86ab'):'THE GOAL',('🎯','#f8f9fa','#5a6872'):'THE GOAL',
+# The glyph+scheme COLOUR fallback was DELETED at S112. It resolved 252 of 1,048 blocks by
+# HEX, so a quarter of this map moved whenever the book was repainted - and at S111 it did:
+# one block fell out silently and no gate could say so. Its 39 survivors are content rules
+# above; the other 213 are settled by the GLYPH tier, itself a stopgap until the 41
+# generated marks replace the emoji.
+# GLYPH-ONLY fallback for the 213 header-less blocks the content rules do not name.
+# Measured: each of these thirteen glyphs resolves to exactly ONE family across every block
+# that reaches this tier, so the hex was never evidence for them - only corroboration, and
+# corroboration that breaks on repaint is a liability. This tier is a STOPGAP: 41 marks are
+# generated in images/marks/ and none are wired in yet, so when the emoji are replaced the
+# family must already be known from content and the mark must follow from the family.
+GLYPH = {
+    '🔑': 'KEY TERM', '🛑': 'THE WALL', '⚠': 'WARNING',
+    '🔬': 'GOING DEEPER', '📘': 'NOTE', '📖': 'LEARN',
+    '🎯': 'TRY THIS', '👀': 'WHAT YOU SHOULD SEE',
+    '📓': "ENGINEER'S LOG", '🔍': 'INSIGHT',
+    '🔌': "IF YOU'RE STUCK", '💾': 'NOTE', '💡': 'TIP',
 }
 res=collections.Counter(); unk=[]
 for inv in d:
@@ -129,7 +182,7 @@ for inv in d:
         if not f:
             for fn,fam in RULE:
                 if fn(lab,g,(bg,bd)): f=fam; break
-        if not f: f=GS.get((g,bg,bd)) or GS.get((g or '·',bg,bd))
+        if not f: f=GLYPH.get(g)
         if f: res[f]+=1
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")

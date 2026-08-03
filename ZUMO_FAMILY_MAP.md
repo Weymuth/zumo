@@ -8,7 +8,54 @@ clone with no prior step: `assigned 1048 / 1048`, `families 30`, `UNASSIGNED: 0`
 and S96 the document and the generator disagreed — the document was right, and the generator
 has been brought to it (S96). The table below is generated output, not hand-typed.
 
-*Written S94 · rulings completed and generator reconciled S96.*
+> **S112 ANNOTATION — the two claims above are now FALSE and are left in place per §26.7.**
+> The generator is **v1.2**, not v1.1.0, and it reports **`assigned 1047 / 1048`,
+> `UNASSIGNED: 1`**. The orphan is **L15 line 295**, a header-less emphasis block reading
+> *"How long does one pass through your loop actually take?"*
+>
+> **Nothing was re-ruled and no block moved.** The S111 repaint changed that block's accent
+> from `#3a7d5c` to `#433014`, and the block had only ever been assigned because a
+> COLOUR-keyed fallback recognised the old hex. Control-run against the pre-repaint tree
+> `185e086` with the identical generator version: **1048 / 1048**. So the repaint did not
+> break the assignment — it revealed that the assignment was never earned. STILL GREEN is
+> the byte-count-report family, and a rhetorical question is not a byte-count report.
+>
+> **S112 also shrank the surface this can happen on.** A glyph-first tier was added ahead of
+> the colour table: thirteen glyphs each resolve to exactly one family across every block
+> that reached the fallback, so **252 hex-dependent blocks became 39**. Controlled
+> positionally across all 1,048 blocks — **0 changed family**, with a sabotage arm moving
+> 159 to prove the control could fire.
+>
+> **The remaining 39 are the fragile surface and need rulings:** 🏆 splits INSIGHT (13) /
+> REAL-WORLD CONNECTION (1), ✅ splits INSIGHT (6) / CHECKPOINT (5), and 14 glyph-less
+> blocks split KEY TERM (10) / LEARN (4). Ruling those retires the colour table entirely.
+
+> **S112 SECOND PASS — THE COLOUR TABLE IS DELETED.** DJ read all 39 survivors and ruled
+> each by content. `build_family_map.py` **v1.3**.
+>
+> **Five blocks moved, and they were hidden by paint.** Thirteen L12 blocks wore one glyph
+> and one green and were **three families**: eight conceptual payoffs (INSIGHT), **three
+> byte-count build reports** — *"21,342 → 24,534 bytes. +3,192"* — and **two
+> observed-behaviour blocks** — *"Button C on delrin: the square closes."* S94 had already
+> ruled a byte-count report is STILL GREEN, and 16 elsewhere in the book are filed that way.
+> These three read as INSIGHT purely because they shared paint with their neighbours. **The
+> ruling was right; the colour overrode it.** Counts: INSIGHT 60 → **55**, STILL GREEN
+> 16 → **19**, WHAT YOU SHOULD SEE 25 → **27**.
+>
+> Controlled positionally across all 1,048 blocks: **exactly 5 changed, and only those 5.**
+> Every one of the 39 prefixes was verified to match exactly one block book-wide before
+> being written.
+>
+> **Family now comes from CONTENT, so the mark and the colour are both OUTPUTS of the
+> family.** That is the order that survives the emoji-to-mark conversion — 41 marks are
+> generated and none are wired in, so a taxonomy resting on emoji was resting on something
+> already scheduled for replacement. The remaining glyph tier is explicitly a stopgap.
+>
+> **STILL OPEN:** `assigned 1047 / 1048`. The orphan is L15:295, outside the 39 and
+> unruled. Gate 47 cannot be written until it is — a gate written to 1047 would be written
+> to the sweep instead of to the ruling.
+
+*Written S94 · rulings completed and generator reconciled S96 · annotated S112 · colour table deleted S112.*
 
 | Family | blocks | share | status |
 |---|---:|---:|---|
