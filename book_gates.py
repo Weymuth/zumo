@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.43.2'
+VERSION = 'v1.44.1'
 # v1.43.2 (S113): §21 coverage 224 -> 225 and the §27.11 digest moved, both because L03
 #   IMAGE 3.14 was wired in from a supplied photo. Two baselines, one cause.
 # v1.43.1 (S113): §27.11 digest moved a second time, same session, same shape - two more
@@ -178,6 +178,43 @@ def P(f):
     """Label for any of the 17 pages. L() slices lesson filenames and returns
     garbage for going_deeper.html — a gate that names the wrong file is a hazard."""
     return 'going_deeper' if f == 'going_deeper.html' else 'L' + L(f)
+
+
+# §25.2 / §25.10h — ONE definition of "converted to the four exit blocks".
+#
+# S115: this existed as TWO predicates and nothing asserted they agreed. §25.2
+# scoped on the string 'MENTAL KNOWLEDGE CHECK'; §25.10h scoped on the id
+# 'brain-check-01'. Control-run S115, and this is why the gate below exists:
+# mistyping CHECK -> CHEK in ONE lesson dropped it out of §25.2 entirely — no
+# four-block check, no retired-name ban, no checkbox/tag parity — and ALL 47
+# GATES PASSED. Breaking the OTHER predicate failed three gates loudly. §24.8:
+# if a lesson silently left §25.2's scope, that gate looked exactly as it does now.
+#
+# NOTE the word "converted" is overloaded in this file: §27 uses it for the
+# inline-style -> class conversion (see expand_classes above). This is the §25
+# exit-block sense and the two are unrelated.
+#
+# The sets are NAMED, not counted. S114's lesson: a baseline that looks like a
+# count gets read as a count. `converted == 9` cannot say WHICH lesson moved;
+# a set difference can, and it survives the conversion arc without a magic literal.
+BC_EXEMPT = {'14', '16'}                        # DJ ruling S115: L14 competition day,
+                                                # L16 end-of-course — their §10s carry
+                                                # content the four blocks would displace.
+BC_PENDING = {'11', '12', '13', '15'}     # DJ ruling S115: to be converted.
+                                                # Remove a number here in the same edit
+                                                # that converts its lesson, never before.
+
+
+def bc_marks(s):
+    """The two marks of a converted lesson. Returned separately so the gate can
+    report a DISAGREEMENT rather than silently picking one and moving on."""
+    return ('id="brain-check-01"' in s, 'MENTAL KNOWLEDGE CHECK' in s)
+
+
+def is_converted(s):
+    """A lesson is converted only when BOTH marks are present. Half a conversion
+    is not a conversion, and must not buy exemption from the gates."""
+    return all(bc_marks(s))
 
 
 def visible(s):
@@ -559,14 +596,37 @@ if len(footers) > 1:
     bad.append(f'footer skeletons differ: { {k: [L(x) for x in v] for k, v in footers.items()} }')
 gate('§25.6 header/footer identical across all 17', bad)
 
-# ---- §25.2: where a lesson has converted to the four exit blocks, it must conform
 RETIRED = ['STOP &amp; PROCESS', 'Conceptual Understanding',
            'Check Your Understanding', 'Reflection Questions',
            'Explain It in Writing']
+
+# ---- §25.2 COVERAGE: the two conversion marks agree, and the converted SET is the ruled set
+bad = []
+converted_set = set()
+for f in files:
+    anchor, phrase = bc_marks(R[f])
+    if anchor != phrase:
+        have = 'id="brain-check-01"' if anchor else "'MENTAL KNOWLEDGE CHECK'"
+        miss = "'MENTAL KNOWLEDGE CHECK'" if anchor else 'id="brain-check-01"'
+        bad.append(f'{L(f)}: half-converted — carries {have} but not {miss}. '
+                   f'§25.2 and §25.10h would disagree about whether this lesson is in scope.')
+    if anchor and phrase:
+        converted_set.add(L(f))
+expected = {L(f) for f in files} - BC_EXEMPT - BC_PENDING
+if converted_set != expected:
+    for n in sorted(expected - converted_set):
+        bad.append(f'L{n}: expected converted, is not — it left §25 scope silently')
+    for n in sorted(converted_set - expected):
+        where = 'exempt by ruling' if n in BC_EXEMPT else 'listed pending'
+        bad.append(f'L{n}: is converted but is {where} — update BC_EXEMPT/BC_PENDING')
+gate(f'§25.2 conversion marks agree; converted set is the ruled set '
+     f'({len(expected)} converted, {len(BC_PENDING)} pending, {len(BC_EXEMPT)} exempt)', bad)
+
+# ---- §25.2: where a lesson has converted to the four exit blocks, it must conform
 bad = []
 for f in files:
     s2 = R[f]
-    if 'MENTAL KNOWLEDGE CHECK' not in s2:
+    if not is_converted(s2):
         continue                      # not yet converted — §25 does not bind it
     # S91: bound by the id §25.10h canonizes, NOT by the nearest preceding <div>.
     # rfind('<div') was correct only by accident -- it worked because the Brain Check
@@ -1035,8 +1095,10 @@ gate('§12.2 repo root carries exactly one session handoff, numbered for the ses
 bad, converted = [], 0
 for f in files:
     s = R[f]
-    if 'id="brain-check-01"' not in s:
-        continue                     # §25.2 governs converted lessons only; L10-L16 pending
+    # S115: was 'id="brain-check-01"' in s — its OWN predicate, disagreeing with §25.2's.
+    # Both now read is_converted(); coverage is asserted as a named SET one gate above.
+    if not is_converted(s):
+        continue                     # §25.2 governs converted lessons only
     converted += 1
     soup = LI.BeautifulSoup(s, 'html.parser') if hasattr(LI, 'BeautifulSoup') else None
     if soup is None:
@@ -1064,8 +1126,13 @@ for f in files:
             if 'border: 2px solid '+BAND_END not in st:
                 bad.append(f'{L(f)}: brain-check-{i} is not in the gray §10 panel '
                            f'(host style {st[:44]!r})')
-if converted != 9:
-    bad.append(f'COVERAGE: {converted} converted lessons scanned, expected 9')
+# S115: was the literal 9. A count cannot say WHICH lesson moved, and the conversion
+# arc (L10/11/12/13/15) would have required editing this number five times, each edit
+# indistinguishable from disarming the gate. Derived from the ruled sets instead.
+_exp = len({L(f) for f in files} - BC_EXEMPT - BC_PENDING)
+if converted != _exp:
+    bad.append(f'COVERAGE: {converted} converted lessons scanned, expected {_exp} '
+               f'(exempt {sorted(BC_EXEMPT)}, pending {sorted(BC_PENDING)})')
 gate('§25.10h Brain Check 01 seats above §6 at body level; 02-04 sit in the §10 panel', bad)
 
 BONUS_CAP = ('<div style="background-color: '+BAND_END+'; color: white; padding: 13px 18px; '
@@ -1482,12 +1549,16 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 225:                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired in;
+if _seen != 230:                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired in;
+                                      # 225 -> 230 at S115: L10 converted to the four
+                                      # exit blocks. Controlled: the ONLY reference that
+                                      # moved is BrainGear_Incomplete.png 45 -> 50 (four
+                                      # BC caps + the nav column). No other file changed.
                                       # 224 -> 225 at S113: DJ supplied the A-Star board
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 225 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 230 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -1865,7 +1936,14 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, 'cc06f4eac889a1cf'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 645, 2365, '8cde3407129289d7'
+#   S115: 646 -> 645, 2,367 -> 2,365. L10's conversion removed both <h4> ancestors
+#   (Check Your Understanding, Rate Yourself), so one h4 rule lost its last use and
+#   build_css renumbered the survivor. Controlled by SELECTOR, not by the comment
+#   header (which carries usage counts and makes every rule look changed): exactly one
+#   selector gone (.h4-c-4d535f-5, 2 declarations), zero born, zero surviving rules
+#   altered. The -2 declarations IS that rule. Control-run after the move: deleting one
+#   `color: white;` still FAILS this gate.
 #   S113 third move: digest ONLY, 646/2,367 unchanged again. L03 IMAGE 3.14 was wired in
 #   from a supplied photo, so .div-c-666 went 45->46, .div-m-20px0 39->40 and .img-h-auto
 #   25->26, and two rules changed POSITION in the usage-ordered output. Diffed in full

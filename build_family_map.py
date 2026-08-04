@@ -2,7 +2,14 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.3.2'
+VERSION = 'v1.3.3'
+# v1.3.3 (S115): baseline 1049 -> 1053. L10 converted to the four Brain Check exit
+#   blocks, which are four callout wrappers. CONTROLLED BEFORE THE LITERAL MOVED, at an
+#   identical generator version, pre-edit tree against post-edit: exactly ONE family count
+#   changes, BRAIN CHECK 36 -> 40. The other 27 are byte-identical, so the delta is the
+#   four new blocks and nothing else - the total alone would not have proven that.
+#   Still a FROZEN BASELINE, not a count (Bible §24.14). Reading it as a count is the
+#   S114 defect; the printed line says 1053 of 1053 and means 'still the book S115 left'.
 # v1.3.2 (S113): baseline 1048 -> 1049. L03's [IMAGE 3.4] placeholder became a real
 #   WHAT YOU SHOULD SEE callout carrying a §22 terminal block, so the book has one more
 #   callout than it did. Control-run against the pre-edit tree with this same version:
@@ -204,7 +211,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1049   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1053   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))
