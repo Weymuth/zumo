@@ -2,7 +2,11 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.42.2'
+VERSION = 'v1.43.1'
+# v1.43.1 (S113): §27.11 digest moved a second time, same session, same shape - two more
+#   figure placeholders retired. Rules and declarations did not move.
+# v1.43.0 (S113, DJ ruling): gate 28 now checks the handoff's NUMBER, not just that there
+#   is one of it. Filename vs title vs 'paste at top of Session N', all three parsed.
 # v1.42.2 (S113): §27.11 digest baseline moved, deliberately, for one content change.
 #   Rules and declarations did not move; only the digest. See the note at the constant.
 # v1.41.0 (S112): GATE 46, §27.14 - every link and every id resolves. 1,237 links and 705
@@ -990,7 +994,34 @@ if len(_HO) != 1:
 _LM = [g for g in glob.glob('ZUMO_LEARNMODE_*_HANDOFF.md')]
 if _HO and any(h in _LM for h in _HO):
     bad.append('a §19 learner-mode record was counted as a session handoff')
-gate('§12.2 repo root carries exactly one session handoff', bad)
+# S113: THE NUMBER WAS NEVER CHECKED, AND TWO SESSIONS RAN ON A WRONG ONE.
+# The count assert above passes on ANY number - control-run: a file renamed
+# ZUMO_S999_HANDOFF.md is still exactly one file and still PASSED. §24.8: if the answer
+# were the opposite, this gate looked identical. Two real defects lived in that blind spot.
+#   S112 wrote its OUTGOING handoff into the INCOMING handoff's filename, editing
+#   ZUMO_S112_HANDOFF.md in place across three commits (893b8b6 -> 4558257 -> 8ae3857) while
+#   its title stayed 'paste at top of Session 112', so ZUMO_S113_HANDOFF.md never existed.
+#   S113 then inferred the convention from that single defective example and pushed S114's
+#   content as ZUMO_S113_HANDOFF.md. DJ caught it by reading; no instrument could.
+# THE CONVENTION, verified from git history 10/10 across S103-S112: the filename number, the
+# title number and the 'paste at top of Session N' number are ONE number, and it is the
+# session that READS the file. Parsed from the title line, not grepped for a literal, so a
+# reworded title fails loudly instead of silently skipping the check (§24.10).
+if len(_HO) == 1:
+    _hn = int(re.fullmatch(r'ZUMO_S(\d+)_HANDOFF\.md', _HO[0]).group(1))
+    _first = open(_HO[0], encoding='utf-8').readline()
+    _tm = re.search(r'#\s*ZUMO\s*[—-]\s*S(\d+)\s+HANDOFF', _first)
+    _pm = re.search(r'paste at top of Session\s+(\d+)', _first)
+    if not _tm:
+        bad.append(f'{_HO[0]}: first line carries no "# ZUMO - SNN HANDOFF" title to check the'
+                   ' filename against - the shape changed, or the title is missing')
+    elif int(_tm.group(1)) != _hn:
+        bad.append(f'{_HO[0]}: filename says S{_hn} but its title says S{_tm.group(1)} - the'
+                   ' number is the session that READS the file, and the two homes disagree')
+    if _pm and _tm and int(_pm.group(1)) != int(_tm.group(1)):
+        bad.append(f'{_HO[0]}: title says S{_tm.group(1)} but it reads "paste at top of Session'
+                   f' {_pm.group(1)}" - the same line disagrees with itself')
+gate('§12.2 repo root carries exactly one session handoff, numbered for the session that reads it', bad)
 
 # ---- §25.10h Brain Check family placement (v8.71 — NEW, S84 batch 2, DJ ruling)
 # BC01 is a direct child of <body> whose NEXT SIBLING is the banner seating #section-6.
@@ -1828,7 +1859,14 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, 'ebf5f2035124ccd6'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, '544d21bfe8cebbfa'
+#   S113 second move: digest ONLY again, and for the same reason. 646/2,367 unchanged.
+#   L07's [IMAGE 7.13] and L14's [IMAGE 14.2] placeholders were retired, so .div-2196f3
+#   went 9->8 uses and .div-ccc 2->1, and both rules changed POSITION in the usage-ordered
+#   output. Diffed in full against the pushed clone before the baseline moved: those two
+#   counts and those two positions are the whole delta. NOTE: .div-ccc is now down to ONE
+#   use book-wide - it is the image-placeholder box, and when the last placeholder retires
+#   the rule dies on its own. That is expected, not a defect.
 #   S113: digest ONLY. 646 rules and 2,367 declarations are UNCHANGED - not one rule was
 #   added, removed or altered. L03's [IMAGE 3.4] placeholder became a WHAT YOU SHOULD SEE
 #   callout, so five usage counts moved (span 831->832, div 728->729, pre 279->280,

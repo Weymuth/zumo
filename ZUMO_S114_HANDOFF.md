@@ -37,7 +37,7 @@
 
 # ⏰ SEPTEMBER 8 IS UNDER FIVE WEEKS OUT
 
-**16 images outstanding of 142.** S113 cleared two without a camera and refused a third.
+**14 images outstanding of 140.** S113 cleared FOUR without a camera and refused a fifth.
 
 DJ ruled at S113 open: **no more photography for a while.** That is not a blocker on its own —
 two of the eighteen came off the list this session by being written rather than shot — but it
@@ -48,22 +48,30 @@ worth reading as such:
 - **`IMAGE 3.6`** needs REAL numbers from a real TRIM run. Refused at S113 and it should stay
   refused: a fabricated log is the same defect as a fabricated screenshot.
 - **`3.2` and `3.5`** are still the one-floor-rig pair.
-- **The remaining nine** — `4.1`, `4.3`, `7.13`, `12.1`, `13.1`, `13.2`, `14.1`, `14.2`, `16.1`
-  — have never been read one at a time to ask *which of these should be a photo at all.* S113's
-  two clears both came from asking exactly that question. **That audit is the highest-value
-  non-camera image work left**, and it is cheap: read the tag, read the prose around it, decide
-  photo / diagram / live content / delete.
+- **The nine were read one at a time at S113 close, and two of them fell.** `7.13` and `14.2`
+  are retired — see S113 WORK. **The remaining seven each need a ruling and none needs a
+  camera to make the ruling**, only to execute it:
+
+| Tag | What it asks for | Reading |
+|---|---|---|
+| `4.1` | Zumo underside, five sensor windows circled 1–5 | A temporary DIAGRAM already stands in and the row says so. Is the photo still wanted, or does the diagram become the figure? **Cheapest of the seven.** |
+| `4.3` | Finished test surface: poster board, black tape line, white margins | This is GEOMETRY, not appearance — margins and a straight line. A diagram carries it and is reproducible; a photo of one person's poster board is not a spec. |
+| `12.1` | Delrin sheet with a Zumo mid-turn | Genuinely camera. The point is the SURFACE, which is exactly the thing a diagram cannot show. |
+| `13.1` | Rescue space: walled zone, silver strip, victim balls | The RCJ field is published spec geometry. Almost certainly a diagram, and a diagram is legal to redraw where a photo of someone else's field is not. |
+| `13.2` | Preview: servo gripper, modified blade, competition robots with arms | Hardware the school may not own. **Likeliest deletion of the seven** — it previews an upgrade path the course does not teach. |
+| `14.1` | Robots competing at a RoboCup Junior event — *the energy, the excitement* | Decorative, and a sourced event photo carries a rights question the book has no answer for. Delete, or replace with something the course owns. |
+| `16.1` | Showcase day: robots, posters, bracket on the whiteboard | **Cannot exist until the first showcase happens.** It is not outstanding work, it is a future capture. Worth marking as such so it stops reading as a debt. |
 
 ---
 
 # STATE
 
-Fresh-clone verified at **`b4d5559`**. Census **40,019**.
-Bible **v8.101** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
+Fresh-clone verified at **`af9e5b9`**. Census **40,013**.
+Bible **v8.102** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
 
-Instruments: `book_gates` **v1.42.2** · `lesson_inventory` **v1.2.0** ·
+Instruments: `book_gates` **v1.43.1** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
 `build_family_map` **v1.3.2** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.15.1** · `fit_raster_svg` **v1.2** ·
@@ -79,7 +87,7 @@ Instruments: `book_gates` **v1.42.2** · `lesson_inventory` **v1.2.0** ·
 `font_stack_sweep` **v1.2.0** ·
 `going_deeper` **v01.4.1**.
 
-Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.25.0 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.21.1 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.16.1 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.21.1 · L15 v02.17.1 · L16 v02.12.1.
+Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.25.0 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.22.0 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.16.1 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
 
 **47/47 gates.** `--anomalies` silent · family map **1049/1049** · `regex_audit` 0 leads ·
 `build_css --check` current at **646 rules** · 0 dead classes · `color_index --check` clean ·
@@ -184,6 +192,52 @@ moving (`span` 831→832, `div` 728→729, `pre` 279→280, `.p-mb-0` 337→338,
 baseline without re-proving the gate still fires is how a baseline move disarms a gate quietly.
 `book_gates` **v1.42.1 → v1.42.2**, with the delta written at the constant.
 
+## Two more figures retired, and both were duplicates of live content
+
+**`[IMAGE 7.13]` — L07 already draws it, twice.** The tag asks for *"a diagram showing the final
+project structure with all modules."* **GRAPHIC 7.16 is *the eight-file architecture, and which
+file includes which*** and is live in the lesson; **GRAPHIC 7.15 is *the PlatformIO project tree***
+and is live twice. The placeholder sat asking for a third drawing of the same thing. Its row was
+also typed **Photo / screenshot** for something its own description calls a diagram — the same
+internal contradiction as `IMAGE 3.14`'s row, in a different lesson, found the same way.
+
+**`[IMAGE 14.2]` — the list above it already says everything the photo would.** *"A well-organized
+competition kit with labeled compartments"*, sitting immediately below a **twelve-item Competition
+Day Kit list** naming robot, laptop, USB cable, two sets of fresh AAs, charger, screwdrivers,
+electrical tape, spare jumpers, notebook, snacks and tuning documentation. A photograph of a
+tackle box adds nothing to that.
+
+**Both follow S111's `IMAGE 2.5` retirement exactly:** bare tag, `Retired — <why>`, type `—`,
+state ✅. **The state cell caught a trap worth recording:** L14 writes it as the entity `&#9744;`
+where L07 writes the literal `☐`, so a replace written against one lesson's spelling silently
+matches nothing in the other. The assert caught it; a global replace would not have.
+
+Applied, both moderate — a planned figure leaving the page changes what renders, so both §5b
+homes move: **L07 v04.22.0** (from v04.21.1) · **L14 v02.22.0** (from v02.21.1).
+
+**A trap this session hit TWICE, so write it down:** `session_versions._versions_in()` builds its
+dict from every `Name vX.Y` match in the whole file and **the LAST match wins**, so a prose
+sentence written as *"Bible v8.100 → v8.101"* or *"L07 vOLD → vNEW"* silently OVERRIDES
+the emitted STATE block and `--check` reports a disagreement that does not exist in the files.
+Backticks are what save the other mentions — `` `build_family_map` v1.3.1 `` does not match,
+because the backtick breaks the name. **Write the OLD version in parentheses after the new one, or
+wrap the name in backticks.** Both times, `--check` caught it before the push — **and then a third time, on the sentence
+written to warn about it**, because the example named a real lesson and a real old version. The
+example now uses placeholders. An instrument that catches the documentation of its own trap is
+working.
+
+## §27.11's digest moved TWICE this session, both times the safe way
+
+**646 rules and 2,367 declarations never moved.** Not one rule was added, removed or altered in
+either move. `build_css` orders its output by usage count, so retiring a placeholder changes a
+count (`.div-2196f3` 10→9→8, `.div-ccc` 2→1) and that changes a rule's POSITION, and position is
+in the digest. **Diffed in full against the pushed clone before each move, and control-run after
+each:** deleting one `color: white;` still FAILS both times.
+
+**`.div-ccc` is now down to ONE use book-wide.** It is the image-placeholder box. When the last
+placeholder retires, the rule dies on its own — expected, not a defect, and written at the
+constant so nobody diagnoses it as one.
+
 ## A find that is not S113's work but is S113's to report
 
 **GPT Task 2 and Task 4 are not in the repo.** The S112 handoff lists both as *"reviewed
@@ -227,9 +281,15 @@ right number, and it never compares the filename to the title inside the file. *
 and a wrong number both pass, and both did.** This is §24.8 exactly: if the answer were the
 opposite — a handoff numbered for the wrong session — gate 28 would look identical.
 
-**OFFERED, NOT BUILT — a two-line extension to gate 28:** parse `N` out of the filename, parse
-`N` out of the first line's `# ZUMO — SNN HANDOFF`, and fail if they disagree. It is cheap, it is
-a parse rather than a third regex, and it catches both defects above. **DJ's ruling.**
+**BUILT THE SAME SESSION, DJ ruling *"Do it"*.** Gate 28 now parses the number out of the
+filename, out of the `# ZUMO — SNN HANDOFF` title and out of the *"paste at top of Session N"*
+clause, and fails when any two disagree — and fails **loudly rather than skipping** if the title
+shape is gone, because a check that silently opts out of itself is the §24.8 failure again.
+**Control-run four ways, and two of the four are the real defects above, not synthetic ones:**
+file S113 / title S114 FAILED naming both numbers · title lagging the filename (S112's actual
+shape) FAILED · the title line disagreeing with its own *paste at top of* clause FAILED · the
+title reworded away FAILED naming the missing shape. `book_gates` **v1.42.2 → v1.43.0**, and
+Bible **v8.102** records it at §12.2.
 
 ---
 
@@ -261,6 +321,8 @@ a parse rather than a third regex, and it catches both defects above. **DJ's rul
 - **NOTE per-block pass** (133 blocks, four destinations).
 - **Nav `<details>` carry no `data-reveal`** — §25.12 exists because one untyped `<details>` slipped.
 - **Selftest-coverage gate** — offered, not built.
+- **The seven remaining figure tags** — the table under the SEPTEMBER block. Seven rulings, no
+  camera needed to make any of them.
 
 ## Ruled, not yet done
 - **DELETE `GPT_BRIEF_FORMAT.md`** — moved to Bible §24.15 this session. GitHub Desktop.
