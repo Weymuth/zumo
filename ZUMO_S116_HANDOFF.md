@@ -51,7 +51,7 @@ it is the biggest authoring block between here and September.
 # STATE
 
 Fresh-clone verified at **`f03c93f`**. Census **40,206**.
-Bible **v8.104** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
+Bible **v8.104.1** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -71,6 +71,8 @@ Instruments: `book_gates` **v1.44.1** · `lesson_inventory` **v1.2.0** ·
 `font_stack_sweep` **v1.2.0** ·
 `going_deeper` **v01.4.1**.
 
+Lessons: L01 v03.19.2 · L02 v03.11.2 · L03 v03.28.1 · L04 v04.19.2 · L05 v04.19.2 · L06 v04.23.2 · L07 v04.22.1 · L08 v04.19.2 · L09 v05.16.2 · L10 v02.17.0 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
+
 Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.28.0 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.22.0 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.17.0 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
 
 **48/48 gates.** `--anomalies` silent · family map **1053/1053** · `regex_audit` 0 leads ·
@@ -78,8 +80,8 @@ Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.28.0 · L04 v04.19.1 · L05 v04
 `build_palette --check` matches the ruling · `image_audit --check` current at 14 outstanding
 of 141 · both banner generators green · `gate_payload_match` PASS.
 
-Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.28.0 · L04 v04.19.1 · L05 v04.19.1 ·
-L06 v04.23.1 · L07 v04.22.0 · L08 v04.19.1 · L09 v05.16.1 · **L10 v02.17.0** ·
+Lessons: L01 v03.19.2 · L02 v03.11.2 · L03 v03.28.1 · L04 v04.19.2 · L05 v04.19.2 ·
+L06 v04.23.2 · L07 v04.22.1 · L08 v04.19.2 · L09 v05.16.2 · **L10 v02.17.0** ·
 L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
 
 ---
@@ -118,6 +120,33 @@ lesson converting FAILS naming it; an exempt lesson converting FAILS naming it.
 This is S114's lesson applied one layer up: S114 said a baseline that looks like a count will
 be read as a count. S115 says **a baseline that cannot name its subject should not be a number
 at all.**
+
+---
+
+# S115 SHIPPED IN TWO PUSHES — THE SECOND ONE IS THE LESSON
+
+**PUSH 1 WAS INCOMPLETE AND EVERY MD5 MATCHED.** It carried `css/book.css` and L10 and omitted
+**the nine lessons the regeneration had also rewritten.** The pushed clone came back **47/48**
+with §27.13 failing, where the identical local tree passed 48/48.
+
+**Cause: a class RENAME, which §27 already names as its own case.** L10's four Brain Check
+blocks added ten `<details>`, flipping the usage ranking `build_css` sorts by, so
+`.details-dee2e6` and `.details-dee2e6-2` **swapped names**. Proven a rename and not a restyle
+by asserting declaration-set equality across the swap in both directions.
+
+**The live site sat in a broken intermediate state** — nine lessons naming `-2` against a
+stylesheet where `-2` now meant the other spacing, so every Brain Check reveal in L01–L09
+rendered with the wrong margin and padding. Visible on the page; invisible to a push that
+looked clean.
+
+**THE RULE WAS ALREADY WRITTEN AND WAS NOT FOLLOWED.** Push item 6 says stage into a copy of
+the PUSHED CLONE and run `book_gates` THERE before presenting md5s. The gates were run in the
+staging tree, which passed, and nobody asked **which files the restore→regenerate→apply cycle
+had modified** — the cycle rewrites all sixteen lessons and only the ones it actually changes
+need pushing.
+
+**THE MISSING STEP IS ONE LINE, AND IT IS NOW PUSH ITEM 10: diff the stage against the pushed
+clone and push every file that DIFFERS, not every file you meant to change.**
 
 ---
 
@@ -278,6 +307,11 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 8. **THE NUMBER IN THE FILENAME IS THE SESSION THAT READS IT, NOT THE ONE THAT WROTE IT.**
    This file is `ZUMO_S116_HANDOFF.md` and is titled S116 because **S116 reads it.**
    `session_versions.session_numbers()` now asserts this against the Bible and LIVE.md.
-9. **Never write a real version number as `vOLD → vNEW` in prose.** `_versions_in()` takes the
+9. **AFTER ANY `css/book.css` REGENERATION, DIFF THE STAGE AGAINST THE PUSHED CLONE AND PUSH
+   EVERY FILE THAT DIFFERS.** The restore→regenerate→apply cycle rewrites all sixteen lessons;
+   a class RENAME changes whichever of them used the renamed class, and those files are not
+   the ones you set out to edit. S115 shipped in two pushes for exactly this. **Then re-run
+   `book_gates` in a FRESH CLONE — matching md5s do not prove a complete push.**
+10. **Never write a real version number as `vOLD → vNEW` in prose.** `_versions_in()` takes the
    LAST match in the file, so a prose arrow silently overrides the emitted STATE block. Write
    *"reaches vNEW (from vOLD)"*. Backticks do not shield it.

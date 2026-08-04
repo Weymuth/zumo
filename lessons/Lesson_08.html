@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.19.1 -->
+<!-- Lesson version: v04.19.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -640,31 +640,31 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <p>That is the reading done &mdash; Sections 1 through 5. Before you write a line of <code>followLine()</code>, answer these five <em>from your head</em>: no scrolling back, no editor open. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6-2"><summary class="summary-c-5a6872">1. Your first line-follower turned hard left or hard right and nothing in between. What is that controller called, and what kind of hardware is it actually right for? (&sect;1)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Your first line-follower turned hard left or hard right and nothing in between. What is that controller called, and what kind of hardware is it actually right for? (&sect;1)</summary>
 
 <div class="div-mt-12px"><p><strong>Bang-bang control</strong> &mdash; named for the way the robot bangs back and forth between full-left and full-right. It is the right choice for <strong>binary actuators</strong>: relays, solenoids, on/off switches, things that only have two states anyway. A motor is a <strong>continuous</strong> actuator &mdash; it can run at any speed &mdash; so bang-bang throws away most of the hardware you already own.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6-2"><summary class="summary-c-5a6872">2. Write the proportional formula, and say what each of its three parts means. (&sect;3.1)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Write the proportional formula, and say what each of its three parts means. (&sect;3.1)</summary>
 
 <div class="div-mt-12px"><p><code>correction = Kp &times; error</code>. <strong>error</strong> is position &minus; setpoint, how far off target you are. <strong>Kp</strong> is the proportional gain, how aggressively to correct. <strong>correction</strong> is the adjustment applied to the motor speeds. Typical Kp runs 0.1 to 0.3: too low is sluggish, too high oscillates.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6-2"><summary class="summary-c-5a6872">3. The correction is a single number. Which motor gets it added, and which gets it subtracted &mdash; and which way does the robot then turn? (&sect;3.2)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. The correction is a single number. Which motor gets it added, and which gets it subtracted &mdash; and which way does the robot then turn? (&sect;3.2)</summary>
 
 <div class="div-mt-12px"><p><code>leftSpeed = baseSpeed + correction</code> and <code>rightSpeed = baseSpeed &minus; correction</code>. The left motor gets the plus. With the line to the right of center the error is positive, so the left wheel speeds up and the robot turns <em>right</em> &mdash; toward the line. A robot turns away from its faster wheel.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6-2"><summary class="summary-c-5a6872">4. Why does the error have to be <em>signed</em>, rather than just a distance? (&sect;5.1)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Why does the error have to be <em>signed</em>, rather than just a distance? (&sect;5.1)</summary>
 
 <div class="div-mt-12px"><p>Because one number then carries both facts the robot needs. The size says how much to correct; the sign says which way &mdash; positive means the line is to the right, negative means to the left, zero means centered. Strip the sign and the robot knows it is off the line but not which way to steer.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6-2"><summary class="summary-c-5a6872">5. Both motor speeds are BASE_SPEED plus or minus a correction, so either one can be commanded past the limit. What stops that? (&sect;5.3)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Both motor speeds are BASE_SPEED plus or minus a correction, so either one can be commanded past the limit. What stops that? (&sect;5.3)</summary>
 
 <div class="div-mt-12px"><p><code>constrain()</code> &mdash; <code>leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);</code>. It clamps the result into the legal range before it ever reaches the motors, so a big error cannot command a speed the hardware will not honour.</p></div>
 
@@ -744,7 +744,7 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> starting values live in <a href="#qr-values" class="link-c-2e86ab">⚡ Quick Reference → Typical Values</a> — and the position scale (0&#8211;4000, center 2000) is in <a href="#qr-formula" class="link-c-2e86ab">⚡ Quick Reference → The Formula</a>.</p>
 
-<details data-reveal="solution" class="details-dee2e6">
+<details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotConfig.h (complete file)</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
@@ -833,7 +833,7 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 <p class="p-mb-0"><code class="code-inline-bg-e8e8e8">extern Zumo32U4LineSensors lineSensors;</code> in the header and <code class="code-inline-bg-e8e8e8">Zumo32U4LineSensors lineSensors;</code> in the .cpp look <em>almost identical</em>. The single word <code class="code-inline-bg-e8e8e8">extern</code> is the difference between a promise and a creation. Get it wrong and nothing complains — <em>yet</em>. Step 4's build is where it surfaces.</p>
 </div>
 
-<details data-reveal="solution" class="details-dee2e6">
+<details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.h (complete file)</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
@@ -890,7 +890,7 @@ extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Les
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> spin = opposite wheel signs (Lesson 3). The one-per-pass line is <code class="code-inline-bg-e8e8e8">lineSensors.calibrate();</code> — signatures in <a href="#qr-sensors" class="link-c-2e86ab">⚡ Quick Reference → Line Sensor Functions</a>.</p>
 
-<details data-reveal="solution" class="details-dee2e6">
+<details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.cpp at this step (complete file)</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
@@ -977,7 +977,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> all three read calls, with what they return: <a href="#qr-sensors" class="link-c-2e86ab">⚡ Quick Reference → Line Sensor Functions</a>.</p>
 
-<details data-reveal="solution" class="details-dee2e6">
+<details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with the finished RobotSensors.cpp (complete file)</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
@@ -1068,7 +1068,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the boot report is Lesson 7 choreography — <strong>copy it from your Lesson 7 main</strong> (swap the title to Lesson 8, and show <code class="code-inline-bg-e8e8e8">Kp</code> where the encoder numbers were). Copying your own verified work is engineering. Which functions live where: <a href="#qr-where" class="link-c-2e86ab">⚡ Quick Reference → Where Does Code Go?</a>.</p>
 
-<details data-reveal="solution" class="details-dee2e6">
+<details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked main.cpp at this step (complete file)</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333">#include <span class="tok-ce9178">"RobotConfig.h"</span>
@@ -1203,7 +1203,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the four formula lines: <a href="#qr-formula" class="link-c-2e86ab">⚡ Quick Reference → The Formula</a>. The countdown block is choreography — copy it from Lesson 7's C-button routine.</p>
 
-<details data-reveal="solution" class="details-dee2e6">
+<details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare: followLine() and the new loop() (the rest of the file is exactly as Step 6 built it)</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
@@ -1279,7 +1279,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the elapsed-time idiom is <code class="code-inline-bg-e8e8e8">millis() - gapStartTime &gt; MAX_GAP_TIME</code> — same <code class="code-inline-bg-e8e8e8">millis()</code> pattern as Lesson 6's timers. Who lives where: <a href="#qr-where" class="link-c-2e86ab">⚡ Quick Reference → Where Does Code Go?</a>.</p>
 
-<details data-reveal="solution" class="details-dee2e6">
+<details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare: the full state block, handleGap(), and the finished loop()</summary>
 <div class="div-mt-15px">
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== LINE FOLLOWING STATE =====</span>
