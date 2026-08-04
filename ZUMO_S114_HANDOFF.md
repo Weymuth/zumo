@@ -68,8 +68,8 @@ worth reading as such:
 
 # STATE
 
-Fresh-clone verified at **`5a0eed1`**. Census **40,015**.
-Bible **v8.102** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
+Fresh-clone verified at **`6561e8d`**. Census **40,015**.
+Bible **v8.103** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -219,15 +219,18 @@ homes move: **L07 v04.22.0** (from v04.21.1) · **L14 v02.22.0** (from v02.21.1)
 
 **A trap this session hit TWICE, so write it down:** `session_versions._versions_in()` builds its
 dict from every `Name vX.Y` match in the whole file and **the LAST match wins**, so a prose
-sentence written as *"Bible v8.100 → v8.101"* or *"L07 vOLD → vNEW"* silently OVERRIDES
+sentence written as *"Bible vOLD → vNEW"* or *"L07 vOLD → vNEW"* silently OVERRIDES
 the emitted STATE block and `--check` reports a disagreement that does not exist in the files.
 **As of `session_versions` v1.16.0 backticks no longer save you** — the comparator used to be
 blind to them, which was itself the defect (see below). **Write the OLD version in parentheses
 after the new one:** *"`book_gates` reaches v1.43.2 (from v1.43.1)"*, never *"v1.43.1 →
 v1.43.2"*. Both times, `--check` caught it before the push — **and then a third time, on the sentence
 written to warn about it**, because the example named a real lesson and a real old version. The
-example now uses placeholders. An instrument that catches the documentation of its own trap is
-working.
+example now uses placeholders in **both halves** — the first repair fixed the lesson half and left
+the Bible half naming a real number, so it fired again on the same sentence at S113 close, and
+then once more on the sentence written to describe *that*. Four firings, three of them on this
+paragraph. **The rule is absolute: never write a real version number inside an example, an
+apology, or a description of this trap. Use vOLD and vNEW.**
 
 ## §27.11's digest moved TWICE this session, both times the safe way
 
@@ -292,7 +295,7 @@ shape is gone, because a check that silently opts out of itself is the §24.8 fa
 file S113 / title S114 FAILED naming both numbers · title lagging the filename (S112's actual
 shape) FAILED · the title line disagreeing with its own *paste at top of* clause FAILED · the
 title reworded away FAILED naming the missing shape. `book_gates` reaches **v1.43.0** (from v1.42.2), and
-Bible **v8.102** records it at §12.2.
+recorded at §12.2 in the Bible of the day (v8.102).
 
 ---
 
@@ -303,8 +306,6 @@ Bible **v8.102** records it at §12.2.
   THING. Parsing makes the label honest; the cost is that gate 47 stops noticing an added or
   deleted callout, which needs its own assert. One line either way, and it decides what happens
   every time the book grows.
-- **Write §24.14.** The rule gate 47 already enforces, sitting behind a section number that does
-  not exist.
 - **The `#666` footer colour** — 18 declarations reaching 17 pages, and eight `.p-c-666*` class
   families whose NAMES encode the hex. A book-wide ruling plus a class rename.
 - **16 uppercase-only colours** — house-style inconsistency, no variance, unruled. Lowercasing
@@ -322,6 +323,15 @@ Bible **v8.102** records it at §12.2.
   camera needed to make any of them.
 
 ## Ruled and DONE at S113 close
+- **§24.14 WRITTEN.** The Bible reaches **v8.103** (from v8.102). The rule itself was never missing — gate 47 enforced it,
+  `book_gates.py` carried the reasoning and `ZUMO_FAMILY_MAP.md` recorded the S112 derivation.
+  Only the numbered section was absent: §24 ran 24.13 straight to 24.15. v8.101 logged that as a
+  debt instead of closing it. The section states the ORDER — **family from CONTENT, mark and
+  colour are OUTPUTS** — and records the two things that make it load-bearing: 252 of 1,048 blocks
+  were hex-resolved until S112, and a correct STILL GREEN ruling was **overridden by paint** on
+  three L12 byte-count blocks. It also states plainly that the printed denominator is a **frozen
+  baseline, not a count**, and that moving the literal is legal only after a control run proves the
+  per-family delta. Transcription of an enforced rule; no ruling changed, no lesson changed.
 - **`IMAGE 3.14` — RESOLVED, AND IT ENDED UP THE OPPOSITE OF WHERE IT STARTED: DJ SUPPLIED
   THE PHOTO AND THE FIGURE IS LIVE.** The row's ORIGINAL description was right all along —
   *"Top view of the A-Star 32U4 board"* — and `L03_IMAGE_3-14_astar_board.jpg` is now wired into
