@@ -51,7 +51,9 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.15.1'     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
+VERSION = 'v1.16.0'
+# v1.16.0 (S113): _versions_in strips backticks. See the note in that function - the
+#   comparator was blind to every backtick-wrapped entry, which is most of the STATE block.     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
 # v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
 #   syllabus. v1.11's G excused 'Syllabus' because it is emitted under its FILENAME - true
 #   of --live, false of --handoff, where it appeared under neither name. The exemption
@@ -300,7 +302,15 @@ def _desha(text):
 
 
 def _versions_in(text):
-    return dict(re.findall(r'([A-Za-z_][\w./]*) \*{0,2}(v[\d.]+)', text.replace('**', '')))
+    # S113: BACKTICKS WERE OPAQUE, AND THE STATE BLOCK IS WRITTEN IN BACKTICKS.
+    # The old body stripped '**' and nothing else, so `book_gates` **v1.43.2** never matched -
+    # the name ended at a backtick, not a space. Measured on the live S114 handoff: the
+    # comparator extracted 22 keys from a block naming ~44, and every instrument version in it
+    # was invisible. --check could not have failed on any of them. §24.8: if the answer were
+    # the opposite - a handoff naming book_gates v1.0.0 - this function returned the same dict.
+    # Backticks are now stripped exactly as '**' already was. Nothing else changed.
+    return dict(re.findall(r'([A-Za-z_][\w./]*) \*{0,2}(v[\d.]+)',
+                           text.replace('**', '').replace('`', '')))
 
 
 # Root scripts that carry NO version by design: one-off utilities and surgery tools,

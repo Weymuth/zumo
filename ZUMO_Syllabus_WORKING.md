@@ -1,6 +1,6 @@
 # Robotics — Zumo Autonomous Robot
 ### How This Class Works · Fall Trimester · Mercersburg Academy · Mr. Weymuth
-<!-- ZUMO_Syllabus_WORKING.md v1.0 — S96, Jul 30 2026 -->
+<!-- ZUMO_Syllabus_WORKING.md v1.2 — S113, Aug 3 2026 -->
 
 > **This is a working draft.** Sections marked _[TBD]_ aren't finalized yet. Everything else reflects decisions made as of this planning session. This document will grow into the student-facing syllabus.
 
@@ -304,4 +304,4 @@ Do not start a build with a setup item missing and hope it sorts itself out. Fix
 - Late-milestone penalty amount
 
 ---
-*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.1.1*
+*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.2*

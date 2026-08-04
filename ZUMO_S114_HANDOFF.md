@@ -68,15 +68,15 @@ worth reading as such:
 
 # STATE
 
-Fresh-clone verified at **`5dd35d8`**. Census **40,015**.
+Fresh-clone verified at **`5a0eed1`**. Census **40,015**.
 Bible **v8.102** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
-`ZUMO_Syllabus_WORKING.md` **v1.0**.
+`ZUMO_Syllabus_WORKING.md` **v1.2**.
 
 Instruments: `book_gates` **v1.43.2** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
 `build_family_map` **v1.3.2** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
-`gen_part_banners` **v1.2** · `session_versions` **v1.15.1** · `fit_raster_svg` **v1.2** ·
+`gen_part_banners` **v1.2** · `session_versions` **v1.16.0** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
 `build_css` **v1.2.1** ·
 `image_audit` **v1.1** ·
@@ -122,7 +122,7 @@ someone had deleted a callout, and nobody would have known which.
    **The other 29 family counts are byte-identical.** So the delta is the one added block and
    nothing else — the total alone would not have proven that, which is the v1.1.0 changelog's
    own warning arriving on schedule.
-2. **Literal moved 1048 → 1049**, `build_family_map` v1.3.1 → **v1.3.2**, with the reason and
+2. **Literal moved 1048 → 1049**, `build_family_map` reaches **v1.3.2** (from v1.3.1), with the reason and
    the control written into the file beside it.
 3. **The real fix deliberately NOT taken.** Parsing the true total (`assigned + len(unk)`) and
    asserting the baseline as its own separate check makes the printed line honest and makes gate
@@ -192,7 +192,7 @@ moving (`span` 831→832, `div` 728→729, `pre` 279→280, `.p-mb-0` 337→338,
 **Diffed in full before the baseline was touched, then control-run after:** deleting one
 `color: white;` still FAILS the gate, and the restore is byte-identical by md5. Moving a
 baseline without re-proving the gate still fires is how a baseline move disarms a gate quietly.
-`book_gates` **v1.42.1 → v1.42.2**, with the delta written at the constant.
+`book_gates` reaches **v1.42.2** (from v1.42.1), with the delta written at the constant.
 
 ## Two more figures retired, and both were duplicates of live content
 
@@ -221,9 +221,10 @@ homes move: **L07 v04.22.0** (from v04.21.1) · **L14 v02.22.0** (from v02.21.1)
 dict from every `Name vX.Y` match in the whole file and **the LAST match wins**, so a prose
 sentence written as *"Bible v8.100 → v8.101"* or *"L07 vOLD → vNEW"* silently OVERRIDES
 the emitted STATE block and `--check` reports a disagreement that does not exist in the files.
-Backticks are what save the other mentions — `` `build_family_map` v1.3.1 `` does not match,
-because the backtick breaks the name. **Write the OLD version in parentheses after the new one, or
-wrap the name in backticks.** Both times, `--check` caught it before the push — **and then a third time, on the sentence
+**As of `session_versions` v1.16.0 backticks no longer save you** — the comparator used to be
+blind to them, which was itself the defect (see below). **Write the OLD version in parentheses
+after the new one:** *"`book_gates` reaches v1.43.2 (from v1.43.1)"*, never *"v1.43.1 →
+v1.43.2"*. Both times, `--check` caught it before the push — **and then a third time, on the sentence
 written to warn about it**, because the example named a real lesson and a real old version. The
 example now uses placeholders. An instrument that catches the documentation of its own trap is
 working.
@@ -290,7 +291,7 @@ shape is gone, because a check that silently opts out of itself is the §24.8 fa
 **Control-run four ways, and two of the four are the real defects above, not synthetic ones:**
 file S113 / title S114 FAILED naming both numbers · title lagging the filename (S112's actual
 shape) FAILED · the title line disagreeing with its own *paste at top of* clause FAILED · the
-title reworded away FAILED naming the missing shape. `book_gates` **v1.42.2 → v1.43.0**, and
+title reworded away FAILED naming the missing shape. `book_gates` reaches **v1.43.0** (from v1.42.2), and
 Bible **v8.102** records it at §12.2.
 
 ---
