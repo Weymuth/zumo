@@ -1,19 +1,19 @@
 # Technical Description Paper — [YOUR NAME]
 ### RoboCupJunior Rescue Line · Mercersburg Academy Robotics
 
-> **This document is your engineering notebook AND your competition TDP — they are the same thing.** Do not start a separate paper at the end. Each lesson's Engineer's Log entry drops into the section marked for it. Fill your section the week you finish that lesson; by Lesson 16 the paper is written and you only assemble it and add the Abstract.
+> **This document is your engineering notebook AND your competition TDP — they are the same thing.** Do not start a separate paper at the end. Add each lesson's Engineer's Log entry to the marked section when you finish the lesson. By Lesson 16, the paper is written; you only need to assemble it and add the Abstract.
 >
-> Make **one copy** (File → Make a copy), put your name and the date on every entry, keep it in your own Drive all semester.
+> Make **one copy** (File → Make a copy), add your name and the date to every entry, and keep it in your own Drive all semester.
 >
-> Target 5–10 pages. **No source code** — diagrams and prose only. The TDP is weighted more than the video and the poster combined. Judges reward **graphics, tables, and real measured data** over adjectives — that is what the running tables below are for.
+> Target 5–10 pages. **No source code** — use diagrams and prose. The TDP is weighted more than the video and poster combined. Judges reward **graphics, tables, and measured data** over adjectives; the running tables below give you that evidence.
 
 ---
 
 # PART A — STANDING LOGS
-*Add to these all semester, not just once. They feed the hardest-to-fake TDP sections — and A5 is a graded one on its own.*
+*Add to these all semester. They supply evidence for the hardest-to-fake TDP sections, and A5 is graded on its own.*
 
 ## A1. Hats I Wore
-*You are a team of one, so document the different KINDS of engineering work you did. Add a line whenever you do something new.*
+*You are a team of one. Record each new kind of engineering work you do.*
 
 | Date | What I worked on (mechanical / sensors / code / calibration / documentation) |
 |---|---|
@@ -21,7 +21,7 @@
 | | |
 
 ## A2. Improvement Ideas — one line every lesson
-*End of each lesson, one sentence: what would you improve after today? By Lesson 16 you pick your Showcase enhancement from this list — and every idea already has a reason behind it.*
+*End each lesson with one sentence: what would you improve next? In Lesson 16, choose your Showcase enhancement from this list.*
 
 | Lesson | "After today, I'd improve…" |
 |---|---|
@@ -42,7 +42,7 @@
 | L15 | |
 
 ## A3. Failure Log
-*Every time something breaks, log it. Hiding failures reads as inexperience; documenting them reads as an engineer. This feeds "Lessons Learned."*
+*Log every failure. Record what broke, what you learned, and how you responded. This becomes your “Lessons Learned” evidence.*
 
 | Date | What broke | What I learned / how I fixed it |
 |---|---|---|
@@ -50,7 +50,7 @@
 | | | |
 
 ## A4. Measured Data — fill the cells as you go
-*These are the numbers your robot shows on the OLED. Read them ONCE and they're gone; write them here and they become your charts. Judges love real data.*
+*Record measurements when you take them. A value left on the OLED disappears; a value entered here can become a chart.*
 
 **Calibration (L04)**
 
@@ -68,7 +68,7 @@
 | Commanded 30 cm → measured | |
 | Agree? (Y/N + gap) | |
 
-**Wheel-base verify (L06 / L07)** — *the book gives you 85 mm; check it.* Command four 90° turns and see if the robot faces home. If it doesn't, back-calculate your true wheel-base from the heading error.
+**Wheel-base verify (L06 / L07)** — *the book gives you 85 mm; test it.* Command four 90° turns and check whether the robot faces home. If it does not, use the heading error to calculate your wheel-base.
 
 | | Value |
 |---|---|
@@ -109,9 +109,9 @@
 | Delta | | |
 
 ## A5. Lab Log — every session outside of class
-*This table **is** your Outside Work grade (5%). One row per session: when you came, when you left, what you actually did. Not "worked on robot" — name the thing. A log with 14 specific rows is worth more than a log with 40 vague ones, and it is the only proof you did the hours.*
+*This table **is** your Outside Work grade (5%). Add one row per session with your arrival time, departure time, and the specific task you worked on. “Worked on robot” is too vague.*
 
-*The lab is open Monday–Thursday evenings; free periods count too. Log those the same way.*
+*The lab is open Monday–Thursday evenings; free periods count too. Log both the same way.*
 
 | Date | In | Out | What I worked on |
 |---|---|---|---|
@@ -126,41 +126,41 @@
 
 *Running total of outside hours: ______*
 
-> **Why this is in the TDP and not on a separate sheet.** Judges and graders both ask the same question — *how much of this is yours?* A dated log answers it. It also feeds **Lessons Learned**: the sessions where you got stuck are usually the ones worth writing about, and you will not remember them in Lesson 16 unless you wrote them down here in week two.
+> **Why this belongs in the TDP.** Judges and graders want evidence that the work is yours. A dated log provides it. It also preserves the sessions and failures worth discussing in **Lessons Learned**.
 
 ---
 
 # PART B — THE TDP
-*Each section is filled by the log entry named under it. The prompt itself lives in the lesson — this just tells you where the entry goes.*
+*Each section names the log entry that feeds it. The full prompt remains in the lesson.*
 
 ## Abstract
-*(150–250 words. Write this LAST, in Lesson 16, with everything else in front of you. An abstract written first is a wish; written last it is a summary.)*
+*(150–250 words. Write this LAST in Lesson 16, after the rest of the paper is complete. Then summarize what you actually built, tested, and learned.)*
 
 > _[Lesson 16 — leave blank until the end]_
 
 ---
 
 ## 1. Introduction — Robot & Author
-*This is a solo project. Introduce yourself and the "before" state of the robot. (Your A1 "Hats I Wore" table shows the range of work you did.)*
+*Introduce yourself, the robot, and its starting condition. Use A1 to show the range of work you completed.*
 
 **Feeds from → Engineer's Log #01 (Lesson 1):**
-> The "before" paragraph — what board, what processor, what's on it, what it can do *today*. Dated. You'll write the "after" in L16; the gap between them is your Abstract.
+> Write the dated “before” paragraph: the board, processor, installed hardware, and what the robot can do today. Write the “after” in L16. The difference between them becomes the basis of your Abstract.
 
 > _[L01 entry — do NOT edit later]_
 
 ---
 
 ## 2. Project Planning
-*Your MVP definition, your schedule, and the design tradeoffs you were forced to make.*
+*Define your MVP, show your schedule, and explain the tradeoffs that shaped the project.*
 
 **Feeds from → Log #05 (L5) + #10 (L10):**
 
 **The shared-pin tradeoff (L05):**
-> Five line sensors OR three proximity sensors — pins 20 and 4 are shared. State the constraint, defend your choice. (The most TDP-shaped decision in the course.)
+> Five line sensors OR three proximity sensors — pins 20 and 4 are shared. State the constraint and defend your choice.
 > _[L05 entry]_
 
 **What the obstacle maneuver costs (L10):**
-> Every capability has a price — seconds, distance, risk. Name yours. (Obstacle = 20 points.)
+> Every capability costs time, distance, or risk. Name the cost of yours. (Obstacle = 20 points.)
 > _[L10 entry]_
 
 **My four-week plan / MVP:**
@@ -169,81 +169,81 @@
 ---
 
 ## 3. Hardware
-*A preconfigured Pololu Zumo 32U4. Document what you actually own — judges reward honesty about the platform over pretending you built one.*
+*Document the preconfigured Pololu Zumo 32U4 you actually used. Describe the platform honestly rather than implying that you built it from scratch.*
 
 **Feeds from → Log #02 (L2) + #03 (L3) + #06 (L6):**
 
 **Labeled board figure (L02):**
-> Every sensor and actuator, labeled, one page, no code.
+> Label every sensor and actuator on one page. Include no source code.
 > _[embed your L02 drawing]_
 
 **Your TRIM number and why it exists (L03):**
-> What's physically different between your two motors? The number, and why it isn't zero.
+> Record your TRIM number and explain what is physically different between the two motors.
 > _[L03 entry]_
 
 **COUNTS_PER_CM — derived and verified (L06):**
-> Wheel diameter → circumference → counts/rev → counts/cm. Then: did 30 cm come out 30 cm? (Pull the numbers from table A4.)
+> Show wheel diameter → circumference → counts/rev → counts/cm. Then compare the commanded 30 cm with the measured result from A4.
 > _[L06 entry]_
 
 **Wheel-base — check the book's number (L06/L07):**
-> The book gives 85 mm. You verified it with the four-turn test (table A4). Report your calculated value and why 85 was close but not exact. *A number you checked is evidence; a number you were handed is a guess.*
+> Use the four-turn test in A4 to check the book's 85 mm value. Report your calculated value and explain the difference. *A number you tested is evidence; a number you copied is not.*
 > _[your verification]_
 
 ---
 
 ## 4. Software
-*The 8-file architecture (draw it — NO source dumps) and your innovation: what it does, what it cost in bytes, what you removed to afford it.*
+*Show the 8-file architecture as a diagram, not a source dump. Explain your enhancement, its byte cost, and what you removed to make room for it.*
 
 **Feeds from → Log #07 (L7) + #08 (L8) + #09 (L9) + #13 (L13):**
 
 **Eight-file architecture diagram (L07):**
-> Which file owns what, who calls whom. No source. Highest-value entry in the book.
+> Show which file owns each responsibility and which files call one another. Include no source code.
 > _[embed your L07 diagram]_
 
 **P-control in plain English (L08):**
-> Explain it with no equations first. Then your Kp and how you found it (table A4).
+> Explain P-control without equations first. Then report your Kp and how the A4 tests led you to it.
 > _[L08 entry]_
 
 **State machine diagram (L09):**
-> States as boxes, transitions as labeled arrows, one page.
+> Draw states as boxes and transitions as labeled arrows on one page.
 > _[embed your L09 diagram]_
 
 **How the robot knows (L13):**
-> How it knows it's in the zone / found a victim / is finished. Your false-victim threshold and what happens on either side.
+> Explain how the robot decides that it is in the zone, has found a victim, or is finished. Include your false-victim threshold and the behavior on both sides of it.
 > _[L13 entry]_
 
 **Your enhancement (L16 Showcase):**
-> Chosen from your A2 Improvement Ideas list. What it does, byte cost, what you removed to afford it.
+> Choose one idea from A2. Explain what it does, its byte cost, and what you removed to afford it.
 > _[Lesson 16]_
 
 ---
 
 ## 5. Performance Evaluation
-*Baseline row, enhanced row, same instrument, what the delta means. Explain how test results were analyzed and how they changed the robot. Use your A4 tables — this section is mostly charts.*
+*Compare the baseline and enhanced runs with the same instrument. Explain what the change means and how the results changed the robot. Use A4 data and charts.*
 
 **Feeds from → Log #04 (L4) + #12 (L12) + #15 (L15):**
 
 **Calibration min/max (L04):**
-> The numbers (table A4), what calibration is, and why they change in a different room (RCJ 3.11: venue lighting ≠ home).
+> Report the A4 values, explain what calibration changes, and explain why the values change in another room (RCJ 3.11: venue lighting ≠ home).
 > _[L04 entry]_
 
 **Encoder vs. gyro (L12):**
-> Your carpet-vs-slick table (A4). Which do you trust, and when?
+> Use the A4 carpet-versus-slick results. State which measurement you trust in each condition and why.
 > _[L12 entry]_
 
 **PID tuning bench (L15):**
-> Your four gain sets and their MAE/PEAK/WEAVE (table A4). What you tried, what you kept, when you stopped and why.
+> Present the four gain sets and their MAE, PEAK, and WEAVE scores from A4. Explain what you tried, what you kept, and why you stopped.
 > _[L15 entry — this IS your performance-evaluation method]_
 
 ---
 
 ## 6. Lessons Learned
-*What failed and what the failure taught you. Draw straight from your A3 Failure Log.*
+*Choose failures from A3 and explain what each one taught you.*
 
 **Feeds from → Log #11 (L11) + your A3 log:**
 
 **The battery failure (L11):**
-> A maneuver that worked fresh and failed tired. What replaced it, and why the replacement is immune.
+> Describe a maneuver that worked with a fresh battery and failed with a tired one. Explain what replaced it and why the replacement is immune.
 > _[L11 entry]_
 
 **Other documented failures:**
@@ -252,18 +252,18 @@
 ---
 
 ## 7. Competition Deliverables
-*Rules-mandated. Not optional at a real event.*
+*Include the items required for a real event.*
 
 **Feeds from → Log #14 (L14):**
 
 **LoP procedure + self-test card (L14):**
-> RCJ rule 4.3.7: you must tell the referee your Lack-of-Progress procedure before each scoring run. Write it here.
+> RCJ rule 4.3.7 requires you to tell the referee your Lack-of-Progress procedure before each scoring run. Write that procedure here.
 > _[L14 entry]_
 
 ---
 
 ## 8. Version 2 — If I Built the Next One
-*Two or three improvements, each justified by your own data or failure log. "I'd add a compass because my dead reckoning drifted 4 cm per lap" is engineering. "I'd make it cooler" is not. Pull the best from your A2 Improvement Ideas.*
+*Propose two or three improvements. Support each one with data or a documented failure from A2, A3, Section 5, or Section 6.*
 
 **Feeds from → Log #16 (L16):**
 > _[write in L16, each item citing a number from Part A or Section 5–6]_
@@ -283,4 +283,4 @@
 - [ ] 5–10 pages total
 
 ---
-*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.*
+*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.1 — prose pass applied S113.*
