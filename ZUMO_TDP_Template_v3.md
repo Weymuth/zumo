@@ -109,7 +109,7 @@
 | Delta | | |
 
 ## A5. Lab Log — every session outside of class
-*This table **is** your Outside Work grade (5%). Add one row per session with your arrival time, departure time, and the specific task you worked on. “Worked on robot” is too vague.*
+*This table **is** your Outside Work grade (5%). Add one row per session with your arrival time, departure time, and the specific task you worked on. “Worked on robot” is too vague — name the thing. A log with 14 specific rows is worth more than a log with 40 vague ones, and it is the only proof you did the hours.*
 
 *The lab is open Monday–Thursday evenings; free periods count too. Log both the same way.*
 

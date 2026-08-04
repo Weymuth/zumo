@@ -108,7 +108,7 @@ You keep one document all term; you never submit a new file.
 | **Engineering Notebook / TDP** | 25% | Your running notebook, filled in as you go |
 | **Reading Quizzes** | 20% | Short pre-class quizzes — read before class |
 | **Exit Tickets / Checklists** | 10% | End-of-lesson "can you do this?" self-checks |
-| **Materials** | 5% | Come ready: robot, charged batteries, cord, jumpers |
+| **Materials** | 5% | Come ready: robot, case, charged batteries, programming cable |
 | **Outside Work** | 5% | Logged lab/practice time outside of class |
 
 ---
@@ -120,13 +120,18 @@ Milestones build on each other. A missed one makes the next harder, and the cour
 **If you miss a reading quiz:** retake it before you build that day. You are not locked out of the course — you are asked to read first. Do it in open lab or a free period.
 
 **If you miss a milestone date:** it is not a zero and it is not forgotten.
-1. See Mr. Weymuth **within one class period.** Not next week.
-2. You agree on a catch-up date — normally the next open lab.
-3. You demo. Late milestones are graded on the same rubric, with a late penalty of _[AMOUNT TBD]_.
+1. **See Mr. Weymuth within one class period.** Not next week.
+2. **Name the blocker.** Be specific — unfinished reading, a build that won't compile, a robot problem, missing data, a behavior that still fails. "I'm stuck" is not a blocker; "my robot overshoots every left turn" is.
+3. **Go back to the last thing that worked.** Get that behavior running again before you add the next one. Debugging two problems at once is debugging neither.
+4. **Agree on a catch-up date** — normally the next open lab.
+5. **Come with one named target,** not "work on the robot."
+6. **Demo, and update your notebook the same day.** The catch-up is done when the robot, the code, and the notebook all agree.
 
-**If you are behind by more than one milestone:** stop trying to do both at once. We will pick the one that unblocks the most and get that working first. Three **buffer periods** are built into the term for exactly this — they exist so that falling behind is recoverable, not fatal.
+Late milestones are graded on the same rubric, with a late penalty of _[AMOUNT TBD]_.
 
-**The one thing that does not work** is going quiet. Every problem in this course is smaller the day it happens than the week after.
+**If you are behind by more than one milestone:** stop trying to do both at once. We will pick the one that unblocks the most and get that working first — newer lesson work can wait until the thing underneath it is stable. Three **buffer periods** are built into the term for exactly this; they exist so that falling behind is recoverable, not fatal.
+
+**The one thing that does not work** is going quiet. Every problem in this course is smaller the day it happens than the week after. A problem you report can be scheduled. A problem you hide becomes several problems.
 
 ---
 
@@ -134,15 +139,16 @@ Milestones build on each other. A missed one makes the next harder, and the cour
 
 Every class, bring:
 - Your robot
-- **Charged batteries**
-- Your USB cord
-- Your jumpers
+- Your marked carrying case, with **all four batteries charged**
+- Your USB cable
+
+Coming to class with uncharged batteries means your robot cannot work that period. That is a Materials grade.
 
 ---
 
 ## Batteries — Read This Once, Follow It All Term
 
-Your Zumo runs **four rechargeable NiMH AA cells — Panasonic eneloop.** Every battery number in this course is written for NiMH. Here is what your robot will tell you when you hold **A + B**:
+Your Zumo runs **four rechargeable NiMH AA cells — Eneloop Pro by Panasonic.** Every battery number in this course is written for NiMH. Here is what your robot will tell you when you hold **A + B**:
 
 | Reading | What it means |
 |---|---|
@@ -159,7 +165,7 @@ Your Zumo runs **four rechargeable NiMH AA cells — Panasonic eneloop.** Every 
 
 **About alkalines:** they are allowed, and they are honestly worse for this course. Alkaline is 6.0 V nominal, so a fresh set is slightly faster — but alkaline voltage **slides downhill the whole time you use it,** while NiMH holds a flat plateau and then drops. *The robot you tuned in first period is not the robot you get in seventh.* You will meet this exact physics again in Lesson 11, "Time Lies, Distance Doesn't."
 
-**Charging:** batteries charge _[WHERE TBD]_, and a charge takes _[HOW LONG TBD]_. Charged batteries are part of your Materials grade. Coming to class with a dead robot is coming to class without your robot.
+**Charging:** you charge your own batteries, on your own time, with the BQ-CC17 charger issued in your case. A charge takes _[HOW LONG TBD]_ — plan backwards from that. Charged batteries are part of your Materials grade. Coming to class with a dead robot is coming to class without your robot.
 
 ---
 
@@ -173,33 +179,56 @@ Class time alone won't get you through your milestones — plan on some outside 
 
 **Your robot is yours.** It is numbered and assigned to you. You do not borrow someone else's robot, and you do not lend yours. If a robot is damaged, tell Mr. Weymuth the same day — a damaged robot reported is a repair; a damaged robot discovered is a problem.
 
-**Shared tools go back.** Screwdrivers, tape, chargers, and course tape live in one place and return there before you leave. The last five minutes of every period are cleanup.
+**Your case is yours too.** You are issued one clearly marked Zumo carrying case holding:
 
-**The floor is the test surface.** Robots run on the course, on the floor, or on a bench with a barrier. **Never on an open table edge.** A Zumo at speed cannot stop before a drop — there is no software fix for this, only a physical barrier. This is not a suggestion.
+- One USB-C–to–Micro-USB cable — this is your **programming** cable
+- One Panasonic **BQ-CC17** charger, which plugs into the wall
+- Four **Eneloop Pro by Panasonic** — NiMH AA cells
 
-**Food and drink stay away from robots and laptops.**
+**The cable and the charger do different jobs, and this catches people out.** **The Zumo does not charge over USB.** There is no charging circuit on the board — the USB cable carries your program to the robot and powers the electronics while it is plugged in, and that is all it does. It never puts anything back into the cells. To charge, the batteries come **out** of the robot and go into the BQ-CC17. Leave a Zumo plugged into your laptop overnight and you get four flat cells in the morning, not a charged robot.
+
+Everything issued to you lives in that case. Do not borrow from someone else's case or lend out of yours — a charger that walks off is two students who cannot run next period. Missing and dead equipment gets reported the same day, same rule as the robot.
+
+**You charge your own batteries, on your own time.** Bring all four charged. Class and open lab are for building and testing, not for waiting on a charger.
+
+**Shared tools go back.** Screwdrivers, tape, chargers, and course tape live in one place and return there before you leave. The last five minutes of every period are cleanup — not one more test run.
+
+**The floor is the test surface.** Robots run on the course, on the floor, or on a bench with a barrier. **Never on an open table edge.** A Zumo at speed cannot stop before a drop — there is no software fix for this, only a physical barrier. This is not a suggestion. **Stop the robot before you reach for it**, move it, or put your hands near the wheels.
+
+**Food and drink stay away from robots, batteries, chargers, and laptops.**
 
 **Open lab is a work session, not a hangout.** Sign in, log your time in your notebook, clean up, sign out.
 
-**Leave the room ready for the next person:** robots on the shelf, batteries on the charger, laptops closed, chairs in.
+**Before you leave, every time:**
+- ☐ Robot stopped and powered down
+- ☐ Shared tools and course pieces returned
+- ☐ Cable, charger, and all four batteries back in your case
+- ☐ Case marking checked — it is yours
+- ☐ Work area and course clear — chairs in, laptops closed
+- ☐ Robot back on the shelf
+- ☐ Case goes home with you, so the batteries are charged for next class
 
 ---
 
 ## Whose Code Is It? — Academic Honesty
 
-This is a **solo build.** Every robot on the shelf runs code its owner wrote. That is the whole point — the milestone demo proves *you* can do the thing.
+This is a **solo build.** Every robot on the shelf runs code its owner wrote. That is the whole point — the milestone demo proves *you* can do the thing. It is not silent work, though: engineers ask questions and compare results, and you are expected to do that here.
 
 **Encouraged:**
 - Talking through a problem with another student at the whiteboard
 - Comparing behavior: *"my robot wobbles on left turns, does yours?"*
+- Helping someone read an error message, or decide what to test next
 - Telling someone **where** to look: *"check your TRIM sign"*
 
 **Not allowed:**
-- Copying code from another student's screen, file, or repo — in either direction
+- Copying code from another student's screen, file, message, or repo — in either direction
 - Handing your file to someone "just to look at"
+- Typing the fix on someone else's keyboard
 - Submitting a milestone demo of a robot running code you did not write
 
-**The line:** you may explain *how* something works. You may not supply the *what to type.* If you can explain your own code line by line when asked, you are fine. If you cannot, you are not — regardless of who typed it.
+**The line:** you may explain *how* something works. You may not supply the *what to type.* Help someone find the answer; do not hand them the answer. After the conversation, both of you should be able to walk back to your own machine and write it yourselves.
+
+**The test:** if you can explain your own code line by line when asked, you are fine. If you cannot, you are not — regardless of who typed it.
 
 ### AI Tools
 
@@ -213,6 +242,13 @@ Autocomplete is a different problem from a chatbot: it **inserts code without be
 - `set motorSpeed()` — invented, with a space in the name.
 - `pololu/Zumo32U4@^1.3.0` in `platformio.ini` — wrong version. The correct pin is `pololu/Zumo32U4@2.0.1`. It breaks the build in a way that looks like *your* mistake.
 
+**AI is a tool, not an author.** Use it to explain a concept, translate an error, or help you design a test — not to produce a finished milestone you paste in. You own every line in your project, including the ones something else suggested. Before you keep a suggestion, you must be able to:
+
+- Say what it does
+- Say why it belongs where you put it
+- Test whether it actually works on your robot
+- Repair it or rip it out when it fails
+
 **If AI helped you, say so in your notebook** — one line: what you asked, what you kept, what you threw out. Documenting a tool you used is engineering. Hiding it is not.
 
 ---
@@ -221,14 +257,17 @@ Autocomplete is a different problem from a chatbot: it **inserts code without be
 
 By the end of the first period you should have all of these. Check them off:
 
-**Hardware**
+**Hardware — your robot and your case**
 - ☐ Zumo 32U4 robot, numbered and assigned to you
-- ☐ Four charged NiMH batteries
-- ☐ USB cable
-- ☐ Jumpers
+- ☐ Marked Zumo carrying case, assigned to you
+- ☐ One USB-C–to–Micro-USB cable (programming)
+- ☐ One Panasonic BQ-CC17 charger (wall)
+- ☐ Four Eneloop Pro by Panasonic NiMH AA cells
+- ☐ Every issued item accounted for and stored in your own case
 
 **Software**
 - ☐ VS Code installed
+- ☐ Git installed
 - ☐ PlatformIO extension installed
 - ☐ **AI autocomplete disabled for this workspace** (Command Palette → "Disable AI Features (Workspace)")
 - ☐ Test upload completed — a program compiled and sent to the robot
@@ -238,12 +277,15 @@ By the end of the first period you should have all of these. Check them off:
 - ☐ Textbook bookmarked: **weymuth.github.io/zumo**
 - ☐ Project Maker bookmarked
 - ☐ **Your own copy of the TDP notebook made** (File → Make a copy), named with your name, saved in your Drive
+- ☐ That copy shared with Mr. Weymuth
 
 **Preflight — the four things to check every time your robot misbehaves**
 - ☐ Power switch is ON
-- ☐ Batteries are charged
-- ☐ USB cable is fully seated
+- ☐ All four batteries installed and charged
+- ☐ USB cable is fully seated at both ends
 - ☐ You uploaded the program you think you uploaded
+
+Do not start a build with a setup item missing and hope it sorts itself out. Fix the setup first — then the behavior you are looking at belongs to the lesson, not to a flat battery or a half-finished install.
 
 ---
 
@@ -259,8 +301,8 @@ By the end of the first period you should have all of these. Check them off:
 ## Still To Add _[working notes — not student-facing yet]_
 - Exact milestone due dates (pin to real calendar — blocked until ~Aug 24)
 - Notebook template Google Doc link
-- Battery charging location and charge time
+- Battery charge time on the BQ-CC17 (location resolved: students charge at home)
 - Late-milestone penalty amount
 
 ---
-*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.0*
+*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.1*
