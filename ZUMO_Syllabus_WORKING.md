@@ -205,14 +205,13 @@ Everything issued to you lives in that case. Do not borrow from someone else's c
 - ☐ Cable, charger, and all four batteries back in your case
 - ☐ Case marking checked — it is yours
 - ☐ Work area and course clear — chairs in, laptops closed
-- ☐ Robot back on the shelf
-- ☐ Case goes home with you, so the batteries are charged for next class
+- ☐ Robot and case go home with you — the robot is yours for the term, and the batteries have to be charged before next class
 
 ---
 
 ## Whose Code Is It? — Academic Honesty
 
-This is a **solo build.** Every robot on the shelf runs code its owner wrote. That is the whole point — the milestone demo proves *you* can do the thing. It is not silent work, though: engineers ask questions and compare results, and you are expected to do that here.
+This is a **solo build.** Every robot in this course runs code its owner wrote. That is the whole point — the milestone demo proves *you* can do the thing. It is not silent work, though: engineers ask questions and compare results, and you are expected to do that here.
 
 **Encouraged:**
 - Talking through a problem with another student at the whiteboard
@@ -305,4 +304,4 @@ Do not start a build with a setup item missing and hope it sorts itself out. Fix
 - Late-milestone penalty amount
 
 ---
-*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.1*
+*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.1.1*
