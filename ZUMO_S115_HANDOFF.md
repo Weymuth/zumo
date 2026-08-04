@@ -1,4 +1,4 @@
-# ZUMO — S114 HANDOFF (written at S113 close · paste at top of Session 114)
+# ZUMO — S115 HANDOFF (written at S114 close · paste at top of Session 115)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** If the clone's
@@ -37,21 +37,21 @@
 
 # ⏰ SEPTEMBER 8 IS UNDER FIVE WEEKS OUT
 
-**14 images outstanding of 141.** S113 cleared FOUR without a camera, refused a fifth, and
+**14 images outstanding of 141.** S114 cleared FOUR without a camera, refused a fifth, and
 **one came back**: DJ supplied `L03_IMAGE_3-14_astar_board.jpg` at close and it is wired in,
 so planned went 140 → 141 and outstanding stayed at 14.
 
-DJ ruled at S113 open: **no more photography for a while.** That is not a blocker on its own —
+DJ ruled at S114 open: **no more photography for a while.** That is not a blocker on its own —
 two of the eighteen came off the list this session by being written rather than shot — but it
 does mean the remaining count is now **the honest floor of what a camera has to do**, and it is
 worth reading as such:
 
 - **Four are VIDEOS** — `VIDEO 3.1`, `4.1`, `6.1`, `8.1`. None can be written.
-- **`IMAGE 3.6`** needs REAL numbers from a real TRIM run. Refused at S113 and it should stay
+- **`IMAGE 3.6`** needs REAL numbers from a real TRIM run. Refused at S114 and it should stay
   refused: a fabricated log is the same defect as a fabricated screenshot.
 - **`3.2` and `3.5`** are still the one-floor-rig pair.
-- **The nine were read one at a time at S113 close, and two of them fell.** `7.13` and `14.2`
-  are retired — see S113 WORK. **The remaining seven each need a ruling and none needs a
+- **The nine were read one at a time at S114 close, and two of them fell.** `7.13` and `14.2`
+  are retired — see S114 WORK. **The remaining seven each need a ruling and none needs a
   camera to make the ruling**, only to execute it:
 
 | Tag | What it asks for | Reading |
@@ -68,7 +68,7 @@ worth reading as such:
 
 # STATE
 
-Fresh-clone verified at **`6561e8d`**. Census **40,015**.
+Fresh-clone verified at **`0bc66da`**. Census **40,015**.
 Bible **v8.103** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
@@ -76,7 +76,7 @@ Bible **v8.103** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 Instruments: `book_gates` **v1.43.2** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
 `build_family_map` **v1.3.2** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
-`gen_part_banners` **v1.2** · `session_versions` **v1.16.0** · `fit_raster_svg` **v1.2** ·
+`gen_part_banners` **v1.2** · `session_versions` **v1.17.0** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
 `build_css` **v1.2.1** ·
 `image_audit` **v1.1** ·
@@ -98,7 +98,7 @@ generators green · `gate_payload_match` PASS.
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S113
+# THE ONE THING TO CARRY OUT OF S114
 
 **A BASELINE THAT LOOKS LIKE A COUNT WILL BE READ AS A COUNT.**
 
@@ -135,7 +135,7 @@ that literal.** Write that into the next session's expectations rather than redi
 
 ---
 
-# S113 WORK
+# S114 WORK
 
 ## Two figure debts cleared without a camera, and a third refused
 
@@ -221,13 +221,13 @@ homes move: **L07 v04.22.0** (from v04.21.1) · **L14 v02.22.0** (from v02.21.1)
 dict from every `Name vX.Y` match in the whole file and **the LAST match wins**, so a prose
 sentence written as *"Bible vOLD → vNEW"* or *"L07 vOLD → vNEW"* silently OVERRIDES
 the emitted STATE block and `--check` reports a disagreement that does not exist in the files.
-**As of `session_versions` v1.16.0 backticks no longer save you** — the comparator used to be
+**Backticks no longer save you** (they stopped shielding when the comparator learned to strip them) — the comparator used to be
 blind to them, which was itself the defect (see below). **Write the OLD version in parentheses
 after the new one:** *"`book_gates` reaches v1.43.2 (from v1.43.1)"*, never *"v1.43.1 →
 v1.43.2"*. Both times, `--check` caught it before the push — **and then a third time, on the sentence
 written to warn about it**, because the example named a real lesson and a real old version. The
 example now uses placeholders in **both halves** — the first repair fixed the lesson half and left
-the Bible half naming a real number, so it fired again on the same sentence at S113 close, and
+the Bible half naming a real number, so it fired again on the same sentence at S114 close, and
 then once more on the sentence written to describe *that*. Four firings, three of them on this
 paragraph. **The rule is absolute: never write a real version number inside an example, an
 apology, or a description of this trap. Use vOLD and vNEW.**
@@ -244,7 +244,7 @@ each:** deleting one `color: white;` still FAILS both times.
 placeholder retires, the rule dies on its own — expected, not a defect, and written at the
 constant so nobody diagnoses it as one.
 
-## A find that is not S113's work but is S113's to report
+## A find that is not S114's work but is S114's to report
 
 **GPT Task 2 and Task 4 are not in the repo.** The S112 handoff lists both as *"reviewed
 structurally, neither applied."* Searched: only `GPT_BRIEF_FORMAT.md` mentions them, and the
@@ -267,19 +267,27 @@ title number and the *"paste at top of Session N"* number are **the same number*
 session that **READS** the file. `ZUMO_S112_HANDOFF.md` is titled *"S112 HANDOFF (written at S111
 close · paste at top of Session 112)."*
 
-**DEFECT 1 — S112's, and it is the one that caused the confusion.** S112 wrote its OUTGOING
-handoff into the INCOMING handoff's filename. `ZUMO_S112_HANDOFF.md` was edited in place across
-three commits with its STATE block updated each time — `893b8b6` → `4558257` → `8ae3857` — while
-its title stayed *"S112 HANDOFF · paste at top of Session 112."* So at S113 open the repo root
-carried a file whose name and title both said *read this at S112* and whose contents were the
-S113 handoff. **`ZUMO_S113_HANDOFF.md` never existed in the repo**, and the S113 text DJ actually
-pasted carries state `b4d5559`, which no committed version of that file ever held. It was written
-in the S112 chat and pasted directly, never committed.
+**DEFECT 1 — the prior session's, and it caused the rest.** It wrote its OUTGOING handoff into
+the INCOMING handoff's filename: the file was edited in place across three commits with its STATE
+block updated each time — `893b8b6` → `4558257` → `8ae3857` — while its title kept naming a
+session that had already run. So at session open the repo root carried a file whose name and
+title both pointed backwards and whose contents were this session's handoff. **The incoming
+handoff under its correct name never existed in the repo**, and the text actually pasted carries
+state `b4d5559`, which no committed version of that file ever held — written in chat, pasted
+directly, never committed.
 
-**DEFECT 2 — S113's, i.e. mine.** I inferred the convention from the single live example, which
-was the defective one, concluded *filename = writing session*, and pushed this file as
-`ZUMO_S113_HANDOFF.md`. That name is now burned on content that belongs to S114. **Corrected the
-same session: this file is `ZUMO_S114_HANDOFF.md` and `ZUMO_S113_HANDOFF.md` is deleted.**
+**DEFECT 2 — mine.** I inferred the convention from that single live example, which was the
+defective one, concluded *filename = writing session*, and pushed the outgoing handoff one number
+low. Corrected the same session.
+
+**DEFECT 3 — the session number itself, twice more the same day.** It lives in FOUR hand-typed
+homes — the handoff filename, the handoff title, the newest Bible changelog entry, and LIVE.md —
+and nothing asserted any relation between them, so they drifted apart and DJ caught it by reading
+the numbers for the third time. **`session_versions` v1.17.0 adds `session_numbers()`:** the
+newest Bible entry names the session that just ran, LIVE.md must match it, and the handoff must
+be exactly one higher because the handoff is read by the NEXT session. Control-run both
+directions — LIVE.md set to a wrong session FAILED naming both numbers, and the handoff left at
+the current session's number FAILED saying it is read by the next one.
 
 **WHY NOTHING CAUGHT IT, AND THIS IS THE PART THAT MATTERS.** Gate 28 asserts the root holds
 **exactly one** file matching `ZUMO_S\d+_HANDOFF\.md`. It never asks whether the number is the
@@ -292,7 +300,7 @@ filename, out of the `# ZUMO — SNN HANDOFF` title and out of the *"paste at to
 clause, and fails when any two disagree — and fails **loudly rather than skipping** if the title
 shape is gone, because a check that silently opts out of itself is the §24.8 failure again.
 **Control-run four ways, and two of the four are the real defects above, not synthetic ones:**
-file S113 / title S114 FAILED naming both numbers · title lagging the filename (S112's actual
+file S114 / title S114 FAILED naming both numbers · title lagging the filename (S112's actual
 shape) FAILED · the title line disagreeing with its own *paste at top of* clause FAILED · the
 title reworded away FAILED naming the missing shape. `book_gates` reaches **v1.43.0** (from v1.42.2), and
 recorded at §12.2 in the Bible of the day (v8.102).
@@ -301,7 +309,7 @@ recorded at §12.2 in the Bible of the day (v8.102).
 
 # S114 QUEUE
 
-## Rulings outstanding — three of these are S113's and are cheap
+## Rulings outstanding — three of these are S114's and are cheap
 - **Should `build_family_map` parse its total instead of holding a baseline?** See THE ONE
   THING. Parsing makes the label honest; the cost is that gate 47 stops noticing an added or
   deleted callout, which needs its own assert. One line either way, and it decides what happens
@@ -322,7 +330,7 @@ recorded at §12.2 in the Bible of the day (v8.102).
 - **The seven remaining figure tags** — the table under the SEPTEMBER block. Seven rulings, no
   camera needed to make any of them.
 
-## Ruled and DONE at S113 close
+## Ruled and DONE at S114 close
 - **§24.14 WRITTEN.** The Bible reaches **v8.103** (from v8.102). The rule itself was never missing — gate 47 enforced it,
   `book_gates.py` carried the reasoning and `ZUMO_FAMILY_MAP.md` recorded the S112 derivation.
   Only the numbered section was absent: §24 ran 24.13 straight to 24.15. v8.101 logged that as a
@@ -355,7 +363,7 @@ recorded at §12.2 in the Bible of the day (v8.102).
   **SUPERSEDED BY THE PHOTO — see the entry above.** At the time this read: The old text called the figure
   a *"Top view of the A-Star 32U4 board"* removed from a section named *"Inside the can"* — but
   GRAPHIC 3.18 is the gearbox cutaway and *"Inside the can"* appears nowhere else in L03, so the
-  row contradicted itself. **DJ, S113: *"A side and top view of what's going on inside the
+  row contradicted itself. **DJ, S114: *"A side and top view of what's going on inside the
   micromotor gearbox."*** That resolves both halves at once: *"the can"* is the MOTOR can, the
   A-Star wording was a stray, and GRAPHIC 3.18 is a genuine like-for-like replacement rather than
   a substitution of one subject for another. The row now carries that subject in DJ's words.
@@ -404,11 +412,11 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 5. **A push that bumps a version and omits LIVE.md is an INCOMPLETE push (§12.6).**
 6. **After any change that regenerates `css/book.css`, stage into a copy of the PUSHED CLONE
    and run `book_gates` THERE before presenting md5s.**
-7. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** At S114 close, adding
-   `ZUMO_S115_HANDOFF.md` means DELETING **this** file — a GitHub Desktop checkbox, not a CLI
+7. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** At S115 close, adding
+   `ZUMO_S116_HANDOFF.md` means DELETING **this** file — a GitHub Desktop checkbox, not a CLI
    command.
 8. **THE NUMBER IN THE FILENAME IS THE SESSION THAT READS IT, NOT THE ONE THAT WROTE IT.**
    Verified 10/10 across `ZUMO_S103`–`ZUMO_S112`: filename number == title number, and the title
    reads *"written at S(N-1) close · paste at top of Session N."* This file is
-   `ZUMO_S114_HANDOFF.md` and is titled S114 because **S114 reads it**. Gate 28 cannot check
+   `ZUMO_S115_HANDOFF.md` and is titled S115 because **S115 reads it**. Gate 28 cannot check
    this — see the queue.

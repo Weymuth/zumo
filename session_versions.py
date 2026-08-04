@@ -51,7 +51,9 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.16.0'
+VERSION = 'v1.17.0'
+# v1.17.0 (S114): session_numbers() - the session number lives in four hand-typed homes and
+#   nothing compared them. It drifted three times in one day. Bible == LIVE.md == handoff-1.
 # v1.16.0 (S113): _versions_in strips backticks. See the note in that function - the
 #   comparator was blind to every backtick-wrapped entry, which is most of the STATE block.     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
 # v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
@@ -328,6 +330,47 @@ def roster_coverage():
     return sorted(found - rostered - UNVERSIONED)
 
 
+def session_numbers():
+    """-> list of disagreements about WHICH SESSION THIS IS.
+
+    S114: the number drifted THREE TIMES IN ONE DAY and no instrument could see it, because it
+    lives in four hand-typed homes with no relation asserted between them. The relation is
+    simple and fully derivable:
+
+        newest Bible changelog entry  = the session that just ran        (N)
+        LIVE.md's "Session N"         = the same session                 (N)
+        handoff filename and title    = the session that READS it        (N + 1)
+
+    Gate 28 already checks that the handoff agrees with ITSELF. It cannot check whether that
+    number is the RIGHT number, because nothing else it can see names a session. This does.
+    §24.8: if the answer were the opposite - a handoff numbered for a session that already ran -
+    every other instrument returns exactly what it returns now.
+    """
+    import glob as _g
+    bad = []
+    bible = open(os.path.join(ROOT, 'ZUMO_SUPER_BIBLE.md'), encoding='utf-8').read()
+    m = re.search(r'^v[\d.]+,\s*S(\d+),\s*(?:major|moderate|minor)\b', bible, re.M)
+    if not m:
+        return ['ZUMO_SUPER_BIBLE.md: no "vX.Y, SNN, kind" changelog entry to read the session from']
+    n = int(m.group(1))
+
+    live = open(os.path.join(ROOT, 'LIVE_ZUMO_TEXTBOOK.md'), encoding='utf-8').read()
+    lm = re.search(r'Session (\d+)', live)
+    if not lm:
+        bad.append('LIVE.md: no "Session NN" to check against the Bible')
+    elif int(lm.group(1)) != n:
+        bad.append(f'LIVE.md says Session {lm.group(1)} but the newest Bible entry says S{n}')
+
+    hos = sorted(g for g in _g.glob(os.path.join(ROOT, 'ZUMO_S*_HANDOFF.md'))
+                 if re.fullmatch(r'ZUMO_S\d+_HANDOFF\.md', os.path.basename(g)))
+    if len(hos) == 1:
+        hn = int(re.fullmatch(r'ZUMO_S(\d+)_HANDOFF\.md', os.path.basename(hos[0])).group(1))
+        if hn != n + 1:
+            bad.append(f'{os.path.basename(hos[0])} is numbered S{hn}, but the newest Bible entry '
+                       f'says S{n} just ran - the outgoing handoff is read by S{n + 1}')
+    return bad
+
+
 def check():
     """Compare LIVE.md's Versions line and the handoff's STATE block against the files.
     Silent when clean; names every disagreement when not. Never compares the sha."""
@@ -339,6 +382,10 @@ def check():
     marks, icons = assets()
     cen, sha = census(), head_sha()
     bad = 0
+
+    for problem in session_numbers():
+        print("  SESSION:", problem)
+        bad += 1
 
     unrostered = roster_coverage()
     for f in unrostered:
