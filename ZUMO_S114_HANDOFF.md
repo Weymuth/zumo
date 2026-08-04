@@ -37,7 +37,9 @@
 
 # ⏰ SEPTEMBER 8 IS UNDER FIVE WEEKS OUT
 
-**14 images outstanding of 140.** S113 cleared FOUR without a camera and refused a fifth.
+**14 images outstanding of 141.** S113 cleared FOUR without a camera, refused a fifth, and
+**one came back**: DJ supplied `L03_IMAGE_3-14_astar_board.jpg` at close and it is wired in,
+so planned went 140 → 141 and outstanding stayed at 14.
 
 DJ ruled at S113 open: **no more photography for a while.** That is not a blocker on its own —
 two of the eighteen came off the list this session by being written rather than shot — but it
@@ -66,12 +68,12 @@ worth reading as such:
 
 # STATE
 
-Fresh-clone verified at **`5dd35d8`**. Census **40,013**.
+Fresh-clone verified at **`5dd35d8`**. Census **40,015**.
 Bible **v8.102** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
 
-Instruments: `book_gates` **v1.43.1** · `lesson_inventory` **v1.2.0** ·
+Instruments: `book_gates` **v1.43.2** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
 `build_family_map` **v1.3.2** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.15.1** · `fit_raster_svg` **v1.2** ·
@@ -87,7 +89,7 @@ Instruments: `book_gates` **v1.43.1** · `lesson_inventory` **v1.2.0** ·
 `font_stack_sweep` **v1.2.0** ·
 `going_deeper` **v01.4.1**.
 
-Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.26.0 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.22.0 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.16.1 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
+Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.28.0 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.22.0 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.16.1 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
 
 **47/47 gates.** `--anomalies` silent · family map **1049/1049** · `regex_audit` 0 leads ·
 `build_css --check` current at **646 rules** · 0 dead classes · `color_index --check` clean ·
@@ -319,16 +321,38 @@ Bible **v8.102** records it at §12.2.
   camera needed to make any of them.
 
 ## Ruled and DONE at S113 close
-- **`IMAGE 3.14` — DJ ruling: *"3-18 replaced 3-14."*** The replacement claim in that row is
+- **`IMAGE 3.14` — RESOLVED, AND IT ENDED UP THE OPPOSITE OF WHERE IT STARTED: DJ SUPPLIED
+  THE PHOTO AND THE FIGURE IS LIVE.** The row's ORIGINAL description was right all along —
+  *"Top view of the A-Star 32U4 board"* — and `L03_IMAGE_3-14_astar_board.jpg` is now wired into
+  §4.2, directly after the sentence *"The A-Star 32U4 board converts your code commands into
+  electrical signals."* Board → motor → gearbox, in that order.
+  **THE PARENTHETICAL WAS THE STRAY, NOT THE SUBJECT.** *"(removed from 'Inside the can' —
+  replaced by GRAPHIC 3.18)"* described a DIFFERENT figure's fate. `🧠 LEARN: Inside the little
+  silver can` is real, at L03:1142, and **GRAPHIC 3.18 sits inside it at 1150** alongside IMAGE
+  3.1 — so 3.18 replaced a MOTOR figure in that block, and someone appended that clause to the
+  board photo's row. One row, two figures' histories.
+  **THREE READINGS WERE OFFERED BEFORE THE RIGHT ONE, AND THE PROCESS STILL WORKED.** The
+  subject was dropped rather than rewritten; then DJ's *"side and top view inside the micromotor
+  gearbox"* was applied to 3.14 and that was wrong too — it describes GRAPHIC 3.18; then the
+  actual asset arrived and settled it. **Every wrong step was reversible because none of them
+  invented a fact into canon** — the subject line was deleted rather than guessed, and the guess
+  that was written got overwritten by an artefact one message later. Superseded: *"3-18 replaced
+  3-14."*
+- **(superseded, kept for the record)** DJ ruling: *"3-18 replaced 3-14."* The replacement claim in that row is
   therefore TRUE and the row now takes the S111 `IMAGE 2.5` retirement form: *Retired — replaced
   by GRAPHIC 3.18, the gearbox cutaway*, type `—`, state ✅.
-  **ONE THING WAS DROPPED RATHER THAN CORRECTED, deliberately.** The old text described the
-  figure as a *"Top view of the A-Star 32U4 board"* removed from a section called *"Inside the
-  can"* — and GRAPHIC 3.18 is the GEARBOX cutaway, while *"Inside the can"* appears nowhere else
-  in L03. The ruling settles the replacement; it does not settle what the photo was going to
-  show. Writing a corrected subject would be asserting something nobody measured, so the subject
-  line is gone rather than rewritten. **If the A-Star wording was accurate, say so and it goes
-  back.** L03 **v03.26.0** (from v03.25.0) — moderate, a Figures-table cell is visible text.
+  **SUPERSEDED BY THE PHOTO — see the entry above.** At the time this read: The old text called the figure
+  a *"Top view of the A-Star 32U4 board"* removed from a section named *"Inside the can"* — but
+  GRAPHIC 3.18 is the gearbox cutaway and *"Inside the can"* appears nowhere else in L03, so the
+  row contradicted itself. **DJ, S113: *"A side and top view of what's going on inside the
+  micromotor gearbox."*** That resolves both halves at once: *"the can"* is the MOTOR can, the
+  A-Star wording was a stray, and GRAPHIC 3.18 is a genuine like-for-like replacement rather than
+  a substitution of one subject for another. The row now carries that subject in DJ's words.
+  **The sequence is the lesson, not the fix:** the subject was DROPPED first rather than
+  rewritten to a plausible guess, and the guess on the table — that *"the can"* meant the motor
+  can — turned out to be right. **Being right is not the same as being measured**, and a correct
+  guess written into canon is indistinguishable from a wrong one six sessions later. It took one
+  question to turn it into a fact. L03 is at **v03.28.0** (from v03.25.0) after the figure landed.
 
 ## Ruled, not yet done
 - **DELETE `GPT_BRIEF_FORMAT.md`** — moved to Bible §24.15 this session. GitHub Desktop.

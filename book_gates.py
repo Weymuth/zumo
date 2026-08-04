@@ -2,7 +2,9 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.43.1'
+VERSION = 'v1.43.2'
+# v1.43.2 (S113): §21 coverage 224 -> 225 and the §27.11 digest moved, both because L03
+#   IMAGE 3.14 was wired in from a supplied photo. Two baselines, one cause.
 # v1.43.1 (S113): §27.11 digest moved a second time, same session, same shape - two more
 #   figure placeholders retired. Rules and declarations did not move.
 # v1.43.0 (S113, DJ ruling): gate 28 now checks the handoff's NUMBER, not just that there
@@ -1480,8 +1482,12 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 224:                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired in
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 224 — a reference '
+if _seen != 225:                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired in;
+                                      # 224 -> 225 at S113: DJ supplied the A-Star board
+                                      # photo and L03 IMAGE 3.14 was wired in. The number
+                                      # moves ONLY when a figure genuinely lands - that is
+                                      # the whole point of the assert.
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 225 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -1859,7 +1865,13 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, '544d21bfe8cebbfa'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 646, 2367, 'cc06f4eac889a1cf'
+#   S113 third move: digest ONLY, 646/2,367 unchanged again. L03 IMAGE 3.14 was wired in
+#   from a supplied photo, so .div-c-666 went 45->46, .div-m-20px0 39->40 and .img-h-auto
+#   25->26, and two rules changed POSITION in the usage-ordered output. Diffed in full
+#   against the pushed clone before the baseline moved. This is the FOURTH baseline this
+#   session (family map, §21 coverage, and this digest twice) and every one moved for a
+#   content change that was proven first - a baseline moved without its diff is a spent gate.
 #   S113 second move: digest ONLY again, and for the same reason. 646/2,367 unchanged.
 #   L07's [IMAGE 7.13] and L14's [IMAGE 14.2] placeholders were retired, so .div-2196f3
 #   went 9->8 uses and .div-ccc 2->1, and both rules changed POSITION in the usage-ordered
