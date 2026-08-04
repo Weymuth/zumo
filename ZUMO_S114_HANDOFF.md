@@ -197,6 +197,42 @@ standing *re-commit the TDP template* item.
 
 ---
 
+# THE HANDOFF NUMBERING WAS WRONG FOR TWO SESSIONS — READ BEFORE WRITING S115'S
+
+**DJ caught this, not a gate.** *"the last one was 112 again and this one says 113, but you are
+calling it 114."*
+
+**THE CONVENTION, verified from git history 10/10 across S103–S112:** the filename number, the
+title number and the *"paste at top of Session N"* number are **the same number**, and it is the
+session that **READS** the file. `ZUMO_S112_HANDOFF.md` is titled *"S112 HANDOFF (written at S111
+close · paste at top of Session 112)."*
+
+**DEFECT 1 — S112's, and it is the one that caused the confusion.** S112 wrote its OUTGOING
+handoff into the INCOMING handoff's filename. `ZUMO_S112_HANDOFF.md` was edited in place across
+three commits with its STATE block updated each time — `893b8b6` → `4558257` → `8ae3857` — while
+its title stayed *"S112 HANDOFF · paste at top of Session 112."* So at S113 open the repo root
+carried a file whose name and title both said *read this at S112* and whose contents were the
+S113 handoff. **`ZUMO_S113_HANDOFF.md` never existed in the repo**, and the S113 text DJ actually
+pasted carries state `b4d5559`, which no committed version of that file ever held. It was written
+in the S112 chat and pasted directly, never committed.
+
+**DEFECT 2 — S113's, i.e. mine.** I inferred the convention from the single live example, which
+was the defective one, concluded *filename = writing session*, and pushed this file as
+`ZUMO_S113_HANDOFF.md`. That name is now burned on content that belongs to S114. **Corrected the
+same session: this file is `ZUMO_S114_HANDOFF.md` and `ZUMO_S113_HANDOFF.md` is deleted.**
+
+**WHY NOTHING CAUGHT IT, AND THIS IS THE PART THAT MATTERS.** Gate 28 asserts the root holds
+**exactly one** file matching `ZUMO_S\d+_HANDOFF\.md`. It never asks whether the number is the
+right number, and it never compares the filename to the title inside the file. **A stale number
+and a wrong number both pass, and both did.** This is §24.8 exactly: if the answer were the
+opposite — a handoff numbered for the wrong session — gate 28 would look identical.
+
+**OFFERED, NOT BUILT — a two-line extension to gate 28:** parse `N` out of the filename, parse
+`N` out of the first line's `# ZUMO — SNN HANDOFF`, and fail if they disagree. It is cheap, it is
+a parse rather than a third regex, and it catches both defects above. **DJ's ruling.**
+
+---
+
 # S114 QUEUE
 
 ## Rulings outstanding — three of these are S113's and are cheap
@@ -265,6 +301,11 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 5. **A push that bumps a version and omits LIVE.md is an INCOMPLETE push (§12.6).**
 6. **After any change that regenerates `css/book.css`, stage into a copy of the PUSHED CLONE
    and run `book_gates` THERE before presenting md5s.**
-7. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** Adding S114 means DELETING
-   `ZUMO_S113_HANDOFF.md` — a GitHub Desktop checkbox, not a CLI command.
-8. **S113 carries a SECOND deletion: `GPT_BRIEF_FORMAT.md`.** Two checkboxes this push, not one.
+7. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** At S114 close, adding
+   `ZUMO_S115_HANDOFF.md` means DELETING **this** file — a GitHub Desktop checkbox, not a CLI
+   command.
+8. **THE NUMBER IN THE FILENAME IS THE SESSION THAT READS IT, NOT THE ONE THAT WROTE IT.**
+   Verified 10/10 across `ZUMO_S103`–`ZUMO_S112`: filename number == title number, and the title
+   reads *"written at S(N-1) close · paste at top of Session N."* This file is
+   `ZUMO_S114_HANDOFF.md` and is titled S114 because **S114 reads it**. Gate 28 cannot check
+   this — see the queue.
