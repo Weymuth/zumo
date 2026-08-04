@@ -66,7 +66,7 @@ worth reading as such:
 
 # STATE
 
-Fresh-clone verified at **`af9e5b9`**. Census **40,013**.
+Fresh-clone verified at **`5dd35d8`**. Census **40,013**.
 Bible **v8.102** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.0**.
@@ -87,7 +87,7 @@ Instruments: `book_gates` **v1.43.1** · `lesson_inventory` **v1.2.0** ·
 `font_stack_sweep` **v1.2.0** ·
 `going_deeper` **v01.4.1**.
 
-Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.25.0 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.22.0 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.16.1 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
+Lessons: L01 v03.19.1 · L02 v03.11.1 · L03 v03.26.0 · L04 v04.19.1 · L05 v04.19.1 · L06 v04.23.1 · L07 v04.22.0 · L08 v04.19.1 · L09 v05.16.1 · L10 v02.16.1 · L11 v02.17.1 · L12 v01.19.1 · L13 v02.17.1 · L14 v02.22.0 · L15 v02.17.1 · L16 v02.12.1.
 
 **47/47 gates.** `--anomalies` silent · family map **1049/1049** · `regex_audit` 0 leads ·
 `build_css --check` current at **646 rules** · 0 dead classes · `color_index --check` clean ·
@@ -296,12 +296,6 @@ Bible **v8.102** records it at §12.2.
 # S114 QUEUE
 
 ## Rulings outstanding — three of these are S113's and are cheap
-- **`IMAGE 3.14`'s description records a replacement that did not happen.** It reads *"Top view
-  of the A-Star 32U4 board (removed from 'Inside the can' — replaced by GRAPHIC 3.18)"*, but
-  **GRAPHIC 3.18 is the gear-train cutaway**, a different subject, and the string *"Inside the
-  can"* appears **nowhere else in L03**. Best reading is that *"the can"* meant the MOTOR can
-  and the *"A-Star board top view"* text was copied in from another row — but that is a guess
-  and a guess written into canon is worse than a gap. **Rewrite it, or delete the row.**
 - **Should `build_family_map` parse its total instead of holding a baseline?** See THE ONE
   THING. Parsing makes the label honest; the cost is that gate 47 stops noticing an added or
   deleted callout, which needs its own assert. One line either way, and it decides what happens
@@ -323,6 +317,18 @@ Bible **v8.102** records it at §12.2.
 - **Selftest-coverage gate** — offered, not built.
 - **The seven remaining figure tags** — the table under the SEPTEMBER block. Seven rulings, no
   camera needed to make any of them.
+
+## Ruled and DONE at S113 close
+- **`IMAGE 3.14` — DJ ruling: *"3-18 replaced 3-14."*** The replacement claim in that row is
+  therefore TRUE and the row now takes the S111 `IMAGE 2.5` retirement form: *Retired — replaced
+  by GRAPHIC 3.18, the gearbox cutaway*, type `—`, state ✅.
+  **ONE THING WAS DROPPED RATHER THAN CORRECTED, deliberately.** The old text described the
+  figure as a *"Top view of the A-Star 32U4 board"* removed from a section called *"Inside the
+  can"* — and GRAPHIC 3.18 is the GEARBOX cutaway, while *"Inside the can"* appears nowhere else
+  in L03. The ruling settles the replacement; it does not settle what the photo was going to
+  show. Writing a corrected subject would be asserting something nobody measured, so the subject
+  line is gone rather than rewritten. **If the A-Star wording was accurate, say so and it goes
+  back.** L03 **v03.26.0** (from v03.25.0) — moderate, a Figures-table cell is visible text.
 
 ## Ruled, not yet done
 - **DELETE `GPT_BRIEF_FORMAT.md`** — moved to Bible §24.15 this session. GitHub Desktop.
