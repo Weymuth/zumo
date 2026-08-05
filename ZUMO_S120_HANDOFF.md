@@ -83,14 +83,14 @@ both instruments agreeing at zero.
 # STATE
 
 Fresh-clone verified at **`0fb3b940`** — confirmed AFTER the push: recursive stage-vs-clone diff
-at zero differences, md5 on all eight files, 48/48 gates run inside that clone, `site_parity`
-PASS. **Verify against the tree that carries the work, never against the sha the session opened
-on (S118).** Census **40,978**.
-Bible **v8.108** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
+at zero differences, md5 on every file, gates run inside that clone, `site_parity` PASS. **Verify
+against the tree that carries the work, never against the sha the session opened on (S118).**
+Census **40,978**.
+Bible **v8.108.1** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.44.5** · `lesson_inventory` **v1.2.0** ·
+Instruments: `book_gates` **v1.45** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
 `build_family_map` **v1.3.7** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.17.0** · `fit_raster_svg` **v1.2** ·
@@ -108,7 +108,7 @@ Instruments: `book_gates` **v1.44.5** · `lesson_inventory` **v1.2.0** ·
 
 Lessons: L01 v03.19.2 · L02 v03.11.2 · L03 v03.28.1 · L04 v04.19.2 · L05 v04.19.3 · L06 v04.23.3 · L07 v04.22.2 · L08 v04.19.3 · L09 v05.16.3 · L10 v02.17.1 · L11 v02.18.1 · L12 v01.20.1 · L13 v02.18.0 · L14 v02.22.1 · L15 v02.18.0 · L16 v02.12.1.
 
-**48/48 gates.** `--anomalies` silent · family map **1069/1069** · `regex_audit` 0 leads ·
+**49/49 gates.** `--anomalies` silent · family map **1069/1069** · `regex_audit` 0 leads ·
 `build_css --check` current at **643 rules** · 0 dead classes · `color_index --check` clean ·
 `build_palette --check` matches the ruling · `image_audit --check` current at 14 outstanding
 of 141 · both banner generators green · `gate_payload_match` PASS on the full glob.
@@ -157,6 +157,14 @@ away: reading says say-2 restates Objective 3 and say-3 restates Objective 6; th
 
 Plus `'15'` leaving `BC_PENDING`, which fails **naming L15** — what §25.2a's named sets buy.
 
+
+**GATE 49 IS NEW AND IT HOLDS A CONSTANT, NOT A BASELINE.** §25.10l — BC01 carries exactly five
+items — was ruled at S119 and nothing enforced it; BC01 was 14/14 and UNHELD, and the session came
+within one ruling of breaking that silently. **The number can never legitimately move again**,
+because the conversion arc is closed and `BC_PENDING` is empty: if it moves, something was edited
+that nobody ruled on. Control-run four ways — deleted item FAILS naming 4, added item FAILS naming
+6, anchor removed FAILS on COVERAGE at 13 of 14, unperturbed passes.
+
 ---
 
 # S120 QUEUE
@@ -185,6 +193,8 @@ Plus `'15'` leaving `BC_PENDING`, which fails **naming L15** — what §25.2a's 
 - **NOTE per-block pass** (133 blocks, four destinations).
 - **Nav `<details>` carry no `data-reveal`** — §25.12 exists because one untyped `<details>` slipped.
 - **Selftest-coverage gate** — offered, not built.
+- **§25.10l's constant lives ONLY in `book_gates.py`** (gate 49), the same shape as §21.1's
+  thresholds. Recorded S119, not fixed.
 - **The seven remaining figure tags** — S114's table.
 
 ## Ruled, not yet done

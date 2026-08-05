@@ -2,7 +2,14 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.44.5'
+VERSION = 'v1.45'
+# v1.45 (S119): NEW GATE 49 — §25.10l, Brain Check 01 carries exactly FIVE items.
+#   A CONSTANT, not a baseline: the conversion arc closed at S119 and BC_PENDING is empty,
+#   so unlike §21 coverage or the family-map total this number has no legitimate future
+#   move. It exists because the norm was 14/14 and UNHELD — S119 came within one ruling of
+#   breaking it silently on a question asked from a false premise. Control-run four ways:
+#   an item deleted FAILS naming 4, an item added FAILS naming 6, brain-check-01 removed
+#   FAILS on COVERAGE, and the unperturbed book passes.
 # v1.44.5 (S119): L15 IS THE FOURTEENTH AND LAST CONVERSION. BC_PENDING is now EMPTY --
 #   the arc that began at L01 closes here, and the set is kept rather than deleted so a
 #   future L17 has a home. L15's SECTION 2 needed NO reword (verb-first already) but
@@ -723,6 +730,36 @@ for f in files:
     if items < 4:
         bad.append(f'{L(f)}: Brain Check 03 has {items} items, floor is 4 (§25.8)')
 gate('§25.8 Brain Check 03 carries at least four items', bad)
+
+# ---- §25.10l: Brain Check 01 carries exactly FIVE items — DJ ruling S119, option D.
+# NOT a floor like §25.8's. BC01 measured at five in 13 of 13 converted lessons before L15
+# and fourteen of fourteen after, and NOTHING held it: at S119 a question was asked on the
+# premise that BC01 maps to §2's objectives (it does not — BC02 does), DJ ruled an item be
+# added, and adding one would have broken a 14/14 norm SILENTLY. The ruling that resolved it
+# put the sixth item in BC03 instead, on the verb: BC01 sits before §6 and asks what the
+# BUILD depends on, so a *diagnose* claim belongs at the bench in §7, which is BC03's half.
+# THE NUMBER CAN NEVER LEGITIMATELY MOVE AGAIN — the conversion arc closed at S119 and
+# BC_PENDING is empty, so unlike §21's coverage or the family map's total this is a constant,
+# not a baseline. If it ever moves, something was edited that nobody ruled on.
+# The COVERAGE arm is not decoration: a gate that scans zero lessons passes (S117, S118).
+bad = []
+_seen01 = 0
+for f in files:
+    s2 = R[f]
+    j1 = s2.find('id="brain-check-01"')
+    if j1 < 0:
+        continue                     # unconverted lessons are out of scope
+    _seen01 += 1
+    blk1 = s2[j1:_close_of(s2, s2.rfind('<div', 0, j1 + 30), 'div')]
+    items = len(re.findall(r'<details data-reveal="\w+"', blk1))
+    if items != 5:
+        bad.append(f'{L(f)}: Brain Check 01 has {items} items, canon is exactly 5 (§25.10l) — '
+                   f'an item belongs in BC01 only if the BUILD in §6 depends on it')
+_exp01 = len({L(f) for f in files} - BC_EXEMPT - BC_PENDING)
+if _seen01 != _exp01:
+    bad.append(f'COVERAGE: {_seen01} lesson(s) carry brain-check-01, expected {_exp01} '
+               f'(exempt {sorted(BC_EXEMPT)}, pending {sorted(BC_PENDING)})')
+gate('§25.10l Brain Check 01 carries exactly five items', bad)
 
 # ---- §5b: every web tool carries a greppable in-file version line
 WEB_TOOLS = {'timer.html': 'Timer', 'tutor/tutor.html': 'Tutor',
