@@ -166,3 +166,31 @@ design"* and would need rewriting.
 **Why parked rather than declined.** It is right and the timing is wrong: it competes directly
 with 20 outstanding figures five weeks before the course starts. Post-Sept-8 it is a clean
 generated arc — the renumbers can be emitted and gated like every other sweep.
+
+---
+
+## L11 Skills Checklist — four rungs displaced by the S116 conversion
+
+**Provenance.** `lessons/Lesson_11.html` §10, *Skills Checklist*, seven `☐` rungs, live from S64
+through S115 and consumed when L11 converted to the four Brain Check blocks at S116.
+
+**What happened to the other three.** Rungs 4, 5 and 6 are bench observations no objective covers
+and became BC02's **I have…** group, tense-shifted per §25.10b. These four did not, because each
+restates an objective that BC02 already carries under **I can…**.
+
+| 1 | I can explain why a timer is the wrong instrument for measuring a gap. | Objective 1 — *Explain why a timer is the wrong instrument for measuring a gap, and an encoder is the right one.* |
+| 2 | I converted encoder counts to centimeters using COUNTS_PER_CM, not a magic number. | Objective 2 — *Convert encoder counts to centimeters using COUNTS_PER_CM — and never hardcode a raw count again.* |
+| 3 | I measured my gap in 7A instead of guessing GAP_MAX_CM. | Objective 5 — *Measure a real gap with your own robot instead of guessing a threshold.* |
+| 7 | I can explain, with numbers, why this robot cannot detect a table edge. | Objective 6 — *Explain, with numbers, why this robot cannot be programmed to avoid falling off a table — and what you would have to change to make it possible.* |
+
+**How the pairing was decided.** A scored pairwise diff of all 7 × 6 combinations, printed in the
+builder and asserted rather than eyeballed: the four above score **0.55–0.73** against their
+partner objective, the three kept rungs score **0.31–0.38** against their nearest. The builder
+asserts `min(dup) > max(keep)`, so a wrong pairing cannot pass. §25.10c's L05 precedent — a
+word-identical duplicate really is redundant — but the tense difference means these are *not*
+word-identical, which is why they are parked rather than simply dropped.
+
+**The open question for a later weeding pass.** The past-tense form asks something the objective
+does not: *did you actually do it*, versus *can you do it*. If that distinction is worth keeping,
+the right home is BC02's **I have…** group and all seven rungs fold — at the cost of the student
+ticking the same claim twice under two labels. DJ has not ruled.

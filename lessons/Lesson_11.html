@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.17.1 -->
+<!-- Lesson version: v02.18.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Time Lies, Distance Doesn't</h1>
 <div class="div-fs-11em">Encoder-Based Gap Crossing</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.17 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.18 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -342,6 +342,45 @@ line came back, and otherwise hands off to <code>handleGap()</code>. The <em>cou
 <p>And <code>LINE_LOST</code> does something the old code never did: <strong>it tells you how far it got.</strong>
 "Blind for 12.4 cm" is a debuggable message. "LINE LOST!" is not.</p>
 <p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+</div>
+
+<div id="brain-check-01" class="callout-3f51b5">
+
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</div>
+
+<p>That is the reading done. Before you put a single wheel on the floor, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. A gap is a place where the line stops and then starts again. What do all five line sensors read while the robot is inside one, and what does that leave P&#8209;control to steer against? (&sect;3.1)</summary>
+
+<div class="div-mt-12px"><p>All five read white. The robot is <strong>blind</strong> &mdash; there is no line under any sensor, so P&#8209;control has nothing to steer against at all. That leaves the robot exactly two choices: stop, and never finish a course with a scuff in it; or drive straight and hope. <strong>Hope has to have a limit</strong>, or a robot that runs off the end of the line keeps driving until the battery dies. How much blindness is acceptable is the whole design problem of this lesson.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Lesson 8&rsquo;s <code class="code-inline-bg-e8e8e8">handleGap()</code> is a stopwatch. Quote the condition that makes it one, and state the question that breaks it. (&sect;3.2)</summary>
+
+<div class="div-mt-12px"><p>The condition is <code class="code-inline-bg-e8e8e8">millis() - gapStartTime &gt; MAX_GAP_TIME</code> &mdash; five hundred milliseconds of blindness, then quit. The question that breaks it: <em>how far does the robot travel in 500&nbsp;ms?</em> It depends on the battery. A fresh one carries the robot further in that time, a tired one less far, and you tuned the number on a full charge &mdash; so at half charge it is silently covering a shorter gap and the robot gives up in the middle of a gap it crossed fine that morning. A stopwatch does not measure distance. It measures time and hopes speed was constant.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. You do not have to write the counts&#8209;to&#8209;centimeters conversion for this lesson &mdash; it is already sitting in <code class="code-inline-bg-e8e8e8">RobotConfig.h</code>. Name the constant, and the lesson it arrived in. (&sect;3.3)</summary>
+
+<div class="div-mt-12px"><p><code class="code-inline-bg-e8e8e8">COUNTS_PER_CM</code>, which has been in your project since <strong>Lesson 6</strong> &mdash; <code class="code-inline-bg-e8e8e8">driveDistance()</code> already uses it. It is defined as <code class="code-inline-bg-e8e8e8">COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0)</code>. The reason it works here is that encoders do not care about your battery: they count <em>wheel rotation</em>, so a slow robot and a fast robot that both travel 10&nbsp;cm report the same count. The slow one just took longer to get there.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Name the two states this lesson adds to your state machine, and the one number that tells them apart. (&sect;3.4)</summary>
+
+<div class="div-mt-12px"><p><code class="code-inline-bg-e8e8e8">GAP_CROSSING</code> &mdash; driving blind, counting the distance, budget not yet spent. <code class="code-inline-bg-e8e8e8">LINE_LOST</code> &mdash; drove the whole budget and never found the line, so stop and say so. The difference between them is <strong>one number</strong>: how far you have gone since the line vanished. Everything else about the two states is the same robot doing the same thing.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Hold the robot out over the edge of the table. What does a line sensor report &mdash; and why is that the same reading it gives over the brightest possible white? (&sect;3.5)</summary>
+
+<div class="div-mt-12px"><p>Nothing bounces back, and <em>no reflection at all</em> reads exactly the same as the brightest possible white. A line sensor is an infrared reflectance sensor: it shines IR down and measures how much returns. Black tape absorbs it, white paper returns it, and a missing floor returns nothing &mdash; which is the low end of the same one scale the sensor has. It can only tell you <strong>no light came back</strong>, and it has no way at all to say why. The sensor does not see a cliff. It sees white.</p></div>
+
+</details>
+
+<p class="p-m-12px00"><button type="button" data-bc-btn="1" class="button">Mark Brain Check 01 done</button></p>
 </div>
 
 <!-- ===================== SECTION 6: BUILD IT ===================== -->
@@ -1060,31 +1099,87 @@ Every time. Even with <code>GAP_MAX_CM</code> set to 50.</p>
 <!-- ===================== SECTION 10: EXIT TICKET ===================== -->
 <div class="div-bg-6f7582"><div id="section-10"><span class="span-d-block-2">Section 10</span><span class="span-d-block">Exit Ticket</span></div></div>
 <div class="div-6f7582">
-<h3 class="h3-c-6f7582">Reflection Questions</h3>
-<ol>
-<li>Your robot crosses a 10&nbsp;cm gap perfectly on Monday. On Friday, with the same code and the
-same track, it quits halfway. <strong>Name the instrument that caused this, and the instrument that fixes it.</strong></li>
-<li><code>followLine()</code> does <em>not</em> use TRIM. <code>handleGap()</code> <em>does</em>.
-Both drive the robot forward. <strong>Why the difference?</strong></li>
-<li><code>GAP_MAX_CM</code> lets the robot cross gaps. Name the <strong>second</strong> job it is quietly doing.
-(Hint: what stops the robot at the end of the line?)</li>
-<li>A classmate says: "Just make the robot drive slower &mdash; then it'll have time to stop before it
-falls off the table." <strong>Using the arithmetic in 8A.4, explain why this does not work.</strong></li>
-<li>You are asked to build a robot that <em>can</em> stop at a table edge. <strong>You are not allowed to
-change the code.</strong> What do you change?</li>
-</ol>
-<h3 class="h3-c-6f7582">Skills Checklist</h3>
-<div class="div-bg-eafaf1">
-<p class="h4-mt-0">Tick these off honestly. If you cannot do one, go back &mdash; the next lesson assumes it.</p>
-<ul class="ul-ls-none">
-<li>&#9744; I can explain why a timer is the wrong instrument for measuring a gap.</li>
-<li>&#9744; I converted encoder counts to centimeters using <code>COUNTS_PER_CM</code>, not a magic number.</li>
-<li>&#9744; I <strong>measured</strong> my gap in 7A instead of guessing <code>GAP_MAX_CM</code>.</li>
-<li>&#9744; I saw the robot curve when TRIM was 0, and go straight when it was not.</li>
-<li>&#9744; I ran 7E and watched the stopwatch version fail on a tired battery.</li>
-<li>&#9744; I can point at the one <code>if</code> statement that re-arms the odometer between gaps.</li>
-<li>&#9744; I can explain, with numbers, why this robot cannot detect a table edge.</li>
-</ul></div>
+<div id="brain-check-02" class="callout-3f51b5">
+
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</div>
+
+<p>The six objectives this lesson opened with in Section 2, asked back &mdash; plus three things you either did or did not do at the bench. Tap each one you can honestly claim. All nine unlock the button.</p>
+
+    <p class="p-mb-0"><strong>I can&hellip;</strong></p>
+    <ul class="ul-ls-none-3">
+        <li data-bc-skill="1" class="li-c-pointer">☐ Explain why a <strong>timer</strong> is the wrong instrument for measuring a gap, and an <strong>encoder</strong> is the right one.</li>
+        <li data-bc-skill="2" class="li-c-pointer">☐ Convert encoder counts to centimeters using <code>COUNTS_PER_CM</code> &mdash; and never hardcode a raw count again.</li>
+        <li data-bc-skill="3" class="li-c-pointer">☐ Rewrite <code>handleGap()</code> so it asks "how <em>far</em> have I been blind?" instead of "how <em>long</em> have I been blind?"</li>
+        <li data-bc-skill="4" class="li-c-pointer">☐ Add two new states &mdash; <code>GAP_CROSSING</code> and <code>LINE_LOST</code> &mdash; to the state machine you built in Lesson 10.</li>
+        <li data-bc-skill="5" class="li-c-pointer">☐ Measure a real gap with your own robot instead of guessing a threshold.</li>
+        <li data-bc-skill="6" class="li-c-pointer">☐ Explain, with numbers, <strong>why this robot cannot be programmed to avoid falling off a table</strong> &mdash; and what you would have to change to make it possible.</li>
+    </ul>
+
+    <p class="p-mb-0"><strong>I have&hellip;</strong></p>
+    <ul class="ul-ls-none-3">
+        <li data-bc-skill="7" class="li-c-pointer">☐ Seen the robot curve when TRIM was 0, and go straight when it was not. (&sect;7C)</li>
+        <li data-bc-skill="8" class="li-c-pointer">☐ Run 7E and watched the stopwatch version fail on a tired battery. (&sect;7E)</li>
+        <li data-bc-skill="9" class="li-c-pointer">☐ Found the one <code>if</code> statement that re-arms the odometer between gaps. (&sect;7D)</li>
+    </ul>
+
+<p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
+</div>
+
+<div id="brain-check-03" class="callout-3f51b5">
+
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</div>
+
+<p>Your robot now crosses a gap by counting centimeters instead of milliseconds, and it stops honestly when the line does not come back. These ask whether you know <em>why</em>.</p>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">Your robot crosses a 10&nbsp;cm gap perfectly on Monday. On Friday, with the same code and the
+same track, it quits halfway. <strong>Name the instrument that caused this, and the instrument that fixes it.</strong> (&sect;3.2)</summary>
+
+<div class="div-mt-12px"><p>The <strong>stopwatch</strong> caused it; the <strong>odometer</strong> fixes it. <code class="code-inline-bg-e8e8e8">millis() - gapStartTime &gt; MAX_GAP_TIME</code> asks how <em>long</em> the robot has been blind, and how far it gets in that time depends on the battery. You tuned the number on Monday&rsquo;s full charge; Friday&rsquo;s tired battery drives slower, so the same 500&nbsp;ms carries it less far and it runs out of time before it runs out of gap. Encoders count wheel rotation, so 10&nbsp;cm is the same count on any charge. The track did not change. The battery did. Only one of the two instruments cared.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872"><code>followLine()</code> does <em>not</em> use TRIM. <code>handleGap()</code> <em>does</em>.
+Both drive the robot forward. <strong>Why the difference?</strong> (&sect;8A.1)</summary>
+
+<div class="div-mt-12px"><p>Open loop needs TRIM; closed loop does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors &mdash; the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code class="code-inline-bg-e8e8e8">followLine()</code> is a P&#8209;controller reading line position fifty times a second and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every open-loop straight line in this book carries TRIM &mdash; <code class="code-inline-bg-e8e8e8">driveDistance()</code>, <code class="code-inline-bg-e8e8e8">handleGap()</code>, the return-to-line drive &mdash; and the one closed loop deliberately does not.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872"><code>GAP_MAX_CM</code> lets the robot cross gaps. Name the <strong>second</strong> job it is quietly doing.
+(Hint: what stops the robot at the end of the line?) (&sect;8A.3)</summary>
+
+<div class="div-mt-12px"><p>It stops the robot at the <strong>end of the line</strong>. The end of the line is just a gap that never closes &mdash; infinitely wide &mdash; so the same budget that lets the robot cross a legal gap is the only thing that catches it when there is no other side to reach. Without it, a robot that finishes the course drives on forever. The obvious job is the one you tuned the number for; the hidden job is the one that saves the robot.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">A classmate says: "Just make the robot drive slower &mdash; then it'll have time to stop before it
+falls off the table." <strong>Using the arithmetic in 8A.4, explain why this does not work.</strong> (&sect;8A.4)</summary>
+
+<div class="div-mt-12px"><p>Because both numbers shrink together and the ratio never moves. At roughly 25&nbsp;cm/s you have 4.5&nbsp;cm of head start &mdash; 180&nbsp;ms &mdash; and you are not allowed to sound the alarm until the robot has been blind for longer than the widest legal gap, 10&nbsp;cm, which is 400&nbsp;ms. Halve the speed and the head start becomes 360&nbsp;ms while the alarm wait becomes 800&nbsp;ms; it is still more than double. The real comparison is between two <em>distances</em>, 4.5&nbsp;cm against 10&nbsp;cm, and speed cancels out of both sides of it. You cannot fix this by tuning.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">You are asked to build a robot that <em>can</em> stop at a table edge. <strong>You are not allowed to
+change the code.</strong> What do you change? (&sect;8A.4, &sect;3.5)</summary>
+
+<div class="div-mt-12px"><p>Where the sensor is. Read the inequality again: the warning distance has to exceed your widest legal gap, and today that is 4.5&nbsp;cm against 10&nbsp;cm. Mount a downward-facing sensor on a boom that sticks out <em>ahead of the wheels</em> and the warning distance grows &mdash; at 25&nbsp;cm the inequality flips and the same code that was impossible becomes trivial. The algorithm was never the problem. And the other legal answer, the one Section 3.5 actually recommends for your desk, is a piece of wood at the table edge: sometimes the correct engineering answer costs four dollars instead of four weeks.</p></div>
+
+</details>
+
+<p class="p-m-12px00"><button type="button" data-bc-btn="3" class="button">Mark Brain Check 03 done</button></p>
+</div>
+
+<div id="brain-check-04" class="callout-3f51b5">
+    <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</div>
+    <p>No reveal on these &mdash; there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
+    <ol>
+        <li>&sect;3.5 says the correct answer was a piece of wood. Describe a moment in your own build where you kept trying to fix something in code that was not a code problem &mdash; and say what doing the arithmetic first would have told you.</li>
+        <li>You now own two instruments that can measure the same maneuver: a stopwatch and an odometer. Name one place still left in your program where something is measured in <em>time</em>, and argue either that it should stay in time or that it should become a distance.</li>
+        <li>&sect;8A.4 did not say &ldquo;impossible&rdquo; &mdash; it named exactly which term to change. Pick one other limit on your robot and say whether it is a software limit or a hardware limit, and how you would tell the two apart.</li>
+    </ol>
+<p class="p-m-12px00"><button type="button" data-bc-btn="4" class="button">Mark Brain Check 04 done</button></p>
+</div>
+
 <h3 class="h3-c-6f7582">Engineer&rsquo;s Log</h3>
 
 <div class="div-0e1a2c">
@@ -1179,5 +1274,95 @@ float blindDistanceCm()    // how far since the line vanished</pre>
     &copy; 2026 RoboLore &middot; Written and compiled by DJ Weymuth and Claude AI
 </p>
 
+<!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
+<div id="brain-check-col" class="div-c5cae9" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
+    <img id="bc-emblem" src="../images/BrainGear_Incomplete.png" alt="Brain Check progress" class="img-h-auto-2">
+    <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" class="link-bg-3f51b5">01</a>
+    <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" class="link-bg-3f51b5">02</a>
+    <a href="#brain-check-03" data-bc-pill="3" aria-label="Brain Check 03" class="link-bg-3f51b5">03</a>
+    <a href="#brain-check-04" data-bc-pill="4" aria-label="Brain Check 04" class="link-bg-3f51b5">04</a>
+</div>
+<script>
+(function() {
+    var m = (window.location.pathname.match(/Lesson_(\d+)/) || []);
+    var key = 'bc_L' + (m[1] || '00');
+    var skey = key + '_sk';
+    var st, sk;
+    try { st = JSON.parse(window.localStorage.getItem(key)); } catch (e) { st = null; }
+    if (!st || Object.prototype.toString.call(st) !== '[object Array]' || st.length !== 4) st = [0, 0, 0, 0];
+    var skillEls = document.querySelectorAll('[data-bc-skill]');
+    try { sk = JSON.parse(window.localStorage.getItem(skey)); } catch (e) { sk = null; }
+    if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
+        sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
+    }
+    var GRAY = '../images/BrainGear_Incomplete.png';
+    var GREEN = '../images/BrainGear_Complete.png';
+    function allSkills() {
+        if (!sk.length) return true;
+        for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
+        return true;
+    }
+    function paint() {
+        var all = st[0] && st[1] && st[2] && st[3];
+        for (var q = 0; q < skillEls.length; q++) {
+            var li = skillEls[q];
+            var txt = li.textContent.replace(/^[\u2610\u2611]\s*/, '');
+            li.textContent = (sk[q] ? '\u2611 ' : '\u2610 ') + txt;
+            li.style.color = sk[q] ? '#2e7d32' : '';
+        }
+        for (var i = 0; i < 4; i++) {
+            var n = i + 1;
+            var pill = document.querySelector('[data-bc-pill="' + n + '"]');
+            if (pill) {
+                pill.style.backgroundColor = st[i] ? '#4caf50' : '#3f51b5';
+                pill.textContent = st[i] ? '\u2713' : '0' + n;
+            }
+            var ico = document.querySelector('[data-bc-icon="' + n + '"]');
+            if (ico) ico.src = st[i] ? GREEN : GRAY;
+            var btn = document.querySelector('[data-bc-btn="' + n + '"]');
+            if (btn) {
+                var locked = (n === 2) && !st[i] && !allSkills();
+                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo'
+                                : (locked ? '\uD83D\uDD12 Check all ' + skillEls.length + ' skills to unlock'
+                                          : 'Mark Brain Check 0' + n + ' done');
+                btn.style.backgroundColor = st[i] ? '#4caf50' : (locked ? '#9e9e9e' : '#3f51b5');
+                btn.style.cursor = locked ? 'not-allowed' : 'pointer';
+                btn.title = locked ? 'Tap each skill in the list above first.' : '';
+            }
+        }
+        var em = document.getElementById('bc-emblem');
+        if (em) em.src = all ? GREEN : GRAY;
+    }
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== document && !(t.getAttribute && (t.getAttribute('data-bc-btn') || t.getAttribute('data-bc-skill')))) t = t.parentNode;
+        if (!t || t === document || !t.getAttribute) return;
+        var skn = t.getAttribute('data-bc-skill');
+        if (skn) {
+            var j = parseInt(skn, 10) - 1;
+            if (j >= 0 && j < sk.length) {
+                sk[j] = sk[j] ? 0 : 1;
+                try { window.localStorage.setItem(skey, JSON.stringify(sk)); } catch (e3) {}
+                paint();
+            }
+            return;
+        }
+        var i = parseInt(t.getAttribute('data-bc-btn'), 10) - 1;
+        if (i < 0 || i > 3) return;
+        if (i === 1 && !st[i] && !allSkills()) { return; }
+        st[i] = st[i] ? 0 : 1;
+        try { window.localStorage.setItem(key, JSON.stringify(st)); } catch (e2) {}
+        paint();
+    });
+    function fit() {
+        var c = document.getElementById('brain-check-col');
+        if (c) c.style.display = (window.innerWidth < 700) ? 'none' : 'flex';
+    }
+    window.addEventListener('resize', fit);
+    paint();
+    fit();
+})();
+</script>
+<!-- ===== BRAIN CHECK COLUMN END ===== -->
 </body>
 </html>

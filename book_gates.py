@@ -2,7 +2,18 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.44.1'
+VERSION = 'v1.44.2'
+# v1.44.2 (S116): L11 IS THE ELEVENTH CONVERSION. '11' leaves BC_PENDING in the same
+#   edit that converts the lesson, which is what the named sets were built for - control-run
+#   with '11' left in and the gate NAMES L11, where a count could only have said 10.
+#   THREE BASELINES MOVED, each controlled in both directions: 27.11 645/2,365 -> 644/2,362
+#   (one selector gone, .div-bg-eafaf1, 3 declarations - the -3 IS that rule; zero born, zero
+#   altered, so NO class RENAME this time, unlike S115); 21 coverage 230 -> 235 (sole delta
+#   BrainGear_Incomplete.png 45 -> 50); family map 1053 -> 1057 (exactly ONE family moves,
+#   BRAIN CHECK 40 -> 44, other 29 byte-identical). After the moves: a deleted `color: white;`
+#   still FAILS, a deleted callout still FAILS at 1056/1057, a broken image ref still FAILS.
+#   NOTE v1.44.0 and v1.44.1 (S115) carry NO changelog line here - the version moved in the
+#   constant only. Recorded, not backfilled: this file is not the place to reconstruct S115.
 # v1.43.2 (S113): §21 coverage 224 -> 225 and the §27.11 digest moved, both because L03
 #   IMAGE 3.14 was wired in from a supplied photo. Two baselines, one cause.
 # v1.43.1 (S113): §27.11 digest moved a second time, same session, same shape - two more
@@ -200,7 +211,7 @@ def P(f):
 BC_EXEMPT = {'14', '16'}                        # DJ ruling S115: L14 competition day,
                                                 # L16 end-of-course — their §10s carry
                                                 # content the four blocks would displace.
-BC_PENDING = {'11', '12', '13', '15'}     # DJ ruling S115: to be converted.
+BC_PENDING = {'12', '13', '15'}           # DJ ruling S115: to be converted.
                                                 # Remove a number here in the same edit
                                                 # that converts its lesson, never before.
 
@@ -1549,7 +1560,11 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 230:                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired in;
+if _seen != 235:                      # 230 -> 235 at S116: L11 converted, five more
+                                      # BrainGear_Incomplete.png refs. Controlled against
+                                      # the pushed clone: that filename is the SOLE delta,
+                                      # 45 -> 50; every other image count byte-identical.
+                                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired in;
                                       # 225 -> 230 at S115: L10 converted to the four
                                       # exit blocks. Controlled: the ONLY reference that
                                       # moved is BrainGear_Incomplete.png 45 -> 50 (four
@@ -1558,7 +1573,7 @@ if _seen != 230:                      # 223 -> 224 at S106: L02 IMAGE 2.2 wired 
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 230 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 235 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -1936,7 +1951,13 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 645, 2365, '8cde3407129289d7'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 644, 2362, 'dda95c477225b591'
+#   S116: 645 -> 644, 2,365 -> 2,362. L11's conversion consumed the Skills Checklist,
+#   whose pale-green box was that rule's last use. Diffed by SELECTOR against the pushed
+#   clone, never by the comment header: exactly one selector gone (.div-bg-eafaf1, 3
+#   declarations), ZERO born, ZERO surviving rules altered - so no class RENAME this time,
+#   unlike S115. The -3 declarations IS that rule. Control-run after the move: deleting one
+#   `color: white;` still FAILS this gate.
 #   S115: 646 -> 645, 2,367 -> 2,365. L10's conversion removed both <h4> ancestors
 #   (Check Your Understanding, Rate Yourself), so one h4 rule lost its last use and
 #   build_css renumbered the survivor. Controlled by SELECTOR, not by the comment
