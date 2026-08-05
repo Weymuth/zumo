@@ -82,9 +82,10 @@ both instruments agreeing at zero.
 
 # STATE
 
-Fresh-clone verified at **`PENDING`** — S119 wrote this before its push. **Do not
-copy a sha from LIVE.md into a verification claim; verify against the tree that carries the
-work (S118).** Census **40,978**.
+Fresh-clone verified at **`0fb3b940`** — confirmed AFTER the push: recursive stage-vs-clone diff
+at zero differences, md5 on all eight files, 48/48 gates run inside that clone, `site_parity`
+PASS. **Verify against the tree that carries the work, never against the sha the session opened
+on (S118).** Census **40,978**.
 Bible **v8.108** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
@@ -232,3 +233,11 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 10. **THE NUMBER IN THE FILENAME IS THE SESSION THAT READS IT, NOT THE ONE THAT WROTE IT.**
 11. **Never write a real version number as `vOLD → vNEW` in prose.** `_versions_in()` takes the
    LAST match in the file. Write *"reaches vNEW (from vOLD)"*. Backticks do not shield it.
+12. **THE SAME TRAP APPLIES TO SHAs, AND IT IS NEW AT S119.** `session_versions` parses a sha
+   out of LIVE.md's verification line. Writing a second sha in that sentence — even to say
+   *"the session opened on X, which is NOT the verification"* — makes the tool read **X**.
+   It reported the wrong commit and looked completely normal doing it. **One sha per parsed
+   line. Never name a second one in prose, however clearly you disclaim it.**
+13. **A document cannot name the commit that contains it.** `session_versions --check` says so
+   itself. LIVE.md's verification line names the commit carrying the WORK; the follow-up push
+   that fills the line is necessarily one commit later. That is expected, not drift.
