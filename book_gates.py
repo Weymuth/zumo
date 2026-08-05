@@ -2,7 +2,16 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.44.4'
+VERSION = 'v1.44.5'
+# v1.44.5 (S119): L15 IS THE FOURTEENTH AND LAST CONVERSION. BC_PENDING is now EMPTY --
+#   the arc that began at L01 closes here, and the set is kept rather than deleted so a
+#   future L17 has a home. L15's SECTION 2 needed NO reword (verb-first already) but
+#   carries no box glyph at all, so BC02 supplies the literal box and the equality assert
+#   normalises it away -- L01's shape, not L13's. BC03 is SIX, not five: its ancestor is
+#   SECTION 10's 'say out loud' list, which no retired-name sweep names, plus one item
+#   authored on DJ's S119 ruling for objective 7. 21 coverage 245 -> 250 (four block
+#   icons plus the column emblem). 27.11 rules and declarations UNCHANGED at 643/2,357;
+#   only the digest moves, S113's shape -- zero rules born, zero died, zero altered.
 # v1.44.4 (S118): L13 IS THE THIRTEENTH CONVERSION. '13' leaves BC_PENDING in the same
 #   edit that seats its four Brain Check blocks. L13 had NO ancestor of any kind --
 #   zero pre-6 reveals, no checklist, no Knowledge Check -- so BC01/BC03/BC04 are
@@ -225,7 +234,7 @@ def P(f):
 BC_EXEMPT = {'14', '16'}                        # DJ ruling S115: L14 competition day,
                                                 # L16 end-of-course — their §10s carry
                                                 # content the four blocks would displace.
-BC_PENDING = {'15'}           # DJ ruling S115: to be converted.
+BC_PENDING = set()            # EMPTY at S119: the conversion arc is complete.
                                                 # Remove a number here in the same edit
                                                 # that converts its lesson, never before.
 
@@ -1574,7 +1583,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 245:                      # 240 -> 245 at S118: L13 converted, five more
+if _seen != 250:                      # 240 -> 245 at S118: L13 converted, five more
                                       # BrainGear_Incomplete.png refs. Controlled against
                                       # the pushed clone: that filename is the SOLE delta,
                                       # 45 -> 50; every other image count byte-identical.
@@ -1587,7 +1596,7 @@ if _seen != 245:                      # 240 -> 245 at S118: L13 converted, five 
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 245 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 250 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -1965,7 +1974,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 643, 2357, 'ee0c8ac2039bc90e'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 643, 2357, 'f852cf656a9bda51'
 #   S116: 645 -> 644, 2,365 -> 2,362. L11's conversion consumed the Skills Checklist,
 #   whose pale-green box was that rule's last use. Diffed by SELECTOR against the pushed
 #   clone, never by the comment header: exactly one selector gone (.div-bg-eafaf1, 3

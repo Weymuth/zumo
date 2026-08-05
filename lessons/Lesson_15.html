@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.17.1 -->
+<!-- Lesson version: v02.18.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +75,7 @@
 <h1 class="h1">The Present Isn't Enough</h1>
 <div class="div-fs-11em">PID Control &mdash; and the Tuning Bench That Proves It</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.17 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.18 &mdash; August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -668,6 +668,45 @@ gone. <b>That is windup, and clamping the output does not prevent it.</b></div>
 <p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-3">&#8593; Back to top</a></p>
 
 </div>
+<div id="brain-check-01" class="callout-3f51b5">
+
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</div>
+
+<p>That is the reading done. Before you touch the robot, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. P alone drives at full correction right up to the moment the robot arrives at the line &mdash; and then sails straight past it. Name the one thing P has never known. (&sect;3.2)</summary>
+
+<div class="div-mt-12px"><p><b>How fast the error is closing.</b> P looks at <i>where you are</i> and nothing else, so the correction it commands at one centimetre off the line is the same whether the robot is racing toward centre or drifting away from it. It is still commanding a hard correction at the instant it arrives, so it carries through, overshoots, and corrects hard the other way &mdash; the <b>weave</b>. The lesson&rsquo;s own analogy: walk toward a wall with your eyes closed while a friend calls out your distance. You know exactly where you are at every moment. You still hit the wall, because nobody told you how fast you were closing.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. What does the derivative actually measure &mdash; and what does a large <i>negative</i> derivative tell the controller to do? (&sect;3.3)</summary>
+
+<div class="div-mt-12px"><p>The derivative measures <b>the rate at which the error is changing</b>, computed as <code class="code-inline-bg-e8e8e8">(error - lastError) / dt</code>. A large negative derivative means the error is shrinking fast &mdash; the robot is closing on the line quickly &mdash; so D <b>subtracts from the correction before the robot gets there</b>. It brakes early. That is why D kills the weave and P cannot: braking early requires knowing which way you are headed, which is the one thing P has never known. You do not park a car by driving at the space full speed and stamping the brake at the last instant.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. A bias in your drivetrain makes the robot pull slightly right. P settles at a small, permanent error and stays there forever. Explain why P <b>structurally</b> cannot remove it &mdash; and name the term that can. (&sect;3.4)</summary>
+
+<div class="div-mt-12px"><p>P&rsquo;s output is proportional to the error, so as the error shrinks the correction shrinks with it. P comes to rest at exactly the point where its correction cancels the bias &mdash; and that point has a <b>non-zero error</b>, because with zero error P produces zero output and the bias wins again. This is <b>steady-state error</b>, and it is not a tuning failure: no value of K<sub>p</sub> removes it, because the arithmetic that leaves it there is the same arithmetic that makes P work. <b>I can.</b> Every pass the robot is even slightly off, a little more is added to a running total, so a small error that never dies grows into a large command. I is the only term that can drive a steady error to zero.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Both new terms carry <code>dt</code> &mdash; one multiplies by it, one divides by it. Say which is which, and say what <code>dt</code> actually <i>is</i>. (&sect;4.1)</summary>
+
+<div class="div-mt-12px"><p>The derivative <b>divides</b>: <code class="code-inline-bg-e8e8e8">(error - lastError) / dt</code>. The integral <b>multiplies</b>: <code class="code-inline-bg-e8e8e8">integral + (error * dt)</code>. And <code>dt</code> is <b>the length of one trip through <code>loop()</code></b> &mdash; how long this single pass took. Both terms are <b>rates</b>, and a rate is a change measured against a time, so neither one means anything until that time is a real number. That is the question this lesson makes you answer and no earlier lesson ever did.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. You are about to upgrade <code>followLine()</code> from P to PD. State the rule this whole lesson runs on &mdash; what happens to the function&rsquo;s name, and to every place that calls it. (&sect;5.1)</summary>
+
+<div class="div-mt-12px"><p><b>The name stays and every call site stays. Only the question the function asks gets better.</b> There is no <code>followLinePD()</code> and no <code>followLinePID()</code>. This is the same move Lesson 11 made when <code>handleGap()</code> went from a stopwatch to an odometer: it kept the name, the call site and the TRIM, and every state that called it got better for free. The rescue sweep, the gap crossing and the intersection run do not know this lesson happened &mdash; and all of them end up with a better controller anyway.</p></div>
+
+</details>
+
+<p class="p-m-12px00"><button type="button" data-bc-btn="1" class="button">Mark Brain Check 01 done</button></p>
+</div>
+
 <!-- ===================== SECTION 6: BUILD IT ===================== -->
 <div class="div-bg-433014"><div id="section-6"><span class="span-d-block-2">Section 6 &middot; Build It</span><span class="span-d-block">From P to PD</span></div></div>
 <div class="div-433014">
@@ -1747,18 +1786,87 @@ your controller is not controlling.</b></div>
 <div class="div-bg-6f7582"><div id="section-10"><span class="span-d-block-2">Section 10</span><span class="span-d-block">Exit Ticket</span></div></div>
 <div class="div-6f7582">
 
+<div id="brain-check-02" class="callout-3f51b5">
+
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</div>
+
+<p>The seven objectives this lesson opened with in Section 2, asked back. Tap each one you can honestly claim. All seven unlock the button.</p>
+
+    <p class="p-mb-0"><strong>I can&hellip;</strong></p>
+    <ul class="ul-ls-none-2">
+        <li data-bc-skill="1" class="li-c-pointer">☐ Explain what the <b>P</b>, <b>I</b>, and <b>D</b> terms each look at &mdash; the present, the past, and the future &mdash; and write the equation for each.</li>
+        <li data-bc-skill="2" class="li-c-pointer">☐ Upgrade <code>followLine()</code> from P to <b>PD</b> without changing its name or a single call site.</li>
+        <li data-bc-skill="3" class="li-c-pointer">☐ Explain why the derivative needs a real <code>dt</code>, and why <code>millis()</code> cannot supply one on this robot.</li>
+        <li data-bc-skill="4" class="li-c-pointer">☐ Build a <b>tuning bench</b> that scores a run with three numbers (MAE, PEAK, WEAVE) so two sets of gains can actually be compared.</li>
+        <li data-bc-skill="5" class="li-c-pointer">☐ Run a repeatable tuning protocol: find <b>Ku</b>, measure <b>Tu</b>, take a Ziegler&ndash;Nichols starting point, and hill-climb from it to a stopping condition.</li>
+        <li data-bc-skill="6" class="li-c-pointer">☐ Explain why the <b>I</b> term is a liability on the line loop and the hero on the speed loop &mdash; and defend that with the physics, not with a preference.</li>
+        <li data-bc-skill="7" class="li-c-pointer">☐ Diagnose integral <b>windup</b>, derivative <b>kick</b>, and derivative <b>noise amplification</b>, and name the fix for each.</li>
+    </ul>
+
+<p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
+</div>
+
+<div id="brain-check-03" class="callout-3f51b5">
+
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</div>
+
+<p>Your controller now anticipates, your speed loop refuses to be quietly wrong, and your bench can score both. These ask whether you know <em>why</em> &mdash; and whether you can defend it with the physics rather than with a preference.</p>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why P alone can never stop weaving, no matter what K<sub>p</sub> you choose. (&sect;3.2)</summary>
+
+<div class="div-mt-12px"><p>Because the weave is not a gain problem. Too small a K<sub>p</sub> and the robot is lazy; too large and the weave becomes a wobble &mdash; but every value in between still commands a correction based only on <i>where the robot is</i>. It is therefore still correcting hard at the instant it reaches centre, so it overshoots, and then it does the same thing in the other direction. Stopping the weave needs the controller to ease off <i>before</i> arrival, and easing off early requires knowing the error is closing &mdash; information that is absent from P at every K<sub>p</sub>.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Why <code>millis()</code> cannot time this loop, and what happens if you make it try. (&sect;4.2)</summary>
+
+<div class="div-mt-12px"><p>Your five line sensors are RC sensors: the library charges them and times the discharge, and <code>initFiveSensors()</code> sets that ceiling to <b>2000 microseconds</b>. So one pass through <code>loop()</code> takes roughly <b>2&ndash;3 milliseconds</b> &mdash; and it is not even constant, because black discharges slower than white, so the loop period depends on what is under the robot. <code>millis()</code> resolves to <b>one millisecond</b>. Asked to measure a 2 ms interval it answers &ldquo;2&rdquo;. Or &ldquo;3&rdquo;. Or <b>&ldquo;0&rdquo;</b>. On a fast pass the derivative is then <b>undefined</b> &mdash; you cannot divide by zero &mdash; and on every other pass it is quantised to 2 or 3, a &plusmn;50% error that has nothing to do with the robot and everything to do with the ruler. <code>micros()</code> resolves to 4 &micro;s, which against a 2000 &micro;s loop is a 0.2% ruler. That is the clock this lesson runs on, and it is the only one aboard that can do the job.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Why the I term ruins a curve and saves a battery &mdash; <i>using the same three lines of code</i>. (&sect;3.4, &sect;5.8)</summary>
+
+<div class="div-mt-12px"><p>I keeps a grudge: every pass it adds the error to a running total, so an error that never dies grows into a large command. Whether that is a virtue depends entirely on <b>what the steady error means</b>. On the line, a curve holds a steady error <b>on purpose</b> &mdash; that error is the correct answer for as long as the curve lasts &mdash; and I mistakes the answer for a mistake, piling up a command that fires when the curve ends. On the speed loop, a tired battery makes the robot slow <b>always</b>: a constant error, in one direction, that never goes away. That is precisely the error P converges on leaving in place, and I is the only term that can erase it. Same three lines, opposite verdict, and the thing that decides is not the code &mdash; it is whether a persistent error is the situation being right or the robot being wrong.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What K<sub>u</sub> and T<sub>u</sub> are, and where the robot got them. (&sect;7B)</summary>
+
+<div class="div-mt-12px"><p><b>K<sub>u</sub> is the ultimate gain</b> &mdash; the K<sub>p</sub> at which the robot oscillates and will not settle, a steady weave that neither grows nor dies away. You find it by setting K<sub>d</sub> to zero and <b>doubling</b> K<sub>p</sub> until it breaks, then halving; gains live on a logarithmic scale, so doubling finds the edge in six runs where nudging takes sixty. <b>T<sub>u</sub> is the period of that oscillation</b>, and the robot handed it to you for free: <b>T<sub>u</sub> = 2 &divide; WEAVE</b>, because WEAVE counts error sign-flips per second and one full oscillation is two flips. Neither number was looked up. Both were measured by the bench you built.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Why &ldquo;that looked smoother&rdquo; is not an engineering claim. (&sect;5.5)</summary>
+
+<div class="div-mt-12px"><p>Because you cannot tune what you cannot score. &ldquo;Smoother&rdquo; is one memory of a run competing with another memory of a different run, with nothing between them but confidence. The bench replaces it with three numbers that answer three <i>different</i> questions &mdash; <b>MAE</b>, how far off the robot lived; <b>PEAK</b>, its worst single moment; <b>WEAVE</b>, how much it hunted &mdash; and they can disagree. A change can lower MAE while raising PEAK, which is a real trade you are entitled to make and cannot even see without the numbers. An engineering claim names which number moved, by how much, and what it cost.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">6. Your robot steers cleanly at K<sub>d</sub> = 1.5. You raise it to 4.0 and the steering turns twitchy and jittery &mdash; noticeably worse on some floors than others. <b>Name the failure, say why raising K<sub>d</sub> caused it, and give the two fixes.</b> (&sect;3.6)</summary>
+
+<div class="div-mt-12px"><p><b>Noise amplification.</b> D is a rate &mdash; and sensor noise is a rate too, an enormous one. A reading that jitters by a few counts from one pass to the next produces a huge <code>(error - lastError)</code> over a 2 ms <code>dt</code>, and <b>D cannot tell that apart from the robot genuinely moving</b>. Raising K<sub>d</sub> multiplies signal and noise by the same number, so the twitch grows with the gain; a floor with more texture or worse contrast supplies more noise, which is why it is surface-dependent. The two fixes &sect;3.6 gives: <b>lower K<sub>d</sub></b>, or <b>low-pass filter the derivative</b> (Challenge 2). Note this is not derivative <i>kick</i> &mdash; kick is a one-pass spike when the setpoint changes, and on the line the setpoint is <code>LINE_CENTER</code>, which never moves.</p></div>
+
+</details>
+
+<p class="p-m-12px00"><button type="button" data-bc-btn="3" class="button">Mark Brain Check 03 done</button></p>
+</div>
+
+<div id="brain-check-04" class="callout-3f51b5">
+    <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</div>
+    <p>No reveal on these &mdash; there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
+    <ol>
+        <li>Your bench reports three numbers, and they do not have to agree. Find a change you made where one improved and another got worse. Write the sentence you would say to a judge that names which number you chose to serve, which you sacrificed, and why that was the right trade <i>for this robot on this course</i> &mdash; not in general.</li>
+        <li><code>followLine()</code> kept its name and every call site, and every caller got better without knowing why. Find one place in your <i>own</i> project where you would be tempted to add a second function beside the first rather than improve it &mdash; and say what that copy would cost you six weeks from now, when only one of the two has been fixed.</li>
+        <li>The same three lines of I are a liability on the line loop and the hero on the speed loop. Name one <i>other</i> instrument or technique in your project that would be right in one place and wrong in another, and state the property of the situation &mdash; not of the code &mdash; that decides which it is.</li>
+    </ol>
+<p class="p-m-12px00"><button type="button" data-bc-btn="4" class="button">Mark Brain Check 04 done</button></p>
+</div>
+
 <div class="div-m-16px0"><b>What you built.</b> A line follower that anticipates instead of only
 reacting. A speed loop that refuses to be slowly, quietly wrong. And a <b>bench</b> that can tell you,
 in a number, whether any change you make is an improvement or a story you told yourself.</div>
 
-<p><b>What you should be able to say out loud, without notes:</b></p>
-<ul>
-<li class="li-mb-6px">Why P alone can never stop weaving, no matter what K<sub>p</sub> you choose.</li>
-<li class="li-mb-6px">Why <code>millis()</code> cannot time this loop, and what happens if you make it try.</li>
-<li class="li-mb-6px">Why the I term ruins a curve and saves a battery &mdash; <i>using the same three lines of code</i>.</li>
-<li class="li-mb-6px">What K<sub>u</sub> and T<sub>u</sub> are, and where the robot got them.</li>
-<li class="li-mb-6px">Why &ldquo;that looked smoother&rdquo; is not an engineering claim.</li>
-</ul>
+
 
 <div class="div-m-16px0"><b>One sentence to carry out of here:</b><br>
 <i>P knows where you are. D knows where you are going. I remembers where you have been &mdash; and whether
@@ -2008,6 +2116,96 @@ the room is not a test.<br><br>
     &copy; 2026 RoboLore &middot; Written and compiled by DJ Weymuth and Claude AI
 </p>
 
+<!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
+<div id="brain-check-col" class="div-c5cae9" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
+    <img id="bc-emblem" src="../images/BrainGear_Incomplete.png" alt="Brain Check progress" class="img-h-auto-2">
+    <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" class="link-bg-3f51b5">01</a>
+    <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" class="link-bg-3f51b5">02</a>
+    <a href="#brain-check-03" data-bc-pill="3" aria-label="Brain Check 03" class="link-bg-3f51b5">03</a>
+    <a href="#brain-check-04" data-bc-pill="4" aria-label="Brain Check 04" class="link-bg-3f51b5">04</a>
+</div>
+<script>
+(function() {
+    var m = (window.location.pathname.match(/Lesson_(\d+)/) || []);
+    var key = 'bc_L' + (m[1] || '00');
+    var skey = key + '_sk';
+    var st, sk;
+    try { st = JSON.parse(window.localStorage.getItem(key)); } catch (e) { st = null; }
+    if (!st || Object.prototype.toString.call(st) !== '[object Array]' || st.length !== 4) st = [0, 0, 0, 0];
+    var skillEls = document.querySelectorAll('[data-bc-skill]');
+    try { sk = JSON.parse(window.localStorage.getItem(skey)); } catch (e) { sk = null; }
+    if (!sk || Object.prototype.toString.call(sk) !== '[object Array]' || sk.length !== skillEls.length) {
+        sk = []; for (var q = 0; q < skillEls.length; q++) sk.push(0);
+    }
+    var GRAY = '../images/BrainGear_Incomplete.png';
+    var GREEN = '../images/BrainGear_Complete.png';
+    function allSkills() {
+        if (!sk.length) return true;
+        for (var q = 0; q < sk.length; q++) if (!sk[q]) return false;
+        return true;
+    }
+    function paint() {
+        var all = st[0] && st[1] && st[2] && st[3];
+        for (var q = 0; q < skillEls.length; q++) {
+            var li = skillEls[q];
+            var txt = li.textContent.replace(/^[\u2610\u2611]\s*/, '');
+            li.textContent = (sk[q] ? '\u2611 ' : '\u2610 ') + txt;
+            li.style.color = sk[q] ? '#2e7d32' : '';
+        }
+        for (var i = 0; i < 4; i++) {
+            var n = i + 1;
+            var pill = document.querySelector('[data-bc-pill="' + n + '"]');
+            if (pill) {
+                pill.style.backgroundColor = st[i] ? '#4caf50' : '#3f51b5';
+                pill.textContent = st[i] ? '\u2713' : '0' + n;
+            }
+            var ico = document.querySelector('[data-bc-icon="' + n + '"]');
+            if (ico) ico.src = st[i] ? GREEN : GRAY;
+            var btn = document.querySelector('[data-bc-btn="' + n + '"]');
+            if (btn) {
+                var locked = (n === 2) && !st[i] && !allSkills();
+                btn.textContent = st[i] ? '\u2713 Brain Check 0' + n + ' done \u2014 tap to undo'
+                                : (locked ? '\uD83D\uDD12 Check all ' + skillEls.length + ' skills to unlock'
+                                          : 'Mark Brain Check 0' + n + ' done');
+                btn.style.backgroundColor = st[i] ? '#4caf50' : (locked ? '#9e9e9e' : '#3f51b5');
+                btn.style.cursor = locked ? 'not-allowed' : 'pointer';
+                btn.title = locked ? 'Tap each skill in the list above first.' : '';
+            }
+        }
+        var em = document.getElementById('bc-emblem');
+        if (em) em.src = all ? GREEN : GRAY;
+    }
+    document.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== document && !(t.getAttribute && (t.getAttribute('data-bc-btn') || t.getAttribute('data-bc-skill')))) t = t.parentNode;
+        if (!t || t === document || !t.getAttribute) return;
+        var skn = t.getAttribute('data-bc-skill');
+        if (skn) {
+            var j = parseInt(skn, 10) - 1;
+            if (j >= 0 && j < sk.length) {
+                sk[j] = sk[j] ? 0 : 1;
+                try { window.localStorage.setItem(skey, JSON.stringify(sk)); } catch (e3) {}
+                paint();
+            }
+            return;
+        }
+        var i = parseInt(t.getAttribute('data-bc-btn'), 10) - 1;
+        if (i < 0 || i > 3) return;
+        if (i === 1 && !st[i] && !allSkills()) { return; }
+        st[i] = st[i] ? 0 : 1;
+        try { window.localStorage.setItem(key, JSON.stringify(st)); } catch (e2) {}
+        paint();
+    });
+    function fit() {
+        var c = document.getElementById('brain-check-col');
+        if (c) c.style.display = (window.innerWidth < 700) ? 'none' : 'flex';
+    }
+    window.addEventListener('resize', fit);
+    paint();
+    fit();
+})();
+</script>
+<!-- ===== BRAIN CHECK COLUMN END ===== -->
 </body>
 </html>
 

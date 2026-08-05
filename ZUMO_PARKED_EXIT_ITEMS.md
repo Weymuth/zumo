@@ -335,3 +335,38 @@ The pedagogy does **not** depend on the material — §3.2's structural-limit ar
 two-instruments argument stand on any surface. It is only the **demonstration** that needs the
 coefficient. §7's own prose already knows this and says so: *"The delrin is the demonstration —
 but your hands are the proof."*
+
+---
+
+## L15 §10 "say out loud" — nothing displaced, and one instrument-vs-reading disagreement (S119 conversion)
+
+**Provenance.** `lessons/Lesson_15.html` §10, the five-item list under *What you should be able to
+say out loud, without notes.* Consumed when L15 converted at S119, L15 reaching v02.18.0.
+**Nothing was displaced** — all five migrated into BC03 and a sixth was authored. This entry
+exists for the measurement, not for a casualty.
+
+**§25.10i ran and returned nothing, which is also a result.** All **5 × 7** pairs of ancestor
+item against §2 objective were scored. **Matrix max 0.182**, against L11's four real duplicates
+at 0.55–0.73 as recorded and its three *keepers* at 0.31–0.38. Nothing came near the duplicate
+band, so no item folds and BC02 and BC03 are disjoint by measurement rather than by assertion.
+
+**Calibration limit, stated rather than assumed.** The scorer was control-run first against
+L11's four independently recorded pairings and reproduced **all four rankings** — but its
+magnitudes differ from S116's (0.36–0.86 where the record says 0.55–0.73), so the normaliser is
+not byte-identical to the one that produced those numbers. **The ranking was therefore trusted
+and S117's absolute 0.78/0.42 separation threshold deliberately was not**; separation was read
+inside this session's own matrix.
+
+**The disagreement, recorded and NOT resolved.** Reading says two pairs restate one another:
+
+| Ancestor item | Objective | Scorer | Reading |
+|---|---|---|---|
+| *Why `millis()` cannot time this loop…* | 3 — *…why `millis()` cannot supply one on this robot* | **0.154** | the same fact |
+| *Why the I term ruins a curve and saves a battery* | 6 — *why the I term is a liability on the line loop and the hero on the speed loop* | **0.111** | the same fact |
+
+Both score low because the two sentences say the same thing in almost entirely different words —
+one shared content token apiece. **The normaliser was not tuned to agree with the reading**;
+doing so would be writing the gate to the sweep (§25.10i). And in this case the disagreement
+costs nothing either way, because §25.10j's B ruling makes the overlap *intended*: BC02 collects
+the claim and BC03 tests it. If a later pass wants a semantic scorer rather than a token one,
+this is the note that says a token scorer cannot see a restatement.
