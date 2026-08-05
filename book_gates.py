@@ -2,7 +2,15 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.44.2'
+VERSION = 'v1.44.3'
+# v1.44.3 (S117): L12 IS THE TWELFTH CONVERSION. '12' leaves BC_PENDING in the same
+#   edit that converts the lesson. THREE BASELINES MOVED, each controlled both ways:
+#   27.11 644/2,362 -> 643/2,357, diffed by SELECTOR — exactly one gone (.div-ddd-3,
+#   the consumed Exit-Ticket checklist box, 5 decls, and the -5 IS that rule), ZERO
+#   born, ZERO altered, so no class RENAME (S116's shape, not S115's); 21 coverage
+#   235 -> 240 (sole delta BrainGear_Incomplete.png 55 -> 60, +5 = four block icons
+#   plus the column emblem); family map 1057 -> 1061 (build_family_map v1.3.5),
+#   exactly ONE family moving, BRAIN CHECK 44 -> 48, the other 29 byte-identical.
 # v1.44.2 (S116): L11 IS THE ELEVENTH CONVERSION. '11' leaves BC_PENDING in the same
 #   edit that converts the lesson, which is what the named sets were built for - control-run
 #   with '11' left in and the gate NAMES L11, where a count could only have said 10.
@@ -211,7 +219,7 @@ def P(f):
 BC_EXEMPT = {'14', '16'}                        # DJ ruling S115: L14 competition day,
                                                 # L16 end-of-course — their §10s carry
                                                 # content the four blocks would displace.
-BC_PENDING = {'12', '13', '15'}           # DJ ruling S115: to be converted.
+BC_PENDING = {'13', '15'}           # DJ ruling S115: to be converted.
                                                 # Remove a number here in the same edit
                                                 # that converts its lesson, never before.
 
@@ -1560,7 +1568,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 235:                      # 230 -> 235 at S116: L11 converted, five more
+if _seen != 240:                      # 235 -> 240 at S117: L12 converted, five more
                                       # BrainGear_Incomplete.png refs. Controlled against
                                       # the pushed clone: that filename is the SOLE delta,
                                       # 45 -> 50; every other image count byte-identical.
@@ -1573,7 +1581,7 @@ if _seen != 235:                      # 230 -> 235 at S116: L11 converted, five 
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 235 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 240 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -1951,7 +1959,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 644, 2362, 'dda95c477225b591'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 643, 2357, '9ba08081c21da16a'
 #   S116: 645 -> 644, 2,365 -> 2,362. L11's conversion consumed the Skills Checklist,
 #   whose pale-green box was that rule's last use. Diffed by SELECTOR against the pushed
 #   clone, never by the comment header: exactly one selector gone (.div-bg-eafaf1, 3

@@ -2,7 +2,10 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.3.4'
+VERSION = 'v1.3.5'
+# v1.3.5 (S117): baseline 1057 -> 1061. L12 converted to the four Brain Check exit
+#   blocks. Controlled at an identical generator version, pre-tree against post-tree:
+#   exactly ONE family moves, BRAIN CHECK 44 -> 48, the other 29 byte-identical.
 # v1.3.4 (S116): baseline 1053 -> 1057. L11 converted to the four Brain Check exit
 #   blocks. Controlled at an identical generator version, pre-tree against post-tree:
 #   exactly ONE family moves, BRAIN CHECK 40 -> 44, and the other 29 are byte-identical.
@@ -215,7 +218,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1057   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1061   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))
