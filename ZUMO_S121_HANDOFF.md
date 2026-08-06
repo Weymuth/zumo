@@ -130,8 +130,10 @@ L14 called optional. Prose and byte chain disagreed and the prose was wrong.
 obvious third fix was a Fall-terminal close in L13. DJ: *"I don't think we need to make the book
 tell them they are done at 13… if this book is used by others, then 13 won't be the end. It would
 be 16."* **Dropped, not parked.** The corollary is now canon: this Bible carries **no calendar
-canon** — `trimester` / `Fall` / `Winter` / `calendar` / `class period` each occur **zero** times
-in it, measured — and the term split stays in `ZUMO_Teacher_Daily_Grid_WORKING.md`, which already
+canon**. Measured **against the file as it stood before the S120 entry**, `trimester` / `Fall` /
+`Winter` / `calendar` / `class period` each occurred **zero** times; they occur now, in that entry
+and in §3.1. **The first draft asserted the zero in the present tense about a file it had just
+falsified, and a full gate pass did not see it, because no gate counts words.** The term split stays in `ZUMO_Teacher_Daily_Grid_WORKING.md`, which already
 rules its own mid-L13 break *"a calendar seam, not a book seam."*
 
 **Applied, both MODERATE (pages render differently, so both §5b homes move):**
@@ -151,12 +153,21 @@ Census 40,978 → **40,979**. Bible reaches **v8.109** (from v8.108.1).
 # S121 QUEUE
 
 ## Ruled at S120, needs a decision next
-- **THE FORWARD POINTER IS NOT A NORM AND SHOULD BE RULED.** Measured, not guessed:
+- **THE FORWARD POINTER IS NOT A NORM AND SHOULD BE RULED.** Parsed, not grepped:
   `<strong>Next:</strong>` exists in exactly **three** lessons — **13, 14, 15** — and a
-  *What's Next?* heading in **seven** — 01, 03, 05, 06, 07, 08, 14 — overlapping only in L14.
-  Six lessons carry neither construct. **Two questions:** must every lesson 01–15 carry one, and
-  which of the two constructs is canon? Ruling it makes it gateable; leaving it unruled means
-  §3.1's *"every lesson points forward"* holds only where someone happens to look (§24.2).
+  *What's Next* heading in **seven** — 01, 03, 05, 06, 07, 08, 14 — overlapping only in L14.
+  **Seven carry neither: 02, 04, 09, 10, 11, 12 and 16**, and only L16 is entitled to.
+  **The heading TEXT drifts three ways** — *What's Next* (L01, L08), *What's Next?* (L05, L06,
+  L07, L14), *What's Next: Preview of Lesson 4* (L03) — and **only L03 carries a `whats-next`
+  anchor id**, so this is §6.8a's shape: an observed practice with no canon behind it.
+  **Three questions:** must every lesson 01–15 carry a pointer, which of the two constructs is
+  canon, and does it take an anchor? Ruling it makes it gateable; unruled, §3.1's *"every lesson
+  points forward"* holds only where someone happens to look (§24.2).
+  **Instrument note, because it nearly cost a wrong number:** the S120 census was first taken by
+  grep, then re-derived by an EXACT heading-text match which returned **six** and omitted L03 —
+  the correct list came only from a third pass matching the heading text by PREFIX. Two of the
+  three instruments disagreed and the grep was the one that happened to be right. §24.13 exactly:
+  a re-derivation is only a check if the new instrument is the right one.
 
 ## Carried, unchanged
 - **L01's BC02 does not carry L01's objectives.** Ruled legacy at S119, not fixed. Still the only
