@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""next_pointer.py v1.0 - the end-of-lesson forward link (Bible §3.1a).
+"""next_pointer.py v1.0.2 - the end-of-lesson forward link (Bible §3.1a).
 
 Generates ONE byte-identical-by-construction block per lesson and seats it
 immediately before the §5b footer paragraph, which is the last element on the
@@ -40,7 +40,22 @@ import os
 import re
 import sys
 
-VERSION = 'v1.0.1'
+# VERSION below is the ONE home read by session_versions. It sits ABOVE the changelog so a
+# plain grep of this file returns the version and not a changelog line (S98).
+VERSION = 'v1.0.2'
+# v1.0.2 (S122): THE DOCSTRING BANNER WENT STALE THE MOMENT THE HOME MOVED. The banner on
+#   line 2 still read v1.0 after the previous release advanced the constant, so this file
+#   carried two versions that disagreed and the FIRST one a reader meets was the wrong one.
+#   Invisible to all 50 gates - book_gates does not look at instrument versions, and
+#   session_versions --check passed because it reads the ANCHORED home and never the banner.
+#   Caught only by grep_trap (Control D), whose entire job is to ask what a plain grep would
+#   return: 1 hit, isolated to this file, 28 other artefacts silent. The banner is not a
+#   second home, it is a LABEL, and a label that can go stale independently is the §5b
+#   two-homes failure one file over. Both lines now carry the same string; grep_trap is the
+#   check that keeps them that way.
+# v1.0.1 (S121): the lossy-derivation note below - esc() rewrites an apostrophe, so one
+#   emitted title is transformed rather than copied. Recorded, deliberately not fixed.
+# v1.0 (S121): NEW. Generates the Bible 3.1a forward link for lessons 01-15.
 
 LESSON_DIR = "lessons"
 FIRST, LAST = 1, 16
