@@ -51,7 +51,12 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.17.0'
+VERSION = 'v1.18.0'
+# v1.18.0 (S121): next_pointer registered in ARTEFACTS and added to BOTH emitted blocks.
+#   CONTROL E named it the moment the file landed in root, which is the control working as
+#   designed - the tool was written this session and would otherwise have drifted unwatched.
+#   Its VERSION literal was normalised to the house single-quoted form at the same time, so the
+#   roster pattern is the standard one rather than a one-off.
 # v1.17.0 (S114): session_numbers() - the session number lives in four hand-typed homes and
 #   nothing compared them. It drifted three times in one day. Bible == LIVE.md == handoff-1.
 # v1.16.0 (S113): _versions_in strips backticks. See the note in that function - the
@@ -172,6 +177,7 @@ ARTEFACTS = [
     ('build_palette',         'build_palette.py',         r"VERSION = '(v[\d.]+)'"),
     ('color_index',           'color_index.py',           r"VERSION = '(v[\d.]+)'"),
     ('class_sweep',           'class_sweep.py',           r"VERSION = '(v[\d.]+)'"),
+    ('next_pointer',          'next_pointer.py',          r"VERSION = '(v[\d.]+)'"),
 ]
 
 
@@ -263,6 +269,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"class_sweep {vals['class_sweep']} · "
             f"color_index {vals['color_index']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
+            f"next_pointer {vals['next_pointer']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -292,6 +299,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`class_sweep` **{vals['class_sweep']}** ·\n"
             f"`color_index` **{vals['color_index']}** ·\n"
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
+            f"`next_pointer` **{vals['next_pointer']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 
