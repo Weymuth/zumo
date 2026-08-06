@@ -1,4 +1,4 @@
-# ZUMO — S120 HANDOFF (written at S119 close · paste at top of Session 120)
+# ZUMO — S121 HANDOFF (written at S120 close · paste at top of Session 121)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** If the clone's
@@ -49,44 +49,36 @@
 **14 images outstanding of 141.** Unchanged. Photography still parked. The seven rulings under
 S114's table remain the cheapest board item and none needs a camera to DECIDE.
 
-**THE CONVERSION ARC IS FINISHED.** L15 closed at S119 and `BC_PENDING` is **empty**. Fourteen
-lessons converted, L14 and L16 exempt by DJ ruling S115. The set is kept rather than deleted so a
-future L17 has a home.
+**THE L14 → L15 → L16 FLOW ITEM IS CLOSED.** Queued by DJ at S115, unblocked when the conversion
+arc finished at S119, ruled and applied at S120. Nothing in it remains open.
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S119
+# THE ONE THING TO CARRY OUT OF S120
 
-**AN INSTRUMENT WHOSE TRANSFORM ERASES THE DISTINCTION UNDER TEST WILL REPORT AGREEMENT NO MATTER
-WHICH WAY THE ANSWER FALLS.**
+**A GATE CAN BE SATISFIED BY THE GEOMETRY OF A DEFECT RATHER THAN BY ITS ABSENCE — AND THE FIX
+IS THE THING THAT REVEALS IT.**
 
-§27.8b step 3 was run as `strip_inline --apply` **without `--include-held`** — the flag is
-written in the S119 handoff in those exact words. That reverted the four byte-exact-across-lesson
-constructs from `class=` to inline `style=` in **all fifteen** other lessons.
+§24's cross-lesson promise gate FAILED the L14 rewrite naming `L14 -> L16: promises ['PID']`.
+The new bullets carried no terminal punctuation, so *full PID* in the Lesson 15 bullet ran on
+into the Lesson 16 sentence.
 
-**And S118's own innocence proof passed on the broken tree.** Expanding a lesson through its
-tree's stylesheet resolves every class back to its declarations — so a lesson left inline expands
-**byte-identically** to one correctly classed. The proof establishes RENDERING equivalence and is
-structurally incapable of seeing FILE-STATE divergence. Only the line diff saw it, at 570 changed
-lines.
+**The ORIGINAL bullets had exactly the same run-on.** They passed only because the third bullet —
+*"Different competitions: sumo wrestling, maze solving, soccer"* — pushed the distance to the next
+period past the gate's 110-character window. Delete that bullet, as the ruling required, and the
+latent defect becomes visible. The gate was never protecting L14; a piece of prose the ruling
+happened to remove was.
 
-This is §24.8 aimed at a *proof* rather than at a gate, and it is not the same failure as S118's
-two: the read-back was fine, the assert could fail. **The transform itself was the hole.** Before
-trusting any equivalence proof, ask what its normalisation throws away — and whether the thing
-you are hunting lives in the discarded part.
-
-Redone correctly, exactly **one** lesson differs from the pushed clone plus the stylesheet, with
-both instruments agreeing at zero.
+This is §24.8 in a new place: the instrument could not distinguish *no promise* from *a promise
+too far from a period*, and the passing report read identically either way. Closed by punctuating
+each bullet as its own sentence — **not** by touching the gate.
 
 ---
 
 # STATE
 
-Fresh-clone verified at **`0fb3b940`** — confirmed AFTER the push: recursive stage-vs-clone diff
-at zero differences, md5 on every file, gates run inside that clone, `site_parity` PASS. **Verify
-against the tree that carries the work, never against the sha the session opened on (S118).**
-Census **40,978**.
-Bible **v8.108.1** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
+Fresh-clone verified at **`PENDING — fill from the push`**. Census **40,979**.
+Bible **v8.109** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -106,85 +98,84 @@ Instruments: `book_gates` **v1.45** · `lesson_inventory` **v1.2.0** ·
 `font_stack_sweep` **v1.2.0** ·
 `going_deeper` **v01.4.1**.
 
-Lessons: L01 v03.19.2 · L02 v03.11.2 · L03 v03.28.1 · L04 v04.19.2 · L05 v04.19.3 · L06 v04.23.3 · L07 v04.22.2 · L08 v04.19.3 · L09 v05.16.3 · L10 v02.17.1 · L11 v02.18.1 · L12 v01.20.1 · L13 v02.18.0 · L14 v02.22.1 · L15 v02.18.0 · L16 v02.12.1.
+Lessons: L01 v03.19.2 · L02 v03.11.2 · L03 v03.28.1 · L04 v04.19.2 · L05 v04.19.3 · L06 v04.23.3 · L07 v04.22.2 · L08 v04.19.3 · L09 v05.16.3 · L10 v02.17.1 · L11 v02.18.1 · L12 v01.20.1 · L13 v02.18.0 · L14 v02.23.0 · L15 v02.19.0 · L16 v02.12.1.
 
 **49/49 gates.** `--anomalies` silent · family map **1069/1069** · `regex_audit` 0 leads ·
-`build_css --check` current at **643 rules** · 0 dead classes · `color_index --check` clean ·
-`build_palette --check` matches the ruling · `image_audit --check` current at 14 outstanding
-of 141 · both banner generators green · `gate_payload_match` PASS on the full glob.
+`build_css --check` current at **643 rules**, UNMOVED by this session's edits · 0 dead classes ·
+`color_index --check` clean · `build_palette --check` matches the ruling · `image_audit --check`
+current at 14 outstanding of 141 · both banner generators green · `gate_payload_match` PASS on the
+full glob. **No stylesheet regeneration this session, so none of §27.8b's three steps ran and no
+innocent lesson was rewritten** — only the two edited files differ.
 
 ---
 
-# S119 WORK — L15, THE FOURTEENTH AND LAST CONVERSION
+# S120 WORK — THE FLOW RULING, AND THE ENDING THAT WAS NOT AUTHORED
 
-| Block | Ancestor | Price |
-|---|---|---|
-| **BC01** | **none** — first reveal in the file is a §6 `catchup`; 0 `check`, 0 `quiz`, 0 TRY IT | 5 authored, §3.2 → §3.3 → §3.4 → §4.1 → §5.1 |
-| **BC02** | §2's **seven** objectives — already verb-first, **no ☐ glyph at all** | 7 migrated, equality ASSERTED, literal ☐ supplied |
-| **BC03** | **§10's *What you should be able to say out loud*** — five items, under a name no retired list carries | 5 migrated + **1 authored**, all six citing §3.2 · §4.2 · §3.4+§5.8 · §7B · §5.5 · §3.6 |
-| **BC04** | none | 3 prompts authored, no reveals |
+**§3.1 IS NEW: THE BOOK ENDS AT LESSON 16, FOR EVERY READER.** The review measured the seam three
+ways and they disagreed:
 
-**§25.10l IS NEW AND IT CAME OUT OF A BAD QUESTION.** Claude asked *"objective 7 has no BC01
-item — add one?"* and DJ ruled yes. **The premise was false:** four of seven objectives had no
-BC01 item, because BC01 has never been an objective map — BC02 is. BC01 measured at **5 items in
-13 of 13** converted lessons, a norm no gate holds. Three options were priced; **DJ ruled a
-fourth on the teaching**: objective 7's verb is *Diagnose*, BC01 sits before §6 and asks what the
-BUILD depends on, and diagnostic vocabulary is what a student reaches for at the BENCH in §7. So
-objective 7 lands in **BC03**, BC01 holds at five and **14/14**, and BC03 goes to **six** —
-legal without a ruling because §25.8 is a floor and L02 ships seven.
+| Measured | Result |
+|---|---|
+| **Code chain** | continuous — L13 24,902 → L14 25,640 → L15 28,034 → L16 starts 28,034 |
+| **Narrative** | L14 carries a course ending; L15 carries no forward pointer at all |
+| **Exit blocks** | legacy / converted / legacy — the S115 exemption's visible cost |
 
-**L01 IS RULED LEGACY (DJ, S119).** L15 and L01 are the only lessons whose §2 carries no ☐, and
-S118's survey read that as *zero objectives* — it was counting the **glyph**. L15 has seven,
-verb-first, standard lead-in, so §25.10k's reword was unnecessary. L01's own BC02 carries ten
-technical-skill items against §2's six, sourced from a list §2 never states; it is pre-§25.5, not
-a competing precedent. **A separate cleanup item, not opened.**
+**L14 was closing the course two lessons early.** Its *What's Next?* offered L15 and L16 as
+post-competition ***options***, third bullet *"Different competitions: sumo wrestling, maze
+solving, soccer"* — an after-the-book list in peer position with the capstone. **L16 §4.2 audits
+*"where YOUR 28,034 bytes are"*, which IS L15's finished build**, so L16 hard-requires the lesson
+L14 called optional. Prose and byte chain disagreed and the prose was wrong.
 
-**§25.10i RAN AND RETURNED NOTHING, WHICH IS ALSO A RESULT.** All 5 × 7 pairs scored; matrix max
-**0.182** against L11's duplicates at 0.53–0.86 and its *keepers* at 0.36 on the same scorer.
-Nothing folds. The scorer was control-run first against L11's four recorded pairings and
-reproduced all four **rankings**, while its magnitudes differ from S116's — so the ranking was
-trusted and **S117's absolute 0.78/0.42 threshold deliberately was not.** Recorded, not tuned
-away: reading says say-2 restates Objective 3 and say-3 restates Objective 6; the scorer sees
-0.154 and 0.111 because those sentences share one content token.
+**A SECOND ENDING WAS OFFERED AND DJ RULED IT OUT.** The grid stops Fall at L13 Step 3, so the
+obvious third fix was a Fall-terminal close in L13. DJ: *"I don't think we need to make the book
+tell them they are done at 13… if this book is used by others, then 13 won't be the end. It would
+be 16."* **Dropped, not parked.** The corollary is now canon: this Bible carries **no calendar
+canon** — `trimester` / `Fall` / `Winter` / `calendar` / `class period` each occur **zero** times
+in it, measured — and the term split stays in `ZUMO_Teacher_Daily_Grid_WORKING.md`, which already
+rules its own mid-L13 break *"a calendar seam, not a book seam."*
 
-**Three baselines moved, each controlled in the failing direction:**
+**Applied, both MODERATE (pages render differently, so both §5b homes move):**
+- **L14** — *What's Next?* rewritten: two lessons remain, L16 named the capstone, the sumo/maze/
+  soccer line demoted out of the peer list to a closing italic. The *Final Word* and 🏆 box were
+  read and **deliberately left alone** — a competition send-off at lesson 14 is legitimate; the
+  menu was the defect.
+- **L15** — gains the `Next:` pointer it had never carried, seated on **L13's live placement**
+  (after the *One sentence to carry out of here* block, before Engineer's Log, same unclassed
+  `<p><strong>Next:</strong>` markup). Its two figures were checked, not assumed: L15 finished is
+  28,034, L16 §4.2 names that same number, the §16 ceiling is 28,672, so 638 bytes.
 
-| Baseline | Move | Control |
-|---|---|---|
-| §21 image coverage | 245 → **250** | four block icons plus the column emblem |
-| family map | 1065 → **1069** | identical generator version; ONE family moves, BRAIN CHECK 52 → 56, other 29 byte-identical |
-| §27.11 digest | → `f852cf656a9bda51` | rules/decls **UNCHANGED** at 643/2,357, zero born, zero died, zero altered — S113's shape |
-
-Plus `'15'` leaving `BC_PENDING`, which fails **naming L15** — what §25.2a's named sets buy.
-
-
-**GATE 49 IS NEW AND IT HOLDS A CONSTANT, NOT A BASELINE.** §25.10l — BC01 carries exactly five
-items — was ruled at S119 and nothing enforced it; BC01 was 14/14 and UNHELD, and the session came
-within one ruling of breaking that silently. **The number can never legitimately move again**,
-because the conversion arc is closed and `BC_PENDING` is empty: if it moves, something was edited
-that nobody ruled on. Control-run four ways — deleted item FAILS naming 4, added item FAILS naming
-6, anchor removed FAILS on COVERAGE at 13 of 14, unperturbed passes.
+Census 40,978 → **40,979**. Bible reaches **v8.109** (from v8.108.1).
 
 ---
 
-# S120 QUEUE
+# S121 QUEUE
 
-## First, because the arc just closed
-- **Revisit the L14 → L15 → L16 flow** (DJ ruling S115, queued deliberately, still untouched).
-  Now unblocked — every lesson it touches is in its final structural shape.
-- **L01's BC02 does not carry L01's objectives.** Ruled legacy at S119, not fixed. It is the one
-  remaining §25.5 violation in the book and it is now the *only* one.
-- **S116's past-tense question: RETIRE IT.** L15 carried no checklist, so it did not recur on
-  L11's successors at all. It has been carried five sessions. Retire deliberately.
-- **L10's `What You Built` is the only non-Brain-Check `<h4>` in a converted §10.** L15's
-  equivalent is unheaded prose. One look across all fourteen.
+## Ruled at S120, needs a decision next
+- **THE FORWARD POINTER IS NOT A NORM AND SHOULD BE RULED.** Measured, not guessed:
+  `<strong>Next:</strong>` exists in exactly **three** lessons — **13, 14, 15** — and a
+  *What's Next?* heading in **seven** — 01, 03, 05, 06, 07, 08, 14 — overlapping only in L14.
+  Six lessons carry neither construct. **Two questions:** must every lesson 01–15 carry one, and
+  which of the two constructs is canon? Ruling it makes it gateable; leaving it unruled means
+  §3.1's *"every lesson points forward"* holds only where someone happens to look (§24.2).
+
+## Carried, unchanged
+- **L01's BC02 does not carry L01's objectives.** Ruled legacy at S119, not fixed. Still the only
+  remaining §25.5 violation in the book.
+- **S116's past-tense question: RETIRE IT.** L15 carried no checklist so it never recurred.
+  Carried six sessions now. Retire deliberately.
+- **L10's `What You Built` is the only non-Brain-Check `<h4>` in a converted §10.** One look
+  across all fourteen.
+- **The syllabus/TDP consequence of the L13 stop, flagged S120 and NOT opened.** `ZUMO_Syllabus_
+  WORKING.md` says the TDP is written *"by Lesson 16"*, and `ZUMO_TDP_Template_v3.md` feeds §7
+  entirely from Log #14, §5's bench row from #15, and §4, §8 and the Abstract from #16. A student
+  who stops at L13 Step 3 has no source for four sections and the Abstract. **This is a
+  syllabus/TDP question, not a book question** — §3.1 rules that the book must not absorb it.
 
 ## Rulings outstanding — carried
-- **Should `build_family_map` parse its total instead of holding a baseline?** **Sixth hand edit
-  in six sessions** (1049 → 1053 → 1057 → 1061 → 1065 → 1069). **The conversion arc is over, so
-  the recurring cause is gone** — this is the session to rule it or drop it.
-- **Should `build_css` name rules by usage RANK at all?** S118's swap did not recur at S119
-  (zero names changed meaning), which is evidence about frequency, not about safety.
+- **Should `build_family_map` parse its total instead of holding a baseline?** The baseline did
+  NOT move this session, the first time in seven — the conversion arc is over and the recurring
+  cause is genuinely gone. Rule it or drop it.
+- **Should `build_css` name rules by usage RANK at all?**
 - **The `#666` footer colour** — 18 declarations, eight `.p-c-666*` families whose NAMES encode the hex.
 - **16 uppercase-only colours** — 197 occurrences, no variance, unruled.
 - **`font_stack_sweep` rule** — Consolas: 15 declarations, all with a fallback, zero bare.
@@ -193,9 +184,10 @@ that nobody ruled on. Control-run four ways — deleted item FAILS naming 4, add
 - **NOTE per-block pass** (133 blocks, four destinations).
 - **Nav `<details>` carry no `data-reveal`** — §25.12 exists because one untyped `<details>` slipped.
 - **Selftest-coverage gate** — offered, not built.
-- **§25.10l's constant lives ONLY in `book_gates.py`** (gate 49), the same shape as §21.1's
-  thresholds. Recorded S119, not fixed.
+- **§25.10l's constant lives ONLY in `book_gates.py`** (gate 49), §21.1's shape.
 - **The seven remaining figure tags** — S114's table.
+- **⭐ heavy-lesson list needs a ruling** — the grid flags L13 as now a Fall lesson carrying a
+  genuinely counter-intuitive idea, deliberately left unmarked pending DJ's call.
 
 ## Ruled, not yet done
 - **`[IMAGE 3.6]` → §22 terminal block, ONCE THERE ARE REAL NUMBERS.**
@@ -238,8 +230,8 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
    and run `book_gates` THERE before presenting md5s.**
 8. **AFTER ANY `css/book.css` REGENERATION, DIFF THE STAGE AGAINST THE PUSHED CLONE AND PUSH
    EVERY FILE THAT DIFFERS** — and diff by LINE, not only by expansion (see the S119 finding).
-9. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** At S120 close, adding
-   `ZUMO_S121_HANDOFF.md` means DELETING **this** file — a GitHub Desktop checkbox.
+9. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** At S121 close, adding
+   `ZUMO_S122_HANDOFF.md` means DELETING **this** file — a GitHub Desktop checkbox.
 10. **THE NUMBER IN THE FILENAME IS THE SESSION THAT READS IT, NOT THE ONE THAT WROTE IT.**
 11. **Never write a real version number as `vOLD → vNEW` in prose.** `_versions_in()` takes the
    LAST match in the file. Write *"reaches vNEW (from vOLD)"*. Backticks do not shield it.
