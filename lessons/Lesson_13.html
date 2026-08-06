@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.19.0 -->
+<!-- Lesson version: v02.20.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments &mdash; Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.19 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.20 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -96,7 +96,7 @@
 <div class="div-fs-105em">&#128173; THE ONE IDEA</div>
 <p class="p-m-8px000">When the reference disappears, you navigate on your instruments &mdash; and you sense on the raw channel, because calibration can only describe the world it was shown.</p>
 </div>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 2: LEARNING OBJECTIVES ===================== -->
@@ -105,14 +105,14 @@
 
 <p>By the end of this lesson you will be able to:</p>
 <ul class="ul-ls-none-3">
-<li>&#9744; Explain <strong>why silver is invisible to <code>readCalibrated()</code></strong> &mdash; the clamp at the bottom of the calibrated scale, straight from the library source</li>
-<li>&#9744; Read <strong>the raw channel</strong> &mdash; outside the calibrated world, where brighter means <em>lower</em></li>
-<li>&#9744; Write <strong>a watchful motion primitive</strong> &mdash; <code>driveUntil()</code>, a straight line with its eyes open, that reports <em>why</em> it stopped</li>
-<li>&#9744; Build <strong>the lawnmower sweep</strong> &mdash; covering an unknown room with rows, using the walls themselves to erase dead-reckoning error every single pass</li>
-<li>&#9744; Cross-examine <strong>one sensor with another</strong> &mdash; the odometer deciding whether the prox saw the wall or a victim</li>
-<li>&#9744; State <strong>an honest limitation</strong> &mdash; why the black victim ball is nearly invisible to every sensor this robot carries, measured with your own hands in Section 7A</li>
+<li>☐ Explain <strong>why silver is invisible to <code>readCalibrated()</code></strong> &mdash; the clamp at the bottom of the calibrated scale, straight from the library source</li>
+<li>☐ Read <strong>the raw channel</strong> &mdash; outside the calibrated world, where brighter means <em>lower</em></li>
+<li>☐ Write <strong>a watchful motion primitive</strong> &mdash; <code>driveUntil()</code>, a straight line with its eyes open, that reports <em>why</em> it stopped</li>
+<li>☐ Build <strong>the lawnmower sweep</strong> &mdash; covering an unknown room with rows, using the walls themselves to erase dead-reckoning error every single pass</li>
+<li>☐ Cross-examine <strong>one sensor with another</strong> &mdash; the odometer deciding whether the prox saw the wall or a victim</li>
+<li>☐ State <strong>an honest limitation</strong> &mdash; why the black victim ball is nearly invisible to every sensor this robot carries, measured with your own hands in Section 7A</li>
 </ul>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 3: THEORY ===================== -->
@@ -144,7 +144,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <li><em>"Is this brighter than anything I calibrated on?"</em> is a question <strong>about the edge</strong> of that world &mdash; and the calibrated channel clamps the answer to a lie. Raw. Deliberately.</li>
 </ul>
 <p>Lesson 11 cut a feature the hardware could not support and taught you why. This lesson uses a channel the rules seemed to forbid and teaches you why. Same discipline, opposite direction: <strong>the reason behind a rule tells you where the rule ends.</strong></p>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 2: HARDWARE & CODE ===================== -->
@@ -179,7 +179,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p class="p-m-8px000">The front proximity sensor works by bouncing infrared light off things and counting how much comes back. A black ball <strong>absorbs</strong> infrared &mdash; the same physics that makes black tape read dark to the line sensors makes a black ball return almost nothing to the prox. In Section 7A you will hold each ball in front of the sensor and watch the counts: the silver ball announces itself across the zone; the black ball barely whispers at point-blank range. This robot will find silver victims and drive straight past black ones &mdash; not because your thresholds are wrong, but because <strong>the signal is not there to threshold</strong>.</p>
 </div>
 <p>Lesson 11 taught the discipline for exactly this moment: a physically impossible feature gets <em>cut from the code and taught as a limitation</em> &mdash; because a detector that "mostly" finds black balls is worse than none; a rescuer would trust it. So the code in this lesson hunts the silver victim, honestly and well. The black ball stays on the course as a standing question. Section 8A.3 does the engineering follow-up: what sensor <em>would</em> see it, and what it would cost. (Spoiler: this is why real rescue robots carry cameras.)</p>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 5: CODE WALKTHROUGH ===================== -->
@@ -241,7 +241,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <li><code>VICTIM_SHORT_CM</code> &mdash; how much shorter than last row means "victim, not wall." Too small and gyro drift throws false victims; too big and a victim near the wall goes unnoticed.</li>
 </ul>
 <p>Until you fill them, the robot honestly refuses to work: with <code>WALL_STOP_COUNT = 0</code> every leg ends instantly, and with <code>SILVER_RAW_MAX = 0</code> the door is invisible (nothing reads brighter than zero). A blank that secretly half-works teaches you nothing. A blank that parks the robot sends you to Section 7A, which is where the answers live.</p>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 
@@ -674,7 +674,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <div class="div-fs-105em">&#128297; COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,902 bytes &mdash; down 44, and this is the finished build.</strong> Read that again: the finished robot is <em>smaller</em> than Step 5. We disassembled both to find out why: the rewritten hand-off and the recompiled state switch came out 120 bytes tighter than the stubs they replaced, while the victim bookkeeping cost only 26. Code you delete pays you back &mdash; a preview of Lesson 16, where that becomes the whole game. Total cost of Lesson 13: 368 bytes over Lesson 12. A doorway, a sweep, and a witness &mdash; for less than four hundred bytes.</p>
 </div>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 3: TESTING & CHALLENGES ===================== -->
@@ -877,7 +877,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 </pre>
 <p>Run it on the smooth zone floor and watch the rows. Each encoder corner is off by a few degrees the wheels never felt; each row inherits every corner before it; by row five the "parallel" rows are a fan, and the sweep is inspecting the same patch of floor twice while leaving another patch forever unvisited. Now put <code>turnDegreesGyro</code> back and run again: rows like ruled paper.</p>
 <p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> &mdash; the wheels, which the floor lies to, or the gyro, which measures the robot itself. The byte counts of these two builds differ by just <strong>64 bytes</strong> &mdash; 24,902 against 24,966, the price of keeping both turn functions alive in the binary &mdash; and nothing in either number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 8: TROUBLESHOOTING ===================== -->
@@ -906,7 +906,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <tr class="tr-bg-f8f9fa"><td class="td-bb-1pxsolid">Drives right past the <strong>black</strong> ball</td>
 <td class="td-bb-1pxsolid">Working as measured. That is Section 4.3, not a bug &mdash; check your 7A table.</td></tr>
 </table>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 8A: CHECKING THE CLAIMS ===================== -->
@@ -935,7 +935,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <h3 class="h3-c-2e86ab">8A.4 Landmarks &mdash; How the Pros Fly</h3>
 <p>Pure dead reckoning has a law you have now met three times: <strong>error accumulates.</strong> Lesson 6&rsquo;s square would not close; Lesson 12&rsquo;s triangle came home crooked on encoder corners; 7E&rsquo;s fan is the same law with more rows. No instrument fixes it &mdash; better instruments only slow the leak.</p>
 <p>What fixes it is <em>outside</em> the robot: a landmark. Something in the world whose position does not drift, checked against regularly. In this lesson the landmark is the wall, and the check is free &mdash; every row ends on it, so every row starts from truth. Full-scale robots do the same thing with more vocabulary: they build maps of landmarks and correct their dead reckoning against them continuously. The technique has a name &mdash; SLAM, simultaneous localization and mapping &mdash; and when you meet it someday, remember that you have already flown it: instruments to move, landmarks to stay honest.</p>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 4: CHALLENGES ===================== -->
@@ -1123,7 +1123,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 </div>
 
 
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 10: EXIT TICKET ===================== -->
@@ -1201,6 +1201,16 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 </div>
 
 <p>Inventory, because it is worth taking: your robot follows a line through intersections, around obstacles, and across gaps; recognizes a doorway that is <em>invisible to its calibrated eyes</em>; navigates a room with no markings at all, on instruments you built and tuned yourself; uses the walls of the world to keep its own arithmetic honest; and tells a wall from a victim by letting one sensor cross-examine another. That is not a toy&rsquo;s skill list. That is the working core of every warehouse robot, vacuum robot, and planetary rover in service.</p>
+<h3 id="whats-next" class="h3-c-6f7582">What's Next?</h3>
+
+<p>In <strong>Lesson 14: Competition Prep</strong>, everything this book has built stops being lessons and becomes a machine that has to work on demand, in front of people, first try.</p>
+
+<ul>
+<li>Build a self-test that catches problems before the referee does</li>
+<li>Write and rehearse your Lack-of-Progress procedure</li>
+<li>Harden the run for a track you have never seen</li>
+</ul>
+
 <p><strong>Next:</strong> Lesson 14 is Competition Prep &mdash; where everything this book has built stops being lessons and becomes a machine that has to work <em>on demand, in front of people, first try</em>. Self-tests, startup sequences, checklists: the unglamorous discipline that separates robots that demo well from robots that win.</p>
 <h3 class="h3-c-2e86ab">Engineer&rsquo;s Log</h3>
 
@@ -1214,7 +1224,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
   <p class="p-mb-0">Four messed-up files wait in <a href="#bonus-challenges" class="link-c-2e86ab">Sabotage</a> &mdash; each Maker link opens the finished build with one defect planted: two calibrations tidied into one, a TRIM measured honestly and never spent, a sweep too fast to see the ball, and a calibrated read that hides the silver strip.</p>
   </div>
 
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Four Messed Up Files</span></div></div>
@@ -1253,7 +1263,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <p>The symptom: the robot follows the line beautifully, reaches the silver strip&hellip; and reports a <strong>gap</strong>. It drives blind across the doorway, <code>GAP_MAX_CM</code> runs out on the open zone floor, and it parks in <code>LINE_LOST</code>, defeated, three centimeters inside a room it never knew it entered. Explain every beat of that story.</p><details data-reveal="solution" class="details-dee2e6-4"><summary class="summary-c-6f7582">Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p>Section 3, executed. On the calibrated channel, silver clamps to 0 on all five sensors &mdash; but the check asks for readings <em>below</em> <code>SILVER_RAW_MAX</code>, and calibrated values sit at 0 while the threshold was tuned for raw values in the hundreds; the comparison logic collapses and the door never triggers. Meanwhile all-zeros makes <code>isLineVisible()</code> report no line &mdash; so <code>handleGap()</code> takes over, exactly as it should for a real gap. The robot crosses its distance budget on open floor and gives up. <strong>One word &mdash; <code>Calibrated</code> &mdash; blinded the doorman</strong>, and note who else it blinded: the black ball has been invisible on the same physics all along. Bright-outside-the-contract and dark-absorbing-the-signal are the two edges of the same lesson: a sensor only answers the question its channel can carry.</p></div></details>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
@@ -1277,7 +1287,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <dt class="dt">Row zero / leap of faith</dt>
 <dd class="dd">The sweep&rsquo;s first row, which has no previous row to compare against and therefore must believe its prox stop is the wall. Insurable (Challenge 3), not eliminable.</dd>
 </dl>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="quick-ref"><span class="span-d-block">Quick Reference</span></div></div>
@@ -1352,7 +1362,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
         <span class="tok-569cd6">break</span>;
       }
 </pre>
-<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">&#8593; Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="figures"><span class="span-d-block">Figures</span></div></div>
@@ -1371,10 +1381,10 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <tbody>
 <tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 13.1]</code></td><td class="td-ddd-2">&sect;5.2</td><td class="td-ddd-2">The lawnmower sweep &#8212; rows wall to wall, and the wall erasing the drift every pass.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 13.2]</code></td><td class="td-ddd-2">&sect;3</td><td class="td-ddd-2">The clamp. Raw readings keep silver, white and black distinct; the calibrated map folds silver and white onto the same 0.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 13.1]</code></td><td class="td-ddd-2">&sect;4</td><td class="td-ddd-2">The rescue space: walled zone, silver entrance strip across the line, silver and black victim balls on the floor.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9744; still needed</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 13.2]</code></td><td class="td-ddd-2">&sect;8A.3</td><td class="td-ddd-2">Preview: servo gripper, modified blade, custom competition robots with arms &#8212; what the carry-them-out upgrade looks like.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9744; still needed</td></tr>
+<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 13.1]</code></td><td class="td-ddd-2">&sect;4</td><td class="td-ddd-2">The rescue space: walled zone, silver entrance strip across the line, silver and black victim balls on the floor.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">☐ still needed</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 13.2]</code></td><td class="td-ddd-2">&sect;8A.3</td><td class="td-ddd-2">Preview: servo gripper, modified blade, custom competition robots with arms &#8212; what the carry-them-out upgrade looks like.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">☐ still needed</td></tr>
 </tbody></table>
-<p class="p-mt-10px-2"><a href="#top">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 

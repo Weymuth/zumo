@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.17.0 -->
+<!-- Lesson version: v05.18.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@
 <h1 class="h1">Intersections &amp; Dead Ends</h1>
 <div class="div-fs-11em">Teaching Your Robot to Decide</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 05.17 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 05.18 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -134,13 +134,13 @@
 <div class="div-2e86ab-4">
     <h4 class="h4-c-1f2a3d-2">By the end of this lesson, you will be able to:</h4>
     <ul class="ul-ls-none-3">
-<li>&#9744; Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own tape</li>
-<li>&#9744; Identify an intersection from which outer sensors see green</li>
-<li>&#9744; Execute precise left, right, and 180&#176; turns as one-line wrappers on Lesson 6&#8217;s <code>turnDegrees()</code></li>
-<li>&#9744; Define an <strong>enum</strong> and say why it beats a magic number</li>
-<li>&#9744; Implement a four-state <strong>state machine</strong> with <code>switch</code>/<code>case</code> &#8212; and say what a missing <code>break</code> does to it</li>
-<li>&#9744; Explain why every state must name its own exit</li>
-<li>&#9744; Navigate a complete course with several intersection types</li>
+<li>☐ Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own tape</li>
+<li>☐ Identify an intersection from which outer sensors see green</li>
+<li>☐ Execute precise left, right, and 180&#176; turns as one-line wrappers on Lesson 6&#8217;s <code>turnDegrees()</code></li>
+<li>☐ Define an <strong>enum</strong> and say why it beats a magic number</li>
+<li>☐ Implement a four-state <strong>state machine</strong> with <code>switch</code>/<code>case</code> &#8212; and say what a missing <code>break</code> does to it</li>
+<li>☐ Explain why every state must name its own exit</li>
+<li>☐ Navigate a complete course with several intersection types</li>
 </ul>
 </div>
 
@@ -1395,7 +1395,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>While the robot sits in STOPPED, print all five calibrated sensor values plus <code class="code-inline-bg-e8e8e8">checkForIntersection()</code>’s verdict to the Serial Monitor, about twice a second. Slide white, green, and black under the robot and watch the verdict change live &mdash; the Green Survey’s power tool.</p>
 </div>
 <div class="div-bg-f3e5f5">
-<h4 class="h4-c-7a5905-2">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
 <p>A helper in main.cpp reads into its own local array (the module’s <code class="code-inline-bg-e8e8e8">sensorValues</code> is RobotSensors’ private property &mdash; Lesson 7’s boundaries still stand), prints, and asks for the verdict. A <code class="code-inline-bg-e8e8e8">static unsigned long</code> timestamp keeps it to every 500 ms. Call it once at the top of the STOPPED case.</p>
 </div>
 <div class="div-p-15px20px">
@@ -1466,7 +1466,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Light the yellow LED for a left decision, green for right, red for a dead end &mdash; on when the decision is announced, off once the turn completes. A human-readable state machine, visible from across the room.</p>
 </div>
 <div class="div-bg-f3e5f5">
-<h4 class="h4-c-7a5905-2">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
 <p>Two touch points, both obvious once you name the states: set the LED where the decision is announced (AT_INTERSECTION, right before <code class="code-inline-bg-e8e8e8">showDecision()</code>), clear all three where the turn finishes (EXECUTING_TURN, before returning to FOLLOWING_LINE). No LED logic anywhere else &mdash; that’s the state machine keeping jobs in their rooms.</p>
 </div>
 <div class="div-p-15px20px">
@@ -1515,7 +1515,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>Make turns self-correcting: turn <em>most</em> of the way on encoders, then creep slowly until the center sensor actually finds the line. Perfect turns even when the junction geometry isn’t perfect &mdash; the competition upgrade.</p>
 </div>
 <div class="div-bg-f3e5f5">
-<h4 class="h4-c-7a5905-2">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
 <p>Three moves: <code class="code-inline-bg-e8e8e8">turnDegrees(-60)</code> covers the predictable bulk; a slow spin (half <code class="code-inline-bg-e8e8e8">TURN_SPEED</code>) hands control to the sensors; a <code class="code-inline-bg-e8e8e8">do&amp;hellip;while</code> watches sensor <code class="code-inline-bg-e8e8e8">[2]</code> until its calibrated value says <em>black</em>. Then swap one dispatch line in EXECUTING_TURN &mdash; and notice what you did <strong>not</strong> touch: Section 8A’s modularity tip, proven.</p>
 </div>
 <div class="div-p-15px20px">
@@ -1571,7 +1571,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p>The sensors ride ahead of the wheels, so the robot detects the marker and turns <em>early</em> &mdash; wheels still short of the junction, and sometimes still parked over green after the turn. Fix it: after announcing, drive forward a few centimeters so the wheels sit on the junction, <em>then</em> turn.</p>
 </div>
 <div class="div-bg-f3e5f5">
-<h4 class="h4-c-7a5905-2">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
 <p>One constant in RobotConfig.h &mdash; the sensor-array-to-axle distance, <strong>measured on your robot</strong>, not copied &mdash; and one <code class="code-inline-bg-e8e8e8">driveDistance()</code> call at the top of EXECUTING_TURN. Lesson 6’s odometry doing intersection work.</p>
 </div>
 <div class="div-p-15px20px">
@@ -1619,7 +1619,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <p>Require <strong>three consecutive matching detections</strong> before believing a marker. One noisy reading on a curve edge should be ignored; a real marker under a moving robot still delivers three matching reads with ease.</p>
 </div>
 <div class="div-bg-f3e5f5">
-<h4 class="h4-c-7a5905-2">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
 <p>Two <code class="code-inline-bg-e8e8e8">static</code> locals inside the FOLLOWING_LINE case remember the last verdict and its streak. Same non-NO verdict &rarr; count up; anything else &rarr; reset. Only a streak of 3 gets to stop the motors and change state &mdash; and remember to reset both statics when it fires, or the <em>next</em> marker inherits a stale streak.</p>
 </div>
 <div class="div-p-15px20px">
@@ -1680,7 +1680,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <p>Solve an <em>unmarked</em> maze &mdash; no green anywhere &mdash; with the right-hand rule: at every crossing take the right; when the line dies, treat it as a dead end and turn around. Run it on a taped maze and watch it emerge.</p>
 </div>
 <div class="div-bg-f3e5f5">
-<h4 class="h4-c-7a5905-2">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
 <p>Two policy changes. <strong>Detection:</strong> an all-black sensor row (calibrated sum above ~4200) is a crossing &mdash; teach <code class="code-inline-bg-e8e8e8">checkForIntersection()</code> to return <code class="code-inline-bg-e8e8e8">GO_RIGHT</code> for it, <em>before</em> the green tests. <strong>Dead ends:</strong> in <code class="code-inline-bg-e8e8e8">handleGap()</code>, the timeout stops meaning <em>give up</em> and starts meaning <em>turn around and drive back</em>. The state machine itself needs zero changes &mdash; policies changed, structure held.</p>
 </div>
 <div class="div-p-15px20px">
@@ -1888,7 +1888,17 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <div class="callout-d4a574-bg-e8d4c4">
     <div class="div-c-8a5a2b">🚀 Coming in Lesson 10: Obstacles</div>
-    <p>So far, intersections have been <em>part of the line</em>—green markers that tell the robot where to turn. But what happens when something <strong>blocks the path entirely</strong>? In Lesson 10, you'll add new states like <code class="code-inline-bg-e8e8e8-2">AVOIDING_OBSTACLE</code> and <code class="code-inline-bg-e8e8e8-2">RETURNING_TO_LINE</code> to navigate around obstacles!</p>
+    <h3 id="whats-next" class="h3-c-6f7582">What's Next?</h3>
+
+<p>So far, intersections have been <em>part of the line</em>—green markers that tell the robot where to turn. But what happens when something <strong>blocks the path entirely</strong>?</p>
+
+<p>In <strong>Lesson 10: Obstacles</strong>, you'll add new states like <code class="code-inline-bg-e8e8e8-2">AVOIDING_OBSTACLE</code> and <code class="code-inline-bg-e8e8e8-2">RETURNING_TO_LINE</code> to navigate around obstacles!</p>
+
+<ul>
+<li>See the failure before you build the fix</li>
+<li>Detect an obstacle with the front proximity sensor</li>
+<li>Decide what to do about it, not just sense it</li>
+</ul>
 </div>
 
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>

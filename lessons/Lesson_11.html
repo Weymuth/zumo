@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.19.0 -->
+<!-- Lesson version: v02.20.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Time Lies, Distance Doesn't</h1>
 <div class="div-fs-11em">Encoder-Based Gap Crossing</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.19 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.20 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -96,7 +96,7 @@ and it drives straight off the end of the line.</p>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">The bug is in Lesson 8, and it has been there the whole time.</div>Lesson 8 crosses gaps with a <strong>stopwatch</strong>: <code>MAX_GAP_TIME = 500</code> milliseconds. But a stopwatch measures <em>how long you drove</em>. It has no idea <em>how far you got</em>. A tired battery drives slower &mdash; so the same 500&nbsp;ms carries the robot less distance. The code did not break. The code was always broken. The full battery was hiding it.</div>
 <p>This lesson fixes it in one move: <strong>stop counting time, start counting distance.</strong> You already own the hardware to do it &mdash; the encoders have been on the robot since Lesson 6.</p>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== SECTION 2: LEARNING OBJECTIVES ===================== -->
@@ -104,14 +104,14 @@ and it drives straight off the end of the line.</p>
 <div class="div-1f2a3d">
 <p>By the end of this lesson you will be able to:</p>
 <ul class="ul-ls-none-3">
-<li>&#9744; Explain why a <strong>timer</strong> is the wrong instrument for measuring a gap, and an <strong>encoder</strong> is the right one.</li>
-<li>&#9744; Convert encoder counts to centimeters using <code>COUNTS_PER_CM</code> &mdash; and never hardcode a raw count again.</li>
-<li>&#9744; Rewrite <code>handleGap()</code> so it asks "how <em>far</em> have I been blind?" instead of "how <em>long</em> have I been blind?"</li>
-<li>&#9744; Add two new states &mdash; <code>GAP_CROSSING</code> and <code>LINE_LOST</code> &mdash; to the state machine you built in Lesson 10.</li>
-<li>&#9744; Measure a real gap with your own robot instead of guessing a threshold.</li>
-<li>&#9744; Explain, with numbers, <strong>why this robot cannot be programmed to avoid falling off a table</strong> &mdash; and what you would have to change to make it possible.</li>
+<li>☐ Explain why a <strong>timer</strong> is the wrong instrument for measuring a gap, and an <strong>encoder</strong> is the right one.</li>
+<li>☐ Convert encoder counts to centimeters using <code>COUNTS_PER_CM</code> &mdash; and never hardcode a raw count again.</li>
+<li>☐ Rewrite <code>handleGap()</code> so it asks "how <em>far</em> have I been blind?" instead of "how <em>long</em> have I been blind?"</li>
+<li>☐ Add two new states &mdash; <code>GAP_CROSSING</code> and <code>LINE_LOST</code> &mdash; to the state machine you built in Lesson 10.</li>
+<li>☐ Measure a real gap with your own robot instead of guessing a threshold.</li>
+<li>☐ Explain, with numbers, <strong>why this robot cannot be programmed to avoid falling off a table</strong> &mdash; and what you would have to change to make it possible.</li>
 </ul>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== SECTION 3: THEORY ===================== -->
@@ -209,7 +209,7 @@ It said <strong>the sensor is in the wrong place</strong>. Mount a downward sens
 alarm can fire in time.</p>
 <p><strong>The fix was never a smarter algorithm. It was a mounting position.</strong>
 That is the kind of thing the math tells you, and guessing never does.</p>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 2: HARDWARE & CODE ===================== -->
@@ -247,7 +247,7 @@ That is the kind of thing the math tells you, and guessing never does.</p>
 <div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap.</div></div>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">No new wiring. No new jumpers. No new library.</div>This is what good architecture buys you. In Lesson 7 you organized the code into modules. In Lesson 6 you built <code>averageCounts()</code>. Today you spend that work &mdash; the whole lesson is about <strong>asking a better question of hardware you already own.</strong></div>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== SECTION 5: CODE WALKTHROUGH ===================== -->
@@ -341,7 +341,7 @@ void handleGap() {
 line came back, and otherwise hands off to <code>handleGap()</code>. The <em>counting</em> lives in one place.</p>
 <p>And <code>LINE_LOST</code> does something the old code never did: <strong>it tells you how far it got.</strong>
 "Blind for 12.4 cm" is a debuggable message. "LINE LOST!" is not.</p>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <div id="brain-check-01" class="callout-3f51b5">
@@ -562,7 +562,7 @@ void handleGap() {
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=11&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 11 build in Project Maker</a></p></div>
 </details>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 3: TESTING & CHALLENGES ===================== -->
@@ -722,7 +722,7 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8&#x27;s stopwatch, put bac
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=11&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Payoff</a></p></div>
 </details>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== SECTION 8: TROUBLESHOOTING ===================== -->
@@ -762,7 +762,7 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8&#x27;s stopwatch, put bac
 <td class="td-ddd">You deleted the stopwatch in Step 6 but something still reads it. Search <code>main.cpp</code> for <code>gapStartTime</code> &mdash; every reader must be gone <em>before</em> the variable is.</td>
 </tr>
 </table>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== SECTION 8A: CLOSING THE LOOP ===================== -->
@@ -835,7 +835,7 @@ Mount a downward-facing sensor on a boom that sticks out <em>ahead of the wheels
 and the warning distance grows until it exceeds the gap width. The inequality flips.
 The same code that was impossible becomes trivial.</p>
 <div class="div-27ae60"><div class="div-fs-105em">&#9989; This is what arithmetic is FOR.</div>It did not just tell you "no." It told you <strong>exactly which term to change</strong>, and roughly how much you would have to change it by.<br><br>Guessing would have told you to write better code. The code was never the problem.</div>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 4: CHALLENGES ===================== -->
@@ -1037,7 +1037,7 @@ with the demo numbers, 400 ms - 180 ms = 220 ms too late.</pre>
   <p class="p-mb-0">Four gap mysteries wait in <a href="#bonus-challenges" class="link-c-2e86ab">Sabotage</a> &mdash; each Maker link opens the finished build with one defect planted: an average that listens to only one wheel, an odometer that never re-zeroes, a TRIM you can tune all day for nothing, and centimeters that are really encoder counts.</p>
   </div>
 
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Four Gap Mysteries</span></div></div>
@@ -1092,7 +1092,7 @@ Every time. Even with <code>GAP_MAX_CM</code> set to 50.</p>
 <p><strong>Q:</strong> Fifty is a big number. Why is the budget gone immediately?</p>
 <details data-reveal="solution" class="callout-6c757d-bg-faf6fd"><summary class="summary-c-6f7582-2">&#128161; Answer</summary><div class="div-mt-12px"><p>The division by <code>COUNTS_PER_CM</code> is missing, so the function returns raw <strong>encoder counts</strong> while the name and the comparison both claim <strong>centimeters</strong>.</p><p>There are about <strong>74 counts in one centimeter</strong>. So a budget of "50" is spent after 50 counts &mdash; roughly <strong>7 millimeters</strong> of travel. The robot is over budget almost before it has moved.</p><p>The compiler cannot help you here. Counts and centimeters are both just numbers to it. <strong>Units live in your head, and in the function name &mdash; and a function whose name lies is worse than one with no name at all.</strong></p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b4_counts" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 
@@ -1180,6 +1180,16 @@ change the code.</strong> What do you change? (&sect;8A.4, &sect;3.5)</summary>
 <p class="p-m-12px00"><button type="button" data-bc-btn="4" class="button">Mark Brain Check 04 done</button></p>
 </div>
 
+<h3 id="whats-next" class="h3-c-6f7582">What's Next?</h3>
+
+<p>In <strong>Lesson 12: Wheels Lie</strong>, you&rsquo;ll meet the first sensor in this book that answers a different question than the one you asked.</p>
+
+<ul>
+<li>Turn on a slick floor and watch the encoders report a turn that never happened</li>
+<li>Compare what the encoders say against what the gyro says</li>
+<li>Decide which instrument to trust, and when</li>
+</ul>
+
 <p><strong>Next:</strong> Lesson 12 is <em>Wheels Lie</em> &mdash; you have just learned to trust the odometer over the stopwatch, and Lesson 12 shows you where the odometer itself goes blind. Put the robot on a slick floor and command a 90-degree turn: the wheels spin, the encoders count honestly, and the robot ends up pointing almost exactly where it started.</p>
 
 <h3 class="h3-c-6f7582">Engineer&rsquo;s Log</h3>
@@ -1189,7 +1199,7 @@ change the code.</strong> What do you change? (&sect;8A.4, &sect;3.5)</summary>
 <b>The failure entry.</b> Describe a maneuver that worked on a fresh battery and failed on a tired one. What replaced it &mdash; and <b>why is the replacement immune?</b><br>
 <i>Why judges care: engineers learn from mistakes. Hiding them looks naive; documenting them looks like experience.</i></div>
 
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
@@ -1210,7 +1220,7 @@ change the code.</strong> What do you change? (&sect;8A.4, &sect;3.5)</summary>
 <tr class="tr-bg-f9f9f9"><td class="td-ddd-5"><strong>IR reflectance</strong></td>
 <td class="td-ddd-5">How the line sensors work: shine IR down, measure what bounces back. <strong>A cliff and white paper look identical.</strong></td></tr>
 </table>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <div class="div-bg-6f7582"><div id="quick-ref"><span class="span-d-block">Quick Reference</span></div></div>
@@ -1247,7 +1257,7 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 <td class="td-ddd-5"><strong>NO</strong></td>
 <td class="td-ddd-5">The wheels oppose on purpose. Encoders govern the angle.</td></tr>
 </table>
-<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+<p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <div class="div-bg-6f7582"><div id="figures"><span class="span-d-block">Figures</span></div></div>
@@ -1265,7 +1275,7 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 11.2]</code></td><td class="td-ddd-2">&sect;3.5</td><td class="td-ddd-2">The cliff arithmetic: 410&nbsp;ms needed, 180&nbsp;ms available. The alarm cannot legally fire in time.</td><td class="td-ddd-2">SVG</td></tr>
 <tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 11.3]</code></td><td class="td-ddd-2">&sect;4</td><td class="td-ddd-2">The five-sensor line array, top view.</td><td class="td-ddd-2">SVG</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 11.4]</code></td><td class="td-ddd-2">&sect;3.4</td><td class="td-ddd-2">The two new states: GAP_CROSSING and LINE_LOST, and the one number between them.</td><td class="td-ddd-2">SVG</td></tr>
-</tbody></table><p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">&uarr; Back to top</a></p>
+</tbody></table><p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <hr class="hr-ddd">

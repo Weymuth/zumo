@@ -2,7 +2,22 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.46'
+VERSION = 'v1.46.2'
+# v1.46.2 (S122): NEW GATE 51 (§3.1b) plus the Tier-1 normalizations, and this is the
+#   first baseline move of the arc where rules actually DIED. 643/2,357 -> 641/2,350:
+#   .link-c-2e86ab-3 and .link-c-2e86ab-4 are gone, and the -7 declarations ARE those two
+#   rules. Both existed only to shrink the back-to-top link to 0.9em and 0.85em in five
+#   lessons; normalizing 89 links to one markup left them with zero uses, verified by
+#   grep across every page, not inferred from the rule dying. Zero born. Re-controlled
+#   against a dropped `color: white;`, which still FAILS.
+# v1.46.1 (S122): §27.11 DIGEST BASELINE MOVED, and the cause is S113's shape for the
+#   FIFTH time. The What's Next? consistency arc re-classed one h3 in Lesson 3 from
+#   .h3-c-2e86ab to .h3-c-6f7582 and seated eight NEW headings on the latter. Both
+#   classes already existed, so nothing was renamed: usage went 83 -> 82 and 42 -> 51;
+#   build_css orders rules by usage RANK, so one rule relocated by a single
+#   position and two count comments changed. Diffed by SELECTOR: 643 rules, ZERO born,
+#   ZERO died, zero declarations altered, 14 changed lines all comment or relocation.
+#   Re-controlled after the move against a dropped `color: white;`, which still FAILS.
 # v1.46 (S121): NEW GATE 50 — §3.1a, every lesson 01-15 ends with a working link to the
 #   next lesson. The book had a forward pointer in prose in 13 lessons and NO clickable
 #   link in any of the sixteen: measured, zero <a href> to a lesson file in any lesson
@@ -2023,7 +2038,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 643, 2357, '831b54e823306f8d'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 641, 2350, '4d45c7bb8062c488'
 #   S121: digest ONLY, 643/2,357 UNCHANGED - zero rules born, zero died, zero altered.
 #   S113's shape, the fourth time. Cause: §3.1a seated 15 next-lesson links, which added
 #   15 uses of .link-c-2e86ab (398->413) and 15 of .p-mt-22px (29->44). build_css orders
@@ -2367,6 +2382,73 @@ for _n in range(1, 17):
 if _seen != 15:
     bad.append(f'COVERAGE: {_seen} lessons scanned, expected 15')
 gate('\u00a73.1a every lesson 01-15 ends with a working link to the next lesson', bad)
+
+
+# ---- §3.1b: the What's Next? section — DJ ruling S122.
+# Sixteen lessons ended four different ways: seven carried a "What's Next" heading in
+# THREE spellings, five carried a bare <p><strong>Next:</strong>, one stacked both, and
+# four just stopped. The link block below is uniform because it is generated; everything
+# above it was authored per lesson and drifted, which is §6.8a's shape one construct over.
+#
+# The ruled shape is a FLOOR, not a ceiling (§25.8's precedent): heading, at least one
+# paragraph naming the next lesson in bold, at least one list. A lesson carrying more —
+# L03's and L05's forward-preview callouts, L14's competition send-off — keeps it. Nothing
+# was deleted to reach conformance; the five Next: paragraphs were MOVED inside.
+#
+# The title is DERIVED from the §6.5a strip and never typed. That is not decoration: L07's
+# prose said "Line Following" and L08's said "Intersections and Dead Ends" while the
+# generated link block on the SAME PAGE said "Line Following with P-Control" and
+# "Intersections & Dead Ends". Two spellings of one title, ninety lines apart, and no
+# instrument could see it because nothing compared prose against the strip.
+#
+# Scope note, learned three times while building this: every check here is scoped to the
+# SECTION, never to the page. A page-wide search for the opener matches L12's BACKWARD
+# references ("In Lesson 4 you calibrated..."), and a page-wide search for the Next:
+# paragraph cannot tell "moved inside the section" from "left outside it".
+bad = []
+_seen = 0
+_titles = {}
+_strip = None
+for _n in range(1, 17):
+    _s = open(f'lessons/Lesson_{_n:02d}.html', encoding='utf-8').read()
+    _i = _s.index('LESSON STRIP')
+    _b = _s[_i:_s.index('LESSON STRIP', _i + 1)]
+    if _strip is None:
+        _strip = _b
+    elif _b != _strip:
+        bad.append(f'L{_n:02d}: lesson strip differs - titles cannot be derived (§6.5a)')
+for _m in re.finditer(r'href="Lesson_(\d\d)\.html"[^>]*title="([^"]*)"', _strip or ''):
+    _titles[int(_m.group(1))] = _m.group(2).replace("'", '&rsquo;')
+
+_HEAD = '<h3 id="whats-next" class="h3-c-6f7582">What\'s Next?</h3>'
+for _n in range(1, 17):
+    _f = f'lessons/Lesson_{_n:02d}.html'
+    _s = open(_f, encoding='utf-8').read()
+    _c = _s.count(_HEAD)
+    if _n == 16:
+        if _c:
+            bad.append(f'{L(_f)}: carries a What\u2019s Next? section; L16 ends the book (§3.1)')
+        continue
+    _seen += 1
+    if _c != 1:
+        bad.append(f'{L(_f)}: {_c} canonical What\u2019s Next? heading(s), expected exactly 1 (§3.1b)')
+        continue
+    _start = _s.index(_HEAD)
+    _end = _s.find('<h3', _start + len(_HEAD))
+    _sec = _s[_start:_end if _end > 0 else len(_s)]
+    _want = f'<p>In <strong>Lesson {_n + 1}: {_titles.get(_n + 1, "?")}</strong>,'
+    if _sec.count(_want) != 1:
+        bad.append(f'{L(_f)}: opener does not match the strip - expected {_want!r}')
+    if '<li>' not in _sec:
+        bad.append(f'{L(_f)}: What\u2019s Next? section carries no list (§3.1b floor)')
+    _log = _s.find('Engineer', _end if _end > 0 else 0)
+    if _end < 0 or _log < 0 or _log - _end > 400:
+        bad.append(f'{L(_f)}: What\u2019s Next? is not seated immediately above Engineer\u2019s Log')
+    if re.search(r'<strong>\s*Next:\s*</strong>', _s.replace(_sec, '')):
+        bad.append(f'{L(_f)}: a Next: paragraph sits OUTSIDE the What\u2019s Next? section')
+if _seen != 15:
+    bad.append(f'COVERAGE: {_seen} lessons scanned, expected 15')
+gate('\u00a73.1b every lesson 01-15 carries the canonical What\u2019s Next? section', bad)
 
 print('=' * 52)
 

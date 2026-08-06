@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.20.0 -->
+<!-- Lesson version: v04.21.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -86,7 +86,7 @@
 <h1 class="h1">Line Following</h1>
 <div class="div-fs-11em">Proportional Control, and Why Bang-Bang Fails</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.20 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 04.21 &mdash; August 2026</div>
 </div>
 
 <!-- New Teaching Approach Notice -->
@@ -199,15 +199,15 @@ If the line is centered, go straight.</pre>
 <div class="div-2e86ab-4">
 
 <ul class="ul-ls-none-3">
-<li>&#9744; Explain why bang-bang control causes oscillation, and when it is nevertheless the right choice</li>
-<li>&#9744; Define <strong>error</strong>, <strong>setpoint</strong>, and <strong>proportional gain (Kp)</strong></li>
-<li>&#9744; Calculate a steering correction from the proportional formula, and say which motor gets the + and which the &#8722;</li>
-<li>&#9744; Explain why the line sensors must be <strong>calibrated</strong> before a threshold means anything</li>
-<li>&#9744; Add line-sensor functions to the RobotSensors module &#8212; and diagnose the <code>extern</code> red build on your own</li>
-<li>&#9744; Implement <code>followLine()</code> &#8212; the whole algorithm, in eight lines</li>
-<li>&#9744; Tune Kp from evidence, one variable per run, without re-flashing</li>
-<li>&#9744; Handle a gap in the line, and make the robot give up <em>on schedule</em> instead of driving on blind</li>
-<li>&#9744; Explain why a closed loop must <strong>not</strong> get TRIM</li>
+<li>☐ Explain why bang-bang control causes oscillation, and when it is nevertheless the right choice</li>
+<li>☐ Define <strong>error</strong>, <strong>setpoint</strong>, and <strong>proportional gain (Kp)</strong></li>
+<li>☐ Calculate a steering correction from the proportional formula, and say which motor gets the + and which the &#8722;</li>
+<li>☐ Explain why the line sensors must be <strong>calibrated</strong> before a threshold means anything</li>
+<li>☐ Add line-sensor functions to the RobotSensors module &#8212; and diagnose the <code>extern</code> red build on your own</li>
+<li>☐ Implement <code>followLine()</code> &#8212; the whole algorithm, in eight lines</li>
+<li>☐ Tune Kp from evidence, one variable per run, without re-flashing</li>
+<li>☐ Handle a gap in the line, and make the robot give up <em>on schedule</em> instead of driving on blind</li>
+<li>☐ Explain why a closed loop must <strong>not</strong> get TRIM</li>
 </ul>
 
 </div>
@@ -2033,7 +2033,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-f3e5f5">
 
-<h4 class="h4-c-7a5905">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
 <pre class="code-block-333"><span class="tok-b5cea8">1.</span> Start with tuned Kp
 <span class="tok-b5cea8">2.</span> Increase BASE_SPEED by <span class="tok-b5cea8">25</span>
@@ -2072,7 +2072,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-f3e5f5">
 
-<h4 class="h4-c-7a5905">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
 <pre class="code-block-333"><span class="tok-b5cea8">1.</span> Set Kp very high (<span class="tok-b5cea8">0.5</span> or more)
 <span class="tok-b5cea8">2.</span> Observe the oscillation
@@ -2110,7 +2110,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-f3e5f5">
 
-<h4 class="h4-c-7a5905">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
 <pre class="code-block-333">1. Calculate: time = distance / speed
 2. At BASE_SPEED=150, robot travels ~15cm/sec
@@ -2148,7 +2148,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-f3e5f5">
 
-<h4 class="h4-c-7a5905">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
 <pre class="code-block-333">FUNCTION drawPositionBar:
 MAP position (0-4000) to a screen column (0-20)
@@ -2222,7 +2222,7 @@ CALL it right after followLine() while running</pre>
 
 <div class="div-bg-f3e5f5">
 
-<h4 class="h4-c-7a5905">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
 <pre class="code-block-333">IF error is small (&lt; <span class="tok-b5cea8">500</span>): USE low Kp (gentle)
 ELSE IF error is medium (<span class="tok-b5cea8">500</span>-<span class="tok-b5cea8">1000</span>): USE medium Kp
@@ -2320,7 +2320,7 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <div class="div-bg-f3e5f5">
 
-<h4 class="h4-c-7a5905">🧠 THE LOGIC</h4>
+<h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
 <pre class="code-block-333">1. position, error, correction &mdash; UNCHANGED (the steering P)
 2. speed = BASE_SPEED - KS &times; |error|   (the throttle P)
@@ -2622,9 +2622,9 @@ Same root cause, two faces. What decides is what is in your files.</p>
 
 </table>
 
-<h3 class="h3-c-6f7582">What's Next</h3>
+<h3 id="whats-next" class="h3-c-6f7582">What's Next?</h3>
 
-<p>In <strong>Lesson 9: Intersections and Dead Ends</strong>, you'll learn to:</p>
+<p>In <strong>Lesson 9: Intersections &amp; Dead Ends</strong>, you'll learn to:</p>
 
 <ul>
 

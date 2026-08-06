@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.21.0 -->
+<!-- Lesson version: v01.22.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Wheels Lie</h1>
 <div class="div-fs-11em">The Gyro &mdash; Measuring the Robot, Not the Wheels</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 01.21 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 01.22 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -120,7 +120,7 @@ The wheel is the very thing it is watching. Asking an encoder whether its wheel 
 asking a witness to confirm their own alibi.</p>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">What this lesson gives you</div>A sensor that watches the <strong>robot</strong> instead of the wheels &mdash; the <strong>gyroscope</strong>. It is the first instrument in this book that can catch <em>another instrument</em> in a lie.</div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 2: LEARNING OBJECTIVES ===================== -->
@@ -129,14 +129,14 @@ asking a witness to confirm their own alibi.</p>
 
 <p>By the end of this lesson you will be able to:</p>
 <ul class="ul-ls-none-3">
-<li>&#9744; Explain <strong>why an encoder cannot detect wheel slip</strong> &mdash; and why that is a structural limit, not a bug.</li>
-<li>&#9744; Calibrate a gyroscope by measuring its <strong>zero</strong> &mdash; a sensor whose resting value is itself a lie.</li>
-<li>&#9744; Read a rotation <strong>rate</strong> and add it up over time to get an <strong>angle</strong>.</li>
-<li>&#9744; Write <code>turnDegreesGyro()</code>, a turn that closes on the <strong>robot&#x27;s</strong> angle instead of the wheels&#x27;.</li>
-<li>&#9744; Route every intersection turn in the book through the gyro &mdash; by changing <strong>three words</strong>.</li>
-<li>&#9744; Prove, with the robot in your hands, that the encoder turn and the gyro turn <em>disagree</em> &mdash; and say which one is right.</li>
+<li>☐ Explain <strong>why an encoder cannot detect wheel slip</strong> &mdash; and why that is a structural limit, not a bug.</li>
+<li>☐ Calibrate a gyroscope by measuring its <strong>zero</strong> &mdash; a sensor whose resting value is itself a lie.</li>
+<li>☐ Read a rotation <strong>rate</strong> and add it up over time to get an <strong>angle</strong>.</li>
+<li>☐ Write <code>turnDegreesGyro()</code>, a turn that closes on the <strong>robot&#x27;s</strong> angle instead of the wheels&#x27;.</li>
+<li>☐ Route every intersection turn in the book through the gyro &mdash; by changing <strong>three words</strong>.</li>
+<li>☐ Prove, with the robot in your hands, that the encoder turn and the gyro turn <em>disagree</em> &mdash; and say which one is right.</li>
 </ul>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <!-- ===================== SECTION 3: THEORY ===================== -->
 <div class="div-bg-1f2a3d"><div id="section-3"><span class="span-d-block-2">Section 3 &middot; Theory</span><span class="span-d-block">Why the Wheels Cannot Catch Themselves</span></div></div>
@@ -282,7 +282,7 @@ that is what NOTHING looks like. Remember it. Subtract it from everything, forev
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; And therefore: A SPIN CANNOT CALIBRATE A GYRO.</div>If the robot moves during those 1,024 samples, the gyro will average in <em>real rotation</em> and conclude that <strong>spinning is what standing still feels like</strong>.<br><br>It will then subtract that from every future reading &mdash; and report that a robot which is genuinely spinning is perfectly still.<br><br>You will break it on purpose in <strong>Bonus B1</strong>.</div>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">Sequence matters, and the code already gets it right.</div>Look at <code>setup()</code>: <code>gyroSetup()</code> runs <strong>before</strong> <code>waitForStart()</code>, which runs <strong>before</strong> <code>calibrateLineSensors()</code>.<br><br>That order is not an accident. <strong>Line-sensor calibration spins the robot.</strong> If the gyro calibrated after it &mdash; or during it &mdash; the spin would poison the zero. The still measurement has to come first, while nothing has moved yet.</div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 2: HARDWARE & CODE ===================== -->
@@ -360,7 +360,7 @@ and plain degrees is all you will ever see:</p>
 }</pre>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">Hidden on purpose.</div>This is what a good function <em>does</em>: it takes something ugly and necessary, and puts a clean door on it. You ask <code>getTurnAngle()</code> for degrees; you get degrees. The fixed-point arithmetic is real, it is running, and it is none of your business.<br><br><em>(Curious what <code>2^29</code> is doing there? Section 8A.3 opens the door.)</em></div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <!-- ===================== SECTION 5: CODE WALKTHROUGH ===================== -->
 <div class="div-bg-433014"><div id="section-5"><span class="span-d-block-2">Section 5 &middot; Code Walkthrough</span><span class="span-d-block">Four Functions and Three Words</span></div></div>
@@ -455,7 +455,7 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 <div class="div-27ae60"><div class="div-fs-105em">&#127942; You just upgraded every turn in the entire book.</div>You did not touch the Lesson 9 state machine. You did not touch <code>followLine()</code>. You did not touch the intersection logic, or Lesson 10&#x27;s obstacle code, or Lesson 11&#x27;s gap crossing.<br><br><strong>You changed three words inside three one-line functions</strong> &mdash; and every turn the robot makes, anywhere in the book, now closes on its <em>real</em> angle.<br><br>This is what Lesson 7 was <em>for</em>. If those turns had been written out longhand at each call site, this change would have been a fifty-line search-and-replace across four lessons, and you would have missed one.</div>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">turnDegrees() is still there. On purpose.</div>We did not delete it. It is still correct, it still works, and on carpet it still agrees with the gyro to within a degree or two.<br><br>You are going to use it again in <strong>Section 7C</strong> &mdash; to <em>break</em> it, deliberately, in front of your own eyes. <strong>Deleting the old thing teaches nothing. Contradicting it teaches everything.</strong></div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <div id="brain-check-01" class="callout-3f51b5">
@@ -749,7 +749,7 @@ Find <code>setup()</code>. Add this <strong>immediately before</strong> the
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=12&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 12 build in Project Maker</a></p></div>
 </details>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <!-- ===================== PART 3: TESTING & CHALLENGES ===================== -->
 <div class="div-bg-00474b-2">
@@ -939,7 +939,7 @@ could not know.</strong></p>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=12&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E &mdash; The Lesson 6 Square</a></p></div>
 </details>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <!-- ===================== SECTION 8: TROUBLESHOOTING ===================== -->
 <div class="div-bg-00474b"><div id="section-8"><span class="span-d-block-2">Section 8</span><span class="span-d-block">Troubleshooting</span></div></div>
@@ -953,7 +953,7 @@ could not know.</strong></p>
 <div class="div-ddd"><div class="div-bg-fdecea">Turns are consistently a few degrees short, or a few degrees long.</div><div class="div-p-13px16px"><strong>Why:</strong> Residual drift, or the motors coasting a little after <code>setSpeeds(0,0)</code>. A few degrees of error is <strong>normal and expected</strong> &mdash; the gyro is enormously better than the encoder on a slick floor, not perfect.<br><strong>Fix:</strong> If it bothers you, that is exactly what <strong>Challenge&nbsp;1</strong> is for: turn to an <em>absolute heading</em> so the small errors stop stacking up across four corners.</div></div>
 <div class="div-ddd"><div class="div-bg-fdecea">The build is red: &#x27;imu&#x27; was not declared in this scope.</div><div class="div-p-13px16px"><strong>Why:</strong> The file you are compiling cannot see the IMU object.<br><strong>Fix:</strong> Check that <code>extern Zumo32U4IMU imu;</code> is in <code>RobotSensors.h</code> (Step 2), and that the file complaining actually <code>#include</code>s <code>&quot;RobotSensors.h&quot;</code>.</div></div>
 <div class="div-ddd"><div class="div-bg-fdecea">The build is red: redefinition of &#x27;Zumo32U4IMU imu&#x27;.</div><div class="div-p-13px16px"><strong>Why:</strong> You created the object in more than one place &mdash; probably you put the real definition in the <code>.h</code> file as well as the <code>.cpp</code>.<br><strong>Fix:</strong> <strong>Exactly one</strong> file creates it: <code>RobotSensors.cpp</code>. The <code>.h</code> gets <code>extern</code> &mdash; a promise, not a thing. This is the same rule as every other object since Lesson 7.</div></div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <!-- ===================== SECTION 8A: TWO INSTRUMENTS, ONE MEASUREMENT ===================== -->
 <div class="div-bg-00474b"><div id="section-8a"><span class="span-d-block-2">Section 8A</span><span class="span-d-block">Two Instruments, One Measurement</span></div></div>
@@ -1032,7 +1032,7 @@ That is not the lesson.</p>
 Leave a Zumo powered on for an hour without touching it, and the encoder will still be telling the perfect
 truth while the gyro has quietly invented a hundred degrees of rotation that never happened.</p>
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; Notice what you did NOT do in this lesson.</div>You did not replace <code>driveDistance()</code>. <strong>Distance is still the encoder&#x27;s job</strong>, because the gyro physically cannot measure distance &mdash; it has no idea the robot is even moving in a straight line.<br><br>You gave the <strong>turning</strong> to the gyro, and left the <strong>driving</strong> with the encoder. Each sensor kept the job it is actually good at.<br><br><strong>That is the real skill: not picking the best sensor, but knowing what each one is FOR.</strong></div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <!-- ===================== PART 4: CHALLENGES ===================== -->
@@ -1288,7 +1288,7 @@ bool turnDegreesGyroSafe(float degrees) {
   <p class="p-mb-0">Four gyro mysteries wait in <a href="#bonus-challenges" class="link-c-2e86ab">Sabotage</a> &mdash; each Maker link opens the finished build with one defect planted: a robot that spins while it calibrates, a turn that never ends, a first turn that works and a second that does not, and a TRIM someone helpfully added to a turn.</p>
   </div>
 
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Four Gyro Mysteries</span></div></div>
@@ -1351,7 +1351,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 </div></div>
 <div class="div-e74c3c"><div class="div-fs-105em">&#128721; What B4 should teach you for the rest of your life</div>Three of these four mysteries change the program&#x27;s size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <!-- ===================== SECTION 10: EXIT TICKET ===================== -->
 <div class="div-bg-6f7582"><div id="section-10"><span class="span-d-block-2">Section 10</span><span class="span-d-block">Exit Ticket</span></div></div>
@@ -1434,6 +1434,16 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 No line means no closed loop &mdash; nothing to correct against, nothing to follow home.
 Everything out in the open is dead reckoning, and now you know exactly how much dead reckoning
 you can trust, and which instrument to trust it with.</p>
+<h3 id="whats-next" class="h3-c-6f7582">What's Next?</h3>
+
+<p>In <strong>Lesson 13: Rescue Zone</strong>, the line disappears and your robot has to navigate without the reference it has leaned on since Lesson 8.</p>
+
+<ul>
+<li>Count the three jobs the line has been doing for you</li>
+<li>Find out why silver is invisible to <code>readCalibrated()</code></li>
+<li>Navigate on instruments and sense on the raw channel</li>
+</ul>
+
 <p><strong>Next:</strong> Lesson 13 is <em>Rescue Zone</em> &mdash; the line has been doing three jobs since Lesson 8: telling the robot where it is, telling it where to go, and giving its sensors a scale to mean something against. In Lesson 13 the robot drives through a doorway onto an open floor, and the line is simply gone.</p>
 
 <h3 class="h3-c-6f7582-4">Engineer&rsquo;s Log</h3>
@@ -1443,7 +1453,7 @@ you can trust, and which instrument to trust it with.</p>
 <b>Cross-examine your own robot.</b> Turn it 90&deg;. Record what the encoder said and what the gyro said &mdash; on carpet, then on a slick floor. <b>Which do you trust, and when?</b><br>
 <i>Why judges care: two instruments disagreeing is data. Picking one without saying why is a guess.</i></div>
 
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
@@ -1459,7 +1469,7 @@ you can trust, and which instrument to trust it with.</p>
 <div class="callout-2e86ab-bg-fff"><div class="div-fs-105em">Open loop / Closed loop</div><strong>Open:</strong> command it and hope (needs TRIM). <strong>Closed:</strong> measure the result and correct until it is right (TRIM would fight it). <code>turnDegreesGyro()</code> is closed.</div>
 <div class="callout-2e86ab-bg-fff"><div class="div-fs-105em">I2C</div>A two-wire bus (<code>SDA</code>, <code>SCL</code>) that chips use to talk. The IMU lives on it. Must be switched on with <code>Wire.begin()</code>.</div>
 <div class="callout-2e86ab-bg-fff"><div class="div-fs-105em">Fixed-point</div>Storing a fractional value in an integer by agreeing on a scale. Used here because the ATmega32U4 has no floating-point hardware. <code>2^32 units = 360&deg;</code>, so the counter wraps correctly for free.</div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <div class="div-bg-6f7582"><div id="quick-ref"><span class="span-d-block">Quick Reference</span></div></div>
 <div class="div-6f7582">
@@ -1550,7 +1560,7 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 </table>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">And remember what Bonus B4 proved.</div>A build that weighs <strong>24,534</strong> bytes is not necessarily a <em>correct</em> build. B4 weighs exactly that and is wrong. The byte count is a useful signal, never a proof.</div>
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="figures"><span class="span-d-block">Figures</span></div></div>
@@ -1570,14 +1580,14 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 <tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 12.1]</code></td><td class="td-ddd-2">&sect;3.2</td><td class="td-ddd-2">Encoder vs. gyro &#8212; the one watches a wheel, the other watches the robot.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 12.2]</code></td><td class="td-ddd-2">&sect;3.5</td><td class="td-ddd-2">The bias: measuring the lie, 1,024 samples with the robot dead still.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
 <tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 12.3]</code></td><td class="td-ddd-2">&sect;7E</td><td class="td-ddd-2">The square that closes vs. the square that collapses.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 12.1]</code></td><td class="td-ddd-2">&sect;7</td><td class="td-ddd-2">The delrin sheet, with a Zumo mid-turn on it.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9744; still needed</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 12.1]</code></td><td class="td-ddd-2">&sect;7</td><td class="td-ddd-2">The delrin sheet, with a Zumo mid-turn on it.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">☐ still needed</td></tr>
 </tbody></table>
 <div class="callout-607d8b-bg-eceff1-4">
 <div class="div-fs-105em">🔬 Curious how any of this actually works?</div>
 <p class="p-mb-0">The <strong>Going Deeper</strong> page opens up the machinery behind two things this lesson leans on &mdash; the <em>linker</em> that noticed your unused function and threw it away, and the fixed-point arithmetic behind &sect;8A.3's gyro units. None of it is assigned, and none of it is on a quiz &mdash; it is there for when you want it. <a href="../going_deeper.html" class="link-c-2e86ab">Open Going Deeper &rarr;</a></p>
 </div>
 
-<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-4">&#8593; Back to top</a></p>
+<p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 
 </div>

@@ -1,9 +1,84 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 5, 2026 (Session 121 — **THE FORWARD POINTER IS RULED, AND THE RULING IS §3.1a: EVERY LESSON 01–15 ENDS WITH A WORKING LINK TO THE NEXT LESSON.** S120 left it open with a construct census, and re-measuring it by CONTENT rather than by construct inverted the question: seven lessons carried neither named construct, but **thirteen of fifteen already named the next lesson in their final quarter** — the pointer was nearly universal and nearly invisible, living in the last sentence of whatever block ended the lesson. **Only L11 and L12 had no forward reference at all**, L11's sole tail mention pointing *backward* to L10. DJ: *"keep the 2 new ones like the other 13."* **THE REAL DEFECT WAS THE DEAD AFFORDANCE:** measured by parse, **zero of sixteen lessons contained a single `<a href>` to a lesson file anywhere in their tail**, so *"In **Lesson 7: Code Organization**…"* is bolded text shaped exactly like a link that does nothing. DJ: *"Yes, fix it completely."* **THE SEAT IS THE RULING'S OTHER HALF AND IT IS PEDAGOGICAL:** the pointer prose sits at **84%** of the page, *above* Engineer's Log — the entry feeding the TDP, which the syllabus weights at 25% — and above the bonus block and quick reference, so a link there routes students past the graded work, which is §3.1's failure one scale down. The generated block therefore sits immediately above the §5b footer, the last element on the page and the only seat present exactly once in all sixteen. **GENERATED, NOT REPAIRED** (§6.8a): new tool **`next_pointer.py` v1.0**, titles DERIVED from the §6.5a strip after asserting it byte-identical across all sixteen, so no lesson title is typed anywhere in this session's work; **L16 generates no block and gate 50 fails if it acquires one.** **THE ANCHOR IS A TEACHER AFFORDANCE AND IS LABELLED AS ONE** — DJ ruled *"we need an anchor link in all books"* and the block carries `id="next-lesson"` in all fifteen, giving a stable Canvas address, but it buys students nothing: the strip lives in `<nav class="nav">` at `position: sticky; top: 0`, so all sixteen links are already on screen at the bottom of every page. **L03's orphan `id="whats-next"` is the proof** — the string occurs exactly once in the repo, in L03's own heading, targeted by no link, and §27.14 cannot see it because it asserts every LINK resolves to an id and never that every ID is reached. **§27.11's digest moved and the rules did not** (643/2,357, zero born, died or altered, S113's shape a fourth time): `build_css` orders by usage RANK, so fifteen new uses of `.link-c-2e86ab` and `.p-mt-22px` relocated one rule and changed two comments — 20 lines, all comment or relocation — and **every class in the new block already existed**, so no lesson was re-classed and §27.8b never ran. **THE SESSION'S DURABLE FINDING IS THE CONTROL HARNESS.** Gate 50's first four controls restored with `git checkout --`, which reverts to the **COMMITTED** tree — and none of this work was committed, so every *restore* DELETED the block rather than replacing it and three controls ran against an already-failing tree. All four printed FAIL and all four looked like evidence. **The untouched-tree control is what exposed it**, the one control whose only job is to have nothing wrong with it. Redone from a pristine snapshot, each isolates cleanly. **Version control is not a control harness when the work under test has never been committed.** Applied S121, all fifteen MODERATE. Census 40,979 → **41,028** — 45 lines for fifteen blocks plus 4 for two authored pointers, the arithmetic proving nothing else moved. Bible **v8.110** · `book_gates` **v1.46**, 50 gates.)
-**Status:** ✅ **50/50 GATES PASS · THE FORWARD-POINTER ITEM IS CLOSED.** **§3.1a is new canon** per DJ ruling: every lesson 01–15 ends with a working link to the next lesson, seated above the §5b footer so the door opens only once the exit work is behind them, carrying `id="next-lesson"` for a stable Canvas address; L16 has none and the gate enforces that. L11 and L12 also gain the `Next:` pointer they never had, seated on L13's live placement, making 11–15 uniform. **Deliberately NOT done and priced:** the heading text still drifts three ways (*What's Next* / *What's Next?* / *What's Next: Preview of Lesson 4*) and fixing it costs three MODERATE bumps for a question mark four weeks out; L03's orphan `whats-next` id is left live pending DJ's call on whether he wants it as a target. **S122 opens on two debts this session made concrete:** `next_pointer.py` is not registered in `session_versions.py` so its version is unwatched, and **§3.1 and §3.1a have no numbered section body at all** — both live only in the Bible's version line and CHANGELOG, the exact shape v8.103 closed for §24.14. Also carried: L01's BC02, S116's past-tense question (seven sessions now), L10's `<h4>`, and the syllabus/TDP consequence of the L13 stop.
+**Date:** August 6, 2026 (Session 122 — **EVERY LESSON NOW ENDS THE SAME WAY: §3.1b IS NEW CANON AND THE BOOK ENDED FOUR DIFFERENT WAYS BEFORE IT.** Seven lessons carried a *What's Next* heading in THREE spellings, five a bare `Next:` paragraph, one stacked both, four just stopped. DJ ruled A-INVERTED — build the eight UP rather than level the seven DOWN — and ruled the shape a FLOOR, not a ceiling: **nothing was deleted to reach conformance.** Titles are DERIVED from the §6.5a strip, which caught two lessons whose prose disagreed with their own generated link block ninety lines below. Plus Tier-1 normalizations from a book-wide consistency census, and `ZUMO_COLOR_LEDGER.md` opened because DJ asked the right question: *"We haven't gone through and done all the colors have you?"*)
+**Status:** ✅ **51/51 GATES PASS · THE WHAT'S NEXT ARC IS COMPLETE, ALL SIXTEEN LESSONS CONFORM.** **§3.1b is new canon**: every lesson 01–15 carries a `What's Next?` section — heading, a bold opener naming the next lesson, at least one list — seated immediately above Engineer's Log, with L16 exempt and gate 51 failing if it acquires one. **§3.1a finally has a numbered section body**, and the standing claim that §3.1 lacked one was measured FALSE — it has had one since v8.109. **The session's reusable finding is SCOPE:** three false results came from asking a SECTION question with a PAGE-wide instrument, and gate 51 is section-scoped throughout. **§27.11's baseline moved twice and the second move DIED TWO RULES** — the two back-to-top font-size variants, zero uses remaining, verified by grep rather than inferred. **The Engineer's Log stripe split was PARKED, not ruled**, and the colour work is now tracked in `ZUMO_COLOR_LEDGER.md` — 16 items, and the blocking fact that 155 hexes live inside 562 class names, so a repaint is a RENAME.
 
-**Versions:** L01 v03.20.0 · L02 v03.12.0 · L03 v03.29.0 · L04 v04.20.0 · L05 v04.20.0 · L06 v04.24.0 · L07 v04.23.0 · L08 v04.20.0 · L09 v05.17.0 · L10 v02.18.0 · L11 v02.19.0 · L12 v01.21.0 · L13 v02.19.0 · L14 v02.24.0 · L15 v02.20.0 · L16 v02.12.1 · going_deeper v01.4.1 — census **41,028** · Bible **v8.110** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.2 · **book_gates v1.46** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.18.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.2.0 · next_pointer v1.0.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `c2c8b97`.**
+**Versions:** L01 v03.21.0 · L02 v03.13.0 · L03 v03.30.0 · L04 v04.21.0 · L05 v04.20.1 · L06 v04.25.0 · L07 v04.24.0 · L08 v04.21.0 · L09 v05.18.0 · L10 v02.19.0 · L11 v02.20.0 · L12 v01.22.0 · L13 v02.20.0 · L14 v02.25.0 · L15 v02.21.0 · L16 v02.13.0 · going_deeper v01.4.1 — census **41,128** · Bible **v8.111** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.2 · **book_gates v1.46.2** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.18.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.2.0 · next_pointer v1.0.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `5ff1ab2`.**
+
+---
+---
+
+## WHAT SHIPPED IN S122
+
+**THE BOOK ENDED FOUR DIFFERENT WAYS AND NOBODY COULD SEE IT.** The generated §3.1a link block was
+uniform in all fifteen because it is generated. Everything above it was authored per lesson and had
+drifted: seven lessons carried a *What's Next* heading in **three spellings**, five carried a bare
+`<p><strong>Next:</strong>`, L14 stacked both, and four lessons simply stopped. Reading could not
+find this; parsing one construct across all sixteen and counting the distinct shapes found it in
+seconds. **That method is the session's real output** — it is what produced every finding below.
+
+**DJ RULED A-INVERTED, AND THE RULING CHANGED SHAPE TWICE UNDER MEASUREMENT.** The first pricing
+said *retire the seven headings, twelve lessons touched*. Reading what sat under those headings
+showed **752 words of authored prose** and one section — L14's — that DJ had himself ruled at S120
+to stop the lesson closing the course early. Retiring them would have deleted content and reversed
+a two-session-old ruling. Presented as A1 (delete), A2 (condense) and A-inverted (build the other
+eight up); DJ ruled A-inverted. Then, on being shown a no-callout canonical shape: *"I like the
+next example you have above, but I do not want to lose any data or prose"* — which turned the
+canonical shape from a **ceiling into a FLOOR** (§25.8's precedent). **Nothing was deleted to reach
+conformance.** The five `Next:` paragraphs were MOVED inside their sections and L01's block was
+RELOCATED past *Before You Go*, asserted by tag multiset rather than by eye.
+
+**THE TITLE IS DERIVED FROM THE §6.5a STRIP AND NEVER TYPED — AND THAT CAUGHT SOMETHING.** L07's
+prose said *Line Following* and L08's said *Intersections and Dead Ends*, while the generated link
+block **on the same page, ninety lines below**, said *Line Following with P-Control* and
+*Intersections & Dead Ends*. Two spellings of one title, invisible because no instrument compared
+prose against the strip. DJ ruled the strip's spelling both times, then asked for the title to be
+**fed rather than typed** so it self-corrects. The target is measured and unique:
+`<p>In <strong>Lesson N: Title</strong>,` occurs exactly once per lesson. **That tool is not built
+and is the top of the S123 queue.**
+
+**THE SESSION'S MOST REUSABLE FINDING IS SCOPE, AND IT COST THREE FALSE RESULTS.** A duplicate
+opener added to L05 where one already existed — the audit had reported only *no id*, which MEANT
+the paragraph was already there. A stray-`Next:` flag on L14 that could not tell *moved inside the
+section* from *left outside it*. A read-back assert that counted L12's **backward** references
+(*"In Lesson 4 you calibrated…"*). **Every one was a SECTION question asked with a PAGE-wide
+instrument.** Gate 51 is section-scoped throughout, and it immediately caught L09's opener buried
+mid-paragraph after a hand-rolled audit had passed it — the gate finding what the sweep that
+motivated it could not.
+
+**TWO DEFECTS I INTRODUCED, BOTH CAUGHT, BOTH WORTH THE RULE THEY PAID FOR.** The L05 duplicate,
+above. And a **bare `&`** emitted into L08 where the strip carries `&amp;`, because the title was
+`html.unescape`d and re-emitted raw — S94's decode-before-matching rule, inverted, and invisible to
+all 51 gates. **Re-escape before emitting.**
+
+**§27.11 MOVED TWICE AND THE SECOND MOVE DIED RULES** — the first time in this arc's history that
+S113's benign shape did not hold. 643/2,357 → **641/2,350**: `.link-c-2e86ab-3` and
+`.link-c-2e86ab-4` are gone, and **the −7 declarations ARE those two rules**. Both existed only to
+shrink the back-to-top link to 0.9em and 0.85em; normalizing left them with zero uses, **verified
+by grep across every page rather than inferred from the rule disappearing.** Zero born.
+Re-controlled after both moves against a dropped `color: white;`, which still FAILS.
+
+**TIER-1 NORMALIZATIONS, from a book-wide consistency census DJ asked for.** 17 blocks in L08–L10
+to the single spelling `🧠 THE LOGIC (Pseudocode)`. **89 of 237 back-to-top links** to one markup,
+literal ↑ and `link-c-2e86ab-2`, from six competing shapes crossing three arrow encodings with four
+classes. **98 `&#9744;` entities to the literal ☐** per v8.104 — L13 had carried both within one
+lesson.
+
+**`ZUMO_COLOR_LEDGER.md` IS NEW, AND DJ IS THE REASON.** Offered a ruling on the Engineer's Log
+stripe, he asked: *"We haven't gone through and done all the colors have you?"* Correct, and the
+measurement is worse than it looked: **169 distinct colour values, 708 tokens, ZERO custom
+properties**, and **155 hexes appearing inside 562 class names** — `#ddd` alone owns 38. **A
+repaint is a RENAME, not a substitution.** The ledger opens with 16 items, three marked
+*re-measure before ruling* because they were recorded at S94 against a tree the §27 migration has
+since replaced. The stripe split is **PARKED, not ruled**: deciding one value out of an unsettled
+palette is the S91 failure §26 exists to document. §26.10 names the ledger so it is not an ungated
+orphan in the root.
+
+**ALSO CLOSED:** `next_pointer` **v1.0.2** — its docstring banner had gone stale at v1.0 against a
+v1.0.1 home, caught by `session_versions` grep_trap Control D and invisible to all 50 gates,
+because `--check` reads the anchored home and never the banner. And two S122 queue items were
+closed **by measurement rather than by work**: `next_pointer` IS registered in `session_versions`,
+and the LIVE.md line-1968 restore is live at line 1998 reading `L01 v03.15.5`.
 
 ---
 ---
