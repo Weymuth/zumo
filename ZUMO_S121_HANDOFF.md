@@ -77,7 +77,7 @@ each bullet as its own sentence — **not** by touching the gate.
 
 # STATE
 
-Fresh-clone verified at **`PENDING — fill from the push`**. Census **40,979**.
+Fresh-clone verified at **`b3dd802`**. Census **40,979**.
 Bible **v8.109** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
