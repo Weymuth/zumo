@@ -77,7 +77,7 @@ FAILS, a block below the footer FAILS. §24.6b said *assert the injection landed
 
 # STATE
 
-Fresh-clone verified at **`cdaa395`**. Census **41,028**.
+Fresh-clone verified at **`c2c8b97`**. Census **41,028**.
 Bible **v8.110** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
@@ -96,7 +96,7 @@ Instruments: `book_gates` **v1.46** · `lesson_inventory` **v1.2.0** ·
 `class_sweep` **v1.0** ·
 `color_index` **v1.0** ·
 `font_stack_sweep` **v1.2.0** ·
-`next_pointer` **v1.0** ·
+`next_pointer` **v1.0.1** ·
 `going_deeper` **v01.4.1**.
 
 Lessons: L01 v03.20.0 · L02 v03.12.0 · L03 v03.29.0 · L04 v04.20.0 · L05 v04.20.0 · L06 v04.24.0 · L07 v04.23.0 · L08 v04.20.0 · L09 v05.17.0 · L10 v02.18.0 · L11 v02.19.0 · L12 v01.21.0 · L13 v02.19.0 · L14 v02.24.0 · L15 v02.20.0 · L16 v02.12.1.
@@ -153,6 +153,33 @@ is the arithmetic proving nothing else moved.
 ---
 
 # S122 QUEUE
+
+## Found after the S121 push, fixed, and worth a rule
+- **A LOOP WITH NO `break` DESTROYED A HISTORICAL LINE IN LIVE.md, AND NO GATE COULD SEE IT.**
+  The S121 regeneration replaced every line matching `**Versions:**`, not the first — so the
+  per-session snapshot at line 1968 (an L01 from the v03.15 era) was overwritten with the S121 line
+  and pushed. **The landmark COUNT was 2 before and 2 after**, so any count-based check is satisfied
+  BY the defect — §24.6's shape exactly, one file over. Caught only by diffing LIVE.md against the
+  pre-push clone, which is not part of any ritual. Restored byte-exact from that clone; LIVE.md now
+  differs from its pre-push state in exactly ONE region, asserted. **The rule to adopt: an edit to a
+  file with repeated landmark lines targets an INDEX and asserts it (§6.12c for markdown), never a
+  prefix match — and a regeneration is verified by DIFFING against the pre-push copy, never by
+  re-counting landmarks.** Offered and not built: a gate asserting LIVE.md's historical per-session
+  blocks are append-only.
+- **`next_pointer.py` reaches v1.0.1** — the lossy-derivation note DJ asked for is now in the
+  docstring: `esc()` rewrites an apostrophe to `&rsquo;`, so the emitted title is not a byte-faithful
+  copy of the strip's. One title is affected (L11's), nothing is broken, and L10's own callout
+  already spells it that way. **Fix deferred by DJ ruling** — dropping the apostrophe branch changes
+  one character in `Lesson_10.html` and needs a version bump.
+- **BODY DEPTH IS ALREADY UNIFORM — THE VARIANCE I REPORTED DID NOT EXIST.** DJ ruled that all body
+  depths should be identical across the book; measured three ways, they already are. The footer and
+  the next-lesson block are direct children of `<body>` in all sixteen, ONE distinct ancestor chain
+  each, confirmed by an independent library (bs4) after two hand-rolled parsers disagreed. **The
+  2-vs-3 spread I reported was an instrument defect:** the parser pushed every start tag onto its
+  stack including void elements (`<br>`, `<img>`, `<hr>`), which never emit an end tag, so measured
+  depth grew with the number of unrelated voids in the ancestry. Control-run: 0/1/3 preceding `<br>`
+  gives depth 2/3/5 on the buggy parser and 2/2/2 on the void-aware one. **No work is required, and
+  a wrong finding cost a ruling.**
 
 ## Opened by S121, needs a decision
 - **`next_pointer.py` IS NOT REGISTERED IN `session_versions.py`.** Its version is therefore

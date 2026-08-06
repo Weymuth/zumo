@@ -13,6 +13,19 @@ Design constraints, each of them load-bearing:
   * No inline style="" is emitted (§27.12).
   * The href and the id both resolve, so §27.14 stays green.
   * Lesson titles are DERIVED from the lesson strip, never typed (§24.10).
+
+    KNOWN LOSSY STEP — recorded S121 by DJ ruling, deliberately NOT fixed yet.
+    esc() rewrites an apostrophe to &rsquo;, so the title this tool emits is NOT a
+    byte-faithful copy of the strip's. Exactly one title is affected today:
+    L11's "Time Lies, Distance Doesn't", which the strip spells with an ASCII
+    apostrophe and which L10's generated link therefore renders as "Doesn’t".
+    Nothing is broken by this and L10's own §NEXT LESSON callout already spells it
+    &rsquo;, so the page is self-consistent — but the docstring above claims the
+    titles are derived, and one character of them is transformed instead.
+    The consequence to watch: edit a title in the strip and the block follows,
+    EXCEPT across an apostrophe. Fix is to drop the apostrophe branch from esc()
+    and let the strip's own spelling through; that changes one character in
+    Lesson_10.html and needs a version bump, so it is queued rather than slipped in.
   * L16 gets no block: it is the last lesson and is entitled to none (§3.1).
 
 Usage:
@@ -27,7 +40,7 @@ import os
 import re
 import sys
 
-VERSION = 'v1.0'
+VERSION = 'v1.0.1'
 
 LESSON_DIR = "lessons"
 FIRST, LAST = 1, 16
