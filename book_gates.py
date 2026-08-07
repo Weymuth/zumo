@@ -1660,22 +1660,60 @@ gate('\u00a75.1 callout title uses the block form, never a bare <strong>', bad)
 _SCHEME = {('#f0f7f0', '#6b8e6b'): 'TIP',
            ('#eceff1', '#607d8b'): 'NOTE',
            ('#fff8e1', '#ffc107'): 'WARNING'}
+# ---- S129: THE GLYPH LEAVES THIS GATE, IN BOTH OF THE PLACES IT SAT.
+# ---- S92 scoped on GLYPH AND SCHEME AGREEING, because the scheme alone is not the family
+# ---- of record -- 24 blocks borrow §6.6a paint while carrying another family's glyph. That
+# ---- reasoning stands; the glyph was simply the only content signal available in S92.
+# ---- §24.14a made the family an ATTRIBUTE, so the agreement is now scheme vs data-family,
+# ---- which is content rather than decoration. This matters beyond tidiness: the marks arc
+# ---- replaces the emoji, and the S128 L04 control measured this gate's coverage falling
+# ---- 251 -> 240 on ONE lesson's worth of marks, because the glyph here is a SCOPE FILTER --
+# ---- so blocks left un-inspected rather than failing. Silent, and the silence grows with
+# ---- every mark applied.
+# ---- MEASURED, not assumed: the swap scopes 255 where the glyph scoped 251, and the five
+# ---- that enter were hidden ONLY by wearing a non-canonical emoji on canonical paint.
+# ---- One passes; four carry a descriptive title in the label div and are HELD BY NAME
+# ---- below, because a gate must not silently exempt what it has just been able to see.
 _FAMGLYPH = {'TIP': '\U0001F4A1', 'NOTE': '\U0001F4D8', 'WARNING': '\u26A0'}
+# S129: newly visible §5.1 violations, held by NAME (§25.2a) pending DJ's ruling on whether
+# the label is corrected or the block is ruled out of §6.6a. Each is on canonical §6.6a paint
+# with a content-resolved family, and each carries a descriptive title where Option C (S92)
+# requires the bare family word. Emptying this set must FAIL, not pass -- see the coverage arm.
+# S129: EMPTIED. DJ ruled option A -- canonical family glyph in the label, old glyph dropped
+# -- and all four were split in the same pass, so the hold has no members. Kept as a named
+# set rather than deleted: the second coverage arm below still fails if a member is added
+# without a matching block, which is the drift a bare deletion would stop catching.
+_S51_HELD = set()
+
+
+def _undecorate(s):
+    """Strip a leading decoration run -- emoji, variation selector, spacing.
+
+    The family words are ASCII, so removing leading non-ASCII is safe here. This is what
+    makes the check MARK-SAFE: the label extractor already strips every tag, so an
+    <img data-mark> contributes no text and a marked label reduces to the same string a
+    glyphed one does. The gate therefore asserts the PROPERTY -- the label holds exactly
+    the family word -- and says nothing about which decoration precedes it. Decoration is
+    owned by §24.14b, deliberately, so this gate cannot certify a spelling (S128 rule 18).
+    """
+    # U+FE0F needs no literal here: it is above the 0x2100 floor, so the ordinal test
+    # already takes it. Spelling it out would be a glyph literal in a locator for no gain.
+    i = 0
+    while i < len(s) and (ord(s[i]) >= 0x2100 or s[i] in ' \t'):
+        i += 1
+    return s[i:].strip()
+
+
 bad = []
 seen = 0
+held_seen = set()
 for f in sorted(glob.glob('lessons/Lesson_*.html')):
     src = R[f]
     lines = src.split('\n')
     for c in LI.build(f)['callouts']:
         fam = _SCHEME.get((c['bg'], c['border']))
-        if fam is None or c['glyph'] not in _FAMGLYPH.values():
-            # S92: scope is blocks where GLYPH AND SCHEME AGREE. The scheme alone is NOT the
-            # family of record -- 24 blocks borrow §6.6a paint while carrying another
-            # family's glyph (7x the going_deeper hook, 7x DO THIS NOW, 2x WHAT YOU NEED,
-            # 8 one-offs). Asserting scheme-as-family would require breaking the rule 24
-            # times, so the gate holds the agreeing set and the 24 are logged for the
-            # family-table batch. The earlier ruling was tested only on blocks that COULD
-            # NOT disagree; an assert that cannot fail is not evidence.
+        _fa = re.search(r'data-family="([^"]*)"', lines[c['line'] - 1])
+        if fam is None or _fa is None or _fa.group(1) != fam:
             continue
         off = sum(len(l) + 1 for l in lines[:c['line'] - 1])
         # v1.26.3: anchor on the callout's OWN opening tag, not the first '>' after the line
@@ -1694,18 +1732,24 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
         # unescape: glyphs are numeric entities in some lessons (L11/L12), and a matcher that
         # forgets that reports every entity-encoded block as broken. S92 hit this exact bug.
         label = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', m.group(1)))).strip()
-        want = _FAMGLYPH[fam]
-        if not label.startswith(want):
-            bad.append(f'{L(f)} line {c["line"]}: label glyph disagrees with the '
-                       f'{fam} scheme, \u00a75.1')
+        rest = _undecorate(label)
+        if rest == fam:
             continue
-        rest = label[len(want):].lstrip('\ufe0f').strip()
-        if rest != fam:
-            bad.append(f'{L(f)} line {c["line"]}: label carries {rest[:40]!r}, '
-                       f'\u00a75.1 requires exactly {fam!r}')
-if seen != 251:
-    bad.append(f'COVERAGE: {seen} labels inspected, expected 251 '
-               f'(3 off-canon blocks are out of scope by ruling)')
+        if rest in _S51_HELD:
+            held_seen.add(rest)
+            continue
+        bad.append(f'{L(f)} line {c["line"]}: label carries {rest[:40]!r}, '
+                   f'\u00a75.1 requires exactly {fam!r}')
+# COVERAGE has TWO arms and they fail for different reasons (S117/S118: a gate that scans
+# zero blocks passes). The first pins the scoped population; the second pins the hold, so a
+# held label that gets CORRECTED -- or a hold that drifts off its subject -- fails loudly
+# instead of silently certifying nothing (S128 rule 20).
+if seen != 255:
+    bad.append(f'COVERAGE: {seen} labels inspected, expected 255 '
+               f'(scheme and data-family must agree; blocks with no title div are gate 34s)')
+if held_seen != _S51_HELD:
+    bad.append(f'COVERAGE: the \u00a75.1 hold matched {len(held_seen)} of {len(_S51_HELD)} '
+               f'named labels; unmatched {sorted(_S51_HELD - held_seen)}')
 gate('\u00a75.1 callout label holds exactly the family word, matched to its scheme', bad)
 
 
@@ -2157,7 +2201,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 604, 2141, '5c22a884d4031cd2'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 604, 2141, '479c793925fe590d'
 #   S126b: 624/2,282 -> 604/2,141, §27.15e. The dark code block graduates and the -20/-141
 #   reconciles exactly: 23 rules DIE carrying 148 declarations, 3 are BORN carrying 3, and
 #   ONE is altered, gaining 4. -148 + 3 + 4 = -141. The altered rule is a RENUMBER, not a

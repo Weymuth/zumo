@@ -2,7 +2,7 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.3.1'
+VERSION = 'v1.3.2'
 #
 # v1.3.1 (S128): callout records gain 'start', 'open_end' and 'family_attr'. Purely
 #   additive - three new keys, no existing key changed, no detector changed. Written
@@ -286,6 +286,34 @@ def expand_classes_mapped(src, css=None):
     return expanded, to_file
 
 
+_PSEUDO_GLYPH = re.compile(r'^\s*([^\w\s]+)\s')
+
+
+def _glyph(t):
+    """The block's decorative leading mark. TWO shapes, and the second was invisible.
+
+    (a) an EMOJI anywhere in the label text -- the original rule, unchanged.
+    (b) an ASCII PSEUDO-GLYPH leading it: four LEARN blocks write `</>`, which sits
+        below the 0x2100 floor and so was reported as NO GLYPH AT ALL. §24.8 on a
+        detector: the population you can enumerate is not the population that renders.
+        Found by READING, not by this instrument (S129).
+
+    THE (b) ARM REQUIRES TRAILING WHITESPACE, and that is the whole design. It is the
+    property separating a standalone decorative token from a sentence that merely opens
+    with punctuation -- L11:173's `"If the robot can tell...` must never be read as
+    decoration. Measured across all 1,069 callouts: the arm fires on exactly the four
+    and refuses the quote.
+
+    ORDER IS LOAD-BEARING: the emoji arm runs first, so no glyph this detector already
+    reported can change value. The widening is additive by construction, not by audit.
+    """
+    g = next((c for c in t if ord(c) > 0x2100), '')
+    if g:
+        return g
+    m = _PSEUDO_GLYPH.match(t)
+    return m.group(1) if m else ''
+
+
 def build(path):
     raw = open(path, encoding='utf-8').read()
     src, _to_file = expand_classes_mapped(raw)
@@ -443,7 +471,7 @@ def build(path):
             'px': int(m.group(1)),
             'border': m.group(2).strip().lower(),
             'bg': bg.group(1).strip().lower() if bg else None,
-            'glyph': next((c for c in gtxt if ord(c) > 0x2100), ''),
+            'glyph': _glyph(gtxt),
             'label': txt[:70],
             'bytes': (nd['end'] or nd['open_end']) - nd['start'],
             # S128: FILE offsets and the live attribute, so a writer can seat

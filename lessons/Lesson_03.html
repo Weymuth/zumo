@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.33.2 -->
+<!-- Lesson version: v03.35.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,7 +101,7 @@
 <h1 class="h1">Motor TRIM</h1>
 <div class="div-fs-11em">No Two Motors Are the Same</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.33 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.35 — August 2026</div>
 </div>
 
 <div class="callout-ffc107-bg-fff8e1" id="what-you-need-l03-p1" data-family="WHAT YOU NEED">
@@ -1427,7 +1427,8 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 <p>Decide the boundary on purpose. <code>&gt;</code> and <code>&gt;=</code> differ by exactly one case — the value sitting on the line — and that one case is where robot bugs like to live.</p>
 
 <div class="div-ffc107-4" data-family="WARNING">
-<div class="div-c-922b21">🚨 The one-character trap: <code>=</code> is not <code>==</code></div>
+<div class="div-fs-09em">⚠️ WARNING</div>
+<div class="div-c-922b21">The one-character trap: <code>=</code> is not <code>==</code></div>
 <p>One equals sign <strong>assigns</strong>: <em>put this value in that box.</em> Two equals signs <strong>compare</strong>: <em>are these two the same?</em> Different jobs, one keystroke apart — and this is the most expensive typo in the language, because <b>neither direction is an error</b>. Both compile. Both run. Both do the wrong thing quietly.</p>
 <p><strong>Direction 1 — you meant to compare and typed one equals:</strong></p>
 <pre><span class="tok-569cd6">if</span> (trimValue = <span class="tok-b5cea8">5</span>) {     <span class="tok-6a9955">// WRONG: this ASSIGNS 5 to trimValue</span>
@@ -2826,8 +2827,7 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <p>Both run identically. The difference is for the <em>human</em>: when you need to change the speed, you change one named line at the top instead of hunting for stray numbers.</p>
 
 <div class="callout-6b8e6b-bg-f0f7f0-3" data-family="TIP">
-    <div class="div-fs-09em">💡 TIP</div>
-    <div class="div-fs-105em"><strong>Tip:</strong></div> A good test — if you'd have to explain a number to a teammate ("oh, 205 is the left wheel with trim baked in"), it should be a named constant, not a literal.
+    <div class="div-fs-105em">💡 TIP</div> A good test — if you'd have to explain a number to a teammate ("oh, 205 is the left wheel with trim baked in"), it should be a named constant, not a literal.
 </div>
 
 <h3 class="h3-c-00474b">8A.2 Constant vs. Variable: Which One?</h3>
@@ -2913,8 +2913,7 @@ TEST_SPEEDS[<span class="tok-b5cea8">3</span>]   <span class="tok-6a9955">// 300
 <p><strong>Counting starts at zero.</strong> Four values live in slots 0, 1, 2 and 3 — there is no slot 4. Every programmer trips on this once; the rule is that the last slot is always one less than the count.</p>
 
 <div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING">
-    <div class="div-fs-09em">⚠️ WARNING</div>
-    <div class="div-fs-105em"><strong>Warning:</strong></div> reading past the end — <code>TEST_SPEEDS[4]</code> on a four-slot array — is <em>not</em> an error. C++ does no bounds checking on an AVR: it reads whatever bytes happen to sit after your array and hands them back as a number. Your robot then drives at a speed you never wrote. This is why the wrap in 8A.6 matters.
+    <div class="div-fs-105em">⚠️ WARNING</div> reading past the end — <code>TEST_SPEEDS[4]</code> on a four-slot array — is <em>not</em> an error. C++ does no bounds checking on an AVR: it reads whatever bytes happen to sit after your array and hands them back as a number. Your robot then drives at a speed you never wrote. This is why the wrap in 8A.6 matters.
 </div>
 
 <p>The payoff is that the slot number can be a <em>variable</em>. One line then reads a different speed depending on what that variable holds:</p>
@@ -2944,8 +2943,7 @@ TEST_SPEEDS[<span class="tok-b5cea8">3</span>]   <span class="tok-6a9955">// 300
 <p>No <code>if</code>, and no way to run off the end — the operator makes the out-of-range value from 8A.5 unreachable by construction.</p>
 
 <div class="callout-6b8e6b-bg-f0f7f0-3" data-family="TIP">
-    <div class="div-fs-09em">💡 TIP</div>
-    <div class="div-fs-105em"><strong>Tip:</strong></div> the parentheses are load-bearing. <code>%</code> binds tighter than <code>+</code>, so <code>speedIndex + 1 % NUM_SPEEDS</code> is read as <code>speedIndex + (1 % NUM_SPEEDS)</code> — and since <code>1 % 4</code> is just 1, that line adds one forever and never wraps. Write <code>(speedIndex + 1) % NUM_SPEEDS</code>.
+    <div class="div-fs-105em">💡 TIP</div> the parentheses are load-bearing. <code>%</code> binds tighter than <code>+</code>, so <code>speedIndex + 1 % NUM_SPEEDS</code> is read as <code>speedIndex + (1 % NUM_SPEEDS)</code> — and since <code>1 % 4</code> is just 1, that line adds one forever and never wraps. Write <code>(speedIndex + 1) % NUM_SPEEDS</code>.
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -3538,8 +3536,7 @@ This is CLOSED-LOOP control - we'll implement it in Lesson 6!
 <li>Document: Deviation distance vs. TRIM value</li>
 </ol>
 <div class="callout-607d8b-bg-eceff1-3" data-family="NOTE">
-<div class="div-fs-09em">📘 NOTE</div>
-<div class="div-fs-105em"><strong>Note:</strong></div> This is exactly what robotics competitions use.
+<div class="div-fs-105em">📘 NOTE</div> This is exactly what robotics competitions use.
 </div>
 
 </details>

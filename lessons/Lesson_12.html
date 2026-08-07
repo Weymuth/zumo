@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.24.2 -->
+<!-- Lesson version: v01.25.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Wheels Lie</h1>
 <div class="div-fs-11em">The Gyro — Measuring the Robot, Not the Wheels</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 01.24 — August 2026</div>
+<div class="div-fs-09em-2">Version 01.25 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -704,7 +704,8 @@ found that <code>turnDegreesGyro()</code> is unreachable from <code>main()</code
 and the linker will not carry dead weight to a chip this small. The ATmega32U4 has 32&nbsp;KB of flash on paper — but 4&nbsp;KB of that is the bootloader, the little program that lets you upload over USB at all. What is actually yours is <strong>28,672 bytes</strong>. Lesson 16 will show you exactly how little that is.</p>
 
 <div class="callout-607d8b-bg-eceff1-6" data-family="NOTE">
-<div class="div-fs-105em">💾 Reminder — this is why every string in this book wears F()</div>
+<div class="div-fs-09em">📘 NOTE</div>
+<div class="div-fs-105em">Reminder — this is why every string in this book wears F()</div>
 <p class="p-mb-0">The linker just threw away a whole function to save space on a chip this small. Text is the other thing quietly competing for room — and unwrapped strings do not compete for <em>flash</em>, they compete for <strong>SRAM</strong>, the 2.5&nbsp;KB you have for variables. Every string literal you write without <code>F()</code> gets copied into SRAM at power-on and sits there for the whole run. Wrapping it leaves it in flash and costs you nothing. <em>(Lesson 2, section 3.2 — or the <code>F()</code> row in the Quick Reference.)</em></p>
 </div>
 <div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 You have written the truth. The robot is still ignoring it.</div>Both turns now exist. <code>turnDegrees()</code> asks the wheels. <code>turnDegreesGyro()</code> asks the robot. They are sitting side by side in the same file, and the robot is <strong>still using the wheels</strong>.<br><br>That is not an oversight — <strong>it is Step 8's entire job.</strong> The old instrument stays until the moment the new one takes over. You never delete the working thing before the replacement is wired in.</div>

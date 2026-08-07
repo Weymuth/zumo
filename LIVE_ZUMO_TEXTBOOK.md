@@ -1,9 +1,60 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 7, 2026 (Session 128 — **§24.14a: THE FAMILY LIVES IN THE MARKUP, BECAUSE THE MARKS ARC CANNOT START UNTIL IT DOES.** `build_family_map`’s GLYPH tier resolved **209 of the 953 mapped blocks by the decorative emoji alone** — KEY TERM 159 of 184, THE WALL 17 of 17, GOING DEEPER 7 of 7 — so replacing that emoji with a mark would have erased their only family signal and failed gate 47. S112 shipped the tier calling itself a stopgap and predicting this exact moment. **`data-family` now sits on all 1,069 callouts**, written by new `family_tag.py` from `build_family_map`’s own IMPORTED tiers. **The correctness proof is agreement, not inspection:** the generator reading the attribute reproduces its 30-family table **byte-identically**, and **blinding the GLYPH tier entirely still returns 1069/1069**. **The mapping was already ruled** — `BookComponentStandard` §7, DJ S91/S93 — and the join is family→mark at **20 families / 953 blocks, 89%**, EXTRACTED, against the handoff’s INFERRED name-match at 58%. **A name-match was measured and rejected with a number on it:** the bullseye carries **13 distinct labels across 125 uses** while NOTE’s 133 blocks wear 13 different emoji — matching bullseye to `bullseye.svg` by name would be right 100 times and wrong 25.)
-**Status:** ✅ **59 GATES PASS · TWO DEFECTS IN THIS SESSION’S OWN WORK, BOTH CAUGHT BY ASSERTS WRITTEN FOR THEM.** **`lesson_inventory`’s node offsets were never file offsets** — `build()` runs `expand_classes` first, so every offset indexes the EXPANDED source where each `class` became a longer `style`; the drift grows with position, so a writer lands mid-prose and lands PLAUSIBLY. §24.8 on an offset: real, usable-looking, measured against a different document, and nothing had needed file offsets until now. Closed with `expand_classes_mapped()`, all 1,069 verified to bracket a clean opening tag. A dry run also reported **zero work to do** because the counter only incremented inside the apply branch. **GATE 59 NEW**, same pass as the ruling, asserting the PROPERTY: it re-derives the family from CONTENT and requires the attribute to AGREE, so a hand-typed attribute contradicting its own content fails like a missing one; control-run four ways, each firing it ALONE at 58 of 58 green, untouched tree passing at both ends. **THE SWAP IS BUILT AND DELIBERATELY NOT APPLIED** — `mark_wire.py` reconciles at **880 SWAP + 17 NO_GLYPH + 56 BRAIN CHECK = 953**, with BRAIN CHECK **held by name** (all 56 already carry the two-state BrainGear emblem) and its own Control E catching that hold being FAKE, since §7.1’s keys read `BRAIN CHECK · open` and the family was falling out of scope on a middot. **The L04 control proved S127’s rule 19 still live: §5.1’s coverage fell 251 → 240**, because that gate finds a callout’s label THROUGH the glyph — so the AST scan for glyph-pinned locators is the next act and no lesson carries a mark in this push. **§27.15b also fired in a NEW direction:** `class="mark"` was re-emitted by `build_css` as `.img-fs-0`, so the rule is seated on `img[data-mark]`, which the generator cannot see.
+**Date:** August 7, 2026 (Session 129 — **§5.1 STOPS READING THE GLYPH, AND THE GLYPH DETECTOR LEARNS TO SEE A MARK IT WAS BUILT BLIND TO.** S127's rule 19 became an instrument rather than a one-off: new **`glyph_scan.py` v1.0**, two detectors with proven independence and acceptance keyed by NAME with a recorded reason. **The fear was larger than the finding — §5.1 is the ONLY gate pinned on the glyph**, and a separate sweep found **zero glyph-pinned locators outside Python**, so the marks arc's blast radius is one gate. §5.1 is re-seated in both places the glyph sat: scope becomes scheme-agrees-with-`data-family`, and the label check becomes decoration-agnostic, so a marked label reduces to the same string a glyphed one does. **The decisive proof is the S128 experiment re-run:** 34 marks on L04 — the exact input that measured coverage falling 251 → 240 — leaves the re-seated gate at **255**. **All three marks-arc prerequisites are now clear.**)
+**Status:** ✅ **59 GATES PASS · THREE PROCESS FAILURES, ALL MINE, EACH CAUGHT BY AN ASSERT AND NONE BY A GATE.** **THE ONE TO CARRY: a control that depends on the state of what it audits is not a control** — `glyph_scan`'s Control A asserted §5.1's pins EXIST, and §5.1 was the thing being fixed, so it could only ever be right once; rebuilt against a fixture. Its Control F then fired twice more on my own edits, each time naming an acceptance for a site I had just rewritten. **A restore used the SESSION-OPEN snapshot after later edits** and silently reverted L02's fixes and its bump — S126's rule 17 by a new road: *a snapshot taken before the work is not a snapshot of the work.* **Editing L03 top-down moved every target below the first deletion**; §6.12c extended — go DESCENDING per file. **DJ RULED A** on rendered specimens (*"B looks stupid"*), and reading BELOW the label then found the class rather than the instance: **8 of 183 two-div blocks opened their title with their own family word**, all fixed. **Both residues have ONE cause** — `sweep_option_c.py` scoped on `FAMILY_GLYPHS` and §5.1 on `_FAMGLYPH`, so the S92 sweep and the S92 gate shared one blind spot; **the one-shot is deleted** by DJ ruling, its canon verified recorded first. **Queue item 2 needed THREE fixes where the handoff predicted one** — widening the detector left the four in NOT_LEADING, because `mark_wire` compared a SINGLE character against a three-character token, and compared entity-preserving `label` against unescaped `glyph`: **S127's `_LAND` in a new costume**. **Queue item 3 derived at 1,134**, delta exactly 884 — against three projections that gave three answers. **And the measurement found a defect no gate could see:** two L16 blocks carried a **doubled variation selector**, invisible on the page, to every gate, and to `entity_sweep`, which compares DECODED text — found only because `mark_wire`'s read-back assert refused the file.
 
-**Versions:** L01 v03.23.2 · L02 v03.15.2 · L03 v03.33.2 · L04 v04.23.2 · L05 v04.22.2 · L06 v04.27.2 · L07 v04.26.2 · L08 v04.23.2 · L09 v05.20.2 · L10 v02.21.2 · L11 v02.22.2 · L12 v01.24.2 · L13 v02.22.2 · L14 v02.27.2 · L15 v02.23.2 · L16 v02.15.2 · going_deeper v01.6.1 — census **40,700** · Bible **v8.120** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.55** · lesson_inventory v1.3.1 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.8 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.21.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.0 · mark_wire v1.0 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `a177da8`.**
+**Versions:** L01 v03.23.2 · L02 v03.16.0 · L03 v03.35.0 · L04 v04.23.2 · L05 v04.23.0 · L06 v04.27.2 · L07 v04.26.2 · L08 v04.25.0 · L09 v05.20.2 · L10 v02.21.2 · L11 v02.22.2 · L12 v01.25.0 · L13 v02.22.2 · L14 v02.27.2 · L15 v02.23.2 · L16 v02.16.1 · going_deeper v01.6.1 — census **40,698** · Bible **v8.121** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.55** · lesson_inventory v1.3.2 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.8 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.21.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.0 · mark_wire v1.0.2 · glyph_scan v1.0 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4ab805a`.**
+
+---
+---
+
+## WHAT SHIPPED IN S129
+
+**`glyph_scan.py` v1.0 — the AST scan is an instrument, not a one-off.** D1 reads the PROPERTY
+(any read of `lesson_inventory`'s `glyph` field, whatever emoji it holds); D2 reads a glyph
+LITERAL reaching a locator, directly or through a module-level table. **Neither subsumes the
+other, and that is measured**, not asserted. Acceptance is a NAMED table keyed on a derived
+expression rather than a line number, with a reason recorded per entry, and a coverage arm that
+fails when an accepted key stops matching a real site.
+
+**§5.1 RE-SEATED.** Coverage 251 → 255. The five that entered were hidden only by wearing a
+non-canonical emoji on canonical paint — one passes, four were real violations. One block
+correctly LEFT scope: L05 is painted NOTE and resolves INSIGHT, so the old gate was wrong to
+inspect it. The label check now asserts the property and cannot certify a spelling; decoration is
+owned by §24.14b.
+
+**THE MAPPING HAS FOUR HOMES AND THE BIBLE’S IS THE STALE ONE.** §8’s LOCKED table names 11 types
+against `BookComponentStandard` §7’s DJ-approved 26 and `build_family_map`’s live 30, and opens
+*"All callouts use inline `style=` only"*, which §27 retired. Measured rather than argued:
+**`BookComponentStandard` is parsed by SIX instruments and this Bible by ONE**, 30 KB against
+694 KB. The roster stays where the parsers are; §8 becomes a pointer — **ruled, not yet done.**
+
+**THE DETECTOR AND ITS CONSUMER.** `lesson_inventory` **v1.3.2** gains a second glyph arm. **The
+arm requires TRAILING WHITESPACE, and that property is the whole design** — it separates a
+standalone decorative token from a sentence merely opening with punctuation, so L11:173’s
+`"If the robot can tell...` is never read as decoration. Measured across all 1,069: fires on
+exactly four, refuses the quote. The emoji arm runs first, so the widening is **additive by
+construction rather than by audit**. `mark_wire` **v1.0.2** now reconciles at **884 SWAP + 13
+NO_GLYPH + 56 HELD**, and it was proved by DOING it — `&lt;/&gt; The five data types` becomes an
+`<img data-mark>` with the token and its space both consumed.
+
+**§21 DERIVED AT 1,134.** Delta exactly **884**, reconciling against a per-lesson count. The
+handoff projected 1,134 by wrong arithmetic and this session first projected 1,147 by adding the
+13 insertions `mark_wire` reports but never writes. **Three projections, three answers; only the
+run settles it.** **The constant is NOT moved** — it moves when the marks are actually applied.
+
+**NO STYLESHEET DAMAGE ACROSS TWO REGENERATIONS.** §27.11 holds at **604 / 2,141** both times —
+zero born, zero died, zero altered, S113’s shape twice. `.div-fs-09em` moved 156 → 160 → 154 and
+the attribute count tracked it exactly; `strip_inline --verify` 0 dead class names, so §27.15b
+never fired. The digest baseline moved twice **by derivation** and was re-controlled against a
+dropped `color: white;` each time.
+
+**Applied S129:** MODERATE (the pages render differently, so both §5b homes move) L02 **v03.16.0**
+· L03 **v03.35.0** · L05 **v04.23.0** · L08 **v04.25.0** · L12 **v01.25.0**; MINOR (an invisible
+character, page identical, banner correctly unchanged) L16 **v02.16.1**. **L03 and L08 bump TWICE**
+because their first version was stated before further work landed and §9 makes a version unique
+per delivery. Census 40,700 → **40,698** — +4 for the splits, −6 for the deleted divs, which is
+the arithmetic check that nothing else moved.
 
 ---
 ---

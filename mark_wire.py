@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # VERSION is the ONE home and sits ABOVE the changelog, so a plain grep of this file
 # returns the version and not a changelog line (S98).
-VERSION = 'v1.0'
+VERSION = 'v1.0.2'
 # v1.0 (S128): first release. Swaps the leading emoji for the family's ruled mark.
 """mark_wire.py - replaces a callout's leading emoji with its family's MARK (§24.14b).
 
@@ -96,12 +96,49 @@ def plan(path):
             kind = 'NO_MARK'
         elif not glyph:
             kind = 'NO_GLYPH'
-        elif label[:1] != glyph:
+        elif not _leads(label, glyph):
             kind = 'NOT_LEADING'
         else:
             kind = 'SWAP'
         out.append((kind, c['start'], c['open_end'], fam, mark_for(fam), glyph))
     return out, raw
+
+
+def _leads(label, glyph):
+    """Does `glyph` lead this label?
+
+    TWO ASSUMPTIONS IN THE ONE LINE THIS REPLACES, AND BOTH WERE WRONG (S129).
+
+    1. It read `label[:1]` -- a SINGLE character. That is fine while every glyph is one
+       emoji, and structurally cannot pass a multi-character mark such as `</>`.
+    2. It compared `label`, which PRESERVES entities by design, against `glyph`, which
+       `lesson_inventory` unescapes. Two encodings, one `!=`. Latent for emoji only
+       because §27.16 made them literal; live the moment a glyph must be written as an
+       entity -- and `<` and `>` have no choice, so the file holds `&lt;/&gt;`.
+
+    S127's `_LAND` in a new costume: a locator that knows one spelling of the thing it
+    is looking for. Decode first, then ask the question.
+    """
+    return _html.unescape(label).lstrip().startswith(glyph)
+
+
+def _find_glyph(win, glyph):
+    """Offset and length of `glyph` in raw markup, in whichever spelling the file uses.
+
+    Returns (index, length) or (-1, 0). The literal form is tried first so no currently
+    resolving swap can change; the escaped form is the fallback that reaches `</>`.
+    Length is returned rather than assumed, because the escaped form is longer than the
+    character it stands for and the caller must skip the bytes actually present.
+    """
+    i = win.find(glyph)
+    if i != -1:
+        return i, len(glyph)
+    esc = _html.escape(glyph, quote=False)
+    if esc != glyph:
+        i = win.find(esc)
+        if i != -1:
+            return i, len(esc)
+    return -1, 0
 
 
 def _swap_one(raw, open_end, glyph, mark):
@@ -113,14 +150,19 @@ def _swap_one(raw, open_end, glyph, mark):
     same rendered character and goes with it.
     """
     win = raw[open_end:open_end + 400]
-    i = win.find(glyph)
-    assert i != -1, 'glyph %r not found in the header window at %d' % (glyph, open_end)
-    j = i + len(glyph)
-    if win[j:j + 1] == '\ufe0f':          # variation selector rides with the emoji
+    i, glen = _find_glyph(win, glyph)
+    assert i != -1, 'glyph %r not found in the header window at %d, in either the ' \
+                    'literal or the escaped spelling' % (glyph, open_end)
+    j = i + glen
+    # Consume the whole DECORATION RUN, not a fixed shape. The original consumed exactly
+    # one U+FE0F and then exactly one space, which is right for every well-formed emoji
+    # and was defeated by two L16 blocks carrying a DOUBLED variation selector
+    # (U+26A0 FE0F FE0F, and U+26A0 FE0F SPACE FE0F). A lone selector renders as nothing,
+    # so the stranded one was invisible on the page and to every gate -- found only
+    # because this function's own read-back assert refused the result (S129).
+    # The book was corrected too; this loop is so the shape cannot defeat the tool again.
+    while win[j:j + 1] in ('\ufe0f', '\u200b', ' '):
         j += 1
-    while win[j:j + 1] == ' ':            # and so does the single space after it
-        j += 1
-        break
     a, b = open_end + i, open_end + j
     return raw[:a] + (_IMG % (MARK_DIR, mark, mark)) + raw[b:]
 

@@ -188,6 +188,7 @@ ARTEFACTS = [
     ('next_pointer',          'next_pointer.py',          r"VERSION = '(v[\d.]+)'"),
     ('family_tag',            'family_tag.py',            r"VERSION = '(v[\d.]+)'"),
     ('mark_wire',             'mark_wire.py',             r"VERSION = '(v[\d.]+)'"),
+    ('glyph_scan',            'glyph_scan.py',            r"VERSION = '(v[\d.]+)'"),
     ('title_feed',            'title_feed.py',            r"VERSION = '(v[\d.]+)'"),
     ('Timer',                 'timer.html',               r'Timer version: (v[\d.]+)'),
 ]
@@ -284,6 +285,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"font_stack_sweep {vals['font_stack_sweep']} · "
             f"next_pointer {vals['next_pointer']} · "
             f"family_tag {vals['family_tag']} · mark_wire {vals['mark_wire']} · "
+            f"glyph_scan {vals['glyph_scan']} · "
             f"title_feed {vals['title_feed']} · "
             f"Timer {vals['Timer']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
@@ -319,6 +321,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`next_pointer` **{vals['next_pointer']}** ·\n"
             f"`family_tag` **{vals['family_tag']}** ·\n"
             f"`mark_wire` **{vals['mark_wire']}** ·\n"
+            f"`glyph_scan` **{vals['glyph_scan']}** ·\n"
             f"`title_feed` **{vals['title_feed']}** ·\n"
             f"`timer.html` **{vals['Timer']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
@@ -349,7 +352,7 @@ def _versions_in(text):
 # anything that is in neither list — a roster that only checks what it already names
 # cannot notice a missing instrument, which is exactly how build_palette.py and
 # class_sweep.py sat unregistered and invisible to --check for a whole session (S110).
-UNVERSIONED = {'engine.py', 'extract_project.py', 'sweep_option_c.py'}
+UNVERSIONED = {'engine.py', 'extract_project.py'}
 
 
 def roster_coverage():
