@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.20.1 -->
+<!-- Lesson version: v05.20.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +101,7 @@
     <li><strong>Dead ends</strong> — The line simply stops, requiring a 180° turnaround</li>
 </ul>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
     <div class="div-c-0d47a1">📖 A Different Kind of Thinking</div>
     <p>This lesson marks a fundamental shift in how your robot operates. In Lesson 8, the robot constantly asked: <em>"How much should I adjust?"</em> — a smooth, continuous calculation. Now at intersections, the question becomes: <em>"Which action should I take?"</em> — a discrete choice between distinct options.</p>
     <p><strong>Unlike line following, intersections require the robot to choose between multiple valid actions.</strong></p>
@@ -109,17 +109,17 @@
 
 <img src="../images/L09_GRAPHIC_9-1_robocup_course.svg" alt="RoboCup line course: black line with two junctions and a dead-end stub; green squares beside the line say GO_LEFT, GO_RIGHT, or (both sides) DEAD_END" class="img-d-block-2">
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
     <div class="div-c-0d47a1">📖 RoboCup Junior Connection</div>
     <p>In RoboCup Junior Line Rescue competitions, robots must navigate courses with multiple intersection types. <strong>Green markers</strong> indicate which way to turn. Miss the marker? You lose points!</p>
 </div>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="REAL-WORLD CONNECTION">
     <div class="div-c-0d47a1">📖 Real-World Connection</div>
     <p>Self-driving cars face the same challenge at every intersection. The state machine pattern you'll learn today is used in autonomous vehicles, industrial robots, and video game AI!</p>
 </div>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
     <div class="div-c-6a1b9a">🔑 Intersection</div> — A point where the line branches, crosses, or ends, requiring the robot to decide what action to take next.
 </div>
 
@@ -144,7 +144,7 @@
 </ul>
 </div>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
     <div class="div-c-3a5a3a">📘 NOTE</div>
     <p>This lesson introduces two powerful programming concepts: <em>state machines</em> and <em>enums</em>. These are used in professional robotics, game development, and automation systems everywhere!</p>
 </div>
@@ -166,7 +166,7 @@
     <li><strong>Black surfaces</strong> absorb IR → <strong>High calibrated values</strong></li>
 </ul>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
     <div class="div-c-0d47a1">📖 Why Green Works</div>
     <p>Green surfaces absorb <em>some</em> IR light but reflect the rest. This gives us <strong>mid-range values</strong> (~300–700) that are distinctly different from both white and black.</p>
 </div>
@@ -178,11 +178,11 @@
     <tr><td class="td-b-white">Black (line)</td><td class="td-b-white">&gt; 800 (low reflectance)</td><td class="td-b-white">HIGH</td></tr>
 </table>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
     <div class="div-c-6a1b9a">🔑 Threshold</div> — A boundary value used to categorize sensor readings. Values above or below the threshold trigger different behaviors.
 </div>
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
     <div class="div-c-856404-2">💡 TIP</div>
     <div class="div-c-856404">Calibration Required</div>
     <p>These threshold values are approximate! <strong>Calibrate for YOUR green:</strong> expect mid-range values for green, versus black and white at the extremes. The calibration test in Section 7 gives you exact numbers.</p>
@@ -202,7 +202,7 @@
     <tr><td class="td-b-white">Neither side</td><td class="td-b-white">No Intersection</td><td class="td-b-white">Continue line following</td></tr>
 </table>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
     <div class="div-c-856404-2">📘 NOTE</div>
     <div class="div-c-856404">What About Cross (+) Intersections?</div>
     <p>At a cross intersection, all center sensors see black. Without green markers, go <strong>straight</strong> by default. Advanced robots use the "right-hand rule" for maze solving (see Challenge 6)!</p>
@@ -210,7 +210,7 @@
 
 <h3 class="h3-c-1f2a3d">3.3 Sensor Pattern Reference: What Each Intersection Looks Like</h3>
 
-<div class="callout-2196f3-bg-e3f2fd-4">
+<div class="callout-2196f3-bg-e3f2fd-4" data-family="LEARN">
     <div class="div-fs-105em">📖 LEARN: Reading Sensor Patterns</div>
     <p>The Zumo has five line sensors, <strong>numbered 1–5 from left to right</strong>. Their readings land in an array whose <strong>positions run 0–4</strong> — so sensor 1’s reading lives in <code>sensorValues[0]</code> and sensor 5’s in <code>sensorValues[4]</code>. Lesson 4 called this out as the number-one bug in the book: <em>the index counts from zero; it does not name the sensor.</em> The table below names the sensors and shows the box each one reports into — because the code you write in Step 4 addresses the <em>boxes</em>.</p>
 <p>When following a line, typically only the middle sensors (2, 3, 4) see it. At an intersection, the outer sensors — 1 and 5, in boxes <code>[0]</code> and <code>[4]</code> — suddenly see line too.</p>
@@ -235,7 +235,7 @@
 <tr><td class="td-ddd">Line Ends (gap — or a true dead end)</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td></tr>
 </table>
 
-<div class="callout-2da99d-bg-e9f7f5-2">
+<div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT">
     <div class="div-fs-105em">🔍 INSIGHT — Two of these rows matter later</div>
     <p class="p-mb-0">An <strong>unmarked</strong> all-black crossing (the 4-Way row) has no green anywhere — the base build correctly drives straight through it, exactly what a RoboCup course expects. Challenge 6 turns that same all-black signature into the right-hand rule. And the all-white row is what <code>handleGap()</code> has been handling since Lesson 8.</p>
 </div>
@@ -244,17 +244,17 @@
 
 <img src="../images/L09_GRAPHIC_9-3_sensor_positions.svg" alt="Top-down Zumo with five sensors [0]-[4] on the front blade: the orange outer pair [0] and [4] feed checkForIntersection(), the middle trio steers P-control" class="img-d-block-2">
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
     <div class="div-c-6a1b9a">🔑 Dead End</div> — An intersection marked with green on both sides, signaling the robot to turn 180°.
 </div>
 
 <h3 class="h3-c-1f2a3d">3.4 What is a State Machine?</h3>
 
-<div class="callout-2e86ab-bg-e7f0fa-2"><div class="div-fs-105em">🔁 Builds on:</div> the Variable Speed Test from Lesson 3 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em"> — Button B cycling four speeds was a state machine. You built one before you had the name.</div>
+<div class="callout-2e86ab-bg-e7f0fa-2" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> the Variable Speed Test from Lesson 3 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em"> — Button B cycling four speeds was a state machine. You built one before you had the name.</div>
 
 <p>Here's a problem: your robot detects green on the left and starts turning. But as it turns, the sensor might briefly see green again. Should it start another turn? This is where a <strong>state machine</strong> saves the day.</p>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
     <div class="div-c-6a1b9a">🔑 State Machine</div> — A programming pattern where a system can only be in ONE specific state at a time, and has defined rules for transitioning between states.
 </div>
 
@@ -270,7 +270,7 @@
 
 <img src="../images/L09_GRAPHIC_9-4_state_machine.svg" alt="Four-state machine: B starts and kills, a marker moves FOLLOWING_LINE to AT_INTERSECTION with motors stopped first, a 600 ms pause leads to EXECUTING_TURN, and the finished turn returns to FOLLOWING_LINE" class="img-d-block-2">
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
     <div class="div-c-3a5a3a-2">💡 TIP</div>
     <div class="div-c-3a5a3a">Best Practice: One Action Per State</div>
     <p>Keep each state simple—it should do <strong>one thing</strong>. When in <code>EXECUTING_TURN</code>, the robot <em>ignores</em> new intersection readings. This prevents the "double detection" problem and makes debugging much easier!</p>
@@ -280,7 +280,7 @@
 
 <p>We <em>could</em> use plain numbers for states, but that's confusing—<code>state = 0</code> tells you nothing. A better way is an <strong>enum</strong>:</p>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
     <div class="div-c-6a1b9a">🔑 Enum (enumeration)</div> — A data type that defines a set of named constants. Instead of "0 means following," you just use <code>FOLLOWING_LINE</code>.
 </div>
 
@@ -308,11 +308,11 @@ enum IntersectionType {
     <tr><td class="td-b-white"><strong>Line-Seeking Turn</strong></td><td class="td-b-white">Turn most of the way, then creep until the center sensor finds the line</td><td class="td-b-white">✅ Self-correcting — the competition upgrade. That's <a href="#challenge-3" class="link-c-2e86ab">Challenge 3</a>.</td></tr>
 </table>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
     <div class="div-c-6a1b9a">🔑 Tank Turn</div> — A turning method where opposite wheels spin in opposite directions, rotating in place. Momentum can cause a little overshoot — encoder turns absorb most of it, and consistent error tunes out via WHEEL_BASE_MM (Lesson 7’s one-number tune-up).
 </div>
 
-<div class="callout-607d8b-bg-eceff1">
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
     <div class="div-fs-09em">📘 NOTE</div>
     <div class="div-fs-105em">The Lesson 6 Dividend</div>
     <p class="p-mb-0">Remember <code>turnDegrees()</code> from Lesson 6? It already turns by <strong>encoder counts</strong>, already averages <strong>both wheels</strong>, already ignores battery sag. And it deliberately does <strong>not</strong> use TRIM — in a pivot the wheels oppose each other <em>on purpose</em>, so there is no straight line to correct. TRIM is for open-loop <em>straight</em> lines; the encoders govern the angle. This lesson's three turn functions are one-line wrappers around it — Step 5 of Section 6 takes about ninety seconds.</p>
@@ -332,7 +332,7 @@ enum IntersectionType {
 <div class="div-433014">
 
 
-<div class="callout-ff8c00-bg-ffe4cc-2" id="what-you-need-l09-p1">
+<div class="callout-ff8c00-bg-ffe4cc-2" id="what-you-need-l09-p1" data-family="WHAT YOU NEED">
     <div class="div-c-c45a00">📝 WHAT YOU NEED BEFORE STARTING</div>
     <ul>
         <li>Completed Lesson 8 project (P-control line following)</li>
@@ -354,7 +354,7 @@ enum IntersectionType {
     <tr class="tr-bg-e8f5e9"><td class="td-bb-1pxsolid"><strong>Green tape or paper</strong></td><td class="td-bb-1pxsolid">Intersection markers</td><td class="td-bb-1pxsolid">~1" squares beside the line</td></tr>
 </table>
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
     <div class="div-c-856404-2">💡 TIP</div>
     <div class="div-c-856404">Green Color Matters</div>
     <p>Not all greens are created equal! Bright "safety green" or "lime green" tape works well. Dark forest greens may read too close to black.</p>
@@ -371,7 +371,7 @@ enum IntersectionType {
 
 <img src="../images/L09_GRAPHIC_9-5_test_course.svg" alt="Straight test strip with three stations: green on the left, green on the right, and green on both sides, with the expected stop-announce-turn behavior for each" class="img-d-block-2">
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
     <div class="div-c-3a5a3a">💡 TIP</div>
     <p>Start with a very simple course—just one intersection. Once that works reliably, add more complexity.</p>
 </div>
@@ -436,13 +436,13 @@ enum IntersectionType {
             Dispatch the saved decision to the right turn
             Clear it, go back to FOLLOWING_LINE</pre>
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
     <div class="div-c-856404-2">💡 TIP</div>
     <div class="div-c-856404">Position Bias at Intersections</div>
     <p>At T-junctions, <code>readLinePosition()</code> can jump unexpectedly. For reliable detection, read the outer sensors <strong>individually</strong> — calibrated, of course —. That's why <code>checkForIntersection()</code> reads each sensor for itself!</p>
 </div>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
     <div class="div-c-0d47a1">📖 Avoiding False Positives: Debouncing</div>
     <p>Sensor noise can cause brief "false green" readings. Require <strong>consistent detection over 2–3 loop cycles</strong> for robust detection. See <a href="#challenge-5" class="link-c-2e86ab-2">Challenge 5</a>!</p>
 </div>
@@ -450,7 +450,7 @@ enum IntersectionType {
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
 </div>
 
-<div id="brain-check-01" class="callout-3f51b5">
+<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
@@ -497,7 +497,7 @@ enum IntersectionType {
 
 
 
-<div class="callout-607d8b-bg-eceff1">
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
     <div class="div-fs-09em">📘 NOTE</div>
     <div class="div-fs-105em">HOW THIS SECTION WORKS — plan-first, same as Lessons 7 and 8</div>
 <ol>
@@ -511,12 +511,12 @@ enum IntersectionType {
 <p class="p-mb-0"><strong>The red build lives in Step 4 again</strong> — new species this time, and just like Lesson 8, nobody stages it. If Step 3 skipped a line, Step 4's build introduces you to <em>does not name a type</em>. Diagnosis is yours.</p>
 </div>
 
-<div class="callout-3d8b6e-bg-e3f2ed">
+<div class="callout-3d8b6e-bg-e3f2ed" data-family="IF YOU'RE STUCK">
     <div class="div-fs-105em">📦 Fell behind? File wrecked? The Maker has your back.</div>
     <p class="p-m-8px000">The <a href="../newproject.html?lesson=9" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>CATCH-UP</strong> menu for this lesson: pick the entry named for the step you're about to start and it opens a project — <strong>all eight files included</strong> — built to that exact point. No Lesson 8 project? The <strong>Step 1</strong> entry <em>is</em> the finished Lesson 8 build.</p>
 </div>
 
-<div class="callout-ff8c00-bg-ffe4cc">
+<div class="callout-ff8c00-bg-ffe4cc" data-family="WHAT YOU NEED">
     <div class="div-fs-105em">📋 WHAT YOU NEED</div>
 <ul class="p-mb-0">
 <li>VS Code with PlatformIO, Zumo connected via USB</li>
@@ -527,7 +527,7 @@ enum IntersectionType {
 
 <h3 class="h3-c-433014">Step 1 — Copy Your Lesson 8 Project</h3>
 
-<div class="callout-ff8c00-bg-ffe4cc">
+<div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW">
     <div class="div-fs-105em">📝 DO THIS NOW</div>
 <ol class="p-mb-0">
 <li>In File Explorer, copy your entire <code>Zumo_Lesson8_LineFollowing</code> folder</li>
@@ -536,7 +536,7 @@ enum IntersectionType {
 </ol>
 </div>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Eight files: four headers in <code>include/</code>, four <code>.cpp</code> in <code>src/</code>. Build (✓) once before touching anything — <strong>start from green</strong>, so the first red you see is one <em>you</em> caused.</p>
 </div>
@@ -545,12 +545,12 @@ enum IntersectionType {
 
 <p>Two kinds of additions here. The familiar kind: two constants marking where "green" lives on the calibrated 0–1000 scale. The new kind: two <code>enum</code> definitions — <strong>the first you've ever written</strong>. Section 3.5 explained why enums beat magic numbers; now you get to feel it: every intersection type and every robot state gets a <em>name</em> the compiler enforces.</p>
 
-<div class="callout-5a6872-bg-f8f9fa">
+<div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL">
     <div class="div-fs-105em">🎯 THE GOAL</div>
     <p class="p-mb-0">Append to <code>RobotConfig.h</code>: two green-band constants (<code>GREEN_LOW_THRESHOLD</code>, <code>GREEN_HIGH_THRESHOLD</code> — you'll measure real values in Step 9), an <code>enum IntersectionType</code> naming the four things a marker can say (nothing / go left / go right / dead end), and an <code>enum RobotState</code> naming the four things the robot can be doing (stopped / following / at an intersection / turning).</p>
 </div>
 
-<div class="callout-9b6a9e-bg-f3e5f5">
+<div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN">
     <div class="div-fs-105em">📝 MY PLAN — yours, before any code</div>
     <p class="p-mb-0">Before looking at any syntax: write the four states and four intersection types as plain-English lists, one line each, with a one-phrase job description per name. If two of your names mean the same thing, merge them — that's state-machine design, and it's the actual work.</p>
 </div>
@@ -586,7 +586,7 @@ enum IntersectionType {
 </div>
 </details>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Build (✓). Green — enums and constants nobody reads yet are legal. Note what you did <em>not</em> add: no <code>TURN_SPEED</code>, no turn durations. <code>TURN_SPEED</code> has lived in this file since Lesson 7 — and the turn timing problem is about to be solved by something better than timing.</p>
 </div>
@@ -595,17 +595,17 @@ enum IntersectionType {
 
 <p>Two new prototypes join the sensor header: <code>isGreen()</code> and <code>checkForIntersection()</code>. But look at the second one's return type: <code>IntersectionType</code>. That's a name this header has <strong>never heard of</strong> — it lives in RobotConfig.h. A header must include what <em>it</em> uses; leaning on some other file to have included it first is exactly the "secret freeloading" Lesson 7's include-shuffle mystery warned about.</p>
 
-<div class="callout-5a6872-bg-f8f9fa">
+<div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL">
     <div class="div-fs-105em">🎯 THE GOAL</div>
     <p class="p-mb-0">Two additions to <code>RobotSensors.h</code>: an <code>#include "RobotConfig.h"</code> near the top, and the two prototypes — <code>bool isGreen(int sensorValue);</code> plus <code>IntersectionType checkForIntersection();</code>.</p>
 </div>
 
-<div class="callout-9b6a9e-bg-f3e5f5">
+<div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN">
     <div class="div-fs-105em">📝 MY PLAN — yours, before any code</div>
     <p class="p-mb-0">Answer in your plan before you type: <code>main.cpp</code> <em>already</em> includes RobotConfig.h before RobotSensors.h — so why must the header include it anyway? Which <em>other</em> file includes RobotSensors.h, and does that file get RobotConfig first? (Hint: it's the file you edit next step.)</p>
 </div>
 
-<div class="callout-607d8b-bg-eceff1">
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
     <div class="div-fs-09em">📘 NOTE</div>
     <div class="div-fs-105em">THE STANDALONE HEADER RULE</div>
 <p class="p-mb-0">A header that uses a type must include the file that defines it — <strong>every header stands on its own</strong>. Skip the include and this build stays green anyway (main.cpp bailed you out). The build that goes red is the <em>next</em> one. If that happens, welcome to Step 4's red build — a little early.</p>
@@ -652,7 +652,7 @@ IntersectionType checkForIntersection();</pre>
 </div>
 </details>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Build (✓). Green — but as the warning box says, a green build here proves less than you'd think. Step 4 is the real judge of this step.</p>
 </div>
@@ -661,12 +661,12 @@ IntersectionType checkForIntersection();</pre>
 
 <p>The header promised; this file delivers. <code>isGreen()</code> is a one-line band test. <code>checkForIntersection()</code> is the lesson's eyes: a <em>calibrated</em> read into the module's own <code>sensorValues</code> array — the same array, the same 0-is-white scale, the same reasoning as Lesson 8's <code>isLineVisible()</code> — then a question to each <strong>outer</strong> sensor: are you on green? Both say yes → dead end. One says yes → that's your turn. Neither → plain line, drive on.</p>
 
-<div class="callout-5a6872-bg-f8f9fa">
+<div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL">
     <div class="div-fs-105em">🎯 THE GOAL</div>
     <p class="p-mb-0">Append both function bodies to <code>RobotSensors.cpp</code>. <code>checkForIntersection()</code> must: read <em>calibrated</em> values, test sensors <code>[0]</code> and <code>[4]</code> with <code>isGreen()</code>, and return the right <code>IntersectionType</code> — both / left / right / neither, <strong>in that order</strong>.</p>
 </div>
 
-<div class="callout-9b6a9e-bg-f3e5f5">
+<div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN">
     <div class="div-fs-105em">📝 MY PLAN — yours, before any code</div>
     <p class="p-mb-0">Write the decision as a four-line pseudo-code ladder, then answer: why must the <em>both-green</em> test come FIRST? What wrong answer comes back if you test left-only first — and which course feature would the robot then never handle?</p>
 </div>
@@ -699,7 +699,7 @@ IntersectionType checkForIntersection() {
 </div>
 </details>
 
-<div class="callout-6b8e6b-bg-f0f7f0">
+<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP">
     <div class="div-fs-09em">💡 TIP</div>
     <div class="div-fs-105em">THE RED BUILD — new species, still nobody staging it</div>
 <p><strong>Build now.</strong> If Step 3's include is in place: green, move on. If it's missing, you meet this lesson's error species:</p>
@@ -707,7 +707,7 @@ IntersectionType checkForIntersection() {
 <p class="p-mb-0">Read it like a detective: the compiler isn't complaining about your new .cpp code — it's complaining about the <em>header</em>, from inside whichever file included that header without RobotConfig.h in front. The one-line fix lives in Step 3. <strong>Green first try?</strong> Earn the encounter: comment out the header's include, build, read the error and <em>which files</em> it fires from, put it back. Two minutes.</p>
 </div>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Build ends green. The robot can now read what the course is asking — it just can't act on it yet.</p>
 </div>
@@ -716,12 +716,12 @@ IntersectionType checkForIntersection() {
 
 <p>The old version of this lesson built timed turns here — spin for 300 milliseconds and hope. You already own something better: <code>turnDegrees()</code>, the encoder-driven, TRIM-independent, battery-independent turn you built in Lesson 6 and modularized in Lesson 7. It has been sitting in RobotMotion.cpp this whole time, waiting. Today's entire step is <strong>three one-line wrappers</strong>.</p>
 
-<div class="callout-5a6872-bg-f8f9fa">
+<div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL">
     <div class="div-fs-105em">🎯 THE GOAL</div>
     <p class="p-mb-0">Add <code>turnLeft()</code>, <code>turnRight()</code>, <code>turnAround()</code> — prototypes in <code>RobotMotion.h</code>, one-line bodies in <code>RobotMotion.cpp</code>, each just calling <code>turnDegrees()</code> with the right argument.</p>
 </div>
 
-<div class="callout-9b6a9e-bg-f3e5f5">
+<div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN">
     <div class="div-fs-105em">📝 MY PLAN — yours, before any code</div>
     <p class="p-mb-0">One recall question, answered in your plan before you peek: in <code>turnDegrees()</code>, which sign turns which way? Don't guess — open RobotMotion.cpp and <em>read your own Lesson 6 code</em>. Then write the three calls.</p>
 </div>
@@ -745,12 +745,12 @@ IntersectionType checkForIntersection() {
 </div>
 </details>
 
-<div class="callout-2da99d-bg-e9f7f5-2">
+<div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT">
     <div class="div-fs-105em">🔍 INSIGHT</div>
     <p class="p-mb-0">This is the Lesson 7 payoff in one step: because turning was already a <em>module</em>, upgrading every turn in this lesson cost three lines and zero risk. The state machine you're about to build will call <code>turnLeft()</code> and never care how it works inside — which is also why Challenge 3 can swap in line-seeking turns later without touching anything else.</p>
 </div>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Build (✓) green. Every piece now exists: eyes (Step 4), muscles (Step 5). What's missing is the brain.</p>
 </div>
@@ -759,17 +759,17 @@ IntersectionType checkForIntersection() {
 
 <p>Here's the surgery. Lesson 8's main ran on <code>bool isRunning</code> — two states, hard-coded into every <code>if</code>. This lesson has <em>four</em> states, and stretching a bool that far produces spaghetti. So the bool retires, <code>RobotState currentState</code> takes its chair, and <code>loop()</code> becomes one <code>switch</code> — Section 5.4's pseudo-code made real. Almost everything else survives: <code>setup()</code> untouched, <code>followLine()</code> untouched, <code>handleGap()</code> changes <strong>one line</strong>, <code>showStatus()</code> changes one expression.</p>
 
-<div class="callout-ffc107-bg-fff8e1">
+<div class="callout-ffc107-bg-fff8e1" data-family="WARNING">
     <div class="div-fs-105em">⚠️ WARNING</div>
     <p class="p-mb-0">Notice what today's loop does NOT yet contain: any code that drives. Step 6 builds the STOPPED state and the <strong>kill switch</strong> — B while running means STOP, no matter what. We teach the robot to stop <em>before</em> we teach it to go. That ordering is deliberate, and it's permanent policy.</p>
 </div>
 
-<div class="callout-5a6872-bg-f8f9fa">
+<div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL">
     <div class="div-fs-105em">🎯 THE GOAL</div>
     <p class="p-mb-0">Rebase <code>main.cpp</code>: add <code>#include "RobotMotion.h"</code> (main finally drives turns); replace the state block — <code>currentState</code> starts <code>STOPPED</code>, <code>pendingTurn</code> starts <code>NO_INTERSECTION</code>, <code>currentKp</code> and <code>gapStartTime</code> survive, <code>isRunning</code> is deleted; update <code>showStatus()</code>'s one test and its button legend; change <code>handleGap()</code>'s give-up line to enter <code>STOPPED</code>; keep <code>setup()</code> byte-for-byte except the two "Lesson 8" title strings; and write <code>loop()</code> as a switch with two cases — STOPPED carries everything Lesson 8 did while parked (battery guard, A/C tuning, B countdown-then-go), FOLLOWING_LINE contains <em>only the kill switch</em> for now.</p>
 </div>
 
-<div class="callout-9b6a9e-bg-f3e5f5">
+<div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN">
     <div class="div-fs-105em">📝 MY PLAN — yours, before any code</div>
     <p class="p-mb-0">Two plan items. First: list every place Lesson 8's main mentioned <code>isRunning</code> (there are five) and write what each becomes in state language. Second: the B button now appears in TWO cases — write one sentence on what B means in each. Same button, two meanings, zero ambiguity: that's what states buy you.</p>
 </div>
@@ -969,7 +969,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 </div>
 </details>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Build, <strong>upload</strong>, run the liturgy: boot report → A → B calibrates (spins) → STOPPED status. Press B: countdown, GO!, status says RUNNING — and the robot <strong>sits perfectly still</strong>. Correct! FOLLOWING_LINE has no driving code yet. Press B again: STOPPED. The kill switch worked before the engine existed. A and C still tune Kp while stopped. That's the whole skeleton, verified on hardware.</p>
 </div>
@@ -978,12 +978,12 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <p>Now the engine. Everything Lesson 8's loop did while running — gap reset, <code>followLine()</code>, <code>handleGap()</code> — moves into the FOLLOWING_LINE case, plus one new reflex at the end of every pass: <em>ask the outer sensors if the course just said something</em>. If it did: <strong>stop first, think second.</strong> Store the decision, change state. That's it — deciding what to do about it is the next step's job.</p>
 
-<div class="callout-5a6872-bg-f8f9fa">
+<div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL">
     <div class="div-fs-105em">🎯 THE GOAL</div>
     <p class="p-mb-0">Fill in the FOLLOWING_LINE case: kill switch first (already there), then — line visible → reset gap timer, <code>followLine()</code>, then <code>checkForIntersection()</code>; if it saw a marker: motors to zero, save it in <code>pendingTurn</code>, state to <code>AT_INTERSECTION</code>. Line not visible → <code>handleGap()</code>, exactly as before.</p>
 </div>
 
-<div class="callout-9b6a9e-bg-f3e5f5">
+<div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN">
     <div class="div-fs-105em">📝 MY PLAN — yours, before any code</div>
     <p class="p-mb-0">Write the case as pseudo-code, then defend one ordering decision: why must <code>motors.setSpeeds(0, 0)</code> happen <em>at detection</em>, in this case — rather than trusting some later state to get around to stopping? (Think about what the motors are doing during every microsecond between here and there.)</p>
 </div>
@@ -1062,12 +1062,12 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 </div>
 </details>
 
-<div class="callout-ffc107-bg-fff8e1">
+<div class="callout-ffc107-bg-fff8e1" data-family="WARNING">
     <div class="div-fs-105em">⚠️ WARNING</div>
     <p class="p-mb-0">Floor test, hands clear, B is your kill switch. The robot will genuinely drive this time.</p>
 </div>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Upload. A → B calibrate → B go: it follows the line — Lesson 8 lives. Now let it reach a green marker: it <strong>stops dead and freezes</strong>, still saying RUNNING. Frozen is correct for today: the robot is stuck in a state that has no case yet. It saw the marker, stored the decision, and is waiting for a brain that doesn't exist until Step 8. (B still rescues you — press it, then look at why: the kill switch lives in FOLLOWING_LINE, and the robot isn't <em>in</em> that state anymore. Power-cycle to reset. Add that to your mental map of what states really mean.)</p>
 </div>
@@ -1076,12 +1076,12 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <p>Two short cases finish the machine. AT_INTERSECTION is pure theater — announce the decision big enough to read, beep, pause long enough for a human to see it. EXECUTING_TURN is pure dispatch — three ifs, three wrappers from Step 5, then clean up: clear <code>pendingTurn</code>, return to FOLLOWING_LINE, refresh the status. The robot's whole day is now a loop through four named rooms.</p>
 
-<div class="callout-5a6872-bg-f8f9fa">
+<div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL">
     <div class="div-fs-105em">🎯 THE GOAL</div>
     <p class="p-mb-0">Add a <code>showDecision()</code> helper (clear screen, print the pending decision, big), then the two cases: AT_INTERSECTION → <code>showDecision()</code>, a beep, <code>delay(600)</code>, state to EXECUTING_TURN. EXECUTING_TURN → dispatch <code>pendingTurn</code> to <code>turnLeft()</code> / <code>turnRight()</code> / <code>turnAround()</code>, reset <code>pendingTurn</code>, state back to FOLLOWING_LINE, <code>showStatus()</code>.</p>
 </div>
 
-<div class="callout-9b6a9e-bg-f3e5f5">
+<div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN">
     <div class="div-fs-105em">📝 MY PLAN — yours, before any code</div>
     <p class="p-mb-0">Trace the full journey in your plan: robot cruising, green marker on the right. Write the state at each hop — what fires, what changes, what the display shows — from FOLLOWING_LINE back to FOLLOWING_LINE. Six hops, one line each. If your trace ever visits a state twice before finishing, find the missing transition.</p>
 </div>
@@ -1186,12 +1186,12 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 </div>
 </details>
 
-<div class="callout-2da99d-bg-e9f7f5-2">
+<div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT">
     <div class="div-fs-105em">🔍 INSIGHT</div>
     <p class="p-mb-0">Look at what each case does <em>not</em> do. FOLLOWING_LINE doesn't turn. EXECUTING_TURN doesn't read sensors. AT_INTERSECTION doesn't drive. Every room has one job, every transition has one owner — that's why you can trace this machine on paper, and why Section 8's bugs will be findable. Spaghetti can't be traced; machines can.</p>
 </div>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Upload and run the full act: follows the line → hits a marker → stops → announces <code>&lt;&lt; GO LEFT</code> with a beep → readable pause → clean 90° encoder turn → picks the line back up and drives on. Both-sides green → <code>DEAD END - U TURN</code> → 180. That's a robot making decisions.</p>
 </div>
@@ -1200,7 +1200,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <p>The code is done; now make the <em>numbers</em> yours. The 300–700 green band in RobotConfig.h is a starting guess — your tape, your lighting, your sensors will disagree. The Green Survey measures reality with a five-line temporary block, then you bake the truth into your constants.</p>
 
-<div class="callout-ff8c00-bg-ffe4cc">
+<div class="callout-ff8c00-bg-ffe4cc" data-family="TRY THIS">
     <div class="div-fs-105em">📝 THE GREEN SURVEY</div>
 <ol>
 <li>Add this <strong>TEMPORARY</strong> block at the top of the STOPPED case (right after <code>checkBattery();</code>):</li>
@@ -1235,7 +1235,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <tr class="tr-bg-f9f9f9-2"><td class="td-ddd"><strong>A+B</strong> held, stopped</td><td class="td-ddd">Battery report</td><td class="td-ddd">Standard helper, Lesson 4 vintage</td></tr>
 </table>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
     <p class="p-mb-0">Robot completes the Section 4 course: every marker announced correctly, every turn clean, dead end U-turned, and your surveyed green band recorded in Section 10. Turns off by a few degrees? That's <code>WHEEL_BASE_MM</code> — Lesson 7's one-number tune-up, not a Lesson 9 problem.</p>
 </div>
@@ -1280,7 +1280,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
     <tr><td class="td-b-white"><strong>Test 7: A-gate</strong></td><td class="td-b-white">Power-cycle, touch nothing</td><td class="td-b-white">Boot report only — nothing moves before A</td></tr>
 </table>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
     <div class="div-c-856404-2">📘 NOTE</div>
     <div class="div-c-856404">Turn Physics: Momentum & Overshoot</div>
     <p>Tank turns have zero turn radius, and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug — it’s <code>WHEEL_BASE_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
@@ -1304,7 +1304,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
     <tr><td class="td-b-white">Can't find line after turn</td><td class="td-b-white">Turn ended before reaching line</td><td class="td-b-white">Add line-seeking turns — <a href="#challenge-3" class="link-c-2e86ab">Challenge 3</a></td></tr>
 </table>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
     <div class="div-c-856404-2">📘 NOTE</div>
     <div class="div-c-856404">Lost the Line for Good?</div>
     <p class="p-mb-0">The base build’s policy is honest: gap timeout → <code>LINE LOST!</code> → STOPPED, and a human decides. Making the <em>robot</em> decide — treat a vanished line as a dead end and turn around — is maze-solver behavior, and it’s built in <a href="#challenge-6" class="link-c-2e86ab">Challenge 6</a>.</p>
@@ -1331,7 +1331,7 @@ if (state == 2) { /* ??? */ }
 RobotState currentState = FOLLOWING_LINE;
 if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
     <div class="div-c-0d47a1">📖 Learn/Insight — Enums Are Just Named Integers</div>
     <p>Under the hood, the compiler assigns each enum constant an integer (the first is 0, then 1, 2, …). You get readability <em>and</em> the speed of integer comparisons—no trade-off.</p>
 </div>
@@ -1340,7 +1340,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <p>A finite state machine (FSM) has three ingredients: a set of <strong>states</strong>, the <strong>current state</strong>, and <strong>transition rules</strong>. The <code>switch (currentState)</code> structure is the standard way to implement one on a microcontroller.</p>
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
     <div class="div-c-3a5a3a-2">💡 TIP</div>
     <div class="div-c-3a5a3a">Each Case Does One Job</div>
     <p>A clean FSM case does its work, then decides the next state—nothing more. If a single case is doing five things, it probably needs to be split into more states.</p>
@@ -1357,7 +1357,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
     <tr><td class="td-b-white"><code>turnAround()</code></td><td class="td-b-white"><code>void</code></td><td class="td-b-white">One-line wrapper: <code>turnDegrees(180)</code> — the dead-end U-turn</td></tr>
 </table>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
     <div class="div-c-3a5a3a-2">📘 NOTE</div>
     <div class="div-c-3a5a3a">Modular by Design</div>
     <p>These turn functions are <strong>modular</strong>: the state machine just calls <code>turnLeft()</code> and doesn't care how it works inside. Proof: Challenge 3 swaps in line-seeking turns by changing <em>one dispatch line</em> — the sensors, the states, the config never hear about it.</p>
@@ -1509,7 +1509,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=line_seek" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-motor" class="link-c-2e86ab">Turn Directions</a> for the sign canon, and <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> for the calibrated read. The hybrid: encoders for the bulk, sensors for the landing. The creep loop is a <a href="#qr-dowhile" class="link-c-2e86ab">do…while</a> — it reads before it tests.</p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> <code>turnDegrees()</code> from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> and the calibrated center-sensor read from Lesson 4 <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">. Encoders for the bulk, sensors for the landing.</div>
+<div class="callout-2e86ab-bg-e7f0fa" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> <code>turnDegrees()</code> from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> and the calibrated center-sensor read from Lesson 4 <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">. Encoders for the bulk, sensors for the landing.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
 <p>Make turns self-correcting: turn <em>most</em> of the way on encoders, then creep slowly until the center sensor actually finds the line. Perfect turns even when the junction geometry isn’t perfect — the competition upgrade.</p>
@@ -1811,7 +1811,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <div class="div-6f7582">
 
 
-<div id="brain-check-02" class="callout-3f51b5">
+<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
@@ -1830,7 +1830,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
 </div>
 
-<div id="brain-check-03" class="callout-3f51b5">
+<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
@@ -1863,7 +1863,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <p class="p-m-12px00"><button type="button" data-bc-btn="3" class="button">Mark Brain Check 03 done</button></p>
 </div>
 
-<div id="brain-check-04" class="callout-3f51b5">
+<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK">
     <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
     <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
@@ -1886,7 +1886,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
     <tr><td class="td-b-white"><code>WHEEL_BASE_MM</code> (carried from Lesson 7)</td><td class="td-999"></td><td class="td-b-white">85.0 start</td></tr>
 </table>
 
-<div class="callout-d4a574-bg-e8d4c4">
+<div class="callout-d4a574-bg-e8d4c4" data-family="WHERE THIS GOES">
     <div class="div-c-8a5a2b">🚀 Coming in Lesson 10: Obstacles</div>
     <h3 id="whats-next" class="h3-c-6f7582">What's Next?</h3>
 
@@ -1904,7 +1904,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
 <h3 class="h3-c-6f7582">Engineer’s Log</h3>
 
-<div class="div-0e1a2c">
+<div class="div-0e1a2c" data-family="ENGINEER'S LOG">
 <div class="div-fs-105em">📓 ENGINEER’S LOG #09 — feeds: Software (flowchart)</div>
 <b>Draw your state machine.</b> States as boxes, transitions as labeled arrows. One page.<br>
 <i>Why judges care: RCJ scores 10 points per intersection and dead end — so this diagram earns points twice, once on the field and once on the page.</i></div>
@@ -1915,14 +1915,14 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
 
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>Dead End</strong></div>An intersection marked with green on both sides, signaling the robot to turn 180°.</div>
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>Debouncing</strong></div>A technique requiring multiple consistent readings before confirming a detection.</div>
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>Enum (enumeration)</strong></div>A data type that defines a set of named constants for readable code.</div>
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>Intersection</strong></div>A point where the line branches, crosses, or ends, requiring a decision.</div>
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>Right-Hand Rule</strong></div>A maze-solving algorithm: prefer right, then straight, then left, then back.</div>
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>State Machine</strong></div>A programming pattern where a system can only be in ONE state at a time with defined transitions.</div>
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>Tank Turn</strong></div>A turning method where opposite wheels spin in opposite directions, rotating in place.</div>
-<div class="callout-9b59b6-bg-e7d4ff"><div class="div-fs-105em">🔑 <strong>Threshold</strong></div>A boundary value used to categorize sensor readings.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>Dead End</strong></div>An intersection marked with green on both sides, signaling the robot to turn 180°.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>Debouncing</strong></div>A technique requiring multiple consistent readings before confirming a detection.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>Enum (enumeration)</strong></div>A data type that defines a set of named constants for readable code.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>Intersection</strong></div>A point where the line branches, crosses, or ends, requiring a decision.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>Right-Hand Rule</strong></div>A maze-solving algorithm: prefer right, then straight, then left, then back.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>State Machine</strong></div>A programming pattern where a system can only be in ONE state at a time with defined transitions.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>Tank Turn</strong></div>A turning method where opposite wheels spin in opposite directions, rotating in place.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM"><div class="div-fs-105em">🔑 <strong>Threshold</strong></div>A boundary value used to categorize sensor readings.</div>
 
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
 

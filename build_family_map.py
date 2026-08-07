@@ -2,7 +2,13 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.3.7'
+VERSION = 'v1.3.8'
+# v1.3.8 (S128): the data-family attribute is read AHEAD of the three inference tiers.
+#   Baseline UNMOVED at 1069 - the attribute is written FROM these same tiers, so on the
+#   day it landed the table came back byte-identical, which is the correctness proof.
+#   What changed is the future: blinding the GLYPH tier now still returns 1069/1069, so
+#   the 209 blocks it used to resolve no longer depend on a decorative emoji and the
+#   marks arc can replace it. S112 predicted this exact moment in the tier's own comment.
 # v1.3.7 (S119): baseline 1065 -> 1069. L15 converted to the four Brain Check exit
 #   blocks; controlled at an identical generator version pre-tree against post-tree,
 #   exactly ONE family moving, BRAIN CHECK 52 -> 56, the other 29 byte-identical.
@@ -210,12 +216,26 @@ GLYPH = {
     '📓': "ENGINEER'S LOG", '🔍': 'INSIGHT',
     '🔌': "IF YOU'RE STUCK", '💾': 'NOTE', '💡': 'TIP',
 }
+# S128: THE ATTRIBUTE IS READ FIRST, AND IT IS THE REASON THE GLYPH TIER CAN DIE.
+# `data-family` is written onto every callout by family_tag.py FROM these same tiers,
+# so on the day it landed this changed nothing - proved by the table coming back
+# byte-identical. What it changes is the FUTURE: 209 blocks were resolved by the
+# decorative emoji alone, and the marks arc replaces that emoji with an <img>. Once
+# the glyph goes those blocks would have had no family signal left and gate 47 would
+# fail. The family now lives in the markup, where §24.14 says it belongs - CONTENT
+# first, mark and colour as OUTPUTS - and the emoji is free to be replaced.
+#
+# DIRECTION IS LOAD-BEARING: nothing here may ever read the mark filename back to
+# recover the family. That would close a loop the canon forbids and would let an icon
+# swap silently re-family the book - the S112 colour-table failure in a new costume.
 res=collections.Counter(); unk=[]
 for inv in d:
     for c in inv['callouts']:
         lab=norm(c.get('label')); g=(c.get('glyph') or '').strip()
         bg=c['bg'] or 'none'; bd=c['border']
-        f=next((fam for fam in CANON if lab.upper().startswith(fam)),None)
+        f=c.get('family_attr')
+        if not f:
+            f=next((fam for fam in CANON if lab.upper().startswith(fam)),None)
         if not f:
             for fn,fam in RULE:
                 if fn(lab,g,(bg,bd)): f=fam; break

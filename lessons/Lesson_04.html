@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.23.1 -->
+<!-- Lesson version: v04.23.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +79,7 @@
 <div class="div-fs-09em-2">Version 04.23 — August 2026</div>
 </div>
 
-<div class="callout-ff8c00-bg-ffe4cc" id="what-you-need-l04-p1">
+<div class="callout-ff8c00-bg-ffe4cc" id="what-you-need-l04-p1" data-family="WHAT YOU NEED">
 <div class="div-fs-105em">📋 WHAT YOU NEED BEFORE STARTING</div>
 <ul>
 <li>Completed Lesson 3 (your robot drives straight and you recorded your TRIM value)</li>
@@ -114,7 +114,7 @@
 
 <p>So this lesson is a story in two acts. In Act One, you will wake up the three connected sensors, learn to read them, and <strong>calibrate</strong> them so they give honest answers on your specific test surface. Then you will push them to their limit and measure — precisely — what three eyes can and cannot see. In Act Two, you will move two jumpers the size of a grain of rice, wake the other two eyes, and run the exact same tests again. By the end you will not just <em>believe</em> that five sensors beat three; you will have the numbers to prove it, and you will know exactly what those two extra eyes cost you in return. That is what real engineering looks like: not choosing what sounds better, but measuring the trade-off and deciding with evidence.</p>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
 <div class="div-fs-105em">📘 NOTE</div>
 <p class="p-mb-0">At the end of this lesson you will put both jumpers back where you found them. This is not busywork — Lesson 5 uses the side-facing proximity sensors, and those sensors <em>share wires</em> with line sensors 2 and 4. Leave the jumpers moved, and next week your robot is blind on its left and right sides. Engineers restore what they borrow. It's in the exit checklist, and yes, it will be checked.</p>
 </div>
@@ -175,12 +175,12 @@
 
 <p>They do, and it trips up almost everyone once. Your instinct says a sensor should report "how much light" — big number, bright surface. These sensors report <strong>how long the drain took</strong> — so big numbers mean <em>dark</em> and small numbers mean <em>bright</em>. Say it to yourself now, because you will need it every time you read the numbers on the OLED: <strong>HIGH = DARK. LOW = LIGHT.</strong> On a white poster board with a black tape line, the sensor over the tape is the one shouting the biggest number.</p>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
 <div class="div-c-6a1b9a">🔑 Key Term: Reflectance Sensor</div>
 <p class="p-mb-0">A sensor that measures how much light bounces back off a nearby surface. The Zumo's line sensors pair an infrared emitter with a phototransistor and report the reflection as a <em>decay time</em> in microseconds: high values mean a dark (absorbing) surface, low values mean a light (reflecting) surface.</p>
 </div>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
 <div class="div-c-0d47a1">📖 LEARN: Why infrared instead of regular light?</div>
 <p>Three reasons. First, IR LEDs and phototransistors are cheap and tiny — the whole sensor fits in a package smaller than a grain of rice. Second, by shining its own light source, the sensor works in a dark room, a bright room, or inside the shadow under the robot — it isn't at the mercy of the ceiling lights. Third, pairing the emitter and detector at the same wavelength filters out most ordinary room light.</p>
 <p class="p-mb-0">Most — not all. <strong>Sunlight is loaded with infrared.</strong> Direct sun on your test surface can flood the phototransistors and make every reading look "bright" no matter what's below. If your robot works perfectly in the classroom and goes haywire next to a sunny window, the window is the bug. (This is worth remembering: it shows up again in Section 8.)</p>
@@ -219,7 +219,7 @@
 <img src="../images/L04_IMAGE_4-04_jumpers_in_five_sensor_position.jpg" alt="The two configuration jumpers slid to the DN (line-sensor) side, enabling all five line sensors — the Act Two position you move to in Section 6." class="img-d-block-3">
 <p class="p-c-888"><em>Both jumpers moved to the line-sensor (DN) side — the five-sensor position. You make this move in Section 6, not now.</em></p>
 
-<div class="callout-2da99d-bg-e9f7f5">
+<div class="callout-2da99d-bg-e9f7f5" data-family="INSIGHT">
 <div class="div-c-165a53">🔍 INSIGHT: This is what engineering actually is</div>
 <p class="p-mb-0">Beginners imagine engineering as building the best possible machine. Real engineering is allocating <em>scarce resources</em> — pins, grams, dollars, milliseconds, battery capacity — among competing goods. The Zumo's designers could not give you every sensor at once, so they gave you a <strong>choice</strong> and made it reversible. Learning to see designs as bundles of trade-offs, rather than lists of features, is one of the biggest mental upgrades in this entire course.</p>
 </div>
@@ -238,12 +238,12 @@
 
 <p>After calibration, the numbers finally mean the same thing everywhere. A calibrated 950 is a confident "black" whether it came from sensor 1 or sensor 5, on poster board or on a competition mat. And that is what makes everything in the rest of this lesson possible — including the one-number line position you are about to meet.</p>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
 <div class="div-c-6a1b9a">🔑 Key Term: Calibration</div>
 <p class="p-mb-0">Measuring a sensor's actual minimum and maximum on the current surface, then rescaling all future readings onto a standard 0–1000 range. Calibration data lives in RAM — it evaporates at power-off, which is why every run of your program starts with a fresh calibration sweep. New surface or new lighting? Recalibrate.</p>
 </div>
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
 <div class="div-c-3a5a3a">💡 TIP</div>
 <p class="p-mb-0">When teams complain that "the sensors are broken," the real story — nine times out of ten — is a bad or skipped calibration sweep. A sweep that never actually passed every sensor over the tape leaves some sensor thinking dark-gray is the blackest thing in the universe. Sweep <em>slowly</em>, and make sure <em>every</em> window crosses the line.</p>
 </div>
@@ -294,7 +294,7 @@
 
 <p>But — and this is the honest, textbook-grade truth — resolution is not free, and more is not automatically better. You already know the price tag on the Zumo (two jumpers' worth of proximity hardware). There are subtler costs too: five sensors take longer to read than three, and more data per loop means more work per loop. For a thick line and simple decisions, three sensors may be genuinely sufficient — plenty of successful sumo robots never wake sensors 2 and 4 at all. The point of Act Two is not "five is better." The point is that after today, you will know <em>how much</em> better, <em>for what</em>, and <em>at what cost</em> — because you measured it.</p>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
 <div class="div-c-6a1b9a">🔑 Key Term: Resolution</div>
 <p class="p-mb-0">The smallest difference a measurement system can distinguish. More sensors across the same space = finer spatial resolution: smaller things can be detected, and positions can be pinned down more precisely. Resolution always costs something — pins, time, money, or power — so engineers buy exactly as much of it as the job needs.</p>
 </div>
@@ -318,7 +318,7 @@
 
 <h3 class="h4-c-433014">4.1 Find the Five Windows</h3>
 
-<div class="callout-ff8c00-bg-ffe4cc">
+<div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW">
 <div class="div-fs-105em">📝 DO THIS NOW</div>
 <p class="p-mb-0">Remove the batteries' influence from the equation: make sure the power switch is <strong>OFF</strong>. Then tip the robot end-over-end toward you, so it rests on its back with the <strong>blade pointing toward you</strong>. Look at the strip of circuit board just behind the blade.</p>
 </div>
@@ -330,7 +330,7 @@
 
 <p>Now number them — and be careful, because this is where left and right love to betray people. Sensor numbers are defined from the <strong>robot's own point of view</strong>: sensor 1 is the robot's far-left eye, sensor 5 its far-right. Held the way you are holding it now — on its back, blade toward you — the robot's left conveniently lines up with <strong>your</strong> left: sensor 1 is the leftmost window from where you sit, sensor 5 the rightmost, sensor 3 dead center. But flip the robot any other way (say, rolling it sideways with the blade pointing away) and the row mirrors. When in doubt, come back to this pose: <em>on its back, blade toward you</em>.</p>
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
 <div class="div-c-3a5a3a">💡 TIP</div>
 <p class="p-mb-0">Don't just trust the pose — in Section 6 you will <em>verify</em> your numbering with software: slide the tape under one end of the row and watch which reading jumps. If the "wrong" end reacts, you numbered the sensors backward. Thirty seconds of checking beats a whole afternoon of debugging a robot that steers the wrong way.</p>
 </div>
@@ -343,7 +343,7 @@
 
 <p>Right now, both jumpers should be sitting on the <strong>proximity side</strong> — the factory position, three line sensors and three proximity receivers. Compare yours against the photo above and confirm it. If a jumper is missing or already moved, tell your instructor before going further; this lesson assumes everyone starts from the factory position.</p>
 
-<div class="callout-ffc107-bg-fff8e1-2">
+<div class="callout-ffc107-bg-fff8e1-2" data-family="WARNING">
 <div class="div-c-856404-2">⚠️ WARNING</div>
 <div class="div-c-856404">Look, don't touch (yet)</div>
 <p class="p-mb-0">You will move these jumpers in Act Two (Section 6) — not now. When the time comes, three rules apply: <strong>power OFF</strong> before touching them; work <strong>over a table</strong>, because a dropped jumper is a lost jumper; and use <strong>tweezers or a careful fingernail</strong> — the blocks are small and the pins bend if you fight them. A jumper only ever slides straight up off its pins and straight back down onto two pins. No twisting.</p>
@@ -365,7 +365,7 @@
 
 <h3 class="h4-c-433014">4.4 Set Up Your Project</h3>
 
-<div class="callout-ff8c00-bg-ffe4cc">
+<div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW">
 <div class="div-fs-105em">📝 DO THIS NOW — Start a New Lesson (same ritual as always)</div>
 <ol>
 <li>Open the <a href="../newproject.html?lesson=4&amp;kind=main" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> → confirm <strong>Lesson 04 — Main lesson build</strong>, click Download.</li>
@@ -383,7 +383,7 @@
 
 <p>One thing is new in this download, and it's worth noticing before you scroll past it. Starting with this lesson, every Maker project arrives with a block of pre-installed code at the bottom labeled <strong>STANDARD HELPERS (added after Lesson 3)</strong>, plus two matching lines in the FUNCTION PROTOTYPES section. From Lesson 4 onward, robots run programs that <em>move</em> based on what they <em>sense</em> — and that changes the safety rules. Section 5.6 introduces the two helpers and the two habits they build. For now, just confirm they're there and that the project builds.</p>
 
-<div class="callout-4caf50-bg-e8f5e9">
+<div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT">
 <div class="div-c-2e7d32">✅ CHECKPOINT — Section 4 complete when:</div>
 <ul class="ul-ls-none-5">
 <li>☐ You found all five sensor windows and can point to sensor 1 and sensor 5 without hesitating</li>
@@ -480,13 +480,13 @@
 <tr class="tr-bg-f8f9fa"><td class="td-ddd">Five sensors</td><td class="td-ddd">Sensor 1</td><td class="td-ddd">Sensor 2</td><td class="td-ddd">Sensor 3 (center)</td><td class="td-ddd">Sensor 4</td><td class="td-ddd">Sensor 5</td></tr>
 </table>
 
-<div class="callout-ffc107-bg-fff8e1-2">
+<div class="callout-ffc107-bg-fff8e1-2" data-family="WARNING">
 <div class="div-c-856404-2">⚠️ WARNING</div>
 <div class="div-c-856404">Index is not sensor number</div>
 <p class="p-mb-0">In the three-sensor configuration, the <em>center</em> sensor lives in box <code>[1]</code>. In the five-sensor configuration, the center moves to box <code>[2]</code>. Code that reads "the center sensor" by index must change when the configuration changes. Say it out loud: <strong>index counts awake sensors from zero; it does not name the sensor.</strong></p>
 </div>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
 <div class="div-c-6a1b9a">🔑 Key Term: Array</div>
 <p class="p-mb-0">A numbered row of same-type values stored under one name. Declared with a size (<code>unsigned int values[3];</code>), accessed by index in square brackets, and — always — indexed from zero. Arrays let one function call hand you many results at once, and let one loop process them all.</p>
 </div>
@@ -542,7 +542,7 @@ Call it at the TOP of loop().
 <li><strong><code>checkBattery()</code> — the A+B battery check.</strong> Called at the <em>top</em> of <code>loop()</code>. Hold buttons A and B together at any moment and the display shows battery millivolts until you let go. Weak batteries cause the weirdest bugs in robotics — motors that stutter, sensors that drift, resets from nowhere — and now every robot answers "how are your batteries?" the same way. The combo-press trick inside it is the same pattern as Lesson 3's A+C reset.</li>
 </ul>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
 <div class="div-c-3a5a3a">📘 NOTE</div>
 <p class="p-mb-0">Today's program doesn't drive any motors — so why bother with a safety gate? Because habits only protect you if they're unconditional. The gate costs one button press; forming the habit now means it's already second nature in Section 9, when the motors come back.</p>
 </div>
@@ -602,7 +602,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <p>Two audiences, two displays. The <strong>Serial Monitor</strong> gets the full-precision values, tab-separated, one line per reading — that's your lab notebook, and it's where you'll copy numbers from during the experiments. The <strong>OLED</strong> gets a squeezed version, because this lesson runs the screen in its <strong>8-characters-by-2-rows layout</strong>: each 0–1000 value is divided by 10 and printed as two digits, giving a live <code>99 00 99</code>-style dashboard that fits the row exactly. Glance test: white floor reads near <strong>00</strong>, tape reads near <strong>99</strong>. In Act Two this function changes shape to fit five one-digit values plus a position line — you'll swap it in Section 6, Step 7.</p>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
 <div class="div-c-3a5a3a-2">📘 NOTE</div>
 <div class="div-c-3a5a3a">why this lesson's screen looks different</div>
 <p>Lessons 2 and 3 opened with <code>display.setLayout21x8();</code>, which packs 21 small characters across 8 rows. Lesson 4 leaves that call out, and the screen falls back to its startup layout: <strong>8 big characters across 2 rows</strong>. That is a choice, not an oversight.</p>
@@ -612,7 +612,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
-<div id="brain-check-01" class="callout-3f51b5">
+<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
@@ -659,7 +659,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <p>Section 5 showed the code in labeled pieces so you could understand each one. In this section <strong>you write it</strong> — each step explains <strong>why</strong>, hands you the plan in pseudo-code, and points you at the Quick Reference. You translate the plan into code, then check it against the reveal.</p>
 
-<div class="callout-607d8b-bg-eceff1">
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
 <div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">HOW THIS SECTION WORKS</div>
 <p>Each step follows the same pattern:</p>
@@ -673,7 +673,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 <p><strong>Do NOT skip ahead.</strong> One step at a time, in order — every step assumes the previous one compiled. One step keeps its gray copy boxes on purpose: <strong>Step 5</strong> — you'll see why when the build turns red.</p>
 </div>
 
-<div class="callout-2e86ab-bg-e7f1fb">
+<div class="callout-2e86ab-bg-e7f1fb" data-family="IF YOU'RE STUCK">
     <div class="div-c-0e1a2c">📦 Fell behind? File wrecked?</div>
     <p class="p-m-8px000">The <a href="../newproject.html?lesson=4" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the entry named for the step you're about to build, and it opens a project already caught up to that exact point. Missed a day? Broke your file beyond repair? Grab the right entry and keep moving — no shame, no retyping.</p>
 </div>
@@ -718,7 +718,7 @@ scratch pad →  one global array, a slot per active sensor —
 </div>
 </details>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
 <div class="div-fs-105em">✅ CHECKPOINT</div>
 <ul class="ul-ls-none-5">
 <li>☐ Build (✓) — still green: declarations alone don't do anything yet, but the compiler now knows every name we're about to use</li>
@@ -750,7 +750,7 @@ scratch pad →  one global array, a slot per active sensor —
 </div>
 </details>
 
-<div class="callout-28a745-bg-d4edda">
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
 <div class="div-fs-105em">✅ CHECKPOINT</div>
 <ul class="ul-ls-none-5">
 <li>☐ Build (✓) — and upload if you like: the robot boots to "Press A / to start" and waits politely. That's the gate working</li>
@@ -790,14 +790,14 @@ scratch pad →  one global array, a slot per active sensor —
 
 <p><strong>Build (✓), upload,</strong> open the Serial Monitor, press A on the robot. Columns of numbers start flowing — one column per sensor, left to right: <strong>sensor 1, sensor 3, sensor 5.</strong> These are raw readings: microseconds of drain time, 0 to 2000, HIGH = DARK.</p>
 
-<div class="callout-17a2b8-bg-d1ecf1-2">
+<div class="callout-17a2b8-bg-d1ecf1-2" data-family="WHAT YOU SHOULD SEE">
 <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE — and three experiments to run right now</div>
 <p><strong>1. The wave test:</strong> hold the robot in the air, sensors down, and wave your hand a couple of centimeters under it. All three columns should jump when your hand passes. Sensors alive: confirmed.</p>
 <p><strong>2. The numbering test (this one settles Section 4.1):</strong> set the robot on your test surface, then slide the board so the tape sits under the <em>robot's left</em> end of the sensor row. The <strong>first</strong> column should go high. If the <strong>last</strong> column went high instead, your idea of the robot's left is mirrored — fix your mental picture now, before any code depends on it.</p>
 <p class="p-mb-0"><strong>3. The honesty test:</strong> put all sensors over plain white and look closely at the three columns. They will <em>not</em> read the same — one sensor might idle at 180 while its neighbor idles at 320, on the identical surface. Same floor, different numbers. That's the manufacturing variance from Section 3.4, live on your screen — and it's exactly the problem the next step fixes.</p>
 </div>
 
-<div id="sensor-data" class="callout-ff8c00-bg-ffe4cc-2">
+<div id="sensor-data" class="callout-ff8c00-bg-ffe4cc-2" data-family="DO THIS NOW">
 <div class="div-fs-105em">📝 DO THIS NOW — Record your raw readings</div>
 <p class="li-mb-6px">From the Serial Monitor, copy typical raw values into this table (you'll want them for the Exit Ticket and for Section 7):</p>
 <table class="table-bc-collapse-10">
@@ -893,17 +893,17 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <p>Upload. The robot now boots straight into <strong>"Sweep!"</strong> with a countdown — that's your five-second calibration window. Set it on the test surface and slide it side to side so <em>every window crosses the tape at least twice</em>. "Cal done," then the gate: press A.</p>
 
-<div class="callout-17a2b8-bg-d1ecf1-2">
+<div class="callout-17a2b8-bg-d1ecf1-2" data-family="WHAT YOU SHOULD SEE">
 <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE</div>
 <p class="p-mb-0">The OLED shows three two-digit numbers — your live dashboard. On plain white, all three sit near <strong>00</strong> (and notice: NOW they agree with each other — that's calibration earning its keep). Slide the tape under the center sensor: the middle number leaps toward <strong>99</strong>. Under sensor 1: the first number leaps. The Serial Monitor shows the same story in full 0–1000 precision.</p>
 </div>
 
-<div class="callout-ff8c00-bg-ffe4cc-2">
+<div class="callout-ff8c00-bg-ffe4cc-2" data-family="DO THIS NOW">
 <div class="div-fs-105em">📝 DO THIS NOW — Find the blind gap</div>
 <p class="p-mb-0">Here is the experiment Act One has been building toward. Start with the tape under sensor 1 (first number ~99). Now slide the board <em>slowly</em> sideways, moving the line toward sensor 3, and watch the dashboard. At some point the first number falls back to 00 — and the middle number <strong>hasn't risen yet</strong>. The line is directly under your robot, and the dashboard reads all-white: <strong>the line has vanished into the blind gap.</strong> Keep sliding until sensor 3 finally picks it up. That dead zone you just drove through is the resolution limit from Section 3.6 — not a theory, a place on your desk. You'll measure it properly in Section 7.</p>
 </div>
 
-<div class="callout-4caf50-bg-e8f5e9">
+<div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT">
 <div class="div-c-2e7d32">✅ CHECKPOINT — Act One complete when:</div>
 <ul class="ul-ls-none-5">
 <li>☐ Calibration sweep runs at boot and every window crossed the tape during it</li>
@@ -990,7 +990,7 @@ Serial Monitor: full values plus the position.
 
 <p>Build (✓ — the code is fine), upload, sweep, press A. Now look at the dashboard: five digits on the top row.</p>
 
-<div class="callout-17a2b8-bg-d1ecf1-2">
+<div class="callout-17a2b8-bg-d1ecf1-2" data-family="WHAT YOU SHOULD SEE">
 <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE — a robot half-lying to you</div>
 <p class="p-mb-0">Digits 1, 3, and 5 behave: slide tape under those sensors and they answer. Digits 2 and 4 do <strong>not</strong> respond to the tape — no matter what the line does under windows 2 and 4, those digits won't track it. The code asked pins 20 and 4 for line readings, but your jumpers still route those pins elsewhere. Nothing crashed. Nothing warned. The program simply reports numbers that mean nothing — <strong>the most dangerous kind of wrong.</strong> This is what a hardware/software mismatch looks like from the inside, and now you'll recognize it forever.</p>
 </div>
@@ -1009,12 +1009,12 @@ Serial Monitor: full values plus the position.
 
 <p>Power on, sweep (recalibrate — the two newly-woken sensors have blank record books!), press A.</p>
 
-<div class="callout-17a2b8-bg-d1ecf1-2">
+<div class="callout-17a2b8-bg-d1ecf1-2" data-family="WHAT YOU SHOULD SEE">
 <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE</div>
 <p class="p-mb-0">All five digits now answer. Slide the tape slowly across the whole row and watch the "hill" of dark walk sensor to sensor: <code>90000 → 09000 → 00900 → 00090 → 00009</code>. Five eyes, all awake. And the bottom row is the star of Act Two: <strong>P:</strong> followed by the line position, 0–4000. Center the tape under the middle sensor and it reads near <strong>2000</strong>. Slide left, it falls toward 0; slide right, it climbs toward 4000 — and watch how it glides <em>through the in-between values</em>: 1200, 1450, 1700... That's the weighted average from Section 3.5, alive.</p>
 </div>
 
-<div class="callout-4caf50-bg-e8f5e9">
+<div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT">
 <div class="div-c-2e7d32">✅ CHECKPOINT — Act Two complete when:</div>
 <ul class="ul-ls-none-5">
 <li>☐ Both jumpers seated on DN2 / DN4 (moved with power off)</li>
@@ -1052,7 +1052,7 @@ Serial Monitor: full values plus the position.
 <li>Try to hide the line in that same gap — or anywhere under the row. Watch digits 2 and 4 in particular. Line hidden: <strong>yes / no?</strong></li>
 </ol>
 
-<div class="callout-17a2b8-bg-d1ecf1-2">
+<div class="callout-17a2b8-bg-d1ecf1-2" data-family="WHAT YOU SHOULD SEE">
 <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE</div>
 <p class="p-mb-0">Three sensors: the line vanishes in two different places — the 1↔3 gap and the 3↔5 gap. Five sensors: there is nowhere to hide; before one digit lets go of the line, its neighbor has already caught it. Two extra eyes closed both blind spots.</p>
 </div>
@@ -1075,7 +1075,7 @@ Serial Monitor: full values plus the position.
 <tr class="tr-bg-f8f9fa"><td class="td-ddd">Your verdict: which estimate would you trust to steer a robot?</td><td class="td-ddd" colspan="2">______</td></tr>
 </table>
 
-<div class="callout-2da99d-bg-e9f7f5">
+<div class="callout-2da99d-bg-e9f7f5" data-family="INSIGHT">
 <div class="div-c-165a53">🔍 INSIGHT — You just did real engineering</div>
 <p class="p-mb-0">Notice what you did NOT do: you did not ask which option "is better" and take somebody's word for it. You held everything constant, changed one variable, and measured. Your table is <em>evidence</em>. When Lesson 8 asks you to choose a sensor configuration for line following, you won't be guessing — you'll be citing your own data. Keep the table; the Exit Ticket asks about it.</p>
 </div>
@@ -1125,7 +1125,7 @@ Serial Monitor: full values plus the position.
 <tr><td class="td-ddd">Readings were fine yesterday, garbage today</td><td class="td-ddd">Calibration doesn't survive power-off — its record books live in RAM</td><td class="td-ddd">Nothing is broken. Sweep again. Every session starts with a fresh calibration; that's by design.</td></tr>
 </table>
 
-<div class="callout-6b8e6b-bg-f0f7f0-2">
+<div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP">
 <div class="div-c-3a5a3a">💡 TIP</div>
 <p class="p-mb-0">Notice how many rows above end in "recalibrate." When a sensor system misbehaves, calibration is the cheapest experiment you can run — ten seconds, zero risk. Rule it out first, every time.</p>
 </div>
@@ -1141,7 +1141,7 @@ Serial Monitor: full values plus the position.
 
 <p>Everything so far has been sensing and showing. But the entire point of giving a robot eyes is so it can <strong>act</strong> on what it sees — and acting on information requires something new: a way for code to take <em>different paths</em> depending on a value. That tool is the <strong>if statement</strong>, and it is arguably the single most important concept in all of programming. Every behavior your robot will ever have — stop at the line, chase the light, avoid the wall, win the match — is if statements all the way down. The challenges in Section 9 use it immediately; this section makes sure you own it completely.</p>
 
-<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> the if statement you first read in Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em"> and first wrote yourself in Lesson 3, Section 5.5 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em">. This is the full treatment — the same tool, now wired to sensors that change their mind forty times a second.</div>
+<div class="callout-2e86ab-bg-e7f0fa-3" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> the if statement you first read in Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em"> and first wrote yourself in Lesson 3, Section 5.5 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em">. This is the full treatment — the same tool, now wired to sensors that change their mind forty times a second.</div>
 
 <p>Then it does the same for the <strong>for loop</strong> — the tool you have already been using since Step 4 without anyone taking it apart for you. An if statement lets code choose. A for loop lets code <em>repeat</em>. Section 9 asks for both, and two of its challenges ask for them <em>together</em>.</p>
 
@@ -1169,7 +1169,7 @@ Serial Monitor: full values plus the position.
 
 <p>Exactly one of the two blocks runs, every time — never both, never neither. This on/off symmetry is everywhere in robotics: moving or stopped, line or no line, friend or wall.</p>
 
-<div class="callout-9c27b0-bg-f3e5f5">
+<div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM">
 <div class="div-c-6a1b9a">🔑 Key Term: Threshold</div>
 <p class="p-mb-0">The cutoff value a condition compares against — the 500 in <code>sensorValue &gt; 500</code>. On the calibrated 0–1000 scale, 500 is the natural "darker than halfway" line between white and tape. Choosing good thresholds from real data — like the readings in your Step 4 table — is a skill you'll use in every sensor lesson from now on.</p>
 </div>
@@ -1206,7 +1206,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 
 <h3 class="h3-c-00474b-3">🎯 8A.5 Quick Practice: Fill in the Blanks</h3>
 
-<div class="callout-3a7d5c-bg-e8f3ec">
+<div class="callout-3a7d5c-bg-e8f3ec" data-family="TRY THIS">
 <div class="div-c-352405" data-challenge="4.t1" data-kind="tryit">🎯 TRY IT — 8A.5 Fill in the Blanks (2 minutes)</div>
 <p>Complete this code so the <strong>red</strong> LED turns on when the <strong>left</strong> sensor (sensor 1) sees the line:</p>
 <pre class="div-m-16px0">lineSensors.readCalibrated(lineSensorValues);
@@ -1261,7 +1261,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 
 <p>Read the last row twice. The loop stops the moment the test fails, which is why <code>i &lt; NUM_SENSORS</code> visits boxes 0, 1 and 2 — three laps — and never touches a box numbered 3. That is not a coincidence; it is the same zero-counting rule from Section 5.5, wearing a different hat. A loop written <code>i &lt;= NUM_SENSORS</code> would reach for a fourth box that does not exist.</p>
 
-<div class="callout-ffc107-bg-fff8e1-2">
+<div class="callout-ffc107-bg-fff8e1-2" data-family="WARNING">
 <div class="div-c-856404-2">⚠️ WARNING</div>
 <div class="div-c-856404">the two loops that never end</div>
 <p class="p-mb-0">Forget the <code>i++</code> and the counter never moves: the test stays true forever and your robot freezes with the screen half-drawn. Put a semicolon right after the closing parenthesis — <code>for (...);</code> — and the loop runs an empty body the correct number of times and then executes your block <em>once</em>. Both compile clean. Neither is a compiler's problem to catch; they are yours.</p>
@@ -1298,7 +1298,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 
 <p>The bug is not in the comparison. The comparison is right: the sensor really <em>is</em> over the tape, five times in a row. The bug is that you asked the wrong question. You do not want to know <strong>whether the sensor is on the line</strong>. You want to know <strong>whether it just arrived</strong> — and "just arrived" is not a fact about this instant. It is a fact about this instant <em>compared to the last one</em>.</p>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
 <div class="div-c-1565c0">&lt;/&gt; A <code>bool</code> that outlives one trip through the loop</div>
 <div class="div-b-white-3">
 <code>bool</code> — true or false, a yes/no switch — you met it in Lesson 2 §3.2b as a <em>type</em>. Here it takes a <em>job</em>: holding one fact from one loop into the next.
@@ -1324,7 +1324,7 @@ onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday<
 
 <p>The last line is the one people forget, and forgetting it breaks everything in a way that is hard to see: without <code>onLine = nowDark;</code> the flag never updates, the second half of the test is true forever, and you are back to counting hundreds. The flag has to be brought up to date at the end of every trip, whether anything happened or not.</p>
 
-<div class="callout-607d8b-bg-eceff1-2">
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE">
 <div class="div-c-37474f">📘 NOTE</div>
 <p class="p-mb-0">Real sensors do not switch cleanly. Right at the threshold a reading can flicker across the line several times in a few milliseconds, and each flicker is a fresh "arrival." The cure is to arm and disarm at two <em>different</em> values — count when it climbs past 600, but do not re-arm until it drops below 400. The gap between them is a no-man's-land that noise cannot rattle around in. That is <strong>hysteresis</strong>, and you will meet it again wherever a robot has to decide that something has genuinely changed.</p>
 </div>
@@ -1339,7 +1339,7 @@ onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday<
 
 <p>But now you want to ask "am I close enough to stop?" and the sign gets in the way. <code>error &lt; 100</code> is true for −400, which is not close at all. You need the size <em>without</em> the sign:</p>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
 <div class="div-c-1565c0">&lt;/&gt; <code>abs()</code> — throw away the sign, keep the size</div>
 <div class="div-b-white-3">
 <code>abs(x)</code> — the <em>absolute value</em> of x: how far it is from zero, always positive — <code>abs(-400)</code> is <code>400</code>, and so is <code>abs(400)</code>.
@@ -1351,7 +1351,7 @@ onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday<
 
 <p>Why not simply demand <code>error == 0</code>? Because the robot will never get there, and it will destroy itself trying. Position 1002 is off by 2, so it corrects. The correction overshoots to 997, so it corrects the other way. Overshoot, correct, overshoot, correct — the robot buzzes in place around the target it cannot quite land on, forever. It is not broken. It is doing precisely what you asked, and what you asked was impossible.</p>
 
-<div class="callout-2196f3-bg-e3f2fd">
+<div class="callout-2196f3-bg-e3f2fd" data-family="LEARN">
 <div class="div-c-1565c0">&lt;/&gt; The <strong>deadband</strong> — a band where the robot does nothing</div>
 <div class="div-b-white-3">
 A <strong>deadband</strong> is a tolerance around the target inside which you take no action — <code>if (abs(error) &lt; DEADBAND) { motors.setSpeeds(0, 0); }</code>
@@ -1361,12 +1361,12 @@ A <strong>deadband</strong> is a tolerance around the target inside which you ta
 
 <p>Put the three ideas in order and you have a control loop: measure the error, ignore it if it is small enough, otherwise push in the direction that shrinks it. Every steering correction in this book is that shape.</p>
 
-<div class="callout-d4a574-bg-e8d4c4">
+<div class="callout-d4a574-bg-e8d4c4" data-family="WHERE THIS GOES">
 <div class="div-c-8a5a2b">🚀 Where this goes next</div>
 <p class="p-mb-0">Right now the correction is blunt: off-centre, so pivot. In Lesson 8 you will make the correction <em>proportional</em> to the error — a small error gets a gentle nudge, a big one a hard shove — and the robot stops lurching and starts gliding. The <code>error = position - 1000</code> line you write in Challenge 5 today is the same line that becomes line following four lessons from now. This is not a warm-up for it; it <em>is</em> it, without a name yet.</p>
 </div>
 
-<div class="callout-d4a574-bg-e8d4c4">
+<div class="callout-d4a574-bg-e8d4c4" data-family="WHERE THIS GOES">
 <div class="div-c-8a5a2b">🚀 Where this goes next</div>
 <p class="p-mb-0">Every challenge in Section 9 is an if statement wearing a costume, and two of them hand it a for loop to ride in. Lesson 5 wires ifs to the proximity sensors and takes the for loop further — counting <em>down</em>, and drawing bar graphs with it. Lesson 8 puts an if-driven correction inside a loop and calls it line following. You will never write another program without both.</p>
 </div>
@@ -1734,7 +1734,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <p>Before you close the lid: an honest self-check. Tick what's true, read the answers <em>after</em> you've tried each question in your head, and be straight with yourself about the confidence line — it's information for you, not a grade.</p>
 
-<div id="brain-check-02" class="callout-3f51b5">
+<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
@@ -1765,7 +1765,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 </div>
 
 
-<div id="brain-check-03" class="callout-3f51b5">
+<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
@@ -1805,7 +1805,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 </div>
 
 
-<div id="brain-check-04" class="callout-3f51b5">
+<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK">
     <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
     <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
@@ -1816,7 +1816,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <p class="p-m-12px00"><button type="button" data-bc-btn="4" class="button">Mark Brain Check 04 done</button></p>
 </div>
 
-<div class="callout-7e57c2">
+<div class="callout-7e57c2" data-family="WHERE THIS GOES">
 <div class="div-c-4527a0">🔮 WHAT'S NEXT — Lesson 5: Proximity Sensors</div>
 <p class="p-mb-0">Today your robot learned to look <em>down</em>. Next lesson it looks <em>out</em>: the three infrared proximity receivers that detect objects in front of and beside the robot — same infrared physics, pointed at the world instead of the floor. And here's the satisfying part: those side receivers live on the exact pins you shared today... which is why your jumpers had to go home. Your robot is already wired for Lesson 5. You made sure of it in Section 7.3.</p>
 </div>
@@ -1833,7 +1833,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <h3 class="h3-c-6f7582">Engineer’s Log</h3>
 
-<div class="div-0e1a2c">
+<div class="div-0e1a2c" data-family="ENGINEER'S LOG">
 <div class="div-fs-105em">📓 ENGINEER’S LOG #04 — feeds: Electronic Design (sensors) + testing data</div>
 <b>Record your calibration minimum and maximum.</b> Then explain what calibration <i>is</i> — and why those numbers change when you carry the robot into a different room. (RCJ rule 3.11 is blunt about it: the lighting at the venue is not the lighting at home.)<br>
 <i>Why judges care: a team that recalibrates at the venue has already answered the first question the field will ask.</i></div>

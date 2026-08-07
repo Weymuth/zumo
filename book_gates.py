@@ -2,7 +2,21 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.54'
+VERSION = 'v1.55'
+# v1.55 (S128): GATE 59 NEW - §24.14a, every callout carries the family its CONTENT
+#   resolves to. Written in the same pass as the ruling (S126 rule 16). Before S128, 209
+#   of 1,069 blocks were identified ONLY by their decorative emoji - build_family_map's
+#   GLYPH tier, which S112 shipped calling itself a stopgap and predicting exactly this
+#   moment. The marks arc replaces that emoji with an <img>, and those blocks would have
+#   lost their only family signal, failing gate 47. The family now lives in the markup.
+#   IT ASSERTS THE PROPERTY, NOT PRESENCE (S126 rule 18): it re-derives the family through
+#   family_tag - which imports build_family_map's own tiers, never a second copy (S83) -
+#   and requires the attribute to AGREE, so a hand-typed attribute contradicting its own
+#   content fails exactly like a missing one. Coverage arm included, because a gate that
+#   scans zero blocks passes (S117/S118). Control-run four ways from a snapshot with
+#   read-back and restore asserts - attribute deleted, wrong family, nonexistent family,
+#   emptied - each firing gate 59 ALONE at 58 of 58 others green, untouched tree passing
+#   at BOTH ends, and the file restored byte-identical.
 # v1.52 (S126): §27.12 SCOPE EXTENDED to semantic-layer consumers (DJ ruling) and to
 #   index.html BY NAME (§25.2a); §27 gains the COVERAGE arm it never had; and BOTH gates
 #   stop keying scope on a bare substring. Three defects found in one pass, each by the
@@ -2945,6 +2959,48 @@ for _f in sorted(R):
 if _scanned == 0:
     bad.append('gate 58 scanned ZERO pages - a gate that scans nothing passes')
 gate('\u00a727.16 one spelling per character: literal unless invisible in source', bad)
+
+
+# ---------------------------------------------------------------------------
+# GATE 59 (S128) - \u00a724.14a: EVERY CALLOUT NAMES ITS OWN FAMILY.
+#
+# WHY THIS IS A GATE AND NOT A NOTE. Before S128, 209 of 1,069 callout blocks were
+# identified ONLY by their decorative emoji - build_family_map's GLYPH tier, which
+# S112 shipped calling itself a stopgap. The marks arc replaces that emoji with an
+# <img>, and on the day it does those blocks lose their only family signal. The
+# attribute moves the family into the markup so the decoration can go.
+#
+# IT ASSERTS THE PROPERTY, NOT A SPELLING (S126 rule 18). It does not check that the
+# attribute is PRESENT - it re-derives the family from CONTENT through family_tag,
+# which imports build_family_map's own tiers, and requires the attribute to AGREE.
+# A hand-typed attribute that contradicts the content fails. So does a missing one.
+#
+# COVERAGE ARM, because a gate that scans zero blocks passes (S117/S118).
+bad = []
+try:
+    import family_tag as _FT
+    _n = _fam_bad = 0
+    for _f in sorted(glob.glob('lessons/Lesson_*.html')):
+        for _c in LI.build(_f)['callouts']:
+            _n += 1
+            _want = _FT.family_of(_c)
+            _have = _c.get('family_attr')
+            if _want is None:
+                bad.append('%s @%s: no tier can name this callout' % (_f, _c['line']))
+            elif _have != _want:
+                _fam_bad += 1
+                if _fam_bad <= 6:
+                    bad.append('%s @%s: data-family is %r, content says %r'
+                               % (_f, _c['line'], _have, _want))
+    if _fam_bad > 6:
+        bad.append('... and %d more disagreeing callout(s)' % (_fam_bad - 6))
+    if _n == 0:
+        bad.append('gate 59 scanned ZERO callouts - a gate that scans nothing passes')
+    elif _n != 1069:
+        bad.append('gate 59 saw %d callouts, expected the 1069 gate 47 holds' % _n)
+except ImportError:
+    bad.append('family_tag.py is missing - the attribute has no generator')
+gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
 
 print('=' * 52)
 

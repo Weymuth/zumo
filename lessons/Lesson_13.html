@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.22.1 -->
+<!-- Lesson version: v02.22.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,7 +92,7 @@
 <p>Count what the line has done for you since Lesson 8. It told the robot <em>where it was</em> — the P-controller's whole error signal is "how far off the line am I?" It told the robot <em>where to go</em> — forward means "along the line." It even defined what the sensors <em>mean</em> — calibration mapped the world onto a scale that runs from the line's white floor to the line's black tape. Position, direction, and meaning. The line was doing all three jobs, and you never had to notice.</p>
 <p>In this lesson the robot drives through a doorway, and on the other side there is no line. Not a gap — Lesson 11 handled gaps, a few blind centimeters with the line waiting on the far side. <strong>Gone.</strong> An open floor with walls around it, somewhere inside it a victim to find, and nothing painted on the ground to follow.</p>
 <p>Pilots have a name for this. When the weather closes in and the window shows nothing but grey, they stop flying by what they see and start flying by what their instruments report. They call it <em>flying on instruments</em>, and it is a separate license, because it is a separate skill. Your robot already owns the instruments: encoders that count distance (Lesson 6), an odometer that survives a dying battery (Lesson 11), a gyro that catches slipping wheels in a lie (Lesson 12), and TRIM to hold a straight line with no line to hold (Lessons 3 and 6). Today they stop being safety nets and become the whole aircraft.</p>
-<div class="callout-2e86ab-bg-e8f4f8">
+<div class="callout-2e86ab-bg-e8f4f8" data-family="INSIGHT">
 <div class="div-fs-105em">💭 THE ONE IDEA</div>
 <p class="p-m-8px000">When the reference disappears, you navigate on your instruments — and you sense on the raw channel, because calibration can only describe the world it was shown.</p>
 </div>
@@ -132,7 +132,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 </pre>
 <p>Walk through it. Calibration (that spin your robot does at startup) records the brightest and darkest thing it saw — <code>calmin</code> and the maximum — and then maps every future reading onto a 0-to-1000 scale between them. White floor reads 0. Black line reads 1000. Everything in between lands in between. It is a beautiful system, and it is why Lesson 8's line following works in morning light and afternoon light alike.</p>
 <p>But look at the clamp: <code>if (x &lt; 0) x = 0;</code>. A surface <em>brighter</em> than the calibration spin ever saw would compute a negative number — and the clamp rounds it up to exactly 0. <strong>The same 0 as plain white floor.</strong> Silver, the brightest thing on the course, reads as identical to the most ordinary thing on the course. The information is destroyed before your code ever sees the number.</p>
-<div class="callout-3a7d5c-bg-e8f5e9">
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN">
 <div class="div-fs-105em">🔑 CALIBRATION IS A CONTRACT</div>
 <p class="p-m-8px000">Calibration maps the world you <em>showed</em> it — white floor to black line — onto 0..1000, and clamps everything outside that world to the edges. It buys you comparability and it costs you range. Silver lives outside the contract.</p>
 </div>
@@ -173,7 +173,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p>Notice what this lesson costs in pins and hardware: <strong>nothing</strong>. Not one wire moves, not one jumper changes. Lesson 13 is the first lesson in this book that adds zero hardware — every sensor was already aboard. What changes is what you ask of them.</p>
 <h3 class="h3-c-2e86ab">4.3 The Black Ball — Read This Before You Blame Your Code</h3>
 <p>The rescue kit ships two victims: a silver ball and a black one. Here is the truth up front, because you will discover it in Section 7A anyway and you deserve to know it is not your fault:</p>
-<div class="callout-ffc107-bg-fff8e1">
+<div class="callout-ffc107-bg-fff8e1" data-family="WARNING">
 <div class="div-fs-09em">⚠️ WARNING</div>
 <div class="div-fs-105em">THE BLACK BALL IS NEARLY INVISIBLE TO THIS ROBOT</div>
 <p class="p-m-8px000">The front proximity sensor works by bouncing infrared light off things and counting how much comes back. A black ball <strong>absorbs</strong> infrared — the same physics that makes black tape read dark to the line sensors makes a black ball return almost nothing to the prox. In Section 7A you will hold each ball in front of the sensor and watch the counts: the silver ball announces itself across the zone; the black ball barely whispers at point-blank range. This robot will find silver victims and drive straight past black ones — not because your thresholds are wrong, but because <strong>the signal is not there to threshold</strong>.</p>
@@ -245,7 +245,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 </div>
 
 
-<div id="brain-check-01" class="callout-3f51b5">
+<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
@@ -290,7 +290,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 
 <p>Start from your finished Lesson 12 project — or pull a fresh copy from the Project Maker (<em>Lesson 12 → Finished</em>). Every step below compiles green on its own, and every step's byte count is printed so you can check your build against the book's. When a step adds code that nothing calls yet, the byte count <em>does not move</em> — the linker discards what is never used. That is not your edit vanishing; Step 5 proves it by calling the code and watching the bytes arrive.</p>
 <h3 class="h3-c-2e86ab">Step 1 — The Numbers, the Names, the Reasons</h3>
-<div class="callout-2e86ab-bg-e8f4f8">
+<div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL">
 <div class="div-fs-105em">🎯 THE GOAL</div>
 <p class="p-m-8px000">Everything tunable and everything nameable lands in <code>RobotConfig.h</code> first: four blanks, a <code>StopReason</code> enum, and three new robot states. No behavior changes — this step is pure vocabulary.</p>
 </div>
@@ -354,7 +354,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
   VICTIM_FOUND         <span class="tok-7cbf6e">// NEW for Lesson 13: stopped short of the wall - someone is here</span>
 };
 </pre>
-<div class="callout-3a7d5c-bg-e8f5e9">
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,534 bytes</strong> — byte-identical to your Lesson 12 finished build. Constants nothing reads and enum names nothing uses are <em>free</em>. Write that down; Step 5 cashes it in.</p>
 </div>
@@ -364,7 +364,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p><a href="../newproject.html?lesson=13&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 2 — The Doorman</h3>
-<div class="callout-2e86ab-bg-e8f4f8">
+<div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL">
 <div class="div-fs-105em">🎯 THE GOAL</div>
 <p class="p-m-8px000"><code>silverDetected()</code> — the raw-channel check from Section 3, living in <code>RobotSensors.cpp</code> where every sensor question belongs. Defined, declared, and deliberately not yet called.</p>
 </div>
@@ -392,7 +392,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 }
 </pre>
 <p>Why <em>all five</em> sensors? Because that is the strip's signature and nothing else's. A glare spot might blind one sensor; a worn patch of floor might brighten two. Only a strip of silver spanning the whole array pulls all five below the fence at the same instant. The AND of five noisy witnesses is a quiet, confident yes.</p>
-<div class="callout-3a7d5c-bg-e8f5e9">
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,534 bytes.</strong> Still identical — the function exists and nobody calls it, so the linker leaves it out of the build entirely. (We verified with <code>avr-nm</code>: the symbol is genuinely absent, not hiding.)</p>
 </div>
@@ -402,7 +402,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p><a href="../newproject.html?lesson=13&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 3 — Wire the Door</h3>
-<div class="callout-2e86ab-bg-e8f4f8">
+<div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL">
 <div class="div-fs-105em">🎯 THE GOAL</div>
 <p class="p-m-8px000">The door goes live: <code>FOLLOWING_LINE</code> checks for silver every loop, a stub <code>ENTERING_ZONE</code> state announces the find and stops, and the status screen learns the three new names. The banner finally says 13 while we are in the neighborhood.</p>
 </div>
@@ -471,7 +471,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
       <span class="tok-569cd6">break</span>;
     }
 </pre>
-<div class="callout-3a7d5c-bg-e8f5e9">
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,714 bytes — up 180.</strong> The door is live: the silver check, the state transition, the announcement. One hundred eighty bytes is what "see the invisible" costs.</p>
 </div>
@@ -481,7 +481,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p><a href="../newproject.html?lesson=13&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 4 — The Watchful Leg</h3>
-<div class="callout-2e86ab-bg-e8f4f8">
+<div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL">
 <div class="div-fs-105em">🎯 THE GOAL</div>
 <p class="p-m-8px000"><code>driveUntil()</code> in <code>RobotMotion.cpp</code> — <code>driveDistance()</code>’s body with its eyes open. Defined, declared, not yet called. You know what the byte count will say.</p>
 </div>
@@ -539,7 +539,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 }
 </pre>
 <p>Two lines deserve a second look. The kill-switch poll is <em>first</em> in the loop — inside a leg, mid-zone, B must work <strong>now</strong>, not after the wall. And the last line writes <code>lastLegCm</code> whatever happened: even a leg that ends early reports honestly how far it got. Step 6 turns that honest report into the victim detector.</p>
-<div class="callout-3a7d5c-bg-e8f5e9">
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,714 bytes.</strong> Flat again, same reason as Step 2 — and this is the last free step. Everything after this costs bytes, because everything after this <em>runs</em>.</p>
 </div>
@@ -549,7 +549,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <p><a href="../newproject.html?lesson=13&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 5 — The Sweep (Walls Only)</h3>
-<div class="callout-2e86ab-bg-e8f4f8">
+<div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL">
 <div class="div-fs-105em">🎯 THE GOAL</div>
 <p class="p-m-8px000">The lawnmower goes live: sweep bookkeeping variables, a real <code>ENTERING_ZONE</code> hand-off, and a <code>SWEEPING_ZONE</code> state that mows wall-to-wall forever. No victim logic yet — first prove the pattern, then teach it to notice.</p>
 </div>
@@ -605,7 +605,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
     }
 </pre>
 <p>Trace <code>sweepDir</code> through two rows on paper before you trust it. Row one ends: turn right 90, step, turn right 90 — now facing back the way you came, one lane over. <code>sweepDir</code> flips. Row two ends: turn <em>left</em> 90, step, turn <em>left</em> 90. Right-right, left-left, right-right — that alternation is the entire lawnmower, and it is one multiplication: <code>90.0 * sweepDir</code>.</p>
-<div class="callout-3a7d5c-bg-e8f5e9">
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,946 bytes — up 232.</strong> There it is: <code>driveUntil()</code> finally has a caller, so the linker finally pays for it — Steps 4’s "free" code just arrived in the build, alongside the sweep case itself. The flat steps were never missing code. They were code waiting for a reason.</p>
 </div>
@@ -615,7 +615,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <p><a href="../newproject.html?lesson=13&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">Step 6 — The Witness</h3>
-<div class="callout-2e86ab-bg-e8f4f8">
+<div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL">
 <div class="div-fs-105em">🎯 THE GOAL</div>
 <p class="p-m-8px000">The odometer cross-examines the prox: a stop well short of the wall’s last known address is a victim, and a new <code>VICTIM_FOUND</code> state celebrates it. This is the finished build.</p>
 </div>
@@ -670,7 +670,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
     }
 </pre>
 <p>The closing comment is the design decision of the lesson: <strong>finding it is the rescue.</strong> This robot has no gripper, no arm, no way to carry anyone anywhere — and a rescue that <em>reports a verified location</em> is a real rescue; it is what search dogs and avalanche beacons do. The day a robot must carry the victim out is the day it needs an arm; Section 8A.3 prices that out.</p>
-<div class="callout-3a7d5c-bg-e8f5e9">
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,902 bytes — down 44, and this is the finished build.</strong> Read that again: the finished robot is <em>smaller</em> than Step 5. We disassembled both to find out why: the rewritten hand-off and the recompiled state switch came out 120 bytes tighter than the stubs they replaced, while the victim bookkeeping cost only 26. Code you delete pays you back — a preview of Lesson 16, where that becomes the whole game. Total cost of Lesson 13: 368 bytes over Lesson 12. A doorway, a sweep, and a witness — for less than four hundred bytes.</p>
 </div>
@@ -954,7 +954,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <div class="div-bg-fffbe6">
 <p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — modify the <code>VICTIM_FOUND</code> state.</p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the state machine from Lesson 9 <img src="../images/spiral_star_09.svg" alt="Spiral review from Lesson 09" class="img-h-11em"> — stepping around a victim is one more transition, and control goes back to the state that owns the sweep.</div>
+<div class="callout-2e86ab-bg-e7f0fa" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> the state machine from Lesson 9 <img src="../images/spiral_star_09.svg" alt="Spiral review from Lesson 09" class="img-h-11em"> — stepping around a victim is one more transition, and control goes back to the state that owns the sweep.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
 <p class="pre-m-0">One victim is a demo; a rescue robot keeps working. After the celebration, step <em>around</em> the victim and hand control back to the sweep, so a zone with two silver balls ends with <code>Rescues: 2</code>. First answer the bookkeeping question: after stepping around a victim, should <code>lastRowCm</code> update?</p>
@@ -1005,7 +1005,7 @@ currentState = ____;               <span class="tok-6a9955">// hand back to the 
 <div class="div-bg-fffbe6">
 <p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — add an accumulator, then a report in the kill branch.</p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> Count and Report from Lesson 10 <img src="../images/spiral_star_10.svg" alt="Spiral review from Lesson 10" class="img-h-11em"> — the same bookkeeping habit, now with three numbers instead of one.</div>
+<div class="callout-2e86ab-bg-e7f0fa" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> Count and Report from Lesson 10 <img src="../images/spiral_star_10.svg" alt="Spiral review from Lesson 10" class="img-h-11em"> — the same bookkeeping habit, now with three numbers instead of one.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
 <p class="pre-m-0">When the kill switch ends a run, make the robot account for itself: rows completed, total centimeters swept, victims found. Everything you need is already being measured — this challenge is pure bookkeeping, and bookkeeping is most of real engineering.</p>
@@ -1131,7 +1131,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <div class="div-6f7582">
 
 
-<div id="brain-check-02" class="callout-3f51b5">
+<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
@@ -1150,7 +1150,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
 </div>
 
-<div id="brain-check-03" class="callout-3f51b5">
+<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
@@ -1189,7 +1189,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <p class="p-m-12px00"><button type="button" data-bc-btn="3" class="button">Mark Brain Check 03 done</button></p>
 </div>
 
-<div id="brain-check-04" class="callout-3f51b5">
+<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK">
     <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
     <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
@@ -1214,7 +1214,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <p><strong>Next:</strong> Lesson 14 is Competition Prep — where everything this book has built stops being lessons and becomes a machine that has to work <em>on demand, in front of people, first try</em>. Self-tests, startup sequences, checklists: the unglamorous discipline that separates robots that demo well from robots that win.</p>
 <h3 class="h3-c-2e86ab">Engineer’s Log</h3>
 
-<div class="div-6f7582-3">
+<div class="div-6f7582-3" data-family="ENGINEER'S LOG">
 <div class="div-fs-105em">📓 ENGINEER’S LOG #13 — feeds: Software + requirements</div>
 <b>How does the robot know?</b> — that it is in the zone, that it has found a victim, that it is finished. Then: the false-victim threshold you chose, and what happens on <i>either side</i> of it.<br>
 <i>Why judges care: they probe thresholds. A number you can defend in both directions is a design; a number you cannot is a lucky value.</i></div>

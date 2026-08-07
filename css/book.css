@@ -148,6 +148,55 @@ pre code {
   font-size: 1em;
 }
 
+/* §24.14b THE FAMILY MARK, S128, DJ ruling: wire the 953 mapped blocks first.
+ *
+ * A callout's family is decided by its CONTENT (§24.14) and carried in the markup as
+ * data-family (§24.14a, gate 59). The mark is an OUTPUT of the family, and this rule
+ * is only its typography - which mark appears is decided in the markup, never here,
+ * and nothing may ever read a mark filename back to recover a family.
+ *
+ * WHY THE ATTRIBUTE HAD TO COME FIRST. Before S128, 209 of 1,069 blocks were resolved
+ * by the decorative emoji alone - build_family_map's GLYPH tier, which S112 shipped
+ * calling itself a stopgap and predicting exactly this moment. Replacing the emoji
+ * would have erased those blocks' only family signal and failed gate 47. With the
+ * family in the markup, blinding the glyph tier still returns 1069/1069.
+ *
+ * ONE GLYPH WAS NEVER ONE FAMILY, AND ONE FAMILY WAS NEVER ONE GLYPH. The bullseye
+ * carries THIRTEEN distinct labels across its 125 uses - THE GOAL 100, TRY IT 12,
+ * FINISHED EARLY? 2, OBJECTIVES 1 and nine more - while NOTE's 133 blocks wear
+ * THIRTEEN different emoji. The relation is many-to-many in both directions, which is
+ * why a name-match mapping from glyph to mark was measured and rejected: matching the
+ * bullseye to bullseye.svg by name would have been right 100 times and wrong 25. The
+ * marks normalise what the emoji never agreed on.
+ *
+ * SIZED IN em, NOT px, ON PURPOSE. The mark sits inside a callout header whose size
+ * varies (1.05em, 0.9em, plain h3/h4), so a px mark would be large in one header and
+ * small in the next - the same drift six pill classes produced for inline code (S124).
+ * At 1em it tracks whatever it sits in, which is what the emoji it replaces did.
+ *
+ * BASELINE, NOT MIDDLE. vertical-align: middle centres against the x-height and rides
+ * high next to capitals, which is what most of these headers are. -0.125em seats the
+ * 16x16 Bootstrap box on the text baseline the way the emoji sat.
+ *
+ * The marks are BOOTSTRAP ICONS and each ships with its role's title colour baked into
+ * its own fill (§7.1: every mark takes its role's title colour, no exceptions), so this
+ * rule deliberately sets no colour - doing so here would need currentColor in 41 files
+ * and would hand the paint back to whatever container the block happens to sit in. */
+ * SELECTED ON AN ATTRIBUTE, NOT A CLASS, AND THAT IS §27.15b ARRIVING AGAIN. The first
+ * attempt used class="mark". build_css SEES class attributes - it expands every one into
+ * the declarations it stands for and re-derives a name from the VALUES - so the semantic
+ * class was promptly re-emitted into the generated block as `.img-fs-0`, which would have
+ * killed `.mark` on the next strip. The graduation model assumes a class LEAVES the markup
+ * when a rule arrives; a NEW semantic class going INTO the markup runs the generator
+ * backwards. A data attribute is invisible to build_css, so the rule stays the only home. */
+img[data-mark] {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  margin-right: 0.4em;
+  flex-shrink: 0;
+}
+
 /* ===== GENERATED BLOCK - derived from the lessons. Do not hand-edit. ===== */
 
 /* ×2577  span×2577 */

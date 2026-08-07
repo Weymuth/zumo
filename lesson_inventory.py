@@ -2,7 +2,14 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.3.0'
+VERSION = 'v1.3.1'
+#
+# v1.3.1 (S128): callout records gain 'start', 'open_end' and 'family_attr'. Purely
+#   additive - three new keys, no existing key changed, no detector changed. Written
+#   because the marks arc needs to WRITE an attribute onto the element this detector
+#   FINDS, and without offsets a writer has to re-locate it with its own regex, which
+#   is the third-copy defect (S83). Verified additive: build_family_map output is
+#   byte-identical across the change.
 #
 # v1.1.1 (S94): the visible-banner expectation was still the pre-S89 value of 2, so --anomalies
 #   printed a false lead for all sixteen lessons. §5b and book_gates have required exactly ONE
@@ -228,9 +235,60 @@ def expand_classes(src, css=None):
     return _CLASS_RE.sub(one, src)
 
 
+def expand_classes_mapped(src, css=None):
+    """expand_classes, plus a function mapping an EXPANDED offset back to the FILE.
+
+    S128, and it exists because of a defect this parser silently caused. Every node
+    offset build() reports indexes the EXPANDED source, where each class="..." has
+    been replaced by the (much longer) style="..." it stands for. The offsets are
+    internally correct and they are NOT file offsets - the drift grows with position,
+    so a writer using them lands in the middle of prose and, worse, lands PLAUSIBLY.
+
+    That is §24.8 on an offset: a number that is real, usable-looking, and measured
+    against a different document. Nothing in the tree needed file offsets until the
+    marks arc did, so nothing had ever noticed.
+
+    Returns (expanded, to_file). `to_file(off)` is exact on any offset OUTSIDE a
+    substituted span, which is every offset a tag-start can occupy, because the
+    regex only ever matches ` class="..."` - never the `<` that opens a tag.
+    """
+    css = load_css() if css is None else css
+    own = page_css(src)
+    if own:
+        css = dict(css or {})
+        css.update(own)
+    if not css:
+        return src, (lambda off: off)
+
+    out = []
+    edges = []          # (expanded_offset_after_this_sub, cumulative_delta)
+    pos = delta = 0
+    for m in _CLASS_RE.finditer(src):
+        decls = [css[c] for c in m.group(1).split() if c in css]
+        rep = m.group(0) if not decls else ' style="' + '; '.join(decls) + ';"'
+        out.append(src[pos:m.start()])
+        out.append(rep)
+        pos = m.end()
+        delta += len(rep) - (m.end() - m.start())
+        edges.append((m.start() + delta, delta))
+    out.append(src[pos:])
+    expanded = ''.join(out)
+
+    def to_file(off):
+        d = 0
+        for edge, cum in edges:
+            if edge <= off:
+                d = cum
+            else:
+                break
+        return off - d
+
+    return expanded, to_file
+
+
 def build(path):
-    src = open(path, encoding='utf-8').read()
-    src = expand_classes(src)
+    raw = open(path, encoding='utf-8').read()
+    src, _to_file = expand_classes_mapped(raw)
     tree = Tree(src)
     tree.feed(src)
     tree.close()
@@ -388,6 +446,17 @@ def build(path):
             'glyph': next((c for c in gtxt if ord(c) > 0x2100), ''),
             'label': txt[:70],
             'bytes': (nd['end'] or nd['open_end']) - nd['start'],
+            # S128: FILE offsets and the live attribute, so a writer can seat
+            # data-family on the SAME element this detector found. Constructs already
+            # carry 'start'; callouts did not, which forced any writer to re-find the
+            # element by its own regex - the third-copy defect S83 rules against.
+            # NOTE the _to_file() calls. nd['start'] indexes the EXPANDED source and
+            # is NOT a file offset (see expand_classes_mapped). 'start'/'open_end'
+            # below are file offsets; 'exp_start' keeps the raw one for debugging.
+            'start': _to_file(nd['start']),
+            'open_end': _to_file(nd['open_end']),
+            'exp_start': nd['start'],
+            'family_attr': nd['attrs'].get('data-family'),
         })
 
     heads = [{'tag': n['tag'], 'line': n['line'], 'div_depth': n['div_depth'],
