@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.52'
+VERSION = 'v1.53'
 # v1.52 (S126): §27.12 SCOPE EXTENDED to semantic-layer consumers (DJ ruling) and to
 #   index.html BY NAME (§25.2a); §27 gains the COVERAGE arm it never had; and BOTH gates
 #   stop keying scope on a bare substring. Three defects found in one pass, each by the
@@ -2122,7 +2122,19 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 624, 2282, '3144f489f4a79cba'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 604, 2141, '5c22a884d4031cd2'
+#   S126b: 624/2,282 -> 604/2,141, §27.15e. The dark code block graduates and the -20/-141
+#   reconciles exactly: 23 rules DIE carrying 148 declarations, 3 are BORN carrying 3, and
+#   ONE is altered, gaining 4. -148 + 3 + 4 = -141. The altered rule is a RENUMBER, not a
+#   meaning change: .div-bg-1e1e1e-2 took the name .div-bg-1e1e1e after the original holder
+#   died in the unwrap, and the survivors were moved onto it by matching IDENTICAL
+#   declarations, never by name arithmetic. §27.15b FIRED FOR REAL on the first attempt --
+#   176 <pre> joined .p-m-0's 120 users, <pre> became the dominant tag, the rule renamed to
+#   .pre-m-0 and 119 <p> plus 1 <ul> went dead. Per §27.15b the tree was REVERTED to the
+#   pushed clone and re-derived with the survivor rename in its correct slot, not patched
+#   forward. PROOF NOTHING ELSE MOVED: every lesson expanded against its own stylesheet
+#   before and after, and every changed line is a <pre>, a removed wrapper <div>, or
+#   whitespace -- ZERO others across all sixteen.
 #   S126: 627/2,297 -> 624/2,282. §27.15a says there is NO exception list, and five inline
 #   <code> elements in L03 were still carrying a class - the last five in the book. They
 #   were invisible to S124's strip because that sweep enumerated the class names it knew
@@ -2750,6 +2762,69 @@ if os.path.exists(_SEM):
     if _nested == 0:
         bad.append('no <code> inside any <pre> - the reset guards nothing; re-derive \u00a727.15a')
 gate('\u00a727.15a a pill on <code> is reset inside <pre>', bad)
+
+
+# ---- GATE 57 (\u00a727.15e): THE DARK CODE BLOCK IS ONE RULE, AND NOTHING RESTATES IT.
+# The graduate reaches 802 <pre> elements that FOURTEEN class names used to stand for. The
+# failure modes are all silent, which is why this exists in the same pass as the ruling
+# (S125's rule): drop the rule and 802 blocks go transparent while every other gate stays
+# green; soften the border back toward the ground and the 1.32:1 invisibility DJ caught by
+# eye comes straight back, with no instrument able to see it; let a value-named class
+# re-acquire a #1e1e1e ground and the construct has two spellings again, which is exactly
+# the drift the no-exception-list rule was ruled to prevent.
+_sem = open('css/semantic.css', encoding='utf-8').read()
+bad = []
+# The layer contains TWO rules whose selector ends in `pre`: the shared `code,\npre {}`
+# font-family rule and this one. Select by CONTENT and assert uniqueness rather than by
+# position, which would silently bind to whichever came first (it did, on the first run).
+_cands = [c for c in re.findall(r'(?<!,)\npre\s*\{([^}]*)\}', _sem)
+          if 'background-color' in c]
+if len(_cands) != 1:
+    bad.append(f'css/semantic.css holds {len(_cands)} `pre` rule(s) declaring a background; '
+               f'expected exactly one (\u00a727.15e)')
+_m = _cands[0] if len(_cands) == 1 else None
+if _m is None:
+    bad.append('css/semantic.css carries no `pre` element rule \u2014 the dark code block is '
+               'ungraduated and 802 blocks resolve to nothing (\u00a727.15e)')
+else:
+    _d = {k.split(':')[0].strip(): k.split(':', 1)[1].strip()
+          for k in _m.split(';') if ':' in k}
+    for _k, _v in (('background-color', '#1e1e1e'), ('border-radius', '6px'),
+                   ('padding', '15px'), ('color', '#e8e8e8')):
+        if _d.get(_k) != _v:
+            bad.append(f'\u00a727.15e `pre` declares {_k}: {_d.get(_k)!r}, ruled {_v!r}')
+    # THE BORDER IS RULED BY CONTRAST, NOT BY SPELLING. #333 passed every gate for two
+    # years and is 1.32:1 against #1e1e1e -- invisible. Assert the RATIO, so any future
+    # value has to earn its place rather than merely differ.
+    _b = _d.get('border', '')
+    _hex = re.search(r'#([0-9a-fA-F]{6})', _b)
+    if not _hex or not _b.startswith('1px solid'):
+        bad.append(f'\u00a727.15e `pre` border is {_b!r}, expected `1px solid #rrggbb`')
+    else:
+        def _lum(h):
+            out = []
+            for i in (0, 2, 4):
+                c = int(h[i:i + 2], 16) / 255
+                out.append(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+            return 0.2126 * out[0] + 0.7152 * out[1] + 0.0722 * out[2]
+        _l1, _l2 = _lum(_hex.group(1)), _lum('1e1e1e')
+        _hi, _lo = max(_l1, _l2), min(_l1, _l2)
+        _ratio = (_hi + 0.05) / (_lo + 0.05)
+        if _ratio < 3.0:
+            bad.append(f'\u00a727.15e `pre` border #{_hex.group(1)} is {_ratio:.2f}:1 against '
+                       f'the #1e1e1e ground \u2014 below the 3:1 minimum, so it is invisible')
+# NO SECOND SPELLING: no generated class may re-acquire the dark ground on a <pre>.
+_gen = open('css/book.css', encoding='utf-8').read()
+_gi = _gen.find('GENERATED BLOCK')
+for _m2 in re.finditer(r'^\.([A-Za-z0-9_-]+)\s*\{([^}]*)\}', _gen[_gi:], re.M):
+    if '#1e1e1e' in _m2.group(2) and _m2.group(1).startswith(('pre-', 'code-block')):
+        bad.append(f'.{_m2.group(1)} restates the dark ground on a <pre> \u2014 one construct, '
+                   f'two spellings (\u00a727.15e)')
+# COVERAGE ARM (S117/S118): a gate that scans zero elements passes.
+_n = sum(len(re.findall(r'<pre\b', open(f, encoding='utf-8').read())) for f in files)
+if _n < 700:
+    bad.append(f'scanned only {_n} <pre> element(s) \u2014 the scope is broken (\u00a727.15e)')
+gate('\u00a727.15e the dark code block is one rule with a visible border', bad)
 
 
 # ---- GATE 56 (\u00a727.15c): A PAGE THAT CONSUMES THE SEMANTIC LAYER MUST NOT RESTATE IT.

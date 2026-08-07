@@ -6,7 +6,7 @@
  * semantic set (27 accents / 30 families) is not designed yet, so a name is English
  * only where the declarations prove the role, and carries the hex otherwise.
  *
- * 624 rules covering 23,615 inline attributes.
+ * 604 rules covering 22,922 inline attributes.
  */
 
 /* ===== SEMANTIC LAYER (§27.15) - preserved verbatim from css/semantic.css. Edit THERE. ===== */
@@ -96,6 +96,44 @@ pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
+/* §27.15e THE DARK CODE BLOCK, S126, DJ ruling. The third graduate, and the largest: it
+ * reaches 802 <pre> elements that FOURTEEN generated class names used to stand for, and
+ * the fourteen disagreed. Padding was unanimous at 15px; colour, line-height, font-size
+ * and overflow-x were each 98-99% one value, so those are drift and normalise here. TWO
+ * declarations were a real split, and neither turned out to be a matter of taste:
+ *
+ * BORDER. 398 blocks carried `1px solid #333`, 289 carried none - and that split is the
+ * L09/L10 SEAM, not a preference: L02-L09 bordered 365 of 372, L10-L16 bordered 29 of 281.
+ * Shown four rendered specimens, DJ said they all looked the same, and he was right:
+ * #333 on #1e1e1e is a contrast ratio of 1.32:1 against a 3:1 WCAG minimum for a non-text
+ * boundary. 398 blocks were carrying a line nobody could see. Ruled to a border that earns
+ * its place. The first value proposed, #686868, was computed by hand as "3:1" and is in
+ * fact 2.992:1 - GATE 57 CAUGHT IT BEFORE THE PUSH, which is the whole argument for
+ * asserting the RATIO rather than the spelling: a gate that checked for the literal
+ * #686868 would have certified an invisible border as the ruled one. #696969 is the
+ * lowest grey that genuinely clears 3:1 here, and it is indistinguishable by eye from
+ * the value it corrects.
+ *
+ * RADIUS. 6px on 389, 8px on 265, 4px and 5px as strays. Ruled 6px.
+ *
+ * NO OPT-OUT AND NO EXCEPTION LIST, which is the point (§27.15a). The 30 light blocks need
+ * no help: they declare background, border, radius and padding themselves, so their class
+ * beats this element rule on every property it sets - checked, not assumed. The 109 blocks
+ * that sat inside a dark WRAPPER <div> in L02/L03 were UNWRAPPED rather than excepted,
+ * because an opt-out is an exception someone has to remember forever. All 109 wrappers held
+ * exactly one <pre> and nothing else, verified across all eight wrapper spellings before a
+ * single one was removed. */
+pre {
+  background-color: #1e1e1e;
+  border: 1px solid #696969;
+  border-radius: 6px;
+  padding: 15px;
+  overflow-x: auto;
+  color: #e8e8e8;
+  font-size: 0.9em;
+  line-height: 1.8;
+}
+
 code {
   background: rgba(0, 0, 0, 0.08);
   padding: 2px 6px;
@@ -162,7 +200,7 @@ pre code {
   font-weight: bold;
 }
 
-/* ×345  p×329, ul×11, ol×5 */
+/* ×350  p×329, ul×11, pre×5, ol×5 */
 .p-mb-0 {
   margin-bottom: 0;
 }
@@ -185,6 +223,11 @@ pre code {
   color: #4ec9b6;
 }
 
+/* ×296  pre×176, p×119, ul×1 */
+.pre-m-0 {
+  margin: 0;
+}
+
 /* ×288  a×288 */
 .link-bc-rgba2552 {
   color: white;
@@ -193,31 +236,6 @@ pre code {
   background-color: rgba(255,255,255,0.14);
   border-radius: 4px;
   font-size: 0.78em;
-}
-
-/* ×286  pre×286 */
-.code-block-333 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 15px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  color: #e8e8e8;
-  line-height: 1.8;
-}
-
-/* ×255  pre×255 */
-.code-block-bg-1e1e1e {
-  background-color: #1e1e1e;
-  color: #e8e8e8;
-  padding: 15px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  line-height: 1.8;
 }
 
 /* ×252  a×252 */
@@ -317,21 +335,6 @@ pre code {
   cursor: pointer;
 }
 
-/* ×120  p×119, ul×1 */
-.p-m-0 {
-  margin: 0;
-}
-
-/* ×109  pre×109 */
-.pre-c-e8e8e8 {
-  margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  overflow-x: auto;
-  color: #e8e8e8;
-  line-height: 1.8;
-}
-
 /* ×106  th×106 */
 .th-ddd {
   padding: 10px;
@@ -419,6 +422,11 @@ pre code {
   border: 1px solid #dee2e6;
 }
 
+/* ×83  div×52, pre×31 */
+.div-m-16px0 {
+  margin: 16px 0;
+}
+
 /* ×82  h3×82 */
 .h3-c-2e86ab {
   color: #2e86ab;
@@ -474,20 +482,6 @@ pre code {
   color: white;
   padding: 12px 15px;
   text-align: left;
-}
-
-/* ×67  pre×67 */
-.code-block-333-2 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 15px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  color: #e8e8e8;
-  line-height: 1.8;
-  margin: 0;
 }
 
 /* ×64  div×64 */
@@ -608,15 +602,6 @@ pre code {
   padding: 15px 20px;
 }
 
-/* ×53  div×53 */
-.div-333 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 20px 0;
-}
-
 /* ×53  td×53 */
 .td-ccc-2 {
   border: 1px solid #ccc;
@@ -627,11 +612,6 @@ pre code {
 .td-ddd-4 {
   padding: 8px;
   border: 1px solid #ddd;
-}
-
-/* ×52  div×52 */
-.div-m-16px0 {
-  margin: 16px 0;
 }
 
 /* ×51  h4×46, h3×5 */
@@ -867,20 +847,6 @@ pre code {
   margin-top: 24px;
 }
 
-/* ×31  pre×31 */
-.code-block-333-3 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 15px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  color: #e8e8e8;
-  line-height: 1.8;
-  margin: 16px 0;
-}
-
 /* ×31  div×31 */
 .callout-17a2b8-bg-d1ecf1 {
   background-color: #d1ecf1;
@@ -1096,16 +1062,6 @@ pre code {
 }
 
 /* ×24  div×24 */
-.div-333-2 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 16px 0;
-  color: #e8e8e8;
-}
-
-/* ×24  div×24 */
 .callout-2196f3-bg-e3f2fd {
   background-color: #e3f2fd;
   border-left: 4px solid #2196f3;
@@ -1135,18 +1091,6 @@ pre code {
   padding: 15px 20px;
   margin: 20px 0;
   border-radius: 4px;
-}
-
-/* ×21  pre×21 */
-.code-block-bg-1e1e1e-2 {
-  background-color: #1e1e1e;
-  border-radius: 4px;
-  color: #e8e8e8;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  line-height: 1.8;
-  overflow-x: auto;
-  padding: 15px;
 }
 
 /* ×21  div×21 */
@@ -1926,16 +1870,6 @@ pre code {
 }
 
 /* ×11  div×11 */
-.div-333-3 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 20px 0;
-  clear: both;
-}
-
-/* ×11  div×11 */
 .div-bg-433014-4 {
   background-color: #433014;
   color: white;
@@ -2123,19 +2057,6 @@ pre code {
   align-items: center;
 }
 
-/* ×9  pre×9 */
-.code-block-333-4 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  color: #e8e8e8;
-  line-height: 1.8;
-}
-
 /* ×9  div×9 */
 .callout-2e86ab-bg-eef4f8 {
   background: #eef4f8;
@@ -2192,34 +2113,6 @@ pre code {
 .tr-bg-00474b {
   background-color: #00474b;
   color: white;
-}
-
-/* ×8  pre×8 */
-.code-block-bg-1e1e1e-3 {
-  background-color: #1e1e1e;
-  border-radius: 4px;
-  color: #e8e8e8;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  line-height: 1.8;
-  padding: 15px;
-}
-
-/* ×8  div×8 */
-.div-333-4 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 10px 0;
-}
-
-/* ×8  div×8 */
-.div-333-5 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 16px 0;
 }
 
 /* ×8  div×8 */
@@ -2659,20 +2552,6 @@ pre code {
   gap: 10px;
 }
 
-/* ×5  pre×5 */
-.code-block-333-5 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 6px;
-  padding: 15px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  color: #e8e8e8;
-  line-height: 1.8;
-  margin-bottom: 0;
-}
-
 /* ×5  tr×5 */
 .tr-bg-1f2a3d {
   background-color: #1f2a3d;
@@ -3018,15 +2897,6 @@ pre code {
   padding: 16px 18px;
 }
 
-/* ×3  pre×3 */
-.code-block-bg-1e1e1e-4 {
-  background-color: #1e1e1e;
-  color: #d4d4d4;
-  padding: 15px;
-  border-radius: 5px;
-  overflow-x: auto;
-}
-
 /* ×3  a×3 */
 .link-bg-1f2a3d-2 {
   display: inline-block;
@@ -3277,20 +3147,6 @@ pre code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
-/* ×3  pre×3 */
-.pre-ff-uimonosp {
-  margin: 5px 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-}
-
-/* ×3  pre×3 */
-.pre-ff-uimonosp-2 {
-  margin: 5px 0 0 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-}
-
 /* ×3  div×3 */
 .div-fs-095em-2 {
   font-size: 0.95em;
@@ -3318,21 +3174,14 @@ pre code {
   margin: 40px 0;
 }
 
-/* ×2  div×2 */
-.div-333-6 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 15px 0 5px;
+/* ×3  pre×3 */
+.pre-m-5px0 {
+  margin: 5px 0;
 }
 
-/* ×2  div×2 */
-.div-bg-1e1e1e {
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  padding: 14px 18px;
-  margin: 12px 0;
+/* ×3  pre×3 */
+.pre-m-5px000 {
+  margin: 5px 0 0 0;
 }
 
 /* ×2  span×2 */
@@ -3767,7 +3616,7 @@ pre code {
 }
 
 /* ×1  div×1 */
-.div-bg-1e1e1e-2 {
+.div-bg-1e1e1e {
   background-color: #1e1e1e;
   border-radius: 4px;
   color: #e8e8e8;
@@ -3776,38 +3625,6 @@ pre code {
   line-height: 1.6;
   margin: 12px 0;
   padding: 12px 15px;
-}
-
-/* ×1  pre×1 */
-.code-block-bg-1e1e1e-5 {
-  background-color: #1e1e1e;
-  border-radius: 4px;
-  color: #e8e8e8;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.85em;
-  line-height: 1.8;
-  padding: 15px;
-}
-
-/* ×1  div×1 */
-.div-333-7 {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 15px 0;
-}
-
-/* ×1  pre×1 */
-.code-block-bg-1e1e1e-6 {
-  background-color: #1e1e1e;
-  color: #d4d4d4;
-  padding: 15px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
-  line-height: 1.5;
 }
 
 /* ×1  div×1 */

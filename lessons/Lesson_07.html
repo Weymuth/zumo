@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.25.0 -->
+<!-- Lesson version: v04.26.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Code Organization</h1>
 <div class="div-fs-11em">Cleaning Up Your Robot's Brain</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.25 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 04.26 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -252,7 +252,7 @@
 
 <p>Poor organization doesn't just make code hard to read—it causes <strong>real errors</strong>. "Spaghetti code" with duplicated variables and functions across files leads to compiler errors like:</p>
 
-<pre class="code-block-333"><span class="tok-f14c4c">error: multiple definition of 'WHEEL_DIAMETER'</span>
+<pre><span class="tok-f14c4c">error: multiple definition of 'WHEEL_DIAMETER'</span>
 <span class="tok-f14c4c">error: 'driveDistance' was not declared in this scope</span></pre>
 
 <p>Proper organization <em>prevents</em> these errors. The techniques in this lesson aren't just "nice to have"—they're essential!</p>
@@ -335,7 +335,7 @@
 
 <div class="div-bg-ef5350">❌ BEFORE: Everything in loop()</div>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
   <span class="tok-7cbf6e">// Drive forward 30cm</span>
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
@@ -369,7 +369,7 @@
 
 <div class="div-bg-4caf50">✅ AFTER: Organized with Functions</div>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
   <span class="tok-7cbf6e">// Drive a square - so clean!</span>
   <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i < <span class="tok-b5cea8">4</span>; i++) {
     driveDistance(<span class="tok-b5cea8">30</span>);
@@ -529,7 +529,7 @@
 
 <p>Here's what a simple header file looks like:</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// RobotMotion.h - Header file for movement functions</span>
+<pre><span class="tok-7cbf6e">// RobotMotion.h - Header file for movement functions</span>
 <span class="tok-569cd6">#pragma</span> once
 <span class="tok-7cbf6e">// Function declarations (promises)</span>
 <span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> centimeters);
@@ -560,7 +560,7 @@
 
 </ul>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// RobotMotion.cpp - Implementation of movement functions</span>
+<pre><span class="tok-7cbf6e">// RobotMotion.cpp - Implementation of movement functions</span>
 <span class="tok-569cd6">#include</span> &lt;Zumo32U4.h&gt;
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotConfig.h"</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotSensors.h"</span>
@@ -592,7 +592,7 @@
 
 <p>There are two styles:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">#include</span> &lt;Zumo32U4.h&gt; <span class="tok-7cbf6e">// Angle brackets: system/library files</span>
+<pre><span class="tok-569cd6">#include</span> &lt;Zumo32U4.h&gt; <span class="tok-7cbf6e">// Angle brackets: system/library files</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotMotion.h"</span> <span class="tok-7cbf6e">// Quotes: YOUR project files</span></pre>
 
 <table class="table-bc-collapse-2">
@@ -645,7 +645,7 @@
 
 </div>
 
-<pre class="code-block-333"><span class="tok-569cd6">#pragma</span> once
+<pre><span class="tok-569cd6">#pragma</span> once
 <span class="tok-7cbf6e">// Your declarations go here</span>
 <span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> centimeters);</pre>
 
@@ -658,7 +658,7 @@
 
 <p>In older codebases, you'll see a three-line pattern called "include guards" that does the same thing:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">#ifndef</span> ROBOT_MOTION_H
+<pre><span class="tok-569cd6">#ifndef</span> ROBOT_MOTION_H
 <span class="tok-569cd6">#define</span> ROBOT_MOTION_H
 <span class="tok-7cbf6e">// ... declarations ...</span>
 <span class="tok-569cd6">#endif</span></pre>
@@ -719,7 +719,7 @@
 
 <p><strong>Example — spot the difference:</strong></p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// GLOBAL variable — declared outside any function</span>
+<pre><span class="tok-7cbf6e">// GLOBAL variable — declared outside any function</span>
 <span class="tok-569cd6">int</span> robotSpeed = <span class="tok-b5cea8">200</span>; <span class="tok-7cbf6e">// Everyone can see this!</span>
 <span class="tok-569cd6">void</span> setup() {
   Serial.begin(<span class="tok-b5cea8">115200</span>);
@@ -744,7 +744,7 @@
 
 <p>When you move code into a new function or file, you might see this error:</p>
 
-<pre class="code-block-333"><span class="tok-f14c4c">error: 'turnAmount' was not declared in this scope</span></pre>
+<pre><span class="tok-f14c4c">error: 'turnAmount' was not declared in this scope</span></pre>
 
 <p><strong>This means:</strong> You're trying to use a variable that doesn't exist where you're trying to use it.</p>
 
@@ -1211,7 +1211,7 @@ This eight-file layout isn't just for this lesson — it's the architecture you'
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotConfig.h</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-6a9955">/*</span>
+<pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">=====================================================</span>
 <span class="tok-6a9955">ROBOTCONFIG.H - Robot Calibration Settings</span>
 <span class="tok-6a9955">=====================================================</span>
@@ -1293,7 +1293,7 @@ This eight-file layout isn't just for this lesson — it's the architecture you'
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.h</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTSENSORS.H - Hardware &amp; Sensor Declarations</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1345,7 +1345,7 @@ extern Zumo32U4ButtonC buttonC;
 <p class="p-mb-0">Create the file, keep main.cpp untouched, and build. It goes red — but look closely: this is a <em>new species</em> of error. No line number in your code. No "expected ;". Instead:</p>
 </div>
 
-<pre class="code-block-333">multiple definition of `display'
+<pre>multiple definition of `display'
 RobotSensors.cpp.o (.bss.display+0x0): first defined here</pre>
 
 <p>The <strong>compiler</strong> was happy — each file made sense alone. The <strong>linker</strong>, whose job is welding the compiled pieces into one program, found two real <code>display</code> objects and refused to guess. Section 8's Error 5 is this exact message. The fix: delete the HARDWARE OBJECTS block from <code>main.cpp</code> — the header's promises now point at RobotSensors.cpp's real things.</p>
@@ -1353,7 +1353,7 @@ RobotSensors.cpp.o (.bss.display+0x0): first defined here</pre>
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.cpp</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTSENSORS.CPP - Hardware Definitions</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1403,7 +1403,7 @@ Zumo32U4ButtonC buttonC;
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with worked RobotHelpers files</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTHELPERS.H - Standard Helper Declarations</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1418,7 +1418,7 @@ Zumo32U4ButtonC buttonC;
 <span class="tok-569cd6">void</span> waitForStart();
 <span class="tok-569cd6">void</span> checkBattery();
 </pre>
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTHELPERS.CPP - Standard Helper Implementations</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1498,7 +1498,7 @@ Zumo32U4ButtonC buttonC;
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotMotion.h</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTMOTION.H - Movement Function Declarations</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1559,7 +1559,7 @@ Zumo32U4ButtonC buttonC;
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotMotion.cpp</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-6a9955">/*</span>
+<pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">=====================================================</span>
 <span class="tok-6a9955">ROBOTMOTION.CPP - Movement Function Implementations</span>
 <span class="tok-6a9955">=====================================================</span>
@@ -1639,7 +1639,7 @@ Zumo32U4ButtonC buttonC;
 
 <p>With every job moved out, <code>main.cpp</code> becomes what it always should have been: the <em>conductor</em>. It includes the modules, reports the battery at boot, gates at <code>waitForStart()</code>, and runs a <strong>tuning-mode menu</strong> — A tests distance, B tests turns, C runs a full square. One Lesson 6 helper does not make the trip — <code>displayEncoderCounts()</code> was a diagnostic that proved your encoders counted true, and that job is done; the tuning menu is main.cpp’s new dashboard. The setup and loop below are boot-report and menu choreography, so this is a copy step. Replace your whole <code>setup()</code> and <code>loop()</code>:</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== SETUP =====</span>
+<pre><span class="tok-7cbf6e">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
   <span class="tok-4ec9b6">Serial</span>.begin(<span class="tok-b5cea8">115200</span>);
   <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> serialStart = millis();
@@ -1994,7 +1994,7 @@ Zumo32U4ButtonC buttonC;
 
 <h3 class="h3-c-00474b">Error 1: "was not declared in this scope"</h3>
 
-<pre class="code-block-333"><span class="tok-f14c4c">error: 'driveDistance' was not declared in this scope</span>
+<pre><span class="tok-f14c4c">error: 'driveDistance' was not declared in this scope</span>
 driveDistance(30);
 ^~~~~~~~~~~~~</pre>
 
@@ -2030,7 +2030,7 @@ driveDistance(30);
 
 <h3 class="h3-c-00474b">Error 2: "multiple definition of"</h3>
 
-<pre class="code-block-333">multiple definition of `WHEEL_DIAMETER_MM'
+<pre>multiple definition of `WHEEL_DIAMETER_MM'
 first defined here...</pre>
 
 <img src="../images/L07_IMAGE_7-10_error_multiple_definition.svg" alt="[IMAGE 7.10] The PlatformIO terminal showing a linker error: multiple definition of TRIM, first defined in main.cpp. Two files each created their own copy of the same variable." class="img-d-block">
@@ -2046,7 +2046,7 @@ first defined here...</pre>
 
 <h3 class="h3-c-00474b">Error 3: "No such file or directory"</h3>
 
-<pre class="code-block-333"><span class="tok-f14c4c">fatal error: RobotMotion.h: No such file or directory</span>
+<pre><span class="tok-f14c4c">fatal error: RobotMotion.h: No such file or directory</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotMotion.h"</span>
 ^~~~~~~~~~~~~~~</pre>
 
@@ -2086,7 +2086,7 @@ first defined here...</pre>
 
 <h3 class="h3-c-00474b">Error 4: "undefined reference to"</h3>
 
-<pre class="code-block-333"><span class="tok-f14c4c">undefined reference to `driveDistance(float)'</span>
+<pre><span class="tok-f14c4c">undefined reference to `driveDistance(float)'</span>
 <span class="tok-f14c4c">collect2: error: ld returned 1 exit status</span></pre>
 
 <table class="table-bc-collapse-2">
@@ -2123,7 +2123,7 @@ first defined here...</pre>
 
 <h3 class="h3-c-00474b">Error 5: "redefinition of" or "multiple definition of" hardware objects</h3>
 
-<pre class="code-block-333">multiple definition of `display'
+<pre>multiple definition of `display'
 RobotSensors.cpp:7: first defined here
 multiple definition of `buzzer'
 RobotSensors.cpp:8: first defined here
@@ -2157,7 +2157,7 @@ RobotSensors.cpp:10: first defined here</pre>
 
 <p>If you copied code from Lesson 6, it probably had lines like:</p>
 
-<pre class="code-block-333">Zumo32U4OLED display; // ← DELETE from main.cpp
+<pre>Zumo32U4OLED display; // ← DELETE from main.cpp
 Zumo32U4Buzzer buzzer; // ← DELETE from main.cpp
 Zumo32U4ButtonA buttonA; // ← DELETE from main.cpp
 Zumo32U4Motors motors; // ← DELETE from RobotMotion.cpp
@@ -2169,7 +2169,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <h3 class="h3-c-00474b">Error 5b: "undefined reference to 'motors'" (extern in wrong place)</h3>
 
-<pre class="code-block-333"><span class="tok-f14c4c">undefined reference to `motors'</span></pre>
+<pre><span class="tok-f14c4c">undefined reference to `motors'</span></pre>
 
 <table class="table-bc-collapse-2">
 
@@ -2201,7 +2201,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <h3 class="h3-c-00474b">Error 6: "expected ';' before '{'"</h3>
 
-<pre class="code-block-333"><span class="tok-f14c4c">error: expected ';' before '{' token</span></pre>
+<pre><span class="tok-f14c4c">error: expected ';' before '{' token</span></pre>
 
 <table class="table-bc-collapse-2">
 
@@ -2294,7 +2294,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <p>When debugging multi-file projects, test one function at a time before combining them:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
   <span class="tok-7cbf6e">// Test just driveDistance first</span>
   Serial.begin(<span class="tok-b5cea8">115200</span>);
   Serial.println(F(<span class="tok-ce9178">"Testing driveDistance(30)..."</span>));
@@ -2337,7 +2337,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <p><strong>Fix:</strong> Make sure your battery check starts with:</p>
 
-<pre class="code-block-333">display.clear();
+<pre>display.clear();
 display.setLayout21x8(); // ← THIS LINE!
 display.gotoXY(0, 0);</pre>
 
@@ -2353,7 +2353,7 @@ display.gotoXY(0, 0);</pre>
 
 <p>In the eight-file structure, all seven hardware objects (<code>display</code>, <code>buzzer</code>, <code>motors</code>, <code>encoders</code>, buttons) live in RobotSensors.cpp. To use them in main.cpp, you need:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotSensors.h"</span></pre>
+<pre><span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotSensors.h"</span></pre>
 
 <p>This is the <strong>most common mistake</strong> in this lesson. If the compiler says any hardware object is "not declared," this is almost always the fix.</p>
 
@@ -2467,7 +2467,7 @@ display.gotoXY(0, 0);</pre>
 
 <h3 class="h3-c-00474b">Usage Examples</h3>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// Include the headers first</span>
+<pre><span class="tok-7cbf6e">// Include the headers first</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotConfig.h"</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotMotion.h"</span>
 <span class="tok-569cd6">void</span> loop() {
@@ -2520,7 +2520,7 @@ display.gotoXY(0, 0);</pre>
 <div class="div-d-grid">
     <div class="div-d63031">
         <h4 class="h4-mt-0">❌ DECLARATION MISTAKE</h4>
-        <pre class="code-block-333"><span class="tok-7cbf6e">// In .h file — WRONG!</span>
+        <pre><span class="tok-7cbf6e">// In .h file — WRONG!</span>
 <span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> cm) {
     <span class="tok-7cbf6e">// Code here... NO!</span>
 }</pre>
@@ -2528,7 +2528,7 @@ display.gotoXY(0, 0);</pre>
     </div>
     <div class="div-28a745">
         <h4 class="h4-mt-0">✅ DECLARATION CORRECT</h4>
-        <pre class="code-block-333"><span class="tok-7cbf6e">// In .h file — CORRECT!</span>
+        <pre><span class="tok-7cbf6e">// In .h file — CORRECT!</span>
 <span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> cm);</pre>
         <p class="p-fs-09em"><strong>Why correct:</strong> Promise only — "this function exists somewhere." The actual code lives in the .cpp file.</p>
     </div>
@@ -2577,13 +2577,13 @@ display.gotoXY(0, 0);</pre>
 <div class="div-d-grid">
     <div class="div-dee2e6-2">
         <h4 class="h4-mt-0">RobotSensors.h</h4>
-        <pre class="code-block-333"><span class="tok-7cbf6e">// In header — TELL OTHER FILES IT EXISTS</span>
+        <pre><span class="tok-7cbf6e">// In header — TELL OTHER FILES IT EXISTS</span>
 <span class="tok-569cd6">extern</span> Zumo32U4Motors motors;
 <span class="tok-569cd6">extern</span> Zumo32U4Encoders encoders;</pre>
     </div>
     <div class="div-dee2e6-2">
         <h4 class="h4-mt-0">RobotSensors.cpp</h4>
-        <pre class="code-block-333"><span class="tok-7cbf6e">// In source — CREATE IT HERE (no extern!)</span>
+        <pre><span class="tok-7cbf6e">// In source — CREATE IT HERE (no extern!)</span>
 Zumo32U4Motors motors;
 Zumo32U4Encoders encoders;</pre>
     </div>
@@ -2599,7 +2599,7 @@ Zumo32U4Encoders encoders;</pre>
     <div class="div-fs-09em">⚠️ WARNING</div>
     <div class="div-fs-105em">COMMON MISTAKE</div>
     <p>Writing <code>extern</code> in the .cpp file is a linker error:</p>
-    <pre class="code-block-333"><span class="tok-7cbf6e">// RobotSensors.cpp — WRONG!</span>
+    <pre><span class="tok-7cbf6e">// RobotSensors.cpp — WRONG!</span>
 <span class="tok-569cd6">extern</span> Zumo32U4Motors motors;  <span class="tok-7cbf6e">// ← Extern in .cpp? ERROR!</span></pre>
     <p><strong>Fix:</strong> In .cpp, create the object without <code>extern</code>. The <code>extern</code> keyword only goes in the .h file.</p>
 </div>
@@ -2643,7 +2643,7 @@ Zumo32U4Encoders encoders;</pre>
 
 <p><strong>Visual example:</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6">int</span> globalSpeed = <span class="tok-b5cea8">200</span>;  <span class="tok-7cbf6e">// ← GLOBAL — all functions can see this</span>
+<pre><span class="tok-569cd6">int</span> globalSpeed = <span class="tok-b5cea8">200</span>;  <span class="tok-7cbf6e">// ← GLOBAL — all functions can see this</span>
 <span class="tok-569cd6">void</span> setup() {
     <span class="tok-569cd6">int</span> localVar = <span class="tok-b5cea8">50</span>;    <span class="tok-7cbf6e">// ← LOCAL — only setup() can see this</span>
     Serial.println(globalSpeed);  <span class="tok-7cbf6e">// ✅ Works! (global visible)</span>
@@ -2717,7 +2717,7 @@ Zumo32U4Encoders encoders;</pre>
 <div class="div-bg-7a5905"><strong>Challenge 1: Add Reverse Driving</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy preloaded with the <strong>finished lesson program</strong> — all eight files, ready to modify: <a href="../newproject.html?lesson=7&amp;kind=reverse" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> · <a href="#qr-decl" class="link-c-2e86ab">Declaration vs Definition</a> &mdash; one promise in RobotMotion.h, one two-line delivery in RobotMotion.cpp.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> · <a href="#qr-decl" class="link-c-2e86ab">Declaration vs Definition</a> &mdash; one promise in RobotMotion.h, one two-line delivery in RobotMotion.cpp.</p>
 </div>
 <div class="div-b-white">
 <div class="div-fs-italic">
@@ -2732,7 +2732,7 @@ Zumo32U4Encoders encoders;</pre>
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">driveBackward(centimeters):
+<pre>driveBackward(centimeters):
 Call driveDistance with NEGATIVE centimeters</pre>
 
 <p><strong>Key insight:</strong> Wrapper functions make code more readable!</p>
@@ -2745,17 +2745,17 @@ Call driveDistance with NEGATIVE centimeters</pre>
 
 <p><strong>Step 1:</strong> Add the declaration to <code>RobotMotion.h</code> (after the existing declarations):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> ____________);</pre>
+<pre><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> ____________);</pre>
 
 <p><strong>Step 2:</strong> Add the implementation to <code>RobotMotion.cpp</code> (after driveDistance):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> centimeters) {
+<pre><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> centimeters) {
   driveDistance(____________);
 }</pre>
 
 <p><strong>Step 3:</strong> Test it in <code>main.cpp</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
   driveDistance(<span class="tok-b5cea8">30</span>); <span class="tok-7cbf6e">// Forward 30cm</span>
   delay(<span class="tok-b5cea8">500</span>);
   driveBackward(<span class="tok-b5cea8">30</span>); <span class="tok-7cbf6e">// Back 30cm - should return to start!</span>
@@ -2770,11 +2770,11 @@ Call driveDistance with NEGATIVE centimeters</pre>
 
 <p><strong>RobotMotion.h:</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> centimeters);</pre>
+<pre><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> centimeters);</pre>
 
 <p><strong>RobotMotion.cpp:</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> centimeters) {
+<pre><span class="tok-569cd6">void</span> driveBackward(<span class="tok-569cd6">float</span> centimeters) {
   driveDistance(-centimeters); <span class="tok-7cbf6e">// Negative = backward!</span>
 }</pre>
 
@@ -2790,7 +2790,7 @@ Call driveDistance with NEGATIVE centimeters</pre>
 <div class="div-bg-7a5905"><strong>Challenge 2: Add Turn Helpers</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy preloaded with the <strong>finished lesson program</strong> — all eight files, ready to modify: <a href="../newproject.html?lesson=7&amp;kind=turn_helpers" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> &mdash; two wrappers riding on turnDegrees() — the RobotMotion pair grows.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> &mdash; two wrappers riding on turnDegrees() — the RobotMotion pair grows.</p>
 </div>
 <div class="div-b-white">
 <div class="div-fs-italic">
@@ -2805,7 +2805,7 @@ Call driveDistance with NEGATIVE centimeters</pre>
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">turnRight(degrees):
+<pre>turnRight(degrees):
 Call turnDegrees with POSITIVE degrees
 turnLeft(degrees):
 Call turnDegrees with NEGATIVE degrees</pre>
@@ -2818,12 +2818,12 @@ Call turnDegrees with NEGATIVE degrees</pre>
 
 <p><strong>Step 1:</strong> Add declarations to <code>RobotMotion.h</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> turnRight(<span class="tok-569cd6">float</span> degrees);
+<pre><span class="tok-569cd6">void</span> turnRight(<span class="tok-569cd6">float</span> degrees);
 <span class="tok-569cd6">void</span> turnLeft(<span class="tok-569cd6">float</span> ________);</pre>
 
 <p><strong>Step 2:</strong> Add implementations to <code>RobotMotion.cpp</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> turnRight(<span class="tok-569cd6">float</span> degrees) {
+<pre><span class="tok-569cd6">void</span> turnRight(<span class="tok-569cd6">float</span> degrees) {
   turnDegrees(________); <span class="tok-7cbf6e">// Positive = right</span>
 }
 <span class="tok-569cd6">void</span> turnLeft(<span class="tok-569cd6">float</span> degrees) {
@@ -2832,7 +2832,7 @@ Call turnDegrees with NEGATIVE degrees</pre>
 
 <p><strong>Step 3:</strong> Test with a square in <code>main.cpp</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
     driveDistance(<span class="tok-b5cea8">20</span>);
     turnRight(<span class="tok-b5cea8">90</span>); <span class="tok-7cbf6e">// Much clearer than turnDegrees(90)!</span>
@@ -2847,7 +2847,7 @@ Call turnDegrees with NEGATIVE degrees</pre>
 
 <summary>🔓 Click to reveal solution</summary>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// RobotMotion.h:</span>
+<pre><span class="tok-7cbf6e">// RobotMotion.h:</span>
 <span class="tok-569cd6">void</span> turnRight(<span class="tok-569cd6">float</span> degrees);
 <span class="tok-569cd6">void</span> turnLeft(<span class="tok-569cd6">float</span> degrees);
 <span class="tok-7cbf6e">// RobotMotion.cpp:</span>
@@ -2870,7 +2870,7 @@ Call turnDegrees with NEGATIVE degrees</pre>
 <div class="div-bg-7a5905"><strong>Challenge 3: Add Display Helper Functions</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy preloaded with the <strong>finished lesson program</strong> — all eight files, ready to modify: <a href="../newproject.html?lesson=7&amp;kind=display_helpers" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> · <a href="#qr-extern" class="link-c-2e86ab">The extern Pattern</a> &mdash; these live in the RobotSensors pair — display is hardware.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> · <a href="#qr-extern" class="link-c-2e86ab">The extern Pattern</a> &mdash; these live in the RobotSensors pair — display is hardware.</p>
 </div>
 <div class="div-b-white">
 <div class="div-fs-italic">
@@ -2885,7 +2885,7 @@ Call turnDegrees with NEGATIVE degrees</pre>
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">initDisplay():
+<pre>initDisplay():
 Set display layout to 21x8
 showMessage(line1, line2):
 Clear display
@@ -2903,13 +2903,13 @@ Print line2</pre>
 
 <p><strong>Step 1:</strong> Add declarations to <code>RobotSensors.h</code> (after the extern declarations):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== DISPLAY HELPER DECLARATIONS =====</span>
+<pre><span class="tok-7cbf6e">// ===== DISPLAY HELPER DECLARATIONS =====</span>
 <span class="tok-569cd6">void</span> initDisplay();
 <span class="tok-569cd6">void</span> showMessage(<span class="tok-569cd6">const</span> char* line1, <span class="tok-569cd6">const</span> char* line2);</pre>
 
 <p><strong>Step 2:</strong> Add implementations to <code>RobotSensors.cpp</code> (after the hardware definitions):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== DISPLAY HELPERS =====</span>
+<pre><span class="tok-7cbf6e">// ===== DISPLAY HELPERS =====</span>
 <span class="tok-569cd6">void</span> initDisplay() {
   display.setLayout21x8();
 }
@@ -2922,7 +2922,7 @@ Print line2</pre>
 
 <p><strong>Step 3:</strong> Update <code>main.cpp</code> to use the helpers:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> setup() {
+<pre><span class="tok-569cd6">void</span> setup() {
   <span class="tok-7cbf6e">// ... battery check ...</span>
   initDisplay();
   showMessage(<span class="tok-ce9178">"ORGANIZED!"</span>, <span class="tok-ce9178">"Press A"</span>);
@@ -2961,7 +2961,7 @@ Print line2</pre>
 
 <p><strong>Before (messy main.cpp):</strong></p>
 
-<pre class="code-block-333">display.setLayout21x8();
+<pre>display.setLayout21x8();
 display.clear();
 display.print(F("Step 1"));
 display.gotoXY(0, 2);
@@ -2969,7 +2969,7 @@ display.print(F("Forward..."));</pre>
 
 <p><strong>After (clean main.cpp):</strong></p>
 
-<pre class="code-block-333">initDisplay();
+<pre>initDisplay();
 showMessage("Step 1", "Forward...");</pre>
 
 <p><strong>Key concept:</strong> Helper functions that wrap hardware calls keep main.cpp clean and readable. The hardware owner (RobotSensors) provides the interface.</p>
@@ -2984,7 +2984,7 @@ showMessage("Step 1", "Forward...");</pre>
 <div class="div-bg-7a5905"><strong>Challenge 4: Add Speed Modes to Config</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy preloaded with the <strong>finished lesson program</strong> — all eight files, ready to modify: <a href="../newproject.html?lesson=7&amp;kind=speed_modes" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> &mdash; three constants in RobotConfig.h, one new function in the RobotMotion pair.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> &mdash; three constants in RobotConfig.h, one new function in the RobotMotion pair.</p>
 </div>
 <div class="div-b-white">
 <div class="div-fs-italic">
@@ -2999,7 +2999,7 @@ showMessage("Step 1", "Forward...");</pre>
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">In RobotConfig.h:
+<pre>In RobotConfig.h:
 Define SLOW_SPEED = 100
 Define MEDIUM_SPEED = 150
 Define FAST_SPEED = 250
@@ -3018,18 +3018,18 @@ Same as driveDistance but use FAST_SPEED</pre>
 
 <p><strong>Step 1:</strong> Add to <code>RobotConfig.h</code> (in the SPEED SETTINGS section):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SLOW_SPEED = ____;
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SLOW_SPEED = ____;
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MEDIUM_SPEED = <span class="tok-b5cea8">150</span>; <span class="tok-7cbf6e">// Same as existing DRIVE_SPEED</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAST_SPEED = ____;</pre>
 
 <p><strong>Step 2:</strong> Add declarations to <code>RobotMotion.h</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> centimeters);
+<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> centimeters);
 <span class="tok-569cd6">void</span> driveDistanceFast(<span class="tok-569cd6">float</span> centimeters);</pre>
 
 <p><strong>Step 3:</strong> Add implementations to <code>RobotMotion.cpp</code> (copy driveDistance and modify the speed):</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
+<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
@@ -3052,13 +3052,13 @@ Same as driveDistance but use FAST_SPEED</pre>
 
 <p><strong>RobotConfig.h:</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SLOW_SPEED = <span class="tok-b5cea8">100</span>;
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SLOW_SPEED = <span class="tok-b5cea8">100</span>;
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MEDIUM_SPEED = <span class="tok-b5cea8">150</span>;
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAST_SPEED = <span class="tok-b5cea8">250</span>;</pre>
 
 <p><strong>RobotMotion.cpp (driveDistanceSlow):</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
+<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
@@ -3083,7 +3083,7 @@ Same as driveDistance but use FAST_SPEED</pre>
 <div class="div-bg-7a5905"><strong>Challenge 5: Add Sensor Stubs to RobotSensors (Prep for Lesson 8!)</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy preloaded with the <strong>finished lesson program</strong> — all eight files, ready to modify: <a href="../newproject.html?lesson=7&amp;kind=sensor_stubs" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-decl" class="link-c-2e86ab">Declaration vs Definition</a> &mdash; stubs are deliveries with empty bodies — legal, useful, and Lesson 8 fills them in.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-decl" class="link-c-2e86ab">Declaration vs Definition</a> &mdash; stubs are deliveries with empty bodies — legal, useful, and Lesson 8 fills them in.</p>
 </div>
 <div class="div-b-white">
 <div class="div-fs-italic">
@@ -3100,7 +3100,7 @@ Same as driveDistance but use FAST_SPEED</pre>
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">In RobotSensors.h (ADD after <span class="tok-569cd6">extern</span> declarations):
+<pre>In RobotSensors.h (ADD after <span class="tok-569cd6">extern</span> declarations):
 Declare: <span class="tok-569cd6">void</span> initLineSensors()
 Declare: <span class="tok-569cd6">void</span> calibrateLineSensors() 
 Declare: <span class="tok-569cd6">int</span> readLinePosition()
@@ -3117,14 +3117,14 @@ Create stub implementations (empty or <span class="tok-569cd6">return</span> <sp
 
 <p><strong>Step 1:</strong> Add to <code>include/RobotSensors.h</code> (AFTER the extern declarations, at the bottom of the file):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== SENSOR FUNCTION DECLARATIONS (Lesson 8 preview) =====</span>
+<pre><span class="tok-7cbf6e">// ===== SENSOR FUNCTION DECLARATIONS (Lesson 8 preview) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors();
 <span class="tok-569cd6">void</span> calibrateLineSensors();
 <span class="tok-569cd6">int</span> readLinePosition();</pre>
 
 <p><strong>Step 2:</strong> Add to <code>src/RobotSensors.cpp</code> (AFTER the hardware definitions):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== SENSOR FUNCTIONS (stubs — filled in Lesson 8) =====</span>
+<pre><span class="tok-7cbf6e">// ===== SENSOR FUNCTIONS (stubs — filled in Lesson 8) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors() {
   <span class="tok-7cbf6e">// TODO: Add sensor initialization in Lesson 8</span>
 }
@@ -3138,7 +3138,7 @@ Create stub implementations (empty or <span class="tok-569cd6">return</span> <sp
 
 <p><strong>Step 3:</strong> Test that it compiles — add a quick test call in <code>main.cpp</code>'s setup():</p>
 
-<pre class="code-block-333">initLineSensors(); // Should compile even though it does nothing yet!</pre>
+<pre>initLineSensors(); // Should compile even though it does nothing yet!</pre>
 
 </div>
 
@@ -3157,7 +3157,7 @@ Create stub implementations (empty or <span class="tok-569cd6">return</span> <sp
 
 <p><strong>include/RobotSensors.h</strong> (showing additions only):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// Add these AFTER the extern declarations:</span>
+<pre><span class="tok-7cbf6e">// Add these AFTER the extern declarations:</span>
 <span class="tok-7cbf6e">// ===== SENSOR FUNCTION DECLARATIONS (Lesson 8 preview) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors();
 <span class="tok-569cd6">void</span> calibrateLineSensors();
@@ -3165,7 +3165,7 @@ Create stub implementations (empty or <span class="tok-569cd6">return</span> <sp
 
 <p><strong>src/RobotSensors.cpp</strong> (showing additions only):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// Add these AFTER the hardware definitions:</span>
+<pre><span class="tok-7cbf6e">// Add these AFTER the hardware definitions:</span>
 <span class="tok-7cbf6e">// ===== SENSOR FUNCTIONS (stubs — filled in Lesson 8) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors() {
   <span class="tok-7cbf6e">// TODO: Add sensor initialization in Lesson 8</span>
@@ -3190,7 +3190,7 @@ Create stub implementations (empty or <span class="tok-569cd6">return</span> <sp
 <div class="div-bg-7a5905"><strong>Challenge 6: Square Navigation Using All Modules</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy preloaded with the <strong>capstone build</strong> (finished program + Challenges 2 and 3 already applied), ready to modify: <a href="../newproject.html?lesson=7&amp;kind=square_capstone" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-includes" class="link-c-2e86ab">Includes &amp; Guards</a> &mdash; uses Challenge 2's turnRight() and Challenge 3's showMessage() — do those first, or the preload arrives with both already installed.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-includes" class="link-c-2e86ab">Includes &amp; Guards</a> &mdash; uses Challenge 2's turnRight() and Challenge 3's showMessage() — do those first, or the preload arrives with both already installed.</p>
 </div>
 <div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the encoder square from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> and the delay-timed square from Lesson 3 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em">. Same square, new instrument each time &mdash; this time the architecture drives it.</div>
 <div class="div-b-white">
@@ -3206,7 +3206,7 @@ Create stub implementations (empty or <span class="tok-569cd6">return</span> <sp
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">Show <span class="tok-ce9178">"Square Demo"</span> message
+<pre>Show <span class="tok-ce9178">"Square Demo"</span> message
 Wait <span class="tok-569cd6">for</span> button press
 REPEAT <span class="tok-b5cea8">4</span> times:
 Show <span class="tok-ce9178">"Side X"</span> message
@@ -3226,14 +3226,14 @@ Show <span class="tok-ce9178">"Complete!"</span> message</pre>
 
 <p><strong>Step 2:</strong> Update <code>main.cpp</code> with all includes:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">#include</span> &lt;Zumo32U4.h&gt;
+<pre><span class="tok-569cd6">#include</span> &lt;Zumo32U4.h&gt;
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotConfig.h"</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotSensors.h"</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotMotion.h"</span></pre>
 
 <p><strong>Step 3:</strong> Write the main program:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> setup() {
+<pre><span class="tok-569cd6">void</span> setup() {
   showMessage(<span class="tok-ce9178">"Square Demo"</span>, <span class="tok-ce9178">"Press A"</span>);
   buttonA.waitForButton();
   delay(<span class="tok-b5cea8">500</span>);
@@ -3257,7 +3257,7 @@ Show <span class="tok-ce9178">"Complete!"</span> message</pre>
 
 <summary>🔓 Click to reveal solution</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6">#include</span> &lt;Zumo32U4.h&gt;
+<pre><span class="tok-569cd6">#include</span> &lt;Zumo32U4.h&gt;
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotConfig.h"</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotSensors.h"</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotMotion.h"</span>
@@ -3296,7 +3296,7 @@ Show <span class="tok-ce9178">"Complete!"</span> message</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=7&amp;kind=trapezoidal" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-decl" class="link-c-2e86ab">Declarations</a> · <a href="#qr-files" class="link-c-2e86ab">Which File Owns What</a> &mdash; Lesson 6&rsquo;s Smooth Stopping and Smooth Acceleration welded together, then re-homed in the architecture.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-decl" class="link-c-2e86ab">Declarations</a> · <a href="#qr-files" class="link-c-2e86ab">Which File Owns What</a> &mdash; Lesson 6&rsquo;s Smooth Stopping and Smooth Acceleration welded together, then re-homed in the architecture.</p>
 </div>
 <div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> Smooth Stopping and Smooth Acceleration from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> and the soft start from Lesson 3 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em">. The algorithm is finished business &mdash; the new work is deciding where every piece of it <em>lives</em>.
 </div>
@@ -3314,7 +3314,7 @@ Show <span class="tok-ce9178">"Complete!"</span> message</pre>
 
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">Set target counts
+<pre>Set target counts
 Start at HALF speed
 WHILE not at target:
 Calculate current progress (0.0 to 1.0)
@@ -3339,7 +3339,7 @@ Stop motors</pre>
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 
 <p><strong>Step 1:</strong> Declare the new function in <code>RobotMotion.h</code>, next to <code>driveDistance()</code> &mdash; the header is the promise:</p>
-<pre class="code-block-333"><span class="tok-6a9955">/*
+<pre><span class="tok-6a9955">/*
 driveDistanceTrapezoidal()
 --------------------------
 Slow start -&gt; fast cruise -&gt; slow finish.
@@ -3348,7 +3348,7 @@ Same distance contract as driveDistance().
 <span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm);</pre>
 <p><strong>Step 2:</strong> Implement it in <code>RobotMotion.cpp</code>, AFTER <code>driveDistance()</code>. It may call <code>averageCounts()</code> freely &mdash; that function is <code>static</code> to this very file, so you are on the right side of its door:</p>
 
-<pre class="code-block-333"><span class="tok-6a9955">/*</span>
+<pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">driveDistanceTrapezoidal(distanceCm)</span>
 <span class="tok-6a9955">------------------------------------</span>
 <span class="tok-6a9955">Slow start -&gt; fast cruise -&gt; slow finish.</span>
@@ -3380,7 +3380,7 @@ Same distance contract as driveDistance().
 
 <p><strong>Step 3:</strong> Test it! In <code>loop()</code> (in <code>main.cpp</code>), call your new function:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
   display.clear();
   display.print(F(<span class="tok-ce9178">"Trapezoid 60cm"</span>));
   driveDistanceTrapezoidal(<span class="tok-b5cea8">60</span>); <span class="tok-7cbf6e">// Use your pro-level version!</span>
@@ -3417,10 +3417,10 @@ Same distance contract as driveDistance().
 <summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
 
 <p><strong>RobotMotion.h</strong> gets the declaration:</p>
-<pre class="code-block-333"><span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm);</pre>
+<pre><span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm);</pre>
 <p><strong>RobotMotion.cpp</strong> gets the implementation, after <code>driveDistance()</code>:</p>
 
-<pre class="code-block-333"><span class="tok-6a9955">/*</span>
+<pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">driveDistanceTrapezoidal(distanceCm)</span>
 <span class="tok-6a9955">------------------------------------</span>
 <span class="tok-6a9955">Slow start -&gt; fast cruise -&gt; slow finish.</span>
@@ -3802,7 +3802,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <h3 class="h3-c-6f7582">🛡️ PREVENT DOUBLE INCLUDES</h3>
 
-<pre class="code-block-333">#pragma once
+<pre>#pragma once
 // ... your code ...</pre>
 
 <h3 id="qr-decl" class="h3-c-6f7582">📌 DECLARATION vs DEFINITION</h3>
@@ -3853,7 +3853,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <p><strong>Use when:</strong> You want to declare functions/constants for use in other files</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">#pragma</span> once
+<pre><span class="tok-569cd6">#pragma</span> once
 <span class="tok-7cbf6e">// Declarations here</span>
 <span class="tok-569cd6">void</span> myFunction(<span class="tok-569cd6">int</span> param);
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MY_CONSTANT = <span class="tok-b5cea8">42</span>;</pre>
@@ -3870,7 +3870,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <p><strong>Use when:</strong> You need to write the actual code for declared functions</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">#include</span> <span class="tok-ce9178">"MyFile.h"</span>
+<pre><span class="tok-569cd6">#include</span> <span class="tok-ce9178">"MyFile.h"</span>
 <span class="tok-569cd6">void</span> myFunction(<span class="tok-569cd6">int</span> param) {
   <span class="tok-7cbf6e">// Actual code here</span>
 }</pre>
@@ -3887,7 +3887,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <p><strong>In main.cpp:</strong></p>
 
-<pre class="code-block-333"><span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotConfig.h"</span> <span class="tok-7cbf6e">// Get constants</span>
+<pre><span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotConfig.h"</span> <span class="tok-7cbf6e">// Get constants</span>
 <span class="tok-569cd6">#include</span> <span class="tok-ce9178">"RobotMotion.h"</span> <span class="tok-7cbf6e">// Get function declarations</span>
 <span class="tok-569cd6">void</span> loop() {
   driveDistance(<span class="tok-b5cea8">30</span>); <span class="tok-7cbf6e">// Just works!</span>

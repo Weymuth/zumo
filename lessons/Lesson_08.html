@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.22.0 -->
+<!-- Lesson version: v04.23.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -86,7 +86,7 @@
 <h1 class="h1">Line Following</h1>
 <div class="div-fs-11em">Proportional Control, and Why Bang-Bang Fails</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.22 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 04.23 &mdash; August 2026</div>
 </div>
 
 <!-- New Teaching Approach Notice -->
@@ -145,7 +145,7 @@
 
 <p>Picture this: You've built your Zumo, calibrated your sensors, and you're ready to follow a line. You write what seems like perfectly logical code:</p>
 
-<pre class="code-block-333">If the line is on the left, turn left.
+<pre>If the line is on the left, turn left.
 If the line is on the right, turn right.
 If the line is centered, go straight.</pre>
 
@@ -230,7 +230,7 @@ If the line is centered, go straight.</pre>
 
 <p>Before P-Control, you probably wrote something like this:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">if</span> (position &lt; <span class="tok-b5cea8">2000</span>) {
+<pre><span class="tok-569cd6">if</span> (position &lt; <span class="tok-b5cea8">2000</span>) {
 <span class="tok-7cbf6e">// Line is left → turn left (HARD)</span>
 motors.setSpeeds(<span class="tok-b5cea8">100</span>, <span class="tok-b5cea8">300</span>);
 } <span class="tok-569cd6">else</span> {
@@ -503,9 +503,9 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <div class="div-dee2e6-3">
     <strong>Mathematical Formula:</strong>
-    <pre class="code-block-333">correction = Kp × (position − setpoint)</pre>
+    <pre>correction = Kp × (position − setpoint)</pre>
     <strong>Arduino Code:</strong>
-    <pre class="code-block-333"><span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+    <pre><span class="tok-569cd6">int</span> error = position - LINE_CENTER;
 <span class="tok-569cd6">int</span> correction = Kp * error;</pre>
 </div>
 
@@ -564,14 +564,14 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <p>The correction is a steering adjustment added to one motor and subtracted from the other:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
+<pre><span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
 <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;</pre>
 
 <div class="callout-6b8e6b-bg-f0f7f0">
     <div class="div-fs-09em">💡 TIP</div>
     <div class="div-fs-105em">Speed Limiting</div>
     <p>Never let motor speeds exceed your <code>MAX_SPEED</code> constant. Use <code>constrain()</code> to keep values safe:</p>
-    <pre class="code-block-333">leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);</pre>
+    <pre>leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);</pre>
 </div>
 
 <h3 class="h3-c-433014">5.4 Key Functions You'll Call</h3>
@@ -747,7 +747,7 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotConfig.h (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTCONFIG.H - Robot Calibration Settings</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -836,7 +836,7 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.h (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTSENSORS.H - Hardware &amp; Sensor Declarations</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -893,7 +893,7 @@ extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Les
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.cpp at this step (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTSENSORS.CPP - Hardware Definitions</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -980,7 +980,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with the finished RobotSensors.cpp (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTSENSORS.CPP - Hardware Definitions</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1071,7 +1071,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked main.cpp at this step (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333">#include <span class="tok-ce9178">"RobotConfig.h"</span>
+<pre>#include <span class="tok-ce9178">"RobotConfig.h"</span>
 #include <span class="tok-ce9178">"RobotSensors.h"</span>
 #include <span class="tok-ce9178">"RobotHelpers.h"</span>
 
@@ -1206,7 +1206,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare: followLine() and the new loop() (the rest of the file is exactly as Step 6 built it)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+<pre><span class="tok-569cd6">void</span> followLine() {
   <span class="tok-569cd6">int</span> position = readLinePosition();
   <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
   <span class="tok-569cd6">int</span> correction = currentKp * error;
@@ -1216,7 +1216,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
   rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
   motors.setSpeeds(leftSpeed, rightSpeed);
 }</pre>
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
+<pre><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// B = start/stop  (A and C get their jobs in Step 8)</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (!isRunning) {
@@ -1282,11 +1282,11 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare: the full state block, handleGap(), and the finished loop()</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== LINE FOLLOWING STATE =====</span>
+<pre><span class="tok-7cbf6e">// ===== LINE FOLLOWING STATE =====</span>
 <span class="tok-569cd6">float</span> currentKp = KP;            <span class="tok-7cbf6e">// Live-tunable copy of KP</span>
 <span class="tok-569cd6">bool</span> isRunning = <span class="tok-569cd6">false</span>;          <span class="tok-7cbf6e">// Is the robot following right now?</span>
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> gapStartTime = <span class="tok-b5cea8">0</span>;  <span class="tok-7cbf6e">// When did the line disappear?</span></pre>
-<pre class="code-block-333"><span class="tok-569cd6">void</span> handleGap() {
+<pre><span class="tok-569cd6">void</span> handleGap() {
   <span class="tok-569cd6">if</span> (gapStartTime == <span class="tok-b5cea8">0</span>) {
     gapStartTime = millis();
   }
@@ -1310,7 +1310,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
     <code>followLine()</code> is the opposite. It reads the line <strong>fifty times a second</strong> and steers on what it sees. It is a <strong>CLOSED loop</strong>, and correcting motor bias is <em>already its job</em>. Add TRIM there and the robot fights its own controller &mdash; the P-term would spend its day undoing a constant you put in on purpose.<br><br>
     <strong>Is anything watching? If not, it needs TRIM.</strong></p>
 </div>
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
+<pre><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// A = Kp down   B = start/stop   C = Kp up</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (!isRunning) {
@@ -1868,13 +1868,13 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-f5f5f5">
     <strong>Current approach (hardcoded):</strong>
-    <pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+    <pre><span class="tok-569cd6">void</span> followLine() {
     <span class="tok-569cd6">int</span> position = readLinePosition();
     <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
     <span class="tok-569cd6">int</span> correction = currentKp * error;  <span class="tok-7cbf6e">// ← uses global currentKp</span>
 }</pre>
     <strong>Better approach (parameterized):</strong>
-    <pre class="code-block-333"><span class="tok-569cd6">void</span> followLine(<span class="tok-569cd6">float</span> kp) {
+    <pre><span class="tok-569cd6">void</span> followLine(<span class="tok-569cd6">float</span> kp) {
     <span class="tok-569cd6">int</span> position = readLinePosition();
     <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
     <span class="tok-569cd6">int</span> correction = kp * error;  <span class="tok-7cbf6e">// ← uses parameter kp</span>
@@ -1890,7 +1890,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <p><code>readLinePosition()</code> returns an integer. But how do you know if that value is valid? What if the line was lost? Advanced code checks return values:</p>
 
 <div class="div-bg-f5f5f5">
-    <pre class="code-block-333"><span class="tok-569cd6">int</span> readLinePosition() {
+    <pre><span class="tok-569cd6">int</span> readLinePosition() {
     lineSensors.read(sensorValues);
     <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
     <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
@@ -1907,7 +1907,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <div class="callout-4caf50-bg-e8f5e9-3">
     <div class="div-fs-105em">✅ Checkpoint</div>
     <p>In your <code>main.cpp</code>, you should check:</p>
-    <pre class="code-block-333"><span class="tok-569cd6">int</span> pos = readLinePosition();
+    <pre><span class="tok-569cd6">int</span> pos = readLinePosition();
 <span class="tok-569cd6">if</span> (pos == -<span class="tok-b5cea8">1</span>) {
     <span class="tok-7cbf6e">// Handle lost line</span>
 } <span class="tok-569cd6">else</span> {
@@ -1951,7 +1951,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <p>The complete pattern you've implemented in this lesson:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> handleRobotControl() {
+<pre><span class="tok-569cd6">void</span> handleRobotControl() {
     <span class="tok-7cbf6e">// 1. READ the current state</span>
     <span class="tok-569cd6">int</span> position = readLinePosition();
     <span class="tok-7cbf6e">// 2. CALCULATE error</span>
@@ -1983,7 +1983,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <p>When you press buttons A and C to adjust Kp, you're running a <strong>manual feedback loop</strong>:</p>
 
-<pre class="code-block-333"><span class="tok-b5cea8">1.</span> OBSERVE: Robot oscillates (error is visible)
+<pre><span class="tok-b5cea8">1.</span> OBSERVE: Robot oscillates (error is visible)
 <span class="tok-b5cea8">2.</span> HYPOTHESIZE: <span class="tok-ce9178">"Kp is too high"</span>
 <span class="tok-b5cea8">3.</span> EXPERIMENT: Press A to decrease Kp
 <span class="tok-b5cea8">4.</span> MEASURE: Watch robot behavior improve
@@ -2020,7 +2020,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=8&amp;kind=speed_run" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-values" class="link-c-2e86ab">Typical Values</a> &mdash; BASE_SPEED's honest range. This one is track time, one constant, and a notebook.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-values" class="link-c-2e86ab">Typical Values</a> &mdash; BASE_SPEED's honest range. This one is track time, one constant, and a notebook.</p>
 </div>
 
 <div class="div-bg-f8f9fa">
@@ -2035,7 +2035,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333"><span class="tok-b5cea8">1.</span> Start with tuned Kp
+<pre><span class="tok-b5cea8">1.</span> Start with tuned Kp
 <span class="tok-b5cea8">2.</span> Increase BASE_SPEED by <span class="tok-b5cea8">25</span>
 <span class="tok-b5cea8">3.</span> Test on track with curves
 <span class="tok-b5cea8">4.</span> If robot loses line, previous speed was <span class="tok-569cd6">max</span>
@@ -2059,7 +2059,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=8&amp;kind=wiggle_test" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" class="link-c-2e86ab">The Formula</a> &mdash; when Kp is huge, the correction outruns the error. Section 7's oscillation box explains the wiggle you're about to cause on purpose.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" class="link-c-2e86ab">The Formula</a> &mdash; when Kp is huge, the correction outruns the error. Section 7's oscillation box explains the wiggle you're about to cause on purpose.</p>
 </div>
 
 <div class="div-bg-f8f9fa">
@@ -2074,7 +2074,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333"><span class="tok-b5cea8">1.</span> Set Kp very high (<span class="tok-b5cea8">0.5</span> or more)
+<pre><span class="tok-b5cea8">1.</span> Set Kp very high (<span class="tok-b5cea8">0.5</span> or more)
 <span class="tok-b5cea8">2.</span> Observe the oscillation
 <span class="tok-b5cea8">3.</span> Decrease Kp until stable
 <span class="tok-b5cea8">4.</span> Record: oscillation Kp = _____, stable Kp = _____</pre>
@@ -2097,7 +2097,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=8&amp;kind=gap_gauntlet" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-values" class="link-c-2e86ab">Typical Values</a> &mdash; plus the card's own time = distance &divide; speed math. MAX_GAP_TIME is the only dial you turn.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-values" class="link-c-2e86ab">Typical Values</a> &mdash; plus the card's own time = distance &divide; speed math. MAX_GAP_TIME is the only dial you turn.</p>
 </div>
 
 <div class="div-bg-f8f9fa">
@@ -2112,7 +2112,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">1. Calculate: time = distance / speed
+<pre>1. Calculate: time = distance / speed
 2. At BASE_SPEED=150, robot travels ~15cm/sec
 3. For 20cm gap: need at least 20/15 = 1.33 seconds
 4. Set MAX_GAP_TIME accordingly (with safety margin)</pre>
@@ -2135,7 +2135,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=8&amp;kind=position_bar" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-map" class="link-c-2e86ab">map()</a> &middot; <a href="#qr-where" class="link-c-2e86ab">Where Does Code Go?</a> &mdash; a new display function belongs in main.cpp, and <code>map()</code> turns 0&#8211;4000 into a 21-column screen position.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-map" class="link-c-2e86ab">map()</a> &middot; <a href="#qr-where" class="link-c-2e86ab">Where Does Code Go?</a> &mdash; a new display function belongs in main.cpp, and <code>map()</code> turns 0&#8211;4000 into a 21-column screen position.</p>
 </div>
 
 <div class="div-bg-f8f9fa">
@@ -2150,7 +2150,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">FUNCTION drawPositionBar:
+<pre>FUNCTION drawPositionBar:
 MAP position (0-4000) to a screen column (0-20)
 DRAW a marker at that column
 CALL it right after followLine() while running</pre>
@@ -2165,7 +2165,7 @@ CALL it right after followLine() while running</pre>
 
 <p>Map the line position onto the 20-column display, then draw the bar at that column. Fill the range and the column.</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> drawPositionBar() {
+<pre><span class="tok-569cd6">void</span> drawPositionBar() {
   <span class="tok-569cd6">int</span> pos = readLinePosition();
   <span class="tok-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, ____, <span class="tok-b5cea8">0</span>, ____);
   display.clear();
@@ -2179,7 +2179,7 @@ CALL it right after followLine() while running</pre>
 
 <summary>🔓 Click to reveal a worked version</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> drawPositionBar() {
+<pre><span class="tok-569cd6">void</span> drawPositionBar() {
   <span class="tok-569cd6">int</span> pos = readLinePosition();
   <span class="tok-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4000</span>, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">20</span>);
   display.clear();
@@ -2209,7 +2209,7 @@ CALL it right after followLine() while running</pre>
 
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=8&amp;kind=adaptive_kp" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" class="link-c-2e86ab">The Formula</a> &mdash; three gains instead of one, chosen by how far off the line is. The bands are yours to tune.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" class="link-c-2e86ab">The Formula</a> &mdash; three gains instead of one, chosen by how far off the line is. The bands are yours to tune.</p>
 </div>
 
 <div class="div-bg-f8f9fa">
@@ -2224,7 +2224,7 @@ CALL it right after followLine() while running</pre>
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">IF error is small (&lt; <span class="tok-b5cea8">500</span>): USE low Kp (gentle)
+<pre>IF error is small (&lt; <span class="tok-b5cea8">500</span>): USE low Kp (gentle)
 ELSE IF error is medium (<span class="tok-b5cea8">500</span>-<span class="tok-b5cea8">1000</span>): USE medium Kp
 ELSE: USE high Kp (aggressive)</pre>
 
@@ -2238,7 +2238,7 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <p>Pick a gentle / medium / aggressive K<sub>p</sub> from how far off-center you are, then steer with it. Fill the three gains and the term that does the steering.</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> adaptiveFollowLine() {
+<pre><span class="tok-569cd6">void</span> adaptiveFollowLine() {
   <span class="tok-569cd6">int</span> position = readLinePosition();
   <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
   <span class="tok-569cd6">int</span> absError = abs(error);
@@ -2264,7 +2264,7 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <summary>🔓 Click to reveal a worked version</summary>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> adaptiveFollowLine() {
+<pre><span class="tok-569cd6">void</span> adaptiveFollowLine() {
   <span class="tok-569cd6">int</span> position = readLinePosition();
   <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
   <span class="tok-569cd6">int</span> absError = abs(error);
@@ -2306,7 +2306,7 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — tuned Kp and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=8&amp;kind=racing_line" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" class="link-c-2e86ab">The Formula</a> &mdash; one error, two listeners: the steering P you already have, and the throttle P you are about to add. <code>KS</code> and <code>MIN_SPEED</code> are yours to tune.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-formula" class="link-c-2e86ab">The Formula</a> &mdash; one error, two listeners: the steering P you already have, and the throttle P you are about to add. <code>KS</code> and <code>MIN_SPEED</code> are yours to tune.</p>
 </div>
 <div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the beep-speed formula from Lesson 5 <img src="../images/spiral_star_05.svg" alt="Spiral review from Lesson 05" class="img-h-11em"> &mdash; output proportional to input, one more time. There it set a beep. Here it sets the throttle.</div>
 
@@ -2322,7 +2322,7 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre class="code-block-333">1. position, error, correction &mdash; UNCHANGED (the steering P)
+<pre>1. position, error, correction &mdash; UNCHANGED (the steering P)
 2. speed = BASE_SPEED - KS &times; |error|   (the throttle P)
 3. IF speed &lt; MIN_SPEED: speed = MIN_SPEED   (the floor)
 4. left = speed + correction, right = speed - correction
@@ -2338,12 +2338,12 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <p>Two new dials in <code>RobotConfig.h</code>, next to the other line-following constants:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KS = ____;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KS = ____;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MIN_SPEED = ____;    <span class="tok-7cbf6e">// The floor - never crawl slower than this</span></pre>
 
 <p>Then two new lines inside <code>followLine()</code> in <code>main.cpp</code> &mdash; everything else stays exactly as it is:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+<pre><span class="tok-569cd6">void</span> followLine() {
   <span class="tok-569cd6">int</span> position = readLinePosition();
   <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
   <span class="tok-569cd6">int</span> correction = currentKp * error;
@@ -2369,12 +2369,12 @@ ELSE: USE high Kp (aggressive)</pre>
 
 <p><code>RobotConfig.h</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KS = <span class="tok-b5cea8">0.03</span>;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KS = <span class="tok-b5cea8">0.03</span>;        <span class="tok-7cbf6e">// Throttle gain - how hard error brakes the robot</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MIN_SPEED = <span class="tok-b5cea8">100</span>;    <span class="tok-7cbf6e">// The floor - never crawl slower than this</span></pre>
 
 <p><code>main.cpp</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> followLine() {
+<pre><span class="tok-569cd6">void</span> followLine() {
   <span class="tok-569cd6">int</span> position = readLinePosition();
   <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
   <span class="tok-569cd6">int</span> correction = currentKp * error;
@@ -2430,7 +2430,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>Two characters, one function. The planted lines in <code>followLine()</code>:</p>
-<pre class="code-block-333">  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED - correction;
+<pre>  <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED - correction;
   <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED + correction;</pre>
 <p>The signs are swapped, so every correction steers <em>away</em> from the line &mdash; which grows the error, which grows the correction. Proportional control with the sign flipped isn't weak, it's a runaway. Swap the signs back.</p>
 </details>
@@ -2439,7 +2439,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The screen says <code>Kp: 0.00</code>. The planted line:</p>
-<pre class="code-block-333"><span class="tok-569cd6">float</span> currentKp = <span class="tok-b5cea8">0.0</span>;           <span class="tok-7cbf6e">// Live-tunable copy of KP</span></pre>
+<pre><span class="tok-569cd6">float</span> currentKp = <span class="tok-b5cea8">0.0</span>;           <span class="tok-7cbf6e">// Live-tunable copy of KP</span></pre>
 <p>Gain zero &rarr; correction zero &rarr; a robot that only drives straight. Pressing C revives it <em>until the next reboot</em> &mdash; live tuning treats the symptom, the initializer is the disease. Restore <code>float currentKp = KP;</code>.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-3" data-challenge="8.m3" data-kind="bonus-sabotage">Mystery 3: The Uncalibrated Run</h4>
@@ -2453,7 +2453,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The logic is perfect. The planted constant:</p>
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> MAX_GAP_TIME = <span class="tok-b5cea8">500000</span>;  <span class="tok-7cbf6e">// Max milliseconds to cross a gap</span></pre>
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> MAX_GAP_TIME = <span class="tok-b5cea8">500000</span>;  <span class="tok-7cbf6e">// Max milliseconds to cross a gap</span></pre>
 <p>500,000 ms is an <strong>eight-minute</strong> gap allowance &mdash; the timeout exists and can essentially never fire. A safety limit that can't trigger is indistinguishable from no safety at all; that's the whole lesson. Restore 500.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-5" data-challenge="8.m5" data-kind="bonus-sabotage">Mystery 5: The Blind Robot</h4>
@@ -2461,7 +2461,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>Different culprit entirely. The planted constant:</p>
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> LINE_LOST_THRESHOLD = <span class="tok-b5cea8">5001</span>;    <span class="tok-7cbf6e">// Calibrated sum below this = no line</span></pre>
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> LINE_LOST_THRESHOLD = <span class="tok-b5cea8">5001</span>;    <span class="tok-7cbf6e">// Calibrated sum below this = no line</span></pre>
 <p>Five sensors &times; 1000 max = a highest possible sum of <strong>5000</strong>. The visibility test can never pass &mdash; not on any line, ever. Same symptom as Mystery 3, opposite end of the pipeline: one starves the reading, the other sets an impossible bar. <em>Same symptom &ne; same cause</em> is the most valuable sentence in debugging. Restore 200.</p>
 </details>
 
@@ -2705,7 +2705,7 @@ Same root cause, two faces. What decides is what is in your files.</p>
 
 <h3 id="qr-formula" class="h3-c-6f7582">📐 THE FORMULA</h3>
 
-<pre class="code-block-333">error = position - <span class="tok-b5cea8">2000</span>
+<pre>error = position - <span class="tok-b5cea8">2000</span>
 correction = Kp × error
 leftSpeed = BASE_SPEED + correction
 rightSpeed = BASE_SPEED - correction</pre>
@@ -2726,7 +2726,7 @@ rightSpeed = BASE_SPEED - correction</pre>
 
 <p><code>map()</code> takes a number living in one range and returns where it would sit in a different range. It is the tool for turning a sensor reading into something else &mdash; a screen column, a speed, a bar length.</p>
 
-<pre class="code-block-333">map(value, fromLow, fromHigh, toLow, toHigh)
+<pre>map(value, fromLow, fromHigh, toLow, toHigh)
 
 map(2000, 0, 4000, 0, 20)   <span class="tok-6a9955">// 2000 is halfway through 0-4000</span>
                             <span class="tok-6a9955">// returns 10  - halfway through 0-20</span></pre>

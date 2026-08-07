@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.20.0 -->
+<!-- Lesson version: v02.21.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@
 <h1 class="h1">Obstacles</h1>
 <div class="div-fs-11em">When the Course Fights Back</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.20 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.21 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -228,7 +228,7 @@ and you used them to tell <em>direction</em> &mdash; is the opponent to my left 
 <p>So the trade you made back in Lesson 5 comes due today. You spent your side proximity
 receivers to buy line&#8209;following precision, and it was the right call &mdash; but it means the following code
 is <em>not a bug</em>, and you should not spend an evening trying to fix it:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// Under the five-down jumper layout, THESE RETURN 0. Always. Forever.</span>
+<pre><span class="tok-6a9955">// Under the five-down jumper layout, THESE RETURN 0. Always. Forever.</span>
 proxSensors.countsLeftWithLeftLeds();     <span class="tok-6a9955">// 0 - the receiver is not connected</span>
 proxSensors.countsRightWithRightLeds();   <span class="tok-6a9955">// 0 - the receiver is not connected</span>
 
@@ -349,7 +349,7 @@ type first. That is not a decision. That is an accident that compiles.</p>
 </div>
 <h3 class="h3-c-1f2a3d">3.5 Why <code>delay()</code> Makes Your Robot Blind</h3>
 <p>Your first instinct for &ldquo;drive forward past the block&rdquo; will be this:</p>
-<pre class="code-block-bg-1e1e1e">motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);
+<pre>motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);
 delay(<span class="tok-b5cea8">800</span>);                 <span class="tok-6a9955">// drive for 800ms</span>
 motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);</pre>
 <p>It works. Sort of. And it will cost you a competition.</p>
@@ -371,7 +371,7 @@ floor surface, and motor wear. Fresh batteries: it overshoots. Tired batteries: 
 number that worked in class on Tuesday is wrong on Friday, and nothing in your code knows.</p>
 
 <p>You already own the fix. You built it in Lesson 6 and filed it in Lesson 7:</p>
-<pre class="code-block-bg-1e1e1e">driveDistance(<span class="tok-b5cea8">20.0</span>);    <span class="tok-6a9955">// 20 CENTIMETERS. Not &quot;however far 800ms gets us.&quot;</span>
+<pre>driveDistance(<span class="tok-b5cea8">20.0</span>);    <span class="tok-6a9955">// 20 CENTIMETERS. Not &quot;however far 800ms gets us.&quot;</span>
 turnDegrees(<span class="tok-b5cea8">90.0</span>);      <span class="tok-6a9955">// 90 DEGREES. Measured by encoders, not by a stopwatch.</span></pre>
 <div class="callout-2da99d-bg-e9f7f5">
     <div class="div-c-165a53">🔍 INSIGHT</div>
@@ -398,7 +398,7 @@ until the line appears under the sensors.</p>
 </div>
 <p>And this is an open&#8209;loop straight line &mdash; the robot is driving forward with nothing
 watching whether it is going <em>straight</em>. You know what that needs by now:</p>
-<pre class="code-block-bg-1e1e1e">motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// Blind AND straight = TRIM</span></pre>
+<pre>motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// Blind AND straight = TRIM</span></pre>
 <div class="callout-607d8b-bg-eceff1-2">
     <div class="div-c-3a5a3a">📘 NOTE</div>
     <p class="p-mb-0"><strong>Open loop needs TRIM. Closed loop does not.</strong>
@@ -508,7 +508,7 @@ That is the whole point of the architecture you built in Lesson 7 &mdash; new ca
 <div class="div-c-666"><strong>[GRAPHIC 10.8]</strong> The eight files &mdash; and where this lesson&rsquo;s new code lands (File: L10_GRAPHIC_10-08_project_file_tree.svg)</div>
 </div>
 
-<pre class="code-block-bg-1e1e1e">ObstacleAvoidance/
+<pre>ObstacleAvoidance/
   include/
     RobotConfig.h      &lt;-- <span class="tok-569cd6">new</span> constants, <span class="tok-569cd6">new</span> states, <span class="tok-569cd6">new</span> phases
     RobotSensors.h     &lt;-- <span class="tok-569cd6">new</span>: extern proxSensors, <span class="tok-b5cea8">3</span> <span class="tok-569cd6">new</span> prototypes
@@ -544,7 +544,7 @@ That is the whole point of the architecture you built in Lesson 7 &mdash; new ca
 </tbody></table>
 <h4 class="h4-c-0e1a2c">The state machine grows &mdash; four states become seven</h4>
 <p>Here is the enum you are extending. The first four you already have. The last three are today.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== ROBOT STATES (UPDATED for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== ROBOT STATES (UPDATED for Lesson 10) =====</span>
 <span class="tok-6a9955">// One name for &quot;what is the robot doing right now&quot;</span>
 <span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
   STOPPED,             <span class="tok-6a9955">// Motors off, waiting for B</span>
@@ -563,7 +563,7 @@ That is the whole point of the architecture you built in Lesson 7 &mdash; new ca
     and it is exactly why Lesson 9 made you convert that <code>bool isRunning</code> into an enum in the first place.</p>
 </div>
 <h4 class="h4-c-0e1a2c">And a second, smaller enum: the phases</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== AVOIDANCE PHASES (NEW for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== AVOIDANCE PHASES (NEW for Lesson 10) =====</span>
 <span class="tok-6a9955">// ONE state (AVOIDING_OBSTACLE) takes FIVE steps. This names them.</span>
 <span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
   PHASE_TURN_AWAY,   <span class="tok-6a9955">// 1. Turn away from the line</span>
@@ -603,7 +603,7 @@ see <a href="#section-8a" class="link-c-2e86ab-2">Section 8A</a>.</p>
 </div>
 <h3 class="h3-c-433014">5.4 The Sensor Functions, In Full</h3>
 <p>These are the three functions you will write in Step 4. Read them now; build them later.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
 
 <span class="tok-6a9955">// Wake the FRONT proximity sensor only.</span>
 <span class="tok-6a9955">// You spent pins 20 and 4 on line sensors in Lesson 5 - the left and</span>
@@ -724,7 +724,7 @@ is the foundation this lesson stands on.</p>
 Thresholds, distances, states, phases &mdash; all of it, in the file where robot&#8209;specific numbers live.</p>
 
 <p>Add these three blocks to the end of <code>RobotConfig.h</code>:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
 <span class="tok-6a9955">// The proximity scale is 0-6, NOT 0-1000. Same names as Lesson 5.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DETECTION_THRESHOLD = <span class="tok-b5cea8">1</span>;   <span class="tok-6a9955">// Anything at all is out there</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">3</span>;       <span class="tok-6a9955">// Close enough to stop and avoid</span>
@@ -745,7 +745,7 @@ Thresholds, distances, states, phases &mdash; all of it, in the file where robot
   PHASE_COMPLETE     <span class="tok-6a9955">// 5. Done - hand control back to the state machine</span>
 };</pre>
 <p>And <strong>replace</strong> your <code>RobotState</code> enum &mdash; three new names on the end:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== ROBOT STATES (UPDATED for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== ROBOT STATES (UPDATED for Lesson 10) =====</span>
 <span class="tok-6a9955">// One name for &quot;what is the robot doing right now&quot;</span>
 <span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
   STOPPED,             <span class="tok-6a9955">// Motors off, waiting for B</span>
@@ -779,9 +779,9 @@ Thresholds, distances, states, phases &mdash; all of it, in the file where robot
 <p>The header is where a file makes <strong>promises</strong>. Two promises today.</p>
 
 <p>First, promise the hardware object exists. Add one line to the extern block:</p>
-<pre class="code-block-bg-1e1e1e">extern <span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NEW for Lesson 10</span></pre>
+<pre>extern <span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NEW for Lesson 10</span></pre>
 <p>Second, promise the three functions exist. Add to the bottom:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
 <span class="tok-569cd6">void</span> initProxSensors();
 <span class="tok-569cd6">int</span> readFrontProx();
 <span class="tok-569cd6">bool</span> checkForObstacle();</pre>
@@ -813,9 +813,9 @@ much better to meet it here than at a competition.</p>
     <p class="p-mb-0"><code>Zumo32U4ProximitySensors proxSensors;</code> &nbsp;&larr; no <code>extern</code></p>
 </div>
 <p>Then add the three functions to the bottom of <code>RobotSensors.cpp</code>, and the object at the top with the others:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;</pre>
+<pre><span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;</pre>
 <p>And in the header, the line you just broke on purpose:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NEW for Lesson 10 - WRONG, see Section 8</span></pre>
+<pre><span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NEW for Lesson 10 - WRONG, see Section 8</span></pre>
 <p><strong>Build it.</strong></p>
 <div class="callout-17a2b8-bg-d1ecf1-2">
     <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE</div>
@@ -833,9 +833,9 @@ meant.</p>
 <summary class="summary-c-5a6872">🔓 Stuck? The fix, spelled out</summary>
 <div class="div-mt-12px">
 <p>Put <code>extern</code> back on the header line. The header <strong>declares</strong>:</p>
-<pre class="code-block-bg-1e1e1e">extern <span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NEW for Lesson 10</span></pre>
+<pre>extern <span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NEW for Lesson 10</span></pre>
 <p>The <code>.cpp</code> <strong>defines</strong> &mdash; exactly once, in exactly one file:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NO extern - this file CREATES it</span></pre>
+<pre><span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NO extern - this file CREATES it</span></pre>
 <p>Declare in many places. Define in one. That is the whole rule.</p>
 </div>
 </details>
@@ -848,7 +848,7 @@ meant.</p>
 </div>
 <h3 class="h3-c-433014">Step 4 (continued) &mdash; The Sensor Functions</h3>
 <p>With <code>extern</code> restored, the top of <code>RobotSensors.cpp</code> reads like this &mdash; the new object sits with the hardware it belongs to:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== PROXIMITY HARDWARE (NEW for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== PROXIMITY HARDWARE (NEW for Lesson 10) =====</span>
 <span class="tok-4ec9b6">Zumo32U4ProximitySensors</span> proxSensors;  <span class="tok-6a9955">// NO extern - this file CREATES it</span>
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-6a9955">// Array to store the five readings</span>
 <span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-6a9955">// Last known line position</span></pre>
@@ -858,7 +858,7 @@ meant.</p>
     place in the whole project that actually <strong>creates</strong> these objects. Everywhere else just borrows them.</p>
 </div>
 <p>Now add the three functions to the bottom of the file:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== OBSTACLE DETECTION (NEW for Lesson 10) =====</span>
 
 <span class="tok-6a9955">// Wake the FRONT proximity sensor only.</span>
 <span class="tok-6a9955">// You spent pins 20 and 4 on line sensors in Lesson 5 - the left and</span>
@@ -897,10 +897,10 @@ logic on top of it, <strong>put the number on the screen and look at it.</strong
 
 <p>Two edits. First, wake the sensor up &mdash; add this to <code>setup()</code>, right after
 <code>initLineSensors()</code>:</p>
-<pre class="code-block-bg-1e1e1e"> <span class="tok-6a9955">// ===== PROXIMITY SETUP (NEW for Lesson 10) =====</span>
+<pre> <span class="tok-6a9955">// ===== PROXIMITY SETUP (NEW for Lesson 10) =====</span>
   initProxSensors();</pre>
 <p>Second, add a live readout to the bottom of <code>showStatus()</code>:</p>
-<pre class="code-block-bg-1e1e1e">  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
+<pre>  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
   display.print(F(<span class="tok-ce9178">&quot;Prox: &quot;</span>));
   display.print(readFrontProx());   <span class="tok-6a9955">// NEW for Lesson 10 - is the sensor alive?</span>
   display.print(F(<span class="tok-ce9178">&quot;  &quot;</span>));</pre>
@@ -935,7 +935,7 @@ logic on top of it, <strong>put the number on the screen and look at it.</strong
 Off the line. Into open floor. Based on a sensor reading you have known about for five minutes.</p>
 
 <p><strong>Build the stop button first.</strong></p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== THE KILL SWITCH (NEW for Lesson 10) =====</span>
+<pre><span class="tok-6a9955">// ===== THE KILL SWITCH (NEW for Lesson 10) =====</span>
 <span class="tok-6a9955">// Built BEFORE any new driving code. Every state that moves the robot</span>
 <span class="tok-6a9955">// calls this FIRST. If it returns true, that state must stop immediately.</span>
 <span class="tok-569cd6">bool</span> killSwitchPressed() {
@@ -948,7 +948,7 @@ Off the line. Into open floor. Based on a sensor reading you have known about fo
   <span class="tok-569cd6">return</span> <span class="tok-569cd6">false</span>;
 }</pre>
 <p>Then, at the top of <em>every</em> state that moves the robot, one line:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;   <span class="tok-6a9955">// B = STOP - now one helper, used everywhere</span></pre>
+<pre><span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;   <span class="tok-6a9955">// B = STOP - now one helper, used everywhere</span></pre>
 <div class="callout-ffc107-bg-fff8e1-2">
     <div class="div-c-856404">⚠️ WARNING</div>
     <p class="p-mb-0"><strong>This is a permanent policy, not a Lesson 10 rule.</strong>
@@ -975,7 +975,7 @@ three questions at once. You decide the order &mdash; and the order <em>is</em> 
 
 <p>First, two new globals at the top of <code>main.cpp</code> &mdash; the maneuver needs somewhere to keep its
 bookmark, and the hunt needs somewhere to keep its stopwatch:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// ===== ROBOT STATE =====</span>
+<pre><span class="tok-6a9955">// ===== ROBOT STATE =====</span>
 <span class="tok-4ec9b6">RobotState</span> currentState = STOPPED;               <span class="tok-6a9955">// What the robot is doing right now</span>
 <span class="tok-4ec9b6">IntersectionType</span> pendingTurn = NO_INTERSECTION;  <span class="tok-6a9955">// The decision waiting to be executed</span>
 <span class="tok-4ec9b6">AvoidPhase</span> avoidPhase = PHASE_TURN_AWAY;         <span class="tok-6a9955">// NEW for Lesson 10 - which step of the maneuver</span>
@@ -990,7 +990,7 @@ bookmark, and the hunt needs somewhere to keep its stopwatch:</p>
     forgets which step it was on and starts the plan over, forever.</p>
 </div>
 <p>Now replace your <code>FOLLOWING_LINE</code> case:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+<pre>    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
       <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;   <span class="tok-6a9955">// B = STOP - now one helper, used everywhere</span>
 
       <span class="tok-6a9955">// PRIORITY 1 - a crash is worse than a missed turn. Check it FIRST.</span>
@@ -1023,7 +1023,7 @@ And the moment it fires, <code>break</code> stops the rest of the case from runn
 is not tidiness. It is the arbitration.</p>
 
 <p>Then add the new state that catches the decision:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> OBSTACLE_DETECTED: {
+<pre>    <span class="tok-569cd6">case</span> OBSTACLE_DETECTED: {
       <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       display.setLayout21x8();
@@ -1061,7 +1061,7 @@ is not tidiness. It is the arbitration.</p>
 
 <p>Build it the way your instincts tell you to &mdash; with <code>delay()</code>. This is the version most
 people write first, and you are going to write it, run it, and watch exactly how it lets you down.</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE: {
+<pre>    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE: {
       <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       <span class="tok-6a9955">// ONE state. FIVE steps. The phase variable remembers which one.</span>
@@ -1100,7 +1100,7 @@ people write first, and you are going to write it, run it, and watch exactly how
       <span class="tok-569cd6">break</span>;
     }</pre>
 <p>And the state that hunts for the line afterward:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> RETURNING_TO_LINE: {
+<pre>    <span class="tok-569cd6">case</span> RETURNING_TO_LINE: {
       <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// Blind AND straight = TRIM</span>
@@ -1154,7 +1154,7 @@ people write first, and you are going to write it, run it, and watch exactly how
 <h3 class="h3-c-433014">Step 8 (continued) &mdash; The Fix Is Smaller Than the Problem</h3>
 <p>You already own the tools. You built them in Lesson 6 and filed them in Lesson 7 and have not
 touched them since. Replace the whole timed maneuver with this:</p>
-<pre class="code-block-bg-1e1e1e">    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE: {
+<pre>    <span class="tok-569cd6">case</span> AVOIDING_OBSTACLE: {
       <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
       <span class="tok-6a9955">// ONE state. FIVE steps. The phase variable remembers which one.</span>
@@ -1219,7 +1219,7 @@ encoders make sure it happens whether the batteries are fresh, tired, or somewhe
 </div>
 <p>Everything is built. The last edit is small: teach <code>showStatus()</code> the three new state
 names, so the display can tell you what the robot is thinking.</p>
-<pre class="code-block-bg-1e1e1e">  <span class="tok-6a9955">// NEW for Lesson 10 - name the state. Seven names, one switch.</span>
+<pre>  <span class="tok-6a9955">// NEW for Lesson 10 - name the state. Seven names, one switch.</span>
   <span class="tok-569cd6">switch</span> (currentState) {
     <span class="tok-569cd6">case</span> STOPPED:            display.print(F(<span class="tok-ce9178">&quot;STOPPED&quot;</span>));   <span class="tok-569cd6">break</span>;
     <span class="tok-569cd6">case</span> FOLLOWING_LINE:     display.print(F(<span class="tok-ce9178">&quot;FOLLOWING&quot;</span>)); <span class="tok-569cd6">break</span>;
@@ -1230,7 +1230,7 @@ names, so the display can tell you what the robot is thinking.</p>
     <span class="tok-569cd6">case</span> RETURNING_TO_LINE:  display.print(F(<span class="tok-ce9178">&quot;SEEKING&quot;</span>));   <span class="tok-569cd6">break</span>;
   }</pre>
 <p>And while you are in there, rename the two banners in <code>setup()</code> &mdash; you are not running Lesson 9 any more:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">&quot;=== Lesson 10: Obstacles ===&quot;</span>));
+<pre><span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">&quot;=== Lesson 10: Obstacles ===&quot;</span>));
 display.print(F(<span class="tok-ce9178">&quot;===== Lesson 10 =====&quot;</span>));</pre>
 <p>Now put it all on the course at once.</p>
 <div class="callout-ff8c00-bg-ffe4cc-2">
@@ -1315,7 +1315,7 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 </div>
 <h3 class="h3-c-00474b">7A &mdash; One Turn. Nothing Else.</h3>
 <p>This program turns the robot 90 degrees and stops. That is the entire program.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<pre><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
@@ -1384,7 +1384,7 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 </details>
 <h3 class="h3-c-00474b">7B &mdash; One Straight Run. No Turning.</h3>
 <p>The other half. Drive forward 30&nbsp;cm. Do not turn. Stop.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<pre><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
@@ -1462,7 +1462,7 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 <h3 class="h3-c-00474b">7C &mdash; One Corner</h3>
 <p>You have a proven turn and a proven drive. Join them <strong>once</strong> &mdash; drive, then turn
 &mdash; and check the result before you ever ask for four of them.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<pre><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
@@ -1540,7 +1540,7 @@ short enough to read in one sitting, each isolating exactly one thing. All five 
 program is repetition.</p>
 
 <p>So do not write the corner four times. <strong>Loop it.</strong></p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<pre><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
@@ -1631,7 +1631,7 @@ program is repetition.</p>
 </details>
 <h3 class="h3-c-00474b">7E &mdash; The Same Square, With Encoders</h3>
 <p>Same square. Read this one <em>before</em> you upload it.</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
+<pre><span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotConfig.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotSensors.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotHelpers.h&quot;</span>
 <span class="tok-c586c0">#include </span><span class="tok-ce9178">&quot;RobotMotion.h&quot;</span>
@@ -1871,7 +1871,7 @@ variable that remembers <em>which one you are on.</em></p>
     <p class="p-mb-0">A variable that survives between passes of <code>loop()</code> and records how far through a multi&#8209;step operation you are. It is the robot&rsquo;s bookmark: <em>&ldquo;I am on step 3 of 5.&rdquo;</em></p>
 </div>
 <p>Here is the shape of it. This is the real code from your project &mdash; just the first two phases, so you can see the rhythm:</p>
-<pre class="code-block-bg-1e1e1e"><span class="tok-4ec9b6">AvoidPhase</span> avoidPhase = PHASE_TURN_AWAY;         <span class="tok-6a9955">// NEW for Lesson 10 - which step of the maneuver</span>
+<pre><span class="tok-4ec9b6">AvoidPhase</span> avoidPhase = PHASE_TURN_AWAY;         <span class="tok-6a9955">// NEW for Lesson 10 - which step of the maneuver</span>
 
 <span class="tok-6a9955">// ...inside the AVOIDING_OBSTACLE state...</span>
 <span class="tok-569cd6">switch</span> (avoidPhase) {
@@ -1953,19 +1953,19 @@ Lesson 10 project &mdash; and each one is a real problem, not a busywork exercis
 <div id="challenge-1" class="div-7d5283" data-challenge="10.1" data-kind="challenge" data-difficulty="easy" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 1: The Impatient Beep</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Make the robot beep <strong>differently</strong> depending on how close the obstacle is when it stops. A gentle note if it caught it early; an urgent, higher note if it nearly hit the thing.</p>
+<p class="pre-m-0">Make the robot beep <strong>differently</strong> depending on how close the obstacle is when it stops. A gentle note if it caught it early; an urgent, higher note if it nearly hit the thing.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<p class="p-m-0">You already have the number &mdash; <code>readFrontProx()</code> returns 0&ndash;6. Compare it against <code>VERY_CLOSE_THRESHOLD</code> inside <code>OBSTACLE_DETECTED</code> and pick a different note.</p>
+<p class="pre-m-0">You already have the number &mdash; <code>readFrontProx()</code> returns 0&ndash;6. Compare it against <code>VERY_CLOSE_THRESHOLD</code> inside <code>OBSTACLE_DETECTED</code> and pick a different note.</p>
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">case</span> OBSTACLE_DETECTED: {
+<pre><span class="tok-569cd6">case</span> OBSTACLE_DETECTED: {
   <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">break</span>;
 
   <span class="tok-569cd6">int</span> howClose = readFrontProx();      <span class="tok-6a9955">// 0-6. How much trouble are we in?</span>
@@ -1988,19 +1988,19 @@ Lesson 10 project &mdash; and each one is a real problem, not a busywork exercis
 <div id="challenge-2" class="div-7d5283" data-challenge="10.2" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 2: Alternate Sides</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Right now the robot always detours the <em>same</em> direction. If two obstacles sit close together, it will happily walk itself off the edge of the mat. Make it <strong>alternate</strong>: turn away right on the first obstacle, left on the second, right on the third&hellip;</p>
+<p class="pre-m-0">Right now the robot always detours the <em>same</em> direction. If two obstacles sit close together, it will happily walk itself off the edge of the mat. Make it <strong>alternate</strong>: turn away right on the first obstacle, left on the second, right on the third&hellip;</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<p class="p-m-0">You cannot use a sensor for this &mdash; remember &sect;3.2, you have <em>no idea</em> which side the obstacle is on. So do not try. Just <strong>count</strong>. Keep a counter that survives between loop passes, and negate the turn angle on every other obstacle.</p>
+<p class="pre-m-0">You cannot use a sensor for this &mdash; remember &sect;3.2, you have <em>no idea</em> which side the obstacle is on. So do not try. Just <strong>count</strong>. Keep a counter that survives between loop passes, and negate the turn angle on every other obstacle.</p>
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">int</span> obstacleCount = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// global - survives between loop() passes</span>
+<pre><span class="tok-569cd6">int</span> obstacleCount = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// global - survives between loop() passes</span>
 
 <span class="tok-6a9955">// ...in OBSTACLE_DETECTED, when you commit to the maneuver:</span>
 obstacleCount++;
@@ -2028,16 +2028,16 @@ obstacleCount++;
 <div id="challenge-3" class="div-7d5283" data-challenge="10.3" data-kind="challenge" data-difficulty="easy" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 3: Count and Report</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
 </div>
 <div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> the count-and-display pattern from Lesson 5&rsquo;s Detection Counter <img src="../images/spiral_star_05.svg" alt="Spiral review from Lesson 05" class="img-h-11em">. Same skill, bigger stage: a robot that reports what it did is a robot you can debug.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">At the end of a run, tell the driver how many obstacles the robot avoided. Show it on the display when the robot returns to <code>STOPPED</code>.</p>
+<p class="pre-m-0">At the end of a run, tell the driver how many obstacles the robot avoided. Show it on the display when the robot returns to <code>STOPPED</code>.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<p class="p-m-0">This is a small thing that teaches a big habit: a robot that <em>reports</em> what it did is a robot you can debug. Keep the counter from C2 (or add one), and print it in the <code>STOPPED</code> state.</p>
+<p class="pre-m-0">This is a small thing that teaches a big habit: a robot that <em>reports</em> what it did is a robot you can debug. Keep the counter from C2 (or add one), and print it in the <code>STOPPED</code> state.</p>
 </div>
 <details data-reveal="hint" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Stuck? Open this.</summary>
@@ -2049,19 +2049,19 @@ obstacleCount++;
 <div id="challenge-4" class="div-7d5283" data-challenge="10.4" data-kind="challenge" data-difficulty="hard" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 4: The Bump Guard</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Your robot stops at <code>CLOSE_THRESHOLD</code> (3). But what if the obstacle is matte black, or angled, and the reading jumps straight from 1 to 6 with nothing in between? Make the robot <strong>back up</strong> before it starts the avoidance maneuver, if it discovers it is already too close.</p>
+<p class="pre-m-0">Your robot stops at <code>CLOSE_THRESHOLD</code> (3). But what if the obstacle is matte black, or angled, and the reading jumps straight from 1 to 6 with nothing in between? Make the robot <strong>back up</strong> before it starts the avoidance maneuver, if it discovers it is already too close.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<p class="p-m-0">Add a new phase at the <em>front</em> of the maneuver: <code>PHASE_BACK_OFF</code>. It runs only if <code>readFrontProx() >= VERY_CLOSE_THRESHOLD</code> &mdash; otherwise you skip straight to <code>PHASE_TURN_AWAY</code>. This is your first <em>conditional</em> phase, and it is a genuinely new shape.</p>
+<p class="pre-m-0">Add a new phase at the <em>front</em> of the maneuver: <code>PHASE_BACK_OFF</code>. It runs only if <code>readFrontProx() >= VERY_CLOSE_THRESHOLD</code> &mdash; otherwise you skip straight to <code>PHASE_TURN_AWAY</code>. This is your first <em>conditional</em> phase, and it is a genuinely new shape.</p>
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-6a9955">// In RobotConfig.h - a new phase, at the FRONT of the enum:</span>
+<pre><span class="tok-6a9955">// In RobotConfig.h - a new phase, at the FRONT of the enum:</span>
 <span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
   PHASE_BACK_OFF,    <span class="tok-6a9955">// NEW - only used when we are dangerously close</span>
   PHASE_TURN_AWAY,
@@ -2081,15 +2081,15 @@ obstacleCount++;
 <div id="challenge-5" class="div-7d5283" data-challenge="10.5" data-kind="challenge" data-difficulty="advanced" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 5: The Obstacle That Is Really a Wall</strong> <span class="span-ai-stretch"><span class="span-bg-6b2545">Advanced</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L10</strong> build — the obstacle-avoidance program from this lesson.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">The robot detours around the block, hunts for the line&hellip; and there is no line, because the &ldquo;obstacle&rdquo; was a wall running <em>alongside</em> the course. Right now the robot hunts for 5 seconds and stops. Make it <strong>try the other side</strong> before giving up.</p>
+<p class="pre-m-0">The robot detours around the block, hunts for the line&hellip; and there is no line, because the &ldquo;obstacle&rdquo; was a wall running <em>alongside</em> the course. Right now the robot hunts for 5 seconds and stops. Make it <strong>try the other side</strong> before giving up.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<p class="p-m-0">When <code>RETURNING_TO_LINE</code> times out, do not go to <code>STOPPED</code>. Instead: turn around, drive back across where you came from, and run the maneuver again in the opposite direction. You will need a flag so the robot only does this <strong>once</strong> &mdash; otherwise it will oscillate forever, which is arguably worse than stopping.</p>
+<p class="pre-m-0">When <code>RETURNING_TO_LINE</code> times out, do not go to <code>STOPPED</code>. Instead: turn around, drive back across where you came from, and run the maneuver again in the opposite direction. You will need a flag so the robot only does this <strong>once</strong> &mdash; otherwise it will oscillate forever, which is arguably worse than stopping.</p>
 </div>
 <details data-reveal="hint" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Stuck? Open this.</summary>
@@ -2240,7 +2240,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <details data-reveal="solution" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">🔓 What is actually wrong</summary>
 <div class="div-mt-12px">
-<p><strong>setup(), as planted:</strong></p><pre class="code-block-bg-1e1e1e">  <span class="tok-6a9955">// ===== PROXIMITY SETUP (NEW for Lesson 10) =====</span>
+<p><strong>setup(), as planted:</strong></p><pre>  <span class="tok-6a9955">// ===== PROXIMITY SETUP (NEW for Lesson 10) =====</span>
   <span class="tok-6a9955">// initProxSensors();   &lt;-- ??? </span></pre>
 <p><code>initProxSensors()</code> is commented out. The sensor was never woken up. <code>readFrontProx()</code> is dutifully reading a peripheral that was never switched on, and getting zeros &mdash; which is <em>exactly</em> what a peripheral that is off returns.</p><p><strong>The lesson:</strong> &ldquo;It returns 0&rdquo; and &ldquo;it is not running&rdquo; look identical from the outside. Always ask whether the thing was ever turned on.</p></div>
 </details>
@@ -2270,7 +2270,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <details data-reveal="solution" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">🔓 What is actually wrong</summary>
 <div class="div-mt-12px">
-<p><strong>The planted constant:</strong></p><pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> AVOID_PAST_CM = <span class="tok-b5cea8">5.0</span>;         <span class="tok-6a9955">// Far enough to clear the obstacle</span></pre>
+<p><strong>The planted constant:</strong></p><pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> AVOID_PAST_CM = <span class="tok-b5cea8">5.0</span>;         <span class="tok-6a9955">// Far enough to clear the obstacle</span></pre>
 <p>The robot goes around <em>part</em> of the obstacle, comes back to the line, and finds itself facing the same block it never actually got past.</p><p><strong>The lesson:</strong> the maneuver was not broken &mdash; it was <em>too small</em>. A loop like this usually means a distance, not a logic error. And notice the robot never complains: from its point of view it is succeeding perfectly, over and over.</p></div>
 </details>
     <p class="p-mb-0"><a href="../newproject.html?lesson=10&amp;kind=bonus_b3" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
@@ -2299,7 +2299,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <details data-reveal="solution" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">🔓 What is actually wrong</summary>
 <div class="div-mt-12px">
-<p><strong>PHASE_TURN_BACK, as planted:</strong></p><pre class="code-block-bg-1e1e1e">        <span class="tok-569cd6">case</span> PHASE_TURN_BACK:
+<p><strong>PHASE_TURN_BACK, as planted:</strong></p><pre>        <span class="tok-569cd6">case</span> PHASE_TURN_BACK:
           turnDegrees(AVOID_TURN_DEGREES);    <span class="tok-6a9955">// Back the other way. Negative = left.</span></pre>
 <p>Read the comment, then read the code. The comment says <em>&ldquo;Negative = left&rdquo;</em> &mdash; and the call is <strong>positive</strong>. The robot turned 90&deg; away and then another 90&deg; the <em>same</em> way, so it is now 180&deg; from where it started, driving away from everything.</p><p><strong>The lesson:</strong> one minus sign. It compiles, it runs, it drives a perfectly confident shape &mdash; and the shape is wrong. This is why you tape the floor and watch the robot, instead of reading the code and assuming.</p></div>
 </details>
@@ -2383,7 +2383,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <tr><td class="td-ddd"><code>followLine()</code></td><td class="td-ddd">❌ <strong>never</strong></td><td class="td-ddd"><strong>Closed loop.</strong> The P&#8209;controller corrects bias 50&times;/sec. TRIM would fight it.</td></tr>
 </tbody></table>
 <h4 class="h4-c-4d535f">The Seven States</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
+<pre><span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">RobotState</span> {
   STOPPED,             <span class="tok-6a9955">// Motors off, waiting for B</span>
   FOLLOWING_LINE,      <span class="tok-6a9955">// P-control driving - Lesson 8&#x27;s whole job</span>
   AT_INTERSECTION,     <span class="tok-6a9955">// Stopped on a marker, announcing the decision</span>
@@ -2393,7 +2393,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
   RETURNING_TO_LINE    <span class="tok-6a9955">// NEW: maneuver done, hunting for the line again</span>
 };</pre>
 <h4 class="h4-c-4d535f">The Five Phases</h4>
-<pre class="code-block-bg-1e1e1e"><span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
+<pre><span class="tok-569cd6">enum</span> <span class="tok-4ec9b6">AvoidPhase</span> {
   PHASE_TURN_AWAY,   <span class="tok-6a9955">// 1. Turn away from the line</span>
   PHASE_DRIVE_PAST,  <span class="tok-6a9955">// 2. Drive forward, past the obstacle</span>
   PHASE_TURN_BACK,   <span class="tok-6a9955">// 3. Turn back toward the line</span>

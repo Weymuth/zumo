@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.23.0 -->
+<!-- Lesson version: v01.24.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Wheels Lie</h1>
 <div class="div-fs-11em">The Gyro &mdash; Measuring the Robot, Not the Wheels</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 01.23 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 01.24 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -222,7 +222,7 @@ The encoders would report absolutely nothing. You will do exactly this in Sectio
 &quot;<em>I am currently facing 37 degrees</em>&quot;. It has no idea where it is facing. It never did.</p>
 
 <p>To get an <strong>angle</strong> out of a <strong>rate</strong>, you have to add it up over time:</p>
-<pre class="code-block-bg-1e1e1e">angle = rate x time
+<pre>angle = rate x time
 
   Spin at 90 deg/sec for 1.0 second  -&gt;  90 degrees
   Spin at 90 deg/sec for 0.5 seconds -&gt;  45 degrees
@@ -230,7 +230,7 @@ The encoders would report absolutely nothing. You will do exactly this in Sectio
 <p>But the robot does not spin at one steady rate. It speeds up, it slows down, it catches on
 a bump. So you cannot do the multiplication once. You have to do it <strong>over and over</strong>,
 in tiny slices, and keep a running total:</p>
-<pre class="code-block-bg-1e1e1e">every few milliseconds:
+<pre>every few milliseconds:
     rate  = how fast am I spinning RIGHT NOW?
     dt    = how long since I last checked?
     total = total + (rate x dt)      &lt;-- accumulate</pre>
@@ -259,7 +259,7 @@ sits absolutely still, averages all 1,024 readings, and stores the result as
 <figure class="div-m-24px0">
 <img src="../images/L12_GRAPHIC_12-02_measuring_the_lie.svg" alt="Calibration: 1024 samples, average the bias, subtract it forever" class="img-ddd">
 <figcaption class="figcaption"><strong>GRAPHIC 12.2</strong> &mdash; Read it 1,024 times while it is still. Average them. That average is the lie &mdash; subtract it from every reading for the rest of the run.</figcaption></figure>
-<pre class="code-block-bg-1e1e1e">void gyroUpdate() {
+<pre>void gyroUpdate() {
   imu.readGyro();
   int16_t turnRate = imu.g.z - gyroOffset;
 
@@ -326,7 +326,7 @@ vertical axis is exactly what &quot;the robot turning&quot; means.</p>
 <h3 class="h3-c-433014-3">4.2 One Line You Must Not Forget</h3>
 <p>The I2C bus has to be switched on before anyone can talk over it. That is
 <code>Wire.begin()</code>, and it happens once, at the top of <code>gyroSetup()</code>.</p>
-<pre class="code-block-bg-1e1e1e">void gyroSetup() {
+<pre>void gyroSetup() {
   Wire.begin();
   imu.init();
   imu.enableDefault();
@@ -348,14 +348,14 @@ setup code for whichever chip answered.</p>
 <div class="div-fs-105em">Why this matters in a classroom.</div>If you grab a spare Zumo from an older batch, <strong>your code runs on it unchanged.</strong> No edits, no #ifdefs, no &quot;which board is this?&quot; The library already asked, and already handled it.</div>
 <h3 class="h3-c-433014-3">4.4 The Angle Is Stored in a Strange Unit</h3>
 <p>Peek inside <code>RobotSensors.cpp</code> and you will find the running angle total stored like this:</p>
-<pre class="code-block-bg-1e1e1e">static uint32_t turnAngle = 0;</pre>
+<pre>static uint32_t turnAngle = 0;</pre>
 <p>That is not degrees. It is a <strong>fixed-point</strong> unit where
 <code>2^29</code> units = 45&deg;. It exists because the ATmega32U4 has no floating-point hardware,
 and doing this arithmetic in <code>float</code> thousands of times per turn would be far too slow.</p>
 
 <p>You are never going to touch it. <code>getTurnAngle()</code> converts it to plain degrees,
 and plain degrees is all you will ever see:</p>
-<pre class="code-block-bg-1e1e1e">int getTurnAngle() {
+<pre>int getTurnAngle() {
   return (((int32_t)turnAngle &gt;&gt; 16) * 360) &gt;&gt; 16;
 }</pre>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
@@ -414,7 +414,7 @@ Compare it, line for line, against Lesson 6&#x27;s <code>turnDegrees()</code>:</
 
 <p>Three of the four steps are the same. <strong>One line is different</strong> &mdash; the line that decides
 when to stop &mdash; and that one line is the entire lesson.</p>
-<pre class="code-block-bg-1e1e1e">// =====================================================
+<pre>// =====================================================
 // THE HONEST TURN (NEW for Lesson 12)
 // =====================================================
 // turnDegrees() stops when the WHEELS have spun far enough.
@@ -445,11 +445,11 @@ void turnDegreesGyro(float degrees) {
 
 <p>Since Lesson 9, every intersection turn in the book has gone through three little helpers.
 They looked like this:</p>
-<pre class="code-block-bg-1e1e1e">void turnLeft()   { turnDegrees(-90); }
+<pre>void turnLeft()   { turnDegrees(-90); }
 void turnRight()  { turnDegrees(90);  }
 void turnAround() { turnDegrees(180); }</pre>
 <p>In Step 8, they become this:</p>
-<pre class="code-block-bg-1e1e1e">void turnLeft()   { turnDegreesGyro(-90); }
+<pre>void turnLeft()   { turnDegreesGyro(-90); }
 void turnRight()  { turnDegreesGyro(90);  }
 void turnAround() { turnDegreesGyro(180); }</pre>
 <div class="div-27ae60"><div class="div-fs-105em">&#127942; You just upgraded every turn in the entire book.</div>You did not touch the Lesson 9 state machine. You did not touch <code>followLine()</code>. You did not touch the intersection logic, or Lesson 10&#x27;s obstacle code, or Lesson 11&#x27;s gap crossing.<br><br><strong>You changed three words inside three one-line functions</strong> &mdash; and every turn the robot makes, anywhere in the book, now closes on its <em>real</em> angle.<br><br>This is what Lesson 7 was <em>for</em>. If those turns had been written out longhand at each call site, this change would have been a fifty-line search-and-replace across four lessons, and you would have missed one.</div>
@@ -521,10 +521,10 @@ You are about to modify a working robot, and you want to be certain it was worki
 <code>encoders</code>, and <code>lineSensors</code> before it.</p>
 <p>First, in <code>RobotSensors.h</code>, <strong>announce</strong> that it exists.
 Add this under the other <code>extern</code> lines:</p>
-<pre class="code-block-bg-1e1e1e">extern Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
+<pre>extern Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
 <p>Then, in <code>RobotSensors.cpp</code>, actually <strong>create</strong> it.
 Add this under the other object definitions:</p>
-<pre class="code-block-bg-1e1e1e">Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
+<pre>Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
 <div class="div-607d8b"><div class="div-fs-09em">📘 NOTE</div>
 <div class="div-fs-105em">extern in the .h, the real thing in the .cpp.</div>This is the same two-part pattern you have used since Lesson 7. The <code>.h</code> says &quot;<em>this object exists somewhere</em>&quot; so every file can talk about it. The <code>.cpp</code> is where it is actually <strong>made</strong> &mdash; exactly once, in exactly one file.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
@@ -534,7 +534,7 @@ Add this under the other object definitions:</p>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 3: Add the Calibration Constant<span class="span-c-555">RobotConfig.h</span></h3>
 <p>Open <code>RobotConfig.h</code>. Add this at the bottom:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 // ===== GYRO (NEW for Lesson 12) =====
 // How many readings to average when learning the gyro&#x27;s "zero".
 // The gyro reports rotation even when it is perfectly still - up to
@@ -552,7 +552,7 @@ const int GYRO_CAL_SAMPLES = 1024;</pre>
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 4: Declare the Four Gyro Functions<span class="span-c-555">RobotSensors.h</span></h3>
 <p>Back to <code>RobotSensors.h</code>. Add the four prototypes:</p>
-<pre class="code-block-bg-1e1e1e">// ===== GYRO (NEW for Lesson 12) =====
+<pre>// ===== GYRO (NEW for Lesson 12) =====
 // The encoders count WHEEL rotation. The gyro measures ROBOT rotation.
 // When a wheel slips, only one of them is still telling the truth.
 void gyroSetup();
@@ -572,7 +572,7 @@ int  getTurnAngle();
 Open <code>RobotSensors.cpp</code> and add this at the bottom.</p>
 <p><strong>Read the comments as you go.</strong> Every one of them is answering a question
 you should be asking.</p>
-<pre class="code-block-bg-1e1e1e">#include &lt;Wire.h&gt;
+<pre>#include &lt;Wire.h&gt;
 
 // =====================================================
 // GYRO (NEW for Lesson 12)
@@ -644,7 +644,7 @@ int getTurnAngle() {
 But a <em>turn</em> is <strong>motion</strong> &mdash; so <code>turnDegreesGyro()</code> belongs in
 <code>RobotMotion</code>, right next to the <code>turnDegrees()</code> it is about to compete with.</p>
 <p>Open <code>RobotMotion.h</code> and add:</p>
-<pre class="code-block-bg-1e1e1e">/*
+<pre>/*
 turnDegreesGyro()          NEW for Lesson 12
 ------------------
 The SAME turn as turnDegrees() - but it asks a different question.
@@ -664,7 +664,7 @@ void turnDegreesGyro(float degrees);
 </details>
 <h3 class="h3-bg-eafaf1">&#128193; Step 7: Write the Honest Turn<span class="span-c-555">RobotMotion.cpp</span></h3>
 <p>Open <code>RobotMotion.cpp</code>. Add this at the bottom:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 // =====================================================
 // THE HONEST TURN (NEW for Lesson 12)
 // =====================================================
@@ -717,11 +717,11 @@ and the linker will not carry dead weight to a chip this small. The ATmega32U4 h
 <p>Two edits, and the lesson lands.</p>
 <p><strong>First</strong>, in <code>RobotMotion.cpp</code>, find the three intersection helpers.
 They currently read:</p>
-<pre class="code-block-bg-1e1e1e">void turnLeft()   { turnDegrees(-90); }
+<pre>void turnLeft()   { turnDegrees(-90); }
 void turnRight()  { turnDegrees(90);  }
 void turnAround() { turnDegrees(180); }</pre>
 <p>Replace them with:</p>
-<pre class="code-block-bg-1e1e1e">// NEW for Lesson 12 - three words changed, and every turn in the
+<pre>// NEW for Lesson 12 - three words changed, and every turn in the
 // book stops guessing. turnDegrees() is still here, still correct
 // when the wheels grip. These three just stopped depending on that.
 void turnLeft()   { turnDegreesGyro(-90); }
@@ -730,7 +730,7 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 <p><strong>Second</strong>, in <code>main.cpp</code>, the gyro has to learn its zero at boot.
 Find <code>setup()</code>. Add this <strong>immediately before</strong> the
 <code>waitForStart()</code> safety gate:</p>
-<pre class="code-block-bg-1e1e1e">  // ===== GYRO SETUP (NEW for Lesson 12) =====
+<pre>  // ===== GYRO SETUP (NEW for Lesson 12) =====
   // The robot MUST be still. If it moves now, the gyro will learn
   // that moving IS still - and it will be wrong for the whole run.
   display.clear();
@@ -772,7 +772,7 @@ Do them in order; each one sets up the next.</p>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7A &mdash; The Gyro With the Motors Off<span class="span-c-555">an instrument, not a command</span></h3>
 <p>Before you let the gyro drive anything, look at what it <em>is</em>.</p>
 <p>Replace your <code>loop()</code> with this. <strong>The motors never run.</strong></p>
-<pre class="code-block-bg-1e1e1e">void loop() {
+<pre>void loop() {
   // The motors NEVER run in this test.
   // Pick the robot up and turn it with your hands.
   gyroUpdate();
@@ -795,7 +795,7 @@ Do them in order; each one sets up the next.</p>
 <p>Same sketch as 7A. One change, in <code>setup()</code>: <strong>do not call
 <code>gyroSetup()</code> at all.</strong> Wake the sensor up &mdash; but never let it learn its zero.</p>
 <p>Replace the gyro-setup block in <code>main.cpp</code> with this:</p>
-<pre class="code-block-bg-1e1e1e">  // ===== GYRO SETUP (NEW for Lesson 12) =====
+<pre>  // ===== GYRO SETUP (NEW for Lesson 12) =====
   // The robot MUST be still. If it moves now, the gyro will learn
   // that moving IS still - and it will be wrong for the whole run.
   display.clear();
@@ -827,7 +827,7 @@ so it has nothing to subtract.</p>
 <p>The <strong>encoder</strong> drives this turn &mdash; exactly the Lesson 6 way, gating on the average of both
 encoders. The <strong>gyro</strong> is along for the ride, watching, steering nothing.</p>
 <p>Then both report what they saw.</p>
-<pre class="code-block-bg-1e1e1e">void loop() {
+<pre>void loop() {
   if (!buttonB.getSingleDebouncedPress()) return;
 
   // 7C: the ENCODER drives this turn. The gyro only watches.
@@ -865,7 +865,7 @@ encoders. The <strong>gyro</strong> is along for the ride, watching, steering no
 </details>
 <h3 class="h3-bg-fff8e1">&#9881;&#65039; 7D &mdash; The Honest Turn, Same Surface<span class="span-c-555">close on the robot, not the wheels</span></h3>
 <p>Same delrin. Same 90 degrees. One difference: <strong>the gyro is now driving.</strong></p>
-<pre class="code-block-bg-1e1e1e">void loop() {
+<pre>void loop() {
   if (!buttonB.getSingleDebouncedPress()) return;
 
   // 7D: same 90 degrees. Same delrin. Different question.
@@ -895,7 +895,7 @@ of it with <code>TRIM</code>.</p>
 
 <p>Here is that same square &mdash; twice. <strong>Button A</strong> turns the corners with the
 <em>encoder</em>. <strong>Button C</strong> turns them with the <em>gyro</em>. Everything else is identical.</p>
-<pre class="code-block-bg-1e1e1e">void loop() {
+<pre>void loop() {
   // 7E: THE SQUARE FROM LESSON 6.
   // A = corners by ENCODER.   C = corners by GYRO.
   // Run both. On delrin, only one of them comes home.
@@ -980,7 +980,7 @@ how far the robot turned.</p>
 
 <p>When two instruments that should agree <em>disagree</em>, the disagreement itself is information.
 It tells you something is wrong that <em>neither instrument alone could ever have told you</em>:</p>
-<pre class="code-block-bg-1e1e1e">encoder says:  90 degrees      (the wheels definitely spun that far)
+<pre>encoder says:  90 degrees      (the wheels definitely spun that far)
 gyro says:     31 degrees      (the robot definitely did not turn that far)
                 ---
 difference:    59 degrees   &lt;-- THE WHEELS ARE SLIPPING</pre>
@@ -997,7 +997,7 @@ and an add. The ATmega32U4 has <strong>no floating-point hardware at all</strong
 
 <p>So instead, the angle is stored as a plain <strong>integer</strong>, in a unit chosen so that the math
 comes out clean:</p>
-<pre class="code-block-bg-1e1e1e">2^29 units  =  45 degrees
+<pre>2^29 units  =  45 degrees
 2^32 units  =  360 degrees  =  all the way around</pre>
 <p>That second line is the trick. A <code>uint32_t</code> holds exactly
 <code>2^32</code> values &mdash; and then it <strong>rolls over to zero</strong>.</p>
@@ -1051,15 +1051,15 @@ That is deliberate: you are going to find these numbers by testing, not by being
 <div id="challenge-1" class="div-7d5283" data-challenge="12.1" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 1: Turn to a Heading</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — add the new function to <code>main.cpp</code>.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — add the new function to <code>main.cpp</code>.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Write <code>turnToHeading()</code> — a turn to an <strong>absolute</strong> angle, measured from wherever <code>gyroReset()</code> last set as zero. Ask for heading 90 and it goes to 90, no matter where the robot is pointing now or how wrong the last turn was. Every turn so far has been <em>relative</em>, and four relative errors stack.</p>
+<p class="pre-m-0">Write <code>turnToHeading()</code> — a turn to an <strong>absolute</strong> angle, measured from wherever <code>gyroReset()</code> last set as zero. Ask for heading 90 and it goes to 90, no matter where the robot is pointing now or how wrong the last turn was. Every turn so far has been <em>relative</em>, and four relative errors stack.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">turnToHeading(target):
+<pre class="pre-m-0">turnToHeading(target):
   read the gyro
   while we are NOT yet within HEADING_TOLERANCE of the target:
     error = target - current heading
@@ -1071,7 +1071,7 @@ That is deliberate: you are going to find these numbers by testing, not by being
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">HEADING_TOLERANCE is yours to find; the two blanks are the logic.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> HEADING_TOLERANCE = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 3.</span>
+<pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> HEADING_TOLERANCE = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 3.</span>
 
 <span class="tok-569cd6">void</span> turnToHeading(<span class="tok-569cd6">int</span> targetHeading) {
   gyroUpdate();
@@ -1087,7 +1087,7 @@ That is deliberate: you are going to find these numbers by testing, not by being
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
-<pre class="code-block-bg-1e1e1e">// ===== MAIN LOOP =====
+<pre>// ===== MAIN LOOP =====
 // One switch, four states - the whole robot brain reads top to bottom
 // CHALLENGE 1: turnDegreesGyro(90) turns 90 degrees FROM HERE.
 // After four of them you have gone in a circle and the errors have
@@ -1105,7 +1105,7 @@ void turnToHeading(int targetHeading) {
   motors.setSpeeds(0, 0);
 }</pre>
 <p>And in <code>loop()</code>, drive it around a diamond of headings:</p>
-<pre class="code-block-bg-1e1e1e">void loop() {
+<pre>void loop() {
   if (!buttonB.getSingleDebouncedPress()) return;
   gyroReset();                 // "straight ahead" is now zero
   turnToHeading(90);   delay(800);
@@ -1120,15 +1120,15 @@ void turnToHeading(int targetHeading) {
 <div id="challenge-2" class="div-7d5283" data-challenge="12.2" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 2: The Slip Alarm</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — add the slip check to <code>loop()</code>.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — add the slip check to <code>loop()</code>.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Make the robot catch its own wheel-slip <strong>automatically</strong>: drive a turn with the encoder, watch it with the gyro, and if the two disagree by more than <code>SLIP_TOLERANCE</code>, sound the buzzer and show <strong>SLIP</strong>. In Section 7C <em>you</em> spotted the disagreement by eye; now the robot does it.</p>
+<p class="pre-m-0">Make the robot catch its own wheel-slip <strong>automatically</strong>: drive a turn with the encoder, watch it with the gyro, and if the two disagree by more than <code>SLIP_TOLERANCE</code>, sound the buzzer and show <strong>SLIP</strong>. In Section 7C <em>you</em> spotted the disagreement by eye; now the robot does it.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">drive a 90-degree turn using the ENCODER (count wheel rotation)
+<pre class="pre-m-0">drive a 90-degree turn using the ENCODER (count wheel rotation)
 while turning, keep the GYRO updated
 when the encoder says "done", read what the gyro ACTUALLY measured
 compare the encoder's claim (90) to the gyro's truth:
@@ -1140,7 +1140,7 @@ compare the encoder's claim (90) to the gyro's truth:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">SLIP_TOLERANCE is yours; the blanks are the audit — the encoder's claim vs the gyro's truth.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SLIP_TOLERANCE = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 10.</span>
+<pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> SLIP_TOLERANCE = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 10.</span>
 
 <span class="tok-6a9955">// after the encoder-driven turn finishes:</span>
 <span class="tok-569cd6">int</span> truth = abs(getTurnAngle());   <span class="tok-6a9955">// what the gyro really saw</span>
@@ -1156,10 +1156,10 @@ compare the encoder's claim (90) to the gyro's truth:
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
-<pre class="code-block-bg-1e1e1e">// CHALLENGE 2: you now own two instruments that measure the SAME
+<pre>// CHALLENGE 2: you now own two instruments that measure the SAME
 // turn. When they disagree, the wheels slipped. Make the robot say so.
 const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
-<pre class="code-block-bg-1e1e1e">void loop() {
+<pre>void loop() {
   if (!buttonB.getSingleDebouncedPress()) return;
 
   gyroReset();
@@ -1197,15 +1197,15 @@ const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
 <div id="challenge-3" class="div-7d5283" data-challenge="12.3" data-kind="challenge" data-difficulty="hard" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 3: The Stuck Guard</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — replace <code>turnDegreesGyro()</code> with a safe version.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — replace <code>turnDegreesGyro()</code> with a safe version.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0"><code>turnDegreesGyro()</code> loops until the robot has actually turned — so if it <em>cannot</em> turn (jammed against a wall), it waits <strong>forever</strong> with the motors straining. Give it a time budget: after <code>TURN_TIMEOUT_MS</code>, stop, report STUCK, and halt honestly.</p>
+<p class="pre-m-0"><code>turnDegreesGyro()</code> loops until the robot has actually turned — so if it <em>cannot</em> turn (jammed against a wall), it waits <strong>forever</strong> with the motors straining. Give it a time budget: after <code>TURN_TIMEOUT_MS</code>, stop, report STUCK, and halt honestly.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">turnDegreesGyroSafe(degrees):
+<pre class="pre-m-0">turnDegreesGyroSafe(degrees):
   reset the gyro, note the start time
   start spinning toward the target
   while we have NOT yet turned |degrees|:
@@ -1217,7 +1217,7 @@ const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">TURN_TIMEOUT_MS is yours; the blanks are the escape hatch — a clock check inside the wait, and honest return values.</p>
-<pre class="code-block-333-2"><span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> TURN_TIMEOUT_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 3000.</span>
+<pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> TURN_TIMEOUT_MS = <span class="tok-b5cea8">0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 3000.</span>
 
 <span class="tok-569cd6">bool</span> turnDegreesGyroSafe(<span class="tok-569cd6">float</span> degrees) {
   gyroReset();
@@ -1239,7 +1239,7 @@ const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
-<pre class="code-block-bg-1e1e1e">// ===== MAIN LOOP =====
+<pre>// ===== MAIN LOOP =====
 // One switch, four states - the whole robot brain reads top to bottom
 // CHALLENGE 3: turnDegreesGyro() waits for an angle that may never
 // arrive. Jam a wheel and it spins forever. Give it a budget.
@@ -1262,7 +1262,7 @@ bool turnDegreesGyroSafe(float degrees) {
   motors.setSpeeds(0, 0);
   return true;
 }</pre>
-<pre class="code-block-bg-1e1e1e">void loop() {
+<pre>void loop() {
   if (!buttonB.getSingleDebouncedPress()) return;
 
   if (!turnDegreesGyroSafe(90)) {
@@ -1302,7 +1302,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <div data-challenge="12.m1" data-kind="bonus-sabotage" class="div-bg-6f7582-2">&#128373;&#65039; Mystery B1 &mdash; The Calibration That Spins<span class="span-f-right">24,558 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
-<pre class="code-block-bg-1e1e1e">  // THE PLANTED LINE:
+<pre>  // THE PLANTED LINE:
   motors.setSpeeds(100, -100);   // spinning DURING calibration
   motors.setSpeeds(0, 0);</pre>
 <p><strong>The symptom:</strong> The robot boots, spins briefly, and then behaves erratically for the entire run. Turns overshoot wildly, or barely happen at all. Every turn is wrong, and wrong by a <em>consistent</em> amount.</p>
@@ -1314,7 +1314,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <div data-challenge="12.m2" data-kind="bonus-sabotage" class="div-bg-6f7582-2">&#128373;&#65039; Mystery B2 &mdash; The Turn That Never Ends<span class="span-f-right">23,882 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
-<pre class="code-block-bg-1e1e1e">  // THE PLANTED LINE: gyroUpdate() was deleted from this loop.
+<pre>  // THE PLANTED LINE: gyroUpdate() was deleted from this loop.
   while (abs(getTurnAngle()) &lt; abs(degrees)) {
     // (nothing)
   }
@@ -1329,11 +1329,11 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <div data-challenge="12.m3" data-kind="bonus-sabotage" class="div-bg-6f7582-2">&#128373;&#65039; Mystery B3 &mdash; The First Turn Works<span class="span-f-right">24,530 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
-<pre class="code-block-bg-1e1e1e">void turnDegreesGyro(float degrees) {
+<pre>void turnDegreesGyro(float degrees) {
   // THE PLANTED LINE: gyroReset() was moved OUT of here
   // and now runs only once, back in setup().</pre>
 <p class="p-c-555-3">&hellip;and over in <code>main.cpp</code>, inside <code>setup()</code>:</p>
-<pre class="code-block-bg-1e1e1e">  gyroReset();   // &lt;-- moved here</pre>
+<pre>  gyroReset();   // &lt;-- moved here</pre>
 <p><strong>The symptom:</strong> The <strong>first</strong> turn is perfect. Every turn after it finishes <strong>instantly</strong> &mdash; the motors barely twitch before the robot declares the turn complete.</p>
 <div class="div-6f7582-4">
 <div class="div-fs-105em">Ask yourself:</div> <code>gyroReset()</code> sets the running angle back to zero. If it only ever runs once, at boot &mdash; what does the running total say <em>after</em> the first 90&deg; turn is finished?<br><br>Now the second turn starts. It checks <code>abs(getTurnAngle()) &lt; 90</code>. The angle is <em>already</em> 90. How long does that loop run?</div>
@@ -1343,7 +1343,7 @@ The changed line is <strong>shown to you</strong> &mdash; this is not a hunt for
 <div data-challenge="12.m4" data-kind="bonus-sabotage" class="div-bg-6f7582-2">&#128373;&#65039; Mystery B4 &mdash; The Helpful TRIM<span class="span-f-right">24,534 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
-<pre class="code-block-bg-1e1e1e">  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
+<pre>  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
   motors.setSpeeds(leftSpeed + TRIM, rightSpeed);</pre>
 <p><strong>The symptom:</strong> Turns are subtly, stubbornly off &mdash; and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
 <div class="div-6f7582-4">
@@ -1477,7 +1477,7 @@ you can trust, and which instrument to trust it with.</p>
 <p><em>Every code block below is quoted verbatim from the finished project.</em></p>
 <h3 class="h3-c-6f7582-4">The Four Gyro Functions</h3>
 <p class="p-c-666-4">In <code>RobotSensors.h</code>:</p>
-<pre class="code-block-bg-1e1e1e">// ===== GYRO (NEW for Lesson 12) =====
+<pre>// ===== GYRO (NEW for Lesson 12) =====
 // The encoders count WHEEL rotation. The gyro measures ROBOT rotation.
 // When a wheel slips, only one of them is still telling the truth.
 void gyroSetup();
@@ -1486,7 +1486,7 @@ void gyroUpdate();
 int  getTurnAngle();</pre>
 <h3 class="h3-c-6f7582-4">The Honest Turn</h3>
 <p class="p-c-666-4">In <code>RobotMotion.cpp</code>:</p>
-<pre class="code-block-bg-1e1e1e">void turnDegreesGyro(float degrees) {
+<pre>void turnDegreesGyro(float degrees) {
   gyroReset();                 // "we are at zero degrees, starting now"
 
   int leftSpeed  = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
@@ -1504,12 +1504,12 @@ int  getTurnAngle();</pre>
 }</pre>
 <h3 class="h3-c-6f7582-4">The Three Intersection Turns</h3>
 <p class="p-c-666-4">In <code>RobotMotion.cpp</code>:</p>
-<pre class="code-block-bg-1e1e1e">void turnLeft()   { turnDegreesGyro(-90); }
+<pre>void turnLeft()   { turnDegreesGyro(-90); }
 void turnRight()  { turnDegreesGyro(90);  }
 void turnAround() { turnDegreesGyro(180); }</pre>
 <h3 class="h3-c-6f7582-4">Boot Sequence &mdash; the order matters</h3>
 <p class="p-c-666-4">In <code>main.cpp</code>, inside <code>setup()</code>:</p>
-<pre class="code-block-bg-1e1e1e">  // ===== GYRO SETUP (NEW for Lesson 12) =====
+<pre>  // ===== GYRO SETUP (NEW for Lesson 12) =====
   // The robot MUST be still. If it moves now, the gyro will learn
   // that moving IS still - and it will be wrong for the whole run.
   display.clear();

@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.21.0 -->
+<!-- Lesson version: v04.22.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Proximity Sensors</h1>
 <div class="div-fs-11em">Teaching Your Robot to Sense</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.21 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 04.22 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -236,7 +236,7 @@
 
 <p>We use <strong>named constants</strong> to make our code readable and easy to adjust:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DETECTION_THRESHOLD = <span class="tok-b5cea8">1</span>;    <span class="tok-7cbf6e">// Minimum value = "something is there"</span>
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DETECTION_THRESHOLD = <span class="tok-b5cea8">1</span>;    <span class="tok-7cbf6e">// Minimum value = "something is there"</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">3</span>;        <span class="tok-7cbf6e">// Object is getting close</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> VERY_CLOSE_THRESHOLD = <span class="tok-b5cea8">5</span>;   <span class="tok-7cbf6e">// Object is very close!</span></pre>
 
@@ -394,7 +394,7 @@
 
 <h3 id="code-5-1" class="h3-c-433014">5.1 Program Header &amp; Includes</h3>
 
-<pre class="code-block-333">/*
+<pre>/*
 =====================================================
 LESSON <span class="tok-b5cea8">5</span> - Proximity Sensors
 =====================================================
@@ -424,7 +424,7 @@ DATE:   [Today's Date]
 
 <h3 id="code-5-2" class="h3-c-433014">5.2 Hardware Objects</h3>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== HARDWARE OBJECTS =====</span>
+<pre><span class="tok-7cbf6e">// ===== HARDWARE OBJECTS =====</span>
 Zumo32U4OLED display;
 Zumo32U4ProximitySensors proxSensors;
 Zumo32U4ButtonA buttonA;
@@ -434,14 +434,14 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-3" class="h3-c-433014">5.3 Configuration Constants</h3>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== CONFIGURATION =====</span>
+<pre><span class="tok-7cbf6e">// ===== CONFIGURATION =====</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DETECTION_THRESHOLD = <span class="tok-b5cea8">1</span>;    <span class="tok-7cbf6e">// Minimum to count as "detected"</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">3</span>;        <span class="tok-7cbf6e">// Considered "close"</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> VERY_CLOSE_THRESHOLD = <span class="tok-b5cea8">5</span>;   <span class="tok-7cbf6e">// Considered "very close"</span></pre>
 
 <h3 id="code-5-4" class="h3-c-433014">5.4 Global Variables</h3>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== GLOBAL VARIABLES =====</span>
+<pre><span class="tok-7cbf6e">// ===== GLOBAL VARIABLES =====</span>
 <span class="tok-569cd6">int</span> leftValue = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">int</span> frontLeftValue = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">int</span> frontRightValue = <span class="tok-b5cea8">0</span>;
@@ -455,7 +455,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <p>Today's program has six helpers, and the display functions call each other (<code>showBarGraphMode()</code> calls <code>drawBar()</code>). With prototypes declared once, up top, the helpers can live in any order and everything still builds:</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== FUNCTION PROTOTYPES =====</span>
+<pre><span class="tok-7cbf6e">// ===== FUNCTION PROTOTYPES =====</span>
 <span class="tok-569cd6">void</span> readAllSensors();
 <span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value);
 <span class="tok-569cd6">void</span> showNumericMode();
@@ -471,7 +471,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-6" class="h3-c-433014">5.6 Helper Functions — readAllSensors()</h3>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> readAllSensors() {
+<pre><span class="tok-569cd6">void</span> readAllSensors() {
     proxSensors.read();
     leftValue = proxSensors.countsLeftWithLeftLeds();
     frontLeftValue = proxSensors.countsFrontWithLeftLeds();
@@ -484,7 +484,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <p>In older, prototype-less programs this function had to sit <em>above</em> <code>showBarGraphMode()</code> or the build went red. Not in ours: its line in FUNCTION PROTOTYPES (Section 5.5) means the compiler already knows it exists, so helpers can live in any order. The prototype is doing quiet work here.</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value) {
+<pre><span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value) {
     display.gotoXY(<span class="tok-b5cea8">2</span>, row);
     <span class="tok-569cd6">int</span> barLength = constrain(value, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
     <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">6</span>; i++) {
@@ -500,7 +500,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-8" class="h3-c-433014">5.8 Display Functions — showNumericMode()</h3>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> showNumericMode() {
+<pre><span class="tok-569cd6">void</span> showNumericMode() {
     display.clear();
     display.setLayout21x8();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -527,7 +527,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-9" class="h3-c-433014">5.9 Display Functions — showBarGraphMode()</h3>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> showBarGraphMode() {
+<pre><span class="tok-569cd6">void</span> showBarGraphMode() {
     display.clear();
     display.setLayout21x8();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -547,7 +547,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-10" class="h3-c-433014">5.10 Display Functions — showAlertMode()</h3>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> showAlertMode() {
+<pre><span class="tok-569cd6">void</span> showAlertMode() {
     display.clear();
     display.setLayout21x8();
     display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -603,7 +603,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-11" class="h3-c-433014">5.11 Indicator Functions — updateIndicators()</h3>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> updateIndicators() {
+<pre><span class="tok-569cd6">void</span> updateIndicators() {
     <span class="tok-7cbf6e">// LED: On if anything detected in front</span>
     <span class="tok-569cd6">if</span> (frontValue >= DETECTION_THRESHOLD) {
         ledYellow(<span class="tok-b5cea8">1</span>);
@@ -630,7 +630,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-12" class="h3-c-433014">5.12 Setup Function</h3>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> setup() {
+<pre><span class="tok-569cd6">void</span> setup() {
     Serial.begin(<span class="tok-b5cea8">115200</span>);
     delay(<span class="tok-b5cea8">500</span>);
     Serial.println(F(<span class="tok-ce9178">""</span>));
@@ -663,7 +663,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <p>One new shape appears in the loop below: a <code>switch</code> statement, which picks one of several blocks based on a value &mdash; here, which display mode to show. Read it as a stack of <code>if</code> checks that all ask about the same variable; each <code>case</code> is one answer, and <code>break</code> ends it. Copy it as written for now &mdash; Lesson 9 takes <code>switch</code> apart properly when the robot needs to choose between intersection types.</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
     checkBattery();   <span class="tok-7cbf6e">// hold A + B together to see battery millivolts</span>
     readAllSensors();
     <span class="tok-7cbf6e">// Button handling</span>
@@ -718,7 +718,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <p>These two arrived in Lesson 4 and now ship at the bottom of every Maker project, with their prototypes pre-installed up top. You don't write them — you <em>call</em> them: <code>waitForStart()</code> at the end of <code>setup()</code>, <code>checkBattery()</code> at the top of <code>loop()</code>. Here is the block in full — this is also the copy source if you ever build a project by hand from the plain template:</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ----- STANDARD HELPERS (added after Lesson 3) -----</span>
+<pre><span class="tok-7cbf6e">// ----- STANDARD HELPERS (added after Lesson 3) -----</span>
 
 <span class="tok-7cbf6e">/*
 waitForStart()
@@ -800,7 +800,7 @@ Call it at the TOP of loop().
 
 <p>Let's trace through our actual code when <code>value = 4</code>:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">6</span>; i++) {
+<pre><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">6</span>; i++) {
     <span class="tok-569cd6">if</span> (i &lt; barLength) {   <span class="tok-7cbf6e">// barLength = 4</span>
         display.print(F(<span class="tok-ce9178">"#"</span>));
     } <span class="tok-569cd6">else</span> {
@@ -837,7 +837,7 @@ Call it at the TOP of loop().
 
 <p>Every loop you have written so far started at 0 and climbed. Nothing requires that. The counter is an ordinary variable and the three parts are yours to set — so a loop can just as easily start high and walk down:</p>
 
-<pre class="code-block-333-3"><span class="tok-6a9955">// A 3-2-1 countdown before the robot moves</span>
+<pre class="div-m-16px0"><span class="tok-6a9955">// A 3-2-1 countdown before the robot moves</span>
 <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">3</span>; i &gt;= <span class="tok-b5cea8">1</span>; i--) {
   display.clear();
   display.print(i);
@@ -869,7 +869,7 @@ Call it at the TOP of loop().
 
 <p>Count how many sensors detect something:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">int</span> sensorValues[] = {leftValue, frontValue, rightValue};
+<pre><span class="tok-569cd6">int</span> sensorValues[] = {leftValue, frontValue, rightValue};
 <span class="tok-569cd6">int</span> detectionCount = <span class="tok-b5cea8">0</span>;
 
 <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">3</span>; i++) {
@@ -883,7 +883,7 @@ Call it at the TOP of loop().
 
 <p>What does this code print?</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
+<pre><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
     Serial.print(i);
     Serial.print(F(<span class="tok-ce9178">" "</span>));
 }</pre>
@@ -1017,18 +1017,18 @@ scratch pad →  five sensor-reading slots (left, frontLeft,
 <details data-reveal="check" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== HARDWARE OBJECTS =====</span>
+<pre><span class="tok-7cbf6e">// ===== HARDWARE OBJECTS =====</span>
 Zumo32U4OLED display;
 Zumo32U4ProximitySensors proxSensors;
 Zumo32U4ButtonA buttonA;
 Zumo32U4ButtonB buttonB;
 Zumo32U4ButtonC buttonC;
 Zumo32U4Buzzer buzzer;</pre>
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== CONFIGURATION =====</span>
+<pre><span class="tok-7cbf6e">// ===== CONFIGURATION =====</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DETECTION_THRESHOLD = <span class="tok-b5cea8">1</span>;    <span class="tok-7cbf6e">// Minimum to count as "detected"</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">3</span>;        <span class="tok-7cbf6e">// Considered "close"</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> VERY_CLOSE_THRESHOLD = <span class="tok-b5cea8">5</span>;   <span class="tok-7cbf6e">// Considered "very close"</span></pre>
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== GLOBAL VARIABLES =====</span>
+<pre><span class="tok-7cbf6e">// ===== GLOBAL VARIABLES =====</span>
 <span class="tok-569cd6">int</span> leftValue = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">int</span> frontLeftValue = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">int</span> frontRightValue = <span class="tok-b5cea8">0</span>;
@@ -1059,7 +1059,7 @@ Zumo32U4Buzzer buzzer;</pre>
 <details data-reveal="check" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-569cd6">void</span> setup() {
+<pre><span class="tok-569cd6">void</span> setup() {
     Serial.begin(<span class="tok-b5cea8">115200</span>);
     delay(<span class="tok-b5cea8">500</span>);
     Serial.println(F(<span class="tok-ce9178">""</span>));
@@ -1095,7 +1095,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <p>Two pastes. First, put <code>readAllSensors()</code> from Section 5.6 into the HELPER FUNCTIONS section, <em>above</em> the STANDARD HELPERS block. Second, replace the empty <code>loop()</code> with this Version&nbsp;1 — readings straight to the Serial Monitor, no display yet:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
+<pre><span class="tok-569cd6">void</span> loop() {
     checkBattery();   <span class="tok-7cbf6e">// hold A + B together to see battery millivolts</span>
     readAllSensors();
     <span class="tok-7cbf6e">// Serial logging only - the OLED display arrives in Step 6</span>
@@ -1117,7 +1117,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <p>The fix is the standing one: prototypes. Add all six of today's, one trip, to the FUNCTION PROTOTYPES section (right below the Maker's two pre-installed lines):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== FUNCTION PROTOTYPES =====</span>
+<pre><span class="tok-7cbf6e">// ===== FUNCTION PROTOTYPES =====</span>
 <span class="tok-569cd6">void</span> readAllSensors();
 <span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value);
 <span class="tok-569cd6">void</span> showNumericMode();
@@ -1139,7 +1139,7 @@ Until now, every function arrived finished and you studied it. This one arrives 
 
 <p>Paste the blueprint into HELPER FUNCTIONS (its prototype went in during Step 4, so the build stays green — an empty function is legal C++):</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">/*
+<pre><span class="tok-7cbf6e">/*
 drawBar(row, value)
 -------------------
 Draws one bar-graph row on the OLED: the value shown as
@@ -1165,7 +1165,7 @@ BLUEPRINT - you write the body from the numbered steps.
 
 <p>Wire up a live test before you write a line — two temporary lines, placed where their comments say:</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// TEMPORARY - both lines removed in Step 6:</span>
+<pre><span class="tok-7cbf6e">// TEMPORARY - both lines removed in Step 6:</span>
 
 display.setLayout21x8();   <span class="tok-7cbf6e">// put in setup(), just above waitForStart()</span>
 
@@ -1175,7 +1175,7 @@ drawBar(<span class="tok-b5cea8">2</span>, frontValue);    <span class="tok-7cbf
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal the solution — write yours first!</summary>
-<pre class="code-block-333"><span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value) {
+<pre><span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value) {
     display.gotoXY(<span class="tok-b5cea8">2</span>, row);
     <span class="tok-569cd6">int</span> barLength = constrain(value, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
     <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">6</span>; i++) {
@@ -1227,7 +1227,7 @@ drawBar(<span class="tok-b5cea8">2</span>, frontValue);    <span class="tok-7cbf
     <div class="div-fs-105em">👀 WHAT YOU SHOULD SEE</div>
     <p><strong>On the OLED:</strong> Numeric values for Left, Front, and Right sensors</p>
     <p><strong>In Serial Monitor:</strong></p>
-    <pre class="code-block-333">L:0	F:0 (0/0)	R:0
+    <pre>L:0	F:0 (0/0)	R:0
 L:0	F:2 (2/1)	R:0	(detected)
 L:0	F:4 (3/4)	R:0	* CLOSE *
 L:0	F:6 (5/6)	R:0	*** VERY CLOSE ***</pre>
@@ -1347,7 +1347,7 @@ L:0	F:6 (5/6)	R:0	*** VERY CLOSE ***</pre>
 
 <p>Slide the tape slowly across the whole row and watch the five numbers. <strong>All five must respond.</strong> If digits 2 and 4 sit dead while 1, 3, and 5 answer, a jumper is not seated — power off and reseat it.</p>
 
-<pre class="code-block-bg-1e1e1e-6">/*
+<pre>/*
 =====================================================
 JUMPER CHECK - Lesson 5 Exit Ritual
 =====================================================
@@ -1404,7 +1404,7 @@ void loop() {
 <p class="p-m-0010px0"><strong>📘 THE TRADE YOU JUST MADE</strong></p>
 <p class="p-m-0010px0">Sensors 1, 3, and 5 have their own permanent wires — they were never in question. But sensors <strong>2</strong> and <strong>4</strong> do not have wires of their own. They are borrowing <strong>pin 20</strong> and <strong>pin 4</strong>, and those two pins used to carry your <strong>left and right proximity receivers</strong>.</p>
 <p class="p-m-0010px0">You did not lose them to a bug. You <em>spent</em> them. From here on your robot has <strong>five line sensors and exactly one proximity sensor — the front one.</strong></p>
-<p class="p-m-0">That is what an engineering trade-off actually feels like. The board has a fixed number of pins, and every pin you spend on one job is a pin you cannot spend on another. You will feel this again in <strong>Lesson 10</strong>, when your robot drives into an obstacle and <em>cannot tell which side it is on</em> — because the sensors that would have told it are now watching the floor.</p>
+<p class="pre-m-0">That is what an engineering trade-off actually feels like. The board has a fixed number of pins, and every pin you spend on one job is a pin you cannot spend on another. You will feel this again in <strong>Lesson 10</strong>, when your robot drives into an obstacle and <em>cannot tell which side it is on</em> — because the sensors that would have told it are now watching the floor.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1471,7 +1471,7 @@ void loop() {
 
 <p>The FRONT detector is a single IR receiver (a 38 kHz detector module — a different kind of part from the phototransistors in the line sensors), and it sits between the two forward emitters on the blade, one to its left and one to its right. Firing the LEFT team and then the RIGHT team tells you not just <em>that</em> something is ahead, but roughly <em>which side</em> of center it sits on. Remember from &sect;3.4 that a &ldquo;team&rdquo; is two LEDs in series &mdash; the blade LED plus the middle one &mdash; so what changes between the two reads is which <em>side</em> is lit, not one single LED:</p>
 
-<pre class="code-block-333">proxSensors.read();
+<pre>proxSensors.read();
 <span class="tok-569cd6">int</span> frontLeft  = proxSensors.countsFrontWithLeftLeds();   <span class="tok-7cbf6e">// object lit from the left</span>
 <span class="tok-569cd6">int</span> frontRight = proxSensors.countsFrontWithRightLeds();  <span class="tok-7cbf6e">// object lit from the right</span></pre>
 
@@ -1496,7 +1496,7 @@ void loop() {
 </tr>
 </table>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// PRESENCE: how strong is the strongest return?</span>
+<pre><span class="tok-7cbf6e">// PRESENCE: how strong is the strongest return?</span>
 <span class="tok-569cd6">int</span> frontValue = max(frontLeft, frontRight);
 <span class="tok-7cbf6e">// DIRECTION: positive = object leans left, negative = leans right</span>
 <span class="tok-569cd6">int</span> bias = frontLeft - frontRight;</pre>
@@ -1507,7 +1507,7 @@ void loop() {
 
 <p>Once you have a bias, steering is a short step — nudge toward whichever side reads stronger:</p>
 
-<pre class="code-block-333"><span class="tok-569cd6">int</span> bias = frontLeft - frontRight;
+<pre><span class="tok-569cd6">int</span> bias = frontLeft - frontRight;
 <span class="tok-569cd6">if</span> (bias &gt; <span class="tok-b5cea8">1</span>) {
   <span class="tok-7cbf6e">// stronger on the left -> turn left toward it</span>
   steerLeft();
@@ -1529,7 +1529,7 @@ Notice the steering checks <code>bias &gt; 1</code> and <code>bias &lt; -1</code
 
 <p>Strip away the proximity specifics and the pattern is general:</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// 1. Read the pair</span>
+<pre><span class="tok-7cbf6e">// 1. Read the pair</span>
 <span class="tok-569cd6">int</span> a = readLeftThing();
 <span class="tok-569cd6">int</span> b = readRightThing();
 <span class="tok-7cbf6e">// 2. Combine for the "how much" answer</span>
@@ -1563,15 +1563,15 @@ A pair of sensors pointed at the same target gives you two facts for the price o
 <div class="div-bg-7a5905"><strong>Challenge 1: Detection Counter</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Detection Counter</strong> (this one replaces <code>loop()</code>, so your main build stays clean): <a href="../newproject.html?lesson=5&amp;kind=detection_counter" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> · <a href="#qr-display" class="link-c-2e86ab">Display</a> &mdash; the arrived/left trick needs one boolean memory</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> · <a href="#qr-display" class="link-c-2e86ab">Display</a> &mdash; the arrived/left trick needs one boolean memory</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Count how many times the front sensor sees something <strong>new</strong>, show the running total on the OLED, and reset it to zero with Button&nbsp;A.</p>
+<p class="pre-m-0">Count how many times the front sensor sees something <strong>new</strong>, show the running total on the OLED, and reset it to zero with Button&nbsp;A.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">keep two memories: a COUNT, and a flag "was something there last loop?"
+<pre class="pre-m-0">keep two memories: a COUNT, and a flag "was something there last loop?"
 every loop:
   read the front sensor  &rarr; frontValue
   something there now?    &rarr; frontValue &gt;= DETECTION_THRESHOLD
@@ -1583,10 +1583,10 @@ every loop:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p><strong>Step 1:</strong> Two globals above <code>setup()</code> &mdash; the flag is what makes "new" possible:</p>
-<pre class="code-block-333"><span class="tok-569cd6">int</span> detectionCount = <span class="tok-b5cea8">0</span>;
+<pre><span class="tok-569cd6">int</span> detectionCount = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">bool</span> wasDetected = ____;    <span class="tok-7cbf6e">// nothing seen yet at power-on</span></pre>
 <p class="div-mt-12px"><strong>Step 2:</strong> In <code>loop()</code>, the "is it NEW?" test is the whole trick:</p>
-<pre class="code-block-333-5"><span class="tok-569cd6">bool</span> isDetected = (frontValue &gt;= DETECTION_THRESHOLD);
+<pre class="p-mb-0"><span class="tok-569cd6">bool</span> isDetected = (frontValue &gt;= DETECTION_THRESHOLD);
 <span class="tok-569cd6">if</span> (isDetected &amp;&amp; !____) {      <span class="tok-7cbf6e">// there now, and NOT there last loop</span>
     detectionCount++;
     display.clear();
@@ -1597,7 +1597,7 @@ ____ = isDetected;              <span class="tok-7cbf6e">// remember for next lo
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
-<pre class="code-block-333">#include &lt;Zumo32U4.h&gt;
+<pre>#include &lt;Zumo32U4.h&gt;
 
 Zumo32U4ProximitySensors proxSensors;
 Zumo32U4OLED display;
@@ -1648,15 +1648,15 @@ Zumo32U4ButtonB buttonB;
 <div class="div-bg-7a5905"><strong>Challenge 2: Directional LED Alerts</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — replace <code>updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=directional_alerts" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-leds" class="link-c-2e86ab">LEDs</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; three LEDs, one winner</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-leds" class="link-c-2e86ab">LEDs</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; three LEDs, one winner</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Use the three onboard LEDs to show which direction has the strongest detection &mdash; red for a left detection, yellow for front, green for right &mdash; instead of only reporting numbers.</p>
+<p class="pre-m-0">Use the three onboard LEDs to show which direction has the strongest detection &mdash; red for a left detection, yellow for front, green for right &mdash; instead of only reporting numbers.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">inside updateIndicators(), pick the winner among left / front / right:
+<pre class="pre-m-0">inside updateIndicators(), pick the winner among left / front / right:
   if all three read 0        &rarr; all LEDs off (the room is empty)
   else if LEFT is the biggest &rarr; red on
   else if RIGHT beats front   &rarr; green on
@@ -1667,7 +1667,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p>Replace the top of <code>updateIndicators()</code> with the winner-picker. Fill the blanks:</p>
-<pre class="code-block-333-5"><span class="tok-569cd6">void</span> updateIndicators() {
+<pre class="p-mb-0"><span class="tok-569cd6">void</span> updateIndicators() {
     <span class="tok-569cd6">if</span> (leftValue == <span class="tok-b5cea8">0</span> &amp;&amp; frontValue == <span class="tok-b5cea8">0</span> &amp;&amp; rightValue == <span class="tok-b5cea8">0</span>) {
         ledRed(<span class="tok-b5cea8">0</span>); ledYellow(<span class="tok-b5cea8">0</span>); ledGreen(____);   <span class="tok-7cbf6e">// all clear</span>
     } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (leftValue &gt;= frontValue &amp;&amp; leftValue &gt;= rightValue) {
@@ -1682,7 +1682,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
-<pre class="code-block-333"><span class="tok-569cd6">void</span> updateIndicators() {
+<pre><span class="tok-569cd6">void</span> updateIndicators() {
     <span class="tok-7cbf6e">// Which direction has the strongest detection?</span>
     <span class="tok-569cd6">if</span> (leftValue == <span class="tok-b5cea8">0</span> &amp;&amp; frontValue == <span class="tok-b5cea8">0</span> &amp;&amp; rightValue == <span class="tok-b5cea8">0</span>) {
         ledRed(<span class="tok-b5cea8">0</span>); ledYellow(<span class="tok-b5cea8">0</span>); ledGreen(<span class="tok-b5cea8">0</span>);   <span class="tok-7cbf6e">// all clear</span>
@@ -1719,15 +1719,15 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-7a5905"><strong>Challenge 3: Proximity-Based Beep Speed</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — modify <code>updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=beep_speed" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buzzer" class="link-c-2e86ab">Sound (Buzzer)</a> · <a href="#qr-timing" class="link-c-2e86ab">Timing</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; the interval is arithmetic on the reading</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buzzer" class="link-c-2e86ab">Sound (Buzzer)</a> · <a href="#qr-timing" class="link-c-2e86ab">Timing</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; the interval is arithmetic on the reading</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Make the beep speed change <strong>smoothly</strong> with distance instead of in fixed steps, using the formula <code>beepInterval = 700 - (value * 100)</code>.</p>
+<p class="pre-m-0">Make the beep speed change <strong>smoothly</strong> with distance instead of in fixed steps, using the formula <code>beepInterval = 700 - (value * 100)</code>.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">in updateIndicators(), the fixed-threshold beep cascade becomes ONE line of arithmetic:
+<pre class="pre-m-0">in updateIndicators(), the fixed-threshold beep cascade becomes ONE line of arithmetic:
   if something is detected (frontValue &gt;= DETECTION_THRESHOLD):
       beepInterval = 700 - (frontValue * 100)   // closer = bigger reading = shorter interval
   else:
@@ -1737,7 +1737,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p>Swap the fixed-threshold beep cascade in <code>updateIndicators()</code> for the formula. Fill the blanks:</p>
-<pre class="code-block-333-5"><span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> beepInterval = <span class="tok-b5cea8">0</span>;
+<pre class="p-mb-0"><span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> beepInterval = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">if</span> (frontValue &gt;= DETECTION_THRESHOLD) {
     beepInterval = ____ - (frontValue * ____);   <span class="tok-7cbf6e">// 1 -&gt; 600ms ... 6 -&gt; 100ms</span>
 }
@@ -1748,7 +1748,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
-<pre class="code-block-333"><span class="tok-569cd6">void</span> updateIndicators() {
+<pre><span class="tok-569cd6">void</span> updateIndicators() {
     <span class="tok-7cbf6e">// LED: On if anything detected in front</span>
     <span class="tok-569cd6">if</span> (frontValue &gt;= DETECTION_THRESHOLD) {
         ledYellow(<span class="tok-b5cea8">1</span>);
@@ -1774,15 +1774,15 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-7a5905"><strong>Challenge 4: Social Distancing Robot</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Social Distancing</strong> (motors + its own <code>loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=social_distancing" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; higher reading = closer, so "too close" is a HIGH count</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; higher reading = closer, so "too close" is a HIGH count</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Keep a "safe distance" from your hand: reverse if it gets too close (&lt; 10&nbsp;cm), drive forward if it gets too far (&gt; 20&nbsp;cm), and hold still in the safe zone (10&ndash;20&nbsp;cm). The robot "follows" your hand while keeping its distance &mdash; like a shy pet.</p>
+<p class="pre-m-0">Keep a "safe distance" from your hand: reverse if it gets too close (&lt; 10&nbsp;cm), drive forward if it gets too far (&gt; 20&nbsp;cm), and hold still in the safe zone (10&ndash;20&nbsp;cm). The robot "follows" your hand while keeping its distance &mdash; like a shy pet.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">two thresholds: CLOSE (~10cm, a HIGH reading) and FAR (~20cm, a LOW reading).
+<pre class="pre-m-0">two thresholds: CLOSE (~10cm, a HIGH reading) and FAR (~20cm, a LOW reading).
 remember: higher reading = closer.
 every loop, read frontValue and decide:
   if frontValue &gt;= CLOSE   &rarr; too close: back away
@@ -1793,10 +1793,10 @@ every loop, read frontValue and decide:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p><strong>Step 1:</strong> Two thresholds above <code>setup()</code> &mdash; you will tune these to your robot:</p>
-<pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = ____;   <span class="tok-7cbf6e">// ~10cm (a HIGH reading)</span>
+<pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = ____;   <span class="tok-7cbf6e">// ~10cm (a HIGH reading)</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAR_THRESHOLD   = ____;   <span class="tok-7cbf6e">// ~20cm (a LOW reading)</span></pre>
 <p class="div-mt-12px"><strong>Step 2:</strong> The four-way decision in <code>loop()</code> &mdash; note the extra branch for "no hand at all":</p>
-<pre class="code-block-333-5"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
+<pre class="p-mb-0"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(-<span class="tok-b5cea8">150</span>, -<span class="tok-b5cea8">150</span>);   <span class="tok-7cbf6e">// too close - back away</span>
 } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (frontValue == ____) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);         <span class="tok-7cbf6e">// no hand - hold still</span>
@@ -1808,7 +1808,7 @@ every loop, read frontValue and decide:
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
-<pre class="code-block-333">#include &lt;Zumo32U4.h&gt;
+<pre>#include &lt;Zumo32U4.h&gt;
 
 Zumo32U4ProximitySensors proxSensors;
 Zumo32U4Motors motors;
@@ -1852,15 +1852,15 @@ Zumo32U4ButtonB buttonB;
 <div class="div-bg-7a5905"><strong>Challenge 5: Simple Obstacle Avoidance</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Obstacle Avoidance</strong> (motors + its own <code>loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=obstacle_avoidance" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; sense, decide, steer &mdash; your first full loop with motion</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; sense, decide, steer &mdash; your first full loop with motion</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Make the robot actually MOVE: drive forward when the path is clear, and when the front sensor sees a close obstacle, stop and turn away. Start with a 3-2-1 countdown so it doesn't bolt the instant you set it down.</p>
+<p class="pre-m-0">Make the robot actually MOVE: drive forward when the path is clear, and when the front sensor sees a close obstacle, stop and turn away. Start with a 3-2-1 countdown so it doesn't bolt the instant you set it down.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">in setup(), after waitForStart(): run a 3-2-1 countdown (the for loop from Section 5.15), then show "GO!".
+<pre class="pre-m-0">in setup(), after waitForStart(): run a 3-2-1 countdown (the for loop from Section 5.15), then show "GO!".
 every loop, read frontValue and decide:
   if frontValue &gt;= CLOSE_THRESHOLD:   // obstacle ahead
       stop briefly, then spin in place ~90 degrees (a timed turn)
@@ -1870,13 +1870,13 @@ every loop, read frontValue and decide:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p><strong>Step 1:</strong> The countdown in <code>setup()</code> &mdash; the for loop from Section 5.15:</p>
-<pre class="code-block-333"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = ____; i &gt;= <span class="tok-b5cea8">1</span>; i--) {   <span class="tok-7cbf6e">// 3, 2, 1</span>
+<pre><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = ____; i &gt;= <span class="tok-b5cea8">1</span>; i--) {   <span class="tok-7cbf6e">// 3, 2, 1</span>
     display.clear();
     display.print(i);
     delay(<span class="tok-b5cea8">1000</span>);
 }</pre>
 <p class="div-mt-12px"><strong>Step 2:</strong> The drive/avoid decision in <code>loop()</code> &mdash; a spin is one wheel forward, one back:</p>
-<pre class="code-block-333-5"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
+<pre class="p-mb-0"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);         <span class="tok-7cbf6e">// obstacle! stop...</span>
     delay(<span class="tok-b5cea8">200</span>);
     motors.setSpeeds(-<span class="tok-b5cea8">150</span>, ____);    <span class="tok-7cbf6e">// ...spin in place...</span>
@@ -1887,7 +1887,7 @@ every loop, read frontValue and decide:
 </div>
 <details data-reveal="solution" class="details-b-none">
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
-<pre class="code-block-333">#include &lt;Zumo32U4.h&gt;
+<pre>#include &lt;Zumo32U4.h&gt;
 
 Zumo32U4ProximitySensors proxSensors;
 Zumo32U4Motors motors;
@@ -2152,12 +2152,12 @@ Zumo32U4ButtonB buttonB;
     </table>
     
     <h4 id="qr-thresholds" class="h4-c-6f7582-2">🎯 Standard Thresholds</h4>
-    <pre class="code-block-333">DETECTION_THRESHOLD = 1   // Any detection
+    <pre>DETECTION_THRESHOLD = 1   // Any detection
 CLOSE_THRESHOLD = 3       // Getting close
 VERY_CLOSE_THRESHOLD = 5  // Very close!</pre>
     
     <h4 id="qr-proximity" class="h4-c-6f7582-2">⚡ Key Functions</h4>
-    <pre class="code-block-333">proxSensors.initThreeSensors();      <span class="tok-7cbf6e">// Call once in setup()</span>
+    <pre>proxSensors.initThreeSensors();      <span class="tok-7cbf6e">// Call once in setup()</span>
 proxSensors.read();                  <span class="tok-7cbf6e">// Call before reading values</span>
 proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</span></pre>
 

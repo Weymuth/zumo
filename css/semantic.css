@@ -83,6 +83,44 @@ pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
+/* §27.15e THE DARK CODE BLOCK, S126, DJ ruling. The third graduate, and the largest: it
+ * reaches 802 <pre> elements that FOURTEEN generated class names used to stand for, and
+ * the fourteen disagreed. Padding was unanimous at 15px; colour, line-height, font-size
+ * and overflow-x were each 98-99% one value, so those are drift and normalise here. TWO
+ * declarations were a real split, and neither turned out to be a matter of taste:
+ *
+ * BORDER. 398 blocks carried `1px solid #333`, 289 carried none - and that split is the
+ * L09/L10 SEAM, not a preference: L02-L09 bordered 365 of 372, L10-L16 bordered 29 of 281.
+ * Shown four rendered specimens, DJ said they all looked the same, and he was right:
+ * #333 on #1e1e1e is a contrast ratio of 1.32:1 against a 3:1 WCAG minimum for a non-text
+ * boundary. 398 blocks were carrying a line nobody could see. Ruled to a border that earns
+ * its place. The first value proposed, #686868, was computed by hand as "3:1" and is in
+ * fact 2.992:1 - GATE 57 CAUGHT IT BEFORE THE PUSH, which is the whole argument for
+ * asserting the RATIO rather than the spelling: a gate that checked for the literal
+ * #686868 would have certified an invisible border as the ruled one. #696969 is the
+ * lowest grey that genuinely clears 3:1 here, and it is indistinguishable by eye from
+ * the value it corrects.
+ *
+ * RADIUS. 6px on 389, 8px on 265, 4px and 5px as strays. Ruled 6px.
+ *
+ * NO OPT-OUT AND NO EXCEPTION LIST, which is the point (§27.15a). The 30 light blocks need
+ * no help: they declare background, border, radius and padding themselves, so their class
+ * beats this element rule on every property it sets - checked, not assumed. The 109 blocks
+ * that sat inside a dark WRAPPER <div> in L02/L03 were UNWRAPPED rather than excepted,
+ * because an opt-out is an exception someone has to remember forever. All 109 wrappers held
+ * exactly one <pre> and nothing else, verified across all eight wrapper spellings before a
+ * single one was removed. */
+pre {
+  background-color: #1e1e1e;
+  border: 1px solid #696969;
+  border-radius: 6px;
+  padding: 15px;
+  overflow-x: auto;
+  color: #e8e8e8;
+  font-size: 0.9em;
+  line-height: 1.8;
+}
+
 code {
   background: rgba(0, 0, 0, 0.08);
   padding: 2px 6px;

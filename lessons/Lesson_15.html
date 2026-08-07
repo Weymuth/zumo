@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.22.0 -->
+<!-- Lesson version: v02.23.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +75,7 @@
 <h1 class="h1">The Present Isn't Enough</h1>
 <div class="div-fs-11em">PID Control &mdash; and the Tuning Bench That Proves It</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.22 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.23 &mdash; August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -91,7 +91,7 @@
 
 <p>Back in Lesson 8 you wrote four lines of code that made the robot follow a line, and they
 worked. Here they are again, unchanged, still running inside your project today:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">int</span> position = readLinePosition();
 <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
 <span class="tok-569cd6">int</span> correction = currentKp * error;
@@ -154,7 +154,7 @@ history (I), and its rate of change (D).</div>
 <div class="div-m-26px0"><img src="../images/L15_GRAPHIC_15-01_three_tenses.svg" alt="[GRAPHIC 15.1] The three tenses. P reads the error now; D reads its slope; I reads the area under it." class="img-cdd9e1"><div class="div-c-607d8b">[GRAPHIC 15.1] The three tenses. P reads the error now; D reads its slope; I reads the area under it.</div></div>
 <h3 class="h3-c-1f2a3d-2">3.2 P &mdash; the present</h3>
 <p>You already own this one. Lesson 8 wrote it.</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">int</span> position = readLinePosition();      <span class="tok-7cbf6e">// 0 - 4000, center is 2000</span>
 <span class="tok-569cd6">int</span> error = position - LINE_CENTER;    <span class="tok-7cbf6e">// how far off, and which way</span>
 <span class="tok-569cd6">float</span> p = currentKp * error;           <span class="tok-7cbf6e">// steer in proportion</span>
@@ -169,7 +169,7 @@ your distance: &ldquo;ten feet&hellip; five&hellip; two&hellip;&rdquo; You know 
 You <i>still</i> hit the wall, because nobody told you how fast you were closing.</div>
 <h3 class="h3-c-1f2a3d-2">3.3 D &mdash; the future</h3>
 <p>The derivative term looks at how fast the error is <i>changing</i>:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">float</span> derivative = (error - lastError) / dt;   <span class="tok-7cbf6e">// how fast the error is closing</span>
 <span class="tok-569cd6">float</span> d = currentKd * derivative;
 lastError = error;                            <span class="tok-7cbf6e">// today becomes the past</span>
@@ -192,7 +192,7 @@ exactly right. It is the shock absorber. Take the shocks off a car and every bum
 that lasts a block.</div>
 <h3 class="h3-c-1f2a3d-2">3.4 I &mdash; the past</h3>
 <p>The integral term adds <b>memory</b>. It accumulates the error over time:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 integral = integral + (error * dt);   <span class="tok-7cbf6e">// add up every moment you were wrong</span>
 <span class="tok-569cd6">float</span> i = currentKi * integral;
 </pre>
@@ -284,7 +284,7 @@ motors. Everything in this lesson is a change of mind, not a change of parts.</p
 for this job</b>, and you are about to find out why.</p>
 <h3 class="h3-c-433014-2">4.1 D and I are rates. A rate needs a dt.</h3>
 <p>Look again at the two new terms:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">float</span> derivative = (error - lastError) / dt;   <span class="tok-7cbf6e">// divided by time</span>
 integral = integral + (error * dt);           <span class="tok-7cbf6e">// multiplied by time</span>
 </pre>
@@ -318,7 +318,7 @@ both numbers on the screen at the same time.</div>
 <h3 class="h3-c-433014-2">4.3 Rollover, and why the subtraction is safe</h3>
 <p><code>micros()</code> counts up in an <code>unsigned long</code> and wraps back to zero
 about every 70 minutes. That sounds like a landmine. It is not &mdash; <b>as long as you subtract</b>:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE CLOCK (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// D and I are both RATES. A rate is a change DIVIDED BY A TIME.</span>
 <span class="tok-7cbf6e">// So before you can compute either one, you have to know dt - honestly.</span>
@@ -366,7 +366,7 @@ and the TRIM &mdash; and every state that called it got better for free. Same mo
 sweep, the gap crossing, the intersection run: <b>none of them know this lesson happened, and all of
 them get a better controller.</b></div>
 <h3 class="h3-c-433014-2">5.2 The new constants</h3>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== PID CONTROL (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// Lesson 8 gave you P. P is the only term that can be wrong in the</span>
 <span class="tok-7cbf6e">// present tense - it knows WHERE YOU ARE and nothing else.</span>
@@ -412,7 +412,7 @@ right for your robot on your track is not the number that is right for mine.</di
 <h3 class="h3-c-433014-2">5.3 The state the controller has to carry</h3>
 <p>P is stateless &mdash; it reads the sensor and answers. D and I are not. D needs to remember the
 <i>last</i> error. I needs to remember <i>every</i> error. Both need to remember <i>when</i>.</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE PID STATE (NEW for Lesson 15) =====</span>
 <span class="tok-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
 <span class="tok-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
@@ -420,7 +420,7 @@ right for your robot on your track is not the number that is right for mine.</di
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
 </pre>
 <h3 class="h3-c-433014-2">5.4 followLine(), upgraded</h3>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
   <span class="tok-569cd6">int</span> position = readLinePosition();
@@ -455,7 +455,7 @@ them work. <b>You cannot tune what you cannot score.</b></p>
 
 <p>Three numbers, one run:</p>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a-4">Number</th><th class="th-17496a-4">What it measures</th><th class="th-17496a-4">Reads on</th></tr><tr><td class="td-cdd9e1"><b>MAE</b></td><td class="td-cdd9e1">The mean of |error| over the whole run</td><td class="td-cdd9e1">How far off the robot <i>lived</i></td></tr><tr><td class="td-cdd9e1"><b>PEAK</b></td><td class="td-cdd9e1">The largest |error| of the run</td><td class="td-cdd9e1">The worst single moment</td></tr><tr><td class="td-cdd9e1"><b>WEAVE</b></td><td class="td-cdd9e1">Error sign-flips per second</td><td class="td-cdd9e1">How much it <i>hunted</i></td></tr></table>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE SCOREBOARD (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">//   MAE   - mean |error|.  How far off the robot LIVED.</span>
 <span class="tok-7cbf6e">//   PEAK  - max  |error|.  The worst single moment.</span>
@@ -468,7 +468,7 @@ them work. <b>You cannot tune what you cannot score.</b></p>
 <span class="tok-569cd6">int</span>  runLastSign = 0;
 <span class="tok-569cd6">int</span>  knob        = 0;   <span class="tok-7cbf6e">// which gain the buttons are turning</span>
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE SCORER (NEW for Lesson 15) =====</span>
 <span class="tok-569cd6">void</span> runReset() {
   runSumAbs = 0; runSamples = 0; runPeak = 0; runCross = 0; runLastSign = 0;
@@ -535,7 +535,7 @@ This is not a detail. <b>Two gains are only comparable if the runs were.</b> A 1
 7-second run produce two MAE numbers that cannot be compared, and a student who does not know that
 will spend an afternoon chasing noise.</div>
 <h3 class="h3-c-433014-2">5.6 Four gains, three buttons</h3>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// The knob UI. Three buttons, more gains than buttons.</span>
 <span class="tok-7cbf6e">//   A             = turn the selected gain DOWN</span>
 <span class="tok-7cbf6e">//   C             = turn the selected gain UP</span>
@@ -570,7 +570,7 @@ why sections 7B, 7C and 7E have no new code to download: they are the <i>same bu
 different knobs. The only rungs that change the program are 7A (which does not drive) and 7D (which
 is designed to fail).</div>
 <h3 class="h3-c-433014-2">5.7 The doorway &mdash; where the reset has to live</h3>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE DOORWAY (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// The integral REMEMBERS and the derivative COMPARES. Both are holding a</span>
 <span class="tok-7cbf6e">// number from the last time we were on the line.</span>
@@ -601,7 +601,7 @@ is designed to fail).</div>
 that walk through it.</b> A reset you have to remember at four call sites is a bug with a four-day
 fuse: it works today, and it fails the first time somebody adds a fifth door.</div>
 <h3 class="h3-c-433014-2">5.8 The speed loop &mdash; where I finally belongs</h3>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE SPEED LOOP (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// How fast are we ACTUALLY going? Ask the encoders. Same averageCounts()</span>
 <span class="tok-7cbf6e">// from Lesson 6, same COUNTS_PER_CM. You already own this instrument.</span>
@@ -645,7 +645,7 @@ fuse: it works today, and it fails the first time somebody adds a fifth door.</d
   currentBase = constrain(BASE_SPEED + speedTrim, <span class="tok-b5cea8">0</span>, MAX_SPEED);
 }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE SPEED LOOP STATE (NEW for Lesson 15) =====</span>
 <span class="tok-569cd6">float</span> currentKpSpeed = KP_SPEED;
 <span class="tok-569cd6">float</span> currentKiSpeed = KI_SPEED;
@@ -727,7 +727,7 @@ before you touch anything, and write the number down. <b>That number is your con
 </details>
 <h3 class="h3-c-433014-2">Step 2 &mdash; The new constants &nbsp;<span class="span-c-607d8b">(25,640 bytes &mdash; unchanged)</span></h3>
 <p>Add the block from 5.2 to <code>RobotConfig.h</code>, and add the new state to the enum:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">enum</span> RobotState {
   STOPPED,             <span class="tok-7cbf6e">// Motors off, waiting for B</span>
   FOLLOWING_LINE,      <span class="tok-7cbf6e">// P-control driving - Lesson 8's whole job</span>
@@ -754,7 +754,7 @@ until something spends them.</div>
 </details>
 <h3 class="h3-c-433014-2">Step 3 &mdash; The clock &nbsp;<span class="span-c-607d8b">(25,640 bytes &mdash; still unchanged!)</span></h3>
 <p>Add the PID state from 5.3, and add <code>deltaTimeSec()</code> from 4.3, above <code>showStatus()</code>.</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE CLOCK (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// D and I are both RATES. A rate is a change DIVIDED BY A TIME.</span>
 <span class="tok-7cbf6e">// So before you can compute either one, you have to know dt - honestly.</span>
@@ -794,7 +794,7 @@ happens to you by accident.</div>
 </details>
 <h3 class="h3-c-433014-2">Step 4 &mdash; followLine() becomes PD &nbsp;<span class="span-c-607d8b">(25,802 bytes, <b>+162</b>)</span></h3>
 <p>Now replace the body of <code>followLine()</code>. Same name. Same call sites. Nothing else in the project changes.</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
   <span class="tok-569cd6">int</span> position = readLinePosition();
@@ -833,7 +833,7 @@ start tuning.</div>
 </details>
 <h3 class="h3-c-433014-2">Step 5 &mdash; The bench &nbsp;<span class="span-c-607d8b">(27,098 bytes, <b>+1,296</b>)</span></h3>
 <p>Add the scoreboard globals and the scorer from 5.5, and the knob UI from 5.6. Then wire them into <code>loop()</code>. In <code>STOPPED</code>, the old A/C handling gets replaced by one call:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
     <span class="tok-569cd6">case</span> STOPPED: {
       checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
 
@@ -860,7 +860,7 @@ start tuning.</div>
     }
 </pre>
 <p>The scorer at this stage has only <b>two</b> gains to turn &mdash; the speed loop does not exist yet:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// The selected gain. Same row on every screen.</span>
 <span class="tok-569cd6">void</span> showKnob() {
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
@@ -869,7 +869,7 @@ start tuning.</div>
   display.print(F(<span class="tok-ce9178">"     "</span>));
 }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// The knob UI. Three buttons, more gains than buttons.</span>
 <span class="tok-7cbf6e">//   A             = turn the selected gain DOWN</span>
 <span class="tok-7cbf6e">//   C             = turn the selected gain UP</span>
@@ -895,7 +895,7 @@ start tuning.</div>
 }
 </pre>
 <p>And <code>showStatus()</code> gives up its hard-wired <code>Kp:</code> line &mdash; the knob row now shows whichever gain you have selected:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">void</span> showStatus() {
   display.setLayout21x8();
   display.clear();
@@ -924,7 +924,7 @@ start tuning.</div>
 }
 </pre>
 <p>Then a new case, and two new lines in the one you already have:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
     <span class="tok-569cd6">case</span> RUN_REPORT: {
       <span class="tok-7cbf6e">// The run is over. Here is what it cost you.</span>
       adjustKnobs();
@@ -936,7 +936,7 @@ start tuning.</div>
       <span class="tok-569cd6">break</span>;
     }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
     <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
       <span class="tok-569cd6">if</span> (killSwitchPressed()) { endRun(); <span class="tok-569cd6">break</span>; }   <span class="tok-7cbf6e">// B = STOP - you still get the score</span>
 
@@ -992,7 +992,7 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
 </details>
 <h3 class="h3-c-433014-2">Step 6 &mdash; The doorway &nbsp;<span class="span-c-607d8b">(27,156 bytes, <b>+58</b>)</span></h3>
 <p>Add <code>resetPID()</code> and <code>enterFollowing()</code> above <code>setup()</code>:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE DOORWAY (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// The integral REMEMBERS and the derivative COMPARES. Both are holding a</span>
 <span class="tok-7cbf6e">// number from the last time we were on the line.</span>
@@ -1017,7 +1017,7 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
 }
 </pre>
 <p>Now find every place that says <code>currentState = FOLLOWING_LINE;</code> followed by <code>showStatus();</code> &mdash; there are <b>four</b> &mdash; and replace each pair with a single call:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
     <span class="tok-569cd6">case</span> EXECUTING_TURN: {
       <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
@@ -1036,7 +1036,7 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
       <span class="tok-569cd6">if</span> (!COMPETITION_MODE) delay(<span class="tok-b5cea8">600</span>);   <span class="tok-7cbf6e">// demo pause - free in practice, 0.6s in a match</span>
 </pre>
 <p>The other three:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
       adjustKnobs();   <span class="tok-7cbf6e">// NEW for Lesson 15 - A- C+ , hold A and tap C to pick the gain</span>
       <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = go</span>
         <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> count = 3; count &gt; 0; count--) {
@@ -1058,7 +1058,7 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
       <span class="tok-569cd6">break</span>;
     }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
     <span class="tok-569cd6">case</span> RUN_REPORT: {
       <span class="tok-7cbf6e">// The run is over. Here is what it cost you.</span>
       adjustKnobs();
@@ -1069,14 +1069,14 @@ the wheels and shows you the score. <b>Stopping a run is not the same as cancell
       <span class="tok-569cd6">break</span>;
     }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
       <span class="tok-7cbf6e">// Found it! The gap is over. Hand control back to P-control.</span>
       <span class="tok-569cd6">if</span> (isLineVisible()) {
         enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
         <span class="tok-569cd6">break</span>;
       }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
       <span class="tok-569cd6">if</span> (isLineVisible()) {
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         enterFollowing();   <span class="tok-7cbf6e">// one door, and the reset lives in it</span>
@@ -1095,7 +1095,7 @@ cannot.</b></div>
 </details>
 <h3 class="h3-c-433014-2">Step 7 &mdash; The I term, on the speed loop &nbsp;<span class="span-c-607d8b">(28,034 bytes, <b>+878</b>)</span></h3>
 <p>Add the speed-loop state and <code>updateSpeedLoop()</code> from 5.8. Then three small edits. First, the knob UI grows from two gains to four:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// The knob UI. Three buttons, more gains than buttons.</span>
 <span class="tok-7cbf6e">//   A             = turn the selected gain DOWN</span>
 <span class="tok-7cbf6e">//   C             = turn the selected gain UP</span>
@@ -1125,7 +1125,7 @@ cannot.</b></div>
 }
 </pre>
 <p>Second, the doorway learns to forget the speed integral too:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE DOORWAY (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// The integral REMEMBERS and the derivative COMPARES. Both are holding a</span>
 <span class="tok-7cbf6e">// number from the last time we were on the line.</span>
@@ -1146,12 +1146,12 @@ cannot.</b></div>
 }
 </pre>
 <p>Third &mdash; and this is the one line that matters &mdash; <code>followLine()</code> stops steering around a <i>fixed</i> base speed and starts steering around the speed the loop is actually holding:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
   <span class="tok-569cd6">int</span> leftSpeed  = currentBase + correction;
   <span class="tok-569cd6">int</span> rightSpeed = currentBase - correction;
 </pre>
 <p>and the speed loop runs once per pass, on the clock <code>followLine()</code> already read:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
       <span class="tok-569cd6">if</span> (isLineVisible()) {
         followLine();
         runSample(lastError);   <span class="tok-7cbf6e">// followLine() just wrote it. Score the pass.</span>
@@ -1198,7 +1198,7 @@ calibrated a square.</li>
 <p><b>Motors stay off.</b> You are going to push the robot across the line with your hand and
 <i>watch the numbers</i>. You cannot tune a derivative you have never seen.</p>
 <p>Add this function, and call it from the top of the <code>STOPPED</code> case:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== 7A: THE STRIP CHART (Lesson 15, section 7A) =====</span>
 <span class="tok-7cbf6e">// No motors. No driving. Push the robot across the line with your hand</span>
 <span class="tok-7cbf6e">// and WATCH. You cannot tune a derivative you have never seen, and you</span>
@@ -1224,7 +1224,7 @@ calibrated a square.</li>
   lastError = error;
 }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
     <span class="tok-569cd6">case</span> STOPPED: {
       stripChart();    <span class="tok-7cbf6e">// 7A: motors stay off. Push the robot by hand and read.</span>
       checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
@@ -1314,13 +1314,13 @@ noise</i>, which is a rate too. (Challenge 2 fixes this properly.)</div>
 told you the I term is wrong for the line loop. You should not believe a textbook that tells you
 something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b></div>
 <p>Add one constant:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== 7D: THE I TERM, ON THE LINE (Lesson 15, section 7D) =====</span>
 <span class="tok-7cbf6e">// This rung is DESIGNED TO FAIL. Turn it on. Run a curve. Watch.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KI_LINE = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 0.5. Then try 2.</span>
 </pre>
 <p>one global &mdash; the memory the line loop should not have:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE PID STATE (NEW for Lesson 15) =====</span>
 <span class="tok-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
 <span class="tok-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
@@ -1329,7 +1329,7 @@ something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b><
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
 </pre>
 <p>a line in the doorway, so the ghost of the last curve does not follow you into the next one:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE DOORWAY (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// The integral REMEMBERS and the derivative COMPARES. Both are holding a</span>
 <span class="tok-7cbf6e">// number from the last time we were on the line.</span>
@@ -1349,7 +1349,7 @@ something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b><
 }
 </pre>
 <p>and three lines inside <code>followLine()</code>:</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">void</span> followLine() {
   <span class="tok-569cd6">int</span> position = readLinePosition();
   <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
@@ -1502,15 +1502,15 @@ you got it right.</p>
 <div id="challenge-1" class="div-7d5283" data-challenge="15.1" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 1: Gain Scheduling</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — add a corner gain and schedule it in <code>followLine()</code>.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — add a corner gain and schedule it in <code>followLine()</code>.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">One K<sub>p</sub> can’t fit a whole track: gentle enough to hold a straight is too lazy for a hairpin, and sharp enough for the hairpin turns the straight into a slalom. Use a <em>different</em> K<sub>p</sub> when the error is large — tune the straight gain on a straight and the corner gain on a corner, separately, on the bench.</p>
+<p class="pre-m-0">One K<sub>p</sub> can’t fit a whole track: gentle enough to hold a straight is too lazy for a hairpin, and sharp enough for the hairpin turns the straight into a slalom. Use a <em>different</em> K<sub>p</sub> when the error is large — tune the straight gain on a straight and the corner gain on a corner, separately, on the bench.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">add two constants:
+<pre class="pre-m-0">add two constants:
     CORNER_ERROR  (the straight-vs-corner boundary)
     KP_CORNER     (the sharper gain, bench-tuned)
 in followLine(), before computing p:
@@ -1521,7 +1521,7 @@ in followLine(), before computing p:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Pick the gain from the error, then compute p. The corner gain stays a bench-tuned blank.</p>
-<pre class="code-block-333-2"><span class="tok-6a9955">// RobotConfig.h:</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// RobotConfig.h:</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span>   CORNER_ERROR = <span class="tok-b5cea8">600</span>;   <span class="tok-6a9955">// above this |error|, not a straight</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KP_CORNER    = <span class="tok-b5cea8">0.0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
 
@@ -1533,13 +1533,13 @@ in followLine(), before computing p:
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
 <div class="div-e0a800"><b>SOLUTION &mdash; add to RobotConfig.h:</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== CHALLENGE 1: GAIN SCHEDULING =====</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span>   CORNER_ERROR = 600;   <span class="tok-7cbf6e">// Above this, you are not on a straight</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> KP_CORNER    = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 2x your straight Kp.</span>
 </pre>
 <div class="div-e0a800"><b>and in <code>followLine()</code>, replace the P line:</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
   <span class="tok-7cbf6e">// P - THE PRESENT. How far off am I right now?</span>
   <span class="tok-7cbf6e">// CHALLENGE 1 - one gain does not fit a whole track. A Kp gentle</span>
   <span class="tok-7cbf6e">// enough for a straight is too lazy for a hairpin.</span>
@@ -1555,15 +1555,15 @@ systems <i>blend</i> between gains instead of switching.</div>
 <div id="challenge-2" class="div-7d5283" data-challenge="15.2" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 2: Filter the Derivative</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — low-pass filter the derivative in <code>followLine()</code>.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — low-pass filter the derivative in <code>followLine()</code>.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">D is a rate, and sensor noise is a rate too — a huge one. D can’t tell a 40-unit jitter from a real, violent move of the track, so it reacts to noise with everything it has (that is why K<sub>d</sub> gets twitchy before it gets good). Low-pass filter the derivative: keep most of what you believed last pass, mix in a little of what you see now.</p>
+<p class="pre-m-0">D is a rate, and sensor noise is a rate too — a huge one. D can’t tell a 40-unit jitter from a real, violent move of the track, so it reacts to noise with everything it has (that is why K<sub>d</sub> gets twitchy before it gets good). Low-pass filter the derivative: keep most of what you believed last pass, mix in a little of what you see now.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">add a constant D_FILTER   (0 = no filter, ~0.7 = smooth)
+<pre class="pre-m-0">add a constant D_FILTER   (0 = no filter, ~0.7 = smooth)
 add a global   dFiltered  (remembers the smoothed value)
 in followLine(), where D is computed:
     dRaw      = (error - lastError) / dt
@@ -1573,7 +1573,7 @@ in followLine(), where D is computed:
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">The blend is the whole trick — mostly the old belief, a little of the new reading.</p>
-<pre class="code-block-333-2"><span class="tok-6a9955">// RobotConfig.h:</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// RobotConfig.h:</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> D_FILTER = <span class="tok-b5cea8">0.0</span>;   <span class="tok-6a9955">// &lt;-- YOUR NUMBER. 0 = none, try 0.7.</span>
 
 <span class="tok-6a9955">// a global to remember the smoothed value:</span>
@@ -1588,14 +1588,14 @@ dFiltered  = D_FILTER * ____ + (<span class="tok-b5cea8">1.0</span> - D_FILTER) 
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
 <div class="div-e0a800"><b>SOLUTION &mdash; add to RobotConfig.h:</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== CHALLENGE 2: FILTER THE DERIVATIVE =====</span>
 <span class="tok-7cbf6e">// D is a rate. Sensor noise is a rate too - a huge one. D cannot tell</span>
 <span class="tok-7cbf6e">// them apart, so it amplifies both. 0 = no filter, 0.9 = heavy filter.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> D_FILTER = <span class="tok-b5cea8">0</span>.0;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 0.7.</span>
 </pre>
 <div class="div-e0a800"><b>a global to remember the smoothed value:</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE PID STATE (NEW for Lesson 15) =====</span>
 <span class="tok-569cd6">float</span> currentKd = KD;         <span class="tok-7cbf6e">// The SECOND knob. currentKp was the first.</span>
 <span class="tok-569cd6">float</span> lastError = 0;          <span class="tok-7cbf6e">// Where the error was last pass - THE PAST</span>
@@ -1604,7 +1604,7 @@ dFiltered  = D_FILTER * ____ + (<span class="tok-b5cea8">1.0</span> - D_FILTER) 
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastMicros = 0; <span class="tok-7cbf6e">// When the last pass was. MICROseconds. See below.</span>
 </pre>
 <div class="div-e0a800"><b>and the D line in <code>followLine()</code>:</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
   <span class="tok-7cbf6e">// D - THE FUTURE. How fast is the error closing?</span>
   <span class="tok-7cbf6e">// If I am already racing back toward the line, D eases off the wheel</span>
   <span class="tok-7cbf6e">// BEFORE I sail past it. P can never do that: P knows where I am, not</span>
@@ -1624,15 +1624,15 @@ reason you hired it. <b>Use the bench. Find the knee.</b></div>
 <div id="challenge-3" class="div-7d5283" data-challenge="15.3" data-kind="challenge" data-difficulty="medium" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 3: Measure Your Worst Pass</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — track the worst <code>dt</code> and show it on the score screen.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — track the worst <code>dt</code> and show it on the score screen.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Your controller doesn’t divide by the <em>typical</em> dt — it divides by whatever <em>this</em> pass took. So what is the <em>worst</em> one: the longest single trip through <code>loop()</code> in a whole run? Track the maximum dt and print it on the score screen — then go find what caused it.</p>
+<p class="pre-m-0">Your controller doesn’t divide by the <em>typical</em> dt — it divides by whatever <em>this</em> pass took. So what is the <em>worst</em> one: the longest single trip through <code>loop()</code> in a whole run? Track the maximum dt and print it on the score screen — then go find what caused it.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
-<pre class="code-block-333-2">add a global dtWorstUs = 0   (the slowest pass so far)
+<pre class="pre-m-0">add a global dtWorstUs = 0   (the slowest pass so far)
 in deltaTimeSec(), once you know this pass's elapsed time:
     if elapsed &gt; dtWorstUs  -&gt;  dtWorstUs = elapsed
 clear it in runReset()      (dtWorstUs = 0)
@@ -1641,7 +1641,7 @@ print it on the score screen</pre>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">One global, one comparison, one clear, one print.</p>
-<pre class="code-block-333-2"><span class="tok-6a9955">// a global - the slowest pass so far:</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// a global - the slowest pass so far:</span>
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> dtWorstUs = <span class="tok-b5cea8">0</span>;
 
 <span class="tok-6a9955">// in deltaTimeSec(), after computing elapsed:</span>
@@ -1654,7 +1654,7 @@ print it on the score screen</pre>
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
 <div class="div-e0a800"><b>SOLUTION &mdash; one global, one line in the clock, one line in the report:</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE SCOREBOARD (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">//   MAE   - mean |error|.  How far off the robot LIVED.</span>
 <span class="tok-7cbf6e">//   PEAK  - max  |error|.  The worst single moment.</span>
@@ -1668,7 +1668,7 @@ print it on the score screen</pre>
 <span class="tok-569cd6">int</span>  knob        = 0;   <span class="tok-7cbf6e">// which gain the buttons are turning</span>
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> dtWorstUs = 0;   <span class="tok-7cbf6e">// CHALLENGE 3 - the slowest pass of the run</span>
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE CLOCK (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// D and I are both RATES. A rate is a change DIVIDED BY A TIME.</span>
 <span class="tok-7cbf6e">// So before you can compute either one, you have to know dt - honestly.</span>
@@ -1695,7 +1695,7 @@ print it on the score screen</pre>
 }
 </pre>
 <div class="div-e0a800"><b>clear it when the run resets, and print it on the score screen:</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE SCORER (NEW for Lesson 15) =====</span>
 <span class="tok-569cd6">void</span> runReset() {
   runSumAbs = 0; runSamples = 0; runPeak = 0; runCross = 0; runLastSign = 0;
@@ -1703,7 +1703,7 @@ print it on the score screen</pre>
   dtWorstUs = 0;
 }
 </pre>
-<pre class="code-block-bg-1e1e1e">
+<pre>
   showKnob();
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>); display.print(F(<span class="tok-ce9178">"dtMAX "</span>)); display.print(dtWorstUs);
   display.print(F(<span class="tok-ce9178">" us"</span>));
@@ -1719,7 +1719,7 @@ your controller is not controlling.</b></div>
 <div id="challenge-4" class="div-7d5283" data-challenge="15.4" data-kind="challenge" data-difficulty="hard" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 4: Anti-Windup: Conditional Integration</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — change how the speed loop integrates.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — change how the speed loop integrates.</p>
 </div>
 <div class="div-p-15px20px">
 <p>Clamping the integral is the blunt fix. The sharp one is to <b>stop accumulating at all
@@ -1734,7 +1734,7 @@ your controller is not controlling.</b></div>
 <div id="challenge-5" class="div-7d5283" data-challenge="15.5" data-kind="challenge" data-difficulty="hard" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 5: Derivative on Measurement</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — add a measurement-based D term to the speed loop.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — add a measurement-based D term to the speed loop.</p>
 </div>
 <div class="div-p-15px20px">
 <p>Section 3.6 said line following gets a free pass on <b>derivative kick</b> because
@@ -1751,7 +1751,7 @@ your controller is not controlling.</b></div>
 <div id="challenge-6" class="div-7d5283" data-challenge="15.6" data-kind="challenge" data-difficulty="hard" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 6: The Speed-Aware Line Loop</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — scale the line gains with speed.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — scale the line gains with speed.</p>
 </div>
 <div class="div-p-15px20px">
 <p>Here is something the bench will show you and intuition will not: <b>your line gains are
@@ -1766,7 +1766,7 @@ your controller is not controlling.</b></div>
 <div id="challenge-7" class="div-7d5283" data-challenge="15.7" data-kind="challenge" data-difficulty="advanced" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 7: Score the Whole Course</strong> <span class="span-ai-stretch"><span class="span-bg-6b2545">Advanced</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — score MAE per state.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L15</strong> build — score MAE per state.</p>
 </div>
 <div class="div-p-15px20px">
 <p><code>TUNING_RUN_MS</code> is 10 seconds because a bench run has to be repeatable. But a
@@ -1912,7 +1912,7 @@ Lowering K<sub>d</sub> to zero makes it stop entirely.<br><br>
 <b>Program size: 28,034 bytes. The correct program is 28,034 bytes.</b>
 They are <b>identical</b>.</div>
 <p>Here is the whole of the sabotaged function. One word is wrong.</p>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE CLOCK (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// D and I are both RATES. A rate is a change DIVIDED BY A TIME.</span>
 <span class="tok-7cbf6e">// So before you can compute either one, you have to know dt - honestly.</span>
@@ -1950,7 +1950,7 @@ It never damps anything. Turning K<sub>d</sub> up does not reduce the weave; it 
 pull.<br><br>
 <b>Program size: 28,050 bytes &mdash; 16 bytes
 <i>bigger</i> than correct.</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
   <span class="tok-569cd6">int</span> position = readLinePosition();
@@ -1990,7 +1990,7 @@ But every single time it crosses a <b>gap</b> &mdash; or takes an intersection t
 settles. It only ever happens right after it comes back.<br><br>
 <b>Program size: 27,986 bytes &mdash; 48 bytes
 smaller than correct.</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-7cbf6e">// ===== THE DOORWAY (NEW for Lesson 15) =====</span>
 <span class="tok-7cbf6e">// The integral REMEMBERS and the derivative COMPARES. Both are holding a</span>
 <span class="tok-7cbf6e">// number from the last time we were on the line.</span>
@@ -2033,7 +2033,7 @@ slower to settle. Every increase makes it worse, smoothly, predictably. So you c
 you tested a PD one.<br><br>
 <b>Program size: 28,034 bytes. The correct program is 28,034 bytes.
 IDENTICAL.</b></div>
-<pre class="code-block-bg-1e1e1e">
+<pre>
 <span class="tok-569cd6">void</span> followLine() {
   <span class="tok-7cbf6e">// SAME NAME. SAME CALL SITE. Only the QUESTION got better.</span>
   <span class="tok-569cd6">int</span> position = readLinePosition();

@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.19.0 -->
+<!-- Lesson version: v05.20.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@
 <h1 class="h1">Intersections &amp; Dead Ends</h1>
 <div class="div-fs-11em">Teaching Your Robot to Decide</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 05.19 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 05.20 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -284,7 +284,7 @@
     <div class="div-c-6a1b9a">🔑 Enum (enumeration)</div> — A data type that defines a set of named constants. Instead of "0 means following," you just use <code>FOLLOWING_LINE</code>.
 </div>
 
-<pre class="code-block-bg-1e1e1e">enum RobotState {
+<pre>enum RobotState {
     STOPPED,           // Motors off, waiting for B
     FOLLOWING_LINE,    // P-control driving
     AT_INTERSECTION,   // Announcing the decision
@@ -416,7 +416,7 @@ enum IntersectionType {
 
 <h3 class="h3-c-433014">5.4 The State Machine Pattern (Pseudocode)</h3>
 
-<pre class="code-block-bg-1e1e1e">loop:
+<pre>loop:
     SWITCH currentState:
         CASE STOPPED:
             Battery guard, Kp tuning (A / C)
@@ -560,7 +560,7 @@ enum IntersectionType {
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked version (the new block — everything above it is untouched Lesson 8)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
+<pre><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// Green markers read BETWEEN white and black on the calibrated</span>
 <span class="tok-7cbf6e">// 0-1000 scale. Find YOUR band in Section 7.1, then tune these.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_LOW_THRESHOLD = <span class="tok-b5cea8">300</span>;   <span class="tok-7cbf6e">// Calibrated value where green starts</span>
@@ -614,7 +614,7 @@ enum IntersectionType {
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.h (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">/*</span>
+<pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
 <span class="tok-7cbf6e">ROBOTSENSORS.H - Hardware &amp; Sensor Declarations</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -676,7 +676,7 @@ IntersectionType checkForIntersection();</pre>
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked version (the new block)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
+<pre><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
 
 <span class="tok-7cbf6e">// Is this ONE calibrated reading inside the green band?</span>
 <span class="tok-569cd6">bool</span> isGreen(<span class="tok-569cd6">int</span> sensorValue) {
@@ -731,11 +731,11 @@ IntersectionType checkForIntersection() {
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked version (both new blocks)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION TURNS (NEW for Lesson 9) =====</span>
+<pre><span class="tok-7cbf6e">// ===== INTERSECTION TURNS (NEW for Lesson 9) =====</span>
 <span class="tok-569cd6">void</span> turnLeft();
 <span class="tok-569cd6">void</span> turnRight();
 <span class="tok-569cd6">void</span> turnAround();</pre>
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION TURNS (NEW for Lesson 9) =====</span>
+<pre><span class="tok-7cbf6e">// ===== INTERSECTION TURNS (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// Three one-liners riding on Lesson 6's encoder machinery.</span>
 <span class="tok-7cbf6e">// turnDegrees canon: positive = right, negative = left.</span>
 
@@ -779,7 +779,7 @@ IntersectionType checkForIntersection() {
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked main.cpp at this step (complete file)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333">#include <span class="tok-ce9178">"RobotConfig.h"</span>
+<pre>#include <span class="tok-ce9178">"RobotConfig.h"</span>
 #include <span class="tok-ce9178">"RobotSensors.h"</span>
 #include <span class="tok-ce9178">"RobotHelpers.h"</span>
 #include <span class="tok-ce9178">"RobotMotion.h"</span>   <span class="tok-7cbf6e">// NEW for Lesson 9 - main finally drives the turns</span>
@@ -993,7 +993,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare: the full loop() at this step (setup and the helpers are exactly as Step 6 built them)</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
+<pre><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// Two live states; the marker stops us cold - the decision brain is Step 8</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">switch</span> (currentState) {
@@ -1091,7 +1091,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare: showDecision() and the finished loop()</summary>
 <div class="div-mt-15px">
-<pre class="code-block-333"><span class="tok-7cbf6e">// Announce what the marker said - big enough to read from standing height</span>
+<pre><span class="tok-7cbf6e">// Announce what the marker said - big enough to read from standing height</span>
 <span class="tok-569cd6">void</span> showDecision() {
   display.setLayout21x8();
   display.clear();
@@ -1100,7 +1100,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
   <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) display.print(F(<span class="tok-ce9178">"GO RIGHT &gt;&gt;"</span>));
   <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) display.print(F(<span class="tok-ce9178">"DEAD END - U TURN"</span>));
 }</pre>
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
+<pre><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// One switch, four states - the whole robot brain reads top to bottom</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">switch</span> (currentState) {
@@ -1204,7 +1204,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
     <div class="div-fs-105em">📝 THE GREEN SURVEY</div>
 <ol>
 <li>Add this <strong>TEMPORARY</strong> block at the top of the STOPPED case (right after <code>checkBattery();</code>):</li>
-</ol><pre class="code-block-333"><span class="tok-7cbf6e">      // TEMPORARY - Green Survey (remove after Section 7.1)</span>
+</ol><pre><span class="tok-7cbf6e">      // TEMPORARY - Green Survey (remove after Section 7.1)</span>
       <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> v[<span class="tok-b5cea8">5</span>];
       lineSensors.readCalibrated(v);
       display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
@@ -1324,7 +1324,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <p>A "magic number" is an unexplained literal in code, like <code>if (state == 2)</code>. Six months later, nobody remembers what <code>2</code> means. Enums give those numbers names the compiler understands:</p>
 
-<pre class="code-block-bg-1e1e1e">// Without enum — what do these numbers mean?
+<pre>// Without enum — what do these numbers mean?
 int state = 0;
 if (state == 2) { /* ??? */ }
 // With enum — self-documenting
@@ -1388,7 +1388,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=sensor_debug" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> &mdash; the calibrated read call. One helper function, one call from the STOPPED case, and the <code>static</code> throttle trick keeps the Serial Monitor readable.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> &mdash; the calibrated read call. One helper function, one call from the STOPPED case, and the <code>static</code> throttle trick keeps the Serial Monitor readable.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
@@ -1405,7 +1405,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <p>Throttle the print to a readable rate, read the <em>calibrated</em> values, and reuse the lesson’s detector for the verdict.</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// C1: print the five calibrated values + verdict, twice a second</span>
+<pre><span class="tok-7cbf6e">// C1: print the five calibrated values + verdict, twice a second</span>
 <span class="tok-569cd6">void</span> debugSensors() {
   <span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastPrint = <span class="tok-b5cea8">0</span>;
   <span class="tok-569cd6">if</span> (millis() - lastPrint &lt; ____) <span class="tok-569cd6">return</span>;
@@ -1427,7 +1427,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333"><span class="tok-7cbf6e">// C1: print the five calibrated values + verdict, twice a second</span>
+<pre><span class="tok-7cbf6e">// C1: print the five calibrated values + verdict, twice a second</span>
 <span class="tok-569cd6">void</span> debugSensors() {
   <span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> lastPrint = <span class="tok-b5cea8">0</span>;
   <span class="tok-569cd6">if</span> (millis() - lastPrint &lt; <span class="tok-b5cea8">500</span>) <span class="tok-569cd6">return</span>;
@@ -1445,7 +1445,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
   <span class="tok-569cd6">else</span>                            Serial.println(F(<span class="tok-ce9178">"-"</span>));
 }</pre>
 <p>And the one-line call, first thing in the STOPPED case:</p>
-<pre class="code-block-333">      checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
+<pre>      checkBattery();  <span class="tok-7cbf6e">// A+B battery report - only while stopped, never mid-run</span>
       debugSensors();  <span class="tok-7cbf6e">// C1: live calibrated values while parked</span></pre>
 </details>
 </div>
@@ -1459,7 +1459,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=led_indicators" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Section 8A’s state walkthrough &mdash; the LEDs belong to AT_INTERSECTION (decide) and get cleared in EXECUTING_TURN (done). The LED calls themselves are Lesson 2 vintage.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Section 8A’s state walkthrough &mdash; the LEDs belong to AT_INTERSECTION (decide) and get cleared in EXECUTING_TURN (done). The LED calls themselves are Lesson 2 vintage.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
@@ -1476,7 +1476,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <p>Light one LED per turn direction. Fill in which LED goes with which way.</p>
 
-<pre class="code-block-333">    <span class="tok-569cd6">case</span> AT_INTERSECTION: {
+<pre>    <span class="tok-569cd6">case</span> AT_INTERSECTION: {
       <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       ____(<span class="tok-b5cea8">1</span>);
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) ____(<span class="tok-b5cea8">1</span>);
       <span class="tok-569cd6">else</span>                              ____(<span class="tok-b5cea8">1</span>);
@@ -1487,14 +1487,14 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333">    <span class="tok-569cd6">case</span> AT_INTERSECTION: {
+<pre>    <span class="tok-569cd6">case</span> AT_INTERSECTION: {
       <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       ledYellow(<span class="tok-b5cea8">1</span>);
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) ledGreen(<span class="tok-b5cea8">1</span>);
       <span class="tok-569cd6">else</span>                              ledRed(<span class="tok-b5cea8">1</span>);
       
       showDecision();</pre>
 <p>And the cleanup in EXECUTING_TURN, right after the dispatch:</p>
-<pre class="code-block-333">      ledYellow(<span class="tok-b5cea8">0</span>); ledGreen(<span class="tok-b5cea8">0</span>); ledRed(<span class="tok-b5cea8">0</span>);</pre>
+<pre>      ledYellow(<span class="tok-b5cea8">0</span>); ledGreen(<span class="tok-b5cea8">0</span>); ledRed(<span class="tok-b5cea8">0</span>);</pre>
 </details>
 </div>
 </div>
@@ -1507,7 +1507,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=line_seek" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motor" class="link-c-2e86ab">Turn Directions</a> for the sign canon, and <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> for the calibrated read. The hybrid: encoders for the bulk, sensors for the landing. The creep loop is a <a href="#qr-dowhile" class="link-c-2e86ab">do&hellip;while</a> &mdash; it reads before it tests.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motor" class="link-c-2e86ab">Turn Directions</a> for the sign canon, and <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> for the calibrated read. The hybrid: encoders for the bulk, sensors for the landing. The creep loop is a <a href="#qr-dowhile" class="link-c-2e86ab">do&hellip;while</a> &mdash; it reads before it tests.</p>
 </div>
 <div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> <code>turnDegrees()</code> from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> and the calibrated center-sensor read from Lesson 4 <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">. Encoders for the bulk, sensors for the landing.</div>
 <div class="div-bg-f8f9fa">
@@ -1525,7 +1525,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <p>Turn most of the way on encoders, then creep until the CENTER sensor is back on black. Fill the turn, the sensor index, and the black threshold.</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// C3: turn most of the way on encoders, then creep until the line is back</span>
+<pre><span class="tok-7cbf6e">// C3: turn most of the way on encoders, then creep until the line is back</span>
 <span class="tok-569cd6">void</span> turnLeftWithSeek() {
   turnDegrees(-____);   <span class="tok-7cbf6e">// Step 1: most of the turn, precise and repeatable</span>
   motors.setSpeeds(-TURN_SPEED / <span class="tok-b5cea8">2</span>, TURN_SPEED / <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// Step 2: slow creep</span>
@@ -1540,7 +1540,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333"><span class="tok-7cbf6e">// C3: turn most of the way on encoders, then creep until the line is back</span>
+<pre><span class="tok-7cbf6e">// C3: turn most of the way on encoders, then creep until the line is back</span>
 <span class="tok-569cd6">void</span> turnLeftWithSeek() {
   turnDegrees(-<span class="tok-b5cea8">60</span>);   <span class="tok-7cbf6e">// Step 1: most of the turn, precise and repeatable</span>
   motors.setSpeeds(-TURN_SPEED / <span class="tok-b5cea8">2</span>, TURN_SPEED / <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// Step 2: slow creep</span>
@@ -1551,7 +1551,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }</pre>
 <p>The single dispatch change:</p>
-<pre class="code-block-333">      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeftWithSeek();   <span class="tok-7cbf6e">// C3 in action</span></pre>
+<pre>      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeftWithSeek();   <span class="tok-7cbf6e">// C3 in action</span></pre>
 </details>
 </div>
 </div>
@@ -1564,7 +1564,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=advance_center" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Section 8’s <em>same marker detected twice</em> row is this challenge’s reason to exist. <code>driveDistance()</code> is Lesson 6’s &mdash; check its signature in RobotMotion.h.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Section 8’s <em>same marker detected twice</em> row is this challenge’s reason to exist. <code>driveDistance()</code> is Lesson 6’s &mdash; check its signature in RobotMotion.h.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
@@ -1581,7 +1581,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 
 <p>One constant — the array-to-axle distance you measure — and one call that drives it before the turn.</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// C4: distance from the sensor array back to the wheel axle.</span>
+<pre><span class="tok-7cbf6e">// C4: distance from the sensor array back to the wheel axle.</span>
 <span class="tok-7cbf6e">// Measure YOUR robot - this puts the wheels over the junction.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MARKER_ADVANCE_CM = ____;
 
@@ -1592,11 +1592,11 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333"><span class="tok-7cbf6e">// C4: distance from the sensor array back to the wheel axle.</span>
+<pre><span class="tok-7cbf6e">// C4: distance from the sensor array back to the wheel axle.</span>
 <span class="tok-7cbf6e">// Measure YOUR robot - this puts the wheels over the junction.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MARKER_ADVANCE_CM = <span class="tok-b5cea8">4.0</span>;</pre>
 <p>And the first line of EXECUTING_TURN:</p>
-<pre class="code-block-333">    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
+<pre>    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
       driveDistance(MARKER_ADVANCE_CM);   <span class="tok-7cbf6e">// C4: center the wheels on the junction</span>
       <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       
       ...</pre>
@@ -1612,7 +1612,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=debounced" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Section 8’s <em>false turns on curves</em> row explains the enemy: edge-crossing readings that land in the green band for a pass or two. <code>static</code> locals (Challenge 1 used one) are the memory between loop passes.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Section 8’s <em>false turns on curves</em> row explains the enemy: edge-crossing readings that land in the green band for a pass or two. <code>static</code> locals (Challenge 1 used one) are the memory between loop passes.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
@@ -1629,7 +1629,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <p>Count consecutive matching reads; fire only after three in a row. Fill the “same as last time” test and the threshold.</p>
 
-<pre class="code-block-333">        <span class="tok-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
+<pre>        <span class="tok-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
         <span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> seenCount = <span class="tok-b5cea8">0</span>;
         IntersectionType seen = checkForIntersection();
         <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION &amp;&amp; seen == ____) seenCount++;
@@ -1647,7 +1647,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333">        <span class="tok-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
+<pre>        <span class="tok-569cd6">static</span> IntersectionType lastSeen = NO_INTERSECTION;
         <span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> seenCount = <span class="tok-b5cea8">0</span>;
         IntersectionType seen = checkForIntersection();
         <span class="tok-569cd6">if</span> (seen != NO_INTERSECTION &amp;&amp; seen == lastSeen) seenCount++;
@@ -1673,7 +1673,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=maze_solver" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="p-m-0">🔍 <strong>Where to look:</strong> Two files this time. The detection idea lives next to <code>checkForIntersection()</code>’s existing tests; the dead-end policy replaces <code>handleGap()</code>’s give-up. Sum logic: <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a>.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Two files this time. The detection idea lives next to <code>checkForIntersection()</code>’s existing tests; the dead-end policy replaces <code>handleGap()</code>’s give-up. Sum logic: <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a>.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
@@ -1690,7 +1690,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <p>An all-black row is an unmarked crossing — take the right. Fill the all-black test and the direction.</p>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
+<pre><span class="tok-7cbf6e">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
   <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
   <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) sum += sensorValues[i];
   <span class="tok-569cd6">if</span> (sum &gt; ____) <span class="tok-569cd6">return</span> ____;   <span class="tok-7cbf6e">// right-hand rule: always take the right</span></pre>
@@ -1699,12 +1699,12 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal a worked version</summary>
-<pre class="code-block-333"><span class="tok-7cbf6e">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
+<pre><span class="tok-7cbf6e">  // C6: an ALL-BLACK row is an unmarked crossing - right-hand rule applies</span>
   <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
   <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) sum += sensorValues[i];
   <span class="tok-569cd6">if</span> (sum &gt; <span class="tok-b5cea8">4200</span>) <span class="tok-569cd6">return</span> GO_RIGHT;   <span class="tok-7cbf6e">// right-hand rule: always take the right</span></pre>
 <p>And the new timeout policy inside <code>handleGap()</code>:</p>
-<pre class="code-block-333">  <span class="tok-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
+<pre>  <span class="tok-569cd6">if</span> (millis() - gapStartTime &gt; MAX_GAP_TIME) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
     turnAround();             <span class="tok-7cbf6e">// C6: a vanished line is a dead end - go back</span>
     gapStartTime = <span class="tok-b5cea8">0</span>;
@@ -1732,7 +1732,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The FOLLOWING_LINE case as planted &mdash; read to the very end:</p>
-<pre class="code-block-333">    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
+<pre>    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
       <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
         currentState = STOPPED;
@@ -1761,7 +1761,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The planted dispatch in EXECUTING_TURN:</p>
-<pre class="code-block-333">      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnRight();
+<pre>      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnRight();
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnLeft();
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();</pre>
 <p><code>GO_LEFT</code> dispatches to <code>turnRight()</code> and vice versa. Detection, storage, and announcement were all perfect &mdash; the last three centimeters of the pipeline betrayed them. When a symptom is a perfect inversion, look at the <em>mapping</em>, not the logic. Swap the calls back.</p>
@@ -1771,7 +1771,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The planted constant:</p>
-<pre class="code-block-333"><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
+<pre><span class="tok-7cbf6e">// ===== INTERSECTION DETECTION (NEW for Lesson 9) =====</span>
 <span class="tok-7cbf6e">// Green markers read BETWEEN white and black on the calibrated</span>
 <span class="tok-7cbf6e">// 0-1000 scale. Find YOUR band in Section 7.1, then tune these.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_LOW_THRESHOLD = <span class="tok-b5cea8">300</span>;   <span class="tok-7cbf6e">// Calibrated value where green starts</span>
@@ -1783,7 +1783,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>EXECUTING_TURN as planted:</p>
-<pre class="code-block-333">    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
+<pre>    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
       <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnLeft();
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnRight();
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();
@@ -1798,7 +1798,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The planted lines in <code>checkForIntersection()</code>:</p>
-<pre class="code-block-333">  <span class="tok-569cd6">bool</span> leftGreen  = isGreen(sensorValues[<span class="tok-b5cea8">1</span>]);   <span class="tok-7cbf6e">// outermost LEFT sensor</span>
+<pre>  <span class="tok-569cd6">bool</span> leftGreen  = isGreen(sensorValues[<span class="tok-b5cea8">1</span>]);   <span class="tok-7cbf6e">// outermost LEFT sensor</span>
   <span class="tok-569cd6">bool</span> rightGreen = isGreen(sensorValues[<span class="tok-b5cea8">3</span>]);   <span class="tok-7cbf6e">// outermost RIGHT sensor</span></pre>
 <p>Sensors <code>[1]</code> and <code>[3]</code> ride just off the line’s shoulders &mdash; markers sit out at the edges, under <code>[0]</code> and <code>[4]</code>. The comments still say <em>outermost</em>; the indexes stopped agreeing. Geometry is part of the contract: restore <code>[0]</code> and <code>[4]</code>.</p>
 </details>
@@ -1956,7 +1956,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <h3 id="qr-functions" class="h3-c-4d535f">Key Functions</h3>
 
-<pre class="code-block-333"><span class="tok-7cbf6e">// Green Detection (RobotSensors)</span>
+<pre><span class="tok-7cbf6e">// Green Detection (RobotSensors)</span>
 <span class="tok-569cd6">bool</span> isGreen(<span class="tok-569cd6">int</span> sensorValue);          <span class="tok-7cbf6e">// Inside the calibrated green band?</span>
 IntersectionType checkForIntersection();<span class="tok-7cbf6e">// Calibrated read, outer sensors [0]/[4]</span>
 lineSensors.readCalibrated(sensorValues); <span class="tok-7cbf6e">// The read behind it: 0 = white, 1000 = black</span>
@@ -1971,7 +1971,7 @@ lineSensors.readCalibrated(sensorValues); <span class="tok-7cbf6e">// The read b
 
 <h3 id="qr-motor" class="h3-c-4d535f">Turn Directions</h3>
 
-<pre class="code-block-333">turnDegrees(degrees)  - the sign canon (Lesson <span class="tok-b5cea8">6</span>):
+<pre>turnDegrees(degrees)  - the sign canon (Lesson <span class="tok-b5cea8">6</span>):
   positive  = RIGHT (clockwise)      turnRight()  is turnDegrees(<span class="tok-b5cea8">90</span>)
   negative  = LEFT  (counterclockwise) turnLeft() is turnDegrees(-<span class="tok-b5cea8">90</span>)
   <span class="tok-b5cea8">180</span>       = U-turn                 turnAround() is turnDegrees(<span class="tok-b5cea8">180</span>)
@@ -1981,7 +1981,7 @@ counted on encoders - battery sag and TRIM cannot bend it</pre>
 
 <h3 id="qr-dowhile" class="h3-c-4d535f">do&hellip;while &mdash; Run First, Then Check</h3>
 
-<pre class="code-block-333">do {
+<pre>do {
   <span class="tok-7cbf6e">// body - always runs at least once</span>
 } <span class="tok-569cd6">while</span> (condition);   <span class="tok-7cbf6e">// note the semicolon</span>
 
