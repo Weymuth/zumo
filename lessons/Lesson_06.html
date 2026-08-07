@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.25.0 -->
+<!-- Lesson version: v04.25.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -590,13 +590,13 @@
 
 <p>Every function you are about to build has the same heart: <em>start the motors, then wait until the encoders say you have gone far enough.</em> That waiting is a <strong>while loop</strong>, and it is the tool you have been missing. A <code class="code-inline-bg-e8e8e8-3">for</code> loop repeats a <strong>known number of times</strong> &mdash; once per sensor, eight times, three. A <code class="code-inline-bg-e8e8e8-3">while</code> loop repeats <strong>as long as something stays true</strong>, however many times that turns out to be. You do not know in advance how many 10-millisecond checks it takes to roll 30&nbsp;cm; you only know when to stop.</p>
 
-<pre class="code-block-333-5"><span class="tok-569cd6">while</span> (<span class="tok-dcdcaa">condition is still true</span>) {
+<pre class="code-block-333"><span class="tok-569cd6">while</span> (<span class="tok-dcdcaa">condition is still true</span>) {
   <span class="tok-7cbf6e">// do this, then check the condition again</span>
 }</pre>
 
 <p>The order is the whole idea, and it is worth walking once: check the condition; if true, run the body once; then go back and check <em>again</em>; keep going until the check finally comes back false; then move on to whatever is below the closing brace. Here is the exact loop at the centre of <code class="code-inline-bg-e8e8e8-3">driveDistance()</code>, the function you write in Step 7:</p>
 
-<pre class="code-block-333-5">motors.setSpeeds(speed, speed);            <span class="tok-7cbf6e">// start rolling</span>
+<pre class="code-block-333">motors.setSpeeds(speed, speed);            <span class="tok-7cbf6e">// start rolling</span>
 <span class="tok-569cd6">while</span> (abs(encoders.getCountsLeft()) &lt; targetCounts) {
   delay(<span class="tok-b5cea8">10</span>);                              <span class="tok-7cbf6e">// hold here, re-checking 100x a second</span>
 }
@@ -608,8 +608,8 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <tr class="tr-bg-352405">
 <th class="th-ddd">Question</th><th class="th-ddd">Reach for&hellip;</th><th class="th-ddd">Because</th>
 </tr>
-<tr><td class="td-ddd">"Do this once per sensor / N times."</td><td class="td-ddd"><code class="code-ff-consolas">for</code></td><td class="td-ddd">the count is known before you start</td></tr>
-<tr><td class="td-ddd">"Keep going until the robot has driven far enough."</td><td class="td-ddd"><code class="code-ff-consolas">while</code></td><td class="td-ddd">the count depends on the world, not on you</td></tr>
+<tr><td class="td-ddd">"Do this once per sensor / N times."</td><td class="td-ddd"><code class="code-ff-uimonosp-2">for</code></td><td class="td-ddd">the count is known before you start</td></tr>
+<tr><td class="td-ddd">"Keep going until the robot has driven far enough."</td><td class="td-ddd"><code class="code-ff-uimonosp-2">while</code></td><td class="td-ddd">the count depends on the world, not on you</td></tr>
 </table>
 
 <div class="div-c0392b">
@@ -623,35 +623,35 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <p class="p-mb-0">Whenever you write a <code class="code-inline-bg-e8e8e8-3">while</code>, before you move on, answer one question out loud: <em>what makes this stop?</em> If you cannot point at the exact thing that turns the condition false, you have written an infinite loop &mdash; you just have not run it yet.</p>
 </div>
 
-<h3 id="code-6-4" class="h3-c-433014">5.4 Two Small Tools This Function Needs: <code class="code-ff-consolas-2">abs()</code> and <code class="code-ff-consolas-2">?:</code></h3>
+<h3 id="code-6-4" class="h3-c-433014">5.4 Two Small Tools This Function Needs: <code class="code-ff-uimonosp-3">abs()</code> and <code class="code-ff-uimonosp-3">?:</code></h3>
 
 <p>The <code class="code-inline-bg-e8e8e8-3">driveDistance()</code> you are about to write leans on two things you have not been shown outright. Both are small. Both save you from a bug that is nastier than it looks.</p>
 
-<h4 class="h4-c-6f7582-4"><code class="code-ff-consolas">abs()</code> &mdash; throw away the minus sign</h4>
+<h4 class="h4-c-6f7582-4"><code class="code-ff-uimonosp-2">abs()</code> &mdash; throw away the minus sign</h4>
 
 <p><code class="code-inline-bg-e8e8e8-3">abs()</code> gives you the <strong>absolute value</strong> of a number: the number with any negative sign stripped off. <code class="code-inline-bg-e8e8e8-3">abs(-30)</code> is <code class="code-inline-bg-e8e8e8-3">30</code>; <code class="code-inline-bg-e8e8e8-3">abs(30)</code> is still <code class="code-inline-bg-e8e8e8-3">30</code>. Think of it as &ldquo;how far from zero,&rdquo; direction thrown away.</p>
 
 <p>Here is why the function cannot work without it. You tell the robot to drive <code class="code-inline-bg-e8e8e8-3">-30</code> &mdash; thirty centimetres <em>backward</em>. That distance becomes a target the encoder count has to reach:</p>
 
-<pre class="code-block-333-5"><span class="tok-7cbf6e">// WITHOUT abs — the backward bug</span>
+<pre class="code-block-333"><span class="tok-7cbf6e">// WITHOUT abs — the backward bug</span>
 int targetCounts = -30 * COUNTS_PER_CM;   <span class="tok-7cbf6e">// a NEGATIVE target</span>
 <span class="tok-569cd6">while</span> (encoderCount &lt; targetCounts) { ... }   <span class="tok-7cbf6e">// already true — loop never runs, robot never moves</span></pre>
 
 <p>The count starts at 0. A negative target is already below 0, so <code class="code-inline-bg-e8e8e8-3">0 &lt; targetCounts</code> is false on the very first check and the loop exits before the wheels turn. Wrap the distance in <code class="code-inline-bg-e8e8e8-3">abs()</code> and the target is always a positive number the count can climb to, whichever way the robot drives:</p>
 
-<pre class="code-block-333-5">int targetCounts = abs(distanceCm) * COUNTS_PER_CM;   <span class="tok-7cbf6e">// always positive — the count can reach it</span></pre>
+<pre class="code-block-333">int targetCounts = abs(distanceCm) * COUNTS_PER_CM;   <span class="tok-7cbf6e">// always positive — the count can reach it</span></pre>
 
 <p>You will meet the same trick in Step 13, where <code class="code-inline-bg-e8e8e8-3">abs()</code> on each wheel's change keeps a distance measurement positive no matter which way a wheel rolled.</p>
 
-<h4 class="h4-c-6f7582-4">The <code class="code-ff-consolas">?:</code> choice &mdash; an if that hands back a value</h4>
+<h4 class="h4-c-6f7582-4">The <code class="code-ff-uimonosp-2">?:</code> choice &mdash; an if that hands back a value</h4>
 
 <p>The direction still has to come from somewhere: forward means <code class="code-inline-bg-e8e8e8-3">+DRIVE_SPEED</code>, backward means <code class="code-inline-bg-e8e8e8-3">-DRIVE_SPEED</code>. You could write that as a four-line if. C++ gives you a one-line form built for exactly this &mdash; picking one of two <em>values</em>:</p>
 
-<pre class="code-block-333-5">int speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;</pre>
+<pre class="code-block-333">int speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;</pre>
 
 <p>Read it as a question and two answers, in that order: <em>is <code class="code-inline-bg-e8e8e8-3">distanceCm</code> greater than 0? If yes, use <code class="code-inline-bg-e8e8e8-3">DRIVE_SPEED</code>; if no, use <code class="code-inline-bg-e8e8e8-3">-DRIVE_SPEED</code>.</em> The <code class="code-inline-bg-e8e8e8-3">?</code> holds the question, the <code class="code-inline-bg-e8e8e8-3">:</code> separates the yes-answer from the no-answer. It is the same decision an <code class="code-inline-bg-e8e8e8-3">if/else</code> makes &mdash; the difference is that this one <strong>produces a value</strong> you can drop straight into a variable, instead of running blocks of code. The whole thing above is identical to:</p>
 
-<pre class="code-block-333-5"><span class="tok-7cbf6e">// the same choice, the long way</span>
+<pre class="code-block-333"><span class="tok-7cbf6e">// the same choice, the long way</span>
 int speed;
 <span class="tok-569cd6">if</span> (distanceCm &gt; 0) {
   speed = DRIVE_SPEED;

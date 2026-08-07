@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""next_pointer.py v1.0.2 - the end-of-lesson forward link (Bible §3.1a).
+"""next_pointer.py v1.1 - the end-of-lesson forward link (Bible §3.1a).
 
 Generates ONE byte-identical-by-construction block per lesson and seats it
 immediately before the §5b footer paragraph, which is the last element on the
@@ -14,18 +14,11 @@ Design constraints, each of them load-bearing:
   * The href and the id both resolve, so §27.14 stays green.
   * Lesson titles are DERIVED from the lesson strip, never typed (§24.10).
 
-    KNOWN LOSSY STEP — recorded S121 by DJ ruling, deliberately NOT fixed yet.
-    esc() rewrites an apostrophe to &rsquo;, so the title this tool emits is NOT a
-    byte-faithful copy of the strip's. Exactly one title is affected today:
-    L11's "Time Lies, Distance Doesn't", which the strip spells with an ASCII
-    apostrophe and which L10's generated link therefore renders as "Doesn’t".
-    Nothing is broken by this and L10's own §NEXT LESSON callout already spells it
-    &rsquo;, so the page is self-consistent — but the docstring above claims the
-    titles are derived, and one character of them is transformed instead.
-    The consequence to watch: edit a title in the strip and the block follows,
-    EXCEPT across an apostrophe. Fix is to drop the apostrophe branch from esc()
-    and let the strip's own spelling through; that changes one character in
-    Lesson_10.html and needs a version bump, so it is queued rather than slipped in.
+    THE APOSTROPHE IS RULED (DJ ruling B, S123) and esc() no longer transforms it, so
+    the titles this tool emits are byte-faithful copies of the strip's. The note that
+    stood here from v1.0.1 to v1.0.2 described the defect; it is closed, and the one
+    character it affected - L11's "Time Lies, Distance Doesn't" in Lesson_10.html -
+    now matches the 21 other places the book spells that title.
   * L16 gets no block: it is the last lesson and is entitled to none (§3.1).
 
 Usage:
@@ -42,7 +35,13 @@ import sys
 
 # VERSION below is the ONE home read by session_versions. It sits ABOVE the changelog so a
 # plain grep of this file returns the version and not a changelog line (S98).
-VERSION = 'v1.0.2'
+VERSION = 'v1.1'
+# v1.1 (S123): esc() no longer rewrites an apostrophe - DJ ruling B. The lossy step
+#   recorded at v1.0.1 and deliberately left is now closed, and the docstring claim that
+#   titles are DERIVED is true for every character. Blast radius measured, not guessed:
+#   exactly one of sixteen titles carries an apostrophe, so exactly one generated block
+#   changes, in Lesson_10.html. gate 51 and title_feed.to_prose() moved in the same
+#   commit - leaving any one of the three behind re-creates the drift on the next apply.
 # v1.0.2 (S122): THE DOCSTRING BANNER WENT STALE THE MOMENT THE HOME MOVED. The banner on
 #   line 2 still read v1.0 after the previous release advanced the constant, so this file
 #   carried two versions that disagreed and the FIRST one a reader meets was the wrong one.
@@ -68,10 +67,18 @@ SEAT = re.compile(r'<p class="p-c-666">\s*\n\s*<strong>LESSON ')
 
 
 def esc(s):
-    """Book-style entity escaping for a title pulled out of an attribute."""
-    s = s.replace("&", "&amp;")
-    s = s.replace("'", "&rsquo;").replace("\u2019", "&rsquo;")
-    return s
+    """Book-style entity escaping for a title pulled out of an attribute.
+
+    DJ RULING B, S123: the APOSTROPHE branch is gone. It rewrote an ASCII apostrophe to
+    &rsquo;, which made this tool's output the only curly spelling of L11's title in a
+    book that spells it straight in 21 other places - and titles() html.unescape()s the
+    attribute first, so the ampersand branch below is still required and the apostrophe
+    branch was the only lossy one. Removing it changes exactly one character in exactly
+    one file, Lesson_10.html, and makes the derivation byte-faithful as the docstring
+    above has always claimed. A curly apostrophe arriving IN the strip is still honoured,
+    because it now passes through untouched rather than being normalised twice.
+    """
+    return s.replace("&", "&amp;")
 
 
 def titles(root="."):
@@ -169,8 +176,8 @@ def selftest(root="."):
     rep(tmap[7] == "Code Organization", "a known title round-trips", repr(tmap[7]))
 
     rep(esc("Motors & TRIM") == "Motors &amp; TRIM", "ampersand escaped")
-    rep(esc("Time Lies, Distance Doesn't") == "Time Lies, Distance Doesn&rsquo;t",
-        "apostrophe escaped")
+    rep(esc("Time Lies, Distance Doesn't") == "Time Lies, Distance Doesn't",
+        "apostrophe passes through UNTRANSFORMED (DJ ruling B, S123)")
 
     b = block(6, tmap)
     rep('href="Lesson_07.html"' in b, "L06 points at L07")

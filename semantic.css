@@ -1,0 +1,52 @@
+/* css/semantic.css — THE SEMANTIC LAYER. Hand-authored. Bible §27.15.
+ *
+ * This file is the opposite of everything below it in css/book.css. The generated block
+ * is a compression of the book's own markup: build_css expands every class back into the
+ * declarations it stands for, deduplicates them, and names each rule after the VALUES it
+ * contains. That is why the stylesheet holds `.code-inline-bg-e8e8e8` and not `.code` —
+ * a generator that re-derives names from values every run can only ever reproduce the
+ * status quo. It is a fixed point of the §27 migration, not a design system.
+ *
+ * DJ, S123: "I thought since we weren't using canvas we didn't need the inline code."
+ * Correct, and measured: the lessons carry ZERO inline style attributes and 25,752 class
+ * attributes. The inline representation exists only inside build_css, for the length of
+ * one run. The constraint that produced the model was retired by §27; the model outlived it.
+ *
+ * SO THIS FILE IS WHERE MEANING LIVES. A rule here says what a thing IS. It is preserved
+ * verbatim at the top of the generated stylesheet and is never re-derived, so it can carry
+ * element selectors, semantic class names and custom properties — none of which the
+ * generated block can express.
+ *
+ * HOW A CONSTRUCT GRADUATES (one at a time, gated, stoppable at any point):
+ *   1. Write the semantic rule here.
+ *   2. Drop the value-named class from the elements it replaces.
+ *   3. Regenerate; the generated block shrinks by one rule.
+ * Constructs that never graduate keep working exactly as they do today. Nothing about
+ * this file obliges the rest of the migration to happen.
+ *
+ * EDITING RULES:
+ *   - Hand-edited on purpose. This is the ONE stylesheet file that is not generated.
+ *   - Never paste a value-named class in here; if it needs a hex in its name it is not
+ *     ready to graduate.
+ *   - css/book.css is still DO-NOT-HAND-EDIT (§24.12). Edit THIS file and regenerate.
+ */
+
+/* Inline code and code blocks. The first construct to graduate (S123).
+ *
+ * Before this rule, 1,199 bare <code> elements across L10–L16 were reached by no author
+ * rule at all, so their typeface was the browser's choice rather than the book's — while
+ * 2,136 styled ones in L01–L09 carried the ruled stack via a class. One construct, two
+ * conventions, split at the L09/L10 seam, and gate 53 could not see the gap because it
+ * checks declarations that EXIST and an unstyled element has none (§24.8).
+ *
+ * The stack is DJ ruling B, S123 (§6.5a-T). A browser takes the best face present and
+ * falls through to a generic; nothing here is Windows-only.
+ *
+ * Deliberately font-family ONLY. Whether inline code keeps its grey pill is a separate,
+ * unruled question — the pill's background and padding still live on the generated
+ * classes, so this rule changes the typeface of the bare ones and nothing else. When the
+ * pill is ruled, it is ruled HERE, in one line, for every book. */
+code,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}

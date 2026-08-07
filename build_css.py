@@ -41,7 +41,20 @@ import re, os, sys, glob, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lesson_inventory as LI      # ONE expander, shared (the S83 rule)
 
-VERSION = 'v1.2.1'        # the only version home in this file (S105)
+VERSION = 'v1.3.0'        # the only version home in this file (S105)
+# v1.3.0 (S123): THE SEMANTIC LAYER (§27.15). DJ: "I thought since we weren't using canvas
+#   we didn't need the inline code" - correct, and measured: the lessons carry ZERO inline
+#   style attributes and 25,752 class attributes, so the inline representation this
+#   generator round-trips through exists only inside one run of it. The model outlived the
+#   constraint §27 retired. Because names are re-derived from VALUES every run, the
+#   generated block can never produce `.code`, hold an element selector, or emit a custom
+#   property - it is a fixed point of the migration, not a design system, and there was
+#   therefore nothing a second book could inherit. css/semantic.css is preserved verbatim
+#   at the top of the output and never re-derived. Control D is SCOPED to the generated
+#   block rather than weakened: that block must still be class-scoped, which is the
+#   property the control was written to hold. Additive by construction - zero lesson
+#   edits, all 540 value-named classes keep working, and a tree without semantic.css
+#   still builds.
 # v1.2 (S105): SOURCES widened to all 16 lessons for the book-wide conversion.
 #   WIDENING THIS LIST RENAMES RULES. Naming is frequency-ranked across the corpus, so at
 #   S105 46 of L01's 167 names kept their SPELLING and changed their MEANING, and 11
@@ -52,6 +65,12 @@ VERSION = 'v1.2.1'        # the only version home in this file (S105)
 #   The sequence is strip_inline --restore, then this, then strip_inline --apply.
 SOURCES = sorted(glob.glob('lessons/Lesson_*.html'))
 OUT = 'css/book.css'
+# S123, §27.15: the SEMANTIC layer. Hand-authored, preserved verbatim at the top of OUT
+# and never re-derived. It is the only place a rule can say what a thing IS: the generated
+# block names every rule after the VALUES it holds, so it can never produce `.code` and can
+# never hold an element selector or a custom property. Missing file is legal and emits
+# nothing, so a tree without it still builds.
+SEMANTIC = 'css/semantic.css'
 
 _STYLED = re.compile(r'<(\w+)\b[^>]*?style="([^"]*)"', re.S)
 
@@ -212,6 +231,14 @@ def names(rows):
     return chosen
 
 
+def semantic():
+    """The preserved layer, verbatim, or '' when the file is absent."""
+    try:
+        return open(SEMANTIC, encoding='utf-8').read().rstrip('\n')
+    except OSError:
+        return ''
+
+
 def emit(rows, chosen):
     src = ', '.join(SOURCES)
     out = [
@@ -227,6 +254,12 @@ def emit(rows, chosen):
         ' */',
         '',
     ]
+    _sem = semantic()
+    if _sem:
+        out += ['/* ===== SEMANTIC LAYER (§27.15) - preserved verbatim from '
+                + SEMANTIC + '. Edit THERE. ===== */', '', _sem, '',
+                '/* ===== GENERATED BLOCK - derived from the lessons. Do not hand-edit. '
+                '===== */', '']
     for c, n, tg, rw in rows:
         tl = ', '.join(f'{k}×{v}' for k, v in sorted(tg.items(), key=lambda kv: -kv[1]))
         out.append(f'/* ×{n}  {tl} */')
@@ -290,7 +323,14 @@ def selftest():
     # lesson is converted. An assertion that expires is worse than none: it fails on success.
     # What actually has to hold afterwards is that nothing is styled by a bare tag selector,
     # and that no page uses a class without linking the file that defines it.
-    naked = [l for l in text.splitlines() if l.endswith(' {') and not l.startswith('.')]
+    # S123: the assertion is now SCOPED TO THE GENERATED BLOCK, not weakened. The semantic
+    # layer (§27.15) exists precisely to hold element selectors, so checking it here would
+    # be checking the wrong file - but the generated block must still be class-scoped, and
+    # that is the property this control was written to hold. Everything after the GENERATED
+    # BLOCK marker is derived; everything before it is preserved.
+    _mark = '/* ===== GENERATED BLOCK'
+    _gen = text.split(_mark, 1)[1] if _mark in text else text
+    naked = [l for l in _gen.splitlines() if l.endswith(' {') and not l.startswith('.')]
     orphan = []
     for f in sorted(glob.glob('lessons/Lesson_*.html')):
         body = open(f, encoding='utf-8').read()

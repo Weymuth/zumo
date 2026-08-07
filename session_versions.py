@@ -51,7 +51,11 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.18.0'
+VERSION = 'v1.19.0'
+# v1.19.0 (S123): title_feed registered in ARTEFACTS and added to BOTH emitted blocks.
+#   Same shape as v1.18.0, and CONTROL E named the file the moment it landed in root —
+#   an instrument written this session is exactly the kind that drifts unwatched, because
+#   nothing else in the tree knows it exists yet.
 # v1.18.0 (S121): next_pointer registered in ARTEFACTS and added to BOTH emitted blocks.
 #   CONTROL E named it the moment the file landed in root, which is the control working as
 #   designed - the tool was written this session and would otherwise have drifted unwatched.
@@ -178,6 +182,8 @@ ARTEFACTS = [
     ('color_index',           'color_index.py',           r"VERSION = '(v[\d.]+)'"),
     ('class_sweep',           'class_sweep.py',           r"VERSION = '(v[\d.]+)'"),
     ('next_pointer',          'next_pointer.py',          r"VERSION = '(v[\d.]+)'"),
+    ('title_feed',            'title_feed.py',            r"VERSION = '(v[\d.]+)'"),
+    ('Timer',                 'timer.html',               r'Timer version: (v[\d.]+)'),
 ]
 
 
@@ -270,6 +276,8 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"color_index {vals['color_index']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
             f"next_pointer {vals['next_pointer']} · "
+            f"title_feed {vals['title_feed']} · "
+            f"Timer {vals['Timer']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -300,6 +308,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`color_index` **{vals['color_index']}** ·\n"
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
             f"`next_pointer` **{vals['next_pointer']}** ·\n"
+            f"`title_feed` **{vals['title_feed']}** ·\n"
+            f"`timer.html` **{vals['Timer']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 

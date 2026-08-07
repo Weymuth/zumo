@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file returns the version and not a changelog line.
-VERSION = 'v1.2.0'
+VERSION = 'v1.3.0'
+# v1.3.0 (S123): DJ ruling B - MONO_BOOK, the book's one mono stack, and the tool pages
+#   JOIN THE SCAN. Two findings drove it. (1) 422 declarations across 12 lessons carried
+#   FIVE Consolas spellings resolving to THREE different fallbacks off Windows and to one
+#   face on Windows, which is why nobody saw it. (2) going_deeper/newproject/timer held
+#   four more that NO instrument could see - this sweep never opened them and build_css
+#   does not model them (25.6a). The mono target is now CONTEXT-dependent, because an SVG
+#   cannot use the `ui-monospace` keyword, and the web-served exemption is DERIVED per
+#   file rather than blanket: going_deeper serves Inter, timer and newproject do not.
+#   Controls I/J/K are new because every pre-existing control called rewrite() without a
+#   path and therefore could not see any of this.
 # v1.2.0 (S110): THE VALUE PARSER COULD NOT READ A QUOTED MULTI-FACE STACK, and the
 #   consequence was a CORRUPTING WRITE, not merely a miscount. DECL's alternation tried
 #   "..." then '...' then a bare run, so `'Consolas','Monaco','Courier New',monospace`
@@ -24,7 +34,14 @@ VERSION = 'v1.2.0'
 import re, sys, os, glob, collections
 
 PROSE = 'Arial, Helvetica, sans-serif'
-MONO  = 'Courier New, monospace'
+MONO  = 'Courier New, monospace'          # SVG target: no web font, no ui-* keyword
+# S123, DJ ruling B: the BOOK's mono stack. Distinct from MONO because an SVG cannot
+# rely on `ui-monospace` (a CSS keyword) and Illustrator resolves none of these, while a
+# browser picks the best face present and falls through to a generic. Measured before the
+# ruling: 422 declarations across 12 lessons carried FIVE Consolas stacks resolving to
+# THREE different fallbacks off Windows, identical on Windows - which is why it survived.
+MONO_BOOK = ("ui-monospace, SFMono-Regular, Menlo, Consolas, "
+             "'Liberation Mono', 'Courier New', monospace")
 
 # first-choice face -> canon replacement
 MAP = {
@@ -55,12 +72,25 @@ MAP = {
 WEB_SERVED = {'inter'}
 
 
-def _exempt(value, path):
+def _exempt(value, path, src=''):
     """S110: this took a FACE and was called with a whole VALUE. It only ever agreed
     because the old parser truncated a quoted stack to its first face — so fixing the
     parser silently un-exempted `'Inter', -apple-system, sans-serif` in the stylesheet.
-    An exemption keyed on the first face is what was always meant."""
-    return path.endswith('.css') and _first(value) in WEB_SERVED
+    An exemption keyed on the first face is what was always meant.
+
+    S123: the scan widened to the tool pages, so the exemption is DERIVED per file rather
+    than assumed. A blanket .html exemption would have been wrong: going_deeper.html links
+    fonts.googleapis.com and declares Inter, while newproject.html and timer.html link
+    nothing — so an Inter declaration is safe in the first and a real substitution risk in
+    the other two. css/book.css stays exempt on the S108 reasoning: it is linked only by
+    pages that serve the font, and it carries no <link> of its own to read."""
+    if _first(value) not in WEB_SERVED:
+        return False
+    if path.endswith('.css'):
+        return True
+    if path.endswith('.html'):
+        return 'fonts.googleapis.com' in src
+    return False
 
 
 # The VALUE is everything up to the declaration terminator. Quotes are part of the value,
@@ -93,7 +123,7 @@ def _first(value):
 
 
 
-def rewrite(text):
+def rewrite(text, path=''):
     """Return (new_text, list of (old_value, new_value)). Value-only; the DELIMITER is
     preserved for an XML attribute and dropped for a CSS declaration, because they are
     not the same thing. `font-family="X"` uses the quote as the attribute delimiter and
@@ -116,6 +146,10 @@ def rewrite(text):
         if len(val) >= 2 and val[0] in '"\'' and val[-1] == val[0] and val[0] not in val[1:-1]:
             delim, val = val[0], val[1:-1]
         target = MAP.get(_first(val))
+        # S123: the mono target depends on the CONTEXT, not on the face. A browser can use
+        # `ui-monospace`; an SVG consumer cannot, so SVGs keep the plain system stack.
+        if target == MONO and (path.endswith('.css') or path.endswith('.html')):
+            target = MONO_BOOK
         if target is None:
             return m.group(0)
         if faces(val) == faces(target):
@@ -218,6 +252,39 @@ def selftest():
     twice, hits_t = rewrite(out)
     check('CONTROL E: second pass is a no-op', (twice == out, hits_t), (True, []))
 
+    # ---- S123 controls. Everything above calls rewrite() WITHOUT a path, so it only ever
+    # exercised the SVG target; the ruling's behaviour was invisible to all of it. An
+    # assert that cannot fail is not evidence (27.13's precedent).
+    mono = "font-family: Consolas, monospace;"
+
+    # CONTROL I -- the mono target depends on the CONTEXT, both directions.
+    css_out, _ = rewrite(mono, 'css/book.css')
+    svg_out, _ = rewrite(mono, 'images/x.svg')
+    check('CONTROL I: a .css mono stack takes the ruled book stack',
+          MONO_BOOK in css_out, True)
+    check('CONTROL I: an SVG keeps the plain system stack (no ui-monospace)',
+          ('ui-monospace' not in svg_out, MONO in svg_out), (True, True))
+    check('CONTROL I: the two contexts genuinely differ', css_out != svg_out, True)
+
+    # CONTROL J -- the ruling is a FIXED POINT. Without this the sweep could "fix" the book
+    # and then propose fixing it again forever, which is how a canon stack churns.
+    ruled = f'font-family: {MONO_BOOK};'
+    fixed, fixed_hits = rewrite(ruled, 'css/book.css')
+    check('CONTROL J: the ruled stack is a fixed point', (fixed == ruled, fixed_hits),
+          (True, []))
+
+    # CONTROL K -- the exemption is DERIVED, and it must fall BOTH ways. A blanket .html
+    # rule would have passed the first of these and wrongly passed the second.
+    inter = "'Inter', -apple-system, sans-serif"
+    check('CONTROL K: Inter is exempt in a page that SERVES it',
+          _exempt(inter, 'going_deeper.html', 'x fonts.googleapis.com y'), True)
+    check('CONTROL K: Inter is REPORTED in a page that does not serve it',
+          _exempt(inter, 'timer.html', 'no font link here'), False)
+    check('CONTROL K: css/book.css stays exempt (S108 reasoning)',
+          _exempt(inter, 'css/book.css', ''), True)
+    check('CONTROL K: a non-web-served face is never exempt',
+          _exempt('Consolas, monospace', 'going_deeper.html', 'fonts.googleapis.com'), False)
+
     print()
     print('ALL CONTROLS PASS - loud on the four named faces, silent on safe stacks, '
           'weight and style intact.' if ok else '*** CONTROLS FAILED ***')
@@ -232,9 +299,14 @@ def main(argv):
     # every non-Windows reader had been silently substituting away from lived in .page,
     # in this file, and this sweep reported 0 rewrites for its whole life because it only
     # ever opened SVGs. An instrument that cannot see a file cannot clear it (24.8).
+    # S123: THE TOOL PAGES JOIN THE SCAN, for the reason S108 put book.css in it. Their
+    # four Consolas declarations were invisible to every instrument: the sweep never
+    # opened them, and build_css does not model them (25.6a exempts tool pages from the
+    # class migration), so nothing in the tree could see or clear them.
     paths = [a for a in argv[1:] if not a.startswith('-')] or (
         sorted(glob.glob('images/**/*.svg', recursive=True))
-        + [f for f in ['css/book.css'] if os.path.exists(f)])
+        + [f for f in ['css/book.css', 'going_deeper.html', 'newproject.html',
+                       'timer.html', 'index.html'] if os.path.exists(f)])
 
     tot_files = 0
     tot_hits = 0
@@ -244,10 +316,10 @@ def main(argv):
     for p in paths:
         with open(p, encoding='utf-8', errors='strict') as fh:
             src = fh.read()
-        new, hits = rewrite(src)
+        new, hits = rewrite(src, p)
         # pass the RAW value: pre-stripping quotes here left an unbalanced quote that
         # the face splitter then read as an opening delimiter (S110).
-        hits = [h for h in hits if not _exempt(h[0], p)]
+        hits = [h for h in hits if not _exempt(h[0], p, src)]
         if not hits:
             continue
         tot_files += 1

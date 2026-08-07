@@ -2,7 +2,43 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.46.2'
+VERSION = 'v1.49'
+# v1.49 (S123): NEW GATE 54 (§27.15, the semantic layer) and §27.11 SCOPED to the generated
+#   block. Rules and declarations hold UNCHANGED at 636/2,332 across the change, which is
+#   the point: adding the semantic layer moved nothing generated, and only the digest moves
+#   because the span it covers now starts at the GENERATED BLOCK marker. Scoping also fixed
+#   a mixed population this session created - _r counted class rules while _d counted every
+#   declaration, so one added element rule read as 'a rule gained or lost a property', the
+#   precisely wrong diagnosis in this gate's own words. Gate 54 exists because the failure
+#   mode is SILENT: measured by injection before the layer was built, an element rule pasted
+#   into css/book.css did not error and did not warn - the next regeneration DELETED it and
+#   every gate stayed green.
+# v1.48 (S123): NEW GATE 53 (the one mono stack) and the 27.11 baseline moves for DJ ruling
+#   B-FULL. FINAL: 641/2,350 -> 636/2,332. GATE 53 EARNED ITS PLACE ON ITS FIRST RUN and
+#   resized the problem: the Consolas lead this session opened with was the MINORITY. The
+#   book carried 'Courier New', monospace in 21 rules at 2,825 uses against Consolas at 14
+#   rules / 459, and font_stack_sweep is structurally blind to it because its first face is
+#   not a named substitution risk. Diffed by SELECTOR: 39 mono rules before, 10 DIED and 29
+#   ALTERED, 39 = 10 + 29, nothing non-mono moved. Five of the ten are font-named classes
+#   replaced by .code-ff-uimonosp*; the other two, .code-block-333-6 and
+#   .code-inline-bg-e8e8e8-7, COLLAPSED into .code-block-333-5 and .code-inline-bg-e8e8e8-6,
+#   proved by comparing their declarations with font-family removed rather than assumed from
+#   the rule disappearing. strip_inline --verify 0 dead class names.
+#   B. 641/2,350 -> 640/2,349, diffed by SELECTOR: three rules DIE (.code-ff-consolas,
+#   .code-ff-consolas-2, .span-ff-consolas), two are BORN (.code-ff-uimonosp,
+#   .code-ff-uimonosp-2) and twelve are ALTERED. 15 = 3 + 12, which is every Consolas-
+#   carrying rule accounted for, and the net -1 is two rules collapsing into one. Only the
+#   classes whose NAME encodes the font were renamed; .code-block-bg-1e1e1e keeps its name
+#   because it is named for its background. Re-controlled after the move against a dropped
+#   `color: white;`, which still FAILS.
+# v1.47 (S123): NEW GATE 52 — the §3.1b opener is UNIQUE inside its section. Gate 51
+#   counts occurrences of the CORRECT opener and finds one; a section holding the correct
+#   opener PLUS a stale duplicate satisfies that count. Measured by injection: a second
+#   opener carrying the historical wrong title "Line Following" pushed into L07 left ALL
+#   51 preceding gates green and exit 0. Not a synthetic shape — S122 committed exactly
+#   this defect to L05 by reading an audit result instead of the file. The regex and the
+#   section bounds are IMPORTED from title_feed (S83's rule), so the pattern has one home
+#   and gate 51's spelling cannot drift away from the generator's.
 # v1.46.2 (S122): NEW GATE 51 (§3.1b) plus the Tier-1 normalizations, and this is the
 #   first baseline move of the arc where rules actually DIED. 643/2,357 -> 641/2,350:
 #   .link-c-2e86ab-3 and .link-c-2e86ab-4 are gone, and the -7 declarations ARE those two
@@ -2038,7 +2074,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 641, 2350, '4d45c7bb8062c488'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 636, 2332, '613709142cf7b79d'
 #   S121: digest ONLY, 643/2,357 UNCHANGED - zero rules born, zero died, zero altered.
 #   S113's shape, the fourth time. Cause: §3.1a seated 15 next-lesson links, which added
 #   15 uses of .link-c-2e86ab (398->413) and 15 of .p-mt-22px (29->44). build_css orders
@@ -2144,7 +2180,14 @@ CSS_RULES, CSS_DECLS, CSS_DIGEST = 641, 2350, '4d45c7bb8062c488'
 bad = []
 if os.path.exists('css/book.css'):
     _css = open('css/book.css', encoding='utf-8').read()
-    _body = _css[_css.index('*/') + 2:]          # skip the generated header: it carries VERSION
+    # S123: SCOPED TO THE GENERATED BLOCK. §27.15's semantic layer is hand-authored and
+    # guarded by gate 54; counting it here would make this baseline move every time a rule
+    # GRADUATES, which is the one operation the architecture is designed to make cheap.
+    # It also silently mixed populations: _r counts class rules only, _d counted every
+    # declaration, so one added element rule read as 'a rule gained or lost a property' —
+    # the precisely wrong diagnosis, printed in this gate's own words.
+    _mark = '/* ===== GENERATED BLOCK'
+    _body = _css.split(_mark, 1)[1] if _mark in _css else _css[_css.index('*/') + 2:]
     _r = len(re.findall(r'^\.[A-Za-z0-9_-]+ \{', _body, re.M))
     _d = len(re.findall(r'^  [a-z-]+: ', _body, re.M))
     _g = _hl.sha256(_body.encode()).hexdigest()[:16]
@@ -2418,7 +2461,12 @@ for _n in range(1, 17):
     elif _b != _strip:
         bad.append(f'L{_n:02d}: lesson strip differs - titles cannot be derived (§6.5a)')
 for _m in re.finditer(r'href="Lesson_(\d\d)\.html"[^>]*title="([^"]*)"', _strip or ''):
-    _titles[int(_m.group(1))] = _m.group(2).replace("'", '&rsquo;')
+    # DJ ruling B, S123: the strip's spelling passes through UNTRANSFORMED. This line used
+    # to carry .replace("'", '&rsquo;'), which made the expected opener disagree with the
+    # strip by one character on the one title that has an apostrophe. Three owners carried
+    # that transform - this gate, next_pointer.esc() and title_feed.to_prose() - and all
+    # three moved together, because one left behind re-creates the drift on the next apply.
+    _titles[int(_m.group(1))] = _m.group(2)
 
 _HEAD = '<h3 id="whats-next" class="h3-c-6f7582">What\'s Next?</h3>'
 for _n in range(1, 17):
@@ -2449,6 +2497,125 @@ for _n in range(1, 17):
 if _seen != 15:
     bad.append(f'COVERAGE: {_seen} lessons scanned, expected 15')
 gate('\u00a73.1b every lesson 01-15 carries the canonical What\u2019s Next? section', bad)
+
+
+# ---- §3.1b: the opener is UNIQUE inside its section — the hole gate 51 cannot see.
+# Gate 51 asserts that the CORRECT opener string occurs once. A section holding the
+# correct opener AND a second one with a stale title satisfies that count and passes.
+# Measured, not supposed: injecting a duplicate opener into L07 carrying the historical
+# wrong title "Line Following" left ALL 51 preceding gates green (S123 control run).
+#
+# This is not a synthetic shape. S122 added a duplicate opener to L05 by hand, because
+# an audit reported "needs only an id" and the RESULT was read instead of the file. The
+# defect this gate holds is one a session has already committed once.
+#
+# The target regex and the section bounds are IMPORTED, not re-implemented (S83): a
+# second home for that pattern is the drift §6.8a exists to stop, one construct over.
+import title_feed as TF
+bad = []
+_seen = 0
+for _n in range(1, 17):
+    _f = f'lessons/Lesson_{_n:02d}.html'
+    _s = open(_f, encoding='utf-8').read()
+    _span = TF.section(_s)
+    if _n == 16:
+        if _span is not None:
+            bad.append(f'{L(_f)}: carries a What\u2019s Next? section; L16 ends the book (\u00a73.1)')
+        continue
+    _seen += 1
+    if _span is None:
+        bad.append(f'{L(_f)}: no What\u2019s Next? section to scope the opener to (\u00a73.1b)')
+        continue
+    _hits = list(TF.TARGET.finditer(_s, _span[0], _span[1]))
+    if len(_hits) != 1:
+        bad.append(f'{L(_f)}: {len(_hits)} \u00a73.1b opener(s) inside one section, expected 1')
+        continue
+    if int(_hits[0].group(2)) != _n + 1:
+        bad.append(f'{L(_f)}: opener points at Lesson {_hits[0].group(2)}, expected {_n + 1}')
+if _seen != 15:
+    bad.append(f'COVERAGE: {_seen} lessons scanned, expected 15')
+gate('\u00a73.1b the What\u2019s Next? opener is unique and points at the successor', bad)
+
+
+# ---- §6.5a-T: the book has ONE mono stack (S123, DJ ruling B).
+# Before the ruling, 422 declarations across 12 lessons carried FIVE Consolas spellings
+# that consolidated into 15 stylesheet rules and resolved to THREE different fallbacks off
+# Windows — and to ONE face on Windows, which is why it survived for the life of the book.
+#
+# WHY THIS IS NOT font_stack_sweep's JOB, AND WHY IT FIRES INDEPENDENTLY OF IT. The sweep
+# rewrites a stack whose FIRST face is a named substitution risk; that is a different
+# question from whether the stack equals the ruled one. `ui-monospace, monospace` has a
+# safe first face and the wrong tail, so the sweep is silent on it and this gate is loud.
+# Measured, not assumed — see the control run recorded in the changelog.
+#
+# Compared by FACE LIST rather than by raw string: the ruling is about which typeface a
+# reader actually gets, and quote style is not a rendering difference. css/book.css is
+# generated so its spelling is the generator's; the four tool pages are hand-authored and
+# §25.6a keeps them out of the class migration, so they are the ones that can drift.
+import font_stack_sweep as FS
+bad = []
+_want = FS.faces(FS.MONO_BOOK)
+_scanned = 0
+_seen_decls = 0
+for _f in ['css/book.css', 'going_deeper.html', 'newproject.html', 'timer.html',
+           'index.html']:
+    if not os.path.exists(_f):
+        bad.append(f'{_f}: missing - cannot check the mono stack')
+        continue
+    _scanned += 1
+    _src = open(_f, encoding='utf-8').read()
+    for _m in FS.DECL.finditer(_src):
+        _val = _m.group(2).strip()
+        if len(_val) >= 2 and _val[0] in '"\'' and _val[-1] == _val[0] and _val[0] not in _val[1:-1]:
+            _val = _val[1:-1]
+        _fl = FS.faces(_val)
+        if 'monospace' not in [x.lower() for x in _fl]:
+            continue                      # a prose stack; §6.5a-T's Inter rule, not this one
+        _seen_decls += 1
+        if _fl != _want:
+            bad.append(f'{_f}: mono stack is {_val!r}, ruled stack is {FS.MONO_BOOK!r}')
+if _scanned != 5:
+    bad.append(f'COVERAGE: {_scanned} file(s) scanned, expected 5')
+if _seen_decls == 0:
+    bad.append('COVERAGE: zero mono declarations found - a gate that scans nothing passes')
+gate('\u00a76.5a-T the book carries exactly one mono stack', bad)
+
+
+# ---- §27.15: the SEMANTIC layer is preserved verbatim (S123, DJ ruling).
+# The generated block names every rule after the VALUES it holds, so it can never produce
+# a rule that means something — no element selector, no semantic class, no custom
+# property. css/semantic.css is where meaning lives, and it is the ONE stylesheet file
+# that is hand-edited on purpose.
+#
+# THE FAILURE MODE THIS EXISTS FOR IS SILENT, WHICH IS WHY IT NEEDS A GATE RATHER THAN A
+# CONVENTION. Measured before the layer was built: an element rule pasted into
+# css/book.css did not error and did not warn — the next regeneration simply DELETED it,
+# and every gate stayed green. A preserved layer that is only preserved by habit is a
+# layer that disappears the first time someone runs the generator.
+#
+# Deliberately asserts the semantic text is present IN book.css and equal to its source,
+# not merely that the file exists: the defect is divergence between the two, and a check
+# that only stats the file cannot see it (§24.8).
+bad = []
+_SEM = 'css/semantic.css'
+if not os.path.exists(_SEM):
+    bad.append(f'{_SEM}: missing - the semantic layer is canon (§27.15)')
+else:
+    _sem = open(_SEM, encoding='utf-8').read().rstrip('\n')
+    _css = open('css/book.css', encoding='utf-8').read()
+    if '/* ===== SEMANTIC LAYER' not in _css:
+        bad.append('css/book.css: no semantic layer marker - the layer was regenerated away')
+    elif _sem not in _css:
+        bad.append('css/book.css: the semantic layer does not match css/semantic.css verbatim')
+    if '/* ===== GENERATED BLOCK' not in _css:
+        bad.append('css/book.css: no generated-block marker - the two layers cannot be told apart')
+    # The layer must actually carry something the generated block CANNOT express, or it is
+    # decoration. An element selector is the cheapest proof of that and the first graduate.
+    if not re.search(r'(^|\n)\s*(code|pre)\s*[,{]', _sem):
+        bad.append(f'{_SEM}: carries no element selector - nothing has graduated (§27.15)')
+    if re.search(r'\n\.[A-Za-z0-9_-]*-[0-9a-f]{3,6}(-\d+)?\s*\{', _sem):
+        bad.append(f'{_SEM}: carries a VALUE-named class - it is not ready to graduate')
+gate('\u00a727.15 the semantic layer is preserved verbatim in the stylesheet', bad)
 
 print('=' * 52)
 

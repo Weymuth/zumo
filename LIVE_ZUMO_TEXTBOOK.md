@@ -1,12 +1,76 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 6, 2026 (Session 122 — **EVERY LESSON NOW ENDS THE SAME WAY: §3.1b IS NEW CANON AND THE BOOK ENDED FOUR DIFFERENT WAYS BEFORE IT.** Seven lessons carried a *What's Next* heading in THREE spellings, five a bare `Next:` paragraph, one stacked both, four just stopped. DJ ruled A-INVERTED — build the eight UP rather than level the seven DOWN — and ruled the shape a FLOOR, not a ceiling: **nothing was deleted to reach conformance.** Titles are DERIVED from the §6.5a strip, which caught two lessons whose prose disagreed with their own generated link block ninety lines below. Plus Tier-1 normalizations from a book-wide consistency census, and `ZUMO_COLOR_LEDGER.md` opened because DJ asked the right question: *"We haven't gone through and done all the colors have you?"*)
-**Status:** ✅ **51/51 GATES PASS · THE WHAT'S NEXT ARC IS COMPLETE, ALL SIXTEEN LESSONS CONFORM.** **§3.1b is new canon**: every lesson 01–15 carries a `What's Next?` section — heading, a bold opener naming the next lesson, at least one list — seated immediately above Engineer's Log, with L16 exempt and gate 51 failing if it acquires one. **§3.1a finally has a numbered section body**, and the standing claim that §3.1 lacked one was measured FALSE — it has had one since v8.109. **The session's reusable finding is SCOPE:** three false results came from asking a SECTION question with a PAGE-wide instrument, and gate 51 is section-scoped throughout. **§27.11's baseline moved twice and the second move DIED TWO RULES** — the two back-to-top font-size variants, zero uses remaining, verified by grep rather than inferred. **The Engineer's Log stripe split was PARKED, not ruled**, and the colour work is now tracked in `ZUMO_COLOR_LEDGER.md` — 16 items, and the blocking fact that 155 hexes live inside 562 class names, so a repaint is a RENAME.
+**Date:** August 6, 2026 (Session 123 — **THE LEAD NAMED THE MINORITY, AND EACH LAYER IT HID WAS BIGGER THAN THE ONE ABOVE IT.** A queue item said *Consolas*; the instrument was scoped to Consolas; the book's dominant code type turned out to be `'Courier New', monospace` at 21 rules and 2,825 uses against Consolas's 14 and 459 — and that error reached DJ as a priced ruling before it was caught. Re-measured and re-ruled **B-full**: one mono stack, 38 declarations. Then gate 53, written from the corrected measurement, **could not see the next layer and said so by passing** — 1,199 bare `<code>` elements reached by no author rule at all. Then DJ cut through the third layer in one sentence — *"I thought since we weren't using canvas we didn't need the inline code"* — which was the real finding: **the stylesheet could not say what anything IS**, and there was nothing a second book could inherit. **§27.15 NEW: the semantic layer.** Plus §3.1b extended — the title is FED not typed, the opener is UNIQUE, and the apostrophe is ruled.)
+**Status:** ✅ **54/54 GATES PASS · THE STYLESHEET CAN NOW HOLD MEANING.** **§27.15 is new canon**: `css/semantic.css` is hand-authored, preserved verbatim at the top of the generated stylesheet, and is the only place a rule can carry an element selector, a semantic class or a custom property. **First graduate: `code, pre`** — 3,336 inline `<code>` and 832 `<pre>` now reached by one rule, 1,199 of them previously reached by nothing. **Additive by construction: zero lesson edits, all 540 value-named classes still work, generated block UNCHANGED at 636/2,332.** **The colour ledger is unblocked** — its first item was never a colour but whether custom properties could be emitted, and they now can. **Three new gates:** 52 (the opener is unique — S122 committed that exact defect to L05), 53 (one mono stack), 54 (the layer survives regeneration, a failure mode measured to be SILENT). **`title_feed.py` v1.0** feeds the §3.1b opener title from the §6.5a strip. **The pill question is deliberately deferred and now costs one line.**
 
-**Versions:** L01 v03.21.0 · L02 v03.13.0 · L03 v03.30.0 · L04 v04.21.0 · L05 v04.20.1 · L06 v04.25.0 · L07 v04.24.0 · L08 v04.21.0 · L09 v05.18.0 · L10 v02.19.0 · L11 v02.20.0 · L12 v01.22.0 · L13 v02.20.0 · L14 v02.25.0 · L15 v02.21.0 · L16 v02.13.0 · going_deeper v01.4.1 — census **41,128** · Bible **v8.111** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.2 · **book_gates v1.46.2** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.18.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.2.1 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.2.0 · next_pointer v1.0.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `5ff1ab2`.**
+**Versions:** L01 v03.21.0 · L02 v03.13.1 · L03 v03.30.1 · L04 v04.21.1 · L05 v04.20.2 · L06 v04.25.1 · L07 v04.24.0 · L08 v04.21.0 · L09 v05.18.0 · L10 v02.19.2 · L11 v02.20.0 · L12 v01.22.0 · L13 v02.20.0 · L14 v02.25.1 · L15 v02.21.0 · L16 v02.13.1 · going_deeper v01.4.2 — census **41,128** · Bible **v8.114** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.3 · **book_gates v1.49** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.19.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.1 · title_feed v1.0 · Timer v1.3.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `c4519b6`.**
 
 ---
 ---
+
+## WHAT SHIPPED IN S123
+
+**THE LEAD NAMED THE MINORITY.** The queue item said *Consolas* — 15 declarations in
+`css/book.css`. Measured, it was **422 declarations across 12 lessons** in five spellings
+resolving to **three different fallbacks off Windows and one face on Windows**, which is why it
+survived: the only readers who could see it were the ones who could not report it. On a Mac the
+dark code block rendered Monaco while inline code rendered the browser default — two code faces
+on one page. DJ was shown a rendered A/B/C specimen and ruled **B**.
+
+**THEN GATE 53, WRITTEN FROM THAT MEASUREMENT, RESIZED THE PROBLEM ON ITS FIRST RUN.** The book's
+dominant code type was never Consolas: `'Courier New', monospace` held **21 rules and 2,825 uses**
+against Consolas's 14 and 459, and `font_stack_sweep` is structurally blind to it because its
+first face is not a named substitution risk. **The A/B/C ruling had been priced on 459 uses when
+the population was 3,294**, and option A was described as a downgrade when for 86% of the book it
+was already the status quo. Re-measured, re-priced, re-ruled **B-full**. §24.6c one level up: a
+lead names a SYMPTOM, and scoping the instrument to the lead's own vocabulary guarantees you
+measure only what you were already told.
+
+**THEN GATE 53 COULD NOT SEE THE NEXT LAYER, AND SAID SO BY PASSING.** 1,199 bare `<code>`
+elements across L10–L16 are reached by no author rule at all, so their typeface was the browser's
+choice rather than the book's — and a gate that checks declarations cannot see an element that has
+none. §24.8, on a gate four hours old. The split is at the **L09/L10 seam**, the same seam S108
+found for the §6.5 Box; L01 is the outlier at 49% and was ruled LEGACY at S119.
+
+**THEN DJ CUT THROUGH THE THIRD LAYER IN ONE SENTENCE**, on being handed a pill-versus-bare
+choice: *"I thought since we weren't using canvas we didn't need the inline code."* Correct, and
+measured — the lessons carry **zero** inline `style` attributes and **25,752** `class` attributes.
+The inline representation `build_css` round-trips through exists only inside one run of it; §27
+retired the constraint and the model outlived it. **Because names are re-derived from VALUES every
+run, the generated block can only reproduce the status quo** — `.code-inline-bg-e8e8e8` can never
+become `.code`. It is a fixed point of the migration, not a design system, so **there was nothing
+a second book could inherit.** Same root cause as the colour ledger's blocker.
+
+**§27.15 NEW: THE SEMANTIC LAYER.** `css/semantic.css` is hand-authored, preserved verbatim at the
+top of the generated stylesheet, and never re-derived. First graduate: `code, pre`, reaching
+**3,336 inline `<code>` and 832 `<pre>`**. **Additive by construction — zero lesson edits, all 540
+value-named classes still work, and the generated block is UNCHANGED at 636/2,332**, which is the
+proof that adding the layer moved nothing generated. Retiring the round-trip outright is
+explicitly NOT ruled: 540 class names, seven instruments reading `expand_classes`, 25 gate
+references. The door is open; walking through it is optional, incremental and stoppable.
+
+**GATE 54 EXISTS BECAUSE THE FAILURE MODE IS SILENT.** Measured by injection before the layer was
+built: an element rule pasted into `css/book.css` did not error and did not warn — the next
+regeneration **deleted it**, and every gate stayed green. Its independence is measured too: add a
+value-named class to `semantic.css` and regenerate, and `build_css --check` reports *current* and
+§27.13 stays green while gate 54 alone names it.
+
+**§3.1b EXTENDED — THE TITLE IS FED, NOT TYPED.** `title_feed.py` v1.0 rewrites the opener title
+from the §6.5a strip; its correctness proof is that applying it to a conforming book rewrites
+**nothing**, which doubles as a cross-check against gate 51. **The handoff's uniqueness claim held
+only under two conditions and named one** — page-wide, `In <strong>Lesson` occurs 3 times in L03,
+2 in L09 and 3 in L12, all backward references. **Gate 52** holds a hole gate 51 cannot see: a
+section with the correct opener PLUS a stale duplicate satisfies gate 51's count, and **S122
+committed exactly that defect to L05**. **The apostrophe is ruled straight (B)** — L11's title was
+spelled straight in 21 places and curly in 3, all inside `Lesson_10.html`, and **three owners moved
+in one commit** because one left behind re-creates the drift on the next apply.
+
+**A REGISTRATION GAP FOUND BY WALKING INTO IT:** `timer.html` carries a version home and was
+registered in nothing — its version could only ever have been hand-typed, the §12.6 shape.
+
+**DELIBERATELY DEFERRED:** the grey pill. The typography hole is closed, so what remains is purely
+visual and now costs **one line** in `css/semantic.css`. DJ has not seen it rendered in a real
+lesson page yet.
 
 ## WHAT SHIPPED IN S122
 

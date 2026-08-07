@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.20.1 -->
+<!-- Lesson version: v04.20.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -852,9 +852,9 @@ Call it at the TOP of loop().
 <th class="th-ddd">Climbing up</th>
 <th class="th-ddd">Counting down</th>
 </tr>
-<tr><td class="td-ddd">START</td><td class="td-ddd"><code class="code-ff-couriern">int i = 0</code> — begin at the bottom</td><td class="td-ddd"><code class="code-ff-couriern">int i = 3</code> — begin at the top</td></tr>
-<tr><td class="td-ddd">CONTINUE IF</td><td class="td-ddd"><code class="code-ff-couriern">i &lt; 6</code> — stop when it gets too big</td><td class="td-ddd"><code class="code-ff-couriern">i &gt;= 1</code> — stop when it gets too small</td></tr>
-<tr><td class="td-ddd">UPDATE</td><td class="td-ddd"><code class="code-ff-couriern">i++</code> — add one</td><td class="td-ddd"><code class="code-ff-couriern">i--</code> — subtract one</td></tr>
+<tr><td class="td-ddd">START</td><td class="td-ddd"><code class="code-ff-uimonosp">int i = 0</code> — begin at the bottom</td><td class="td-ddd"><code class="code-ff-uimonosp">int i = 3</code> — begin at the top</td></tr>
+<tr><td class="td-ddd">CONTINUE IF</td><td class="td-ddd"><code class="code-ff-uimonosp">i &lt; 6</code> — stop when it gets too big</td><td class="td-ddd"><code class="code-ff-uimonosp">i &gt;= 1</code> — stop when it gets too small</td></tr>
+<tr><td class="td-ddd">UPDATE</td><td class="td-ddd"><code class="code-ff-uimonosp">i++</code> — add one</td><td class="td-ddd"><code class="code-ff-uimonosp">i--</code> — subtract one</td></tr>
 </table>
 
 <p>The loop prints 3, then 2, then 1, then quits — because on the next lap <code class="code-inline-bg-e8e8e8">i</code> is 0 and <code class="code-inline-bg-e8e8e8">0 &gt;= 1</code> is false. Notice the test is <code class="code-inline-bg-e8e8e8">&gt;=</code> and not <code class="code-inline-bg-e8e8e8">&gt;</code>: with a plain <code class="code-inline-bg-e8e8e8">&gt;</code> the countdown would show 3 and 2 and then stop, and your robot would launch a full second early. One character, one second, one crashed run.</p>
@@ -1586,7 +1586,7 @@ every loop:
 <pre class="code-block-333"><span class="tok-569cd6">int</span> detectionCount = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">bool</span> wasDetected = ____;    <span class="tok-7cbf6e">// nothing seen yet at power-on</span></pre>
 <p class="div-mt-12px"><strong>Step 2:</strong> In <code class="code-inline-bg-e8e8e8">loop()</code>, the "is it NEW?" test is the whole trick:</p>
-<pre class="code-block-333-6"><span class="tok-569cd6">bool</span> isDetected = (frontValue &gt;= DETECTION_THRESHOLD);
+<pre class="code-block-333-5"><span class="tok-569cd6">bool</span> isDetected = (frontValue &gt;= DETECTION_THRESHOLD);
 <span class="tok-569cd6">if</span> (isDetected &amp;&amp; !____) {      <span class="tok-7cbf6e">// there now, and NOT there last loop</span>
     detectionCount++;
     display.clear();
@@ -1667,7 +1667,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p>Replace the top of <code class="code-inline-bg-e8e8e8">updateIndicators()</code> with the winner-picker. Fill the blanks:</p>
-<pre class="code-block-333-6"><span class="tok-569cd6">void</span> updateIndicators() {
+<pre class="code-block-333-5"><span class="tok-569cd6">void</span> updateIndicators() {
     <span class="tok-569cd6">if</span> (leftValue == <span class="tok-b5cea8">0</span> &amp;&amp; frontValue == <span class="tok-b5cea8">0</span> &amp;&amp; rightValue == <span class="tok-b5cea8">0</span>) {
         ledRed(<span class="tok-b5cea8">0</span>); ledYellow(<span class="tok-b5cea8">0</span>); ledGreen(____);   <span class="tok-7cbf6e">// all clear</span>
     } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (leftValue &gt;= frontValue &amp;&amp; leftValue &gt;= rightValue) {
@@ -1737,7 +1737,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p>Swap the fixed-threshold beep cascade in <code class="code-inline-bg-e8e8e8">updateIndicators()</code> for the formula. Fill the blanks:</p>
-<pre class="code-block-333-6"><span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> beepInterval = <span class="tok-b5cea8">0</span>;
+<pre class="code-block-333-5"><span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> beepInterval = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">if</span> (frontValue &gt;= DETECTION_THRESHOLD) {
     beepInterval = ____ - (frontValue * ____);   <span class="tok-7cbf6e">// 1 -&gt; 600ms ... 6 -&gt; 100ms</span>
 }
@@ -1796,7 +1796,7 @@ every loop, read frontValue and decide:
 <pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = ____;   <span class="tok-7cbf6e">// ~10cm (a HIGH reading)</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAR_THRESHOLD   = ____;   <span class="tok-7cbf6e">// ~20cm (a LOW reading)</span></pre>
 <p class="div-mt-12px"><strong>Step 2:</strong> The four-way decision in <code class="code-inline-bg-e8e8e8">loop()</code> &mdash; note the extra branch for "no hand at all":</p>
-<pre class="code-block-333-6"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
+<pre class="code-block-333-5"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(-<span class="tok-b5cea8">150</span>, -<span class="tok-b5cea8">150</span>);   <span class="tok-7cbf6e">// too close - back away</span>
 } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (frontValue == ____) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);         <span class="tok-7cbf6e">// no hand - hold still</span>
@@ -1876,7 +1876,7 @@ every loop, read frontValue and decide:
     delay(<span class="tok-b5cea8">1000</span>);
 }</pre>
 <p class="div-mt-12px"><strong>Step 2:</strong> The drive/avoid decision in <code class="code-inline-bg-e8e8e8">loop()</code> &mdash; a spin is one wheel forward, one back:</p>
-<pre class="code-block-333-6"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
+<pre class="code-block-333-5"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);         <span class="tok-7cbf6e">// obstacle! stop...</span>
     delay(<span class="tok-b5cea8">200</span>);
     motors.setSpeeds(-<span class="tok-b5cea8">150</span>, ____);    <span class="tok-7cbf6e">// ...spin in place...</span>
