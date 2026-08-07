@@ -2,7 +2,14 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.50'
+VERSION = 'v1.51'
+# v1.51 (S125): NEW GATE 56 (§27.15c). §27.15c ruled going_deeper.html onto the semantic
+#   layer and shipped UNGATED. The sixteen lessons reach the layer through css/book.css,
+#   which gate 54 holds byte-for-byte; going_deeper reaches it through a direct <link> that
+#   nothing held at all. Measured by injection BEFORE this gate was written, three ways,
+#   each leaving all 55 preceding gates green and exit 0: delete the <link>, restate the
+#   old dark rule in the page's own <style>, or point the href at a file that does not
+#   exist. Carries a COVERAGE arm, because a gate that scans zero pages passes (S117/S118).
 # v1.50 (S124): NEW GATE 55 (§27.15a). The pill graduated and the graduation happened by
 #   DELETION - 2,132 class attributes stripped, ten rules dead, one BORN. The birth is the
 #   finding: build_css names a rule after its DOMINANT TAG, so stripping a class from SOME
@@ -2679,6 +2686,66 @@ if os.path.exists(_SEM):
     if _nested == 0:
         bad.append('no <code> inside any <pre> - the reset guards nothing; re-derive \u00a727.15a')
 gate('\u00a727.15a a pill on <code> is reset inside <pre>', bad)
+
+
+# ---- GATE 56 (\u00a727.15c): A PAGE THAT CONSUMES THE SEMANTIC LAYER MUST NOT RESTATE IT.
+# S125 ruled going_deeper.html onto css/semantic.css. It is the layer's FIRST DIRECT consumer:
+# the sixteen lessons reach the same rules a different way, preserved verbatim at the top of
+# css/book.css, which gate 54 holds. NOTHING held the direct path.
+#
+# MEASURED BY INJECTION BEFORE THIS GATE EXISTED, three ways, each leaving all 55 preceding
+# gates green and exit 0 while the page renders wrong or the ruling is silently undone:
+#   (a) delete the <link>                     -> 71 inline <code> lose the ruled pill
+#   (b) restate `code { background: ... }` in the page's own <style> -> two spellings of one
+#       ruled construct, which is exactly the drift \u00a727.15c ruled against
+#   (c) point the href at a path that does not exist -> the pipe is decorative
+# site_parity cannot see (a) or (b): it compares what the site SERVES against the repo, and a
+# page that stops referencing a file still matches. font_stack_sweep cannot see them either:
+# it rewrites non-compliant stacks and an ABSENT stack is not non-compliant (\u00a724.8, twice).
+#
+# The ORDER assertion is part of the rule, not decoration. \u00a727.15c seats the <link> ABOVE the
+# page's own <style> so the page wins collisions on declarations it sets. Move it below and the
+# layer starts overriding the page instead - a silent inversion no rendering check would flag.
+#
+# COVERAGE arm: the consumer set is NAMED (\u00a725.2a), never counted. A page joining it is a
+# deliberate act and belongs in this list.
+_SEM_CONSUMERS = ['going_deeper.html']
+bad = []
+_seen = 0
+for _f in _SEM_CONSUMERS:
+    if not os.path.exists(_f):
+        bad.append(f'{_f}: named a semantic-layer consumer and the file is missing')
+        continue
+    _seen += 1
+    _s = open(_f, encoding='utf-8').read()
+    _lnk = re.search(r'<link[^>]+href="([^"]*semantic\.css)"[^>]*>', _s)
+    if not _lnk:
+        bad.append(f'{_f}: links no semantic layer - its inline <code> silently loses the '
+                   'ruled pill and every other gate stays green (\u00a727.15c)')
+        continue
+    _href = _lnk.group(1)
+    _target = os.path.normpath(os.path.join(os.path.dirname(_f), _href))
+    if not os.path.exists(_target):
+        bad.append(f'{_f}: links `{_href}`, which resolves to `{_target}` and does not exist')
+    if _target.replace(os.sep, '/') != _SEM:
+        bad.append(f'{_f}: links `{_href}` -> `{_target}`, not the ruled layer `{_SEM}`')
+    _sty = _s.find('<style')
+    if _sty == -1:
+        bad.append(f'{_f}: carries no <style> block - re-derive \u00a727.15c, this gate assumes one')
+    elif _lnk.start() > _sty:
+        bad.append(f'{_f}: the semantic <link> is seated BELOW the page <style> block, so the '
+                   'layer now overrides the page instead of the other way round (\u00a727.15c)')
+    else:
+        _own = _s[_sty:]
+        for _sel in ('code', 'pre code'):
+            _m = re.search(r'(^|\n)\s*' + _sel.replace(' ', r'\s+') + r'\s*\{([^}]*)\}', _own)
+            if _m and re.search(r'background\s*:|font-family\s*:', _m.group(2)):
+                bad.append(f'{_f}: its own <style> restates `{_sel}` with a background or a '
+                           'font-family - one ruled construct, two spellings, and nothing '
+                           'compares them (\u00a727.15c)')
+if _seen == 0:
+    bad.append('gate 56 scanned ZERO consumer pages - a gate that scans nothing passes')
+gate('\u00a727.15c a semantic-layer consumer links it and does not restate it', bad)
 
 print('=' * 52)
 

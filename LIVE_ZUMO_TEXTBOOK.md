@@ -1,9 +1,52 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** August 7, 2026 (Session 125 — **BEING OUTSIDE THE GENERATED BLOCK IS NOT A REASON TO HOLD A DIFFERENT CONVENTION; IT IS ONLY A REASON TO BE REACHED BY A DIFFERENT PIPE.** DJ ruled **C** — *"I want the book to be the same throughout"* — and `going_deeper.html` becomes the **FIRST DIRECT CONSUMER of `css/semantic.css`**. Its 71 bare inline `<code>` elements drop the dark `#1e1e1e` / `#9cdcfe` pill S124 recorded and left unruled, and take the ruled wash. **A CLAIM CARRIED IN FROM S124 WAS FALSE AND DJ'S QUESTION IS WHAT TESTED IT** — asked whether S124 had shipped the pill *by linking*, the tree says **nothing in the repo links `css/semantic.css` at all**; the lessons link `css/book.css`, which carries the layer verbatim at byte offset 973. **The mechanism was ruled on which failure it leaves behind**, not on effort: a second spelling inside the page's own `<style>` block is drift that gate 54 is structurally blind to. **§27.15c NEW.**)
-**Status:** ✅ **55/55 GATES PASS · ONE BOOK, ONE INLINE-CODE CONVENTION.** Measured before proposing anything: **77 `<code>` in `going_deeper.html`, 71 inline and 6 inside `<pre>`, and not one of the 71 carries a class** — the same bare-element population that was invisible to S124's first sweep. **The S124 trap does not fire here and that was CHECKED, not assumed:** grounds are **62 `#ffffff` and 9 `#e3f0e5`**, zero dark, zero `<th>` ancestors, no container declaring `color: white`. The content is the lesson construct — identifiers, calls, literals, directives, filenames, and **7 compiler-error strings, which match lesson practice at 23 bare `<code>` occurrences across L01–L16**. **The book already shipped the split a *different context* ruling would have defended:** six `.code-block-bg-1e1e1e` variants and nine bare `<code>` inside L01's dark blocks under the light pill, so dark-block-plus-light-inline was already canon in sixteen lessons and going_deeper was the only page disagreeing. **Linking `css/book.css` was measured and rejected — 84,541 bytes and 627 lesson-specific rules for four declarations.** **FOUR DECLARATIONS LEFT THE PAGE AND NOTHING WAS ADDED**, six changed lines, every edit asserted at exactly one occurrence. **NO CASCADE:** going_deeper is not a `build_css` source, so §27.8b never ran — `build_css --check` current at **627 rules**, §27.11 holding at 627 / 2,297, family map unmoved at 1069, `site_parity` 139 → 140 assets and still PARITY. **THE VISIBLE §5b BANNER WAS MISSED AND THE GATE CAUGHT IT** before anything was presented. **Recorded, not ruled:** §27.12 still cannot reach this now partly-converted page, and going_deeper loads the **Inter** webfont and never uses it.
+**Status:** ✅ **56/56 GATES PASS · ONE BOOK, ONE INLINE-CODE CONVENTION — AND THE NEW PATH IS NOW HELD. GATE 56 NEW (§27.15c).** The ruling shipped UNGATED for one commit: deleting `going_deeper.html`'s `<link>`, restating the dark rule in its own `<style>`, breaking the `href`, or seating the link below the `<style>` block each left **all 55 preceding gates green and exit 0**. `site_parity` and `font_stack_sweep` are both structurally blind to the first two (§24.8 twice). Control-run six ways, each defect firing gate 56 ALONE. Measured before proposing anything: **77 `<code>` in `going_deeper.html`, 71 inline and 6 inside `<pre>`, and not one of the 71 carries a class** — the same bare-element population that was invisible to S124's first sweep. **The S124 trap does not fire here and that was CHECKED, not assumed:** grounds are **62 `#ffffff` and 9 `#e3f0e5`**, zero dark, zero `<th>` ancestors, no container declaring `color: white`. The content is the lesson construct — identifiers, calls, literals, directives, filenames, and **7 compiler-error strings, which match lesson practice at 23 bare `<code>` occurrences across L01–L16**. **The book already shipped the split a *different context* ruling would have defended:** six `.code-block-bg-1e1e1e` variants and nine bare `<code>` inside L01's dark blocks under the light pill, so dark-block-plus-light-inline was already canon in sixteen lessons and going_deeper was the only page disagreeing. **Linking `css/book.css` was measured and rejected — 84,541 bytes and 627 lesson-specific rules for four declarations.** **FOUR DECLARATIONS LEFT THE PAGE AND NOTHING WAS ADDED**, six changed lines, every edit asserted at exactly one occurrence. **NO CASCADE:** going_deeper is not a `build_css` source, so §27.8b never ran — `build_css --check` current at **627 rules**, §27.11 holding at 627 / 2,297, family map unmoved at 1069, `site_parity` 139 → 140 assets and still PARITY. **THE VISIBLE §5b BANNER WAS MISSED AND THE GATE CAUGHT IT** before anything was presented. **Recorded, not ruled:** §27.12 still cannot reach this now partly-converted page, and going_deeper loads the **Inter** webfont and never uses it.
 
-**Versions:** L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04.21.0 · L06 v04.26.0 · L07 v04.25.0 · L08 v04.22.0 · L09 v05.19.0 · L10 v02.20.0 · L11 v02.21.0 · L12 v01.23.0 · L13 v02.21.0 · L14 v02.26.0 · L15 v02.22.0 · L16 v02.14.0 · going_deeper v01.5.0 — census **41,128** · Bible **v8.116** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.3 · **book_gates v1.50** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.19.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.1 · title_feed v1.0 · Timer v1.3.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `7ae1650`.**
+**Versions:** L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04.21.0 · L06 v04.26.0 · L07 v04.25.0 · L08 v04.22.0 · L09 v05.19.0 · L10 v02.20.0 · L11 v02.21.0 · L12 v01.23.0 · L13 v02.21.0 · L14 v02.26.0 · L15 v02.22.0 · L16 v02.14.0 · going_deeper v01.5.0 — census **41,128** · Bible **v8.116.1** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.3 · **book_gates v1.51** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.19.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.1 · title_feed v1.0 · Timer v1.3.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `907b26e`.**
+
+---
+---
+
+## WHAT SHIPPED IN S125 — ADDENDUM: THE RULING OWED A GATE
+
+**§27.15c WENT LIVE UNGATED AND THE HOLE WAS THE ONE THE SECTION ITSELF DESCRIBES.** The sixteen
+lessons reach the semantic layer through `css/book.css`, which **gate 54 holds byte-for-byte**.
+`going_deeper.html` reaches it through a direct `<link>` that **no instrument in the tree could see.**
+
+**MEASURED BY INJECTION BEFORE THE GATE WAS WRITTEN — four defects, each leaving all 55 preceding
+gates green and exit 0:**
+
+| injected defect | what actually breaks |
+|---|---|
+| delete the `<link>` | 71 inline `<code>` silently lose the ruled pill |
+| restate `code { background: … }` in the page's own `<style>` | one ruled construct, two spellings — the exact drift §27.15c rules against |
+| point the `href` at a path that does not exist | the pipe is decorative |
+| seat the `<link>` **below** the `<style>` block | the layer overrides the page instead of the reverse |
+
+**THE TWO INSTRUMENTS THAT LOOK LIKE THEY SHOULD HAVE COVERED IT ARE BOTH BLIND, §24.8 TWICE.**
+`site_parity` compares what the site **serves** against the repo — a page that stops **referencing** a
+file still matches, and it reported PARITY throughout. `font_stack_sweep` rewrites non-compliant
+stacks, and an **absent** stack is not non-compliant, so it stayed silent at 0 rewrites.
+
+**GATE 56 NEW.** The consumer set is **NAMED, not counted** (§25.2a) — `_SEM_CONSUMERS` — and the gate
+carries a **coverage arm**, because a gate that scans zero pages passes (S117/S118): emptying that list
+FAILS naming *scanned ZERO consumer pages*. **Control-run six ways from a pristine snapshot with
+read-back asserts (S117/S121):** each of the five defect shapes fires gate 56 **alone** at 55 of 55
+others green, and the untouched tree passes at 56 of 56. `regex_audit` run after the gate per S124 —
+**0 leads**. `going_deeper.html` was restored from the snapshot and **diffed byte-identical against the
+pushed clone**, so no page changed in this pass.
+
+**THE GENERAL SHAPE, AND IT IS WHY THIS IS AN ADDENDUM RATHER THAN A FOOTNOTE: A RULING THAT CREATES A
+NEW DELIVERY PATH CREATES A NEW UNGUARDED PATH, AND THE SESSION THAT RULES IT OWES THE GATE.** The
+coupling cost of §27.15c was written into the handoff as a known risk **and no gate was written for it
+in the same pass** — §24.2's shape one scale down. **Write the gate in the same pass as the ruling, not
+in the handoff that describes it.**
+
+**Applied S125 (second push):** `book_gates` reaches **v1.51** (from v1.50), 56 gates. Bible reaches
+**v8.116.1**, minor — the rule was already ruled; only its enforcement is new. No lesson file changed,
+`going_deeper.html` unchanged, `build_css --check` current at 627 rules, census unchanged at **41,128**
+[lesson_inventory.py], family map unmoved at 1069.
 
 ---
 ---

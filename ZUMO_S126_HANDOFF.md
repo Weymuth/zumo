@@ -80,17 +80,26 @@ on **which failure each leaves behind**. A second spelling of a ruled construct 
 future graduate uninvited is visible at the moment of the next graduation. **Silent-and-unwatched loses
 to visible-and-scheduled**, and that is why the more-coupled option was the right one.
 
+**AND THEN THE RULING SHIPPED UNGATED, WHICH IS THE SAME MISTAKE ONE LEVEL UP.** §27.15c created a
+delivery path nothing held. The coupling cost was written into THIS handoff as a known risk and no gate
+was written for it in the same pass. Measured afterwards: deleting the `<link>`, restating the dark rule
+in the page's own `<style>`, breaking the `href`, or seating the link below the `<style>` block each left
+**all 55 preceding gates green and exit 0** — and `site_parity` and `font_stack_sweep`, the two
+instruments that look like they should have covered it, are both structurally blind (§24.8 twice).
+**Gate 56 closes it.** The rule: **a ruling that creates a new delivery path creates a new unguarded
+path, and the session that rules it owes the gate — in the same pass, not in the handoff.**
+
 ---
 
 # STATE
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`7ae1650`**. Census **41,128**.
-Bible **v8.116** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.3** ·
+Fresh-clone verified at **`907b26e`**. Census **41,128**.
+Bible **v8.116.1** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.3** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.50** · `lesson_inventory` **v1.2.0** ·
+Instruments: `book_gates` **v1.51** · `lesson_inventory` **v1.2.0** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
 `build_family_map` **v1.3.7** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.19.0** · `fit_raster_svg` **v1.2** ·
@@ -111,11 +120,11 @@ Instruments: `book_gates` **v1.50** · `lesson_inventory` **v1.2.0** ·
 
 Lessons: L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04.21.0 · L06 v04.26.0 · L07 v04.25.0 · L08 v04.22.0 · L09 v05.19.0 · L10 v02.20.0 · L11 v02.21.0 · L12 v01.23.0 · L13 v02.21.0 · L14 v02.26.0 · L15 v02.22.0 · L16 v02.14.0.
 
-**55/55 gates.** `--anomalies` silent · family map **1069/1069** · `regex_audit` 0 leads ·
+**56/56 gates.** `--anomalies` silent · family map **1069/1069** · `regex_audit` 0 leads ·
 `build_css --check` current at **627 rules** · `color_index --check` clean ·
 `image_audit --check` current at 14 outstanding of 141 · both banner generators green ·
 `gate_payload_match` PASS on the full glob · `next_pointer --check` and `title_feed --check` clean ·
-`font_stack_sweep` 0 rewrites · `strip_inline --verify` 0 dead class names ·
+`font_stack_sweep` 0 rewrites (and BLIND to gate 56's population — an absent stack is not non-compliant) · `strip_inline --verify` 0 dead class names ·
 `site_parity` PARITY at **140** referenced assets (was 139 — the new `css/semantic.css` reference).
 
 **§27.11 is 627 / 2,297, digest `3f4c39d35c2d6b64`**, scoped to the generated block. Unmoved by S125:
@@ -128,6 +137,9 @@ Lessons: L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04
 DJ ruled **C**: *"I want the book to be the same throughout."* `going_deeper.html` is the **first
 direct consumer of `css/semantic.css`**. Four declarations left the page, nothing was added, six lines
 changed. **§27.15c NEW.** Bible **v8.116**, `going_deeper` **v01.5.0**.
+
+**Gate 56 NEW (`book_gates` v1.51), shipped in a second push** after the ruling was found ungated —
+control-run six ways, each defect firing it ALONE, `regex_audit` 0 leads. Bible **v8.116.1** carries the entry.
 
 **Two things recorded and NOT ruled, both live for S126:**
 - **§27.12 still cannot reach `going_deeper.html`.** Gate 44 keys on `css/book.css` appearing in the
@@ -186,8 +198,8 @@ wired into a lesson.**
 
 ## Opened and not ruled
 - **Should `css/semantic.css` carry a version home?** Carried from S123. **The case is stronger again
-  at S125** — it now holds two ruled constructs AND has an external consumer that can break if it
-  changes. `session_versions` could register it in a line.
+  at S125** — it now holds two ruled constructs, has an external consumer that can break if it changes,
+  and TWO gates (54 and 56) depend on its contents. `session_versions` could register it in a line.
 - **Is anything ELSE in the repo carrying a version that nothing tracks?** `timer.html` was the S123
   case; the sweep was never run.
 - **L14's score formula is marked up as `<code>` and is not code.** The markup question is real and
@@ -261,6 +273,9 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 14. **AN EDIT TO A FILE WITH REPEATED LANDMARK LINES TARGETS AN INDEX AND ASSERTS IT** (§6.12c for
     markdown), never a prefix match. LIVE.md has TWO `**Versions:**` lines and the second is a
     historical per-session snapshot whose contents must not move.
+16. **WRITE THE GATE IN THE SAME PASS AS THE RULING.** S125 ruled §27.15c, shipped it, and wrote the
+    coupling risk into this handoff without a gate — four separate defects then passed 55 of 55.
+    A ruling that creates a new delivery path owes a gate on that path before the push, not after.
 15. **A VERSION HOME FOUND BY GREPPING FOR A SPELLING IS A HOME YOU HAVE NOT ENUMERATED.** S125
     grepped `version:` and `Version 1` and missed `Version 01.4`. Gate 1 caught it. `session_versions`
     holds the regex for every registered artefact — read ARTEFACTS, do not invent a search.
