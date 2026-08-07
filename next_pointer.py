@@ -35,7 +35,7 @@ import sys
 
 # VERSION below is the ONE home read by session_versions. It sits ABOVE the changelog so a
 # plain grep of this file returns the version and not a changelog line (S98).
-VERSION = 'v1.1'
+VERSION = 'v1.2'
 # v1.1 (S123): esc() no longer rewrites an apostrophe - DJ ruling B. The lossy step
 #   recorded at v1.0.1 and deliberately left is now closed, and the docstring claim that
 #   titles are DERIVED is true for every character. Blast radius measured, not guessed:
@@ -114,7 +114,7 @@ def block(n, tmap):
         f"{MARK}\n"
         f'<p class="p-mt-22px" id="next-lesson">'
         f'<a href="Lesson_{nxt:02d}.html" class="link-c-2e86ab">'
-        f"Next: Lesson {nxt} &mdash; {esc(tmap[nxt])} &rarr;</a></p>\n\n"
+        f"Next: Lesson {nxt} \u2014 {esc(tmap[nxt])} \u2192</a></p>\n\n"
     )
 
 

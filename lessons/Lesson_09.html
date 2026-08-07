@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.20.0 -->
+<!-- Lesson version: v05.20.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +49,7 @@
         <a href="Lesson_14.html" title="Competition Prep" class="link-bc-rgba2552">14</a>
         <a href="Lesson_15.html" title="Advanced PID Control" class="link-bc-rgba2552">15</a>
         <a href="Lesson_16.html" title="Engineering Showcase" class="link-bc-rgba2552">16</a>
-        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
+        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">⌂</a>
     </div>
     <script>
     (function() {
@@ -76,8 +76,8 @@
 <div class="div-fs-095em">LESSON 09</div>
 <h1 class="h1">Intersections &amp; Dead Ends</h1>
 <div class="div-fs-11em">Teaching Your Robot to Decide</div>
-<div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 05.20 &mdash; August 2026</div>
+<div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
+<div class="div-fs-09em-2">Version 05.20 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -136,9 +136,9 @@
     <ul class="ul-ls-none-3">
 <li>☐ Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own tape</li>
 <li>☐ Identify an intersection from which outer sensors see green</li>
-<li>☐ Execute precise left, right, and 180&#176; turns as one-line wrappers on Lesson 6&#8217;s <code>turnDegrees()</code></li>
+<li>☐ Execute precise left, right, and 180° turns as one-line wrappers on Lesson 6’s <code>turnDegrees()</code></li>
 <li>☐ Define an <strong>enum</strong> and say why it beats a magic number</li>
-<li>☐ Implement a four-state <strong>state machine</strong> with <code>switch</code>/<code>case</code> &#8212; and say what a missing <code>break</code> does to it</li>
+<li>☐ Implement a four-state <strong>state machine</strong> with <code>switch</code>/<code>case</code> — and say what a missing <code>break</code> does to it</li>
 <li>☐ Explain why every state must name its own exit</li>
 <li>☐ Navigate a complete course with several intersection types</li>
 </ul>
@@ -153,7 +153,7 @@
 </div>
 
 <!-- ===================== SECTION 3: THEORY ===================== -->
-<div class="div-bg-1f2a3d"><div id="section-3"><span class="span-d-block-2">Section 3 &middot; Theory</span><span class="span-d-block">How Intersection Detection Works</span></div></div>
+<div class="div-bg-1f2a3d"><div id="section-3"><span class="span-d-block-2">Section 3 · Theory</span><span class="span-d-block">How Intersection Detection Works</span></div></div>
 <div class="div-1f2a3d">
 
 
@@ -192,13 +192,13 @@
 
 <h3 class="h3-c-1f2a3d">3.2 Intersection Types</h3>
 
-<p>Green markers are placed beside the line to indicate which way to turn. Your robot detects them with the <strong>outer sensors</strong> &#8212; sensor 1 and sensor 5, which report into array boxes <code>[0]</code> and <code>[4]</code>:</p>
+<p>Green markers are placed beside the line to indicate which way to turn. Your robot detects them with the <strong>outer sensors</strong> — sensor 1 and sensor 5, which report into array boxes <code>[0]</code> and <code>[4]</code>:</p>
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-0e1a2c">Green Detected On</th><th class="th-bg-0e1a2c">Intersection Type</th><th class="th-bg-0e1a2c">Action</th></tr>
-    <tr><td class="td-b-white">LEFT only &#8212; sensor 1, box <code>[0]</code></td><td class="td-b-white">Turn Left</td><td class="td-b-white">Execute 90° left turn</td></tr>
-    <tr><td class="td-b-white">RIGHT only &#8212; sensor 5, box <code>[4]</code></td><td class="td-b-white">Turn Right</td><td class="td-b-white">Execute 90° right turn</td></tr>
-    <tr><td class="td-b-white">BOTH sides &#8212; boxes <code>[0]</code> AND <code>[4]</code></td><td class="td-b-white">Dead End</td><td class="td-b-white">Execute 180° turnaround</td></tr>
+    <tr><td class="td-b-white">LEFT only — sensor 1, box <code>[0]</code></td><td class="td-b-white">Turn Left</td><td class="td-b-white">Execute 90° left turn</td></tr>
+    <tr><td class="td-b-white">RIGHT only — sensor 5, box <code>[4]</code></td><td class="td-b-white">Turn Right</td><td class="td-b-white">Execute 90° right turn</td></tr>
+    <tr><td class="td-b-white">BOTH sides — boxes <code>[0]</code> AND <code>[4]</code></td><td class="td-b-white">Dead End</td><td class="td-b-white">Execute 180° turnaround</td></tr>
     <tr><td class="td-b-white">Neither side</td><td class="td-b-white">No Intersection</td><td class="td-b-white">Continue line following</td></tr>
 </table>
 
@@ -212,8 +212,8 @@
 
 <div class="callout-2196f3-bg-e3f2fd-4">
     <div class="div-fs-105em">📖 LEARN: Reading Sensor Patterns</div>
-    <p>The Zumo has five line sensors, <strong>numbered 1&#8211;5 from left to right</strong>. Their readings land in an array whose <strong>positions run 0&#8211;4</strong> &#8212; so sensor 1&#8217;s reading lives in <code>sensorValues[0]</code> and sensor 5&#8217;s in <code>sensorValues[4]</code>. Lesson 4 called this out as the number-one bug in the book: <em>the index counts from zero; it does not name the sensor.</em> The table below names the sensors and shows the box each one reports into &#8212; because the code you write in Step 4 addresses the <em>boxes</em>.</p>
-<p>When following a line, typically only the middle sensors (2, 3, 4) see it. At an intersection, the outer sensors &#8212; 1 and 5, in boxes <code>[0]</code> and <code>[4]</code> &#8212; suddenly see line too.</p>
+    <p>The Zumo has five line sensors, <strong>numbered 1–5 from left to right</strong>. Their readings land in an array whose <strong>positions run 0–4</strong> — so sensor 1’s reading lives in <code>sensorValues[0]</code> and sensor 5’s in <code>sensorValues[4]</code>. Lesson 4 called this out as the number-one bug in the book: <em>the index counts from zero; it does not name the sensor.</em> The table below names the sensors and shows the box each one reports into — because the code you write in Step 4 addresses the <em>boxes</em>.</p>
+<p>When following a line, typically only the middle sensors (2, 3, 4) see it. At an intersection, the outer sensors — 1 and 5, in boxes <code>[0]</code> and <code>[4]</code> — suddenly see line too.</p>
 </div>
 
 <p>Here's what the <strong>black geometry</strong> of each junction looks like to your sensors. Read it for sensor literacy — then note carefully: our robot's <em>decisions</em> don't come from this geometry. They come from the <strong>green markers</strong> (Section 3.1). The geometry says <em>an intersection exists</em>; the marker says <em>what to do about it</em>.</p>
@@ -232,12 +232,12 @@
 <tr><td class="td-ddd">Right Turn Only</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬛ High</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ HIGH</td></tr>
 <tr><td class="td-ddd">T-Intersection<br>(left + right)</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ High</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ HIGH</td></tr>
 <tr><td class="td-ddd">4-Way / Cross</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ HIGH</td><td class="td-ddd">⬛ HIGH</td></tr>
-<tr><td class="td-ddd">Line Ends (gap &mdash; or a true dead end)</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td></tr>
+<tr><td class="td-ddd">Line Ends (gap — or a true dead end)</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td><td class="td-ddd">⬜ Low</td></tr>
 </table>
 
 <div class="callout-2da99d-bg-e9f7f5-2">
     <div class="div-fs-105em">🔍 INSIGHT — Two of these rows matter later</div>
-    <p class="p-mb-0">An <strong>unmarked</strong> all-black crossing (the 4-Way row) has no green anywhere &mdash; the base build correctly drives straight through it, exactly what a RoboCup course expects. Challenge 6 turns that same all-black signature into the right-hand rule. And the all-white row is what <code>handleGap()</code> has been handling since Lesson 8.</p>
+    <p class="p-mb-0">An <strong>unmarked</strong> all-black crossing (the 4-Way row) has no green anywhere — the base build correctly drives straight through it, exactly what a RoboCup course expects. Challenge 6 turns that same all-black signature into the right-hand rule. And the all-white row is what <code>handleGap()</code> has been handling since Lesson 8.</p>
 </div>
 
 <img src="../images/L09_GRAPHIC_9-7_sensor_patterns.svg" alt="Six junction shapes with the five-sensor bar overlaid: which sensors read High on a plain line, left turn, right turn, T, 4-way cross, and a line that ends" class="img-d-block-2">
@@ -250,7 +250,7 @@
 
 <h3 class="h3-c-1f2a3d">3.4 What is a State Machine?</h3>
 
-<div class="callout-2e86ab-bg-e7f0fa-2"><div class="div-fs-105em">🔁 Builds on:</div> the Variable Speed Test from Lesson 3 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em"> &mdash; Button B cycling four speeds was a state machine. You built one before you had the name.</div>
+<div class="callout-2e86ab-bg-e7f0fa-2"><div class="div-fs-105em">🔁 Builds on:</div> the Variable Speed Test from Lesson 3 <img src="../images/spiral_star_03.svg" alt="Spiral review from Lesson 03" class="img-h-11em"> — Button B cycling four speeds was a state machine. You built one before you had the name.</div>
 
 <p>Here's a problem: your robot detects green on the left and starts turning. But as it turns, the sensor might briefly see green again. Should it start another turn? This is where a <strong>state machine</strong> saves the day.</p>
 
@@ -299,7 +299,7 @@ enum IntersectionType {
 
 <h3 class="h3-c-1f2a3d">3.6 Turn Execution Strategies</h3>
 
-<p>There are three ways a robot can execute a 90&deg; tank turn — and you already own the good one:</p>
+<p>There are three ways a robot can execute a 90° tank turn — and you already own the good one:</p>
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-0e1a2c">Method</th><th class="th-bg-0e1a2c">How It Works</th><th class="th-bg-0e1a2c">Verdict</th></tr>
@@ -315,7 +315,7 @@ enum IntersectionType {
 <div class="callout-607d8b-bg-eceff1">
     <div class="div-fs-09em">📘 NOTE</div>
     <div class="div-fs-105em">The Lesson 6 Dividend</div>
-    <p class="p-mb-0">Remember <code>turnDegrees()</code> from Lesson 6? It already turns by <strong>encoder counts</strong>, already averages <strong>both wheels</strong>, already ignores battery sag. And it deliberately does <strong>not</strong> use TRIM &mdash; in a pivot the wheels oppose each other <em>on purpose</em>, so there is no straight line to correct. TRIM is for open-loop <em>straight</em> lines; the encoders govern the angle. This lesson's three turn functions are one-line wrappers around it — Step 5 of Section 6 takes about ninety seconds.</p>
+    <p class="p-mb-0">Remember <code>turnDegrees()</code> from Lesson 6? It already turns by <strong>encoder counts</strong>, already averages <strong>both wheels</strong>, already ignores battery sag. And it deliberately does <strong>not</strong> use TRIM — in a pivot the wheels oppose each other <em>on purpose</em>, so there is no straight line to correct. TRIM is for open-loop <em>straight</em> lines; the encoders govern the angle. This lesson's three turn functions are one-line wrappers around it — Step 5 of Section 6 takes about ninety seconds.</p>
 </div>
 
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
@@ -328,7 +328,7 @@ enum IntersectionType {
 </div>
 
 <!-- ===================== SECTION 4: THE COURSE ===================== -->
-<div class="div-bg-433014-2"><div id="section-4"><span class="span-d-block-2">Section 4 &middot; The Course</span><span class="span-d-block">Building Your Testing Environment</span></div></div>
+<div class="div-bg-433014-2"><div id="section-4"><span class="span-d-block-2">Section 4 · The Course</span><span class="span-d-block">Building Your Testing Environment</span></div></div>
 <div class="div-433014">
 
 
@@ -380,7 +380,7 @@ enum IntersectionType {
 </div>
 
 <!-- ===================== SECTION 5: CODE WALKTHROUGH ===================== -->
-<div class="div-bg-433014"><div id="section-5"><span class="span-d-block-2">Section 5 &middot; Code Walkthrough</span><span class="span-d-block">The State Machine Pattern</span></div></div>
+<div class="div-bg-433014"><div id="section-5"><span class="span-d-block-2">Section 5 · Code Walkthrough</span><span class="span-d-block">The State Machine Pattern</span></div></div>
 <div class="div-433014">
 
 
@@ -407,7 +407,7 @@ enum IntersectionType {
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-0e1a2c">Function</th><th class="th-bg-0e1a2c">Location</th><th class="th-bg-0e1a2c">Purpose</th></tr>
     <tr><td class="td-b-white"><code>isGreen(int)</code></td><td class="td-b-white">RobotSensors</td><td class="td-b-white">Is one calibrated reading inside the green band?</td></tr>
-    <tr><td class="td-bg-f9f9f9"><code>checkForIntersection()</code></td><td class="td-bg-f9f9f9">RobotSensors</td><td class="td-bg-f9f9f9">Calibrated read of the outer sensors &rarr; what is the course asking?</td></tr>
+    <tr><td class="td-bg-f9f9f9"><code>checkForIntersection()</code></td><td class="td-bg-f9f9f9">RobotSensors</td><td class="td-bg-f9f9f9">Calibrated read of the outer sensors → what is the course asking?</td></tr>
     <tr><td class="td-b-white"><code>turnLeft()</code> / <code>turnRight()</code> / <code>turnAround()</code></td><td class="td-b-white">RobotMotion</td><td class="td-b-white">One-line wrappers on Lesson 6’s encoder <code>turnDegrees()</code></td></tr>
     <tr><td class="td-bg-f9f9f9"><code>showDecision()</code></td><td class="td-bg-f9f9f9">main.cpp</td><td class="td-bg-f9f9f9">Announce the pending decision on the display</td></tr>
 </table>
@@ -452,37 +452,37 @@ enum IntersectionType {
 
 <div id="brain-check-01" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
-<p>That is the reading done. Before you put a single wheel on the floor, answer these five <em>from your head</em> &mdash; no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
+<p>That is the reading done. Before you put a single wheel on the floor, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Name the three bands on the calibrated scale, and which surface sits in each. (&sect;3.1)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Name the three bands on the calibrated scale, and which surface sits in each. (§3.1)</summary>
 
-<div class="div-mt-12px"><p>White reflects most of the infrared, so it reads low &mdash; under about 200. Black absorbs it and reads high &mdash; over about 800. Green absorbs some and reflects the rest, which lands it in the middle, roughly 300&#8211;700. Treat all three as approximate until you survey your own tape in Section 7: the bands are the idea, the numbers are yours.</p></div>
-
-</details>
-
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Which two sensors carry the green markers, which array boxes do they report into, and what does green on both sides mean? (&sect;3.2, &sect;3.3)</summary>
-
-<div class="div-mt-12px"><p>Sensors 1 and 5 &mdash; the outer pair &mdash; reporting into <code>sensorValues[0]</code> and <code>sensorValues[4]</code>. The index counts from zero; it does not name the sensor. Green on the left only means turn left, green on the right only means turn right, and green on <em>both</em> sides at once is a dead end &mdash; a 180&#176; turnaround.</p></div>
+<div class="div-mt-12px"><p>White reflects most of the infrared, so it reads low — under about 200. Black absorbs it and reads high — over about 800. Green absorbs some and reflects the rest, which lands it in the middle, roughly 300–700. Treat all three as approximate until you survey your own tape in Section 7: the bands are the idea, the numbers are yours.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Name the four states, and say what each one does. (&sect;3.4)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Which two sensors carry the green markers, which array boxes do they report into, and what does green on both sides mean? (§3.2, §3.3)</summary>
 
-<div class="div-mt-12px"><p><code>STOPPED</code> &mdash; motors off, waiting for button B. <code>FOLLOWING_LINE</code> &mdash; normal P-control line following. <code>AT_INTERSECTION</code> &mdash; stop and identify which kind of intersection this is. <code>EXECUTING_TURN</code> &mdash; perform the turn on encoder counts. One action per state, and only ever one state at a time.</p></div>
-
-</details>
-
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Define an enum, and say what <code>state = 0</code> costs you. (&sect;3.5)</summary>
-
-<div class="div-mt-12px"><p>An enum is a data type that defines a set of named constants. <code>state = 0</code> tells you nothing &mdash; you have to remember what zero meant, and so does every reader after you. <code>FOLLOWING_LINE</code> says it out loud.</p></div>
+<div class="div-mt-12px"><p>Sensors 1 and 5 — the outer pair — reporting into <code>sensorValues[0]</code> and <code>sensorValues[4]</code>. The index counts from zero; it does not name the sensor. Green on the left only means turn left, green on the right only means turn right, and green on <em>both</em> sides at once is a dead end — a 180° turnaround.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Of the three turn strategies, name the one this lesson uses, the one it refuses, and why. (&sect;3.6)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Name the four states, and say what each one does. (§3.4)</summary>
 
-<div class="div-mt-12px"><p>It uses the <strong>encoder turn</strong> &mdash; <code>turnDegrees()</code>, which you built in Lesson 6 and which has been living in <code>RobotMotion.cpp</code> ever since. It refuses the <strong>timed turn</strong>, which depends on battery level and surface and is only a naive baseline. The <strong>line-seeking turn</strong> &mdash; turn most of the way, then creep until the centre sensor finds the line &mdash; is the competition upgrade, and it is Challenge 3.</p></div>
+<div class="div-mt-12px"><p><code>STOPPED</code> — motors off, waiting for button B. <code>FOLLOWING_LINE</code> — normal P-control line following. <code>AT_INTERSECTION</code> — stop and identify which kind of intersection this is. <code>EXECUTING_TURN</code> — perform the turn on encoder counts. One action per state, and only ever one state at a time.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Define an enum, and say what <code>state = 0</code> costs you. (§3.5)</summary>
+
+<div class="div-mt-12px"><p>An enum is a data type that defines a set of named constants. <code>state = 0</code> tells you nothing — you have to remember what zero meant, and so does every reader after you. <code>FOLLOWING_LINE</code> says it out loud.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Of the three turn strategies, name the one this lesson uses, the one it refuses, and why. (§3.6)</summary>
+
+<div class="div-mt-12px"><p>It uses the <strong>encoder turn</strong> — <code>turnDegrees()</code>, which you built in Lesson 6 and which has been living in <code>RobotMotion.cpp</code> ever since. It refuses the <strong>timed turn</strong>, which depends on battery level and surface and is only a naive baseline. The <strong>line-seeking turn</strong> — turn most of the way, then creep until the centre sensor finds the line — is the competition upgrade, and it is Challenge 3.</p></div>
 
 </details>
 
@@ -490,7 +490,7 @@ enum IntersectionType {
 </div>
 
 <!-- ===================== SECTION 6: BUILD IT ===================== -->
-<div class="div-bg-433014"><div id="section-6"><span class="span-d-block-2">Section 6 &middot; Build It</span><span class="span-d-block">The Intersection Handler</span></div></div>
+<div class="div-bg-433014"><div id="section-6"><span class="span-d-block-2">Section 6 · Build It</span><span class="span-d-block">The Intersection Handler</span></div></div>
 <div class="div-433014">
 
 <p>Lesson 8 gave the robot reflexes. This lesson gives it <strong>decisions</strong> — and the vehicle for decisions is the <strong>state machine</strong> from Section 3. Every file grows a little; nothing gets rebuilt. The deepest change is one line of retirement: Lesson 8's <code>bool isRunning</code> grows up into a four-state <code>enum</code>.</p>
@@ -543,7 +543,7 @@ enum IntersectionType {
 
 <h3 class="h3-c-433014">Step 2 — RobotConfig.h: The Green Band — and Your First Enums</h3>
 
-<p>Two kinds of additions here. The familiar kind: two constants marking where "green" lives on the calibrated 0&#8211;1000 scale. The new kind: two <code>enum</code> definitions — <strong>the first you've ever written</strong>. Section 3.5 explained why enums beat magic numbers; now you get to feel it: every intersection type and every robot state gets a <em>name</em> the compiler enforces.</p>
+<p>Two kinds of additions here. The familiar kind: two constants marking where "green" lives on the calibrated 0–1000 scale. The new kind: two <code>enum</code> definitions — <strong>the first you've ever written</strong>. Section 3.5 explained why enums beat magic numbers; now you get to feel it: every intersection type and every robot state gets a <em>name</em> the compiler enforces.</p>
 
 <div class="callout-5a6872-bg-f8f9fa">
     <div class="div-fs-105em">🎯 THE GOAL</div>
@@ -671,7 +671,7 @@ IntersectionType checkForIntersection();</pre>
     <p class="p-mb-0">Write the decision as a four-line pseudo-code ladder, then answer: why must the <em>both-green</em> test come FIRST? What wrong answer comes back if you test left-only first — and which course feature would the robot then never handle?</p>
 </div>
 
-<p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the read call is <code>lineSensors.readCalibrated(sensorValues)</code> — signatures in <a href="#qr-functions" class="link-c-2e86ab">⚡ Quick Reference → Key Functions</a>. Why raw <code>read()</code> can't do this job: Lesson 8, Step 5 — raw values sit in the hundreds even on white, so a 300&#8211;700 band means nothing.</p>
+<p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the read call is <code>lineSensors.readCalibrated(sensorValues)</code> — signatures in <a href="#qr-functions" class="link-c-2e86ab">⚡ Quick Reference → Key Functions</a>. Why raw <code>read()</code> can't do this job: Lesson 8, Step 5 — raw values sit in the hundreds even on white, so a 300–700 band means nothing.</p>
 
 <details data-reveal="solution" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Compare with a worked version (the new block)</summary>
@@ -1198,7 +1198,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <h3 class="h3-c-433014">Step 9 — Course Day: The Green Survey and the Full Run</h3>
 
-<p>The code is done; now make the <em>numbers</em> yours. The 300&#8211;700 green band in RobotConfig.h is a starting guess — your tape, your lighting, your sensors will disagree. The Green Survey measures reality with a five-line temporary block, then you bake the truth into your constants.</p>
+<p>The code is done; now make the <em>numbers</em> yours. The 300–700 green band in RobotConfig.h is a starting guess — your tape, your lighting, your sensors will disagree. The Green Survey measures reality with a five-line temporary block, then you bake the truth into your constants.</p>
 
 <div class="callout-ff8c00-bg-ffe4cc">
     <div class="div-fs-105em">📝 THE GREEN SURVEY</div>
@@ -1250,7 +1250,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 </div>
 
 <!-- ===================== SECTION 7: TEST IT ===================== -->
-<div class="div-bg-00474b-3"><div id="section-7"><span class="span-d-block-2">Section 7 &middot; Test It</span><span class="span-d-block">The Green Survey</span></div></div>
+<div class="div-bg-00474b-3"><div id="section-7"><span class="span-d-block-2">Section 7 · Test It</span><span class="span-d-block">The Green Survey</span></div></div>
 <div class="div-00474b">
 
 
@@ -1259,31 +1259,31 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <p>Section 6, Step 9 walked you through the <strong>Green Survey</strong>: calibrate on your course, read the outer sensors live on the display, and record white / green / black values for both sides. Before course testing, sanity-check what you measured:</p>
 
 <table class="table-bc-collapse-2">
-    <tr><th class="th-bg-00393d">Surface</th><th class="th-bg-00393d">Calibrated reading should be&hellip;</th><th class="th-bg-00393d">Red flag</th></tr>
-    <tr><td class="td-b-white"><strong>White</strong> (course floor)</td><td class="td-b-white">Near 0 &mdash; low double digits are normal</td><td class="td-b-white">Above ~150: recalibrate; the spin may have missed true white</td></tr>
+    <tr><th class="th-bg-00393d">Surface</th><th class="th-bg-00393d">Calibrated reading should be…</th><th class="th-bg-00393d">Red flag</th></tr>
+    <tr><td class="td-b-white"><strong>White</strong> (course floor)</td><td class="td-b-white">Near 0 — low double digits are normal</td><td class="td-b-white">Above ~150: recalibrate; the spin may have missed true white</td></tr>
     <tr><td class="td-b-white"><strong>Black</strong> (the line)</td><td class="td-b-white">Near 1000</td><td class="td-b-white">Below ~850: recalibrate on the course you’ll actually run</td></tr>
-    <tr><td class="td-b-white"><strong>Green</strong> (the markers)</td><td class="td-b-white">Somewhere between &mdash; <em>your</em> number is the only one that matters, and left / right may differ slightly</td><td class="td-b-white">Hugging either end: your tape reads too much like floor or line &mdash; different green tape beats threshold heroics</td></tr>
+    <tr><td class="td-b-white"><strong>Green</strong> (the markers)</td><td class="td-b-white">Somewhere between — <em>your</em> number is the only one that matters, and left / right may differ slightly</td><td class="td-b-white">Hugging either end: your tape reads too much like floor or line — different green tape beats threshold heroics</td></tr>
 </table>
 
-<p>Then confirm your constants: <code>GREEN_LOW_THRESHOLD</code> and <code>GREEN_HIGH_THRESHOLD</code> should bracket <em>both</em> green readings with roughly 100 of margin per side, staying clear of white and black. Record everything in Section 10’s Calibration Data Record &mdash; competition-day you will thank homework-day you.</p>
+<p>Then confirm your constants: <code>GREEN_LOW_THRESHOLD</code> and <code>GREEN_HIGH_THRESHOLD</code> should bracket <em>both</em> green readings with roughly 100 of margin per side, staying clear of white and black. Record everything in Section 10’s Calibration Data Record — competition-day you will thank homework-day you.</p>
 
 <h3 class="h3-c-00474b">7.2 Intersection Test Sequence</h3>
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-00393d">Test</th><th class="th-bg-00393d">Setup</th><th class="th-bg-00393d">Expected Behavior</th></tr>
-    <tr><td class="td-b-white"><strong>Test 1: Left</strong></td><td class="td-b-white">Green on LEFT side</td><td class="td-b-white">Stops, beeps, announces <code>&lt;&lt; GO LEFT</code>, clean 90&deg; encoder turn left, resumes</td></tr>
-    <tr><td class="td-b-white"><strong>Test 2: Right</strong></td><td class="td-b-white">Green on RIGHT side</td><td class="td-b-white">Stops, beeps, announces <code>GO RIGHT &gt;&gt;</code>, clean 90&deg; encoder turn right, resumes</td></tr>
-    <tr><td class="td-b-white"><strong>Test 3: Dead End</strong></td><td class="td-b-white">Green on BOTH sides</td><td class="td-b-white">Stops, beeps, announces <code>DEAD END - U TURN</code>, 180&deg; turnaround, resumes</td></tr>
+    <tr><td class="td-b-white"><strong>Test 1: Left</strong></td><td class="td-b-white">Green on LEFT side</td><td class="td-b-white">Stops, beeps, announces <code>&lt;&lt; GO LEFT</code>, clean 90° encoder turn left, resumes</td></tr>
+    <tr><td class="td-b-white"><strong>Test 2: Right</strong></td><td class="td-b-white">Green on RIGHT side</td><td class="td-b-white">Stops, beeps, announces <code>GO RIGHT &gt;&gt;</code>, clean 90° encoder turn right, resumes</td></tr>
+    <tr><td class="td-b-white"><strong>Test 3: Dead End</strong></td><td class="td-b-white">Green on BOTH sides</td><td class="td-b-white">Stops, beeps, announces <code>DEAD END - U TURN</code>, 180° turnaround, resumes</td></tr>
     <tr><td class="td-b-white"><strong>Test 4: None</strong></td><td class="td-b-white">No green markers</td><td class="td-b-white">Follows line continuously</td></tr>
     <tr><td class="td-b-white"><strong>Test 5: Kill switch</strong></td><td class="td-b-white">Press B mid-run</td><td class="td-b-white">Motors stop instantly, status returns to STOPPED</td></tr>
     <tr><td class="td-b-white"><strong>Test 6: Gap</strong></td><td class="td-b-white">Cover 20 cm of line</td><td class="td-b-white">Crosses small gaps; a long gap times out to LINE LOST + STOPPED</td></tr>
-    <tr><td class="td-b-white"><strong>Test 7: A-gate</strong></td><td class="td-b-white">Power-cycle, touch nothing</td><td class="td-b-white">Boot report only &mdash; nothing moves before A</td></tr>
+    <tr><td class="td-b-white"><strong>Test 7: A-gate</strong></td><td class="td-b-white">Power-cycle, touch nothing</td><td class="td-b-white">Boot report only — nothing moves before A</td></tr>
 </table>
 
 <div class="callout-607d8b-bg-eceff1-2">
     <div class="div-c-856404-2">📘 NOTE</div>
     <div class="div-c-856404">Turn Physics: Momentum & Overshoot</div>
-    <p>Tank turns have zero turn radius, and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug &mdash; it’s <code>WHEEL_BASE_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
+    <p>Tank turns have zero turn radius, and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug — it’s <code>WHEEL_BASE_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
 </div>
 
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
@@ -1299,15 +1299,15 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
     <tr><td class="td-b-white">Robot doesn't detect green</td><td class="td-b-white">Threshold values wrong</td><td class="td-b-white">Run calibration test, adjust thresholds</td></tr>
     <tr><td class="td-b-white">Robot stops on white areas</td><td class="td-b-white">GREEN_LOW too low</td><td class="td-b-white">Increase to 350+</td></tr>
     <tr><td class="td-b-white">Every turn off by the same amount</td><td class="td-b-white"><code>WHEEL_BASE_MM</code> needs tuning</td><td class="td-b-white">Lesson 7’s tune-up: nudge it up if turns fall short, down if they overshoot</td></tr>
-    <tr><td class="td-b-white">False turns on curves</td><td class="td-b-white">An outer sensor crossed the line edge; the in-between reading landed in the green band</td><td class="td-b-white">Real courses need debouncing &mdash; that’s <a href="#challenge-5" class="link-c-2e86ab">Challenge 5</a></td></tr>
-    <tr><td class="td-b-white">Same marker detected twice</td><td class="td-b-white">After the turn, an outer sensor is still over the marker</td><td class="td-b-white">Advance past the marker before turning &mdash; <a href="#challenge-4" class="link-c-2e86ab">Challenge 4</a></td></tr>
-    <tr><td class="td-b-white">Can't find line after turn</td><td class="td-b-white">Turn ended before reaching line</td><td class="td-b-white">Add line-seeking turns &mdash; <a href="#challenge-3" class="link-c-2e86ab">Challenge 3</a></td></tr>
+    <tr><td class="td-b-white">False turns on curves</td><td class="td-b-white">An outer sensor crossed the line edge; the in-between reading landed in the green band</td><td class="td-b-white">Real courses need debouncing — that’s <a href="#challenge-5" class="link-c-2e86ab">Challenge 5</a></td></tr>
+    <tr><td class="td-b-white">Same marker detected twice</td><td class="td-b-white">After the turn, an outer sensor is still over the marker</td><td class="td-b-white">Advance past the marker before turning — <a href="#challenge-4" class="link-c-2e86ab">Challenge 4</a></td></tr>
+    <tr><td class="td-b-white">Can't find line after turn</td><td class="td-b-white">Turn ended before reaching line</td><td class="td-b-white">Add line-seeking turns — <a href="#challenge-3" class="link-c-2e86ab">Challenge 3</a></td></tr>
 </table>
 
 <div class="callout-607d8b-bg-eceff1-2">
     <div class="div-c-856404-2">📘 NOTE</div>
     <div class="div-c-856404">Lost the Line for Good?</div>
-    <p class="p-mb-0">The base build’s policy is honest: gap timeout &rarr; <code>LINE LOST!</code> &rarr; STOPPED, and a human decides. Making the <em>robot</em> decide &mdash; treat a vanished line as a dead end and turn around &mdash; is maze-solver behavior, and it’s built in <a href="#challenge-6" class="link-c-2e86ab">Challenge 6</a>.</p>
+    <p class="p-mb-0">The base build’s policy is honest: gap timeout → <code>LINE LOST!</code> → STOPPED, and a human decides. Making the <em>robot</em> decide — treat a vanished line as a dead end and turn around — is maze-solver behavior, and it’s built in <a href="#challenge-6" class="link-c-2e86ab">Challenge 6</a>.</p>
 </div>
 
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
@@ -1360,7 +1360,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <div class="callout-607d8b-bg-eceff1-2">
     <div class="div-c-3a5a3a-2">📘 NOTE</div>
     <div class="div-c-3a5a3a">Modular by Design</div>
-    <p>These turn functions are <strong>modular</strong>: the state machine just calls <code>turnLeft()</code> and doesn't care how it works inside. Proof: Challenge 3 swaps in line-seeking turns by changing <em>one dispatch line</em> &mdash; the sensors, the states, the config never hear about it.</p>
+    <p>These turn functions are <strong>modular</strong>: the state machine just calls <code>turnLeft()</code> and doesn't care how it works inside. Proof: Challenge 3 swaps in line-seeking turns by changing <em>one dispatch line</em> — the sensors, the states, the config never hear about it.</p>
 </div>
 
 <img src="../images/L09_GRAPHIC_9-6_fsm_uml.svg" alt="UML statechart of the same four-state machine: initial dot into STOPPED, entry/do/exit activities inside each state, and trigger/action labels on every transition" class="img-d-block-2">
@@ -1378,7 +1378,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 <div class="div-bg-7a5905-3"><div id="section-9"><span class="span-d-block-2">Section 9</span><span class="span-d-block">Challenges</span></div></div>
 <div class="div-7a5905">
 
-<p>Six ways to push the machine. The first two are quality-of-life upgrades; the middle pair make turns and detection course-proof; the last two are competition behavior. Every reveal is a <strong>compile-verified</strong> worked version &mdash; compare, don’t copy.</p>
+<p>Six ways to push the machine. The first two are quality-of-life upgrades; the middle pair make turns and detection course-proof; the last two are competition behavior. Every reveal is a <strong>compile-verified</strong> worked version — compare, don’t copy.</p>
 
 <!-- Challenge 1 -->
 <div id="challenge-1" class="div-7d5283" data-challenge="9.1" data-kind="challenge" data-difficulty="easy" data-grasp="moderate">
@@ -1388,15 +1388,15 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=sensor_debug" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> &mdash; the calibrated read call. One helper function, one call from the STOPPED case, and the <code>static</code> throttle trick keeps the Serial Monitor readable.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> — the calibrated read call. One helper function, one call from the STOPPED case, and the <code>static</code> throttle trick keeps the Serial Monitor readable.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
-<p>While the robot sits in STOPPED, print all five calibrated sensor values plus <code>checkForIntersection()</code>’s verdict to the Serial Monitor, about twice a second. Slide white, green, and black under the robot and watch the verdict change live &mdash; the Green Survey’s power tool.</p>
+<p>While the robot sits in STOPPED, print all five calibrated sensor values plus <code>checkForIntersection()</code>’s verdict to the Serial Monitor, about twice a second. Slide white, green, and black under the robot and watch the verdict change live — the Green Survey’s power tool.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
-<p>A helper in main.cpp reads into its own local array (the module’s <code>sensorValues</code> is RobotSensors’ private property &mdash; Lesson 7’s boundaries still stand), prints, and asks for the verdict. A <code>static unsigned long</code> timestamp keeps it to every 500 ms. Call it once at the top of the STOPPED case.</p>
+<p>A helper in main.cpp reads into its own local array (the module’s <code>sensorValues</code> is RobotSensors’ private property — Lesson 7’s boundaries still stand), prints, and asks for the verdict. A <code>static unsigned long</code> timestamp keeps it to every 500 ms. Call it once at the top of the STOPPED case.</p>
 </div>
 <div class="div-p-15px20px">
 <div class="div-bg-e8f5e9">
@@ -1459,15 +1459,15 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=led_indicators" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Section 8A’s state walkthrough &mdash; the LEDs belong to AT_INTERSECTION (decide) and get cleared in EXECUTING_TURN (done). The LED calls themselves are Lesson 2 vintage.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Section 8A’s state walkthrough — the LEDs belong to AT_INTERSECTION (decide) and get cleared in EXECUTING_TURN (done). The LED calls themselves are Lesson 2 vintage.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
-<p>Light the yellow LED for a left decision, green for right, red for a dead end &mdash; on when the decision is announced, off once the turn completes. A human-readable state machine, visible from across the room.</p>
+<p>Light the yellow LED for a left decision, green for right, red for a dead end — on when the decision is announced, off once the turn completes. A human-readable state machine, visible from across the room.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
-<p>Two touch points, both obvious once you name the states: set the LED where the decision is announced (AT_INTERSECTION, right before <code>showDecision()</code>), clear all three where the turn finishes (EXECUTING_TURN, before returning to FOLLOWING_LINE). No LED logic anywhere else &mdash; that’s the state machine keeping jobs in their rooms.</p>
+<p>Two touch points, both obvious once you name the states: set the LED where the decision is announced (AT_INTERSECTION, right before <code>showDecision()</code>), clear all three where the turn finishes (EXECUTING_TURN, before returning to FOLLOWING_LINE). No LED logic anywhere else — that’s the state machine keeping jobs in their rooms.</p>
 </div>
 <div class="div-p-15px20px">
 <div class="div-bg-e8f5e9">
@@ -1507,16 +1507,16 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=line_seek" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motor" class="link-c-2e86ab">Turn Directions</a> for the sign canon, and <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> for the calibrated read. The hybrid: encoders for the bulk, sensors for the landing. The creep loop is a <a href="#qr-dowhile" class="link-c-2e86ab">do&hellip;while</a> &mdash; it reads before it tests.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-motor" class="link-c-2e86ab">Turn Directions</a> for the sign canon, and <a href="#qr-functions" class="link-c-2e86ab">Key Functions</a> for the calibrated read. The hybrid: encoders for the bulk, sensors for the landing. The creep loop is a <a href="#qr-dowhile" class="link-c-2e86ab">do…while</a> — it reads before it tests.</p>
 </div>
 <div class="callout-2e86ab-bg-e7f0fa"><div class="div-fs-105em">🔁 Builds on:</div> <code>turnDegrees()</code> from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> and the calibrated center-sensor read from Lesson 4 <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">. Encoders for the bulk, sensors for the landing.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
-<p>Make turns self-correcting: turn <em>most</em> of the way on encoders, then creep slowly until the center sensor actually finds the line. Perfect turns even when the junction geometry isn’t perfect &mdash; the competition upgrade.</p>
+<p>Make turns self-correcting: turn <em>most</em> of the way on encoders, then creep slowly until the center sensor actually finds the line. Perfect turns even when the junction geometry isn’t perfect — the competition upgrade.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
-<p>Three moves: <code>turnDegrees(-60)</code> covers the predictable bulk; a slow spin (half <code>TURN_SPEED</code>) hands control to the sensors; a <code>do&amp;hellip;while</code> watches sensor <code>[2]</code> until its calibrated value says <em>black</em>. Then swap one dispatch line in EXECUTING_TURN &mdash; and notice what you did <strong>not</strong> touch: Section 8A’s modularity tip, proven.</p>
+<p>Three moves: <code>turnDegrees(-60)</code> covers the predictable bulk; a slow spin (half <code>TURN_SPEED</code>) hands control to the sensors; a <code>do&amp;hellip;while</code> watches sensor <code>[2]</code> until its calibrated value says <em>black</em>. Then swap one dispatch line in EXECUTING_TURN — and notice what you did <strong>not</strong> touch: Section 8A’s modularity tip, proven.</p>
 </div>
 <div class="div-p-15px20px">
 <div class="div-bg-e8f5e9">
@@ -1564,15 +1564,15 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your Step 9 build — surveyed green band and all — or a fresh copy preloaded with the <strong>finished lesson program</strong>, all eight files: <a href="../newproject.html?lesson=9&amp;kind=advance_center" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Section 8’s <em>same marker detected twice</em> row is this challenge’s reason to exist. <code>driveDistance()</code> is Lesson 6’s &mdash; check its signature in RobotMotion.h.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Section 8’s <em>same marker detected twice</em> row is this challenge’s reason to exist. <code>driveDistance()</code> is Lesson 6’s — check its signature in RobotMotion.h.</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
-<p>The sensors ride ahead of the wheels, so the robot detects the marker and turns <em>early</em> &mdash; wheels still short of the junction, and sometimes still parked over green after the turn. Fix it: after announcing, drive forward a few centimeters so the wheels sit on the junction, <em>then</em> turn.</p>
+<p>The sensors ride ahead of the wheels, so the robot detects the marker and turns <em>early</em> — wheels still short of the junction, and sometimes still parked over green after the turn. Fix it: after announcing, drive forward a few centimeters so the wheels sit on the junction, <em>then</em> turn.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
-<p>One constant in RobotConfig.h &mdash; the sensor-array-to-axle distance, <strong>measured on your robot</strong>, not copied &mdash; and one <code>driveDistance()</code> call at the top of EXECUTING_TURN. Lesson 6’s odometry doing intersection work.</p>
+<p>One constant in RobotConfig.h — the sensor-array-to-axle distance, <strong>measured on your robot</strong>, not copied — and one <code>driveDistance()</code> call at the top of EXECUTING_TURN. Lesson 6’s odometry doing intersection work.</p>
 </div>
 <div class="div-p-15px20px">
 <div class="div-bg-e8f5e9">
@@ -1620,7 +1620,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
-<p>Two <code>static</code> locals inside the FOLLOWING_LINE case remember the last verdict and its streak. Same non-NO verdict &rarr; count up; anything else &rarr; reset. Only a streak of 3 gets to stop the motors and change state &mdash; and remember to reset both statics when it fires, or the <em>next</em> marker inherits a stale streak.</p>
+<p>Two <code>static</code> locals inside the FOLLOWING_LINE case remember the last verdict and its streak. Same non-NO verdict → count up; anything else → reset. Only a streak of 3 gets to stop the motors and change state — and remember to reset both statics when it fires, or the <em>next</em> marker inherits a stale streak.</p>
 </div>
 <div class="div-p-15px20px">
 <div class="div-bg-e8f5e9">
@@ -1660,7 +1660,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
           lastSeen = NO_INTERSECTION;
           currentState = AT_INTERSECTION;
         }</pre>
-<p>The transition inside then fires on <code>seenCount &gt;= 3</code> and resets both statics &mdash; everything else in the case is untouched.</p>
+<p>The transition inside then fires on <code>seenCount &gt;= 3</code> and resets both statics — everything else in the case is untouched.</p>
 </details>
 </div>
 </div>
@@ -1677,11 +1677,11 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
-<p>Solve an <em>unmarked</em> maze &mdash; no green anywhere &mdash; with the right-hand rule: at every crossing take the right; when the line dies, treat it as a dead end and turn around. Run it on a taped maze and watch it emerge.</p>
+<p>Solve an <em>unmarked</em> maze — no green anywhere — with the right-hand rule: at every crossing take the right; when the line dies, treat it as a dead end and turn around. Run it on a taped maze and watch it emerge.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
-<p>Two policy changes. <strong>Detection:</strong> an all-black sensor row (calibrated sum above ~4200) is a crossing &mdash; teach <code>checkForIntersection()</code> to return <code>GO_RIGHT</code> for it, <em>before</em> the green tests. <strong>Dead ends:</strong> in <code>handleGap()</code>, the timeout stops meaning <em>give up</em> and starts meaning <em>turn around and drive back</em>. The state machine itself needs zero changes &mdash; policies changed, structure held.</p>
+<p>Two policy changes. <strong>Detection:</strong> an all-black sensor row (calibrated sum above ~4200) is a crossing — teach <code>checkForIntersection()</code> to return <code>GO_RIGHT</code> for it, <em>before</em> the green tests. <strong>Dead ends:</strong> in <code>handleGap()</code>, the timeout stops meaning <em>give up</em> and starts meaning <em>turn around and drive back</em>. The state machine itself needs zero changes — policies changed, structure held.</p>
 </div>
 <div class="div-p-15px20px">
 <div class="div-bg-e8f5e9">
@@ -1716,7 +1716,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <div class="div-6f7582-2">
   <strong class="strong-c-4d535f">🏁 FINISHED EARLY?</strong>
-  <p class="p-mb-0">Five state-machine mysteries wait in <a href="#bonus-challenges" class="link-c-2e86ab">Sabotage</a> &mdash; each Maker link opens the finished build with one defect planted: a robot that crawls and beeps, one that turns the wrong way every time, one that U-turns at plain black crossings, one that turns exactly once and plays dead, and one that blows through every marker like it isn’t there.</p>
+  <p class="p-mb-0">Five state-machine mysteries wait in <a href="#bonus-challenges" class="link-c-2e86ab">Sabotage</a> — each Maker link opens the finished build with one defect planted: a robot that crawls and beeps, one that turns the wrong way every time, one that U-turns at plain black crossings, one that turns exactly once and plays dead, and one that blows through every marker like it isn’t there.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1725,13 +1725,13 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Five State-Machine Mysteries</span></div></div>
 <div class="div-6f7582">
 
-<p>Detective work, state-machine edition. Each Maker link opens the <strong>finished build with one deliberate defect planted</strong>. The routine holds: upload, watch the symptom, <strong>predict the culprit before opening a file</strong>, find it, fix it, prove the fix. New this lesson: for every mystery, first ask <em>which STATE is misbehaving?</em> &mdash; that question alone eliminates three quarters of the code.</p>
+<p>Detective work, state-machine edition. Each Maker link opens the <strong>finished build with one deliberate defect planted</strong>. The routine holds: upload, watch the symptom, <strong>predict the culprit before opening a file</strong>, find it, fix it, prove the fix. New this lesson: for every mystery, first ask <em>which STATE is misbehaving?</em> — that question alone eliminates three quarters of the code.</p>
 
 <h4 class="h4-c-6f7582" id="mystery-1" data-challenge="9.m1" data-kind="bonus-sabotage">Mystery 1: The Crawling Robot</h4>
 <p><a href="../newproject.html?lesson=9&amp;kind=missing_break" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — it follows the line at a tenth of its old speed, lurching, beeping at nothing, the screen flashing blank announcements. Every state seems <em>almost</em> right. What single character is missing?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
-<p>The FOLLOWING_LINE case as planted &mdash; read to the very end:</p>
+<p>The FOLLOWING_LINE case as planted — read to the very end:</p>
 <pre>    <span class="tok-569cd6">case</span> FOLLOWING_LINE: {
       <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {   <span class="tok-7cbf6e">// B = STOP - the kill switch</span>
         motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
@@ -1754,7 +1754,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
         handleGap();
       }
     }</pre>
-<p>No <code>break</code>. Every pass <strong>falls through</strong> into AT_INTERSECTION: stop, announce a decision that doesn’t exist, wait 600 ms, bounce through EXECUTING_TURN (which dispatches <code>NO_INTERSECTION</code> to nothing) and back. The robot drives one loop-pass per second of theater. A switch without breaks isn’t a state machine &mdash; it’s a waterfall. Restore the <code>break;</code>.</p>
+<p>No <code>break</code>. Every pass <strong>falls through</strong> into AT_INTERSECTION: stop, announce a decision that doesn’t exist, wait 600 ms, bounce through EXECUTING_TURN (which dispatches <code>NO_INTERSECTION</code> to nothing) and back. The robot drives one loop-pass per second of theater. A switch without breaks isn’t a state machine — it’s a waterfall. Restore the <code>break;</code>.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-2" data-challenge="9.m2" data-kind="bonus-sabotage">Mystery 2: The Mirror Maze</h4>
 <p><a href="../newproject.html?lesson=9&amp;kind=mirror_dispatch" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — detection is flawless — every marker stops it, every announcement is correct — and then it turns the <em>wrong way</em>. Every single time. The screen says LEFT; the robot goes right. Where can a decision go wrong <em>after</em> it’s been made correctly?</p>
@@ -1764,7 +1764,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <pre>      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       turnRight();
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) turnLeft();
       <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) turnAround();</pre>
-<p><code>GO_LEFT</code> dispatches to <code>turnRight()</code> and vice versa. Detection, storage, and announcement were all perfect &mdash; the last three centimeters of the pipeline betrayed them. When a symptom is a perfect inversion, look at the <em>mapping</em>, not the logic. Swap the calls back.</p>
+<p><code>GO_LEFT</code> dispatches to <code>turnRight()</code> and vice versa. Detection, storage, and announcement were all perfect — the last three centimeters of the pipeline betrayed them. When a symptom is a perfect inversion, look at the <em>mapping</em>, not the logic. Swap the calls back.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-3" data-challenge="9.m3" data-kind="bonus-sabotage">Mystery 3: The Paranoid Robot</h4>
 <p><a href="../newproject.html?lesson=9&amp;kind=paranoid_green" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — it U-turns at plain black crossings, announces DEAD END where there’s no green for a meter in any direction — markers it handles fine. What does a <em>black</em> line have to do to get mistaken for green?</p>
@@ -1776,10 +1776,10 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <span class="tok-7cbf6e">// 0-1000 scale. Find YOUR band in Section 7.1, then tune these.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_LOW_THRESHOLD = <span class="tok-b5cea8">300</span>;   <span class="tok-7cbf6e">// Calibrated value where green starts</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> GREEN_HIGH_THRESHOLD = <span class="tok-b5cea8">1001</span>; <span class="tok-7cbf6e">// Calibrated value where green ends</span></pre>
-<p>The green band now ends at <strong>1001</strong> &mdash; and calibrated black tops out at 1000. Every black reading is inside the band, so a perpendicular black line under both outer sensors reads as green-on-both-sides: DEAD END. The band’s upper edge isn’t bureaucracy; it’s the only thing separating <em>marker</em> from <em>line</em>. Restore your surveyed value.</p>
+<p>The green band now ends at <strong>1001</strong> — and calibrated black tops out at 1000. Every black reading is inside the band, so a perpendicular black line under both outer sensors reads as green-on-both-sides: DEAD END. The band’s upper edge isn’t bureaucracy; it’s the only thing separating <em>marker</em> from <em>line</em>. Restore your surveyed value.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-4" data-challenge="9.m4" data-kind="bonus-sabotage">Mystery 4: The One-Turn Wonder</h4>
-<p><a href="../newproject.html?lesson=9&amp;kind=one_turn_wonder" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — first marker: perfect stop, perfect announcement, perfect turn &mdash; then it plays dead forever. B does nothing. Power-cycle, same story: one flawless turn, then statue. What did the robot forget to do after turning?</p>
+<p><a href="../newproject.html?lesson=9&amp;kind=one_turn_wonder" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — first marker: perfect stop, perfect announcement, perfect turn — then it plays dead forever. B does nothing. Power-cycle, same story: one flawless turn, then statue. What did the robot forget to do after turning?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>EXECUTING_TURN as planted:</p>
@@ -1791,16 +1791,16 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
       showStatus();
       <span class="tok-569cd6">break</span>;
     }</pre>
-<p>The turn runs, <code>pendingTurn</code> clears&hellip; and the state never changes. Next pass: still EXECUTING_TURN, all three ifs false, nothing happens &mdash; forever. And the kill switch can’t save you, because B lives in FOLLOWING_LINE and the robot isn’t <em>in</em> that state. Every state must name its exit; restore <code>currentState = FOLLOWING_LINE;</code>.</p>
+<p>The turn runs, <code>pendingTurn</code> clears… and the state never changes. Next pass: still EXECUTING_TURN, all three ifs false, nothing happens — forever. And the kill switch can’t save you, because B lives in FOLLOWING_LINE and the robot isn’t <em>in</em> that state. Every state must name its exit; restore <code>currentState = FOLLOWING_LINE;</code>.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-5" data-challenge="9.m5" data-kind="bonus-sabotage">Mystery 5: The Blind Corners</h4>
-<p><a href="../newproject.html?lesson=9&amp;kind=blind_corners" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — green thresholds surveyed and verified, calibration perfect &mdash; and it sails through every marker without a twitch. Challenge 1’s debug tool says the values are fine. So which sensors is the verdict actually asking?</p>
+<p><a href="../newproject.html?lesson=9&amp;kind=blind_corners" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — green thresholds surveyed and verified, calibration perfect — and it sails through every marker without a twitch. Challenge 1’s debug tool says the values are fine. So which sensors is the verdict actually asking?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The planted lines in <code>checkForIntersection()</code>:</p>
 <pre>  <span class="tok-569cd6">bool</span> leftGreen  = isGreen(sensorValues[<span class="tok-b5cea8">1</span>]);   <span class="tok-7cbf6e">// outermost LEFT sensor</span>
   <span class="tok-569cd6">bool</span> rightGreen = isGreen(sensorValues[<span class="tok-b5cea8">3</span>]);   <span class="tok-7cbf6e">// outermost RIGHT sensor</span></pre>
-<p>Sensors <code>[1]</code> and <code>[3]</code> ride just off the line’s shoulders &mdash; markers sit out at the edges, under <code>[0]</code> and <code>[4]</code>. The comments still say <em>outermost</em>; the indexes stopped agreeing. Geometry is part of the contract: restore <code>[0]</code> and <code>[4]</code>.</p>
+<p>Sensors <code>[1]</code> and <code>[3]</code> ride just off the line’s shoulders — markers sit out at the edges, under <code>[0]</code> and <code>[4]</code>. The comments still say <em>outermost</em>; the indexes stopped agreeing. Geometry is part of the contract: restore <code>[0]</code> and <code>[4]</code>.</p>
 </details>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1813,16 +1813,16 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <div id="brain-check-02" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
-<p>These are the seven objectives this lesson opened with, in Section 2 &mdash; the same list, now asked back. Tap each one you can honestly claim. All seven unlock the button.</p>
+<p>These are the seven objectives this lesson opened with, in Section 2 — the same list, now asked back. Tap each one you can honestly claim. All seven unlock the button.</p>
 
     <ul class="ul-ls-none-2">
         <li data-bc-skill="1" class="li-c-pointer">☐ Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own tape</li>
         <li data-bc-skill="2" class="li-c-pointer">☐ Identify an intersection from which outer sensors see green</li>
-        <li data-bc-skill="3" class="li-c-pointer">☐ Execute precise left, right, and 180&#176; turns as one-line wrappers on Lesson 6&#8217;s <code>turnDegrees()</code></li>
+        <li data-bc-skill="3" class="li-c-pointer">☐ Execute precise left, right, and 180° turns as one-line wrappers on Lesson 6’s <code>turnDegrees()</code></li>
         <li data-bc-skill="4" class="li-c-pointer">☐ Define an <strong>enum</strong> and say why it beats a magic number</li>
-        <li data-bc-skill="5" class="li-c-pointer">☐ Implement a four-state <strong>state machine</strong> with <code>switch</code>/<code>case</code> &#8212; and say what a missing <code>break</code> does to it</li>
+        <li data-bc-skill="5" class="li-c-pointer">☐ Implement a four-state <strong>state machine</strong> with <code>switch</code>/<code>case</code> — and say what a missing <code>break</code> does to it</li>
         <li data-bc-skill="6" class="li-c-pointer">☐ Explain why every state must name its own exit</li>
         <li data-bc-skill="7" class="li-c-pointer">☐ Navigate a complete course with several intersection types</li>
     </ul>
@@ -1832,31 +1832,31 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <div id="brain-check-03" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
 <p>Your robot reads a marker, picks a turn, and executes it without tripping over itself. These ask whether you know <em>why</em>.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why do green markers show mid-range sensor values? (&sect;3.1)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why do green markers show mid-range sensor values? (§3.1)</summary>
 
-<div class="div-mt-12px"><p>Green absorbs some of the infrared and reflects the rest, so it lands between the two extremes. On the calibrated 0&#8211;1000 scale (0 = your white, 1000 = your black): <strong>white reads low (under ~200)</strong>, <strong>black reads high (over ~800)</strong>, and green sits in the middle band &#8212; roughly 300&#8211;700, though the only number that matters is the one <em>you</em> survey on <em>your</em> tape.</p></div>
+<div class="div-mt-12px"><p>Green absorbs some of the infrared and reflects the rest, so it lands between the two extremes. On the calibrated 0–1000 scale (0 = your white, 1000 = your black): <strong>white reads low (under ~200)</strong>, <strong>black reads high (over ~800)</strong>, and green sits in the middle band — roughly 300–700, though the only number that matters is the one <em>you</em> survey on <em>your</em> tape.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. What problem does the state machine solve during turns? (&sect;3.4)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. What problem does the state machine solve during turns? (§3.4)</summary>
 
 <div class="div-mt-12px"><p>It prevents "double detection" — the robot ignores new intersection readings while in EXECUTING_TURN state.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Why are encoder-based turns more reliable than timed turns? (&sect;3.6)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Why are encoder-based turns more reliable than timed turns? (§3.6)</summary>
 
 <div class="div-mt-12px"><p>Encoders measure actual wheel rotation, working consistently regardless of battery level or surface friction.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What is the advantage of an enum over a plain integer for tracking state? (&sect;3.5)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What is the advantage of an enum over a plain integer for tracking state? (§3.5)</summary>
 
-<div class="div-mt-12px"><p>Named constants are self-documenting and prevent meaningless "magic numbers" in your code. The compiler emits the same numbers either way, so the enum costs nothing at run time &mdash; what it buys is that <code>case EXECUTING_TURN:</code> states its own condition, while <code>case 3:</code> makes every reader rebuild it from memory. It also narrows the type: a <code>RobotState</code> variable can only hold one of the four names you declared, so a slip that would have compiled quietly as an <code>int</code> becomes a build error instead of a bug on the course.</p></div>
+<div class="div-mt-12px"><p>Named constants are self-documenting and prevent meaningless "magic numbers" in your code. The compiler emits the same numbers either way, so the enum costs nothing at run time — what it buys is that <code>case EXECUTING_TURN:</code> states its own condition, while <code>case 3:</code> makes every reader rebuild it from memory. It also narrows the type: a <code>RobotState</code> variable can only hold one of the four names you declared, so a slip that would have compiled quietly as an <code>int</code> becomes a build error instead of a bug on the course.</p></div>
 
 </details>
 
@@ -1864,12 +1864,12 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 </div>
 
 <div id="brain-check-04" class="callout-3f51b5">
-    <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</div>
-    <p>No reveal on these &mdash; there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
+    <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
+    <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
         <li>In your engineering notebook, draw a state machine diagram showing all 4 states and transitions. Mark which conditions trigger each transition!</li>
-        <li><code>EXECUTING_TURN</code> exists so the robot stops believing the green sensors while it is already turning. Name one other moment on a rescue course where the robot should deliberately distrust a sensor for a while &mdash; and say how it would know when to start trusting it again.</li>
-        <li>How confident are you with state machines &mdash; still shaky, getting there, confident, or ready to add a fifth state on your own? Say what would move you up one step.</li>
+        <li><code>EXECUTING_TURN</code> exists so the robot stops believing the green sensors while it is already turning. Name one other moment on a rescue course where the robot should deliberately distrust a sensor for a while — and say how it would know when to start trusting it again.</li>
+        <li>How confident are you with state machines — still shaky, getting there, confident, or ready to add a fifth state on your own? Say what would move you up one step.</li>
     </ol>
 <p class="p-m-12px00"><button type="button" data-bc-btn="4" class="button">Mark Brain Check 04 done</button></p>
 </div>
@@ -1878,9 +1878,9 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-4d535f">Measurement</th><th class="th-bg-4d535f">Your Value</th><th class="th-bg-4d535f">Expected / Default</th></tr>
-    <tr><td class="td-b-white">White reading &mdash; left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">near 0</td></tr>
-    <tr><td class="td-b-white">Green reading &mdash; left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">between &mdash; yours</td></tr>
-    <tr><td class="td-b-white">Black reading &mdash; left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">near 1000</td></tr>
+    <tr><td class="td-b-white">White reading — left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">near 0</td></tr>
+    <tr><td class="td-b-white">Green reading — left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">between — yours</td></tr>
+    <tr><td class="td-b-white">Black reading — left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">near 1000</td></tr>
     <tr><td class="td-b-white"><code>GREEN_LOW_THRESHOLD</code> (your tuned value)</td><td class="td-999"></td><td class="td-b-white">300 default</td></tr>
     <tr><td class="td-b-white"><code>GREEN_HIGH_THRESHOLD</code> (your tuned value)</td><td class="td-999"></td><td class="td-b-white">700 default</td></tr>
     <tr><td class="td-b-white"><code>WHEEL_BASE_MM</code> (carried from Lesson 7)</td><td class="td-999"></td><td class="td-b-white">85.0 start</td></tr>
@@ -1902,12 +1902,12 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 </div>
 
 <div class="div-mt-20px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
-<h3 class="h3-c-6f7582">Engineer&rsquo;s Log</h3>
+<h3 class="h3-c-6f7582">Engineer’s Log</h3>
 
 <div class="div-0e1a2c">
-<div class="div-fs-105em">&#128211; ENGINEER&rsquo;S LOG #09 &mdash; feeds: Software (flowchart)</div>
+<div class="div-fs-105em">📓 ENGINEER’S LOG #09 — feeds: Software (flowchart)</div>
 <b>Draw your state machine.</b> States as boxes, transitions as labeled arrows. One page.<br>
-<i>Why judges care: RCJ scores 10 points per intersection and dead end &mdash; so this diagram earns points twice, once on the field and once on the page.</i></div>
+<i>Why judges care: RCJ scores 10 points per intersection and dead end — so this diagram earns points twice, once on the field and once on the page.</i></div>
 
 </div>
 
@@ -1936,23 +1936,23 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-4d535f">Addition</th><th class="th-bg-4d535f">Values</th><th class="th-bg-4d535f">Purpose</th></tr>
     <tr><td class="td-b-white"><code>GREEN_LOW_THRESHOLD</code></td><td class="td-b-white">300 (survey yours)</td><td class="td-b-white">Calibrated value where green starts</td></tr>
-    <tr><td class="td-bg-f9f9f9"><code>GREEN_HIGH_THRESHOLD</code></td><td class="td-bg-f9f9f9">700 (survey yours)</td><td class="td-bg-f9f9f9">Calibrated value where green ends &mdash; must stay below black&rsquo;s ~1000</td></tr>
-    <tr><td class="td-b-white"><code>enum IntersectionType</code></td><td class="td-b-white"><code>NO_INTERSECTION</code> &middot; <code>GO_LEFT</code> &middot; <code>GO_RIGHT</code> &middot; <code>DEAD_END</code></td><td class="td-b-white">What the marker said</td></tr>
-    <tr><td class="td-bg-f9f9f9"><code>enum RobotState</code></td><td class="td-bg-f9f9f9"><code>STOPPED</code> &middot; <code>FOLLOWING_LINE</code> &middot; <code>AT_INTERSECTION</code> &middot; <code>EXECUTING_TURN</code></td><td class="td-bg-f9f9f9">What the robot is doing</td></tr>
-    <tr><td class="td-b-white"><code>TURN_SPEED</code></td><td class="td-b-white">150 (inherited)</td><td class="td-b-white">Lives in RobotConfig.h since Lesson 7 &mdash; do not re-declare it</td></tr>
+    <tr><td class="td-bg-f9f9f9"><code>GREEN_HIGH_THRESHOLD</code></td><td class="td-bg-f9f9f9">700 (survey yours)</td><td class="td-bg-f9f9f9">Calibrated value where green ends — must stay below black’s ~1000</td></tr>
+    <tr><td class="td-b-white"><code>enum IntersectionType</code></td><td class="td-b-white"><code>NO_INTERSECTION</code> · <code>GO_LEFT</code> · <code>GO_RIGHT</code> · <code>DEAD_END</code></td><td class="td-b-white">What the marker said</td></tr>
+    <tr><td class="td-bg-f9f9f9"><code>enum RobotState</code></td><td class="td-bg-f9f9f9"><code>STOPPED</code> · <code>FOLLOWING_LINE</code> · <code>AT_INTERSECTION</code> · <code>EXECUTING_TURN</code></td><td class="td-bg-f9f9f9">What the robot is doing</td></tr>
+    <tr><td class="td-b-white"><code>TURN_SPEED</code></td><td class="td-b-white">150 (inherited)</td><td class="td-b-white">Lives in RobotConfig.h since Lesson 7 — do not re-declare it</td></tr>
 </table>
 
 <h3 id="qr-states" class="h3-c-4d535f">The Four States</h3>
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-4d535f">State</th><th class="th-bg-4d535f">What runs there</th><th class="th-bg-4d535f">Who leaves it, and how</th></tr>
-    <tr><td class="td-b-white"><code>STOPPED</code></td><td class="td-b-white">Battery guard, Kp tuning (A/C), Green Survey (temp)</td><td class="td-b-white">B &rarr; countdown &rarr; <code>FOLLOWING_LINE</code></td></tr>
-    <tr><td class="td-bg-f9f9f9"><code>FOLLOWING_LINE</code></td><td class="td-bg-f9f9f9"><code>followLine()</code>, gap handling, marker check</td><td class="td-bg-f9f9f9">B &rarr; <code>STOPPED</code> (kill switch) &middot; marker &rarr; stop motors &rarr; <code>AT_INTERSECTION</code> &middot; gap timeout &rarr; <code>STOPPED</code></td></tr>
-    <tr><td class="td-b-white"><code>AT_INTERSECTION</code></td><td class="td-b-white"><code>showDecision()</code>, beep, 600 ms readable pause</td><td class="td-b-white">Always &rarr; <code>EXECUTING_TURN</code></td></tr>
-    <tr><td class="td-bg-f9f9f9"><code>EXECUTING_TURN</code></td><td class="td-bg-f9f9f9">Dispatch to <code>turnLeft()</code> / <code>turnRight()</code> / <code>turnAround()</code></td><td class="td-bg-f9f9f9">Turn done &rarr; clear <code>pendingTurn</code> &rarr; <code>FOLLOWING_LINE</code></td></tr>
+    <tr><td class="td-b-white"><code>STOPPED</code></td><td class="td-b-white">Battery guard, Kp tuning (A/C), Green Survey (temp)</td><td class="td-b-white">B → countdown → <code>FOLLOWING_LINE</code></td></tr>
+    <tr><td class="td-bg-f9f9f9"><code>FOLLOWING_LINE</code></td><td class="td-bg-f9f9f9"><code>followLine()</code>, gap handling, marker check</td><td class="td-bg-f9f9f9">B → <code>STOPPED</code> (kill switch) · marker → stop motors → <code>AT_INTERSECTION</code> · gap timeout → <code>STOPPED</code></td></tr>
+    <tr><td class="td-b-white"><code>AT_INTERSECTION</code></td><td class="td-b-white"><code>showDecision()</code>, beep, 600 ms readable pause</td><td class="td-b-white">Always → <code>EXECUTING_TURN</code></td></tr>
+    <tr><td class="td-bg-f9f9f9"><code>EXECUTING_TURN</code></td><td class="td-bg-f9f9f9">Dispatch to <code>turnLeft()</code> / <code>turnRight()</code> / <code>turnAround()</code></td><td class="td-bg-f9f9f9">Turn done → clear <code>pendingTurn</code> → <code>FOLLOWING_LINE</code></td></tr>
 </table>
 
-<p><strong>Two rules the table encodes:</strong> every state names its own exits, and stopping the motors happens <em>at the moment of detection</em> &mdash; never deferred to a later state.</p>
+<p><strong>Two rules the table encodes:</strong> every state names its own exits, and stopping the motors happens <em>at the moment of detection</em> — never deferred to a later state.</p>
 
 <h3 id="qr-functions" class="h3-c-4d535f">Key Functions</h3>
 
@@ -1979,7 +1979,7 @@ lineSensors.readCalibrated(sensorValues); <span class="tok-7cbf6e">// The read b
 Under the hood: right turn = setSpeeds(+TURN_SPEED, -TURN_SPEED)
 counted on encoders - battery sag and TRIM cannot bend it</pre>
 
-<h3 id="qr-dowhile" class="h3-c-4d535f">do&hellip;while &mdash; Run First, Then Check</h3>
+<h3 id="qr-dowhile" class="h3-c-4d535f">do…while — Run First, Then Check</h3>
 
 <pre>do {
   <span class="tok-7cbf6e">// body - always runs at least once</span>
@@ -1988,12 +1988,12 @@ counted on encoders - battery sag and TRIM cannot bend it</pre>
 <span class="tok-7cbf6e">// while: test first, so the body may never run</span>
 <span class="tok-7cbf6e">// do..while: act first, so the body always runs once</span></pre>
 
-<p>A <code>while</code> loop checks its condition <em>before</em> the first pass, so if the condition starts false the body never runs at all. A <code>do&hellip;while</code> flips the order: the body runs, <em>then</em> the condition is checked.</p>
+<p>A <code>while</code> loop checks its condition <em>before</em> the first pass, so if the condition starts false the body never runs at all. A <code>do…while</code> flips the order: the body runs, <em>then</em> the condition is checked.</p>
 
-<p>That matters whenever the condition depends on something the body has to fetch first. In Challenge 3 the test asks whether the center sensor is on black &mdash; but nothing has read the sensors yet when the loop is entered, so the array holds stale values. <code>do&hellip;while</code> guarantees one read happens before the first test.</p>
+<p>That matters whenever the condition depends on something the body has to fetch first. In Challenge 3 the test asks whether the center sensor is on black — but nothing has read the sensors yet when the loop is entered, so the array holds stale values. <code>do…while</code> guarantees one read happens before the first test.</p>
 
 <ul>
-<li>The trailing <strong>semicolon</strong> after the condition is required &mdash; a plain <code>while</code> loop has none, and leaving it off is the usual compile error.</li>
+<li>The trailing <strong>semicolon</strong> after the condition is required — a plain <code>while</code> loop has none, and leaving it off is the usual compile error.</li>
 <li>Everything else behaves like <code>while</code>: the loop keeps going while the condition stays true.</li>
 <li>Reach for it only when the body must run at least once. If a zero-pass run is fine, a plain <code>while</code> is clearer.</li>
 </ul>
@@ -2010,7 +2010,7 @@ counted on encoders - battery sag and TRIM cannot bend it</pre>
     <tr><th class="th-bg-4d535f">Image</th><th class="th-bg-4d535f">Description &amp; File</th><th class="th-bg-4d535f">Section</th></tr>
     <tr><td class="td-b-white">[GRAPHIC 9.1]</td><td class="td-b-white">RoboCup line course with T-intersection &amp; green markers<br><code>L09_GRAPHIC_9-1_robocup_course.svg</code></td><td class="td-b-white"><a href="#section-1" class="link-c-2e86ab-2">1. Intro</a></td></tr>
     <tr><td class="td-b-white">[GRAPHIC 9.2]</td><td class="td-b-white">Calibrated sensor values on white, green, and black<br><code>L09_GRAPHIC_9-2_green_sensor_values.svg</code></td><td class="td-b-white"><a href="#section-3" class="link-c-2e86ab-2">3. Theory</a></td></tr>
-    <tr><td class="td-b-white">[GRAPHIC 9.3]</td><td class="td-b-white">Zumo sensor positions 0&#8211;4 with the outer pair highlighted<br><code>L09_GRAPHIC_9-3_sensor_positions.svg</code></td><td class="td-b-white"><a href="#section-3" class="link-c-2e86ab-2">3. Theory</a></td></tr>
+    <tr><td class="td-b-white">[GRAPHIC 9.3]</td><td class="td-b-white">Zumo sensor positions 0–4 with the outer pair highlighted<br><code>L09_GRAPHIC_9-3_sensor_positions.svg</code></td><td class="td-b-white"><a href="#section-3" class="link-c-2e86ab-2">3. Theory</a></td></tr>
     <tr><td class="td-b-white">[GRAPHIC 9.4]</td><td class="td-b-white">The four-state machine: states &amp; transitions<br><code>L09_GRAPHIC_9-4_state_machine.svg</code></td><td class="td-b-white"><a href="#section-3" class="link-c-2e86ab-2">3. Theory</a></td></tr>
     <tr><td class="td-b-white">[GRAPHIC 9.5]</td><td class="td-b-white">Test course layout with labeled intersection types<br><code>L09_GRAPHIC_9-5_test_course.svg</code></td><td class="td-b-white"><a href="#section-4" class="link-c-2e86ab-2">4. Hardware</a></td></tr>
     <tr><td class="td-b-white">[GRAPHIC 9.6]</td><td class="td-b-white">Finite State Machine UML diagram (same machine, formal notation)<br><code>L09_GRAPHIC_9-6_fsm_uml.svg</code></td><td class="td-b-white"><a href="#section-8a" class="link-c-2e86ab-2">8A. Concepts</a></td></tr>
@@ -2023,13 +2023,13 @@ counted on encoders - battery sag and TRIM cannot bend it</pre>
 
 <!-- ===================== FOOTER ===================== -->
 <!-- ===== NEXT LESSON v1 (§3.1a) — generated by next_pointer.py; do not hand-vary ===== -->
-<p class="p-mt-22px" id="next-lesson"><a href="Lesson_10.html" class="link-c-2e86ab">Next: Lesson 10 &mdash; Obstacles &rarr;</a></p>
+<p class="p-mt-22px" id="next-lesson"><a href="Lesson_10.html" class="link-c-2e86ab">Next: Lesson 10 — Obstacles →</a></p>
 
 <p class="p-c-666">
-    <strong>LESSON 09 &middot; Intersections & Dead Ends</strong><br>
+    <strong>LESSON 09 · Intersections & Dead Ends</strong><br>
     Teaching Your Robot to Decide<br>
-    Zumo 32U4 Robotics &bull; PlatformIO Edition<br>
-    &copy; 2026 RoboLore &middot; Written and compiled by DJ Weymuth and Claude AI
+    Zumo 32U4 Robotics • PlatformIO Edition<br>
+    © 2026 RoboLore · Written and compiled by DJ Weymuth and Claude AI
 </p>
 
 <!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->

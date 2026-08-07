@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.19.0'
+VERSION = 'v1.20.0'
 # v1.19.0 (S123): title_feed registered in ARTEFACTS and added to BOTH emitted blocks.
 #   Same shape as v1.18.0, and CONTROL E named the file the moment it landed in root —
 #   an instrument written this session is exactly the kind that drifts unwatched, because
@@ -180,6 +180,7 @@ ARTEFACTS = [
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
     ('build_palette',         'build_palette.py',         r"VERSION = '(v[\d.]+)'"),
     ('color_index',           'color_index.py',           r"VERSION = '(v[\d.]+)'"),
+    ('entity_sweep',          'entity_sweep.py',          r"VERSION = '(v[\d.]+)'"),
     ('class_sweep',           'class_sweep.py',           r"VERSION = '(v[\d.]+)'"),
     ('next_pointer',          'next_pointer.py',          r"VERSION = '(v[\d.]+)'"),
     ('title_feed',            'title_feed.py',            r"VERSION = '(v[\d.]+)'"),
@@ -274,6 +275,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"build_palette {vals['build_palette']} · "
             f"class_sweep {vals['class_sweep']} · "
             f"color_index {vals['color_index']} · "
+            f"entity_sweep {vals['entity_sweep']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
             f"next_pointer {vals['next_pointer']} · "
             f"title_feed {vals['title_feed']} · "
@@ -306,6 +308,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`build_palette` **{vals['build_palette']}** ·\n"
             f"`class_sweep` **{vals['class_sweep']}** ·\n"
             f"`color_index` **{vals['color_index']}** ·\n"
+            f"`entity_sweep` **{vals['entity_sweep']}** ·\n"
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
             f"`next_pointer` **{vals['next_pointer']}** ·\n"
             f"`title_feed` **{vals['title_feed']}** ·\n"

@@ -49,7 +49,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lesson_inventory as LI
 import build_css as BC
 
-VERSION = 'v1.1'          # the only version home in this file (S105)
+VERSION = 'v1.2'          # the only version home in this file (S105)
 # v1.1 (S105): --include-held, for the ONE pass that converts the four byte-exact-across-lesson
 #   block types book-wide. It is gated on a precondition, not on a promise: every held string
 #   must round-trip BYTE-EXACT through the stylesheet, because §6.5a/§25.6/§6.8/§4.5 assert
@@ -88,7 +88,7 @@ def held_spans(s, label):
         spans.append((m.start(), m.end()))
     lm = re.search(r'>\s*' + re.escape(label) + r'\s*<', s)
     if lm:
-        v = re.search(r'Version \d+\.\d+ &mdash; \w+ \d{4}', s[lm.start():lm.start() + 2500])
+        v = re.search(r'Version \d+\.\d+(?: &mdash;| \u2014) \w+ \d{4}', s[lm.start():lm.start() + 2500])
         if v:
             vpos = lm.start() + v.start()
             st = lm.start()
@@ -100,7 +100,9 @@ def held_spans(s, label):
                 if en > vpos:
                     spans.append((st, en))
                     break
-    i = s.find('&copy; 2026 RoboLore')
+    i = s.find('\u00a9 2026 RoboLore')
+    if i < 0:
+        i = s.find('&copy; 2026 RoboLore')
     if i >= 0:
         spans.append((s.rfind('<p', 0, i), s.find('</p>', i) + 4))
     for m in _PART.finditer(s):

@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.22.0 -->
+<!-- Lesson version: v04.22.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +48,7 @@
         <a href="Lesson_14.html" title="Competition Prep" class="link-bc-rgba2552">14</a>
         <a href="Lesson_15.html" title="Advanced PID Control" class="link-bc-rgba2552">15</a>
         <a href="Lesson_16.html" title="Engineering Showcase" class="link-bc-rgba2552">16</a>
-        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">&#8962;</a>
+        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">⌂</a>
     </div>
     <script>
     (function() {
@@ -75,8 +75,8 @@
 <div class="div-fs-095em">LESSON 05</div>
 <h1 class="h1">Proximity Sensors</h1>
 <div class="div-fs-11em">Teaching Your Robot to Sense</div>
-<div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.22 &mdash; August 2026</div>
+<div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
+<div class="div-fs-09em-2">Version 04.22 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -92,7 +92,7 @@
 
 <p>Imagine walking through a dark room. You can't see the furniture, but you can feel when your hands get close to something—even before touching it. You sense the object's presence somehow.</p>
 
-<p>Your robot doesn't have eyes, but it <em>can</em> detect objects around it &mdash; ahead of it, and out to either side. The Zumo 32U4 has <strong>infrared proximity sensors</strong> that work on the same principle as a bat&#8217;s echolocation or a ship&#8217;s sonar &#8212; send out a signal, then measure what bounces back. The bat uses sound and the ship uses sound; your robot uses invisible light.</p>
+<p>Your robot doesn't have eyes, but it <em>can</em> detect objects around it — ahead of it, and out to either side. The Zumo 32U4 has <strong>infrared proximity sensors</strong> that work on the same principle as a bat’s echolocation or a ship’s sonar — send out a signal, then measure what bounces back. The bat uses sound and the ship uses sound; your robot uses invisible light.</p>
 
 <div class="callout-17a2b8-bg-d1ecf1">
     <div class="div-fs-105em">🤖 Real-World Connection</div>
@@ -121,7 +121,7 @@
 
 <div class="div-m-25px0">
 <img src="../images/L05_GRAPHIC_5-01_robot_sees_obstacles.svg" alt="Top view of the Zumo. One infrared detection cone points straight ahead from the front detector, where a nearby hand reads 6. The left and right detectors each throw a cone straight out of the side of the robot, roughly ninety degrees off the nose: a wall running alongside on the left reads 2, and the open right side reads 0." class="img-ddd">
-<p class="p-c-666-2">[GRAPHIC 5.1] Three detectors, three directions. FRONT looks ahead &mdash; a hand close in reads F:6. LEFT and RIGHT look out of the <em>flanks</em>, not forward: a wall running alongside reads L:2, an open right side reads R:0. None of that light is visible to you.</p>
+<p class="p-c-666-2">[GRAPHIC 5.1] Three detectors, three directions. FRONT looks ahead — a hand close in reads F:6. LEFT and RIGHT look out of the <em>flanks</em>, not forward: a wall running alongside reads L:2, an open right side reads R:0. None of that light is visible to you.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -135,14 +135,14 @@
 <p>By the end of this lesson, you will be able to:</p>
 
 <ul>
-    <li>☐ Explain how an infrared proximity sensor detects an object &#8212; and why a 38 kHz flicker makes it deaf to sunlight</li>
-    <li>☐ Read all three proximity sensors and interpret the 0&#8211;6 brightness scale</li>
-    <li>☐ Explain why a reading is an <em>echo</em>, not a distance &#8212; and what that means for your thresholds</li>
+    <li>☐ Explain how an infrared proximity sensor detects an object — and why a 38 kHz flicker makes it deaf to sunlight</li>
+    <li>☐ Read all three proximity sensors and interpret the 0–6 brightness scale</li>
+    <li>☐ Explain why a reading is an <em>echo</em>, not a distance — and what that means for your thresholds</li>
     <li>☐ Use threshold constants to turn a raw reading into a decision (none, far, close, very close)</li>
     <li>☐ Write a <strong>function prototype</strong> and say what it promises the compiler</li>
-    <li>☐ Write a <strong>for loop</strong> and trace it &#8212; and tell its condition apart from an <code>if</code> inside it</li>
+    <li>☐ Write a <strong>for loop</strong> and trace it — and tell its condition apart from an <code>if</code> inside it</li>
     <li>☐ Display sensor data in three formats (numeric, bar graph, alerts) and build the bar-graph gauge yourself</li>
-    <li>☐ Create audio and visual feedback that varies with proximity, like a car&#8217;s parking sensors</li>
+    <li>☐ Create audio and visual feedback that varies with proximity, like a car’s parking sensors</li>
     <li>☐ Read a sensor <em>pair</em> and combine it two ways: <code>max()</code> for presence, the difference for direction</li>
     <li>☐ Move the two configuration jumpers to DN2/DN4 <strong>permanently</strong>, verify the move in software, and explain what you traded away</li>
 </ul>
@@ -155,7 +155,7 @@
 
 </div>
 <!-- ===================== SECTION 3: THEORY ===================== -->
-<div class="div-bg-1f2a3d"><div id="section-3"><span class="span-d-block-2">Section 3 &middot; Theory</span><span class="span-d-block">Two Flashlights, Three Ears</span></div></div>
+<div class="div-bg-1f2a3d"><div id="section-3"><span class="span-d-block-2">Section 3 · Theory</span><span class="span-d-block">Two Flashlights, Three Ears</span></div></div>
 <div class="div-1f2a3d">
 
 
@@ -176,7 +176,7 @@
 
 <div class="div-m-25px0">
 <img src="../images/L05_GRAPHIC_5-02_emit_reflect_detect.svg" alt="The four-stage proximity cycle, beside a panel contrasting steady sunlight (a flat line, ignored) with the robot's own 38 kHz pulse train (a square wave, heard)" class="img-ddd">
-<p class="p-c-666-2">[GRAPHIC 5.2] EMIT &#8594; REFLECT &#8594; DETECT &#8594; COUNT &#8212; and the 38 kHz trick that makes steady sunlight invisible to the receiver.</p>
+<p class="p-c-666-2">[GRAPHIC 5.2] EMIT → REFLECT → DETECT → COUNT — and the 38 kHz trick that makes steady sunlight invisible to the receiver.</p>
 </div>
 
 <div class="callout-607d8b-bg-eceff1">
@@ -196,7 +196,7 @@
 
 <p>Here's what actually happens inside one <code>read()</code>: the robot runs <strong>six rounds</strong> of pulses, starting faint and getting stronger — think whisper, murmur, talk, project, shout, YELL. After each round it checks: did the echo come back?</p>
 
-<p>The value you get is <strong>how many rounds produced an echo</strong>. A very close object bounces back even the whisper — all six rounds land, and you read 6. A distant object only bounces back the yell — one round lands, and you read 1. Nothing comes back at all — 0. The whole six-round conversation takes about 13&frac12; milliseconds, fast enough to run over and over inside <code>loop()</code> without the robot ever feeling slow.</p>
+<p>The value you get is <strong>how many rounds produced an echo</strong>. A very close object bounces back even the whisper — all six rounds land, and you read 6. A distant object only bounces back the yell — one round lands, and you read 1. Nothing comes back at all — 0. The whole six-round conversation takes about 13½ milliseconds, fast enough to run over and over inside <code>loop()</code> without the robot ever feeling slow.</p>
 
 <table class="table-bc-collapse">
     <tr class="tr-bg-f8f9fa">
@@ -253,18 +253,18 @@
 <p>And that's why one <code>read()</code> hands you <strong>two numbers per sensor</strong>: the library runs the full whisper-to-yell sequence once with the left team, then once with the right team, and every ear takes notes both times.</p>
 
 
-<p><strong>Why they are teams and not four switches.</strong> The front-left LED and the middle-left LED are wired <strong>in series</strong> &mdash; one current path, so lighting either one lights both. Same for the right pair. That is not a software choice you could change; it is a wire. It also means the side detector is being helped by the blade LED and the front detector is being helped by the side LED, every single time a team fires. <strong>The emitters flood; the direction you get back comes from which detector answers.</strong></p>
+<p><strong>Why they are teams and not four switches.</strong> The front-left LED and the middle-left LED are wired <strong>in series</strong> — one current path, so lighting either one lights both. Same for the right pair. That is not a software choice you could change; it is a wire. It also means the side detector is being helped by the blade LED and the front detector is being helped by the side LED, every single time a team fires. <strong>The emitters flood; the direction you get back comes from which detector answers.</strong></p>
 
 <h3 id="section-3-4a" class="h3-c-1f2a3d">3.4a The Dead Spot Between Them</h3>
 
-<p>Three cones do not add up to a circle. FRONT covers about &plusmn;19&deg; of your nose and each side detector covers a wedge centred straight out the flank &mdash; which leaves <strong>two blind wedges, roughly 19&deg; to 72&deg; off each side</strong>, where no detector is aimed. Pololu measured this and calls it a significant dead spot between the front sensor and each side sensor.</p>
+<p>Three cones do not add up to a circle. FRONT covers about ±19° of your nose and each side detector covers a wedge centred straight out the flank — which leaves <strong>two blind wedges, roughly 19° to 72° off each side</strong>, where no detector is aimed. Pololu measured this and calls it a significant dead spot between the front sensor and each side sensor.</p>
 
 <img src="../images/L05_GRAPHIC_5-07_the_dead_spot.svg" alt="Top view of the Zumo showing the front detection cone covering about plus or minus nineteen degrees ahead, the left and right cones aimed straight out of each flank, and two hatched blind wedges between them from roughly nineteen to seventy-two degrees off each side. A three-step strip alongside shows an object detected by the left sensor, then falling into the blind wedge as the robot turns toward it and reading zero on all sensors, then being picked up by the front sensor as the turn continues." class="img-ddd-3">
-<p class="p-c-666-3">[GRAPHIC 5.7] Between &#8220;ahead&#8221; and &#8220;beside&#8221; there is a wedge nothing is watching. The consequence is the strip on the right: see it on the left, turn to face it, and it vanishes mid-turn.</p>
+<p class="p-c-666-3">[GRAPHIC 5.7] Between “ahead” and “beside” there is a wedge nothing is watching. The consequence is the strip on the right: see it on the left, turn to face it, and it vanishes mid-turn.</p>
 
 <div class="callout-ffc107-bg-fff8e1-3">
     <div class="div-fs-09em">⚠️ WARNING</div>
-    <div class="div-fs-105em"><strong>Warning:</strong></div> a reading that drops to 0 <em>while you are turning toward the thing you just detected</em> is not a broken sensor and not a bug in your code. Nothing is aimed there. Design around it: remember what you saw and keep turning rather than re-testing every frame. <strong>Lesson 10 leans on exactly this dead spot</strong> &mdash; by then the five-down jumper move has taken your side receivers away, so the blind region starts at about 19&deg; off your nose and never closes.
+    <div class="div-fs-105em"><strong>Warning:</strong></div> a reading that drops to 0 <em>while you are turning toward the thing you just detected</em> is not a broken sensor and not a bug in your code. Nothing is aimed there. Design around it: remember what you saw and keep turning rather than re-testing every frame. <strong>Lesson 10 leans on exactly this dead spot</strong> — by then the five-down jumper move has taken your side receivers away, so the blind region starts at about 19° off your nose and never closes.
 </div>
 
 <h3 id="section-3-5" class="h3-c-1f2a3d">3.5 A Proximity Sensor Is Not a Ruler</h3>
@@ -277,7 +277,7 @@
 
 <p><code>read()</code> is active sonar — shout, then listen for your own echo. It has a quiet cousin: <code>readBasic()</code> never fires the LEDs at all. It just listens for 38&nbsp;kHz pulses that <em>someone else</em> is emitting.</p>
 
-<p>Someone else &#8212; like the robot on the next desk running this very program. Its 38 kHz shouts are, to your receiver, indistinguishable from your own echoes. In a sumo ring that cuts both ways: you could hear an opponent who is actively hunting for you, without ever switching your own lights on and revealing yourself. Today&#8217;s program doesn&#8217;t use <code>readBasic()</code>, and this book never comes back to it &#8212; but you can prove the effect yourself in ten seconds, and Observation Experiment 5 shows you how.</p>
+<p>Someone else — like the robot on the next desk running this very program. Its 38 kHz shouts are, to your receiver, indistinguishable from your own echoes. In a sumo ring that cuts both ways: you could hear an opponent who is actively hunting for you, without ever switching your own lights on and revealing yourself. Today’s program doesn’t use <code>readBasic()</code>, and this book never comes back to it — but you can prove the effect yourself in ten seconds, and Observation Experiment 5 shows you how.</p>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
@@ -290,29 +290,29 @@
 </div>
 
 <!-- ===================== SECTION 4: HARDWARE ===================== -->
-<div class="div-bg-433014-2"><div id="section-4"><span class="span-d-block-2">Section 4 &middot; Hardware</span><span class="span-d-block">The Two-LED System</span></div></div>
+<div class="div-bg-433014-2"><div id="section-4"><span class="span-d-block-2">Section 4 · Hardware</span><span class="span-d-block">The Two-LED System</span></div></div>
 <div class="div-433014">
 
 
 <h3 class="h3-c-433014">4.1 Sensor Locations</h3>
 
-<p>The Zumo 32U4's proximity system has two parts. <strong>Three detectors</strong> sit on the front sensor array, each facing a different direction &#8212; LEFT, FRONT, and RIGHT. <strong>Four IR emitter LEDs</strong> live on the main board: two forward-facing LEDs mounted on the front blade (the clear domes you can see), and two middle LEDs on the sides between the wheels that shine left and right.</p>
+<p>The Zumo 32U4's proximity system has two parts. <strong>Three detectors</strong> sit on the front sensor array, each facing a different direction — LEFT, FRONT, and RIGHT. <strong>Four IR emitter LEDs</strong> live on the main board: two forward-facing LEDs mounted on the front blade (the clear domes you can see), and two middle LEDs on the sides between the wheels that shine left and right.</p>
 
 <img src="../images/L05_GRAPHIC_5-05_proximity_sensor_layout.svg" alt="Proximity system layout, top view: two forward emitters on the blade and two middle emitters between the wheels, wired as LEFT and RIGHT teams; three receivers facing left, front, and right" class="img-d-block-2">
-<p class="p-c-666-3">[GRAPHIC 5.5] The whole system, from above. Four emitters wired as two teams &mdash; one blade LED and one middle LED per side &mdash; and three detectors, each aimed a different way: LEFT out the flank, FRONT up the nose, RIGHT out the other flank.</p>
+<p class="p-c-666-3">[GRAPHIC 5.5] The whole system, from above. Four emitters wired as two teams — one blade LED and one middle LED per side — and three detectors, each aimed a different way: LEFT out the flank, FRONT up the nose, RIGHT out the other flank.</p>
 
-<p><strong>Key insight:</strong> the detectors see reflections &mdash; but they do not see <em>direction</em>. Because each side's two emitters are wired in series (&sect;3.4), firing a team floods a wide area, so a strong return tells you something is out there without telling you where it is. Direction comes from <strong>which detector answers</strong>: an object out your left flank reads on LEFT because LEFT is the only detector aimed there. The one place the LED team <em>does</em> carry direction is the front detector, read twice &mdash; that is &sect;4.2.</p>
+<p><strong>Key insight:</strong> the detectors see reflections — but they do not see <em>direction</em>. Because each side's two emitters are wired in series (§3.4), firing a team floods a wide area, so a strong return tells you something is out there without telling you where it is. Direction comes from <strong>which detector answers</strong>: an object out your left flank reads on LEFT because LEFT is the only detector aimed there. The one place the LED team <em>does</em> carry direction is the front detector, read twice — that is §4.2.</p>
 
 
 <img src="../images/L05_IMAGE_5-06_proximity_facing_directions.png" alt="The three proximity receivers on the Zumo 32U4 front sensor array, each boxed and labelled with the direction it faces: the centre receiver marked FRONT has two arrows pointing straight ahead, while the two outer receivers each have a single arrow pointing straight out to the side, away from the board." class="img-ddd-2">
-<p class="p-c-666-3">[IMAGE 5.6] <strong>Why &ldquo;left&rdquo; and &ldquo;right&rdquo; mean <em>sideways</em>.</strong> FRONT looks straight ahead. The two outer receivers look out of the <em>sides</em> of the robot &mdash; not forward-left and forward-right. Something just off your nose is still FRONT&rsquo;s business; LEFT and RIGHT are watching your flanks. <span class="tok-888">Photo: Pololu, annotated.</span></p>
+<p class="p-c-666-3">[IMAGE 5.6] <strong>Why “left” and “right” mean <em>sideways</em>.</strong> FRONT looks straight ahead. The two outer receivers look out of the <em>sides</em> of the robot — not forward-left and forward-right. Something just off your nose is still FRONT’s business; LEFT and RIGHT are watching your flanks. <span class="tok-888">Photo: Pololu, annotated.</span></p>
 
 
 <p><strong>Where the four emitters actually are.</strong> Two you can see, two you cannot:</p>
 <img src="../images/L05_IMAGE_5-07_forward_ir_leds_on_blade.png" alt="Top view of an assembled Zumo 32U4 OLED robot with the two forward infrared emitter LEDs boxed in red, seated in their plastic holder on the steel blade at the front of the robot." class="img-ddd-2">
-<p class="p-c-666-3">[IMAGE 5.7] The <strong>forward pair</strong> &mdash; the clear domes on the blade, in their protective holder. Assembled robots ship with the wide-angle (50&deg;) clear LEDs. <span class="tok-888">Photo: Pololu, annotated.</span></p>
+<p class="p-c-666-3">[IMAGE 5.7] The <strong>forward pair</strong> — the clear domes on the blade, in their protective holder. Assembled robots ship with the wide-angle (50°) clear LEDs. <span class="tok-888">Photo: Pololu, annotated.</span></p>
 <img src="../images/L05_IMAGE_5-08_middle_ir_leds_main_board.png" alt="Top view of a bare Zumo 32U4 OLED main board with the middle-left and middle-right infrared emitter LEDs boxed in red at the far left and right edges of the board, level with the middle of the robot between the wheel cutouts." class="img-ddd-4">
-<p class="p-c-666-3">[IMAGE 5.8] The <strong>middle pair</strong>, on the bare board &mdash; surface-mounted at the outer edges, aiming straight out. On your robot they are hidden inside the tracks, which is why you have never seen them. Note the <code>A1 = VBAT/2</code> silkscreen just inboard: A1 is the pin that picks which LED team fires. <span class="tok-888">Photo: Pololu, annotated.</span></p>
+<p class="p-c-666-3">[IMAGE 5.8] The <strong>middle pair</strong>, on the bare board — surface-mounted at the outer edges, aiming straight out. On your robot they are hidden inside the tracks, which is why you have never seen them. Note the <code>A1 = VBAT/2</code> silkscreen just inboard: A1 is the pin that picks which LED team fires. <span class="tok-888">Photo: Pololu, annotated.</span></p>
 
 <h3 class="h3-c-433014">4.2 The Two-LED System</h3>
 
@@ -323,11 +323,11 @@
     <li><code>countsFrontWithRightLeds()</code> — Front detector lit by RIGHT side LEDs</li>
 </ul>
 
-<p>If an object is slightly left of center, the LEFT-team reading will be higher. We combine them with <code>max()</code> to detect objects regardless of their exact position &mdash; &ldquo;slightly&rdquo; meaning inside FRONT's own &plusmn;19&deg;. Past that you are in the dead spot of &sect;3.4a, and no amount of combining will find the object.</p>
+<p>If an object is slightly left of center, the LEFT-team reading will be higher. We combine them with <code>max()</code> to detect objects regardless of their exact position — “slightly” meaning inside FRONT's own ±19°. Past that you are in the dead spot of §3.4a, and no amount of combining will find the object.</p>
 
 <div class="div-m-25px0">
 <img src="../images/L05_GRAPHIC_5-03_two_led_system.svg" alt="Front elevation of the Zumo showing the left emitter, the single front receiver, and the right emitter; below, the two reads of that one receiver returning 5 and 2 for an object sitting left of centre" class="img-ddd">
-<p class="p-c-666-2">[GRAPHIC 5.3] One ear, two flashlights. The same front detector, read once with the LEFT LED (5) and once with the RIGHT (2) &#8212; same object, two answers.</p>
+<p class="p-c-666-2">[GRAPHIC 5.3] One ear, two flashlights. The same front detector, read once with the LEFT LED (5) and once with the RIGHT (2) — same object, two answers.</p>
 </div>
 
 <h3 class="h3-c-433014">4.3 What Affects Detection?</h3>
@@ -386,7 +386,7 @@
 
 </div>
 <!-- ===================== SECTION 5: CODE WALKTHROUGH ===================== -->
-<div class="div-bg-433014"><div id="section-5"><span class="span-d-block-2">Section 5 &middot; Code Walkthrough</span><span class="span-d-block">The Order-Proof Trick</span></div></div>
+<div class="div-bg-433014"><div id="section-5"><span class="span-d-block-2">Section 5 · Code Walkthrough</span><span class="span-d-block">The Order-Proof Trick</span></div></div>
 <div class="div-433014">
 
 
@@ -661,7 +661,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-13" class="h3-c-433014">5.13 Loop Function</h3>
 
-<p>One new shape appears in the loop below: a <code>switch</code> statement, which picks one of several blocks based on a value &mdash; here, which display mode to show. Read it as a stack of <code>if</code> checks that all ask about the same variable; each <code>case</code> is one answer, and <code>break</code> ends it. Copy it as written for now &mdash; Lesson 9 takes <code>switch</code> apart properly when the robot needs to choose between intersection types.</p>
+<p>One new shape appears in the loop below: a <code>switch</code> statement, which picks one of several blocks based on a value — here, which display mode to show. Read it as a stack of <code>if</code> checks that all ask about the same variable; each <code>case</code> is one answer, and <code>break</code> ends it. Copy it as written for now — Lesson 9 takes <code>switch</code> apart properly when the robot needs to choose between intersection types.</p>
 
 <pre><span class="tok-569cd6">void</span> loop() {
     checkBattery();   <span class="tok-7cbf6e">// hold A + B together to see battery millivolts</span>
@@ -817,13 +817,13 @@ Call it at the TOP of loop().
 <th class="th-ddd-5">Prints</th>
 <th class="th-ddd-5">Display so far</th>
 </tr>
-<tr><td class="td-ddd">1</td><td class="td-ddd">0</td><td class="td-ddd">Yes &#8212; keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">#</td></tr>
-<tr><td class="td-ddd">2</td><td class="td-ddd">1</td><td class="td-ddd">Yes &#8212; keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">##</td></tr>
-<tr><td class="td-ddd">3</td><td class="td-ddd">2</td><td class="td-ddd">Yes &#8212; keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">###</td></tr>
-<tr><td class="td-ddd">4</td><td class="td-ddd">3</td><td class="td-ddd">Yes &#8212; keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">####</td></tr>
-<tr><td class="td-ddd">5</td><td class="td-ddd">4</td><td class="td-ddd">Yes &#8212; keep going</td><td class="td-ddd"><strong>No</strong></td><td class="td-ddd">-</td><td class="td-ddd">####-</td></tr>
-<tr><td class="td-ddd">6</td><td class="td-ddd">5</td><td class="td-ddd">Yes &#8212; keep going</td><td class="td-ddd"><strong>No</strong></td><td class="td-ddd">-</td><td class="td-ddd">####--</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd">&#8212;</td><td class="td-ddd">6</td><td class="td-ddd"><strong>No &#8212; loop ENDS</strong></td><td class="td-ddd">never asked</td><td class="td-ddd">nothing</td><td class="td-ddd">####--</td></tr>
+<tr><td class="td-ddd">1</td><td class="td-ddd">0</td><td class="td-ddd">Yes — keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">#</td></tr>
+<tr><td class="td-ddd">2</td><td class="td-ddd">1</td><td class="td-ddd">Yes — keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">##</td></tr>
+<tr><td class="td-ddd">3</td><td class="td-ddd">2</td><td class="td-ddd">Yes — keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">###</td></tr>
+<tr><td class="td-ddd">4</td><td class="td-ddd">3</td><td class="td-ddd">Yes — keep going</td><td class="td-ddd">Yes</td><td class="td-ddd">#</td><td class="td-ddd">####</td></tr>
+<tr><td class="td-ddd">5</td><td class="td-ddd">4</td><td class="td-ddd">Yes — keep going</td><td class="td-ddd"><strong>No</strong></td><td class="td-ddd">-</td><td class="td-ddd">####-</td></tr>
+<tr><td class="td-ddd">6</td><td class="td-ddd">5</td><td class="td-ddd">Yes — keep going</td><td class="td-ddd"><strong>No</strong></td><td class="td-ddd">-</td><td class="td-ddd">####--</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd">—</td><td class="td-ddd">6</td><td class="td-ddd"><strong>No — loop ENDS</strong></td><td class="td-ddd">never asked</td><td class="td-ddd">nothing</td><td class="td-ddd">####--</td></tr>
 </table>
 
 <div class="callout-607d8b-bg-eceff1">
@@ -897,7 +897,7 @@ Call it at the TOP of loop().
 <div class="callout-607d8b-bg-eceff1">
     <div class="div-fs-09em">📘 NOTE</div>
     <div class="div-fs-105em">For Loops vs While Loops</div>
-    <p>For loops are best when you know exactly how many times to repeat (like "do this 6 times" or "count down from 3"). While loops are better for sensor-based conditions where you don't know how many iterations you'll need (like "keep turning until you see the line" or "drive forward until something is detected"). You'll meet the while loop properly in Lesson 6, Section 5.3 &mdash; it is the heart of every measured move, driving until the encoders say you have gone far enough.</p>
+    <p>For loops are best when you know exactly how many times to repeat (like "do this 6 times" or "count down from 3"). While loops are better for sensor-based conditions where you don't know how many iterations you'll need (like "keep turning until you see the line" or "drive forward until something is detected"). You'll meet the while loop properly in Lesson 6, Section 5.3 — it is the heart of every measured move, driving until the encoders say you have gone far enough.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda">
@@ -916,35 +916,35 @@ Call it at the TOP of loop().
 
 <div id="brain-check-01" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 &middot; MENTAL KNOWLEDGE CHECK &mdash; Answer From Your Head</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
 <p>That is the reading done. Before you point a single sensor at the world, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. The room is already full of infrared — sunlight especially. Why doesn't it flood every proximity reading? (&sect;3.1)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. The room is already full of infrared — sunlight especially. Why doesn't it flood every proximity reading? (§3.1)</summary>
 
 <div class="div-mt-12px"><p>Because the robot blinks its IR LEDs about 38,000 times per second and the receiver is a tuned ear that only reacts to that rhythm. Steady sunlight has no 38 kHz flicker, so it is ignored — like picking a friend out of a loud crowd because they whistle a pattern nobody else knows. Up to a point: enough raw IR can deafen the ear outright, which is why Section 8 lists bright light as a cause of erratic readings.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. What value range do Zumo proximity sensors return? (&sect;3.2)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. What value range do Zumo proximity sensors return? (§3.2)</summary>
 
 <div class="div-mt-12px"><p>0–6 (brightness levels), NOT 0–255. Each level represents a different IR pulse brightness that detected a reflection.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. What does <code>DETECTION_THRESHOLD = 1</code> mean? (&sect;3.3)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. What does <code>DETECTION_THRESHOLD = 1</code> mean? (§3.3)</summary>
 
 <div class="div-mt-12px"><p>Any reading of 1 or higher counts as "something detected." Since 0 means nothing, a threshold of 1 catches even faint/distant objects.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What does a function prototype promise the compiler? (&sect;5.5)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What does a function prototype promise the compiler? (§5.5)</summary>
 
 <div class="div-mt-12px"><p>That a function by that name exists, with that return type and those parameters, and that its full definition appears somewhere later in the file. The compiler reads top to bottom and refuses to call a name it has not heard of; the prototype is the promise that lets it proceed.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Right now your two configuration jumpers sit at LFT/RGT. Where do they end up by the end of this lesson, and what do you trade away? (&sect;1, &sect;7.3)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Right now your two configuration jumpers sit at LFT/RGT. Where do they end up by the end of this lesson, and what do you trade away? (§1, §7.3)</summary>
 
 <div class="div-mt-12px"><p>At DN2/DN4 — and this time permanently. You trade your left and right proximity receivers for line sensors 2 and 4. This lesson borrowed all three receivers and every reading you took came from that loan; Section 7.3 is where it comes due. Lesson 6 will not work until you move them.</p></div>
 
@@ -954,7 +954,7 @@ Call it at the TOP of loop().
 </div>
 
 <!-- ===================== SECTION 6: BUILD IT ===================== -->
-<div class="div-bg-433014"><div id="section-6"><span class="span-d-block-2">Section 6 &middot; Build It</span><span class="span-d-block">The Proximity Display</span></div></div>
+<div class="div-bg-433014"><div id="section-6"><span class="span-d-block-2">Section 6 · Build It</span><span class="span-d-block">The Proximity Display</span></div></div>
 <div class="div-433014">
 
 <p>Section 5 walked the whole program in labeled pieces. In this section you assemble it — and for the first two steps, <strong>you write the code yourself</strong>: each hands you the plan in pseudo-code and points you at the Quick Reference; you translate, then check against the reveal.</p>
@@ -1251,7 +1251,7 @@ L:0	F:6 (5/6)	R:0	*** VERY CLOSE ***</pre>
 </div>
 
 <!-- ===================== SECTION 7: TEST IT ===================== -->
-<div class="div-bg-00474b-3"><div id="section-7"><span class="span-d-block-2">Section 7 &middot; Test It</span><span class="span-d-block">The Last Jumper Move</span></div></div>
+<div class="div-bg-00474b-3"><div id="section-7"><span class="span-d-block-2">Section 7 · Test It</span><span class="span-d-block">The Last Jumper Move</span></div></div>
 <div class="div-00474b">
 
 
@@ -1339,11 +1339,11 @@ L:0	F:6 (5/6)	R:0	*** VERY CLOSE ***</pre>
 </div>
 
 
-<p><strong>What actually changes on top of the board.</strong> The jumpers do not move the sensors &mdash; they choose which ones are <em>wired up</em>. Same five sensors, both times:</p>
+<p><strong>What actually changes on top of the board.</strong> The jumpers do not move the sensors — they choose which ones are <em>wired up</em>. Same five sensors, both times:</p>
 <img src="../images/L05_IMAGE_5-05a_array_three_live_factory.png" alt="Zumo 32U4 front sensor array in the factory jumper configuration, with three of the five reflectance sensors highlighted and numbered 1, 3 and 5 — the two outermost sensors and the centre one." class="img-ddd-2">
-<p class="p-c-666-3">[IMAGE 5.5a] <strong>BEFORE &mdash; factory (LFT / RGT).</strong> Only three of the five reflectance sensors reach the microcontroller: the two outer ones and the centre. Positions 2 and 4 are dark.</p>
+<p class="p-c-666-3">[IMAGE 5.5a] <strong>BEFORE — factory (LFT / RGT).</strong> Only three of the five reflectance sensors reach the microcontroller: the two outer ones and the centre. Positions 2 and 4 are dark.</p>
 <img src="../images/L05_IMAGE_5-05b_array_five_live_fivedown.png" alt="The same Zumo 32U4 front sensor array in the five-down configuration, with all five reflectance sensors highlighted and numbered 1 through 5 — sensors 2 and 4 are now connected as well." class="img-ddd-2">
-<p class="p-c-666-3">[IMAGE 5.5b] <strong>AFTER &mdash; five-down (DN2 / DN4).</strong> All five are connected &mdash; 2 and 4 wake up. This is the row your JUMPER CHECK program is about to print. <span class="tok-888">Photos: Pololu, annotated.</span></p>
+<p class="p-c-666-3">[IMAGE 5.5b] <strong>AFTER — five-down (DN2 / DN4).</strong> All five are connected — 2 and 4 wake up. This is the row your JUMPER CHECK program is about to print. <span class="tok-888">Photos: Pololu, annotated.</span></p>
 
 <p>Slide the tape slowly across the whole row and watch the five numbers. <strong>All five must respond.</strong> If digits 2 and 4 sit dead while 1, 3, and 5 answer, a jumper is not seated — power off and reseat it.</p>
 
@@ -1469,7 +1469,7 @@ void loop() {
 
 <h3 class="h3-c-00474b">8A.1 Why Two LEDs Per Direction?</h3>
 
-<p>The FRONT detector is a single IR receiver (a 38 kHz detector module — a different kind of part from the phototransistors in the line sensors), and it sits between the two forward emitters on the blade, one to its left and one to its right. Firing the LEFT team and then the RIGHT team tells you not just <em>that</em> something is ahead, but roughly <em>which side</em> of center it sits on. Remember from &sect;3.4 that a &ldquo;team&rdquo; is two LEDs in series &mdash; the blade LED plus the middle one &mdash; so what changes between the two reads is which <em>side</em> is lit, not one single LED:</p>
+<p>The FRONT detector is a single IR receiver (a 38 kHz detector module — a different kind of part from the phototransistors in the line sensors), and it sits between the two forward emitters on the blade, one to its left and one to its right. Firing the LEFT team and then the RIGHT team tells you not just <em>that</em> something is ahead, but roughly <em>which side</em> of center it sits on. Remember from §3.4 that a “team” is two LEDs in series — the blade LED plus the middle one — so what changes between the two reads is which <em>side</em> is lit, not one single LED:</p>
 
 <pre>proxSensors.read();
 <span class="tok-569cd6">int</span> frontLeft  = proxSensors.countsFrontWithLeftLeds();   <span class="tok-7cbf6e">// object lit from the left</span>
@@ -1563,7 +1563,7 @@ A pair of sensors pointed at the same target gives you two facts for the price o
 <div class="div-bg-7a5905"><strong>Challenge 1: Detection Counter</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Detection Counter</strong> (this one replaces <code>loop()</code>, so your main build stays clean): <a href="../newproject.html?lesson=5&amp;kind=detection_counter" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> · <a href="#qr-display" class="link-c-2e86ab">Display</a> &mdash; the arrived/left trick needs one boolean memory</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> · <a href="#qr-display" class="link-c-2e86ab">Display</a> — the arrived/left trick needs one boolean memory</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
@@ -1573,16 +1573,16 @@ A pair of sensors pointed at the same target gives you two facts for the price o
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
 <pre class="pre-m-0">keep two memories: a COUNT, and a flag "was something there last loop?"
 every loop:
-  read the front sensor  &rarr; frontValue
-  something there now?    &rarr; frontValue &gt;= DETECTION_THRESHOLD
+  read the front sensor  → frontValue
+  something there now?    → frontValue &gt;= DETECTION_THRESHOLD
   if there NOW and it was NOT there last loop:   // a brand-new arrival
       add 1 to COUNT, show it
   remember "there now" for next loop
-  if Button A was pressed &rarr; set COUNT back to 0</pre>
+  if Button A was pressed → set COUNT back to 0</pre>
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p><strong>Step 1:</strong> Two globals above <code>setup()</code> &mdash; the flag is what makes "new" possible:</p>
+<p><strong>Step 1:</strong> Two globals above <code>setup()</code> — the flag is what makes "new" possible:</p>
 <pre><span class="tok-569cd6">int</span> detectionCount = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">bool</span> wasDetected = ____;    <span class="tok-7cbf6e">// nothing seen yet at power-on</span></pre>
 <p class="div-mt-12px"><strong>Step 2:</strong> In <code>loop()</code>, the "is it NEW?" test is the whole trick:</p>
@@ -1640,7 +1640,7 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span class="tok-b5cea8">50</span>);
 }</pre>
-<p class="p-mb-0">The flag is the whole trick: <code>isDetected &amp;&amp; !wasDetected</code> is true only on the <em>rising edge</em> &mdash; the moment nothing becomes something. Without it, one hand held in place would count thousands of times per second. (The STANDARD HELPERS block isn't shown &mdash; the Maker ships it at the bottom.)</p>
+<p class="p-mb-0">The flag is the whole trick: <code>isDetected &amp;&amp; !wasDetected</code> is true only on the <em>rising edge</em> — the moment nothing becomes something. Without it, one hand held in place would count thousands of times per second. (The STANDARD HELPERS block isn't shown — the Maker ships it at the bottom.)</p>
 </details>
 </div>
 
@@ -1648,20 +1648,20 @@ Zumo32U4ButtonB buttonB;
 <div class="div-bg-7a5905"><strong>Challenge 2: Directional LED Alerts</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — replace <code>updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=directional_alerts" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-leds" class="link-c-2e86ab">LEDs</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; three LEDs, one winner</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-leds" class="link-c-2e86ab">LEDs</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> — three LEDs, one winner</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="pre-m-0">Use the three onboard LEDs to show which direction has the strongest detection &mdash; red for a left detection, yellow for front, green for right &mdash; instead of only reporting numbers.</p>
+<p class="pre-m-0">Use the three onboard LEDs to show which direction has the strongest detection — red for a left detection, yellow for front, green for right — instead of only reporting numbers.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
 <pre class="pre-m-0">inside updateIndicators(), pick the winner among left / front / right:
-  if all three read 0        &rarr; all LEDs off (the room is empty)
-  else if LEFT is the biggest &rarr; red on
-  else if RIGHT beats front   &rarr; green on
-  else                        &rarr; yellow on (front wins)
-check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room lights red.
+  if all three read 0        → all LEDs off (the room is empty)
+  else if LEFT is the biggest → red on
+  else if RIGHT beats front   → green on
+  else                        → yellow on (front wins)
+check all-zero FIRST — otherwise 0 &gt;= 0 is true and an empty room lights red.
 (leave the buzzer half of the function alone.)</pre>
 </div>
 <div class="div-bg-e8f5e9">
@@ -1711,7 +1711,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
         lastBeep = millis();
     }
 }</pre>
-<p class="p-mb-0">The all-zero check comes first &mdash; otherwise a silent room would still light the red LED (0 &ge; 0 &ge; 0 is true!). Ties go left, then right; the buzzer half of the function is untouched.</p>
+<p class="p-mb-0">The all-zero check comes first — otherwise a silent room would still light the red LED (0 ≥ 0 ≥ 0 is true!). Ties go left, then right; the buzzer half of the function is untouched.</p>
 </details>
 </div>
 
@@ -1719,7 +1719,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-7a5905"><strong>Challenge 3: Proximity-Based Beep Speed</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — modify <code>updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=beep_speed" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buzzer" class="link-c-2e86ab">Sound (Buzzer)</a> · <a href="#qr-timing" class="link-c-2e86ab">Timing</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; the interval is arithmetic on the reading</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-buzzer" class="link-c-2e86ab">Sound (Buzzer)</a> · <a href="#qr-timing" class="link-c-2e86ab">Timing</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> — the interval is arithmetic on the reading</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
@@ -1766,7 +1766,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
         lastBeep = millis();
     }
 }</pre>
-<p class="p-mb-0">Reading 1 &rarr; 600&nbsp;ms between beeps; reading 6 &rarr; 100&nbsp;ms. The zero-detection guard matters: without it the formula would produce <code>beepInterval = 700</code> and the robot would tick slowly at an empty room forever.</p>
+<p class="p-mb-0">Reading 1 → 600&nbsp;ms between beeps; reading 6 → 100&nbsp;ms. The zero-detection guard matters: without it the formula would produce <code>beepInterval = 700</code> and the robot would tick slowly at an empty room forever.</p>
 </details>
 </div>
 
@@ -1774,28 +1774,28 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div class="div-bg-7a5905"><strong>Challenge 4: Social Distancing Robot</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Social Distancing</strong> (motors + its own <code>loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=social_distancing" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; higher reading = closer, so "too close" is a HIGH count</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> — higher reading = closer, so "too close" is a HIGH count</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="pre-m-0">Keep a "safe distance" from your hand: reverse if it gets too close (&lt; 10&nbsp;cm), drive forward if it gets too far (&gt; 20&nbsp;cm), and hold still in the safe zone (10&ndash;20&nbsp;cm). The robot "follows" your hand while keeping its distance &mdash; like a shy pet.</p>
+<p class="pre-m-0">Keep a "safe distance" from your hand: reverse if it gets too close (&lt; 10&nbsp;cm), drive forward if it gets too far (&gt; 20&nbsp;cm), and hold still in the safe zone (10–20&nbsp;cm). The robot "follows" your hand while keeping its distance — like a shy pet.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
 <pre class="pre-m-0">two thresholds: CLOSE (~10cm, a HIGH reading) and FAR (~20cm, a LOW reading).
 remember: higher reading = closer.
 every loop, read frontValue and decide:
-  if frontValue &gt;= CLOSE   &rarr; too close: back away
-  else if frontValue == 0   &rarr; no hand at all: hold still (a shy pet waits, it does not wander)
-  else if frontValue &lt;= FAR &rarr; too far: drive forward
-  else                      &rarr; just right: stop</pre>
+  if frontValue &gt;= CLOSE   → too close: back away
+  else if frontValue == 0   → no hand at all: hold still (a shy pet waits, it does not wander)
+  else if frontValue &lt;= FAR → too far: drive forward
+  else                      → just right: stop</pre>
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p><strong>Step 1:</strong> Two thresholds above <code>setup()</code> &mdash; you will tune these to your robot:</p>
+<p><strong>Step 1:</strong> Two thresholds above <code>setup()</code> — you will tune these to your robot:</p>
 <pre><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = ____;   <span class="tok-7cbf6e">// ~10cm (a HIGH reading)</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAR_THRESHOLD   = ____;   <span class="tok-7cbf6e">// ~20cm (a LOW reading)</span></pre>
-<p class="div-mt-12px"><strong>Step 2:</strong> The four-way decision in <code>loop()</code> &mdash; note the extra branch for "no hand at all":</p>
+<p class="div-mt-12px"><strong>Step 2:</strong> The four-way decision in <code>loop()</code> — note the extra branch for "no hand at all":</p>
 <pre class="p-mb-0"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(-<span class="tok-b5cea8">150</span>, -<span class="tok-b5cea8">150</span>);   <span class="tok-7cbf6e">// too close - back away</span>
 } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (frontValue == ____) {
@@ -1844,7 +1844,7 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span class="tok-b5cea8">50</span>);
 }</pre>
-<p class="p-mb-0">One branch more than the basic three-zone plan: <code>frontValue == 0</code> means <em>no hand at all</em>, and a shy pet waits &mdash; it doesn't wander off hunting. Try removing that branch and watch what the robot does in an empty room to see why it's there.</p>
+<p class="p-mb-0">One branch more than the basic three-zone plan: <code>frontValue == 0</code> means <em>no hand at all</em>, and a shy pet waits — it doesn't wander off hunting. Try removing that branch and watch what the robot does in an empty room to see why it's there.</p>
 </details>
 </div>
 
@@ -1852,7 +1852,7 @@ Zumo32U4ButtonB buttonB;
 <div class="div-bg-7a5905"><strong>Challenge 5: Simple Obstacle Avoidance</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Obstacle Avoidance</strong> (motors + its own <code>loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=obstacle_avoidance" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; sense, decide, steer &mdash; your first full loop with motion</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> — sense, decide, steer — your first full loop with motion</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
@@ -1869,13 +1869,13 @@ every loop, read frontValue and decide:
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p><strong>Step 1:</strong> The countdown in <code>setup()</code> &mdash; the for loop from Section 5.15:</p>
+<p><strong>Step 1:</strong> The countdown in <code>setup()</code> — the for loop from Section 5.15:</p>
 <pre><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = ____; i &gt;= <span class="tok-b5cea8">1</span>; i--) {   <span class="tok-7cbf6e">// 3, 2, 1</span>
     display.clear();
     display.print(i);
     delay(<span class="tok-b5cea8">1000</span>);
 }</pre>
-<p class="div-mt-12px"><strong>Step 2:</strong> The drive/avoid decision in <code>loop()</code> &mdash; a spin is one wheel forward, one back:</p>
+<p class="div-mt-12px"><strong>Step 2:</strong> The drive/avoid decision in <code>loop()</code> — a spin is one wheel forward, one back:</p>
 <pre class="p-mb-0"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);         <span class="tok-7cbf6e">// obstacle! stop...</span>
     delay(<span class="tok-b5cea8">200</span>);
@@ -1930,7 +1930,7 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span class="tok-b5cea8">20</span>);
 }</pre>
-<p class="p-mb-0">The <code>delay(400)</code> turn is timed, not measured &mdash; roughly 90&deg; at these speeds on a charged battery, and it will drift as the battery drains. That's not a bug to fix today; it's the exact problem Lesson 6's encoders exist to solve.</p>
+<p class="p-mb-0">The <code>delay(400)</code> turn is timed, not measured — roughly 90° at these speeds on a charged battery, and it will drift as the battery drains. That's not a bug to fix today; it's the exact problem Lesson 6's encoders exist to solve.</p>
 </details>
 </div>
 
@@ -1979,13 +1979,13 @@ Zumo32U4ButtonB buttonB;
 <p>Find a partner whose robot is also running today's program. Stand the two robots facing each other, about half a meter apart, both started. Nothing in the room is moving — so why do both robots' readings jump around?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Sections 3.6 and 3.1 &#8212; each robot hears the other&#8217;s 38 kHz shouts and books them as its own echoes. The library documentation warns about exactly this. Sit with what it implies: a sensor that can be fooled by a neighbour can also be <em>used</em> to listen for one. That is the whole idea behind <code>readBasic()</code> in Section 3.6 &#8212; sensing an opponent who is sensing you.</p>
+    <p>Sections 3.6 and 3.1 — each robot hears the other’s 38 kHz shouts and books them as its own echoes. The library documentation warns about exactly this. Sit with what it implies: a sensor that can be fooled by a neighbour can also be <em>used</em> to listen for one. That is the whole idea behind <code>readBasic()</code> in Section 3.6 — sensing an opponent who is sensing you.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-6" data-challenge="5.m6" data-kind="bonus-observation">Experiment 6: No Yesterday</h4>
 <p>Walk your hand in from the right until R climbs, then take it away completely. Predict first: in any of the three display modes, is there anything left on the screen that knows the last thing you saw came from the right? Test it. Then explain what your program would need before it could answer that.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Sections 5.4 and 5.13 &mdash; <code>readAllSensors()</code> runs at the top of every pass and overwrites all five reading variables, so each one only ever holds <em>right now</em>. <code>displayMode</code> is the one global that survives a pass untouched, because nothing writes to it unless you press a button. A history needs a variable of that second kind. Section 3.4a already told you this was coming: remember what you saw and keep turning.</p>
+    <p>Sections 5.4 and 5.13 — <code>readAllSensors()</code> runs at the top of every pass and overwrites all five reading variables, so each one only ever holds <em>right now</em>. <code>displayMode</code> is the one global that survives a pass untouched, because nothing writes to it unless you press a button. A history needs a variable of that second kind. Section 3.4a already told you this was coming: remember what you saw and keep turning.</p>
 </details>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1999,11 +1999,11 @@ Zumo32U4ButtonB buttonB;
 
 <div id="brain-check-02" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 &middot; TECHNICAL SKILLS &mdash; Can You&hellip;?</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
 <p>Tap each one you can honestly claim. All nine unlock the button.</p>
 
-    <p class="p-mb-4px"><strong>I can&hellip;</strong></p>
+    <p class="p-mb-4px"><strong>I can…</strong></p>
     <ul class="ul-ls-none-2">
         <li data-bc-skill="1" class="li-c-pointer">☐ Explain that proximity sensors use IR light to detect objects</li>
         <li data-bc-skill="2" class="li-c-pointer">☐ State that Zumo proximity values are 0-6, not 0-255</li>
@@ -2013,7 +2013,7 @@ Zumo32U4ButtonB buttonB;
         <li data-bc-skill="6" class="li-c-pointer">☐ Create visual feedback (bars, status words) based on sensor data</li>
         <li data-bc-skill="7" class="li-c-pointer">☐ Create audio feedback that varies with proximity</li>
     </ul>
-    <p class="p-mb-4px"><strong>I have&hellip;</strong></p>
+    <p class="p-mb-4px"><strong>I have…</strong></p>
     <ul class="ul-ls-none-2">
         <li data-bc-skill="8" class="li-c-pointer">☐ Completed at least one of the <strong>Section 9</strong> challenges</li>
         <li data-bc-skill="9" class="li-c-pointer">☐ Changed the threshold values and watched what it did to detection</li>
@@ -2024,30 +2024,30 @@ Zumo32U4ButtonB buttonB;
 
 <div id="brain-check-03" class="callout-3f51b5">
 
-<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 &middot; KNOWLEDGE CHECK &mdash; What You Just Built</div>
+<div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
 <p>You built it and it runs. These ask whether you know <em>why</em> it runs.</p>
 
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why do we use <code>max(frontLeftValue, frontRightValue)</code>? (&sect;4.2)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why do we use <code>max(frontLeftValue, frontRightValue)</code>? (§4.2)</summary>
 
 <div class="div-mt-12px"><p>The front detector can be illuminated from either side. Taking the maximum ensures we detect objects even if they're slightly off-center (to the left or right of straight ahead).</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Our helper functions live <em>below</em> loop(), in any order — why does the build still succeed? (&sect;5.5)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Our helper functions live <em>below</em> loop(), in any order — why does the build still succeed? (§5.5)</summary>
 
 <div class="div-mt-12px"><p>Because of the FUNCTION PROTOTYPES section. The compiler reads top to bottom and refuses to call a name it hasn't heard of — but a prototype is a promise: "this function exists; details below." Once every helper is declared up top, the definitions can sit anywhere in the file.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. How is a <strong>threshold</strong> different from a <strong>sensor reading</strong>? (&sect;3.3, &sect;3.5)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. How is a <strong>threshold</strong> different from a <strong>sensor reading</strong>? (§3.3, §3.5)</summary>
 
-<div class="div-mt-12px"><p>A reading is what the world <em>is</em> &#8212; a number the hardware hands you, 0&#8211;6, that you do not get to choose. A threshold is a line <em>you</em> draw through those numbers to turn a measurement into a decision: <code>DETECTION_THRESHOLD = 1</code> is not something the sensor told you, it is your ruling on what counts as "something is there." Readings are facts; thresholds are judgments. That is why thresholds live at the top of the file as named constants &#8212; so you can change your mind in one place.</p></div>
+<div class="div-mt-12px"><p>A reading is what the world <em>is</em> — a number the hardware hands you, 0–6, that you do not get to choose. A threshold is a line <em>you</em> draw through those numbers to turn a measurement into a decision: <code>DETECTION_THRESHOLD = 1</code> is not something the sensor told you, it is your ruling on what counts as "something is there." Readings are facts; thresholds are judgments. That is why thresholds live at the top of the file as named constants — so you can change your mind in one place.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Why is using a for loop better than using multiple <code>delay()</code> calls? (&sect;5.15)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Why is using a for loop better than using multiple <code>delay()</code> calls? (§5.15)</summary>
 
 <div class="div-mt-12px"><p>For loops let you repeat code without duplicating it. Instead of writing <code>delay(1000); display.print(F("3"));</code> then <code>delay(1000); display.print(F("2"));</code> and so on, you can use one loop that handles all iterations. This makes code shorter, easier to modify (change the count in one place), and less error-prone. Loops are a fundamental programming concept you'll use constantly!</p></div>
 
@@ -2057,11 +2057,11 @@ Zumo32U4ButtonB buttonB;
 </div>
 
 <div id="brain-check-04" class="callout-3f51b5">
-    <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 &middot; REFLECTION &mdash; In Your Notebook</div>
+    <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
     <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
         <li>Section 3.5 says a proximity sensor is not a ruler — it reports echo strength, not distance. Where on a real rescue course would that difference bite you, and what would you do about it?</li>
-        <li>Your robot has blind wedges roughly 19&deg; to 72&deg; off each side that no detector is aimed into. Name the one thing you would most want it to notice there — and say whether you would fix that in hardware or in code.</li>
+        <li>Your robot has blind wedges roughly 19° to 72° off each side that no detector is aimed into. Name the one thing you would most want it to notice there — and say whether you would fix that in hardware or in code.</li>
         <li>How confident are you with the proximity sensors — still shaky, getting there, confident, or ready to make the robot act on what it sees? Say what would move you up one step.</li>
     </ol>
 <p class="p-m-12px00"><button type="button" data-bc-btn="4" class="button">Mark Brain Check 04 done</button></p>
@@ -2081,12 +2081,12 @@ Zumo32U4ButtonB buttonB;
     <p>Combined with proximity sensors, this enables sophisticated behaviors like "drive forward until 15cm from wall, then turn right exactly 90°"!</p>
 </div>
 
-<h3 class="h3-c-6f7582">Engineer&rsquo;s Log</h3>
+<h3 class="h3-c-6f7582">Engineer’s Log</h3>
 
 <div class="div-0e1a2c">
-<div class="div-fs-105em">&#128211; ENGINEER&rsquo;S LOG #05 &mdash; feeds: Project Planning (design constraints)</div>
-<b>Defend a forced tradeoff.</b> You cannot have five line sensors <i>and</i> three proximity sensors &mdash; pins 20 and 4 are physically shared. <b>State the constraint. Defend the choice you made.</b><br>
-<i>Why judges care: this is the most TDP-shaped thing in the book &mdash; a real, unavoidable, documented design decision, which is exactly what the Planning section is asking you for.</i></div>
+<div class="div-fs-105em">📓 ENGINEER’S LOG #05 — feeds: Project Planning (design constraints)</div>
+<b>Defend a forced tradeoff.</b> You cannot have five line sensors <i>and</i> three proximity sensors — pins 20 and 4 are physically shared. <b>State the constraint. Defend the choice you made.</b><br>
+<i>Why judges care: this is the most TDP-shaped thing in the book — a real, unavoidable, documented design decision, which is exactly what the Planning section is asking you for.</i></div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
@@ -2247,7 +2247,7 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
 <div class="div-bg-6f7582"><div id="figures"><span class="span-d-block">Figures</span></div></div>
 <div class="div-6f7582">
 
-<p>Every figure in this lesson. <strong>Lesson 5 is fully illustrated</strong> &#8212; nothing outstanding.</p>
+<p>Every figure in this lesson. <strong>Lesson 5 is fully illustrated</strong> — nothing outstanding.</p>
 
 <table class="table-bc-collapse-6">
 <thead>
@@ -2259,20 +2259,20 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
 </tr>
 </thead>
 <tbody>
-<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.1]</strong></td><td class="td-ddd-2">Three detectors, three directions: FRONT ahead reads 6, the side-facing LEFT reads 2 off a wall, RIGHT reads 0</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.2]</strong></td><td class="td-ddd-2">EMIT &#8594; REFLECT &#8594; DETECT &#8594; COUNT, and the 38 kHz trick that ignores sunlight</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.3]</strong></td><td class="td-ddd-2">The two-LED system, front view: one ear, two flashlights, two different answers</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.4]</strong></td><td class="td-ddd-2">Anatomy of a for loop &#8212; START, CONTINUE IF, and UPDATE parts labeled</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.5]</strong></td><td class="td-ddd-2">Proximity system layout, top view &#8212; four emitters in two teams, three detectors</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.6]</strong></td><td class="td-ddd-2">The last jumper move: straight up, straight down, never twist &#8212; then verify in software</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.5a]</strong></td><td class="td-ddd-2">Front sensor array, factory jumpers: three of five reflectance sensors live (1, 3, 5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.5b]</strong></td><td class="td-ddd-2">Front sensor array, five-down jumpers: all five reflectance sensors live (1&ndash;5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.6]</strong></td><td class="td-ddd-2">The three proximity receivers and the direction each faces &mdash; FRONT ahead, the outer two out the sides</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.7]</strong></td><td class="td-ddd-2">The dead spot: two blind wedges ~19&deg;&ndash;72&deg; off each flank, and the see-it/turn/lose-it sequence</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.7]</strong></td><td class="td-ddd-2">The two forward IR emitters in their holder on the blade</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.8]</strong></td><td class="td-ddd-2">The two middle IR emitters on the bare main board, hidden by the tracks on an assembled robot</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.4a]</strong></td><td class="td-ddd-2">The two jumpers in the factory position (LFT / RGT) &#8212; 3 line sensors, 3 proximity receivers</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.4b]</strong></td><td class="td-ddd-2">The two jumpers moved to DN2 / DN4 &#8212; 5 line sensors, 1 proximity sensor. Permanent.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.1]</strong></td><td class="td-ddd-2">Three detectors, three directions: FRONT ahead reads 6, the side-facing LEFT reads 2 off a wall, RIGHT reads 0</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.2]</strong></td><td class="td-ddd-2">EMIT → REFLECT → DETECT → COUNT, and the 38 kHz trick that ignores sunlight</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.3]</strong></td><td class="td-ddd-2">The two-LED system, front view: one ear, two flashlights, two different answers</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.4]</strong></td><td class="td-ddd-2">Anatomy of a for loop — START, CONTINUE IF, and UPDATE parts labeled</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.5]</strong></td><td class="td-ddd-2">Proximity system layout, top view — four emitters in two teams, three detectors</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.6]</strong></td><td class="td-ddd-2">The last jumper move: straight up, straight down, never twist — then verify in software</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[IMAGE 5.5a]</strong></td><td class="td-ddd-2">Front sensor array, factory jumpers: three of five reflectance sensors live (1, 3, 5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.5b]</strong></td><td class="td-ddd-2">Front sensor array, five-down jumpers: all five reflectance sensors live (1–5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[IMAGE 5.6]</strong></td><td class="td-ddd-2">The three proximity receivers and the direction each faces — FRONT ahead, the outer two out the sides</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.7]</strong></td><td class="td-ddd-2">The dead spot: two blind wedges ~19°–72° off each flank, and the see-it/turn/lose-it sequence</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[IMAGE 5.7]</strong></td><td class="td-ddd-2">The two forward IR emitters in their holder on the blade</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.8]</strong></td><td class="td-ddd-2">The two middle IR emitters on the bare main board, hidden by the tracks on an assembled robot</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[IMAGE 5.4a]</strong></td><td class="td-ddd-2">The two jumpers in the factory position (LFT / RGT) — 3 line sensors, 3 proximity receivers</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.4b]</strong></td><td class="td-ddd-2">The two jumpers moved to DN2 / DN4 — 5 line sensors, 1 proximity sensor. Permanent.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 </tbody>
 </table>
 
@@ -2281,13 +2281,13 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
 </div>
 <hr class="hr-m-40px0">
 <!-- ===== NEXT LESSON v1 (§3.1a) — generated by next_pointer.py; do not hand-vary ===== -->
-<p class="p-mt-22px" id="next-lesson"><a href="Lesson_06.html" class="link-c-2e86ab">Next: Lesson 6 &mdash; Encoders &rarr;</a></p>
+<p class="p-mt-22px" id="next-lesson"><a href="Lesson_06.html" class="link-c-2e86ab">Next: Lesson 6 — Encoders →</a></p>
 
 <p class="p-c-666">
-    <strong>LESSON 05 &middot; Proximity Sensors</strong><br>
+    <strong>LESSON 05 · Proximity Sensors</strong><br>
     Teaching Your Robot to Sense<br>
-    Zumo 32U4 Robotics &bull; PlatformIO Edition<br>
-    &copy; 2026 RoboLore &middot; Written and compiled by DJ Weymuth and Claude AI
+    Zumo 32U4 Robotics • PlatformIO Edition<br>
+    © 2026 RoboLore · Written and compiled by DJ Weymuth and Claude AI
 </p>
 
 <!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->

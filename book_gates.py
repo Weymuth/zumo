@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.53'
+VERSION = 'v1.54'
 # v1.52 (S126): §27.12 SCOPE EXTENDED to semantic-layer consumers (DJ ruling) and to
 #   index.html BY NAME (§25.2a); §27 gains the COVERAGE arm it never had; and BOTH gates
 #   stop keying scope on a bare substring. Three defects found in one pass, each by the
@@ -677,6 +677,27 @@ import subprocess
 PAGES = files + (['going_deeper.html'] if os.path.exists('going_deeper.html') else [])
 
 
+
+def _find_dash(s, left, right):
+    """Find "LEFT <em dash> RIGHT" without pinning how the dash is spelled.
+    §27.16: the book spells it literally now; a gate that pins a spelling
+    certifies whatever it was given (S126, gate 57)."""
+    for d in ('\u2014', '&mdash;'):
+        i = s.find(left + ' ' + d + ' ' + right)
+        if i >= 0:
+            return i
+    return -1
+
+
+def _find_any(s, *forms):
+    """First offset at which any spelling of the same text occurs."""
+    for f in forms:
+        i = s.find(f)
+        if i >= 0:
+            return i
+    return -1
+
+
 def _close_of(s2, st, tag):
     d = 0
     for m in re.finditer(rf'<{tag}\b|</{tag}>', s2[st:]):
@@ -698,7 +719,7 @@ for f in PAGES:
     if not m:
         bad.append(f'{f}: no hero label "{lab}"')
         continue
-    v = re.search(r'Version \d+\.\d+ &mdash; \w+ \d{4}', s2[m.start():m.start() + 2500])
+    v = re.search(r'Version \d+\.\d+(?: &mdash;| \u2014) \w+ \d{4}', s2[m.start():m.start() + 2500])
     if not v:
         bad.append(f'{f}: hero has no dated Version line')
         continue
@@ -712,7 +733,7 @@ for f in PAGES:
         if en > vpos:
             break
     heroes.setdefault(_skel(s2[st:en]), []).append(f)
-    i = s2.find('&copy; 2026 RoboLore')
+    i = _find_any(s2, '&copy; 2026 RoboLore', '© 2026 RoboLore')
     if i < 0:
         bad.append(f'{f}: footer missing the credits line')
         continue
@@ -780,9 +801,9 @@ for f in files:
     for m in re.finditer(r'<summary[^>]*>(.*?)</summary>', blk, re.S):
         if not re.search(r'&sect;|§', m.group(1)):
             bad.append(f'{L(f)}: Mental item names no § — {txt(m.group(1))[:52]}')
-    if s2.find('KNOWLEDGE CHECK &mdash; What You Just Built') < s2.find('id="section-10"'):
+    if _find_dash(s2, 'KNOWLEDGE CHECK', 'What You Just Built') < s2.find('id="section-10"'):
         bad.append(f'{L(f)}: §10 Knowledge Check is not inside §10')
-    j = s2.find('REFLECTION &mdash; In Your Notebook')
+    j = _find_dash(s2, 'REFLECTION', 'In Your Notebook')
     if j < 0:
         bad.append(f'{L(f)}: converted but has no Reflection block')
     else:
@@ -885,7 +906,7 @@ gate('§12/§23 site layout: every page in its canonical place, no strays', bad)
 # fill-nothing-in code block inside a `hint` is therefore shipped to the model
 # while looking withheld to a reader.  Found live in L01 C11 at S79.
 _LAND = ('<<<', 'GOES HERE', 'goes here', 'your code here', 'YOUR CODE HERE',
-         '______', '_____', '&larr;', '&#8592;', 'write your', 'YOUR ')
+         '______', '_____', '\u2190', '&larr;', '&#8592;', 'write your', 'YOUR ')
 
 
 # The card extent is the PARSE-TREE span from lesson_inventory (§24.6a), not a
@@ -1312,7 +1333,7 @@ def _bonus_cards(s2, after):
     g = s2.find('id="glossary"')
     seg = s2[after:g] if g > after else s2[after:]
     tagged = re.findall(r'<h[34][^>]*data-challenge="([^"]*)"', seg)
-    bnum = set(re.findall(r'\bB([1-9])\b\s*&mdash;', seg))
+    bnum = set(re.findall(r'\bB([1-9])\b\s*(?:&mdash;|—)', seg))
     h4 = [x for x in re.findall(r'<h4[^>]*>(.*?)</h4>', seg, re.S)
           if 'Reveal' not in x and 'verbatim' not in x]
     return len(tagged) or len(bnum) or len(h4)
@@ -2885,6 +2906,45 @@ for _f in _SEM_CONSUMERS:
 if _seen == 0:
     bad.append('gate 56 scanned ZERO consumer pages - a gate that scans nothing passes')
 gate('\u00a727.15c a semantic-layer consumer links it and does not restate it', bad)
+
+
+# ---- GATE 58 (\u00a727.16): ONE SPELLING PER CHARACTER.
+# S127 DJ RULING. The book spelled the same character two ways - 5,935 non-ASCII
+# characters were literal while 4,827 were entities - so every byte-reading instrument
+# counted a fraction of each population. S126's glyph census missed 711 symbols, and
+# fifteen characters existed ONLY in entity form and appeared in no census ever taken.
+# THE RULE IS A PROPERTY, NOT A LIST: write the character however it can be SEEN in the
+# source. Literal when the literal form is distinguishable; an entity when it is not.
+# The second clause reaches exactly three characters (no-break space, narrow no-break
+# space, non-breaking hyphen) and the gate DERIVES that set from the property rather
+# than trusting it, so a fourth invisible character cannot be added without the gate
+# noticing. `&`, `<`, `>` stay mandatory; <script>/<style> are raw text the parser never
+# decodes; attribute interiors are left alone.
+import entity_sweep as _ES
+
+bad = []
+_scanned = 0
+_HOLD_OK = {0x00A0: '&nbsp;', 0x2011: '&#8209;', 0x202F: '&#8239;'}
+if set(_ES.HOLD) != set(_HOLD_OK):
+    bad.append('\u00a727.16 the HOLD set drifted from the ruled three: %s' % sorted(_ES.HOLD))
+for _cp, _want in _HOLD_OK.items():
+    if _ES.held_spelling(_cp) != _want:
+        bad.append('\u00a727.16 U+%04X spells as %r, ruled %r'
+                   % (_cp, _ES.held_spelling(_cp), _want))
+for _f in sorted(R):
+    _s = R[_f]
+    _scanned += 1
+    _new, _ch, _prot, _held = _ES.sweep_text(_s)
+    if _ch:
+        bad.append('%s: %d character(s) still carry a non-ruled spelling (\u00a727.16)'
+                   % (_f, _ch))
+    for _cp in _HOLD_OK:
+        if chr(_cp) in _ES.RAWTEXT.sub('', _s):
+            bad.append('%s: U+%04X written LITERALLY - it is invisible in source and must '
+                       'stay an entity (\u00a727.16)' % (_f, _cp))
+if _scanned == 0:
+    bad.append('gate 58 scanned ZERO pages - a gate that scans nothing passes')
+gate('\u00a727.16 one spelling per character: literal unless invisible in source', bad)
 
 print('=' * 52)
 
