@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.13.1 -->
+<!-- Lesson version: v02.14.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +74,7 @@
 <h1 class="h1">Nothing Left to Take Away</h1>
 <div class="div-fs-11em">The Capstone Write-Up</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.13 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.14 &mdash; August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -112,7 +112,7 @@ must be paid for with a feature you are willing to lose. This lesson teaches the
 
 <div class="callout-607d8b-bg-eceff1-6">
 <div class="div-fs-105em">💾 Before you start cutting &mdash; check your F() wrappers first</div>
-<p class="p-mb-0">Subtraction is about to get expensive, so spend the free bytes before the painful ones. Search your project for <code class="code-inline-bg-e8e8e8">print(</code> and find any string literal that is not wrapped in <code class="code-inline-bg-e8e8e8">F()</code>. Each one you wrap moves that text out of <strong>SRAM</strong> &mdash; and unlike the flash budget in the table above, SRAM overflow gives you <em>no error at all</em>. It gives you garbled OLED text, resets mid-run, and variables that change on their own. Fixing those before you delete a feature is the cheapest 40&nbsp;bytes you will ever find. <em>(Lesson 2, section 3.2.)</em></p>
+<p class="p-mb-0">Subtraction is about to get expensive, so spend the free bytes before the painful ones. Search your project for <code>print(</code> and find any string literal that is not wrapped in <code>F()</code>. Each one you wrap moves that text out of <strong>SRAM</strong> &mdash; and unlike the flash budget in the table above, SRAM overflow gives you <em>no error at all</em>. It gives you garbled OLED text, resets mid-run, and variables that change on their own. Fixing those before you delete a feature is the cheapest 40&nbsp;bytes you will ever find. <em>(Lesson 2, section 3.2.)</em></p>
 </div>
 <div class="div-2196f3">[IMAGE 16.1] &mdash; Engineering showcase day: student robots, technical posters, and a bracket on the whiteboard</div>
 <div class="callout-9b59b6-bg-e7d4ff-3">
@@ -307,7 +307,7 @@ still runs &mdash; once. You could never upload again without a hardware program
 It is enforced by the linker, the last tool in the build chain, whose job is to place every function at a
 real address inside the region. Ask it to place 29,298 bytes into 28,672 and it does not warn you, round
 down, or try its best. It refuses, and prints the most honest error message in this entire book:</p>
-<div class="div-bg-2c3e50"><span class="code-ff-uimonosp-2">ld: region `text&#39; overflowed by 626 bytes<br>
+<div class="div-bg-2c3e50"><span class="span-ff-uimonosp">ld: region `text&#39; overflowed by 626 bytes<br>
 collect2: error: ld returned 1 exit status</span></div>
 <p><i>Region text</i> is the flash. <i>Overflowed by 626 bytes</i> means exactly what it says:
 your program is 626 bytes bigger than the space that exists. There is no setting to change, no flag to
@@ -379,8 +379,8 @@ fleet runs on this map:</p>
 <tr><th class="th-bg-4d535f-2">Address</th>
 <th class="th-bg-4d535f-2">Owner</th>
 <th class="th-bg-4d535f-2">What lives there</th></tr>
-<tr><td class="td-b-white-2">0 &ndash; 511</td><td class="td-b-white-2">Lesson 16 &mdash; this lesson</td><td class="td-b-white-2">The <code class="code-inline-bg-e8e8e8">Saved</code> block: magic byte, your gains, your baseline</td></tr>
-<tr><td class="td-b-white-2">512 &ndash; 543</td><td class="td-b-white-2">Lesson 1 &mdash; your robot&rsquo;s name</td><td class="td-b-white-2">Magic byte <code class="code-inline-bg-e8e8e8">0x5A</code>, then the name, written once by your teacher</td></tr>
+<tr><td class="td-b-white-2">0 &ndash; 511</td><td class="td-b-white-2">Lesson 16 &mdash; this lesson</td><td class="td-b-white-2">The <code>Saved</code> block: magic byte, your gains, your baseline</td></tr>
+<tr><td class="td-b-white-2">512 &ndash; 543</td><td class="td-b-white-2">Lesson 1 &mdash; your robot&rsquo;s name</td><td class="td-b-white-2">Magic byte <code>0x5A</code>, then the name, written once by your teacher</td></tr>
 <tr><td class="td-b-white-2">544 &ndash; 1023</td><td class="td-b-white-2">unclaimed</td><td class="td-b-white-2">Free. If your Section 7 enhancement needs to remember something, take it from here</td></tr>
 </table>
 <p>Your capstone stays inside its own lines. Write to 512 and your robot loses its name &mdash; and no
@@ -869,7 +869,7 @@ that again. Ten. The runway is gone. Nothing about the code is wrong &mdash; and
     }
 </pre>
 <p>Type all of it. Build it.</p>
-<div class="div-bg-2c3e50"><span class="code-ff-uimonosp-2">ld: region `text&#39; overflowed by 626 bytes<br>
+<div class="div-bg-2c3e50"><span class="span-ff-uimonosp">ld: region `text&#39; overflowed by 626 bytes<br>
 collect2: error: ld returned 1 exit status</span></div>
 <p><b>Your first red build that no fix can cure.</b> There is no missing semicolon. No
 misspelled name. No prototype to add. The program is <i>correct</i> &mdash; all 29,298 bytes of it &mdash;
@@ -1403,14 +1403,14 @@ form of sabotage-proofing. The bug still fits in prose: Section 8.2, row three, 
 <th class="th-ddd-2">Status</th>
 </tr></thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 16.1]</code></td><td class="td-ddd-2">&sect;4</td><td class="td-ddd-2">The three memories &#8212; flash, RAM and EEPROM: size, volatility, speed.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 16.2]</code></td><td class="td-ddd-2">&sect;1, &sect;6</td><td class="td-ddd-2">The wall: the byte ladder from Lesson 7 climbing into the 28,672-byte ceiling.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 16.3]</code></td><td class="td-ddd-2">&sect;7</td><td class="td-ddd-2">The A/B protocol: one switch, one ruler, two rows.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 16.1]</code></td><td class="td-ddd-2">&sect;1</td><td class="td-ddd-2">Showcase day: robots, posters, and the bracket on the whiteboard.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">☐ still needed</td></tr>
+<tr><td class="td-ddd-2"><code>[GRAPHIC 16.1]</code></td><td class="td-ddd-2">&sect;4</td><td class="td-ddd-2">The three memories &#8212; flash, RAM and EEPROM: size, volatility, speed.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 16.2]</code></td><td class="td-ddd-2">&sect;1, &sect;6</td><td class="td-ddd-2">The wall: the byte ladder from Lesson 7 climbing into the 28,672-byte ceiling.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
+<tr><td class="td-ddd-2"><code>[GRAPHIC 16.3]</code></td><td class="td-ddd-2">&sect;7</td><td class="td-ddd-2">The A/B protocol: one switch, one ruler, two rows.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">&#9989; in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[IMAGE 16.1]</code></td><td class="td-ddd-2">&sect;1</td><td class="td-ddd-2">Showcase day: robots, posters, and the bracket on the whiteboard.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">☐ still needed</td></tr>
 </tbody></table>
 <div class="callout-607d8b-bg-eceff1-4">
 <div class="div-fs-105em">🔬 Curious how any of this actually works?</div>
-<p class="p-mb-0">The <strong>Going Deeper</strong> page opens up what is behind the 28,672-byte wall you spend this lesson fighting &mdash; how a letter becomes bytes in the first place, why <code class="code-inline-bg-e8e8e8">F()</code> moves a string out of RAM, and which of the four build programs is the one telling you the region overflowed. None of it is assigned, and none of it is on a quiz &mdash; it is there for when you want it. <a href="../going_deeper.html" class="link-c-2e86ab">Open Going Deeper &rarr;</a></p>
+<p class="p-mb-0">The <strong>Going Deeper</strong> page opens up what is behind the 28,672-byte wall you spend this lesson fighting &mdash; how a letter becomes bytes in the first place, why <code>F()</code> moves a string out of RAM, and which of the four build programs is the one telling you the region overflowed. None of it is assigned, and none of it is on a quiz &mdash; it is there for when you want it. <a href="../going_deeper.html" class="link-c-2e86ab">Open Going Deeper &rarr;</a></p>
 </div>
 
 <p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>

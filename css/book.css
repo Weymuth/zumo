@@ -6,7 +6,7 @@
  * semantic set (27 accents / 30 families) is not designed yet, so a name is English
  * only where the declarations prove the role, and carries the hex otherwise.
  *
- * 636 rules covering 25,752 inline attributes.
+ * 627 rules covering 23,620 inline attributes.
  */
 
 /* ===== SEMANTIC LAYER (§27.15) - preserved verbatim from css/semantic.css. Edit THERE. ===== */
@@ -55,13 +55,59 @@
  * The stack is DJ ruling B, S123 (§6.5a-T). A browser takes the best face present and
  * falls through to a generic; nothing here is Windows-only.
  *
- * Deliberately font-family ONLY. Whether inline code keeps its grey pill is a separate,
- * unruled question — the pill's background and padding still live on the generated
- * classes, so this rule changes the typeface of the bare ones and nothing else. When the
- * pill is ruled, it is ruled HERE, in one line, for every book. */
+ * S124 — THE PILL IS RULED IN, WITH NO CARVE-OUT. DJ: "Pill everywhere." Ruled twice on
+ * purpose: once for inline code generally, and again explicitly for the 28 operator uses that
+ * had drifted to mono-without-pill in L02 and L03. The evidence for the second ruling was that
+ * 36 operator <code> elements elsewhere in the book were ALREADY pilled against 12 that were
+ * not, the same operator appearing both ways - so there was no operator convention to
+ * preserve, only local drift. The result is a rule with no exception list to remember and no
+ * exception a gate has to encode.
+ *
+ * SIX GENERATED CLASSES STOOD FOR ONE CONSTRUCT AND DISAGREED ABOUT IT.
+ * .code-inline-bg-e8e8e8 through -6 shipped three different font sizes (0.9em, 0.85em, and
+ * none at all, which renders 1em), one added color:#333, one added white-space:pre-wrap. All
+ * six are dropped. The normalisations that follow are the POINT of one pill, not a side
+ * effect of it. The pre-wrap one was verified inert before it went: its string carries no
+ * repeated spaces and no newline, so the property was doing nothing.
+ *
+ * THE GROUND IS A TRANSLUCENT WASH, NOT AN OPAQUE GREY. DJ ruling B.
+ * Inline code sits on 43 distinct backgrounds in this book and only 46% of it is on the cream
+ * page; 686 pills already sit on 27 coloured grounds today. Eight elements sit on DARK grounds
+ * whose containers each declare color:white - seven bare <code> inside dark table headers
+ * (L04 #a04a5f, L05 #352405 x2, L10 #00393d x2, L12 #433014 x2) and L14's score formula inside
+ * a #1f2a3d banner - and an opaque light pill renders white text on light grey in all eight,
+ * silently. A wash inherits its ground instead of fighting it, so one rule works on cream, on
+ * the 40 callout and table colours, and on the eight dark headers. The price, ruled knowingly:
+ * the pill is no longer a fixed neutral grey - on a coloured callout it tints to that colour.
+ * On cream it computes to about #e1dfd7, a shade warmer and ~3% darker than the opaque value.
+ *
+ * THOSE SEVEN WERE INVISIBLE TO THE FIRST SWEEP BECAUSE THEY CARRY NO CLASS. The audit looked
+ * at the elements that still had one, found the two that did, and reported two. §24.8 again:
+ * the population you can enumerate is not the population an element rule reaches.
+ *
+ * THE `pre code` RESET IS NOT OPTIONAL. 15 bare <code> elements live INSIDE <pre>, nine of
+ * them in L01's #1e1e1e blocks. An unscoped background paints a pill inside every dark code
+ * block in the book. No existing gate could see it: gate 53 checks declarations that exist,
+ * §27.13 checks the generated block, and this rule is neither - so gate 55 was written to hold
+ * it. going_deeper.html, which does not link this stylesheet, reached the same reset
+ * independently; that is the best evidence available that the shape is right. */
 code,
 pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+code {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: 1em;
 }
 
 /* ===== GENERATED BLOCK - derived from the lessons. Do not hand-edit. ===== */
@@ -74,15 +120,6 @@ pre {
 /* ×2300  span×2300 */
 .tok-b5cea8 {
   color: #b5cea8;
-}
-
-/* ×1790  code×1790 */
-.code-inline-bg-e8e8e8 {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  background: #e8e8e8;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.9em;
 }
 
 /* ×1466  span×1466 */
@@ -237,13 +274,6 @@ pre {
   padding: 8px;
 }
 
-/* ×168  code×168 */
-.code-inline-bg-e8e8e8-2 {
-  background: #e8e8e8;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
 /* ×157  h3×157 */
 .h3-c-433014 {
   color: #433014;
@@ -321,14 +351,6 @@ pre {
 /* ×103  div×102, p×1 */
 .div-mt-15px {
   margin-top: 15px;
-}
-
-/* ×101  code×101 */
-.code-inline-bg-e8e8e8-3 {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  background: #e8e8e8;
-  padding: 2px 6px;
-  border-radius: 4px;
 }
 
 /* ×91  h3×91 */
@@ -929,16 +951,6 @@ pre {
   margin: 6px 0 12px;
 }
 
-/* ×29  code×29 */
-.code-inline-bg-e8e8e8-4 {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  background: #e8e8e8;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.9em;
-  color: #333;
-}
-
 /* ×28  th×28 */
 .th-ddd-4 {
   background: #0e1a2c;
@@ -1071,12 +1083,6 @@ pre {
   font-weight: normal;
   font-size: 0.75em;
   color: #555;
-}
-
-/* ×25  code×25 */
-.code-ff-uimonosp {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.9em;
 }
 
 /* ×25  p×18, div×7 */
@@ -2273,14 +2279,6 @@ pre {
   color: #1565c0;
 }
 
-/* ×8  code×8 */
-.code-inline-bg-e8e8e8-5 {
-  background: #e8e8e8;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.85em;
-}
-
 /* ×8  h3×8 */
 .h3-bg-eafaf1 {
   color: #352405;
@@ -2468,11 +2466,6 @@ pre {
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-}
-
-/* ×7  code×4, span×2, strong×1 */
-.code-ff-uimonosp-2 {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 /* ×7  img×7 */
@@ -2810,12 +2803,6 @@ pre {
   margin-bottom: 8px;
   font-size: 1.05em;
   color: #8a5a2b;
-}
-
-/* ×5  code×5 */
-.code-ff-uimonosp-3 {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 0.85em;
 }
 
 /* ×5  p×5 */
@@ -3283,6 +3270,11 @@ pre {
   text-align: center;
   vertical-align: top;
   width: 31%;
+}
+
+/* ×3  span×2, strong×1 */
+.span-ff-uimonosp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 /* ×3  pre×3 */
@@ -4296,16 +4288,6 @@ pre {
   color: #1565c0;
 }
 
-/* ×1  code×1 */
-.code-inline-bg-e8e8e8-6 {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  background: #e8e8e8;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.9em;
-  white-space: pre-wrap;
-}
-
 /* ×1  div×1 */
 .div-4caf50-3 {
   background: #e8f5e9;
@@ -4802,13 +4784,6 @@ pre {
 .strong-c-b71c1c-2 {
   color: #b71c1c;
   font-size: 1.1em;
-}
-
-/* ×1  code×1 */
-.code-c-white {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  font-size: 1.1em;
-  color: white;
 }
 
 /* ×1  img×1 */

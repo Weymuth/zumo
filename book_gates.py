@@ -2,7 +2,16 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.49'
+VERSION = 'v1.50'
+# v1.50 (S124): NEW GATE 55 (§27.15a). The pill graduated and the graduation happened by
+#   DELETION - 2,132 class attributes stripped, ten rules dead, one BORN. The birth is the
+#   finding: build_css names a rule after its DOMINANT TAG, so stripping a class from SOME
+#   of its users RENAMES it for the survivors. Three compiler-error <span>/<strong> elements
+#   sharing .code-ff-uimonosp-2 with four <code> elements went dead the moment the <code>
+#   ones left, and no gate saw it - strip_inline --verify did. The recovery order is
+#   load-bearing and now canon (§27.15b): strip, regenerate, move the survivors onto the
+#   name pass 1 emitted, regenerate again. Renaming after a SECOND pass is unrecoverable,
+#   because the generator can only preserve a class it can still resolve.
 # v1.49 (S123): NEW GATE 54 (§27.15, the semantic layer) and §27.11 SCOPED to the generated
 #   block. Rules and declarations hold UNCHANGED at 636/2,332 across the change, which is
 #   the point: adding the semantic layer moved nothing generated, and only the digest moves
@@ -2074,7 +2083,13 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 636, 2332, '613709142cf7b79d'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 627, 2297, '3f4c39d35c2d6b64'
+#   S124: 636/2,332 -> 627/2,297, and the -9 is fully accounted for. TEN rules die - the six
+#   .code-inline-bg-e8e8e8 variants, the three .code-ff-uimonosp ones and .code-c-white - and
+#   ONE is born, .span-ff-uimonosp, which is the same declarations under a name derived from
+#   the tag mix that survived the strip. 10 - 1 = 9. The six pill rules disagreed about the
+#   construct they encoded (three font sizes, a stray color, a white-space), which is why the
+#   declaration count falls further than the rule count.
 #   S121: digest ONLY, 643/2,357 UNCHANGED - zero rules born, zero died, zero altered.
 #   S113's shape, the fourth time. Cause: §3.1a seated 15 next-lesson links, which added
 #   15 uses of .link-c-2e86ab (398->413) and 15 of .p-mt-22px (29->44). build_css orders
@@ -2616,6 +2631,54 @@ else:
     if re.search(r'\n\.[A-Za-z0-9_-]*-[0-9a-f]{3,6}(-\d+)?\s*\{', _sem):
         bad.append(f'{_SEM}: carries a VALUE-named class - it is not ready to graduate')
 gate('\u00a727.15 the semantic layer is preserved verbatim in the stylesheet', bad)
+
+
+# GATE 55 (\u00a727.15a). AN ELEMENT RULE REACHES ELEMENTS NO AUTHOR EVER LISTED. That is the
+# whole point of graduating one and it is the whole risk, because the population you can
+# enumerate is not the population the rule reaches (\u00a724.8). Two independent contexts in this
+# book are defined by NOT wanting the pill:
+#   (a) inside <pre>. 15 bare <code> live there, nine in L01's #1e1e1e blocks. An unscoped
+#       background paints a light pill inside every dark code block in the book.
+#   (b) on a dark ground. Eight <code> sit in containers declaring color:white; an OPAQUE
+#       light pill renders white text on light grey, unreadable, silently.
+# (b) is held by the ruled value itself - a translucent wash inherits its ground - so this
+# gate holds (a), which is the half a value cannot hold, and asserts the wash has not
+# quietly been replaced by an opaque colour that would reopen (b).
+#
+# No pre-existing gate can see either: gate 53 checks declarations that EXIST, \u00a727.13 checks
+# the GENERATED block, and gate 54 checks the layer is preserved VERBATIM - a verbatim copy
+# of a wrong rule passes all three. Measured by injection before it was written: deleting the
+# `pre code` reset left all 54 preceding gates green and exit 0.
+bad = []
+if os.path.exists(_SEM):
+    _sem = open(_SEM, encoding='utf-8').read()
+    _pill = re.search(r'(^|\n)code\s*\{([^}]*)\}', _sem)
+    if _pill:
+        _decl = _pill.group(2)
+        if re.search(r'background\s*:', _decl):
+            _reset = re.search(r'(^|\n)pre\s+code\s*\{([^}]*)\}', _sem)
+            if not _reset:
+                bad.append(f'{_SEM}: `code` sets a background and there is NO `pre code` reset - '
+                           'every <code> inside a <pre> gets a pill (\u00a727.15a)')
+            elif not re.search(r'background\s*:\s*(?:none|transparent)', _reset.group(2)):
+                bad.append(f'{_SEM}: the `pre code` reset does not clear the background')
+            _bg = re.search(r'background\s*:\s*([^;]+)', _decl).group(1).strip()
+            if not _bg.startswith('rgba'):
+                bad.append(f'{_SEM}: the pill ground is `{_bg}`, not a translucent wash - eight '
+                           '<code> elements sit on dark grounds declaring color:white and an '
+                           'opaque ground makes all eight unreadable (DJ ruling B, S124)')
+    # The reset only helps if it is actually reached: assert the nested population is real,
+    # so a future refactor that moves those <code> out does not leave a rule guarding nothing.
+    _nested = 0
+    for _f in sorted(glob.glob('lessons/Lesson_*.html')) + ['going_deeper.html']:
+        if not os.path.exists(_f):
+            continue
+        _s = open(_f, encoding='utf-8').read()
+        for _m in re.finditer(r'<pre\b.*?</pre>', _s, re.S):
+            _nested += len(re.findall(r'<code\b', _m.group(0)))
+    if _nested == 0:
+        bad.append('no <code> inside any <pre> - the reset guards nothing; re-derive \u00a727.15a')
+gate('\u00a727.15a a pill on <code> is reset inside <pre>', bad)
 
 print('=' * 52)
 

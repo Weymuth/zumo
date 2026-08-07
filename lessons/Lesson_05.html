@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.20.2 -->
+<!-- Lesson version: v04.21.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Proximity Sensors</h1>
 <div class="div-fs-11em">Teaching Your Robot to Sense</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.20 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 04.21 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -194,9 +194,9 @@
     <p>The Zumo proximity sensors return values <strong>0 to 6</strong>, NOT 0 to 255! These are "brightness levels"—the sensor pulses the IR LEDs at increasing brightness and counts how many levels detected a reflection.</p>
 </div>
 
-<p>Here's what actually happens inside one <code class="code-inline-bg-e8e8e8">read()</code>: the robot runs <strong>six rounds</strong> of pulses, starting faint and getting stronger — think whisper, murmur, talk, project, shout, YELL. After each round it checks: did the echo come back?</p>
+<p>Here's what actually happens inside one <code>read()</code>: the robot runs <strong>six rounds</strong> of pulses, starting faint and getting stronger — think whisper, murmur, talk, project, shout, YELL. After each round it checks: did the echo come back?</p>
 
-<p>The value you get is <strong>how many rounds produced an echo</strong>. A very close object bounces back even the whisper — all six rounds land, and you read 6. A distant object only bounces back the yell — one round lands, and you read 1. Nothing comes back at all — 0. The whole six-round conversation takes about 13&frac12; milliseconds, fast enough to run over and over inside <code class="code-inline-bg-e8e8e8">loop()</code> without the robot ever feeling slow.</p>
+<p>The value you get is <strong>how many rounds produced an echo</strong>. A very close object bounces back even the whisper — all six rounds land, and you read 6. A distant object only bounces back the yell — one round lands, and you read 1. Nothing comes back at all — 0. The whole six-round conversation takes about 13&frac12; milliseconds, fast enough to run over and over inside <code>loop()</code> without the robot ever feeling slow.</p>
 
 <table class="table-bc-collapse">
     <tr class="tr-bg-f8f9fa">
@@ -248,9 +248,9 @@
 
 <p>The four emitter LEDs are not four independent flashlights. They're wired as <strong>two teams</strong>: a LEFT pair (the forward-left LED on the blade plus the middle-left LED between the wheels) and a RIGHT pair (their mirror twins). One control pin picks which team fires — they never fire together.</p>
 
-<p>That's the secret decoder ring for the long function names. <code class="code-inline-bg-e8e8e8">countsFrontWithLeftLeds()</code> reads as: <em>the FRONT ear, listening while the LEFT flashlight team was on</em>. "Front" names the ear; "WithLeftLeds" names the flashlight. Every one of the counts functions follows the same grammar.</p>
+<p>That's the secret decoder ring for the long function names. <code>countsFrontWithLeftLeds()</code> reads as: <em>the FRONT ear, listening while the LEFT flashlight team was on</em>. "Front" names the ear; "WithLeftLeds" names the flashlight. Every one of the counts functions follows the same grammar.</p>
 
-<p>And that's why one <code class="code-inline-bg-e8e8e8">read()</code> hands you <strong>two numbers per sensor</strong>: the library runs the full whisper-to-yell sequence once with the left team, then once with the right team, and every ear takes notes both times.</p>
+<p>And that's why one <code>read()</code> hands you <strong>two numbers per sensor</strong>: the library runs the full whisper-to-yell sequence once with the left team, then once with the right team, and every ear takes notes both times.</p>
 
 
 <p><strong>Why they are teams and not four switches.</strong> The front-left LED and the middle-left LED are wired <strong>in series</strong> &mdash; one current path, so lighting either one lights both. Same for the right pair. That is not a software choice you could change; it is a wire. It also means the side detector is being helped by the blade LED and the front detector is being helped by the side LED, every single time a team fires. <strong>The emitters flood; the direction you get back comes from which detector answers.</strong></p>
@@ -275,9 +275,9 @@
 
 <h3 id="section-3-6" class="h3-c-1f2a3d">3.6 Hearing Without Shouting</h3>
 
-<p><code class="code-inline-bg-e8e8e8">read()</code> is active sonar — shout, then listen for your own echo. It has a quiet cousin: <code class="code-inline-bg-e8e8e8">readBasic()</code> never fires the LEDs at all. It just listens for 38&nbsp;kHz pulses that <em>someone else</em> is emitting.</p>
+<p><code>read()</code> is active sonar — shout, then listen for your own echo. It has a quiet cousin: <code>readBasic()</code> never fires the LEDs at all. It just listens for 38&nbsp;kHz pulses that <em>someone else</em> is emitting.</p>
 
-<p>Someone else &#8212; like the robot on the next desk running this very program. Its 38 kHz shouts are, to your receiver, indistinguishable from your own echoes. In a sumo ring that cuts both ways: you could hear an opponent who is actively hunting for you, without ever switching your own lights on and revealing yourself. Today&#8217;s program doesn&#8217;t use <code class="code-inline-bg-e8e8e8">readBasic()</code>, and this book never comes back to it &#8212; but you can prove the effect yourself in ten seconds, and Observation Experiment 5 shows you how.</p>
+<p>Someone else &#8212; like the robot on the next desk running this very program. Its 38 kHz shouts are, to your receiver, indistinguishable from your own echoes. In a sumo ring that cuts both ways: you could hear an opponent who is actively hunting for you, without ever switching your own lights on and revealing yourself. Today&#8217;s program doesn&#8217;t use <code>readBasic()</code>, and this book never comes back to it &#8212; but you can prove the effect yourself in ten seconds, and Observation Experiment 5 shows you how.</p>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
@@ -312,18 +312,18 @@
 <img src="../images/L05_IMAGE_5-07_forward_ir_leds_on_blade.png" alt="Top view of an assembled Zumo 32U4 OLED robot with the two forward infrared emitter LEDs boxed in red, seated in their plastic holder on the steel blade at the front of the robot." class="img-ddd-2">
 <p class="p-c-666-3">[IMAGE 5.7] The <strong>forward pair</strong> &mdash; the clear domes on the blade, in their protective holder. Assembled robots ship with the wide-angle (50&deg;) clear LEDs. <span class="tok-888">Photo: Pololu, annotated.</span></p>
 <img src="../images/L05_IMAGE_5-08_middle_ir_leds_main_board.png" alt="Top view of a bare Zumo 32U4 OLED main board with the middle-left and middle-right infrared emitter LEDs boxed in red at the far left and right edges of the board, level with the middle of the robot between the wheel cutouts." class="img-ddd-4">
-<p class="p-c-666-3">[IMAGE 5.8] The <strong>middle pair</strong>, on the bare board &mdash; surface-mounted at the outer edges, aiming straight out. On your robot they are hidden inside the tracks, which is why you have never seen them. Note the <code class="code-inline-bg-e8e8e8">A1 = VBAT/2</code> silkscreen just inboard: A1 is the pin that picks which LED team fires. <span class="tok-888">Photo: Pololu, annotated.</span></p>
+<p class="p-c-666-3">[IMAGE 5.8] The <strong>middle pair</strong>, on the bare board &mdash; surface-mounted at the outer edges, aiming straight out. On your robot they are hidden inside the tracks, which is why you have never seen them. Note the <code>A1 = VBAT/2</code> silkscreen just inboard: A1 is the pin that picks which LED team fires. <span class="tok-888">Photo: Pololu, annotated.</span></p>
 
 <h3 class="h3-c-433014">4.2 The Two-LED System</h3>
 
 <p>Notice there are <strong>two LEDs on each side</strong>. The library reads the front detector twice:</p>
 
 <ul>
-    <li><code class="code-inline-bg-e8e8e8">countsFrontWithLeftLeds()</code> — Front detector lit by LEFT side LEDs</li>
-    <li><code class="code-inline-bg-e8e8e8">countsFrontWithRightLeds()</code> — Front detector lit by RIGHT side LEDs</li>
+    <li><code>countsFrontWithLeftLeds()</code> — Front detector lit by LEFT side LEDs</li>
+    <li><code>countsFrontWithRightLeds()</code> — Front detector lit by RIGHT side LEDs</li>
 </ul>
 
-<p>If an object is slightly left of center, the LEFT-team reading will be higher. We combine them with <code class="code-inline-bg-e8e8e8">max()</code> to detect objects regardless of their exact position &mdash; &ldquo;slightly&rdquo; meaning inside FRONT's own &plusmn;19&deg;. Past that you are in the dead spot of &sect;3.4a, and no amount of combining will find the object.</p>
+<p>If an object is slightly left of center, the LEFT-team reading will be higher. We combine them with <code>max()</code> to detect objects regardless of their exact position &mdash; &ldquo;slightly&rdquo; meaning inside FRONT's own &plusmn;19&deg;. Past that you are in the dead spot of &sect;3.4a, and no amount of combining will find the object.</p>
 
 <div class="div-m-25px0">
 <img src="../images/L05_GRAPHIC_5-03_two_led_system.svg" alt="Front elevation of the Zumo showing the left emitter, the single front receiver, and the right emitter; below, the two reads of that one receiver returning 5 and 2 for an object sitting left of centre" class="img-ddd">
@@ -366,20 +366,20 @@
     <div class="div-fs-105em">📝 DO THIS NOW — Start a New Lesson (same ritual as always)</div>
     <ol>
         <li>Open the <strong>ZUMO Project Maker</strong> → confirm <strong>Lesson 05 — Main lesson build</strong>, click <strong>Download</strong>.</li>
-        <li>Unzip and drag the <code class="code-inline-bg-e8e8e8">LastName_L05</code> folder into <code class="code-inline-bg-e8e8e8">Documents/PlatformIO</code>.</li>
+        <li>Unzip and drag the <code>LastName_L05</code> folder into <code>Documents/PlatformIO</code>.</li>
         <li>VS Code: File → Open Folder → your new folder (close Lesson 4's folder first).</li>
         <li>Check the header comment the Maker pre-filled, then <strong>Build (✓)</strong> — healthy before you write a line.</li>
     </ol>
-    <p class="p-mb-0"><em>No internet?</em> Copy your <code class="code-inline-bg-e8e8e8">ZUMO_Template</code>, rename it <code class="code-inline-bg-e8e8e8">LastName_L05</code> by hand — and paste in the STANDARD HELPERS block from Section 5.14 (the Maker adds it automatically; the plain template doesn't have it).</p>
+    <p class="p-mb-0"><em>No internet?</em> Copy your <code>ZUMO_Template</code>, rename it <code>LastName_L05</code> by hand — and paste in the STANDARD HELPERS block from Section 5.14 (the Maker adds it automatically; the plain template doesn't have it).</p>
 </div>
 
-<p>Scroll to the bottom of the fresh <code class="code-inline-bg-e8e8e8">main.cpp</code> before you move on. The STANDARD HELPERS block that arrived in Lesson 4 is there again — <code class="code-inline-bg-e8e8e8">waitForStart()</code> and <code class="code-inline-bg-e8e8e8">checkBattery()</code>, plus their two lines up in FUNCTION PROTOTYPES. It ships with every Maker project now. Today's program leans on both; Section 5.14 is the refresher.</p>
+<p>Scroll to the bottom of the fresh <code>main.cpp</code> before you move on. The STANDARD HELPERS block that arrived in Lesson 4 is there again — <code>waitForStart()</code> and <code>checkBattery()</code>, plus their two lines up in FUNCTION PROTOTYPES. It ships with every Maker project now. Today's program leans on both; Section 5.14 is the refresher.</p>
 
 <div class="callout-28a745-bg-d4edda">
     <div class="div-fs-105em">✅ CHECKPOINT — Section 4 complete when:</div>
     <p class="p-m-8px000">☐ You can point to all three proximity receivers (left, front, right) on the sensor array<br>
     ☐ You can point to the four emitter LEDs and say which team — LEFT pair or RIGHT pair — each belongs to<br>
-    ☐ <code class="code-inline-bg-e8e8e8">LastName_L05</code> project created, STANDARD HELPERS block present, Build shows ✓</p>
+    ☐ <code>LastName_L05</code> project created, STANDARD HELPERS block present, Build shows ✓</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -451,9 +451,9 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-5" class="h3-c-433014">5.5 Function Prototypes — The Order-Proof Trick</h3>
 
-<p>The compiler reads <code class="code-inline-bg-e8e8e8">main.cpp</code> top to bottom, and it refuses to call a function it hasn't heard of yet. You've hit that wall twice on purpose — Lesson 2 Step 7, Lesson 4 Step 5 — and both times the fix was the same: a <strong>prototype</strong>, one line near the top that promises the compiler "this function exists; details below."</p>
+<p>The compiler reads <code>main.cpp</code> top to bottom, and it refuses to call a function it hasn't heard of yet. You've hit that wall twice on purpose — Lesson 2 Step 7, Lesson 4 Step 5 — and both times the fix was the same: a <strong>prototype</strong>, one line near the top that promises the compiler "this function exists; details below."</p>
 
-<p>Today's program has six helpers, and the display functions call each other (<code class="code-inline-bg-e8e8e8">showBarGraphMode()</code> calls <code class="code-inline-bg-e8e8e8">drawBar()</code>). With prototypes declared once, up top, the helpers can live in any order and everything still builds:</p>
+<p>Today's program has six helpers, and the display functions call each other (<code>showBarGraphMode()</code> calls <code>drawBar()</code>). With prototypes declared once, up top, the helpers can live in any order and everything still builds:</p>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// ===== FUNCTION PROTOTYPES =====</span>
 <span class="tok-569cd6">void</span> readAllSensors();
@@ -482,7 +482,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 id="code-5-7" class="h3-c-433014">5.7 Helper Functions — drawBar()</h3>
 
-<p>In older, prototype-less programs this function had to sit <em>above</em> <code class="code-inline-bg-e8e8e8">showBarGraphMode()</code> or the build went red. Not in ours: its line in FUNCTION PROTOTYPES (Section 5.5) means the compiler already knows it exists, so helpers can live in any order. The prototype is doing quiet work here.</p>
+<p>In older, prototype-less programs this function had to sit <em>above</em> <code>showBarGraphMode()</code> or the build went red. Not in ours: its line in FUNCTION PROTOTYPES (Section 5.5) means the compiler already knows it exists, so helpers can live in any order. The prototype is doing quiet work here.</p>
 
 <pre class="code-block-333"><span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value) {
     display.gotoXY(<span class="tok-b5cea8">2</span>, row);
@@ -655,13 +655,13 @@ Zumo32U4Buzzer buzzer;</pre>
     waitForStart();   <span class="tok-7cbf6e">// safety gate: nothing runs until you press A</span>
 }</pre>
 
-<p>Read the last line first. <code class="code-inline-bg-e8e8e8">waitForStart()</code> is the safety gate from the STANDARD HELPERS, and it goes at the <strong>end</strong> of <code class="code-inline-bg-e8e8e8">setup()</code>, always — that's the habit from Lesson 4. The robot finishes its setup work, shows <em>"Press A / to start,"</em> and freezes until you press it. It's the boot screen now. And since the whole Serial banner prints <em>before</em> the gate, your cheat sheet is already waiting in the Serial Monitor while the robot waits for you.</p>
+<p>Read the last line first. <code>waitForStart()</code> is the safety gate from the STANDARD HELPERS, and it goes at the <strong>end</strong> of <code>setup()</code>, always — that's the habit from Lesson 4. The robot finishes its setup work, shows <em>"Press A / to start,"</em> and freezes until you press it. It's the boot screen now. And since the whole Serial banner prints <em>before</em> the gate, your cheat sheet is already waiting in the Serial Monitor while the robot waits for you.</p>
 
 <p>Today's program doesn't drive any motors — but the habit is unconditional. Challenges 4 and 5 bring the motors back, and by then the gate will already be second nature.</p>
 
 <h3 id="code-5-13" class="h3-c-433014">5.13 Loop Function</h3>
 
-<p>One new shape appears in the loop below: a <code class="code-inline-bg-e8e8e8">switch</code> statement, which picks one of several blocks based on a value &mdash; here, which display mode to show. Read it as a stack of <code class="code-inline-bg-e8e8e8">if</code> checks that all ask about the same variable; each <code class="code-inline-bg-e8e8e8">case</code> is one answer, and <code class="code-inline-bg-e8e8e8">break</code> ends it. Copy it as written for now &mdash; Lesson 9 takes <code class="code-inline-bg-e8e8e8">switch</code> apart properly when the robot needs to choose between intersection types.</p>
+<p>One new shape appears in the loop below: a <code>switch</code> statement, which picks one of several blocks based on a value &mdash; here, which display mode to show. Read it as a stack of <code>if</code> checks that all ask about the same variable; each <code>case</code> is one answer, and <code>break</code> ends it. Copy it as written for now &mdash; Lesson 9 takes <code>switch</code> apart properly when the robot needs to choose between intersection types.</p>
 
 <pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
     checkBattery();   <span class="tok-7cbf6e">// hold A + B together to see battery millivolts</span>
@@ -712,11 +712,11 @@ Zumo32U4Buzzer buzzer;</pre>
     delay(<span class="tok-b5cea8">50</span>);
 }</pre>
 
-<p>New first line: <code class="code-inline-bg-e8e8e8">checkBattery()</code> — the other STANDARD HELPER, at the <strong>top</strong> of <code class="code-inline-bg-e8e8e8">loop()</code>, always. Hold A and B together at any moment and the display shows battery millivolts until you let go. Weak batteries cause the weirdest bugs in robotics — flaky readings, random resets — so make the check a reflex before you blame your code.</p>
+<p>New first line: <code>checkBattery()</code> — the other STANDARD HELPER, at the <strong>top</strong> of <code>loop()</code>, always. Hold A and B together at any moment and the display shows battery millivolts until you let go. Weak batteries cause the weirdest bugs in robotics — flaky readings, random resets — so make the check a reflex before you blame your code.</p>
 
 <h3 id="code-5-14" class="h3-c-433014">5.14 The STANDARD HELPERS — Carried Forward</h3>
 
-<p>These two arrived in Lesson 4 and now ship at the bottom of every Maker project, with their prototypes pre-installed up top. You don't write them — you <em>call</em> them: <code class="code-inline-bg-e8e8e8">waitForStart()</code> at the end of <code class="code-inline-bg-e8e8e8">setup()</code>, <code class="code-inline-bg-e8e8e8">checkBattery()</code> at the top of <code class="code-inline-bg-e8e8e8">loop()</code>. Here is the block in full — this is also the copy source if you ever build a project by hand from the plain template:</p>
+<p>These two arrived in Lesson 4 and now ship at the bottom of every Maker project, with their prototypes pre-installed up top. You don't write them — you <em>call</em> them: <code>waitForStart()</code> at the end of <code>setup()</code>, <code>checkBattery()</code> at the top of <code>loop()</code>. Here is the block in full — this is also the copy source if you ever build a project by hand from the plain template:</p>
 
 <pre class="code-block-333"><span class="tok-7cbf6e">// ----- STANDARD HELPERS (added after Lesson 3) -----</span>
 
@@ -760,14 +760,14 @@ Call it at the TOP of loop().
 
 <div class="callout-6b8e6b-bg-f0f7f0">
     <div class="div-fs-105em">💡 TIP</div>
-    <p>The A+B battery combo works even while you're flipping between display modes — <code class="code-inline-bg-e8e8e8">checkBattery()</code> runs before the mode buttons get a look at your fingers. Try it mid-session: hold A+B, read the millivolts, release, and the proximity display picks up right where it left off.</p>
+    <p>The A+B battery combo works even while you're flipping between display modes — <code>checkBattery()</code> runs before the mode buttons get a look at your fingers. Try it mid-session: hold A+B, read the millivolts, release, and the proximity display picks up right where it left off.</p>
 </div>
 
 <h3 id="code-5-15" class="h3-c-433014">5.15 Coding Concepts: The For Loop, Second Look</h3>
 
-<div class="callout-2e86ab-bg-e7f0fa-4"><div class="div-fs-105em">🔁 Builds on:</div> the <code class="code-inline-bg-e8e8e8">for</code> loop you took apart in Lesson 4, Section 8A <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">.</div>
+<div class="callout-2e86ab-bg-e7f0fa-4"><div class="div-fs-105em">🔁 Builds on:</div> the <code>for</code> loop you took apart in Lesson 4, Section 8A <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">.</div>
 
-<p>You already own this tool. In Lesson 4 you used a <code class="code-inline-bg-e8e8e8">for</code> loop to walk the sensor array, and Section 8A there pulled it apart into its three parts — START, CONTINUE IF, UPDATE. Nothing below replaces that. This is the <strong>second look</strong>, and it exists because this lesson asks the loop to do two things Lesson 4 never did: <strong>count downward</strong>, and <strong>draw</strong> — a loop whose body decides, character by character, what to put on the screen.</p>
+<p>You already own this tool. In Lesson 4 you used a <code>for</code> loop to walk the sensor array, and Section 8A there pulled it apart into its three parts — START, CONTINUE IF, UPDATE. Nothing below replaces that. This is the <strong>second look</strong>, and it exists because this lesson asks the loop to do two things Lesson 4 never did: <strong>count downward</strong>, and <strong>draw</strong> — a loop whose body decides, character by character, what to put on the screen.</p>
 
 <p>Start with a refresher, then go straight to the new work.</p>
 
@@ -798,7 +798,7 @@ Call it at the TOP of loop().
 
 <h4 class="h4-c-6f7582-2">Worked Example #1: The drawBar() Function</h4>
 
-<p>Let's trace through our actual code when <code class="code-inline-bg-e8e8e8">value = 4</code>:</p>
+<p>Let's trace through our actual code when <code>value = 4</code>:</p>
 
 <pre class="code-block-333"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">6</span>; i++) {
     <span class="tok-569cd6">if</span> (i &lt; barLength) {   <span class="tok-7cbf6e">// barLength = 4</span>
@@ -828,10 +828,10 @@ Call it at the TOP of loop().
 
 <div class="callout-607d8b-bg-eceff1">
 <div class="div-fs-09em">📘 NOTE</div>
-<div class="div-fs-105em">Two different questions — do not mix them up.</div> The <strong>loop</strong> condition (<code class="code-inline-bg-e8e8e8">i &lt; 6</code>) decides <em>whether there is another pass at all</em>. The <strong>if</strong> condition (<code class="code-inline-bg-e8e8e8">i &lt; barLength</code>) decides <em>what gets printed on this pass</em>. The loop always runs exactly six times; the <code>if</code> is what changes at position 4.
+<div class="div-fs-105em">Two different questions — do not mix them up.</div> The <strong>loop</strong> condition (<code>i &lt; 6</code>) decides <em>whether there is another pass at all</em>. The <strong>if</strong> condition (<code>i &lt; barLength</code>) decides <em>what gets printed on this pass</em>. The loop always runs exactly six times; the <code>if</code> is what changes at position 4.
 </div>
 
-<p><strong>Result:</strong> <code class="code-inline-bg-e8e8e8">####--</code> — Four filled, two empty!</p>
+<p><strong>Result:</strong> <code>####--</code> — Four filled, two empty!</p>
 
 <h4 class="h4-c-6f7582-2">New in Lesson 5: Counting the Other Way</h4>
 
@@ -852,17 +852,17 @@ Call it at the TOP of loop().
 <th class="th-ddd">Climbing up</th>
 <th class="th-ddd">Counting down</th>
 </tr>
-<tr><td class="td-ddd">START</td><td class="td-ddd"><code class="code-ff-uimonosp">int i = 0</code> — begin at the bottom</td><td class="td-ddd"><code class="code-ff-uimonosp">int i = 3</code> — begin at the top</td></tr>
-<tr><td class="td-ddd">CONTINUE IF</td><td class="td-ddd"><code class="code-ff-uimonosp">i &lt; 6</code> — stop when it gets too big</td><td class="td-ddd"><code class="code-ff-uimonosp">i &gt;= 1</code> — stop when it gets too small</td></tr>
-<tr><td class="td-ddd">UPDATE</td><td class="td-ddd"><code class="code-ff-uimonosp">i++</code> — add one</td><td class="td-ddd"><code class="code-ff-uimonosp">i--</code> — subtract one</td></tr>
+<tr><td class="td-ddd">START</td><td class="td-ddd"><code>int i = 0</code> — begin at the bottom</td><td class="td-ddd"><code>int i = 3</code> — begin at the top</td></tr>
+<tr><td class="td-ddd">CONTINUE IF</td><td class="td-ddd"><code>i &lt; 6</code> — stop when it gets too big</td><td class="td-ddd"><code>i &gt;= 1</code> — stop when it gets too small</td></tr>
+<tr><td class="td-ddd">UPDATE</td><td class="td-ddd"><code>i++</code> — add one</td><td class="td-ddd"><code>i--</code> — subtract one</td></tr>
 </table>
 
-<p>The loop prints 3, then 2, then 1, then quits — because on the next lap <code class="code-inline-bg-e8e8e8">i</code> is 0 and <code class="code-inline-bg-e8e8e8">0 &gt;= 1</code> is false. Notice the test is <code class="code-inline-bg-e8e8e8">&gt;=</code> and not <code class="code-inline-bg-e8e8e8">&gt;</code>: with a plain <code class="code-inline-bg-e8e8e8">&gt;</code> the countdown would show 3 and 2 and then stop, and your robot would launch a full second early. One character, one second, one crashed run.</p>
+<p>The loop prints 3, then 2, then 1, then quits — because on the next lap <code>i</code> is 0 and <code>0 &gt;= 1</code> is false. Notice the test is <code>&gt;=</code> and not <code>&gt;</code>: with a plain <code>&gt;</code> the countdown would show 3 and 2 and then stop, and your robot would launch a full second early. One character, one second, one crashed run.</p>
 
 <div class="callout-ffc107-bg-fff8e1-2">
 <div class="div-c-856404-2">⚠️ WARNING</div>
 <div class="div-c-856404">the countdown that never counts</div>
-<p class="p-mb-0">Write <code class="code-inline-bg-e8e8e8">i++</code> in a loop that starts at 3 and tests <code class="code-inline-bg-e8e8e8">i &gt;= 1</code> and the counter runs away from its finish line forever — the robot hangs on the number 3 and never moves. When a loop refuses to end, check that UPDATE is walking <em>toward</em> the condition, not away from it.</p>
+<p class="p-mb-0">Write <code>i++</code> in a loop that starts at 3 and tests <code>i &gt;= 1</code> and the counter runs away from its finish line forever — the robot hangs on the number 3 and never moves. When a loop refuses to end, check that UPDATE is walking <em>toward</em> the condition, not away from it.</p>
 </div>
 
 <h4 class="h4-c-6f7582-2">Worked Example #2: Counting Detections</h4>
@@ -890,8 +890,8 @@ Call it at the TOP of loop().
 
 <details data-reveal="solution">
     <summary>🔓 Click to reveal answer</summary>
-    <p><strong>Output:</strong> <code class="code-inline-bg-e8e8e8">0 1 2 3</code></p>
-    <p>The loop runs 4 times with <code class="code-inline-bg-e8e8e8">i = 0, 1, 2, 3</code>. When <code class="code-inline-bg-e8e8e8">i</code> reaches 4, the condition <code class="code-inline-bg-e8e8e8">i &lt; 4</code> is false, so the loop stops.</p>
+    <p><strong>Output:</strong> <code>0 1 2 3</code></p>
+    <p>The loop runs 4 times with <code>i = 0, 1, 2, 3</code>. When <code>i</code> reaches 4, the condition <code>i &lt; 4</code> is false, so the loop stops.</p>
 </details>
 
 <div class="callout-607d8b-bg-eceff1">
@@ -905,8 +905,8 @@ Call it at the TOP of loop().
     <ul class="ol-m-10px000">
     <li>I understand the three parts of a for loop (START, CONTINUE, UPDATE)</li>
     <li>I can trace through a loop and predict its output</li>
-    <li>I know that <code class="code-inline-bg-e8e8e8">i &lt; 6</code> means the loop runs 6 times (0 through 5)</li>
-    <li>I understand that the loop body runs BEFORE <code class="code-inline-bg-e8e8e8">i</code> is incremented</li>
+    <li>I know that <code>i &lt; 6</code> means the loop runs 6 times (0 through 5)</li>
+    <li>I understand that the loop body runs BEFORE <code>i</code> is incremented</li>
     </ul>
 </div>
 
@@ -932,7 +932,7 @@ Call it at the TOP of loop().
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. What does <code class="code-inline-bg-e8e8e8">DETECTION_THRESHOLD = 1</code> mean? (&sect;3.3)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. What does <code>DETECTION_THRESHOLD = 1</code> mean? (&sect;3.3)</summary>
 
 <div class="div-mt-12px"><p>Any reading of 1 or higher counts as "something detected." Since 0 means nothing, a threshold of 1 catches even faint/distant objects.</p></div>
 
@@ -991,7 +991,7 @@ Call it at the TOP of loop().
 
 <div class="callout-ff8c00-bg-ffe4cc">
     <div class="div-fs-105em">📝 DO THIS NOW</div>
-    <p class="p-mb-0">Open the <code class="code-inline-bg-e8e8e8">LastName_L05</code> folder you made in Section 4.4 (VS Code: File → Open Folder). Haven't made it yet? Do the Section 4.4 ritual now, then come back.</p>
+    <p class="p-mb-0">Open the <code>LastName_L05</code> folder you made in Section 4.4 (VS Code: File → Open Folder). Haven't made it yet? Do the Section 4.4 ritual now, then come back.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda">
@@ -1045,7 +1045,7 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <h3 class="h3-c-433014">Step 3 — setup() and the Gate</h3>
 
-<p>Now wake the machine. Everything <code class="code-inline-bg-e8e8e8">setup()</code> calls already exists: the sensor object from Step 2, and <code class="code-inline-bg-e8e8e8">waitForStart()</code> from the pre-installed STANDARD HELPERS.</p>
+<p>Now wake the machine. Everything <code>setup()</code> calls already exists: the sensor object from Step 2, and <code>waitForStart()</code> from the pre-installed STANDARD HELPERS.</p>
 
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
 <pre class="pre-b8c4cc">when the robot boots:
@@ -1088,12 +1088,12 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <div class="callout-28a745-bg-d4edda">
     <div class="div-fs-105em">✅ CHECKPOINT — worth an upload</div>
-    <p>Build (✓), then upload and watch: Serial banner scrolls by, the OLED says <em>"Press A / to start,"</em> and after you press A… nothing. Correct! The robot is faithfully running an empty <code class="code-inline-bg-e8e8e8">loop()</code>. The gate works before the program does.</p>
+    <p>Build (✓), then upload and watch: Serial banner scrolls by, the OLED says <em>"Press A / to start,"</em> and after you press A… nothing. Correct! The robot is faithfully running an empty <code>loop()</code>. The gate works before the program does.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 4 — First Readings (and a Red Build You've Met Twice)</h3>
 
-<p>Two pastes. First, put <code class="code-inline-bg-e8e8e8">readAllSensors()</code> from Section 5.6 into the HELPER FUNCTIONS section, <em>above</em> the STANDARD HELPERS block. Second, replace the empty <code class="code-inline-bg-e8e8e8">loop()</code> with this Version&nbsp;1 — readings straight to the Serial Monitor, no display yet:</p>
+<p>Two pastes. First, put <code>readAllSensors()</code> from Section 5.6 into the HELPER FUNCTIONS section, <em>above</em> the STANDARD HELPERS block. Second, replace the empty <code>loop()</code> with this Version&nbsp;1 — readings straight to the Serial Monitor, no display yet:</p>
 
 <pre class="code-block-333"><span class="tok-569cd6">void</span> loop() {
     checkBattery();   <span class="tok-7cbf6e">// hold A + B together to see battery millivolts</span>
@@ -1113,7 +1113,7 @@ Zumo32U4Buzzer buzzer;</pre>
     delay(<span class="tok-b5cea8">100</span>);
 }</pre>
 
-<p>Now build. <strong>It fails.</strong> Red squiggle, and the terminal says something like <code class="code-inline-bg-e8e8e8">'readAllSensors' was not declared in this scope</code>. You have seen this exact error twice before, both times on purpose: Lesson 2 Step 7, Lesson 4 Step 5. The compiler reads top to bottom, hit a name inside <code class="code-inline-bg-e8e8e8">loop()</code> that it had never heard of — the function lives further down the file — and quit.</p>
+<p>Now build. <strong>It fails.</strong> Red squiggle, and the terminal says something like <code>'readAllSensors' was not declared in this scope</code>. You have seen this exact error twice before, both times on purpose: Lesson 2 Step 7, Lesson 4 Step 5. The compiler reads top to bottom, hit a name inside <code>loop()</code> that it had never heard of — the function lives further down the file — and quit.</p>
 
 <p>The fix is the standing one: prototypes. Add all six of today's, one trip, to the FUNCTION PROTOTYPES section (right below the Maker's two pre-installed lines):</p>
 
@@ -1188,7 +1188,7 @@ drawBar(<span class="tok-b5cea8">2</span>, frontValue);    <span class="tok-7cbf
     display.print(F(<span class="tok-ce9178">" "</span>));
     display.print(value);
 }</pre>
-    <p>Every line maps to one numbered comment. If yours works but looks different — say your loop prints <code class="code-inline-bg-e8e8e8">barLength</code> characters then fills the rest — that's fine, as long as the display matches the example: <code class="code-inline-bg-e8e8e8">####-- 4</code>.</p>
+    <p>Every line maps to one numbered comment. If yours works but looks different — say your loop prints <code>barLength</code> characters then fills the rest — that's fine, as long as the display matches the example: <code>####-- 4</code>.</p>
 </details>
 
 <div class="callout-28a745-bg-d4edda">
@@ -1198,17 +1198,17 @@ drawBar(<span class="tok-b5cea8">2</span>, frontValue);    <span class="tok-7cbf
 
 <h3 class="h3-c-433014">Step 6 — The Display Suite</h3>
 
-<p>Bulk paste, four functions into HELPER FUNCTIONS (any order — the prototypes have you covered): <code class="code-inline-bg-e8e8e8">showNumericMode()</code> from 5.8, <code class="code-inline-bg-e8e8e8">showBarGraphMode()</code> from 5.9, <code class="code-inline-bg-e8e8e8">showAlertMode()</code> from 5.10, and <code class="code-inline-bg-e8e8e8">updateIndicators()</code> from 5.11. Then replace your Version&nbsp;1 <code class="code-inline-bg-e8e8e8">loop()</code> with the final version from Section 5.13.</p>
+<p>Bulk paste, four functions into HELPER FUNCTIONS (any order — the prototypes have you covered): <code>showNumericMode()</code> from 5.8, <code>showBarGraphMode()</code> from 5.9, <code>showAlertMode()</code> from 5.10, and <code>updateIndicators()</code> from 5.11. Then replace your Version&nbsp;1 <code>loop()</code> with the final version from Section 5.13.</p>
 
 <div class="callout-6b8e6b-bg-f0f7f0">
     <div class="div-fs-09em">💡 TIP</div>
     <div class="div-fs-105em">Remove the two TEMPORARY lines from Step 5</div>
-    <p class="p-mb-0">Replacing <code class="code-inline-bg-e8e8e8">loop()</code> removes the <code class="code-inline-bg-e8e8e8">drawBar(2, frontValue);</code> test line automatically — but the <code class="code-inline-bg-e8e8e8">display.setLayout21x8();</code> you added to <code class="code-inline-bg-e8e8e8">setup()</code> must go by hand. The display functions manage the layout themselves now.</p>
+    <p class="p-mb-0">Replacing <code>loop()</code> removes the <code>drawBar(2, frontValue);</code> test line automatically — but the <code>display.setLayout21x8();</code> you added to <code>setup()</code> must go by hand. The display functions manage the layout themselves now.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda">
     <div class="div-fs-105em">✅ CHECKPOINT</div>
-    <p>Build (✓) shows <strong>SUCCESS</strong>. Compare your <code class="code-inline-bg-e8e8e8">main.cpp</code> against Section 5 top to bottom — seven sections, six of your helpers, two STANDARD HELPERS at the end.</p>
+    <p>Build (✓) shows <strong>SUCCESS</strong>. Compare your <code>main.cpp</code> against Section 5 top to bottom — seven sections, six of your helpers, two STANDARD HELPERS at the end.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 7 — Upload and Full Test</h3>
@@ -1312,7 +1312,7 @@ L:0	F:6 (5/6)	R:0	*** VERY CLOSE ***</pre>
 <li><strong>Power OFF</strong>, USB unplugged.</li>
 <li>Front sensor array facing you, over the table — the same pose as Lesson 4, Section 4.</li>
 <li>Move both jumpers <strong>forward</strong>: one to <strong>DN2</strong>, one to <strong>DN4</strong>. Straight up, straight down, fully seated. No twisting — same procedure as Lesson 4, Step 8.</li>
-<li><strong>Verify with software.</strong> Never trust a hardware change without a test. Flash the <code class="code-inline-bg-e8e8e8">JUMPER CHECK</code> program below, set the robot on your line tape, and press A.</li>
+<li><strong>Verify with software.</strong> Never trust a hardware change without a test. Flash the <code>JUMPER CHECK</code> program below, set the robot on your line tape, and press A.</li>
 </ol>
 
 <p><strong>What it looks like on a real board.</strong> These are the two states, photographed from the underside of the front sensor array. Compare yours against the right-hand picture before you go on — both blocks should have moved <em>outward</em>, away from the center of the board.</p>
@@ -1424,17 +1424,17 @@ void loop() {
     <tr>
         <td class="td-ddd">All values stuck at 0</td>
         <td class="td-ddd">Sensors not initialized</td>
-        <td class="td-ddd">Check that <code class="code-inline-bg-e8e8e8">proxSensors.initThreeSensors()</code> is in setup()</td>
+        <td class="td-ddd">Check that <code>proxSensors.initThreeSensors()</code> is in setup()</td>
     </tr>
     <tr>
         <td class="td-ddd">"'drawBar' was not declared"</td>
         <td class="td-ddd">Missing prototype</td>
-        <td class="td-ddd">Add <code class="code-inline-bg-e8e8e8">void drawBar(int row, int value);</code> to FUNCTION PROTOTYPES (Section 5.5)</td>
+        <td class="td-ddd">Add <code>void drawBar(int row, int value);</code> to FUNCTION PROTOTYPES (Section 5.5)</td>
     </tr>
     <tr>
         <td class="td-ddd">Robot boots, then nothing happens</td>
         <td class="td-ddd">You're at the safety gate</td>
-        <td class="td-ddd">Press A — <code class="code-inline-bg-e8e8e8">waitForStart()</code> is waiting for you</td>
+        <td class="td-ddd">Press A — <code>waitForStart()</code> is waiting for you</td>
     </tr>
     <tr>
         <td class="td-ddd">Values only go to 6</td>
@@ -1453,7 +1453,7 @@ void loop() {
     </tr>
     <tr>
         <td class="td-ddd">After Section 7.3: sensors 2 and 4 stay dead in Lesson 6+</td>
-        <td class="td-ddd">A jumper is not seated on DN2/DN4 — <code class="code-inline-bg-e8e8e8">initFiveSensors()</code> compiles anyway, then lies</td>
+        <td class="td-ddd">A jumper is not seated on DN2/DN4 — <code>initFiveSensors()</code> compiles anyway, then lies</td>
         <td class="td-ddd">Power off, reseat both jumpers, re-run the <strong>JUMPER CHECK</strong> program (Section 7.3)</td>
     </tr>
 </table>
@@ -1475,7 +1475,7 @@ void loop() {
 <span class="tok-569cd6">int</span> frontLeft  = proxSensors.countsFrontWithLeftLeds();   <span class="tok-7cbf6e">// object lit from the left</span>
 <span class="tok-569cd6">int</span> frontRight = proxSensors.countsFrontWithRightLeds();  <span class="tok-7cbf6e">// object lit from the right</span></pre>
 
-<p>If <code class="code-inline-bg-e8e8e8">frontLeft</code> reads higher than <code class="code-inline-bg-e8e8e8">frontRight</code>, the object is biased to your left — the left emitter's light is bouncing back more strongly. That difference is the seed of steering.</p>
+<p>If <code>frontLeft</code> reads higher than <code>frontRight</code>, the object is biased to your left — the left emitter's light is bouncing back more strongly. That difference is the seed of steering.</p>
 
 <h3 class="h3-c-00474b">8A.2 Combine for Presence, Compare for Direction</h3>
 
@@ -1501,7 +1501,7 @@ void loop() {
 <span class="tok-7cbf6e">// DIRECTION: positive = object leans left, negative = leans right</span>
 <span class="tok-569cd6">int</span> bias = frontLeft - frontRight;</pre>
 
-<p>You already used the presence half in <code class="code-inline-bg-e8e8e8">readAllSensors()</code> — the line <code class="code-inline-bg-e8e8e8">frontValue = max(frontLeftValue, frontRightValue)</code> is exactly this pattern. The direction half is what you'll build on next.</p>
+<p>You already used the presence half in <code>readAllSensors()</code> — the line <code>frontValue = max(frontLeftValue, frontRightValue)</code> is exactly this pattern. The direction half is what you'll build on next.</p>
 
 <h3 class="h3-c-00474b">8A.3 From Pair to Steering</h3>
 
@@ -1522,7 +1522,7 @@ void loop() {
 <div class="callout-6b8e6b-bg-f0f7f0">
 <div class="div-fs-09em">💡 TIP</div>
 <div class="div-fs-105em">Use a dead band, not exact equality</div>
-Notice the steering checks <code class="code-inline-bg-e8e8e8">bias &gt; 1</code> and <code class="code-inline-bg-e8e8e8">bias &lt; -1</code>, not <code class="code-inline-bg-e8e8e8">bias == 0</code>. Real sensor readings jitter by a count or two even when nothing moves. A small "dead band" around zero keeps the robot from twitching left-right-left when the object is actually centered.
+Notice the steering checks <code>bias &gt; 1</code> and <code>bias &lt; -1</code>, not <code>bias == 0</code>. Real sensor readings jitter by a count or two even when nothing moves. A small "dead band" around zero keeps the robot from twitching left-right-left when the object is actually centered.
 </div>
 
 <h3 class="h3-c-00474b">8A.4 The Reusable Shape</h3>
@@ -1557,12 +1557,12 @@ A pair of sensors pointed at the same target gives you two facts for the price o
 <div class="div-7a5905">
 
 
-<p>These are independent challenges, ordered easiest to hardest. Every card says where to work; challenges that replace your <code class="code-inline-bg-e8e8e8">loop()</code> get their own project copy so your main build stays clean.</p>
+<p>These are independent challenges, ordered easiest to hardest. Every card says where to work; challenges that replace your <code>loop()</code> get their own project copy so your main build stays clean.</p>
 
 <div id="challenge-1" class="div-7d5283" data-challenge="5.1" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 1: Detection Counter</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Detection Counter</strong> (this one replaces <code class="code-inline-bg-e8e8e8">loop()</code>, so your main build stays clean): <a href="../newproject.html?lesson=5&amp;kind=detection_counter" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Detection Counter</strong> (this one replaces <code>loop()</code>, so your main build stays clean): <a href="../newproject.html?lesson=5&amp;kind=detection_counter" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> · <a href="#qr-display" class="link-c-2e86ab">Display</a> &mdash; the arrived/left trick needs one boolean memory</p>
 </div>
 <div class="div-bg-f8f9fa">
@@ -1582,10 +1582,10 @@ every loop:
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p><strong>Step 1:</strong> Two globals above <code class="code-inline-bg-e8e8e8">setup()</code> &mdash; the flag is what makes "new" possible:</p>
+<p><strong>Step 1:</strong> Two globals above <code>setup()</code> &mdash; the flag is what makes "new" possible:</p>
 <pre class="code-block-333"><span class="tok-569cd6">int</span> detectionCount = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">bool</span> wasDetected = ____;    <span class="tok-7cbf6e">// nothing seen yet at power-on</span></pre>
-<p class="div-mt-12px"><strong>Step 2:</strong> In <code class="code-inline-bg-e8e8e8">loop()</code>, the "is it NEW?" test is the whole trick:</p>
+<p class="div-mt-12px"><strong>Step 2:</strong> In <code>loop()</code>, the "is it NEW?" test is the whole trick:</p>
 <pre class="code-block-333-5"><span class="tok-569cd6">bool</span> isDetected = (frontValue &gt;= DETECTION_THRESHOLD);
 <span class="tok-569cd6">if</span> (isDetected &amp;&amp; !____) {      <span class="tok-7cbf6e">// there now, and NOT there last loop</span>
     detectionCount++;
@@ -1640,14 +1640,14 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span class="tok-b5cea8">50</span>);
 }</pre>
-<p class="p-mb-0">The flag is the whole trick: <code class="code-inline-bg-e8e8e8">isDetected &amp;&amp; !wasDetected</code> is true only on the <em>rising edge</em> &mdash; the moment nothing becomes something. Without it, one hand held in place would count thousands of times per second. (The STANDARD HELPERS block isn't shown &mdash; the Maker ships it at the bottom.)</p>
+<p class="p-mb-0">The flag is the whole trick: <code>isDetected &amp;&amp; !wasDetected</code> is true only on the <em>rising edge</em> &mdash; the moment nothing becomes something. Without it, one hand held in place would count thousands of times per second. (The STANDARD HELPERS block isn't shown &mdash; the Maker ships it at the bottom.)</p>
 </details>
 </div>
 
 <div id="challenge-2" class="div-7d5283" data-challenge="5.2" data-kind="challenge" data-difficulty="easy" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 2: Directional LED Alerts</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — replace <code class="code-inline-bg-e8e8e8">updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=directional_alerts" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — replace <code>updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=directional_alerts" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-leds" class="link-c-2e86ab">LEDs</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; three LEDs, one winner</p>
 </div>
 <div class="div-bg-f8f9fa">
@@ -1666,7 +1666,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p>Replace the top of <code class="code-inline-bg-e8e8e8">updateIndicators()</code> with the winner-picker. Fill the blanks:</p>
+<p>Replace the top of <code>updateIndicators()</code> with the winner-picker. Fill the blanks:</p>
 <pre class="code-block-333-5"><span class="tok-569cd6">void</span> updateIndicators() {
     <span class="tok-569cd6">if</span> (leftValue == <span class="tok-b5cea8">0</span> &amp;&amp; frontValue == <span class="tok-b5cea8">0</span> &amp;&amp; rightValue == <span class="tok-b5cea8">0</span>) {
         ledRed(<span class="tok-b5cea8">0</span>); ledYellow(<span class="tok-b5cea8">0</span>); ledGreen(____);   <span class="tok-7cbf6e">// all clear</span>
@@ -1718,12 +1718,12 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 <div id="challenge-3" class="div-7d5283" data-challenge="5.3" data-kind="challenge" data-difficulty="medium" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 3: Proximity-Based Beep Speed</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — modify <code class="code-inline-bg-e8e8e8">updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=beep_speed" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L05</strong> build — modify <code>updateIndicators()</code> — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=5&amp;kind=beep_speed" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-buzzer" class="link-c-2e86ab">Sound (Buzzer)</a> · <a href="#qr-timing" class="link-c-2e86ab">Timing</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; the interval is arithmetic on the reading</p>
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">Make the beep speed change <strong>smoothly</strong> with distance instead of in fixed steps, using the formula <code class="code-inline-bg-e8e8e8">beepInterval = 700 - (value * 100)</code>.</p>
+<p class="p-m-0">Make the beep speed change <strong>smoothly</strong> with distance instead of in fixed steps, using the formula <code>beepInterval = 700 - (value * 100)</code>.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
@@ -1736,7 +1736,7 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p>Swap the fixed-threshold beep cascade in <code class="code-inline-bg-e8e8e8">updateIndicators()</code> for the formula. Fill the blanks:</p>
+<p>Swap the fixed-threshold beep cascade in <code>updateIndicators()</code> for the formula. Fill the blanks:</p>
 <pre class="code-block-333-5"><span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">long</span> beepInterval = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">if</span> (frontValue &gt;= DETECTION_THRESHOLD) {
     beepInterval = ____ - (frontValue * ____);   <span class="tok-7cbf6e">// 1 -&gt; 600ms ... 6 -&gt; 100ms</span>
@@ -1766,14 +1766,14 @@ check all-zero FIRST &mdash; otherwise 0 &gt;= 0 is true and an empty room light
         lastBeep = millis();
     }
 }</pre>
-<p class="p-mb-0">Reading 1 &rarr; 600&nbsp;ms between beeps; reading 6 &rarr; 100&nbsp;ms. The zero-detection guard matters: without it the formula would produce <code class="code-inline-bg-e8e8e8">beepInterval = 700</code> and the robot would tick slowly at an empty room forever.</p>
+<p class="p-mb-0">Reading 1 &rarr; 600&nbsp;ms between beeps; reading 6 &rarr; 100&nbsp;ms. The zero-detection guard matters: without it the formula would produce <code>beepInterval = 700</code> and the robot would tick slowly at an empty room forever.</p>
 </details>
 </div>
 
 <div id="challenge-4" class="div-7d5283" data-challenge="5.4" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 4: Social Distancing Robot</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Social Distancing</strong> (motors + its own <code class="code-inline-bg-e8e8e8">loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=social_distancing" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Social Distancing</strong> (motors + its own <code>loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=social_distancing" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> · <a href="#qr-scale" class="link-c-2e86ab">Value Range</a> &mdash; higher reading = closer, so "too close" is a HIGH count</p>
 </div>
 <div class="div-bg-f8f9fa">
@@ -1792,10 +1792,10 @@ every loop, read frontValue and decide:
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p><strong>Step 1:</strong> Two thresholds above <code class="code-inline-bg-e8e8e8">setup()</code> &mdash; you will tune these to your robot:</p>
+<p><strong>Step 1:</strong> Two thresholds above <code>setup()</code> &mdash; you will tune these to your robot:</p>
 <pre class="code-block-333"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = ____;   <span class="tok-7cbf6e">// ~10cm (a HIGH reading)</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAR_THRESHOLD   = ____;   <span class="tok-7cbf6e">// ~20cm (a LOW reading)</span></pre>
-<p class="div-mt-12px"><strong>Step 2:</strong> The four-way decision in <code class="code-inline-bg-e8e8e8">loop()</code> &mdash; note the extra branch for "no hand at all":</p>
+<p class="div-mt-12px"><strong>Step 2:</strong> The four-way decision in <code>loop()</code> &mdash; note the extra branch for "no hand at all":</p>
 <pre class="code-block-333-5"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(-<span class="tok-b5cea8">150</span>, -<span class="tok-b5cea8">150</span>);   <span class="tok-7cbf6e">// too close - back away</span>
 } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (frontValue == ____) {
@@ -1844,14 +1844,14 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span class="tok-b5cea8">50</span>);
 }</pre>
-<p class="p-mb-0">One branch more than the basic three-zone plan: <code class="code-inline-bg-e8e8e8">frontValue == 0</code> means <em>no hand at all</em>, and a shy pet waits &mdash; it doesn't wander off hunting. Try removing that branch and watch what the robot does in an empty room to see why it's there.</p>
+<p class="p-mb-0">One branch more than the basic three-zone plan: <code>frontValue == 0</code> means <em>no hand at all</em>, and a shy pet waits &mdash; it doesn't wander off hunting. Try removing that branch and watch what the robot does in an empty room to see why it's there.</p>
 </details>
 </div>
 
 <div id="challenge-5" class="div-7d5283" data-challenge="5.5" data-kind="challenge" data-difficulty="hard" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 5: Simple Obstacle Avoidance</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Obstacle Avoidance</strong> (motors + its own <code class="code-inline-bg-e8e8e8">loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=obstacle_avoidance" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p class="p-m-008px">📁 <strong>Work in:</strong> a fresh project — ZUMO Project Maker → Lesson 05 → <strong>Obstacle Avoidance</strong> (motors + its own <code>loop()</code>): <a href="../newproject.html?lesson=5&amp;kind=obstacle_avoidance" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p class="p-m-0">🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-proximity" class="link-c-2e86ab">Key Functions</a> · <a href="#qr-thresholds" class="link-c-2e86ab">Standard Thresholds</a> &mdash; sense, decide, steer &mdash; your first full loop with motion</p>
 </div>
 <div class="div-bg-f8f9fa">
@@ -1869,13 +1869,13 @@ every loop, read frontValue and decide:
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p><strong>Step 1:</strong> The countdown in <code class="code-inline-bg-e8e8e8">setup()</code> &mdash; the for loop from Section 5.15:</p>
+<p><strong>Step 1:</strong> The countdown in <code>setup()</code> &mdash; the for loop from Section 5.15:</p>
 <pre class="code-block-333"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = ____; i &gt;= <span class="tok-b5cea8">1</span>; i--) {   <span class="tok-7cbf6e">// 3, 2, 1</span>
     display.clear();
     display.print(i);
     delay(<span class="tok-b5cea8">1000</span>);
 }</pre>
-<p class="div-mt-12px"><strong>Step 2:</strong> The drive/avoid decision in <code class="code-inline-bg-e8e8e8">loop()</code> &mdash; a spin is one wheel forward, one back:</p>
+<p class="div-mt-12px"><strong>Step 2:</strong> The drive/avoid decision in <code>loop()</code> &mdash; a spin is one wheel forward, one back:</p>
 <pre class="code-block-333-5"><span class="tok-569cd6">if</span> (frontValue &gt;= CLOSE_THRESHOLD) {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);         <span class="tok-7cbf6e">// obstacle! stop...</span>
     delay(<span class="tok-b5cea8">200</span>);
@@ -1930,7 +1930,7 @@ Zumo32U4ButtonB buttonB;
     }
     delay(<span class="tok-b5cea8">20</span>);
 }</pre>
-<p class="p-mb-0">The <code class="code-inline-bg-e8e8e8">delay(400)</code> turn is timed, not measured &mdash; roughly 90&deg; at these speeds on a charged battery, and it will drift as the battery drains. That's not a bug to fix today; it's the exact problem Lesson 6's encoders exist to solve.</p>
+<p class="p-mb-0">The <code>delay(400)</code> turn is timed, not measured &mdash; roughly 90&deg; at these speeds on a charged battery, and it will drift as the battery drains. That's not a bug to fix today; it's the exact problem Lesson 6's encoders exist to solve.</p>
 </details>
 </div>
 
@@ -1979,13 +1979,13 @@ Zumo32U4ButtonB buttonB;
 <p>Find a partner whose robot is also running today's program. Stand the two robots facing each other, about half a meter apart, both started. Nothing in the room is moving — so why do both robots' readings jump around?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Sections 3.6 and 3.1 &#8212; each robot hears the other&#8217;s 38 kHz shouts and books them as its own echoes. The library documentation warns about exactly this. Sit with what it implies: a sensor that can be fooled by a neighbour can also be <em>used</em> to listen for one. That is the whole idea behind <code class="code-inline-bg-e8e8e8">readBasic()</code> in Section 3.6 &#8212; sensing an opponent who is sensing you.</p>
+    <p>Sections 3.6 and 3.1 &#8212; each robot hears the other&#8217;s 38 kHz shouts and books them as its own echoes. The library documentation warns about exactly this. Sit with what it implies: a sensor that can be fooled by a neighbour can also be <em>used</em> to listen for one. That is the whole idea behind <code>readBasic()</code> in Section 3.6 &#8212; sensing an opponent who is sensing you.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-6" data-challenge="5.m6" data-kind="bonus-observation">Experiment 6: No Yesterday</h4>
 <p>Walk your hand in from the right until R climbs, then take it away completely. Predict first: in any of the three display modes, is there anything left on the screen that knows the last thing you saw came from the right? Test it. Then explain what your program would need before it could answer that.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Sections 5.4 and 5.13 &mdash; <code class="code-inline-bg-e8e8e8">readAllSensors()</code> runs at the top of every pass and overwrites all five reading variables, so each one only ever holds <em>right now</em>. <code class="code-inline-bg-e8e8e8">displayMode</code> is the one global that survives a pass untouched, because nothing writes to it unless you press a button. A history needs a variable of that second kind. Section 3.4a already told you this was coming: remember what you saw and keep turning.</p>
+    <p>Sections 5.4 and 5.13 &mdash; <code>readAllSensors()</code> runs at the top of every pass and overwrites all five reading variables, so each one only ever holds <em>right now</em>. <code>displayMode</code> is the one global that survives a pass untouched, because nothing writes to it unless you press a button. A history needs a variable of that second kind. Section 3.4a already told you this was coming: remember what you saw and keep turning.</p>
 </details>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -2029,7 +2029,7 @@ Zumo32U4ButtonB buttonB;
 <p>You built it and it runs. These ask whether you know <em>why</em> it runs.</p>
 
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why do we use <code class="code-inline-bg-e8e8e8">max(frontLeftValue, frontRightValue)</code>? (&sect;4.2)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why do we use <code>max(frontLeftValue, frontRightValue)</code>? (&sect;4.2)</summary>
 
 <div class="div-mt-12px"><p>The front detector can be illuminated from either side. Taking the maximum ensures we detect objects even if they're slightly off-center (to the left or right of straight ahead).</p></div>
 
@@ -2043,13 +2043,13 @@ Zumo32U4ButtonB buttonB;
 
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. How is a <strong>threshold</strong> different from a <strong>sensor reading</strong>? (&sect;3.3, &sect;3.5)</summary>
 
-<div class="div-mt-12px"><p>A reading is what the world <em>is</em> &#8212; a number the hardware hands you, 0&#8211;6, that you do not get to choose. A threshold is a line <em>you</em> draw through those numbers to turn a measurement into a decision: <code class="code-inline-bg-e8e8e8">DETECTION_THRESHOLD = 1</code> is not something the sensor told you, it is your ruling on what counts as "something is there." Readings are facts; thresholds are judgments. That is why thresholds live at the top of the file as named constants &#8212; so you can change your mind in one place.</p></div>
+<div class="div-mt-12px"><p>A reading is what the world <em>is</em> &#8212; a number the hardware hands you, 0&#8211;6, that you do not get to choose. A threshold is a line <em>you</em> draw through those numbers to turn a measurement into a decision: <code>DETECTION_THRESHOLD = 1</code> is not something the sensor told you, it is your ruling on what counts as "something is there." Readings are facts; thresholds are judgments. That is why thresholds live at the top of the file as named constants &#8212; so you can change your mind in one place.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Why is using a for loop better than using multiple <code class="code-inline-bg-e8e8e8">delay()</code> calls? (&sect;5.15)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Why is using a for loop better than using multiple <code>delay()</code> calls? (&sect;5.15)</summary>
 
-<div class="div-mt-12px"><p>For loops let you repeat code without duplicating it. Instead of writing <code class="code-inline-bg-e8e8e8">delay(1000); display.print(F("3"));</code> then <code class="code-inline-bg-e8e8e8">delay(1000); display.print(F("2"));</code> and so on, you can use one loop that handles all iterations. This makes code shorter, easier to modify (change the count in one place), and less error-prone. Loops are a fundamental programming concept you'll use constantly!</p></div>
+<div class="div-mt-12px"><p>For loops let you repeat code without duplicating it. Instead of writing <code>delay(1000); display.print(F("3"));</code> then <code>delay(1000); display.print(F("2"));</code> and so on, you can use one loop that handles all iterations. This makes code shorter, easier to modify (change the count in one place), and less error-prone. Loops are a fundamental programming concept you'll use constantly!</p></div>
 
 </details>
 
@@ -2167,12 +2167,12 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
             <th class="th-ddd-3">Call</th>
             <th class="th-ddd-3">What it does</th>
         </tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4OLED display;</code></td><td class="td-ddd">The OLED screen</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4ProximitySensors proxSensors;</code></td><td class="td-ddd">The proximity system — new today</td></tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4ButtonA buttonA;</code></td><td class="td-ddd">Button A (B and C follow the same pattern)</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4Buzzer buzzer;</code></td><td class="td-ddd">The buzzer</td></tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4Motors motors;</code></td><td class="td-ddd">Both motors as one unit (Challenges 4–5 only)</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">int leftValue = 0;</code></td><td class="td-ddd">A reading slot — one int per value you track</td></tr>
+        <tr><td class="td-ddd"><code>Zumo32U4OLED display;</code></td><td class="td-ddd">The OLED screen</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>Zumo32U4ProximitySensors proxSensors;</code></td><td class="td-ddd">The proximity system — new today</td></tr>
+        <tr><td class="td-ddd"><code>Zumo32U4ButtonA buttonA;</code></td><td class="td-ddd">Button A (B and C follow the same pattern)</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>Zumo32U4Buzzer buzzer;</code></td><td class="td-ddd">The buzzer</td></tr>
+        <tr><td class="td-ddd"><code>Zumo32U4Motors motors;</code></td><td class="td-ddd">Both motors as one unit (Challenges 4–5 only)</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>int leftValue = 0;</code></td><td class="td-ddd">A reading slot — one int per value you track</td></tr>
     </table>
 
     <h4 id="qr-display" class="h4-c-6f7582-2">🖥️ Display</h4>
@@ -2181,11 +2181,11 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
             <th class="th-ddd-3">Call</th>
             <th class="th-ddd-3">What it does</th>
         </tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.clear();</code></td><td class="td-ddd">Wipe the screen, cursor to top-left</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.setLayout21x8();</code></td><td class="td-ddd">21×8 character grid — the layout today's screens use</td></tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.gotoXY(col, row);</code></td><td class="td-ddd">Move the cursor — column first, then row</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.print(F("text"));</code></td><td class="td-ddd">Print text (F() keeps it out of precious RAM)</td></tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.print(value);</code></td><td class="td-ddd">Print a number — wipe leftovers with spaces</td></tr>
+        <tr><td class="td-ddd"><code>display.clear();</code></td><td class="td-ddd">Wipe the screen, cursor to top-left</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>display.setLayout21x8();</code></td><td class="td-ddd">21×8 character grid — the layout today's screens use</td></tr>
+        <tr><td class="td-ddd"><code>display.gotoXY(col, row);</code></td><td class="td-ddd">Move the cursor — column first, then row</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>display.print(F("text"));</code></td><td class="td-ddd">Print text (F() keeps it out of precious RAM)</td></tr>
+        <tr><td class="td-ddd"><code>display.print(value);</code></td><td class="td-ddd">Print a number — wipe leftovers with spaces</td></tr>
     </table>
 
     <h4 id="qr-leds" class="h4-c-6f7582-2">💡 LEDs</h4>
@@ -2194,8 +2194,8 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
             <th class="th-ddd-3">Call</th>
             <th class="th-ddd-3">What it does</th>
         </tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">ledYellow(1);</code></td><td class="td-ddd">Yellow LED on</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">ledYellow(0);</code></td><td class="td-ddd">Yellow LED off (ledGreen and ledRed work the same)</td></tr>
+        <tr><td class="td-ddd"><code>ledYellow(1);</code></td><td class="td-ddd">Yellow LED on</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>ledYellow(0);</code></td><td class="td-ddd">Yellow LED off (ledGreen and ledRed work the same)</td></tr>
     </table>
 
     <h4 id="qr-buzzer" class="h4-c-6f7582-2">🔊 Sound (Buzzer)</h4>
@@ -2204,8 +2204,8 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
             <th class="th-ddd-3">Call</th>
             <th class="th-ddd-3">What it does</th>
         </tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">buzzer.playNote(NOTE_C(5), 30, 15);</code></td><td class="td-ddd">One note: pitch, duration (ms), volume (0–15)</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">buzzer.playFrequency(440, 200, 15);</code></td><td class="td-ddd">Raw frequency in Hz instead of a named note</td></tr>
+        <tr><td class="td-ddd"><code>buzzer.playNote(NOTE_C(5), 30, 15);</code></td><td class="td-ddd">One note: pitch, duration (ms), volume (0–15)</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>buzzer.playFrequency(440, 200, 15);</code></td><td class="td-ddd">Raw frequency in Hz instead of a named note</td></tr>
     </table>
 
     <h4 id="qr-motors" class="h4-c-6f7582-2">⚙️ Motors (Challenges 4–5 — robot moves!)</h4>
@@ -2214,8 +2214,8 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
             <th class="th-ddd-3">Call</th>
             <th class="th-ddd-3">What it does</th>
         </tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">motors.setSpeeds(left, right);</code></td><td class="td-ddd">Both motors at once, −400 to +400 each</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">motors.setSpeeds(0, 0);</code></td><td class="td-ddd">Full stop</td></tr>
+        <tr><td class="td-ddd"><code>motors.setSpeeds(left, right);</code></td><td class="td-ddd">Both motors at once, −400 to +400 each</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>motors.setSpeeds(0, 0);</code></td><td class="td-ddd">Full stop</td></tr>
     </table>
 
     <h4 id="qr-serial" class="h4-c-6f7582-2">🖨️ Serial Monitor</h4>
@@ -2224,9 +2224,9 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
             <th class="th-ddd-3">Call</th>
             <th class="th-ddd-3">What it does</th>
         </tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Serial.begin(115200);</code></td><td class="td-ddd">Start the USB link — first line of setup()</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Serial.print(value);</code></td><td class="td-ddd">Print without ending the line</td></tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Serial.println(F("text"));</code></td><td class="td-ddd">Print, then end the line</td></tr>
+        <tr><td class="td-ddd"><code>Serial.begin(115200);</code></td><td class="td-ddd">Start the USB link — first line of setup()</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>Serial.print(value);</code></td><td class="td-ddd">Print without ending the line</td></tr>
+        <tr><td class="td-ddd"><code>Serial.println(F("text"));</code></td><td class="td-ddd">Print, then end the line</td></tr>
     </table>
 
     <h4 id="qr-timing" class="h4-c-6f7582-2">⏱️ Timing</h4>
@@ -2235,8 +2235,8 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
             <th class="th-ddd-3">Call</th>
             <th class="th-ddd-3">What it does</th>
         </tr>
-        <tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">delay(ms);</code></td><td class="td-ddd">Pause everything for that many milliseconds</td></tr>
-        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">millis();</code></td><td class="td-ddd">Milliseconds since boot — the clock behind the beep-interval trick</td></tr>
+        <tr><td class="td-ddd"><code>delay(ms);</code></td><td class="td-ddd">Pause everything for that many milliseconds</td></tr>
+        <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>millis();</code></td><td class="td-ddd">Milliseconds since boot — the clock behind the beep-interval trick</td></tr>
     </table>
 </div>
 

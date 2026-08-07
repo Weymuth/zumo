@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.30.1 -->
+<!-- Lesson version: v03.31.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,7 +101,7 @@
 <h1 class="h1">Motor TRIM</h1>
 <div class="div-fs-11em">No Two Motors Are the Same</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.30 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 03.31 &mdash; August 2026</div>
 </div>
 
 <div class="callout-ffc107-bg-fff8e1" id="what-you-need-l03-p1">
@@ -223,7 +223,7 @@ After this lesson, your robot will finally drive straight—but it's still <em>b
 
 <li>☐ Explain how DC motors convert electrical signals into wheel movement</li>
 
-<li>☐ Control motor speed and direction using <code class="code-inline-bg-e8e8e8">motors.setSpeeds(left, right)</code></li>
+<li>☐ Control motor speed and direction using <code>motors.setSpeeds(left, right)</code></li>
 
 <li>☐ Understand the difference between <strong>speed</strong> (how fast) and <strong>direction</strong> (which way)</li>
 
@@ -350,13 +350,13 @@ After this lesson, your robot will finally drive straight—but it's still <em>b
 
 <p>A DC motor’s direction is set by which way current flows through it — flip the current, flip the spin. The flipping is done by an <strong>H-bridge</strong>: four electronic switches arranged like the letter H, with the motor as the crossbar. Close the top-left and bottom-right switches and current flows one way through the motor; close the other diagonal and it flows the opposite way.</p>
 
-<p>Your Zumo carries <strong>two DRV8838 motor-driver chips</strong> — one per motor — each a complete H-bridge that also handles the 20,000-per-second power switching you’ll meet in the next section. So when you write <code class="code-inline-bg-e8e8e8">motors.setSpeeds(-200, 200)</code>, you’re the commander and the DRV8838s are the muscle: the <code class="code-inline-bg-e8e8e8">motors</code> object translates your two numbers into switch patterns on those chips. That’s what an object being a “bridge to the hardware” means — literally, here.</p>
+<p>Your Zumo carries <strong>two DRV8838 motor-driver chips</strong> — one per motor — each a complete H-bridge that also handles the 20,000-per-second power switching you’ll meet in the next section. So when you write <code>motors.setSpeeds(-200, 200)</code>, you’re the commander and the DRV8838s are the muscle: the <code>motors</code> object translates your two numbers into switch patterns on those chips. That’s what an object being a “bridge to the hardware” means — literally, here.</p>
 
-<p><strong>Why do the chips exist at all?</strong> Because a microcontroller pin can only supply a few dozen milliamps — wire a motor straight to it and the pin melts. The DRV8838s are heavy-duty switches: they take the microcontroller’s whisper-weak signals and switch the <em>battery’s</em> full current into the motors. Engineers call this whole stack an <strong>abstraction layer</strong>: you state your intent (<code class="code-inline-bg-e8e8e8">setSpeeds(200, 200)</code>), and object → timer → driver chip → motor handles the electrons.</p>
+<p><strong>Why do the chips exist at all?</strong> Because a microcontroller pin can only supply a few dozen milliamps — wire a motor straight to it and the pin melts. The DRV8838s are heavy-duty switches: they take the microcontroller’s whisper-weak signals and switch the <em>battery’s</em> full current into the motors. Engineers call this whole stack an <strong>abstraction layer</strong>: you state your intent (<code>setSpeeds(200, 200)</code>), and object → timer → driver chip → motor handles the electrons.</p>
 
 <img src="../images/L03_IMAGE_3-15_drv8838_location.jpg" alt="Top view of the Zumo 32U4 OLED board. Two gold rectangles highlight the two DRV8838 motor driver chips, sitting side by side above the centre of the board, with arrows from both boxes pointing to a label reading DRV8838 Motor Controller." class="img-d-block-5">
 
-<p class="p-c-555">There they are, boxed in gold &mdash; <strong>two</strong> DRV8838 chips, one per motor. Small parts for the job they do: every <code class="code-inline-bg-e8e8e8">setSpeeds()</code> you write ends up as switching patterns on these two chips.</p>
+<p class="p-c-555">There they are, boxed in gold &mdash; <strong>two</strong> DRV8838 chips, one per motor. Small parts for the job they do: every <code>setSpeeds()</code> you write ends up as switching patterns on these two chips.</p>
 
 
 
@@ -366,7 +366,7 @@ After this lesson, your robot will finally drive straight—but it's still <em>b
 
 <div class="callout-b7950b-bg-fef9e7">
 <div class="div-c-7d6608">🧪 TRY THIS: Feel the gearbox (1 minute, robot OFF, no upload)</div>
-<p>With the power switch OFF, slowly turn one track forward with your finger &mdash; gently, one tread block at a time. Feel that resistance? That is the gear train between the tiny motor and the track. Now do the other side. Each track has its own motor and its own gearbox &mdash; two independent drive systems, which is exactly why <code class="code-inline-bg-e8e8e8">setSpeeds()</code> takes <strong>two</strong> numbers (you will meet it properly in Section 3.8).</p>
+<p>With the power switch OFF, slowly turn one track forward with your finger &mdash; gently, one tread block at a time. Feel that resistance? That is the gear train between the tiny motor and the track. Now do the other side. Each track has its own motor and its own gearbox &mdash; two independent drive systems, which is exactly why <code>setSpeeds()</code> takes <strong>two</strong> numbers (you will meet it properly in Section 3.8).</p>
 <div class="div-m-14px04px"><img src="../images/L03_IMAGE_3-16_gearmotor_gear_train.png" alt="A Pololu micro metal gearmotor with the gearbox cover removed, showing the silver motor can on the left and the exposed brass-and-steel gear train on the right, ending in the output shaft" class="img-ccc-4"><div class="div-c-666-3">The resistance you feel is this gear train. (Photo: Pololu)</div></div>
 </div>
 
@@ -412,15 +412,15 @@ After this lesson, your robot will finally drive straight—but it's still <em>b
 
 <tbody>
 
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">200</code></td><td class="td-ddd-2">Forward</td><td class="td-ddd-2">Medium</td><td class="td-ddd-2">"Go forward at medium speed"</td></tr>
+<tr><td class="td-ddd-2"><code>200</code></td><td class="td-ddd-2">Forward</td><td class="td-ddd-2">Medium</td><td class="td-ddd-2">"Go forward at medium speed"</td></tr>
 
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">50</code></td><td class="td-ddd-2">Forward</td><td class="td-ddd-2">Slow</td><td class="td-ddd-2">"Go forward slowly"</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>50</code></td><td class="td-ddd-2">Forward</td><td class="td-ddd-2">Slow</td><td class="td-ddd-2">"Go forward slowly"</td></tr>
 
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">-200</code></td><td class="td-ddd-2">Backward</td><td class="td-ddd-2">Medium</td><td class="td-ddd-2">"Go backward at medium speed"</td></tr>
+<tr><td class="td-ddd-2"><code>-200</code></td><td class="td-ddd-2">Backward</td><td class="td-ddd-2">Medium</td><td class="td-ddd-2">"Go backward at medium speed"</td></tr>
 
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">-50</code></td><td class="td-ddd-2">Backward</td><td class="td-ddd-2">Slow</td><td class="td-ddd-2">"Go backward slowly"</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>-50</code></td><td class="td-ddd-2">Backward</td><td class="td-ddd-2">Slow</td><td class="td-ddd-2">"Go backward slowly"</td></tr>
 
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">0</code></td><td class="td-ddd-2">Neither</td><td class="td-ddd-2">Stopped</td><td class="td-ddd-2">"Stop"</td></tr>
+<tr><td class="td-ddd-2"><code>0</code></td><td class="td-ddd-2">Neither</td><td class="td-ddd-2">Stopped</td><td class="td-ddd-2">"Stop"</td></tr>
 
 </tbody>
 
@@ -441,7 +441,7 @@ This matters later when you're doing line following: "slow down the left motor" 
 
 <div class="callout-9b59b6-bg-e7d4ff-2">
 
-<div class="div-fs-105em">🔑 <span id="term-negative-speed">Negative Speed Values</span></div> — In everyday speech, you'd say "go backward at speed 5." In code, we use the minus sign instead: <code class="code-inline-bg-e8e8e8">-5</code> means "backward at speed 5." Think of the minus sign as the word "backward"—it flips the direction while the number still tells you how fast.
+<div class="div-fs-105em">🔑 <span id="term-negative-speed">Negative Speed Values</span></div> — In everyday speech, you'd say "go backward at speed 5." In code, we use the minus sign instead: <code>-5</code> means "backward at speed 5." Think of the minus sign as the word "backward"—it flips the direction while the number still tells you how fast.
 
 </div>
 
@@ -456,13 +456,13 @@ Every motor value carries both facts at once. The <strong>size</strong> of the n
 
 <ul>
 
-<li><code class="code-inline-bg-e8e8e8">200</code> → size 200, sign <strong>+</strong> → speed 200, <strong>forward</strong></li>
+<li><code>200</code> → size 200, sign <strong>+</strong> → speed 200, <strong>forward</strong></li>
 
-<li><code class="code-inline-bg-e8e8e8">-200</code> → size 200, sign <strong>&minus;</strong> → speed 200, <strong>backward</strong></li>
+<li><code>-200</code> → size 200, sign <strong>&minus;</strong> → speed 200, <strong>backward</strong></li>
 
 </ul>
 
-Same speed. Opposite directions. So <code class="code-inline-bg-e8e8e8">motors.setSpeeds(-200, 200)</code> runs both motors at speed 200 — one forward, one backward — and the robot spins in place.
+Same speed. Opposite directions. So <code>motors.setSpeeds(-200, 200)</code> runs both motors at speed 200 — one forward, one backward — and the robot spins in place.
 
 </div>
 
@@ -511,9 +511,9 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <p>It’s not 200 of anything you can put a unit on — no volts, no RPM. The motor driver can really only do two things: power fully ON, or fully OFF. So it fakes everything in between by <strong>switching ON and OFF 20,000 times per second</strong> and controlling what fraction of each cycle is ON. That fraction is called the <strong>duty cycle</strong>, and the technique is <strong>PWM — Pulse Width Modulation</strong>.</p>
 
-<p>Your speed number is just the duty-cycle dial: <code class="code-inline-bg-e8e8e8">400</code> = ON 100% of the time (full power) · <code class="code-inline-bg-e8e8e8">200</code> = ON half of each cycle (≈50% power) · <code class="code-inline-bg-e8e8e8">0</code> = never ON. The sign picks the current direction (forward/backward). The motor spins smoothly instead of stuttering because 20,000 pulses per second is far too fast for a physical armature to follow — it averages them out. And 20 kHz is chosen for your ears’ sake: switching any slower would produce an audible whine.</p>
+<p>Your speed number is just the duty-cycle dial: <code>400</code> = ON 100% of the time (full power) · <code>200</code> = ON half of each cycle (≈50% power) · <code>0</code> = never ON. The sign picks the current direction (forward/backward). The motor spins smoothly instead of stuttering because 20,000 pulses per second is far too fast for a physical armature to follow — it averages them out. And 20 kHz is chosen for your ears’ sake: switching any slower would produce an audible whine.</p>
 
-<p>And here’s the part that should impress you: <strong>your code isn’t doing any of that switching.</strong> The library programs <strong>Timer 1</strong> — a dedicated 16-bit timer circuit inside the ATmega32U4 — to generate the pulses in hardware, forever, with zero attention from your program. That’s why <code class="code-inline-bg-e8e8e8">loop()</code> stays free to watch buttons while both motors run: the chip has a specialist doing the 20,000-per-second work.</p>
+<p>And here’s the part that should impress you: <strong>your code isn’t doing any of that switching.</strong> The library programs <strong>Timer 1</strong> — a dedicated 16-bit timer circuit inside the ATmega32U4 — to generate the pulses in hardware, forever, with zero attention from your program. That’s why <code>loop()</code> stays free to watch buttons while both motors run: the chip has a specialist doing the 20,000-per-second work.</p>
 
 </div>
 
@@ -525,7 +525,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </div>
 
-<p>When you call <code class="code-inline-bg-e8e8e8">motors.setSpeeds(200, 200)</code>, you're telling the A-Star 32U4 board to apply a certain amount of power to the motors. But you have <strong>NO feedback</strong> about:</p>
+<p>When you call <code>motors.setSpeeds(200, 200)</code>, you're telling the A-Star 32U4 board to apply a certain amount of power to the motors. But you have <strong>NO feedback</strong> about:</p>
 
 <ul>
 
@@ -667,7 +667,7 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span> + <span class="tok-b5cea8">
 
 <ul>
 
-<li><strong>Speed setting</strong> — A TRIM that works at <code class="code-inline-bg-e8e8e8">speed = 200</code> might not work at <code class="code-inline-bg-e8e8e8">speed = 400</code></li>
+<li><strong>Speed setting</strong> — A TRIM that works at <code>speed = 200</code> might not work at <code>speed = 400</code></li>
 
 <li><strong>Battery level</strong> — As the NiMH pack slides from its 4800 mV plateau toward the 4200 mV floor, motor behavior shifts (Section 3.6)</li>
 
@@ -703,7 +703,7 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span> + <span class="tok-b5cea8">
 
 </ul>
 
-<p>The solution: The Zumo can measure its own battery voltage! We'll use <code class="code-inline-bg-e8e8e8">readBatteryMillivolts()</code> to monitor battery health.</p>
+<p>The solution: The Zumo can measure its own battery voltage! We'll use <code>readBatteryMillivolts()</code> to monitor battery health.</p>
 
 <div class="div-333-2">
 
@@ -722,11 +722,11 @@ The function returns <strong>millivolts</strong> (mV), which is 1/1000 of a volt
 
 <ul>
 
-<li><code class="code-inline-bg-e8e8e8">5400 mV = 5.4 V</code> (divide by 1000)</li>
+<li><code>5400 mV = 5.4 V</code> (divide by 1000)</li>
 
-<li><code class="code-inline-bg-e8e8e8">4800 mV = 4.8 V</code></li>
+<li><code>4800 mV = 4.8 V</code></li>
 
-<li><code class="code-inline-bg-e8e8e8">4200 mV = 4.2 V</code></li>
+<li><code>4200 mV = 4.2 V</code></li>
 
 </ul>
 
@@ -770,7 +770,7 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 
 <div class="div-c-7d6608">🧪 TRY THIS: Catch dead reckoning failing (2 minutes, once your robot runs)</div>
 
-<p><strong>Predict first:</strong> your program drives for exactly <code class="code-inline-bg-e8e8e8">TEST_DURATION = 2000</code> milliseconds every single test. Same code, same time — should the robot stop in the same place every time? Write down your answer <strong>in your notebook</strong>.</p>
+<p><strong>Predict first:</strong> your program drives for exactly <code>TEST_DURATION = 2000</code> milliseconds every single test. Same code, same time — should the robot stop in the same place every time? Write down your answer <strong>in your notebook</strong>.</p>
 
 <ol>
 
@@ -791,7 +791,7 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 <div class="callout-607d8b-bg-eceff1-5">
 
 <div class="div-fs-09em">📘 NOTE</div>
-<div class="div-fs-105em">First, a unit: milliseconds.</div> Every timing number in this lesson is in <strong>milliseconds</strong> (ms) &mdash; thousandths of a second. So <strong>1000 ms = 1 second</strong>. That means <code class="code-inline-bg-e8e8e8">TEST_DURATION = 2000</code> runs the motors for 2 seconds, and a <code class="code-inline-bg-e8e8e8">delay(500)</code> is a half-second pause. Whenever you see <code class="code-inline-bg-e8e8e8">delay(...)</code> from here on, read the number as milliseconds.
+<div class="div-fs-105em">First, a unit: milliseconds.</div> Every timing number in this lesson is in <strong>milliseconds</strong> (ms) &mdash; thousandths of a second. So <strong>1000 ms = 1 second</strong>. That means <code>TEST_DURATION = 2000</code> runs the motors for 2 seconds, and a <code>delay(500)</code> is a half-second pause. Whenever you see <code>delay(...)</code> from here on, read the number as milliseconds.
 
 </div>
 
@@ -894,7 +894,7 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 
 <li><strong>Speeds persist until changed</strong> — motors keep running until you call setSpeeds() again</li>
 
-<li><strong>Always stop your motors</strong> — call <code class="code-inline-bg-e8e8e8">motors.setSpeeds(0, 0)</code> when done!</li>
+<li><strong>Always stop your motors</strong> — call <code>motors.setSpeeds(0, 0)</code> when done!</li>
 
 </ul>
 
@@ -939,13 +939,13 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </ul>
 
-<p>On the Zumo, <code class="code-inline-bg-e8e8e8">setSpeeds(0, 0)</code> gives you a <strong>brake</strong>-style stop &mdash; the driver shorts the motors, so the robot stops promptly rather than coasting. That is usually what you want for precise moves. Keep the three in mind: when a robot "won't stop where I told it," the question is often <em>which kind of stop</em> you actually used.</p>
+<p>On the Zumo, <code>setSpeeds(0, 0)</code> gives you a <strong>brake</strong>-style stop &mdash; the driver shorts the motors, so the robot stops promptly rather than coasting. That is usually what you want for precise moves. Keep the three in mind: when a robot "won't stop where I told it," the question is often <em>which kind of stop</em> you actually used.</p>
 
 </div>
 
 <h3 id="section-3-9" class="h3-c-2e86ab">3.9 The constrain() Function</h3>
 
-<p>When calculating motor speeds with TRIM, you might accidentally exceed the -400 to +400 range. The <code class="code-inline-bg-e8e8e8">constrain()</code> function keeps values within safe limits:</p>
+<p>When calculating motor speeds with TRIM, you might accidentally exceed the -400 to +400 range. The <code>constrain()</code> function keeps values within safe limits:</p>
 
 <div class="div-333-2">
 
@@ -967,7 +967,7 @@ leftSpeed = constrain(speed + trim, -<span class="tok-b5cea8">400</span>, <span 
 
 <div class="div-fs-105em">📚 Where Does constrain() Come From?</div>
 
-The <code class="code-inline-bg-e8e8e8">constrain()</code> function is part of the Arduino core library (<code class="code-inline-bg-e8e8e8">Arduino.h</code>), which is automatically included when you use the Zumo32U4 library. You don't need to include anything extra—it just works!
+The <code>constrain()</code> function is part of the Arduino core library (<code>Arduino.h</code>), which is automatically included when you use the Zumo32U4 library. You don't need to include anything extra—it just works!
 
 </div>
 
@@ -985,11 +985,11 @@ The <code class="code-inline-bg-e8e8e8">constrain()</code> function is part of t
 
 <div class="callout-6b8e6b-bg-f0f7f0">
 
-<div class="div-fs-105em">💡 TIP</div> Always use <code class="code-inline-bg-e8e8e8">constrain()</code> when adding TRIM or calculating speeds dynamically. It keeps your speed math honest.
+<div class="div-fs-105em">💡 TIP</div> Always use <code>constrain()</code> when adding TRIM or calculating speeds dynamically. It keeps your speed math honest.
 
 <br><br>
 
-<strong>Does it really matter, if the library caps at 400 anyway?</strong> Fair question &mdash; and yes, <code class="code-inline-bg-e8e8e8">setSpeeds()</code> already clamps anything past &plusmn;400 internally, just like a VEX motor maxes out no matter what number you feed it. So <code class="code-inline-bg-e8e8e8">constrain()</code> is <em>not</em> there to protect the motor. It matters when <strong>you</strong> use the speed number for something else &mdash; showing it on the display, logging it, or feeding it into more math &mdash; where an out-of-range value (like 415) would be wrong or confusing. Constrain your own variables so the number you see and the number the motor gets are the same.
+<strong>Does it really matter, if the library caps at 400 anyway?</strong> Fair question &mdash; and yes, <code>setSpeeds()</code> already clamps anything past &plusmn;400 internally, just like a VEX motor maxes out no matter what number you feed it. So <code>constrain()</code> is <em>not</em> there to protect the motor. It matters when <strong>you</strong> use the speed number for something else &mdash; showing it on the display, logging it, or feeding it into more math &mdash; where an out-of-range value (like 415) would be wrong or confusing. Constrain your own variables so the number you see and the number the motor gets are the same.
 
 </div>
 
@@ -1074,7 +1074,7 @@ The <code class="code-inline-bg-e8e8e8">constrain()</code> function is part of t
 
 </ul>
 
-<p>So you'd use <code class="code-inline-bg-e8e8e8">motors.setSpeeds(210, 200)</code> to balance them.</p>
+<p>So you'd use <code>motors.setSpeeds(210, 200)</code> to balance them.</p>
 
 <div class="callout-17a2b8-bg-d1ecf1">
 
@@ -1084,7 +1084,7 @@ If you found TRIM = 15 at speed 200, your motor imbalance is approximately:
 
 <br><br>
 
-<code class="code-inline-bg-e8e8e8">Imbalance % = (TRIM / BASE_SPEED) × 100 = (15 / 200) × 100 = 7.5%</code>
+<code>Imbalance % = (TRIM / BASE_SPEED) × 100 = (15 / 200) × 100 = 7.5%</code>
 
 <br><br>
 
@@ -1233,7 +1233,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <div class="callout-17a2b8-bg-d1ecf1">
 
-<div class="div-fs-105em">📏 Accuracy Note:</div> The <code class="code-inline-bg-e8e8e8">readBatteryMillivolts()</code> function is approximate—expect accuracy of about <strong>±10%</strong>. If it reads 5000 mV, actual voltage is somewhere between 4500-5500 mV. This is fine for our purposes (detecting "fresh" vs "low"), but don't rely on it for precision measurements.
+<div class="div-fs-105em">📏 Accuracy Note:</div> The <code>readBatteryMillivolts()</code> function is approximate—expect accuracy of about <strong>±10%</strong>. If it reads 5000 mV, actual voltage is somewhere between 4500-5500 mV. This is fine for our purposes (detecting "fresh" vs "low"), but don't rely on it for precision measurements.
 
 </div>
 
@@ -1350,11 +1350,11 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 </ol>
 
-<p class="p-c-666-5">No internet? Copy your <strong>ZUMO_Template</strong> and rename it <code class="code-inline-bg-e8e8e8">LastName_L03</code> by hand.</p>
+<p class="p-c-666-5">No internet? Copy your <strong>ZUMO_Template</strong> and rename it <code>LastName_L03</code> by hand.</p>
 
 </div>
 
-<p>The file structure is the <strong>seven-section</strong> <code class="code-inline-bg-e8e8e8">main.cpp</code> you know from Lesson 2 — with one twist: this program defines its helper functions <strong>above</strong> <code class="code-inline-bg-e8e8e8">setup()</code>, so it needs no FUNCTION PROTOTYPES section. Prototypes are only required when a function is <em>used before the compiler has seen it</em> (Lesson 2, Step 7). Both layouts are common in real code — you’ll write the above-setup style today and should recognize either one on sight.</p>
+<p>The file structure is the <strong>seven-section</strong> <code>main.cpp</code> you know from Lesson 2 — with one twist: this program defines its helper functions <strong>above</strong> <code>setup()</code>, so it needs no FUNCTION PROTOTYPES section. Prototypes are only required when a function is <em>used before the compiler has seen it</em> (Lesson 2, Step 7). Both layouts are common in real code — you’ll write the above-setup style today and should recognize either one on sight.</p>
 
 <h3 class="h3-c-433014">5.2 What's New in This Lesson</h3>
 
@@ -1369,9 +1369,9 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 </tr>
 </thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">BASE_SPEED</code></td><td class="td-ddd-2">Motor speed both wheels target during a test</td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">200</code></td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">TEST_DURATION</code></td><td class="td-ddd-2">How long (ms) the motors run per test</td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">2000</code></td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">TRIM_STEP</code></td><td class="td-ddd-2">How much <code class="code-inline-bg-e8e8e8">trimValue</code> changes per button press</td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">5</code></td></tr>
+<tr><td class="td-ddd-2"><code>BASE_SPEED</code></td><td class="td-ddd-2">Motor speed both wheels target during a test</td><td class="td-ddd-2"><code>200</code></td></tr>
+<tr><td class="td-ddd-2"><code>TEST_DURATION</code></td><td class="td-ddd-2">How long (ms) the motors run per test</td><td class="td-ddd-2"><code>2000</code></td></tr>
+<tr><td class="td-ddd-2"><code>TRIM_STEP</code></td><td class="td-ddd-2">How much <code>trimValue</code> changes per button press</td><td class="td-ddd-2"><code>5</code></td></tr>
 </tbody>
 </table>
 
@@ -1386,9 +1386,9 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 </tr>
 </thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">trimValue</code></td><td class="td-ddd-2">Current correction applied to the left wheel (&minus;50&hellip;+50 typical)</td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">0</code></td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">testCount</code></td><td class="td-ddd-2">How many tests you've run this session</td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">0</code></td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">instructionsPrinted</code></td><td class="td-ddd-2">Has the Serial banner been printed yet? Keeps it from reprinting every loop</td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">false</code></td></tr>
+<tr><td class="td-ddd-2"><code>trimValue</code></td><td class="td-ddd-2">Current correction applied to the left wheel (&minus;50&hellip;+50 typical)</td><td class="td-ddd-2"><code>0</code></td></tr>
+<tr><td class="td-ddd-2"><code>testCount</code></td><td class="td-ddd-2">How many tests you've run this session</td><td class="td-ddd-2"><code>0</code></td></tr>
+<tr><td class="td-ddd-2"><code>instructionsPrinted</code></td><td class="td-ddd-2">Has the Serial banner been printed yet? Keeps it from reprinting every loop</td><td class="td-ddd-2"><code>false</code></td></tr>
 </tbody>
 </table>
 
@@ -1401,7 +1401,7 @@ leftSpeed  = BASE_SPEED + trimValue;     <span class="tok-6a9955">// left wheel 
 rightSpeed = BASE_SPEED;                 <span class="tok-6a9955">// right wheel = baseline</span>
 motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
-<p>If the robot veers <strong>left</strong>, the left wheel is too slow &rarr; raise <code class="code-inline-bg-e8e8e8">trimValue</code> (positive). If it veers <strong>right</strong>, lower it (negative). Each button press changes <code class="code-inline-bg-e8e8e8">trimValue</code> by <code class="code-inline-bg-e8e8e8">TRIM_STEP</code>, so you converge on "straight" by trial and observation. This is your first taste of <strong>closed-loop tuning</strong>: change a value, observe, adjust.</p>
+<p>If the robot veers <strong>left</strong>, the left wheel is too slow &rarr; raise <code>trimValue</code> (positive). If it veers <strong>right</strong>, lower it (negative). Each button press changes <code>trimValue</code> by <code>TRIM_STEP</code>, so you converge on "straight" by trial and observation. This is your first taste of <strong>closed-loop tuning</strong>: change a value, observe, adjust.</p>
 
 <div class="callout-9c27b0-bg-f3e5f5-2">
     <div class="div-fs-105em">🔑 <strong id="glossary-trim">TRIM</strong></div>A single adjustable value added to one motor's speed to compensate for mechanical imbalance, making a robot drive straight without changing hardware.
@@ -1409,7 +1409,7 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
 <h3 class="h3-c-433014">5.4 Function Reference</h3>
 
-<p>You'll write four helper functions plus <code class="code-inline-bg-e8e8e8">setup()</code> and <code class="code-inline-bg-e8e8e8">loop()</code>. Each has one job:</p>
+<p>You'll write four helper functions plus <code>setup()</code> and <code>loop()</code>. Each has one job:</p>
 
 <table class="table-bc-collapse">
 <thead>
@@ -1419,22 +1419,22 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 </tr>
 </thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">runMotorTest()</code></td><td class="td-ddd-2">Runs both motors at trimmed speeds for <code class="code-inline-bg-e8e8e8">TEST_DURATION</code>, then stops. The core action.</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">updateDisplay()</code></td><td class="td-ddd-2">Shows current <code class="code-inline-bg-e8e8e8">trimValue</code> and <code class="code-inline-bg-e8e8e8">testCount</code> on the OLED so robot state is readable at a glance.</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">blinkConfirm()</code></td><td class="td-ddd-2">Blinks an LED to confirm a button press registered &mdash; instant visual feedback.</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">printTrimAdvice()</code></td><td class="td-ddd-2">Logs battery voltage and current TRIM to the Serial Monitor, with hints on what to try next.</td></tr>
+<tr><td class="td-ddd-2"><code>runMotorTest()</code></td><td class="td-ddd-2">Runs both motors at trimmed speeds for <code>TEST_DURATION</code>, then stops. The core action.</td></tr>
+<tr><td class="td-ddd-2"><code>updateDisplay()</code></td><td class="td-ddd-2">Shows current <code>trimValue</code> and <code>testCount</code> on the OLED so robot state is readable at a glance.</td></tr>
+<tr><td class="td-ddd-2"><code>blinkConfirm()</code></td><td class="td-ddd-2">Blinks an LED to confirm a button press registered &mdash; instant visual feedback.</td></tr>
+<tr><td class="td-ddd-2"><code>printTrimAdvice()</code></td><td class="td-ddd-2">Logs battery voltage and current TRIM to the Serial Monitor, with hints on what to try next.</td></tr>
 </tbody>
 </table>
 
-<p><code class="code-inline-bg-e8e8e8">setup()</code> initializes the hardware and shows a start screen. <code class="code-inline-bg-e8e8e8">loop()</code> is the controller: it watches buttons A/B/C (decrease TRIM / run test / increase TRIM), calls the right function, and refreshes the display.</p>
+<p><code>setup()</code> initializes the hardware and shows a start screen. <code>loop()</code> is the controller: it watches buttons A/B/C (decrease TRIM / run test / increase TRIM), calls the right function, and refreshes the display.</p>
 
 <div class="callout-2da99d-bg-e9f7f5-3">
-    <div class="div-fs-105em">🔍 <strong>Why four small functions instead of one big <code class="code-inline-bg-e8e8e8">loop()</code>?</strong></div> Each function names a single idea, so <code class="code-inline-bg-e8e8e8">loop()</code> reads like a summary: "if button A, lower trim; if button B, run test." Short, named functions are easier to debug and reuse &mdash; the same habit you started in Lesson 2's 8A.
+    <div class="div-fs-105em">🔍 <strong>Why four small functions instead of one big <code>loop()</code>?</strong></div> Each function names a single idea, so <code>loop()</code> reads like a summary: "if button A, lower trim; if button B, run test." Short, named functions are easier to debug and reuse &mdash; the same habit you started in Lesson 2's 8A.
 </div>
 
 <h3 class="h3-c-433014">5.5 Writing a Decision: if, Comparison, and the One-Character Trap</h3>
 
-<p>Lesson 2 taught you to <em>read</em> an if statement: a question in parentheses, a block in braces, an optional <code class="code-inline-bg-e8e8e8">else</code> for the other answer. Section 9 asks you to <em>write</em> one from a blank line, which is a different skill. Here is the whole move.</p>
+<p>Lesson 2 taught you to <em>read</em> an if statement: a question in parentheses, a block in braces, an optional <code>else</code> for the other answer. Section 9 asks you to <em>write</em> one from a blank line, which is a different skill. Here is the whole move.</p>
 
 <p><strong>Start with the sentence.</strong> Say what you want in plain English, with the word &ldquo;if&rdquo; in it: <em>&ldquo;If the test speed is above 400, print a warning.&rdquo;</em> Now translate it left to right &mdash; the sentence and the code are in the same order:</p>
 
@@ -1442,21 +1442,21 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
   <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Too fast for this classroom!"</span>));
 }</pre>
 
-<p>The only genuinely new piece is the middle: <code class="code-inline-bg-e8e8e8">testSpeed &gt; 400</code>. That is a <strong>comparison</strong>, and it is how a number becomes a yes/no answer the if can use. Six of them cover everything you will need:</p>
+<p>The only genuinely new piece is the middle: <code>testSpeed &gt; 400</code>. That is a <strong>comparison</strong>, and it is how a number becomes a yes/no answer the if can use. Six of them cover everything you will need:</p>
 
 <table class="table-bc-collapse">
 <tr class="tr-bg-352405">
 <th class="th-ddd">Operator</th><th class="th-ddd">Asks</th><th class="th-ddd">True when&hellip;</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">&gt;</code></td><td class="td-ddd">greater than</td><td class="td-ddd" >left is bigger &mdash; <code class="code-ff-uimonosp">500 &gt; 400</code></td></tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">&lt;</code></td><td class="td-ddd">less than</td><td class="td-ddd">left is smaller &mdash; <code class="code-ff-uimonosp">300 &lt; 400</code></td></tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">&gt;=</code></td><td class="td-ddd">greater than or equal</td><td class="td-ddd">bigger <em>or</em> exactly equal &mdash; the boundary counts</td></tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">&lt;=</code></td><td class="td-ddd">less than or equal</td><td class="td-ddd">smaller <em>or</em> exactly equal</td></tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">==</code></td><td class="td-ddd"><strong>is equal to</strong></td><td class="td-ddd">the two values match &mdash; <strong>note the TWO equals signs</strong></td></tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">!=</code></td><td class="td-ddd">is not equal to</td><td class="td-ddd">the two values differ</td></tr>
+<tr><td class="td-ddd"><code>&gt;</code></td><td class="td-ddd">greater than</td><td class="td-ddd" >left is bigger &mdash; <code>500 &gt; 400</code></td></tr>
+<tr><td class="td-ddd"><code>&lt;</code></td><td class="td-ddd">less than</td><td class="td-ddd">left is smaller &mdash; <code>300 &lt; 400</code></td></tr>
+<tr><td class="td-ddd"><code>&gt;=</code></td><td class="td-ddd">greater than or equal</td><td class="td-ddd">bigger <em>or</em> exactly equal &mdash; the boundary counts</td></tr>
+<tr><td class="td-ddd"><code>&lt;=</code></td><td class="td-ddd">less than or equal</td><td class="td-ddd">smaller <em>or</em> exactly equal</td></tr>
+<tr><td class="td-ddd"><code>==</code></td><td class="td-ddd"><strong>is equal to</strong></td><td class="td-ddd">the two values match &mdash; <strong>note the TWO equals signs</strong></td></tr>
+<tr><td class="td-ddd"><code>!=</code></td><td class="td-ddd">is not equal to</td><td class="td-ddd">the two values differ</td></tr>
 </table>
 
-<p>Decide the boundary on purpose. <code class="code-inline-bg-e8e8e8">&gt;</code> and <code class="code-inline-bg-e8e8e8">&gt;=</code> differ by exactly one case &mdash; the value sitting on the line &mdash; and that one case is where robot bugs like to live.</p>
+<p>Decide the boundary on purpose. <code>&gt;</code> and <code>&gt;=</code> differ by exactly one case &mdash; the value sitting on the line &mdash; and that one case is where robot bugs like to live.</p>
 
 <div class="div-ffc107-4">
 <div class="div-c-922b21">🚨 The one-character trap: <code class="code-inline-bg-f5c6c0">=</code> is not <code class="code-inline-bg-f5c6c0">==</code></div>
@@ -1468,11 +1468,11 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 <p>Two things just went wrong, and the screen tells you about neither. Your TRIM was overwritten with 5. And the if now tests the value 5, which C++ treats as true &mdash; so the block runs <strong>every single time</strong>, forever, no matter what TRIM was.</p>
 <p><strong>Direction 2 &mdash; you meant to assign and typed two:</strong></p>
 <pre class="code-block-333">trimValue == <span class="tok-b5cea8">5</span>;              <span class="tok-6a9955">// WRONG: this COMPARES, then throws the answer away</span></pre>
-<p>The comparison happens, produces true or false, and nothing catches it. <code class="code-inline-bg-e8e8e8">trimValue</code> never changes. You will swear you set it, and the robot will swear you did not, and the robot is right.</p>
-<p class="p-mb-0"><strong>The habit that saves you:</strong> when a condition behaves like it is stuck &mdash; always firing, or never firing &mdash; count the equals signs <em>before</em> you question your logic. Inside <code class="code-inline-bg-e8e8e8">if (&hellip;)</code>, a single <code class="code-inline-bg-e8e8e8">=</code> is almost always a typo.</p>
+<p>The comparison happens, produces true or false, and nothing catches it. <code>trimValue</code> never changes. You will swear you set it, and the robot will swear you did not, and the robot is right.</p>
+<p class="p-mb-0"><strong>The habit that saves you:</strong> when a condition behaves like it is stuck &mdash; always firing, or never firing &mdash; count the equals signs <em>before</em> you question your logic. Inside <code>if (&hellip;)</code>, a single <code>=</code> is almost always a typo.</p>
 </div>
 
-<p><strong>Two more shapes, and you have the full set.</strong> Add <code class="code-inline-bg-e8e8e8">else</code> when there is a plan for &ldquo;no,&rdquo; and chain <code class="code-inline-bg-e8e8e8">else if</code> when there are more than two outcomes:</p>
+<p><strong>Two more shapes, and you have the full set.</strong> Add <code>else</code> when there is a plan for &ldquo;no,&rdquo; and chain <code>else if</code> when there are more than two outcomes:</p>
 
 <pre class="code-block-333"><span class="tok-569cd6">if</span> (testSpeed &gt; <span class="tok-b5cea8">400</span>) {
   <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Too fast"</span>));
@@ -1487,32 +1487,32 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 <div class="callout-6b8e6b-bg-f0f7f0-2">
 <div class="div-c-3a5a3a-2">💡 TIP</div>
 <div class="div-c-3a5a3a">write the sentence first, in a comment</div>
-<p class="p-mb-0">Before typing an if, write what you want as a comment on the line above it: <code class="code-inline-bg-e8e8e8">// if the battery is under 4200, warn me</code>. Then translate your own sentence. Students who stall on &ldquo;where do I start&rdquo; have almost always skipped this step &mdash; they are trying to invent the logic and recall the syntax at the same time. Separate the two and each one is easy. Lesson 4 takes the if apart properly and wires it to the sensors; this is enough to write your own today.</p>
+<p class="p-mb-0">Before typing an if, write what you want as a comment on the line above it: <code>// if the battery is under 4200, warn me</code>. Then translate your own sentence. Students who stall on &ldquo;where do I start&rdquo; have almost always skipped this step &mdash; they are trying to invent the logic and recall the syntax at the same time. Separate the two and each one is easy. Lesson 4 takes the if apart properly and wires it to the sensors; this is enough to write your own today.</p>
 </div>
 
 <h3 class="h3-c-433014">5.6 Three Ways to Say &ldquo;Add One&rdquo; (They Are All the Same)</h3>
 
 <p>You will see a counter go up written three different ways across this book &mdash; in the lessons, in the reveals, in your classmates&rsquo; code. They look different and they do <strong>exactly the same thing</strong>. Meet all three now so none of them trips you later.</p>
 
-<p>Say <code class="code-inline-bg-e8e8e8">testCount</code> holds 4 and you want it to hold 5. Every line below does that, and only that:</p>
+<p>Say <code>testCount</code> holds 4 and you want it to hold 5. Every line below does that, and only that:</p>
 
 <table class="table-bc-collapse">
 <tr class="tr-bg-352405">
 <th class="th-ddd">Written as</th><th class="th-ddd">Read it as</th><th class="th-ddd">When you&rsquo;ll reach for it</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">testCount = testCount + 1;</code></td><td class="td-ddd">&ldquo;the new count is the old count plus one&rdquo;</td><td class="td-ddd">the long form &mdash; clearest the first time, spells out every piece</td></tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">testCount += 1;</code></td><td class="td-ddd">&ldquo;add one to count&rdquo;</td><td class="td-ddd">the shorthand &mdash; and it takes any number, so <code class="code-ff-uimonosp">+= 10</code> adds ten</td></tr>
-<tr><td class="td-ddd"><code class="code-ff-uimonosp">testCount++;</code></td><td class="td-ddd">&ldquo;bump count by one&rdquo;</td><td class="td-ddd">the shortest &mdash; but <strong>only ever adds 1</strong>, nothing else</td></tr>
+<tr><td class="td-ddd"><code>testCount = testCount + 1;</code></td><td class="td-ddd">&ldquo;the new count is the old count plus one&rdquo;</td><td class="td-ddd">the long form &mdash; clearest the first time, spells out every piece</td></tr>
+<tr><td class="td-ddd"><code>testCount += 1;</code></td><td class="td-ddd">&ldquo;add one to count&rdquo;</td><td class="td-ddd">the shorthand &mdash; and it takes any number, so <code>+= 10</code> adds ten</td></tr>
+<tr><td class="td-ddd"><code>testCount++;</code></td><td class="td-ddd">&ldquo;bump count by one&rdquo;</td><td class="td-ddd">the shortest &mdash; but <strong>only ever adds 1</strong>, nothing else</td></tr>
 </table>
 
-<p>You have already used the last one without a second thought: <code class="code-inline-bg-e8e8e8">i++</code> is what steps a <code class="code-inline-bg-e8e8e8">for</code> loop from one pass to the next. Same operator, out in the open here.</p>
+<p>You have already used the last one without a second thought: <code>i++</code> is what steps a <code>for</code> loop from one pass to the next. Same operator, out in the open here.</p>
 
 <div class="callout-2e86ab-bg-e7f0fa-6">
 <div class="div-c-0e1a2c">The rule of thumb</div>
-<p class="p-mb-0"><code class="code-inline-bg-e8e8e8">++</code> when you are adding exactly 1 (loop counters, tallying presses). <code class="code-inline-bg-e8e8e8">+= n</code> when you are adding some other amount (nudging TRIM by 5, a score by 10). The long form when you are learning the line or want it to read like a sentence. Pick whichever is clearest &mdash; the robot cannot tell them apart, so write for the human who reads it next.</p>
+<p class="p-mb-0"><code>++</code> when you are adding exactly 1 (loop counters, tallying presses). <code>+= n</code> when you are adding some other amount (nudging TRIM by 5, a score by 10). The long form when you are learning the line or want it to read like a sentence. Pick whichever is clearest &mdash; the robot cannot tell them apart, so write for the human who reads it next.</p>
 </div>
 
-<p>Two things to keep straight. There is no <code class="code-inline-bg-e8e8e8">++</code> for anything but 1 &mdash; if you need to add 5, it is <code class="code-inline-bg-e8e8e8">+= 5</code>, not <code class="code-inline-bg-e8e8e8">+++++</code>. And subtraction mirrors all three exactly: <code class="code-inline-bg-e8e8e8">count = count - 1</code>, <code class="code-inline-bg-e8e8e8">count -= 1</code>, and <code class="code-inline-bg-e8e8e8">count--</code> are the same three spellings going the other way.</p>
+<p>Two things to keep straight. There is no <code>++</code> for anything but 1 &mdash; if you need to add 5, it is <code>+= 5</code>, not <code>+++++</code>. And subtraction mirrors all three exactly: <code>count = count - 1</code>, <code>count -= 1</code>, and <code>count--</code> are the same three spellings going the other way.</p>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
@@ -1560,19 +1560,19 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">-
 
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. How does differential drive create turns and spins with only two motors? (§3.1)</summary>
 
-<div class="div-mt-12px"><p>Different speeds on the two tracks: one faster than the other = a curve toward the slower side; equal and opposite (<code class="code-inline-bg-e8e8e8">setSpeeds(200, -200)</code>) = a spin in place around the robot’s center.</p></div>
+<div class="div-mt-12px"><p>Different speeds on the two tracks: one faster than the other = a curve toward the slower side; equal and opposite (<code>setSpeeds(200, -200)</code>) = a spin in place around the robot’s center.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What does a <em>negative</em> value in <code class="code-inline-bg-e8e8e8">setSpeeds()</code> mean — and what does it NOT mean? (§3.2)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What does a <em>negative</em> value in <code>setSpeeds()</code> mean — and what does it NOT mean? (§3.2)</summary>
 
-<div class="div-mt-12px"><p>Negative = that motor runs <strong>backward</strong>. It does NOT mean “slower” — <code class="code-inline-bg-e8e8e8">-400</code> is full speed in reverse. The number’s size is the speed; its sign is the direction.</p></div>
+<div class="div-mt-12px"><p>Negative = that motor runs <strong>backward</strong>. It does NOT mean “slower” — <code>-400</code> is full speed in reverse. The number’s size is the speed; its sign is the direction.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. What does <code class="code-inline-bg-e8e8e8">constrain(value, -400, 400)</code> protect you from? (§3.9)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. What does <code>constrain(value, -400, 400)</code> protect you from? (§3.9)</summary>
 
-<div class="div-mt-12px"><p>Out-of-range speed values. After TRIM math, a number can exceed the legal ±400 range; <code class="code-inline-bg-e8e8e8">constrain()</code> clamps it back inside the limits so the motor library always receives a valid command.</p></div>
+<div class="div-mt-12px"><p>Out-of-range speed values. After TRIM math, a number can exceed the legal ±400 range; <code>constrain()</code> clamps it back inside the limits so the motor library always receives a valid command.</p></div>
 
 </details>
 
@@ -1612,7 +1612,7 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">-
 
 <div class="callout-2e86ab-bg-e7f1fb">
     <div class="div-c-0e1a2c">📦 Fell behind? File wrecked?</div>
-    <p class="p-m-8px000">The <a href="../newproject.html?lesson=3" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the Discovery named for the step you're about to build, and it opens a project already caught up to that exact point &mdash; empty <code class="code-inline-bg-e8e8e8">setup()</code>/<code class="code-inline-bg-e8e8e8">loop()</code> and all. Missed a day? Broke your file beyond repair? Grab the right Discovery and keep moving &mdash; no shame, no retyping.</p>
+    <p class="p-m-8px000">The <a href="../newproject.html?lesson=3" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the Discovery named for the step you're about to build, and it opens a project already caught up to that exact point &mdash; empty <code>setup()</code>/<code>loop()</code> and all. Missed a day? Broke your file beyond repair? Grab the right Discovery and keep moving &mdash; no shame, no retyping.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 1: Make Your Lesson 3 Project</h3>
@@ -1621,11 +1621,11 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">-
 
 <h3 class="h3-c-433014">Step 2: Open the Folder and Check Your Header</h3>
 
-<p>VS Code: <strong>File → Open Folder</strong> → <strong>LastName_L03</strong> (close the old lesson’s folder first so you can’t edit the wrong project). Open <code class="code-inline-bg-e8e8e8">src/main.cpp</code> — the Maker pre-filled your header comment. Delete the template’s section banner comments below the header, but <strong>keep the empty <code class="code-inline-bg-e8e8e8">setup()</code> and <code class="code-inline-bg-e8e8e8">loop()</code></strong> — this lesson fills them in Steps 10–11, and until then they are what keeps every build green. Today’s program uses the helpers-above-setup layout (no prototypes needed).</p>
+<p>VS Code: <strong>File → Open Folder</strong> → <strong>LastName_L03</strong> (close the old lesson’s folder first so you can’t edit the wrong project). Open <code>src/main.cpp</code> — the Maker pre-filled your header comment. Delete the template’s section banner comments below the header, but <strong>keep the empty <code>setup()</code> and <code>loop()</code></strong> — this lesson fills them in Steps 10–11, and until then they are what keeps every build green. Today’s program uses the helpers-above-setup layout (no prototypes needed).</p>
 
 <div class="callout-4caf50-bg-e8f5e9">
     <div class="div-c-2e7d32">✅ CHECKPOINT</div>
-    <p>Your file contains the header comment plus empty <code class="code-inline-bg-e8e8e8">setup()</code>/<code class="code-inline-bg-e8e8e8">loop()</code> — nothing else. Click <strong>Build</strong> (✓): it should already say SUCCESS. A program that does nothing, but compiles — that green build is the baseline you will protect through every step below.</p>
+    <p>Your file contains the header comment plus empty <code>setup()</code>/<code>loop()</code> — nothing else. Click <strong>Build</strong> (✓): it should already say SUCCESS. A program that does nothing, but compiles — that green build is the baseline you will protect through every step below.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 3: Program Header</h3>
@@ -1668,9 +1668,9 @@ DATE: [Today's Date]
 
 <li>Copy the code above and paste it into your empty main.cpp</li>
 
-<li>Change <code class="code-inline-bg-e8e8e8">[Your Name]</code> to YOUR actual name</li>
+<li>Change <code>[Your Name]</code> to YOUR actual name</li>
 
-<li>Change <code class="code-inline-bg-e8e8e8">[Today's Date]</code> to today's date</li>
+<li>Change <code>[Today's Date]</code> to today's date</li>
 
 </ol>
 
@@ -1682,7 +1682,7 @@ DATE: [Today's Date]
 
 <ul class="ul-ls-none">
 
-<li>☐ Your file starts with <code class="code-inline-bg-e8e8e8">/*</code> on line 1</li>
+<li>☐ Your file starts with <code>/*</code> on line 1</li>
 
 <li>☐ Your name and date are filled in</li>
 
@@ -1692,7 +1692,7 @@ DATE: [Today's Date]
 
 <h3 class="h3-c-433014">Step 4: Include and Hardware Objects</h3>
 
-<p>The <code class="code-inline-bg-e8e8e8">#include</code> brings in all Zumo functions. Each hardware object lets you control a specific part of the robot. The <code class="code-inline-bg-e8e8e8">motors</code> object controls BOTH motors together (unlike buttons which are separate).</p>
+<p>The <code>#include</code> brings in all Zumo functions. Each hardware object lets you control a specific part of the robot. The <code>motors</code> object controls BOTH motors together (unlike buttons which are separate).</p>
 
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
 
@@ -1701,7 +1701,7 @@ DATE: [Today's Date]
               the OLED display
               BOTH motors, driven as one unit  ← new today</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Five declaration lines under your <code class="code-inline-bg-e8e8e8">// ===== HARDWARE OBJECTS =====</code> banner, right after the include. Four of them are the exact cast from Lesson 2. The new actor drives both motors together — find its one line in the <a href="#qr-motors" class="link-c-2e86ab">⚡ Quick Reference → Motors</a> table.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Five declaration lines under your <code>// ===== HARDWARE OBJECTS =====</code> banner, right after the include. Four of them are the exact cast from Lesson 2. The new actor drives both motors together — find its one line in the <a href="#qr-motors" class="link-c-2e86ab">⚡ Quick Reference → Motors</a> table.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -1729,7 +1729,7 @@ DATE: [Today's Date]
 
 <div class="callout-4caf50-bg-e8f5e9">
     <div class="div-c-2e7d32">✅ CHECKPOINT</div>
-    <p>Count your hardware objects: <strong>five lines, five semicolons</strong> — <code class="code-inline-bg-e8e8e8">buttonA</code>, <code class="code-inline-bg-e8e8e8">buttonB</code>, <code class="code-inline-bg-e8e8e8">buttonC</code>, <code class="code-inline-bg-e8e8e8">display</code>, <code class="code-inline-bg-e8e8e8">motors</code>. The compiler can’t check your work yet (no <code class="code-inline-bg-e8e8e8">setup()</code>/<code class="code-inline-bg-e8e8e8">loop()</code> exists), so you’re the checker: every line ends in a semicolon, every type starts with <code class="code-inline-bg-e8e8e8">Zumo32U4</code>.</p>
+    <p>Count your hardware objects: <strong>five lines, five semicolons</strong> — <code>buttonA</code>, <code>buttonB</code>, <code>buttonC</code>, <code>display</code>, <code>motors</code>. The compiler can’t check your work yet (no <code>setup()</code>/<code>loop()</code> exists), so you’re the checker: every line ends in a semicolon, every type starts with <code>Zumo32U4</code>.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda">
@@ -1742,15 +1742,15 @@ DATE: [Today's Date]
 
 <h3 class="h3-c-433014">Step 5: Configuration Constants</h3>
 
-<p>These constants control the test behavior. Using <code class="code-inline-bg-e8e8e8">const</code> means they can't be accidentally changed during the program.</p>
+<p>These constants control the test behavior. Using <code>const</code> means they can't be accidentally changed during the program.</p>
 
 <ul>
 
-<li><code class="code-inline-bg-e8e8e8">BASE_SPEED</code>: 200 is a good middle ground — fast enough to see drift, slow enough to be safe</li>
+<li><code>BASE_SPEED</code>: 200 is a good middle ground — fast enough to see drift, slow enough to be safe</li>
 
-<li><code class="code-inline-bg-e8e8e8">TEST_DURATION</code>: 2000ms (2 seconds) shows drift without robot going too far</li>
+<li><code>TEST_DURATION</code>: 2000ms (2 seconds) shows drift without robot going too far</li>
 
-<li><code class="code-inline-bg-e8e8e8">TRIM_STEP</code>: 5 is a good balance between precision and speed of adjustment</li>
+<li><code>TRIM_STEP</code>: 5 is a good balance between precision and speed of adjustment</li>
 
 </ul>
 
@@ -1761,7 +1761,7 @@ DATE: [Today's Date]
               test duration            2 seconds (in ms)
               TRIM adjustment step     5</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Three <code class="code-inline-bg-e8e8e8">const int</code> lines under a <code class="code-inline-bg-e8e8e8">// ===== CONFIGURATION =====</code> banner. ALL_CAPS names (Section 3.2 named all three), a short comment on each. If a value never changes while the program runs, <code class="code-inline-bg-e8e8e8">const</code> makes the compiler enforce it.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Three <code>const int</code> lines under a <code>// ===== CONFIGURATION =====</code> banner. ALL_CAPS names (Section 3.2 named all three), a short comment on each. If a value never changes while the program runs, <code>const</code> makes the compiler enforce it.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -1798,9 +1798,9 @@ DATE: [Today's Date]
 
 <ul>
 
-<li><code class="code-inline-bg-e8e8e8">trimValue</code>: The correction we're currently applying. Starts at 0 (no correction).</li>
+<li><code>trimValue</code>: The correction we're currently applying. Starts at 0 (no correction).</li>
 
-<li><code class="code-inline-bg-e8e8e8">testCount</code>: Helps you keep track of how many tests you've done.</li>
+<li><code>testCount</code>: Helps you keep track of how many tests you've done.</li>
 
 </ul>
 
@@ -1811,7 +1811,7 @@ DATE: [Today's Date]
               how many tests run so far    starts at 0
               banner printed yet?          starts false</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Two <code class="code-inline-bg-e8e8e8">int</code>s and one <code class="code-inline-bg-e8e8e8">bool</code> under <code class="code-inline-bg-e8e8e8">// ===== STATE VARIABLES =====</code>. No <code class="code-inline-bg-e8e8e8">const</code> this time — these are the values the buttons will change. The names are in the step’s reveal if yours differ; matching names matter, because every later step calls these variables by name.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Two <code>int</code>s and one <code>bool</code> under <code>// ===== STATE VARIABLES =====</code>. No <code>const</code> this time — these are the values the buttons will change. The names are in the step’s reveal if yours differ; matching names matter, because every later step calls these variables by name.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -1836,7 +1836,7 @@ DATE: [Today's Date]
 
 <div class="callout-4caf50-bg-e8f5e9">
     <div class="div-c-2e7d32">✅ CHECKPOINT</div>
-    <p>You now have <strong>3 constants and 3 state variables</strong>. Say out loud what each state variable remembers: <code class="code-inline-bg-e8e8e8">trimValue</code> (the correction), <code class="code-inline-bg-e8e8e8">testCount</code> (how many runs so far), <code class="code-inline-bg-e8e8e8">instructionsPrinted</code> (has the banner shown yet?). If you can’t say it, re-read the comment next to it — future-you will thank present-you.</p>
+    <p>You now have <strong>3 constants and 3 state variables</strong>. Say out loud what each state variable remembers: <code>trimValue</code> (the correction), <code>testCount</code> (how many runs so far), <code>instructionsPrinted</code> (has the banner shown yet?). If you can’t say it, re-read the comment next to it — future-you will thank present-you.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda">
@@ -1864,7 +1864,7 @@ DATE: [Today's Date]
               row 5:  "Tests run: " + the test counter
               row 7:  "A:- B:TEST C:+"</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> One <code class="code-inline-bg-e8e8e8">void</code> function opening the <code class="code-inline-bg-e8e8e8">// ===== HELPER FUNCTIONS =====</code> banner, placed <strong>above</strong> <code class="code-inline-bg-e8e8e8">setup()</code>. Every display call you need is in the <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a> table, and the volts math (<code class="code-inline-bg-e8e8e8">mv / 1000</code> and <code class="code-inline-bg-e8e8e8">(mv % 1000) / 100</code>) is in the <a href="#qr-battery" class="link-c-2e86ab">Battery</a> table. Comment block above the function — name, one dashed line, what it does.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> One <code>void</code> function opening the <code>// ===== HELPER FUNCTIONS =====</code> banner, placed <strong>above</strong> <code>setup()</code>. Every display call you need is in the <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a> table, and the volts math (<code>mv / 1000</code> and <code>(mv % 1000) / 100</code>) is in the <a href="#qr-battery" class="link-c-2e86ab">Battery</a> table. Comment block above the function — name, one dashed line, what it does.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -1917,7 +1917,7 @@ Called whenever settings change.
 
 
 
-<p><strong>Battery Voltage Display Trick:</strong> The code <code class="code-inline-bg-e8e8e8">mv / 1000</code> gets the whole volts and <code class="code-inline-bg-e8e8e8">(mv % 1000) / 100</code> gets the tenths — converting 5400 mV to "5.4V" without floating point math.</p>
+<p><strong>Battery Voltage Display Trick:</strong> The code <code>mv / 1000</code> gets the whole volts and <code>(mv % 1000) / 100</code> gets the tenths — converting 5400 mV to "5.4V" without floating point math.</p>
 
 <div class="callout-28a745-bg-d4edda">
 
@@ -1929,7 +1929,7 @@ Called whenever settings change.
 
 <h3 class="h3-c-433014">Step 8: Helper Functions</h3>
 
-<p>Two small utility functions: <code class="code-inline-bg-e8e8e8">blinkConfirm()</code> gives visual feedback when a button is pressed, and <code class="code-inline-bg-e8e8e8">printTrimAdvice()</code> logs helpful context to the Serial Monitor.</p>
+<p>Two small utility functions: <code>blinkConfirm()</code> gives visual feedback when a button is pressed, and <code>printTrimAdvice()</code> logs helpful context to the Serial Monitor.</p>
 
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
 
@@ -1942,7 +1942,7 @@ script     →  printTrimAdvice():
                   negative  → "(Cutting LEFT motor - use if robot curves RIGHT)"
                   zero      → "(No correction - motors balanced)"</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Translate these two yourself — the LED call is in the <a href="#qr-leds" class="link-c-2e86ab">⚡ Quick Reference → LEDs</a> table and the if/else-if/else ladder is Lesson 2 material. The third helper, <code class="code-inline-bg-e8e8e8">printInstructions()</code>, is thirty lines of banner text with nothing new to discover — <strong>copy it straight from the reveal</strong> and paste it below the other two. (Note what it remembers: TRIM boosts or cuts the <strong>LEFT</strong> motor. That is this lesson’s core rule.)</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Translate these two yourself — the LED call is in the <a href="#qr-leds" class="link-c-2e86ab">⚡ Quick Reference → LEDs</a> table and the if/else-if/else ladder is Lesson 2 material. The third helper, <code>printInstructions()</code>, is thirty lines of banner text with nothing new to discover — <strong>copy it straight from the reveal</strong> and paste it below the other two. (Note what it remembers: TRIM boosts or cuts the <strong>LEFT</strong> motor. That is this lesson’s core rule.)</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -2025,7 +2025,7 @@ connects. (Why not setup()? See Step 11.)
 
 <div class="callout-4caf50-bg-e8f5e9">
     <div class="div-c-2e7d32">✅ CHECKPOINT</div>
-    <p>Three helpers now exist — <code class="code-inline-bg-e8e8e8">blinkConfirm()</code>, <code class="code-inline-bg-e8e8e8">printTrimAdvice()</code>, <code class="code-inline-bg-e8e8e8">printInstructions()</code> — and <strong>none of them has been called yet</strong>. That’s normal: a function definition is a recipe, not a meal. <code class="code-inline-bg-e8e8e8">setup()</code> and <code class="code-inline-bg-e8e8e8">loop()</code> will do the cooking in Steps 10–11.</p>
+    <p>Three helpers now exist — <code>blinkConfirm()</code>, <code>printTrimAdvice()</code>, <code>printInstructions()</code> — and <strong>none of them has been called yet</strong>. That’s normal: a function definition is a recipe, not a meal. <code>setup()</code> and <code>loop()</code> will do the cooking in Steps 10–11.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda">
@@ -2055,7 +2055,7 @@ connects. (Why not setup()? See Step 11.)
               count the test, prompt "Done! L/R curve?"
               back to the main screen (updateDisplay)</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> The heart of the program — and every piece is findable: the speed math is the <a href="#qr-trim-pattern" class="link-c-2e86ab">⚡ Quick Reference → TRIM Pattern</a>, the range clamp is in <a href="#qr-constrain" class="link-c-2e86ab">Constrain</a>, the run/stop shape is the <a href="#qr-safe-run" class="link-c-2e86ab">Safe Motor Run Pattern</a>, and the screen calls are in <a href="#qr-display" class="link-c-2e86ab">Display</a>. Place it above <code class="code-inline-bg-e8e8e8">setup()</code>, after your other helpers. Work from the plan line by line; open the reveal only when you’ve got a version you believe in.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> The heart of the program — and every piece is findable: the speed math is the <a href="#qr-trim-pattern" class="link-c-2e86ab">⚡ Quick Reference → TRIM Pattern</a>, the range clamp is in <a href="#qr-constrain" class="link-c-2e86ab">Constrain</a>, the run/stop shape is the <a href="#qr-safe-run" class="link-c-2e86ab">Safe Motor Run Pattern</a>, and the screen calls are in <a href="#qr-display" class="link-c-2e86ab">Display</a>. Place it above <code>setup()</code>, after your other helpers. Work from the plan line by line; open the reveal only when you’ve got a version you believe in.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -2128,11 +2128,11 @@ Displays countdown on OLED and logs to Serial.
 
 
 
-<p><strong>Key safety features:</strong> 3-2-1 countdown gives you time to set robot down and step back; <code class="code-inline-bg-e8e8e8">constrain()</code> prevents invalid speed values; <code class="code-inline-bg-e8e8e8">motors.setSpeeds(0, 0)</code> ALWAYS runs after the timed test; fixed duration means robot stops automatically.</p>
+<p><strong>Key safety features:</strong> 3-2-1 countdown gives you time to set robot down and step back; <code>constrain()</code> prevents invalid speed values; <code>motors.setSpeeds(0, 0)</code> ALWAYS runs after the timed test; fixed duration means robot stops automatically.</p>
 
 <div class="callout-607d8b-bg-eceff1">
 
-<div class="div-fs-105em">📘 NOTE</div> Notice how <code class="code-inline-bg-e8e8e8">motors.setSpeeds(0, 0)</code> appears immediately after the delay. This is a safety pattern — always stop motors as soon as possible after a timed run. Never rely on something else to stop them.
+<div class="div-fs-105em">📘 NOTE</div> Notice how <code>motors.setSpeeds(0, 0)</code> appears immediately after the delay. This is a safety pattern — always stop motors as soon as possible after a timed run. Never rely on something else to stop them.
 
 </div>
 
@@ -2146,7 +2146,7 @@ Displays countdown on OLED and logs to Serial.
 
 <h3 class="h3-c-433014">Step 10: The setup() Function</h3>
 
-<p>Runs once when the robot powers on. Initializes Serial communication and sets up the OLED display — and deliberately does <strong>not</strong> print anything. Printing at boot is invisible on the Zumo: reset drops the USB port, and the Serial Monitor only reconnects after <code class="code-inline-bg-e8e8e8">setup()</code> has already finished. The banner lives in <code class="code-inline-bg-e8e8e8">printInstructions()</code> and is triggered from <code class="code-inline-bg-e8e8e8">loop()</code> instead — Step 11 shows the trick.</p>
+<p>Runs once when the robot powers on. Initializes Serial communication and sets up the OLED display — and deliberately does <strong>not</strong> print anything. Printing at boot is invisible on the Zumo: reset drops the USB port, and the Serial Monitor only reconnects after <code>setup()</code> has already finished. The banner lives in <code>printInstructions()</code> and is triggered from <code>loop()</code> instead — Step 11 shows the trick.</p>
 
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
 
@@ -2155,7 +2155,7 @@ Displays countdown on OLED and logs to Serial.
               do NOT print a banner here  ← see below
               draw the main screen (updateDisplay)</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Replace your empty <code class="code-inline-bg-e8e8e8">setup()</code> with the real one — two working lines plus the why-no-banner comment. <code class="code-inline-bg-e8e8e8">Serial.begin()</code> is in the <a href="#qr-serial" class="link-c-2e86ab">⚡ Quick Reference → Serial</a> table. The banner prints from <code class="code-inline-bg-e8e8e8">loop()</code> instead, and the step’s reveal explains why in the comment itself.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Replace your empty <code>setup()</code> with the real one — two working lines plus the why-no-banner comment. <code>Serial.begin()</code> is in the <a href="#qr-serial" class="link-c-2e86ab">⚡ Quick Reference → Serial</a> table. The banner prints from <code>loop()</code> instead, and the step’s reveal explains why in the comment itself.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -2185,7 +2185,7 @@ Displays countdown on OLED and logs to Serial.
 
 <div class="callout-4caf50-bg-e8f5e9">
     <div class="div-c-2e7d32">✅ CHECKPOINT</div>
-    <p>Your <code class="code-inline-bg-e8e8e8">setup()</code> looks suspiciously short — <code class="code-inline-bg-e8e8e8">Serial.begin</code>, a comment, <code class="code-inline-bg-e8e8e8">updateDisplay()</code>. That’s deliberate: printing here would vanish into the USB reset. The banner’s trigger lives in <code class="code-inline-bg-e8e8e8">loop()</code>, one step away.</p>
+    <p>Your <code>setup()</code> looks suspiciously short — <code>Serial.begin</code>, a comment, <code>updateDisplay()</code>. That’s deliberate: printing here would vanish into the USB reset. The banner’s trigger lives in <code>loop()</code>, one step away.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda">
@@ -2198,7 +2198,7 @@ Displays countdown on OLED and logs to Serial.
 
 <h3 class="h3-c-433014">Step 11: The loop() Function</h3>
 
-<p>Runs forever, checking for button presses. Notice how A+C reset uses <code class="code-inline-bg-e8e8e8">isPressed()</code> (held check) rather than <code class="code-inline-bg-e8e8e8">getSingleDebouncedPress()</code> (tap check) — we want users to deliberately hold both buttons, not accidentally reset during rapid pressing.</p>
+<p>Runs forever, checking for button presses. Notice how A+C reset uses <code>isPressed()</code> (held check) rather than <code>getSingleDebouncedPress()</code> (tap check) — we want users to deliberately hold both buttons, not accidentally reset during rapid pressing.</p>
 
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
 
@@ -2215,7 +2215,7 @@ Displays countdown on OLED and logs to Serial.
                   clamp to -50..50, blink, log, advice, redraw
               tiny 10 ms breather</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Replace your empty <code class="code-inline-bg-e8e8e8">loop()</code>. The held-vs-tapped distinction is the <a href="#qr-buttons" class="link-c-2e86ab">⚡ Quick Reference → Buttons</a> table (<code class="code-inline-bg-e8e8e8">isPressed()</code> for “held right now”, <code class="code-inline-bg-e8e8e8">getSingleDebouncedPress()</code> for “tapped once”) — the A+C combo must come <strong>first</strong> and the others hang off it as <code class="code-inline-bg-e8e8e8">else if</code>, or a combined press also fires a single-button branch. The clamp is <a href="#qr-constrain" class="link-c-2e86ab">Constrain</a> again. Four branches, all the same shape — build one, then pattern-match.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Replace your empty <code>loop()</code>. The held-vs-tapped distinction is the <a href="#qr-buttons" class="link-c-2e86ab">⚡ Quick Reference → Buttons</a> table (<code>isPressed()</code> for “held right now”, <code>getSingleDebouncedPress()</code> for “tapped once”) — the A+C combo must come <strong>first</strong> and the others hang off it as <code>else if</code>, or a combined press also fires a single-button branch. The clamp is <a href="#qr-constrain" class="link-c-2e86ab">Constrain</a> again. Four branches, all the same shape — build one, then pattern-match.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 
@@ -2281,7 +2281,7 @@ Displays countdown on OLED and logs to Serial.
 
 
 
-<p><strong>The Constrain on TRIM:</strong> <code class="code-inline-bg-e8e8e8">constrain(trimValue, -50, 50)</code> keeps TRIM in a reasonable range. If you need TRIM larger than ±50, something is probably wrong with your robot's hardware.</p>
+<p><strong>The Constrain on TRIM:</strong> <code>constrain(trimValue, -50, 50)</code> keeps TRIM in a reasonable range. If you need TRIM larger than ±50, something is probably wrong with your robot's hardware.</p>
 
 <div class="callout-28a745-bg-d4edda">
 
@@ -2301,7 +2301,7 @@ Displays countdown on OLED and logs to Serial.
 
 <div class="div-c-0e1a2c">🧠 LEARN: How does the robot KNOW the monitor connected?</div>
 
-<p>That little <code class="code-inline-bg-e8e8e8">if (Serial)</code> at the top of <code class="code-inline-bg-e8e8e8">loop()</code> is a native-USB superpower. On the Zumo, <code class="code-inline-bg-e8e8e8">Serial</code> acts like a true/false question: <em>“is a Serial Monitor currently open on the other end?”</em> The instant you open the monitor, it flips to true, the banner prints exactly once, and the <code class="code-inline-bg-e8e8e8">instructionsPrinted</code> flag stops it from printing again every loop. Classic-serial boards like the Arduino Uno <strong>cannot do this</strong> — their serial line has no idea whether anyone is listening. It’s the same native-USB difference that makes baud rate irrelevant on this robot.</p>
+<p>That little <code>if (Serial)</code> at the top of <code>loop()</code> is a native-USB superpower. On the Zumo, <code>Serial</code> acts like a true/false question: <em>“is a Serial Monitor currently open on the other end?”</em> The instant you open the monitor, it flips to true, the banner prints exactly once, and the <code>instructionsPrinted</code> flag stops it from printing again every loop. Classic-serial boards like the Arduino Uno <strong>cannot do this</strong> — their serial line has no idea whether anyone is listening. It’s the same native-USB difference that makes baud rate irrelevant on this robot.</p>
 
 </div>
 
@@ -2345,9 +2345,9 @@ Displays countdown on OLED and logs to Serial.
 
 <li>Check line number in error — that's where the problem is</li>
 
-<li>Common issue: Missing closing brace <code class="code-inline-bg-e8e8e8">}</code> — count your braces!</li>
+<li>Common issue: Missing closing brace <code>}</code> — count your braces!</li>
 
-<li>Common issue: Missing semicolon <code class="code-inline-bg-e8e8e8">;</code> at end of line</li>
+<li>Common issue: Missing semicolon <code>;</code> at end of line</li>
 
 <li>Common issue: Copied a section header into your code — delete it!</li>
 
@@ -2367,15 +2367,15 @@ Displays countdown on OLED and logs to Serial.
 
 <ol>
 
-<li>Select the <strong>entire</strong> <code class="code-inline-bg-e8e8e8">runMotorTest()</code> function (comment block through closing brace). Cut it.</li>
+<li>Select the <strong>entire</strong> <code>runMotorTest()</code> function (comment block through closing brace). Cut it.</li>
 
-<li>Paste it at the very <strong>bottom</strong> of the file, below <code class="code-inline-bg-e8e8e8">loop()</code>. Build.</li>
+<li>Paste it at the very <strong>bottom</strong> of the file, below <code>loop()</code>. Build.</li>
 
-<li>Read the error — you’ll get exactly: <strong class="code-ff-uimonosp-2">error: ‘runMotorTest’ was not declared in this scope</strong></li>
+<li>Read the error — you’ll get exactly: <strong class="span-ff-uimonosp">error: ‘runMotorTest’ was not declared in this scope</strong></li>
 
 </ol>
 
-<p>The compiler reads top to bottom: when <code class="code-inline-bg-e8e8e8">loop()</code> calls <code class="code-inline-bg-e8e8e8">runMotorTest()</code>, it hasn’t seen the function yet. Lesson 2, Step 7 — same beast. <strong>Two fixes, both real:</strong> move the function back above <code class="code-inline-bg-e8e8e8">setup()</code>, or leave it at the bottom and add one line to the top of the file: <code class="code-inline-bg-e8e8e8">void runMotorTest();</code> — a function prototype. Try the prototype fix, build, and watch it go green. Then pick whichever layout you prefer; both compile, and now you can read this error anywhere it bites you.</p>
+<p>The compiler reads top to bottom: when <code>loop()</code> calls <code>runMotorTest()</code>, it hasn’t seen the function yet. Lesson 2, Step 7 — same beast. <strong>Two fixes, both real:</strong> move the function back above <code>setup()</code>, or leave it at the bottom and add one line to the top of the file: <code>void runMotorTest();</code> — a function prototype. Try the prototype fix, build, and watch it go green. Then pick whichever layout you prefer; both compile, and now you can read this error anywhere it bites you.</p>
 
 </div>
 
@@ -2405,7 +2405,7 @@ Displays countdown on OLED and logs to Serial.
 
 <ul>
 
-<li>Terminal shows: <code class="code-inline-bg-e8e8e8">[SUCCESS]</code></li>
+<li>Terminal shows: <code>[SUCCESS]</code></li>
 
 <li>Robot's OLED shows: "=== TRIM FINDER ==="</li>
 
@@ -2420,7 +2420,7 @@ Displays countdown on OLED and logs to Serial.
 <div class="callout-6b8e6b-bg-f0f7f0">
 
 <div class="div-fs-09em">💡 TIP</div>
-<div class="div-fs-105em">Upload, then power-on — setup() runs once.</div> The moment the upload finishes (or you switch the robot on), <code class="code-inline-bg-e8e8e8">setup()</code> runs <strong>one time</strong> and then <code class="code-inline-bg-e8e8e8">loop()</code> takes over. So a program with motor commands in <code class="code-inline-bg-e8e8e8">setup()</code> starts driving <em>the instant it's ready</em> &mdash; put the robot down on the floor <strong>before</strong> the upload completes, and stand back. Don't upload with the robot in your hand.
+<div class="div-fs-105em">Upload, then power-on — setup() runs once.</div> The moment the upload finishes (or you switch the robot on), <code>setup()</code> runs <strong>one time</strong> and then <code>loop()</code> takes over. So a program with motor commands in <code>setup()</code> starts driving <em>the instant it's ready</em> &mdash; put the robot down on the floor <strong>before</strong> the upload completes, and stand back. Don't upload with the robot in your hand.
 
 </div>
 
@@ -2525,7 +2525,7 @@ Displays countdown on OLED and logs to Serial.
 
 <ul class="ul-ls-none">
 
-<li>☐ Welcome banner appears <strong>the moment the monitor connects</strong> (that’s the <code class="code-inline-bg-e8e8e8">if (Serial)</code> trick from Step 11)</li>
+<li>☐ Welcome banner appears <strong>the moment the monitor connects</strong> (that’s the <code>if (Serial)</code> trick from Step 11)</li>
 
 <li>☐ Battery voltage is logged</li>
 
@@ -2690,9 +2690,9 @@ Displays countdown on OLED and logs to Serial.
 
 <li><strong>Code not uploaded</strong> → Did you click Upload (→), not just Build (✓)?</li>
 
-<li><strong>Missing motors object</strong> → Verify <code class="code-inline-bg-e8e8e8">Zumo32U4Motors motors;</code> is in your code</li>
+<li><strong>Missing motors object</strong> → Verify <code>Zumo32U4Motors motors;</code> is in your code</li>
 
-<li><strong>Wrong function call</strong> → Make sure it's <code class="code-inline-bg-e8e8e8">setSpeeds()</code> not <code class="code-inline-bg-e8e8e8">setSpeed()</code></li>
+<li><strong>Wrong function call</strong> → Make sure it's <code>setSpeeds()</code> not <code>setSpeed()</code></li>
 
 </ul>
 
@@ -2763,7 +2763,7 @@ Displays countdown on OLED and logs to Serial.
 
 <ul>
 
-<li><strong>Missing stop command</strong> → Look for <code class="code-inline-bg-e8e8e8">motors.setSpeeds(0, 0);</code> after the delay()</li>
+<li><strong>Missing stop command</strong> → Look for <code>motors.setSpeeds(0, 0);</code> after the delay()</li>
 
 <li><strong>Loop restarting test</strong> → Check button detection isn't triggering repeatedly</li>
 
@@ -2785,9 +2785,9 @@ Displays countdown on OLED and logs to Serial.
 
 <ul>
 
-<li><strong>TRIM not being applied</strong> → Check <code class="code-inline-bg-e8e8e8">leftSpeed = BASE_SPEED + trimValue</code> in runMotorTest()</li>
+<li><strong>TRIM not being applied</strong> → Check <code>leftSpeed = BASE_SPEED + trimValue</code> in runMotorTest()</li>
 
-<li><strong>TRIM sign is backwards</strong> → TRIM always adjusts the <strong>LEFT</strong> motor (<code class="code-inline-bg-e8e8e8">leftSpeed = BASE_SPEED + trimValue</code>) — that never changes, in this lesson or any lesson after it. If your correction makes the curve <em>worse</em>, flip the <strong>sign</strong>, not the motor: curves LEFT → POSITIVE TRIM; curves RIGHT → NEGATIVE TRIM (Section 3.7).</li>
+<li><strong>TRIM sign is backwards</strong> → TRIM always adjusts the <strong>LEFT</strong> motor (<code>leftSpeed = BASE_SPEED + trimValue</code>) — that never changes, in this lesson or any lesson after it. If your correction makes the curve <em>worse</em>, flip the <strong>sign</strong>, not the motor: curves LEFT → POSITIVE TRIM; curves RIGHT → NEGATIVE TRIM (Section 3.7).</li>
 
 <li><strong>Surface issue</strong> → Some floors grip one wheel more. Try a different surface.</li>
 
@@ -2878,7 +2878,7 @@ Displays countdown on OLED and logs to Serial.
 <div class="div-bg-00474b"><div id="section-8a"><span class="span-d-block-2">Section 8A</span><span class="span-d-block">Tuning with Calibration Constants</span></div></div>
 <div class="div-00474b">
 
-<p>In this lesson you nudged <code class="code-inline-bg-e8e8e8">trimValue</code> until your robot drove straight. That wasn't a one-off trick &mdash; it's a pattern you'll reuse in almost every lesson ahead. This section names it so you can spot it and apply it deliberately.</p>
+<p>In this lesson you nudged <code>trimValue</code> until your robot drove straight. That wasn't a one-off trick &mdash; it's a pattern you'll reuse in almost every lesson ahead. This section names it so you can spot it and apply it deliberately.</p>
 
 <h3 class="h3-c-00474b">8A.1 The Pattern: Name It, Don't Bury It</h3>
 
@@ -2910,13 +2910,13 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 </tr>
 </thead>
 <tbody>
-<tr><td class="td-ddd-2">The value is fixed for the whole run (<code class="code-inline-bg-e8e8e8">BASE_SPEED</code>, <code class="code-inline-bg-e8e8e8">TRIM_STEP</code>)</td><td class="td-ddd-2">The value changes while running (<code class="code-inline-bg-e8e8e8">trimValue</code>, <code class="code-inline-bg-e8e8e8">testCount</code>)</td></tr>
+<tr><td class="td-ddd-2">The value is fixed for the whole run (<code>BASE_SPEED</code>, <code>TRIM_STEP</code>)</td><td class="td-ddd-2">The value changes while running (<code>trimValue</code>, <code>testCount</code>)</td></tr>
 <tr><td class="td-ddd-2">You set it once and never reassign</td><td class="td-ddd-2">You update it in response to buttons, sensors, time</td></tr>
 <tr><td class="td-ddd-2">Accidental change should be an <em>error</em></td><td class="td-ddd-2">Change is the whole point</td></tr>
 </tbody>
 </table>
 
-<p>Marking a fixed value <code class="code-inline-bg-e8e8e8">const</code> tells the compiler "this must never change" &mdash; so if you accidentally try to reassign it, you get caught at build time instead of chasing a weird bug later.</p>
+<p>Marking a fixed value <code>const</code> tells the compiler "this must never change" &mdash; so if you accidentally try to reassign it, you get caught at build time instead of chasing a weird bug later.</p>
 
 <h3 class="h3-c-00474b">8A.3 The Tuning Loop</h3>
 
@@ -2930,7 +2930,7 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <p>This is <strong>closed-loop tuning</strong> &mdash; the human is the feedback loop now; later, sensors will be. The reason your tunables sit together at the top is so step 3 takes five seconds, not five minutes.</p>
 
 <div class="callout-2da99d-bg-e9f7f5-3">
-    <div class="div-fs-105em">🔍 <strong>INSIGHT:</strong></div> Every robot you'll ever build has "knobs" &mdash; speeds, thresholds, timings, gains. Pros put all the knobs in one labeled box at the top of the file. You just built your first knob (<code class="code-inline-bg-e8e8e8">TRIM_STEP</code>); in Lesson 8 you'll tune a control gain the exact same way.
+    <div class="div-fs-105em">🔍 <strong>INSIGHT:</strong></div> Every robot you'll ever build has "knobs" &mdash; speeds, thresholds, timings, gains. Pros put all the knobs in one labeled box at the top of the file. You just built your first knob (<code>TRIM_STEP</code>); in Lesson 8 you'll tune a control gain the exact same way.
 </div>
 
 <h3 class="h3-c-00474b">8A.4 Naming That Survives</h3>
@@ -2946,27 +2946,27 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 </tr>
 </thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">int s = 200;</code></td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">const int BASE_SPEED = 200;</code></td><td class="td-ddd-2">Says what it controls</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">int t = 5;</code></td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">const int TRIM_STEP = 5;</code></td><td class="td-ddd-2">Says what changes by it</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">int d = 2000;</code></td><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">const int TEST_DURATION = 2000;</code></td><td class="td-ddd-2">Says it's a time, and what for</td></tr>
+<tr><td class="td-ddd-2"><code>int s = 200;</code></td><td class="td-ddd-2"><code>const int BASE_SPEED = 200;</code></td><td class="td-ddd-2">Says what it controls</td></tr>
+<tr><td class="td-ddd-2"><code>int t = 5;</code></td><td class="td-ddd-2"><code>const int TRIM_STEP = 5;</code></td><td class="td-ddd-2">Says what changes by it</td></tr>
+<tr><td class="td-ddd-2"><code>int d = 2000;</code></td><td class="td-ddd-2"><code>const int TEST_DURATION = 2000;</code></td><td class="td-ddd-2">Says it's a time, and what for</td></tr>
 </tbody>
 </table>
 
-<p>Use <code class="code-inline-bg-e8e8e8">ALL_CAPS</code> for constants by convention &mdash; it signals "this is a fixed knob" at a glance, distinct from regular <code class="code-inline-bg-e8e8e8">camelCase</code> variables.</p>
+<p>Use <code>ALL_CAPS</code> for constants by convention &mdash; it signals "this is a fixed knob" at a glance, distinct from regular <code>camelCase</code> variables.</p>
 
 <div class="callout-4caf50-bg-e8f5e9-2">
-    <div class="div-fs-105em">✅ <strong>CHECKPOINT:</strong></div> Can you (1) explain why <code class="code-inline-bg-e8e8e8">BASE_SPEED</code> is a <code class="code-inline-bg-e8e8e8">const</code> but <code class="code-inline-bg-e8e8e8">trimValue</code> isn't, and (2) point to where in your program you'd change the test speed?
+    <div class="div-fs-105em">✅ <strong>CHECKPOINT:</strong></div> Can you (1) explain why <code>BASE_SPEED</code> is a <code>const</code> but <code>trimValue</code> isn't, and (2) point to where in your program you'd change the test speed?
 </div>
 
 <div class="callout-3a7d5c-bg-e8f3ec">
-    <div class="div-c-352405">🎯 CHALLENGE:</div> Add a calibration constant <code class="code-inline-bg-e8e8e8">SETTLE_TIME</code> (try <code class="code-inline-bg-e8e8e8">300</code> ms) and use it to pause briefly <em>before</em> each motor test starts, so the robot isn't moving when you let go of the button. One named constant, one <code class="code-inline-bg-e8e8e8">delay()</code>, cleaner results.
+    <div class="div-c-352405">🎯 CHALLENGE:</div> Add a calibration constant <code>SETTLE_TIME</code> (try <code>300</code> ms) and use it to pause briefly <em>before</em> each motor test starts, so the robot isn't moving when you let go of the button. One named constant, one <code>delay()</code>, cleaner results.
 </div>
 
 <h3 class="h3-c-00474b">8A.5 When One Knob Becomes Several: Arrays</h3>
 
-<p>Every tunable so far has been a single named value. Sometimes you want to try <em>several</em> in a row &mdash; four test speeds, three thresholds &mdash; and naming them <code class="code-inline-bg-e8e8e8">TEST_SPEED_1</code> through <code class="code-inline-bg-e8e8e8">TEST_SPEED_4</code> gets ugly the moment you want to step through them.</p>
+<p>Every tunable so far has been a single named value. Sometimes you want to try <em>several</em> in a row &mdash; four test speeds, three thresholds &mdash; and naming them <code>TEST_SPEED_1</code> through <code>TEST_SPEED_4</code> gets ugly the moment you want to step through them.</p>
 
-<p>An <strong>array</strong> is one name holding a numbered row of values. The <code class="code-inline-bg-e8e8e8">[]</code> after the name is what makes it a row instead of a single value:</p>
+<p>An <strong>array</strong> is one name holding a numbered row of values. The <code>[]</code> after the name is what makes it a row instead of a single value:</p>
 
 <pre class="code-block-333-4"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TEST_SPEEDS[] = {<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">300</span>};
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> NUM_SPEEDS = <span class="tok-b5cea8">4</span>;   <span class="tok-6a9955">// how many slots — worth naming, you will need it</span></pre>
@@ -2982,7 +2982,7 @@ TEST_SPEEDS[<span class="tok-b5cea8">3</span>]   <span class="tok-6a9955">// 300
 
 <div class="callout-ffc107-bg-fff8e1-3">
     <div class="div-fs-09em">⚠️ WARNING</div>
-    <div class="div-fs-105em"><strong>Warning:</strong></div> reading past the end &mdash; <code class="code-inline-bg-e8e8e8">TEST_SPEEDS[4]</code> on a four-slot array &mdash; is <em>not</em> an error. C++ does no bounds checking on an AVR: it reads whatever bytes happen to sit after your array and hands them back as a number. Your robot then drives at a speed you never wrote. This is why the wrap in 8A.6 matters.
+    <div class="div-fs-105em"><strong>Warning:</strong></div> reading past the end &mdash; <code>TEST_SPEEDS[4]</code> on a four-slot array &mdash; is <em>not</em> an error. C++ does no bounds checking on an AVR: it reads whatever bytes happen to sit after your array and hands them back as a number. Your robot then drives at a speed you never wrote. This is why the wrap in 8A.6 matters.
 </div>
 
 <p>The payoff is that the slot number can be a <em>variable</em>. One line then reads a different speed depending on what that variable holds:</p>
@@ -2990,30 +2990,30 @@ TEST_SPEEDS[<span class="tok-b5cea8">3</span>]   <span class="tok-6a9955">// 300
 <pre class="code-block-333-4"><span class="tok-569cd6">int</span> speedIndex = <span class="tok-b5cea8">1</span>;
 <span class="tok-569cd6">int</span> currentSpeed = TEST_SPEEDS[speedIndex];   <span class="tok-6a9955">// 200 — because speedIndex is 1</span></pre>
 
-<h3 class="h3-c-00474b">8A.6 Wrapping Around: the <code class="code-inline-bg-e8e8e8">%</code> Operator</h3>
+<h3 class="h3-c-00474b">8A.6 Wrapping Around: the <code>%</code> Operator</h3>
 
-<p>Once an index can move, it has to come back. Advance <code class="code-inline-bg-e8e8e8">speedIndex</code> four times on a four-slot array and it is pointing at slot 4, which does not exist. The obvious fix needs an <code class="code-inline-bg-e8e8e8">if</code>:</p>
+<p>Once an index can move, it has to come back. Advance <code>speedIndex</code> four times on a four-slot array and it is pointing at slot 4, which does not exist. The obvious fix needs an <code>if</code>:</p>
 
 <pre class="code-block-333-4">speedIndex = speedIndex + <span class="tok-b5cea8">1</span>;
 <span class="tok-569cd6">if</span> (speedIndex &gt;= NUM_SPEEDS) {
     speedIndex = <span class="tok-b5cea8">0</span>;
 }</pre>
 
-<p>There is a one-line version. The <code class="code-inline-bg-e8e8e8">%</code> operator &mdash; <strong>modulo</strong> &mdash; gives you the <em>remainder</em> of a division rather than the division itself:</p>
+<p>There is a one-line version. The <code>%</code> operator &mdash; <strong>modulo</strong> &mdash; gives you the <em>remainder</em> of a division rather than the division itself:</p>
 
 <pre class="code-block-333-4"><span class="tok-b5cea8">7</span> % <span class="tok-b5cea8">3</span>   <span class="tok-6a9955">// 1   — 3 goes into 7 twice, with 1 left over</span>
 <span class="tok-b5cea8">6</span> % <span class="tok-b5cea8">3</span>   <span class="tok-6a9955">// 0   — divides evenly, nothing left over</span>
 <span class="tok-b5cea8">2</span> % <span class="tok-b5cea8">4</span>   <span class="tok-6a9955">// 2   — 4 does not fit at all, so all of it is left over</span></pre>
 
-<p>The property that makes it useful: <strong>a remainder can never be as large as the number you divide by.</strong> So <code class="code-inline-bg-e8e8e8">something % 4</code> is always 0, 1, 2 or 3 &mdash; which is exactly the set of legal slot numbers for a four-slot array. Advancing and wrapping become one line:</p>
+<p>The property that makes it useful: <strong>a remainder can never be as large as the number you divide by.</strong> So <code>something % 4</code> is always 0, 1, 2 or 3 &mdash; which is exactly the set of legal slot numbers for a four-slot array. Advancing and wrapping become one line:</p>
 
 <pre class="code-block-333-4">speedIndex = (speedIndex + <span class="tok-b5cea8">1</span>) % NUM_SPEEDS;   <span class="tok-6a9955">// 0 -> 1 -> 2 -> 3 -> 0 -> 1 ...</span></pre>
 
-<p>No <code class="code-inline-bg-e8e8e8">if</code>, and no way to run off the end &mdash; the operator makes the out-of-range value from 8A.5 unreachable by construction.</p>
+<p>No <code>if</code>, and no way to run off the end &mdash; the operator makes the out-of-range value from 8A.5 unreachable by construction.</p>
 
 <div class="callout-6b8e6b-bg-f0f7f0-3">
     <div class="div-fs-09em">💡 TIP</div>
-    <div class="div-fs-105em"><strong>Tip:</strong></div> the parentheses are load-bearing. <code class="code-inline-bg-e8e8e8">%</code> binds tighter than <code class="code-inline-bg-e8e8e8">+</code>, so <code class="code-inline-bg-e8e8e8">speedIndex + 1 % NUM_SPEEDS</code> is read as <code class="code-inline-bg-e8e8e8">speedIndex + (1 % NUM_SPEEDS)</code> &mdash; and since <code class="code-inline-bg-e8e8e8">1 % 4</code> is just 1, that line adds one forever and never wraps. Write <code class="code-inline-bg-e8e8e8">(speedIndex + 1) % NUM_SPEEDS</code>.
+    <div class="div-fs-105em"><strong>Tip:</strong></div> the parentheses are load-bearing. <code>%</code> binds tighter than <code>+</code>, so <code>speedIndex + 1 % NUM_SPEEDS</code> is read as <code>speedIndex + (1 % NUM_SPEEDS)</code> &mdash; and since <code>1 % 4</code> is just 1, that line adds one forever and never wraps. Write <code>(speedIndex + 1) % NUM_SPEEDS</code>.
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -3032,7 +3032,7 @@ TEST_SPEEDS[<span class="tok-b5cea8">3</span>]   <span class="tok-6a9955">// 300
 <div id="challenge-1" class="div-7d5283" data-challenge="3.1" data-kind="challenge" data-difficulty="easy" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 1: Add a Spin Test</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p>📁 <strong>Work in:</strong> your main <code class="code-inline-bg-e8e8e8">LastName_L03</code> build — this adds a function to your TRIM Finder — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=spin_test" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> your main <code>LastName_L03</code> build — this adds a function to your TRIM Finder — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=spin_test" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a> and <a href="#qr-speed-direction" class="link-c-2e86ab">Speed vs Direction</a> &mdash; a spin is just the sign rules from the 🔮 predict sandbox.</p>
 </div>
 <div class="div-p-0">
@@ -3057,9 +3057,9 @@ write runSpinTest():
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
-<p><strong>Hint:</strong> Spinning means one motor forward, one backward: <code class="code-inline-bg-e8e8e8">motors.setSpeeds(150, -150);</code></p>
+<p><strong>Hint:</strong> Spinning means one motor forward, one backward: <code>motors.setSpeeds(150, -150);</code></p>
 
-<div class="callout-2196f3-bg-e3f2fd-3"><div class="div-fs-105em">🧩 About PROTOTYPE:</div> if you define your spin function <em>below</em> <code class="code-inline-bg-e8e8e8-4">setup()</code> and call it from above, the compiler complains it "was not declared in this scope" — it reads top to bottom and hasn't met the function yet. Two fixes (same as Step 12): move the function above <code class="code-inline-bg-e8e8e8-4">setup()</code>, or leave it at the bottom and add its <strong>prototype</strong> — one line at the top, the function's signature followed by a semicolon.</div>
+<div class="callout-2196f3-bg-e3f2fd-3"><div class="div-fs-105em">🧩 About PROTOTYPE:</div> if you define your spin function <em>below</em> <code>setup()</code> and call it from above, the compiler complains it "was not declared in this scope" — it reads top to bottom and hasn't met the function yet. Two fixes (same as Step 12): move the function above <code>setup()</code>, or leave it at the bottom and add its <strong>prototype</strong> — one line at the top, the function's signature followed by a semicolon.</div>
 
 <p><strong>Success:</strong> Robot spins in place for 1 second, then stops.</p>
 </div>
@@ -3080,7 +3080,7 @@ write runSpinTest():
 
 </div>
 
-<p><strong>Note on motor convention:</strong> On the Zumo, positive values = forward. So <code class="code-inline-bg-e8e8e8">setSpeeds(150, -150)</code> means left wheel forward, right wheel backward = spin right.</p>
+<p><strong>Note on motor convention:</strong> On the Zumo, positive values = forward. So <code>setSpeeds(150, -150)</code> means left wheel forward, right wheel backward = spin right.</p>
 
 </div>
 
@@ -3091,7 +3091,7 @@ write runSpinTest():
 <div id="challenge-2" class="div-7d5283" data-challenge="3.2" data-kind="challenge" data-difficulty="easy" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 2: Battery Warning System</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p>📁 <strong>Work in:</strong> your main <code class="code-inline-bg-e8e8e8">LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=battery_warning" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> your main <code>LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=battery_warning" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-battery" class="link-c-2e86ab">Battery</a> and <a href="#qr-display" class="link-c-2e86ab">Display</a>.</p>
 </div>
 <div class="div-p-0">
@@ -3118,7 +3118,7 @@ write runSpinTest():
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
-<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> the OLED <code class="code-inline-bg-e8e8e8">display.print()</code> you used in Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em">.</div>
+<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> the OLED <code>display.print()</code> you used in Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em">.</div>
 
 
 
@@ -3127,12 +3127,12 @@ write runSpinTest():
 
 
 
-<p><strong>Hint:</strong> Add a battery check at the start of <code class="code-inline-bg-e8e8e8">updateDisplay()</code>.</p>
+<p><strong>Hint:</strong> Add a battery check at the start of <code>updateDisplay()</code>.</p>
 
 <p><strong>Success:</strong> OLED shows warning when batteries are low, normal display otherwise.</p>
 
 <div class="callout-607d8b-bg-eceff1-8">
-<p class="p-m-0"><strong>📘 Testing on USB? The reading lies.</strong> <code class="code-inline-bg-e8e8e8">readBatteryMillivolts()</code> only reads the <em>battery</em> voltage. Plugged into USB with the power switch off, it reads low (or zero) &mdash; so your warning fires even on a full charge. That is not a bug in your code. To test this challenge for real, run the robot on <strong>batteries with the power switch on</strong>, unplugged. On USB, expect a false &ldquo;LOW BATTERY&rdquo; and ignore it.</p>
+<p class="p-m-0"><strong>📘 Testing on USB? The reading lies.</strong> <code>readBatteryMillivolts()</code> only reads the <em>battery</em> voltage. Plugged into USB with the power switch off, it reads low (or zero) &mdash; so your warning fires even on a full charge. That is not a bug in your code. To test this challenge for real, run the robot on <strong>batteries with the power switch on</strong>, unplugged. On USB, expect a false &ldquo;LOW BATTERY&rdquo; and ignore it.</p>
 </div>
 </div>
 <details data-reveal="solution" class="details-b-none">
@@ -3166,7 +3166,7 @@ write runSpinTest():
 <div class="div-bg-7a5905"><strong>Challenge 3: Clamp the Speed with constrain()</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
 <p>📁 <strong>Work in:</strong> a fresh starter that opens ready to modify: <a href="../newproject.html?lesson=3&amp;kind=constrain" target="_blank" class="link-c-2e86ab">&rarr; make this folder for me</a></p>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a>. The new tool is <code class="code-inline-bg-e8e8e8">constrain(value, low, high)</code> &mdash; it hands back <code class="code-inline-bg-e8e8e8">value</code>, but never below <code class="code-inline-bg-e8e8e8">low</code> and never above <code class="code-inline-bg-e8e8e8">high</code>.</p>
+<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a>. The new tool is <code>constrain(value, low, high)</code> &mdash; it hands back <code>value</code>, but never below <code>low</code> and never above <code>high</code>.</p>
 </div>
 <div class="div-p-0">
 <div class="div-bg-f8f9fa">
@@ -3190,7 +3190,7 @@ motors.setSpeeds(
 );</pre>
 </div>
 <div class="div-bb-1pxsolid">
-<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> named <code class="code-inline-bg-e8e8e8">const</code> values from Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em"> — this is the third time you've used a left/right pair (spin signs &rarr; TRIM offset &rarr; now a speed clamp).</div>
+<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> named <code>const</code> values from Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em"> — this is the third time you've used a left/right pair (spin signs &rarr; TRIM offset &rarr; now a speed clamp).</div>
 
 
 
@@ -3199,19 +3199,19 @@ motors.setSpeeds(
 
 
 <div class="callout-607d8b-bg-eceff1-8">
-<p class="p-m-0010px0"><strong>📘 <code class="code-inline-bg-e8e8e8">const</code> and <code class="code-inline-bg-e8e8e8">constrain()</code> are two different jobs.</strong> They start with the same four letters, but they do opposite things:</p>
+<p class="p-m-0010px0"><strong>📘 <code>const</code> and <code>constrain()</code> are two different jobs.</strong> They start with the same four letters, but they do opposite things:</p>
 <ul class="ul-m-0010px0">
-<li class="ul-mb-8px"><code class="code-inline-bg-e8e8e8">const int MAX_SPEED = 200;</code> <strong>declares</strong> a value. One name, one number, set once with <code class="code-inline-bg-e8e8e8">=</code>. It's a label for a number that never changes.</li>
-<li><code class="code-inline-bg-e8e8e8">constrain(value, low, high)</code> <strong>calls</strong> a function. Three arguments, no <code class="code-inline-bg-e8e8e8">=</code>, used right where you need it. It takes a number and hands back a clamped one.</li>
+<li class="ul-mb-8px"><code>const int MAX_SPEED = 200;</code> <strong>declares</strong> a value. One name, one number, set once with <code>=</code>. It's a label for a number that never changes.</li>
+<li><code>constrain(value, low, high)</code> <strong>calls</strong> a function. Three arguments, no <code>=</code>, used right where you need it. It takes a number and hands back a clamped one.</li>
 </ul>
-<p class="p-m-0">You'll use <em>both</em> on this card: you declare your speeds with <code class="code-inline-bg-e8e8e8">const</code>, then clamp them with <code class="code-inline-bg-e8e8e8">constrain()</code>. Declaring names the number; constraining limits it.</p>
+<p class="p-m-0">You'll use <em>both</em> on this card: you declare your speeds with <code>const</code>, then clamp them with <code>constrain()</code>. Declaring names the number; constraining limits it.</p>
 </div>
 
 <p><strong>Your task:</strong></p>
 <ol>
-<li>Make three constants: <code class="code-inline-bg-e8e8e8">LEFT_SPEED</code>, <code class="code-inline-bg-e8e8e8">RIGHT_SPEED</code> (start both at <strong>150</strong>), and <code class="code-inline-bg-e8e8e8">MAX_SPEED</code> (set to <strong>200</strong>).</li>
-<li>Send each speed through <code class="code-inline-bg-e8e8e8">constrain(&hellip;, -MAX_SPEED, MAX_SPEED)</code> into <code class="code-inline-bg-e8e8e8">setSpeeds()</code>.</li>
-<li>Run briefly, then <code class="code-inline-bg-e8e8e8">setSpeeds(0, 0)</code> so it stops before it drives off the table.</li>
+<li>Make three constants: <code>LEFT_SPEED</code>, <code>RIGHT_SPEED</code> (start both at <strong>150</strong>), and <code>MAX_SPEED</code> (set to <strong>200</strong>).</li>
+<li>Send each speed through <code>constrain(&hellip;, -MAX_SPEED, MAX_SPEED)</code> into <code>setSpeeds()</code>.</li>
+<li>Run briefly, then <code>setSpeeds(0, 0)</code> so it stops before it drives off the table.</li>
 <li>Upload three times: change both speeds to <strong>150</strong>, then <strong>200</strong>, then <strong>250</strong>. Watch what happens.</li>
 </ol>
 
@@ -3243,7 +3243,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </div>
 
-<p class="div-mt-12px"><strong>Why 250 == 200:</strong> <code class="code-inline-bg-e8e8e8">constrain(250, -200, 200)</code> returns 200. <code class="code-inline-bg-e8e8e8">constrain(200, -200, 200)</code> also returns 200. Same value reaches the motors, so the robot moves the same.</p>
+<p class="div-mt-12px"><strong>Why 250 == 200:</strong> <code>constrain(250, -200, 200)</code> returns 200. <code>constrain(200, -200, 200)</code> also returns 200. Same value reaches the motors, so the robot moves the same.</p>
 
 </div>
 
@@ -3255,7 +3255,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <div class="div-bg-7a5905"><strong>Challenge 4: Ramp Up to Speed</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
 <p>📁 <strong>Work in:</strong> a fresh starter that opens ready to modify: <a href="../newproject.html?lesson=3&amp;kind=ramp" target="_blank" class="link-c-2e86ab">&rarr; make this folder for me</a></p>
-<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a>. You already have both tools you need: <code class="code-inline-bg-e8e8e8">setSpeeds()</code> and a short <code class="code-inline-bg-e8e8e8">delay()</code>. Write the climb out by hand &mdash; one <code class="code-inline-bg-e8e8e8">setSpeeds()</code> + <code class="code-inline-bg-e8e8e8">delay()</code> per rung.</p>
+<p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a>. You already have both tools you need: <code>setSpeeds()</code> and a short <code>delay()</code>. Write the climb out by hand &mdash; one <code>setSpeeds()</code> + <code>delay()</code> per rung.</p>
 </div>
 <div class="div-p-0">
 <div class="div-bg-f8f9fa">
@@ -3279,7 +3279,7 @@ motors.setSpeeds(____, ____); delay(STEP_MS);   <span class="tok-6a9955">// next
 motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span class="tok-6a9955">// stop at the cap</span></pre>
 </div>
 <div class="div-bb-1pxsolid">
-<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> the speed clamp from <strong>Challenge 3</strong> just above &mdash; you'll ramp up <em>to</em> that same capped <code class="code-inline-bg-e8e8e8">MAX_SPEED</code>, not jump to it.</div>
+<div class="callout-2e86ab-bg-e7f0fa-3"><div class="div-fs-105em">🔁 Builds on:</div> the speed clamp from <strong>Challenge 3</strong> just above &mdash; you'll ramp up <em>to</em> that same capped <code>MAX_SPEED</code>, not jump to it.</div>
 
 
 
@@ -3290,9 +3290,9 @@ motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span class="tok-6a9955">// sto
 <p><strong>Your task:</strong></p>
 <ol>
 <li>Start speed at <strong>0</strong>.</li>
-<li>Climb by hand in steps: <code class="code-inline-bg-e8e8e8">setSpeeds(50, 50)</code> then a short <code class="code-inline-bg-e8e8e8">delay()</code>, then <strong>100</strong>, then <strong>150</strong>, then <strong>200</strong> &mdash; one line per rung.</li>
-<li>Stop climbing once you reach <code class="code-inline-bg-e8e8e8">MAX_SPEED</code> &mdash; the same cap from Challenge 3.</li>
-<li>Then <code class="code-inline-bg-e8e8e8">setSpeeds(0, 0)</code> to stop.</li>
+<li>Climb by hand in steps: <code>setSpeeds(50, 50)</code> then a short <code>delay()</code>, then <strong>100</strong>, then <strong>150</strong>, then <strong>200</strong> &mdash; one line per rung.</li>
+<li>Stop climbing once you reach <code>MAX_SPEED</code> &mdash; the same cap from Challenge 3.</li>
+<li>Then <code>setSpeeds(0, 0)</code> to stop.</li>
 </ol>
 
 <p><strong>The "aha":</strong> the robot glides up to speed instead of lurching. Same top speed as before &mdash; but how it <em>gets</em> there is now under your control. That's the difference between setting a value and <strong>changing a value over time</strong>.</p>
@@ -3300,7 +3300,7 @@ motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span class="tok-6a9955">// sto
 <p><strong>Success:</strong> a visibly smooth start, and the ramp stops climbing at the cap rather than blowing past it.</p>
 
 <div class="callout-6b8e6b-bg-f0f7f0-4"><div class="div-fs-09em">💡 TIP</div>
-<div class="div-fs-105em">Tips — when the build fights you:</div><p class="p-m-8px000"><strong>1. "It compiled" can be a stale build.</strong> If your change didn't seem to take effect, the compiler may have reused an old build. Run <strong>Clean</strong>, then <strong>Build</strong>, before you trust what you're seeing.</p><p class="p-m-8px000"><strong>2. The compiler judges the file on disk, not the tab you're looking at.</strong> If an error makes no sense, confirm you actually <em>saved</em>. When in doubt, dump the real file: <code class="code-inline-bg-e8e8e8-4">type src\main.cpp</code> (Windows) shows exactly what the compiler sees.</p><p class="p-m-8px000"><strong>3. Errors surface one at a time.</strong> Fix the first error and rebuild — a second, previously hidden error often appears. An early typo (like <code class="code-inline-bg-e8e8e8-4">motor</code> vs <code class="code-inline-bg-e8e8e8-4">motors</code>) can mask a missing semicolon further down. Work top to bottom, one at a time.</p></div>
+<div class="div-fs-105em">Tips — when the build fights you:</div><p class="p-m-8px000"><strong>1. "It compiled" can be a stale build.</strong> If your change didn't seem to take effect, the compiler may have reused an old build. Run <strong>Clean</strong>, then <strong>Build</strong>, before you trust what you're seeing.</p><p class="p-m-8px000"><strong>2. The compiler judges the file on disk, not the tab you're looking at.</strong> If an error makes no sense, confirm you actually <em>saved</em>. When in doubt, dump the real file: <code>type src\main.cpp</code> (Windows) shows exactly what the compiler sees.</p><p class="p-m-8px000"><strong>3. Errors surface one at a time.</strong> Fix the first error and rebuild — a second, previously hidden error often appears. An early typo (like <code>motor</code> vs <code>motors</code>) can mask a missing semicolon further down. Work top to bottom, one at a time.</p></div>
 </div>
 <details data-reveal="solution" class="details-b-none">
 
@@ -3323,7 +3323,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </div>
 
-<p class="div-mt-12px"><strong>Why the cap matters:</strong> the last rung lands exactly on <code class="code-inline-bg-e8e8e8">MAX_SPEED</code> &mdash; the same 200 ceiling you clamped to in Challenge 3, now reached gradually instead of instantly. You write each rung yourself here; in <strong>Lesson 5</strong> you'll meet the <code class="code-inline-bg-e8e8e8">for</code> loop, which writes the whole climb for you in three lines.</p>
+<p class="div-mt-12px"><strong>Why the cap matters:</strong> the last rung lands exactly on <code>MAX_SPEED</code> &mdash; the same 200 ceiling you clamped to in Challenge 3, now reached gradually instead of instantly. You write each rung yourself here; in <strong>Lesson 5</strong> you'll meet the <code>for</code> loop, which writes the whole climb for you in three lines.</p>
 
 </div>
 
@@ -3334,7 +3334,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <div id="challenge-5" class="div-7d5283" data-challenge="3.5" data-kind="challenge" data-difficulty="tough" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 5: Variable Speed Test</strong> <span class="span-ai-stretch"><span class="span-bg-b85425">Tough</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p>📁 <strong>Work in:</strong> your main <code class="code-inline-bg-e8e8e8">LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=variable_speed" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> your main <code>LastName_L03</code> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=variable_speed" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a>, <a href="#qr-speed-range" class="link-c-2e86ab">Speed Range</a>, <a href="#qr-array" class="link-c-2e86ab">Arrays</a> and <a href="#qr-modulo" class="link-c-2e86ab">Modulo (%)</a>; both are taught in &sect;8A.5&ndash;8A.6.</p>
 </div>
 <div class="div-p-0">
@@ -3366,9 +3366,9 @@ speedIndex = (speedIndex + <span class="tok-b5cea8">1</span>) % ____;</pre>
 
 <div class="callout-2196f3-bg-e3f2fd-5">
 
-<div class="div-fs-105em">🆕 New operator: <code class="code-inline-bg-e8e8e8">%</code> (modulo)</div>
-The <code class="code-inline-bg-e8e8e8">%</code> operator gives you the <strong>remainder</strong> of a division &mdash; not the divide itself. <code class="code-inline-bg-e8e8e8">7 % 3</code> is <strong>1</strong> (7 &divide; 3 is 2 with 1 left over). <code class="code-inline-bg-e8e8e8">6 % 3</code> is <strong>0</strong> (nothing left over).<br><br>
-Why it matters here: a remainder can never be as big as the number you divide by, so <code class="code-inline-bg-e8e8e8">something % 4</code> is always one of <strong>0, 1, 2, 3</strong> &mdash; then it wraps back to 0. That is exactly the cycle you want for four speeds: <code class="code-inline-bg-e8e8e8">0 &rarr; 1 &rarr; 2 &rarr; 3 &rarr; 0 &rarr; 1&hellip;</code> It keeps your index from ever running off the end of the array. (Remember arrays are <strong>zero-indexed</strong>: <code class="code-inline-bg-e8e8e8-4">TEST_SPEEDS[0]</code> is the first speed, <code class="code-inline-bg-e8e8e8-4">[3]</code> the last — four slots numbered 0&ndash;3, which is exactly what <code class="code-inline-bg-e8e8e8-4">% 4</code> produces.)
+<div class="div-fs-105em">🆕 New operator: <code>%</code> (modulo)</div>
+The <code>%</code> operator gives you the <strong>remainder</strong> of a division &mdash; not the divide itself. <code>7 % 3</code> is <strong>1</strong> (7 &divide; 3 is 2 with 1 left over). <code>6 % 3</code> is <strong>0</strong> (nothing left over).<br><br>
+Why it matters here: a remainder can never be as big as the number you divide by, so <code>something % 4</code> is always one of <strong>0, 1, 2, 3</strong> &mdash; then it wraps back to 0. That is exactly the cycle you want for four speeds: <code>0 &rarr; 1 &rarr; 2 &rarr; 3 &rarr; 0 &rarr; 1&hellip;</code> It keeps your index from ever running off the end of the array. (Remember arrays are <strong>zero-indexed</strong>: <code>TEST_SPEEDS[0]</code> is the first speed, <code>[3]</code> the last — four slots numbered 0&ndash;3, which is exactly what <code>% 4</code> produces.)
 
 </div>
 </div>
@@ -3400,7 +3400,7 @@ speedIndex = (speedIndex + <span class="tok-b5cea8">1</span>) % NUM_SPEEDS;</pre
 <div id="challenge-6" class="div-7d5283" data-challenge="3.6" data-kind="challenge" data-difficulty="easy" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 6: Save TRIM to Code</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
 <div class="div-bg-fffbe6">
-<p>📁 <strong>Work in:</strong> your main <code class="code-inline-bg-e8e8e8">LastName_L03</code> build — this one edits your constants — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=save_trim" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> your main <code>LastName_L03</code> build — this one edits your constants — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=save_trim" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-trim-pattern" class="link-c-2e86ab">TRIM Pattern</a> &mdash; and your logged value from the §7 trial table.</p>
 </div>
 <div class="div-p-0">
@@ -3422,7 +3422,7 @@ initialise trimValue from it, so the robot starts corrected instead of at 0</pre
 <div class="div-bb-1pxsolid">
 <p><strong>Hint:</strong> Create a constant for your TRIM and initialize with it.</p>
 
-<div class="callout-2196f3-bg-e3f2fd-3"><div class="div-fs-105em">🧠 Watch your scope:</div> declare the TRIM constant at the <strong>top of the file, outside every function</strong> (global) so the whole program can see it. If you accidentally re-declare it <em>inside</em> <code class="code-inline-bg-e8e8e8-4">setup()</code> — e.g. <code class="code-inline-bg-e8e8e8-4">int trimValue = 8;</code> inside the braces — you create a second, <em>local</em> copy that only setup() can see and that vanishes when setup() ends; the driving code still reads the global 0 and nothing changes. Set the global once, at the top.</div>
+<div class="callout-2196f3-bg-e3f2fd-3"><div class="div-fs-105em">🧠 Watch your scope:</div> declare the TRIM constant at the <strong>top of the file, outside every function</strong> (global) so the whole program can see it. If you accidentally re-declare it <em>inside</em> <code>setup()</code> — e.g. <code>int trimValue = 8;</code> inside the braces — you create a second, <em>local</em> copy that only setup() can see and that vanishes when setup() ends; the driving code still reads the global 0 and nothing changes. Set the global once, at the top.</div>
 
 <p><strong>Success:</strong> Program boots with your saved TRIM value already set.</p>
 </div>
@@ -3449,7 +3449,7 @@ initialise trimValue from it, so the robot starts corrected instead of at 0</pre
 <div id="challenge-7" class="div-7d5283" data-challenge="3.7" data-kind="challenge" data-difficulty="hard" data-grasp="moderate">
 <div class="div-bg-7a5905"><strong>Challenge 7: Drive a Square</strong> <span class="span-ai-stretch"><span class="span-bg-8a2f18">Hard</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Drive_A_Square</code> — a new motion program deserves its own home <a href="../newproject.html?lesson=3&amp;kind=drive_a_square" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Drive_A_Square</code> — a new motion program deserves its own home <a href="../newproject.html?lesson=3&amp;kind=drive_a_square" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> Quick Reference &rarr; <a href="#qr-motors" class="link-c-2e86ab">Motors</a>, <a href="#qr-speed-direction" class="link-c-2e86ab">Speed vs Direction</a>, and <a href="#qr-safe-run" class="link-c-2e86ab">Safe Motor Run Pattern</a>.</p>
 </div>
 <div class="div-p-0">
@@ -3530,7 +3530,7 @@ tune TURN_TIME until the fourth corner lands you back on the tape</pre>
 
 </div>
 
-<p><strong>Motor convention confirmed:</strong> <code class="code-inline-bg-e8e8e8">setSpeeds(TURN_SPEED, -TURN_SPEED)</code> = left forward + right backward = turn right.</p>
+<p><strong>Motor convention confirmed:</strong> <code>setSpeeds(TURN_SPEED, -TURN_SPEED)</code> = left forward + right backward = turn right.</p>
 
 <p><strong>Calibration tip:</strong> Start by getting a single 90° turn correct. Time it carefully! Then build up to the full square.</p>
 
@@ -3543,7 +3543,7 @@ tune TURN_TIME until the fourth corner lands you back on the tape</pre>
 <div id="challenge-8" class="div-7d5283" data-challenge="3.8" data-kind="challenge" data-difficulty="easy" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 8: Auto-TRIM Preview</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Auto_TRIM</code> — experimental — keep your working TRIM Finder safe <a href="../newproject.html?lesson=3&amp;kind=auto_trim" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Auto_TRIM</code> — experimental — keep your working TRIM Finder safe <a href="../newproject.html?lesson=3&amp;kind=auto_trim" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 <p>🔍 <strong>Where to look:</strong> no code needed &mdash; your sources are Section 3.11 (TRIM Math) and this card's prompts; the deliverable is comments.</p>
 </div>
 <div class="div-p-0">
@@ -3568,7 +3568,7 @@ tune TURN_TIME until the fourth corner lands you back on the tape</pre>
 
 <summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 
-<p>📌 <strong>Where it goes:</strong> paste this right after <code class="code-inline-bg-e8e8e8">runMotorTest()</code> — <strong>above</strong> <code class="code-inline-bg-e8e8e8">setup()</code>. This program defines helpers above setup, so no prototype is needed. (Paste it below <code class="code-inline-bg-e8e8e8">loop()</code> instead and you’ll get <em>‘was not declared’</em> — that’s Lesson 2, Step 7 territory.)</p>
+<p>📌 <strong>Where it goes:</strong> paste this right after <code>runMotorTest()</code> — <strong>above</strong> <code>setup()</code>. This program defines helpers above setup, so no prototype is needed. (Paste it below <code>loop()</code> instead and you’ll get <em>‘was not declared’</em> — that’s Lesson 2, Step 7 territory.)</p>
 
 <div class="div-mt-15px">
 
@@ -3671,13 +3671,13 @@ This is CLOSED-LOOP control - we'll implement it in Lesson 6!
 <div class="p-mt-10px">
     <p class="p-c-283593">I can&hellip;</p>
     <ul class="ul-ls-none-4">
-        <li data-bc-skill="1" class="li-c-pointer">☐ Control motor speed and direction using <code class="code-inline-bg-e8e8e8">motors.setSpeeds()</code></li>
+        <li data-bc-skill="1" class="li-c-pointer">☐ Control motor speed and direction using <code>motors.setSpeeds()</code></li>
         <li data-bc-skill="2" class="li-c-pointer">☐ Explain the difference between speed (how fast) and direction (forward/backward)</li>
         <li data-bc-skill="3" class="li-c-pointer">☐ Explain why negative motor values mean "backward" (not "slower")</li>
         <li data-bc-skill="4" class="li-c-pointer">☐ Successfully find my robot's TRIM value</li>
         <li data-bc-skill="5" class="li-c-pointer">☐ Make my robot drive reasonably straight with TRIM applied</li>
         <li data-bc-skill="6" class="li-c-pointer">☐ Understand the difference between positive and negative TRIM</li>
-        <li data-bc-skill="7" class="li-c-pointer">☐ Read battery voltage using <code class="code-inline-bg-e8e8e8">readBatteryMillivolts()</code></li>
+        <li data-bc-skill="7" class="li-c-pointer">☐ Read battery voltage using <code>readBatteryMillivolts()</code></li>
         <li data-bc-skill="8" class="li-c-pointer">☐ Document my TRIM value (on robot, in code, or in notebook)</li>
     </ul>
     <p class="p-c-283593-2">I have&hellip;</p>
@@ -3717,7 +3717,7 @@ This is CLOSED-LOOP control - we'll implement it in Lesson 6!
 
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. The motor speed range is −400 to +400. What happens if you write 500 — and how would you know? (§3.2, §3.9)</summary>
 
-<div class="div-mt-12px"><p>The library clamps it to 400 — the robot behaves exactly as if you wrote 400. Nothing crashes, which is why it’s sneaky: your “faster” change silently does nothing. That’s why we <code class="code-inline-bg-e8e8e8">constrain()</code> ourselves and print the values we actually send.</p></div>
+<div class="div-mt-12px"><p>The library clamps it to 400 — the robot behaves exactly as if you wrote 400. Nothing crashes, which is why it’s sneaky: your “faster” change silently does nothing. That’s why we <code>constrain()</code> ourselves and print the values we actually send.</p></div>
 
 </details>
 
@@ -3839,7 +3839,7 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p><strong>Your Task:</strong> Find the <strong>lowest speed value that still moves your robot.</strong> A/C adjust the speed by 5; B runs it for one second. Record your robot’s creep threshold and compare with a neighbor’s robot — are they the same?</p>
 
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Creep_Mode</code> <a href="../newproject.html?lesson=3&amp;kind=creep_mode" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Creep_Mode</code> <a href="../newproject.html?lesson=3&amp;kind=creep_mode" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
 <div class="div-333">
 
@@ -3887,13 +3887,13 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <iframe src="../timer.html?v=4&amp;min=5&amp;label=Bonus+Challenge+2" title="5-minute countdown timer for Bonus Challenge 2" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 
-<p><strong>Predict first, then test:</strong> your TRIM value makes the robot drive straight <em>forward</em>. Will the same value make it drive straight <em>backward</em>? Write down your prediction. Then modify your TRIM Finder’s <code class="code-inline-bg-e8e8e8">runMotorTest()</code> to drive backward (negate both speed values) and run your usual test.</p>
+<p><strong>Predict first, then test:</strong> your TRIM value makes the robot drive straight <em>forward</em>. Will the same value make it drive straight <em>backward</em>? Write down your prediction. Then modify your TRIM Finder’s <code>runMotorTest()</code> to drive backward (negate both speed values) and run your usual test.</p>
 
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Backwards_TRIM</code> that opens <strong>preloaded with the finished TRIM Finder</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=backwards_trim" target="_blank" class="link-c-2e86ab">→ make this folder for me</a> — your working build stays safe</p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Backwards_TRIM</code> that opens <strong>preloaded with the finished TRIM Finder</strong>, ready to modify: <a href="../newproject.html?lesson=3&amp;kind=backwards_trim" target="_blank" class="link-c-2e86ab">→ make this folder for me</a> — your working build stays safe</p>
 
 <details data-reveal="hint" class="details-dee2e6-2"><summary class="summary-c-5a6872">🔓 Hint + what’s going on</summary>
 
-<div class="div-mt-12px"><p>Change the two <code class="code-inline-bg-e8e8e8">setSpeeds</code> lines inside the test to use negative values (keep the TRIM math!). Most robots need a <em>different</em> TRIM backward — gearboxes and motors aren’t symmetric in the two directions. Real rovers store separate calibrations per direction.</p></div>
+<div class="div-mt-12px"><p>Change the two <code>setSpeeds</code> lines inside the test to use negative values (keep the TRIM math!). Most robots need a <em>different</em> TRIM backward — gearboxes and motors aren’t symmetric in the two directions. Real rovers store separate calibrations per direction.</p></div>
 
 </details>
 
@@ -3901,11 +3901,11 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <iframe src="../timer.html?v=4&amp;min=5&amp;label=Bonus+Challenge+3" title="5-minute countdown timer for Bonus Challenge 3" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 
-<p><strong>The scenario:</strong> a teammate built a robot with the motor wires <strong>soldered on backwards</strong> — commanded forward, it drives backward. Rewiring means desoldering. Your job: fix it <strong>entirely in software</strong>, with exactly <strong>two lines</strong> in <code class="code-inline-bg-e8e8e8">setup()</code> — without touching <code class="code-inline-bg-e8e8e8">driveForward()</code> at all.</p>
+<p><strong>The scenario:</strong> a teammate built a robot with the motor wires <strong>soldered on backwards</strong> — commanded forward, it drives backward. Rewiring means desoldering. Your job: fix it <strong>entirely in software</strong>, with exactly <strong>two lines</strong> in <code>setup()</code> — without touching <code>driveForward()</code> at all.</p>
 
 <p><strong>Simulate it:</strong> upload the sketch below and pretend your (correct) robot is the miswired one — your two lines should make B drive it <em>backward</em>, proving you could reverse a backwards robot to forward the same way.</p>
 
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Backwards_Robot</code> <a href="../newproject.html?lesson=3&amp;kind=backwards_robot" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Backwards_Robot</code> <a href="../newproject.html?lesson=3&amp;kind=backwards_robot" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
 <div class="div-333">
 
@@ -3934,20 +3934,20 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <details data-reveal="hint" class="details-dee2e6-2"><summary class="summary-c-5a6872">🔓 Hint: hidden library features</summary>
 
-<div class="div-mt-12px"><p>The motors object has two commands this lesson never used: <code class="code-inline-bg-e8e8e8">motors.flipLeftMotor(true);</code> and <code class="code-inline-bg-e8e8e8">motors.flipRightMotor(true);</code> — they reverse what “positive” means for each motor, deep in the object. One call each in <code class="code-inline-bg-e8e8e8">setup()</code> and every <code class="code-inline-bg-e8e8e8">setSpeeds()</code> in the whole program obeys the new polarity. That’s the power of fixing things at the abstraction layer: one patch, applied everywhere.</p></div>
+<div class="div-mt-12px"><p>The motors object has two commands this lesson never used: <code>motors.flipLeftMotor(true);</code> and <code>motors.flipRightMotor(true);</code> — they reverse what “positive” means for each motor, deep in the object. One call each in <code>setup()</code> and every <code>setSpeeds()</code> in the whole program obeys the new polarity. That’s the power of fixing things at the abstraction layer: one patch, applied everywhere.</p></div>
 
 </details>
 
 <h3 id="bonus-4" data-challenge="3.b4" data-kind="bonus-practice" class="h3-c-4d535f">Bonus Challenge 4: Braking vs. Coasting</h3>
 
 <div class="callout-ffc107-bg-fff8e1-5"><div class="div-fs-09em">⚠️ WARNING</div>
-<div class="div-fs-105em">Space check:</div> this one hits full speed — you need about 3 meters of clear floor and a catcher, or shorten both <code class="code-inline-bg-e8e8e8">delay(1500)</code> lines to <code class="code-inline-bg-e8e8e8">delay(800)</code>.</div>
+<div class="div-fs-105em">Space check:</div> this one hits full speed — you need about 3 meters of clear floor and a catcher, or shorten both <code>delay(1500)</code> lines to <code>delay(800)</code>.</div>
 
 <iframe src="../timer.html?v=4&amp;min=6&amp;label=Bonus+Challenge+4" title="6-minute countdown timer for Bonus Challenge 4" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 
 <p><strong>The experiment:</strong> two ways to stop from full speed. Button A slams the speed to 0 instantly; Button C ramps it down over one second. <strong>Measure the skid:</strong> mark where the robot finally stands still after each. Predict first: which stops shorter — and by a little or a lot?</p>
 
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Braking_Test</code> <a href="../newproject.html?lesson=3&amp;kind=braking_test" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Braking_Test</code> <a href="../newproject.html?lesson=3&amp;kind=braking_test" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
 <div class="div-333">
 
@@ -3990,7 +3990,7 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p><strong>Your Task:</strong> one press of B = one complete figure-eight (a right-hand circle, then a left-hand circle, crossing in the middle). The starter code below <em>should</em> work by symmetry… tune the four numbers until your crossover actually lines up.</p>
 
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Figure_Eight</code> <a href="../newproject.html?lesson=3&amp;kind=figure_eight" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Figure_Eight</code> <a href="../newproject.html?lesson=3&amp;kind=figure_eight" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
 <div class="div-333">
 
@@ -4026,7 +4026,7 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p><strong>Predict first:</strong> speed 200 is twice the duty cycle of speed 100. If both run for exactly 2 seconds, will the robot travel exactly <strong>twice as far</strong>? Write your prediction down, with a reason. Then: A runs 2 seconds at 100, C runs 2 seconds at 200. Tape a start line, measure both distances in cm, and compute the ratio.</p>
 
-<p>📁 <strong>Work in:</strong> a fresh template copy named <code class="code-inline-bg-e8e8e8">LastName_L03_Speedometer</code> <a href="../newproject.html?lesson=3&amp;kind=speedometer" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
+<p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Speedometer</code> <a href="../newproject.html?lesson=3&amp;kind=speedometer" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
 <div class="div-333">
 
@@ -4091,7 +4091,7 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <div class="callout-9b59b6-bg-e7d4ff">
 
-<div class="div-fs-105em">🔑 Negative Speed Values</div> — In motor commands, the minus sign means "backward" (not "slower"). <code class="code-inline-bg-e8e8e8">-200</code> means "backward at speed 200." The magnitude |speed| is always positive. See <a href="#term-negative-speed" class="link-c-1f2a3d">Section 3.2</a>.
+<div class="div-fs-105em">🔑 Negative Speed Values</div> — In motor commands, the minus sign means "backward" (not "slower"). <code>-200</code> means "backward at speed 200." The magnitude |speed| is always positive. See <a href="#term-negative-speed" class="link-c-1f2a3d">Section 3.2</a>.
 
 </div>
 
@@ -4144,11 +4144,11 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 </tr>
 </thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">+400</code></td><td class="td-ddd-2">Full speed forward — the maximum</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">+200</code></td><td class="td-ddd-2">About half speed forward</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">0</code></td><td class="td-ddd-2">Stopped</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">-200</code></td><td class="td-ddd-2">About half speed backward</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">-400</code></td><td class="td-ddd-2">Full speed backward — the minimum</td></tr>
+<tr><td class="td-ddd-2"><code>+400</code></td><td class="td-ddd-2">Full speed forward — the maximum</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>+200</code></td><td class="td-ddd-2">About half speed forward</td></tr>
+<tr><td class="td-ddd-2"><code>0</code></td><td class="td-ddd-2">Stopped</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>-200</code></td><td class="td-ddd-2">About half speed backward</td></tr>
+<tr><td class="td-ddd-2"><code>-400</code></td><td class="td-ddd-2">Full speed backward — the minimum</td></tr>
 </tbody>
 </table>
 
@@ -4253,7 +4253,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">buttonA.isPressed()</code></td>
+<td class="td-ddd-2"><code>buttonA.isPressed()</code></td>
 
 <td class="td-ddd-2">True while the button is held down right now &mdash; use for combos like A+C</td>
 
@@ -4261,7 +4261,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr class="tr-bg-f8f9fa">
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">buttonA.getSingleDebouncedPress()</code></td>
+<td class="td-ddd-2"><code>buttonA.getSingleDebouncedPress()</code></td>
 
 <td class="td-ddd-2">True once per tap (won't repeat while held)</td>
 
@@ -4269,7 +4269,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">Zumo32U4ButtonA buttonA;</code></td>
+<td class="td-ddd-2"><code>Zumo32U4ButtonA buttonA;</code></td>
 
 <td class="td-ddd-2">Hardware object &mdash; same pattern for ButtonB / ButtonC</td>
 
@@ -4299,7 +4299,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">ledYellow(1)</code></td>
+<td class="td-ddd-2"><code>ledYellow(1)</code></td>
 
 <td class="td-ddd-2">Yellow LED on (0 = off) &mdash; ledRed() and ledGreen() work the same way</td>
 
@@ -4307,7 +4307,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr class="tr-bg-f8f9fa">
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">delay(50)</code></td>
+<td class="td-ddd-2"><code>delay(50)</code></td>
 
 <td class="td-ddd-2">Wait in milliseconds &mdash; a 50 ms on-time makes a visible blink</td>
 
@@ -4337,7 +4337,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">display.clear()</code></td>
+<td class="td-ddd-2"><code>display.clear()</code></td>
 
 <td class="td-ddd-2">Wipe the screen and move the cursor to the top-left</td>
 
@@ -4345,7 +4345,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr class="tr-bg-f8f9fa">
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">display.setLayout21x8()</code></td>
+<td class="td-ddd-2"><code>display.setLayout21x8()</code></td>
 
 <td class="td-ddd-2">Switch to the 21-column &times; 8-row text layout</td>
 
@@ -4353,7 +4353,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">display.gotoXY(0, 2)</code></td>
+<td class="td-ddd-2"><code>display.gotoXY(0, 2)</code></td>
 
 <td class="td-ddd-2">Move the cursor: column, then row (both start at 0)</td>
 
@@ -4361,7 +4361,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr class="tr-bg-f8f9fa">
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">display.print(F("TRIM: "))</code></td>
+<td class="td-ddd-2"><code>display.print(F("TRIM: "))</code></td>
 
 <td class="td-ddd-2">Print text &mdash; F() keeps the text out of precious RAM</td>
 
@@ -4369,7 +4369,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">display.print(trimValue)</code></td>
+<td class="td-ddd-2"><code>display.print(trimValue)</code></td>
 
 <td class="td-ddd-2">Print a number &mdash; no F() around variables</td>
 
@@ -4399,7 +4399,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">Serial.begin(115200)</code></td>
+<td class="td-ddd-2"><code>Serial.begin(115200)</code></td>
 
 <td class="td-ddd-2">Start the USB link to the computer &mdash; once, in setup()</td>
 
@@ -4407,7 +4407,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr class="tr-bg-f8f9fa">
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">Serial.print(F("..."))</code></td>
+<td class="td-ddd-2"><code>Serial.print(F("..."))</code></td>
 
 <td class="td-ddd-2">Print text without a line break</td>
 
@@ -4415,7 +4415,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr>
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">Serial.println(value)</code></td>
+<td class="td-ddd-2"><code>Serial.println(value)</code></td>
 
 <td class="td-ddd-2">Print and end the line &mdash; works for text and numbers</td>
 
@@ -4423,7 +4423,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <tr class="tr-bg-f8f9fa">
 
-<td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">if (Serial)</code></td>
+<td class="td-ddd-2"><code>if (Serial)</code></td>
 
 <td class="td-ddd-2">True once a Serial Monitor is connected (native-USB trick from Step 11)</td>
 

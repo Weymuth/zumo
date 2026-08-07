@@ -1,9 +1,81 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 6, 2026 (Session 123 — **THE LEAD NAMED THE MINORITY, AND EACH LAYER IT HID WAS BIGGER THAN THE ONE ABOVE IT.** A queue item said *Consolas*; the instrument was scoped to Consolas; the book's dominant code type turned out to be `'Courier New', monospace` at 21 rules and 2,825 uses against Consolas's 14 and 459 — and that error reached DJ as a priced ruling before it was caught. Re-measured and re-ruled **B-full**: one mono stack, 38 declarations. Then gate 53, written from the corrected measurement, **could not see the next layer and said so by passing** — 1,199 bare `<code>` elements reached by no author rule at all. Then DJ cut through the third layer in one sentence — *"I thought since we weren't using canvas we didn't need the inline code"* — which was the real finding: **the stylesheet could not say what anything IS**, and there was nothing a second book could inherit. **§27.15 NEW: the semantic layer.** Plus §3.1b extended — the title is FED not typed, the opener is UNIQUE, and the apostrophe is ruled.)
-**Status:** ✅ **54/54 GATES PASS · THE STYLESHEET CAN NOW HOLD MEANING.** **§27.15 is new canon**: `css/semantic.css` is hand-authored, preserved verbatim at the top of the generated stylesheet, and is the only place a rule can carry an element selector, a semantic class or a custom property. **First graduate: `code, pre`** — 3,336 inline `<code>` and 832 `<pre>` now reached by one rule, 1,199 of them previously reached by nothing. **Additive by construction: zero lesson edits, all 540 value-named classes still work, generated block UNCHANGED at 636/2,332.** **The colour ledger is unblocked** — its first item was never a colour but whether custom properties could be emitted, and they now can. **Three new gates:** 52 (the opener is unique — S122 committed that exact defect to L05), 53 (one mono stack), 54 (the layer survives regeneration, a failure mode measured to be SILENT). **`title_feed.py` v1.0** feeds the §3.1b opener title from the §6.5a strip. **The pill question is deliberately deferred and now costs one line.**
+**Date:** August 7, 2026 (Session 124 — **AN ELEMENT RULE REACHES ELEMENTS NO AUTHOR LISTED, AND THE POPULATION YOU CAN ENUMERATE IS NOT THE POPULATION IT REACHES.** DJ ruled the inline-code pill IN — *"Pill everywhere"* — and the graduation happened by DELETION: **2,132 class attributes stripped from all sixteen lessons**, ten rules dead, one born, and **3,336 inline `<code>` now reached by one rule in `css/semantic.css`**. The audit checked the elements that still carried a class, found two on dark grounds, and **could not see the seven that carry none** — bare `<code>` inside dark table headers in L04, L05, L10 and L12 whose containers each declare `color: white`. DJ found them by asking *"why would I want to change from code to span?"* about a proposal reaching for the markup on a sample of one. Ground ruled **B**, a translucent wash. **§27.15a and §27.15b NEW, gate 55 NEW**, and a generator property that cost a full redo: stripping a class from SOME of its users renames it for the survivors.)
+**Status:** ✅ **55/55 GATES PASS · THE PILL IS RULED IN, WITH NO CARVE-OUT.** Every inline `<code>` in a lesson carries it, ruled twice on purpose — once as *pill everywhere*, and again explicitly for the 28 operator uses that had drifted, on the evidence that **36 operator `<code>` elements elsewhere were already pilled against 12 that were not**, the same operator appearing both ways. **Six classes stood for one construct and disagreed about it** — three font sizes, a stray `color`, a `white-space` — and all six are gone. **The ground is `rgba(0, 0, 0, 0.08)`, not an opaque grey**, because inline code sits on **43 distinct backgrounds** and eight elements sit on dark ones that declare `color: white`. **The `pre code` reset is part of the rule:** 15 bare `<code>` live inside `<pre>`, nine in L01's `#1e1e1e` blocks, and gate 53, §27.13 and gate 54 are each structurally blind to that. **§27.11 moved to 627 / 2,297.** **THE ENTIRE BUILD WAS RE-DERIVED FROM A CLEAN CLONE AND DIFFED AGAINST THE FIRST ATTEMPT: all sixteen lessons and the whole generated block came back BYTE-IDENTICAL** — two independent runs agreeing, rather than one run verifying itself. `going_deeper.html` reached the same reset independently and carries a THIRD inline-code treatment nobody had counted — recorded, **not ruled**.
 
-**Versions:** L01 v03.21.0 · L02 v03.13.1 · L03 v03.30.1 · L04 v04.21.1 · L05 v04.20.2 · L06 v04.25.1 · L07 v04.24.0 · L08 v04.21.0 · L09 v05.18.0 · L10 v02.19.2 · L11 v02.20.0 · L12 v01.22.0 · L13 v02.20.0 · L14 v02.25.1 · L15 v02.21.0 · L16 v02.13.1 · going_deeper v01.4.2 — census **41,128** · Bible **v8.114** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.3 · **book_gates v1.49** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.19.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.1 · title_feed v1.0 · Timer v1.3.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `c4519b6`.**
+**Versions:** L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04.21.0 · L06 v04.26.0 · L07 v04.25.0 · L08 v04.22.0 · L09 v05.19.0 · L10 v02.20.0 · L11 v02.21.0 · L12 v01.23.0 · L13 v02.21.0 · L14 v02.26.0 · L15 v02.22.0 · L16 v02.14.0 · going_deeper v01.4.2 — census **41,128** · Bible **v8.115** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.3 · **book_gates v1.50** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.19.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.1 · title_feed v1.0 · Timer v1.3.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `695ec87`.**
+
+---
+---
+
+## WHAT SHIPPED IN S124
+
+**THE PILL IS THE SECOND GRADUATE, AND THE FIRST TO LEAVE BY DELETION.** S123 put `code, pre` in
+`css/semantic.css` carrying `font-family` and nothing else, deliberately deferring the grey pill. DJ
+ruled it in. The opening measurement did not inherit S123's numbers and they had moved: **3,345 inline
+`<code>` — 1,208 bare and 2,137 classed** — and the L09/L10 seam the handoff described is not clean.
+Every back-half lesson still carried pills (L10 27, L12 27, L13 20, L14 16, L16 9) and every front-half
+lesson carried bare ones (L02 24, L08 23, L07 18). L01 is 52% bare, not 49%.
+
+**THE RULING WAS TAKEN TWICE.** 28 `.code-ff-uimonosp` uses were mono-without-pill, and 12 of those are
+bare operators. Measured across the whole book, **36 operator `<code>` elements were ALREADY pilled
+against 12 that were not**, `&&` appearing pilled five times and unpilled twice, `||` four and two, `%`
+pilled all five. The 12 exceptions live in L02 and L03 only. There was no operator convention to
+preserve, so DJ ruled them in too — *"then pill them all"* — and the rule ships with no exception list.
+
+**SIX CLASSES, ONE CONSTRUCT, THREE FONT SIZES.** `.code-inline-bg-e8e8e8` through `-6` disagreed about
+what they encoded: 0.9em, 0.85em, and none at all. One added `color: #333`, one added
+`white-space: pre-wrap`. All six dropped. The pre-wrap was **verified inert before it went** — its
+string carries no repeated spaces and no newline.
+
+**THE GROUND IS A WASH, AND THAT IS A SCOPE RULING WEARING A VALUE.** Inline code sits on **43 distinct
+backgrounds**; only 46% is on the cream page, and **686 pills already sat on 27 coloured grounds**, so
+neutral-grey-on-coloured was already shipping. **Eight elements sit on DARK grounds declaring
+`color: white`** — seven bare `<code>` in dark table headers (L04 `#a04a5f`, L05 `#352405` ×2, L10
+`#00393d` ×2, L12 `#433014` ×2) plus L14's score formula in a `#1f2a3d` banner. An opaque pill makes
+all eight unreadable, silently. `rgba(0, 0, 0, 0.08)` inherits its ground instead of fighting it.
+
+**THE SEVEN WERE INVISIBLE TO THE FIRST SWEEP BECAUSE THEY CARRY NO CLASS.** The audit enumerated the
+elements that still had one, found two, and reported two — §24.8 in its most expensive form. DJ opened
+the hole with one question: *"why would I want to change from code to span?"* The proposal being
+questioned was retagging L14's element, which is only defensible on a sample of one; with eight cases
+the markup was obviously innocent and the rule was obviously unscoped. **When an element selector is
+the subject, the audit must enumerate ELEMENTS, never the classes on them.**
+
+**TWO PRICES WERE WRONG ON FIRST TELLING, BOTH POINTING AWAY FROM THE OPTION DJ PREFERRED.** The wash
+was recommended as the conservative choice and it is the opposite — it repaints all 3,336 elements
+including 2,097 already ruled, where an opaque pill plus a scoped opt-out changes 1,233. Then, told it
+was *more work*, the correct answer was that it is a ONE-LINE value change, identical labour to the
+alternative. **A count of what CHANGES is not a count of what it COSTS.**
+
+**THE `pre code` RESET IS PART OF THE RULE.** 15 bare `<code>` live inside `<pre>`, nine in L01's
+`#1e1e1e` blocks. **GATE 55 NEW**, holding the reset and asserting the ground is still a wash;
+control-run three ways, each firing gate 55 alone. `going_deeper.html` — which does not link this
+stylesheet — reached the same reset independently.
+
+**§27.15b NEW, AND IT COST A FULL REDO.** `build_css` names a rule after its DOMINANT TAG, so stripping
+a class from SOME of its users **renames it for the survivors**. `.code-ff-uimonosp-2` became
+`.span-ff-uimonosp` when its four `<code>` users left, and three compiler-error `<span>`/`<strong>`
+elements went dead. No gate saw it; `strip_inline --verify` did. The first fix made it unrecoverable by
+renaming AFTER a second regeneration had deleted the definition. Order: **strip → regenerate → move the
+survivors onto the name pass 1 emitted → regenerate again.**
+
+**THE WHOLE BUILD WAS RE-DERIVED FROM A CLEAN CLONE.** A first attempt existed in the working tree whose
+authorship could not be accounted for, so nothing was pushed and everything was rebuilt from
+`695ec87` with every edit scripted and asserted. **All sixteen lesson files and the entire 76,473-byte
+generated block came back byte-identical to the first attempt.** Two independent runs agreeing is
+stronger evidence than one run verifying itself. The rebuild also carries a fix the first attempt did
+not: its `css/semantic.css` comment block had text spliced mid-sentence, and gate 54 copies that layer
+verbatim into `css/book.css`, so it would have shipped.
+
+**§27.11 MOVED TO 627 / 2,297**, digest `3f4c39d35c2d6b64`. The −9 is fully accounted: ten rules die
+(six pill variants, three mono, `.code-c-white`), one is born (`.span-ff-uimonosp`). Declarations fall
+further than rules because the six disagreed. `regex_audit` caught a match-and-discard alternation in
+gate 55 on its first run; made non-capturing, back to 0 leads.
+
+**OPEN, NOT RULED:** `going_deeper.html`'s dark inline-code pill — `#1e1e1e` ground, `#9cdcfe` text, a
+border, `.88em`, 71 inline uses — is a third treatment nobody had counted. It is recorded here and left
+alone, because that page carries its own `<style>` and does not link `css/book.css`.
 
 ---
 ---

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.20.0 -->
+<!-- Lesson version: v02.21.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Time Lies, Distance Doesn't</h1>
 <div class="div-fs-11em">Encoder-Based Gap Crossing</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.20 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.21 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -356,21 +356,21 @@ line came back, and otherwise hands off to <code>handleGap()</code>. The <em>cou
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Lesson 8&rsquo;s <code class="code-inline-bg-e8e8e8">handleGap()</code> is a stopwatch. Quote the condition that makes it one, and state the question that breaks it. (&sect;3.2)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Lesson 8&rsquo;s <code>handleGap()</code> is a stopwatch. Quote the condition that makes it one, and state the question that breaks it. (&sect;3.2)</summary>
 
-<div class="div-mt-12px"><p>The condition is <code class="code-inline-bg-e8e8e8">millis() - gapStartTime &gt; MAX_GAP_TIME</code> &mdash; five hundred milliseconds of blindness, then quit. The question that breaks it: <em>how far does the robot travel in 500&nbsp;ms?</em> It depends on the battery. A fresh one carries the robot further in that time, a tired one less far, and you tuned the number on a full charge &mdash; so at half charge it is silently covering a shorter gap and the robot gives up in the middle of a gap it crossed fine that morning. A stopwatch does not measure distance. It measures time and hopes speed was constant.</p></div>
+<div class="div-mt-12px"><p>The condition is <code>millis() - gapStartTime &gt; MAX_GAP_TIME</code> &mdash; five hundred milliseconds of blindness, then quit. The question that breaks it: <em>how far does the robot travel in 500&nbsp;ms?</em> It depends on the battery. A fresh one carries the robot further in that time, a tired one less far, and you tuned the number on a full charge &mdash; so at half charge it is silently covering a shorter gap and the robot gives up in the middle of a gap it crossed fine that morning. A stopwatch does not measure distance. It measures time and hopes speed was constant.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. You do not have to write the counts&#8209;to&#8209;centimeters conversion for this lesson &mdash; it is already sitting in <code class="code-inline-bg-e8e8e8">RobotConfig.h</code>. Name the constant, and the lesson it arrived in. (&sect;3.3)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. You do not have to write the counts&#8209;to&#8209;centimeters conversion for this lesson &mdash; it is already sitting in <code>RobotConfig.h</code>. Name the constant, and the lesson it arrived in. (&sect;3.3)</summary>
 
-<div class="div-mt-12px"><p><code class="code-inline-bg-e8e8e8">COUNTS_PER_CM</code>, which has been in your project since <strong>Lesson 6</strong> &mdash; <code class="code-inline-bg-e8e8e8">driveDistance()</code> already uses it. It is defined as <code class="code-inline-bg-e8e8e8">COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0)</code>. The reason it works here is that encoders do not care about your battery: they count <em>wheel rotation</em>, so a slow robot and a fast robot that both travel 10&nbsp;cm report the same count. The slow one just took longer to get there.</p></div>
+<div class="div-mt-12px"><p><code>COUNTS_PER_CM</code>, which has been in your project since <strong>Lesson 6</strong> &mdash; <code>driveDistance()</code> already uses it. It is defined as <code>COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0)</code>. The reason it works here is that encoders do not care about your battery: they count <em>wheel rotation</em>, so a slow robot and a fast robot that both travel 10&nbsp;cm report the same count. The slow one just took longer to get there.</p></div>
 
 </details>
 
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Name the two states this lesson adds to your state machine, and the one number that tells them apart. (&sect;3.4)</summary>
 
-<div class="div-mt-12px"><p><code class="code-inline-bg-e8e8e8">GAP_CROSSING</code> &mdash; driving blind, counting the distance, budget not yet spent. <code class="code-inline-bg-e8e8e8">LINE_LOST</code> &mdash; drove the whole budget and never found the line, so stop and say so. The difference between them is <strong>one number</strong>: how far you have gone since the line vanished. Everything else about the two states is the same robot doing the same thing.</p></div>
+<div class="div-mt-12px"><p><code>GAP_CROSSING</code> &mdash; driving blind, counting the distance, budget not yet spent. <code>LINE_LOST</code> &mdash; drove the whole budget and never found the line, so stop and say so. The difference between them is <strong>one number</strong>: how far you have gone since the line vanished. Everything else about the two states is the same robot doing the same thing.</p></div>
 
 </details>
 
@@ -1134,14 +1134,14 @@ Every time. Even with <code>GAP_MAX_CM</code> set to 50.</p>
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">Your robot crosses a 10&nbsp;cm gap perfectly on Monday. On Friday, with the same code and the
 same track, it quits halfway. <strong>Name the instrument that caused this, and the instrument that fixes it.</strong> (&sect;3.2)</summary>
 
-<div class="div-mt-12px"><p>The <strong>stopwatch</strong> caused it; the <strong>odometer</strong> fixes it. <code class="code-inline-bg-e8e8e8">millis() - gapStartTime &gt; MAX_GAP_TIME</code> asks how <em>long</em> the robot has been blind, and how far it gets in that time depends on the battery. You tuned the number on Monday&rsquo;s full charge; Friday&rsquo;s tired battery drives slower, so the same 500&nbsp;ms carries it less far and it runs out of time before it runs out of gap. Encoders count wheel rotation, so 10&nbsp;cm is the same count on any charge. The track did not change. The battery did. Only one of the two instruments cared.</p></div>
+<div class="div-mt-12px"><p>The <strong>stopwatch</strong> caused it; the <strong>odometer</strong> fixes it. <code>millis() - gapStartTime &gt; MAX_GAP_TIME</code> asks how <em>long</em> the robot has been blind, and how far it gets in that time depends on the battery. You tuned the number on Monday&rsquo;s full charge; Friday&rsquo;s tired battery drives slower, so the same 500&nbsp;ms carries it less far and it runs out of time before it runs out of gap. Encoders count wheel rotation, so 10&nbsp;cm is the same count on any charge. The track did not change. The battery did. Only one of the two instruments cared.</p></div>
 
 </details>
 
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872"><code>followLine()</code> does <em>not</em> use TRIM. <code>handleGap()</code> <em>does</em>.
 Both drive the robot forward. <strong>Why the difference?</strong> (&sect;8A.1)</summary>
 
-<div class="div-mt-12px"><p>Open loop needs TRIM; closed loop does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors &mdash; the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code class="code-inline-bg-e8e8e8">followLine()</code> is a P&#8209;controller reading line position fifty times a second and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every open-loop straight line in this book carries TRIM &mdash; <code class="code-inline-bg-e8e8e8">driveDistance()</code>, <code class="code-inline-bg-e8e8e8">handleGap()</code>, the return-to-line drive &mdash; and the one closed loop deliberately does not.</p></div>
+<div class="div-mt-12px"><p>Open loop needs TRIM; closed loop does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors &mdash; the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code>followLine()</code> is a P&#8209;controller reading line position fifty times a second and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every open-loop straight line in this book carries TRIM &mdash; <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive &mdash; and the one closed loop deliberately does not.</p></div>
 
 </details>
 
@@ -1271,10 +1271,10 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 <th class="th-ddd-2">Type</th>
 </tr></thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 11.1]</code></td><td class="td-ddd-2">&sect;3.3</td><td class="td-ddd-2">Time vs. distance &#8212; the same gap and the same code, on two batteries. Only the stopwatch cares.</td><td class="td-ddd-2">SVG</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 11.2]</code></td><td class="td-ddd-2">&sect;3.5</td><td class="td-ddd-2">The cliff arithmetic: 410&nbsp;ms needed, 180&nbsp;ms available. The alarm cannot legally fire in time.</td><td class="td-ddd-2">SVG</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 11.3]</code></td><td class="td-ddd-2">&sect;4</td><td class="td-ddd-2">The five-sensor line array, top view.</td><td class="td-ddd-2">SVG</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 11.4]</code></td><td class="td-ddd-2">&sect;3.4</td><td class="td-ddd-2">The two new states: GAP_CROSSING and LINE_LOST, and the one number between them.</td><td class="td-ddd-2">SVG</td></tr>
+<tr><td class="td-ddd-2"><code>[GRAPHIC 11.1]</code></td><td class="td-ddd-2">&sect;3.3</td><td class="td-ddd-2">Time vs. distance &#8212; the same gap and the same code, on two batteries. Only the stopwatch cares.</td><td class="td-ddd-2">SVG</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 11.2]</code></td><td class="td-ddd-2">&sect;3.5</td><td class="td-ddd-2">The cliff arithmetic: 410&nbsp;ms needed, 180&nbsp;ms available. The alarm cannot legally fire in time.</td><td class="td-ddd-2">SVG</td></tr>
+<tr><td class="td-ddd-2"><code>[GRAPHIC 11.3]</code></td><td class="td-ddd-2">&sect;4</td><td class="td-ddd-2">The five-sensor line array, top view.</td><td class="td-ddd-2">SVG</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 11.4]</code></td><td class="td-ddd-2">&sect;3.4</td><td class="td-ddd-2">The two new states: GAP_CROSSING and LINE_LOST, and the one number between them.</td><td class="td-ddd-2">SVG</td></tr>
 </tbody></table><p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 

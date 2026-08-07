@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.21.1 -->
+<!-- Lesson version: v04.22.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Line Sensors</h1>
 <div class="div-fs-11em">Your Robot Cannot See &mdash; It Measures</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.21 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 04.22 &mdash; August 2026</div>
 </div>
 
 <div class="callout-ff8c00-bg-ffe4cc" id="what-you-need-l04-p1">
@@ -133,13 +133,13 @@
 <li>☐ Explain how an infrared reflectance sensor tells a dark surface from a light one</li>
 <li>☐ Locate all eight sensors on the front sensor array — five line sensors facing down, three proximity sensors facing out — and explain why only six can be connected at once</li>
 <li>☐ Identify the two configuration jumpers and state what each position connects</li>
-<li>☐ Initialize and read the three-sensor configuration with <code class="code-inline-bg-e8e8e8-2">initThreeSensors()</code> and <code class="code-inline-bg-e8e8e8-2">read()</code></li>
+<li>☐ Initialize and read the three-sensor configuration with <code>initThreeSensors()</code> and <code>read()</code></li>
 <li>☐ Read individual values out of an array using index numbers</li>
 <li>☐ Calibrate the sensors for your specific surface and explain what calibration actually changes</li>
 <li>☐ Reconfigure the robot — jumpers <em>and</em> code — for the five-sensor configuration</li>
-<li>☐ Use <code class="code-inline-bg-e8e8e8-2">readLine()</code> to turn five readings into a single line-position number from 0 to 4000, and interpret that number</li>
+<li>☐ Use <code>readLine()</code> to turn five readings into a single line-position number from 0 to 4000, and interpret that number</li>
 <li>☐ Run a fair side-by-side test and argue, with your own data, what five sensors buy you and what they cost</li>
-<li>☐ Write a basic <code class="code-inline-bg-e8e8e8-2">if</code> statement that makes your robot react to what it sees</li>
+<li>☐ Write a basic <code>if</code> statement that makes your robot react to what it sees</li>
 <li>☐ Restore the robot to its standard configuration and explain why Lesson 5 depends on it</li>
 </ul>
 
@@ -250,9 +250,9 @@
 
 <h3 class="link-c-1f2a3d">3.5 From Five Numbers to One: How readLine() Thinks</h3>
 
-<p>Once the sensors are calibrated, your program could look at all the individual values — sensor 1 says 40, sensor 2 says 130, sensor 3 says 880... — and reason about them one by one. Sometimes you will. But for steering, what you really want is a single answer to a single question: <strong>"where is the line under me, exactly?"</strong> The library function <code class="code-inline-bg-e8e8e8-2">readLine()</code> compresses all five readings into that one number, and the way it does it is a genuinely elegant piece of math called a <strong>weighted average</strong>.</p>
+<p>Once the sensors are calibrated, your program could look at all the individual values — sensor 1 says 40, sensor 2 says 130, sensor 3 says 880... — and reason about them one by one. Sometimes you will. But for steering, what you really want is a single answer to a single question: <strong>"where is the line under me, exactly?"</strong> The library function <code>readLine()</code> compresses all five readings into that one number, and the way it does it is a genuinely elegant piece of math called a <strong>weighted average</strong>.</p>
 
-<p>First, each sensor gets a position label: sensor 1 sits at position 0, sensor 2 at 1000, sensor 3 at 2000, sensor 4 at 3000, sensor 5 at 4000. Then <code class="code-inline-bg-e8e8e8-2">readLine()</code> computes the average of those positions — but each position is <em>weighted by how dark its sensor reads</em>. A sensor screaming "1000 — pure black!" pulls the average hard toward its own position. A sensor whispering "60 — basically white" barely tugs at all. The result is the line's center of darkness, on a scale from <strong>0 (far left) to 4000 (far right)</strong>, with <strong>2000 meaning dead center</strong>.</p>
+<p>First, each sensor gets a position label: sensor 1 sits at position 0, sensor 2 at 1000, sensor 3 at 2000, sensor 4 at 3000, sensor 5 at 4000. Then <code>readLine()</code> computes the average of those positions — but each position is <em>weighted by how dark its sensor reads</em>. A sensor screaming "1000 — pure black!" pulls the average hard toward its own position. A sensor whispering "60 — basically white" barely tugs at all. The result is the line's center of darkness, on a scale from <strong>0 (far left) to 4000 (far right)</strong>, with <strong>2000 meaning dead center</strong>.</p>
 
 <p>Work one example by hand — this is exactly the arithmetic the robot does hundreds of times per second. Say the calibrated readings are:</p>
 
@@ -274,15 +274,15 @@
 
 <img src="../images/L04_GRAPHIC_4-05_readline_numberline.svg" alt="readLine position number line, 0 to 4000: five sensors at home values 0, 1000, 2000, 3000, 4000, each labeled with its physical number and array box index; the Section 3.5 worked example value 2323 is flagged a little right of center" class="img-d-block-4">
 
-<p>Three fine-print behaviors of <code class="code-inline-bg-e8e8e8-2">readLine()</code> are worth knowing now, because each one will explain something you'll see on the bench:</p>
+<p>Three fine-print behaviors of <code>readLine()</code> are worth knowing now, because each one will explain something you'll see on the bench:</p>
 
 <ul>
 <li><strong>It ignores whispers.</strong> Values of 50 or below are treated as noise and left out of the average entirely, so a speck of dust doesn't drag the position around.</li>
-<li><strong>It remembers which side it fell off.</strong> If <em>no</em> sensor sees anything dark (nothing above 200), the line is lost — and instead of panicking, <code class="code-inline-bg-e8e8e8-2">readLine()</code> returns 0 if the line was last seen left of center, or 4000 if it was last seen to the right. The robot's best guess is "it went that way." Lesson 8 turns this little memory into recovery behavior.</li>
+<li><strong>It remembers which side it fell off.</strong> If <em>no</em> sensor sees anything dark (nothing above 200), the line is lost — and instead of panicking, <code>readLine()</code> returns 0 if the line was last seen left of center, or 4000 if it was last seen to the right. The robot's best guess is "it went that way." Lesson 8 turns this little memory into recovery behavior.</li>
 <li><strong>The scale depends on the sensor count.</strong> Positions run 0 to (number of sensors − 1) × 1000. Five sensors: 0–4000, center 2000. Three sensors: 0–2000, center 1000. Keep this in mind in Act One.</li>
 </ul>
 
-<p>One more relative: <code class="code-inline-bg-e8e8e8-2">readLineWhite()</code> does the identical math with every value flipped, for the mirror-world case of a <em>white</em> line on a <em>dark</em> floor. Same idea, opposite wardrobe.</p>
+<p>One more relative: <code>readLineWhite()</code> does the identical math with every value flipped, for the mirror-world case of a <em>white</em> line on a <em>dark</em> floor. Same idea, opposite wardrobe.</p>
 
 <h3 class="link-c-1f2a3d">3.6 Resolution: What Two More Eyes Actually Buy</h3>
 
@@ -373,7 +373,7 @@
 <li>VS Code: <strong>File → Open Folder</strong> → your new folder (close Lesson 3's folder first).</li>
 <li>Check the header comment the Maker pre-filled, then <strong>Build</strong> (✓) — healthy before you write a line.</li>
 </ol>
-<p class="p-c-666-5">No internet? Copy your <strong>ZUMO_Template</strong>, rename it <code class="code-inline-bg-e8e8e8">LastName_L04</code> by hand — and <strong>paste in the STANDARD HELPERS block</strong> from Section 5.6 (the Maker adds it automatically; the plain template doesn't have it).</p>
+<p class="p-c-666-5">No internet? Copy your <strong>ZUMO_Template</strong>, rename it <code>LastName_L04</code> by hand — and <strong>paste in the STANDARD HELPERS block</strong> from Section 5.6 (the Maker adds it automatically; the plain template doesn't have it).</p>
 <div class="div-m-22px0">
 <img src="../images/L04_GRAPHIC_4-02_project_file_tree.svg" alt="The Lesson 4 PlatformIO project tree: src/main.cpp, include/, lib/, platformio.ini" class="img-h-auto-3">
 <div class="div-c-666"><strong>[GRAPHIC 4.2]</strong> Your Lesson 4 project &mdash; what each folder is for (File: L04_GRAPHIC_4-02_project_file_tree.svg)</div>
@@ -402,13 +402,13 @@
 </div>
 <div class="div-433014">
 
-<p>This section walks through every piece of today's program so you understand what each part does and why it exists. Think of it as the blueprint; Section 6 is the construction. Read it with your project open — everything here goes into <strong>one</strong> <code class="code-inline-bg-e8e8e8">main.cpp</code>, organized in the seven-section layout you have used since Lesson 2.</p>
+<p>This section walks through every piece of today's program so you understand what each part does and why it exists. Think of it as the blueprint; Section 6 is the construction. Read it with your project open — everything here goes into <strong>one</strong> <code>main.cpp</code>, organized in the seven-section layout you have used since Lesson 2.</p>
 
 <h3 class="h4-c-433014">5.1 The Shape of Today's Program</h3>
 
 <p>Both acts of this lesson run <em>the same program</em> in two costumes. In Act One it wakes three sensors and shows their calibrated readings. In Act Two you change two lines and a display function, and it wakes five sensors and adds a line-position readout. Nothing in it drives the motors — today's program only <strong>senses and shows</strong>. (The driving starts in Section 9, once you can trust what the robot sees.)</p>
 
-<p>The program has five jobs, and each one maps to a helper or a section of <code class="code-inline-bg-e8e8e8">main.cpp</code>: declare the hardware, wake the right sensor set, calibrate, read into an array, and display. Let's take them in order.</p>
+<p>The program has five jobs, and each one maps to a helper or a section of <code>main.cpp</code>: declare the hardware, wake the right sensor set, calibrate, read into an array, and display. Let's take them in order.</p>
 
 <h3 class="h4-c-433014">5.2 The Hardware Objects</h3>
 
@@ -423,7 +423,7 @@
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> CAL_TIME_MS = <span class="tok-b5cea8">5000</span>;        <span class="tok-6a9955">// calibration sweep window</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> DISPLAY_INTERVAL_MS = <span class="tok-b5cea8">100</span>; <span class="tok-6a9955">// refresh rate for readings</span></pre>
 
-<p>Four objects this time. The display and the two buttons you know; <code class="code-inline-bg-e8e8e8">buttonB</code> earns its seat because the STANDARD HELPERS use the A+B combination for the battery check (Section 5.6). The new face is <strong><code class="code-inline-bg-e8e8e8">Zumo32U4LineSensors lineSensors;</code></strong> — your handle on the entire reflectance array. Every sensor operation in this lesson goes through this one object: waking sensors, calibrating them, reading them raw or calibrated, and computing the line position.</p>
+<p>Four objects this time. The display and the two buttons you know; <code>buttonB</code> earns its seat because the STANDARD HELPERS use the A+B combination for the battery check (Section 5.6). The new face is <strong><code>Zumo32U4LineSensors lineSensors;</code></strong> — your handle on the entire reflectance array. Every sensor operation in this lesson goes through this one object: waking sensors, calibrating them, reading them raw or calibrated, and computing the line position.</p>
 
 <h3 class="h4-c-433014">5.3 The Constants</h3>
 
@@ -433,16 +433,16 @@
 <th class="th-ddd">Value</th>
 <th class="th-ddd">What it controls</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">NUM_SENSORS</code></td><td class="td-ddd">3 (Act One) → 5 (Act Two)</td><td class="td-ddd">How many sensors are awake — sizes the array and drives every loop that walks it</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">CAL_TIME_MS</code></td><td class="td-ddd">5000</td><td class="td-ddd">Length of the calibration sweep window, in milliseconds</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">DISPLAY_INTERVAL_MS</code></td><td class="td-ddd">100</td><td class="td-ddd">Pause between readings — 10 updates per second is fast enough to feel live and slow enough to read</td></tr>
+<tr><td class="td-ddd"><code>NUM_SENSORS</code></td><td class="td-ddd">3 (Act One) → 5 (Act Two)</td><td class="td-ddd">How many sensors are awake — sizes the array and drives every loop that walks it</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>CAL_TIME_MS</code></td><td class="td-ddd">5000</td><td class="td-ddd">Length of the calibration sweep window, in milliseconds</td></tr>
+<tr><td class="td-ddd"><code>DISPLAY_INTERVAL_MS</code></td><td class="td-ddd">100</td><td class="td-ddd">Pause between readings — 10 updates per second is fast enough to feel live and slow enough to read</td></tr>
 </table>
 
-<p>Same discipline as Lesson 2: values that tune behavior live at the top, in ALL_CAPS, defined once. When Act Two arrives, changing <code class="code-inline-bg-e8e8e8">NUM_SENSORS</code> in <em>one place</em> resizes the array and retunes every loop automatically. That is the payoff for killing magic numbers.</p>
+<p>Same discipline as Lesson 2: values that tune behavior live at the top, in ALL_CAPS, defined once. When Act Two arrives, changing <code>NUM_SENSORS</code> in <em>one place</em> resizes the array and retunes every loop automatically. That is the payoff for killing magic numbers.</p>
 
 <h3 class="h4-c-433014">5.4 Waking the Sensors: The Software Half of the Jumper Story</h3>
 
-<p>The jumpers are the hardware half of the three-vs-five choice. The software half is a single line in <code class="code-inline-bg-e8e8e8">setup()</code>:</p>
+<p>The jumpers are the hardware half of the three-vs-five choice. The software half is a single line in <code>setup()</code>:</p>
 
 <table class="table-bc-collapse">
 <tr class="tr-bg-352405">
@@ -450,11 +450,11 @@
 <th class="th-ddd">Sensors it wakes</th>
 <th class="th-ddd">Hardware it assumes</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.initThreeSensors();</code></td><td class="td-ddd">1, 3, 5</td><td class="td-ddd">Works in <strong>any</strong> jumper position — sensors 1, 3, 5 have their own permanent wires</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.initFiveSensors();</code></td><td class="td-ddd">1, 2, 3, 4, 5</td><td class="td-ddd">Requires <strong>both jumpers moved</strong> to DN2 / DN4 — otherwise sensors 2 and 4 read nonsense</td></tr>
+<tr><td class="td-ddd"><code>lineSensors.initThreeSensors();</code></td><td class="td-ddd">1, 3, 5</td><td class="td-ddd">Works in <strong>any</strong> jumper position — sensors 1, 3, 5 have their own permanent wires</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>lineSensors.initFiveSensors();</code></td><td class="td-ddd">1, 2, 3, 4, 5</td><td class="td-ddd">Requires <strong>both jumpers moved</strong> to DN2 / DN4 — otherwise sensors 2 and 4 read nonsense</td></tr>
 </table>
 
-<p>Notice the asymmetry, because it matters twice today. <code class="code-inline-bg-e8e8e8">initThreeSensors()</code> is safe everywhere — its three sensors are hardwired. <code class="code-inline-bg-e8e8e8">initFiveSensors()</code> makes a <em>promise about the hardware</em> — that pins 20 and 4 actually lead to line sensors. The code compiles either way; the compiler cannot see your jumpers. If the promise is false, nothing crashes and nothing warns you — sensors 2 and 4 simply report garbage. You will see this with your own eyes in Section 6, on purpose, because it is one of the most important lessons in robotics: <strong>hardware and software each keep promises the other can't check.</strong></p>
+<p>Notice the asymmetry, because it matters twice today. <code>initThreeSensors()</code> is safe everywhere — its three sensors are hardwired. <code>initFiveSensors()</code> makes a <em>promise about the hardware</em> — that pins 20 and 4 actually lead to line sensors. The code compiles either way; the compiler cannot see your jumpers. If the promise is false, nothing crashes and nothing warns you — sensors 2 and 4 simply report garbage. You will see this with your own eyes in Section 6, on purpose, because it is one of the most important lessons in robotics: <strong>hardware and software each keep promises the other can't check.</strong></p>
 
 <h3 class="h4-c-433014">5.5 Reading Into an Array — Three Values, One Variable</h3>
 
@@ -463,7 +463,7 @@
 <pre class="code-block-333-3"><span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
 
-<p>An array is a row of numbered boxes stored under one name. <code class="code-inline-bg-e8e8e8">lineSensorValues[NUM_SENSORS]</code> creates <code class="code-inline-bg-e8e8e8">NUM_SENSORS</code> boxes; a call like <code class="code-inline-bg-e8e8e8">lineSensors.read(lineSensorValues)</code> fills all of them in one shot. You then open an individual box with its <strong>index</strong> in square brackets — and here is the rule that catches everyone at least once: <strong>the boxes are numbered starting from ZERO.</strong> The first box is <code class="code-inline-bg-e8e8e8">lineSensorValues[0]</code>, not <code class="code-inline-bg-e8e8e8">[1]</code>.</p>
+<p>An array is a row of numbered boxes stored under one name. <code>lineSensorValues[NUM_SENSORS]</code> creates <code>NUM_SENSORS</code> boxes; a call like <code>lineSensors.read(lineSensorValues)</code> fills all of them in one shot. You then open an individual box with its <strong>index</strong> in square brackets — and here is the rule that catches everyone at least once: <strong>the boxes are numbered starting from ZERO.</strong> The first box is <code>lineSensorValues[0]</code>, not <code>[1]</code>.</p>
 
 <p>And that creates a genuinely tricky mismatch, because the <em>sensors</em> are numbered 1–5. Worse: in the three-sensor configuration, the array only has boxes for the sensors that are <em>awake</em>. Study this table until it feels obvious — it is the number-one source of Lesson 4 bugs:</p>
 
@@ -483,12 +483,12 @@
 <div class="callout-ffc107-bg-fff8e1-2">
 <div class="div-c-856404-2">⚠️ WARNING</div>
 <div class="div-c-856404">Index is not sensor number</div>
-<p class="p-mb-0">In the three-sensor configuration, the <em>center</em> sensor lives in box <code class="code-inline-bg-e8e8e8">[1]</code>. In the five-sensor configuration, the center moves to box <code class="code-inline-bg-e8e8e8">[2]</code>. Code that reads "the center sensor" by index must change when the configuration changes. Say it out loud: <strong>index counts awake sensors from zero; it does not name the sensor.</strong></p>
+<p class="p-mb-0">In the three-sensor configuration, the <em>center</em> sensor lives in box <code>[1]</code>. In the five-sensor configuration, the center moves to box <code>[2]</code>. Code that reads "the center sensor" by index must change when the configuration changes. Say it out loud: <strong>index counts awake sensors from zero; it does not name the sensor.</strong></p>
 </div>
 
 <div class="callout-9c27b0-bg-f3e5f5">
 <div class="div-c-6a1b9a">🔑 Key Term: Array</div>
-<p class="p-mb-0">A numbered row of same-type values stored under one name. Declared with a size (<code class="code-inline-bg-e8e8e8">unsigned int values[3];</code>), accessed by index in square brackets, and — always — indexed from zero. Arrays let one function call hand you many results at once, and let one loop process them all.</p>
+<p class="p-mb-0">A numbered row of same-type values stored under one name. Declared with a size (<code>unsigned int values[3];</code>), accessed by index in square brackets, and — always — indexed from zero. Arrays let one function call hand you many results at once, and let one loop process them all.</p>
 </div>
 
 <h3 class="h4-c-433014">5.6 The STANDARD HELPERS — Two Habits That Start Today</h3>
@@ -538,8 +538,8 @@ Call it at the TOP of loop().
 <p>Why now? Because Lesson 4 is the moment your robots stop being remote-controlled toys and start being <strong>machines that act on their own senses</strong>. From here on, programs will read sensors and move motors in response — and a robot that lunges the instant the power switch flips is a robot that drives off a desk, chews a USB cable, or startles someone into dropping it. Two habits, enforced by two helpers, book-wide from today:</p>
 
 <ul>
-<li><strong><code class="code-inline-bg-e8e8e8">waitForStart()</code> — the safety gate.</strong> Called at the <em>end</em> of <code class="code-inline-bg-e8e8e8">setup()</code>, always. The robot boots, finishes its setup work, then stops and waits: <em>"Press A to start."</em> Nothing moves at power-on — ever again. The half-second delay after the press exists so your hands are clear before anything happens.</li>
-<li><strong><code class="code-inline-bg-e8e8e8">checkBattery()</code> — the A+B battery check.</strong> Called at the <em>top</em> of <code class="code-inline-bg-e8e8e8">loop()</code>. Hold buttons A and B together at any moment and the display shows battery millivolts until you let go. Weak batteries cause the weirdest bugs in robotics — motors that stutter, sensors that drift, resets from nowhere — and now every robot answers "how are your batteries?" the same way. The combo-press trick inside it is the same pattern as Lesson 3's A+C reset.</li>
+<li><strong><code>waitForStart()</code> — the safety gate.</strong> Called at the <em>end</em> of <code>setup()</code>, always. The robot boots, finishes its setup work, then stops and waits: <em>"Press A to start."</em> Nothing moves at power-on — ever again. The half-second delay after the press exists so your hands are clear before anything happens.</li>
+<li><strong><code>checkBattery()</code> — the A+B battery check.</strong> Called at the <em>top</em> of <code>loop()</code>. Hold buttons A and B together at any moment and the display shows battery millivolts until you let go. Weak batteries cause the weirdest bugs in robotics — motors that stutter, sensors that drift, resets from nowhere — and now every robot answers "how are your batteries?" the same way. The combo-press trick inside it is the same pattern as Lesson 3's A+C reset.</li>
 </ul>
 
 <div class="callout-607d8b-bg-eceff1-2">
@@ -572,9 +572,9 @@ countdown ends. Every window must cross the tape.
   display.clear();
 }</pre>
 
-<p>This helper is Section 3.4 turned into code. For five seconds (that's <code class="code-inline-bg-e8e8e8">CAL_TIME_MS</code>), it calls <code class="code-inline-bg-e8e8e8">lineSensors.calibrate()</code> as fast as it can, while you slide the robot side to side across the tape. Each call takes a fresh reading on every sensor and quietly updates that sensor's personal record book — <em>brightest ever seen, darkest ever seen</em>. The <code class="code-inline-bg-e8e8e8">while (millis() - startTime &lt; CAL_TIME_MS)</code> pattern is the non-blocking clock trick from Lesson 3's boot-banner fix, reused: check the elapsed time each pass instead of freezing in one long delay, which is what lets the countdown on row 1 stay live.</p>
+<p>This helper is Section 3.4 turned into code. For five seconds (that's <code>CAL_TIME_MS</code>), it calls <code>lineSensors.calibrate()</code> as fast as it can, while you slide the robot side to side across the tape. Each call takes a fresh reading on every sensor and quietly updates that sensor's personal record book — <em>brightest ever seen, darkest ever seen</em>. The <code>while (millis() - startTime &lt; CAL_TIME_MS)</code> pattern is the non-blocking clock trick from Lesson 3's boot-banner fix, reused: check the elapsed time each pass instead of freezing in one long delay, which is what lets the countdown on row 1 stay live.</p>
 
-<p>The record books are the whole product of calibration. They live in RAM, they vanish at power-off, and every future <code class="code-inline-bg-e8e8e8">readCalibrated()</code> uses them to re-grade raw readings onto the honest 0–1000 scale.</p>
+<p>The record books are the whole product of calibration. They live in RAM, they vanish at power-off, and every future <code>readCalibrated()</code> uses them to re-grade raw readings onto the honest 0–1000 scale.</p>
 
 <h3 class="h4-c-433014">5.8 Displaying What the Robot Sees</h3>
 
@@ -600,12 +600,12 @@ Serial Monitor: the full 0-1000 values, tab-separated.
   <span class="tok-4ec9b6">Serial</span>.println();
 }</pre>
 
-<p>Two audiences, two displays. The <strong>Serial Monitor</strong> gets the full-precision values, tab-separated, one line per reading — that's your lab notebook, and it's where you'll copy numbers from during the experiments. The <strong>OLED</strong> gets a squeezed version, because this lesson runs the screen in its <strong>8-characters-by-2-rows layout</strong>: each 0–1000 value is divided by 10 and printed as two digits, giving a live <code class="code-inline-bg-e8e8e8">99 00 99</code>-style dashboard that fits the row exactly. Glance test: white floor reads near <strong>00</strong>, tape reads near <strong>99</strong>. In Act Two this function changes shape to fit five one-digit values plus a position line — you'll swap it in Section 6, Step 7.</p>
+<p>Two audiences, two displays. The <strong>Serial Monitor</strong> gets the full-precision values, tab-separated, one line per reading — that's your lab notebook, and it's where you'll copy numbers from during the experiments. The <strong>OLED</strong> gets a squeezed version, because this lesson runs the screen in its <strong>8-characters-by-2-rows layout</strong>: each 0–1000 value is divided by 10 and printed as two digits, giving a live <code>99 00 99</code>-style dashboard that fits the row exactly. Glance test: white floor reads near <strong>00</strong>, tape reads near <strong>99</strong>. In Act Two this function changes shape to fit five one-digit values plus a position line — you'll swap it in Section 6, Step 7.</p>
 
 <div class="callout-607d8b-bg-eceff1-2">
 <div class="div-c-3a5a3a-2">📘 NOTE</div>
 <div class="div-c-3a5a3a">why this lesson's screen looks different</div>
-<p>Lessons 2 and 3 opened with <code class="code-inline-bg-e8e8e8">display.setLayout21x8();</code>, which packs 21 small characters across 8 rows. Lesson 4 leaves that call out, and the screen falls back to its startup layout: <strong>8 big characters across 2 rows</strong>. That is a choice, not an oversight.</p>
+<p>Lessons 2 and 3 opened with <code>display.setLayout21x8();</code>, which packs 21 small characters across 8 rows. Lesson 4 leaves that call out, and the screen falls back to its startup layout: <strong>8 big characters across 2 rows</strong>. That is a choice, not an oversight.</p>
 <p class="p-mb-0">Here is the reasoning, and it is worth stealing. Today you are not reading the screen at a desk — you are sliding a robot across tape and watching numbers move from a foot away. Big wins. Three two-digit values plus their spaces come to exactly eight characters, so the dashboard fills the row and nothing is wasted. When Lesson 5 needs bar graphs and labels, it will ask for the 21-character layout again, because <em>that</em> job needs room more than it needs size. Match the layout to the reading distance.</p>
 </div>
 
@@ -722,7 +722,7 @@ scratch pad →  one global array, a slot per active sensor —
 <div class="div-fs-105em">✅ CHECKPOINT</div>
 <ul class="ul-ls-none-5">
 <li>☐ Build (✓) — still green: declarations alone don't do anything yet, but the compiler now knows every name we're about to use</li>
-<li>☐ Four hardware objects, three constants, one array — all above <code class="code-inline-bg-e8e8e8">setup()</code></li>
+<li>☐ Four hardware objects, three constants, one array — all above <code>setup()</code></li>
 </ul>
 </div>
 
@@ -754,7 +754,7 @@ scratch pad →  one global array, a slot per active sensor —
 <div class="div-fs-105em">✅ CHECKPOINT</div>
 <ul class="ul-ls-none-5">
 <li>☐ Build (✓) — and upload if you like: the robot boots to "Press A / to start" and waits politely. That's the gate working</li>
-<li>☐ <code class="code-inline-bg-e8e8e8">waitForStart()</code> is the <strong>last line of setup, always</strong></li>
+<li>☐ <code>waitForStart()</code> is the <strong>last line of setup, always</strong></li>
 </ul>
 </div>
 
@@ -770,7 +770,7 @@ scratch pad →  one global array, a slot per active sensor —
 4. end the line
 5. brief pause so the numbers don't blur</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> The raw read call is in <a href="#qr-linesensors" class="link-c-2e86ab">⚡ Quick Reference → Line sensor functions</a>, printing and the tab trick are in <a href="#qr-serial" class="link-c-2e86ab">⚡ Quick Reference → Serial Monitor</a>, and the pause is in <a href="#qr-timing" class="link-c-2e86ab">⚡ Quick Reference → Timing</a>. The for loop counts <code class="code-inline-bg-e8e8e8">i</code> from 0 up to NUM_SENSORS — the same lap-per-sensor pattern every sensor lesson uses from here forward. Copy it as written for now; <a href="#section-8a" class="link-c-2e86ab">Section 8A</a> takes it apart piece by piece before the challenges ask you to write your own.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> The raw read call is in <a href="#qr-linesensors" class="link-c-2e86ab">⚡ Quick Reference → Line sensor functions</a>, printing and the tab trick are in <a href="#qr-serial" class="link-c-2e86ab">⚡ Quick Reference → Serial Monitor</a>, and the pause is in <a href="#qr-timing" class="link-c-2e86ab">⚡ Quick Reference → Timing</a>. The for loop counts <code>i</code> from 0 up to NUM_SENSORS — the same lap-per-sensor pattern every sensor lesson uses from here forward. Copy it as written for now; <a href="#section-8a" class="link-c-2e86ab">Section 8A</a> takes it apart piece by piece before the challenges ask you to write your own.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
@@ -814,7 +814,7 @@ scratch pad →  one global array, a slot per active sensor —
 
 <h4 class="h4-c-433014">Step 5 — Add calibration (and meet a familiar red build)</h4>
 
-<p>Now make the readings honest. First, add one call in <code class="code-inline-bg-e8e8e8">setup()</code>, between the sensor init and the safety gate:</p>
+<p>Now make the readings honest. First, add one call in <code>setup()</code>, between the sensor init and the safety gate:</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">void</span> setup() {
   <span class="tok-4ec9b6">Serial</span>.begin(<span class="tok-b5cea8">115200</span>);
@@ -823,7 +823,7 @@ scratch pad →  one global array, a slot per active sensor —
   waitForStart();
 }</pre>
 
-<p><strong>Build. It fails.</strong> Red squiggle, and the terminal says something like <code class="code-inline-bg-e8e8e8">'calibrateSensors' was not declared in this scope</code>. Good — you have seen this exact error before, on purpose, in Lesson 2 Step 7. The compiler read <code class="code-inline-bg-e8e8e8">setup()</code> top-to-bottom, hit a name it had never heard of, and quit. The fix is the same as it was then: a <strong>function prototype</strong> up top, and the function itself down in helpers. Since we're about to need <code class="code-inline-bg-e8e8e8">showReadings()</code> too, declare <em>both</em> prototypes now — one trip:</p>
+<p><strong>Build. It fails.</strong> Red squiggle, and the terminal says something like <code>'calibrateSensors' was not declared in this scope</code>. Good — you have seen this exact error before, on purpose, in Lesson 2 Step 7. The compiler read <code>setup()</code> top-to-bottom, hit a name it had never heard of, and quit. The fix is the same as it was then: a <strong>function prototype</strong> up top, and the function itself down in helpers. Since we're about to need <code>showReadings()</code> too, declare <em>both</em> prototypes now — one trip:</p>
 
 <pre class="code-block-333-3"><span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
 <span class="tok-569cd6">void</span> calibrateSensors();
@@ -878,7 +878,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
   <span class="tok-4ec9b6">Serial</span>.println();
 }</pre>
 
-<p>And switch <code class="code-inline-bg-e8e8e8">loop()</code> from raw to calibrated:</p>
+<p>And switch <code>loop()</code> from raw to calibrated:</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
@@ -936,7 +936,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 4. loop(): ask readLine() for the position,
    hand it to showReadings()</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Changes 1, 2, and 4 are a line each — <code class="code-inline-bg-e8e8e8">initFiveSensors()</code> and <code class="code-inline-bg-e8e8e8">readLine()</code> are both in <a href="#qr-linesensors" class="link-c-2e86ab">⚡ Quick Reference → Line sensor functions</a>, and what the position scale means is in <a href="#qr-configs" class="link-c-2e86ab">⚡ Quick Reference → The two configurations</a>. Change 3 is the real work: rewrite <code class="code-inline-bg-e8e8e8">showReadings()</code> from its plan above — the display calls are in <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a>.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Changes 1, 2, and 4 are a line each — <code>initFiveSensors()</code> and <code>readLine()</code> are both in <a href="#qr-linesensors" class="link-c-2e86ab">⚡ Quick Reference → Line sensor functions</a>, and what the position scale means is in <a href="#qr-configs" class="link-c-2e86ab">⚡ Quick Reference → The two configurations</a>. Change 3 is the real work: rewrite <code>showReadings()</code> from its plan above — the display calls are in <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a>.</p>
 
 <details data-reveal="check" class="details-dee2e6-2">
 <summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
@@ -945,11 +945,11 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <pre class="code-block-333-3"><span class="tok-569cd6">const</span> <span class="tok-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">5</span>;                <span class="tok-6a9955">// Act Two: all five sensors</span></pre>
 
-<p><strong>7b.</strong> One line in <code class="code-inline-bg-e8e8e8">setup()</code>:</p>
+<p><strong>7b.</strong> One line in <code>setup()</code>:</p>
 
 <pre class="code-block-333-3">  lineSensors.initFiveSensors();    <span class="tok-6a9955">// requires jumpers on DN2 / DN4!</span></pre>
 
-<p><strong>7c.</strong> Replace <code class="code-inline-bg-e8e8e8">showReadings()</code> with the five-sensor version (and update its prototype to match — it takes a parameter now):</p>
+<p><strong>7c.</strong> Replace <code>showReadings()</code> with the five-sensor version (and update its prototype to match — it takes a parameter now):</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">void</span> showReadings(<span class="tok-569cd6">int</span> position);</pre>
 
@@ -977,7 +977,7 @@ Serial Monitor: full values plus the position.
   <span class="tok-4ec9b6">Serial</span>.println(position);
 }</pre>
 
-<p><strong>7d.</strong> And <code class="code-inline-bg-e8e8e8">loop()</code> now asks for the position:</p>
+<p><strong>7d.</strong> And <code>loop()</code> now asks for the position:</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
@@ -1011,7 +1011,7 @@ Serial Monitor: full values plus the position.
 
 <div class="callout-17a2b8-bg-d1ecf1-2">
 <div class="div-c-0c5460">👀 WHAT YOU SHOULD SEE</div>
-<p class="p-mb-0">All five digits now answer. Slide the tape slowly across the whole row and watch the "hill" of dark walk sensor to sensor: <code class="code-inline-bg-e8e8e8">90000 → 09000 → 00900 → 00090 → 00009</code>. Five eyes, all awake. And the bottom row is the star of Act Two: <strong>P:</strong> followed by the line position, 0–4000. Center the tape under the middle sensor and it reads near <strong>2000</strong>. Slide left, it falls toward 0; slide right, it climbs toward 4000 — and watch how it glides <em>through the in-between values</em>: 1200, 1450, 1700... That's the weighted average from Section 3.5, alive.</p>
+<p class="p-mb-0">All five digits now answer. Slide the tape slowly across the whole row and watch the "hill" of dark walk sensor to sensor: <code>90000 → 09000 → 00900 → 00090 → 00009</code>. Five eyes, all awake. And the bottom row is the star of Act Two: <strong>P:</strong> followed by the line position, 0–4000. Center the tape under the middle sensor and it reads near <strong>2000</strong>. Slide left, it falls toward 0; slide right, it climbs toward 4000 — and watch how it glides <em>through the in-between values</em>: 1200, 1450, 1700... That's the weighted average from Section 3.5, alive.</p>
 </div>
 
 <div class="callout-4caf50-bg-e8f5e9">
@@ -1039,14 +1039,14 @@ Serial Monitor: full values plus the position.
 </div>
 <div class="div-00474b">
 
-<p>Act One and Act Two each ended with working sensors. Now comes the payoff of the whole lesson: a <strong>fair, controlled comparison</strong> of three sensors against five. And here is the trick that makes it genuinely fair: with the jumpers now on DN2/DN4, sensors 1, 3, and 5 <em>still have their own permanent wires</em> — so <code class="code-inline-bg-e8e8e8">initThreeSensors()</code> works in this jumper position too. You can switch between the three-sensor program and the five-sensor program <strong>purely in software</strong>, on identical hardware, on the same surface, in the same light. Same robot, same everything — only the number of open eyes changes. That is what "controlled experiment" means.</p>
+<p>Act One and Act Two each ended with working sensors. Now comes the payoff of the whole lesson: a <strong>fair, controlled comparison</strong> of three sensors against five. And here is the trick that makes it genuinely fair: with the jumpers now on DN2/DN4, sensors 1, 3, and 5 <em>still have their own permanent wires</em> — so <code>initThreeSensors()</code> works in this jumper position too. You can switch between the three-sensor program and the five-sensor program <strong>purely in software</strong>, on identical hardware, on the same surface, in the same light. Same robot, same everything — only the number of open eyes changes. That is what "controlled experiment" means.</p>
 
 <h3 class="h3-c-00474b-3">7.1 Test A — Hide the Line</h3>
 
 <p><strong>Question:</strong> can the line disappear under the robot?</p>
 
 <ol>
-<li><strong>Flash the Act One program</strong> (three sensors — flip <code class="code-inline-bg-e8e8e8">NUM_SENSORS</code> back to 3, <code class="code-inline-bg-e8e8e8">initThreeSensors()</code>, three-value <code class="code-inline-bg-e8e8e8">showReadings()</code> — or keep a saved copy of each version — the <a href="../newproject.html?lesson=4&amp;kind=act_one" target="_blank" class="link-c-2e86ab">Project Maker has Act One</a> and <a href="../newproject.html?lesson=4&amp;kind=act_two" target="_blank" class="link-c-2e86ab">Act Two</a> preloaded as separate folders). Sweep, press A.</li>
+<li><strong>Flash the Act One program</strong> (three sensors — flip <code>NUM_SENSORS</code> back to 3, <code>initThreeSensors()</code>, three-value <code>showReadings()</code> — or keep a saved copy of each version — the <a href="../newproject.html?lesson=4&amp;kind=act_one" target="_blank" class="link-c-2e86ab">Project Maker has Act One</a> and <a href="../newproject.html?lesson=4&amp;kind=act_two" target="_blank" class="link-c-2e86ab">Act Two</a> preloaded as separate folders). Sweep, press A.</li>
 <li>Slide the line into the gap between sensors 1 and 3, using the Step 6 technique, until the dashboard reads all-white. Line hidden: <strong>yes / no?</strong></li>
 <li><strong>Flash the Act Two program</strong> (five sensors). Sweep, press A.</li>
 <li>Try to hide the line in that same gap — or anywhere under the row. Watch digits 2 and 4 in particular. Line hidden: <strong>yes / no?</strong></li>
@@ -1061,7 +1061,7 @@ Serial Monitor: full values plus the position.
 
 <p><strong>Question:</strong> how smoothly does each configuration track the line's position?</p>
 
-<p>For each program in turn, watch the <em>position</em> this time (in the three-sensor program, temporarily print <code class="code-inline-bg-e8e8e8">lineSensors.readLine(lineSensorValues)</code> to the Serial Monitor — remember its scale is <strong>0–2000</strong> with three sensors). Slide the line at a slow, steady pace from far left to far right, and watch how the number travels. Record what you observe:</p>
+<p>For each program in turn, watch the <em>position</em> this time (in the three-sensor program, temporarily print <code>lineSensors.readLine(lineSensorValues)</code> to the Serial Monitor — remember its scale is <strong>0–2000</strong> with three sensors). Slide the line at a slow, steady pace from far left to far right, and watch how the number travels. Record what you observe:</p>
 
 <table class="table-bc-collapse">
 <tr class="tr-bg-00393d">
@@ -1117,9 +1117,9 @@ Serial Monitor: full values plus the position.
 <tr><td class="td-ddd">Every reading sits at maximum (2000 raw / near 99) no matter the surface</td><td class="td-ddd">Sensors too far from the floor — robot held in the air reads “dark” because nothing bounces back</td><td class="td-ddd">Set the robot ON the surface. These sensors are designed for a few millimeters of range; air counts as black.</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd">Readings don't change at all when you slide the tape</td><td class="td-ddd">Program not actually running (still at the safety gate), or Serial Monitor watching an old session</td><td class="td-ddd">Look at the OLED: if it says “Press A / to start,” press A. If the port dropped after upload, reopen the Serial Monitor.</td></tr>
 <tr><td class="td-ddd">Calibrated values look wrong everywhere — white doesn't read near 0, tape doesn't read near 1000</td><td class="td-ddd">Bad calibration sweep: some window never crossed the tape, so its record book is missing a real “darkest”</td><td class="td-ddd">Re-run the program and sweep again — slowly, edge to edge, every window across the tape at least twice.</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd">Sensors 2 and 4 ignore the tape in five-sensor mode</td><td class="td-ddd">Hardware/software mismatch: <code class="code-inline-bg-e8e8e8">initFiveSensors()</code> in code, but the jumpers still sit in the factory position</td><td class="td-ddd">Power off, move both jumpers to DN2 / DN4 (Section 6, Step 8), power on, recalibrate.</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd">Sensors 2 and 4 ignore the tape in five-sensor mode</td><td class="td-ddd">Hardware/software mismatch: <code>initFiveSensors()</code> in code, but the jumpers still sit in the factory position</td><td class="td-ddd">Power off, move both jumpers to DN2 / DN4 (Section 6, Step 8), power on, recalibrate.</td></tr>
 <tr><td class="td-ddd">Everything reads “bright” near a window, works fine elsewhere</td><td class="td-ddd">Direct sunlight — the sun floods the phototransistors with infrared</td><td class="td-ddd">Move the test surface out of the sunbeam (Section 3.1). Curtains also work.</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd">The position readout is stuck at exactly 0 or exactly 4000</td><td class="td-ddd">The line is lost — no sensor sees dark, so <code class="code-inline-bg-e8e8e8">readLine()</code> reports its last-known side (Section 3.5)</td><td class="td-ddd">Put the line back under the array. If it IS under the array, recalibrate — the robot's idea of “dark” is stale.</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd">The position readout is stuck at exactly 0 or exactly 4000</td><td class="td-ddd">The line is lost — no sensor sees dark, so <code>readLine()</code> reports its last-known side (Section 3.5)</td><td class="td-ddd">Put the line back under the array. If it IS under the array, recalibrate — the robot's idea of “dark” is stale.</td></tr>
 <tr><td class="td-ddd">One sensor always reads darker than its neighbors, even after calibration</td><td class="td-ddd">Dust, tape gunk, or a fingerprint on that sensor window</td><td class="td-ddd">Power off and wipe the window gently with a dry cloth or cotton swab. Recalibrate.</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd">Left and right seem swapped — tape under the robot's left lights up the LAST column</td><td class="td-ddd">Mirrored mental picture of the sensor row (Section 4.1)</td><td class="td-ddd">Re-do the pose: robot on its back, blade toward you. Robot's left = your left in that pose only.</td></tr>
 <tr><td class="td-ddd">Readings were fine yesterday, garbage today</td><td class="td-ddd">Calibration doesn't survive power-off — its record books live in RAM</td><td class="td-ddd">Nothing is broken. Sweep again. Every session starts with a fresh calibration; that's by design.</td></tr>
@@ -1145,7 +1145,7 @@ Serial Monitor: full values plus the position.
 
 <p>Then it does the same for the <strong>for loop</strong> — the tool you have already been using since Step 4 without anyone taking it apart for you. An if statement lets code choose. A for loop lets code <em>repeat</em>. Section 9 asks for both, and two of its challenges ask for them <em>together</em>.</p>
 
-<p><em>(Your robot is back in the standard three-sensor configuration after Section 7.3 — every example here assumes that: center sensor = <code class="code-inline-bg-e8e8e8">lineSensorValues[1]</code>, position scale 0–2000.)</em></p>
+<p><em>(Your robot is back in the standard three-sensor configuration after Section 7.3 — every example here assumes that: center sensor = <code>lineSensorValues[1]</code>, position scale 0–2000.)</em></p>
 
 <h3 class="h3-c-00474b-3">8A.1 What Is a Decision in Code?</h3>
 
@@ -1153,13 +1153,13 @@ Serial Monitor: full values plus the position.
 
 <img src="../images/L04_GRAPHIC_4-01_if_anatomy.svg" alt="Anatomy of an if statement: the condition in parentheses is a yes/no question; the opening brace starts the conditional block; the action lines run only when the condition is true; the closing brace ends the block" class="img-d-block-3">
 
-<p>Three parts, always the same three parts. <strong>The condition</strong>, in parentheses — a question with a yes/no answer, usually built from a comparison: <code class="code-inline-bg-e8e8e8">&gt;</code> greater than, <code class="code-inline-bg-e8e8e8">&lt;</code> less than, <code class="code-inline-bg-e8e8e8">==</code> equal to (two equals signs — one is assignment, and that typo is a classic). <strong>The braces</strong>, which fence off the conditional block. <strong>The action</strong> — everything inside the fence, which runs only on "yes."</p>
+<p>Three parts, always the same three parts. <strong>The condition</strong>, in parentheses — a question with a yes/no answer, usually built from a comparison: <code>&gt;</code> greater than, <code>&lt;</code> less than, <code>==</code> equal to (two equals signs — one is assignment, and that typo is a classic). <strong>The braces</strong>, which fence off the conditional block. <strong>The action</strong> — everything inside the fence, which runs only on "yes."</p>
 
-<p>Reading it out loud helps more than you'd expect. <code class="code-inline-bg-e8e8e8">if (sensorValue &gt; 500) { ledYellow(1); }</code> reads: <em>"If the sensor value is greater than 500, turn the yellow LED on."</em> If the value is 500 or below, the whole block is skipped as if it weren't there, and the program carries on underneath.</p>
+<p>Reading it out loud helps more than you'd expect. <code>if (sensorValue &gt; 500) { ledYellow(1); }</code> reads: <em>"If the sensor value is greater than 500, turn the yellow LED on."</em> If the value is 500 or below, the whole block is skipped as if it weren't there, and the program carries on underneath.</p>
 
 <h3 class="h3-c-00474b-3">8A.2 Adding an Else</h3>
 
-<p>Often "skip it" isn't enough — you want a plan for both answers. <code class="code-inline-bg-e8e8e8">else</code> attaches the "no" plan:</p>
+<p>Often "skip it" isn't enough — you want a plan for both answers. <code>else</code> attaches the "no" plan:</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">if</span> (sensorValue &gt; <span class="tok-b5cea8">500</span>) {
   ledYellow(<span class="tok-b5cea8">1</span>);   <span class="tok-6a9955">// dark detected - LED ON</span>
@@ -1171,12 +1171,12 @@ Serial Monitor: full values plus the position.
 
 <div class="callout-9c27b0-bg-f3e5f5">
 <div class="div-c-6a1b9a">🔑 Key Term: Threshold</div>
-<p class="p-mb-0">The cutoff value a condition compares against — the 500 in <code class="code-inline-bg-e8e8e8">sensorValue &gt; 500</code>. On the calibrated 0–1000 scale, 500 is the natural "darker than halfway" line between white and tape. Choosing good thresholds from real data — like the readings in your Step 4 table — is a skill you'll use in every sensor lesson from now on.</p>
+<p class="p-mb-0">The cutoff value a condition compares against — the 500 in <code>sensorValue &gt; 500</code>. On the calibrated 0–1000 scale, 500 is the natural "darker than halfway" line between white and tape. Choosing good thresholds from real data — like the readings in your Step 4 table — is a skill you'll use in every sensor lesson from now on.</p>
 </div>
 
 <h3 class="h3-c-00474b-3">✏️ 8A.3 Worked Example #1: The Dark Detector</h3>
 
-<p><strong>Goal:</strong> yellow LED on whenever the center sensor sees the line. <strong>What we know:</strong> center = <code class="code-inline-bg-e8e8e8">lineSensorValues[1]</code> (three-sensor config!); calibrated values run 0–1000; "on the tape" comfortably clears 500. <strong>The code</strong>, inside <code class="code-inline-bg-e8e8e8">loop()</code> after the read:</p>
+<p><strong>Goal:</strong> yellow LED on whenever the center sensor sees the line. <strong>What we know:</strong> center = <code>lineSensorValues[1]</code> (three-sensor config!); calibrated values run 0–1000; "on the tape" comfortably clears 500. <strong>The code</strong>, inside <code>loop()</code> after the read:</p>
 
 <pre class="code-block-333-3">lineSensors.readCalibrated(lineSensorValues);
 
@@ -1186,11 +1186,11 @@ Serial Monitor: full values plus the position.
   ledYellow(<span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// light detected - LED OFF</span>
 }</pre>
 
-<p>Slide the tape under the center window: LED on. Slide it away: LED off. Your robot just made its first decision — about ten times a second, tirelessly, exactly as written. (Ten, not sixty: <code class="code-inline-bg-e8e8e8">DISPLAY_INTERVAL_MS</code> pauses the loop 100 ms every pass. Observation Experiment 5 makes you feel that limit.)</p>
+<p>Slide the tape under the center window: LED on. Slide it away: LED off. Your robot just made its first decision — about ten times a second, tirelessly, exactly as written. (Ten, not sixty: <code>DISPLAY_INTERVAL_MS</code> pauses the loop 100 ms every pass. Observation Experiment 5 makes you feel that limit.)</p>
 
 <h3 class="h3-c-00474b-3">✏️ 8A.4 Worked Example #2: The Line Position Indicator</h3>
 
-<p><strong>Goal:</strong> the display announces which zone the line is in — LEFT, CENTER, or RIGHT. <strong>What we know:</strong> with three sensors, <code class="code-inline-bg-e8e8e8">readLine()</code> gives 0–2000 with 1000 as dead center. Three zones need a <em>chain</em> of decisions — <code class="code-inline-bg-e8e8e8">else if</code> glues them together:</p>
+<p><strong>Goal:</strong> the display announces which zone the line is in — LEFT, CENTER, or RIGHT. <strong>What we know:</strong> with three sensors, <code>readLine()</code> gives 0–2000 with 1000 as dead center. Three zones need a <em>chain</em> of decisions — <code>else if</code> glues them together:</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
 display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
@@ -1202,7 +1202,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
   display.print(<span class="tok-4ec9b6">F</span>(<span class="tok-ce9178">"CENTER"</span>));
 }</pre>
 
-<p>Read the chain top to bottom, the way the robot does: <em>below 750? Say LEFT and stop. Otherwise, above 1250? Say RIGHT and stop. Otherwise — it must be in the middle band — say CENTER.</em> Exactly one branch fires. The trailing spaces in <code class="code-inline-bg-e8e8e8">"LEFT&nbsp;&nbsp;"</code> are doing quiet, honest work: they overwrite leftover letters from a longer previous word on the 8-character row.</p>
+<p>Read the chain top to bottom, the way the robot does: <em>below 750? Say LEFT and stop. Otherwise, above 1250? Say RIGHT and stop. Otherwise — it must be in the middle band — say CENTER.</em> Exactly one branch fires. The trailing spaces in <code>"LEFT&nbsp;&nbsp;"</code> are doing quiet, honest work: they overwrite leftover letters from a longer previous word on the 8-character row.</p>
 
 <h3 class="h3-c-00474b-3">🎯 8A.5 Quick Practice: Fill in the Blanks</h3>
 
@@ -1221,23 +1221,23 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">0</span>] &gt; <span class="tok-b5cea8">500</span>) {
   ledRed(<span class="tok-b5cea8">1</span>);
 }</pre>
-<p class="p-mb-0"><strong>Explanation:</strong> sensor 1 is the <em>first awake sensor</em>, so in the three-sensor configuration it lives in box <code class="code-inline-bg-e8e8e8">[0]</code> — index counts from zero. If you wrote <code class="code-inline-bg-e8e8e8">[1]</code>, you just met the number-one Lesson 4 bug from Section 5.5 — better here than in a competition.</p>
+<p class="p-mb-0"><strong>Explanation:</strong> sensor 1 is the <em>first awake sensor</em>, so in the three-sensor configuration it lives in box <code>[0]</code> — index counts from zero. If you wrote <code>[1]</code>, you just met the number-one Lesson 4 bug from Section 5.5 — better here than in a competition.</p>
 </div>
 </details>
 </div>
 
 <h3 class="h3-c-00474b-3">🔁 8A.6 Doing It Three Times Without Writing It Three Times: the for Loop</h3>
 
-<p>You have already written one of these. Back in Step 4 you typed this into <code class="code-inline-bg-e8e8e8">loop()</code>, and it worked, and nobody explained it:</p>
+<p>You have already written one of these. Back in Step 4 you typed this into <code>loop()</code>, and it worked, and nobody explained it:</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
   Serial.print(lineSensorValues[i]);
   Serial.print(<span class="tok-ce9178">'\t'</span>);
 }</pre>
 
-<p>Here is what it saved you, and it is an argument this lesson can make better than any other in the book. Without a loop, printing three sensors means writing the same two lines three times, once for box <code class="code-inline-bg-e8e8e8">[0]</code>, once for <code class="code-inline-bg-e8e8e8">[1]</code>, once for <code class="code-inline-bg-e8e8e8">[2]</code>. Tedious, but survivable.</p>
+<p>Here is what it saved you, and it is an argument this lesson can make better than any other in the book. Without a loop, printing three sensors means writing the same two lines three times, once for box <code>[0]</code>, once for <code>[1]</code>, once for <code>[2]</code>. Tedious, but survivable.</p>
 
-<p>Then Act Two woke sensors 2 and 4. <strong>Five sensors.</strong> Every one of those copied blocks would have to be found and duplicated again — and every place in your program that walked the array would need the same surgery, and the one you missed would fail silently. Instead you changed a single character: <code class="code-inline-bg-e8e8e8">NUM_SENSORS = 3</code> became <code class="code-inline-bg-e8e8e8">5</code>. The loop asked for the new number and kept working. <em>That</em> is what the loop bought you, and you already spent it today without noticing.</p>
+<p>Then Act Two woke sensors 2 and 4. <strong>Five sensors.</strong> Every one of those copied blocks would have to be found and duplicated again — and every place in your program that walked the array would need the same surgery, and the one you missed would fail silently. Instead you changed a single character: <code>NUM_SENSORS = 3</code> became <code>5</code>. The loop asked for the new number and kept working. <em>That</em> is what the loop bought you, and you already spent it today without noticing.</p>
 
 <div class="div-m-22px0">
 <img src="../images/L04_GRAPHIC_4-06_for_anatomy.svg" alt="Anatomy of a for loop: the START part creates the counter uint8_t i = 0 and runs once; the CONTINUE IF part tests i less than NUM_SENSORS before every lap; the UPDATE part runs i++ after each lap; the order each lap is start once, check, run body, update, check again" class="img-h-auto-5">
@@ -1249,27 +1249,27 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <table class="table-bc-collapse">
 <tr class="tr-bg-a04a5f">
 <th class="th-ddd">Lap</th>
-<th class="th-ddd">Is <code class="code-ff-uimonosp">i &lt; 3</code>?</th>
+<th class="th-ddd">Is <code>i &lt; 3</code>?</th>
 <th class="th-ddd">Body prints</th>
 <th class="th-ddd">Which sensor is that?</th>
 </tr>
-<tr><td class="td-ddd">i = 0</td><td class="td-ddd">0 &lt; 3 &rarr; yes</td><td class="td-ddd"><code class="code-ff-uimonosp">lineSensorValues[0]</code></td><td class="td-ddd">Sensor 1 &mdash; far left</td></tr>
-<tr><td class="td-ddd">i = 1</td><td class="td-ddd">1 &lt; 3 &rarr; yes</td><td class="td-ddd"><code class="code-ff-uimonosp">lineSensorValues[1]</code></td><td class="td-ddd">Sensor 3 &mdash; center</td></tr>
-<tr><td class="td-ddd">i = 2</td><td class="td-ddd">2 &lt; 3 &rarr; yes</td><td class="td-ddd"><code class="code-ff-uimonosp">lineSensorValues[2]</code></td><td class="td-ddd">Sensor 5 &mdash; far right</td></tr>
+<tr><td class="td-ddd">i = 0</td><td class="td-ddd">0 &lt; 3 &rarr; yes</td><td class="td-ddd"><code>lineSensorValues[0]</code></td><td class="td-ddd">Sensor 1 &mdash; far left</td></tr>
+<tr><td class="td-ddd">i = 1</td><td class="td-ddd">1 &lt; 3 &rarr; yes</td><td class="td-ddd"><code>lineSensorValues[1]</code></td><td class="td-ddd">Sensor 3 &mdash; center</td></tr>
+<tr><td class="td-ddd">i = 2</td><td class="td-ddd">2 &lt; 3 &rarr; yes</td><td class="td-ddd"><code>lineSensorValues[2]</code></td><td class="td-ddd">Sensor 5 &mdash; far right</td></tr>
 <tr><td class="td-ddd">i = 3</td><td class="td-ddd">3 &lt; 3 &rarr; <strong>no</strong></td><td class="td-ddd">nothing &mdash; the loop ends</td><td class="td-ddd">&mdash;</td></tr>
 </table>
 
-<p>Read the last row twice. The loop stops the moment the test fails, which is why <code class="code-inline-bg-e8e8e8">i &lt; NUM_SENSORS</code> visits boxes 0, 1 and 2 — three laps — and never touches a box numbered 3. That is not a coincidence; it is the same zero-counting rule from Section 5.5, wearing a different hat. A loop written <code class="code-inline-bg-e8e8e8">i &lt;= NUM_SENSORS</code> would reach for a fourth box that does not exist.</p>
+<p>Read the last row twice. The loop stops the moment the test fails, which is why <code>i &lt; NUM_SENSORS</code> visits boxes 0, 1 and 2 — three laps — and never touches a box numbered 3. That is not a coincidence; it is the same zero-counting rule from Section 5.5, wearing a different hat. A loop written <code>i &lt;= NUM_SENSORS</code> would reach for a fourth box that does not exist.</p>
 
 <div class="callout-ffc107-bg-fff8e1-2">
 <div class="div-c-856404-2">⚠️ WARNING</div>
 <div class="div-c-856404">the two loops that never end</div>
-<p class="p-mb-0">Forget the <code class="code-inline-bg-e8e8e8">i++</code> and the counter never moves: the test stays true forever and your robot freezes with the screen half-drawn. Put a semicolon right after the closing parenthesis — <code class="code-inline-bg-e8e8e8">for (...);</code> — and the loop runs an empty body the correct number of times and then executes your block <em>once</em>. Both compile clean. Neither is a compiler's problem to catch; they are yours.</p>
+<p class="p-mb-0">Forget the <code>i++</code> and the counter never moves: the test stays true forever and your robot freezes with the screen half-drawn. Put a semicolon right after the closing parenthesis — <code>for (...);</code> — and the loop runs an empty body the correct number of times and then executes your block <em>once</em>. Both compile clean. Neither is a compiler's problem to catch; they are yours.</p>
 </div>
 
 <h3 class="h3-c-00474b-3">🔁 8A.7 A Loop with a Decision Inside</h3>
 
-<p>An if statement chooses. A for loop repeats. Put one inside the other and you get the shape most real robot code is made of — and you already own an example of it. This is <code class="code-inline-bg-e8e8e8">showReadings()</code> from Section 5.8, the function drawing your OLED right now:</p>
+<p>An if statement chooses. A for loop repeats. Put one inside the other and you get the shape most real robot code is made of — and you already own an example of it. This is <code>showReadings()</code> from Section 5.8, the function drawing your OLED right now:</p>
 
 <pre class="code-block-333-3"><span class="tok-569cd6">for</span> (<span class="tok-569cd6">uint8_t</span> i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
   <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> scaled = lineSensorValues[i] / <span class="tok-b5cea8">10</span>;
@@ -1279,11 +1279,11 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
   <span class="tok-569cd6">if</span> (i &lt; NUM_SENSORS - <span class="tok-b5cea8">1</span>) display.print(<span class="tok-ce9178">' '</span>);
 }</pre>
 
-<p>Three ifs, all inside one loop, each answering a question about <em>this lap only</em>. The last one is the interesting one: <code class="code-inline-bg-e8e8e8">i &lt; NUM_SENSORS - 1</code> is true on every lap except the final one, so a space goes <em>between</em> the numbers and never after the last. That single line is why your display reads <code class="code-inline-bg-e8e8e8">42 87 13</code> and not <code class="code-inline-bg-e8e8e8">42 87 13 </code> with a stray gap pushing the row one character too wide.</p>
+<p>Three ifs, all inside one loop, each answering a question about <em>this lap only</em>. The last one is the interesting one: <code>i &lt; NUM_SENSORS - 1</code> is true on every lap except the final one, so a space goes <em>between</em> the numbers and never after the last. That single line is why your display reads <code>42 87 13</code> and not <code>42 87 13 </code> with a stray gap pushing the row one character too wide.</p>
 
 <p>Notice what the loop and the if are each responsible for. The loop decides <strong>how many times</strong>. The if decides <strong>what happens this time</strong>. Keep those two jobs straight and nested code stops being confusing — and you will need them together within the hour, because two of the Section 9 challenges are exactly this shape.</p>
 
-<h3 class="h3-c-00474b-3">🔁 8A.8 Remembering Where You Were: a <code class="code-inline-bg-e8e8e8">bool</code> as Memory</h3>
+<h3 class="h3-c-00474b-3">🔁 8A.8 Remembering Where You Were: a <code>bool</code> as Memory</h3>
 
 <p>Every program you have written so far answers the same question over and over: <em>what is true right now?</em> The sensor is dark, so the LED is on. The sensor is light, so the LED is off. Ask again a tenth of a second later and the answer is fresh. Nothing is remembered, and nothing needs to be.</p>
 
@@ -1294,16 +1294,16 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
     crossings++;
 }</pre>
 
-<p>The loop runs about ten times a second. The tape sits under the sensor for perhaps half a second. That is five trips through the <code class="code-inline-bg-e8e8e8">if</code>, all of them true, all of them adding one — for a single crossing. The count runs away and the number on the display is meaningless.</p>
+<p>The loop runs about ten times a second. The tape sits under the sensor for perhaps half a second. That is five trips through the <code>if</code>, all of them true, all of them adding one — for a single crossing. The count runs away and the number on the display is meaningless.</p>
 
 <p>The bug is not in the comparison. The comparison is right: the sensor really <em>is</em> over the tape, five times in a row. The bug is that you asked the wrong question. You do not want to know <strong>whether the sensor is on the line</strong>. You want to know <strong>whether it just arrived</strong> — and "just arrived" is not a fact about this instant. It is a fact about this instant <em>compared to the last one</em>.</p>
 
 <div class="callout-2196f3-bg-e3f2fd">
-<div class="div-c-1565c0">&lt;/&gt; A <code class="code-inline-bg-e8e8e8">bool</code> that outlives one trip through the loop</div>
+<div class="div-c-1565c0">&lt;/&gt; A <code>bool</code> that outlives one trip through the loop</div>
 <div class="div-b-white-3">
-<code class="code-inline-bg-e8e8e8">bool</code> — true or false, a yes/no switch — you met it in Lesson 2 §3.2b as a <em>type</em>. Here it takes a <em>job</em>: holding one fact from one loop into the next.
+<code>bool</code> — true or false, a yes/no switch — you met it in Lesson 2 §3.2b as a <em>type</em>. Here it takes a <em>job</em>: holding one fact from one loop into the next.
 </div>
-<p class="p-mb-0-2">A variable declared <strong>above</strong> <code class="code-inline-bg-e8e8e8">loop()</code> — in GLOBAL VARIABLES — is created once and keeps its value forever. A variable declared <strong>inside</strong> <code class="code-inline-bg-e8e8e8">loop()</code> is born and dies on every trip. That placement is the whole difference between a robot that remembers and one that cannot.</p>
+<p class="p-mb-0-2">A variable declared <strong>above</strong> <code>loop()</code> — in GLOBAL VARIABLES — is created once and keeps its value forever. A variable declared <strong>inside</strong> <code>loop()</code> is born and dies on every trip. That placement is the whole difference between a robot that remembers and one that cannot.</p>
 </div>
 
 <p>So keep a flag that records where you were, and compare it to where you are:</p>
@@ -1320,41 +1320,41 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 }
 onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday</span></pre>
 
-<p>Read the middle line out loud: <em>"if it is dark now and it was not dark before."</em> That is an <strong>edge</strong> — the moment a value changes, not the stretch of time it stays changed. The five true readings are still five true readings, but only the first of them has a false <code class="code-inline-bg-e8e8e8">onLine</code> sitting behind it, so only the first one counts.</p>
+<p>Read the middle line out loud: <em>"if it is dark now and it was not dark before."</em> That is an <strong>edge</strong> — the moment a value changes, not the stretch of time it stays changed. The five true readings are still five true readings, but only the first of them has a false <code>onLine</code> sitting behind it, so only the first one counts.</p>
 
-<p>The last line is the one people forget, and forgetting it breaks everything in a way that is hard to see: without <code class="code-inline-bg-e8e8e8">onLine = nowDark;</code> the flag never updates, the second half of the test is true forever, and you are back to counting hundreds. The flag has to be brought up to date at the end of every trip, whether anything happened or not.</p>
+<p>The last line is the one people forget, and forgetting it breaks everything in a way that is hard to see: without <code>onLine = nowDark;</code> the flag never updates, the second half of the test is true forever, and you are back to counting hundreds. The flag has to be brought up to date at the end of every trip, whether anything happened or not.</p>
 
 <div class="callout-607d8b-bg-eceff1-2">
 <div class="div-c-37474f">📘 NOTE</div>
 <p class="p-mb-0">Real sensors do not switch cleanly. Right at the threshold a reading can flicker across the line several times in a few milliseconds, and each flicker is a fresh "arrival." The cure is to arm and disarm at two <em>different</em> values — count when it climbs past 600, but do not re-arm until it drops below 400. The gap between them is a no-man's-land that noise cannot rattle around in. That is <strong>hysteresis</strong>, and you will meet it again wherever a robot has to decide that something has genuinely changed.</p>
 </div>
 
-<h3 class="h3-c-00474b-3">🔁 8A.9 "Close Enough": <code class="code-inline-bg-e8e8e8">abs()</code> and the Deadband</h3>
+<h3 class="h3-c-00474b-3">🔁 8A.9 "Close Enough": <code>abs()</code> and the Deadband</h3>
 
-<p>Some questions are not "is it dark?" but "how far off am I?" Ask the line sensors for a position with <code class="code-inline-bg-e8e8e8">readLine()</code> and you get a number from 0 to 2000, with 1000 meaning dead center. Subtract, and you have the most useful quantity in robotics:</p>
+<p>Some questions are not "is it dark?" but "how far off am I?" Ask the line sensors for a position with <code>readLine()</code> and you get a number from 0 to 2000, with 1000 meaning dead center. Subtract, and you have the most useful quantity in robotics:</p>
 
 <pre class="code-block-bg-1e1e1e-4"><span class="tok-569cd6">int</span> error = position - <span class="tok-b5cea8">1000</span>;   <span class="tok-6a9955">// how far off centre, and which way</span></pre>
 
-<p>That single subtraction carries two facts at once. Its <strong>size</strong> says how wrong you are; its <strong>sign</strong> says which way. Position 1400 gives <code class="code-inline-bg-e8e8e8">error = 400</code>; position 600 gives <code class="code-inline-bg-e8e8e8">error = -400</code>. Equally wrong, opposite directions — which is exactly what you need to know to correct it.</p>
+<p>That single subtraction carries two facts at once. Its <strong>size</strong> says how wrong you are; its <strong>sign</strong> says which way. Position 1400 gives <code>error = 400</code>; position 600 gives <code>error = -400</code>. Equally wrong, opposite directions — which is exactly what you need to know to correct it.</p>
 
-<p>But now you want to ask "am I close enough to stop?" and the sign gets in the way. <code class="code-inline-bg-e8e8e8">error &lt; 100</code> is true for −400, which is not close at all. You need the size <em>without</em> the sign:</p>
+<p>But now you want to ask "am I close enough to stop?" and the sign gets in the way. <code>error &lt; 100</code> is true for −400, which is not close at all. You need the size <em>without</em> the sign:</p>
 
 <div class="callout-2196f3-bg-e3f2fd">
-<div class="div-c-1565c0">&lt;/&gt; <code class="code-inline-bg-e8e8e8">abs()</code> — throw away the sign, keep the size</div>
+<div class="div-c-1565c0">&lt;/&gt; <code>abs()</code> — throw away the sign, keep the size</div>
 <div class="div-b-white-3">
-<code class="code-inline-bg-e8e8e8">abs(x)</code> — the <em>absolute value</em> of x: how far it is from zero, always positive — <code class="code-inline-bg-e8e8e8">abs(-400)</code> is <code class="code-inline-bg-e8e8e8">400</code>, and so is <code class="code-inline-bg-e8e8e8">abs(400)</code>.
+<code>abs(x)</code> — the <em>absolute value</em> of x: how far it is from zero, always positive — <code>abs(-400)</code> is <code>400</code>, and so is <code>abs(400)</code>.
 </div>
 <p class="p-mb-0-2">Use it whenever you care <strong>how far off</strong> something is but not <strong>which side</strong> it is off on. Keep the signed value too — you still need the sign to know which way to correct.</p>
 </div>
 
-<p>So <code class="code-inline-bg-e8e8e8">abs(error) &lt; 100</code> asks the real question: am I within 100 of centre, on either side?</p>
+<p>So <code>abs(error) &lt; 100</code> asks the real question: am I within 100 of centre, on either side?</p>
 
-<p>Why not simply demand <code class="code-inline-bg-e8e8e8">error == 0</code>? Because the robot will never get there, and it will destroy itself trying. Position 1002 is off by 2, so it corrects. The correction overshoots to 997, so it corrects the other way. Overshoot, correct, overshoot, correct — the robot buzzes in place around the target it cannot quite land on, forever. It is not broken. It is doing precisely what you asked, and what you asked was impossible.</p>
+<p>Why not simply demand <code>error == 0</code>? Because the robot will never get there, and it will destroy itself trying. Position 1002 is off by 2, so it corrects. The correction overshoots to 997, so it corrects the other way. Overshoot, correct, overshoot, correct — the robot buzzes in place around the target it cannot quite land on, forever. It is not broken. It is doing precisely what you asked, and what you asked was impossible.</p>
 
 <div class="callout-2196f3-bg-e3f2fd">
 <div class="div-c-1565c0">&lt;/&gt; The <strong>deadband</strong> — a band where the robot does nothing</div>
 <div class="div-b-white-3">
-A <strong>deadband</strong> is a tolerance around the target inside which you take no action — <code class="code-inline-bg-e8e8e8">if (abs(error) &lt; DEADBAND) { motors.setSpeeds(0, 0); }</code>
+A <strong>deadband</strong> is a tolerance around the target inside which you take no action — <code>if (abs(error) &lt; DEADBAND) { motors.setSpeeds(0, 0); }</code>
 </div>
 <p class="p-mb-0-2">Too narrow and the robot hunts and buzzes. Too wide and it stops visibly off-target and calls it done. The right width is a number you find by trying, not one you can look up — it depends on your sensors, your surface, and your speed.</p>
 </div>
@@ -1363,7 +1363,7 @@ A <strong>deadband</strong> is a tolerance around the target inside which you ta
 
 <div class="callout-d4a574-bg-e8d4c4">
 <div class="div-c-8a5a2b">🚀 Where this goes next</div>
-<p class="p-mb-0">Right now the correction is blunt: off-centre, so pivot. In Lesson 8 you will make the correction <em>proportional</em> to the error — a small error gets a gentle nudge, a big one a hard shove — and the robot stops lurching and starts gliding. The <code class="code-inline-bg-e8e8e8">error = position - 1000</code> line you write in Challenge 5 today is the same line that becomes line following four lessons from now. This is not a warm-up for it; it <em>is</em> it, without a name yet.</p>
+<p class="p-mb-0">Right now the correction is blunt: off-centre, so pivot. In Lesson 8 you will make the correction <em>proportional</em> to the error — a small error gets a gentle nudge, a big one a hard shove — and the robot stops lurching and starts gliding. The <code>error = position - 1000</code> line you write in Challenge 5 today is the same line that becomes line following four lessons from now. This is not a warm-up for it; it <em>is</em> it, without a name yet.</p>
 </div>
 
 <div class="callout-d4a574-bg-e8d4c4">
@@ -1386,7 +1386,7 @@ A <strong>deadband</strong> is a tolerance around the target inside which you ta
 </div>
 <div class="div-7a5905">
 
-<p>Now it's your turn. Five challenges, easy to advanced, each one an if statement wearing a different costume — and the last two put the motors back in play. <strong>All challenges run in the standard three-sensor configuration</strong> (your robot is already there after Section 7.3): center sensor = <code class="code-inline-bg-e8e8e8">lineSensorValues[1]</code>, position scale 0–2000, center 1000. Every challenge card says where to work; challenges that replace your loop get their own project copy so your main build stays clean.</p>
+<p>Now it's your turn. Five challenges, easy to advanced, each one an if statement wearing a different costume — and the last two put the motors back in play. <strong>All challenges run in the standard three-sensor configuration</strong> (your robot is already there after Section 7.3): center sensor = <code>lineSensorValues[1]</code>, position scale 0–2000, center 1000. Every challenge card says where to work; challenges that replace your loop get their own project copy so your main build stays clean.</p>
 
 <div id="challenge-1" class="div-7d5283" data-challenge="4.1" data-kind="challenge" data-difficulty="easy" data-grasp="light">
 <div class="div-bg-7a5905"><strong>Challenge 1: Line Light</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-4a7fb5">Light</span></span></div>
@@ -1423,8 +1423,8 @@ else:
 </div>
 <div class="div-bb-1pxsolid">
 <iframe src="../timer.html?v=4&amp;min=3&amp;label=Challenge+1" title="3-minute countdown timer for Challenge 1" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
-<p><strong>Hints:</strong> center sensor = <code class="code-inline-bg-e8e8e8">lineSensorValues[1]</code> · clear the message by printing spaces · the display work goes in <em>both</em> branches.</p>
-<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code class="code-inline-bg-e8e8e8-4">lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code class="code-inline-bg-e8e8e8-4">ledYellow(1)/ledYellow(0)</code> <span class="tok-666">LED on/off</span> · <code class="code-inline-bg-e8e8e8-4">display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code class="code-inline-bg-e8e8e8-4">display.print(F("LINE!"))</code> <span class="tok-666">print / F("     ") to erase</span></p>
+<p><strong>Hints:</strong> center sensor = <code>lineSensorValues[1]</code> · clear the message by printing spaces · the display work goes in <em>both</em> branches.</p>
+<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code>ledYellow(1)/ledYellow(0)</code> <span class="tok-666">LED on/off</span> · <code>display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code>display.print(F("LINE!"))</code> <span class="tok-666">print / F("     ") to erase</span></p>
 </div>
 <details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
@@ -1477,9 +1477,9 @@ each loop, read the center sensor:
 </div>
 <div class="div-bb-1pxsolid">
 <iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+2" title="4-minute countdown timer for Challenge 2" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
-<p><strong>The trap (and the whole point):</strong> "if dark, add one" counts hundreds per crossing — the loop runs ten times a second and the line is under the sensor for many loops. You need to count <em>arrivals</em>, not <em>presence</em>: add one only at the moment the sensor <strong>goes from white to dark</strong>. Track where you were with a <code class="code-inline-bg-e8e8e8">bool</code> variable.</p>
+<p><strong>The trap (and the whole point):</strong> "if dark, add one" counts hundreds per crossing — the loop runs ten times a second and the line is under the sensor for many loops. You need to count <em>arrivals</em>, not <em>presence</em>: add one only at the moment the sensor <strong>goes from white to dark</strong>. Track where you were with a <code>bool</code> variable.</p>
 <p><strong>Bonus polish:</strong> use two different thresholds — count at &gt;600, release at &lt;400 — so a reading that jitters around one cutoff can't double-count. (That trick has a name: <em>hysteresis</em>. It's in the glossary.)</p>
-<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code class="code-inline-bg-e8e8e8-4">lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code class="code-inline-bg-e8e8e8-4">display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code class="code-inline-bg-e8e8e8-4">display.print(count)</code> <span class="tok-666">print a number</span></p>
+<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code>display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code>display.print(count)</code> <span class="tok-666">print a number</span></p>
 </div>
 <details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
@@ -1500,7 +1500,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &lt; <span class="tok-b5cea8">400</span> &amp;&amp; onLine) {
   onLine = <span class="tok-569cd6">false</span>;                   <span class="tok-6a9955">// the line has fully LEFT</span>
 }</pre>
-<p class="p-mb-0">The <code class="code-inline-bg-e8e8e8">&amp;&amp; !onLine</code> is the arrival detector: dark AND we weren't already on it. The gap between 600 and 400 is the hysteresis band — inside it, nothing changes state, so jitter can't ring the counter.</p>
+<p class="p-mb-0">The <code>&amp;&amp; !onLine</code> is the arrival detector: dark AND we weren't already on it. The gap between 600 and 400 is the hysteresis band — inside it, nothing changes state, so jitter can't ring the counter.</p>
 </div>
 </details>
 </div>
@@ -1514,7 +1514,7 @@ lineSensors.readCalibrated(lineSensorValues);
 <div class="div-p-0">
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="p-m-0">turn the bottom display row into a live pointer — a <code class="code-inline-bg-e8e8e8">^</code> character that slides along the 8-character row, tracking the line's position under the robot. Line far left: <code class="code-inline-bg-e8e8e8">^</code> at the row's left edge. Dead center: middle of the row. Far right: right edge.</p>
+<p class="p-m-0">turn the bottom display row into a live pointer — a <code>^</code> character that slides along the 8-character row, tracking the line's position under the robot. Line far left: <code>^</code> at the row's left edge. Dead center: middle of the row. Far right: right edge.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
@@ -1538,8 +1538,8 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 </div>
 <div class="div-bb-1pxsolid">
 <iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+3" title="4-minute countdown timer for Challenge 3" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
-<p><strong>Hints:</strong> <code class="code-inline-bg-e8e8e8">readLine()</code> gives 0–2000 (three sensors) · you need to squash 0–2000 down to a column number 0–7 · then print 8 characters: seven spaces and one <code class="code-inline-bg-e8e8e8">^</code>, with an if deciding which is which.</p>
-<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code class="code-inline-bg-e8e8e8-4">display.gotoXY(col,row)</code> <span class="tok-666">move cursor</span> · <code class="code-inline-bg-e8e8e8-4">display.print(F("..."))</code> <span class="tok-666">print text</span></p>
+<p><strong>Hints:</strong> <code>readLine()</code> gives 0–2000 (three sensors) · you need to squash 0–2000 down to a column number 0–7 · then print 8 characters: seven spaces and one <code>^</code>, with an if deciding which is which.</p>
+<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code>display.gotoXY(col,row)</code> <span class="tok-666">move cursor</span> · <code>display.print(F("..."))</code> <span class="tok-666">print text</span></p>
 </div>
 <details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
@@ -1588,9 +1588,9 @@ each loop: read all sensors — is ANY sensor over the line?
 </div>
 <div class="div-bb-1pxsolid">
 <iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+4" title="4-minute countdown timer for Challenge 4" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
-<p><strong>New ingredient:</strong> motors are back — add <code class="code-inline-bg-e8e8e8">Zumo32U4Motors motors;</code> to your hardware objects. Keep the speed gentle (<code class="code-inline-bg-e8e8e8">80</code> is plenty). "Any sensor" means checking all three boxes of the array — a <code class="code-inline-bg-e8e8e8">for</code> loop with an if inside beats writing three ifs.</p>
-<p><strong>Safety notes:</strong> this robot moves by itself — clear runway, and appreciate that <code class="code-inline-bg-e8e8e8">waitForStart()</code> is now doing exactly the job it was hired for. If it curves as it creeps, your Lesson 3 TRIM values fix that.</p>
-<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code class="code-inline-bg-e8e8e8-4">lineSensorValues[0] / [2]</code> <span class="tok-666">the edge sensors</span> · <code class="code-inline-bg-e8e8e8-4">ledYellow(1)/ledRed(1)</code> <span class="tok-666">warn</span> · <code class="code-inline-bg-e8e8e8-4">motors.setSpeeds(0,0)</code> <span class="tok-666">stop</span></p>
+<p><strong>New ingredient:</strong> motors are back — add <code>Zumo32U4Motors motors;</code> to your hardware objects. Keep the speed gentle (<code>80</code> is plenty). "Any sensor" means checking all three boxes of the array — a <code>for</code> loop with an if inside beats writing three ifs.</p>
+<p><strong>Safety notes:</strong> this robot moves by itself — clear runway, and appreciate that <code>waitForStart()</code> is now doing exactly the job it was hired for. If it curves as it creeps, your Lesson 3 TRIM values fix that.</p>
+<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[0] / [2]</code> <span class="tok-666">the edge sensors</span> · <code>ledYellow(1)/ledRed(1)</code> <span class="tok-666">warn</span> · <code>motors.setSpeeds(0,0)</code> <span class="tok-666">stop</span></p>
 </div>
 <details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
@@ -1656,7 +1656,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+5" title="4-minute countdown timer for Challenge 5" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 <p><strong>Think it through before coding:</strong> position below center → the line is to the robot's <em>left</em> → pivot left (left track backward, right track forward). Above center → mirror it. Near center → stop. "Near" matters: demand <em>exactly</em> 1000 and the robot will vibrate forever around the target — give it a tolerance band (a <em>deadband</em>) and it settles.</p>
 <p><strong>Why this is the advanced card:</strong> you are closing the full loop — sense → compute error → correct — which is, in miniature, the architecture of line following (Lesson 8) and PID control (Lesson 15). You're not preparing to do robotics anymore. This IS robotics.</p>
-<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code class="code-inline-bg-e8e8e8-4">lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code class="code-inline-bg-e8e8e8-4">motors.setSpeeds(L,R)</code> <span class="tok-666">drive</span> · <code class="code-inline-bg-e8e8e8-4">center of range ≈ 1000</code> <span class="tok-666">the target</span></p>
+<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code>motors.setSpeeds(L,R)</code> <span class="tok-666">drive</span> · <code>center of range ≈ 1000</code> <span class="tok-666">the target</span></p>
 </div>
 <details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
@@ -1679,7 +1679,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 } <span class="tok-569cd6">else</span> {
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);                      <span class="tok-6a9955">// centered - hold</span>
 }</pre>
-<p class="p-mb-0">The pivot directions follow the Lesson 3 rule — a robot turns toward its slower (here, backward) track. <code class="code-inline-bg-e8e8e8">error</code> is a concept worth savoring: one signed number that says both <em>which way</em> and <em>how far</em>. In Lesson 15, PID does nothing but stare at this exact number — you've just met the main character early.</p>
+<p class="p-mb-0">The pivot directions follow the Lesson 3 rule — a robot turns toward its slower (here, backward) track. <code>error</code> is a concept worth savoring: one signed number that says both <em>which way</em> and <em>how far</em>. In Lesson 15, PID does nothing but stare at this exact number — you've just met the main character early.</p>
 </div>
 </details>
 </div>
@@ -1703,7 +1703,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 
 <h4 data-challenge="4.m1" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 1: White World</h4>
-<p>Swap <code class="code-inline-bg-e8e8e8">readLine()</code> for <code class="code-inline-bg-e8e8e8">readLineWhite()</code> in your position code and run it on your normal surface. The position goes insane. <em>Why exactly</em> — what is the robot now hunting for? Where would this version be the right tool?</p>
+<p>Swap <code>readLine()</code> for <code>readLineWhite()</code> in your position code and run it on your normal surface. The position goes insane. <em>Why exactly</em> — what is the robot now hunting for? Where would this version be the right tool?</p>
 <details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">Section 3.5, last paragraph — "opposite wardrobe." It flips every value and hunts the <em>brightest</em> thing. Right tool for a white line on a dark floor (some competition mats are exactly that).</p></div></details>
 
 <h4 data-challenge="4.m2" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 2: The Covered Eye</h4>
@@ -1720,7 +1720,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <h4 data-challenge="4.m5" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 5: The Speed Reader</h4>
 <p>With the position program running, slide the surface under the robot slowly, then fast, then as fast as you dare. At some speed the position readout stops keeping up. Estimate: how many readings per second is the program taking, and what constant would you change to react faster?</p>
-<details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The loop waits <code class="code-inline-bg-e8e8e8">DISPLAY_INTERVAL_MS</code> = 100 ms per pass — about 10 readings per second. Between readings the robot is blind. Line followers shrink that pause dramatically; there's a reason racing code doesn't sightsee.</p></div></details>
+<details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The loop waits <code>DISPLAY_INTERVAL_MS</code> = 100 ms per pass — about 10 readings per second. Between readings the robot is blind. Line followers shrink that pause dramatically; there's a reason racing code doesn't sightsee.</p></div></details>
 
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1748,7 +1748,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
         <li data-bc-skill="3" class="li-c-pointer">☐ Run a calibration sweep correctly (every window across the tape)</li>
         <li data-bc-skill="4" class="li-c-pointer">☐ Read sensors into an array and pull out one sensor's value by index</li>
         <li data-bc-skill="5" class="li-c-pointer">☐ Display live sensor data on the OLED and full data on the Serial Monitor</li>
-        <li data-bc-skill="6" class="li-c-pointer">☐ Read a <code class="code-inline-bg-e8e8e8">for</code> loop and say how many times it runs &mdash; and why it stops where it does</li>
+        <li data-bc-skill="6" class="li-c-pointer">☐ Read a <code>for</code> loop and say how many times it runs &mdash; and why it stops where it does</li>
     </ul>
     <p class="p-c-283593-2">I have&hellip;</p>
     <ul class="ul-ls-none-4">
@@ -1875,11 +1875,11 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <th class="th-ddd">Call</th>
 <th class="th-ddd">What it does</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4ButtonA buttonA;</code></td><td class="td-ddd">Button A (B and C follow the same pattern)</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4OLED display;</code></td><td class="td-ddd">The OLED screen</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4LineSensors lineSensors;</code></td><td class="td-ddd">The line sensor array — new today</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Zumo32U4Motors motors;</code></td><td class="td-ddd">Both motors, driven as one unit (Challenges 4–5)</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">unsigned int lineSensorValues[NUM_SENSORS];</code></td><td class="td-ddd">The readings array — one slot per active sensor</td></tr>
+<tr><td class="td-ddd"><code>Zumo32U4ButtonA buttonA;</code></td><td class="td-ddd">Button A (B and C follow the same pattern)</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>Zumo32U4OLED display;</code></td><td class="td-ddd">The OLED screen</td></tr>
+<tr><td class="td-ddd"><code>Zumo32U4LineSensors lineSensors;</code></td><td class="td-ddd">The line sensor array — new today</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>Zumo32U4Motors motors;</code></td><td class="td-ddd">Both motors, driven as one unit (Challenges 4–5)</td></tr>
+<tr><td class="td-ddd"><code>unsigned int lineSensorValues[NUM_SENSORS];</code></td><td class="td-ddd">The readings array — one slot per active sensor</td></tr>
 </table>
 
 <h4 id="qr-linesensors" class="h4-c-6f7582">Line sensor functions</h4>
@@ -1888,15 +1888,15 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <th class="th-ddd">Call</th>
 <th class="th-ddd">What it does</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.initThreeSensors();</code></td><td class="td-ddd">Wake sensors 1, 3, 5 — works in any jumper position</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.initFiveSensors();</code></td><td class="td-ddd">Wake all five — REQUIRES jumpers on DN2 / DN4</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.calibrate();</code></td><td class="td-ddd">One calibration pass — call repeatedly during the sweep</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.read(values);</code></td><td class="td-ddd">Raw readings into the array, 0–2000, HIGH = DARK</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.readCalibrated(values);</code></td><td class="td-ddd">Calibrated readings into the array, 0–1000 per sensor</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">int p = lineSensors.readLine(values);</code></td><td class="td-ddd">Calibrated read + weighted-average line position (dark line)</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">lineSensors.readLineWhite(values);</code></td><td class="td-ddd">Same, hunting a WHITE line on a dark surface</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">waitForStart();</code></td><td class="td-ddd">Safety gate — LAST line of setup(), always</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">checkBattery();</code></td><td class="td-ddd">A+B battery display — TOP of loop(), always</td></tr>
+<tr><td class="td-ddd"><code>lineSensors.initThreeSensors();</code></td><td class="td-ddd">Wake sensors 1, 3, 5 — works in any jumper position</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>lineSensors.initFiveSensors();</code></td><td class="td-ddd">Wake all five — REQUIRES jumpers on DN2 / DN4</td></tr>
+<tr><td class="td-ddd"><code>lineSensors.calibrate();</code></td><td class="td-ddd">One calibration pass — call repeatedly during the sweep</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>lineSensors.read(values);</code></td><td class="td-ddd">Raw readings into the array, 0–2000, HIGH = DARK</td></tr>
+<tr><td class="td-ddd"><code>lineSensors.readCalibrated(values);</code></td><td class="td-ddd">Calibrated readings into the array, 0–1000 per sensor</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>int p = lineSensors.readLine(values);</code></td><td class="td-ddd">Calibrated read + weighted-average line position (dark line)</td></tr>
+<tr><td class="td-ddd"><code>lineSensors.readLineWhite(values);</code></td><td class="td-ddd">Same, hunting a WHITE line on a dark surface</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>waitForStart();</code></td><td class="td-ddd">Safety gate — LAST line of setup(), always</td></tr>
+<tr><td class="td-ddd"><code>checkBattery();</code></td><td class="td-ddd">A+B battery display — TOP of loop(), always</td></tr>
 </table>
 
 <h4 id="qr-configs" class="h4-c-6f7582">The two configurations</h4>
@@ -1918,11 +1918,11 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <th class="th-ddd">Call</th>
 <th class="th-ddd">What it does</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.clear();</code></td><td class="td-ddd">Wipe the screen, cursor to top-left</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.gotoXY(col, row);</code></td><td class="td-ddd">Move the cursor — row 0 = top, row 1 = bottom</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.print(F("text"));</code></td><td class="td-ddd">Print text (F() keeps it out of precious RAM)</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.print(value);</code></td><td class="td-ddd">Print a number — digits only, no cleanup: wipe leftovers with spaces</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">display.setLayout21x8();</code></td><td class="td-ddd">Switches to 21 small characters × 8 rows. <strong>Not used in this lesson</strong> — Lesson 4 stays on the startup 8 × 2 layout on purpose (Section 5.8). Lessons 2, 3 and 5 call it.</td></tr>
+<tr><td class="td-ddd"><code>display.clear();</code></td><td class="td-ddd">Wipe the screen, cursor to top-left</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>display.gotoXY(col, row);</code></td><td class="td-ddd">Move the cursor — row 0 = top, row 1 = bottom</td></tr>
+<tr><td class="td-ddd"><code>display.print(F("text"));</code></td><td class="td-ddd">Print text (F() keeps it out of precious RAM)</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>display.print(value);</code></td><td class="td-ddd">Print a number — digits only, no cleanup: wipe leftovers with spaces</td></tr>
+<tr><td class="td-ddd"><code>display.setLayout21x8();</code></td><td class="td-ddd">Switches to 21 small characters × 8 rows. <strong>Not used in this lesson</strong> — Lesson 4 stays on the startup 8 × 2 layout on purpose (Section 5.8). Lessons 2, 3 and 5 call it.</td></tr>
 </table>
 
 <h4 id="qr-leds" class="h4-c-6f7582">LEDs</h4>
@@ -1931,8 +1931,8 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <th class="th-ddd">Call</th>
 <th class="th-ddd">What it does</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">ledYellow(1);</code></td><td class="td-ddd">Yellow LED on</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">ledYellow(0);</code></td><td class="td-ddd">Yellow LED off (ledGreen and ledRed work the same)</td></tr>
+<tr><td class="td-ddd"><code>ledYellow(1);</code></td><td class="td-ddd">Yellow LED on</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>ledYellow(0);</code></td><td class="td-ddd">Yellow LED off (ledGreen and ledRed work the same)</td></tr>
 </table>
 
 <h4 id="qr-motors" class="h4-c-6f7582">Motors (Challenges 4–5 — robot moves!)</h4>
@@ -1941,9 +1941,9 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <th class="th-ddd">Call</th>
 <th class="th-ddd">What it does</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">motors.setSpeeds(left, right);</code></td><td class="td-ddd">Both motors at once, −400 to +400 each</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">motors.setSpeeds(0, 0);</code></td><td class="td-ddd">Full stop</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">motors.setSpeeds(-s, s);</code></td><td class="td-ddd">Pivot left in place (opposite signs spin — Lesson 3)</td></tr>
+<tr><td class="td-ddd"><code>motors.setSpeeds(left, right);</code></td><td class="td-ddd">Both motors at once, −400 to +400 each</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>motors.setSpeeds(0, 0);</code></td><td class="td-ddd">Full stop</td></tr>
+<tr><td class="td-ddd"><code>motors.setSpeeds(-s, s);</code></td><td class="td-ddd">Pivot left in place (opposite signs spin — Lesson 3)</td></tr>
 </table>
 
 <h4 id="qr-serial" class="h4-c-6f7582">Serial Monitor</h4>
@@ -1952,10 +1952,10 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <th class="th-ddd">Call</th>
 <th class="th-ddd">What it does</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Serial.begin(115200);</code></td><td class="td-ddd">Start the USB link — first line of setup()</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Serial.print(value);</code></td><td class="td-ddd">Print without ending the line</td></tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Serial.print('\t');</code></td><td class="td-ddd">Print a tab — makes columns line up</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">Serial.println();</code></td><td class="td-ddd">End the line (println(value) prints, then ends)</td></tr>
+<tr><td class="td-ddd"><code>Serial.begin(115200);</code></td><td class="td-ddd">Start the USB link — first line of setup()</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>Serial.print(value);</code></td><td class="td-ddd">Print without ending the line</td></tr>
+<tr><td class="td-ddd"><code>Serial.print('\t');</code></td><td class="td-ddd">Print a tab — makes columns line up</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>Serial.println();</code></td><td class="td-ddd">End the line (println(value) prints, then ends)</td></tr>
 </table>
 
 <h4 id="qr-timing" class="h4-c-6f7582">Timing</h4>
@@ -1964,8 +1964,8 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <th class="th-ddd">Call</th>
 <th class="th-ddd">What it does</th>
 </tr>
-<tr><td class="td-ddd"><code class="code-inline-bg-e8e8e8">delay(ms);</code></td><td class="td-ddd">Pause everything for that many milliseconds</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code class="code-inline-bg-e8e8e8">millis();</code></td><td class="td-ddd">Milliseconds since boot — the clock behind the calibration countdown</td></tr>
+<tr><td class="td-ddd"><code>delay(ms);</code></td><td class="td-ddd">Pause everything for that many milliseconds</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>millis();</code></td><td class="td-ddd">Milliseconds since boot — the clock behind the calibration countdown</td></tr>
 </table>
 
 <h4 id="qr-scales" class="h4-c-6f7582">Value scales at a glance</h4>

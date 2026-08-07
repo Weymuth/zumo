@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.19.2 -->
+<!-- Lesson version: v02.20.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@
 <h1 class="h1">Obstacles</h1>
 <div class="div-fs-11em">When the Course Fights Back</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics &bull; PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.19 &mdash; August 2026</div>
+<div class="div-fs-09em-2">Version 02.20 &mdash; August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -641,31 +641,31 @@ see <a href="#section-8a" class="link-c-2e86ab-2">Section 8A</a>.</p>
 
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. What is the range of a single proximity reading, and how does it compare with the line-sensor scale you have been using? (&sect;3.1)</summary>
 
-<div class="div-mt-12px"><p>Zero to six. Seven possible values, total &mdash; not 0&#8211;1000 like the calibrated line sensors and not 0&#8211;4000 like <code class="code-inline-bg-e8e8e8">readLinePosition()</code>. Every threshold you write today lives inside that tiny range, which is why a &ldquo;big&rdquo; change is 1. The three thresholds carry over from Lesson 5 unchanged: <strong>DETECTION_THRESHOLD 1</strong>, <strong>CLOSE_THRESHOLD 3</strong>, <strong>VERY_CLOSE_THRESHOLD 5</strong>. You trigger on 3 rather than 5 because the robot needs room to stop; at 5 you are nearly touching the block.</p></div>
+<div class="div-mt-12px"><p>Zero to six. Seven possible values, total &mdash; not 0&#8211;1000 like the calibrated line sensors and not 0&#8211;4000 like <code>readLinePosition()</code>. Every threshold you write today lives inside that tiny range, which is why a &ldquo;big&rdquo; change is 1. The three thresholds carry over from Lesson 5 unchanged: <strong>DETECTION_THRESHOLD 1</strong>, <strong>CLOSE_THRESHOLD 3</strong>, <strong>VERY_CLOSE_THRESHOLD 5</strong>. You trigger on 3 rather than 5 because the robot needs room to stop; at 5 you are nearly touching the block.</p></div>
 
 </details>
 
 <details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Your robot cannot decide to go around the left side of a block because the block is on the right. Say why &mdash; in terms of hardware, not code. (&sect;3.2)</summary>
 
-<div class="div-mt-12px"><p>You have one proximity receiver, the front one. Pins 20 and 4 are shared between the left/right receivers and line sensors 2 and 4, and in Lesson 5 you moved permanently to the five-down layout &mdash; five line sensors, one proximity receiver &mdash; because five line sensors are what make P&#8209;control possible. So <code class="code-inline-bg-e8e8e8">countsLeftWithLeftLeds()</code> and <code class="code-inline-bg-e8e8e8">countsRightWithRightLeds()</code> return 0 always, and that is not a bug. Your sensor tells you <em>that</em>, not <em>where</em>. Directional avoidance is not hard or advanced on this robot &mdash; it is impossible.</p></div>
+<div class="div-mt-12px"><p>You have one proximity receiver, the front one. Pins 20 and 4 are shared between the left/right receivers and line sensors 2 and 4, and in Lesson 5 you moved permanently to the five-down layout &mdash; five line sensors, one proximity receiver &mdash; because five line sensors are what make P&#8209;control possible. So <code>countsLeftWithLeftLeds()</code> and <code>countsRightWithRightLeds()</code> return 0 always, and that is not a bug. Your sensor tells you <em>that</em>, not <em>where</em>. Directional avoidance is not hard or advanced on this robot &mdash; it is impossible.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. In one pass of <code class="code-inline-bg-e8e8e8">loop()</code> the line sensors, the green markers and the proximity sensor all want the motors. Which wins, and why that order? (&sect;3.4)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. In one pass of <code>loop()</code> the line sensors, the green markers and the proximity sensor all want the motors. Which wins, and why that order? (&sect;3.4)</summary>
 
-<div class="div-mt-12px"><p>Obstacle first, intersection second, follow-the-line last. A crash is worse than a missed turn &mdash; you can re-run a course you got lost on, you cannot un-break a robot. The intersection is the course asking a question, and it deserves an answer, but not while something is in the way. Following the line is the default: what the robot does when nothing more urgent is happening. The point is that you decide this <em>in advance and in writing</em>. If you do not, you still get a priority &mdash; whichever <code class="code-inline-bg-e8e8e8">if</code> you happened to type first. That is not a decision, it is an accident that compiles.</p></div>
-
-</details>
-
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Give two separate reasons <code class="code-inline-bg-e8e8e8">delay(800)</code> is the wrong way to drive past a block. (&sect;3.5)</summary>
-
-<div class="div-mt-12px"><p>First, it stops the program dead &mdash; roughly 40 passes of <code class="code-inline-bg-e8e8e8">loop()</code> that never happen. For eight tenths of a second the robot does not read the line, does not read the proximity sensor, and does not check the kill switch. A robot inside a <code class="code-inline-bg-e8e8e8">delay()</code> is not a robot, it is a wind&#8209;up toy. Second, and quieter: 800&nbsp;ms is a duration, not a distance. How far the robot travels in it depends on battery charge, grip, surface and motor wear &mdash; fresh batteries overshoot, tired ones come up short, and nothing in your code knows. <code class="code-inline-bg-e8e8e8">driveDistance(20.0)</code> and <code class="code-inline-bg-e8e8e8">turnDegrees(90.0)</code> fix both.</p></div>
+<div class="div-mt-12px"><p>Obstacle first, intersection second, follow-the-line last. A crash is worse than a missed turn &mdash; you can re-run a course you got lost on, you cannot un-break a robot. The intersection is the course asking a question, and it deserves an answer, but not while something is in the way. Following the line is the default: what the robot does when nothing more urgent is happening. The point is that you decide this <em>in advance and in writing</em>. If you do not, you still get a priority &mdash; whichever <code>if</code> you happened to type first. That is not a decision, it is an accident that compiles.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. What is <code class="code-inline-bg-e8e8e8">RETURN_TIMEOUT</code> for, and what happens to a robot that does not have one? (&sect;3.6)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Give two separate reasons <code>delay(800)</code> is the wrong way to drive past a block. (&sect;3.5)</summary>
 
-<div class="div-mt-12px"><p>The maneuver ends with the robot hunting &mdash; creeping forward and checking <code class="code-inline-bg-e8e8e8">isLineVisible()</code> every pass until the line appears. If the line never comes back, because the robot overshot or the block was bigger than expected or someone moved the mat, a robot that hunts forever drives off the table. <code class="code-inline-bg-e8e8e8">RETURN_TIMEOUT</code> is five seconds, then stop and say so. A robot that stops and admits it is lost is infinitely more useful than one that confidently drives into a wall.</p></div>
+<div class="div-mt-12px"><p>First, it stops the program dead &mdash; roughly 40 passes of <code>loop()</code> that never happen. For eight tenths of a second the robot does not read the line, does not read the proximity sensor, and does not check the kill switch. A robot inside a <code>delay()</code> is not a robot, it is a wind&#8209;up toy. Second, and quieter: 800&nbsp;ms is a duration, not a distance. How far the robot travels in it depends on battery charge, grip, surface and motor wear &mdash; fresh batteries overshoot, tired ones come up short, and nothing in your code knows. <code>driveDistance(20.0)</code> and <code>turnDegrees(90.0)</code> fix both.</p></div>
+
+</details>
+
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. What is <code>RETURN_TIMEOUT</code> for, and what happens to a robot that does not have one? (&sect;3.6)</summary>
+
+<div class="div-mt-12px"><p>The maneuver ends with the robot hunting &mdash; creeping forward and checking <code>isLineVisible()</code> every pass until the line appears. If the line never comes back, because the robot overshot or the block was bigger than expected or someone moved the mat, a robot that hunts forever drives off the table. <code>RETURN_TIMEOUT</code> is five seconds, then stop and say so. A robot that stops and admits it is lost is infinitely more useful than one that confidently drives into a wall.</p></div>
 
 </details>
 
@@ -2145,21 +2145,21 @@ obstacleCount++;
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. The obstacle check sits above the intersection check inside <code class="code-inline-bg-e8e8e8">FOLLOWING_LINE</code>. What would break if you swapped them? Be specific about what the robot would physically do. (&sect;3.4)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. The obstacle check sits above the intersection check inside <code>FOLLOWING_LINE</code>. What would break if you swapped them? Be specific about what the robot would physically do. (&sect;3.4)</summary>
 
 <div class="div-mt-12px"><p>The robot would answer the course&rsquo;s question while something was in the way. Arriving at a green marker with a block in front of it, it would commit to the intersection turn &mdash; and drive into the obstacle mid-turn, because once it is executing that turn it is no longer asking whether anything is ahead. The priority is not a style preference: a missed turn costs you a re-run, a crash costs you the robot.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. <code class="code-inline-bg-e8e8e8">driveDistance()</code> gets TRIM. <code class="code-inline-bg-e8e8e8">followLine()</code> does not. Why not? (&sect;3.6)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. <code>driveDistance()</code> gets TRIM. <code>followLine()</code> does not. Why not? (&sect;3.6)</summary>
 
-<div class="div-mt-12px"><p>Open loop needs TRIM; closed loop does not. While the robot is driving blind &mdash; hunting for the line, or driving past the block &mdash; nothing is watching whether it is going straight, so an untrimmed robot curves, and a curving robot can cross beside the line instead of over it and hunt straight past it into the timeout. <code class="code-inline-bg-e8e8e8">followLine()</code> is a P&#8209;controller already correcting the heading fifty times a second; adding TRIM there would make it fight itself.</p></div>
+<div class="div-mt-12px"><p>Open loop needs TRIM; closed loop does not. While the robot is driving blind &mdash; hunting for the line, or driving past the block &mdash; nothing is watching whether it is going straight, so an untrimmed robot curves, and a curving robot can cross beside the line instead of over it and hunt straight past it into the timeout. <code>followLine()</code> is a P&#8209;controller already correcting the heading fifty times a second; adding TRIM there would make it fight itself.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What does <code class="code-inline-bg-e8e8e8">PHASE_COMPLETE</code> actually <em>do</em>? Why is it not a wasted line of code? (&sect;3.3)</summary>
+<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What does <code>PHASE_COMPLETE</code> actually <em>do</em>? Why is it not a wasted line of code? (&sect;3.3)</summary>
 
-<div class="div-mt-12px"><p>It moves no motors. It says &ldquo;the plan is finished&rdquo; and hands control back to the state machine &mdash; and that hand-back is the job. The maneuver is a memorized shape the robot committed to before it started, so something has to mark the moment it stops executing the plan and starts reacting again. Two of the five phases do not drive the robot at all: <code class="code-inline-bg-e8e8e8">PHASE_SEEK_LINE</code> starts a stopwatch and <code class="code-inline-bg-e8e8e8">PHASE_COMPLETE</code> ends the plan. A phase that changes what the robot <em>believes</em> is doing as much work as one that turns a wheel.</p></div>
+<div class="div-mt-12px"><p>It moves no motors. It says &ldquo;the plan is finished&rdquo; and hands control back to the state machine &mdash; and that hand-back is the job. The maneuver is a memorized shape the robot committed to before it started, so something has to mark the moment it stops executing the plan and starts reacting again. Two of the five phases do not drive the robot at all: <code>PHASE_SEEK_LINE</code> starts a stopwatch and <code>PHASE_COMPLETE</code> ends the plan. A phase that changes what the robot <em>believes</em> is doing as much work as one that turns a wheel.</p></div>
 
 </details>
 
@@ -2429,13 +2429,13 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <th class="th-ddd-2">Type</th>
 </tr></thead>
 <tbody>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 10.1]</code></td><td class="td-ddd-2">&sect;1</td><td class="td-ddd-2">Robot on a line with a block ahead: line sensors point <em>down</em>, prox sensor points <em>forward</em>.</td><td class="td-ddd-2">SVG</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 10.2]</code></td><td class="td-ddd-2">&sect;3.3</td><td class="td-ddd-2">The avoidance box, top-down: out, along, back, hunt &#8212; with the five phases labelled.</td><td class="td-ddd-2">SVG</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 10.3]</code></td><td class="td-ddd-2">&sect;4.4</td><td class="td-ddd-2">Course layout: straight line, obstacle centered, 30&nbsp;cm detour space marked.</td><td class="td-ddd-2">SVG</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 10.7]</code></td><td class="td-ddd-2">&sect;8.3</td><td class="td-ddd-2">The extended state machine &#8212; the four Lesson 9 states plus the three added today.</td><td class="td-ddd-2">SVG</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 10.8]</code></td><td class="td-ddd-2">&sect;5.1</td><td class="td-ddd-2">The eight files, and which one gains the obstacle code.</td><td class="td-ddd-2">SVG</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[GRAPHIC 10.9]</code></td><td class="td-ddd-2">&sect;7.7</td><td class="td-ddd-2">Troubleshooting flowchart: sensor &#8594; state &#8594; motion, in that order.</td><td class="td-ddd-2">SVG</td></tr>
-<tr><td class="td-ddd-2"><code class="code-inline-bg-e8e8e8">[IMAGE 10.1]</code></td><td class="td-ddd-2">&sect;4.2</td><td class="td-ddd-2">Zumo underside, five-down jumper layout (DN2 and DN4 bridged). <em>Reuses the Lesson 5 photo.</em></td><td class="td-ddd-2">photo</td></tr>
+<tr><td class="td-ddd-2"><code>[GRAPHIC 10.1]</code></td><td class="td-ddd-2">&sect;1</td><td class="td-ddd-2">Robot on a line with a block ahead: line sensors point <em>down</em>, prox sensor points <em>forward</em>.</td><td class="td-ddd-2">SVG</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 10.2]</code></td><td class="td-ddd-2">&sect;3.3</td><td class="td-ddd-2">The avoidance box, top-down: out, along, back, hunt &#8212; with the five phases labelled.</td><td class="td-ddd-2">SVG</td></tr>
+<tr><td class="td-ddd-2"><code>[GRAPHIC 10.3]</code></td><td class="td-ddd-2">&sect;4.4</td><td class="td-ddd-2">Course layout: straight line, obstacle centered, 30&nbsp;cm detour space marked.</td><td class="td-ddd-2">SVG</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 10.7]</code></td><td class="td-ddd-2">&sect;8.3</td><td class="td-ddd-2">The extended state machine &#8212; the four Lesson 9 states plus the three added today.</td><td class="td-ddd-2">SVG</td></tr>
+<tr><td class="td-ddd-2"><code>[GRAPHIC 10.8]</code></td><td class="td-ddd-2">&sect;5.1</td><td class="td-ddd-2">The eight files, and which one gains the obstacle code.</td><td class="td-ddd-2">SVG</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 10.9]</code></td><td class="td-ddd-2">&sect;7.7</td><td class="td-ddd-2">Troubleshooting flowchart: sensor &#8594; state &#8594; motion, in that order.</td><td class="td-ddd-2">SVG</td></tr>
+<tr><td class="td-ddd-2"><code>[IMAGE 10.1]</code></td><td class="td-ddd-2">&sect;4.2</td><td class="td-ddd-2">Zumo underside, five-down jumper layout (DN2 and DN4 bridged). <em>Reuses the Lesson 5 photo.</em></td><td class="td-ddd-2">photo</td></tr>
 </tbody></table>
 <div class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></div>
 </div>
