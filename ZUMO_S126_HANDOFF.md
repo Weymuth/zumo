@@ -1,4 +1,4 @@
-# ZUMO — S125 HANDOFF (written at S124 close · paste at top of Session 125)
+# ZUMO — S126 HANDOFF (written at S125 close · paste at top of Session 126)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** If the clone's
@@ -37,18 +37,20 @@
    `regex_audit.audit(paths)`, `session_versions.bible_consistency(path)`,
    `build_css.build(paths)`, `image_audit.audit(paths)`, `strip_inline.build(paths)`,
    `build_palette.build()`, `class_sweep.sweep(paths)`, `color_index.index(paths)`,
-   **`title_feed.build(root)`**.
+   `title_feed.build(root)`.
 11. **A CLONE IS NOT THE SITE.** Run `site_parity.py` after any push. It can FAIL on the first
    run in the minute after a push and pass on retry — Pages lag, not a defect (S112).
 12. **VERIFY THE PUSH BY FRESH CLONE AND MD5 — AND DIFF THE STAGE AGAINST THE CLONE.**
 13. **The lesson files are `Lesson_NN.html`, no topic suffix, and they live in `lessons/`.**
 14. **`css/semantic.css` IS HAND-EDITED ON PURPOSE (§27.15).** It is the ONLY stylesheet file
    that is. `css/book.css` is still DO-NOT-HAND-EDIT — edit the source and regenerate.
-
-14. **`css/semantic.css` IS HAND-EDITED ON PURPOSE (§27.15).** It is the ONLY stylesheet file
-   that is. `css/book.css` is still DO-NOT-HAND-EDIT — edit the source and regenerate.
-15. **NEW S124 — `regex_audit.py` after any gate you write.** Gate 55 shipped a match-and-discard
+15. **`regex_audit.py` after any gate you write.** Gate 55 shipped a match-and-discard
    alternation and the audit caught it on the first run.
+16. **NEW S125 — `css/semantic.css` NOW HAS A DIRECT CONSUMER.** `going_deeper.html` links it
+   (§27.15c). **Anything added to the semantic layer from now on lands on that page too**, and
+   it defines its own `.callout`, `.body`, `pre` and `table`. Before graduating a construct,
+   check what it does to going_deeper. Its `<style>` block sits BELOW the link, so the page wins
+   any collision on a declaration it sets — and only on those.
 
 ---
 
@@ -58,33 +60,33 @@
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S124
+# THE ONE THING TO CARRY OUT OF S125
 
-**AN ELEMENT RULE REACHES ELEMENTS NO AUTHOR EVER LISTED. THE POPULATION YOU CAN ENUMERATE IS NOT
-THE POPULATION THE RULE REACHES.**
+**A MECHANISM INHERITED FROM A CHANGELOG IS A LEAD, NOT A FINDING — AND THE OPTIONS WERE PRESENTED
+WITH THAT LEAD BAKED IN.**
 
-The pill was ruled in and the dark-context audit enumerated the `<code>` elements that still carried
-a CLASS. It found two, and reported two. **Seven more sit inside dark table headers carrying no
-class at all** — invisible to an instrument that was looking at classes while the rule under test
-was an element selector. Every one of those containers declares `color: white`, so an opaque pill
-would have made all eight unreadable, silently, in shipped lessons.
+Asked *"didn't we go with the pill by linking?"*, the honest answer required reading the tree, and the
+tree says **nothing in the repo links `css/semantic.css` at all**. The lessons link `css/book.css`,
+which carries the layer preserved verbatim at byte offset 973. S124 shipped the pill through a pipe
+that already existed; *linking* was never the mechanism.
 
-**DJ found it with one question** — *"why would I want to change from code to span?"* — aimed at a
-proposal to retag L14's element. That proposal was only defensible on a sample of one. With eight
-cases the markup was obviously innocent and the RULE was obviously unscoped.
+**That error had already reached the ruling.** Option C was written as *link `css/semantic.css`* and
+described as though it followed S124's precedent. It does not — it CREATES the first direct link in
+the repo. DJ's question is what surfaced it, one turn before the edit.
 
-**And the options were mispriced to him twice, both times away from the option he preferred.** The
-wash was called the conservative choice when it repaints 3,336 elements against 1,233, then called
-more work when it is a one-line value change. **A count of what CHANGES is not a count of what it
-COSTS. State the two numbers separately.**
+**The second half is the ruling principle, and it is worth keeping:** when two options both work, rule
+on **which failure each leaves behind**. A second spelling of a ruled construct inside a page's own
+`<style>` block is drift that gate 54 is structurally blind to — silent and unwatched. Inheriting a
+future graduate uninvited is visible at the moment of the next graduation. **Silent-and-unwatched loses
+to visible-and-scheduled**, and that is why the more-coupled option was the right one.
 
 ---
 
 # STATE
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`695ec87`**. Census **41,128**.
-Bible **v8.115** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.3** ·
+Fresh-clone verified at **`7ae1650`**. Census **41,128**.
+Bible **v8.116** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.3** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -105,7 +107,7 @@ Instruments: `book_gates` **v1.50** · `lesson_inventory` **v1.2.0** ·
 `next_pointer` **v1.1** ·
 `title_feed` **v1.0** ·
 `timer.html` **v1.3.1** ·
-`going_deeper` **v01.4.2**.
+`going_deeper` **v01.5.0**.
 
 Lessons: L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04.21.0 · L06 v04.26.0 · L07 v04.25.0 · L08 v04.22.0 · L09 v05.19.0 · L10 v02.20.0 · L11 v02.21.0 · L12 v01.23.0 · L13 v02.21.0 · L14 v02.26.0 · L15 v02.22.0 · L16 v02.14.0.
 
@@ -113,49 +115,56 @@ Lessons: L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04
 `build_css --check` current at **627 rules** · `color_index --check` clean ·
 `image_audit --check` current at 14 outstanding of 141 · both banner generators green ·
 `gate_payload_match` PASS on the full glob · `next_pointer --check` and `title_feed --check` clean ·
-`font_stack_sweep` 0 rewrites · `strip_inline --verify` 0 dead class names.
+`font_stack_sweep` 0 rewrites · `strip_inline --verify` 0 dead class names ·
+`site_parity` PARITY at **140** referenced assets (was 139 — the new `css/semantic.css` reference).
 
-**§27.11 is 627 / 2,297, digest `3f4c39d35c2d6b64`**, scoped to the generated block.
-
----
-
-# S124 WORK — SEE `LIVE_ZUMO_TEXTBOOK.md` FOR THE FULL ACCOUNT
-
-The pill graduated by DELETION: 2,132 class attributes stripped, ten rules dead, one born, net −9.
-Ground ruled **B**, `rgba(0, 0, 0, 0.08)`. §27.15a, §27.15b and gate 55 are new.
-
-**THE BUILD WAS RE-DERIVED FROM A CLEAN CLONE AND THAT IS WORTH KNOWING.** A first attempt sat in the
-working tree whose authorship could not be accounted for. Nothing was pushed; everything was rebuilt
-from `695ec87` with every edit scripted and asserted. **All sixteen lesson files and the entire
-76,473-byte generated block came back byte-identical.** Two independent runs agreeing beats one run
-verifying itself — and the rebuild also dropped a spliced comment block the first attempt carried
-into the preserved layer, which gate 54 would have copied verbatim into `css/book.css`.
+**§27.11 is 627 / 2,297, digest `3f4c39d35c2d6b64`**, scoped to the generated block. Unmoved by S125:
+`going_deeper.html` is not a `build_css` source, so nothing regenerated.
 
 ---
 
-# S125 QUEUE
+# S125 WORK — SEE `LIVE_ZUMO_TEXTBOOK.md` FOR THE FULL ACCOUNT
 
-## The obvious next one
-- **`going_deeper.html` CARRIES A THIRD INLINE-CODE TREATMENT AND IT IS NOT RULED.** A DARK pill —
-  `#1e1e1e` ground, `#9cdcfe` text, a border, `.88em` — across **71 inline uses**. It does not link
-  `css/book.css`; it carries its own `<style>`, and it reached the `pre code` reset independently.
-  Whether it converts to the lesson pill, or is ruled a deliberately different context, is open.
-  **Do not assume convert. Measure what those 71 elements ARE first** — the L02/L03 operator lesson.
+DJ ruled **C**: *"I want the book to be the same throughout."* `going_deeper.html` is the **first
+direct consumer of `css/semantic.css`**. Four declarations left the page, nothing was added, six lines
+changed. **§27.15c NEW.** Bible **v8.116**, `going_deeper` **v01.5.0**.
 
-## The colour ledger — still the big one, now with a second graduate behind it
+**Two things recorded and NOT ruled, both live for S126:**
+- **§27.12 still cannot reach `going_deeper.html`.** Gate 44 keys on `css/book.css` appearing in the
+  file, so the page's **seven inline `style` attributes** stay outside it while the page is now PARTLY
+  converted. The gate's own scope comment names those seven deliberately — so this is a scope question,
+  not an oversight. **Is a page that consumes the semantic layer "converted"?**
+- **`going_deeper.html` loads the Inter webfont and never uses it.** Preconnect plus stylesheet link on
+  lines 9–10; its only `font-family` declarations were Arial for `body` and the ruled mono stack, and
+  the mono ones are now gone. Every lesson body is Inter. So the page is off-family in body text AND
+  pays for a font it discards. **Two possible rulings and they point opposite ways:** adopt Inter (the
+  book's body face, and the request is already being made), or drop the two `<link>` lines (the page is
+  deliberately its own thing). Measure what else differs before ruling — this is a page-identity
+  question, not a font question.
+
+---
+
+# S126 QUEUE
+
+## The colour ledger — still the big one
 - **`ZUMO_COLOR_LEDGER.md`'s 16 items can be reopened.** The blocking fact (155 hexes inside 562 class
   names, so a repaint is a RENAME) is a fact about the GENERATED block only. **Three items are marked
   *re-measure before ruling* — they date from S94, before §27.**
-- **The wash is a precedent worth noticing here:** a value that inherits its context can retire a
-  whole class of scope exceptions. Some ledger items may have the same shape.
+- **The wash remains the precedent to notice:** a value that inherits its context can retire a whole
+  class of scope exceptions.
+- **The two pink pills in L03 are spelled `#f5c6cb` and `#f5c6c0`** — one digit apart, both pink, on the
+  same construct. That is a typo, not two colours. A colour-ledger item.
 
-## Graduation candidates — one at a time
+## Graduation candidates — one at a time, and now with a second consumer to check
 **540 of 636 class names encoded a value at S123; the pill took nine of them out.** Suggested next:
 - `.code-block-333` / `.code-block-bg-1e1e1e` — §6.11's LOCKED single dark block, which is ALSO a
   Tier-2 census item: **16 distinct `<pre>` opening shapes** against a rule saying there is one.
-  Graduating it and closing the census item are the same job. **Re-measure — S123 put the total at 31
-  shapes splitting ~16 block / ~14 inline, and the inline half just moved under this session's strip.**
-- Callout families — but **NOT before the colour ledger**, since their whole point is paint.
+  Graduating it and closing the census item are the same job. **NOTE: going_deeper sets its own `pre`
+  background `#1e1e1e` and `color #e8e8e8`, below the link, so it would win the collision — but check,
+  do not assume.** Re-measure: S123 put the total at 31 shapes splitting ~16 block / ~14 inline, and the
+  inline half moved under S124's strip.
+- Callout families — but **NOT before the colour ledger**, since their whole point is paint. **And
+  going_deeper defines its own `.callout`.**
 
 ## The consistency census — Tier 2 partly measured, Tier 3 open
 - **Nav pill count ranges 10 to 19** — L09 has 19, nine lessons have 11. §6.5's "12–14" rule is
@@ -176,28 +185,28 @@ into the preserved layer, which gate 54 would have copied verbatim into `css/boo
 wired into a lesson.**
 
 ## Opened and not ruled
-- **Should `css/semantic.css` carry a version home?** Carried from S123, and it now holds TWO ruled
-  constructs rather than one, so the case is stronger. `session_versions` could register it in a line.
+- **Should `css/semantic.css` carry a version home?** Carried from S123. **The case is stronger again
+  at S125** — it now holds two ruled constructs AND has an external consumer that can break if it
+  changes. `session_versions` could register it in a line.
 - **Is anything ELSE in the repo carrying a version that nothing tracks?** `timer.html` was the S123
   case; the sweep was never run.
-- **L14's score formula is marked up as `<code>` and is not code.** Left alone this session because
-  retagging it was the wrong answer to the dark-ground problem, but the markup question is real and
+- **L14's score formula is marked up as `<code>` and is not code.** The markup question is real and
   separate: `FIELD SCORE = ( LINE TRACING SCORE + EXIT BONUS ) × EVACUATION ZONE MULTIPLIER`.
-- **The two pink pills in L03 are spelled `#f5c6cb` and `#f5c6c0`** — one digit apart, both pink, on
-  the same construct. That is a typo, not two colours. **A colour-ledger item, not a pill item.**
+- **`sweep_option_c.py` sits in the repo root** — the S92 one-shot callout sweep. `session_versions.py`
+  references it so it is not orphaned, but it is not in any handoff's instrument list. Housekeeping.
 
 ## Carried, unchanged
 - **L01's BC02 does not carry L01's objectives.** Ruled legacy S119, still the only §25.5 violation.
-- **S116's past-tense question: RETIRE IT.** Ten sessions now.
+- **S116's past-tense question: RETIRE IT.** Eleven sessions now.
 - **L10's `What You Built` is the only non-Brain-Check `<h4>` in a converted §10.**
 - **The syllabus/TDP consequence of the L13 stop** — a syllabus question, not a book question.
 - **L03's `id="whats-next"` is in all fifteen**; §27.14 still cannot see an unreached id.
 
 ## Rulings outstanding — carried
-- Should `build_family_map` parse its total instead of holding a baseline? Baseline unmoved five
+- Should `build_family_map` parse its total instead of holding a baseline? Baseline unmoved six
   sessions running.
-- Should `build_css` name rules by usage RANK at all? **S124 sharpened this** — rank-naming is what
-  renamed `.code-ff-uimonosp-2` out from under three surviving elements (§27.15b).
+- Should `build_css` name rules by usage RANK at all? Rank-naming is what renamed
+  `.code-ff-uimonosp-2` out from under three surviving elements (§27.15b).
 - **NOTE per-block pass** (133 blocks, four destinations).
 - Nav `<details>` carry no `data-reveal` — §25.12 exists because one untyped `<details>` slipped.
 - Selftest-coverage gate — offered, not built.
@@ -232,8 +241,7 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 2. **Never present a test file, or a DIAGNOSTIC, in the same list as repo files.**
 3. **Never produce PUSH_ME_*.md or MD5_*.txt.** Checksums and instructions go in the CHAT ONLY.
 4. **`lessons/` IS PART OF THE FILENAME.** Check the destination path of every file.
-   **`css/` likewise — `css/book.css` AND `css/semantic.css` are both in `css/`.** S124 proved the
-   gates catch this: `semantic.css` pushed to the ROOT failed §27.15 and §27.13 in the clone.
+   **`css/` likewise — `css/book.css` AND `css/semantic.css` are both in `css/`.**
 5. **A push that bumps a version and omits LIVE.md is an INCOMPLETE push (§12.6).**
 6. **§27.8b's third step is `strip_inline --apply --include-held`.** Without the flag, 624 held
    strings revert to inline and fifteen innocent lessons are rewritten.
@@ -241,16 +249,18 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
    and run `book_gates` THERE before presenting md5s.**
 8. **AFTER ANY `css/book.css` REGENERATION, DIFF THE STAGE AGAINST THE PUSHED CLONE AND PUSH
    EVERY FILE THAT DIFFERS** — and diff by LINE, not only by expansion.
-9. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** At S125 close, adding
-   `ZUMO_S126_HANDOFF.md` means DELETING **this** file — a GitHub Desktop checkbox.
+9. **Exactly ONE `ZUMO_SNN_HANDOFF.md` in the root (gate 28).** At S126 close, adding
+   `ZUMO_S127_HANDOFF.md` means DELETING **this** file — a GitHub Desktop checkbox.
 10. **THE NUMBER IN THE FILENAME IS THE SESSION THAT READS IT, NOT THE ONE THAT WROTE IT.**
 11. **Never write a real version number as `vOLD → vNEW` in prose.** `_versions_in()` takes the
     LAST match in the file. Write *"reaches vNEW (from vOLD)"*. Backticks do not shield it.
 12. **THE SAME TRAP APPLIES TO SHAs.** One sha per parsed line. Never name a second one in prose.
 13. **A document cannot name the commit that contains it.** LIVE.md's verification line names the
-    commit carrying the WORK; the follow-up push that fills it is necessarily one commit later.
-    **S124 found this unpaid:** LIVE.md and the S124 handoff both named `c4519b6`, a commit that
-    contains none of S123's work — the work shipped in `753c8cc` and was fixed in `695ec87`.
+    commit carrying the PREVIOUS state; the push that fills it is necessarily one commit later.
+    `session_versions --check` prints this as an expected note, not drift — read the note.
 14. **AN EDIT TO A FILE WITH REPEATED LANDMARK LINES TARGETS AN INDEX AND ASSERTS IT** (§6.12c for
     markdown), never a prefix match. LIVE.md has TWO `**Versions:**` lines and the second is a
     historical per-session snapshot whose contents must not move.
+15. **A VERSION HOME FOUND BY GREPPING FOR A SPELLING IS A HOME YOU HAVE NOT ENUMERATED.** S125
+    grepped `version:` and `Version 1` and missed `Version 01.4`. Gate 1 caught it. `session_versions`
+    holds the regex for every registered artefact — read ARTEFACTS, do not invent a search.

@@ -1,9 +1,85 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 7, 2026 (Session 124 — **AN ELEMENT RULE REACHES ELEMENTS NO AUTHOR LISTED, AND THE POPULATION YOU CAN ENUMERATE IS NOT THE POPULATION IT REACHES.** DJ ruled the inline-code pill IN — *"Pill everywhere"* — and the graduation happened by DELETION: **2,132 class attributes stripped from all sixteen lessons**, ten rules dead, one born, and **3,336 inline `<code>` now reached by one rule in `css/semantic.css`**. The audit checked the elements that still carried a class, found two on dark grounds, and **could not see the seven that carry none** — bare `<code>` inside dark table headers in L04, L05, L10 and L12 whose containers each declare `color: white`. DJ found them by asking *"why would I want to change from code to span?"* about a proposal reaching for the markup on a sample of one. Ground ruled **B**, a translucent wash. **§27.15a and §27.15b NEW, gate 55 NEW**, and a generator property that cost a full redo: stripping a class from SOME of its users renames it for the survivors.)
-**Status:** ✅ **55/55 GATES PASS · THE PILL IS RULED IN, WITH NO CARVE-OUT.** Every inline `<code>` in a lesson carries it, ruled twice on purpose — once as *pill everywhere*, and again explicitly for the 28 operator uses that had drifted, on the evidence that **36 operator `<code>` elements elsewhere were already pilled against 12 that were not**, the same operator appearing both ways. **Six classes stood for one construct and disagreed about it** — three font sizes, a stray `color`, a `white-space` — and all six are gone. **The ground is `rgba(0, 0, 0, 0.08)`, not an opaque grey**, because inline code sits on **43 distinct backgrounds** and eight elements sit on dark ones that declare `color: white`. **The `pre code` reset is part of the rule:** 15 bare `<code>` live inside `<pre>`, nine in L01's `#1e1e1e` blocks, and gate 53, §27.13 and gate 54 are each structurally blind to that. **§27.11 moved to 627 / 2,297.** **THE ENTIRE BUILD WAS RE-DERIVED FROM A CLEAN CLONE AND DIFFED AGAINST THE FIRST ATTEMPT: all sixteen lessons and the whole generated block came back BYTE-IDENTICAL** — two independent runs agreeing, rather than one run verifying itself. `going_deeper.html` reached the same reset independently and carries a THIRD inline-code treatment nobody had counted — recorded, **not ruled**.
+**Date:** August 7, 2026 (Session 125 — **BEING OUTSIDE THE GENERATED BLOCK IS NOT A REASON TO HOLD A DIFFERENT CONVENTION; IT IS ONLY A REASON TO BE REACHED BY A DIFFERENT PIPE.** DJ ruled **C** — *"I want the book to be the same throughout"* — and `going_deeper.html` becomes the **FIRST DIRECT CONSUMER of `css/semantic.css`**. Its 71 bare inline `<code>` elements drop the dark `#1e1e1e` / `#9cdcfe` pill S124 recorded and left unruled, and take the ruled wash. **A CLAIM CARRIED IN FROM S124 WAS FALSE AND DJ'S QUESTION IS WHAT TESTED IT** — asked whether S124 had shipped the pill *by linking*, the tree says **nothing in the repo links `css/semantic.css` at all**; the lessons link `css/book.css`, which carries the layer verbatim at byte offset 973. **The mechanism was ruled on which failure it leaves behind**, not on effort: a second spelling inside the page's own `<style>` block is drift that gate 54 is structurally blind to. **§27.15c NEW.**)
+**Status:** ✅ **55/55 GATES PASS · ONE BOOK, ONE INLINE-CODE CONVENTION.** Measured before proposing anything: **77 `<code>` in `going_deeper.html`, 71 inline and 6 inside `<pre>`, and not one of the 71 carries a class** — the same bare-element population that was invisible to S124's first sweep. **The S124 trap does not fire here and that was CHECKED, not assumed:** grounds are **62 `#ffffff` and 9 `#e3f0e5`**, zero dark, zero `<th>` ancestors, no container declaring `color: white`. The content is the lesson construct — identifiers, calls, literals, directives, filenames, and **7 compiler-error strings, which match lesson practice at 23 bare `<code>` occurrences across L01–L16**. **The book already shipped the split a *different context* ruling would have defended:** six `.code-block-bg-1e1e1e` variants and nine bare `<code>` inside L01's dark blocks under the light pill, so dark-block-plus-light-inline was already canon in sixteen lessons and going_deeper was the only page disagreeing. **Linking `css/book.css` was measured and rejected — 84,541 bytes and 627 lesson-specific rules for four declarations.** **FOUR DECLARATIONS LEFT THE PAGE AND NOTHING WAS ADDED**, six changed lines, every edit asserted at exactly one occurrence. **NO CASCADE:** going_deeper is not a `build_css` source, so §27.8b never ran — `build_css --check` current at **627 rules**, §27.11 holding at 627 / 2,297, family map unmoved at 1069, `site_parity` 139 → 140 assets and still PARITY. **THE VISIBLE §5b BANNER WAS MISSED AND THE GATE CAUGHT IT** before anything was presented. **Recorded, not ruled:** §27.12 still cannot reach this now partly-converted page, and going_deeper loads the **Inter** webfont and never uses it.
 
-**Versions:** L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04.21.0 · L06 v04.26.0 · L07 v04.25.0 · L08 v04.22.0 · L09 v05.19.0 · L10 v02.20.0 · L11 v02.21.0 · L12 v01.23.0 · L13 v02.21.0 · L14 v02.26.0 · L15 v02.22.0 · L16 v02.14.0 · going_deeper v01.4.2 — census **41,128** · Bible **v8.115** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.3 · **book_gates v1.50** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.19.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.1 · title_feed v1.0 · Timer v1.3.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `695ec87`.**
+**Versions:** L01 v03.22.0 · L02 v03.14.0 · L03 v03.31.0 · L04 v04.22.0 · L05 v04.21.0 · L06 v04.26.0 · L07 v04.25.0 · L08 v04.22.0 · L09 v05.19.0 · L10 v02.20.0 · L11 v02.21.0 · L12 v01.23.0 · L13 v02.21.0 · L14 v02.26.0 · L15 v02.22.0 · L16 v02.14.0 · going_deeper v01.5.0 — census **41,128** · Bible **v8.116** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.3 · **book_gates v1.50** · lesson_inventory v1.2.0 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.3.7 · build_mark_index v1.0.2 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.19.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.1 · strip_inline v1.1 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.1 · title_feed v1.0 · Timer v1.3.1 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `7ae1650`.**
+
+---
+---
+
+## WHAT SHIPPED IN S125
+
+**THE RULING WAS TAKEN ON EVIDENCE THE PAGE ITSELF SUPPLIED.** S124 left `going_deeper.html` recorded
+and unruled: a dark inline-code pill — `#1e1e1e` ground, `#9cdcfe` text, a border, `.88em` — across 71
+inline uses, on a page that does not link `css/book.css`. The handoff's own instruction was **do not
+assume convert; measure what those 71 elements ARE first.**
+
+**77 `<code>`, 71 INLINE AND 6 INSIDE `<pre>`, AND NOT ONE OF THE 71 CARRIES A CLASS.** That is the
+same bare-element population S124's first sweep could not see, and it is why the audit enumerated
+ELEMENTS this time rather than the classes on them. Content breakdown: 22 identifiers, keywords and
+types · 19 calls and signatures · 9 expressions · 7 compiler-error strings · 5 literals · 5
+preprocessor directives · 4 filenames.
+
+**THE ONE SHAPE THAT COULD HAVE BEEN A DIVERGENCE IS NOT.** Compiler-error text marked up as `<code>`
+matches lesson practice at **23 bare occurrences across L01–L16**, with
+`'calibrateSensors' was not declared in this scope` appearing verbatim in L04 and in going_deeper.
+
+**THE GROUNDS WERE MEASURED BEFORE THE WASH WAS PROPOSED (§27.15a).** 62 on `#ffffff`, 9 on `#e3f0e5`,
+**zero dark grounds, zero `<th>` ancestors, and no container in any chain declaring `color: white`.**
+The eight-element trap that cost S124 a full redo does not fire on this page — but that is a measured
+result, not an assumption, and the measurement is the reusable part.
+
+**THE ARGUMENT AGAINST *DELIBERATELY DIFFERENT CONTEXT* IS THAT THE BOOK ALREADY SHIPS THE SPLIT.**
+`css/book.css` carries six `.code-block-bg-1e1e1e` variants, and nine bare `<code>` live inside L01's
+`#1e1e1e` blocks under the light pill. Dark block plus light inline is canon in sixteen lessons.
+going_deeper was the only page where inline matched the block, and it is linked from all sixteen
+lessons and from `index.html`.
+
+**A CLAIM CARRIED IN FROM S124 WAS FALSE, AND DJ'S QUESTION IS WHAT TESTED IT.** Asked whether S124 had
+delivered the pill *by linking*, the tree answers **no — nothing in the repo links `css/semantic.css`
+at all.** The lessons link `css/book.css`, which carries the layer preserved verbatim at byte offset
+973; the pill arrived through a pipe that already existed. §24.6c, one more time: **a mechanism
+inherited from a changelog is a lead, not a finding.**
+
+**THE MECHANISM WAS RULED ON WHICH FAILURE IT LEAVES BEHIND.** Rewriting the page's own `code` rule in
+place spells the pill in two files, and **nothing watches the second** — gate 54 asserts the layer is
+verbatim inside `css/book.css` and is structurally blind to a third copy in a page's `<style>` block.
+That option is only safe with a gate written alongside it, which makes it the *more* expensive one, not
+the cheaper one. Linking `css/book.css` instead was measured and rejected: **84,541 bytes and 627
+lesson-specific rules pulled into a page that uses none of them, to obtain four declarations.**
+
+**SO THE LAYER NOW HAS TWO DELIVERY PATHS AND ONE SOURCE**, and one source is the part that matters.
+**The coupling cost is recorded rather than waved off:** going_deeper will inherit whatever graduates
+into `css/semantic.css` next, uninvited, and it defines its own `.callout` while callout families are a
+queued graduation candidate. The `<link>` is seated **above** the page's `<style>` block on purpose, so
+the page wins any collision on a declaration it sets — and only on those.
+
+**FOUR DECLARATIONS LEFT AND NOTHING WAS ADDED:** the local `code` rule, its mono `font-family`, the
+`pre` rule's mono `font-family`, and the page's own `pre code` reset, which the layer already holds.
+Six changed lines, each edit asserted at exactly one occurrence, with post-asserts that `#9cdcfe` and
+every local `ui-monospace` string are gone.
+
+**NO STYLESHEET MOVEMENT AND NO CASCADE.** going_deeper is not a `build_css` source, so §27.8b's
+three-step sequence never ran: `build_css --check` current at **627 rules**, §27.11 holding at
+627 / 2,297, `strip_inline --verify` 0 dead class names, family map unmoved at **1069**, `site_parity`
+139 → 140 referenced assets and still **PARITY**, because the site already serves the file.
+
+**THE VISIBLE §5b BANNER WAS MISSED AND THE GATE CAUGHT IT.** The first sweep for version homes grepped
+`version:` and `Version 1`; the banner reads `Version 01.4`. Gate 1 failed naming
+*hidden=01.5 but visible=01.4* before anything was presented. **A version home found by grepping for a
+spelling is a home you have not enumerated.**
+
+**RECORDED, NOT RULED — TWO ITEMS.** (1) §27.12 keys on `css/book.css` appearing in the file, so
+going_deeper's **seven inline `style` attributes** stay outside gate 44 even though the page is now
+partly converted. The gate's scope comment names those seven deliberately, so this is a scope question
+rather than an oversight. (2) **going_deeper preconnects to Google Fonts and loads Inter, and never uses
+it** — its only `font-family` declarations were Arial for `body` and the ruled mono stack. Every lesson
+body is Inter, so the page is off-family in body text and pays for a webfont it discards.
+
+**Applied S125:** `going_deeper` reaches **v01.5.0** (from v01.4.2), MODERATE — 71 elements render
+differently, so both §5b homes move. Bible reaches **v8.116**, §27.15c NEW. `book_gates` unchanged at
+**v1.50**, 55 gates, all passing. Census unchanged at **41,128** [lesson_inventory.py].
 
 ---
 ---
