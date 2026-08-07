@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""next_pointer.py v1.1 - the end-of-lesson forward link (Bible §3.1a).
+"""next_pointer.py v1.2 - the end-of-lesson forward link (Bible §3.1a).
 
 Generates ONE byte-identical-by-construction block per lesson and seats it
 immediately before the §5b footer paragraph, which is the last element on the
@@ -36,6 +36,7 @@ import sys
 # VERSION below is the ONE home read by session_versions. It sits ABOVE the changelog so a
 # plain grep of this file returns the version and not a changelog line (S98).
 VERSION = 'v1.2'
+# v1.2 (S127): emits the LITERAL em dash and arrow, not &mdash;/&rarr; (\u00a727.16).
 # v1.1 (S123): esc() no longer rewrites an apostrophe - DJ ruling B. The lossy step
 #   recorded at v1.0.1 and deliberately left is now closed, and the docstring claim that
 #   titles are DERIVED is true for every character. Blast radius measured, not guessed:
