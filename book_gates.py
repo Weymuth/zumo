@@ -2,7 +2,21 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.51'
+VERSION = 'v1.52'
+# v1.52 (S126): §27.12 SCOPE EXTENDED to semantic-layer consumers (DJ ruling) and to
+#   index.html BY NAME (§25.2a); §27 gains the COVERAGE arm it never had; and BOTH gates
+#   stop keying scope on a bare substring. Three defects found in one pass, each by the
+#   next one: (a) a COMMENT mentioning css/book.css pulled going_deeper.html into §27's
+#   scope, because the predicate was `'css/book.css' in src`; (b) the specific predicate
+#   that replaced it demanded href="css/book.css" and the lessons link "../css/book.css"
+#   (§27.10), so it matched ZERO pages and §27 PASSED on an empty scope; (c) that was
+#   caught ONLY because gate 44 carries a coverage arm and §27 did not -- S117/S118 for
+#   the third time. COMPLEMENTARITY MEASURED: an inline style pasted into going_deeper's
+#   preamble FAILS §27.12 alone under the new scope and is INVISIBLE under the old one.
+# v1.51.1 (S126): §27.11 baseline 627/2,297 -> 624/2,282 after L03's five classed
+#   inline <code> elements were stripped per §27.15a's no-exception rule. Three rules die,
+#   zero born, zero altered; the -15 declarations IS those three at five each. Control-run
+#   after the move: a deleted `color: white;` still FAILS §27.11, alone.
 # v1.51 (S125): NEW GATE 56 (§27.15c). §27.15c ruled going_deeper.html onto the semantic
 #   layer and shipped UNGATED. The sixteen lessons reach the layer through css/book.css,
 #   which gate 54 holds byte-for-byte; going_deeper reaches it through a direct <link> that
@@ -2033,13 +2047,31 @@ if _frag:
 # that were never book.css's business. Keying on the <link> is self-maintaining: a page
 # enters this gate the moment it is converted, and nothing has to be remembered.
 bad = []
+# S126: SCOPE IS A <link> ELEMENT, NOT A SUBSTRING. Both §27 and §27.12 keyed scope on
+# `'css/book.css' in src`, so ANY page that merely MENTIONS the path -- in prose, in a
+# comment, in a code sample -- silently entered the gate. Measured, not hypothesised: a
+# comment added to going_deeper.html's own <style> block reading "...reach through
+# css/book.css..." pulled that page into §27 and reported 11 of its own classes as
+# unresolved. §24.8 -- the population the gate scans was never the population it names.
+# The href is RELATIVE-TO-THE-PAGE (§27.10, the book does not name its own host), so the
+# lessons in lessons/ link "../css/book.css" and the root pages link "css/book.css". A
+# predicate that demanded the bare path matched ZERO lessons and §27 then PASSED on an
+# empty scope -- caught only because gate 44 carries a COVERAGE arm and §27 did not.
+# S117/S118 for the third time: a gate that scans zero pages passes.
+def _links(src, sheet):
+    return re.search(r'<link[^>]+href="(?:\.\./)*' + re.escape(sheet) + r'"', src) is not None
+
+
 _used = collections.Counter()
-_scope = [f for f in site if 'css/book.css' in open(f, encoding='utf-8').read()]
+_scope = [f for f in site if _links(open(f, encoding='utf-8').read(), 'css/book.css')]
 for f in _scope:
     for m in re.finditer(r'\sclass="([^"]*)"', open(f, encoding='utf-8').read()):
         for c in m.group(1).split():
             _used[c] += 1
 _css = LI.load_css()
+if len(_scope) < 16:
+    bad.append(f'scanned only {len(_scope)} page(s) \u2014 the scope expression is '
+               f'broken; all sixteen lessons link the stylesheet (\u00a727)')
 if _used and not _css:
     bad.append(f'{sum(_used.values())} class attribute(s) in use and css/book.css is absent '
                f'or empty - every one of them resolves to nothing')
@@ -2090,7 +2122,17 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 627, 2297, '3f4c39d35c2d6b64'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 624, 2282, '3144f489f4a79cba'
+#   S126: 627/2,297 -> 624/2,282. §27.15a says there is NO exception list, and five inline
+#   <code> elements in L03 were still carrying a class - the last five in the book. They
+#   were invisible to S124's strip because that sweep enumerated the class names it knew
+#   (.code-inline-bg-e8e8e8*, .code-ff-uimonosp*) and these three are spelled differently:
+#   §24.8 again. Two of them, .code-inline-bg-f5c6cb and -f5c6c0, are the SAME pink one
+#   digit apart on the same construct - a typo, not two colours. Diffed by SELECTOR against
+#   the pushed clone: exactly THREE gone, ZERO born, ZERO surviving rules altered, so no
+#   class RENAME and §27.15b's trap does not fire (all three were code-only: x2, x2, x1).
+#   The -15 declarations IS those three rules at five declarations each. Control-run after
+#   the move: deleting one `color: white;` still FAILS this gate.
 #   S124: 636/2,332 -> 627/2,297, and the -9 is fully accounted for. TEN rules die - the six
 #   .code-inline-bg-e8e8e8 variants, the three .code-ff-uimonosp ones and .code-c-white - and
 #   ONE is born, .span-ff-uimonosp, which is the same declarations under a name derived from
@@ -2243,14 +2285,36 @@ gate(f'\u00a727.11 the stylesheet matches its baseline '
 # own <style> blocks and their own inline attributes, and none of that is book.css's
 # business. A page enters this gate the moment it is converted; nothing has to be
 # remembered.
-_conv = [f for f in site if 'css/book.css' in open(f, encoding='utf-8').read()]
+# S126 EXTENSION, DJ RULING. Scope was "links css/book.css". §27.15c put
+# going_deeper.html on css/semantic.css, which made it a converted page this gate could
+# not see -- so it sat PARTLY converted, with seven inline style attributes, and gate 44
+# passed. Same shape as §27.15c shipping ungated: a new delivery path is a new unguarded
+# path. Scope now DERIVES from either stylesheet, so a page joining the layer by either
+# pipe enters automatically and nothing has to be remembered.
+# index.html links NEITHER -- it is fully self-contained -- and is therefore held by NAME
+# (§25.2a, named sets over counts), because DJ ruled its one inline style out and a fix
+# with no gate is an unguarded fix. newproject.html and tutor/tutor.html stay OUT by
+# §25.6a: they are tool pages and their own inline styles are nobody else's business.
+_SHEETS = ('css/book.css', 'css/semantic.css')
+_ALSO_HELD = ('index.html',)
+_conv = []
+for f in site:
+    src = open(f, encoding='utf-8').read()
+    hit = [h for h in _SHEETS if _links(src, h)]
+    if hit:
+        _conv.append((f, 'links ' + hit[0]))
+    elif f in _ALSO_HELD:
+        _conv.append((f, 'is held by name (\u00a725.2a)'))
 bad = []
-for f in _conv:
+# COVERAGE ARM (S117/S118): a gate that scans zero pages passes.
+if len(_conv) < 1 + len(_ALSO_HELD):
+    bad.append(f'scanned only {len(_conv)} page(s) \u2014 the scope expression is broken (\u00a727.12)')
+for f, why in _conv:
     src = open(f, encoding='utf-8').read()
     for m in re.finditer(r'\sstyle="([^"]*)"', src):
         ln = src.count('\n', 0, m.start()) + 1
-        bad.append(f'{f} line {ln}: inline style="{m.group(1)[:60]}" — this page links '
-                   f'css/book.css, so its styling belongs in a rule (§27.12)')
+        bad.append(f'{f} line {ln}: inline style="{m.group(1)[:60]}" \u2014 this page {why}, '
+                   f'so its styling belongs in a rule (\u00a727.12)')
 gate('\u00a727.12 no converted page carries an inline style attribute', bad)
 
 # ---- GATE 45 (§27.13): css/book.css regenerates byte-identically from the lessons.

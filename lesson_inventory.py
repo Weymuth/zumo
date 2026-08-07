@@ -2,7 +2,7 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.2.0'
+VERSION = 'v1.3.0'
 #
 # v1.1.1 (S94): the visible-banner expectation was still the pre-S89 value of 2, so --anomalies
 #   printed a false lead for all sixteen lessons. §5b and book_gates have required exactly ONE
@@ -185,9 +185,38 @@ def load_css(path=CSS_PATH):
     return out
 
 
+_STYLE_RE = re.compile(r'<style[^>]*>(.*?)</style>', re.S | re.I)
+
+
+def page_css(src):
+    """-> {class: 'decl; decl'} from the page's OWN <style> block(s).
+
+    S126, DJ ruling A. Until now the resolver knew exactly one stylesheet, css/book.css,
+    so a page styling itself from its own <style> block was OPAQUE to every gate that
+    reads through expand_classes -- the class stayed a class and resolved to nothing.
+    That is why going_deeper.html's hero could only satisfy §25.6 while it was written
+    INLINE: inline and expanded-from-book.css produce the same string, and a class the
+    resolver cannot see produces neither. §27.15c's shape one level down -- a page that
+    joins the book by a second pipe is invisible to instruments built around the first.
+    Inert for the sixteen lessons, which carry NO <style> block at all (measured, S126).
+    """
+    out = {}
+    for blk in _STYLE_RE.findall(src):
+        for m in _RULE_RE.finditer(blk):
+            ds = [' '.join(d.split()) for d in m.group(2).split(';') if d.strip()]
+            out[m.group(1)] = '; '.join(ds)
+    return out
+
+
 def expand_classes(src, css=None):
     """Replace every class="..." with the style="" it stands for, for READING."""
     css = load_css() if css is None else css
+    # The page's own <style> block sits BELOW its <link> and therefore WINS any collision
+    # on a declaration it sets (§27.15c). The merge order encodes that, deliberately.
+    own = page_css(src)
+    if own:
+        css = dict(css or {})
+        css.update(own)
     if not css:
         return src
 
