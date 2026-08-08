@@ -2,7 +2,7 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.3.2'
+VERSION = 'v1.3.3'
 #
 # v1.3.1 (S128): callout records gain 'start', 'open_end' and 'family_attr'. Purely
 #   additive - three new keys, no existing key changed, no detector changed. Written
@@ -472,6 +472,13 @@ def build(path):
             'border': m.group(2).strip().lower(),
             'bg': bg.group(1).strip().lower() if bg else None,
             'glyph': _glyph(gtxt),
+            # S130: THE AUTHORED IDENTITY. Every other locator in this suite is a FILE
+            # OFFSET, which any edit above it invalidates (rule 15). Three derived keys
+            # were tried at S130 - a content hash at two window sizes and the label text -
+            # and the best re-found only 199 of 212 blocks across one markup change. A
+            # derived key cannot be an identity. This one is authored by callout_id.py and
+            # never recomputed, so it survives the edits that destroy an offset.
+            'callout_id': nd['attrs'].get('data-callout'),
             'label': txt[:70],
             'bytes': (nd['end'] or nd['open_end']) - nd['start'],
             # S128: FILE offsets and the live attribute, so a writer can seat

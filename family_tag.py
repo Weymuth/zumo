@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # VERSION is the ONE home and sits ABOVE the changelog, so a plain grep of this file
 # returns the version and not a changelog line (S98).
-VERSION = 'v1.0'
+VERSION = 'v1.1'
 # v1.0 (S128): first release. Seats data-family on every callout block.
 """family_tag.py - writes the FAMILY onto the callout that carries it (Bible §24.14).
 
@@ -60,8 +60,13 @@ def family_of(c):
     """The family of one callout record, through build_family_map's OWN tiers.
 
     Order is the generator's: CANON label prefix, then the content RULE list, then
-    the GLYPH stopgap. Returns None when no tier names it - the caller decides what
+    the authored PIN. Returns None when no tier names it - the caller decides what
     an unnamed block means, because 'unassigned' is a finding, not a default.
+
+    S130: THE LAST TIER IS NO LONGER THE GLYPH. It was a decoration-keyed stopgap and it
+    died the way the COLOUR tier died at S112 - the marks arc replaced the emoji and 212
+    blocks lost their only signal. The pin is AUTHORED and keyed on `data-callout`, so no
+    repaint or reskin can orphan it. Read-only input; see ZUMO_FAMILY_PINS.md.
     """
     lab = B.norm(c.get('label'))
     g = (c.get('glyph') or '').strip()
@@ -72,7 +77,7 @@ def family_of(c):
     for fn, f in B.RULE:
         if fn(lab, g, scheme):
             return f
-    return B.GLYPH.get(g)
+    return B.PINS.get(c.get('callout_id'))
 
 
 def plan(path):

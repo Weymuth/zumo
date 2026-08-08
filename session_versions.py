@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.21.0'
+VERSION = 'v1.22.0'
 # v1.19.0 (S123): title_feed registered in ARTEFACTS and added to BOTH emitted blocks.
 #   Same shape as v1.18.0, and CONTROL E named the file the moment it landed in root —
 #   an instrument written this session is exactly the kind that drifts unwatched, because
@@ -168,6 +168,7 @@ ARTEFACTS = [
     ('pill_sweep',            'pill_sweep.py',            r'pill sweep .*?  (v[\d.]+)'),
     ('gate_payload_match',    'gate_payload_match.py',    r'PAYLOAD BYTE-MATCH GATE .*?— (v[\d.]+)'),
     ('build_family_map',      'build_family_map.py',      r"VERSION = '(v[\d.]+)'"),
+    ('callout_id',            'callout_id.py',            r"VERSION = '(v[\d.]+)'"),
     ('build_mark_index',      'build_mark_index.py',      r"VERSION = '(v[\d.]+)'"),
     ('gen_bonus_banner',      'gen_bonus_banner.py',      r"VERSION = '(v[\d.]+)'"),
     ('gen_part_banners',      'gen_part_banners.py',      r'gen_part_banners\.py  (v[\d.]+)'),
@@ -266,7 +267,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"{vals['BookComponentStandard']} · gen_component {vals['gen_component']} · Maker "
             f"{vals['Maker']} · **book_gates {vals['book_gates']}** · lesson_inventory "
             f"{vals['lesson_inventory']} · pill_sweep {vals['pill_sweep']} · gate_payload_match "
-            f"{vals['gate_payload_match']} · build_family_map {vals['build_family_map']} · "
+            f"{vals['gate_payload_match']} · build_family_map {vals['build_family_map']} · callout_id {vals['callout_id']} · "
             f"build_mark_index {vals['build_mark_index']} · gen_bonus_banner "
             f"{vals['gen_bonus_banner']} · gen_part_banners {vals['gen_part_banners']} · "
             f"session_versions {vals['session_versions']} · "
@@ -301,7 +302,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"Instruments: `book_gates` **{vals['book_gates']}** · `lesson_inventory` "
             f"**{vals['lesson_inventory']}** ·\n`gen_component` **{vals['gen_component']}** · "
             f"`pill_sweep` **{vals['pill_sweep']}** · `gate_payload_match` **{vals['gate_payload_match']}** ·\n"
-            f"`build_family_map` **{vals['build_family_map']}** · `build_mark_index` "
+            f"`build_family_map` **{vals['build_family_map']}** · `callout_id` **{vals['callout_id']}** · `build_mark_index` "
             f"**{vals['build_mark_index']}** · `gen_bonus_banner` **{vals['gen_bonus_banner']}** ·\n"
             f"`gen_part_banners` **{vals['gen_part_banners']}** · `session_versions` "
             f"**{vals['session_versions']}** · `fit_raster_svg` **{vals['fit_raster_svg']}** ·\n"

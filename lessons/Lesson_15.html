@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.23.2 -->
+<!-- Lesson version: v02.24.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +75,7 @@
 <h1 class="h1">The Present Isn't Enough</h1>
 <div class="div-fs-11em">PID Control — and the Tuning Bench That Proves It</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.23 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.24 — August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -87,7 +87,7 @@
 <div class="div-bg-1f2a3d-2"><div id="section-1"><span class="span-d-block-2">Section 1</span><span class="span-d-block">The Robot That Knows Where It Is and Nothing Else</span></div></div>
 <div class="div-1f2a3d">
 
-<div class="callout-2e86ab-bg-e7f0fa-2" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> the P-controller from Lesson 8 <img src="../images/spiral_star_08.svg" alt="Spiral review from Lesson 08" class="img-h-11em"> — the four lines below are unchanged; this lesson teaches what they cannot see.</div>
+<div class="callout-2e86ab-bg-e7f0fa-2" data-family="BUILDS ON" data-callout="15.1"><div class="div-fs-105em"><img src="../images/marks/arrow-repeat.svg" alt="" data-mark="arrow-repeat">Builds on:</div> the P-controller from Lesson 8 <img src="../images/spiral_star_08.svg" alt="Spiral review from Lesson 08" class="img-h-11em"> — the four lines below are unchanged; this lesson teaches what they cannot see.</div>
 
 <p>Back in Lesson 8 you wrote four lines of code that made the robot follow a line, and they
 worked. Here they are again, unchanged, still running inside your project today:</p>
@@ -110,7 +110,7 @@ straights, the overshoot out of a corner, the way it runs slower and slower as t
 <p>This lesson gives the controller two more tenses. It also gives you something you have never had
 before: <b>a way to tell whether your tuning actually helped.</b></p>
 
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><b>⚠️ The honest warning up front.</b> Most PID chapters end with a student turning
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.2"><b><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">The honest warning up front.</b> Most PID chapters end with a student turning
 knobs, squinting at the robot, and saying “that looked smoother.” That is not tuning. That is
 hoping. Half this lesson is about building an instrument that replaces the squint with a
 <b>number</b>.</div>
@@ -148,7 +148,7 @@ correction = (how far off) &nbsp;+&nbsp; (how long off) &nbsp;+&nbsp; (how fast 
 <p>Three pieces of information, combined into one decision. And the cleanest way to hold them
 in your head is not as three formulas. It is as <b>three tenses</b>:</p>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a-3">Term</th><th class="th-17496a-3">Tense</th><th class="th-17496a-3">The question it asks</th><th class="th-17496a-3">What it can fix</th></tr><tr><td class="td-cdd9e1"><b>P</b> — Proportional</td><td class="td-cdd9e1"><b>Present</b></td><td class="td-cdd9e1">How far off am I <i>right now</i>?</td><td class="td-cdd9e1">Large errors, quickly</td></tr><tr><td class="td-cdd9e1"><b>D</b> — Derivative</td><td class="td-cdd9e1"><b>Future</b></td><td class="td-cdd9e1">How fast is the error <i>closing</i>?</td><td class="td-cdd9e1">Overshoot and oscillation</td></tr><tr><td class="td-cdd9e1"><b>I</b> — Integral</td><td class="td-cdd9e1"><b>Past</b></td><td class="td-cdd9e1">How long have I <i>been</i> wrong?</td><td class="td-cdd9e1">A small error that never dies</td></tr></table>
-<div class="div-2e86ab-3" data-family="KEY TERM"><b>🔑 KEY TERM — PID Controller:</b> a control algorithm that
+<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.3"><b><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM — PID Controller:</b> a control algorithm that
 computes a correction from three views of the same error — its present value (P), its accumulated
 history (I), and its rate of change (D).</div>
 <div class="div-m-26px0"><img src="../images/L15_GRAPHIC_15-01_three_tenses.svg" alt="[GRAPHIC 15.1] The three tenses. P reads the error now; D reads its slope; I reads the area under it." class="img-cdd9e1"><div class="div-c-607d8b">[GRAPHIC 15.1] The three tenses. P reads the error now; D reads its slope; I reads the area under it.</div></div>
@@ -174,7 +174,7 @@ You <i>still</i> hit the wall, because nobody told you how fast you were closing
 <span class="tok-569cd6">float</span> d = currentKd * derivative;
 lastError = error;                            <span class="tok-7cbf6e">// today becomes the past</span>
 </pre>
-<div class="div-2e86ab-3" data-family="KEY TERM"><b>🔑 KEY TERM — Derivative:</b> the rate of change of a value over
+<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.4"><b><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM — Derivative:</b> the rate of change of a value over
 time. The derivative of the error tells you whether you are getting closer or further away, and how
 fast — which is a statement about the <i>future</i>.</div>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a-3">Situation</th><th class="th-17496a-3">Derivative</th><th class="th-17496a-3">What it means</th></tr><tr><td class="td-cdd9e1">Error was 100, now 50</td><td class="td-cdd9e1">Negative</td><td class="td-cdd9e1">Closing fast. Ease off — you are about to arrive.</td></tr><tr><td class="td-cdd9e1">Error was 50, now 100</td><td class="td-cdd9e1">Positive</td><td class="td-cdd9e1">Opening up. Push harder.</td></tr><tr><td class="td-cdd9e1">Error was 50, still 50</td><td class="td-cdd9e1">Zero</td><td class="td-cdd9e1">Not changing. D has nothing to say.</td></tr></table>
@@ -187,7 +187,7 @@ requires knowing something P has never known: which way you are headed.</p>
 stamping the brake at the last instant. You slow down <i>as you approach</i>. D is the part of you
 that does that.</div>
 <div class="div-m-26px0"><img src="../images/L15_GRAPHIC_15-02_p_vs_pd.svg" alt="[GRAPHIC 15.2] The same step, two controllers: P alone oscillates around the line; PD glides onto it." class="img-cdd9e1"><div class="div-c-607d8b">[GRAPHIC 15.2] The same step, two controllers: P alone oscillates around the line; PD glides onto it.</div></div>
-<div class="callout-607d8b-bg-eceff1-3" data-family="NOTE"><b>📘  </b> D is often called the <i>damper</i>, and that is
+<div class="callout-607d8b-bg-eceff1-3" data-family="NOTE" data-callout="15.5"><b><img src="../images/marks/sticky.svg" alt="" data-mark="sticky"></b> D is often called the <i>damper</i>, and that is
 exactly right. It is the shock absorber. Take the shocks off a car and every bump becomes a bounce
 that lasts a block.</div>
 <h3 class="h3-c-1f2a3d-2">3.4 I — the past</h3>
@@ -196,7 +196,7 @@ that lasts a block.</div>
 integral = integral + (error * dt);   <span class="tok-7cbf6e">// add up every moment you were wrong</span>
 <span class="tok-569cd6">float</span> i = currentKi * integral;
 </pre>
-<div class="div-2e86ab-3" data-family="KEY TERM"><b>🔑 KEY TERM — Integral:</b> the accumulated sum of a value over
+<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.6"><b><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM — Integral:</b> the accumulated sum of a value over
 time — the <i>area under the error curve</i>. It answers “how much total wrongness has piled up?”</div>
 
 <p><b>What I is for.</b> Suppose a bias in your drivetrain makes the robot pull slightly right. P
@@ -210,7 +210,7 @@ output.</p>
 small error that never dies grows into a large command. <b>I is the only term that can drive a
 steady error to zero.</b></p>
 
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><b>⚠️  And I is the most dangerous term in the equation.</b> If the error
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.7"><b><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">And I is the most dangerous term in the equation.</b> If the error
 stays large for a while — the robot is picked up, the line disappears, a wheel is blocked — the
 integral keeps piling up into an enormous number. When the robot finally recovers, that stored
 command fires all at once and the robot lunges. This is <b>integral windup</b>, and it is why I
@@ -292,7 +292,7 @@ integral = integral + (error * dt);           <span class="tok-7cbf6e">// multip
 trip through <code>loop()</code>. So before either term can mean anything, you have to answer a
 question nobody has made you answer before:</p>
 
-<div class="div-433014-2" data-family="THINK ABOUT IT"><div class="p-fs-12em"><b>How long does one pass
+<div class="div-433014-2" data-family="THINK ABOUT IT" data-callout="15.8"><div class="p-fs-12em"><b>How long does one pass
 through your loop actually take?</b></div></div>
 <h3 class="h3-c-433014-2">4.2 Measure the loop, and the loop bites back</h3>
 <p>Here is the fact that decides this lesson. Your five line sensors are <b>RC sensors</b>:
@@ -301,7 +301,7 @@ discharge slowly, bright ones quickly — the timing <i>is</i> the measurement.<
 
 <p>And <code>initFiveSensors()</code> sets that timing ceiling to <b>2000 microseconds</b>. So:</p>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a-4">Fact</th><th class="th-17496a-4">Consequence</th></tr><tr><td class="td-cdd9e1">One <code>readLinePosition()</code> can block for up to <b>2000&nbsp;µs</b></td><td class="td-cdd9e1">Your loop takes roughly <b>2–3 milliseconds</b> per pass</td></tr><tr><td class="td-cdd9e1">Black discharges slower than white</td><td class="td-cdd9e1">The loop period is <b>not even constant</b> — it depends on what is under the robot</td></tr><tr><td class="td-cdd9e1"><code>millis()</code> resolves to <b>1 millisecond</b></td><td class="td-cdd9e1">Asked to measure a 2&nbsp;ms interval it answers “2”. Or “3”. Or <b>“0”</b>.</td></tr></table>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><div class="div-fs-09em">⚠️ WARNING</div>
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.9"><div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
 <div class="div-fs-105em">You cannot divide by zero.</div><br>
 A derivative computed as <code>(error - lastError) / dt</code> where <code>dt</code> came from
 <code>millis()</code> is not “a bit imprecise.” On a fast pass it is <b>undefined</b>, and on every
@@ -596,7 +596,7 @@ is designed to fail).</div>
   showStatus();
 }
 </pre>
-<div class="callout-607d8b-bg-eceff1-3" data-family="NOTE"><b>📘 The general rule, and it is worth more than this lesson:</b> if something
+<div class="callout-607d8b-bg-eceff1-3" data-family="NOTE" data-callout="15.10"><b><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">The general rule, and it is worth more than this lesson:</b> if something
 <i>must</i> happen every time you enter a state, <b>put it in the doorway — not in the four places
 that walk through it.</b> A reset you have to remember at four call sites is a bug with a four-day
 fuse: it works today, and it fails the first time somebody adds a fifth door.</div>
@@ -660,7 +660,7 @@ from Lesson 6, <code>COUNTS_PER_CM</code> from Lesson 6, and the <code>dt</code>
 <code>followLine()</code> already measured this pass. <b>You did not buy a single new instrument.</b>
 You wired three you already owned into a loop that closes.</p>
 
-<div class="callout-6b8e6b-bg-f0f7f0-3" data-family="TIP"><b>💡 Clamp the memory, not just the output.</b> Look at the <code>iMax</code> line.
+<div class="callout-6b8e6b-bg-f0f7f0-3" data-family="TIP" data-callout="15.11"><b><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">Clamp the memory, not just the output.</b> Look at the <code>iMax</code> line.
 It is tempting to clamp only <code>speedTrim</code> on the way out — but then the integral keeps
 growing on the inside, invisibly, and when you finally need it to come <i>back down</i> it has
 thousands of accumulated units to unwind first. The robot stays wrong for seconds after the cause is
@@ -668,7 +668,7 @@ gone. <b>That is windup, and clamping the output does not prevent it.</b></div>
 <p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
-<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="15.12">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
@@ -779,7 +779,7 @@ until something spends them.</div>
   <span class="tok-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
 }
 </pre>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><div class="div-fs-09em">⚠️ WARNING</div>
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.13"><div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
 <div class="div-fs-105em">You just wrote a whole function and the program did not get one
 byte bigger. Why?</div><br>
 Because <b>nothing calls it.</b> The linker looked at <code>deltaTimeSec()</code>, saw that no code
@@ -1183,7 +1183,7 @@ sneaking back in through a different door.</div>
 <h3 class="h3-c-00474b-2">7.0 First: the rules of a fair test</h3>
 <p>Everything below is worthless if you skip this. Three gains, tuned by feel, on a track that
 keeps changing, with a battery that keeps dying, is not an experiment. It is a superstition.</p>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><div class="div-fs-09em">⚠️ WARNING</div>
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.14"><div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
 <div class="div-fs-105em">The three rules. Break any one of them and your numbers mean nothing.</div>
 <ol class="ol-m-10px000">
 <li class="li-mb-6px"><b>Same track, same start line, every run.</b> Mark the start with tape.</li>
@@ -1231,7 +1231,7 @@ calibrated a square.</li>
 </pre>
 <p><b>Do this, and write the answers in your notebook:</b></p>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a">Do</th><th class="th-17496a">Watch</th><th class="th-17496a">Write down</th></tr><tr><td class="td-cdd9e1">Hold the robot still, centered on the line</td><td class="td-cdd9e1"><code>ERR</code> near 0, <code>dERR</code> near 0</td><td class="td-cdd9e1">Your <b>dt&nbsp;µs</b>. This is your loop period.</td></tr><tr><td class="td-cdd9e1">Slide it slowly to the left</td><td class="td-cdd9e1"><code>ERR</code> grows one way, <code>dERR</code> small</td><td class="td-cdd9e1">The sign of <code>ERR</code> when the line is left of center</td></tr><tr><td class="td-cdd9e1">Snap it across the line fast</td><td class="td-cdd9e1"><code>dERR</code> spikes hard</td><td class="td-cdd9e1"><b>This is what D reacts to.</b> P never sees it.</td></tr><tr><td class="td-cdd9e1">Slide it over the black tape, then over white</td><td class="td-cdd9e1"><code>dt&nbsp;µs</code> <i>changes</i></td><td class="td-cdd9e1">Two numbers: dt over black, dt over white</td></tr><tr><td class="td-cdd9e1">Now read the <code>dt ms</code> row — that is what <code>millis()</code> would have said</td><td class="td-cdd9e1">It reads 2. Or 3. Or <b>0</b>.</td><td class="td-cdd9e1">What <code>(error-lastError)/0</code> evaluates to</td></tr></table>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><b>⚠️  That last row is the whole reason this lesson uses
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.15"><b><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">That last row is the whole reason this lesson uses
 <code>micros()</code>.</b> Your loop is a couple of milliseconds long, and the only clock most
 Arduino code ever reaches for cannot resolve it. It is not <i>close</i> to good enough. It is
 <b>the wrong instrument</b>, and it will hand you a division by zero without so much as a
@@ -1279,7 +1279,7 @@ the score screen, <code>showScore()</code> prints <b>TRY&nbsp;Kd</b>.</p>
 <p>That number is <b>Ziegler–Nichols</b>, a recipe from the 1940s that has been landing engineers
 in the right ZIP code for eighty years:</p>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a">Controller</th><th class="th-17496a">K<sub>p</sub></th><th class="th-17496a">K<sub>i</sub></th><th class="th-17496a">K<sub>d</sub></th></tr><tr><td class="td-cdd9e1">P only</td><td class="td-cdd9e1">0.5 × K<sub>u</sub></td><td class="td-cdd9e1">—</td><td class="td-cdd9e1">—</td></tr><tr><td class="td-cdd9e1">PI</td><td class="td-cdd9e1">0.45 × K<sub>u</sub></td><td class="td-cdd9e1">1.2 × K<sub>p</sub> / T<sub>u</sub></td><td class="td-cdd9e1">—</td></tr><tr><td class="td-cdd9e1"><b>PID</b></td><td class="td-cdd9e1"><b>0.6 × K<sub>u</sub></b></td><td class="td-cdd9e1">2 × K<sub>p</sub> / T<sub>u</sub></td><td class="td-cdd9e1"><b>K<sub>p</sub> × T<sub>u</sub> / 8</b></td></tr></table>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><b>⚠️  Ziegler–Nichols is a starting point, not an answer.</b> It is
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.16"><b><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">Ziegler–Nichols is a starting point, not an answer.</b> It is
 famously aggressive — it was designed for industrial processes that care more about responding
 fast than about overshooting. It will get you close. It will not get you good. <b>Anyone who tells
 you Z–N <i>is</i> the tuning is selling you something.</b></div>
@@ -1310,7 +1310,7 @@ noise</i>, which is a rate too. (Challenge 2 fixes this properly.)</div>
 <p><a href="../newproject.html?lesson=15&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C — Add D and Hill-Climb</a></p></div>
 </details>
 <h3 class="h3-c-00474b-2">7D — Put I on the line. Watch it fail. &nbsp;<span class="span-c-607d8b">(27,222 bytes)</span></h3>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><b>⚠️  This rung is designed to fail. Build it anyway.</b> Section 3.5
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.17"><b><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">This rung is designed to fail. Build it anyway.</b> Section 3.5
 told you the I term is wrong for the line loop. You should not believe a textbook that tells you
 something is wrong and then hides the evidence. <b>Build it. Run it. Watch.</b></div>
 <p>Add one constant:</p>
@@ -1456,7 +1456,7 @@ an hour ago. That is the point of the ladder.</div>
 <p>You have now been burned twice by the same class of mistake, in two different lessons.
 Lesson 11: a stopwatch cannot measure a distance. Lesson 15: a millisecond clock cannot measure a
 two-millisecond loop.</p>
-<div class="callout-607d8b-bg-eceff1-3" data-family="NOTE"><b>📘 An instrument is not “good” or “bad.” It is <i>matched</i> or
+<div class="callout-607d8b-bg-eceff1-3" data-family="NOTE" data-callout="15.18"><b><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">An instrument is not “good” or “bad.” It is <i>matched</i> or
 <i>mismatched</i> to the thing you are measuring.</b> <code>millis()</code> is a fine clock. It has
 run every timeout in this book. It is simply <b>the wrong size</b> for this job, and being the wrong
 size does not make it complain — it makes it <i>lie quietly</i>.</div>
@@ -1615,7 +1615,7 @@ dFiltered  = D_FILTER * ____ + (<span class="tok-b5cea8">1.0</span> - D_FILTER) 
   dFiltered = D_FILTER * dFiltered + (<span class="tok-b5cea8">1.0</span> - D_FILTER) * dRaw;
   <span class="tok-569cd6">float</span> d = currentKd * dFiltered;
 </pre>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><b>⚠️  Nothing is free.</b> The filter also delays the derivative — you
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.19"><b><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">Nothing is free.</b> The filter also delays the derivative — you
 are, by definition, acting on slightly stale information. Turn <code>D_FILTER</code> up toward 0.95
 and you will find the point where D is so smooth it is no longer <i>early</i>, which was the entire
 reason you hired it. <b>Use the bench. Find the knee.</b></div>
@@ -1786,7 +1786,7 @@ your controller is not controlling.</b></div>
 <div class="div-bg-6f7582"><div id="section-10"><span class="span-d-block-2">Section 10</span><span class="span-d-block">Exit Ticket</span></div></div>
 <div class="div-6f7582">
 
-<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="15.20">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
@@ -1806,7 +1806,7 @@ your controller is not controlling.</b></div>
 <p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
 </div>
 
-<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="15.21">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
@@ -1851,7 +1851,7 @@ your controller is not controlling.</b></div>
 <p class="p-m-12px00"><button type="button" data-bc-btn="3" class="button">Mark Brain Check 03 done</button></p>
 </div>
 
-<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="15.22">
     <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
     <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
@@ -1884,8 +1884,8 @@ that memory is wisdom or superstition depends entirely on what you attached it t
 <p><strong>Next:</strong> Lesson 16 is <em>Nothing Left to Take Away</em> — the capstone. The 28,034-byte controller you just tuned is the baseline it measures against, and the 638 bytes left under the ceiling are the currency every enhancement has to be bought with.</p>
 <h3 class="h3-c-6f7582-2">Engineer’s Log</h3>
 
-<div class="div-6f7582-3" data-family="ENGINEER'S LOG">
-<div class="div-fs-105em">📓 ENGINEER’S LOG #15 — feeds: Performance Evaluation</div>
+<div class="div-6f7582-3" data-family="ENGINEER'S LOG" data-callout="15.23">
+<div class="div-fs-105em"><img src="../images/marks/journal-text.svg" alt="" data-mark="journal-text">ENGINEER’S LOG #15 — feeds: Performance Evaluation</div>
 <b>Record the hill-climb.</b> Your four gains, and the MAE / PEAK / WEAVE each set produced. What you tried, what you kept, <b>when you stopped and why.</b><br>
 <i>Why judges care: the template asks you to explain how test results were analyzed and how they changed the robot. The hill-climb <i>is</i> that answer — you just have to have written it down.</i></div>
 
@@ -2067,7 +2067,7 @@ shrinking, so the derivative is <b>negative</b>. The correct controller <i>adds<
 number, which <b>reduces</b> the correction — it brakes early. What does this one do with it?<br><br>
 <b>This is why a sabotage that only shows up when you turn a gain up is so dangerous: the bug hides
 behind the very knob you would use to find it.</b></div></details>
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING"><div class="div-fs-09em">⚠️ WARNING</div>
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="15.24"><div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
 <div class="div-fs-105em">The lesson of B1 and B4, and it applies to every program you
 will ever write:</div><br>
 <b>The byte count proves nothing.</b> Both of those builds are exactly, to the byte, the size of the
@@ -2111,8 +2111,8 @@ the room is not a test.<br><br>
 
 <table class="table-bc-collapse-4"><tr><th class="th-17496a-2">Tag</th><th class="th-17496a-2">Graphic</th><th class="th-17496a-2">Where</th></tr><tr><td class="td-cdd9e1">[GRAPHIC 15.1]</td><td class="td-cdd9e1">The three tenses — P reads the error, D reads its slope, I reads the area under it</td><td class="td-cdd9e1">§3.1</td></tr><tr><td class="td-cdd9e1">[GRAPHIC 15.2]</td><td class="td-cdd9e1">P vs PD response to the same step — oscillation vs a clean glide</td><td class="td-cdd9e1">§3.3</td></tr><tr><td class="td-cdd9e1">[GRAPHIC 15.3]</td><td class="td-cdd9e1">Integral windup on a curve — why a steady error is not always a mistake</td><td class="td-cdd9e1">§3.5</td></tr></table>
 
-<div class="callout-607d8b-bg-eceff1-4" data-family="GOING DEEPER">
-<div class="div-fs-105em">🔬 Curious how any of this actually works?</div>
+<div class="callout-607d8b-bg-eceff1-4" data-family="GOING DEEPER" data-callout="15.25">
+<div class="div-fs-105em"><img src="../images/marks/file-earmark-plus.svg" alt="" data-mark="file-earmark-plus">Curious how any of this actually works?</div>
 <p class="p-mb-0">The <strong>Going Deeper</strong> page opens up what your PID gains cost in machine terms — why a decimal is expensive on a chip with no floating-point unit, and how fixed point buys the same three-term math back in integers. None of it is assigned, and none of it is on a quiz — it is there for when you want it. <a href="../going_deeper.html#fixed-point" class="link-c-2e86ab">Open Going Deeper →</a></p>
 </div>
 

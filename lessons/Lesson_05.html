@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.23.0 -->
+<!-- Lesson version: v04.24.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Proximity Sensors</h1>
 <div class="div-fs-11em">Teaching Your Robot to Sense</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.23 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.24 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -94,7 +94,7 @@
 
 <p>Your robot doesn't have eyes, but it <em>can</em> detect objects around it — ahead of it, and out to either side. The Zumo 32U4 has <strong>infrared proximity sensors</strong> that work on the same principle as a bat’s echolocation or a ship’s sonar — send out a signal, then measure what bounces back. The bat uses sound and the ship uses sound; your robot uses invisible light.</p>
 
-<div class="callout-17a2b8-bg-d1ecf1" data-family="REAL-WORLD CONNECTION">
+<div class="callout-17a2b8-bg-d1ecf1" data-family="REAL-WORLD CONNECTION" data-callout="5.1">
     <div class="div-fs-105em">🤖 Real-World Connection</div>
     <p>Proximity sensors are everywhere:</p>
     <ul>
@@ -106,14 +106,14 @@
     <p>Today, you'll add this "sixth sense" to your Zumo!</p>
 </div>
 
-<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
-    <div class="div-fs-09em">📘 NOTE</div>
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="5.2">
+    <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
     <div class="div-fs-105em">"Object" vs "Obstacle"</div>
     <p>Throughout this lesson, we'll use the word <strong>object</strong> to mean anything the sensor detects. When we specifically mean something the robot should avoid, we'll say <strong>obstacle</strong>.</p>
 </div>
 
-<div class="div-ffc107-3" data-family="WARNING">
-    <div class="div-fs-09em">⚠️ WARNING</div>
+<div class="div-ffc107-3" data-family="WARNING" data-callout="5.3">
+    <div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
     <div class="div-fs-105em">HEADS UP — today ends with a permanent hardware change</div>
     <p class="ol-m-10px000">Your robot is sitting in the <strong>factory jumper position</strong> right now — three line sensors, three proximity receivers. That is exactly what this lesson needs, and it is why Lesson 4 made you put the jumpers back.</p>
     <p class="ol-m-10px000">But it is the last time. In <strong>Section 7.3</strong> you will move those jumpers to DN2/DN4 <em>for good</em>, trading your left and right proximity receivers for line sensors 2 and 4. Read that section before you pack up — Lesson 6 will not work without it.</p>
@@ -147,8 +147,8 @@
     <li>☐ Move the two configuration jumpers to DN2/DN4 <strong>permanently</strong>, verify the move in software, and explain what you traded away</li>
 </ul>
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-proximity">Proximity Sensor</strong></div>A sensor that detects how close an object is without physical contact, typically using infrared light or ultrasound.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.4">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-proximity">Proximity Sensor</strong></div>A sensor that detects how close an object is without physical contact, typically using infrared light or ultrasound.
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -179,8 +179,8 @@
 <p class="p-c-666-2">[GRAPHIC 5.2] EMIT → REFLECT → DETECT → COUNT — and the 38 kHz trick that makes steady sunlight invisible to the receiver.</p>
 </div>
 
-<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
-    <div class="div-fs-105em">📘 NOTE</div>
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="5.5">
+    <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
     <p>Think of it like shining a flashlight in a dark room. A nearby wall reflects lots of light back to your eyes. A wall far away reflects much less. The sensors work the same way!</p>
 </div>
 
@@ -188,8 +188,8 @@
 
 <p>Here's something important that confuses many beginners:</p>
 
-<div class="callout-ffc107-bg-fff8e1" data-family="WARNING">
-    <div class="div-fs-09em">⚠️ WARNING</div>
+<div class="callout-ffc107-bg-fff8e1" data-family="WARNING" data-callout="5.6">
+    <div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
     <div class="div-fs-105em">CRITICAL!</div>
     <p>The Zumo proximity sensors return values <strong>0 to 6</strong>, NOT 0 to 255! These are "brightness levels"—the sensor pulses the IR LEDs at increasing brightness and counts how many levels detected a reflection.</p>
 </div>
@@ -228,8 +228,8 @@
 
 <p class="p-c-555-4"><em>These distances are rough guides — actual readings vary with object color, size, and angle (see Section 4.3). Calibrate against your own robot.</em></p>
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-brightness-level">Brightness Level</strong></div>A measure (0-6) of how many IR LED pulses at increasing intensity detected a reflection. Higher = closer object.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.7">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-brightness-level">Brightness Level</strong></div>A measure (0-6) of how many IR LED pulses at increasing intensity detected a reflection. Higher = closer object.
 </div>
 
 <h3 id="section-3-3" class="h3-c-1f2a3d">3.3 Threshold Constants</h3>
@@ -240,8 +240,8 @@
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">3</span>;        <span class="tok-7cbf6e">// Object is getting close</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> VERY_CLOSE_THRESHOLD = <span class="tok-b5cea8">5</span>;   <span class="tok-7cbf6e">// Object is very close!</span></pre>
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-threshold">Threshold</strong></div>A boundary value used to make decisions. Values above trigger one action; values below trigger another.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.8">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-threshold">Threshold</strong></div>A boundary value used to make decisions. Values above trigger one action; values below trigger another.
 </div>
 
 <h3 id="section-3-4" class="h3-c-1f2a3d">3.4 Two Flashlights, Three Ears</h3>
@@ -262,8 +262,8 @@
 <img src="../images/L05_GRAPHIC_5-07_the_dead_spot.svg" alt="Top view of the Zumo showing the front detection cone covering about plus or minus nineteen degrees ahead, the left and right cones aimed straight out of each flank, and two hatched blind wedges between them from roughly nineteen to seventy-two degrees off each side. A three-step strip alongside shows an object detected by the left sensor, then falling into the blind wedge as the robot turns toward it and reading zero on all sensors, then being picked up by the front sensor as the turn continues." class="img-ddd-3">
 <p class="p-c-666-3">[GRAPHIC 5.7] Between “ahead” and “beside” there is a wedge nothing is watching. The consequence is the strip on the right: see it on the left, turn to face it, and it vanishes mid-turn.</p>
 
-<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING">
-    <div class="div-fs-105em">⚠️ WARNING</div> a reading that drops to 0 <em>while you are turning toward the thing you just detected</em> is not a broken sensor and not a bug in your code. Nothing is aimed there. Design around it: remember what you saw and keep turning rather than re-testing every frame. <strong>Lesson 10 leans on exactly this dead spot</strong> — by then the five-down jumper move has taken your side receivers away, so the blind region starts at about 19° off your nose and never closes.
+<div class="callout-ffc107-bg-fff8e1-3" data-family="WARNING" data-callout="5.9">
+    <div class="div-fs-105em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div> a reading that drops to 0 <em>while you are turning toward the thing you just detected</em> is not a broken sensor and not a bug in your code. Nothing is aimed there. Design around it: remember what you saw and keep turning rather than re-testing every frame. <strong>Lesson 10 leans on exactly this dead spot</strong> — by then the five-down jumper move has taken your side receivers away, so the blind region starts at about 19° off your nose and never closes.
 </div>
 
 <h3 id="section-3-5" class="h3-c-1f2a3d">3.5 A Proximity Sensor Is Not a Ruler</h3>
@@ -361,8 +361,8 @@
 
 <h3 id="section-4-4" class="h3-c-433014">4.4 Set Up Your Project</h3>
 
-<div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW">
-    <div class="div-fs-105em">📝 DO THIS NOW — Start a New Lesson (same ritual as always)</div>
+<div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW" data-callout="5.10">
+    <div class="div-fs-105em"><img src="../images/marks/play-circle.svg" alt="" data-mark="play-circle">DO THIS NOW — Start a New Lesson (same ritual as always)</div>
     <ol>
         <li>Open the <strong>ZUMO Project Maker</strong> → confirm <strong>Lesson 05 — Main lesson build</strong>, click <strong>Download</strong>.</li>
         <li>Unzip and drag the <code>LastName_L05</code> folder into <code>Documents/PlatformIO</code>.</li>
@@ -374,8 +374,8 @@
 
 <p>Scroll to the bottom of the fresh <code>main.cpp</code> before you move on. The STANDARD HELPERS block that arrived in Lesson 4 is there again — <code>waitForStart()</code> and <code>checkBattery()</code>, plus their two lines up in FUNCTION PROTOTYPES. It ships with every Maker project now. Today's program leans on both; Section 5.14 is the refresher.</p>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT — Section 4 complete when:</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.11">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT — Section 4 complete when:</div>
     <p class="p-m-8px000">☐ You can point to all three proximity receivers (left, front, right) on the sensor array<br>
     ☐ You can point to the four emitter LEDs and say which team — LEFT pair or RIGHT pair — each belongs to<br>
     ☐ <code>LastName_L05</code> project created, STANDARD HELPERS block present, Build shows ✓</p>
@@ -757,14 +757,14 @@ Call it at the TOP of loop().
   }
 }</pre>
 
-<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP">
-    <div class="div-fs-105em">💡 TIP</div>
+<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP" data-callout="5.12">
+    <div class="div-fs-105em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
     <p>The A+B battery combo works even while you're flipping between display modes — <code>checkBattery()</code> runs before the mode buttons get a look at your fingers. Try it mid-session: hold A+B, read the millivolts, release, and the proximity display picks up right where it left off.</p>
 </div>
 
 <h3 id="code-5-15" class="h3-c-433014">5.15 Coding Concepts: The For Loop, Second Look</h3>
 
-<div class="callout-2e86ab-bg-e7f0fa-4" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> the <code>for</code> loop you took apart in Lesson 4, Section 8A <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">.</div>
+<div class="callout-2e86ab-bg-e7f0fa-4" data-family="BUILDS ON" data-callout="5.13"><div class="div-fs-105em"><img src="../images/marks/arrow-repeat.svg" alt="" data-mark="arrow-repeat">Builds on:</div> the <code>for</code> loop you took apart in Lesson 4, Section 8A <img src="../images/spiral_star_04.svg" alt="Spiral review from Lesson 04" class="img-h-11em">.</div>
 
 <p>You already own this tool. In Lesson 4 you used a <code>for</code> loop to walk the sensor array, and Section 8A there pulled it apart into its three parts — START, CONTINUE IF, UPDATE. Nothing below replaces that. This is the <strong>second look</strong>, and it exists because this lesson asks the loop to do two things Lesson 4 never did: <strong>count downward</strong>, and <strong>draw</strong> — a loop whose body decides, character by character, what to put on the screen.</p>
 
@@ -791,8 +791,8 @@ Call it at the TOP of loop().
 
 <img src="../images/L05_GRAPHIC_5-04_for_anatomy.svg" alt="Anatomy of a for loop: for (int i = 0; i &lt; 6; i++) with three labeled parts — START runs once before anything else (int i = 0), CONTINUE IF is checked before every pass (i &lt; 6), and UPDATE runs after each pass (i++)" class="img-d-block-4">
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-for-loop">For Loop</strong></div>A control structure that repeats code a specific number of times, using a counter variable to track progress.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.14">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-for-loop">For Loop</strong></div>A control structure that repeats code a specific number of times, using a counter variable to track progress.
 </div>
 
 <h4 class="h4-c-6f7582-2">Worked Example #1: The drawBar() Function</h4>
@@ -825,8 +825,8 @@ Call it at the TOP of loop().
 <tr class="tr-bg-f8f9fa"><td class="td-ddd">—</td><td class="td-ddd">6</td><td class="td-ddd"><strong>No — loop ENDS</strong></td><td class="td-ddd">never asked</td><td class="td-ddd">nothing</td><td class="td-ddd">####--</td></tr>
 </table>
 
-<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
-<div class="div-fs-09em">📘 NOTE</div>
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="5.15">
+<div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Two different questions — do not mix them up.</div> The <strong>loop</strong> condition (<code>i &lt; 6</code>) decides <em>whether there is another pass at all</em>. The <strong>if</strong> condition (<code>i &lt; barLength</code>) decides <em>what gets printed on this pass</em>. The loop always runs exactly six times; the <code>if</code> is what changes at position 4.
 </div>
 
@@ -858,8 +858,8 @@ Call it at the TOP of loop().
 
 <p>The loop prints 3, then 2, then 1, then quits — because on the next lap <code>i</code> is 0 and <code>0 &gt;= 1</code> is false. Notice the test is <code>&gt;=</code> and not <code>&gt;</code>: with a plain <code>&gt;</code> the countdown would show 3 and 2 and then stop, and your robot would launch a full second early. One character, one second, one crashed run.</p>
 
-<div class="callout-ffc107-bg-fff8e1-2" data-family="WARNING">
-<div class="div-c-856404-2">⚠️ WARNING</div>
+<div class="callout-ffc107-bg-fff8e1-2" data-family="WARNING" data-callout="5.16">
+<div class="div-c-856404-2"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
 <div class="div-c-856404">the countdown that never counts</div>
 <p class="p-mb-0">Write <code>i++</code> in a loop that starts at 3 and tests <code>i &gt;= 1</code> and the counter runs away from its finish line forever — the robot hangs on the number 3 and never moves. When a loop refuses to end, check that UPDATE is walking <em>toward</em> the condition, not away from it.</p>
 </div>
@@ -893,14 +893,14 @@ Call it at the TOP of loop().
     <p>The loop runs 4 times with <code>i = 0, 1, 2, 3</code>. When <code>i</code> reaches 4, the condition <code>i &lt; 4</code> is false, so the loop stops.</p>
 </details>
 
-<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
-    <div class="div-fs-09em">📘 NOTE</div>
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="5.17">
+    <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
     <div class="div-fs-105em">For Loops vs While Loops</div>
     <p>For loops are best when you know exactly how many times to repeat (like "do this 6 times" or "count down from 3"). While loops are better for sensor-based conditions where you don't know how many iterations you'll need (like "keep turning until you see the line" or "drive forward until something is detected"). You'll meet the while loop properly in Lesson 6, Section 5.3 — it is the heart of every measured move, driving until the encoders say you have gone far enough.</p>
 </div>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT: Ready for Challenges?</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.18">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT: Ready for Challenges?</div>
     <ul class="ol-m-10px000">
     <li>I understand the three parts of a for loop (START, CONTINUE, UPDATE)</li>
     <li>I can trace through a loop and predict its output</li>
@@ -913,7 +913,7 @@ Call it at the TOP of loop().
 
 </div>
 
-<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="5.19">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
@@ -958,8 +958,8 @@ Call it at the TOP of loop().
 
 <p>Section 5 walked the whole program in labeled pieces. In this section you assemble it — and for the first two steps, <strong>you write the code yourself</strong>: each hands you the plan in pseudo-code and points you at the Quick Reference; you translate, then check against the reveal.</p>
 
-<div class="callout-607d8b-bg-eceff1" data-family="NOTE">
-<div class="div-fs-09em">📘 NOTE</div>
+<div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="5.20">
+<div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">HOW THIS SECTION WORKS</div>
 <p>Discovery steps follow the same pattern:</p>
 <ol>
@@ -972,12 +972,12 @@ Call it at the TOP of loop().
 <p><strong>Three steps break the pattern on purpose:</strong> <strong>Step 4</strong> keeps its copy boxes — you'll see why when the build turns red. <strong>Step 5</strong> is a <strong>BLUEPRINT</strong> — one rung <em>harder</em> than a discovery: comments only, no pseudo-code safety net. <strong>Step 6</strong> stays a bulk paste — a hundred lines of display formatting teaches nothing a reveal wouldn't.</p>
 </div>
 
-<div class="callout-3d8b6e-bg-e3f2ed" data-family="IF YOU'RE STUCK">
-    <div class="div-fs-105em">📦 Fell behind? File wrecked? The Maker has your back.</div>
+<div class="callout-3d8b6e-bg-e3f2ed" data-family="IF YOU'RE STUCK" data-callout="5.21">
+    <div class="div-fs-105em"><img src="../images/marks/life-preserver.svg" alt="" data-mark="life-preserver">Fell behind? File wrecked? The Maker has your back.</div>
     <p class="p-m-8px000">The <a href="../newproject.html?lesson=5" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the entry named for the step you're about to start, and it opens a project already built up to that exact point. Missed a day? Broke your file beyond repair? Grab the right entry and keep moving — no shame, no retyping.</p>
 </div>
 
-<div class="callout-ff8c00-bg-ffe4cc" id="what-you-need-l05-p1" data-family="WHAT YOU NEED">
+<div class="callout-ff8c00-bg-ffe4cc" id="what-you-need-l05-p1" data-family="WHAT YOU NEED" data-callout="5.22">
     <div class="div-fs-105em">📝 WHAT YOU NEED BEFORE STARTING</div>
     <ul>
         <li>VS Code with PlatformIO installed</li>
@@ -988,13 +988,13 @@ Call it at the TOP of loop().
 
 <h3 class="h3-c-433014">Step 1 — Open Your Project</h3>
 
-<div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW">
-    <div class="div-fs-105em">📝 DO THIS NOW</div>
+<div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW" data-callout="5.23">
+    <div class="div-fs-105em"><img src="../images/marks/play-circle.svg" alt="" data-mark="play-circle">DO THIS NOW</div>
     <p class="p-mb-0">Open the <code>LastName_L05</code> folder you made in Section 4.4 (VS Code: File → Open Folder). Haven't made it yet? Do the Section 4.4 ritual now, then come back.</p>
 </div>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.24">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
     <p>Build (✓) shows <strong>SUCCESS</strong> before you've written a single line. That's the point — every red from here on is something <em>we</em> did, and we'll know exactly when we did it.</p>
 </div>
 
@@ -1037,8 +1037,8 @@ Zumo32U4Buzzer buzzer;</pre>
 </div>
 </details>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.25">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
     <p>Build (✓). Warnings about unused variables are fine — nothing uses them <em>yet</em>.</p>
 </div>
 
@@ -1085,8 +1085,8 @@ Zumo32U4Buzzer buzzer;</pre>
 </div>
 </details>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT — worth an upload</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.26">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT — worth an upload</div>
     <p>Build (✓), then upload and watch: Serial banner scrolls by, the OLED says <em>"Press A / to start,"</em> and after you press A… nothing. Correct! The robot is faithfully running an empty <code>loop()</code>. The gate works before the program does.</p>
 </div>
 
@@ -1124,15 +1124,15 @@ Zumo32U4Buzzer buzzer;</pre>
 <span class="tok-569cd6">void</span> showAlertMode();
 <span class="tok-569cd6">void</span> updateIndicators();</pre>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.27">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
     <p>Build (✓) goes green. Upload, open the Serial Monitor at <strong>115200</strong>, press A, and wave your hand in front of the robot — the F number climbs as you get closer. Your robot just sensed the world for the first time today.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 5 — BLUEPRINT BUILD: Write drawBar() Yourself</h3>
 
-<div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT">
-<div class="div-fs-105em">🔍 INSIGHT — a new kind of step</div>
+<div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT" data-callout="5.28">
+<div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT — a new kind of step</div>
 Until now, every function arrived finished and you studied it. This one arrives as a <strong>blueprint</strong>: the comments describe each move, and <em>you</em> write the code beneath them. The walkthrough in Section 5.7 explains what the finished function does; the blueprint tells you how to get there. Write first, peek at the solution only to check.
 </div>
 
@@ -1190,8 +1190,8 @@ drawBar(<span class="tok-b5cea8">2</span>, frontValue);    <span class="tok-7cbf
     <p>Every line maps to one numbered comment. If yours works but looks different — say your loop prints <code>barLength</code> characters then fills the rest — that's fine, as long as the display matches the example: <code>####-- 4</code>.</p>
 </details>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.29">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
     <p>Upload, press A, wave your hand: a live bar on the OLED grows and shrinks with your hand, with the raw number beside it. You built the gauge yourself.</p>
 </div>
 
@@ -1199,14 +1199,14 @@ drawBar(<span class="tok-b5cea8">2</span>, frontValue);    <span class="tok-7cbf
 
 <p>Bulk paste, four functions into HELPER FUNCTIONS (any order — the prototypes have you covered): <code>showNumericMode()</code> from 5.8, <code>showBarGraphMode()</code> from 5.9, <code>showAlertMode()</code> from 5.10, and <code>updateIndicators()</code> from 5.11. Then replace your Version&nbsp;1 <code>loop()</code> with the final version from Section 5.13.</p>
 
-<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP">
-    <div class="div-fs-09em">💡 TIP</div>
+<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP" data-callout="5.30">
+    <div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
     <div class="div-fs-105em">Remove the two TEMPORARY lines from Step 5</div>
     <p class="p-mb-0">Replacing <code>loop()</code> removes the <code>drawBar(2, frontValue);</code> test line automatically — but the <code>display.setLayout21x8();</code> you added to <code>setup()</code> must go by hand. The display functions manage the layout themselves now.</p>
 </div>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ CHECKPOINT</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.31">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
     <p>Build (✓) shows <strong>SUCCESS</strong>. Compare your <code>main.cpp</code> against Section 5 top to bottom — seven sections, six of your helpers, two STANDARD HELPERS at the end.</p>
 </div>
 
@@ -1222,7 +1222,7 @@ drawBar(<span class="tok-b5cea8">2</span>, frontValue);    <span class="tok-7cbf
     <li>Press <strong>A</strong> at the gate to start</li>
 </ol>
 
-<div class="callout-17a2b8-bg-d1ecf1" data-family="WHAT YOU SHOULD SEE">
+<div class="callout-17a2b8-bg-d1ecf1" data-family="WHAT YOU SHOULD SEE" data-callout="5.32">
     <div class="div-fs-105em">👀 WHAT YOU SHOULD SEE</div>
     <p><strong>On the OLED:</strong> Numeric values for Left, Front, and Right sensors</p>
     <p><strong>In Serial Monitor:</strong></p>
@@ -1256,8 +1256,8 @@ L:0	F:6 (5/6)	R:0	*** VERY CLOSE ***</pre>
 
 <h3 class="h3-c-00474b">7.1 Basic Function Test</h3>
 
-<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT">
-    <div class="div-fs-105em">✅ VERIFICATION CHECKLIST</div>
+<div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.33">
+    <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">VERIFICATION CHECKLIST</div>
     <ul class="ul-ls-none">
         <li>☐ Code uploads without errors</li>
         <li>☐ Serial Monitor shows welcome message at 115200 baud</li>
@@ -1327,8 +1327,8 @@ L:0	F:6 (5/6)	R:0	*** VERY CLOSE ***</pre>
 </div>
 </div>
 
-<div class="callout-3d8b6e-bg-e3f2ed-2" data-family="NOTE">
-<div class="div-fs-105em">👀 Note:</div> the pin labels (LFT · DN2 · RGT · DN4) are silkscreened on the <strong>other side</strong> of the board — you cannot read them from this angle. Go by the <em>position</em> of the blue blocks: both move <strong>outward</strong>, toward the ends of the array.
+<div class="callout-3d8b6e-bg-e3f2ed-2" data-family="NOTE" data-callout="5.34">
+<div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">Note:</div> the pin labels (LFT · DN2 · RGT · DN4) are silkscreened on the <strong>other side</strong> of the board — you cannot read them from this angle. Go by the <em>position</em> of the blue blocks: both move <strong>outward</strong>, toward the ends of the array.
 </div>
 
 
@@ -1399,8 +1399,8 @@ void loop() {
 <strong class="strong-c-2e7d32">🏁 ROBOT COMMITTED — five sensors down, verified by test. These jumpers do not move again.</strong>
 </div>
 
-<div class="div-607d8b-2" data-family="INSIGHT">
-<p class="p-m-0010px0"><strong>📘 THE TRADE YOU JUST MADE</strong></p>
+<div class="div-607d8b-2" data-family="INSIGHT" data-callout="5.35">
+<p class="p-m-0010px0"><strong><img src="../images/marks/stars.svg" alt="" data-mark="stars">THE TRADE YOU JUST MADE</strong></p>
 <p class="p-m-0010px0">Sensors 1, 3, and 5 have their own permanent wires — they were never in question. But sensors <strong>2</strong> and <strong>4</strong> do not have wires of their own. They are borrowing <strong>pin 20</strong> and <strong>pin 4</strong>, and those two pins used to carry your <strong>left and right proximity receivers</strong>.</p>
 <p class="p-m-0010px0">You did not lose them to a bug. You <em>spent</em> them. From here on your robot has <strong>five line sensors and exactly one proximity sensor — the front one.</strong></p>
 <p class="pre-m-0">That is what an engineering trade-off actually feels like. The board has a fixed number of pins, and every pin you spend on one job is a pin you cannot spend on another. You will feel this again in <strong>Lesson 10</strong>, when your robot drives into an obstacle and <em>cannot tell which side it is on</em> — because the sensors that would have told it are now watching the floor.</p>
@@ -1518,8 +1518,8 @@ void loop() {
   driveStraight();
 }</pre>
 
-<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP">
-<div class="div-fs-09em">💡 TIP</div>
+<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP" data-callout="5.36">
+<div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">Use a dead band, not exact equality</div>
 Notice the steering checks <code>bias &gt; 1</code> and <code>bias &lt; -1</code>, not <code>bias == 0</code>. Real sensor readings jitter by a count or two even when nothing moves. A small "dead band" around zero keeps the robot from twitching left-right-left when the object is actually centered.
 </div>
@@ -1536,8 +1536,8 @@ Notice the steering checks <code>bias &gt; 1</code> and <code>bias &lt; -1</code
 <span class="tok-7cbf6e">// 3. Subtract for the "which way" answer</span>
 <span class="tok-569cd6">int</span> direction = a - b;</pre>
 
-<div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT">
-<div class="div-fs-105em">🔍 INSIGHT</div>
+<div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT" data-callout="5.37">
+<div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT</div>
 A pair of sensors pointed at the same target gives you two facts for the price of one read: <em>how strong</em> (combine) and <em>which side</em> (subtract). In Lesson 6 you'll do the identical thing with the two wheel encoders — their sum tells you distance traveled, their difference tells you how much the robot turned. Same shape, different sensors.
 </div>
 
@@ -1996,7 +1996,7 @@ Zumo32U4ButtonB buttonB;
 <div class="div-6f7582">
 
 
-<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="5.38">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
@@ -2021,7 +2021,7 @@ Zumo32U4ButtonB buttonB;
 <p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
 </div>
 
-<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="5.39">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
@@ -2055,7 +2055,7 @@ Zumo32U4ButtonB buttonB;
 <p class="p-m-12px00"><button type="button" data-bc-btn="3" class="button">Mark Brain Check 03 done</button></p>
 </div>
 
-<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="5.40">
     <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
     <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
@@ -2068,8 +2068,8 @@ Zumo32U4ButtonB buttonB;
 
 <h3 id="whats-next" class="h3-c-6f7582">What's Next?</h3>
 
-<div class="callout-d4a574-bg-e8d4c4-2" data-family="WHERE THIS GOES">
-    <div class="div-fs-105em">🔮 Next Lesson: Encoders</div>
+<div class="callout-d4a574-bg-e8d4c4-2" data-family="WHERE THIS GOES" data-callout="5.41">
+    <div class="div-fs-105em"><img src="../images/marks/rocket.svg" alt="" data-mark="rocket">Next Lesson: Encoders</div>
     <p>Your proximity sensors can tell how far away an object is. But here's a different question: <strong>How does your robot know how far IT has traveled?</strong></p>
     <p>In <strong>Lesson 6: Encoders</strong>, you'll learn to measure exactly how far your robot has traveled using wheel encoders. This lets you:</p>
     <ul>
@@ -2082,8 +2082,8 @@ Zumo32U4ButtonB buttonB;
 
 <h3 class="h3-c-6f7582">Engineer’s Log</h3>
 
-<div class="div-0e1a2c" data-family="ENGINEER'S LOG">
-<div class="div-fs-105em">📓 ENGINEER’S LOG #05 — feeds: Project Planning (design constraints)</div>
+<div class="div-0e1a2c" data-family="ENGINEER'S LOG" data-callout="5.42">
+<div class="div-fs-105em"><img src="../images/marks/journal-text.svg" alt="" data-mark="journal-text">ENGINEER’S LOG #05 — feeds: Project Planning (design constraints)</div>
 <b>Defend a forced tradeoff.</b> You cannot have five line sensors <i>and</i> three proximity sensors — pins 20 and 4 are physically shared. <b>State the constraint. Defend the choice you made.</b><br>
 <i>Why judges care: this is the most TDP-shaped thing in the book — a real, unavoidable, documented design decision, which is exactly what the Planning section is asking you for.</i></div>
 
@@ -2095,20 +2095,20 @@ Zumo32U4ButtonB buttonB;
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-brightness-level-g">Brightness Level</strong></div>A measure (0-6) of how many IR LED pulses at increasing intensity detected a reflection. Higher values indicate closer objects.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.43">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-brightness-level-g">Brightness Level</strong></div>A measure (0-6) of how many IR LED pulses at increasing intensity detected a reflection. Higher values indicate closer objects.
 </div>
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-infrared">Infrared (IR)</strong></div>Light with wavelengths longer than visible red light. Invisible to humans but useful for proximity sensing because it reflects well off most surfaces.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.44">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-infrared">Infrared (IR)</strong></div>Light with wavelengths longer than visible red light. Invisible to humans but useful for proximity sensing because it reflects well off most surfaces.
 </div>
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-static">Static Variable</strong></div>A local variable that retains its value between function calls, unlike normal local variables which reset each time.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.45">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-static">Static Variable</strong></div>A local variable that retains its value between function calls, unlike normal local variables which reset each time.
 </div>
 
-<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM">
-    <div class="div-fs-105em">🔑 <strong id="term-threshold-g">Threshold</strong></div>A boundary value used to make decisions. Values above the threshold trigger one action; values below trigger another.
+<div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.46">
+    <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-threshold-g">Threshold</strong></div>A boundary value used to make decisions. Values above the threshold trigger one action; values below trigger another.
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>

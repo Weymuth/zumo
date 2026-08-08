@@ -2,7 +2,7 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.3.8'
+VERSION = 'v1.4.0'
 # v1.3.8 (S128): the data-family attribute is read AHEAD of the three inference tiers.
 #   Baseline UNMOVED at 1069 - the attribute is written FROM these same tiers, so on the
 #   day it landed the table came back byte-identical, which is the correctness proof.
@@ -209,13 +209,40 @@ RULE=[
 # corroboration that breaks on repaint is a liability. This tier is a STOPGAP: 41 marks are
 # generated in images/marks/ and none are wired in yet, so when the emoji are replaced the
 # family must already be known from content and the mark must follow from the family.
-GLYPH = {
-    '🔑': 'KEY TERM', '🛑': 'THE WALL', '⚠': 'WARNING',
-    '🔬': 'GOING DEEPER', '📘': 'NOTE', '📖': 'LEARN',
-    '🎯': 'TRY THIS', '👀': 'WHAT YOU SHOULD SEE',
-    '📓': "ENGINEER'S LOG", '🔍': 'INSIGHT',
-    '🔌': "IF YOU'RE STUCK", '💾': 'NOTE', '💡': 'TIP',
-}
+# S130: THE GLYPH TIER IS DELETED. IT WAS THE SECOND DECORATION-KEYED TIER TO DIE.
+# S112 deleted a COLOUR-keyed fallback when a repaint silently orphaned a block, and the
+# replacement was this GLYPH table - decoration standing in for content a second time. The
+# marks arc then replaced the emoji and orphaned 212 blocks, the same failure one tier later.
+# A tier keyed on decoration is a tier waiting for the next repaint or reskin.
+#
+# The 212 blocks now resolve from ZUMO_FAMILY_PINS.md, an AUTHORED record keyed on
+# `data-callout`. It is READ-ONLY INPUT and must never be regenerated from `data-family`:
+# a pin rebuilt from the value it exists to check agrees with any drift by construction.
+PIN_FILE = 'ZUMO_FAMILY_PINS.md'
+_PIN_ROW = re.compile(r'^\|\s*`(\d+\.\d+)`\s*\|\s*([^|]+?)\s*\|')
+
+
+def load_pins(path=PIN_FILE):
+    """{data-callout: family} from the preserved pin file.
+
+    A MISSING FILE MUST NOT RAISE. The first draft called SystemExit here, and because
+    this module is imported by book_gates (through family_tag), a missing pin killed the
+    whole suite MID-RUN and still exited 0 - the run stopped before gates 59 and 60 and
+    reported success by exit code. That is the exact failure the session ritual's "read
+    the exit code, not the last line" exists to catch, inverted into the exit code itself.
+    An absent pin is reported BY GATE 60, which can name it; a library cannot.
+    """
+    if not os.path.exists(path):
+        return {}
+    pins = {}
+    for line in open(path, encoding='utf-8'):
+        m = _PIN_ROW.match(line)
+        if m:
+            pins[m.group(1)] = m.group(2).strip()
+    return pins
+
+
+PINS = load_pins()
 # S128: THE ATTRIBUTE IS READ FIRST, AND IT IS THE REASON THE GLYPH TIER CAN DIE.
 # `data-family` is written onto every callout by family_tag.py FROM these same tiers,
 # so on the day it landed this changed nothing - proved by the table coming back
@@ -239,7 +266,7 @@ for inv in d:
         if not f:
             for fn,fam in RULE:
                 if fn(lab,g,(bg,bd)): f=fam; break
-        if not f: f=GLYPH.get(g)
+        if not f: f=PINS.get(c.get('callout_id'))
         if f: res[f]+=1
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")

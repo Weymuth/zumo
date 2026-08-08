@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.55'
+VERSION = 'v1.56'
 # v1.55 (S128): GATE 59 NEW - §24.14a, every callout carries the family its CONTENT
 #   resolves to. Written in the same pass as the ruling (S126 rule 16). Before S128, 209
 #   of 1,069 blocks were identified ONLY by their decorative emoji - build_family_map's
@@ -1792,7 +1792,17 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 250:                      # 240 -> 245 at S118: L13 converted, five more
+if _seen != 1134:                     # 250 -> 1134 at S130: THE MARKS ARC LANDED. 884
+                                      # callouts swapped a leading emoji for an <img>
+                                      # mark, and every one is a new image reference.
+                                      # DERIVED, not projected: 250 + 884 = 1,134, and
+                                      # mark_wire reconciled at 884 SWAP + 13 NO_GLYPH +
+                                      # 56 HELD + 116 NO_MARK = 1,069 callouts. Three
+                                      # earlier projections gave three different answers
+                                      # (1,134 by wrong arithmetic, 1,147 by counting the
+                                      # 13 insertions the tool reports but never writes);
+                                      # only the run settles it, and the run says 1,134.
+                                      # 240 -> 245 at S118: L13 converted, five more
                                       # BrainGear_Incomplete.png refs. Controlled against
                                       # the pushed clone: that filename is the SOLE delta,
                                       # 45 -> 50; every other image count byte-identical.
@@ -1805,7 +1815,7 @@ if _seen != 250:                      # 240 -> 245 at S118: L13 converted, five 
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 250 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,134 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -3045,6 +3055,66 @@ try:
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 60 (S130) - §24.14c: THE FAMILY PIN IS A PRESERVED LAYER.
+#
+# WHY A FINGERPRINT AND NOT JUST A COVERAGE COUNT. ZUMO_FAMILY_PINS.md is the ONLY
+# remaining home for 212 blocks' family. It is read-only input, and the hazard it exists
+# to survive is that somebody REGENERATES it from `data-family` - at which point it agrees
+# with any drift by construction and silently stops being evidence. A coverage count
+# cannot see that: a regenerated pin has exactly the same 212 keys. Only a fingerprint
+# can, so the table is pinned by md5 exactly as §11 pins the boxed challenge headers.
+# Changing the pin deliberately means editing the constant below, which is a visible diff.
+#
+# THE COVERAGE ARM IS THE OTHER HALF, and it is scoped to the PROPERTY, not the number:
+# the pinned set must be exactly the set of callouts the CONTENT tiers cannot name. A
+# block that gains a content signal must LEAVE the pin, and one that loses its label must
+# ENTER it. Either way the gate fails and a human rules, which is the point.
+bad = []
+_PINF = 'ZUMO_FAMILY_PINS.md'
+_PIN_MD5 = 'a29c7290bb6f2e8352f0acc2e5b0ed0f'   # 212 rows, generated once at S130
+if not os.path.exists(_PINF):
+    bad.append('%s is missing - 212 blocks lose their only family home' % _PINF)
+else:
+    _rows = [l for l in open(_PINF, encoding='utf-8').read().split('\n')
+             if re.match(r'^\| `\d+\.\d+` \|', l)]
+    _got = hashlib.md5('\n'.join(_rows).encode()).hexdigest()
+    if _got != _PIN_MD5:
+        bad.append('%s table changed (%d rows, md5 %s, expected %s) - if this was a '
+                   'deliberate re-pin, move the constant; if it was a REGENERATION from '
+                   'data-family, the pin has stopped being evidence'
+                   % (_PINF, len(_rows), _got[:12], _PIN_MD5[:12]))
+    try:
+        import build_family_map as _B
+        import lesson_inventory as _LIp
+        _pinned = set(re.findall(r'^\| `(\d+\.\d+)` \|', '\n'.join(_rows), re.M))
+        _need = set()
+        for _f in sorted(glob.glob('lessons/Lesson_*.html')):
+            for _c in _LIp.build(_f)['callouts']:
+                _lab = _B.norm(_c.get('label')); _g = (_c.get('glyph') or '').strip()
+                _sch = (_c['bg'] or 'none', _c['border'])
+                _fam = next((x for x in _B.CANON if _lab.upper().startswith(x)), None)
+                if not _fam:
+                    for _fn, _x in _B.RULE:
+                        if _fn(_lab, _g, _sch):
+                            _fam = _x; break
+                if not _fam:
+                    _need.add(_c.get('callout_id'))
+        if _need - _pinned:
+            bad.append('%d callout(s) content cannot name are NOT pinned: %s'
+                       % (len(_need - _pinned),
+                          ', '.join(sorted(str(x) for x in _need - _pinned)[:8])))
+        if _pinned - _need:
+            bad.append('%d pinned callout(s) no longer need a pin - content names them '
+                       'now, so the hold has expired: %s'
+                       % (len(_pinned - _need), ', '.join(sorted(_pinned - _need)[:8])))
+        if not _pinned:
+            bad.append('gate 60 read ZERO pins - a gate that checks nothing passes')
+    except ImportError:
+        bad.append('build_family_map.py is missing - the pin has no consumer')
+gate('\u00a724.14c the family pin is preserved and covers exactly the unnameable blocks',
+     bad)
 
 print('=' * 52)
 

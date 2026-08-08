@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.25.0 -->
+<!-- Lesson version: v01.26.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Wheels Lie</h1>
 <div class="div-fs-11em">The Gyro — Measuring the Robot, Not the Wheels</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 01.25 — August 2026</div>
+<div class="div-fs-09em-2">Version 01.26 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -96,7 +96,7 @@ with total confidence, that it has turned exactly 90 degrees.</p>
 <p>Now look at the robot.</p>
 
 <p>It is pointing almost exactly where it started.</p>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 The encoder is not broken. It is doing its job perfectly.</div>The encoder counts <strong>wheel rotation</strong>. The wheel <em>did</em> rotate. The encoder counted it correctly, reported it honestly, and stopped the turn at exactly the right count. Every number it produced was true.<br><br>The wheel just was not <em>attached to the floor</em> at the time.</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.1"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">The encoder is not broken. It is doing its job perfectly.</div>The encoder counts <strong>wheel rotation</strong>. The wheel <em>did</em> rotate. The encoder counted it correctly, reported it honestly, and stopped the turn at exactly the right count. Every number it produced was true.<br><br>The wheel just was not <em>attached to the floor</em> at the time.</div>
 <p>This is the first sensor in this book that has lied to you. Not by malfunctioning —
 by <strong>answering a different question than the one you asked</strong>.</p>
 
@@ -118,7 +118,7 @@ on a patch of dust, on a wet spot, or when a wheel is jammed against a wall.</p>
 <strong>the encoder cannot tell the difference.</strong> It is structurally incapable of it.
 The wheel is the very thing it is watching. Asking an encoder whether its wheel slipped is like
 asking a witness to confirm their own alibi.</p>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.2"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">What this lesson gives you</div>A sensor that watches the <strong>robot</strong> instead of the wheels — the <strong>gyroscope</strong>. It is the first instrument in this book that can catch <em>another instrument</em> in a lie.</div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
@@ -164,7 +164,7 @@ asking a witness to confirm their own alibi.</p>
 
 <p>Look at that last row again. The encoder is the only one that watches a part of the robot
 <em>instead of</em> the world. That is the whole problem.</p>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.3"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">The encoder measures INTENT, not RESULT.</div>It tells you how far the wheel <em>turned</em>. It does not — and cannot — tell you how far the <strong>robot moved</strong>. Those two things are connected by <strong>friction</strong>, and friction is not something the encoder can see.<br><br>When friction is good, the encoder's answer happens to also be the right answer. You have spent six lessons being quietly lucky.</div>
 <h3 class="h3-c-1f2a3d-3">3.2 Slip Is Invisible From Inside the Wheel</h3>
 <p>Here is the exact failure, step by step:</p>
@@ -185,7 +185,7 @@ The math really was correct. Every single component performed exactly as designe
 <figure class="div-m-24px0">
 <img src="../images/L12_GRAPHIC_12-01_encoder_vs_gyro.svg" alt="Encoder watches the wheel; gyro watches the chassis" class="img-ddd">
 <figcaption class="figcaption"><strong>GRAPHIC 12.1</strong> — The encoder is bolted to the motor. The gyro is bolted to the chassis. On a slick floor, only one of them is still answering the question you asked.</figcaption></figure>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 This is a structural limit, not a tuning problem.</div>You cannot fix this with a better constant. You cannot fix it with a smarter algorithm. You cannot fix it by counting more carefully.<br><br><strong>The information is not present in the encoder signal at all.</strong> A slipping wheel and a gripping wheel produce the <em>identical</em> stream of counts. There is no clever way to tell them apart, because there is nothing to tell apart — the two cases are the same to the sensor.<br><br>To detect slip you need a <strong>second instrument, watching something else.</strong></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.4"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">This is a structural limit, not a tuning problem.</div>You cannot fix this with a better constant. You cannot fix it with a smarter algorithm. You cannot fix it by counting more carefully.<br><br><strong>The information is not present in the encoder signal at all.</strong> A slipping wheel and a gripping wheel produce the <em>identical</em> stream of counts. There is no clever way to tell them apart, because there is nothing to tell apart — the two cases are the same to the sensor.<br><br>To detect slip you need a <strong>second instrument, watching something else.</strong></div>
 <h3 class="h3-c-1f2a3d-3">3.3 The Gyro Watches the Robot</h3>
 <p>A <strong>gyroscope</strong> measures <strong>rotation</strong> — how fast the thing it is bolted to
 is spinning. It is bolted to the <em>circuit board</em>. The circuit board is bolted to the <em>chassis</em>.</p>
@@ -236,7 +236,7 @@ in tiny slices, and keep a running total:</p>
     total = total + (rate x dt)      &lt;-- accumulate</pre>
 <p>That running total is the angle. That accumulation is what <code>gyroUpdate()</code> does,
 and it is why you must call it <strong>as often as you possibly can</strong> while turning.</p>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.5"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Every slice you miss is an angle you never counted.</div>If the robot spins for 40&nbsp;ms and you were not looking, that rotation is <strong>gone</strong>. It is not recovered later — the gyro has no memory. It only ever tells you about <em>now</em>.<br><br>This is why <code>gyroUpdate()</code> lives <em>inside</em> the turn loop, called thousands of times per turn. Put a <code>delay()</code> in that loop and you are throwing away angle.<br><br><em>(Bonus mystery B2 deletes this call. The robot turns forever and never arrives. Now you know why.)</em></div>
 <h3 class="h3-c-1f2a3d-3">3.5 The Zero Is a Lie — and You Must Measure It</h3>
 <p>Set the Zumo on the table. Do not touch it. Do not breathe on it.</p>
@@ -249,7 +249,7 @@ and it is why you must call it <strong>as often as you possibly can</strong> whi
 A gyro sitting perfectly still routinely reports <strong>up to 25 degrees per second</strong> of rotation
 that is not happening. This is called <strong>bias</strong>, or <strong>drift</strong>, and it is not a defect.
 Every gyro does it. Yours does it. A $40,000 aircraft gyro does it, just less.</p>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 Do the arithmetic on that.</div>A bias of 20°/sec, accumulated for one 3-second turn, adds <strong>60 degrees</strong> of pure fiction to your angle.<br><br>Uncorrected, the gyro is <em>worse than the encoder</em>. Much worse.</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.6"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Do the arithmetic on that.</div>A bias of 20°/sec, accumulated for one 3-second turn, adds <strong>60 degrees</strong> of pure fiction to your angle.<br><br>Uncorrected, the gyro is <em>worse than the encoder</em>. Much worse.</div>
 <p>So before you can trust the gyro, you must find out <strong>what its lie is</strong> —
 and then subtract it, forever after.</p>
 
@@ -267,7 +267,7 @@ sits absolutely still, averages all 1,024 readings, and stores the result as
   uint16_t dt = m - gyroLastUpdate;
   gyroLastUpdate = m;</pre>
 <p class="p-c-555-2">The subtraction on line 3 is the whole point: <code>imu.g.z</code> is the raw reading (<em>which contains the lie</em>), <code>gyroOffset</code> is the lie you measured at boot, and the difference is the truth.</p>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.7"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Why 1,024 samples and not just one?</div>Because the bias is <em>noisy</em> — it jitters around its true value. One reading might catch it at −23; the next at −11. Averaging 1,024 readings cancels the jitter and leaves the <strong>steady</strong> part, which is the part you can actually subtract.<br><br>It takes about a fifth of a second. That is why the OLED says <strong>HOLD STILL</strong>.</div>
 <h3 class="h3-c-1f2a3d-3">3.6 A Calibration Against Nothing At All</h3>
 <p>Stop and notice what just happened, because it is genuinely strange.</p>
@@ -278,9 +278,9 @@ You showed them <strong>black</strong>. They learned the range between two thing
 <p>Now you are calibrating a sensor by showing it… <strong>nothing</strong>.
 By holding the robot perfectly still and saying: <em>"whatever you are reading right now —
 that is what NOTHING looks like. Remember it. Subtract it from everything, forever."</em></p>
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 This is the deepest idea in the lesson.</div>You are not calibrating the sensor against a <em>reference</em>. You are calibrating it against <strong>its own error</strong>.<br><br>The line sensors needed to learn what <em>white</em> was. The gyro needs to learn what <strong>its own dishonesty</strong> is — and then carry that number around and cancel itself out with it, on every single reading, for the rest of the run.</div>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 And therefore: A SPIN CANNOT CALIBRATE A GYRO.</div>If the robot moves during those 1,024 samples, the gyro will average in <em>real rotation</em> and conclude that <strong>spinning is what standing still feels like</strong>.<br><br>It will then subtract that from every future reading — and report that a robot which is genuinely spinning is perfectly still.<br><br>You will break it on purpose in <strong>Bonus B1</strong>.</div>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.8"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">This is the deepest idea in the lesson.</div>You are not calibrating the sensor against a <em>reference</em>. You are calibrating it against <strong>its own error</strong>.<br><br>The line sensors needed to learn what <em>white</em> was. The gyro needs to learn what <strong>its own dishonesty</strong> is — and then carry that number around and cancel itself out with it, on every single reading, for the rest of the run.</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.9"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">And therefore: A SPIN CANNOT CALIBRATE A GYRO.</div>If the robot moves during those 1,024 samples, the gyro will average in <em>real rotation</em> and conclude that <strong>spinning is what standing still feels like</strong>.<br><br>It will then subtract that from every future reading — and report that a robot which is genuinely spinning is perfectly still.<br><br>You will break it on purpose in <strong>Bonus B1</strong>.</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.10"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Sequence matters, and the code already gets it right.</div>Look at <code>setup()</code>: <code>gyroSetup()</code> runs <strong>before</strong> <code>waitForStart()</code>, which runs <strong>before</strong> <code>calibrateLineSensors()</code>.<br><br>That order is not an accident. <strong>Line-sensor calibration spins the robot.</strong> If the gyro calibrated after it — or during it — the spin would poison the zero. The still measurement has to come first, while nothing has moved yet.</div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
@@ -322,7 +322,7 @@ since the day it was built, and it has been sitting there, unused, for eleven le
 <p>We only need the gyro, and we only need <strong>one axis of it</strong>: <code>imu.g.z</code> —
 the <strong>z</strong> axis, which is the one pointing straight up out of the board. Rotation around a
 vertical axis is exactly what "the robot turning" means.</p>
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 The IMU is the only free sensor on this robot.</div>Every other sensor cost you something. The five-sensor line array cost you two proximity receivers — <strong>pins 20 and 4 are physically shared</strong>, so from Lesson 6 on you have run five line sensors and <em>only the front</em> proximity sensor.<br><br>The IMU costs <strong>zero pins</strong>. It sits on the <strong>I2C bus</strong> (<code>SDA</code>&nbsp;=&nbsp;D2, <code>SCL</code>&nbsp;=&nbsp;D3, fixed in the ATmega32U4 silicon), which nothing else on the Zumo is using. Turning the gyro on takes <strong>nothing away from you.</strong> That is not normal, and it is worth appreciating.</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.11"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The IMU is the only free sensor on this robot.</div>Every other sensor cost you something. The five-sensor line array cost you two proximity receivers — <strong>pins 20 and 4 are physically shared</strong>, so from Lesson 6 on you have run five line sensors and <em>only the front</em> proximity sensor.<br><br>The IMU costs <strong>zero pins</strong>. It sits on the <strong>I2C bus</strong> (<code>SDA</code>&nbsp;=&nbsp;D2, <code>SCL</code>&nbsp;=&nbsp;D3, fixed in the ATmega32U4 silicon), which nothing else on the Zumo is using. Turning the gyro on takes <strong>nothing away from you.</strong> That is not normal, and it is worth appreciating.</div>
 <h3 class="h3-c-433014-3">4.2 One Line You Must Not Forget</h3>
 <p>The I2C bus has to be switched on before anyone can talk over it. That is
 <code>Wire.begin()</code>, and it happens once, at the top of <code>gyroSetup()</code>.</p>
@@ -332,7 +332,7 @@ vertical axis is exactly what "the robot turning" means.</p>
   imu.enableDefault();
   imu.configureForTurnSensing();</pre>
 <p class="p-c-555-2"><code>Wire.begin()</code> switches on the I2C bus. <code>imu.init()</code> finds the chip and identifies it. <code>enableDefault()</code> powers it up, and <code>configureForTurnSensing()</code> sets it up to measure turns. <strong>The calibration loop follows immediately after.</strong></p>
-<div class="div-ffc107-2" data-family="WARNING"><div class="div-fs-09em">⚠️ WARNING</div>
+<div class="div-ffc107-2" data-family="WARNING" data-callout="12.12"><div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
 <div class="div-fs-105em">Forget Wire.begin() and the robot hangs at startup.</div>No error message. No red build. The OLED just says <strong>Gyro calibrating / HOLD STILL</strong> and stays there forever, because <code>imu.gyroDataReady()</code> is waiting for data that will never come over a bus that was never switched on.<br><br>See Section 8 if this happens to you.</div>
 <h3 class="h3-c-433014-3">4.3 Two Different Chips, One Set of Code</h3>
 <p>Zumos built in different years carry different IMU chips. Yours might have an
@@ -344,7 +344,7 @@ vertical axis is exactly what "the robot turning" means.</p>
 <p><code>imu.init()</code> asks the chip who it is — there is a register literally called
 <code>WHO_AM_I</code> — and then <code>configureForTurnSensing()</code> quietly branches to the right
 setup code for whichever chip answered.</p>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.13"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Why this matters in a classroom.</div>If you grab a spare Zumo from an older batch, <strong>your code runs on it unchanged.</strong> No edits, no #ifdefs, no "which board is this?" The library already asked, and already handled it.</div>
 <h3 class="h3-c-433014-3">4.4 The Angle Is Stored in a Strange Unit</h3>
 <p>Peek inside <code>RobotSensors.cpp</code> and you will find the running angle total stored like this:</p>
@@ -358,7 +358,7 @@ and plain degrees is all you will ever see:</p>
 <pre>int getTurnAngle() {
   return (((int32_t)turnAngle &gt;&gt; 16) * 360) &gt;&gt; 16;
 }</pre>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.14"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Hidden on purpose.</div>This is what a good function <em>does</em>: it takes something ugly and necessary, and puts a clean door on it. You ask <code>getTurnAngle()</code> for degrees; you get degrees. The fixed-point arithmetic is real, it is running, and it is none of your business.<br><br><em>(Curious what <code>2^29</code> is doing there? Section 8A.3 opens the door.)</em></div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
@@ -392,7 +392,7 @@ They are declared in <code>RobotSensors.h</code> so the rest of the project can 
     <td class="td-ddd-3">Whenever you want to know</td>
     <td class="td-ddd-3">Hands back the running total, <strong>in plain degrees</strong></td></tr>
 </table>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.15"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">gyroReset() is not gyroSetup().</div><code>gyroSetup()</code> measures the sensor's <em>bias</em> — it runs <strong>once</strong>, at boot, and it takes a fifth of a second.<br><br><code>gyroReset()</code> just zeroes the <em>counter</em> — it is instant, and it runs at the start of <strong>every single turn</strong>. It means "measure from <em>here</em>."<br><br>Mix them up and you get <strong>Bonus B3</strong>: the first turn works and every turn after it finishes instantly.</div>
 <h3 class="h3-c-433014-3">5.2 The Honest Turn</h3>
 <p>This is the function the whole lesson has been walking toward.
@@ -439,7 +439,7 @@ void turnDegreesGyro(float degrees) {
 
   motors.setSpeeds(0, 0);
 }</pre>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 Notice what is NOT in there: TRIM.</div>There is no <code>TRIM</code> in <code>turnDegreesGyro()</code>, and that is correct.<br><br><strong>TRIM is for open loops.</strong> It corrects a robot that drifts when nothing is watching — <code>driveDistance()</code>, <code>handleGap()</code>. But this turn <em>is being watched</em>. The gyro checks the real angle thousands of times per second and stops the motors at exactly the right moment.<br><br>Adding TRIM here would mean <strong>fighting a controller that is already correct.</strong> It is not just unnecessary — it is wrong. <strong>Bonus B4</strong> adds it anyway, and the result is genuinely nasty: <em>the binary is exactly the same size.</em></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.16"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Notice what is NOT in there: TRIM.</div>There is no <code>TRIM</code> in <code>turnDegreesGyro()</code>, and that is correct.<br><br><strong>TRIM is for open loops.</strong> It corrects a robot that drifts when nothing is watching — <code>driveDistance()</code>, <code>handleGap()</code>. But this turn <em>is being watched</em>. The gyro checks the real angle thousands of times per second and stops the motors at exactly the right moment.<br><br>Adding TRIM here would mean <strong>fighting a controller that is already correct.</strong> It is not just unnecessary — it is wrong. <strong>Bonus B4</strong> adds it anyway, and the result is genuinely nasty: <em>the binary is exactly the same size.</em></div>
 <h3 class="h3-c-433014-3">5.3 The Three Words</h3>
 <p>Here is the payoff, and it is almost anticlimactic.</p>
 
@@ -452,13 +452,13 @@ void turnAround() { turnDegrees(180); }</pre>
 <pre>void turnLeft()   { turnDegreesGyro(-90); }
 void turnRight()  { turnDegreesGyro(90);  }
 void turnAround() { turnDegreesGyro(180); }</pre>
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 You just upgraded every turn in the entire book.</div>You did not touch the Lesson 9 state machine. You did not touch <code>followLine()</code>. You did not touch the intersection logic, or Lesson 10's obstacle code, or Lesson 11's gap crossing.<br><br><strong>You changed three words inside three one-line functions</strong> — and every turn the robot makes, anywhere in the book, now closes on its <em>real</em> angle.<br><br>This is what Lesson 7 was <em>for</em>. If those turns had been written out longhand at each call site, this change would have been a fifty-line search-and-replace across four lessons, and you would have missed one.</div>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.17"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">You just upgraded every turn in the entire book.</div>You did not touch the Lesson 9 state machine. You did not touch <code>followLine()</code>. You did not touch the intersection logic, or Lesson 10's obstacle code, or Lesson 11's gap crossing.<br><br><strong>You changed three words inside three one-line functions</strong> — and every turn the robot makes, anywhere in the book, now closes on its <em>real</em> angle.<br><br>This is what Lesson 7 was <em>for</em>. If those turns had been written out longhand at each call site, this change would have been a fifty-line search-and-replace across four lessons, and you would have missed one.</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.18"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">turnDegrees() is still there. On purpose.</div>We did not delete it. It is still correct, it still works, and on carpet it still agrees with the gyro to within a degree or two.<br><br>You are going to use it again in <strong>Section 7C</strong> — to <em>break</em> it, deliberately, in front of your own eyes. <strong>Deleting the old thing teaches nothing. Contradicting it teaches everything.</strong></div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
-<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="12.19">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="1" class="img-h-135em">BRAIN CHECK 01 · MENTAL KNOWLEDGE CHECK — Answer From Your Head</div>
 
@@ -501,7 +501,7 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 <div class="div-bg-433014-2"><div id="section-6"><span class="span-d-block-2">Section 6 · Build It</span><span class="span-d-block">The Honest Turn</span></div></div>
 <div class="div-433014">
 
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.20"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">How this section works</div>Eight steps. Each one names the <strong>one file</strong> you open. After every step the project still <strong>compiles green</strong> — you can stop anywhere, build, and nothing is broken.<br><br>Steps 6 and 7 will feel like nothing happens. <strong>That is correct, and it is explained when you get there.</strong></div>
 <h3 class="h3-bg-eafaf1">📁 Step 1: Copy Your Lesson 11 Project<span class="span-c-555">no code</span></h3>
 <p>Open the Project Maker, choose <strong>Lesson 12</strong>, and download the starter project.
@@ -509,7 +509,7 @@ It is your finished Lesson 11 robot — line following, intersections, obstacles
 with nothing removed.</p>
 <p><strong>Build it before you change anything.</strong> Confirm it still drives the course.
 You are about to modify a working robot, and you want to be certain it was working when you started.</p>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.21"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Your project is EIGHT files.</div><code>RobotConfig.h</code> · <code>RobotSensors.h</code> · <code>RobotSensors.cpp</code> · <code>RobotHelpers.h</code> · <code>RobotHelpers.cpp</code> · <code>RobotMotion.h</code> · <code>RobotMotion.cpp</code> · <code>main.cpp</code><br><br>If you are missing <code>RobotHelpers</code>, you are missing <code>waitForStart()</code> — your <strong>safety gate</strong>. Re-download before you go any further.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 CATCH-UP — Step 1</summary>
@@ -525,7 +525,7 @@ Add this under the other <code>extern</code> lines:</p>
 <p>Then, in <code>RobotSensors.cpp</code>, actually <strong>create</strong> it.
 Add this under the other object definitions:</p>
 <pre>Zumo32U4IMU imu;                       // NEW for Lesson 12</pre>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.22"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">extern in the .h, the real thing in the .cpp.</div>This is the same two-part pattern you have used since Lesson 7. The <code>.h</code> says "<em>this object exists somewhere</em>" so every file can talk about it. The <code>.cpp</code> is where it is actually <strong>made</strong> — exactly once, in exactly one file.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 CATCH-UP — Step 2</summary>
@@ -541,9 +541,9 @@ Add this under the other object definitions:</p>
 // 25 degrees per second of pure fiction. We measure that lie once,
 // at startup, and subtract it forever after.
 const int GYRO_CAL_SAMPLES = 1024;</pre>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.23"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Why a constant instead of just typing 1024?</div>Because <code>RobotConfig.h</code> is where every number a human might want to change lives. If your classroom is noisy and the gyro zero comes out unsteady, the fix is <strong>one number, in one place</strong> — not a hunt through <code>RobotSensors.cpp</code>.</div>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.24"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">plain int, not uint16_t.</div><code>RobotConfig.h</code> does not include <code>&lt;Arduino.h&gt;</code>, so the fixed-width types like <code>uint16_t</code> are not defined there. Plain <code>int</code> is what belongs in this file.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 CATCH-UP — Step 3</summary>
@@ -560,7 +560,7 @@ void gyroReset();
 void gyroUpdate();
 int  getTurnAngle();
 </pre>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.25"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Nothing works yet, and the robot has not changed.</div>You have just <em>promised</em> that these four functions exist. You have not written them. The project still compiles — a prototype is a promise, and the compiler is willing to wait until link time to see it kept.<br><br>You keep it in Step 5.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 CATCH-UP — Step 4</summary>
@@ -632,9 +632,9 @@ int getTurnAngle() {
   return (((int32_t)turnAngle &gt;&gt; 16) * 360) &gt;&gt; 16;
 }</pre>
 <p><em>About those two giant numbers: they convert the gyro’s raw readings into degrees using pure integer math — this function must run as often as possible, and integer math keeps every call cheap and exact. You do not need to derive that ratio to use it. You need to know what it does — and now you do.</em></p>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.26"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">The #include &lt;Wire.h&gt; goes at the TOP of the file.</div>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
-<div class="div-27ae60" data-family="STILL GREEN"><div class="div-fs-105em">🏆 Build it now. The binary just grew by 800 bytes.</div>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live — the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup" class="details-bg-f8f9fa">
+<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.27"><div class="div-fs-105em">🏆 Build it now. The binary just grew by 800 bytes.</div>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live — the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 CATCH-UP — Step 5</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=12&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
@@ -690,7 +690,7 @@ void turnDegreesGyro(float degrees) {
 
   motors.setSpeeds(0, 0);
 }</pre>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 Build it. The binary did not change. AT ALL.</div>Step 5 grew the binary by 800 bytes. Steps 6 and 7 grew it by <strong>zero</strong>. Still <strong>21,342</strong>, to the byte.<br><br>You just wrote a 25-line function and the program did not get any bigger. <strong>Did the edit not save?</strong></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.28"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Build it. The binary did not change. AT ALL.</div>Step 5 grew the binary by 800 bytes. Steps 6 and 7 grew it by <strong>zero</strong>. Still <strong>21,342</strong>, to the byte.<br><br>You just wrote a 25-line function and the program did not get any bigger. <strong>Did the edit not save?</strong></div>
 <p>It saved. Look at what you have actually built:</p>
 
 <ul class="ul-lh-19">
@@ -703,12 +703,12 @@ found that <code>turnDegreesGyro()</code> is unreachable from <code>main()</code
 <strong>threw it in the bin</strong> before writing the binary. A function nobody calls is dead weight,
 and the linker will not carry dead weight to a chip this small. The ATmega32U4 has 32&nbsp;KB of flash on paper — but 4&nbsp;KB of that is the bootloader, the little program that lets you upload over USB at all. What is actually yours is <strong>28,672 bytes</strong>. Lesson 16 will show you exactly how little that is.</p>
 
-<div class="callout-607d8b-bg-eceff1-6" data-family="NOTE">
-<div class="div-fs-09em">📘 NOTE</div>
+<div class="callout-607d8b-bg-eceff1-6" data-family="NOTE" data-callout="12.29">
+<div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Reminder — this is why every string in this book wears F()</div>
 <p class="p-mb-0">The linker just threw away a whole function to save space on a chip this small. Text is the other thing quietly competing for room — and unwrapped strings do not compete for <em>flash</em>, they compete for <strong>SRAM</strong>, the 2.5&nbsp;KB you have for variables. Every string literal you write without <code>F()</code> gets copied into SRAM at power-on and sits there for the whole run. Wrapping it leaves it in flash and costs you nothing. <em>(Lesson 2, section 3.2 — or the <code>F()</code> row in the Quick Reference.)</em></p>
 </div>
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 You have written the truth. The robot is still ignoring it.</div>Both turns now exist. <code>turnDegrees()</code> asks the wheels. <code>turnDegreesGyro()</code> asks the robot. They are sitting side by side in the same file, and the robot is <strong>still using the wheels</strong>.<br><br>That is not an oversight — <strong>it is Step 8's entire job.</strong> The old instrument stays until the moment the new one takes over. You never delete the working thing before the replacement is wired in.</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.30"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">You have written the truth. The robot is still ignoring it.</div>Both turns now exist. <code>turnDegrees()</code> asks the wheels. <code>turnDegreesGyro()</code> asks the robot. They are sitting side by side in the same file, and the robot is <strong>still using the wheels</strong>.<br><br>That is not an oversight — <strong>it is Step 8's entire job.</strong> The old instrument stays until the moment the new one takes over. You never delete the working thing before the replacement is wired in.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 CATCH-UP — Step 7</summary>
 <div class="div-mt-12px">
@@ -741,9 +741,9 @@ Find <code>setup()</code>. Add this <strong>immediately before</strong> the
   display.print(F("HOLD STILL"));
   gyroSetup();
 </pre>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 This block MUST come before waitForStart(). Here is why.</div>The next thing <code>setup()</code> does is <code>calibrateLineSensors()</code> — and <strong>that spins the robot.</strong><br><br>If the gyro were still measuring its zero while the robot spun, it would learn that <strong>spinning is what standing still feels like</strong>, subtract that from every future reading, and be catastrophically wrong for the entire run.<br><br>The still measurement comes first, while nothing has moved yet. <strong>Order is not decoration here.</strong></div>
-<div class="div-27ae60" data-family="STILL GREEN"><div class="div-fs-105em">🏆 Build it. 21,342 → 24,534 bytes. +3,192.</div>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable — and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.31"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">This block MUST come before waitForStart(). Here is why.</div>The next thing <code>setup()</code> does is <code>calibrateLineSensors()</code> — and <strong>that spins the robot.</strong><br><br>If the gyro were still measuring its zero while the robot spun, it would learn that <strong>spinning is what standing still feels like</strong>, subtract that from every future reading, and be catastrophically wrong for the entire run.<br><br>The still measurement comes first, while nothing has moved yet. <strong>Order is not decoration here.</strong></div>
+<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.32"><div class="div-fs-105em">🏆 Build it. 21,342 → 24,534 bytes. +3,192.</div>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable — and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.33"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">What just happened to the rest of the book</div>Every intersection turn from Lesson 9. Every obstacle maneuver from Lesson 10. Everything that ever called <code>turnLeft()</code>, <code>turnRight()</code>, or <code>turnAround()</code>.<br><br><strong>All of it now closes on the robot's real angle</strong>, and you did not open a single one of those files.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 CATCH-UP — Step 8 (finished build)</summary>
@@ -767,7 +767,7 @@ that you make the robot fail, on purpose, while you watch.</p>
 
 <p>Five rungs. Each one is a small change to <code>loop()</code> only.
 Do them in order; each one sets up the next.</p>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.34"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">You need a slippery surface. Here is what works.</div>Your teacher has <strong>delrin</strong> (acetal) sheet. It is slick against rubber, it is rigid so it lies flat, and it behaves the same in week 15 as it did in week 1.<br><br><strong>No delrin? Hold the robot.</strong> Grip the chassis firmly and let the wheels fight you. Guaranteed slip, zero materials, works every time. <em>The delrin is the demonstration — but your hands are the proof.</em></div>
 <div class="div-aab7b8"><strong>[IMAGE 12.1]</strong><br><span class="span-fs-09em">The delrin sheet, with a Zumo mid-turn on it.</span></div>
 <h3 class="h3-bg-fff8e1">⚙️ 7A — The Gyro With the Motors Off<span class="span-c-555">an instrument, not a command</span></h3>
@@ -783,9 +783,9 @@ Do them in order; each one sets up the next.</p>
   display.print(getTurnAngle());
   display.print(F("    "));
 }</pre>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.35"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">Now pick the robot up and turn it with your hands.</div>Rotate it a quarter turn. The OLED climbs toward <strong>90</strong>. Turn it back — it climbs back down. Spin it all the way around and it reaches <strong>360</strong>.<br><br>The motors are off. The encoders are reporting <strong>nothing</strong>. And the robot knows <em>exactly</em> how far you turned it.<br><br><strong>The gyro is an instrument, not a motor command.</strong> It measures the world whether you are driving or not.</div>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.36"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">Watch it drift.</div>Set the robot down and leave it completely alone for thirty seconds. The number will slowly wander — a degree, then two, then five.<br><br>That is the leftover bias, the part the 1,024-sample average could not perfectly cancel. It is why <code>gyroReset()</code> is called at the start of <em>every</em> turn instead of once at boot: <strong>you want the drift to have as little time as possible to accumulate.</strong></div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 7A in the Project Maker</summary>
@@ -813,11 +813,11 @@ Do them in order; each one sets up the next.</p>
   imu.configureForTurnSensing();</pre>
 <p><code>gyroOffset</code> now stays at <strong>0</strong> forever. The gyro has never measured its own lie,
 so it has nothing to subtract.</p>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.37"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">You also need <code>#include &lt;Wire.h&gt;</code> at the top of <code>main.cpp</code>.</div>You are calling <code>Wire.begin()</code> directly now instead of letting <code>gyroSetup()</code> do it for you — so this file needs the header too.</div>
 <p>Build it. <strong>Put the robot down. Do not touch it.</strong></p>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 The number climbs anyway.</div>The robot is <em>motionless</em>. The angle reading crawls upward — or downward — steadily, forever. Left alone for a minute it will confidently report that it has rotated a hundred degrees.<br><br>It has not moved at all.</div>
-<div class="div-27ae60" data-family="STILL GREEN"><div class="div-fs-105em">🏆 And look at the byte count: 20,626 → 20,422. It got SMALLER.</div>The broken version is <strong>204 bytes cheaper</strong> than the correct one.<br><br><strong>The lie costs less than the truth.</strong> Honesty is not free — it is 204 bytes of code and a fifth of a second of your life, every boot, and it buys you a sensor you can believe.<br><br>Put the calibration back before you go on.</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.38"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">The number climbs anyway.</div>The robot is <em>motionless</em>. The angle reading crawls upward — or downward — steadily, forever. Left alone for a minute it will confidently report that it has rotated a hundred degrees.<br><br>It has not moved at all.</div>
+<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.39"><div class="div-fs-105em">🏆 And look at the byte count: 20,626 → 20,422. It got SMALLER.</div>The broken version is <strong>204 bytes cheaper</strong> than the correct one.<br><br><strong>The lie costs less than the truth.</strong> Honesty is not free — it is 204 bytes of code and a fifth of a second of your life, every boot, and it buys you a sensor you can believe.<br><br>Put the calibration back before you go on.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 7B in the Project Maker</summary>
 <div class="div-mt-12px">
@@ -856,9 +856,9 @@ encoders. The <strong>gyro</strong> is along for the ride, watching, steering no
 
   delay(4000);
 }</pre>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.40"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">Run it on CARPET first.</div>Press B. The robot turns. The OLED says <code>Encoder: 90</code> and <code>Gyro: 88</code> — or 91, or 89.<br><br><strong>They agree.</strong> This is the world you have been living in for six lessons, and in this world the encoder is a perfectly good instrument.</div>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 Now put it on the delrin. Press B.</div><code>Encoder: 90</code><br><code>Gyro:&nbsp;&nbsp;&nbsp;&nbsp;31</code><br><br>The wheels spun exactly as far as they were told. The encoder counted exactly right. The code stopped at exactly the correct count.<br><br><strong>The robot barely moved.</strong><br><br>And notice: <code>Encoder: 90</code> is <em>hardcoded</em> in that sketch. It does not read the encoder at the end — it does not have to. <strong>The encoder is always certain.</strong> That is the problem.</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.41"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Now put it on the delrin. Press B.</div><code>Encoder: 90</code><br><code>Gyro:&nbsp;&nbsp;&nbsp;&nbsp;31</code><br><br>The wheels spun exactly as far as they were told. The encoder counted exactly right. The code stopped at exactly the correct count.<br><br><strong>The robot barely moved.</strong><br><br>And notice: <code>Encoder: 90</code> is <em>hardcoded</em> in that sketch. It does not read the encoder at the end — it does not have to. <strong>The encoder is always certain.</strong> That is the problem.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 7C in the Project Maker</summary>
 <div class="div-mt-12px">
@@ -881,13 +881,13 @@ encoders. The <strong>gyro</strong> is along for the ride, watching, steering no
 
   delay(4000);
 }</pre>
-<div class="div-27ae60" data-family="WHAT YOU SHOULD SEE"><div class="div-fs-105em">🏆 The robot turns 90 degrees. On the slick surface. Every time.</div>The wheels are still slipping — you can <em>hear</em> them slipping, and the turn takes noticeably longer than it did on carpet.<br><br><strong>The robot does not care.</strong> It keeps spinning the motors until the <em>chassis</em> has come around 90 degrees, and then it stops. Slip does not make it wrong. Slip just makes it slow.</div><details data-reveal="catchup" class="details-bg-f8f9fa">
+<div class="div-27ae60" data-family="WHAT YOU SHOULD SEE" data-callout="12.42"><div class="div-fs-105em">🏆 The robot turns 90 degrees. On the slick surface. Every time.</div>The wheels are still slipping — you can <em>hear</em> them slipping, and the turn takes noticeably longer than it did on carpet.<br><br><strong>The robot does not care.</strong> It keeps spinning the motors until the <em>chassis</em> has come around 90 degrees, and then it stops. Slip does not make it wrong. Slip just makes it slow.</div><details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 7D in the Project Maker</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=12&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D — The Honest Turn</a></p></div>
 </details>
 <h3 class="h3-bg-fff8e1">⚙️ 7E — The Lesson 6 Square<span class="span-c-555">🏆 the payoff</span></h3>
-<div class="callout-2e86ab-bg-e7f0fa-2" data-family="BUILDS ON"><div class="div-fs-105em">🔁 Builds on:</div> the square from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> — same four sides, same four corners, new instrument watching them.</div>
+<div class="callout-2e86ab-bg-e7f0fa-2" data-family="BUILDS ON" data-callout="12.43"><div class="div-fs-105em"><img src="../images/marks/arrow-repeat.svg" alt="" data-mark="arrow-repeat">Builds on:</div> the square from Lesson 6 <img src="../images/spiral_star_06.svg" alt="Spiral review from Lesson 06" class="img-h-11em"> — same four sides, same four corners, new instrument watching them.</div>
 <p>In <strong>Lesson 6</strong> you drove a square. It did not close. The robot came back
 somewhere near where it started, pointing somewhere near the right direction, and you fixed most
 of it with <code>TRIM</code>.</p>
@@ -921,19 +921,19 @@ of it with <code>TRIM</code>.</p>
     motors.setSpeeds(0, 0);
   }
 }</pre>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.44"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">Run A on carpet. Then run C on carpet.</div>Both squares close. Both are decent. On carpet, the encoder is a good instrument and the gyro is a good instrument, and they mostly agree.<br><br><strong>Now move to the delrin.</strong></div>
 <figure class="div-m-24px0">
 <img src="../images/L12_GRAPHIC_12-03_the_square_that_closes.svg" alt="Encoder square collapses on delrin; gyro square closes" class="img-ddd">
 <figcaption class="figcaption"><strong>GRAPHIC 12.3</strong> — Button A (encoder) and Button C (gyro), same slick surface. Four corners, four errors — and errors in dead reckoning add up. They do not cancel.</figcaption></figure>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 Button A on delrin: the square collapses.</div>Each corner slips a little. The robot turns 60° instead of 90°. Four corners, four errors, and <strong>the errors add up</strong> — they do not cancel.<br><br>The robot finishes its four sides and its four turns having driven something closer to a <em>pentagon that gave up</em>, and it ends up nowhere near where it started, pointing nowhere near where it began.<br><br>And the encoder is <strong>completely satisfied</strong>. As far as it is concerned, it drove a perfect square.</div>
-<div class="div-27ae60" data-family="WHAT YOU SHOULD SEE"><div class="div-fs-105em">🏆 Button C on delrin: the square closes.</div>Same slippery surface. Same slipping wheels. Same motors, same speed, same 30&nbsp;cm sides.<br><br><strong>The robot comes home.</strong><br><br>Every corner is a real 90 degrees, because every corner was measured on the <em>robot</em> instead of the wheels. The slip is still happening — it just cannot lie to you any more.</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.45"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Button A on delrin: the square collapses.</div>Each corner slips a little. The robot turns 60° instead of 90°. Four corners, four errors, and <strong>the errors add up</strong> — they do not cancel.<br><br>The robot finishes its four sides and its four turns having driven something closer to a <em>pentagon that gave up</em>, and it ends up nowhere near where it started, pointing nowhere near where it began.<br><br>And the encoder is <strong>completely satisfied</strong>. As far as it is concerned, it drove a perfect square.</div>
+<div class="div-27ae60" data-family="WHAT YOU SHOULD SEE" data-callout="12.46"><div class="div-fs-105em">🏆 Button C on delrin: the square closes.</div>Same slippery surface. Same slipping wheels. Same motors, same speed, same 30&nbsp;cm sides.<br><br><strong>The robot comes home.</strong><br><br>Every corner is a real 90 degrees, because every corner was measured on the <em>robot</em> instead of the wheels. The slip is still happening — it just cannot lie to you any more.</div>
 <p>Six lessons ago, the square that would not close was a mystery, and <code>TRIM</code> was the answer.</p>
 <p><code>TRIM</code> fixed the robot's tendency to <em>curve</em>. It could never have fixed this,
 because this was never a curve. <strong>This was a turn that did not happen, reported by a sensor that
 could not know.</strong></p>
 <p>Now you have a sensor that knows.</p>
-<div class="div-6b8e6b" data-family="TIP"><div class="div-fs-09em">💡 TIP</div>
+<div class="div-6b8e6b" data-family="TIP" data-callout="12.47"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">Before you move on: put loop() back.</div>Section 7 replaced your <code>loop()</code> with test sketches. Restore the real one — the Lesson 11 state machine — and rebuild. It should compile to <strong>24,534 bytes</strong> and drive the full course, with every turn now closing on the gyro.</div>
 <details data-reveal="catchup" class="details-bg-f8f9fa">
 <summary class="summary-c-5a6872">📦 7E in the Project Maker</summary>
@@ -971,7 +971,7 @@ Ships navigated oceans this way for centuries.</p>
 <p>If each of your four corners is 5° short, you do not end up 5° off. You end up
 <strong>20°</strong> off, and the fourth side of your square is driving in a direction that has nothing
 to do with where you meant to go. That is what Button A does on the delrin in Section 7E.</p>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.48"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Why the gyro helps — and why it is not magic.</div>The gyro breaks the chain. Each turn closes on the <em>real</em> angle, so an error in corner 1 does not get inherited by corner 2.<br><br>But the gyro is <strong>still dead reckoning</strong> — it accumulates rate over time, and it <em>still</em> drifts, just far more slowly. It is a better instrument, not a different <em>kind</em> of instrument. Anything that measures "how much did I change" will eventually drift. Only something that measures "where am I, absolutely" — a compass, a GPS, a line on the floor — escapes that.<br><br><strong>Which is exactly why we never stopped following the line.</strong></div>
 <h3 class="h3-c-00474b-4">8A.2 Two Instruments, One Measurement</h3>
 <p>You now own <strong>two independent instruments that measure the same thing</strong>:
@@ -985,7 +985,7 @@ It tells you something is wrong that <em>neither instrument alone could ever hav
 gyro says:     31 degrees      (the robot definitely did not turn that far)
                 ---
 difference:    59 degrees   &lt;-- THE WHEELS ARE SLIPPING</pre>
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 Neither sensor can detect slip. Together, they cannot miss it.</div>The encoder does not know it slipped. The gyro does not know the wheels exist. <strong>The gap between their answers is the slip</strong> — and it is visible only if you are holding both numbers at once.<br><br>This is <strong>Challenge&nbsp;2</strong>. It is also, in one form or another, how every serious robot, aircraft, and spacecraft on earth knows when one of its sensors has gone bad.</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.49"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">Neither sensor can detect slip. Together, they cannot miss it.</div>The encoder does not know it slipped. The gyro does not know the wheels exist. <strong>The gap between their answers is the slip</strong> — and it is visible only if you are holding both numbers at once.<br><br>This is <strong>Challenge&nbsp;2</strong>. It is also, in one form or another, how every serious robot, aircraft, and spacecraft on earth knows when one of its sensors has gone bad.</div>
 <h3 class="h3-c-00474b-4">8A.3 The Fixed-Point Angle — What 2^29 Is Doing In There</h3>
 <p>Back in Section 4.4 we said the running angle is stored in a strange unit and told you not to worry
 about it. Here is what is actually happening.</p>
@@ -1004,7 +1004,7 @@ comes out clean:</p>
 <code>2^32</code> values — and then it <strong>rolls over to zero</strong>.</p>
 
 <p>Which is precisely what an angle does.</p>
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 The overflow bug IS the feature.</div>Turn 360° and the counter overflows back to 0 — <em>which is the correct answer</em>. Turn −10° and it wraps to just under the top — <em>which is also correct</em>.<br><br>The thing that would be a catastrophic bug in almost any other program is, here, <strong>free, exact, angle-wrapping arithmetic</strong>. No <code>if</code> statements. No modulo. Nobody wrote code to handle it. It is a property of the <em>unit</em>.<br><br>Choosing your units well can make an entire class of bug impossible to write.</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.50"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The overflow bug IS the feature.</div>Turn 360° and the counter overflows back to 0 — <em>which is the correct answer</em>. Turn −10° and it wraps to just under the top — <em>which is also correct</em>.<br><br>The thing that would be a catastrophic bug in almost any other program is, here, <strong>free, exact, angle-wrapping arithmetic</strong>. No <code>if</code> statements. No modulo. Nobody wrote code to handle it. It is a property of the <em>unit</em>.<br><br>Choosing your units well can make an entire class of bug impossible to write.</div>
 <h3 class="h3-c-00474b-4">8A.4 Why the Gyro Is Not Simply Better</h3>
 <p>It would be easy to walk out of this lesson thinking the gyro won and the encoder lost.
 That is not the lesson.</p>
@@ -1032,7 +1032,7 @@ That is not the lesson.</p>
 <p>Look at rows 3 and 4. The encoder is <em>rock solid</em> in exactly the places the gyro is weakest.
 Leave a Zumo powered on for an hour without touching it, and the encoder will still be telling the perfect
 truth while the gyro has quietly invented a hundred degrees of rotation that never happened.</p>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 Notice what you did NOT do in this lesson.</div>You did not replace <code>driveDistance()</code>. <strong>Distance is still the encoder's job</strong>, because the gyro physically cannot measure distance — it has no idea the robot is even moving in a straight line.<br><br>You gave the <strong>turning</strong> to the gyro, and left the <strong>driving</strong> with the encoder. Each sensor kept the job it is actually good at.<br><br><strong>That is the real skill: not picking the best sensor, but knowing what each one is FOR.</strong></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.51"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Notice what you did NOT do in this lesson.</div>You did not replace <code>driveDistance()</code>. <strong>Distance is still the encoder's job</strong>, because the gyro physically cannot measure distance — it has no idea the robot is even moving in a straight line.<br><br>You gave the <strong>turning</strong> to the gyro, and left the <strong>driving</strong> with the encoder. Each sensor kept the job it is actually good at.<br><br><strong>That is the real skill: not picking the best sensor, but knowing what each one is FOR.</strong></div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
@@ -1113,7 +1113,7 @@ void turnToHeading(int targetHeading) {
   turnToHeading(-90);  delay(800);
   turnToHeading(0);    delay(800);   // back to straight ahead
 }</pre>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.52"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">What HEADING_TOLERANCE is for.</div>The robot will never land on <em>exactly</em> 90.000°. It will overshoot to 92, come back to 88, and hunt back and forth forever if you demand perfection.<br><br><strong>Tolerance is how close is close enough.</strong> Too tight and it oscillates and never settles. Too loose and your turns are sloppy. Start at 3 and find your own number.</div>
 <p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c1_heading" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
@@ -1191,7 +1191,7 @@ const int SLIP_TOLERANCE = 0;   // &lt;-- YOUR NUMBER. Try 10.</pre>
   display.print(truth);
   delay(4000);
 }</pre>
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 Read that code again and notice what it is doing.</div>It is <strong>using one sensor to audit another</strong>. Not to replace it — to <em>check</em> it.<br><br>Run it on carpet: <code>Clean</code>. Run it on delrin: <code>SLIP!</code> and the buzzer goes off.<br><br>Your robot can now detect a condition that <strong>neither of its sensors can detect alone.</strong></div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.53"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">Read that code again and notice what it is doing.</div>It is <strong>using one sensor to audit another</strong>. Not to replace it — to <em>check</em> it.<br><br>Run it on carpet: <code>Clean</code>. Run it on delrin: <code>SLIP!</code> and the buzzer goes off.<br><br>Your robot can now detect a condition that <strong>neither of its sensors can detect alone.</strong></div>
 <p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c2_slipalarm" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
@@ -1277,8 +1277,8 @@ bool turnDegreesGyroSafe(float degrees) {
   display.print(F("Turn OK"));
   delay(2000);
 }</pre>
-<div class="div-e74c3c" data-family="NOTE"><div class="div-fs-105em">🛑 Note what it does NOT do when it gives up.</div>It does not shrug and carry on as if the turn worked. It <strong>stops the motors, screams, and halts</strong>.<br><br>A robot that knows it failed and keeps going is <em>more</em> dangerous than one that never knew. If the turn did not happen, every single thing the robot does afterward is based on a false idea of which way it is pointing.<br><br><strong>Stop. Do not pretend.</strong></div>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-e74c3c" data-family="NOTE" data-callout="12.54"><div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">Note what it does NOT do when it gives up.</div>It does not shrug and carry on as if the turn worked. It <strong>stops the motors, screams, and halts</strong>.<br><br>A robot that knows it failed and keeps going is <em>more</em> dangerous than one that never knew. If the turn did not happen, every single thing the robot does afterward is based on a false idea of which way it is pointing.<br><br><strong>Stop. Do not pretend.</strong></div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.55"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Choosing TURN_TIMEOUT_MS.</div>Too short and a legitimately slow turn on the delrin gets killed as a false alarm. Too long and a genuinely stuck robot sits there grinding its motors.<br><br>Time your slowest <em>real</em> turn on the slipperiest surface you have. Then add margin. Start at 3000.</div>
 <p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c3_stuckguard" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
@@ -1307,7 +1307,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
   motors.setSpeeds(100, -100);   // spinning DURING calibration
   motors.setSpeeds(0, 0);</pre>
 <p><strong>The symptom:</strong> The robot boots, spins briefly, and then behaves erratically for the entire run. Turns overshoot wildly, or barely happen at all. Every turn is wrong, and wrong by a <em>consistent</em> amount.</p>
-<div class="div-6f7582-4" data-family="THINK ABOUT IT">
+<div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.56">
 <div class="div-fs-105em">Ask yourself:</div> The calibration loop is averaging 1,024 readings to learn what "not moving" feels like. What is the robot <em>doing</em> during those 1,024 readings? So what does the gyro conclude that "still" means — and what does it now subtract from every reading, forever?</div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b1_spinning_cal" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 </div></div>
@@ -1322,7 +1322,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 
   motors.setSpeeds(0, 0);</pre>
 <p><strong>The symptom:</strong> The robot starts a turn and <strong>never stops turning</strong>. It spins until you cut the power.</p>
-<div class="div-6f7582-4" data-family="THINK ABOUT IT">
+<div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.57">
 <div class="div-fs-105em">Ask yourself:</div> A gyro reports a <em>rate</em>, not an angle. Something has to add the rate up over time. If nobody ever adds anything up, what does <code>getTurnAngle()</code> keep returning? And is <code>0 &lt; 90</code> ever going to become false?<br><br><em>Note the byte count: this build is 648 bytes SMALLER than the correct one. Deleting code makes the program smaller. It does not make it work.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b2_no_update" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 </div></div>
@@ -1336,7 +1336,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-c-555-3">…and over in <code>main.cpp</code>, inside <code>setup()</code>:</p>
 <pre>  gyroReset();   // &lt;-- moved here</pre>
 <p><strong>The symptom:</strong> The <strong>first</strong> turn is perfect. Every turn after it finishes <strong>instantly</strong> — the motors barely twitch before the robot declares the turn complete.</p>
-<div class="div-6f7582-4" data-family="THINK ABOUT IT">
+<div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.58">
 <div class="div-fs-105em">Ask yourself:</div> <code>gyroReset()</code> sets the running angle back to zero. If it only ever runs once, at boot — what does the running total say <em>after</em> the first 90° turn is finished?<br><br>Now the second turn starts. It checks <code>abs(getTurnAngle()) &lt; 90</code>. The angle is <em>already</em> 90. How long does that loop run?</div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b3_reset_hoisted" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
 </div></div>
@@ -1347,18 +1347,18 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <pre>  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
   motors.setSpeeds(leftSpeed + TRIM, rightSpeed);</pre>
 <p><strong>The symptom:</strong> Turns are subtly, stubbornly off — and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
-<div class="div-6f7582-4" data-family="THINK ABOUT IT">
+<div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.59">
 <div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>open loop</strong> — a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,534</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 </div></div>
-<div class="div-e74c3c" data-family="THE WALL"><div class="div-fs-105em">🛑 What B4 should teach you for the rest of your life</div>Three of these four mysteries change the program's size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.60"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">What B4 should teach you for the rest of your life</div>Three of these four mysteries change the program's size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <!-- ===================== SECTION 10: EXIT TICKET ===================== -->
 <div class="div-bg-6f7582"><div id="section-10"><span class="span-d-block-2">Section 10</span><span class="span-d-block">Exit Ticket</span></div></div>
 <div class="div-6f7582">
 
-<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="12.61">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="2" class="img-h-135em">BRAIN CHECK 02 · TECHNICAL SKILLS — Can You…?</div>
 
@@ -1386,7 +1386,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
 </div>
 
-<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-03" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="12.62">
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
@@ -1419,7 +1419,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-m-12px00"><button type="button" data-bc-btn="3" class="button">Mark Brain Check 03 done</button></p>
 </div>
 
-<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK">
+<div id="brain-check-04" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="12.63">
     <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="4" class="img-h-135em">BRAIN CHECK 04 · REFLECTION — In Your Notebook</div>
     <p>No reveal on these — there is no single right answer. Write them in your engineering notebook, in your own words. If you can explain it, you own it.</p>
     <ol>
@@ -1430,7 +1430,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-m-12px00"><button type="button" data-bc-btn="4" class="button">Mark Brain Check 04 done</button></p>
 </div>
 
-<div class="div-27ae60" data-family="INSIGHT"><div class="div-fs-105em">🏆 The one sentence to walk out with</div><strong>A sensor can only tell you about the thing it watches.</strong><br><br>The encoder watches the wheels, so it can only tell you about the wheels. It was never lying to you — you were asking it a question it had no way to answer, and taking its answer as if it had.</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="12.64"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The one sentence to walk out with</div><strong>A sensor can only tell you about the thing it watches.</strong><br><br>The encoder watches the wheels, so it can only tell you about the wheels. It was never lying to you — you were asking it a question it had no way to answer, and taking its answer as if it had.</div>
 <p class="h4-mt-26px"><strong>Next lesson:</strong> the robot <em>leaves the line</em>.
 No line means no closed loop — nothing to correct against, nothing to follow home.
 Everything out in the open is dead reckoning, and now you know exactly how much dead reckoning
@@ -1449,8 +1449,8 @@ you can trust, and which instrument to trust it with.</p>
 
 <h3 class="h3-c-6f7582-4">Engineer’s Log</h3>
 
-<div class="div-6f7582-3" data-family="ENGINEER'S LOG">
-<div class="div-fs-105em">📓 ENGINEER’S LOG #12 — feeds: Performance Evaluation (testing data)</div>
+<div class="div-6f7582-3" data-family="ENGINEER'S LOG" data-callout="12.65">
+<div class="div-fs-105em"><img src="../images/marks/journal-text.svg" alt="" data-mark="journal-text">ENGINEER’S LOG #12 — feeds: Performance Evaluation (testing data)</div>
 <b>Cross-examine your own robot.</b> Turn it 90°. Record what the encoder said and what the gyro said — on carpet, then on a slick floor. <b>Which do you trust, and when?</b><br>
 <i>Why judges care: two instruments disagreeing is data. Picking one without saying why is a guess.</i></div>
 
@@ -1460,16 +1460,16 @@ you can trust, and which instrument to trust it with.</p>
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
 
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">IMU (Inertial Measurement Unit)</div>The chip on your Zumo containing a gyroscope, an accelerometer, and a magnetometer. Already soldered on; costs zero pins.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Gyroscope</div>Measures <strong>rotation rate</strong> — how fast something is spinning, in degrees per second. It does <em>not</em> measure direction or position.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Bias / Drift</div>The rotation a gyro reports when it is <strong>perfectly still</strong>. Up to 25°/sec of pure fiction. Not a defect — every gyro has it.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Calibration (of a gyro)</div>Measuring the bias by averaging many readings while the robot does not move, then subtracting it from every future reading. 1,024 samples, robot still.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Integration (accumulation)</div>Adding up a <em>rate</em> over <em>time</em> to get a <em>total</em>. <code>angle = angle + (rate × dt)</code>, thousands of times per turn. This is what <code>gyroUpdate()</code> does.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Dead reckoning</div>Working out where you are from where you started plus what you did. Encoders and gyros both do this. Its fatal flaw: <strong>errors accumulate and never cancel</strong>.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Wheel slip</div>The wheel turns but the robot does not. The encoder counts it as real motion, because from inside the wheel it <em>is</em> real motion.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Open loop / Closed loop</div><strong>Open:</strong> command it and hope (needs TRIM). <strong>Closed:</strong> measure the result and correct until it is right (TRIM would fight it). <code>turnDegreesGyro()</code> is closed.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">I2C</div>A two-wire bus (<code>SDA</code>, <code>SCL</code>) that chips use to talk. The IMU lives on it. Must be switched on with <code>Wire.begin()</code>.</div>
-<div class="callout-2e86ab-bg-fff" data-family="KEY TERM"><div class="div-fs-105em">Fixed-point</div>Storing a fractional value in an integer by agreeing on a scale. Used here because the ATmega32U4 has no floating-point hardware. <code>2^32 units = 360°</code>, so the counter wraps correctly for free.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.66"><div class="div-fs-105em">IMU (Inertial Measurement Unit)</div>The chip on your Zumo containing a gyroscope, an accelerometer, and a magnetometer. Already soldered on; costs zero pins.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.67"><div class="div-fs-105em">Gyroscope</div>Measures <strong>rotation rate</strong> — how fast something is spinning, in degrees per second. It does <em>not</em> measure direction or position.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.68"><div class="div-fs-105em">Bias / Drift</div>The rotation a gyro reports when it is <strong>perfectly still</strong>. Up to 25°/sec of pure fiction. Not a defect — every gyro has it.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.69"><div class="div-fs-105em">Calibration (of a gyro)</div>Measuring the bias by averaging many readings while the robot does not move, then subtracting it from every future reading. 1,024 samples, robot still.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.70"><div class="div-fs-105em">Integration (accumulation)</div>Adding up a <em>rate</em> over <em>time</em> to get a <em>total</em>. <code>angle = angle + (rate × dt)</code>, thousands of times per turn. This is what <code>gyroUpdate()</code> does.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.71"><div class="div-fs-105em">Dead reckoning</div>Working out where you are from where you started plus what you did. Encoders and gyros both do this. Its fatal flaw: <strong>errors accumulate and never cancel</strong>.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.72"><div class="div-fs-105em">Wheel slip</div>The wheel turns but the robot does not. The encoder counts it as real motion, because from inside the wheel it <em>is</em> real motion.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.73"><div class="div-fs-105em">Open loop / Closed loop</div><strong>Open:</strong> command it and hope (needs TRIM). <strong>Closed:</strong> measure the result and correct until it is right (TRIM would fight it). <code>turnDegreesGyro()</code> is closed.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.74"><div class="div-fs-105em">I2C</div>A two-wire bus (<code>SDA</code>, <code>SCL</code>) that chips use to talk. The IMU lives on it. Must be switched on with <code>Wire.begin()</code>.</div>
+<div class="callout-2e86ab-bg-fff" data-family="KEY TERM" data-callout="12.75"><div class="div-fs-105em">Fixed-point</div>Storing a fractional value in an integer by agreeing on a scale. Used here because the ATmega32U4 has no floating-point hardware. <code>2^32 units = 360°</code>, so the counter wraps correctly for free.</div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 <div class="div-bg-6f7582"><div id="quick-ref"><span class="span-d-block">Quick Reference</span></div></div>
@@ -1559,7 +1559,7 @@ void turnAround() { turnDegreesGyro(180); }</pre>
     <td class="td-ddd-6"><strong>24,534</strong></td>
     <td class="td-ddd-6"><strong>+3,192 — the three turns switch</strong></td></tr>
 </table>
-<div class="div-607d8b" data-family="NOTE"><div class="div-fs-09em">📘 NOTE</div>
+<div class="div-607d8b" data-family="NOTE" data-callout="12.76"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">And remember what Bonus B4 proved.</div>A build that weighs <strong>24,534</strong> bytes is not necessarily a <em>correct</em> build. B4 weighs exactly that and is wrong. The byte count is a useful signal, never a proof.</div>
 <p class="p-mt-10px-2"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
@@ -1583,8 +1583,8 @@ void turnAround() { turnDegreesGyro(180); }</pre>
 <tr><td class="td-ddd-2"><code>[GRAPHIC 12.3]</code></td><td class="td-ddd-2">§7E</td><td class="td-ddd-2">The square that closes vs. the square that collapses.</td><td class="td-ddd-2">SVG</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[IMAGE 12.1]</code></td><td class="td-ddd-2">§7</td><td class="td-ddd-2">The delrin sheet, with a Zumo mid-turn on it.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">☐ still needed</td></tr>
 </tbody></table>
-<div class="callout-607d8b-bg-eceff1-4" data-family="GOING DEEPER">
-<div class="div-fs-105em">🔬 Curious how any of this actually works?</div>
+<div class="callout-607d8b-bg-eceff1-4" data-family="GOING DEEPER" data-callout="12.77">
+<div class="div-fs-105em"><img src="../images/marks/file-earmark-plus.svg" alt="" data-mark="file-earmark-plus">Curious how any of this actually works?</div>
 <p class="p-mb-0">The <strong>Going Deeper</strong> page opens up the machinery behind two things this lesson leans on — the <em>linker</em> that noticed your unused function and threw it away, and the fixed-point arithmetic behind §8A.3's gyro units. None of it is assigned, and none of it is on a quiz — it is there for when you want it. <a href="../going_deeper.html" class="link-c-2e86ab">Open Going Deeper →</a></p>
 </div>
 
