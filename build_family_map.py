@@ -2,7 +2,32 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.4.0'
+VERSION = 'v1.5.0'
+# v1.5.0 (S132): THE STRUCTURE TIER. A callout inside the GLOSSARY REGION is a KEY TERM.
+#   Seated ABOVE the pin, below the content rules, and it is the FIRST tier since S112
+#   that is not a content rule and not authored — so the distinction it stands on has to
+#   be stated: A SECTION ID IS STRUCTURE, NOT DECORATION. Colour died (S112) and the
+#   glyph died (S130) because both were presentation that happened to correlate with
+#   family; either could be repainted or reskinned without the family changing, so
+#   reading them backwards let a repaint re-family the book. A banner id cannot be
+#   repainted. Moving a block out of the glossary is not a restyle, it is a move, and if
+#   it moves it SHOULD stop being a KEY TERM. The tier reads what the block IS, not what
+#   it looks like — which is §24.14, not an exception to it.
+#   MEASURED, and the probe could fail: 97 callouts sit in a glossary region, 97 of 97
+#   are KEY TERM, ZERO exceptions. An earlier probe that closed the region at EOF instead
+#   of at the next banner returned NINE exceptions (GOING DEEPER and two NOTE blocks
+#   sitting past the glossary), so the predicate is discriminating and not vacuous.
+#   SUFFICIENT, NOT NECESSARY: 72 KEY TERM blocks live in lesson bodies and this tier
+#   says nothing about them. It resolves the glossary side only.
+#   WHY IT IS WORTH A TIER: it makes 87 of the pin's 159 KEY TERM rows redundant and it
+#   means the 54 non-callout glossary entries can be converted to canon term cards
+#   WITHOUT authoring 54 new pin rows. Pin today 212; with the glossary-side rows
+#   retired 125; convert with no tier and it is 266. A 141-row swing.
+#   BASELINE 1069 -> 1123. The glossary conversion (glossary_convert v1.0) turned 54
+#   non-callout entries - L04 bare divs, L13/L14 <dl> pairs, L11/L15 table rows - into
+#   canon term cards, so they are callouts now and the map sees them. DERIVED: 1069 + 54.
+#   RETIRING THOSE 87 ROWS IS A SEPARATE RULING and is NOT done here — the pin is a
+#   preserved layer and this version only makes the rows unnecessary, not absent.
 # v1.3.8 (S128): the data-family attribute is read AHEAD of the three inference tiers.
 #   Baseline UNMOVED at 1069 - the attribute is written FROM these same tiers, so on the
 #   day it landed the table came back byte-identical, which is the correctness proof.
@@ -218,6 +243,22 @@ RULE=[
 # The 212 blocks now resolve from ZUMO_FAMILY_PINS.md, an AUTHORED record keyed on
 # `data-callout`. It is READ-ONLY INPUT and must never be regenerated from `data-family`:
 # a pin rebuilt from the value it exists to check agrees with any drift by construction.
+# ---- THE STRUCTURE TIER (S132). ONE DEFINITION, imported by family_tag rather than
+# restated there (S83). The region comes from lesson_inventory v1.3.5, which derives it
+# from the banner PROPERTY; nothing here re-parses the file.
+STRUCT_REGION = {'glossary': 'KEY TERM'}
+
+
+def struct(c):
+    """The family a callout's REGION implies, or None.
+
+    Returns None for every region but the glossary — a region this table does not name
+    is not an assertion that the block has no family, it is silence, and the caller
+    falls through to the pin exactly as before.
+    """
+    return STRUCT_REGION.get(c.get('region'))
+
+
 PIN_FILE = 'ZUMO_FAMILY_PINS.md'
 _PIN_ROW = re.compile(r'^\|\s*`(\d+\.\d+)`\s*\|\s*([^|]+?)\s*\|')
 
@@ -266,12 +307,13 @@ for inv in d:
         if not f:
             for fn,fam in RULE:
                 if fn(lab,g,(bg,bd)): f=fam; break
+        if not f: f=struct(c)
         if not f: f=PINS.get(c.get('callout_id'))
         if f: res[f]+=1
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1069   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1123   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))

@@ -2,7 +2,22 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.3.4'
+VERSION = 'v1.3.5'
+#
+# v1.3.5 (S132): callout records gain 'region' — the id of the nearest preceding BANNER
+#   anchor. Additive: one new key, no existing key changed, no detector changed.
+#   WHY THE EXISTING 'section' WOULD NOT DO. §10's anchor opens Exit Ticket, Glossary,
+#   Quick Reference and Figures alike, so 'section' reads §10 for the 97 glossary term
+#   cards AND for 95 blocks that are not glossary at all. A tier keyed on 'section'
+#   would have been sound-looking and wrong (§24.8).
+#   THE DETECTOR READS A PROPERTY, NOT A SPELLING (rule 19). A banner is a <div> that
+#   carries an id and OPENS with the span-d-block title span. The div-bg-* wrapper is
+#   NOT the predicate: L04's glossary banner wears no wrapper, and a probe keyed on the
+#   wrapper returned zero regions for L04 — clean by omission, which is the worst kind.
+#   Book-wide the property returns 15 banner ids, 16 of each but bonus-challenges (15)
+#   and section-8a (14), both expected.
+#   Offsets come from `raw`, and attribution uses the callout's FILE offset (the
+#   _to_file one), never the expanded offset.
 #
 # v1.3.1 (S128): callout records gain 'start', 'open_end' and 'family_attr'. Purely
 #   additive - three new keys, no existing key changed, no detector changed. Written
@@ -155,6 +170,12 @@ CALLOUT_BG_RE = re.compile(r'background(?:-color)?:\s*([^;"]+)')
 
 
 SECTION_RE = re.compile(r'=+\s*(SECTION\s+[0-9]+[A-Z]?|PART\s+[0-9]+[^=]*?)\s*:?\s*([^=]*?)\s*=*$', re.I)
+
+# A BANNER is a <div> carrying an id whose content OPENS with the span-d-block title
+# span. That shape is the PROPERTY. The div-bg-* wrapper around it is a SPELLING and is
+# deliberately NOT in this pattern — L04's glossary banner does not wear one (S132).
+# Matched against RAW source, so `class=` is still a class here, not an expanded style.
+BANNER_RE = re.compile(r'<div id="([a-z0-9-]+)"><span class="span-d-block')
 
 
 # ---------------------------------------------------------------------------
@@ -357,6 +378,21 @@ def build(path):
                 break
         return cur or '(front matter)'
 
+    # ---- REGIONS: the BANNER anchors, finer than 'section' and for the reason above.
+    # Read from `raw`, so these are FILE offsets and must only be compared against the
+    # file offsets callout records carry — never against nd['start'].
+    regions = [{'id': m.group(1), 'off': m.start()} for m in BANNER_RE.finditer(raw)]
+    regions.sort(key=lambda r: r['off'])
+
+    def region_of(off):
+        cur = None
+        for r in regions:
+            if r['off'] <= off:
+                cur = r['id']
+            else:
+                break
+        return cur
+
     # ---- constructs: every element carrying data-challenge
     constructs = []
     for n in nodes:
@@ -467,6 +503,11 @@ def build(path):
         callouts.append({
             'line': nd['line'], 'tag': nd['tag'], 'div_depth': nd['div_depth'],
             'section': section_of(nd['start']),
+            # S132: the FILE offset, because `regions` was read from `raw`. Passing
+            # nd['start'] here would compare an expanded offset to a file one and drift
+            # with position — plausibly, which is the trap expand_classes_mapped exists
+            # to close.
+            'region': region_of(_to_file(nd['start'])),
             'construct': (construct_of(nd['start']) or {}).get('marker'),
             'px': int(m.group(1)),
             'border': m.group(2).strip().lower(),
@@ -516,6 +557,7 @@ def build(path):
         'lines': src.count('\n') + (0 if src.endswith('\n') else 1),
         'versions': versions,
         'sections': sections,
+        'regions': regions,
         'fences': fences,
         'headings': heads,
         'constructs': constructs,

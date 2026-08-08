@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.23.0 -->
+<!-- Lesson version: v02.24.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Time Lies, Distance Doesn't</h1>
 <div class="div-fs-11em">Encoder-Based Gap Crossing</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.23 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.24 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1204,22 +1204,13 @@ change the code.</strong> What do you change? (§8A.4, §3.5)</summary>
 
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
-<table class="table-bc-collapse-11">
-<tr class="tr-bg-f9f9f9"><td class="td-ddd-12"><strong>Odometer</strong></td>
-<td class="td-ddd-5">An instrument that measures <em>distance travelled</em>. Your encoders, used this way.</td></tr>
-<tr><td class="td-ddd-5"><strong>Open loop</strong></td>
-<td class="td-ddd-5">Acting without measuring the result. Driving blind across a gap. <strong>Needs TRIM.</strong></td></tr>
-<tr class="tr-bg-f9f9f9"><td class="td-ddd-5"><strong>Closed loop</strong></td>
-<td class="td-ddd-5">Measuring the result and correcting. <code>followLine()</code>. <strong>Does not need TRIM.</strong></td></tr>
-<tr><td class="td-ddd-5"><strong>Gap</strong></td>
-<td class="td-ddd-5">A break in the line the robot is <em>allowed</em> to cross.</td></tr>
-<tr class="tr-bg-f9f9f9"><td class="td-ddd-5"><strong>Budget</strong></td>
-<td class="td-ddd-5">The maximum blind distance (<code>GAP_MAX_CM</code>). Spend it all and you are LINE_LOST.</td></tr>
-<tr><td class="td-ddd-5"><strong>Re-arm</strong></td>
-<td class="td-ddd-5">Re-zeroing the odometer as the robot enters a new gap, so each gap gets a full budget.</td></tr>
-<tr class="tr-bg-f9f9f9"><td class="td-ddd-5"><strong>IR reflectance</strong></td>
-<td class="td-ddd-5">How the line sensors work: shine IR down, measure what bounces back. <strong>A cliff and white paper look identical.</strong></td></tr>
-</table>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.34"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-odometer-gloss">Odometer</strong></div>An instrument that measures <em>distance travelled</em>. Your encoders, used this way.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.35"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-open-loop-gloss">Open loop</strong></div>Acting without measuring the result. Driving blind across a gap. <strong>Needs TRIM.</strong></div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.36"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-closed-loop-gloss">Closed loop</strong></div>Measuring the result and correcting. <code>followLine()</code>. <strong>Does not need TRIM.</strong></div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.37"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-gap-gloss">Gap</strong></div>A break in the line the robot is <em>allowed</em> to cross.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.38"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-budget-gloss">Budget</strong></div>The maximum blind distance (<code>GAP_MAX_CM</code>). Spend it all and you are LINE_LOST.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.39"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-re-arm-gloss">Re-arm</strong></div>Re-zeroing the odometer as the robot enters a new gap, so each gap gets a full budget.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.40"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-ir-reflectance-gloss">IR reflectance</strong></div>How the line sensors work: shine IR down, measure what bounces back. <strong>A cliff and white paper look identical.</strong></div>
 <p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
@@ -1239,23 +1230,23 @@ enum RobotState {
 long  averageCounts()      // BOTH encoders, averaged
 float blindDistanceCm()    // how far since the line vanished</pre>
 <h3 class="h4-c-6f7582-3">The TRIM Rule</h3>
-<table class="table-bc-collapse-11">
+<table class="table-bc-collapse-18">
 <tr class="tr-bg-6f7582">
 <th class="th-ddd-13">Function</th>
 <th class="th-ddd-13">TRIM?</th>
 <th class="th-ddd-13">Why</th></tr>
-<tr class="tr-bg-f9f9f9"><td class="td-ddd-5"><code>handleGap()</code></td>
-<td class="td-ddd-5"><strong>YES</strong></td>
-<td class="td-ddd-5">Open loop — blind, nothing else steers.</td></tr>
-<tr><td class="td-ddd-5"><code>driveDistance()</code></td>
-<td class="td-ddd-5"><strong>YES</strong></td>
-<td class="td-ddd-5">Open loop — encoders count rotation, not straightness.</td></tr>
-<tr class="tr-bg-f9f9f9"><td class="td-ddd-5"><code>followLine()</code></td>
-<td class="td-ddd-5"><strong>NO</strong></td>
-<td class="td-ddd-5">Closed loop — P-control already corrects bias 50x/sec.</td></tr>
-<tr><td class="td-ddd-5"><code>turnDegrees()</code></td>
-<td class="td-ddd-5"><strong>NO</strong></td>
-<td class="td-ddd-5">The wheels oppose on purpose. Encoders govern the angle.</td></tr>
+<tr class="tr-bg-f9f9f9"><td class="td-ddd-6"><code>handleGap()</code></td>
+<td class="td-ddd-6"><strong>YES</strong></td>
+<td class="td-ddd-6">Open loop — blind, nothing else steers.</td></tr>
+<tr><td class="td-ddd-6"><code>driveDistance()</code></td>
+<td class="td-ddd-6"><strong>YES</strong></td>
+<td class="td-ddd-6">Open loop — encoders count rotation, not straightness.</td></tr>
+<tr class="tr-bg-f9f9f9"><td class="td-ddd-6"><code>followLine()</code></td>
+<td class="td-ddd-6"><strong>NO</strong></td>
+<td class="td-ddd-6">Closed loop — P-control already corrects bias 50x/sec.</td></tr>
+<tr><td class="td-ddd-6"><code>turnDegrees()</code></td>
+<td class="td-ddd-6"><strong>NO</strong></td>
+<td class="td-ddd-6">The wheels oppose on purpose. Encoders govern the angle.</td></tr>
 </table>
 <p class="div-mt-25px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>

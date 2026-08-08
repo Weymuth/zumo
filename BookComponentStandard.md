@@ -1,6 +1,6 @@
 # RoboLore Book Component Standard
 
-**Standard version: v01.12.1**
+**Standard version: v01.13.0**
 
 This document defines the visual components a RoboLore book is built from: what they are,
 what they look like, how they are generated, and how conformance is proved.
@@ -542,6 +542,62 @@ marks. The shipped icon folder holds exactly these and nothing else — a librar
 thousands of icons; a book ships the ones it uses, so that the folder can be asserted
 against this table in both directions.
 
+### 7.4 The term card
+
+**APPROVED — DJ ruling, S131 and S132.** Every glossary entry in a book is the same component.
+DJ, S132: *"Just make them ALL the same."* The requirement behind the ruling is that a glossary
+can be **harvested** later — pulled down into a book-wide glossary or an index — and a harvest
+cannot key on a shape that has five spellings.
+
+**The shape.**
+
+```html
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="L.n">
+<div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-SLUG-gloss">Term</strong></div>
+Definition, beginning with a capital and ending with a full stop.
+</div>
+```
+
+**Every part of that is DERIVED from the majority of the live tree, not chosen.** Measured
+across a converted book's 151 entries at S132, before conversion: wrapper 83 of 97, head div
+88 of 97, `key` mark 87 of 97. Where a minority disagreed it disagreed by one declaration or
+by omitting the head entirely, never by carrying a different design.
+
+**NO EM DASH.** DJ, S131. A definition follows its term on the next line, not after a dash.
+43 of the 97 pre-conversion cards carried one.
+
+**The family is KEY TERM, and this table's GLOSSARY family is NOT adopted for it.** §7's roster
+lists GLOSSARY with the `journal-bookmark` mark; it is used **zero times** in the Zumo book and
+the term card must not adopt it. The reason is §4.1's own principle, applied to family: **a
+family names CONTENT, not LOCATION.** A glossary entry and the body callout that teaches the
+same term define the same thing — the per-lesson dual is deliberate design, ruled S128 — so
+they carry the same family. A family that means *"this one is in the glossary"* is a family
+that means *where the block sits*, and where a block sits is already carried structurally by
+its region. Two names for one content type would put one meaning on two grounds, which §4.1
+forbids for glyphs and which holds here for the same reason.
+
+**THE HARVEST KEY IS THE REGION, NOT THE FAMILY.** This is what makes the ruling safe. Keying a
+harvest on `data-family="KEY TERM"` returns the glossary entries AND the body teaching callouts
+together — 184 blocks where the glossary is 151. Keying it on the glossary REGION returns
+exactly the glossary. The region is structural, is derived from the banner shape rather than
+from any class, and is gated.
+
+**Two attributes, and they are what the conversion is actually for.** Before S132 a third of the
+entries carried neither, and were invisible to every instrument that reads the family layer —
+no gate could fail on them.
+
+| Attribute | What it buys |
+|---|---|
+| `data-family="KEY TERM"` | the family layer, its map, its auditors and its pin can see the entry at all |
+| `data-callout="L.n"` | an AUTHORED identity that survives edits which destroy a file offset |
+
+**The id is universal, and the `-gloss` suffix is not decoration.** Every entry carries
+`id="term-SLUG-gloss"` so that a link — from a body term, from a future book-wide glossary, from
+an index — always has a target. The suffix exists because a lesson may define the same term in
+both places: seven such pairs were live in one lesson at S132 (`term-platformio` in the body,
+`term-platformio-gloss` in the glossary). Ids must be unique per page; the suffix is what keeps
+them so. **The bare `term-SLUG` spelling belongs to the body callout and is not available here.**
+
 ---
 
 ## 8. Collisions
@@ -656,4 +712,4 @@ are output.
 
 ---
 
-*RoboLore Book Component Standard v01.12*
+*RoboLore Book Component Standard v01.13*

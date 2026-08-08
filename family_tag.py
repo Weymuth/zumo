@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 # VERSION is the ONE home and sits ABOVE the changelog, so a plain grep of this file
 # returns the version and not a changelog line (S98).
-VERSION = 'v1.1'
+VERSION = 'v1.2'
+# v1.2 (S132): the STRUCTURE tier is consulted above the pin. It is IMPORTED from
+#   build_family_map (B.struct), not restated here — the same discipline that keeps CANON,
+#   RULE and PINS in one place. Additive: every block this tier names was already named
+#   by the pin, so the audit is unmoved at 1069 correct / 0 unnamed, which is the proof.
 # v1.0 (S128): first release. Seats data-family on every callout block.
 """family_tag.py - writes the FAMILY onto the callout that carries it (Bible §24.14).
 
@@ -77,6 +81,9 @@ def family_of(c):
     for fn, f in B.RULE:
         if fn(lab, g, scheme):
             return f
+    s = B.struct(c)
+    if s:
+        return s
     return B.PINS.get(c.get('callout_id'))
 
 

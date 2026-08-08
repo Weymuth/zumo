@@ -1,11 +1,53 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 7, 2026 (Session 131 — **THE MARKS ARC BILLED ONE MORE INSTRUMENT, AND THE BILL WAS SIX PHOTOGRAPHS.** `image_audit`'s neighbour arm lands a figure when any `<img>` sits in the tag's own paragraph — written for L10, which reuses L05's photo and says so. S130 put 884 marks into that same prose and the arm could not tell a lightbulb from a photograph, so **L03 3.2 / 3.5 / 3.6, L12 12.1, L14 14.1 and L16 16.1 went from outstanding to LANDED with nothing taken.** No gate failed. The only signal was `--check` printing DIFFERS, whose obvious reading is *re-run me* — which would have written **8 over 14** and retired six shots four weeks out. **The predicate is the AUTHORED `data-mark`, not the `marks/` directory**, because a directory is a spelling and the files can move. **Gate 63 new**, sharing no code with the fix: it re-derives landing from filenames on disk, so it fails on whatever a future arc decorates the prose with. Its independent arm then found a **second, unruled** case — L07's `[IMAGE 7.3]` served by a GRAPHIC across the two number spaces with no prose declaring it — held by name rather than decided. **The glossary arc was measured and NOT started:** the glossary ships in **five schemas, 151 entries, and only 97 are KEY TERM callouts**, so 54 are invisible to every family instrument. DJ ruled **A, normalize to the canon term card**, and **no em dash**; the conversion is S132's arc.)
-**Status:** ✅ **63 GATES PASS · ONE INSTRUMENT FIXED, ONE GATE WRITTEN, ONE ARC MEASURED AND DELIBERATELY NOT STARTED.** **THE ONE TO CARRY: an arc's price is paid by the instruments nobody pointed at it.** S130 measured its acceptance on the consumer that could not fail and this session found the same shape one instrument later — `image_audit` was never in the marks arc's blast radius because nobody thought to put it there, and it had been silently wrong since that push. **The fix's proof is that it restores exactly the pre-marks answer and no more:** the regenerated worklist is byte-identical to the repo copy but for the version line, all fourteen rows unchanged. **A PROCESS FAILURE, MINE:** the first control run restored the BEFORE snapshot with no snapshot of the AFTER and destroyed the fix under test — S130 rule 15 by a new road, **a snapshot of the state you are leaving is not a restore path for the state you are in.** Redone with the fixed state snapshotted first; four injections each fire gate 63 ALONE at 62 of 62 green. **AND A SETTLED QUESTION WAS RE-OPENED:** the per-lesson dual — §3 teaching callout plus §10 glossary restatement — was ruled at S128 and its drift hypothesis already tested and rejected; this session re-derived it as a finding before DJ named the prior ruling. **Read the record before re-deriving a design.**
+**Date:** August 8, 2026 (Session 132 — **THE GLOSSARY IS ONE COMPONENT, AND THE THING DJ ACTUALLY ASKED FOR WAS NOT THE SHAPE.** DJ: *"I want it to match and I want to be able to pull a glossary down later… Just make them ALL the same."* The glossary shipped in **five schemas, 151 entries**, and **54 carried no `data-family` and no `data-callout`** — a third of the book's vocabulary that no gate could fail on. All 151 are now the canon term card (`BookComponentStandard` §7.4, new), every part of it DERIVED from the live majority: wrapper 83 of 97, head 88 of 97, `key` mark 87 of 97, **no em dash**. **BUT THE HARVEST KEY WAS NEVER THE FAMILY:** `data-family="KEY TERM"` returns **184** blocks where the glossary is **151**, because the body callouts teach the same terms. What separates them is WHERE THEY SIT, so `lesson_inventory` v1.3.5 gains **`region`** — and that field, not the family, is what makes a book-wide glossary possible. **§24.14b NEW, THE STRUCTURE TIER:** a callout inside the glossary region is a KEY TERM, **97 of 97, zero exceptions**. A section id is STRUCTURE, not decoration — colour died at S112 and the glyph at S130 for being presentation, and a banner id cannot be repainted. **PROVEN AGAINST THE AUDITOR THAT CAN FAIL:** strip the 87 glossary-side pin rows and `family_tag` reports 0 unnamed; blind the tier on the same tree and it reports exactly 87. **THE PIN FELL 212 → 125 AND GATE 62 RULED IT** — taught the tier, its coverage arm reported the holds expired without being told to. **Gate 64 new**, asserting the predicate rather than the tier's output. §6.9's glossary format and §8's 11-type callout table both become POINTERS to `BookComponentStandard`.)
+**Status:** ✅ **64 GATES PASS · 151 ENTRIES, FIVE SCHEMAS, ONE COMPONENT · THE PIN IS 125 ROWS.** **THE ONE TO CARRY: when someone asks for a CAPABILITY rather than a shape, find the field that answers it before proposing the shape.** The five schemas had to go regardless; they were not what was blocking the harvest. **TWO CONTROLS EARNED THEIR KEEP AND ONE OF THEM WAS WRONG FIRST:** the no-text-lost check fired on 8 of 16 regions and every hit was a missing SPACE at a tag boundary — a control that cannot tell a lost word from a lost space is not a control; re-run on WORDS it returned 0 of 16. **AND §27.15b's RENAME TRAP FIRED FOR REAL:** six rules died and **12 SURVIVING spellings changed declarations**, `.th-17496a-2` and `-3` swapping grounds outright, so the acceptance test is not the rule count — all **22,933** resolved declaration strings are byte-identical across the restore → regenerate → apply cycle in all sixteen lessons. **Zero pixels moved.** **THE FALSE CLEAN THAT RULE 19 EXISTS FOR HAPPENED HERE:** the first region probe keyed on the `div-bg-*` wrapper, which L04's glossary banner does not wear, and returned ZERO regions for L04. The detector reads the banner SHAPE now, and gate 64 pins the roster.
 
-**Versions:** L01 v03.24.0 · L02 v03.17.0 · L03 v03.36.1 · L04 v04.24.0 · L05 v04.24.0 · L06 v04.28.0 · L07 v04.27.0 · L08 v04.26.0 · L09 v05.21.0 · L10 v02.22.0 · L11 v02.23.0 · L12 v01.26.0 · L13 v02.23.0 · L14 v02.28.0 · L15 v02.24.0 · L16 v02.17.0 · going_deeper v01.6.1 — census **40,683** · Bible **v8.123** · BookComponentStandard v01.12.1 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.58** · lesson_inventory v1.3.4 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.4.0 · callout_id v1.0 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.22.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.1 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `96d41cd`.**
+**Versions:** L01 v03.25.0 · L02 v03.18.0 · L03 v03.37.0 · L04 v04.25.0 · L05 v04.25.0 · L06 v04.29.0 · L07 v04.28.0 · L08 v04.27.0 · L09 v05.22.0 · L10 v02.23.0 · L11 v02.24.0 · L12 v01.27.0 · L13 v02.24.0 · L14 v02.29.0 · L15 v02.25.0 · L16 v02.18.0 · going_deeper v01.6.1 — census **40,440** · Bible **v8.124** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.59** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.5.0 · callout_id v1.0 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.23.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `3c0566a`.**
 
 ---
+---
+
+## WHAT SHIPPED IN S132
+
+**The arc.** All 151 glossary entries normalised to the canon term card. Source schemas retired:
+97 KEY TERM callouts (four sub-shapes), 14 bare `div-9b59b6` in L04, 15 `<dl>/<dt>` pairs in
+L13/L14, 25 table rows in L11/L15. New instrument `glossary_convert.py` v1.0 — idempotent,
+measured: a second pass rewrites 0 of 16 files. It mints no identity; `callout_id --apply`
+authored the 54 new `data-callout` markers at the next free ordinal per lesson.
+
+**The field.** `lesson_inventory` v1.3.5 adds `region` to every callout record — the nearest
+preceding banner anchor, read from the banner PROPERTY and deliberately not from the `div-bg-*`
+wrapper. The existing `section` could not have carried it: §10's anchor opens Exit Ticket,
+Glossary, Quick Reference and Figures alike, so it reads §10 for the 97 term cards and for 95
+blocks that are not glossary at all.
+
+**The tier.** `build_family_map` v1.5.0 seats a STRUCTURE tier above the pin; `family_tag` v1.2
+imports it rather than restating it. Ten blocks are named both by a tier above `struct` and by
+`struct`, with **0 disagreements** — it cannot override a content rule.
+
+**The pin.** 212 rows fall to 125. Not a regeneration from `data-family`, which that file
+forbids: a live tier replaced the need, exactly as the glyph tier's death created the file.
+
+**Gate 64.** Blinds the tier and fails if any other tier resolves a glossary-region block to
+something else; arm 2 pins the banner roster. Control-run both ways from a snapshot of the FIXED
+tree: a NOTE relocated into L10's glossary fires the contradiction arm, breaking L04's banner
+shape fires the roster arm, each ALONE at 63 of 63 others green.
+
+**Baselines, each derived.** Family map to 1123 (= 1069 + 54) · §21 coverage to 1,198
+(= 151 − 87 already-marked) · gate 59 to 1123 · §27.11 to 598/2,123 · the pin md5.
+
+**Canon.** `BookComponentStandard` v01.13.0 with §7.4 new. Bible v8.124: §6.9's glossary entry
+format and §8's 11-type callout table both become pointers. `session_versions` v1.23.0 registers
+`glossary_convert` — its ROSTER arm named the new tool unprompted on the first run.
+
+**All sixteen lessons MODERATE** — the glossary renders differently on every page, so both §5b
+homes move.
+
+**Open, not ruled.** 25 body key terms have no same-lesson glossary entry; L11/L12/L13 carry no
+body KEY TERM callouts at all; and **not one body callout links to a glossary entry yet** — the
+direction is ruled and every entry now has an id, but the ids are affordance, not use.
+
 ---
 
 ## WHAT SHIPPED IN S131

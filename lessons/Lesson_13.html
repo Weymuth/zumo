@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.23.0 -->
+<!-- Lesson version: v02.24.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.23 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.24 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1269,24 +1269,14 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
 
-<dl class="dl">
-<dt class="dt">Raw channel</dt>
-<dd class="dd">The line sensors’ unprocessed reading: infrared decay time in microseconds. Brighter surface → faster decay → <em>lower</em> number. Needs no calibration; sees outside the calibrated world.</dd>
-<dt class="dt">Calibration clamp</dt>
-<dd class="dd">The <code>if (x &lt; 0) x = 0</code> in <code>readCalibrated()</code> that folds anything brighter than the calibrated minimum onto the same 0 as white. Buys comparability, costs range.</dd>
-<dt class="dt">Dead reckoning</dt>
-<dd class="dd">Knowing where you are by adding up your own movements — encoders, TRIM, gyro — with no external reference. Drifts, always; the only question is how fast.</dd>
-<dt class="dt">Landmark</dt>
-<dd class="dd">A fixed feature of the world used to erase accumulated dead-reckoning error. In this lesson: the walls, once per row, for free.</dd>
-<dt class="dt">Lawnmower sweep</dt>
-<dd class="dd">Coverage pattern of parallel wall-to-wall rows joined by turn–step–turn corners with alternating direction. Guarantees the prox inspects every band of floor — if the step is sized to overlap.</dd>
-<dt class="dt">StopReason</dt>
-<dd class="dd">The enum <code>driveUntil()</code> returns: <code>STOP_DISTANCE</code>, <code>STOP_PROX</code>, or <code>STOP_KILL</code>. A primitive that reports facts and leaves judgment to the caller.</dd>
-<dt class="dt">Cross-examination (sensor fusion)</dt>
-<dd class="dd">Using one sensor to resolve another’s ambiguity. The gyro checked the encoders (Lesson 12); the odometer now checks the prox. The grown-up name is sensor fusion.</dd>
-<dt class="dt">Row zero / leap of faith</dt>
-<dd class="dd">The sweep’s first row, which has no previous row to compare against and therefore must believe its prox stop is the wall. Insurable (Challenge 3), not eliminable.</dd>
-</dl>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.23"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-raw-channel-gloss">Raw channel</strong></div>The line sensors’ unprocessed reading: infrared decay time in microseconds. Brighter surface → faster decay → <em>lower</em> number. Needs no calibration; sees outside the calibrated world.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.24"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-calibration-clamp-gloss">Calibration clamp</strong></div>The <code>if (x &lt; 0) x = 0</code> in <code>readCalibrated()</code> that folds anything brighter than the calibrated minimum onto the same 0 as white. Buys comparability, costs range.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.25"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-dead-reckoning-gloss">Dead reckoning</strong></div>Knowing where you are by adding up your own movements — encoders, TRIM, gyro — with no external reference. Drifts, always; the only question is how fast.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.26"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-landmark-gloss">Landmark</strong></div>A fixed feature of the world used to erase accumulated dead-reckoning error. In this lesson: the walls, once per row, for free.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.27"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-lawnmower-sweep-gloss">Lawnmower sweep</strong></div>Coverage pattern of parallel wall-to-wall rows joined by turn–step–turn corners with alternating direction. Guarantees the prox inspects every band of floor — if the step is sized to overlap.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.28"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-stopreason-gloss">StopReason</strong></div>The enum <code>driveUntil()</code> returns: <code>STOP_DISTANCE</code>, <code>STOP_PROX</code>, or <code>STOP_KILL</code>. A primitive that reports facts and leaves judgment to the caller.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.29"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-cross-examination-sensor-fusion-gloss">Cross-examination (sensor fusion)</strong></div>Using one sensor to resolve another’s ambiguity. The gyro checked the encoders (Lesson 12); the odometer now checks the prox. The grown-up name is sensor fusion.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.30"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-row-zero-leap-of-faith-gloss">Row zero / leap of faith</strong></div>The sweep’s first row, which has no previous row to compare against and therefore must believe its prox stop is the wall. Insurable (Challenge 3), not eliminable.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>

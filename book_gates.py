@@ -2,7 +2,21 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.58'
+VERSION = 'v1.59'
+# v1.59 (S132): GATE 64 NEW - §24.14b, the STRUCTURE tier's predicate. build_family_map
+#   v1.5.0 added a tier reading "a callout in the GLOSSARY REGION is a KEY TERM" (97 of 97
+#   today, zero exceptions). That is true and an author can break it with one paste, so the
+#   ruling and its gate ship together. IT ASSERTS THE PREDICATE, NOT THE TIER'S OUTPUT:
+#   asking the tier whether it returns KEY TERM is circular, so the gate BLINDS the tier and
+#   asks whether any other tier resolves a glossary-region block to something else. Silence
+#   is legal - once the 87 glossary-side pin rows retire, most of these resolve to nothing
+#   with the tier blinded, and nothing is not a contradiction. Arm 2 pins the banner ROSTER
+#   rather than the wrapper class, because the first probe of this arc keyed the region on
+#   `div-bg-*`, which L04's glossary banner does not wear, and returned ZERO regions for L04
+#   - a false clean by omission (rule 19: pin the property). Control-run both ways from a
+#   snapshot of the FIXED tree: a NOTE relocated into L10's glossary fires the contradiction
+#   arm, breaking L04's banner shape fires the roster arm, each ALONE at 63 of 63 others
+#   green, untouched tree passing at both ends.
 # v1.58 (S131): GATE 63 NEW - §10, a figure is landed by an asset and never by a decoration.
 #   S130's 884 marks landed in the same prose image_audit's NEIGHBOUR arm reads, and the arm
 #   could not tell a lightbulb from a photograph: six real shots - L03 3.2 / 3.5 / 3.6,
@@ -1811,7 +1825,12 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1134:                     # 250 -> 1134 at S130: THE MARKS ARC LANDED. 884
+if _seen != 1198:                     # 1134 -> 1198 at S132: THE GLOSSARY CONVERSION. 64
+                                      # of the 151 term cards had no key mark; the canon
+                                      # card carries one, so 64 new image references.
+                                      # DERIVED: 1,134 + 64, and 151 - 87 already-marked
+                                      # = 64 reconciles from the other side.
+                                      # 250 -> 1134 at S130: THE MARKS ARC LANDED. 884
                                       # callouts swapped a leading emoji for an <img>
                                       # mark, and every one is a new image reference.
                                       # DERIVED, not projected: 250 + 884 = 1,134, and
@@ -1834,7 +1853,7 @@ if _seen != 1134:                     # 250 -> 1134 at S130: THE MARKS ARC LANDE
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,134 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,198 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2230,7 +2249,17 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 604, 2141, '479c793925fe590d'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 598, 2123, '570cf088bb8553ab'
+#   S132: 604/2,141 -> 598/2,123, THE GLOSSARY CONVERSION. Six rules died with the five
+#   retired schemas: .div-9b59b6 (L04's bare entry), .dl/.dt/.dd (L13/L14), .td-ddd-12 and
+#   .callout-2e86ab-bg-fff (L12's blue-on-white card). Nothing was ADDED - the canon card
+#   reuses classes the book already had, which is what made it the canon.
+#   THE RENAME TRAP FIRED AND WAS PAID (§27.15b, and build_css v1.2's own warning): naming
+#   is frequency-ranked, so 12 SURVIVING spellings changed declarations - .th-17496a-2 and
+#   -3 swapped grounds outright. A name that still resolves repaints the page with every
+#   gate green, so the sequence was restore -> regenerate -> apply --include-held, and the
+#   acceptance test is not the rule count: all 22,933 RESOLVED declaration strings are
+#   byte-identical across the cycle in all sixteen lessons. Zero pixels moved.
 #   S126b: 624/2,282 -> 604/2,141, §27.15e. The dark code block graduates and the -20/-141
 #   reconciles exactly: 23 rules DIE carrying 148 declarations, 3 are BORN carrying 3, and
 #   ONE is altered, gaining 4. -148 + 3 + 4 = -141. The altered rule is a RENUMBER, not a
@@ -3069,8 +3098,8 @@ try:
         bad.append('... and %d more disagreeing callout(s)' % (_fam_bad - 6))
     if _n == 0:
         bad.append('gate 59 scanned ZERO callouts - a gate that scans nothing passes')
-    elif _n != 1069:
-        bad.append('gate 59 saw %d callouts, expected the 1069 gate 47 holds' % _n)
+    elif _n != 1123:
+        bad.append('gate 59 saw %d callouts, expected the 1123 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -3092,9 +3121,11 @@ gate('\u00a724.14a every callout carries the family its CONTENT resolves to', ba
 # ENTER it. Either way the gate fails and a human rules, which is the point.
 bad = []
 _PINF = 'ZUMO_FAMILY_PINS.md'
-_PIN_MD5 = 'a29c7290bb6f2e8352f0acc2e5b0ed0f'   # 212 rows, generated once at S130
+_PIN_MD5 = '5cf173327d35077aa9c1a452d3e9a45a'   # 125 rows: 212 at S130, less the
+                                                     # 87 glossary-side rows the S132
+                                                     # STRUCTURE tier made redundant
 if not os.path.exists(_PINF):
-    bad.append('%s is missing - 212 blocks lose their only family home' % _PINF)
+    bad.append('%s is missing - 125 blocks lose their only family home' % _PINF)
 else:
     _rows = [l for l in open(_PINF, encoding='utf-8').read().split('\n')
              if re.match(r'^\| `\d+\.\d+` \|', l)]
@@ -3118,6 +3149,15 @@ else:
                     for _fn, _x in _B.RULE:
                         if _fn(_lab, _g, _sch):
                             _fam = _x; break
+                # S132: STRUCTURE COUNTS AS A SIGNAL. The pin's job is to hold blocks
+                # NOTHING ELSE CAN NAME. build_family_map v1.5.0 added a tier that names
+                # every callout in the glossary region, so those blocks have a live signal
+                # and no longer belong here - and the coverage arm says so by design
+                # (rule 20: a hold satisfied by something else is not a hold). Omitting
+                # this call would leave 87 rows the gate certifies as load-bearing while
+                # a tier above them does the work.
+                if not _fam:
+                    _fam = _B.struct(_c)
                 if not _fam:
                     _need.add(_c.get('callout_id'))
         if _need - _pinned:
@@ -3294,6 +3334,85 @@ else:
         bad.append('[%s] is held in REUSE but no longer needs the exemption - it either has '
                    'its own file now or stopped being planned. Drop the name.' % _t)
 gate('\u00a710  no figure is landed by a decoration', bad)
+
+
+# ---- GATE 64 (\u00a724.14b) - THE STRUCTURE TIER'S PREDICATE, S132.
+# The tier says: a callout inside the GLOSSARY REGION is a KEY TERM. That is TRUE TODAY,
+# 97 of 97, and this gate exists because it is the kind of truth an author can break in
+# one paste - drop a NOTE into a glossary and the tier silently mis-families it.
+#
+# IT ASSERTS THE PREDICATE, NOT THE TIER'S OUTPUT. Asking "does the tier return KEY TERM
+# for these blocks" is circular. This asks the opposite question: with the tier BLINDED,
+# does any glossary-region callout resolve to a family that is NOT KEY TERM? Silence is
+# fine - after the 87 pin rows retire, most of them will resolve to nothing with the tier
+# blinded, and nothing is not a contradiction. A DISAGREEMENT is the failure.
+#
+# ARM 2 PINS THE PROPERTY, NOT THE SPELLING (rule 19). The region detector matches a
+# banner by shape, deliberately not by the div-bg-* wrapper - L04's glossary banner wears
+# no wrapper, and the first probe of this arc keyed on the wrapper and returned ZERO
+# regions for L04, which read as clean. So the roster itself is gated: if a markup change
+# stops the detector matching, the count moves and this fails loudly instead of a tier
+# quietly resolving nothing.
+bad = []
+try:
+    import lesson_inventory as _LI64
+    import family_tag as _FT64
+    _B64 = _FT64.B
+    _glos = _named = 0
+    _roster = collections.Counter()
+    for _f in files:
+        _inv64 = _LI64.build(_f)
+        for _r in _inv64['regions']:
+            _roster[_r['id']] += 1
+        for _c in _inv64['callouts']:
+            if _c.get('region') != 'glossary':
+                continue
+            _glos += 1
+            # BLINDED: attribute, CANON, RULE, PIN - every tier EXCEPT struct.
+            _lab = _B64.norm(_c.get('label'))
+            _g64 = (_c.get('glyph') or '').strip()
+            _sch = (_c['bg'] or 'none', _c['border'])
+            _f64 = _c.get('family_attr')
+            if not _f64:
+                _f64 = next((x for x in _B64.CANON if _lab.upper().startswith(x)), None)
+            if not _f64:
+                for _fn, _x in _B64.RULE:
+                    if _fn(_lab, _g64, _sch):
+                        _f64 = _x
+                        break
+            if not _f64:
+                _f64 = _B64.PINS.get(_c.get('callout_id'))
+            if _f64:
+                _named += 1
+                if _f64 != 'KEY TERM':
+                    bad.append('L%s callout %s sits in the glossary region but resolves to '
+                               '%s - the STRUCTURE tier would call it KEY TERM and be wrong. '
+                               'Either it does not belong in the glossary or the tier does '
+                               'not belong in build_family_map.'
+                               % (_inv64['lesson'], _c.get('callout_id'), _f64))
+    # ARM 1b - COVERAGE. A gate that reads zero blocks passes (S117/S118).
+    if _glos < 90:
+        bad.append('gate 64 saw only %d glossary-region callout(s) - the region detector '
+                   'under-reaches, which is exactly how a wrapper-keyed probe missed L04'
+                   % _glos)
+    if not _named:
+        bad.append('gate 64 resolved NO glossary-region callout with the tier blinded - the '
+                   'contradiction arm cannot fire and is not evidence')
+    # ARM 2 - THE BANNER ROSTER.
+    _EXPECT64 = {'section-1': 16, 'section-2': 16, 'section-3': 16, 'section-4': 16,
+                 'section-5': 16, 'section-6': 16, 'section-7': 16, 'section-8': 16,
+                 'section-8a': 14, 'section-9': 16, 'section-10': 16,
+                 'bonus-challenges': 15, 'glossary': 16, 'quick-ref': 16, 'figures': 16}
+    if dict(_roster) != _EXPECT64:
+        for _k in sorted(set(_EXPECT64) | set(_roster)):
+            if _roster.get(_k, 0) != _EXPECT64.get(_k, 0):
+                bad.append('banner roster: %s appears %d time(s), expected %d - the region '
+                           'detector reads a SHAPE, and a shape that stopped matching makes '
+                           'the STRUCTURE tier resolve nothing in silence'
+                           % (_k, _roster.get(_k, 0), _EXPECT64.get(_k, 0)))
+except ImportError as _e:
+    bad.append('gate 64 could not import its inputs (%s)' % _e)
+gate('\u00a724.14b a glossary-region callout is a KEY TERM, and the banner roster holds', bad)
 
 print('=' * 52)
 

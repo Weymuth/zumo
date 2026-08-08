@@ -51,7 +51,11 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.22.0'
+VERSION = 'v1.23.0'
+# v1.23.0 (S132): registers `glossary_convert.py`, emitted in BOTH blocks. A tool nothing
+#   tracks can only ever have its version hand-typed (§12.6); the ROSTER arm named it
+#   unprompted on its first run - Control G working as designed for the fourth
+#   consecutive tool-adding session.
 # v1.19.0 (S123): title_feed registered in ARTEFACTS and added to BOTH emitted blocks.
 #   Same shape as v1.18.0, and CONTROL E named the file the moment it landed in root —
 #   an instrument written this session is exactly the kind that drifts unwatched, because
@@ -188,6 +192,7 @@ ARTEFACTS = [
     ('class_sweep',           'class_sweep.py',           r"VERSION = '(v[\d.]+)'"),
     ('next_pointer',          'next_pointer.py',          r"VERSION = '(v[\d.]+)'"),
     ('family_tag',            'family_tag.py',            r"VERSION = '(v[\d.]+)'"),
+    ('glossary_convert',      'glossary_convert.py',      r"VERSION = '(v[\d.]+)'"),
     ('mark_wire',             'mark_wire.py',             r"VERSION = '(v[\d.]+)'"),
     ('glyph_scan',            'glyph_scan.py',            r"VERSION = '(v[\d.]+)'"),
     ('title_feed',            'title_feed.py',            r"VERSION = '(v[\d.]+)'"),
@@ -285,7 +290,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"entity_sweep {vals['entity_sweep']} · "
             f"font_stack_sweep {vals['font_stack_sweep']} · "
             f"next_pointer {vals['next_pointer']} · "
-            f"family_tag {vals['family_tag']} · mark_wire {vals['mark_wire']} · "
+            f"family_tag {vals['family_tag']} · glossary_convert {vals['glossary_convert']} · mark_wire {vals['mark_wire']} · "
             f"glyph_scan {vals['glyph_scan']} · "
             f"title_feed {vals['title_feed']} · "
             f"Timer {vals['Timer']} · "
@@ -321,6 +326,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`font_stack_sweep` **{vals['font_stack_sweep']}** ·\n"
             f"`next_pointer` **{vals['next_pointer']}** ·\n"
             f"`family_tag` **{vals['family_tag']}** ·\n"
+            f"`glossary_convert` **{vals['glossary_convert']}** ·\n"
             f"`mark_wire` **{vals['mark_wire']}** ·\n"
             f"`glyph_scan` **{vals['glyph_scan']}** ·\n"
             f"`title_feed` **{vals['title_feed']}** ·\n"
