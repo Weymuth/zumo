@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.25.0 -->
+<!-- Lesson version: v04.26.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Line Sensors</h1>
 <div class="div-fs-11em">Your Robot Cannot See — It Measures</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.25 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.26 — August 2026</div>
 </div>
 
 <div class="callout-ff8c00-bg-ffe4cc" id="what-you-need-l04-p1" data-family="WHAT YOU NEED" data-callout="4.1">
@@ -618,31 +618,31 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <p>That is the reading done. Before you wake a single sensor, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why do the sensors emit their own infrared light instead of just looking at the floor? (§3.1)</summary>
+<details data-reveal="quiz"><summary>1. Why do the sensors emit their own infrared light instead of just looking at the floor? (§3.1)</summary>
 
 <div class="div-mt-12px"><p>So they control the lighting. By supplying their own IR and measuring what bounces back, the reading depends on the surface's reflectivity — not on how bright the room happens to be.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. A raw reading of 1400 comes in. Dark or light? (§3.4)</summary>
+<details data-reveal="quiz"><summary>2. A raw reading of 1400 comes in. Dark or light? (§3.4)</summary>
 
 <div class="div-mt-12px"><p>You genuinely can't say — raw values only mean something relative to that sensor's personal range on that surface in that light. That's the “1400 problem,” and it's exactly why calibration exists.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. What does the calibration sweep actually produce, and where does it live? (§3.4)</summary>
+<details data-reveal="quiz"><summary>3. What does the calibration sweep actually produce, and where does it live? (§3.4)</summary>
 
 <div class="div-mt-12px"><p>A per-sensor record book: brightest ever seen and darkest ever seen. It lives in RAM — so it vanishes at power-off, and every session starts with a fresh sweep.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. After calibration, what do 0 and 1000 mean? (§3.4)</summary>
+<details data-reveal="quiz"><summary>4. After calibration, what do 0 and 1000 mean? (§3.4)</summary>
 
 <div class="div-mt-12px"><p>0 = “as bright as this sensor has ever seen on this surface,” 1000 = “as dark as it has ever seen.” Every sensor is graded on its own curve, so their numbers finally agree.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. In the three-sensor configuration, which box holds the center sensor — and why is that a trap? (§5)</summary>
+<details data-reveal="quiz"><summary>5. In the three-sensor configuration, which box holds the center sensor — and why is that a trap? (§5)</summary>
 
 <div class="div-mt-12px"><p>lineSensorValues[1]. The trap: index counts awake sensors from zero, it doesn't name the sensor — so the center sensor is [1] with three awake but [2] with five awake.</p></div>
 
@@ -699,8 +699,8 @@ scratch pad →  one global array, a slot per active sensor —
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> The template already declares buttonA, buttonB, and display — the one new actor and the array syntax are both in the <a href="#qr-hardware" class="link-c-2e86ab">⚡ Quick Reference → Hardware objects</a> table. Write the three constants first: the array's size comes from NUM_SENSORS, so that name must exist before the array uses it.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre class="div-m-16px0"><span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
@@ -739,8 +739,8 @@ scratch pad →  one global array, a slot per active sensor —
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> The serial link is in <a href="#qr-serial" class="link-c-2e86ab">⚡ Quick Reference → Serial Monitor</a>, the wake-up call is in <a href="#qr-linesensors" class="link-c-2e86ab">⚡ Quick Reference → Line sensor functions</a>, and the gate you already know from Section 5.6.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre class="div-m-16px0"><span class="tok-569cd6">void</span> setup() {
   <span class="tok-4ec9b6">Serial</span>.begin(<span class="tok-b5cea8">115200</span>);
@@ -772,8 +772,8 @@ scratch pad →  one global array, a slot per active sensor —
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> The raw read call is in <a href="#qr-linesensors" class="link-c-2e86ab">⚡ Quick Reference → Line sensor functions</a>, printing and the tab trick are in <a href="#qr-serial" class="link-c-2e86ab">⚡ Quick Reference → Serial Monitor</a>, and the pause is in <a href="#qr-timing" class="link-c-2e86ab">⚡ Quick Reference → Timing</a>. The for loop counts <code>i</code> from 0 up to NUM_SENSORS — the same lap-per-sensor pattern every sensor lesson uses from here forward. Copy it as written for now; <a href="#section-8a" class="link-c-2e86ab">Section 8A</a> takes it apart piece by piece before the challenges ask you to write your own.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre class="div-m-16px0"><span class="tok-569cd6">void</span> loop() {
   checkBattery();
@@ -938,8 +938,8 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> Changes 1, 2, and 4 are a line each — <code>initFiveSensors()</code> and <code>readLine()</code> are both in <a href="#qr-linesensors" class="link-c-2e86ab">⚡ Quick Reference → Line sensor functions</a>, and what the position scale means is in <a href="#qr-configs" class="link-c-2e86ab">⚡ Quick Reference → The two configurations</a>. Change 3 is the real work: rewrite <code>showReadings()</code> from its plan above — the display calls are in <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a>.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <p><strong>7a.</strong> One constant:</p>
 
@@ -1214,7 +1214,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <span class="tok-569cd6">if</span> (_________ &gt; <span class="tok-b5cea8">500</span>) {
   _________;
 }</pre>
-<details data-reveal="solution" class="details-ddd"><summary class="summary-bg-f8f9fa-3">🔓 Click to reveal the answer</summary>
+<details data-reveal="solution"><summary>🔓 Click to reveal the answer</summary>
 <div class="div-p-020px15p">
 <pre class="div-m-16px0">lineSensors.readCalibrated(lineSensorValues);
 
@@ -1426,7 +1426,7 @@ else:
 <p><strong>Hints:</strong> center sensor = <code>lineSensorValues[1]</code> · clear the message by printing spaces · the display work goes in <em>both</em> branches.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code>ledYellow(1)/ledYellow(0)</code> <span class="tok-666">LED on/off</span> · <code>display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code>display.print(F("LINE!"))</code> <span class="tok-666">print / F("     ") to erase</span></p>
 </div>
-<details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution"><summary>🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
 <pre class="div-m-16px0">lineSensors.readCalibrated(lineSensorValues);
 
@@ -1481,7 +1481,7 @@ each loop, read the center sensor:
 <p><strong>Bonus polish:</strong> use two different thresholds — count at &gt;600, release at &lt;400 — so a reading that jitters around one cutoff can't double-count. (That trick has a name: <em>hysteresis</em>. It's in the glossary.)</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code>display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code>display.print(count)</code> <span class="tok-666">print a number</span></p>
 </div>
-<details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution"><summary>🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
 <pre class="div-m-16px0"><span class="tok-6a9955">// with the other globals:</span>
 <span class="tok-569cd6">bool</span> onLine = <span class="tok-569cd6">false</span>;
@@ -1541,7 +1541,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <p><strong>Hints:</strong> <code>readLine()</code> gives 0–2000 (three sensors) · you need to squash 0–2000 down to a column number 0–7 · then print 8 characters: seven spaces and one <code>^</code>, with an if deciding which is which.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code>display.gotoXY(col,row)</code> <span class="tok-666">move cursor</span> · <code>display.print(F("..."))</code> <span class="tok-666">print text</span></p>
 </div>
-<details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution"><summary>🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
 <pre class="div-m-16px0"><span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
 
@@ -1592,7 +1592,7 @@ each loop: read all sensors — is ANY sensor over the line?
 <p><strong>Safety notes:</strong> this robot moves by itself — clear runway, and appreciate that <code>waitForStart()</code> is now doing exactly the job it was hired for. If it curves as it creeps, your Lesson 3 TRIM values fix that.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[0] / [2]</code> <span class="tok-666">the edge sensors</span> · <code>ledYellow(1)/ledRed(1)</code> <span class="tok-666">warn</span> · <code>motors.setSpeeds(0,0)</code> <span class="tok-666">stop</span></p>
 </div>
-<details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution"><summary>🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
 <pre class="div-m-16px0"><span class="tok-6a9955">// hardware objects: add</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
@@ -1658,7 +1658,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <p><strong>Why this is the advanced card:</strong> you are closing the full loop — sense → compute error → correct — which is, in miniature, the architecture of line following (Lesson 8) and PID control (Lesson 15). You're not preparing to do robotics anymore. This IS robotics.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readLine(lineSensorValues)</code> <span class="tok-666">position 0–2000</span> · <code>motors.setSpeeds(L,R)</code> <span class="tok-666">drive</span> · <code>center of range ≈ 1000</code> <span class="tok-666">the target</span></p>
 </div>
-<details data-reveal="solution" class="details-b-none"><summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution"><summary>🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
 <pre class="div-m-16px0"><span class="tok-6a9955">// hardware objects: add</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
@@ -1704,23 +1704,23 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <h4 data-challenge="4.m1" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 1: White World</h4>
 <p>Swap <code>readLine()</code> for <code>readLineWhite()</code> in your position code and run it on your normal surface. The position goes insane. <em>Why exactly</em> — what is the robot now hunting for? Where would this version be the right tool?</p>
-<details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">Section 3.5, last paragraph — "opposite wardrobe." It flips every value and hunts the <em>brightest</em> thing. Right tool for a white line on a dark floor (some competition mats are exactly that).</p></div></details>
+<details data-reveal="hint"><summary>💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">Section 3.5, last paragraph — "opposite wardrobe." It flips every value and hunts the <em>brightest</em> thing. Right tool for a white line on a dark floor (some competition mats are exactly that).</p></div></details>
 
 <h4 data-challenge="4.m2" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 2: The Covered Eye</h4>
 <p><strong>Predict first, then test:</strong> put a small piece of tape over the center sensor's window, recalibrate, and run. What do the readings do? Was your prediction right? Now explain the calibration sweep's role in what you saw.</p>
-<details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">A covered eye sees the same darkness everywhere — so during the sweep, its "brightest ever" and "darkest ever" are nearly identical. Calibration then has almost no range to grade against, and tiny flickers get stretched into wild swings. (Remove the tape and recalibrate to undo.)</p></div></details>
+<details data-reveal="hint"><summary>💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">A covered eye sees the same darkness everywhere — so during the sweep, its "brightest ever" and "darkest ever" are nearly identical. Calibration then has almost no range to grade against, and tiny flickers get stretched into wild swings. (Remove the tape and recalibrate to undo.)</p></div></details>
 
 <h4 data-challenge="4.m3" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 3: The Sun Hunter</h4>
 <p>Take the robot (raw-readings program) toward the sunniest spot in the room and watch the numbers as you go. Then aim the sensors at the window from a foot away. What happens, and why does the robot "see" sunshine at all — its emitters point down?</p>
-<details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The phototransistor can't tell WHOSE infrared it's drinking. Sunlight is full of IR, so the bucket drains fast no matter what — everything reads "bright." Your emitters were never the only light source in the room; they're just usually the loudest.</p></div></details>
+<details data-reveal="hint"><summary>💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The phototransistor can't tell WHOSE infrared it's drinking. Sunlight is full of IR, so the bucket drains fast no matter what — everything reads "bright." Your emitters were never the only light source in the room; they're just usually the loudest.</p></div></details>
 
 <h4 data-challenge="4.m4" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 4: The Gap Ruler</h4>
 <p>Back in Section 6 you <em>found</em> the blind gap. Now measure it: with the three-sensor program running, find where the line disappears, mark the surface position, slide until it reappears, mark again. Ruler out — how many millimeters wide is your robot's blind spot? Compare with a neighbor's robot.</p>
-<details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The invisible zone is roughly the sensor-to-sensor spacing minus your tape's width — which is why <em>wider tape</em> is the classic three-sensor survival trick. Notice your measured number is a hardware fact you produced with a piece of tape and a ruler.</p></div></details>
+<details data-reveal="hint"><summary>💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The invisible zone is roughly the sensor-to-sensor spacing minus your tape's width — which is why <em>wider tape</em> is the classic three-sensor survival trick. Notice your measured number is a hardware fact you produced with a piece of tape and a ruler.</p></div></details>
 
 <h4 data-challenge="4.m5" data-kind="bonus-observation" class="h4-c-6f7582">Experiment 5: The Speed Reader</h4>
 <p>With the position program running, slide the surface under the robot slowly, then fast, then as fast as you dare. At some speed the position readout stops keeping up. Estimate: how many readings per second is the program taking, and what constant would you change to react faster?</p>
-<details data-reveal="hint" class="details-ddd"><summary class="summary-bg-f8f9fa-2">💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The loop waits <code>DISPLAY_INTERVAL_MS</code> = 100 ms per pass — about 10 readings per second. Between readings the robot is blind. Line followers shrink that pause dramatically; there's a reason racing code doesn't sightsee.</p></div></details>
+<details data-reveal="hint"><summary>💡 Hint</summary><div class="div-p-020px15p"><p class="p-mb-0">The loop waits <code>DISPLAY_INTERVAL_MS</code> = 100 ms per pass — about 10 readings per second. Between readings the robot is blind. Line followers shrink that pause dramatically; there's a reason racing code doesn't sightsee.</p></div></details>
 
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1771,31 +1771,31 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 
 <p>Your sensors are calibrated, both configurations ran, and the jumpers are home. These ask you to <em>apply</em> what you read, not just recall it — answer them, then click to compare.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Your five-sensor code runs but sensors 2 and 4 ignore the tape. What happened? (§4, §6 Step 7)</summary>
+<details data-reveal="quiz"><summary>1. Your five-sensor code runs but sensors 2 and 4 ignore the tape. What happened? (§4, §6 Step 7)</summary>
 
 <div class="div-mt-12px"><p>Hardware/software mismatch: initFiveSensors() promises the jumpers are on DN2/DN4, but they're still in the factory position. The code compiles fine — the compiler can't see jumpers.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. readLine() returns 2323 in five-sensor mode. Say what that means in plain English. (§3.5)</summary>
+<details data-reveal="quiz"><summary>2. readLine() returns 2323 in five-sensor mode. Say what that means in plain English. (§3.5)</summary>
 
 <div class="div-mt-12px"><p>The line's center of darkness sits a little right of the robot's center — about 16% of the way from center (2000) toward the right edge (4000) — 323 of the 2000 units on that side, computed as a weighted average of all sensors.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Why can readLine() report positions like 1500 — between two sensors? (§3.5)</summary>
+<details data-reveal="quiz"><summary>3. Why can readLine() report positions like 1500 — between two sensors? (§3.5)</summary>
 
 <div class="div-mt-12px"><p>Because a line between sensors darkens both of them partially, and the weighted average blends those partial readings into an in-between answer. Five coarse eyes, one fine estimate.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What did the five-sensor configuration buy you, and what did it cost? (§3.2, §3.6, §7)</summary>
+<details data-reveal="quiz"><summary>4. What did the five-sensor configuration buy you, and what did it cost? (§3.2, §3.6, §7)</summary>
 
 <div class="div-mt-12px"><p>Bought: no blind gaps and a smoother, finer position estimate (your Section 7 table is the evidence). Cost: two shared pins reassigned by physically moving jumpers — and Lesson 5's programs expect those pins back.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Why does waitForStart() go at the END of setup and checkBattery() at the TOP of loop? (§5)</summary>
+<details data-reveal="quiz"><summary>5. Why does waitForStart() go at the END of setup and checkBattery() at the TOP of loop? (§5)</summary>
 
 <div class="div-mt-12px"><p>The gate must be the last thing before the robot goes live, so all setup work happens while it's still safely parked. The battery check must run every pass so A+B answers instantly, no matter what the rest of loop is doing.</p></div>
 

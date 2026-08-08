@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.29.0 -->
+<!-- Lesson version: v04.30.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Code Organization</h1>
 <div class="div-fs-11em">Cleaning Up Your Robot's Brain</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.29 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.30 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1115,31 +1115,31 @@ This eight-file layout isn't just for this lesson — it's the architecture you'
 
 <p>That is the reading done — Sections 1 through 5. Before you split a single file, answer these five <em>from your head</em>: no scrolling back, no editor open. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. A declaration ends with one particular piece of punctuation. Which one — and what does it tell the compiler? (§3.3)</summary>
+<details data-reveal="quiz"><summary>1. A declaration ends with one particular piece of punctuation. Which one — and what does it tell the compiler? (§3.3)</summary>
 
 <div class="div-mt-12px"><p>A semicolon, not curly braces. The semicolon is what makes the line a <em>promise</em>: it says this function exists and here is how to call it, but the code lives somewhere else. Swap in curly braces and you have written a definition instead — the actual work — which is why putting one in a header that several files include produces “multiple definition” later.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Name the three kinds of thing that belong in a .cpp file. (§3.4)</summary>
+<details data-reveal="quiz"><summary>2. Name the three kinds of thing that belong in a .cpp file. (§3.4)</summary>
 
 <div class="div-mt-12px"><p><code>#include</code> statements that connect it to the headers it needs; function definitions, meaning the full code behind each promise; and private helper code that nothing outside the file needs to know about. The .h says what exists, the .cpp says how it works.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Where is a global variable declared, and where is a local one? (§3.7)</summary>
+<details data-reveal="quiz"><summary>3. Where is a global variable declared, and where is a local one? (§3.7)</summary>
 
 <div class="div-mt-12px"><p>A global is declared outside every function, at the top of the file — the classroom, where anyone can reach it. A local is declared inside a function and exists only there — your pocket. Reach for a local from outside its function and the compiler tells you it was never declared, which is the same message you get for a missing <code>#include</code> and a different cause.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Poor organization is not just untidy. Name one compiler error it actually causes. (§3.1)</summary>
+<details data-reveal="quiz"><summary>4. Poor organization is not just untidy. Name one compiler error it actually causes. (§3.1)</summary>
 
 <div class="div-mt-12px"><p>Either <em>multiple definition of 'WHEEL_DIAMETER'</em> — the same constant defined in two files that meet at link time — or <em>'driveDistance' was not declared in this scope</em>, where the file calling it never got the header that promises it. Both are organization failures wearing a compiler's vocabulary.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. How many files does this lesson split the program into, and what decides what goes in each? (§5.1, §5.2)</summary>
+<details data-reveal="quiz"><summary>5. How many files does this lesson split the program into, and what decides what goes in each? (§5.1, §5.2)</summary>
 
 <div class="div-mt-12px"><p>Eight, and the rule is one clear job per file. If you cannot say in a sentence what a file is responsible for, the code is in the wrong place. That single-job test is what you will use in Section 6 every time you decide where a new line belongs.</p></div>
 
@@ -1208,8 +1208,8 @@ This eight-file layout isn't just for this lesson — it's the architecture you'
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the guard line is in <a href="#qr-includes" class="link-c-2e86ab">⚡ Quick Reference → Includes & Guards</a>; your Lesson 6 CONFIGURATION section has every constant. One new speed: <code>TURN_SPEED</code> splits off from <code>DRIVE_SPEED</code> — same value today, tunable separately forever after.</p>
 
-<details data-reveal="solution" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Compare with a worked RobotConfig.h</summary>
+<details data-reveal="solution">
+<summary>🔓 Compare with a worked RobotConfig.h</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">=====================================================</span>
@@ -1290,8 +1290,8 @@ This eight-file layout isn't just for this lesson — it's the architecture you'
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the extern pattern is one line per object in <a href="#qr-extern" class="link-c-2e86ab">⚡ Quick Reference → The extern Pattern</a>. The include question: a file that <em>names</em> Zumo types has to be told what those types are.</p>
 
-<details data-reveal="solution" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.h</summary>
+<details data-reveal="solution">
+<summary>🔓 Compare with a worked RobotSensors.h</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1350,8 +1350,8 @@ RobotSensors.cpp.o (.bss.display+0x0): first defined here</pre>
 
 <p>The <strong>compiler</strong> was happy — each file made sense alone. The <strong>linker</strong>, whose job is welding the compiled pieces into one program, found two real <code>display</code> objects and refused to guess. Section 8's Error 5 is this exact message. The fix: delete the HARDWARE OBJECTS block from <code>main.cpp</code> — the header's promises now point at RobotSensors.cpp's real things.</p>
 
-<details data-reveal="solution" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Compare with a worked RobotSensors.cpp</summary>
+<details data-reveal="solution">
+<summary>🔓 Compare with a worked RobotSensors.cpp</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1400,8 +1400,8 @@ Zumo32U4ButtonC buttonC;
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the split rule is <a href="#qr-files" class="link-c-2e86ab">⚡ Quick Reference → What Goes Where</a>; hardware access comes from including <code>RobotSensors.h</code>. And you already know from Step 4 what happens if the old copies stay behind in main.cpp — no walkthrough this time.</p>
 
-<details data-reveal="solution" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Compare with worked RobotHelpers files</summary>
+<details data-reveal="solution">
+<summary>🔓 Compare with worked RobotHelpers files</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1495,8 +1495,8 @@ Zumo32U4ButtonC buttonC;
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> declaration anatomy is in <a href="#qr-files" class="link-c-2e86ab">⚡ Quick Reference → What Goes Where</a> — a declaration is a prototype that moved into a header.</p>
 
-<details data-reveal="solution" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Compare with a worked RobotMotion.h</summary>
+<details data-reveal="solution">
+<summary>🔓 Compare with a worked RobotMotion.h</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">=====================================================</span>
@@ -1556,8 +1556,8 @@ Zumo32U4ButtonC buttonC;
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> stuck on the three? <a href="#qr-includes" class="link-c-2e86ab">⚡ Quick Reference → Includes & Guards</a> has the map. The bodies are your Lesson 6 code — copying your own verified work between projects is engineering, not cheating.</p>
 
-<details data-reveal="solution" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Compare with a worked RobotMotion.cpp</summary>
+<details data-reveal="solution">
+<summary>🔓 Compare with a worked RobotMotion.cpp</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">=====================================================</span>
@@ -2575,13 +2575,13 @@ display.gotoXY(0, 0);</pre>
 <p><strong>The pattern:</strong></p>
 
 <div class="div-d-grid">
-    <div class="div-dee2e6-2">
+    <div class="div-dee2e6-3">
         <h4 class="h4-mt-0">RobotSensors.h</h4>
         <pre><span class="tok-7cbf6e">// In header — TELL OTHER FILES IT EXISTS</span>
 <span class="tok-569cd6">extern</span> Zumo32U4Motors motors;
 <span class="tok-569cd6">extern</span> Zumo32U4Encoders encoders;</pre>
     </div>
-    <div class="div-dee2e6-2">
+    <div class="div-dee2e6-3">
         <h4 class="h4-mt-0">RobotSensors.cpp</h4>
         <pre><span class="tok-7cbf6e">// In source — CREATE IT HERE (no extern!)</span>
 Zumo32U4Motors motors;
@@ -3412,9 +3412,9 @@ Same distance contract as driveDistance().
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <p><strong>RobotMotion.h</strong> gets the declaration:</p>
 <pre><span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm);</pre>
@@ -3805,7 +3805,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <h3 class="h3-c-6f7582">Code Recipes</h3>
 
-<div class="details-dee2e6-3">
+<div class="div-dee2e6-2">
 
 <div class="div-c-4d535f">Recipe #15: Creating a Header File</div>
 
@@ -3822,7 +3822,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 </div>
 
-<div class="details-dee2e6-3">
+<div class="div-dee2e6-2">
 
 <div class="div-c-4d535f">Recipe #16: Creating an Implementation File</div>
 
@@ -3839,7 +3839,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 </div>
 
-<div class="details-dee2e6-3">
+<div class="div-dee2e6-2">
 
 <div class="div-c-4d535f">Recipe #17: Using Your Organized Files</div>
 

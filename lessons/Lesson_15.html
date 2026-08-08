@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.26.0 -->
+<!-- Lesson version: v02.27.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +75,7 @@
 <h1 class="h1">The Present Isn't Enough</h1>
 <div class="div-fs-11em">PID Control — and the Tuning Bench That Proves It</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.26 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.27 — August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -674,31 +674,31 @@ gone. <b>That is windup, and clamping the output does not prevent it.</b></div>
 
 <p>That is the reading done. Before you touch the robot, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. P alone drives at full correction right up to the moment the robot arrives at the line — and then sails straight past it. Name the one thing P has never known. (§3.2)</summary>
+<details data-reveal="quiz"><summary>1. P alone drives at full correction right up to the moment the robot arrives at the line — and then sails straight past it. Name the one thing P has never known. (§3.2)</summary>
 
 <div class="div-mt-12px"><p><b>How fast the error is closing.</b> P looks at <i>where you are</i> and nothing else, so the correction it commands at one centimetre off the line is the same whether the robot is racing toward centre or drifting away from it. It is still commanding a hard correction at the instant it arrives, so it carries through, overshoots, and corrects hard the other way — the <b>weave</b>. The lesson’s own analogy: walk toward a wall with your eyes closed while a friend calls out your distance. You know exactly where you are at every moment. You still hit the wall, because nobody told you how fast you were closing.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. What does the derivative actually measure — and what does a large <i>negative</i> derivative tell the controller to do? (§3.3)</summary>
+<details data-reveal="quiz"><summary>2. What does the derivative actually measure — and what does a large <i>negative</i> derivative tell the controller to do? (§3.3)</summary>
 
 <div class="div-mt-12px"><p>The derivative measures <b>the rate at which the error is changing</b>, computed as <code>(error - lastError) / dt</code>. A large negative derivative means the error is shrinking fast — the robot is closing on the line quickly — so D <b>subtracts from the correction before the robot gets there</b>. It brakes early. That is why D kills the weave and P cannot: braking early requires knowing which way you are headed, which is the one thing P has never known. You do not park a car by driving at the space full speed and stamping the brake at the last instant.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. A bias in your drivetrain makes the robot pull slightly right. P settles at a small, permanent error and stays there forever. Explain why P <b>structurally</b> cannot remove it — and name the term that can. (§3.4)</summary>
+<details data-reveal="quiz"><summary>3. A bias in your drivetrain makes the robot pull slightly right. P settles at a small, permanent error and stays there forever. Explain why P <b>structurally</b> cannot remove it — and name the term that can. (§3.4)</summary>
 
 <div class="div-mt-12px"><p>P’s output is proportional to the error, so as the error shrinks the correction shrinks with it. P comes to rest at exactly the point where its correction cancels the bias — and that point has a <b>non-zero error</b>, because with zero error P produces zero output and the bias wins again. This is <b>steady-state error</b>, and it is not a tuning failure: no value of K<sub>p</sub> removes it, because the arithmetic that leaves it there is the same arithmetic that makes P work. <b>I can.</b> Every pass the robot is even slightly off, a little more is added to a running total, so a small error that never dies grows into a large command. I is the only term that can drive a steady error to zero.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. Both new terms carry <code>dt</code> — one multiplies by it, one divides by it. Say which is which, and say what <code>dt</code> actually <i>is</i>. (§4.1)</summary>
+<details data-reveal="quiz"><summary>4. Both new terms carry <code>dt</code> — one multiplies by it, one divides by it. Say which is which, and say what <code>dt</code> actually <i>is</i>. (§4.1)</summary>
 
 <div class="div-mt-12px"><p>The derivative <b>divides</b>: <code>(error - lastError) / dt</code>. The integral <b>multiplies</b>: <code>integral + (error * dt)</code>. And <code>dt</code> is <b>the length of one trip through <code>loop()</code></b> — how long this single pass took. Both terms are <b>rates</b>, and a rate is a change measured against a time, so neither one means anything until that time is a real number. That is the question this lesson makes you answer and no earlier lesson ever did.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. You are about to upgrade <code>followLine()</code> from P to PD. State the rule this whole lesson runs on — what happens to the function’s name, and to every place that calls it. (§5.1)</summary>
+<details data-reveal="quiz"><summary>5. You are about to upgrade <code>followLine()</code> from P to PD. State the rule this whole lesson runs on — what happens to the function’s name, and to every place that calls it. (§5.1)</summary>
 
 <div class="div-mt-12px"><p><b>The name stays and every call site stays. Only the question the function asks gets better.</b> There is no <code>followLinePD()</code> and no <code>followLinePID()</code>. This is the same move Lesson 11 made when <code>handleGap()</code> went from a stopwatch to an odometer: it kept the name, the call site and the TRIM, and every state that called it got better for free. The rescue sweep, the gap crossing and the intersection run do not know this lesson happened — and all of them end up with a better controller anyway.</p></div>
 
@@ -720,8 +720,8 @@ something you should notice.</p>
 <p>Open the Project Maker, choose <b>Lesson 15</b>, and download the starting project — or
 just keep working in your Lesson 14 folder. It is the same eight files, unchanged. Compile it now,
 before you touch anything, and write the number down. <b>That number is your control.</b></p>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 1</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 1</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
 </details>
@@ -747,8 +747,8 @@ before you touch anything, and write the number down. <b>That number is your con
 <div class="div-m-16px0"><b>The byte count did not move. That is correct.</b> A <code>const</code>
 that nothing reads yet costs nothing — the compiler simply does not emit it. Constants are free
 until something spends them.</div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 2</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 2</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
 </details>
@@ -787,8 +787,8 @@ anywhere reaches it, and threw it away before it ever got into the binary. Your 
 clock in it. Your <i>robot</i> does not.<br><br>
 This is a good thing to see happen on purpose <b>once</b>, so that you recognize it the day it
 happens to you by accident.</div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 3</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 3</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
 </details>
@@ -826,8 +826,8 @@ it, so it survives. Flash this and drive: with <code>KD</code> still at 0, the r
 as it did in Lesson 14 — because <code>currentKd</code> is 0 and the D term contributes nothing.
 <b>The machinery is in, and it is switched off.</b> That is exactly where you want to be before you
 start tuning.</div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 4</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 4</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
 </details>
@@ -985,8 +985,8 @@ start tuning.</div>
 <div class="div-m-16px0"><b>Read what the kill switch does now.</b> B still stops the robot instantly
 — that is untouchable and it always will be. But it no longer <i>throws away the run</i>. It stops
 the wheels and shows you the score. <b>Stopping a run is not the same as cancelling it.</b></div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 5</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 5</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
 </details>
@@ -1088,8 +1088,8 @@ come back: the line was gone for half a second, <code>readLine()</code> was pinn
 time, and <code>lastError</code> is still holding that number. The first pass back on the line
 computes a derivative against a value from a different world. The robot flinches. <b>Now it
 cannot.</b></div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 6</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 6</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=step_6" class="link-c-2e86ab">Open Step 6 in Project Maker</a></p></div>
 </details>
@@ -1162,8 +1162,8 @@ cannot.</b></div>
 they share a <code>loop()</code>, and reading the clock twice in one pass would give the second
 reader a <code>dt</code> of nearly zero — which is exactly the bug section 4 warned you about,
 sneaking back in through a different door.</div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 7 (finished build)</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 7 (finished build)</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 15 build in Project Maker</a></p></div>
 </details>
@@ -1240,8 +1240,8 @@ warning.</div>
 <div class="div-m-16px0"><b>Also notice:</b> dt changed when you moved the robot from white to black. The
 loop is not on a metronome. That is exactly why <code>dt</code> is <i>measured every pass</i> and
 never assumed.</div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7A</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7A</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A — The Strip Chart</a></p></div>
 </details>
@@ -1268,8 +1268,8 @@ hands you the second half of the classical recipe for free:</p>
 WEAVE counts sign-<i>flips</i> per second. One full oscillation is <b>two</b> flips.
 So the period T<sub>u</sub> is 2 over the flip rate.
 </div></div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7B</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7B</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B — Find Ku and Tu</a></p></div>
 </details>
@@ -1304,8 +1304,8 @@ You are done. That is not a feeling. That is a condition.</li>
 • <b>K<sub>d</sub> too low</b> — still weaving. D is not damping enough.<br>
 • <b>K<sub>d</sub> too high</b> — twitchy, jerky, buzzing. D is now amplifying <i>sensor
 noise</i>, which is a rate too. (Challenge 2 fixes this properly.)</div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7C</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7C</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C — Add D and Hill-Climb</a></p></div>
 </details>
@@ -1393,8 +1393,8 @@ is <b>where we put it.</b></div>
 
 <p>Now delete it. Set <code>KI_LINE</code> back to 0, or take the three lines out. It has taught you
 what it came to teach.</p>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7D</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7D</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D — I on the Line (fails by design)</a></p></div>
 </details>
@@ -1427,8 +1427,8 @@ arithmetic. The world changed, not the code.</div>
 
 <div class="div-m-16px0"><b>Now go back and re-read section 3.5.</b> It should read differently than it did
 an hour ago. That is the point of the ladder.</div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7E</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7E</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E — I on the Speed Loop</a></p></div>
 </details>
@@ -1529,8 +1529,8 @@ in followLine(), before computing p:
 <span class="tok-569cd6">float</span> kp = (abs(error) &gt; CORNER_ERROR) ? ____ : ____;
 <span class="tok-569cd6">float</span> p  = kp * error;</pre>
 </div>
-<details data-reveal="solution" class="details-b-none">
-<summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
 
 <div class="div-e0a800"><b>SOLUTION — add to RobotConfig.h:</b></div>
 <pre>
@@ -1584,8 +1584,8 @@ in followLine(), where D is computed:
 dFiltered  = D_FILTER * ____ + (<span class="tok-b5cea8">1.0</span> - D_FILTER) * ____;
 <span class="tok-569cd6">float</span> d    = currentKd * dFiltered;</pre>
 </div>
-<details data-reveal="solution" class="details-b-none">
-<summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
 
 <div class="div-e0a800"><b>SOLUTION — add to RobotConfig.h:</b></div>
 <pre>
@@ -1650,8 +1650,8 @@ print it on the score screen</pre>
 <span class="tok-6a9955">// clear in runReset():        dtWorstUs = 0;</span>
 <span class="tok-6a9955">// print on the score screen:  display.print(dtWorstUs);</span></pre>
 </div>
-<details data-reveal="solution" class="details-b-none">
-<summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
 
 <div class="div-e0a800"><b>SOLUTION — one global, one line in the clock, one line in the report:</b></div>
 <pre>
@@ -1812,37 +1812,37 @@ your controller is not controlling.</b></div>
 
 <p>Your controller now anticipates, your speed loop refuses to be quietly wrong, and your bench can score both. These ask whether you know <em>why</em> — and whether you can defend it with the physics rather than with a preference.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Why P alone can never stop weaving, no matter what K<sub>p</sub> you choose. (§3.2)</summary>
+<details data-reveal="quiz"><summary>1. Why P alone can never stop weaving, no matter what K<sub>p</sub> you choose. (§3.2)</summary>
 
 <div class="div-mt-12px"><p>Because the weave is not a gain problem. Too small a K<sub>p</sub> and the robot is lazy; too large and the weave becomes a wobble — but every value in between still commands a correction based only on <i>where the robot is</i>. It is therefore still correcting hard at the instant it reaches centre, so it overshoots, and then it does the same thing in the other direction. Stopping the weave needs the controller to ease off <i>before</i> arrival, and easing off early requires knowing the error is closing — information that is absent from P at every K<sub>p</sub>.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. Why <code>millis()</code> cannot time this loop, and what happens if you make it try. (§4.2)</summary>
+<details data-reveal="quiz"><summary>2. Why <code>millis()</code> cannot time this loop, and what happens if you make it try. (§4.2)</summary>
 
 <div class="div-mt-12px"><p>Your five line sensors are RC sensors: the library charges them and times the discharge, and <code>initFiveSensors()</code> sets that ceiling to <b>2000 microseconds</b>. So one pass through <code>loop()</code> takes roughly <b>2–3 milliseconds</b> — and it is not even constant, because black discharges slower than white, so the loop period depends on what is under the robot. <code>millis()</code> resolves to <b>one millisecond</b>. Asked to measure a 2 ms interval it answers “2”. Or “3”. Or <b>“0”</b>. On a fast pass the derivative is then <b>undefined</b> — you cannot divide by zero — and on every other pass it is quantised to 2 or 3, a ±50% error that has nothing to do with the robot and everything to do with the ruler. <code>micros()</code> resolves to 4 µs, which against a 2000 µs loop is a 0.2% ruler. That is the clock this lesson runs on, and it is the only one aboard that can do the job.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Why the I term ruins a curve and saves a battery — <i>using the same three lines of code</i>. (§3.4, §5.8)</summary>
+<details data-reveal="quiz"><summary>3. Why the I term ruins a curve and saves a battery — <i>using the same three lines of code</i>. (§3.4, §5.8)</summary>
 
 <div class="div-mt-12px"><p>I keeps a grudge: every pass it adds the error to a running total, so an error that never dies grows into a large command. Whether that is a virtue depends entirely on <b>what the steady error means</b>. On the line, a curve holds a steady error <b>on purpose</b> — that error is the correct answer for as long as the curve lasts — and I mistakes the answer for a mistake, piling up a command that fires when the curve ends. On the speed loop, a tired battery makes the robot slow <b>always</b>: a constant error, in one direction, that never goes away. That is precisely the error P converges on leaving in place, and I is the only term that can erase it. Same three lines, opposite verdict, and the thing that decides is not the code — it is whether a persistent error is the situation being right or the robot being wrong.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What K<sub>u</sub> and T<sub>u</sub> are, and where the robot got them. (§7B)</summary>
+<details data-reveal="quiz"><summary>4. What K<sub>u</sub> and T<sub>u</sub> are, and where the robot got them. (§7B)</summary>
 
 <div class="div-mt-12px"><p><b>K<sub>u</sub> is the ultimate gain</b> — the K<sub>p</sub> at which the robot oscillates and will not settle, a steady weave that neither grows nor dies away. You find it by setting K<sub>d</sub> to zero and <b>doubling</b> K<sub>p</sub> until it breaks, then halving; gains live on a logarithmic scale, so doubling finds the edge in six runs where nudging takes sixty. <b>T<sub>u</sub> is the period of that oscillation</b>, and the robot handed it to you for free: <b>T<sub>u</sub> = 2 ÷ WEAVE</b>, because WEAVE counts error sign-flips per second and one full oscillation is two flips. Neither number was looked up. Both were measured by the bench you built.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Why “that looked smoother” is not an engineering claim. (§5.5)</summary>
+<details data-reveal="quiz"><summary>5. Why “that looked smoother” is not an engineering claim. (§5.5)</summary>
 
 <div class="div-mt-12px"><p>Because you cannot tune what you cannot score. “Smoother” is one memory of a run competing with another memory of a different run, with nothing between them but confidence. The bench replaces it with three numbers that answer three <i>different</i> questions — <b>MAE</b>, how far off the robot lived; <b>PEAK</b>, its worst single moment; <b>WEAVE</b>, how much it hunted — and they can disagree. A change can lower MAE while raising PEAK, which is a real trade you are entitled to make and cannot even see without the numbers. An engineering claim names which number moved, by how much, and what it cost.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">6. Your robot steers cleanly at K<sub>d</sub> = 1.5. You raise it to 4.0 and the steering turns twitchy and jittery — noticeably worse on some floors than others. <b>Name the failure, say why raising K<sub>d</sub> caused it, and give the two fixes.</b> (§3.6)</summary>
+<details data-reveal="quiz"><summary>6. Your robot steers cleanly at K<sub>d</sub> = 1.5. You raise it to 4.0 and the steering turns twitchy and jittery — noticeably worse on some floors than others. <b>Name the failure, say why raising K<sub>d</sub> caused it, and give the two fixes.</b> (§3.6)</summary>
 
 <div class="div-mt-12px"><p><b>Noise amplification.</b> D is a rate — and sensor noise is a rate too, an enormous one. A reading that jitters by a few counts from one pass to the next produces a huge <code>(error - lastError)</code> over a 2 ms <code>dt</code>, and <b>D cannot tell that apart from the robot genuinely moving</b>. Raising K<sub>d</sub> multiplies signal and noise by the same number, so the twitch grows with the gain; a floor with more texture or worse contrast supplies more noise, which is why it is surface-dependent. The two fixes §3.6 gives: <b>lower K<sub>d</sub></b>, or <b>low-pass filter the derivative</b> (Challenge 2). Note this is not derivative <i>kick</i> — kick is a one-pass spike when the setpoint changes, and on the line the setpoint is <code>LINE_CENTER</code>, which never moves.</p></div>
 
@@ -1937,7 +1937,7 @@ They are <b>identical</b>.</div>
   <span class="tok-569cd6">return</span> elapsed / <span class="tok-b5cea8">1000000</span>.0;
 }
 </pre>
-<details data-reveal="hint" class="details-m-12px0"><summary class="summary-c-2e86ab">
+<details data-reveal="hint"><summary>
 Show the hint</summary><div class="div-m-16px0">Section 4.2. What is the smallest interval this clock can
 resolve? What is the length of one pass through this loop? Now write down what <code>elapsed</code>
 equals on a fast pass, and then look at the line that divides by it.<br><br>
@@ -1976,7 +1976,7 @@ pull.<br><br>
   motors.setSpeeds(leftSpeed, rightSpeed);
 }
 </pre>
-<details data-reveal="hint" class="details-m-12px0"><summary class="summary-c-2e86ab">
+<details data-reveal="hint"><summary>
 Show the hint</summary><div class="div-m-16px0">Compare this function, line for line, against the one in
 5.4. Something is <b>missing</b>, not changed. Then ask: if that line is gone, what does
 <code>lastError</code> hold on pass number 500? And what, therefore, is the derivative actually
@@ -2015,7 +2015,7 @@ smaller than correct.</b></div>
   showStatus();
 }
 </pre>
-<details data-reveal="hint" class="details-m-12px0"><summary class="summary-c-2e86ab">
+<details data-reveal="hint"><summary>
 Show the hint</summary><div class="div-m-16px0"><code>resetPID()</code> is still there. It is still correct.
 It is still perfectly written. <b>Read the four lines under it.</b><br><br>
 Then remember what <code>readLine()</code> returns while the robot is blind — section 3.5 — and
@@ -2060,7 +2060,7 @@ IDENTICAL.</b></div>
   motors.setSpeeds(leftSpeed, rightSpeed);
 }
 </pre>
-<details data-reveal="hint" class="details-m-12px0"><summary class="summary-c-2e86ab">
+<details data-reveal="hint"><summary>
 Show the hint</summary><div class="div-m-16px0">One character. Find it.<br><br>
 Then think about what D is <i>for</i>: as the robot races back toward the line, the error is
 shrinking, so the derivative is <b>negative</b>. The correct controller <i>adds</i> that negative

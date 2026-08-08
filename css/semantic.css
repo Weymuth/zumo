@@ -183,3 +183,53 @@ img[data-mark] {
   margin-right: 0.4em;
   flex-shrink: 0;
 }
+
+/* §27.15f THE REVEAL BOX, S132, DJ ruling. The fourth graduate. 453 <details> elements that
+ * THIRTEEN generated class names stood for, plus 55 that carried no class at all and fell to
+ * the browser default - and the thirteen disagreed about every declaration they shared.
+ *
+ * THE DEFECT THAT IS NOT DRIFT: those 55 unstyled reveals in L05-L09 got no cursor: pointer,
+ * so the mouse did not change over the clickable line and nothing told a student the box
+ * opened. Every other reveal in the book declared it. 17 in L07, 14 in L08, 11 in L09.
+ *
+ * BORDER. This is §27.15e applied a second time, not a new decision. #dee2e6 on #f8f9fa is
+ * 1.24:1 against the same 3:1 WCAG minimum for a non-text boundary that retired #333 on
+ * #1e1e1e - 238 blocks carrying a line nobody could see, and 215 more with no line at all.
+ * The S126 ruling was "a border that earns its place", and it CORRECTED the value rather
+ * than deleting the border. #909090 is the lowest grey that clears 3:1 on this fill,
+ * DERIVED by computation and not by hand: #919191, one step lighter, is 2.9900:1. That is
+ * the #686868 lesson - assert the RATIO, never the spelling.
+ *
+ * RADIUS 6px AND PADDING 15px are already ruled by §27.15e and are not re-derived here.
+ *
+ * THE SUMMARY IS THE OTHER HALF. Twelve spellings: six text colours, two weights, three
+ * paddings, and 16 summaries carrying their own background and radius - a box inside the
+ * box. #5a6872 holds 304 of 453 and clears 5.45:1 on the fill. bold holds 452 of 453. No
+ * padding holds 382 of 453 and the box already pads, which also satisfies §6.12c (S79):
+ * stacked sibling reveals must AGREE on summary padding, and agreement at zero is agreement.
+ *
+ * ONE HOLD, AND IT IS A FAMILY RATHER THAN A STYLE (DJ ruling, S132: "Keep those as
+ * answers"). L11's four Mystery answer reveals - data-callout 11.26 to 11.29 - are the whole
+ * ANSWER family and they are CALLOUTS that happen to collapse, not reveals wearing callout
+ * paint. They keep `.callout-6c757d-bg-faf6fd`, so the family map holds at 1123 and the
+ * identity layer keeps all four. Their class now declares `border: none` BEFORE its
+ * border-left, because this element rule sets the `border` SHORTHAND and a class that names
+ * only border-left would have taken three grey sides it never had - checked in the cascade,
+ * not assumed. Their SUMMARY still graduates: it gains the pointer cue like every other.
+ *
+ * The three translucent reveals in L02 were the other plausible exception - rgba white,
+ * which reads as a dark-ground case - and they sit inside a GREEN #e8f3ec callout, not a
+ * dark one, so the S124 trap does not fire. Checked before the rule was written. */
+details {
+  background: #f8f9fa;
+  border: 1px solid #909090;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: #5a6872;
+}

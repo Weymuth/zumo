@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.29.0 -->
+<!-- Lesson version: v04.30.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Encoders</h1>
 <div class="div-fs-11em">Teaching Your Robot to Measure</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.29 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.30 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -745,31 +745,31 @@ int speed;
 
 <p>That is the reading done. Before you put a single wheel on the floor, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Each wheel has two encoder channels, not one. What does the second one buy you? (§3.2)</summary>
+<details data-reveal="quiz"><summary>1. Each wheel has two encoder channels, not one. What does the second one buy you? (§3.2)</summary>
 
 <div class="div-mt-12px"><p>Direction. Channel A triggers before Channel B when the wheel rolls forward, and B before A when it rolls backward — so the <em>order</em> of the two signals says which way it turned. That is why counts are signed: forward adds, backward subtracts, and you get direction free with the measurement instead of having to ask for it separately.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. One full turn of a wheel is how many encoder counts — and where does that number come from? (§3.3)</summary>
+<details data-reveal="quiz"><summary>2. One full turn of a wheel is how many encoder counts — and where does that number come from? (§3.3)</summary>
 
 <div class="div-mt-12px"><p>About 909.7. The encoder produces 12 counts per turn of the <em>motor</em> shaft, and a 75.81:1 gearbox sits between the motor and the wheel: 12 × 75.81 = 909.7. The number is a property of your gearbox, not of encoders in general — a 50:1 Zumo reads about 600 and a 100:1 reads about 1,200. Every distance in this lesson rests on getting this one right.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. The wheels are 39&#8239;mm across. How many counts is one centimetre, and how do you get there? (§3.4)</summary>
+<details data-reveal="quiz"><summary>3. The wheels are 39&#8239;mm across. How many counts is one centimetre, and how do you get there? (§3.4)</summary>
 
 <div class="div-mt-12px"><p>About 74.3. Circumference = π × 39&#8239;mm = 122.5&#8239;mm, which is 12.25&#8239;cm of floor per wheel rotation. So 909.7 counts ÷ 12.25&#8239;cm = 74.3 counts per cm. Driving 30&#8239;cm is therefore 30 × 74.3 ≈ 2,229 counts.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. A <code>for</code> loop and a <code>while</code> loop both repeat. What different question does each one answer? (§5.3)</summary>
+<details data-reveal="quiz"><summary>4. A <code>for</code> loop and a <code>while</code> loop both repeat. What different question does each one answer? (§5.3)</summary>
 
 <div class="div-mt-12px"><p>A <code>for</code> loop runs a number of times you know before you start — once per sensor, eight times, three. A <code>while</code> loop runs as long as something stays true, however many times that turns out to be. You cannot know in advance how many 10-millisecond checks it takes to roll 30&#8239;cm; you only know when to stop. That is a <code>while</code>.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Why does the distance get wrapped in <code>abs()</code> before it becomes a target? (§5.4)</summary>
+<details data-reveal="quiz"><summary>5. Why does the distance get wrapped in <code>abs()</code> before it becomes a target? (§5.4)</summary>
 
 <div class="div-mt-12px"><p>Because encoder counts are signed and the target has to be something the count can climb <em>to</em>. Ask for −30 and <code>-30 * COUNTS_PER_CM</code> is a negative target; the count starts at 0, so <code>0 &lt; targetCounts</code> is already false on the very first check and the loop exits before the wheels ever turn. <code>abs()</code> makes the target positive whichever way the robot is driving, and the direction is handled separately by the sign on the motor speed.</p></div>
 
@@ -836,8 +836,8 @@ int speed;
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> The declarations are in <a href="#qr-hardware" class="link-c-2e86ab">⚡ Quick Reference → Hardware objects</a>. Add the two new lines to the HARDWARE OBJECTS section.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
@@ -868,8 +868,8 @@ int speed;
 
 <p><strong>Then, the prototype trip — solo this time.</strong> You have met <code>'...' was not declared in this scope</code> three times now, and three times the lesson walked you through the fix. This is the graduation: add <strong>all three</strong> of today's prototypes to the FUNCTION PROTOTYPES section yourself, one trip, before the compiler asks — <code>displayEncoderCounts</code> plus the two functions you'll write later this hour, <code>driveDistance(float)</code> and <code>turnDegrees(float)</code>. (A prototype without a definition is legal — the promise just has to be kept before anything <em>calls</em> the function.)</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">displayEncoderCounts()</span>
@@ -919,8 +919,8 @@ every loop:
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> Layout and timing calls are in <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a> and <a href="#qr-timing" class="link-c-2e86ab">⚡ Quick Reference → Timing</a>; the two STANDARD HELPERS are already defined at the bottom of your file.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-569cd6">void</span> setup() {
   display.setLayout21x8();
@@ -952,8 +952,8 @@ counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> The measured values live in <a href="#qr-encoders" class="link-c-2e86ab">⚡ Quick Reference → Key Values</a>. All four are <code>const float</code>.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">// ===== CONFIGURATION =====</span>
 <span class="tok-7cbf6e">// ----- Distance Measurement -----</span>
@@ -982,8 +982,8 @@ counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> Printing a float with one decimal is <code>display.print(value, 1)</code> — it's in <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a>.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">displayEncoderCounts()</span>
@@ -1038,8 +1038,8 @@ driveDistance(distanceCm):
 <p class="p-mb-0">The target lives in an <code>int</code>, and on this chip an int tops out at 32,767. At ~74.3 counts per cm, that's about <strong>440 cm</strong>. Ask for more and the math silently wraps — the robot barely moves, or never stops. Keep single moves under 4 meters. (Observation experiment #4 turns this into a puzzle.)</p>
 </div>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">// ----- Motor Control -----</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">150</span>;</pre>
@@ -1130,8 +1130,8 @@ counts per degree    = (turn circumference ÷ 360)
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> Same <code>const float</code> pattern as Step 5; the values are in <a href="#qr-encoders" class="link-c-2e86ab">⚡ Quick Reference → Key Values</a>.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">// ----- Turning -----</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_BASE_MM = <span class="tok-b5cea8">85.0</span>;
@@ -1163,8 +1163,8 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 5. wait until |left count| reaches target
 6. full stop</pre>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">/*</span>
 <span class="tok-7cbf6e">turnDegrees(degrees)</span>
@@ -1212,8 +1212,8 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <p class="p-m-8px0"><strong>Now translate it yourself.</strong> It's Step 8's loop with a second act — build it from that one and the plan.</p>
 
-<details data-reveal="check" class="details-dee2e6-2">
-<summary class="summary-c-5a6872">🔓 Check your work — open after you've tried</summary>
+<details data-reveal="check">
+<summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-569cd6">void</span> loop() {
   checkBattery();
@@ -1569,9 +1569,9 @@ blinkLED(<span class="tok-b5cea8">10</span>); <span class="tok-7cbf6e">// Blinks
   turnDegrees(<span class="tok-b5cea8">90</span>);
 }</pre>
 
-<details data-reveal="solution" class="details-ddd-2">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal answer</summary>
+<summary>🔓 Click to reveal answer</summary>
 
 <p class="div-mt-15px"><code>void driveAndTurn(<strong>float</strong> distance)</code></p>
 
@@ -1654,9 +1654,9 @@ driveSquare(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <pre><span class="tok-569cd6">void</span> driveSquare() {
   <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
@@ -1738,9 +1738,9 @@ driveTriangle(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <pre><span class="tok-569cd6">void</span> driveTriangle() {
   <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">3</span>; i++) {
@@ -1825,9 +1825,9 @@ drivePentagon(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <pre><span class="tok-569cd6">void</span> drivePentagon() {
   <span class="tok-569cd6">float</span> turnAngle = <span class="tok-b5cea8">72</span>; <span class="tok-7cbf6e">// 360 / 5 = 72</span>
@@ -1933,9 +1933,9 @@ lineDrill(); <span class="tok-7cbf6e">// Call your new function!</span>
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <pre><span class="tok-569cd6">void</span> lineDrill() {
   display.clear();
@@ -2045,9 +2045,9 @@ delay(<span class="tok-b5cea8">50</span>); <span class="tok-7cbf6e">// Small del
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <pre><span class="tok-7cbf6e">// In CONFIGURATION section:</span>
 <span class="tok-569cd6">float</span> totalDistance = <span class="tok-b5cea8">0</span>;
@@ -2160,9 +2160,9 @@ Stop motors</pre>
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">driveDistanceSmooth(distanceCm)</span>
@@ -2276,9 +2276,9 @@ Stop motors</pre>
 
 </div>
 
-<details data-reveal="solution" class="details-b-none">
+<details data-reveal="solution">
 
-<summary class="summary-c-pointer">🔓 Click to reveal solution</summary>
+<summary>🔓 Click to reveal solution</summary>
 
 <pre><span class="tok-6a9955">/*</span>
 <span class="tok-6a9955">driveDistanceAccel(distanceCm)</span>
@@ -2348,31 +2348,31 @@ Stop motors</pre>
 
 <p>You built it and it drives. These ask whether you know <em>why</em> it drives.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. What's the difference between <code>getCountsLeft()</code> and <code>getCountsAndResetLeft()</code>? (§5.2)</summary>
+<details data-reveal="quiz"><summary>1. What's the difference between <code>getCountsLeft()</code> and <code>getCountsAndResetLeft()</code>? (§5.2)</summary>
 
 <div class="div-mt-12px"><p><code>getCountsLeft()</code> returns the count without changing it. <code>getCountsAndResetLeft()</code> returns the count AND resets it to zero.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. If the robot drives 33cm instead of 30cm, what should you adjust? (§8)</summary>
+<details data-reveal="quiz"><summary>2. If the robot drives 33cm instead of 30cm, what should you adjust? (§8)</summary>
 
 <div class="div-mt-12px"><p>Increase WHEEL_DIAMETER_MM slightly. A larger diameter means fewer counts per cm, so the robot will stop sooner.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Why is 120° the correct turn angle for a triangle, not 60°? (§5.5)</summary>
+<details data-reveal="quiz"><summary>3. Why is 120° the correct turn angle for a triangle, not 60°? (§5.5)</summary>
 
 <div class="div-mt-12px"><p>We turn through the EXTERIOR angle, not the interior angle. For an equilateral triangle: 180° - 60° = 120°.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. What's the difference between open-loop and closed-loop control? (§3.6)</summary>
+<details data-reveal="quiz"><summary>4. What's the difference between open-loop and closed-loop control? (§3.6)</summary>
 
 <div class="div-mt-12px"><p><strong>Open-loop:</strong> No feedback—"run motors for 2 seconds"<br><strong>Closed-loop:</strong> Uses feedback—"run motors until encoders show 30cm"</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. Step 13 changed the drive gate from one encoder to <code>averageCounts()</code>. Why does asking both wheels beat asking the better one? (§6 Step 13)</summary>
+<details data-reveal="quiz"><summary>5. Step 13 changed the drive gate from one encoder to <code>averageCounts()</code>. Why does asking both wheels beat asking the better one? (§6 Step 13)</summary>
 
 <div class="div-mt-12px"><p>Because you do not get to choose which wheel misbehaves. The old gate watched the left encoder only, so a slipping left track over-counted and the loop quit early, while a dragging right track was never asked anything at all and the robot sailed straight past the mark. Averaging does not make either wheel honest — it makes the error <em>shared</em>, so a bad track costs you half the distance error instead of all of it, and it costs you that in a direction you can predict.</p></div>
 

@@ -2,7 +2,17 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.59'
+VERSION = 'v1.60'
+# v1.60 (S132): GATE 65 NEW - §27.15f, THE REVEAL BOX. 453 <details> in THIRTEEN spellings
+#   plus 55 with no class at all, whose summaries therefore had NO cursor: pointer - the one
+#   part of the drift a reader would have felt. Graduated to an element rule. The gate is
+#   gate 57's assertion on a second construct and asserts the RATIO: #dee2e6 on #f8f9fa is
+#   1.24:1, LOWER than the #333 gate 57 exists to have retired. Control-run five ways from a
+#   snapshot of the FIXED tree - the old #dee2e6 restored, #919191 (2.99:1, one step under),
+#   cursor:auto, the named hold's `border: none` removed, and a stray class on one summary.
+#   All five fire gate 65; the three that edit the layer also fire §27.13 and §27.15, which
+#   is correct rather than noise - those gates guard the layer's integrity, so any edit to
+#   it moves them. Untouched tree passes at 65 of 65 at both ends.
 # v1.59 (S132): GATE 64 NEW - §24.14b, the STRUCTURE tier's predicate. build_family_map
 #   v1.5.0 added a tier reading "a callout in the GLOSSARY REGION is a KEY TERM" (97 of 97
 #   today, zero exceptions). That is true and an author can break it with one paste, so the
@@ -2249,7 +2259,14 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 598, 2123, '570cf088bb8553ab'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 578, 2045, 'a59964efa3ed9b25'
+#   S132: 598/2,123 -> 578/2,045, THE REVEAL BOX (§27.15f). 21 rules die - twelve <details>
+#   spellings and nine <summary> spellings - and ONE is born, `.div-dee2e6-6`, which is a
+#   <div> that had been sharing a name with a reveal and needed its own once the reveals
+#   left. Five surviving spellings changed declarations, so §27.15b's rename trap fired and
+#   was paid by restore -> regenerate -> apply --include-held. THE ACCEPTANCE TEST IS NOT THE
+#   RULE COUNT: every element in the book that is NOT a reveal resolves byte-identically
+#   across the cycle, all 22,137 of them, in all sixteen lessons.
 #   S132: 604/2,141 -> 598/2,123, THE GLOSSARY CONVERSION. Six rules died with the five
 #   retired schemas: .div-9b59b6 (L04's bare entry), .dl/.dt/.dd (L13/L14), .td-ddd-12 and
 #   .callout-2e86ab-bg-fff (L12's blue-on-white card). Nothing was ADDED - the canon card
@@ -3413,6 +3430,111 @@ try:
 except ImportError as _e:
     bad.append('gate 64 could not import its inputs (%s)' % _e)
 gate('\u00a724.14b a glossary-region callout is a KEY TERM, and the banner roster holds', bad)
+
+
+# ---- GATE 65 (\u00a727.15f) - THE REVEAL BOX, S132.
+# The ruling and its gate ship together (S125). This is gate 57's assertion on a SECOND
+# construct, and it is written out rather than shared because the two grounds differ and a
+# helper taking a ground as an argument would invite a third caller to pass the wrong one.
+#
+# THE RATIO, NOT THE SPELLING. That is the whole argument, and this construct is the reason
+# it generalises: #dee2e6 on #f8f9fa is 1.24:1, LOWER than the #333 that gate 57 exists to
+# have retired, and it sat on 238 blocks. A gate checking for the literal #909090 would
+# certify tomorrow's invisible grey exactly as the old one was certified.
+#
+# THE POINTER ARM GUARDS THE DEFECT, NOT THE STYLE. 55 reveals in L05-L09 carried no class
+# at all and therefore no cursor cue - the mouse did not change over the clickable line.
+# That is the only part of this ruling a reader would have FELT, so it is asserted directly.
+#
+# THE HOLD IS NAMED (\u00a725.2a, DJ ruling S132). L11's four ANSWER callouts keep their skin,
+# and arm 4 fails if that skin ever stops declaring `border: none` - because this rule sets
+# the border SHORTHAND, and a class naming only border-left would silently take three grey
+# sides. A hold that depends on a cascade nobody checks is not a hold (rule 20).
+bad = []
+_sem65 = open('css/semantic.css', encoding='utf-8').read()
+_gen65 = open('css/book.css', encoding='utf-8').read()
+
+
+def _lum65(h):
+    out = []
+    for i in (0, 2, 4):
+        c = int(h[i:i + 2], 16) / 255
+        out.append(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * out[0] + 0.7152 * out[1] + 0.0722 * out[2]
+
+
+_dets = re.findall(r'(?<!,)\ndetails\s*\{([^}]*)\}', _sem65)
+_sums = re.findall(r'(?<!,)\nsummary\s*\{([^}]*)\}', _sem65)
+if len(_dets) != 1 or len(_sums) != 1:
+    bad.append('css/semantic.css holds %d `details` and %d `summary` element rule(s); '
+               'expected exactly one each (\u00a727.15f)' % (len(_dets), len(_sums)))
+else:
+    _dd = {k.split(':')[0].strip(): k.split(':', 1)[1].strip()
+           for k in _dets[0].split(';') if ':' in k}
+    _ds = {k.split(':')[0].strip(): k.split(':', 1)[1].strip()
+           for k in _sums[0].split(';') if ':' in k}
+    # ARM 1 - the values §27.15e already ruled, restated on this construct.
+    for _k, _v in (('background', '#f8f9fa'), ('border-radius', '6px'),
+                   ('padding', '15px'), ('margin', '15px 0')):
+        if _dd.get(_k) != _v:
+            bad.append('\u00a727.15f `details` declares %s: %r, ruled %r' % (_k, _dd.get(_k), _v))
+    # ARM 2 - THE BORDER EARNS ITS PLACE, asserted by ratio against its own ground.
+    _b65 = _dd.get('border', '')
+    _h65 = re.search(r'#([0-9a-fA-F]{6})', _b65)
+    if not _h65 or not _b65.startswith('1px solid'):
+        bad.append('\u00a727.15f `details` border is %r, expected `1px solid #rrggbb`' % _b65)
+    else:
+        _l1, _l2 = _lum65(_h65.group(1)), _lum65('f8f9fa')
+        _r65 = (max(_l1, _l2) + 0.05) / (min(_l1, _l2) + 0.05)
+        if _r65 < 3.0:
+            bad.append('\u00a727.15f `details` border #%s is %.2f:1 against the #f8f9fa ground '
+                       '\u2014 below the 3:1 minimum, so it is invisible'
+                       % (_h65.group(1), _r65))
+    # ARM 3 - THE POINTER, and the summary colour asserted by ratio for the same reason.
+    if _ds.get('cursor') != 'pointer':
+        bad.append('\u00a727.15f `summary` declares cursor: %r \u2014 55 reveals shipped with no '
+                   'pointer cue at all and that is the defect this rule closed'
+                   % _ds.get('cursor'))
+    if _ds.get('font-weight') != 'bold':
+        bad.append('\u00a727.15f `summary` font-weight is %r, ruled bold' % _ds.get('font-weight'))
+    _hs = re.search(r'#([0-9a-fA-F]{6})', _ds.get('color', ''))
+    if not _hs:
+        bad.append('\u00a727.15f `summary` declares no colour')
+    else:
+        _l1, _l2 = _lum65(_hs.group(1)), _lum65('f8f9fa')
+        _rs = (max(_l1, _l2) + 0.05) / (min(_l1, _l2) + 0.05)
+        if _rs < 4.5:
+            bad.append('\u00a727.15f `summary` colour #%s is %.2f:1 on the box \u2014 below the '
+                       '4.5:1 text minimum' % (_hs.group(1), _rs))
+# ARM 4 - THE NAMED HOLD, and the cascade it depends on.
+_HELD65 = 'callout-6c757d-bg-faf6fd'
+_hm = re.search(r'^\.%s\s*\{([^}]*)\}' % re.escape(_HELD65), _gen65, re.M)
+if not _hm:
+    bad.append('.%s is gone \u2014 L11\u2019s four ANSWER callouts lost the skin DJ ruled they keep '
+               '(\u00a727.15f)' % _HELD65)
+elif 'border: none' not in _hm.group(1):
+    bad.append('.%s no longer declares `border: none` \u2014 the `details` rule sets the border '
+               'SHORTHAND, so this class now takes three grey sides it never had (\u00a727.15f)'
+               % _HELD65)
+# ARM 5 - NO SECOND SPELLING: no generated class may re-style a reveal.
+_gi65 = _gen65.find('GENERATED BLOCK')
+for _m65 in re.finditer(r'^\.((?:details|summary)[A-Za-z0-9_-]*)\s*\{', _gen65[_gi65:], re.M):
+    bad.append('.%s restates the reveal box \u2014 one construct, two spellings (\u00a727.15f)'
+               % _m65.group(1))
+# ARM 6 - COVERAGE (S117/S118), and the markup arm: a reveal must carry NO class of its own.
+_seen65 = _stray65 = 0
+for _f65 in files:
+    _s65 = open(_f65, encoding='utf-8').read()
+    for _t65 in re.finditer(r'<(details|summary)\b([^>]*)>', _s65):
+        _seen65 += 1
+        if 'class=' in _t65.group(2) and _HELD65 not in _t65.group(2):
+            _stray65 += 1
+if _seen65 < 800:
+    bad.append('scanned only %d reveal element(s) \u2014 the scope is broken (\u00a727.15f)' % _seen65)
+if _stray65:
+    bad.append('%d reveal element(s) still carry a class of their own \u2014 the element rule is '
+               'the only home and a class beats it silently (\u00a727.15f)' % _stray65)
+gate('\u00a727.15f the reveal box is one rule, with a visible border and a pointer', bad)
 
 print('=' * 52)
 

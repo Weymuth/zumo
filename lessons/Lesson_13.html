@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.25.0 -->
+<!-- Lesson version: v02.26.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.25 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.26 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -251,31 +251,31 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 
 <p>That is the reading done. Before you touch the robot, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Silver is the most reflective thing on the course — shinier than anything your robot has ever driven over. Explain why <code>readCalibrated()</code> reports it as <strong>0</strong>, the same number as plain white floor. (§3)</summary>
+<details data-reveal="quiz"><summary>1. Silver is the most reflective thing on the course — shinier than anything your robot has ever driven over. Explain why <code>readCalibrated()</code> reports it as <strong>0</strong>, the same number as plain white floor. (§3)</summary>
 
 <div class="div-mt-12px"><p>Because of one line in the library source: <code>if (x &lt; 0) x = 0;</code>. Calibration records the brightest and darkest surfaces the startup spin saw and maps everything between them onto 0..1000. Silver is brighter than the brightest thing it saw, so the subtraction produces a <strong>negative</strong> number — and the negative sign is exactly the information you want, because it means “brighter than anything you showed me.” Then the clamp rounds it up to 0. The subtraction knew; the clamp forgot. Notice what that means: the information is destroyed <em>before your code ever sees the number</em>, so no threshold, no smarter comparison and no amount of tuning can recover it from the calibrated channel.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. How many lines of containment code keep your robot inside the rescue zone — and what do the walls do for your dead reckoning that no amount of code could? (§4.1)</summary>
+<details data-reveal="quiz"><summary>2. How many lines of containment code keep your robot inside the rescue zone — and what do the walls do for your dead reckoning that no amount of code could? (§4.1)</summary>
 
 <div class="div-mt-12px"><p><strong>Zero.</strong> Not one boundary check. The robot stays in the zone because the walls are there, which is Lesson 11’s rule made of wood: when the hardware cannot support a behaviour, use a physical barrier rather than a guard that mostly works. The second job is the one that makes this whole lesson possible. Dead reckoning drifts — you proved that in Lesson 6 when your square would not close — and every centimeter of error <em>accumulates</em>. But every sweep row ends <strong>at the wall</strong>. Wherever the robot <em>thought</em> it was, the wall is where it actually is, so the accumulated error resets to zero at the end of every single row. The wall is not just containment; it is a <strong>landmark</strong>, and dead reckoning that gets corrected forty times a run is dead reckoning you can trust.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. There is no line in the rescue zone. Say what your line sensors’ <em>calibrated</em> channel is good for in there — and what the <em>raw</em> channel is doing instead. (§4.2)</summary>
+<details data-reveal="quiz"><summary>3. There is no line in the rescue zone. Say what your line sensors’ <em>calibrated</em> channel is good for in there — and what the <em>raw</em> channel is doing instead. (§4.2)</summary>
 
 <div class="div-mt-12px"><p>The calibrated channel is <strong>unemployed</strong>. There is no line to find, and the one thing worth seeing in there — the silver doorway — clamps to a lie. The raw channel takes over as <strong>the doorman</strong>: <code>silverDetected()</code> watches for all five sensors reading brighter-than-white <em>at once</em>, because only the strip across the doorway does that. This is the lesson’s quiet headline: not one wire moves and not one jumper changes. Lesson 13 is the first lesson in the book that adds <strong>zero hardware</strong> — every sensor was already aboard, and what changes is only what you ask of them.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. The kit ships two victim balls, silver and black. Your robot will find one and drive straight past the other. Which one, and why is that not a bug in your code? (§4.3)</summary>
+<details data-reveal="quiz"><summary>4. The kit ships two victim balls, silver and black. Your robot will find one and drive straight past the other. Which one, and why is that not a bug in your code? (§4.3)</summary>
 
 <div class="div-mt-12px"><p>It finds the <strong>silver</strong> ball and drives past the <strong>black</strong> one. The front proximity sensor works by bouncing infrared off things and counting how much comes back — and a black ball <em>absorbs</em> infrared, which is the same physics that makes black tape read dark to the line sensors. The silver ball announces itself across the zone; the black ball barely whispers at point-blank range. So the failure is not a wrong threshold: <strong>the signal is not there to threshold.</strong> That is why the code hunts silver honestly and treats black as a stated limitation rather than shipping a detector that mostly works — a rescuer would trust it, and Lesson 11 already taught what that costs.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. <code>driveDistance()</code> has served you since Lesson 6. Name the one thing it cannot do that <code>driveUntil()</code> can — and the three ways a leg can end. (§5.1)</summary>
+<details data-reveal="quiz"><summary>5. <code>driveDistance()</code> has served you since Lesson 6. Name the one thing it cannot do that <code>driveUntil()</code> can — and the three ways a leg can end. (§5.1)</summary>
 
 <div class="div-mt-12px"><p><code>driveDistance()</code> <strong>cannot be interrupted</strong>. Once a leg starts it holds the wheel and stares at the odometer until the centimeters run out — so a sweep row cannot end early when the prox sees something, and the kill switch only works <em>between</em> legs instead of mid-leg. In the zone that is disqualifying. <code>driveUntil()</code> is the same primitive — same TRIM, same both-encoder average — plus one poll inside the loop and a report at the end. The three endings are <code>STOP_DISTANCE</code> (drove the full budget, saw nothing), <code>STOP_PROX</code> (something ahead — wall or victim, the <em>caller</em> decides) and <code>STOP_KILL</code> (B pressed). A primitive that reports <em>why</em> it stopped is worth two that do not.</p></div>
 
@@ -358,8 +358,8 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,534 bytes</strong> — byte-identical to your Lesson 12 finished build. Constants nothing reads and enum names nothing uses are <em>free</em>. Write that down; Step 5 cashes it in.</p>
 </div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 1</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 1</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
 </details>
@@ -396,8 +396,8 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,534 bytes.</strong> Still identical — the function exists and nobody calls it, so the linker leaves it out of the build entirely. (We verified with <code>avr-nm</code>: the symbol is genuinely absent, not hiding.)</p>
 </div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 2</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 2</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
 </details>
@@ -475,8 +475,8 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,714 bytes — up 180.</strong> The door is live: the silver check, the state transition, the announcement. One hundred eighty bytes is what "see the invisible" costs.</p>
 </div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 3</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 3</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=step_3" class="link-c-2e86ab">Open Step 3 in Project Maker</a></p></div>
 </details>
@@ -543,8 +543,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,714 bytes.</strong> Flat again, same reason as Step 2 — and this is the last free step. Everything after this costs bytes, because everything after this <em>runs</em>.</p>
 </div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 4</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 4</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
 </details>
@@ -609,8 +609,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>24,946 bytes — up 232.</strong> There it is: <code>driveUntil()</code> finally has a caller, so the linker finally pays for it — Steps 4’s "free" code just arrived in the build, alongside the sweep case itself. The flat steps were never missing code. They were code waiting for a reason.</p>
 </div>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 5</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 5</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
 </details>
@@ -688,8 +688,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <div class="div-00474b">
 
 <p>Five rungs, one primitive at a time, same discipline as Lessons 7 and 11: <strong>you cannot tune a number you have not measured, and you cannot trust a sweep whose atom you have not tested.</strong> Every rung is in the Project Maker under Lesson 13 if you would rather download than edit.</p>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — Step 6 (finished build)</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 6 (finished build)</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 13 build in Project Maker</a></p></div>
 </details>
@@ -768,8 +768,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <tr><td class="td-bb-1pxsolid-2"><strong>Black ball</strong> at 30 / 20 / 10 cm</td><td class="td-bb-1pxsolid-2">—</td><td class="td-bb-1pxsolid-2">___ / ___ / ___</td></tr>
 </table>
 <p>Three discoveries are waiting in that table. Silver tape reads clearly below white — there is your <code>SILVER_RAW_MAX</code>, set between them. The wall’s counts give you <code>WALL_STOP_COUNT</code> at the stopping distance you want. And the black ball’s row… read it, read it again, and then reread Section 4.3. The signal is not there. You just measured the limitation this lesson teaches.</p>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7A</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7A</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=cal_7a" class="link-c-2e86ab">Open 7A — The Surface Meter</a></p></div>
 </details>
@@ -781,8 +781,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <li>Set it between, where 7A told you — one clean stop, exactly on the strip, every run.</li>
 </ul>
 <p>A threshold you have broken in both directions is a threshold you understand.</p>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7B</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7B</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=cal_7b" class="link-c-2e86ab">Open 7B — The Silver Brake</a></p></div>
 </details>
@@ -850,16 +850,16 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 }
 </pre>
 <p>Blanks live: <code>WALL_STOP_COUNT</code>, and your old friend <code>TRIM</code>. Point the robot at a wall, press B, and read the report. <em>Stop: PROX</em> at your chosen distance and a straight track on the floor: atom good. Stopping too late or too early: <code>WALL_STOP_COUNT</code>. Arcing sideways on the way there: TRIM — the zone floor is not the line course, and open loops feel every surface change (Lesson 6 taught you the fix; Lesson 12 taught you the smooth floor lies hardest). Corner not square: hold the robot <em>still</em> during gyro calibration and reread Lesson 12’s Section 7.</p>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7C</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7C</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=cal_7c" class="link-c-2e86ab">Open 7C — One Leg, One Turn</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">7D — The Full Sweep</h3>
 <p>The finished build (Maker: <em>Lesson 13 → Finished</em>), all four blanks filled, silver ball on the floor. Line → strip → announcement → rows → and somewhere mid-row, the stop that is not a wall: <strong>VICTIM FOUND</strong>, with the distance on the screen.</p>
 <p>Watch a full run with your eyes on the <em>walls</em>: every row ends flush against one, no matter what the corners smeared. That is the drift being erased in real time — the landmark doing its quiet work. Then watch a false victim happen on purpose: set <code>VICTIM_SHORT_CM</code> to 2 and watch gyro noise get promoted to a rescue. Set it back to what the margin needs to be. Both failure directions, always.</p>
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7D</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7D</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D — The Full Sweep</a></p></div>
 </details>
@@ -913,8 +913,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <div class="div-bg-00474b"><div id="section-8a"><span class="span-d-block-2">Section 8A</span><span class="span-d-block">Checking the Claims</span></div></div>
 <div class="div-00474b">
 
-<details data-reveal="catchup" class="details-bg-f8f9fa">
-<summary class="summary-c-5a6872">📦 Catch Up with Project Maker — 7E</summary>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — 7E</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E — The Payoff</a></p></div>
 </details>
@@ -981,8 +981,8 @@ currentState = ____;               <span class="tok-6a9955">// hand back to the 
 <span class="tok-569cd6">break</span>;
 <span class="tok-6a9955">// (do NOT touch lastRowCm)</span></pre>
 </div>
-<details data-reveal="solution" class="details-b-none">
-<summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
 
 <p>Replace <code>VICTIM_FOUND</code>’s ending — instead of parking in <code>STOPPED</code>, back off, take the lawnmower turn early, and rejoin:</p><pre>
       <span class="tok-7cbf6e">// CHALLENGE 1: one victim is a demo. A rescue ROBOT keeps</span>
@@ -1030,8 +1030,8 @@ display.print(F("Rows: "));    display.print(rowCount);
 display.print(F("Dist: "));    display.print(____);   <span class="tok-6a9955">// the total swept</span>
 display.print(F("Rescues: ")); display.print(rescueCount);</pre>
 </div>
-<details data-reveal="solution" class="details-b-none">
-<summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
 
 <p>One accumulator with the sweep variables:</p><pre>
 <span class="tok-569cd6">float</span> totalSweptCm = <span class="tok-b5cea8">0</span>; <span class="tok-7cbf6e">// CHALLENGE 2: every centimeter the sweep drove</span>
@@ -1098,8 +1098,8 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
   <span class="tok-569cd6">break</span>;
 }</pre>
 </div>
-<details data-reveal="solution" class="details-b-none">
-<summary class="summary-c-0e1a2c">🔓 Click to reveal solution</summary>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
 
 <p>A one-shot flag with the sweep variables:</p><pre>
 <span class="tok-569cd6">bool</span>  rowZeroRetried = <span class="tok-569cd6">false</span>; <span class="tok-7cbf6e">// CHALLENGE 3: row zero gets ONE benefit of the doubt</span>
@@ -1156,31 +1156,31 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 
 <p>Your robot now covers a room it has never seen, on instruments you tuned yourself. These ask whether you know <em>why</em> — and whether you can defend the decisions that made it work.</p>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">1. Mid-sweep, the prox fires and the leg stops. The odometer says this row ran twenty centimeters shorter than the last one. <strong>Say what is ahead of the robot, and how you know.</strong> (§5.2)</summary>
+<details data-reveal="quiz"><summary>1. Mid-sweep, the prox fires and the leg stops. The odometer says this row ran twenty centimeters shorter than the last one. <strong>Say what is ahead of the robot, and how you know.</strong> (§5.2)</summary>
 
 <div class="div-mt-12px"><p>A <strong>victim</strong>, not the wall. The prox can only say <em>something ahead</em>; it has no way to tell a wall from a ball. What supplies the missing half is the odometer, and it can only do that because the sweep’s rows have <strong>consistent length</strong>: the walls do not move, so this row should run about as long as the last one did. The row itself has become a measuring stick. A leg that ends twenty centimeters early ended on something that is not where the wall stood last pass. Notice the shape of the move — it is the third time the book has played this card. The gyro cross-examined the encoders in Lesson 12; here the odometer cross-examines the prox. When one sensor cannot answer alone, find a second one that can call its bluff.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">2. That victim test compares this row against the last row. So what does the <em>first</em> row compare against? <strong>Name what the code chooses to believe, and what that choice costs you.</strong> (§8A.2)</summary>
+<details data-reveal="quiz"><summary>2. That victim test compares this row against the last row. So what does the <em>first</em> row compare against? <strong>Name what the code chooses to believe, and what that choice costs you.</strong> (§8A.2)</summary>
 
 <div class="div-mt-12px"><p>Nothing — there is no last row. The code makes the choice explicit with <code>rowCount &gt; 0</code> in the guard: <strong>row zero’s prox stop is always believed to be the wall.</strong> The robot spends its first row learning the room, and every later row is checked against that knowledge. The cost is honest and worth stating out loud: a victim sitting dead in row zero’s path gets recorded as a very close wall, and the sweep steps politely around it. That is rare — it takes a victim in one specific lane — and it is the price of having any baseline at all. An engineer names the case the design gives up on rather than pretending it does not exist.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">3. Since Lesson 8 this book has hammered one nail: use <code>readCalibrated()</code>, never raw <code>read()</code>. This lesson uses raw. <strong>State the rule you were actually being taught</strong> — and how you decide which channel a question belongs to. (§3)</summary>
+<details data-reveal="quiz"><summary>3. Since Lesson 8 this book has hammered one nail: use <code>readCalibrated()</code>, never raw <code>read()</code>. This lesson uses raw. <strong>State the rule you were actually being taught</strong> — and how you decide which channel a question belongs to. (§3)</summary>
 
 <div class="div-mt-12px"><p>The rule was never “calibrated is holy.” The rule is <strong>match the channel to the question.</strong> <em>“Where is the line?”</em> is a question <em>inside</em> the calibrated world — comparability is exactly what you want, so calibrated, always. <em>“Is this brighter than anything I calibrated on?”</em> is a question <em>about the edge</em> of that world, and the calibrated channel clamps the answer to a lie. Raw, deliberately. The general form is the one worth carrying: <strong>the reason behind a rule tells you where the rule ends.</strong> A rule you obey without its reason cannot tell you when it stops applying — which is the whole difference between following instructions and engineering.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">4. You already own <code>CLOSE_THRESHOLD</code> from Lesson 10, and it already means “something is close.” <strong>Defend adding <code>WALL_STOP_COUNT</code> instead of reusing it.</strong> (§5.3)</summary>
+<details data-reveal="quiz"><summary>4. You already own <code>CLOSE_THRESHOLD</code> from Lesson 10, and it already means “something is close.” <strong>Defend adding <code>WALL_STOP_COUNT</code> instead of reusing it.</strong> (§5.3)</summary>
 
 <div class="div-mt-12px"><p>Because <strong>a wall is not an obstacle.</strong> They look like the same reading and they are not the same job: you stop for an obstacle in order to <em>avoid</em> it, and you stop at a wall in order to <em>turn</em>. Different job, different distance, different number. Reusing one constant for two jobs is the bug that does not look like a bug — the day you tune your obstacle standoff for a cleaner dodge, every sweep corner in the zone moves with it, and nothing in the code says why. Two names cost you one line in <code>RobotConfig.h</code> and buy you the ability to tune each behaviour without touching the other.</p></div>
 
 </details>
 
-<details data-reveal="quiz" class="details-dee2e6"><summary class="summary-c-5a6872">5. A judge watches your robot drive past a black victim ball and asks whether that is a bug. <strong>Answer it — and name a sensor that would see the ball, and what it measures instead.</strong> (§4.3, §8A.3)</summary>
+<details data-reveal="quiz"><summary>5. A judge watches your robot drive past a black victim ball and asks whether that is a bug. <strong>Answer it — and name a sensor that would see the ball, and what it measures instead.</strong> (§4.3, §8A.3)</summary>
 
 <div class="div-mt-12px"><p>It is not a bug; it is a stated limitation of the sensor the robot carries. The prox measures <strong>reflected infrared</strong>, and the black ball’s job is to absorb exactly that — so the signal is not there to threshold, and a detector that “mostly” finds black balls would be worse than none, because a rescuer would trust it. What would see it: a <strong>camera</strong>, which reads ambient light rather than its own echo, so a black ball on a light floor is a high-contrast target — and that is precisely why real rescue robots carry cameras. A <strong>time-of-flight sensor</strong> times a laser pulse instead of counting reflected intensity, so it is far less fooled by colour, though dark targets still shorten its range. A <strong>whisker or bumper</strong> finds the ball by touch, which is honest and cheap and locates the victim by running it over.</p></div>
 
@@ -1236,7 +1236,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
   calibrateLineSensors();
   gyroSetup();   <span class="tok-7cbf6e">// as planted: "both calibrations, together"</span>
 </pre>
-<p>Now every sweep corner overshoots by the same weird amount, and the rows corkscrew across the zone. The line follower is fine. 7C’s single turn is <em>not</em> fine. Why does the order of two setup calls bend every corner in the run?</p><details data-reveal="mechanism" class="details-dee2e6-4"><summary class="summary-c-6f7582">Reveal the mechanism</summary>
+<p>Now every sweep corner overshoots by the same weird amount, and the rows corkscrew across the zone. The line follower is fine. 7C’s single turn is <em>not</em> fine. Why does the order of two setup calls bend every corner in the run?</p><details data-reveal="mechanism"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p><code>gyroSetup()</code> learns the gyro’s <em>zero</em> — what “not rotating” reads like — by averaging 1,024 samples while the robot holds still. <code>calibrateLineSensors()</code> <strong>spins the robot.</strong> Run the spin first and the gyro learns its zero <em>mid-pirouette</em>: it now believes some real rotation rate is stillness, and subtracts that fiction from every turn forever after. Every corner inherits the same bias; the rows corkscrew. A spin cannot calibrate a gyro — canon since Lesson 12, and the reason the correct <code>setup()</code> zeroes the gyro <em>before</em> anything moves.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b1_corkscrew" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
@@ -1244,7 +1244,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <p>The victim tuned TRIM perfectly in 7C — and the rows in the zone still arc. Their <code>RobotConfig.h</code> shows <code>TRIM = 8</code>, honestly measured. The planted line, in <code>driveUntil()</code>:</p><pre>
 motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as planted</span>
 </pre>
-<details data-reveal="solution" class="details-dee2e6-4"><summary class="summary-c-6f7582">Reveal the mechanism</summary>
+<details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p>Compare against the real line: <code>setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED)</code>. The student’s 8 is declared, tuned, believed in — and <strong>never reaches the motors.</strong> A declared blank the code never spends is a lie in the worksheet: the student adjusts the number, nothing changes, and they learn to distrust the instrument instead of the build.</p><p>Here is the part that should worry you: with <code>TRIM = 8</code> set, this build and the correct one are <em>still</em> byte-identical — 24,902 bytes each. We disassembled both to prove the difference is real: the correct build loads <strong>158</strong> into the left motor and 150 into the right; the sabotage loads <strong>150 and 150</strong>. One instruction’s immediate value. The file size is blind to it; only the disassembly — or the arc on your floor — tells the truth.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b2_unspent" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
@@ -1252,7 +1252,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <p>“I made the sweep twice as fast,” says the saboteur, proudly. And the runs <em>are</em> faster — and the robot misses the silver ball about half the time, on a course where it used to score every run. The planted line:</p><pre>
       driveDistance(ROW_STEP_CM * <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// as planted: "cover ground faster"</span>
 </pre>
-<details data-reveal="solution" class="details-dee2e6-4"><summary class="summary-c-6f7582">Reveal the mechanism</summary>
+<details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p><code>ROW_STEP_CM</code> was sized in 7A so that adjacent rows’ prox coverage <em>overlaps</em> — no floor goes uninspected. Doubling the step opens a blind stripe between every pair of rows, exactly one step wide. The ball is found when it sits in a covered band and missed when it sits in a stripe — which is why the failure is <em>intermittent</em>, the cruelest kind. Speed was bought with coverage, and nobody was told the price. Halve the blind area or halve the runtime is a real engineering trade; making it <em>silently</em> is the sabotage.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b3_stripes" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
@@ -1260,7 +1260,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <p>The subtlest of the four. A well-meaning classmate “fixed” <code>silverDetected()</code> to follow the book’s oldest rule: <em>always use the calibrated read.</em> The planted line:</p><pre>
   lineSensors.readCalibrated(raw);   <span class="tok-7cbf6e">// as planted: "calibrated is always better"</span>
 </pre>
-<p>The symptom: the robot follows the line beautifully, reaches the silver strip… and reports a <strong>gap</strong>. It drives blind across the doorway, <code>GAP_MAX_CM</code> runs out on the open zone floor, and it parks in <code>LINE_LOST</code>, defeated, three centimeters inside a room it never knew it entered. Explain every beat of that story.</p><details data-reveal="solution" class="details-dee2e6-4"><summary class="summary-c-6f7582">Reveal the mechanism</summary>
+<p>The symptom: the robot follows the line beautifully, reaches the silver strip… and reports a <strong>gap</strong>. It drives blind across the doorway, <code>GAP_MAX_CM</code> runs out on the open zone floor, and it parks in <code>LINE_LOST</code>, defeated, three centimeters inside a room it never knew it entered. Explain every beat of that story.</p><details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
 <p>Section 3, executed. On the calibrated channel, silver clamps to 0 on all five sensors — but the check asks for readings <em>below</em> <code>SILVER_RAW_MAX</code>, and calibrated values sit at 0 while the threshold was tuned for raw values in the hundreds; the comparison logic collapses and the door never triggers. Meanwhile all-zeros makes <code>isLineVisible()</code> report no line — so <code>handleGap()</code> takes over, exactly as it should for a real gap. The robot crosses its distance budget on open floor and gives up. <strong>One word — <code>Calibrated</code> — blinded the doorman</strong>, and note who else it blinded: the black ball has been invisible on the same physics all along. Bright-outside-the-contract and dark-absorbing-the-signal are the two edges of the same lesson: a sensor only answers the question its channel can carry.</p></div></details>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
