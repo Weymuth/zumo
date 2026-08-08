@@ -2259,12 +2259,12 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 578, 2045, 'a59964efa3ed9b25'
-#   S132: 598/2,123 -> 578/2,045, THE REVEAL BOX (§27.15f). 21 rules die - twelve <details>
-#   spellings and nine <summary> spellings - and ONE is born, `.div-dee2e6-6`, which is a
-#   <div> that had been sharing a name with a reveal and needed its own once the reveals
-#   left. Five surviving spellings changed declarations, so §27.15b's rename trap fired and
-#   was paid by restore -> regenerate -> apply --include-held. THE ACCEPTANCE TEST IS NOT THE
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 577, 2039, '3211afa33570dfb0'
+#   S132 second push: 598/2,123 -> 577/2,039, THE REVEAL BOX (§27.15f). 23 rules die - twelve
+#   <details> spellings, nine <summary> spellings, and the two callout classes L11's ex-ANSWER
+#   blocks vacated - against two born, one of them `.div-dee2e6-6`, a <div> that had been
+#   sharing a name with a reveal. Surviving spellings changed declarations, so §27.15b's trap
+#   fired and was paid by restore -> regenerate -> apply. THE ACCEPTANCE TEST IS NOT THE
 #   RULE COUNT: every element in the book that is NOT a reveal resolves byte-identically
 #   across the cycle, all 22,137 of them, in all sixteen lessons.
 #   S132: 604/2,141 -> 598/2,123, THE GLOSSARY CONVERSION. Six rules died with the five
@@ -3115,8 +3115,8 @@ try:
         bad.append('... and %d more disagreeing callout(s)' % (_fam_bad - 6))
     if _n == 0:
         bad.append('gate 59 scanned ZERO callouts - a gate that scans nothing passes')
-    elif _n != 1123:
-        bad.append('gate 59 saw %d callouts, expected the 1123 gate 47 holds' % _n)
+    elif _n != 1119:
+        bad.append('gate 59 saw %d callouts, expected the 1119 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -3506,16 +3506,17 @@ else:
         if _rs < 4.5:
             bad.append('\u00a727.15f `summary` colour #%s is %.2f:1 on the box \u2014 below the '
                        '4.5:1 text minimum' % (_hs.group(1), _rs))
-# ARM 4 - THE NAMED HOLD, and the cascade it depends on.
+# ARM 4 - NO EXCEPTION SURVIVES. The one candidate hold, L11's four ANSWER callouts, was
+# ruled OUT by DJ: the word stays, the box matches. The arm is INVERTED rather than deleted
+# (S108) - a gate that stops checking is worse than one that fails.
 _HELD65 = 'callout-6c757d-bg-faf6fd'
-_hm = re.search(r'^\.%s\s*\{([^}]*)\}' % re.escape(_HELD65), _gen65, re.M)
-if not _hm:
-    bad.append('.%s is gone \u2014 L11\u2019s four ANSWER callouts lost the skin DJ ruled they keep '
-               '(\u00a727.15f)' % _HELD65)
-elif 'border: none' not in _hm.group(1):
-    bad.append('.%s no longer declares `border: none` \u2014 the `details` rule sets the border '
-               'SHORTHAND, so this class now takes three grey sides it never had (\u00a727.15f)'
-               % _HELD65)
+if re.search(r'^\.%s\s*\{' % re.escape(_HELD65), _gen65, re.M):
+    bad.append('.%s is back \u2014 a reveal wearing a callout skin, which \u00a727.15f ruled '
+               'out (DJ, S132: the word stays, the pill matches)' % _HELD65)
+for _f4 in files:
+    if re.search(r'<details\b[^>]*data-family=', open(_f4, encoding='utf-8').read()):
+        bad.append('%s: a <details> carries data-family \u2014 a reveal is not a callout '
+                   '(\u00a727.15f)' % os.path.basename(_f4))
 # ARM 5 - NO SECOND SPELLING: no generated class may re-style a reveal.
 _gi65 = _gen65.find('GENERATED BLOCK')
 for _m65 in re.finditer(r'^\.((?:details|summary)[A-Za-z0-9_-]*)\s*\{', _gen65[_gi65:], re.M):
@@ -3527,7 +3528,7 @@ for _f65 in files:
     _s65 = open(_f65, encoding='utf-8').read()
     for _t65 in re.finditer(r'<(details|summary)\b([^>]*)>', _s65):
         _seen65 += 1
-        if 'class=' in _t65.group(2) and _HELD65 not in _t65.group(2):
+        if 'class=' in _t65.group(2):
             _stray65 += 1
 if _seen65 < 800:
     bad.append('scanned only %d reveal element(s) \u2014 the scope is broken (\u00a727.15f)' % _seen65)

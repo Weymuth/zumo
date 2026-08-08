@@ -84,10 +84,10 @@ Instruments: `book_gates` **v1.60** · `lesson_inventory` **v1.3.5** ·
 
 Lessons: L01 v03.26.0 · L02 v03.19.0 · L03 v03.38.0 · L04 v04.26.0 · L05 v04.26.0 · L06 v04.30.0 · L07 v04.30.0 · L08 v04.29.0 · L09 v05.24.0 · L10 v02.25.0 · L11 v02.26.0 · L12 v01.29.0 · L13 v02.26.0 · L14 v02.31.0 · L15 v02.27.0 · L16 v02.20.0.
 
-**65/65 gates.** `lesson_inventory --anomalies` silent · family map **1123/1123** ·
-`family_tag` **1123 correct, 0 drifted, 0 unnamed** · `callout_id --audit` **1123, 0 problems** ·
+**65/65 gates.** `lesson_inventory --anomalies` silent · family map **1119/1119** ·
+`family_tag` **1119 correct, 0 drifted, 0 unnamed** · `callout_id --audit` **1119, 0 problems** ·
 census **40,440 == `wc -l`** · `regex_audit` **1 lead** (known `entity_sweep.py:70`) ·
-`build_css --check` current at 578 rules · `color_index --check` clean ·
+`build_css --check` current at 577 rules · `color_index --check` clean ·
 **`image_audit --check` current at 14 of 141** · `gate_payload_match` PASS ·
 `strip_inline --verify` **0 dead class names** · the pin is **125 rows**.
 

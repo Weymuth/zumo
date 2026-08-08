@@ -12,18 +12,17 @@
 
 **The reveal box graduates (§27.15f, second push).** 453 `<details>` in thirteen spellings,
 plus 55 with no class at all - and **those 55 had no `cursor: pointer`**, so nothing told a
-student the box opened: 17 in L07, 14 in L08, 11 in L09. That is the one part of the drift a
-reader would have felt. The standalone split sat at the familiar L09/L10 seam (83 bordered
-against 79 borderless). **The border was already decided and this session asked anyway,
-twice** - §27.15e rules *a border that earns its place* and CORRECTS an invisible value
-rather than deleting it, so `#dee2e6` at 1.24:1 becomes `#909090`, derived by computation
-(`#919191` is 2.9900:1). DJ named the repeat. §24.13 on a DESIGN, which S131 had already
-recorded and this session had written into its own handoff. The summary line normalised from
-twelve spellings to one. **DJ held L11's four ANSWER callouts** (*"Keep those as answers"*),
-so the family map stays 1123 and their class now declares `border: none` before its
-border-left - the new element rule sets the border SHORTHAND and would otherwise have handed
-them three grey sides. Gate 65 new, control-run five ways. §27.11 to 578/2,045. Acceptance
-test: every non-reveal element in the book resolves byte-identically, all 22,137.
+student the box opened: 17 in L07, 14 in L08, 11 in L09. The standalone split sat at the
+familiar L09/L10 seam. **The border was already decided and this session asked anyway,
+twice** - §27.15e rules *a border that earns its place* and CORRECTS an invisible value, so
+`#dee2e6` at 1.24:1 becomes `#909090`, derived by computation (`#919191` is 2.9900:1). DJ
+named the repeat. The summary line normalised from twelve spellings to one. **L11's four
+ANSWER blocks were the one candidate exception and DJ ruled it out** - *"I wanted the word
+answer to stay, but the pill should be consistent with the others"* - so they take the same
+box, still say *Answer*, and the ANSWER family retires. Family delta CONTROLLED: exactly one
+family moves, ANSWER 4 -> 0, other 29 byte-identical. Gate 65 new, control-run five ways.
+§27.11 to 577/2,039; family map 1123 -> 1119. Acceptance test: every non-reveal element in
+the book resolves byte-identically, all 22,137.
 
 **Reveal-label normalisation, part two.** The 77 Project-Maker reveals in L10-L16 were
 labelled *CATCH-UP - Step N* (44) or *7A-7E in the Project Maker* (30) and **74 of the 77
