@@ -1,6 +1,6 @@
 # The family pin — blocks whose family CONTENT cannot re-derive
 
-**125 of 1,123 callout blocks.** Generated ONCE, at S130, from the verified state.
+**55 of 1,119 callout blocks.** Generated ONCE, at S130, from the verified state.
 
 **87 ROWS RETIRED AT S132, and the reason is the only one that may retire a row.**
 They were the glossary-side KEY TERM blocks. `build_family_map` v1.5.0 added a STRUCTURE
@@ -13,6 +13,16 @@ tier's death created this file.
 This file is a PRESERVED LAYER: it is read-only input to `build_family_map.py` and
 must never be regenerated from `data-family`. A pin rebuilt from the value it exists
 to check would agree with any drift by construction.
+
+**70 ROWS RETIRED AT S134, for the same and only legal reason.**
+They were the BODY-side KEY TERM blocks. DJ ruled (option A, S134) that a KEY TERM
+callout in the lesson body opens its head with the literal `KEY TERM: `, so the family
+this file was holding is now stated in the block's own label and `canon_of` names it
+from CONTENT, reading nothing decorative. Gate 62's coverage arm reported the hold
+expired without being told to, exactly as at S132. **The rows were retired BY THE
+PROPERTY** - the surviving set is the gate's own `_need` derivation, never a hand list -
+and the count reconciles: 83 blocks converted, 13 of which already named themselves and
+were therefore never pinned, leaves 70.
 
 ## Why these blocks need a pin
 
@@ -33,91 +43,21 @@ decoration-keyed tier this file replaces.
 
 | `data-callout` | Family | Retired glyph | Label (first 58 chars) |
 |---|---|---|---|
-| `1.4` | KEY TERM | 🔑 | PlatformIO A professional development environment for prog |
-| `1.7` | KEY TERM | 🔑 | Library Pre-written code that provides ready-to-use functi |
-| `1.9` | KEY TERM | 🔑 | A-Star32U4 The brain of your Zumo robot. A small circuit b |
-| `1.10` | KEY TERM | 🔑 | Microcontroller A small, self-contained computer on a sing |
-| `1.15` | KEY TERM | 🔑 | Git A version control tool. PlatformIO uses it to download |
-| `1.23` | KEY TERM | 🔑 | Object A named variable that represents a piece of hardwar |
-| `1.59` | KEY TERM | 🔑 | Serial Monitor A window that displays text messages sent f |
 | `1.83` | GOING DEEPER | 🔬 | Curious how any of this actually works? The Going Deeper p |
-| `2.5` | KEY TERM | 🔑 | Comment - Text in your code that the compiler ignores comp |
 | `2.11` | ENGINEER'S LOG | 📓 | For your engineering notebook The PNG is sized to drop str |
-| `2.14` | KEY TERM | 🔑 | Curly Braces { } - Define the start and end of a code bloc |
-| `2.31` | KEY TERM | 🔑 | Header Comment - A block of text at the very top of your f |
-| `2.34` | KEY TERM | 🔑 | include - Tells the computer to load a library (a collecti |
-| `2.35` | KEY TERM | 🔑 | Object - A variable that represents a piece of hardware. Y |
-| `2.37` | KEY TERM | 🔑 | Constant - A value that doesn't change while the program r |
-| `2.40` | KEY TERM | 🔑 | setup() - Code inside this function runs exactly ONE time  |
-| `2.41` | KEY TERM | 🔑 | loop() - Code inside this function runs FOREVER, repeating |
-| `2.44` | KEY TERM | 🔑 | Function - A reusable chunk of code with a name. Instead o |
-| `2.54` | KEY TERM | 🔑 | Serial Monitor - A window in VS Code that shows messages f |
-| `2.77` | KEY TERM | 🔑 | Function Prototype - A one-line preview of a function: its |
 | `2.96` | TRY THIS | 🎯 | CHALLENGE: Write a function beep(int count) that buzzes th |
 | `2.122` | GOING DEEPER | 🔬 | Curious how any of this actually works? The Going Deeper p |
-| `3.2` | KEY TERM | 🔑 | Motor Imbalance - When two motors don't spin at exactly th |
-| `3.4` | KEY TERM | 🔑 | TRIM - A small correction value you add to one motor to co |
-| `3.6` | KEY TERM | 🔑 | Differential Drive - A two-motor system where steering is  |
-| `3.11` | KEY TERM | 🔑 | Negative Speed Values - In everyday speech, you'd say "go  |
-| `3.16` | KEY TERM | 🔑 | Open-Loop Control - Send a command and hope for the best.  |
-| `3.17` | KEY TERM | 🔑 | Closed-Loop Control - Send a command, measure the result,  |
-| `3.30` | KEY TERM | 🔑 | constrain(value, min, max) - Returns: min if value < min,  |
-| `3.44` | KEY TERM | 🔑 | TRIM A single adjustable value added to one motor's speed  |
 | `3.45` | INSIGHT | 🔍 | Why four small functions instead of one big loop() ? Each  |
 | `3.91` | TRY THIS | 🎯 | CHALLENGE: Add a calibration constant SETTLE_TIME (try 300 |
 | `3.96` | NOTE | 📘 | Testing on USB? The reading lies. readBatteryMillivolts()  |
 | `3.98` | NOTE | 📘 | const and constrain() are two different jobs. They start w |
-| `5.4` | KEY TERM | 🔑 | Proximity Sensor A sensor that detects how close an object |
-| `5.7` | KEY TERM | 🔑 | Brightness Level A measure (0-6) of how many IR LED pulses |
-| `5.8` | KEY TERM | 🔑 | Threshold A boundary value used to make decisions. Values  |
-| `5.14` | KEY TERM | 🔑 | For Loop A control structure that repeats code a specific  |
-| `6.2` | KEY TERM | 🔑 | Encoder A sensor that converts rotational motion into elec |
-| `6.4` | KEY TERM | 🔑 | Behind the Scenes The Zumo32U4 library uses interrupts to  |
-| `6.5` | KEY TERM | 🔑 | Quadrature Encoding A method using two offset sensors to d |
-| `6.6` | KEY TERM | 🔑 | Signed Counts Encoder counts are signed integers . Forward |
-| `6.8` | KEY TERM | 🔑 | The Math Counts per wheel rotation = 12 × 75.81 = 909.7 co |
-| `6.12` | KEY TERM | 🔑 | The Formula Counts per degree = (wheel_base × π × counts_p |
-| `6.13` | KEY TERM | 🔑 | Closed-Loop Control A control system that uses sensor feed |
 | `6.24` | KEY TERM | 🔑 | The Formula Turn at each corner = 360 ÷ number of sides |
-| `6.54` | KEY TERM | 🔑 | Function A reusable block of code that performs a specific |
-| `7.9` | KEY TERM | 🔑 | Header Files (.h) Declarations: "What exists." Like a rest |
-| `7.10` | KEY TERM | 🔑 | Implementation Files (.cpp) Definitions: "How it works." L |
-| `7.12` | KEY TERM | 🔑 | include A directive that literally copies and pastes the e |
-| `7.13` | KEY TERM | 🔑 | pragma once A compiler directive that says: "Only include  |
-| `7.15` | KEY TERM | 🔑 | Scope Determines where in your code a variable can be acce |
-| `7.21` | KEY TERM | 🔑 | Header file (.h) A file that declares what exists (functio |
-| `7.22` | KEY TERM | 🔑 | Implementation file (.cpp) A file that contains the actual |
-| `7.23` | KEY TERM | 🔑 | Include guard An older technique (#ifndef/#define/#endif)  |
-| `7.24` | KEY TERM | 🔑 | Declaration Telling the compiler "this function exists" -  |
-| `7.25` | KEY TERM | 🔑 | Definition The actual code that makes a function work - ha |
-| `7.26` | KEY TERM | 🔑 | Refactoring Reorganizing existing code without changing wh |
-| `7.27` | KEY TERM | 🔑 | Scope Determines where in your code a variable can be acce |
-| `7.73` | KEY TERM | 🔑 | Declaration Tells the compiler "this function exists, here |
-| `7.74` | KEY TERM | 🔑 | Definition Provides the actual code that makes the functio |
-| `7.76` | KEY TERM | 🔑 | extern A keyword meaning "this variable/object exists in a |
-| `7.78` | KEY TERM | 🔑 | Scope The region where a variable is accessible. Use it ou |
 | `7.103` | GOING DEEPER | 🔬 | Curious how any of this actually works? The Going Deeper p |
-| `8.8` | KEY TERM | 🔑 | Setpoint The target value you want to maintain. For line f |
-| `8.9` | KEY TERM | 🔑 | Error The difference between where you are and where you w |
-| `8.10` | KEY TERM | 🔑 | Kp (Proportional Gain) A tuning constant that scales error |
-| `8.13` | KEY TERM | 🔑 | Error = Current Position − Setpoint Example: If position = |
-| `8.55` | KEY TERM | 🔑 | Function Parameter A value you pass INTO a function that t |
 | `8.70` | GOING DEEPER | 🔬 | Curious how any of this actually works? The Going Deeper p |
 | `9.1` | LEARN | 📖 | A Different Kind of Thinking This lesson marks a fundament |
 | `9.2` | LEARN | 📖 | RoboCup Junior Connection In RoboCup Junior Line Rescue co |
-| `9.4` | KEY TERM | 🔑 | Intersection - A point where the line branches, crosses, o |
 | `9.6` | LEARN | 📖 | Why Green Works Green surfaces absorb some IR light but re |
-| `9.7` | KEY TERM | 🔑 | Threshold - A boundary value used to categorize sensor rea |
-| `9.12` | KEY TERM | 🔑 | Dead End - An intersection marked with green on both sides |
-| `9.14` | KEY TERM | 🔑 | State Machine - A programming pattern where a system can o |
-| `9.16` | KEY TERM | 🔑 | Enum (enumeration) - A data type that defines a set of nam |
-| `9.17` | KEY TERM | 🔑 | Tank Turn - A turning method where opposite wheels spin in |
 | `9.23` | LEARN | 📖 | Avoiding False Positives: Debouncing Sensor noise can caus |
-| `10.2` | KEY TERM | 🔑 | Obstacle Anything physically blocking the robot's path tha |
-| `10.11` | KEY TERM | 🔑 | Avoidance Maneuver A pre‑planned sequence of movements tha |
-| `10.13` | KEY TERM | 🔑 | Behavior Arbitration Deciding, in advance and in writing , |
-| `10.36` | KEY TERM | 🔑 | extern A promise that a variable or object exists somewher |
-| `10.88` | KEY TERM | 🔑 | Phase Variable A variable that survives between passes of  |
 | `11.2` | THE WALL | 🛑 | It depends on the battery. And that is fatal. A fresh batt |
 | `11.5` | THE WALL | 🛑 | The alarm is not allowed to go off until the robot has alr |
 | `11.9` | THE WALL | 🛑 | Read the last line. That TRIM is not decoration. Inside a  |

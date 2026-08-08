@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.62'
+VERSION = 'v1.63'
 # v1.60 (S132): GATE 65 NEW - §27.15f, THE REVEAL BOX. 453 <details> in THIRTEEN spellings
 #   plus 55 with no class at all, whose summaries therefore had NO cursor: pointer - the one
 #   part of the drift a reader would have felt. Graduated to an element rule. The gate is
@@ -2259,7 +2259,16 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '2f52e29b7e181c26'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '2cf7bbd1225543d4'
+#   S134 move: digest ONLY. Rules and declarations UNCHANGED at 574/2,033 - zero born,
+#   zero died, zero ALTERED, diffed by selector. The whole sheet delta is FOUR lines: the
+#   header's covered-attribute count and one rule's usage comment, .div-fs-105em ×792 ->
+#   ×795. Those three uses are L15's three inline <b> KEY TERM heads becoming the head div
+#   every other body block already had (§2.3). Acceptance test is the RESOLVED styling, not
+#   the rule count (S133 rule 24): all 22,142 pre-existing resolved declaration strings are
+#   byte-identical across the restore/regenerate/apply cycle in all sixteen lessons, and the
+#   only difference is +3 of that one string in L15. §27.15b did not fire and could not -
+#   nothing left a class, so no survivor could be renamed.
 #   S133 fourth move: digest ONLY, 574/2,033 unchanged, zero born, zero died. TWO rules
 #   ALTERED - .ul-ls-none-2 and .ul-ls-none-3 swapped declarations. THE LESSONS ARE
 #   BYTE-IDENTICAL either side of this move; only the stylesheet moved. Cause: build_css
@@ -3157,11 +3166,18 @@ gate('\u00a724.14a every callout carries the family its CONTENT resolves to', ba
 # ENTER it. Either way the gate fails and a human rules, which is the point.
 bad = []
 _PINF = 'ZUMO_FAMILY_PINS.md'
-_PIN_MD5 = '5cf173327d35077aa9c1a452d3e9a45a'   # 125 rows: 212 at S130, less the
-                                                     # 87 glossary-side rows the S132
-                                                     # STRUCTURE tier made redundant
+_PIN_MD5 = 'c6ee67d6938e22d7c6480a0848af72a1'   # 55 rows: 212 at S130, less the 87
+                                                     # glossary-side rows the S132
+                                                     # STRUCTURE tier made redundant, less
+                                                     # the 70 body-side KEY TERM rows S134's
+                                                     # `KEY TERM: ` prefix made nameable
+                                                     # from CONTENT. Retired BY THE PROPERTY
+                                                     # - the survivors are this gate's own
+                                                     # _need derivation, never a hand list.
+                                                     # 83 converted, 13 already self-naming
+                                                     # and therefore never pinned, = 70.
 if not os.path.exists(_PINF):
-    bad.append('%s is missing - 125 blocks lose their only family home' % _PINF)
+    bad.append('%s is missing - 55 blocks lose their only family home' % _PINF)
 else:
     _rows = [l for l in open(_PINF, encoding='utf-8').read().split('\n')
              if re.match(r'^\| `\d+\.\d+` \|', l)]
@@ -3675,6 +3691,102 @@ for _f2 in files:
 if _seen2 != len(files):
     bad.append('scanned %d of %d lessons - the scope is broken' % (_seen2, len(files)))
 gate('\u00a72.2 every lesson states objectives, each a box and not a bullet', bad)
+
+
+# ---- 68. §24.14d THE BODY KEY TERM NAMES ITS FAMILY; THE GLOSSARY ENTRY DOES NOT ----
+# DJ ruling S134, option A, taken on rendered specimens of both glossaries side by side.
+#
+# WHY THE RULE EXISTS. KEY TERM was the only large family in this book that did not name
+# itself. Measured across all 1,119 live callouts: NOTE 113/133, CHECKPOINT 102/112,
+# TIP 79/85, DO THIS NOW 55/58, WARNING 67/80, LEARN 38/47, and BRAIN CHECK / THE GOAL /
+# MY PLAN / BUILDS ON at 100%. KEY TERM stood at 13 of 238 - and those 13 were exactly
+# the blocks a normalisation pass was about to strip, which is the finding that reversed
+# the session's direction.
+#
+# WHY IT IS TWO ASSERTIONS AND NOT ONE. The prefix is ruled IN for the body and OUT for
+# the glossary, deliberately, because the glossary sits under a banner that already reads
+# Glossary and 151 repetitions of the family name would push every term off the left edge
+# a reader scans. That makes the rule a REGION rule, and this gate asserts BOTH halves -
+# a gate that only checked the body would certify a glossary silently drifting into the
+# prefix as conformant.
+#
+# THE PREDICATE IS IMPORTED, NOT RE-IMPLEMENTED (S83). book_gates, family_tag and
+# build_family_map each held their own copy of the canon matcher until S133 found all
+# three; the same defect is available here, so head_of() and PREFIX come from the tool
+# that writes them and cannot drift away from it.
+#
+# HELD BY NAME, NOT BY COUNT (§25.2a). Four body blocks carry the family and are not term
+# cards - a provenance question, an operator announcement, a formula and a procedural list.
+# DJ held constrain explicitly and the other three are the same shape. They are excepted by
+# id so that a future session reads a NAME and a reason rather than finding a silent gap.
+bad = []
+try:
+    import keyterm_prefix as _KT
+    _bodyseen = _glosseen = 0
+    _heldshape = {}
+    for _f3 in sorted(glob.glob('lessons/Lesson_*.html')):
+        _src3 = open(_f3, encoding='utf-8').read()
+        _exp3, _tofile3 = LI.expand_classes_mapped(_src3)
+        for _c3 in LI.build(_f3)['callouts']:
+            if _c3.get('family_attr') != 'KEY TERM':
+                continue
+            _cid3 = _c3.get('callout_id')
+            _fs3 = _tofile3(int(_c3['exp_start']))
+            _raw3 = _src3[_fs3:_fs3 + int(_c3['bytes']) * 3]
+            _k3, _h3 = _KT.head_of(_raw3)
+            if _k3 is None:
+                bad.append('%s: KEY TERM %s has no head carrying the key mark'
+                           % (L(_f3), _cid3))
+                continue
+            if _c3['region'] == 'glossary':
+                _glosseen += 1
+                if _h3.interior.lstrip().upper().startswith(_KT.PREFIX.strip().upper()):
+                    bad.append('%s: glossary entry %s carries the KEY TERM prefix - the '
+                               'section banner already says Glossary (DJ, S134 option A)'
+                               % (L(_f3), _cid3))
+                continue
+            _bodyseen += 1
+            if _cid3 in _KT.HELD:
+                _heldshape[_cid3] = _h3.interior
+                continue
+            if not _h3.interior.startswith(_KT.PREFIX):
+                bad.append('%s: body KEY TERM %s does not open with %r - it is the only '
+                           'large family that would not name itself'
+                           % (L(_f3), _cid3, _KT.PREFIX))
+            elif not re.search(r'<strong\b', _h3.interior):
+                bad.append('%s: body KEY TERM %s carries the prefix but its term is not in '
+                           'a <strong> - the term is what the glossary harvest extracts'
+                           % (L(_f3), _cid3))
+    # COVERAGE ARM (S117/S118): a gate that scans zero blocks passes.
+    if _bodyseen != 87:
+        bad.append('scanned %d body KEY TERM blocks, expected 87 - the scope is broken'
+                   % _bodyseen)
+    if _glosseen != 151:
+        bad.append('scanned %d glossary KEY TERM entries, expected 151 - the scope is broken'
+                   % _glosseen)
+    # HOLD ARM, AND IT IS HERE BECAUSE THE FIRST DRAFT OF THIS GATE FAILED ITS OWN CONTROL.
+    # Adding a fifth id to HELD excepted a real, conformant block and every arm above stayed
+    # green: the coverage count measures blocks SCANNED, not blocks ASSERTED, so an exception
+    # is invisible to it. That is S130 rule 20 arriving inside the gate written to enforce a
+    # ruling - a hold something else satisfies is not a hold - and it is caught by pinning
+    # the hold two ways. The SET is named (§25.2a), so swapping an id fails; and each held
+    # block must genuinely still lack the prefix, so a hold that has quietly become
+    # unnecessary expires loudly instead of sitting there certified.
+    _HELD_EXPECT = {'3.31', '3.101', '6.24', '14.28'}
+    if set(_KT.HELD) != _HELD_EXPECT:
+        bad.append('keyterm_prefix.HELD is %s, expected %s - the four non-term blocks are '
+                   'held BY NAME; changing the set needs a DJ ruling, not an edit'
+                   % (sorted(_KT.HELD), sorted(_HELD_EXPECT)))
+    for _hid in sorted(set(_KT.HELD) & _HELD_EXPECT):
+        _hb = _heldshape.get(_hid)
+        if _hb is None:
+            bad.append('held id %s is not a live body KEY TERM block' % _hid)
+        elif _hb.startswith(_KT.PREFIX):
+            bad.append('held block %s now carries the prefix - the hold has EXPIRED and the '
+                       'row should come out of HELD' % _hid)
+except ImportError:
+    bad.append('keyterm_prefix.py is missing - the rule has no predicate')
+gate('\u00a724.14d the body KEY TERM names its family and the glossary entry does not', bad)
 
 print('=' * 52)
 

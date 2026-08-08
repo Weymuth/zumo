@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.29.0 -->
+<!-- Lesson version: v02.30.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +75,7 @@
 <h1 class="h1">The Present Isn't Enough</h1>
 <div class="div-fs-11em">PID Control — and the Tuning Bench That Proves It</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.29 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.30 — August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -150,7 +150,7 @@ correction = (how far off) &nbsp;+&nbsp; (how long off) &nbsp;+&nbsp; (how fast 
 <p>Three pieces of information, combined into one decision. And the cleanest way to hold them
 in your head is not as three formulas. It is as <b>three tenses</b>:</p>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a-2">Term</th><th class="th-17496a-2">Tense</th><th class="th-17496a-2">The question it asks</th><th class="th-17496a-2">What it can fix</th></tr><tr><td class="td-cdd9e1"><b>P</b> — Proportional</td><td class="td-cdd9e1"><b>Present</b></td><td class="td-cdd9e1">How far off am I <i>right now</i>?</td><td class="td-cdd9e1">Large errors, quickly</td></tr><tr><td class="td-cdd9e1"><b>D</b> — Derivative</td><td class="td-cdd9e1"><b>Future</b></td><td class="td-cdd9e1">How fast is the error <i>closing</i>?</td><td class="td-cdd9e1">Overshoot and oscillation</td></tr><tr><td class="td-cdd9e1"><b>I</b> — Integral</td><td class="td-cdd9e1"><b>Past</b></td><td class="td-cdd9e1">How long have I <i>been</i> wrong?</td><td class="td-cdd9e1">A small error that never dies</td></tr></table>
-<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.3"><b><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM — PID Controller:</b> a control algorithm that
+<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.3"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>PID Controller</strong></div> A control algorithm that
 computes a correction from three views of the same error — its present value (P), its accumulated
 history (I), and its rate of change (D).</div>
 <div class="div-m-26px0"><img src="../images/L15_GRAPHIC_15-01_three_tenses.svg" alt="[GRAPHIC 15.1] The three tenses. P reads the error now; D reads its slope; I reads the area under it." class="img-cdd9e1"><div class="div-c-607d8b">[GRAPHIC 15.1] The three tenses. P reads the error now; D reads its slope; I reads the area under it.</div></div>
@@ -176,7 +176,7 @@ You <i>still</i> hit the wall, because nobody told you how fast you were closing
 <span class="tok-569cd6">float</span> d = currentKd * derivative;
 lastError = error;                            <span class="tok-7cbf6e">// today becomes the past</span>
 </pre>
-<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.4"><b><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM — Derivative:</b> the rate of change of a value over
+<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.4"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Derivative</strong></div> The rate of change of a value over
 time. The derivative of the error tells you whether you are getting closer or further away, and how
 fast — which is a statement about the <i>future</i>.</div>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a-2">Situation</th><th class="th-17496a-2">Derivative</th><th class="th-17496a-2">What it means</th></tr><tr><td class="td-cdd9e1">Error was 100, now 50</td><td class="td-cdd9e1">Negative</td><td class="td-cdd9e1">Closing fast. Ease off — you are about to arrive.</td></tr><tr><td class="td-cdd9e1">Error was 50, now 100</td><td class="td-cdd9e1">Positive</td><td class="td-cdd9e1">Opening up. Push harder.</td></tr><tr><td class="td-cdd9e1">Error was 50, still 50</td><td class="td-cdd9e1">Zero</td><td class="td-cdd9e1">Not changing. D has nothing to say.</td></tr></table>
@@ -198,7 +198,7 @@ that lasts a block.</div>
 integral = integral + (error * dt);   <span class="tok-7cbf6e">// add up every moment you were wrong</span>
 <span class="tok-569cd6">float</span> i = currentKi * integral;
 </pre>
-<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.6"><b><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM — Integral:</b> the accumulated sum of a value over
+<div class="div-2e86ab-3" data-family="KEY TERM" data-callout="15.6"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Integral</strong></div> The accumulated sum of a value over
 time — the <i>area under the error curve</i>. It answers “how much total wrongness has piled up?”</div>
 
 <p><b>What I is for.</b> Suppose a bias in your drivetrain makes the robot pull slightly right. P
