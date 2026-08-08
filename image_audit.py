@@ -9,8 +9,9 @@ a record. §24.12: this emits a generated artefact, never hand-edited.
 
 WHAT IT MEASURES, and it is deliberately not the status column. A figure is PLANNED when the
 lesson prints its tag - [IMAGE 4.3], [GRAPHIC 1.10], [VIDEO 3.1]. It is LANDED when an <img>
-in that lesson points at a file whose name encodes the same tag. Everything planned and not
-landed is outstanding. That question is schema-independent, so it can be asked of all sixteen
+in that lesson points at a file whose name encodes the same tag, or - the reuse case - when a
+FIGURE image sits in the tag's own paragraph. A MARK IS NOT A FIGURE: see DECORATION_ATTR.
+Everything planned and not landed is outstanding. That question is schema-independent, so it can be asked of all sixteen
 lessons the same way.
 
 TWO TRAPS, BOTH HIT WHILE WRITING THIS, BOTH RECORDED SO THE NEXT READER DOES NOT REPEAT THEM:
@@ -36,12 +37,24 @@ exit 0 = clean. exit 1 = a control failed or --check found a difference.
 """
 import re, os, sys, glob, collections
 
-VERSION = 'v1.1'          # the only version home in this file (S104)
+VERSION = 'v1.2'          # the only version home in this file (S104)
 OUT = 'IMAGE_WORKLIST.md'
 
 TAG_RE = re.compile(r'\[(IMAGE|GRAPHIC|VIDEO)\s+(\d+)\.(\d+)([a-z]?)\]')
 SRC_RE = re.compile(r'<img[^>]+src="[^"]*/images/([^"?#]+)"')
-IMG_ANY = re.compile(r'<img[^>]+src="[^"]*/images/([^"?#]+)"')
+
+# WHOLE <img> TAGS, not just their src. The neighbour arm below has to know what KIND of
+# image it found, and the src alone cannot say.
+IMG_TAG_RE = re.compile(r'<img\b[^>]*?src="[^"]*/images/([^"?#]+)"[^>]*?>')
+
+# A DECORATION IS NOT A FIGURE, AND THIS ATTRIBUTE IS WHAT SAYS SO (§20.5). S130 put 884
+# <img data-mark> marks into the same prose the neighbour arm reads, and six real shots -
+# L03 3.2 / 3.5 / 3.6, L12 12.1, L14 14.1, L16 16.1 - reported LANDED on the strength of a
+# lightbulb sitting near the tag. Keyed on `images/marks/` instead this would read the
+# DIRECTORY, which is a spelling: move the files and the audit silently reverts. `data-mark`
+# is authored, which is the whole reason S130 authored it. The two sets coincide at 884
+# today and that is measured, not assumed - CONTROL F3 fails if the site stops existing.
+DECORATION_ATTR = 'data-mark'
 
 
 def lessons():
@@ -54,6 +67,18 @@ def expected(kind, a, b, suf):
     return re.compile(rf'^L{a:02d}_{kind}_{a}-0*{b}{suf}_', re.I)
 
 
+def figure_spans(src):
+    """Character spans of every <img> in SRC that could BE a figure - marks excluded.
+
+    Computed over the WHOLE file and never over a window. Classifying a tag on a slice
+    classifies it on whatever the slice happened to include: `data-mark` can sit outside a
+    window that contains the tag's `src=`, and the tag would then read as a figure. Spans
+    first, intersect second.
+    """
+    return [m.span() for m in IMG_TAG_RE.finditer(src)
+            if DECORATION_ATTR not in m.group(0)]
+
+
 def audit(paths=None):
     """ENTRYPOINT. -> (planned, outstanding, orphans, dupes) with no side effects."""
     paths = paths or lessons()
@@ -64,6 +89,7 @@ def audit(paths=None):
         src = open(f, encoding='utf-8', errors='replace').read()
         refs = set(SRC_RE.findall(src))
         referenced |= refs
+        spans = figure_spans(src)
         # KIND IS PART OF THE SORT KEY, and leaving it out cost a real defect: [IMAGE 4.1]
         # and [VIDEO 4.1] share the key (4, 1, ''), so their order fell out of SET iteration
         # and flipped between processes. The written file and the next --check disagreed at
@@ -87,8 +113,10 @@ def audit(paths=None):
             # re-shoot a photograph the book already ships. If an <img> sits within the
             # tag's own paragraph, the figure is LANDED whatever the filename says.
             j = src.find(f'[{tag}]')
-            if j >= 0 and SRC_RE.search(src[max(0, j - 700):j + 400]):
-                continue
+            if j >= 0:
+                lo, hi = max(0, j - 700), j + 400
+                if any(s < hi and e > lo for s, e in spans):
+                    continue
             staged = [d for d in on_disk if pat.match(d)]
             outstanding.append((host, tag, 'on disk, unwired: ' + staged[0] if staged
                                 else 'no asset'))
@@ -176,6 +204,50 @@ def selftest():
         ok = False
     else:
         print('   L10 IMAGE 10.1, served by L05\'s photo, is not reported outstanding')
+
+    print('CONTROL F (S131): a DECORATION beside a tag must not land the figure')
+    # SYNTHETIC ON PURPOSE. A control read off the live book is a control that depends on the
+    # state of what it audits: shoot L03 3.2 and the arm stops testing anything while still
+    # printing PASS. These two strings are the predicate's whole contract, both directions.
+    deco = '<p>[IMAGE 9.9] <img data-mark src="../images/marks/lightbulb.svg" alt=""></p>'
+    figs = '<p>[IMAGE 9.9] <img src="../images/L05_IMAGE_5-04b_zumo.jpg" alt=""></p>'
+    if figure_spans(deco):
+        print('   FAILED. A mark was counted as a figure - the S131 defect is back.')
+        ok = False
+    elif not figure_spans(figs):
+        print('   FAILED. A plain <img> stopped counting - L10\'s reuse case is broken.')
+        ok = False
+    else:
+        print('   mark -> not a figure; plain <img> -> a figure. Both directions.')
+
+    print('CONTROL F2 (attribute, not directory): src alone must not decide')
+    # The same file under a DIFFERENT path, and the same path WITHOUT the attribute. If this
+    # ever starts keying on `images/marks/`, the first line passes and the second fails.
+    moved = '<p>[IMAGE 9.9] <img data-mark src="../images/lightbulb.svg" alt=""></p>'
+    naked = '<p>[IMAGE 9.9] <img src="../images/marks/lightbulb.svg" alt=""></p>'
+    if figure_spans(moved) or not figure_spans(naked):
+        print('   FAILED. The predicate is reading the path, not the authored attribute.')
+        ok = False
+    else:
+        print('   a moved mark is still a mark; an unmarked file in marks/ is still a figure')
+
+    print('CONTROL F3 (coverage): the live book must still contain the shape F guards')
+    # An arm that guards a shape no longer present passes forever and proves nothing.
+    hit = 0
+    for f in lessons():
+        s = open(f, encoding='utf-8').read()
+        keep = figure_spans(s)
+        for m in TAG_RE.finditer(s):
+            lo, hi = max(0, m.start() - 700), m.start() + 400
+            near_any = IMG_TAG_RE.search(s[lo:hi])
+            near_fig = any(a < hi and b > lo for a, b in keep)
+            if near_any and not near_fig:
+                hit += 1
+    if hit:
+        print(f'   {hit} tag(s) sit beside a decoration and no figure - the arm is live')
+    else:
+        print('   FAILED. No tag in the book has a mark and no figure nearby; F is vacuous.')
+        ok = False
 
     print('CONTROL E (determinism): a SECOND PROCESS must emit the same bytes')
     # In-process repetition is not a determinism test. PYTHONHASHSEED is fixed for the life

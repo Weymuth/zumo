@@ -2,7 +2,26 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.57'
+VERSION = 'v1.58'
+# v1.58 (S131): GATE 63 NEW - §10, a figure is landed by an asset and never by a decoration.
+#   S130's 884 marks landed in the same prose image_audit's NEIGHBOUR arm reads, and the arm
+#   could not tell a lightbulb from a photograph: six real shots - L03 3.2 / 3.5 / 3.6,
+#   L12 12.1, L14 14.1, L16 16.1 - went from outstanding to LANDED with nothing taken. NO
+#   GATE FAILED. The only signal was `image_audit --check` printing DIFFERS, whose obvious
+#   reading is "re-run me" - which would have written 8 over 14 and retired six entries from
+#   the shot list four weeks out. THE ARC WAS MEASURED ON THE CONSUMERS THAT WERE WATCHED
+#   (S130's own lesson, one instrument later). The gate re-derives landing from FILENAMES ON
+#   DISK with its own regexes and never asks image_audit the question that matters, so it
+#   fails on whatever a future arc decorates the prose with, not just on `data-mark`.
+#   Disagreements are a NAMED set with a reason each, and arm 4 fails a name that has stopped
+#   needing the exemption (S130 rule 20). Coverage arm included (S117/S118). Control-run four
+#   ways from a snapshot of the FIXED state: the defect reproduced end to end (old
+#   image_audit + the worklist it emits) names all six; a deleted worklist row; IMAGE 10.1
+#   dropped from REUSE; a non-load-bearing name added. Each fires gate 63 ALONE at 62 of 62
+#   others green and exit 1, untouched tree passing at BOTH ends, all three files restored
+#   byte-identical. `image_audit` reaches v1.2 and the worklist returns to 14 of 141 -
+#   byte-identical to the repo copy but for the version line, which is the check that the fix
+#   restores exactly the pre-marks answer and no more.
 # v1.55 (S128): GATE 59 NEW - §24.14a, every callout carries the family its CONTENT
 #   resolves to. Written in the same pass as the ruling (S126 rule 16). Before S128, 209
 #   of 1,069 blocks were identified ONLY by their decorative emoji - build_family_map's
@@ -3192,6 +3211,89 @@ try:
 except ImportError:
     bad.append('lesson_inventory.py is missing - the census has no source')
 gate('\u00a712.6 the census equals an independent line count', bad)
+
+
+# GATE 63 (S131) - §10: A FIGURE IS LANDED BY AN ASSET, NEVER BY A DECORATION.
+#
+# image_audit has a NEIGHBOUR arm: if the filename does not match, an <img> sitting in the
+# tag's own paragraph lands the figure anyway. It exists for L10, which prints "this is the
+# same photo you met in Lesson 5" and wires L05's file directly - counting that as missing
+# would send DJ out to re-shoot a photograph the book already ships.
+#
+# S130 then put 884 <img data-mark> marks into that same prose, and the arm could not tell a
+# lightbulb from a photograph. SIX REAL SHOTS - L03 3.2 / 3.5 / 3.6, L12 12.1, L14 14.1,
+# L16 16.1 - reported LANDED. Nothing failed. `--check` said DIFFERS and the only honest
+# reading of that was "re-run me", which would have written 8 over 14 and retired six
+# entries from the shot list four weeks out from the course.
+#
+# THIS GATE IS THE SECOND METHOD AND SHARES NO CODE WITH THE FIRST. It does not import
+# image_audit for the question that matters: it re-derives landing from FILENAMES ON DISK
+# with its own regexes, and requires every disagreement to be a NAMED reuse with a recorded
+# reason. Whatever a future arc decorates the prose with, a tag that quietly stops being
+# outstanding lands here. Arm 4 keeps the names honest: a hold that has become true by
+# accident is not a hold (S130 rule 20), so a name that no longer NEEDS the exemption fails.
+REUSE = {
+    # tag -> why this tag legitimately lands with no file of its own name
+    'IMAGE 10.1': "L10 wires L05_IMAGE_5-04b directly and the prose says so - "
+                  "'this is the same photo you met in Lesson 5'",
+    'IMAGE 7.3': "UNRULED, held by name at S131: satisfied by L07_GRAPHIC_7-15_platformio_"
+                 "file_tree.svg, which is a GRAPHIC standing in for an IMAGE across the two "
+                 "number spaces (\u00a710), with no prose declaring the substitution. Same "
+                 "subject, so it is plausibly deliberate - but nothing in the book says so, "
+                 "and this gate will not decide it. DJ rules; the name leaves when he does.",
+}
+bad = []
+_WL = 'IMAGE_WORKLIST.md'
+_TAG63 = re.compile(r'\[(IMAGE|GRAPHIC|VIDEO)\s+(\d+)\.(\d+)([a-z]?)\]')
+_ROW63 = re.compile(r'^\| L(\d\d) \| ([A-Z]+ \d+\.\d+[a-z]?) \|')
+if not os.path.exists(_WL):
+    bad.append('%s is missing - the shot list has no home' % _WL)
+else:
+    # ARM 1 - CURRENCY. This one DOES import the generator, because "the artefact matches its
+    # generator" is the only question that cannot be asked without it. It is not the
+    # independence claim; arm 3 is.
+    try:
+        import image_audit as _IA
+        if _IA.emit(*_IA.audit()) != open(_WL, encoding='utf-8').read():
+            bad.append('%s does not match what image_audit emits - regenerate it, and read '
+                       'the diff before you do' % _WL)
+    except ImportError:
+        bad.append('image_audit.py is missing - the shot list has no generator')
+
+    _rows = set()
+    for _ln in open(_WL, encoding='utf-8'):
+        _m = _ROW63.match(_ln)
+        if _m:
+            _rows.add((_m.group(1), _m.group(2)))
+    _disk63 = [os.path.basename(_p) for _p in glob.glob('images/*.*')]
+    _planned63, _needed = 0, set()
+    for _f in files:
+        _host = os.path.basename(_f)[7:9]
+        _src = open(_f, encoding='utf-8').read()
+        for _k, _a, _b, _s in {(m.group(1), int(m.group(2)), int(m.group(3)), m.group(4))
+                               for m in _TAG63.finditer(_src)}:
+            _planned63 += 1
+            _tag = '%s %d.%d%s' % (_k, _a, _b, _s)
+            if _k == 'VIDEO' or (_host, _tag) in _rows:
+                continue
+            # ARM 3 - INDEPENDENT. Own regex, own directory read, no image_audit.
+            _pat = re.compile(r'^L%02d_%s_%d-0*%d%s_' % (_a, _k, _a, _b, _s), re.I)
+            if any(_pat.match(_d) for _d in _disk63):
+                continue
+            _needed.add(_tag)
+            if _tag not in REUSE:
+                bad.append('L%s [%s] is not outstanding and no file in images/ carries its '
+                           'name - something in the prose landed it that is not an asset '
+                           '(a mark did exactly this at S130). Shoot it, wire it, or add it '
+                           'to REUSE with a reason.' % (_host, _tag))
+    # ARM 2 - COVERAGE. A gate that reads zero tags passes (S117/S118).
+    if _planned63 < 100:
+        bad.append('gate 63 saw only %d planned tag(s) - the scan under-reaches' % _planned63)
+    # ARM 4 - THE NAMES MUST STILL BE LOAD-BEARING.
+    for _t in sorted(set(REUSE) - _needed):
+        bad.append('[%s] is held in REUSE but no longer needs the exemption - it either has '
+                   'its own file now or stopped being planned. Drop the name.' % _t)
+gate('\u00a710  no figure is landed by a decoration', bad)
 
 print('=' * 52)
 
