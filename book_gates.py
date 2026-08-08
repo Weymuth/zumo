@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.63'
+VERSION = 'v1.63.1'
 # v1.60 (S132): GATE 65 NEW - §27.15f, THE REVEAL BOX. 453 <details> in THIRTEEN spellings
 #   plus 55 with no class at all, whose summaries therefore had NO cursor: pointer - the one
 #   part of the drift a reader would have felt. Graduated to an element rule. The gate is
@@ -1835,7 +1835,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1198:                     # 1134 -> 1198 at S132: THE GLOSSARY CONVERSION. 64
+if _seen != 1201:                     # 1198 -> 1201 at S135: the three §1 hook figures land. 3
                                       # of the 151 term cards had no key mark; the canon
                                       # card carries one, so 64 new image references.
                                       # DERIVED: 1,134 + 64, and 151 - 87 already-marked
@@ -1863,7 +1863,7 @@ if _seen != 1198:                     # 1134 -> 1198 at S132: THE GLOSSARY CONVE
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,198 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,201 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2061,7 +2061,7 @@ if _staged38:
 # Two faults, both fatal to editability and both invisible on screen:
 #   1. an <image> carrying a plain href (with or without xlink alongside)
 #   2. xlink:href used while xmlns:xlink is undeclared — malformed, may not parse at all
-NIMG_EXPECTED = 28           # stated, not inherited — bump when an <image> is added
+NIMG_EXPECTED = 31           # stated, not inherited — bump when an <image> is added
 #   27 -> 28 at S106: L02_IMAGE_2-02_zumo_buttons_labeled.svg joined the book. The gate
 #   caught it entering on a fresh clone — the file's own xlink was correct, so the ONLY
 #   thing that saw a new composite arrive was this stated count.
@@ -2259,7 +2259,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '2cf7bbd1225543d4'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '312d08a07c87b5da'
 #   S134 move: digest ONLY. Rules and declarations UNCHANGED at 574/2,033 - zero born,
 #   zero died, zero ALTERED, diffed by selector. The whole sheet delta is FOUR lines: the
 #   header's covered-attribute count and one rule's usage comment, .div-fs-105em ×792 ->
