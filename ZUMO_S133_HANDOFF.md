@@ -53,7 +53,7 @@ the harvest.
 # STATE
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`3c0566a`**. Census **40,440**.
+Fresh-clone verified at **`c0a20c2`**. Census **40,440**.
 Bible **v8.124** · `BookComponentStandard` **v01.13.0** · Maker **v2.45.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
@@ -82,7 +82,7 @@ Instruments: `book_gates` **v1.59** · `lesson_inventory` **v1.3.5** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.25.0 · L02 v03.18.0 · L03 v03.37.0 · L04 v04.25.0 · L05 v04.25.0 · L06 v04.29.0 · L07 v04.28.0 · L08 v04.27.0 · L09 v05.22.0 · L10 v02.23.0 · L11 v02.24.0 · L12 v01.27.0 · L13 v02.24.0 · L14 v02.29.0 · L15 v02.25.0 · L16 v02.18.0.
+Lessons: L01 v03.25.0 · L02 v03.18.0 · L03 v03.37.0 · L04 v04.25.0 · L05 v04.25.0 · L06 v04.29.0 · L07 v04.29.0 · L08 v04.28.0 · L09 v05.23.0 · L10 v02.23.0 · L11 v02.24.0 · L12 v01.27.0 · L13 v02.24.0 · L14 v02.29.0 · L15 v02.25.0 · L16 v02.18.0.
 
 **64/64 gates.** `lesson_inventory --anomalies` silent · family map **1123/1123** ·
 `family_tag` **1123 correct, 0 drifted, 0 unnamed** · `callout_id --audit` **1123, 0 problems** ·
