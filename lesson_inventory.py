@@ -2,7 +2,7 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.3.3'
+VERSION = 'v1.3.4'
 #
 # v1.3.1 (S128): callout records gain 'start', 'open_end' and 'family_attr'. Purely
 #   additive - three new keys, no existing key changed, no detector changed. Written
@@ -503,7 +503,17 @@ def build(path):
     return {
         'file': path,
         'lesson': os.path.basename(path)[7:9],
-        'bytes': len(src), 'lines': src.count('\n') + 1,
+        # S130: THE CENSUS IS REAL LINES, AND IT NOW AGREES WITH `wc -l`.
+        # This was an unconditional `count('\n') + 1`, which counts the empty string AFTER a
+        # trailing newline as a line - so the census ran exactly one high per file, 16 high
+        # book-wide, and re-deriving it by any ordinary means disagreed. DJ, on being offered
+        # a handoff note explaining the gap: "Why do we need it. Can't we fix the problem?"
+        # A number that needs a footnote to avoid being misread is a defect, not a convention.
+        # The `+ 1` is now conditional on the file NOT ending in a newline, which is the case
+        # that genuinely has a final unterminated line. All sixteen lessons were normalised to
+        # end in a newline in the same pass, so both branches agree and the count is exact.
+        'bytes': len(src),
+        'lines': src.count('\n') + (0 if src.endswith('\n') else 1),
         'versions': versions,
         'sections': sections,
         'fences': fences,

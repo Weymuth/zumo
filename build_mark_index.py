@@ -11,11 +11,45 @@ colours actually appear anywhere in the project.
 """
 import json
 
-VERSION = 'v1.0.2'   # the only version home in this file (S96)
+VERSION = 'v1.1.0'   # the only version home in this file (S96)
 import os
 import re
 import sys
 import tempfile
+
+# S130: §7.2 IS PARSED, NOT TRANSCRIBED. FAMILY below is §7.1 only, and a reconciliation
+# scoped to it reports every §7.2 supporting mark as an unindexed orphan - which is exactly
+# what happened at S130, producing a list of "14 orphans" that came within one ruling of
+# deleting eleven correctly-indexed files. §24.8 in the instrument: the population you can
+# enumerate is not the population the standard names. The standard is the source (S83:
+# import the definition, never write a second copy), so this reads it rather than restating
+# it, and `supporting()` is empty-loud because a table that silently parses to nothing would
+# reproduce the same false orphan list.
+_STD = 'BookComponentStandard.md'
+
+
+def supporting(path=_STD):
+    """The §7.2 supporting-mark names, parsed from the standard. LOUD if empty."""
+    if not os.path.exists(path):
+        return set()
+    s = open(path, encoding='utf-8').read()
+    i = s.find('### 7.2 Supporting marks')
+    if i < 0:
+        raise SystemExit('%s: §7.2 heading not found - the parser has drifted from the '
+                         'standard, and a silent empty set reads as "no supporting marks"'
+                         % path)
+    j = s.find('**Grounds.**', i)
+    names = set(re.findall(r'`([a-z0-9-]+)`', s[i:j if j > 0 else len(s)]))
+    if not names:
+        raise SystemExit('%s: §7.2 parsed to ZERO names - refusing to report every '
+                         'supporting mark as an orphan' % path)
+    return names
+
+
+def roster(path=_STD):
+    """Every mark name the standard accounts for: §7.1 families + §7.2 supporting."""
+    return set(FAMILY) | supporting(path)
+
 
 FAMILY = {
     'book': 'LEARN', 'sticky': 'NOTE', 'chat-square-text': 'EXPLANATION',

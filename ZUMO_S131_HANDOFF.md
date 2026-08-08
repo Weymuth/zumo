@@ -52,14 +52,14 @@ consumer that CAN fail, not the one that reports.**
 # STATE
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`fe1f2b5`**. Census **40,698**.
+Fresh-clone verified at **`fe1f2b5`**. Census **40,683**.
 Bible **v8.122** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.56** · `lesson_inventory` **v1.3.3** ·
+Instruments: `book_gates` **v1.57** · `lesson_inventory` **v1.3.4** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
-`build_family_map` **v1.4.0** · `callout_id` **v1.0** · `build_mark_index` **v1.0.2** · `gen_bonus_banner` **v1.4.1** ·
+`build_family_map` **v1.4.0** · `callout_id` **v1.0** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.22.0** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
 `build_css` **v1.3.0** ·
@@ -75,15 +75,16 @@ Instruments: `book_gates` **v1.56** · `lesson_inventory` **v1.3.3** ·
 `next_pointer` **v1.2** ·
 `family_tag` **v1.1** ·
 `mark_wire` **v1.0.2** ·
-`glyph_scan` **v1.0** ·
+`glyph_scan` **v1.1** ·
 `title_feed` **v1.0** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.24.0 · L02 v03.17.0 · L03 v03.36.0 · L04 v04.24.0 · L05 v04.24.0 · L06 v04.28.0 · L07 v04.27.0 · L08 v04.26.0 · L09 v05.21.0 · L10 v02.22.0 · L11 v02.23.0 · L12 v01.26.0 · L13 v02.23.0 · L14 v02.28.0 · L15 v02.24.0 · L16 v02.17.0.
+Lessons: L01 v03.24.0 · L02 v03.17.0 · L03 v03.36.1 · L04 v04.24.0 · L05 v04.24.0 · L06 v04.28.0 · L07 v04.27.0 · L08 v04.26.0 · L09 v05.21.0 · L10 v02.22.0 · L11 v02.23.0 · L12 v01.26.0 · L13 v02.23.0 · L14 v02.28.0 · L15 v02.24.0 · L16 v02.17.0.
 
-**60/60 gates.** `lesson_inventory --anomalies` silent · family map **1069/1069** ·
+**62/62 gates.** `lesson_inventory --anomalies` silent · family map **1069/1069** ·
 `family_tag` **1069 correct, 0 drifted, 0 unnamed** · `callout_id --audit` **1069, 0 problems** ·
+**census 40,683 == `wc -l`** (gate 62) ·
 `regex_audit` **1 lead** (known `entity_sweep.py:70`) · `build_css --check` current at 604 rules ·
 `color_index --check` clean · `image_audit --check` current at 14 of 141 ·
 `gate_payload_match` PASS · `site_parity` **PARITY**.
@@ -98,7 +99,9 @@ one new preserved layer, one tier deleted.**
 - **884 marks applied.** All verified to LEAD their own label. §21 coverage **250 → 1,134**.
 - **`callout_id.py` v1.0** — `data-callout="L.n"` on all 1,069 callouts, §20.2's form.
   **Authored, never recomputed.** Stripping it back out returns all 16 files byte-identical.
-- **`lesson_inventory` v1.3.3 emits `callout_id`** — the stable identity the suite never had.
+- **`lesson_inventory` emits `callout_id`** — the stable identity the suite never had.
+  (Version deliberately not restated here: a real version in prose is taken as the LAST match
+  by `_versions_in()`, which is push rule 11. Read it from the version block above.)
 - **`ZUMO_FAMILY_PINS.md`** — 212 blocks, generated ONCE from the verified state.
   **PRESERVED LAYER. Never regenerate it from `data-family`.**
 - **The GLYPH tier is DELETED**, including for the rump of 4 whose families have no §7 row.
@@ -114,8 +117,8 @@ one new preserved layer, one tier deleted.**
   §21's constant HAS now moved (250 → 1,134); the family-map total is still a hand-held literal.
 
 ## Opened S130, unruled
-- **`glyph_scan`'s trailing line still reads *"NEW leads must be read before `mark_wire --apply`
-  runs"*.** It has run. Reword or retire.
+- **DONE S130:** `glyph_scan` **v1.1** — post-run line generalised; gate 60's own glyph read
+  accepted by name after a behavioural proof (0 of 1,069 resolutions change when blanked).
 - **Should `ZUMO_FAMILY_PINS.md` carry a version home?** Same shape as the carried
   `css/semantic.css` question, now with a gate depending on it.
 - **The 3 NEW `glyph_scan` leads are unchanged and still read** — `book_gates:843` (☐, a BRAIN
@@ -141,7 +144,7 @@ one new preserved layer, one tier deleted.**
   RETIRE IT** · **L14's score formula is `<code>` and is not code** ·
   **the two `book_gates` versions S115 shipped carry NO changelog line** ·
   **four `data-reveal="mechanism"` blocks are not on §20.1's whitelist** ·
-  **§7.2 names seven marks not on disk.**
+  **The mark roster now RECONCILES and is gated (61).** The seven absent marks are §7.2's SYSTEMS group, which §7.2's own Grounds table already rules *"in scope: no"* — NOT a debt. Held by name; the hold expires if any one lands. **Do not re-open this.**
 
 ## Bench (need the robot — parked with photography)
 Q017 L09 six numbers · Q044 calibration-spin · Q046 gyro-bias · L02 §5 green-LED ·

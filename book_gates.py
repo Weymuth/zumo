@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.56'
+VERSION = 'v1.57'
 # v1.55 (S128): GATE 59 NEW - §24.14a, every callout carries the family its CONTENT
 #   resolves to. Written in the same pass as the ruling (S126 rule 16). Before S128, 209
 #   of 1,069 blocks were identified ONLY by their decorative emoji - build_family_map's
@@ -3115,6 +3115,83 @@ else:
         bad.append('build_family_map.py is missing - the pin has no consumer')
 gate('\u00a724.14c the family pin is preserved and covers exactly the unnameable blocks',
      bad)
+
+# ---------------------------------------------------------------------------
+# GATE 61 (S130) - §7.2: THE MARK ROSTER RECONCILES AGAINST DISK.
+#
+# WHY IT EXISTS, AND IT IS A DEFECT THIS SESSION COMMITTED. A hand reconciliation scoped to
+# §7.1's FAMILY table reported every §7.2 supporting mark as an unindexed orphan - a list of
+# "14 orphans" that came within one ruling of DELETING eleven correctly-indexed files. The
+# standard has TWO tables and the instrument knew one. §24.8: the population you can
+# enumerate is not the population the standard names.
+#
+# THE MISSING SEVEN ARE NOT A DEBT, AND CALLING THEM ONE WAS THE SECOND ERROR OF THE PAIR.
+# They are §7.2's SYSTEMS group, and §7.2's own Grounds table already rules that group
+# "in scope: no" - it sits on a filled band rather than the page tint. So the standard
+# accounts for them completely and they were never owed. Held BY NAME (§25.2a) rather than
+# by count, because a count arm passes when one is drawn and a different one goes missing;
+# naming them means the hold expires the moment any single one lands.
+bad = []
+_MARKS_MISSING = {          # §7.2 SYSTEMS: out of scope per §7.2's Grounds table, not owed.
+    'box-seam': 'maker', 'chat-dots': 'tutor', 'images': 'image index',
+    'stopwatch': 'timer', 'table': 'quick reference', 'trophy': 'milestones',
+    'ticket-perforated': 'exit ticket',
+}
+try:
+    import build_mark_index as _BMI
+    _roster = _BMI.roster()
+    _disk = {os.path.basename(f)[:-4] for f in glob.glob('images/marks/*.svg')}
+    if not _roster:
+        bad.append('gate 61 read an EMPTY roster - a gate that checks nothing passes')
+    _unindexed = _disk - _roster
+    if _unindexed:
+        bad.append('%d mark(s) on disk are in NEITHER §7 table: %s'
+                   % (len(_unindexed), ', '.join(sorted(_unindexed))))
+    _absent = _roster - _disk
+    _new = _absent - set(_MARKS_MISSING)
+    if _new:
+        bad.append('%d mark(s) named in §7 but NOT on disk and not held: %s'
+                   % (len(_new), ', '.join(sorted(_new))))
+    _landed = set(_MARKS_MISSING) - _absent
+    if _landed:
+        bad.append('%d held mark(s) are now on disk - the hold has expired, remove them '
+                   'from _MARKS_MISSING: %s' % (len(_landed), ', '.join(sorted(_landed))))
+except ImportError:
+    bad.append('build_mark_index.py is missing - the mark roster has no source')
+gate('\u00a77.2 every mark on disk is indexed and every named mark is accounted for', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 62 (S130) - §12.6: THE CENSUS IS RE-DERIVABLE BY ORDINARY MEANS.
+#
+# The census ran ONE HIGH PER FILE for its whole life - an unconditional `count('\n') + 1`
+# counts the empty string after a trailing newline as a line - so `wc -l` disagreed by 16
+# and the gap had to be explained every time anyone checked. DJ: "Why do we need it. Can't
+# we fix the problem?" A number that needs a footnote to avoid being misread is a defect.
+#
+# THIS GATE IS THE SECOND METHOD, NOT A RESTATEMENT OF THE FIRST. It counts newlines
+# directly, without importing the parser, so it fails if the two definitions ever diverge
+# again. The trailing-newline arm is what keeps them equal: every lesson must end in one,
+# because that is the condition under which "newlines" and "lines" are the same number.
+bad = []
+try:
+    import lesson_inventory as _LIc
+    _files = sorted(glob.glob('lessons/Lesson_*.html'))
+    if not _files:
+        bad.append('gate 62 found ZERO lessons - a gate that counts nothing passes')
+    _raw = 0
+    for _f in _files:
+        _src = open(_f, encoding='utf-8').read()
+        if not _src.endswith('\n'):
+            bad.append('%s does not end in a newline - its final line is unterminated, and '
+                       'the census and wc -l stop agreeing' % _f)
+        _raw += _src.count('\n')
+    _inv = sum(_LIc.build(_f)['lines'] for _f in _files)
+    if _inv != _raw:
+        bad.append('census %d disagrees with an independent newline count %d - the two '
+                   'definitions have diverged' % (_inv, _raw))
+except ImportError:
+    bad.append('lesson_inventory.py is missing - the census has no source')
+gate('\u00a712.6 the census equals an independent line count', bad)
 
 print('=' * 52)
 

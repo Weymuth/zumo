@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""glyph_scan.py - AST scan for GLYPH-PINNED LOCATORS.  v1.0, S129.
+"""glyph_scan.py - AST scan for GLYPH-PINNED LOCATORS.  v1.1, S130 (v1.0, S129).
 
 WHY THIS EXISTS (S127 rule 19, S128's marks arc):
     The marks arc replaces a callout's decorative leading emoji with an <img>.  Any
@@ -35,7 +35,7 @@ import os
 import pathlib
 import sys
 
-VERSION = 'v1.0'
+VERSION = 'v1.1'
 GLYPH_FLOOR = 0x2100          # lesson_inventory's own threshold; see queue item 2
 SEARCH = {'count', 'find', 'rfind', 'index', 'startswith', 'endswith',
           'replace', 'split', 'search', 'match', 'findall', 'sub', 'finditer'}
@@ -49,10 +49,24 @@ ACCEPTED = {
     ('lesson_inventory.py', 'D1', "c['glyph']"):
         'PRODUCER. The parser is where the glyph field is born; it is not a consumer.',
     ('build_family_map.py', 'D1', "c.get('glyph')"):
-        'BLINDABLE. Proved S129: GLYPH={} still returns 1069/1069, so no family '
-        'depends on it. The tier is corroboration only.',
+        'VESTIGIAL. The GLYPH tier is DELETED (S130, §24.14c). What still reads the '
+        'field is the value passed to the RULE lambdas, and NONE of them uses it: '
+        'blanking the glyph changes the resolution of 0 of 1069 callouts, measured '
+        'behaviourally rather than by reading source. '
+        'THE S129 REASON HERE WAS THE ONE THAT MISLED S130 AND IS REPLACED: it read '
+        '"GLYPH={} still returns 1069/1069, so no family depends on it" - a TRUE '
+        'statement whose conclusion was false, because this module reads data-family '
+        'FIRST and therefore cannot fail that test. The auditor could, and did, at 212. '
+        'Run a blinding control against the consumer that CAN fail.',
     ('family_tag.py', 'D1', "c.get('glyph')"):
-        'BLINDABLE. Imports build_family_map\'s tiers (§83), so it inherits the above.',
+        'VESTIGIAL. Imports build_family_map\'s tiers (§83), so it inherits the above. '
+        'Its own last tier is now the AUTHORED pin, not the glyph (S130).',
+    ('book_gates.py', 'D1', "_c.get('glyph')"):
+        'VESTIGIAL. Gate 60 re-runs the CONTENT tiers to derive which callouts need a '
+        'pin, and passes the glyph only because the RULE lambdas take three arguments. '
+        'Measured: blanking it changes 0 of 1069 resolutions, so the pinned/unpinned '
+        'split is glyph-independent. Caught by this scanner in the very gate written to '
+        'retire the glyph tier, which is the scanner working.',
     ('mark_wire.py', 'D1', "c.get('glyph')"):
         'BY DESIGN. The swapper reads the glyph in order to REPLACE it. If this stopped '
         'reading the glyph the arc would not work.',
@@ -243,7 +257,14 @@ def _report(root='.'):
           f'{sum(1 for l in leads if l["fixture"])} in selftest fixtures, '
           f'{len(new)} NEW.')
     if new:
-        print('\n  NEW leads must be read before mark_wire --apply runs (S127 rule 19).')
+        # S130: THIS LINE NAMED `mark_wire --apply` AND THAT ARC HAS RUN. A message pinned to
+        # one arc expires with it and then quietly misinstructs whoever reads it next - the
+        # same shape as an acceptance keyed on a site that no longer exists (S129 Control F).
+        # The RULE is not about that tool: a NEW lead is an unread dependency on how a
+        # character is SPELLED, and it must be read before ANY sweep that rewrites one.
+        print('\n  A NEW lead is an UNREAD dependency on a character\'s spelling.')
+        print('  Read every one before running any sweep that rewrites a glyph, mark or')
+        print('  entity, and accept it BY NAME with a reason (S127 rule 19).')
     return 1 if new else 0
 
 
