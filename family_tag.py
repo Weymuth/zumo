@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # VERSION is the ONE home and sits ABOVE the changelog, so a plain grep of this file
 # returns the version and not a changelog line (S98).
-VERSION = 'v1.2'
+VERSION = 'v1.2.1'
 # v1.2 (S132): the STRUCTURE tier is consulted above the pin. It is IMPORTED from
 #   build_family_map (B.struct), not restated here — the same discipline that keeps CANON,
 #   RULE and PINS in one place. Additive: every block this tier names was already named
@@ -75,7 +75,7 @@ def family_of(c):
     lab = B.norm(c.get('label'))
     g = (c.get('glyph') or '').strip()
     scheme = (c['bg'] or 'none', c['border'])
-    fam = next((f for f in B.CANON if lab.upper().startswith(f)), None)
+    fam = B.canon_of(lab)
     if fam:
         return fam
     for fn, f in B.RULE:

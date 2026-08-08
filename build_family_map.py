@@ -2,7 +2,7 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.5.0'
+VERSION = 'v1.6.0'
 # v1.5.0 (S132): THE STRUCTURE TIER. A callout inside the GLOSSARY REGION is a KEY TERM.
 #   Seated ABOVE the pin, below the content rules, and it is the FIRST tier since S112
 #   that is not a content rule and not authored — so the distinction it stands on has to
@@ -123,6 +123,14 @@ CANON=["HOW THIS SECTION WORKS","IF YOU'RE STUCK","COMMON PITFALLS","ENGINEER'S 
 "LEARN","NOTE","TIP","HINT"]
 CANON.sort(key=len,reverse=True)
 
+def canon_of(lab):
+    """The CANON tier, ONE definition (S83). The prefix must end on a WORD BOUNDARY:
+    'LEARNING OBJECTIVES' starts with 'LEARN' and is not a LEARN box. Measured inert at
+    S133 - across all 1,119 live labels the result changes for zero of them."""
+    u = (lab or '').upper()
+    return next((f for f in CANON
+                 if u.startswith(f) and (len(u) == len(f) or not u[len(f)].isalpha())), None)
+
 # S94 rulings, checked in order. (matcher, family)
 RULE=[
  (lambda l,g,s: l.upper().startswith('MYSTERY'),                        'MYSTERY'),
@@ -144,7 +152,10 @@ RULE=[
  (lambda l,g,s: 'NEW IN THIS LESSON' in l.upper(),                      'HOW THIS SECTION WORKS'),
  (lambda l,g,s: 'YOU ALREADY OWN THIS TOOL' in l.upper() or l.startswith('The desk and the bookshelf') or l.startswith('Reminder -') or l.startswith('INFO:') or l.startswith('The recipe, written out') or l.startswith('Recipe:'),'NOTE'),
  (lambda l,g,s: l.startswith('The rule that saves you') or l.startswith('The rule of thumb') or l.startswith('Clamp the memory'),'TIP'),
- (lambda l,g,s: l.startswith('OBJECTIVES'),                             'OBJECTIVES'),
+ # S133: was startswith('OBJECTIVES'), which the S133 rename to 'Learning Objectives'
+ # walked straight past. A list of objectives is an OBJECTIVES block whatever adjective
+ # precedes the noun - the rule now names the NOUN, which is the content (§24.14).
+ (lambda l,g,s: re.search(r'\bOBJECTIVES\b', l.upper()) is not None,      'OBJECTIVES'),
  # --- S96 rulings (DJ). Closes the 15 blocks the S94 map assigned but the generator did not.
  # Matched on label prefix, not line number, so an edit above them does not break the rule.
  (lambda l,g,s: l.startswith('A new kind of label'),                     'HOW THIS SECTION WORKS'),
@@ -309,7 +320,12 @@ for inv in d:
         bg=c['bg'] or 'none'; bd=c['border']
         f=c.get('family_attr')
         if not f:
-            f=next((fam for fam in CANON if lab.upper().startswith(fam)),None)
+            # S133: the prefix must end on a WORD BOUNDARY. 'LEARNING OBJECTIVES' starts
+            # with 'LEARN' and is not a LEARN box - a canon name must match a whole word,
+            # not bite into the next one. MEASURED INERT before it was applied: across all
+            # 1,119 live labels the result changes for ZERO of them, so this cannot move
+            # the map; it only stops a FUTURE label from being claimed by a shorter name.
+            f=canon_of(lab)
         if not f:
             for fn,fam in RULE:
                 if fn(lab,g,(bg,bd)): f=fam; break

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.27.0 -->
+<!-- Lesson version: v02.29.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +75,7 @@
 <h1 class="h1">The Present Isn't Enough</h1>
 <div class="div-fs-11em">PID Control — and the Tuning Bench That Proves It</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.27 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.29 — August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -114,23 +114,25 @@ before: <b>a way to tell whether your tuning actually helped.</b></p>
 knobs, squinting at the robot, and saying “that looked smoother.” That is not tuning. That is
 hoping. Half this lesson is about building an instrument that replaces the squint with a
 <b>number</b>.</div>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<div class="div-2196f3">[GRAPHIC 15.4] Proportional control under a spotlight: it can see the present and nothing else. The past and the future are dark.</div>
+
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 2: LEARNING OBJECTIVES ===================== -->
 <div class="div-bg-1f2a3d"><div id="section-2"><span class="span-d-block-2">Section 2</span><span class="span-d-block">Learning Objectives</span></div></div>
 <div class="div-1f2a3d">
 
-<p>By the end of this lesson you will be able to:</p><ul>
-<li class="li-mb-7px">Explain what the <b>P</b>, <b>I</b>, and <b>D</b> terms each look at — the present, the past, and the future — and write the equation for each.</li>
-<li class="li-mb-7px">Upgrade <code>followLine()</code> from P to <b>PD</b> without changing its name or a single call site.</li>
-<li class="li-mb-7px">Explain why the derivative needs a real <code>dt</code>, and why <code>millis()</code> cannot supply one on this robot.</li>
-<li class="li-mb-7px">Build a <b>tuning bench</b> that scores a run with three numbers (MAE, PEAK, WEAVE) so two sets of gains can actually be compared.</li>
-<li class="li-mb-7px">Run a repeatable tuning protocol: find <b>Ku</b>, measure <b>Tu</b>, take a Ziegler–Nichols starting point, and hill-climb from it to a stopping condition.</li>
-<li class="li-mb-7px">Explain why the <b>I</b> term is a liability on the line loop and the hero on the speed loop — and defend that with the physics, not with a preference.</li>
-<li class="li-mb-7px">Diagnose integral <b>windup</b>, derivative <b>kick</b>, and derivative <b>noise amplification</b>, and name the fix for each.</li>
+<p>By the end of this lesson, you will be able to:</p><ul data-objectives>
+<li class="li-mb-7px">☐ Explain what the <b>P</b>, <b>I</b>, and <b>D</b> terms each look at — the present, the past, and the future — and write the equation for each.</li>
+<li class="li-mb-7px">☐ Upgrade <code>followLine()</code> from P to <b>PD</b> without changing its name or a single call site.</li>
+<li class="li-mb-7px">☐ Explain why the derivative needs a real <code>dt</code>, and why <code>millis()</code> cannot supply one on this robot.</li>
+<li class="li-mb-7px">☐ Build a <b>tuning bench</b> that scores a run with three numbers (MAE, PEAK, WEAVE) so two sets of gains can actually be compared.</li>
+<li class="li-mb-7px">☐ Run a repeatable tuning protocol: find <b>Ku</b>, measure <b>Tu</b>, take a Ziegler–Nichols starting point, and hill-climb from it to a stopping condition.</li>
+<li class="li-mb-7px">☐ Explain why the <b>I</b> term is a liability on the line loop and the hero on the speed loop — and defend that with the physics, not with a preference.</li>
+<li class="li-mb-7px">☐ Diagnose integral <b>windup</b>, derivative <b>kick</b>, and derivative <b>noise amplification</b>, and name the fix for each.</li>
 </ul>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 3: THEORY ===================== -->
@@ -264,7 +266,7 @@ watch it save a run on a dying battery. Same term. Same three lines. The robot w
 <div class="div-m-16px0">Line following gets a free pass on <b>derivative kick</b>: our setpoint is
 <code>LINE_CENTER</code>, and it never changes. Remember the name anyway — the first time you put a
 PID on something with a moving target, it will be the first thing that bites you.</div>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== PART 2: HARDWARE & CODE ===================== -->
@@ -350,7 +352,7 @@ an elapsed total and compare it to a target — <i>that</i> is where rollover bu
 <div class="div-m-16px0"><b><code>DT_MIN_US</code> is an engineering limit, not a blank.</b> It ships with
 a value and a reason: 100&nbsp;µs sits far below this loop's real period, so it can only ever fire
 if something is already badly wrong. Changing a limit means beating its reason.</div>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 5: CODE WALKTHROUGH ===================== -->
@@ -665,7 +667,7 @@ It is tempting to clamp only <code>speedTrim</code> on the way out — but then 
 growing on the inside, invisibly, and when you finally need it to come <i>back down</i> it has
 thousands of accumulated units to unwind first. The robot stays wrong for seconds after the cause is
 gone. <b>That is windup, and clamping the output does not prevent it.</b></div>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div id="brain-check-01" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="15.12">
@@ -1167,7 +1169,7 @@ sneaking back in through a different door.</div>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=finished" class="link-c-2e86ab">Open the finished Lesson 15 build in Project Maker</a></p></div>
 </details>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== PART 3: TESTING & CHALLENGES ===================== -->
@@ -1432,7 +1434,7 @@ an hour ago. That is the point of the ladder.</div>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=15&amp;kind=cal_7e" class="link-c-2e86ab">Open 7E — I on the Speed Loop</a></p></div>
 </details>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 8: TROUBLESHOOTING ===================== -->
@@ -1445,7 +1447,7 @@ an hour ago. That is the point of the ladder.</div>
 <h3 class="h3-c-00474b-2">8.2 Stress tests — break it on purpose, in the pit</h3>
 <p>Any controller looks good on a clean straight. Find out what yours does when the world gets rude.</p>
 <table class="table-bc-collapse-4"><tr><th class="th-17496a">Test</th><th class="th-17496a">Do this</th><th class="th-17496a">A good controller…</th></tr><tr><td class="td-cdd9e1"><b>The pickup</b></td><td class="td-cdd9e1">Lift the robot mid-run for two seconds. Put it back on the line.</td><td class="td-cdd9e1">…resumes. It does not lunge. (If it lunges: windup, or you skipped the doorway.)</td></tr><tr><td class="td-cdd9e1"><b>The shove</b></td><td class="td-cdd9e1">Nudge it sideways off the line, hard, mid-run.</td><td class="td-cdd9e1">…comes back in one smooth arc, not three overshooting ones.</td></tr><tr><td class="td-cdd9e1"><b>The tired pack</b></td><td class="td-cdd9e1">Run the same course on a fresh and a half-dead battery.</td><td class="td-cdd9e1">…posts a similar MAE on both. That is the speed loop doing its job.</td></tr><tr><td class="td-cdd9e1"><b>The dirty line</b></td><td class="td-cdd9e1">Put a small piece of white tape across the black line.</td><td class="td-cdd9e1">…crosses it without a flinch. (This is <code>handleGap()</code>, from Lesson 11.)</td></tr><tr><td class="td-cdd9e1"><b>The re-run</b></td><td class="td-cdd9e1">Run the exact same setup three times.</td><td class="td-cdd9e1">…posts three MAE numbers within a few percent. <b>If it does not, tune nothing until you find out why.</b></td></tr></table>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 8A: PERSISTENT ERRORS ===================== -->
@@ -1482,7 +1484,7 @@ MAE, PEAK and WEAVE are not there to make the lesson look scientific. They are t
 eyes are terrible at this: they see the last thing that happened, they want the change to have
 worked, and they cannot hold two ten-second runs side by side. <b>The robot can.</b><br><br>
 Build the instrument before you turn the knob. Always.</div>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== PART 4: CHALLENGES ===================== -->
@@ -1779,7 +1781,7 @@ your controller is not controlling.</b></div>
 </div>
 </div>
 
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <!-- ===================== SECTION 10: EXIT TICKET ===================== -->
@@ -1894,7 +1896,7 @@ that memory is wisdom or superstition depends entirely on what you attached it t
   <p class="p-mb-0">Four messed-up files wait in <a href="#bonus-challenges" class="link-c-2e86ab">Sabotage</a> — each Maker link opens the finished build with one defect planted: a clock that cannot see, a derivative that never learns, a ghost left over from the last gap, and a damper that amplifies.</p>
   </div>
 
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Four Messed Up Files</span></div></div>
@@ -2075,7 +2077,7 @@ correct program. A file size is not a test. A clean compile is not a test. A rob
 the room is not a test.<br><br>
 <b>A number you can compare is a test.</b> That is what the bench is for.</div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=15&amp;kind=b4_sign" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
@@ -2099,7 +2101,7 @@ the room is not a test.<br><br>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="15.41"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-hill-climbing-gloss">Hill-climbing</strong></div>Change one gain, keep it only if the score improves. Stop when nothing improves it.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="15.42"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-gain-scheduling-gloss">Gain scheduling</strong></div>Using different gains in different regimes — e.g. a sharper K<sub>p</sub> in corners than on straights.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="15.43"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-saturation-gloss">Saturation</strong></div>When a value hits its limit and stops responding. <code>readLine()</code> saturates at 0 or 4000 when blind.</div>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="quick-ref"><span class="span-d-block">Quick Reference</span></div></div>
@@ -2120,7 +2122,7 @@ the room is not a test.<br><br>
 • <b>One gain at a time. Same track, same battery, same bell.</b><br>
 • <b>The byte count proves nothing. The score does.</b>
 </div>
-<p class="p-mt-22px"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
 <div class="div-bg-6f7582"><div id="figures"><span class="span-d-block">Figures</span></div></div>

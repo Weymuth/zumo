@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.60'
+VERSION = 'v1.62'
 # v1.60 (S132): GATE 65 NEW - §27.15f, THE REVEAL BOX. 453 <details> in THIRTEEN spellings
 #   plus 55 with no class at all, whose summaries therefore had NO cursor: pointer - the one
 #   part of the drift a reader would have felt. Graduated to an element rule. The gate is
@@ -2259,7 +2259,26 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 577, 2039, '3211afa33570dfb0'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '2f52e29b7e181c26'
+#   S133 fourth move: digest ONLY, 574/2,033 unchanged, zero born, zero died. TWO rules
+#   ALTERED - .ul-ls-none-2 and .ul-ls-none-3 swapped declarations. THE LESSONS ARE
+#   BYTE-IDENTICAL either side of this move; only the stylesheet moved. Cause: build_css
+#   expands through the CURRENT css/book.css, so its class-name assignment is PATH
+#   DEPENDENT - the same lesson tree has more than one fixed point, and which one you land
+#   on depends on the sheet you started from. Recorded rather than fought: the regenerated
+#   sheet is by definition what the lessons generate (S27.13), so it is the correct one.
+#   S133 third move: digest ONLY. Rules and declarations UNCHANGED at 574/2,033 - zero born,
+#   zero died, zero altered. Five S1 figure placeholders joined .div-2196f3 (3 uses -> 8),
+#   which moved that rule's usage RANK and its count comment. Nothing was re-classed.
+#   S133 second move: 577/2,039 -> 574/2,033. THE BACK-TO-TOP WRAPPER IS ONE SPELLING.
+#   All 237 links take <p class="p-ta-right">. Exactly three rules DIE - .div-mt-20px,
+#   .div-mt-25px, .p-mt-10px-2 - carrying two declarations each, and -6 IS those three.
+#   Zero born, zero altered, so §27.15b's rename trap does not fire: all three were used
+#   ONLY by back-to-top links, verified by grep before deletion, 0 other consumers.
+#   S133: digest ONLY. Rules and declarations UNCHANGED at 577/2,039 - zero born, zero died,
+#   zero altered. The 20 changed lines are two RANK relocations and their count comments:
+#   .p-ta-right 150 -> 178 uses and .p-mt-22px 44 -> 16, because L15/L16's 28 back-to-top
+#   wrappers moved from one to the other. S121's shape.
 #   S132 second push: 598/2,123 -> 577/2,039, THE REVEAL BOX (§27.15f). 23 rules die - twelve
 #   <details> spellings, nine <summary> spellings, and the two callout classes L11's ex-ANSWER
 #   blocks vacated - against two born, one of them `.div-dee2e6-6`, a <div> that had been
@@ -3161,7 +3180,7 @@ else:
             for _c in _LIp.build(_f)['callouts']:
                 _lab = _B.norm(_c.get('label')); _g = (_c.get('glyph') or '').strip()
                 _sch = (_c['bg'] or 'none', _c['border'])
-                _fam = next((x for x in _B.CANON if _lab.upper().startswith(x)), None)
+                _fam = _B.canon_of(_lab)
                 if not _fam:
                     for _fn, _x in _B.RULE:
                         if _fn(_lab, _g, _sch):
@@ -3391,7 +3410,7 @@ try:
             _sch = (_c['bg'] or 'none', _c['border'])
             _f64 = _c.get('family_attr')
             if not _f64:
-                _f64 = next((x for x in _B64.CANON if _lab.upper().startswith(x)), None)
+                _f64 = _B64.canon_of(_lab)
             if not _f64:
                 for _fn, _x in _B64.RULE:
                     if _fn(_lab, _g64, _sch):
@@ -3536,6 +3555,126 @@ if _stray65:
     bad.append('%d reveal element(s) still carry a class of their own \u2014 the element rule is '
                'the only home and a class beats it silently (\u00a727.15f)' % _stray65)
 gate('\u00a727.15f the reveal box is one rule, with a visible border and a pointer', bad)
+
+# =====================================================================
+# GATE 66  -  SECTION 1 OPENS WITH SOMETHING TO LOOK AT  (S133, DJ ruling)
+# =====================================================================
+# WHY. Section 1 is the hook - "The Messy Room Problem", "The Crooked Robot Problem" - and
+# its whole job is to make a student care before any code appears. At S133, EIGHT of sixteen
+# had a real figure, three had a placeholder, and FIVE had nothing at all: L04, L11, L12, L13,
+# L15. The five were invisible to image_audit, and correctly so - that tool reports figures the
+# book DECLARES it wants, and nobody had ever declared these. An absence nobody wrote down is
+# an absence no instrument can find (S24.8).
+#
+# WHAT IT ASSERTS. Every lesson's S1 carries a figure OR a declared placeholder. Placeholder
+# counts, deliberately: the ruling is that a hook needs something to look at, and a declared
+# figure is on IMAGE_WORKLIST.md and therefore visible work. A gate demanding a landed ASSET
+# would be a to-do list wearing a gate - red for months, and tuned away by the first reader.
+#
+# THE PREDICATE IS THE AUTHORED NAME, NOT A PATH (rule 19). A figure asset is one named
+# L##_IMAGE_ or L##_GRAPHIC_ per S10/S17. Keying on the directory instead would count every
+# decorative mark in images/marks/ and every spiral_star_NN.svg as a figure - and it did, on
+# the first draft of this very check, reporting a false 16 of 16 with SIX lessons still empty.
+# The naming convention is a property of the asset; the directory is where it happens to live.
+_S1FIG = re.compile(r'L\d\d_(?:IMAGE|GRAPHIC)_')
+_S1PH  = re.compile(r'\[(?:IMAGE|GRAPHIC|VIDEO) [\d.]+\]')
+bad = []
+_seen1 = 0
+for _f1 in files:
+    _s1 = open(_f1, encoding='utf-8').read()
+    _a1 = _s1.find('id="section-1"')
+    _b1 = _s1.find('id="section-2"')
+    if _a1 < 0:
+        bad.append('%s carries no id="section-1"' % L(_f1))
+        continue
+    if _b1 < _a1:
+        bad.append('%s: section-2 does not follow section-1 - the slice is wrong' % L(_f1))
+        continue
+    _seen1 += 1
+    _seg1 = _s1[_a1:_b1]
+    _as1 = [x for x in re.findall(r'<img[^>]*src="\.\./images/([^"]+)"', _seg1)
+            if _S1FIG.search(x)]
+    if _as1:
+        continue
+    if _S1PH.search(_seg1):
+        continue
+    bad.append('%s: Section 1 carries no figure and no declared placeholder - the hook has '
+               'nothing to look at, and nothing on the worklist will ever say so' % L(_f1))
+# COVERAGE ARM (S117/S118): a gate that scans zero lessons passes.
+if _seen1 != len(files):
+    bad.append('scanned %d of %d lessons - the scope is broken' % (_seen1, len(files)))
+gate('\u00a72.1 every lesson opens Section 1 with a figure or a declared placeholder', bad)
+
+# =====================================================================
+# GATE 67  -  SECTION 2 STATES OBJECTIVES, AND EACH ONE IS A BOX  (S133, DJ ruling)
+# =====================================================================
+# DJ, S133: "Can you make it a rule that lessons have to have objectives and there are
+# squares/boxes not dots."
+#
+# THREE ARMS, AND THE THIRD IS THE ONE NOTHING COULD SEE.
+#   1. Every lesson's Section 2 states at least one objective.
+#   2. Every objective carries the literal box glyph. L01 and L15 carried NONE at S133 open -
+#      13 objectives with no box - and v8.108 had recorded that as an observation with no gate.
+#   3. The list must not ALSO draw a bullet. Four lessons (L01, L05, L15, L16) left the <ul>
+#      at the browser default, so each objective rendered as a DOT followed by a BOX. Twelve
+#      lessons suppressed it and four did not, and no instrument in the tree looked at
+#      list-style - it is resolved styling, not markup, so a grep of the lesson cannot answer
+#      it. That is the shape DJ asked about by name: "boxes not dots."
+#
+# THE BOX IS THE LITERAL CHARACTER, NOT AN ENTITY (S27.16, and v8.104 converted 98 of them).
+# Asserting on the entity spelling would pass a book that renders no boxes at all.
+#
+# SCOPE IS THE SECTION, NOT THE PAGE (S122's repeated lesson): a page-wide count of the box
+# glyph is satisfied by BC02, which carries its own boxes by S25.5 and would mask an empty S2.
+_BOX = '\u2610'
+bad = []
+_seen2 = 0
+for _f2 in files:
+    _s2 = open(_f2, encoding='utf-8').read()
+    _a2 = _s2.find('id="section-2"')
+    _b2 = _s2.find('id="section-3"')
+    if _a2 < 0:
+        bad.append('%s carries no id="section-2"' % L(_f2))
+        continue
+    if _b2 < _a2:
+        bad.append('%s: section-3 does not follow section-2 - the slice is wrong' % L(_f2))
+        continue
+    _seen2 += 1
+    _seg2 = _s2[_a2:_b2]
+    _items = re.findall(r'<li[^>]*>(.*?)</li>', _seg2, re.S)
+    if not _items:
+        bad.append('%s: Section 2 states no objectives' % L(_f2))
+        continue
+    _nb = [x for x in _items if not x.lstrip().startswith(_BOX)]
+    if _nb:
+        bad.append('%s: %d of %d objective(s) carry no box - an objective the student cannot '
+                   'tick is a sentence, not a checklist'
+                   % (L(_f2), len(_nb), len(_items)))
+    # ARM 3 - THE BULLET. DJ, S133: "squares/boxes not dots". An objective list must not draw
+    # its own bullet on top of the box. THE PREDICATE IS THE ATTRIBUTE, and the attribute is
+    # why this arm can exist at all: routing the rule through the generated layer swapped
+    # .ul-ls-none with .ul-ls-none-3 and silently re-resolved twelve untouched lessons
+    # (S27.15b). ul[data-objectives] lives in css/semantic.css, which build_css preserves
+    # verbatim and never re-derives, so this rule cannot be renamed or re-ranked.
+    # A CLASS THAT ALREADY SUPPRESSES THE BULLET ALSO SATISFIES IT - the twelve conforming
+    # lessons are not made non-compliant by a rule written for the four that were not.
+    _exp2 = LI.expand_classes_mapped(_s2)[0]
+    _ea2 = _exp2.find('id="section-2"')
+    _eb2 = _exp2.find('id="section-3"')
+    for _u2 in re.finditer(r'<ul([^>]*)>(.*?)</ul>', _exp2[_ea2:_eb2], re.S):
+        if _BOX not in _u2.group(2):
+            continue                      # not an objective list
+        _at2 = _u2.group(1)
+        if 'data-objectives' in _at2:
+            continue
+        _st2 = re.search(r'style="([^"]*)"', _at2)
+        if not (_st2 and re.search(r'list-style[^;:]*:\s*none', _st2.group(1))):
+            bad.append('%s: an objective list draws its own bullet - every item renders as a '
+                       'dot AND a box (DJ, S133: boxes not dots)' % L(_f2))
+# COVERAGE ARM (S117/S118): a gate that scans zero lessons passes.
+if _seen2 != len(files):
+    bad.append('scanned %d of %d lessons - the scope is broken' % (_seen2, len(files)))
+gate('\u00a72.2 every lesson states objectives, each a box and not a bullet', bad)
 
 print('=' * 52)
 
