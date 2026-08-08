@@ -53,7 +53,7 @@ consumer that CAN fail, not the one that reports.**
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
 Fresh-clone verified at **`fe1f2b5`**. Census **40,683**.
-Bible **v8.122** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.4** ·
+Bible **v8.122.1** · `BookComponentStandard` **v01.12.1** · Maker **v2.45.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -84,7 +84,7 @@ Lessons: L01 v03.24.0 · L02 v03.17.0 · L03 v03.36.1 · L04 v04.24.0 · L05 v04
 
 **62/62 gates.** `lesson_inventory --anomalies` silent · family map **1069/1069** ·
 `family_tag` **1069 correct, 0 drifted, 0 unnamed** · `callout_id --audit` **1069, 0 problems** ·
-**census 40,683 == `wc -l`** (gate 62) ·
+**census 40,683 == `wc -l`** (gate 62 — pre-S130 figures run high by the LESSON COUNT, see §12.6) ·
 `regex_audit` **1 lead** (known `entity_sweep.py:70`) · `build_css --check` current at 604 rules ·
 `color_index --check` clean · `image_audit --check` current at 14 of 141 ·
 `gate_payload_match` PASS · `site_parity` **PARITY**.
