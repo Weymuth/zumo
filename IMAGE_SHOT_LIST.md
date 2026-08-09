@@ -2,7 +2,9 @@
 
 Supersedes `IMAGE_NAMING_WORKSHEET.md` (Session 10 — stale: 48 rows, wrong filenames).
 
-**22 photos for DJ · 3 SVGs for Claude · 25 total.**
+**21 photos for DJ · 3 SVGs for Claude · 24 total.**
+
+_S138: L04 IMAGE 4.1 retired — `L04_GRAPHIC_4-07_five_sensor_windows.svg` carries that shot as an annotated Pololu photograph, so it no longer needs shooting._
 
 Convention: `L{NN}_IMAGE_{n-yy}_{snake_name}.png|.jpg` · `L{NN}_GRAPHIC_{n-yy}_{snake_name}.svg`
 **IMAGE and GRAPHIC are separate number spaces** — `L02_IMAGE_2-08` and `L02_GRAPHIC_2-08` coexist by design (Bible §10).
@@ -17,7 +19,6 @@ Convention: `L{NN}_IMAGE_{n-yy}_{snake_name}.png|.jpg` · `L{NN}_GRAPHIC_{n-yy}_
 | L03 | IMAGE 3.4 | `L03_IMAGE_3-04_build_and_upload_success_messages` | Build and upload success messages in terminal |
 | L03 | IMAGE 3.5 | `L03_IMAGE_3-05_testing_setup_with_robot_on_floor` | Testing setup with robot on floor, tape starting line marking start position, clear path ahead |
 | L03 | IMAGE 3.6 | `L03_IMAGE_3-06_serial_monitor_log_showing_several` | Serial Monitor log showing several test runs with TRIM adjustments (TRIM increased from 0 to 15) |
-| L04 | IMAGE 4.1 | `L04_IMAGE_4-01_underside_of_the_zumo_blade_toward` | Underside of the Zumo, blade toward camera: the five sensor windows circled and numbered 1–5 |
 | L04 | IMAGE 4.2 | `L04_IMAGE_4-02_close_up_of_the_front_sensor_array` | Close-up of the front sensor array: the two configuration jumpers in the factory position (proxi |
 | L04 | IMAGE 4.3 | `L04_IMAGE_4-03_finished_test_surface_white_poster` | Finished test surface: white poster board with a straight black tape line and wide white margins |
 | L07 | IMAGE 7.3 | `L07_IMAGE_7-03_platformio_project_folder_structur` | PlatformIO project folder structure in VS Code Explorer panel |

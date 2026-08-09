@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.7, S56 (S110: runs on stable filenames)
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.7.1, S56 (S110: runs on stable filenames)
+v1.7.1 (S138) EXEMPTIONS RE-PINNED AFTER THE S137 STARTER FIX. This gate went PASS ->
+FAIL (4) inside the S137 close push and the handoff still claimed PASS, because the gate
+is NOT one of the 69 - nothing in book_gates.py runs it. S137 rewrote the L03 constrain
+and ramp starters (button-B gate, stop-the-motors line, Lesson 5 -> Lesson 4 for-loop
+pointer) and three EXEMPT keys are byte-exact line text, so rewriting the line orphaned
+the key. Three entries repointed, one added. Census confirmed EXECUTABLE CODE: 0 - the
+divergence was starter-only comment scaffolding throughout, which is exactly what these
+exemptions exist for; the book's card is NOT the place for it (§18.3). LESSON: an EXEMPT
+key that pins a LINE certifies a spelling, not a property - edit a starter and the
+exemption silently dies.
 v1.6.1 (S110) RE-PINNED. The five L01 fingerprints had been stale since S61 and nobody
 could see it, because this gate needs `Lesson_NN_Topic_` filenames and the book stabilised
 on `Lesson_NN.html` - so it did not fail, it CRASHED on the first file and was simply never
@@ -77,8 +87,9 @@ EXEMPT = {
     # S44: L03 whole-template challenge-starter scaffolding (Bible §18.3, rewritten S44).
     # Starter-only lines with no solution source to byte-derive from. Supersedes the S43
     # minimal-skeleton exemptions (those lines no longer exist after the whole-template rebuild).
-    ("3", "constrain", "// (empty - the run happens once, in setup)"):
-        "L03 constrain whole-template starter (S44, §18.3): starter-only comment, no derivation source",
+    ("3", "constrain", "// (nothing to set up - press B to run, so put the robot down first)"):
+        "L03 constrain whole-template starter (S44, §18.3; line rewritten S137 when the starter "
+        "was gated on button B): starter-only comment, no derivation source",
     ("3", "constrain", "// (none needed for this challenge)"):
         "L03 constrain whole-template starter (S44, §18.3): starter-only comment, no derivation source",
     ("3", "constrain", "// write your code here"):
@@ -93,8 +104,13 @@ EXEMPT = {
         "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
     ("3", "ramp", "// Set a low speed, wait STEP_MS, set a higher speed, wait again -"):
         "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
-    ("3", "ramp", "// (empty - the ramp happens once, in setup)"):
-        "L03 ramp whole-template starter (S44, §18.3): starter-only comment, no derivation source",
+    ("3", "ramp", "// (nothing to set up - press B to run, so put the robot down first)"):
+        "L03 ramp whole-template starter (S44, §18.3; line rewritten S137 when the starter "
+        "was gated on button B): starter-only comment, no derivation source",
+    ("3", "ramp", "// Then STOP: motors.setSpeeds(0, 0);  <-- never leave the motors running."):
+        "L03 ramp whole-template starter (§18.3; ADDED S137 - the ramp starter never told the "
+        "student to stop the motors, in a lesson whose §3.8 warning is the robot drives off the "
+        "table): starter-only landing-zone comment, no derivation source",
     ("3", "ramp", "// (none needed for this challenge)"):
         "L03 ramp whole-template starter (S44, §18.3): starter-only comment, no derivation source",
     ("3", "ramp", "// write your code here"):
@@ -111,8 +127,9 @@ EXEMPT = {
         "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
     ("3", "ramp", "// When you reach MAX_SPEED, you are done - do NOT go past the cap."):
         "L03 ramp whole-template starter (S44, §18.3): starter-only landing-zone comment, no derivation source",
-    ("3", "ramp", "// (In Lesson 5 you'll learn the for loop, which does this climb for you.)"):
-        "L03 ramp whole-template starter (S44, §18.3): starter-only L05 forward-reference, no derivation source",
+    ("3", "ramp", "// (Lesson 4 takes the for loop apart; it does this climb in three lines.)"):
+        "L03 ramp whole-template starter (S44, §18.3; repointed S137 from Lesson 5 to Lesson 4 - "
+        "S57 gave the for tutorial to L04 §8A.6): starter-only forward-reference, no derivation source",
 }
 
 def decode_pres(txt):

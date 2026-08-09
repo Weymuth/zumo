@@ -1,4 +1,4 @@
-# ZUMO — S138 HANDOFF (rewritten at S137 close · paste at top of Session 138)
+# ZUMO — S139 HANDOFF (rewritten at S138 close · paste at top of Session 139)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** A stale answer is
@@ -21,7 +21,38 @@
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S137
+# THE ONE THING TO CARRY OUT OF S138
+
+**AN ASSET IS NOT A DELIVERY UNTIL SOMETHING REFERENCES IT.**
+
+`L04_GRAPHIC_4-07_five_sensor_windows.svg` was pushed on its own and took the suite from 69/69 to
+**two failures** — §17.3c's raster census (31 walked, 32 present) and §10's worklist, because a file
+nothing points at lands in `image_audit`'s unreferenced bucket, 30 → 31. **Three counters moved for a
+file no page referenced.** The instruments watch the DIRECTORY as well as the prose, so a half push is
+louder than no push. Now wired into L04 twice — §1 as the reveal and §4.1 as the numbered reference,
+retiring a borrowed **Lesson 11** diagram that had stood in with a *temporary* caption and array-slot
+labels. **`IMAGE 4.1` AND `IMAGE 4.5` BOTH RETIRE WITHOUT A SHOT BEING TAKEN** — the shot list, the
+Figures table and the reserved filename all described the same photograph. **Fall figure debt 11 → 9.**
+
+**AND THE HANDOFF ITSELF WAS THE SESSION'S LAST DEFECT.** S138's outgoing handoff was written by
+editing `ZUMO_S138_HANDOFF.md` **in place** — the INCOMING file — which is the v8.102 defect verbatim,
+and **gate 28 passed** because filename, title and paste-clause all agreed at 138. The gate cannot know
+which session is running. DJ caught it by reading the number. **§12.3 step 4: the outgoing handoff is
+`ZUMO_S<N+1>_HANDOFF.md`, and the old one is DELETED — a separate GitHub Desktop checkbox that is
+frequently missed.**
+
+**TWO THINGS SETTLED THAT SHOULD NOT BE RE-DERIVED.** The five-sensor figure's orientation: Pololu
+0J63 §3.5 gives the convention (sensor 1 is the robot's left-most), the photograph is an underside view
+with the blade pointing *away*, and DJ confirmed on a real board — chips run **5 4 3 2 1** left to
+right. And `gate_payload_match` **went PASS → FAIL inside the S137 close push while the handoff claimed
+PASS**: it is not one of the 69, so nothing runs it unless a session opener does. Its `EXEMPT` keys pin
+literal starter LINES, and S137 rewriting those lines orphaned three — **S126 Rule 19 one layer down,
+a key that pins a spelling certifies a spelling.** Fixed at **v1.7.1**, blinding control loud, orphan
+census across all 21 keys clean.
+
+---
+
+# CARRIED FROM S137
 
 **A TEXT MATCH LOCATES; IT NEVER ANSWERS — AND NAMING THE TOOL LET ME ROUTE AROUND THE RULE.**
 
@@ -73,13 +104,13 @@ the highest-value shot in the set.
 # STATE
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`e27d50b`**. Census **40,467**.
-Bible **v8.130.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.45.5** ·
+Fresh-clone verified at **`442f68d`**. Census **40,468**.
+Bible **v8.130.2** · `BookComponentStandard` **v01.13.0** · Maker **v2.45.5** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.64.1** · `lesson_inventory` **v1.3.5** ·
-`gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7** ·
+Instruments: `book_gates` **v1.64.2** · `lesson_inventory` **v1.3.5** ·
+`gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.7.1** ·
 `build_family_map` **v1.6.0** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.24.0** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
@@ -102,7 +133,7 @@ Instruments: `book_gates` **v1.64.1** · `lesson_inventory` **v1.3.5** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.28.2 · L02 v03.21.2 · L03 v03.40.2 · L04 v04.28.2 · L05 v04.28.1 · L06 v04.31.1 · L07 v04.31.1 · L08 v04.30.1 · L09 v05.26.1 · L10 v02.27.1 · L11 v02.28.2 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1.
+Lessons: L01 v03.28.2 · L02 v03.21.2 · L03 v03.40.2 · L04 v04.28.3 · L05 v04.28.1 · L06 v04.31.1 · L07 v04.31.1 · L08 v04.30.1 · L09 v05.26.1 · L10 v02.27.1 · L11 v02.28.2 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1.
 
 **69/69 gates.** `lesson_inventory --anomalies` silent · family map **1119/1119** ·
 `callout_id --audit` **1119, 0 problems** · `keyterm_prefix --audit` **238 = 151 + 4 + 83 + 0** ·
@@ -158,13 +189,28 @@ open since S40 and S69 already burned a session on a false finding of the same s
 
 ---
 
-# S138 QUEUE
+# S139 QUEUE
 
-## 1. CONTINUE THE READ — L04 IS NEXT
+## 1. L04'S TWELVE READ FINDINGS — READ, NOT YET FIXED
+**L04 was read end to end at S138 (2,129 lines) and NONE of the twelve are applied.** The one that
+reaches a student at the bench: **Challenge 4's TEMPLATE does not compile** — `LINE_SEEN` is used and
+never declared, and the card names only two blanks. Compiler-confirmed. Also: §8A.8 says a crossing
+counts *hundreds* in three places while its own arithmetic derives **five** (10 Hz × half a second);
+`LEARN 4.38` cites **Lesson 2 §3.2b**, a section L02 does not have; **arrays are introduced as new in
+§5.5 when L03 §8A.5 already teaches them**, with no spiral star; §5.1's *seven-section layout* is true
+of no lesson (census: L01 5 · L02 4 · L03 6 · L04 5 · L05 5 · L06 4 · L07 4); Step 2's reveal puts
+`GLOBAL VARIABLES` above `FUNCTION PROTOTYPES` against its own pseudo-code and the shipped file; the
+wave test says readings *jump* where §8 says air already reads maximum; Act Two's row 1 is `P:` + 4
+digits + a 3-space wipe = **9 characters on an 8-character row**; `waitForStart()`/`checkBattery()` sit
+in the Quick Reference's *Line sensor functions* table; C4's function list names `[0]`/`[2]` where the
+solution loops all three; and the Figures table zebra breaks. **Two need the bench** (the wave test and
+the row-1 overflow). **This unblocks L04's quiz bank — READ → FIX → QUIZ.**
+
+## 2. CONTINUE THE READ — L05 IS NEXT
 **L01, L02 and L03 are READ. L04–L16 ARE NOT.** L04 is the lesson S57 gave the `for` tutorial to,
 and the one whose §8A.6 opener just changed — read it against L01 and L05 as a set.
 
-## 2. THE QUIZ BANKS — 11 MORE FOR THE FALL SCOPE
+## 3. THE QUIZ BANKS — 11 MORE FOR THE FALL SCOPE
 L01, L03–L12. **L03 is now read and fixed, so its bank is unblocked.**
 `quizzes/QUIZ_SPEC.md` is the recipe; do not reinvent it.
 
@@ -251,6 +297,23 @@ objectives (legacy, ruled S119)** · S116's past-tense question: RETIRE IT · L1
 **the mark roster RECONCILES and is gated (61). Do not re-open.** · **`build_css` is NOT
 idempotent on this tree** — `.ul-ls-none-2`/`-3` alternate across runs; §27.13 assumes one fixed
 point, there are two.
+
+## AFTER SEPTEMBER 8 — PARKED ON PURPOSE, DO NOT START EARLY
+
+- **REDO `GRAPHIC 4.7` IN THE BLUEPRINT COMPOSITION.** DJ generated a blueprint-styled version
+  of the five-sensor figure at S138 and its **composition is better than what shipped** — larger
+  rounded chips, cleaner leader routing, `ROBOT'S RIGHT` / `ROBOT'S LEFT` stacked in the margins
+  clear of the tracks, corner ticks and thin measure rules. **None of what makes it better needs
+  the redrawn board**, so the rebuild is: that composition, in SVG, over the **real photograph**.
+  **It was declined at S138 on evidence, not taste** — its silkscreen reads `OJ8696` where the
+  board reads `0J8696`, and one provable wrong glyph means all fifteen labels are model output
+  rather than measurement (§14). It is also a 2.1 MB dark-field raster with no live text, which
+  fails the 500,000 B ceiling and §21.2, and it dropped the two `initThreeSensors()` /
+  `initFiveSensors()` panels and the Pololu credit. **What shipped is correct and on-palette; the
+  rebuild is a look, and a look loses to twelve unwritten quiz banks four weeks out.**
+  **Do not re-derive the orientation** — it is settled: Pololu 0J63 §3.5 gives the convention
+  (sensor 1 is the robot's left-most), the photograph is an underside view with the blade pointing
+  *away*, and DJ confirmed on a real board. Chips run **5 4 3 2 1** left to right. Keep them.
 
 ## Learner mode & book content
 L03_C05 Variable Speed · L03 C01/C05/C06 reference a `finished` payload that does not exist for
