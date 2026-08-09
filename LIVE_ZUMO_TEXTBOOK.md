@@ -1,13 +1,70 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 8, 2026 (Session 136 — **THE LABEL AND THE THING IT NAMES ARE TWO LAYERS, AND THEY DRIFT SEPARATELY.** A content read of L01 found the book promising a **sumo match** the course never runs — the only course-scope promise in all sixteen lessons, and contradicted in place by L03's *"our non-sumo RoboCup bots"* and L14 listing sumo as *beyond these pages*. No instrument could have found it; §24.13's re-derive does not reach prose. Rewritten to line following, which is what L08 actually teaches. **THEN THE BANNERS AND THE PILLS MEASURED AS FOUR SPLITS EACH, ON DIFFERENT AXES.** §3 was 15 Theory / 1 Code Anatomy; §8 was 13 bare captioned *Troubleshooting* against 3 carrying the label and a real title. Thirteen new §8 titles were written from each section's own content. **GATE §6.8a CAUGHT THE HALF-RENAME:** changing L02's §3 banner without its HTML fence failed loudly, because the fence is DERIVED from the eyebrow — the gate is why a two-line edit did not ship as a one-line edit. **AND THE NAV PILL IS A SECOND LABELLING LAYER THAT NOBODY WAS WATCHING.** L14's pill read `8. Tune & Test` over a Troubleshooting section and L16's read `9. Tiers` over a banner saying Challenges — both pills had drifted away from their own sections. Pills 1–9 are now one identical row across sixteen files; L14's `10. Match Day` is the single ruled exception, because its §10 is a competition-day procedure and not an exit ticket.)
-**Status:** ✅ **69 GATES PASS · PILLS 1–9 IDENTICAL ACROSS ALL 16 · ALL 16 LESSONS BUMPED.** **THE ONE TO CARRY: a label is not the thing it names, and the two drift apart silently.** Section banners, HTML fences and nav pills are three independent spellings of one section, and this session found live disagreements in all three — none of which any of the 69 gates could see, because no gate ties a pill to its banner. **THE SECOND: no instrument reads prose.** The sumo error survived 135 sessions and a 69-gate suite because gates measure structure; only a read finds a false claim. **A CONTENT READ OF L01 IS DONE; L02–L16 ARE NOT.** L02 (4,555 lines) and L03 (4,409) are the two heaviest and the two a first-week student lives in. **Also found, unruled:** §4's banner carries seven different labels and they are accurate per lesson, left alone; the `for` loop has three homes — introduced L01, dissected L04 §8A.6, and the objective owned by L05 — and L04's opener says *"nobody explained it"*, which is only true if L01's INSIGHT is skipped. Bible **v8.129** · `book_gates` **v1.64**.
+**Date:** August 9, 2026 (Session 136 — **NO INSTRUMENT READS PROSE.** A content read of L01 and L02 end to end found **seven defects, none of which any of the 69 gates could see** — a gate measures structure, and a false claim in prose is well-formed structure. **Three were contradictions BETWEEN lessons, invisible inside either one:** the **sumo match** L01 promised that L03 and L14 both deny; **L01 blaming garbled serial on a baud rate** that L02 §8, L02 §6 Step 2 and L02's own Glossary all say this hardware ignores; and L02 pointing at **Lesson 7 for `float`**, which teaches it nowhere, when L06 is the first lesson that makes a student type one. A fourth was a number contradicting the fleet's own chemistry — L02's Quick Reference read **6000 mV fresh, which is alkaline**, where our 4-cell NiMH packs read ~5400. **L01's OTHER 6000 was checked and LEFT** — a Challenge 11 prompt whose point is an unreachable threshold. **Not every hit is a defect.** **Two techniques beat reading:** `g++ -fsyntax-only` against a stub header put *The Broken Code*'s errors on lines 2/5/8 where the reveal said 3/7/11 — **and showed the third error is invisible on the first build**; and when the buzzer library was unreachable, **L01's own chime testified** — `delay(900)` after an 800 ms note is meaningless unless the call returns immediately. That behaviour was already taught **only inside GRAPHIC 1.19**: **a fact that lives only in an SVG is not in the book.** Earlier the same session, the banner, the HTML fence and the nav pill measured as **three independent spellings of one section** — L14's pill read `8. Tune & Test` over a Troubleshooting section and L16's read `9. Tiers` over a banner saying Challenges. Pills 1–9 are now byte-identical across sixteen files. **And `quizzes/` was created**: the L02 bank, the authoring spec, and a validator with nine loud controls.)
+**Status:** ✅ **69 GATES PASS · L01 AND L02 READ END TO END · `quizzes/` LIVE WITH 76 QUESTIONS.** **THE ONE TO CARRY: no instrument reads prose, and the uncovered region is invisible precisely because nothing reports on it.** Seven defects survived 135 sessions at a green suite. **A number is only checkable against the other fifteen lessons** — grep it book-wide and read every sentence it appears in. **L03–L16 ARE STILL UNREAD**; L03 is 4,409 lines and week-one material. **THE ORDER IS CANON: READ → FIX → QUIZ, never quiz first** — four of the seven defects sat directly under questions the L02 bank asks, and a bank written against the unread lesson would have keyed **6000** correct and marked careful readers wrong. **An auto-graded gate that punishes the attentive is worse than no gate.** Quiz status is DERIVED — run `quizzes/quiz_bank.py --status`, never keep a list. **DEBT, recorded not fixed: no gate holds a quiz bank, and no gate holds a nav pill.** Bible **v8.130** · `book_gates` **v1.64** · `quiz_bank` **v1.0.0**.
 
-**Versions:** L01 v03.28.1 · L02 v03.21.1 · L03 v03.40.1 · L04 v04.28.1 · L05 v04.28.1 · L06 v04.31.1 · L07 v04.31.1 · L08 v04.30.1 · L09 v05.26.1 · L10 v02.27.1 · L11 v02.28.2 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,455** · Bible **v8.129** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.64** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.6.0 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `06023bd`.**
+**Versions:** L01 v03.28.2 · L02 v03.21.2 · L03 v03.40.1 · L04 v04.28.1 · L05 v04.28.1 · L06 v04.31.1 · L07 v04.31.1 · L08 v04.30.1 · L09 v05.26.1 · L10 v02.27.1 · L11 v02.28.2 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,458** · Bible **v8.130** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.64** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.6.0 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `41a5f5c`.**
 
 ---
 ---
 ---
+## WHAT SHIPPED IN S136 — PART 2: THE CONTENT READ
+
+**A read of L01 and L02 end to end found seven defects. Not one was visible to any gate.**
+`book_gates.py` measures structure; a false claim in prose is well-formed structure. Three
+of the seven were **contradictions between lessons** and could not be seen from inside
+either one — the method that found them was to grep a figure book-wide and read every
+sentence it appears in.
+
+**Fixed in L01.** The **sumo match** §3.0 promised, in a course that runs Rescue Line —
+contradicted in place by L03's *"our non-sumo RoboCup bots"* and L14 listing sumo under
+*beyond these pages*; rewritten to line following, which is what L08 teaches. The
+troubleshooting table blaming garbled serial on a **wrong baud rate**, where L02 §8, L02 §6
+Step 2 and L02's Glossary all say the Zumo's native-USB link ignores that number; it now
+names the three real causes. And the buzzer's background behaviour, which existed **only
+inside GRAPHIC 1.19** — now stated in prose.
+
+**Fixed in L02.** The `float` pointer aimed at Lesson 7, which teaches it nowhere, when
+**L06** is the first lesson that makes a student type one. *The Broken Code*'s reveal, which
+named lines **3 / 7 / 11** where the mistakes are on **2 / 5 / 8**. The Quick Reference
+anatomy list, which omitted the **Function Prototypes** row that §3.1 insists on, Brain
+Check Q1 requires by name, Step 7 breaks the build to teach, and its own code template three
+inches above it contains. The battery figure reading **6000 mV fresh** — alkaline chemistry
+in a book whose fleet runs **4-cell NiMH** at ~5400. And the sound row, which now states
+that a note plays in the background.
+
+**Checked and deliberately LEFT: L01's other `6000`.** It is a Challenge 11 prompt — *"try a
+threshold of 6000 — what happens, and why?"* — whose whole point is that the threshold can
+never be reached. **Not every hit is a defect. Read before you fix.**
+
+**Two techniques beat reading, and both should be reached for again.** Compiling the snippet
+with `g++ -fsyntax-only` against a stub header settled the line numbers **and revealed
+something no reading would have**: on the first build the missing parenthesis does not appear
+at all, because the line-2 semicolon swallows `setup()` before the parser reaches line 5 — a
+challenge promising three errors shows two, and a student who counts concludes they have
+missed one that is not findable. And when the buzzer library proved unreachable, **L01's own
+code testified**: a jingle whose every delay runs longer than the note it follows is only
+meaningful if `playFrequency()` returns immediately.
+
+**`quizzes/` created.** The L02 bank carries **58 before + 18 after = 76 questions**, every
+one with a § citation so a miss tells the student where to re-read. `QUIZ_SPEC.md` holds
+every ruling with its reason; `quiz_bank.py` validates and **derives** status rather than
+keeping a list, because a hand-kept progress list is wrong the first time somebody forgets,
+and wrong silently. Nine selftest controls, all loud, run against banks built in memory.
+
+**The order is canon: READ → FIX → QUIZ.** Four of the seven defects sat directly under
+questions the bank asks. A bank written against the unread L02 would have keyed **6000**
+correct and marked the students who read carefully WRONG. **An auto-graded gate that punishes
+the attentive is worse than no gate.** Fill-in-the-blank is banned — Canvas string-matches
+it, and a capital letter costs a student their entry to build time.
+
+**The source pin earned itself inside a single session:** bumping L01 and L02 at close made
+the bank's `source:` block stale, and the pin is what caught it.
+
+---
+---
+---
+
 ## WHAT SHIPPED IN S136
 
 **A content read of Lesson 1 found a promise the course never keeps.** L01 §3.0 explained closed-loop

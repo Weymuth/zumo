@@ -1,0 +1,1148 @@
+# ZUMO READING QUIZ BANK — LESSON 02
+# Mastering the Code · Reading Code You Didn't Write
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_02.html v03.21.2 and lessons/Lesson_01.html v03.28.2
+#
+# WHY THE SOURCE VERSION IS PINNED: every answer below was checked against those two
+# files AFTER the S136 content fixes. Four answers in this bank would have been WRONG
+# against the previous versions — the battery figure, the Broken Code line numbers, the
+# float pointer, and the baud-rate cause. If a lesson is edited, re-check the questions
+# citing that section before reusing the bank.
+#
+# FORMATS: multiple_choice, true_false, matching. No fill-in-the-blank by ruling —
+# Canvas string-matches it and a capital letter locks a student out of build time.
+#
+# EVERY QUESTION CARRIES A `cite`. A miss tells the student exactly where to re-read.
+# That is the same contract the in-page Brain Checks use.
+
+lesson: "L02"
+title: "Mastering the Code — Reading Code You Didn't Write"
+bank_version: "1.0.1"
+source:
+  lesson_02: "v03.21.2"
+  lesson_01: "v03.28.2"
+
+sets:
+
+  # ===================================================================
+  # BEFORE — THE PRE-CLASS GATE
+  # Answerable from the reading alone. Nothing here needs the robot,
+  # a compiler, or a built program. Draws on §1-§5, §8, §8A.
+  # Suggested Canvas draw: 10 from this set, one attempt, locks at
+  # period start.
+  # ===================================================================
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone."
+    suggested_draw: 10
+    questions:
+
+      # ---------- The seven sections ----------
+      - id: L02_B01
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "In the Sketch Anatomy, which section comes immediately AFTER Constants?"
+        options:
+          - text: "setup()"
+            correct: false
+            why: "setup() comes after the prototypes row, not immediately after Constants."
+          - text: "Function Prototypes"
+            correct: true
+          - text: "Hardware Objects"
+            correct: false
+            why: "Hardware Objects come before Constants."
+          - text: "Helper Functions"
+            correct: false
+
+      - id: L02_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "The Sketch Anatomy diagram has seven NUMBERED sections and one UNNUMBERED row. Which is the unnumbered one?"
+        options:
+          - text: "The header comment"
+            correct: false
+          - text: "Function Prototypes"
+            correct: true
+          - text: "The #include line"
+            correct: false
+          - text: "Helper Functions"
+            correct: false
+
+      - id: L02_B03
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What does a function prototype tell the compiler?"
+        options:
+          - text: "How much memory the function will need"
+            correct: false
+          - text: "That the function exists, and its full definition is further down the file"
+            correct: true
+          - text: "That the function should run first"
+            correct: false
+          - text: "Which file the function is stored in"
+            correct: false
+
+      - id: L02_B04
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: |
+          Two different errors are described in the reading:
+            (a) 'beep' was not declared in this scope
+            (b) undefined reference to 'beep()'
+          What is the difference between them?
+        options:
+          - text: "They are the same error worded two ways"
+            correct: false
+          - text: "(a) means you never announced the function; (b) means you announced it but never wrote it"
+            correct: true
+          - text: "(a) is a warning and (b) is an error"
+            correct: false
+          - text: "(a) comes from the linker and (b) comes from the compiler"
+            correct: false
+            why: "Backwards — 'not declared' is the compiler, 'undefined reference' is the linker."
+
+      - id: L02_B05
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: |
+          A prototype reads:   void showCount();
+          The definition reads: void showCount(int n) { ... }
+          What happens?
+        options:
+          - text: "Nothing — the compiler matches them by name"
+            correct: false
+          - text: "C++ treats them as two different functions, and the promised one is never written"
+            correct: true
+          - text: "The prototype automatically updates to match"
+            correct: false
+          - text: "The build fails immediately at the prototype line"
+            correct: false
+            why: "The prototype is legal on its own; the failure arrives later, from the linker."
+
+      # ---------- Braces ----------
+      - id: L02_B06
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "This book writes its braces in K&R style. What does that mean, and does it change what the robot does?"
+        options:
+          - text: "The opening brace goes on the same line; it changes nothing about how the code runs"
+            correct: true
+          - text: "The opening brace goes on its own line; it changes nothing about how the code runs"
+            correct: false
+            why: "That is Allman style."
+          - text: "The opening brace goes on the same line, and it compiles slightly faster"
+            correct: false
+          - text: "Braces are optional in K&R style"
+            correct: false
+
+      - id: L02_B07
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: |
+          A student writes:
+            if (killSwitchPressed())
+              motors.setSpeeds(0, 0);
+              break;
+          The indentation suggests both lines belong to the if. What actually happens?
+        options:
+          - text: "The build fails with a missing-brace error"
+            correct: false
+            why: "This is the dangerous part — it compiles clean."
+          - text: "Both lines run only when the kill switch is pressed"
+            correct: false
+          - text: "Only setSpeeds runs conditionally; break runs every pass through the loop"
+            correct: true
+          - text: "Neither line runs"
+            correct: false
+
+      - id: L02_B08
+        type: true_false
+        cite: "§3.1"
+        points: 1
+        stem: "The one-liner brace trap is dangerous mainly because the compiler gives you a clear error message about it."
+        correct: false
+        why: "The opposite — it compiles clean, with no error, no warning, no red squiggle. That is exactly why it is nasty."
+
+      - id: L02_B09
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "The reading connects the missing-brace trap to a real 2014 security hole. Whose software was it in?"
+        options:
+          - text: "Microsoft's"
+            correct: false
+          - text: "Apple's"
+            correct: true
+          - text: "Google's"
+            correct: false
+          - text: "Pololu's"
+            correct: false
+
+      # ---------- Data types ----------
+      - id: L02_B10
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "You write:  int speed = 2.5;   What ends up in speed?"
+        options:
+          - text: "2.5"
+            correct: false
+          - text: "3, because it rounds"
+            correct: false
+            why: "It does not round. It chops."
+          - text: "2, because everything after the decimal point is chopped off"
+            correct: true
+          - text: "Nothing — the build fails"
+            correct: false
+            why: "No error is produced, which is what makes it dangerous."
+
+      - id: L02_B11
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Which data type would you use for a variable that answers a yes/no question, like whether the line has been found?"
+        options:
+          - text: "int"
+            correct: false
+          - text: "bool"
+            correct: true
+          - text: "char"
+            correct: false
+          - text: "long"
+            correct: false
+
+      - id: L02_B12
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "A bool can hold true, false, or a number in between."
+        correct: false
+        why: "Exactly two values and nothing else — a light switch, on or off, with no in-between."
+
+      - id: L02_B13
+        type: matching
+        cite: "§3.2"
+        points: 5
+        stem: "Match each data type to what it holds."
+        pairs:
+          - left: "int"
+            right: "A whole number, no decimal"
+          - left: "bool"
+            right: "True or false, and nothing else"
+          - left: "float"
+            right: "A number with a decimal"
+          - left: "long"
+            right: "A very big whole number"
+          - left: "char"
+            right: "A single character, like 'A'"
+        extra_answers:
+          - "A list of several values at once"
+          - "A piece of hardware on the robot"
+        note: "Extra answers are required — with five prompts and five answers, a student who knows four gets the fifth free."
+
+      # ---------- if and the operators ----------
+      - id: L02_B14
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "In an if statement, what goes inside the parentheses?"
+        options:
+          - text: "The lines that should run"
+            correct: false
+          - text: "A question with a yes/no answer"
+            correct: true
+          - text: "The name of the function to call"
+            correct: false
+          - text: "A number between 0 and 400"
+            correct: false
+
+      - id: L02_B15
+        type: true_false
+        cite: "§3.3"
+        points: 1
+        stem: "The else part of an if statement is optional."
+        correct: true
+        why: "Leave it off and a 'no' simply skips the block and carries on underneath."
+
+      - id: L02_B16
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "Which line correctly asks whether count is between 1 and 9?"
+        options:
+          - text: "if (count > 0 && < 10)"
+            correct: false
+            why: "'< 10' on its own is not a question — below what?"
+          - text: "if (count > 0 && count < 10)"
+            correct: true
+          - text: "if (count > 0 and count < 10)"
+            correct: false
+          - text: "if (count > 0 & count < 10)"
+            correct: false
+            why: "One ampersand is a different operator entirely."
+
+      - id: L02_B17
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "What does ! do when placed in front of a yes/no value?"
+        options:
+          - text: "Makes it run twice"
+            correct: false
+          - text: "Flips the answer to its opposite"
+            correct: true
+          - text: "Marks it as important"
+            correct: false
+          - text: "Converts it to a number"
+            correct: false
+
+      - id: L02_B18
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: |
+          if (batteryOK() && startRun()) { ... }
+          batteryOK() returns false. What happens to startRun()?
+        options:
+          - text: "It runs, then the result is discarded"
+            correct: false
+          - text: "It never runs at all — C++ already knows the answer is false"
+            correct: true
+          - text: "It runs first, before batteryOK()"
+            correct: false
+          - text: "The build fails"
+            correct: false
+
+      - id: L02_B19
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "The reading gives a habit that prevents short-circuit bugs entirely. What is it?"
+        options:
+          - text: "Always use || instead of &&"
+            correct: false
+          - text: "Keep conditions as pure questions — a condition should ask, not act"
+            correct: true
+          - text: "Put every condition on its own line"
+            correct: false
+          - text: "Never use more than one operator per if"
+            correct: false
+
+      - id: L02_B20
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "In C++, || is satisfied when either side is true — including when both are true."
+        correct: true
+        why: "More generous than 'or' in conversation: offered tea or coffee you pick one, but || is happy with both."
+
+      # ---------- Comments ----------
+      - id: L02_B21
+        type: multiple_choice
+        cite: "§1, §5"
+        points: 1
+        stem: "What does a comment cost your compiled program?"
+        options:
+          - text: "A few bytes each"
+            correct: false
+          - text: "Nothing — zero bytes and zero effect on speed"
+            correct: true
+          - text: "It makes the program slightly slower to run"
+            correct: false
+          - text: "It depends how long the comment is"
+            correct: false
+
+      - id: L02_B22
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "State the Two-Week Rule."
+        options:
+          - text: "Rewrite your program every two weeks"
+            correct: false
+          - text: "Write code as if the next person to read it is a stranger who knows nothing — and that stranger is you, two weeks from now"
+            correct: true
+          - text: "Comment only the code you wrote in the last two weeks"
+            correct: false
+          - text: "Back up your project every two weeks"
+            correct: false
+
+      - id: L02_B23
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Which is the better comment, and why?"
+        options:
+          - text: "const int MOTOR_SPEED = 200; // set speed to 200 — it states the value clearly"
+            correct: false
+            why: "It only repeats what the code already says."
+          - text: "const int MOTOR_SPEED = 200; // Cap speed so turns stay controllable on tile floors — it explains WHY"
+            correct: true
+          - text: "Both are equally good"
+            correct: false
+          - text: "Neither — constants should not be commented"
+            correct: false
+
+      - id: L02_B24
+        type: true_false
+        cite: "§3.5"
+        points: 1
+        stem: "Professional software engineers spend far more of their time reading code than writing it."
+        correct: true
+
+      - id: L02_B25
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "Which is TRUE about block comments (/* ... */)?"
+        options:
+          - text: "They can be nested inside one another"
+            correct: false
+            why: "The first */ ends the whole comment, so a /* inside a /* breaks your build."
+          - text: "They do not nest — the first */ ends the whole comment"
+            correct: true
+          - text: "They only work at the top of a file"
+            correct: false
+          - text: "They must be closed on the same line"
+            correct: false
+
+      - id: L02_B26
+        type: true_false
+        cite: "§5"
+        points: 1
+        stem: "It is acceptable to leave last lesson's header comment in place when you start a new lesson, since the compiler ignores it anyway."
+        correct: false
+        why: "Non-negotiable rule: a header describing last week's program is worse than no header — it actively lies to the reader."
+
+      # ---------- Objects, constants, memory ----------
+      - id: L02_B27
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "Why are hardware objects declared at the TOP of the file, outside every function?"
+        options:
+          - text: "So they run first"
+            correct: false
+          - text: "So every function can reach the same hardware, and because hardware never stops existing while the robot is on"
+            correct: true
+          - text: "Because C++ requires all variables at the top"
+            correct: false
+          - text: "To save flash memory"
+            correct: false
+
+      - id: L02_B28
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "What does the const keyword buy you that an ALL_CAPS name alone does not?"
+        options:
+          - text: "It makes the value load faster"
+            correct: false
+          - text: "The compiler enforces it — any line that tries to change the value fails the build"
+            correct: true
+          - text: "It stores the value in flash instead of SRAM"
+            correct: false
+          - text: "Nothing; const and ALL_CAPS do the same job"
+            correct: false
+
+      - id: L02_B29
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "What is a 'magic number'?"
+        options:
+          - text: "A number the robot calculates at runtime"
+            correct: false
+          - text: "A bare number sitting in the code that clearly matters, but nothing says why"
+            correct: true
+          - text: "Any number above 1000"
+            correct: false
+          - text: "A number stored in flash memory"
+            correct: false
+
+      - id: L02_B30
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "A global hardware object and a local int i inside a loop — where does each live?"
+        options:
+          - text: "Both live in SRAM for the whole program"
+            correct: false
+          - text: "The global lives in SRAM for the entire run; the local lives on the stack and vanishes when its block ends"
+            correct: true
+          - text: "The global lives in flash; the local lives in SRAM"
+            correct: false
+          - text: "Both live on the stack"
+            correct: false
+
+      - id: L02_B31
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "About how much SRAM does the Zumo's ATmega32U4 have?"
+        options:
+          - text: "About 2.5 KB"
+            correct: true
+          - text: "About 28 KB"
+            correct: false
+            why: "That is the usable FLASH, not SRAM."
+          - text: "About 64 KB"
+            correct: false
+          - text: "About 1 MB"
+            correct: false
+
+      - id: L02_B32
+        type: true_false
+        cite: "§5"
+        points: 1
+        stem: "A local variable needs a cleanup command to free its memory when you are done with it."
+        correct: false
+        why: "Falling out of scope IS the cleanup — the chip simply reuses the space at the closing brace."
+
+      - id: L02_B33
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "When loop() calls a helper function, how does the chip know where to continue afterwards?"
+        options:
+          - text: "It starts loop() over from the top"
+            correct: false
+          - text: "It saves the return address on the stack, then loads it back when the function ends"
+            correct: true
+          - text: "The function returns the address it should go to"
+            correct: false
+          - text: "It searches the file for the next line"
+            correct: false
+
+      - id: L02_B34
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "How many times does setup() run, and how many times does loop() run?"
+        options:
+          - text: "Both run once"
+            correct: false
+          - text: "setup() runs once at power-on; loop() repeats forever after that"
+            correct: true
+          - text: "setup() repeats; loop() runs once"
+            correct: false
+          - text: "Both repeat forever"
+            correct: false
+
+      - id: L02_B35
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "Why does the reading warn against putting a long delay() loose inside loop()?"
+        options:
+          - text: "It uses too much SRAM"
+            correct: false
+          - text: "The robot is frozen during a delay and cannot respond to buttons or sensors"
+            correct: true
+          - text: "delay() only works inside setup()"
+            correct: false
+          - text: "It makes the program larger"
+            correct: false
+
+      # ---------- F() ----------
+      - id: L02_B36
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "What does wrapping a string in F() actually do?"
+        options:
+          - text: "Makes the text print faster"
+            correct: false
+          - text: "Leaves the text in flash instead of copying it into SRAM at power-on"
+            correct: true
+          - text: "Formats the text to fit the screen"
+            correct: false
+          - text: "Converts the text to ASCII"
+            correct: false
+
+      - id: L02_B37
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Which of these can NOT be wrapped in F()?"
+        options:
+          - text: 'display.print(F("Ready"));'
+            correct: false
+          - text: 'Serial.println(F("Hello"));'
+            correct: false
+          - text: "display.print(count); — a variable the program computes"
+            correct: true
+          - text: 'display.print(F("=== ABOUT ==="));'
+            correct: false
+
+      - id: L02_B38
+        type: true_false
+        cite: "§6 Step 6"
+        points: 1
+        stem: "If your program runs out of SRAM, the compiler will tell you with an error message."
+        correct: false
+        why: "It cannot tell how much you will use while the program runs. Instead you get garbled text, random resets, and variables that change on their own."
+
+      # ---------- Serial and baud ----------
+      - id: L02_B39
+        type: multiple_choice
+        cite: "§6 Step 2, Glossary"
+        points: 1
+        stem: "Your Zumo's Serial Monitor shows gibberish. What is the LEAST likely cause on this robot?"
+        options:
+          - text: "The monitor opened partway through a message"
+            correct: false
+          - text: "A mismatched baud rate"
+            correct: true
+            why: "The Zumo talks over native USB, which negotiates its own speed — the number in Serial.begin() is effectively ignored here."
+          - text: "The wrong device or port is selected"
+            correct: false
+          - text: "A loose or damaged USB cable"
+            correct: false
+
+      - id: L02_B40
+        type: true_false
+        cite: "§6 Step 2"
+        points: 1
+        stem: "On an Arduino Uno, a mismatched baud rate genuinely does cause garbled serial text."
+        correct: true
+        why: "The Uno uses a real UART link, where both ends must agree. The Zumo does not."
+
+      - id: L02_B41
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "When Serial.println() sends 'Hello', what actually travels down the USB cable?"
+        options:
+          - text: "The letters themselves"
+            correct: false
+          - text: "Each character's ASCII code, broken into bits and sent as electrical pulses"
+            correct: true
+          - text: "A picture of the text"
+            correct: false
+          - text: "Nothing until you open the Serial Monitor"
+            correct: false
+
+      - id: L02_B42
+        type: true_false
+        cite: "§4"
+        points: 1
+        stem: "The Serial Monitor is a part of the robot."
+        correct: false
+        why: "It is a window on your computer, fed through the USB cable. The robot has no idea it exists — which is why a program works fine with the monitor closed."
+
+      # ---------- Errors ----------
+      - id: L02_B43
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: |
+          Line 8:  delay(100)      ← the semicolon is missing here
+          Line 9:  ledYellow(1);
+          Which line will the compiler name in its error?
+        options:
+          - text: "Line 8"
+            correct: false
+          - text: "Line 9"
+            correct: true
+          - text: "Line 1"
+            correct: false
+          - text: "It names no line"
+            correct: false
+
+      - id: L02_B44
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "You build and get six errors at once. What does the reading tell you to do?"
+        options:
+          - text: "Fix all six before rebuilding"
+            correct: false
+          - text: "Fix the FIRST error and rebuild — the rest usually vanish"
+            correct: true
+          - text: "Start the file over"
+            correct: false
+          - text: "Fix the last error first"
+            correct: false
+
+      - id: L02_B45
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "What does  if (x > 5);  do?"
+        options:
+          - text: "It fails to compile"
+            correct: false
+          - text: "It compiles, and silently means 'if x is greater than 5, do nothing at all'"
+            correct: true
+          - text: "It runs the next block only when x is greater than 5"
+            correct: false
+          - text: "It is the same as writing if (x > 5) { }"
+            correct: false
+            why: "Close, but the danger is what follows: the braces below then run every time regardless."
+
+      - id: L02_B46
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "C++ treats buttonA, ButtonA, and BUTTONA as the same name."
+        correct: false
+        why: "Three completely different names. 'Was not declared' often means you capitalized it differently than where you created it."
+
+      - id: L02_B47
+        type: multiple_choice
+        cite: "§8A"
+        points: 1
+        stem: "Your build fails with 'multiple definition of loop'. What is the likely cause?"
+        options:
+          - text: "You wrote loop() twice in main.cpp"
+            correct: false
+          - text: "A second .cpp file is sitting somewhere inside your src/ folder"
+            correct: true
+          - text: "You forgot the function prototype"
+            correct: false
+          - text: "Your project folder is named wrong"
+            correct: false
+
+      # ---------- Functions ----------
+      - id: L02_B48
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "What does the return type void mean?"
+        options:
+          - text: "The function is empty"
+            correct: false
+          - text: "The function does a job but does not hand anything back"
+            correct: true
+          - text: "The function can be called only once"
+            correct: false
+          - text: "The function returns zero"
+            correct: false
+
+      - id: L02_B49
+        type: multiple_choice
+        cite: "§8A.3"
+        points: 1
+        stem: |
+          void blinkLED(int times) { ... }   is called as   blinkLED(3);
+          Which is the parameter and which is the argument?
+        options:
+          - text: "times is the argument; 3 is the parameter"
+            correct: false
+          - text: "times is the parameter (in the definition); 3 is the argument (at the call site)"
+            correct: true
+          - text: "Both are parameters"
+            correct: false
+          - text: "Both are arguments"
+            correct: false
+
+      - id: L02_B50
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "The 'Twice' Rule says you should turn code into a function when…"
+        options:
+          - text: "it is longer than ten lines"
+            correct: false
+          - text: "you have written the same block of code twice"
+            correct: true
+          - text: "it uses more than one hardware object"
+            correct: false
+          - text: "you plan to share the program with someone"
+            correct: false
+
+      - id: L02_B51
+        type: true_false
+        cite: "§8A.4"
+        points: 1
+        stem: "A function named blinkLED() that also reads a sensor and moves a motor is good design, because it does more work per call."
+        correct: false
+        why: "One job per function. The name is a promise."
+
+      # ---------- Hardware this lesson touches ----------
+      - id: L02_B52
+        type: matching
+        cite: "§4, Quick Reference"
+        points: 4
+        stem: "Match each button function to what it does."
+        pairs:
+          - left: "buttonA.isPressed()"
+            right: "True while the button is held down"
+          - left: "buttonA.getSingleDebouncedPress()"
+            right: "True once per press, and will not repeat"
+          - left: "buttonA.waitForPress()"
+            right: "Pauses the program until the button is pressed"
+          - left: "millis()"
+            right: "Milliseconds since power-on"
+        extra_answers:
+          - "Returns which of the three buttons was pressed"
+          - "Counts how many times the button has been pressed"
+
+      - id: L02_B53
+        type: multiple_choice
+        cite: "§4"
+        points: 1
+        stem: "Which button is which on the Zumo?"
+        options:
+          - text: "A left, B center, C right"
+            correct: true
+          - text: "A right, B center, C left"
+            correct: false
+          - text: "A center, B left, C right"
+            correct: false
+          - text: "The order changes depending on how you hold the robot"
+            correct: false
+
+      - id: L02_B54
+        type: multiple_choice
+        cite: "Quick Reference"
+        points: 1
+        stem: "Why is the yellow LED the one this lesson uses for feedback?"
+        options:
+          - text: "It is the brightest"
+            correct: false
+          - text: "Green and red share their pins with USB activity and the display, so they flicker on their own — yellow is the only one that is fully yours"
+            correct: true
+          - text: "It is the only one the library can control"
+            correct: false
+          - text: "It uses the least power"
+            correct: false
+
+      - id: L02_B55
+        type: multiple_choice
+        cite: "Quick Reference"
+        points: 1
+        stem: "Our robots run 4-cell NiMH packs. What does readBatteryMillivolts() return on a pack fresh off the charger?"
+        options:
+          - text: "About 4200"
+            correct: false
+            why: "4200 is the recharge-now threshold."
+          - text: "About 4800"
+            correct: false
+            why: "4800 is the healthy plateau through most of a run."
+          - text: "About 5400"
+            correct: true
+          - text: "About 6000"
+            correct: false
+            why: "That is roughly what alkaline cells read — not the NiMH packs we use."
+
+      - id: L02_B56
+        type: multiple_choice
+        cite: "Lesson 1 §5, Quick Reference"
+        points: 1
+        stem: |
+          buzzer.playFrequency(440, 200, 15);
+          buzzer.playFrequency(880, 200, 15);
+          What do you hear?
+        options:
+          - text: "Two clear notes, one after the other"
+            correct: false
+          - text: "One blip — the second note starts immediately and takes the buzzer over"
+            correct: true
+          - text: "Nothing, because the buzzer is still busy"
+            correct: false
+          - text: "Both notes at the same time, as a chord"
+            correct: false
+
+      - id: L02_B57
+        type: true_false
+        cite: "Lesson 1 §5"
+        points: 1
+        stem: "A delay() placed after playFrequency() is what makes the sound last longer."
+        correct: false
+        why: "The duration argument sets the length. The delay is giving the note room to finish before anything else takes the buzzer."
+
+      - id: L02_B58
+        type: multiple_choice
+        cite: "§6 Step 9, §8"
+        points: 1
+        stem: "How many characters fit on one line of the OLED at the 21x8 layout?"
+        options:
+          - text: "8"
+            correct: false
+            why: "8 is the number of ROWS."
+          - text: "16"
+            correct: false
+          - text: "21"
+            correct: true
+          - text: "There is no limit; it wraps"
+            correct: false
+
+  # ===================================================================
+  # AFTER — POST-BUILD
+  # These need the student to have actually built the program, seen the
+  # errors, and worked the challenges. Overlaps with in-page BRAIN CHECK
+  # 03 by design; if BC03 stays the exit instrument, this set is the
+  # retake/review bank instead.
+  # ===================================================================
+  after:
+    description: "Post-build. Requires having compiled, uploaded, and worked the challenges."
+    suggested_draw: 8
+    questions:
+
+      - id: L02_A01
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "In Step 3 the build failed ON PURPOSE. What was the error, and why was it expected?"
+        options:
+          - text: "'buttonA' was not declared — the code used buttonA before the hardware object existed"
+            correct: true
+          - text: "'buttonA' was not declared — the prototype was missing"
+            correct: false
+            why: "Prototypes are for functions. buttonA is an object."
+          - text: "expected ';' — a semicolon was left off"
+            correct: false
+          - text: "undefined reference to buttonA — the linker could not find it"
+            correct: false
+
+      - id: L02_A02
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "Step 7 broke the build a second time, and one line fixed it. Which line, and where did it go?"
+        options:
+          - text: "#include <Zumo32U4.h>, at the very top"
+            correct: false
+          - text: "void blinkLED();  in the FUNCTION PROTOTYPES section"
+            correct: true
+          - text: "Zumo32U4OLED display;  with the hardware objects"
+            correct: false
+          - text: "Moving blinkLED() above loop()"
+            correct: false
+            why: "That would also work, but it is not the fix the lesson teaches — and it does not scale."
+
+      - id: L02_A03
+        type: true_false
+        cite: "§6 Step 7, §8"
+        points: 1
+        stem: "Moving a helper function lower in the file fixes a 'was not declared in this scope' error."
+        correct: false
+        why: "Moving it lower makes it worse. The prototype is the fix."
+
+      - id: L02_A04
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: |
+          In The Broken Code, the missing semicolon is on line 2.
+          Which line does the compiler name?
+        options:
+          - text: "Line 2"
+            correct: false
+          - text: "Line 3"
+            correct: true
+          - text: "Line 5"
+            correct: false
+          - text: "Line 8"
+            correct: false
+
+      - id: L02_A05
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "You build The Broken Code for the first time. The challenge says there are three errors. How many does the compiler report?"
+        options:
+          - text: "Three"
+            correct: false
+          - text: "Two — the missing parenthesis is hidden until the semicolon is fixed"
+            correct: true
+          - text: "One"
+            correct: false
+          - text: "Six"
+            correct: false
+
+      - id: L02_A06
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "Why is the third error invisible on the first build?"
+        options:
+          - text: "The compiler stops after two errors"
+            correct: false
+          - text: "The missing semicolon merges the declaration into setup(), so the compiler never parses that far"
+            correct: true
+          - text: "It is a linker error, not a compiler error"
+            correct: false
+          - text: "It only appears after uploading"
+            correct: false
+
+      - id: L02_A07
+        type: multiple_choice
+        cite: "§9 Challenge 5"
+        points: 1
+        stem: "For the A+C reset combo, why does getSingleDebouncedPress() not work?"
+        options:
+          - text: "It only works on button A"
+            correct: false
+          - text: "It fires once per press-and-release of ONE button; a combo needs 'are both held down right now?'"
+            correct: true
+          - text: "It is too slow"
+            correct: false
+          - text: "It cannot be used inside an if statement"
+            correct: false
+
+      - id: L02_A08
+        type: multiple_choice
+        cite: "§9 Challenge 5"
+        points: 1
+        stem: "Where does the two-button combo check go in loop(), and why?"
+        options:
+          - text: "Last, so the single-button checks run first"
+            correct: false
+          - text: "First, so it wins over the single-button checks"
+            correct: true
+          - text: "In setup(), so it only runs once"
+            correct: false
+          - text: "Anywhere — order does not matter"
+            correct: false
+
+      - id: L02_A09
+        type: multiple_choice
+        cite: "§9 Challenge 4"
+        points: 1
+        stem: "In Sound Feedback you used 880, 440 and 220 Hz for the three buttons. What is the relationship between them?"
+        options:
+          - text: "Each is 200 Hz lower than the last"
+            correct: false
+          - text: "Each is one octave below the last — halving the frequency drops it an octave"
+            correct: true
+          - text: "They are three notes of a chord"
+            correct: false
+          - text: "The numbers are arbitrary"
+            correct: false
+
+      - id: L02_A10
+        type: multiple_choice
+        cite: "Extra Practice, Bonus 5"
+        points: 1
+        stem: |
+          loop() contains:
+            buzzer.playFrequency(880, 100, 10);
+            delay(150);
+          To make a beep start every 1000 ms, what should the delay be?
+        options:
+          - text: "delay(850)"
+            correct: false
+          - text: "delay(900) — subtract the 100 ms tone"
+            correct: false
+            why: "The tone plays in the background and is not part of the loop's trip."
+          - text: "delay(1000)"
+            correct: true
+          - text: "delay(1150)"
+            correct: false
+
+      - id: L02_A11
+        type: multiple_choice
+        cite: "§6 Step 10"
+        points: 1
+        stem: "The Status screen shows uptime in seconds. What does the code do to millis() to get there?"
+        options:
+          - text: "Multiplies by 1000"
+            correct: false
+          - text: "Divides by 1000"
+            correct: true
+          - text: "Nothing — millis() already returns seconds"
+            correct: false
+          - text: "Wraps it in F()"
+            correct: false
+
+      - id: L02_A12
+        type: true_false
+        cite: "§6 Step 10"
+        points: 1
+        stem: "The uptime number printed on the Status screen should be wrapped in F()."
+        correct: false
+        why: "F() is only for fixed text between quotes. The uptime is computed, so there is nothing sitting in flash to point at."
+
+      - id: L02_A13
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Your OLED flickers and redraws wildly. What is the cause?"
+        options:
+          - text: "The display object was declared twice"
+            correct: false
+          - text: "A draw function is being called on every pass of loop() instead of only when a button is pressed"
+            correct: true
+          - text: "The battery is low"
+            correct: false
+          - text: "setLayout21x8() is missing"
+            correct: false
+
+      - id: L02_A14
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "You try to upload and get 'Resource busy' / 'could not open port'. What is almost always holding it?"
+        options:
+          - text: "The robot's power switch is off"
+            correct: false
+          - text: "The Serial Monitor you opened a few minutes ago"
+            correct: true
+          - text: "A missing function prototype"
+            correct: false
+          - text: "The USB cable is charge-only"
+            correct: false
+
+      - id: L02_A15
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "You add buttonB and buttonC to the hardware objects, upload, and nothing happens when you press them. Why?"
+        options:
+          - text: "The objects were declared in the wrong order"
+            correct: false
+          - text: "Declaring an object only tells the compiler the hardware exists — nothing happens until loop() checks it"
+            correct: true
+          - text: "Only one button object can exist at a time"
+            correct: false
+          - text: "They need their own prototypes"
+            correct: false
+
+      - id: L02_A16
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "You press Button A and see the Serial message, but the OLED stays blank. What is happening?"
+        options:
+          - text: "The display object is broken"
+            correct: false
+          - text: "Serial.println() talks to the computer, not the robot's screen"
+            correct: true
+          - text: "The screen needs display.clear() first"
+            correct: false
+          - text: "The upload failed"
+            correct: false
+
+      - id: L02_A17
+        type: true_false
+        cite: "§6 Step 5"
+        points: 1
+        stem: "A green flicker while your program prints to Serial means something is wrong with your code."
+        correct: false
+        why: "Green is the USB activity light reacting to Serial.println() sending data. Not your code."
+
+      - id: L02_A18
+        type: multiple_choice
+        cite: "§7"
+        points: 1
+        stem: "Which of these is NOT on the final checklist for the completed Lesson 2 program?"
+        options:
+          - text: "A function prototype for every helper"
+            correct: false
+          - text: "A header comment with your name and date"
+            correct: false
+          - text: "A motors object for driving the robot"
+            correct: true
+            why: "Nothing in Lesson 2 moves the robot. The motors object is a head start for Lesson 3."
+          - text: "showStatusScreen() function"
+            correct: false

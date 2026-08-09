@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.21.1 -->
+<!-- Lesson version: v03.21.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -688,7 +688,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <p>An <code>int</code> holds a whole number: <code>150</code>, <code>0</code>, <code>-42</code>. No fractions. This is the type you reach for by default — motor speeds, counts, pin numbers, loop counters are all whole numbers, so they are all <code>int</code>s.</p>
 
-<p>The catch is the one you already saw in the warning above: an <code>int</code> cannot hold a decimal. If you try to put <code>2.5</code> into an <code>int</code>, the robot does not round — it <strong>chops off</strong> everything after the decimal point and keeps <code>2</code>. That is not an error, so nothing warns you; you just get the wrong number. When you need the fraction, that is what <code>float</code> is for (Lesson 7).</p>
+<p>The catch is the one you already saw in the warning above: an <code>int</code> cannot hold a decimal. If you try to put <code>2.5</code> into an <code>int</code>, the robot does not round — it <strong>chops off</strong> everything after the decimal point and keeps <code>2</code>. That is not an error, so nothing warns you; you just get the wrong number. When you need the fraction, that is what <code>float</code> is for — you will need one in Lesson 6, the first time you divide.</p>
 
 <h4 class="h4-c-433014-2">bool — the yes/no switch</h4>
 
@@ -3093,15 +3093,15 @@ delay(<span class="tok-b5cea8">500</span>);
 
 <ol>
 
-<li><strong>Line 3:</strong> Missing semicolon after <code>Zumo32U4OLED display</code></li>
+<li><strong>Line 2</strong> — missing semicolon after <code>Zumo32U4OLED display</code>. The compiler names <em>line 3</em>, one line down, exactly as Section 3.6 warned: look up one line.</li>
 
-<li><strong>Line 7:</strong> Missing closing parenthesis — should be <code>display.print(F("Hello"));</code></li>
+<li><strong>Line 5</strong> — missing closing parenthesis: <code>display.print("Hello";</code> should be <code>display.print(F("Hello"));</code>. <strong>You will not see this one on the first build.</strong> The missing semicolon above swallows <code>setup()</code> whole, so the compiler never gets far enough to reach it. Fix the first error, rebuild, and this one appears — which is the avalanche rule from Section 3.6 happening to you on purpose.</li>
 
-<li><strong>Line 11:</strong> Capitalization error — <code>digitalwrite</code> should be <code>digitalWrite</code> (capital W)</li>
+<li><strong>Line 8</strong> — capitalization: <code>digitalwrite</code> should be <code>digitalWrite</code> (capital W).</li>
 
 </ol>
 
-<p><strong>Lesson:</strong> C++ is case-sensitive and picky about punctuation. The compiler tells you the line number — always start there!</p>
+<p><strong>Lesson:</strong> C++ is case-sensitive and picky about punctuation. The compiler tells you a line number — start there, then look one line up. And a build that reports two errors does not mean there are only two: fix, rebuild, read again.</p>
 
 </div>
 
@@ -3792,7 +3792,7 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
 
 <div class="div-mt-15px">
 
-<p>How long does one full trip through <code>loop()</code> take right now? What should the <code>delay()</code> be so a beep starts every 1000 milliseconds?</p>
+<p>How long does one full trip through <code>loop()</code> take right now? Careful — <code>playFrequency()</code> starts the note and returns immediately, so the tone is <em>not</em> part of the trip. Only the <code>delay()</code> is. What should that <code>delay()</code> be so a beep starts every 1000 milliseconds?</p>
 
 </div>
 
@@ -4036,6 +4036,8 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 
 </ol>
 
+<p>Plus the <strong>unnumbered</strong> row that is not one of the seven: <strong>Function Prototypes</strong>, which sits between Constants and <code>setup()</code> — see the template above.</p>
+
 <h3 class="h3-c-6f7582-3">Program Execution Flow</h3>
 
 <pre class="pre-m-0">Power On → setup() runs once → loop() runs forever
@@ -4217,7 +4219,7 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 
 <td class="td-ddd-2"><code>buzzer.playFrequency(880, 100, 10)</code></td>
 
-<td class="td-ddd-2">Play a tone: frequency in Hz (higher = higher pitch), length in ms, volume 0–15</td>
+<td class="td-ddd-2">Play a tone: frequency in Hz (higher = higher pitch), length in ms, volume 0–15. <strong>The note plays in the background — this line does not pause your program.</strong> Starting a second note before the first has finished cuts the first one off, so put a <code>delay()</code> at least as long as the note between them (Lesson 1, GRAPHIC 1.19)</td>
 
 </tr>
 
@@ -4247,7 +4249,7 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 
 <td class="td-ddd-2"><code>readBatteryMillivolts()</code></td>
 
-<td class="td-ddd-2">Returns battery voltage in millivolts (an <code>int</code>) — about 6000 with fresh batteries</td>
+<td class="td-ddd-2">Returns battery voltage in millivolts (an <code>int</code>). Our packs are <strong>4-cell NiMH</strong>: about <strong>5400</strong> fresh off the charger, <strong>4800</strong> through most of the run, <strong>4200</strong> means recharge now</td>
 
 </tr>
 
