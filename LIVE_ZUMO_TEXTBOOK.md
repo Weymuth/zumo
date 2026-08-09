@@ -1,13 +1,62 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 8, 2026 (Session 135 — **THE FIGURE'S TAG DOES NOT LIVE WHERE THE FIGURE DOES.** Three §1 hook GRAPHICs landed — 11.5, 12.4, 13.3 — and swapping the `[TAG]` placeholder for the asset made `image_audit` report **146 planned → 143**, with landed UNMOVED at 127. The three figures had not moved from outstanding to landed; they had left the population entirely. **A landed figure's tag lives in the lesson's FIGURES INDEX TABLE, not in the body** — the body carries the `<img>`, the index carries the `[TAG]` — so deleting the placeholder deleted the only occurrence. Caught because the count was ASSERTED against its own arithmetic rather than read (§24.13); a glance at *16 outstanding* would have looked like success. Three index rows added and the population is whole at **146 planned / 16 outstanding / 130 landed**. **AND THE FIGURE BLOCK HAS THREE SHAPES, ONE PER LESSON:** L11 `div-m-24px0`/`img-ddd`/`div-c-666-2`, L12 semantic `<figure>`/`<figcaption>`, L13 `div-m-25px0`/`img-br-8px`. Each lesson's own convention was matched rather than one imposed, because choosing between them is DJ's ruling and matching needs none. **THE CLASS NAMES WERE CHECKED FOR RANK BEFORE REUSE (rule 25):** `img-h-auto` carries five ranked siblings and `div-c-666` three, so adding uses can SWAP a pair — measured, the margins are 12 to 40 against an increase of 3, so no rank could move.)
-**Status:** ✅ **69 GATES PASS · GATE 69 NEW · THE THREE §1 HOOK GRAPHICS ARE LIVE · 16 OF 146 OUTSTANDING.** **THE ONE TO CARRY: a figure is planned by its TAG, and the tag does not live where the figure does.** Gate 69 pins the PLANNED total, never the outstanding count — outstanding is MEANT to fall as art lands, so pinning it would fire on every success. **Complementarity measured, not assumed:** with an index row deleted, gate 63 fires only on its CURRENCY arm, and **regenerating the worklist turns gate 63 GREEN while gate 69 stays red** at *16 outstanding of 145 planned* — outstanding unchanged, denominator one smaller. **§18.1's "1–2 prior concepts" is now a FLOOR, not a ceiling (DJ).** The spiral does not stop at L11 — L13 leads the book and L11 is second; it never started, at 13 of 171 challenge units. Five approved placements and 17 self-declaring cards are banked in the S136 handoff; **the arc is parked, not started, because under a floor ruling partial application is worse than none.** **AND A PROCESS FAILURE, MINE:** I reported a gate 69 that did not exist, quoted it, and called it live — two sandbox clones had drifted to three different md5s of one file and I read the polluted ones. **When two readings disagree, re-clone; do not reconcile.** Bible **v8.128** · `book_gates` **v1.64**.
+**Date:** August 8, 2026 (Session 136 — **THE LABEL AND THE THING IT NAMES ARE TWO LAYERS, AND THEY DRIFT SEPARATELY.** A content read of L01 found the book promising a **sumo match** the course never runs — the only course-scope promise in all sixteen lessons, and contradicted in place by L03's *"our non-sumo RoboCup bots"* and L14 listing sumo as *beyond these pages*. No instrument could have found it; §24.13's re-derive does not reach prose. Rewritten to line following, which is what L08 actually teaches. **THEN THE BANNERS AND THE PILLS MEASURED AS FOUR SPLITS EACH, ON DIFFERENT AXES.** §3 was 15 Theory / 1 Code Anatomy; §8 was 13 bare captioned *Troubleshooting* against 3 carrying the label and a real title. Thirteen new §8 titles were written from each section's own content. **GATE §6.8a CAUGHT THE HALF-RENAME:** changing L02's §3 banner without its HTML fence failed loudly, because the fence is DERIVED from the eyebrow — the gate is why a two-line edit did not ship as a one-line edit. **AND THE NAV PILL IS A SECOND LABELLING LAYER THAT NOBODY WAS WATCHING.** L14's pill read `8. Tune & Test` over a Troubleshooting section and L16's read `9. Tiers` over a banner saying Challenges — both pills had drifted away from their own sections. Pills 1–9 are now one identical row across sixteen files; L14's `10. Match Day` is the single ruled exception, because its §10 is a competition-day procedure and not an exit ticket.)
+**Status:** ✅ **69 GATES PASS · PILLS 1–9 IDENTICAL ACROSS ALL 16 · ALL 16 LESSONS BUMPED.** **THE ONE TO CARRY: a label is not the thing it names, and the two drift apart silently.** Section banners, HTML fences and nav pills are three independent spellings of one section, and this session found live disagreements in all three — none of which any of the 69 gates could see, because no gate ties a pill to its banner. **THE SECOND: no instrument reads prose.** The sumo error survived 135 sessions and a 69-gate suite because gates measure structure; only a read finds a false claim. **A CONTENT READ OF L01 IS DONE; L02–L16 ARE NOT.** L02 (4,555 lines) and L03 (4,409) are the two heaviest and the two a first-week student lives in. **Also found, unruled:** §4's banner carries seven different labels and they are accurate per lesson, left alone; the `for` loop has three homes — introduced L01, dissected L04 §8A.6, and the objective owned by L05 — and L04's opener says *"nobody explained it"*, which is only true if L01's INSIGHT is skipped. Bible **v8.129** · `book_gates` **v1.64**.
 
-**Versions:** L01 v03.28.0 · L02 v03.21.0 · L03 v03.40.0 · L04 v04.28.0 · L05 v04.28.0 · L06 v04.31.0 · L07 v04.31.0 · L08 v04.30.0 · L09 v05.26.0 · L10 v02.27.0 · L11 v02.28.1 · L12 v01.31.1 · L13 v02.28.1 · L14 v02.33.0 · L15 v02.30.0 · L16 v02.22.0 · going_deeper v01.6.1 — census **40,455** · Bible **v8.128** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.64** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.6.0 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `b05357e`.**
+**Versions:** L01 v03.28.1 · L02 v03.21.1 · L03 v03.40.1 · L04 v04.28.1 · L05 v04.28.1 · L06 v04.31.1 · L07 v04.31.1 · L08 v04.30.1 · L09 v05.26.1 · L10 v02.27.1 · L11 v02.28.2 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,455** · Bible **v8.129** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.45.4 · **book_gates v1.64** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.7 · build_family_map v1.6.0 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `06023bd`.**
 
 ---
 ---
 ---
+## WHAT SHIPPED IN S136
+
+**A content read of Lesson 1 found a promise the course never keeps.** L01 §3.0 explained closed-loop
+control with *"when your Zumo fights a sumo match later in this course"* - and the course is Rescue Line.
+The book already contradicted itself in two places: L03 says *"our non-sumo RoboCup bots"* and L14 lists
+sumo under *"beyond these pages."* A scan of every course-scope promise in all sixteen lessons returned
+exactly one hit, and it was this one. Rewritten to line following, which is what L08 teaches. **No gate
+could have found this** - the 69 gates measure structure, and a false claim in prose is well-formed.
+
+**The section banner was four splits, not one.** §3 read `Theory` in fifteen and `Code Anatomy` in L02.
+§8 was worse in shape: thirteen lessons carried a bare `Section 8` with the title doing the naming, while
+L14-L16 carried `Section 8 · Troubleshooting` plus a real lesson-specific title. DJ ruled toward the
+three. **Thirteen new titles were written from each section's own content**, not invented - L04's
+*When the Sensors Lie* comes from its own opening line, *"the program compiles, uploads, runs - and lies."*
+§4's seven labels (Hardware, Setup, Planning, The Course, Prep, Timing, Budget) were measured and left
+alone: each is accurate to its lesson, so that split is a descriptor working as designed.
+
+**Gate §6.8a is why the §3 rename did not ship half-done.** Changing L02's banner alone failed the suite
+immediately: the fence comment is DERIVED from the eyebrow's post-middot name, so `SECTION 3: CODE ANATOMY`
+no longer matched. One edit became two because the gate said so, which is §6.8a doing precisely the job
+S82 built it for.
+
+**The nav pill is a SECOND labelling layer, and nothing was watching it.** It drifts independently of the
+banner, and two of its entries were not style choices but defects: **L14's `8. Tune & Test` pointed at a
+Troubleshooting section** (tuning is L15), and **L16's `9. Tiers` sat over a banner reading Challenges.**
+A student clicking either landed somewhere other than the label promised. Pills 5, 6, 7, 8, 9 and 10 were
+normalized; the core row is now byte-identical across all sixteen files:
+`1. Intro · 2. Objectives · 3. Theory · 4. Hardware · 5. Code · 6. Build · 7. Verify · 8. Diagnose · 9. Challenges`
+
+**Pill 7 was ruled on the word, not the shape.** `Commission It` is the precise engineering term and was
+declined: the word appears nowhere else in the book, so it would arrive as a nav pill with no definition
+behind it. `Verify` was taken because it is equally true of L01's *press A and watch* and L16's three-run
+A/B protocol - the whole span the word must cover. `Diagnose` was rejected for §7 on the same evidence:
+§7 and §8 are opposites, entered with a working robot and a broken one respectively.
+
+**Pill 10 has one ruled exception, and it was measured before it was granted.** Fifteen lessons take
+`Wrap-Up`. **L14 keeps `Match Day`** because its §10 is `10.1 Morning Routine` / `10.2 Pre-Match Routine`.
+A read of all sixteen §10 sections found exactly two that are not a Brain Check exit ticket - L14 and
+L16 - and L16's *final deliverables and reflection* is the best-fitting Wrap-Up in the book.
+
+**Every §10 banner already read `Section 10 / Exit Ticket` in all sixteen.** The pill diverges from the
+banner in every lesson now, and that is the ruled pattern: **pills are short handles, banners are section
+names.** That is what makes `Diagnose` over Troubleshooting and `Wrap-Up` over Exit Ticket coherent
+rather than inconsistent.
+
+---
+---
+---
+
 ## WHAT SHIPPED IN S134
 
 **The body KEY TERM names its family; the glossary entry does not (§24.14d, gate 68).** 83 blocks
