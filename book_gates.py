@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.63.1'
+VERSION = 'v1.64'
 # v1.60 (S132): GATE 65 NEW - §27.15f, THE REVEAL BOX. 453 <details> in THIRTEEN spellings
 #   plus 55 with no class at all, whose summaries therefore had NO cursor: pointer - the one
 #   part of the drift a reader would have felt. Graduated to an element rule. The gate is
@@ -3787,6 +3787,36 @@ try:
 except ImportError:
     bad.append('keyterm_prefix.py is missing - the rule has no predicate')
 gate('\u00a724.14d the body KEY TERM names its family and the glossary entry does not', bad)
+
+
+# ---------------------------------------------------------------- GATE 69 (S135)
+# \u00a710  A FIGURE IS PLANNED BY ITS TAG, AND THE TAG DOES NOT LIVE WHERE THE FIGURE DOES.
+# Landing three \u00a71 hook GRAPHICs made image_audit report planned 146 -> 143 with LANDED
+# UNMOVED at 127: the three had not moved from outstanding to landed, they had LEFT THE
+# POPULATION. A landed figure's tag lives in the lesson's FIGURES INDEX TABLE; the body
+# carries only the <img>. Swapping the placeholder therefore deleted the tag's only
+# occurrence and shrank the DENOMINATOR. Nothing failed. `image_audit --check` printed
+# DIFFERS, which reads as "re-run me" (rule 22), and --write would have accepted the
+# smaller population and printed a smaller `outstanding` that looks exactly like progress.
+# Gate 63 is structurally blind to this: it walks TAG -> asset, so a tag that no longer
+# exists is never iterated (\u00a724.8).
+# THE PIN IS THE PLANNED TOTAL, NOT THE OUTSTANDING COUNT. Outstanding is MEANT to fall as
+# art lands; pinning it would fire on every success. planned moves only when a figure is
+# ruled into or out of the book, which is DJ's call and not a side effect of an edit.
+PLANNED_EXPECTED = 146      # stated, not inherited - moves only when a figure is ruled in or out
+bad = []
+try:
+    import image_audit as _IA69       # by module name, the LI convention at line 325
+    _pl, _out, _orph, _dup = _IA69.audit()
+    if len(_pl) != PLANNED_EXPECTED:
+        bad.append('%d figure tags planned, expected %d - a tag was added or DELETED. A tag '
+                   'deleted without the figure landing shrinks the denominator, so outstanding '
+                   'falls like progress (S135)' % (len(_pl), PLANNED_EXPECTED))
+    if len(_out) > len(_pl):
+        bad.append('outstanding %d exceeds planned %d' % (len(_out), len(_pl)))
+except Exception as _e69:
+    bad.append('image_audit.audit() did not run - the rule has no predicate (%s)' % _e69)
+gate('\u00a710   the planned figure population is whole', bad)
 
 print('=' * 52)
 
