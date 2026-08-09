@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.64'
+VERSION = 'v1.64.1'
 # v1.60 (S132): GATE 65 NEW - §27.15f, THE REVEAL BOX. 453 <details> in THIRTEEN spellings
 #   plus 55 with no class at all, whose summaries therefore had NO cursor: pointer - the one
 #   part of the drift a reader would have felt. Graduated to an element rule. The gate is
@@ -2259,7 +2259,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '312d08a07c87b5da'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '00bb95c6c00064e4'
 #   S134 move: digest ONLY. Rules and declarations UNCHANGED at 574/2,033 - zero born,
 #   zero died, zero ALTERED, diffed by selector. The whole sheet delta is FOUR lines: the
 #   header's covered-attribute count and one rule's usage comment, .div-fs-105em ×792 ->

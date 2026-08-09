@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.40.1 -->
+<!-- Lesson version: v03.40.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -170,7 +170,7 @@
 
 <div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT: Why Does This Happen? (Physics Corner)</div>
 
-Motor imbalance comes from tiny differences in <strong>torque</strong> (rotational force). Remember F=ma from physics? Your robot has small mass, so even tiny force differences get amplified into noticeable motion differences. A motor producing 1% less torque means 1% less acceleration—and over 2 seconds of driving, that compounds into a visible curve.
+Motor imbalance comes from tiny differences in <strong>torque</strong> (rotational force) — windings, magnets, friction, gear mesh. Give both motors the same command and they settle at slightly different <em>speeds</em>, and there they stay. That is the whole mechanism: not a dramatic force effect, just a small, <em>steady</em> speed gap that the robot spends every second of the run adding up. A wheel turning 1% faster than its partner has travelled a little further after one second, further still after two — and a robot whose tracks have gone different distances is no longer pointing where it started. That is your curve.
 
 </div>
 
@@ -264,7 +264,6 @@ After this lesson, your robot will finally drive straight—but it's still <em>b
 
 </div>
 
-<p>Differential drive diagram:</p>
 
 
 
@@ -616,6 +615,8 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span> + <span class="tok-b5cea8">
 
 <p>By adding a small boost to the weaker motor, we balance them out.</p>
 
+<p><strong>Why always the LEFT motor?</strong> Because TRIM has to mean the same thing on every robot in the room and in every lesson for the rest of the year. Pick one wheel and stay on it, and a single number tells the whole story: <strong>positive boosts the left, negative eases the left down</strong>. If you corrected whichever side happened to be weak, the same TRIM value would mean opposite things on two robots — and every table, tip and troubleshooting row after this page would need to ask which one you chose first.</p>
+
 <p><strong>TRIM values guide:</strong></p>
 
 <table class="table-bc-collapse">
@@ -798,6 +799,8 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 </ul>
 
 <p><strong>Step 2: Identify the Problem</strong></p>
+
+<p><strong>First, whose left?</strong> Always the <strong>robot’s</strong> — its blade is the front. If it is driving away from you, you are seeing its back, and its left is on your right. Stand behind the robot, or turn your head to face the way it is facing, before you decide which way it curved. This one is the most common way a TRIM hunt goes backwards.</p>
 
 <ul>
 
@@ -1666,7 +1669,7 @@ DATE: [Today's Date]
               the OLED display
               BOTH motors, driven as one unit  ← new today</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Five declaration lines under your <code>// ===== HARDWARE OBJECTS =====</code> banner, right after the include. Four of them are the exact cast from Lesson 2. The new actor drives both motors together — find its one line in the <a href="#qr-motors" class="link-c-2e86ab">⚡ Quick Reference → Motors</a> table.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Five declaration lines under a <code>// ===== HARDWARE OBJECTS =====</code> banner you type yourself (Step 2 had you clear the template’s banners), right after the include. Four of them are the exact cast from Lesson 2. The new actor drives both motors together — find its one line in the <a href="#qr-motors" class="link-c-2e86ab">⚡ Quick Reference → Motors</a> table.</p>
 
 <details data-reveal="check">
 
@@ -2720,7 +2723,7 @@ Displays countdown on OLED and logs to Serial.
 
 <li><strong>TRIM not being applied</strong> → Check <code>leftSpeed = BASE_SPEED + trimValue</code> in runMotorTest()</li>
 
-<li><strong>TRIM sign is backwards</strong> → TRIM always adjusts the <strong>LEFT</strong> motor (<code>leftSpeed = BASE_SPEED + trimValue</code>) — that never changes, in this lesson or any lesson after it. If your correction makes the curve <em>worse</em>, flip the <strong>sign</strong>, not the motor: curves LEFT → POSITIVE TRIM; curves RIGHT → NEGATIVE TRIM (Section 3.7).</li>
+<li><strong>TRIM sign is backwards</strong> → TRIM always adjusts the <strong>LEFT</strong> motor (<code>leftSpeed = BASE_SPEED + trimValue</code>) — that never changes, in this lesson or any lesson after it. Check which way it curved from the <strong>robot’s</strong> point of view before you touch the sign — half of all “TRIM is backwards” reports are a robot driving away from the student. If your correction really does make the curve <em>worse</em>, flip the <strong>sign</strong>, not the motor: curves LEFT → POSITIVE TRIM; curves RIGHT → NEGATIVE TRIM (Section 3.7).</li>
 
 <li><strong>Surface issue</strong> → Some floors grip one wheel more. Try a different surface.</li>
 
@@ -2891,7 +2894,7 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 </div>
 
 <div class="callout-3a7d5c-bg-e8f3ec" data-family="TRY THIS" data-callout="3.91">
-    <div class="div-c-352405">🎯 CHALLENGE:</div> Add a calibration constant <code>SETTLE_TIME</code> (try <code>300</code> ms) and use it to pause briefly <em>before</em> each motor test starts, so the robot isn't moving when you let go of the button. One named constant, one <code>delay()</code>, cleaner results.
+    <div class="div-c-352405">🎯 CHALLENGE:</div> Your countdown is three hard-coded <code>delay(1000)</code> calls — three magic numbers doing one job. Replace them with a single named constant <code>COUNTDOWN_STEP_MS</code> (start at <code>1000</code>) and use it for all three. Then try <code>500</code>: one edit, and the whole countdown speeds up.
 </div>
 
 <h3 class="h3-c-00474b">8A.5 When One Knob Becomes Several: Arrays</h3>
@@ -3074,7 +3077,7 @@ write runSpinTest():
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   display.print(F(<span class="tok-ce9178">"!! LOW BATTERY !!"</span>));
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
-  display.print(F(<span class="tok-ce9178">"Replace batteries"</span>));
+  display.print(F(<span class="tok-ce9178">"Recharge batteries"</span>));
   <span class="tok-569cd6">return</span>; <span class="tok-6a9955">// Skip normal display</span>
 }</pre>
 
@@ -3105,11 +3108,14 @@ constrain(value, low, high) hands back a value that can never leave the range</p
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 <p class="p-m-008px">Fill the function that clamps each speed to the cap.</p>
 <pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the cap</span>
-<span class="tok-6a9955">// in setup(), before driving:</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> RUN_MS    = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 1000 (1 s) and adjust.</span>
+<span class="tok-6a9955">// in loop(), inside the button-B block:</span>
 motors.setSpeeds(
   ____(LEFT_SPEED,  -MAX_SPEED, MAX_SPEED),   <span class="tok-6a9955">// clamp to the cap</span>
   ____(RIGHT_SPEED, -MAX_SPEED, MAX_SPEED)
-);</pre>
+);
+delay(RUN_MS);
+motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// stop before the edge</span></pre>
 </div>
 <div class="div-bb-1pxsolid">
 <div class="callout-2e86ab-bg-e7f0fa-3" data-family="BUILDS ON" data-callout="3.97"><div class="div-fs-105em"><img src="../images/marks/arrow-repeat.svg" alt="" data-mark="arrow-repeat">Builds on:</div> named <code>const</code> values from Lesson 2 <img src="../images/spiral_star_02.svg" alt="Spiral review from Lesson 02" class="img-h-11em"> — this is the third time you've used a left/right pair (spin signs → TRIM offset → now a speed clamp).</div>
@@ -3153,7 +3159,7 @@ motors.setSpeeds(
 <span class="tok-569cd6">const int</span> MAX_SPEED   = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the cap</span>
 <span class="tok-569cd6">const int</span> RUN_MS      = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 1000 (1 s) and adjust.</span>
 
-<span class="tok-6a9955">// In setup(), after waitForButtonA():</span>
+<span class="tok-6a9955">// In loop(), inside the button-B block:</span>
 motors.setSpeeds(
   constrain(LEFT_SPEED,  -MAX_SPEED, MAX_SPEED),
   constrain(RIGHT_SPEED, -MAX_SPEED, MAX_SPEED)
@@ -3191,10 +3197,13 @@ instead step up one rung at a time, pausing STEP_MS between:
 <p class="p-m-008px">Fill the two middle rungs of the climb.</p>
 <pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> STEP_MS   = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// <-- YOUR NUMBER (try 200)</span>
+<span class="tok-6a9955">// in loop(), inside the button-B block:</span>
 motors.setSpeeds(<span class="tok-b5cea8">50</span>,  <span class="tok-b5cea8">50</span>);   delay(STEP_MS);
 motors.setSpeeds(____, ____); delay(STEP_MS);   <span class="tok-6a9955">// next rung</span>
 motors.setSpeeds(____, ____); delay(STEP_MS);   <span class="tok-6a9955">// next rung</span>
-motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span class="tok-6a9955">// stop at the cap</span></pre>
+motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span class="tok-6a9955">// climb stops at the cap</span>
+delay(STEP_MS);
+motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);              <span class="tok-6a9955">// and then STOP the motors</span></pre>
 </div>
 <div class="div-bb-1pxsolid">
 <div class="callout-2e86ab-bg-e7f0fa-3" data-family="BUILDS ON" data-callout="3.99"><div class="div-fs-105em"><img src="../images/marks/arrow-repeat.svg" alt="" data-mark="arrow-repeat">Builds on:</div> the speed clamp from <strong>Challenge 3</strong> just above — you'll ramp up <em>to</em> that same capped <code>MAX_SPEED</code>, not jump to it.</div>
@@ -3229,7 +3238,7 @@ motors.setSpeeds(MAX_SPEED, MAX_SPEED);          <span class="tok-6a9955">// sto
 <pre class="pre-m-0"><span class="tok-569cd6">const int</span> MAX_SPEED = <span class="tok-b5cea8">200</span>;   <span class="tok-6a9955">// the top of the climb</span>
 <span class="tok-569cd6">const int</span> STEP_MS   = <span class="tok-b5cea8">0</span>;     <span class="tok-6a9955">// &lt;-- YOUR NUMBER. Try 200 and adjust.</span>
 
-<span class="tok-6a9955">// In setup() - write the climb out by hand, one rung at a time:</span>
+<span class="tok-6a9955">// In loop(), inside the button-B block - write the climb by hand:</span>
 motors.setSpeeds(<span class="tok-b5cea8">50</span>,  <span class="tok-b5cea8">50</span>);   delay(STEP_MS);
 motors.setSpeeds(<span class="tok-b5cea8">100</span>, <span class="tok-b5cea8">100</span>);  delay(STEP_MS);
 motors.setSpeeds(<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">150</span>);  delay(STEP_MS);
@@ -3237,7 +3246,7 @@ motors.setSpeeds(MAX_SPEED, MAX_SPEED);   <span class="tok-6a9955">// stop at th
 delay(STEP_MS);
 motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);</pre>
 
-<p class="div-mt-12px"><strong>Why the cap matters:</strong> the last rung lands exactly on <code>MAX_SPEED</code> — the same 200 ceiling you clamped to in Challenge 3, now reached gradually instead of instantly. You write each rung yourself here; in <strong>Lesson 5</strong> you'll meet the <code>for</code> loop, which writes the whole climb for you in three lines.</p>
+<p class="div-mt-12px"><strong>Why the cap matters:</strong> the last rung lands exactly on <code>MAX_SPEED</code> — the same 200 ceiling you clamped to in Challenge 3, now reached gradually instead of instantly. You write each rung yourself here. The <code>for</code> loop you met in Lesson 1 writes this whole climb in three lines — <strong>Lesson 4</strong> takes it apart, and Lesson 5 adds counting downward.</p>
 
 </div>
 
@@ -3254,7 +3263,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <div class="div-p-0">
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="pre-m-0">Modify the program so pressing B multiple times cycles through different test speeds: 150 → 200 → 250 → 300 → 150...</p>
+<p class="pre-m-0">Modify the program so pressing B multiple times cycles through the four test speeds in turn. The starting index is <code>1</code>, so the first press runs 200: 200 → 250 → 300 → 150 → 200…</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
@@ -3865,7 +3874,7 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <details data-reveal="mechanism"><summary>🔓 What you’re measuring</summary>
 
-<div class="div-mt-12px"><p>Even the “instant” stop skids — a 400-speed robot carries momentum, and rubber treads on smooth floor can’t dump it instantly. The ramp-down travels farther by design but is <em>controlled</em> the whole way (and gentler on the gearbox — real robots almost never slam from full speed to zero). The for-loop is your first <strong>deceleration profile</strong> — Lesson 6 turns this idea into real motion control.</p></div>
+<div class="div-mt-12px"><p>Even the “instant” stop skids — a 400-speed robot carries momentum, and rubber treads on smooth floor can’t dump it instantly. The ramp-down travels farther by design but is <em>controlled</em> the whole way (and gentler on the gearbox — real robots almost never slam from full speed to zero). Look closely at that loop: it counts <em>down</em> (<code>s = 400</code>, test <code>s &gt;= 0</code>, step <code>s -= 20</code>), and the counter <em>is</em> the speed rather than a lap tally. You have only met loops that count up by one; you will take the descending form apart properly in Lesson 5. Here it is your first <strong>deceleration profile</strong> — Lesson 6 turns this idea into real motion control.</p></div>
 
 </details>
 
