@@ -1,0 +1,1300 @@
+# ZUMO READING QUIZ BANK — LESSON 03
+# Motor TRIM · No Two Motors Are the Same
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_03.html v03.41.0 (post-S140 content edit)
+#
+# READ -> FIX -> QUIZ. Lesson 03 was read end to end in S140 before a single
+# question was written. The S140 edit resolved the lesson's last two
+# [CONTENT PLACEHOLDER] blocks: the brushed-vs-brushless explainer was written
+# into §4.2 as prose, and the Roomba story was skipped by DJ ruling. Questions
+# B31 and B32 sit directly on the new brushed-vs-brushless prose and did not exist
+# as askable facts against v03.40.2.
+#
+# TWO ANSWERS DELIBERATELY NOT ASKED, both because the lesson's own numbers are
+# under an open finding and a quiz must not key a disputed fact:
+#   1. §4.2's stall-current multiple — the WARNING says ~1.5 A is "roughly 5x
+#      its free-running draw", but Pololu's no-load figure for this motor is
+#      ~0.10 A, which is ~15x. Carried unruled since S137.
+#   2. The alkaline reading. §3.6 prose derives 6.0 V from 1.5 V per cell while
+#      the table row reads 6,300 mV. Both are defensible (nominal vs fresh) but
+#      a question keyed to either number would fail a careful reader of the
+#      other. B17 asks WHY the fleet runs NiMH, which the lesson states once and
+#      unambiguously, instead of asking for a voltage.
+#
+# FORMATS: multiple_choice, true_false, matching. No fill-in-the-blank by ruling.
+# EVERY QUESTION CARRIES A `cite`.
+#
+# MIX (QUIZ_SPEC v1.1.0: MC ~70%, TF cap ~20%, matching ~10%). Derived, not typed —
+# run quiz_bank.py; do not trust this comment over the tool:
+#   before 61 — MC 46 (75%) / TF 10 (16%) / matching 5 (8%)
+#   after  22 — MC 16 (73%) / TF  4 (18%) / matching 2 (9%)
+# MC sits above the ~70% target and that is deliberate rather than drift. QUIZ_SPEC
+# v1.1.0 measured the arithmetic: under the TF and matching caps the MC floor is 76%,
+# so 75% is essentially AT the structural minimum. Buying the last five points would
+# mean adding true/false, which is 50% guessable — the spec's own rule is that when a
+# ratio has to give, it gives to the instrument that measures better.
+
+lesson: "L03"
+title: "Motor TRIM — No Two Motors Are the Same"
+bank_version: "1.0.0"
+source:
+  lesson_03: "v03.41.0"
+  lesson_02: "v03.21.2"
+
+sets:
+
+  # ===================================================================
+  # BEFORE — THE PRE-CLASS GATE
+  # Answerable from the reading alone. Nothing here needs the robot, a
+  # compiler, or a built program. Draws on §1-§5, §8, §8A, the Quick
+  # Reference and the Glossary.
+  # Suggested Canvas draw: 10, one attempt, locks at period start.
+  # ===================================================================
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone."
+    suggested_draw: 10
+    questions:
+
+      # ---------- §1 The Crooked Robot Problem ----------
+      - id: L03_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "You command both motors to speed 200 and the robot curves anyway. According to the lesson, what is going on?"
+        options:
+          - text: "Nothing is broken — no two motors are exactly alike, even from the same factory on the same day"
+            correct: true
+          - text: "One motor is damaged and needs replacing"
+            correct: false
+            why: "The lesson says the opposite: this is normal for every wheeled robot."
+          - text: "The speed command was too high for the battery"
+            correct: false
+          - text: "The two motors received different commands"
+            correct: false
+            why: "Both received 200. The difference is mechanical, not in the command."
+
+      - id: L03_B02
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "A robot with unequal wheel speeds turns toward which side?"
+        options:
+          - text: "Toward its slower side"
+            correct: true
+          - text: "Toward its faster side"
+            correct: false
+            why: "The faster wheel travels further, which swings the robot the other way."
+          - text: "Toward whichever side is heavier"
+            correct: false
+          - text: "It alternates unpredictably"
+            correct: false
+
+      - id: L03_B03
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "The lesson says one motor might spin about 1% faster than its twin. Why does such a small difference matter?"
+        options:
+          - text: "The gap adds up second after second, so the tracks travel different distances and the robot is no longer pointing where it started"
+            correct: true
+          - text: "1% is enough to stall the slower motor"
+            correct: false
+          - text: "The library rounds 1% up to 10%"
+            correct: false
+          - text: "It only matters above speed 300"
+            correct: false
+
+      # ---------- §3.1 Differential drive ----------
+      - id: L03_B04
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What is a differential drive?"
+        options:
+          - text: "A two-motor system where steering comes from running the left and right wheels at different speeds"
+            correct: true
+          - text: "A gearbox that splits torque between two axles"
+            correct: false
+            why: "That is a differential in a car. The lesson's term is about steering by wheel speed."
+          - text: "A drive system with a separate steering motor"
+            correct: false
+          - text: "A motor that changes gear ratio while running"
+            correct: false
+
+      - id: L03_B05
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "In the three turn types, what makes a PIVOT different from a SPIN?"
+        options:
+          - text: "In a pivot one wheel is stopped; in a spin the wheels run opposite directions"
+            correct: true
+          - text: "A pivot uses both wheels forward at different speeds"
+            correct: false
+            why: "That is a swing (arc turn)."
+          - text: "A pivot is always faster than a spin"
+            correct: false
+          - text: "A spin stops one wheel; a pivot reverses one"
+            correct: false
+            why: "This is the right idea with the two names swapped."
+
+      - id: L03_B06
+        type: multiple_choice
+        cite: "§3.1, §3.2"
+        points: 1
+        stem: "What does motors.setSpeeds(-200, 200) do?"
+        options:
+          - text: "Runs both motors at speed 200 in opposite directions, spinning the robot in place"
+            correct: true
+          - text: "Runs the left motor at 200 and the right at half of that"
+            correct: false
+          - text: "Drives the robot backward in a straight line"
+            correct: false
+            why: "That would need both values negative."
+          - text: "Stops the left motor and runs the right forward"
+            correct: false
+
+      # ---------- §3.2 Speed values, sign and size ----------
+      - id: L03_B07
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Every motor value carries two pieces of information. Which is which?"
+        options:
+          - text: "The sign is the direction; the size of the number is the speed"
+            correct: true
+          - text: "The sign is the speed; the size is the direction"
+            correct: false
+          - text: "The sign is the motor, the size is the speed"
+            correct: false
+          - text: "Both are speed — direction is set by a separate command"
+            correct: false
+
+      - id: L03_B08
+        type: multiple_choice
+        cite: "§3.2, Quick Reference"
+        points: 1
+        stem: "What is the legal speed range for setSpeeds()?"
+        options:
+          - text: "-400 to +400"
+            correct: true
+          - text: "0 to 400"
+            correct: false
+            why: "That would leave no way to reverse."
+          - text: "-255 to +255"
+            correct: false
+          - text: "-1000 to +1000"
+            correct: false
+
+      - id: L03_B09
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The LEARN box asks what a speed of 200 physically IS. What is the answer?"
+        options:
+          - text: "A duty-cycle setting — the driver switches full power on and off very fast, and 200 means on about half of each cycle"
+            correct: true
+          - text: "200 revolutions per minute at the track sprocket"
+            correct: false
+            why: "The lesson says explicitly that the number has no unit like RPM or volts."
+          - text: "200 millivolts delivered to the motor"
+            correct: false
+          - text: "200 encoder counts per second"
+            correct: false
+
+      - id: L03_B10
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Why does the driver switch the motors at 20,000 times per second rather than something slower?"
+        options:
+          - text: "Slower switching would produce a whine you could hear"
+            correct: true
+          - text: "Slower switching would damage the motor windings"
+            correct: false
+          - text: "It is the fastest the ATmega32U4 can manage"
+            correct: false
+          - text: "The library requires it for encoder counting"
+            correct: false
+
+      - id: L03_B11
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Which part of the robot actually generates the 20,000-per-second pulses?"
+        options:
+          - text: "Timer 1, a dedicated timer circuit inside the ATmega32U4, programmed once by the library"
+            correct: true
+          - text: "Your loop() function, one pulse per pass"
+            correct: false
+            why: "The lesson makes this point directly: your code does none of the switching, which is why loop() stays free."
+          - text: "The OLED display controller"
+            correct: false
+          - text: "The battery monitor circuit"
+            correct: false
+
+      # ---------- §3.3 Open loop, closed loop, dead reckoning ----------
+      - id: L03_B12
+        type: multiple_choice
+        cite: "§3.3, Glossary"
+        points: 1
+        stem: "What is open-loop control?"
+        options:
+          - text: "Sending a command with no feedback about what actually happened"
+            correct: true
+          - text: "Sending a command, measuring the result, and adjusting"
+            correct: false
+            why: "That is closed-loop — the loop closes because information flows back."
+          - text: "Running the motors without stopping them"
+            correct: false
+          - text: "Any program with a loop() function"
+            correct: false
+
+      - id: L03_B13
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "The lesson gives your TRIM Finder's driving style a navigator's name. What is it, and what is its flaw?"
+        options:
+          - text: "Dead reckoning — estimating position from speed and time, so every small error quietly accumulates and nothing corrects it"
+            correct: true
+          - text: "Dead reckoning — a method so accurate that ships used it to cross oceans"
+            correct: false
+            why: "Ships did use it, but the lesson's point is the flaw: nothing ever checks."
+          - text: "Triangulation — fixing position from two known landmarks"
+            correct: false
+          - text: "Odometry — counting wheel rotations to measure distance"
+            correct: false
+            why: "That is what Lesson 6's encoders add; it is the fix, not the problem."
+
+      # ---------- §3.4 / §3.5 TRIM ----------
+      - id: L03_B14
+        type: multiple_choice
+        cite: "§3.5, §3.7"
+        points: 1
+        stem: "Your robot curves LEFT. What TRIM do you need?"
+        options:
+          - text: "Positive TRIM — it boosts the left motor"
+            correct: true
+          - text: "Negative TRIM — it eases the left motor down"
+            correct: false
+            why: "That is the fix for a robot curving RIGHT."
+          - text: "Zero TRIM — the motors are balanced"
+            correct: false
+          - text: "Either sign works as long as the size is right"
+            correct: false
+
+      - id: L03_B15
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Why does TRIM always adjust the LEFT motor, even when the right motor is the weak one?"
+        options:
+          - text: "So one number means the same thing on every robot and in every later lesson — positive boosts the left, negative eases it down"
+            correct: true
+          - text: "Because the left motor is always the weaker one on a Zumo"
+            correct: false
+            why: "Which motor is weak varies by robot. The convention is about consistency, not about which one is weak."
+          - text: "Because the library can only modify the left channel"
+            correct: false
+          - text: "Because the left motor is closer to the battery"
+            correct: false
+
+      - id: L03_B16
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "The lesson says typical TRIM values run from about -30 to +30. What does a needed TRIM larger than about plus or minus 50 suggest?"
+        options:
+          - text: "Something is probably wrong with the robot's hardware"
+            correct: true
+          - text: "The batteries are fresh and the motors are running fast"
+            correct: false
+          - text: "The TRIM_STEP constant is set too low"
+            correct: false
+          - text: "It is normal on a 75:1 gearbox"
+            correct: false
+
+      # ---------- §3.6 Battery ----------
+      - id: L03_B17
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "The lesson explains why the fleet runs NiMH rechargeables even though fresh alkalines sit closer to the motors' rated voltage. What is the reason?"
+        options:
+          - text: "The shape of the discharge — NiMH holds a steady voltage for nearly the whole charge, while an alkaline slides downhill the entire time it is used"
+            correct: true
+          - text: "NiMH cells deliver more current, so the motors run faster"
+            correct: false
+          - text: "Alkaline cells are not safe in a robot"
+            correct: false
+          - text: "The Zumo's battery monitor cannot read alkaline cells"
+            correct: false
+
+      - id: L03_B18
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "Your OLED reads a battery voltage of 4200 mV. What does the lesson tell you to do?"
+        options:
+          - text: "Recharge — the cells are nearly empty, and draining NiMH below this damages them"
+            correct: true
+          - text: "Keep running; this is the normal working plateau"
+            correct: false
+            why: "The plateau is about 4800 mV. 4200 is the floor."
+          - text: "Nothing — 4200 mV is a fresh reading"
+            correct: false
+          - text: "Swap in alkalines, which read lower"
+            correct: false
+
+      - id: L03_B19
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "readBatteryMillivolts() returns 5400. What is that in volts?"
+        options:
+          - text: "5.4 V"
+            correct: true
+          - text: "54 V"
+            correct: false
+          - text: "0.54 V"
+            correct: false
+          - text: "540 V"
+            correct: false
+
+      # ---------- §3.7 The test strategy ----------
+      - id: L03_B20
+        type: multiple_choice
+        cite: "§3.7"
+        points: 1
+        stem: "TEST_DURATION is 2000. How long do the motors run?"
+        options:
+          - text: "2 seconds — every timing number in this lesson is in milliseconds"
+            correct: true
+          - text: "2000 seconds"
+            correct: false
+          - text: "20 seconds"
+            correct: false
+          - text: "0.2 seconds"
+            correct: false
+
+      - id: L03_B21
+        type: multiple_choice
+        cite: "§3.7"
+        points: 1
+        stem: "Why does the lesson tell you to adjust TRIM in steps of 5 to 10 rather than 1 or 2?"
+        options:
+          - text: "A change of 1 or 2 is too small to see over a short run, so you burn a whole test learning nothing"
+            correct: true
+          - text: "Steps smaller than 5 are rejected by constrain()"
+            correct: false
+          - text: "TRIM_STEP cannot be set below 5"
+            correct: false
+            why: "TRIM_STEP is yours to change; the lesson even suggests dropping to 2 or 3 to fine-tune once you are close."
+          - text: "Small steps overheat the motors"
+            correct: false
+
+      - id: L03_B22
+        type: multiple_choice
+        cite: "§3.7"
+        points: 1
+        stem: "The lesson warns this is the most common way a TRIM hunt goes backwards. What is it?"
+        options:
+          - text: "Judging left and right from your own point of view instead of the robot's, when the robot is driving away from you"
+            correct: true
+          - text: "Testing on tile instead of carpet"
+            correct: false
+          - text: "Forgetting to press B before adjusting TRIM"
+            correct: false
+          - text: "Using a TRIM_STEP that is too large"
+            correct: false
+
+      # ---------- §3.8 setSpeeds behaviour ----------
+      - id: L03_B23
+        type: multiple_choice
+        cite: "§3.8"
+        points: 1
+        stem: "What happens after you call motors.setSpeeds(200, 200) and your program moves on to other work?"
+        options:
+          - text: "The motors keep running at that speed until setSpeeds() is called again"
+            correct: true
+          - text: "The motors run briefly and then stop on their own"
+            correct: false
+            why: "This is the single most common bug the lesson names: speeds persist, and the robot drives off the table."
+          - text: "The motors stop when loop() restarts"
+            correct: false
+          - text: "The motors stop after TEST_DURATION automatically"
+            correct: false
+
+      - id: L03_B24
+        type: multiple_choice
+        cite: "§3.8"
+        points: 1
+        stem: "The LEARN box names three kinds of stop. Which one does setSpeeds(0, 0) give you on the Zumo?"
+        options:
+          - text: "A brake-style stop — the driver shorts the motors so the robot stops promptly rather than coasting"
+            correct: true
+          - text: "A coast — the leads are left open and the robot rolls to a halt"
+            correct: false
+          - text: "A hold — the robot actively fights anything that pushes it"
+            correct: false
+            why: "A hold keeps drawing power while standing still. The Zumo's zero command does not do that."
+          - text: "None of the three — it cuts battery power entirely"
+            correct: false
+
+      # ---------- §3.9 constrain ----------
+      - id: L03_B25
+        type: multiple_choice
+        cite: "§3.9, Quick Reference"
+        points: 1
+        stem: "What does constrain(450, -400, 400) return?"
+        options:
+          - text: "400"
+            correct: true
+          - text: "450"
+            correct: false
+          - text: "50"
+            correct: false
+            why: "constrain() clamps to the limit; it does not subtract the overshoot."
+          - text: "-400"
+            correct: false
+
+      - id: L03_B26
+        type: multiple_choice
+        cite: "§3.9"
+        points: 1
+        stem: "setSpeeds() already clamps anything past plus or minus 400 internally. So why does the lesson still want you to call constrain() yourself?"
+        options:
+          - text: "Because you use the speed number for other things — showing it, logging it, feeding it into more math — where an out-of-range value would be wrong or confusing"
+            correct: true
+          - text: "Because without it the motor can be damaged"
+            correct: false
+            why: "The lesson says plainly that constrain() is not there to protect the motor."
+          - text: "Because the internal clamp only works below speed 200"
+            correct: false
+          - text: "Because constrain() is required before every setSpeeds() call"
+            correct: false
+
+      # ---------- §3.10 Safety ----------
+      - id: L03_B27
+        type: multiple_choice
+        cite: "§3.10, §8"
+        points: 1
+        stem: "Your robot will not stop and is heading for the edge of the table. What does the lesson tell you to do first?"
+        options:
+          - text: "Hit the power switch"
+            correct: true
+          - text: "Grab the robot by the wheels"
+            correct: false
+            why: "The lesson says never to do this."
+          - text: "Unplug the USB cable"
+            correct: false
+          - text: "Press button A to reset TRIM"
+            correct: false
+
+      # ---------- §3.11 TRIM math ----------
+      - id: L03_B28
+        type: multiple_choice
+        cite: "§3.11"
+        points: 1
+        stem: "Your right motor runs about 5% faster than your left and you are testing at BASE_SPEED = 200. Using the lesson's formula, roughly what TRIM should you expect?"
+        options:
+          - text: "About 10"
+            correct: true
+          - text: "About 5"
+            correct: false
+            why: "5 is the percentage, not the TRIM. The formula multiplies it by BASE_SPEED."
+          - text: "About 40"
+            correct: false
+          - text: "About 195"
+            correct: false
+
+      # ---------- §4.2 Motor hardware ----------
+      - id: L03_B29
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "What does the gearbox stacked on the nose of the motor do?"
+        options:
+          - text: "Divides the speed and multiplies the torque by the same factor"
+            correct: true
+          - text: "Multiplies both the speed and the torque"
+            correct: false
+            why: "There is no free lunch — the gearbox trades one for the other."
+          - text: "Converts the motor's rotation into a straight-line push"
+            correct: false
+          - text: "Keeps the two motors running at matched speeds"
+            correct: false
+
+      - id: L03_B30
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "What is the commutator's job inside a brushed DC motor?"
+        options:
+          - text: "It flips the current direction every half-turn so the push against the magnets never runs out"
+            correct: true
+          - text: "It converts battery voltage into the right level for the coils"
+            correct: false
+          - text: "It counts revolutions so the board can measure speed"
+            correct: false
+          - text: "It engages and disengages the gearbox"
+            correct: false
+
+      - id: L03_B31
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "According to §4.2, what does a BRUSHLESS motor replace the commutator with?"
+        options:
+          - text: "An electronic controller that switches the coils in the right order at the right instant"
+            correct: true
+          - text: "A second set of permanent magnets"
+            correct: false
+          - text: "A gearbox with a higher ratio"
+            correct: false
+          - text: "Nothing — a brushless motor does not need the current to change direction"
+            correct: false
+            why: "It still needs the switching; what changes is that a circuit does it instead of a rubbing contact."
+
+      - id: L03_B32
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "Brushless motors run cooler and last longer. Why does the Zumo use brushed motors anyway?"
+        options:
+          - text: "A brushed motor needs only two wires and a voltage, while a brushless motor needs three wires and a controller of its own"
+            correct: true
+          - text: "Brushless motors cannot be reversed"
+            correct: false
+            why: "They reverse fine — but not by flipping a voltage, which is how the DRV8838 does it."
+          - text: "Brushed motors are more efficient at low speeds"
+            correct: false
+          - text: "Brushless motors are not made small enough for a robot this size"
+            correct: false
+
+      - id: L03_B33
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "Two robots in the room disagree about how far speed 200 for 2 seconds travels. Before blaming the code, what does the lesson tell you to check?"
+        options:
+          - text: "The coloured sticker inside the battery compartment, which tells you the gear ratio"
+            correct: true
+          - text: "The TRIM value written on each robot's tape"
+            correct: false
+          - text: "Whether both robots are on the same firmware version"
+            correct: false
+          - text: "The serial number on the underside of the chassis"
+            correct: false
+
+      - id: L03_B34
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Why does the Zumo need the two DRV8838 driver chips at all, instead of wiring the motors to the microcontroller?"
+        options:
+          - text: "A microcontroller pin can only supply a few dozen milliamps — wire a motor straight to it and the pin melts"
+            correct: true
+          - text: "The microcontroller has no pins left over"
+            correct: false
+          - text: "The chips convert the motor's analogue signal to digital"
+            correct: false
+          - text: "The chips store the TRIM value between power cycles"
+            correct: false
+
+      # ---------- §4.3 Battery monitoring ----------
+      - id: L03_B35
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "How accurate is readBatteryMillivolts()?"
+        options:
+          - text: "About plus or minus 10 percent — fine for telling fresh from low, not for precision measurement"
+            correct: true
+          - text: "Accurate to the nearest millivolt"
+            correct: false
+          - text: "About plus or minus 50 percent"
+            correct: false
+          - text: "Exact, because it reads the cells directly"
+            correct: false
+
+      # ---------- §5 Code walkthrough ----------
+      - id: L03_B36
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "Lesson 2's program needed a FUNCTION PROTOTYPES section. Why does this lesson's program not need one?"
+        options:
+          - text: "This program defines its helper functions above setup(), so the compiler has already seen them before anything calls them"
+            correct: true
+          - text: "Prototypes were only ever needed in Lesson 2's template"
+            correct: false
+          - text: "The Zumo32U4 library declares them for you"
+            correct: false
+          - text: "Prototypes are optional in C++ and never actually required"
+            correct: false
+            why: "They are required whenever a function is used before the compiler has seen it — which is exactly the error Step 12 has you produce on purpose."
+
+      - id: L03_B37
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "Which of these is a STATE VARIABLE in this lesson's program rather than a configuration constant?"
+        options:
+          - text: "trimValue"
+            correct: true
+          - text: "BASE_SPEED"
+            correct: false
+          - text: "TEST_DURATION"
+            correct: false
+          - text: "TRIM_STEP"
+            correct: false
+
+      - id: L03_B38
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "You write if (trimValue = 5) when you meant to compare. What actually happens?"
+        options:
+          - text: "trimValue is overwritten with 5, and the block runs every time, because C++ treats the value 5 as true"
+            correct: true
+          - text: "The compiler reports an error and refuses to build"
+            correct: false
+            why: "The lesson calls this the most expensive typo in the language precisely because both directions compile and run."
+          - text: "The block never runs, because assignment is not a comparison"
+            correct: false
+          - text: "trimValue is compared to 5 and left unchanged"
+            correct: false
+            why: "That is what you meant to write. One equals sign assigns."
+
+      - id: L03_B39
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "In an if / else if / else ladder, how many branches run?"
+        options:
+          - text: "Exactly one — the first whose answer is yes; the rest are skipped without being asked"
+            correct: true
+          - text: "All the branches whose conditions are true"
+            correct: false
+          - text: "Only the last branch, because it has no condition"
+            correct: false
+          - text: "None, unless an else is present"
+            correct: false
+
+      - id: L03_B40
+        type: multiple_choice
+        cite: "§5.6"
+        points: 1
+        stem: "You want to add 5 to a counter. Which line does that?"
+        options:
+          - text: "count += 5;"
+            correct: true
+          - text: "count++5;"
+            correct: false
+          - text: "count++++;"
+            correct: false
+            why: "The lesson says it directly: there is no ++ for anything but 1."
+          - text: "count == count + 5;"
+            correct: false
+            why: "Two equals signs compare and throw the answer away — the counter never changes."
+
+      # ---------- §8 Troubleshooting ----------
+      - id: L03_B41
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Your Serial Monitor shows gibberish. Which cause does the lesson rule OUT for this robot?"
+        options:
+          - text: "A baud rate mismatch — the Zumo's native-USB link sets its own speed"
+            correct: true
+          - text: "The monitor was opened in the middle of a message"
+            correct: false
+            why: "That is a listed cause: close the monitor and reopen it."
+          - text: "Old code still running on the robot"
+            correct: false
+          - text: "A loose USB connection"
+            correct: false
+
+      - id: L03_B42
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Only one motor spins. Which check would tell you whether the fault is in the hardware rather than the code?"
+        options:
+          - text: "Swap the left and right speed values in code — if the OTHER motor now fails, it is hardware"
+            correct: true
+          - text: "Raise BASE_SPEED until both motors move"
+            correct: false
+          - text: "Reset TRIM to zero and test again"
+            correct: false
+          - text: "Re-upload the program twice"
+            correct: false
+
+      # ---------- §8A Calibration constants ----------
+      - id: L03_B43
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "What is wrong with writing motors.setSpeeds(205, 200) directly in your code?"
+        options:
+          - text: "205 is a magic number — it runs identically, but a human cannot see what it is or where to change it"
+            correct: true
+          - text: "It will not compile without named constants"
+            correct: false
+          - text: "205 is outside the legal speed range"
+            correct: false
+          - text: "The library rejects values that are not multiples of 5"
+            correct: false
+
+      - id: L03_B44
+        type: multiple_choice
+        cite: "§8A.5"
+        points: 1
+        stem: "TEST_SPEEDS has four values. What happens if you read TEST_SPEEDS[4]?"
+        options:
+          - text: "It is not an error — C++ does no bounds checking here, so it hands back whatever bytes sit after the array"
+            correct: true
+          - text: "The compiler reports an out-of-range error"
+            correct: false
+          - text: "It returns the last value, 300"
+            correct: false
+          - text: "It returns zero"
+            correct: false
+            why: "The lesson's warning is that the value is unpredictable — your robot then drives at a speed you never wrote."
+
+      - id: L03_B45
+        type: multiple_choice
+        cite: "§8A.6, Quick Reference"
+        points: 1
+        stem: "What does 7 % 3 evaluate to?"
+        options:
+          - text: "1"
+            correct: true
+          - text: "2"
+            correct: false
+            why: "2 is how many times 3 goes into 7. The % operator gives the remainder, not the division."
+          - text: "3"
+            correct: false
+          - text: "2.33"
+            correct: false
+
+      - id: L03_B46
+        type: multiple_choice
+        cite: "§8A.6"
+        points: 1
+        stem: "Why must you write (speedIndex + 1) % NUM_SPEEDS with the parentheses?"
+        options:
+          - text: "% binds tighter than +, so without them the line reads speedIndex + (1 % NUM_SPEEDS) and never wraps"
+            correct: true
+          - text: "Without them the code will not compile"
+            correct: false
+            why: "It compiles fine. It just silently counts upward forever, which is worse."
+          - text: "Parentheses are required around every use of %"
+            correct: false
+          - text: "They make the index start at 1 instead of 0"
+            correct: false
+
+      # ---------- true_false (10 of 51 = 20%) ----------
+      - id: L03_B47
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "A negative value in setSpeeds() means the motor runs more slowly."
+        correct: false
+        why: "It means the motor runs BACKWARD. -400 is full speed in reverse; the size is the speed, the sign is the direction."
+
+      - id: L03_B48
+        type: true_false
+        cite: "§3.5, §8"
+        points: 1
+        stem: "TRIM is always applied to the left motor, in this lesson and every lesson after it."
+        correct: true
+        why: "leftSpeed = BASE_SPEED + trimValue. The convention never changes, so one number means the same thing on every robot."
+
+      - id: L03_B49
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "A TRIM value you tuned on fresh batteries may be slightly off once the pack has drained."
+        correct: true
+        why: "The same speed command produces different actual speeds at different voltages, so the imbalance shifts."
+
+      - id: L03_B50
+        type: true_false
+        cite: "§3.9, §9"
+        points: 1
+        stem: "const and constrain() do the same job — one is just the shorter spelling."
+        correct: false
+        why: "const declares a value once with an equals sign. constrain() is a function call with three arguments that hands back a clamped number. Declaring names a number; constraining limits it."
+
+      - id: L03_B51
+        type: true_false
+        cite: "§4.2"
+        points: 1
+        stem: "Every Zumo 32U4 in the room has the same gear ratio."
+        correct: false
+        why: "Pololu sells three gearboxes — 50:1, 75:1 and 100:1 — and the coloured sticker inside the battery compartment tells you which one you have."
+
+      - id: L03_B52
+        type: true_false
+        cite: "§5.6"
+        points: 1
+        stem: "The ++ operator can be used to add any amount you like."
+        correct: false
+        why: "++ only ever adds 1. To add another amount you need += n."
+
+      - id: L03_B53
+        type: true_false
+        cite: "§3.3"
+        points: 1
+        stem: "Adding encoders in Lesson 6 turns the robot's driving from open-loop into closed-loop control."
+        correct: true
+        why: "Encoders let the robot measure actual wheel rotation and adjust — information flows back, so the loop closes."
+
+      - id: L03_B54
+        type: true_false
+        cite: "§8A.2"
+        points: 1
+        stem: "Marking a fixed value const means an accidental attempt to change it is caught at build time rather than becoming a bug you chase later."
+        correct: true
+
+      - id: L03_B55
+        type: true_false
+        cite: "§3.2, §8A.5"
+        points: 1
+        stem: "Array slots are numbered starting from 1, so a four-value array has slots 1 through 4."
+        correct: false
+        why: "Counting starts at zero. Four values live in slots 0, 1, 2 and 3 — the last slot is always one less than the count."
+
+      - id: L03_B56
+        type: true_false
+        cite: "§3.7"
+        points: 1
+        stem: "A robot that curves RIGHT needs a negative TRIM value."
+        correct: true
+        why: "Curving right means the right motor is the weak one, and the fix is to ease the LEFT motor down to match — which is what a negative TRIM does."
+
+      # ---------- matching (5 of 51 = 10%) ----------
+      - id: L03_B57
+        type: matching
+        cite: "Glossary, §3.1, §3.3, §3.9"
+        points: 5
+        stem: "Match each Lesson 3 term to its definition."
+        pairs:
+          - left: "Motor imbalance"
+            right: "When two motors do not spin at exactly the same speed despite receiving the same command"
+          - left: "Differential drive"
+            right: "A two-motor system where steering comes from running the left and right wheels at different speeds"
+          - left: "Open-loop control"
+            right: "Sending a command with no feedback about what actually happened"
+          - left: "Closed-loop control"
+            right: "Sending a command, measuring the result, and adjusting"
+          - left: "TRIM"
+            right: "A small correction value added to one motor to compensate for imbalance"
+        extra_answers:
+          - "The maximum current a motor draws when it cannot turn"
+          - "The fraction of each switching cycle the motor is powered on"
+
+      - id: L03_B58
+        type: matching
+        cite: "§3.2, Quick Reference"
+        points: 4
+        stem: "Match each speed value to what the motor does."
+        pairs:
+          - left: "+400"
+            right: "Full speed forward — the maximum"
+          - left: "+200"
+            right: "About half speed forward"
+          - left: "0"
+            right: "Stopped"
+          - left: "-400"
+            right: "Full speed backward — the minimum"
+        extra_answers:
+          - "Half speed backward"
+          - "Forward at whatever speed the battery allows"
+
+      - id: L03_B59
+        type: matching
+        cite: "§5.2"
+        points: 3
+        stem: "Match each of this lesson's three new constants to what it controls."
+        pairs:
+          - left: "BASE_SPEED"
+            right: "The speed both wheels target during a test"
+          - left: "TEST_DURATION"
+            right: "How long the motors run per test, in milliseconds"
+          - left: "TRIM_STEP"
+            right: "How much trimValue changes per button press"
+        extra_answers:
+          - "How many tests have been run this session"
+          - "The largest TRIM the program will accept"
+
+      - id: L03_B60
+        type: matching
+        cite: "§5.5"
+        points: 4
+        stem: "Match each comparison operator to what it asks."
+        pairs:
+          - left: ">="
+            right: "Is the left side bigger than or exactly equal to the right?"
+          - left: "<"
+            right: "Is the left side smaller than the right?"
+          - left: "=="
+            right: "Are the two values the same?"
+          - left: "!="
+            right: "Are the two values different?"
+        extra_answers:
+          - "Put the right-hand value into the left-hand variable"
+          - "What is the remainder after dividing?"
+
+      - id: L03_B61
+        type: matching
+        cite: "§4.2"
+        points: 3
+        stem: "Match each gearbox sticker colour to the gear ratio it marks."
+        pairs:
+          - left: "Green"
+            right: "50:1 — the fastest and weakest"
+          - left: "Blue"
+            right: "75:1 — the middle, and what most classroom robots run"
+          - left: "Red"
+            right: "100:1 — the slowest and strongest"
+        extra_answers:
+          - "30:1 — the direct-drive option"
+          - "150:1 — the competition gearbox"
+
+  # ===================================================================
+  # AFTER — POST-BUILD CHECK
+  # Assumes the student has built and run the TRIM Finder. Draws on §6
+  # steps, §7, §9 challenges and the Extra Practice set.
+  # Overlaps BRAIN CHECK 03 by design is AVOIDED: BC03 asks about
+  # yesterday's TRIM going stale, testing at more than one speed, the
+  # power switch, writing 500, and hand-tuning vs closed loop. None of
+  # those five is repeated below.
+  # Suggested Canvas draw: 8.
+  # ===================================================================
+  after:
+    description: "Post-build check. Assumes the TRIM Finder was built and run."
+    suggested_draw: 8
+    questions:
+
+      - id: L03_A01
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "Step 2 has you delete the template's section banner comments but keep something. What, and why?"
+        options:
+          - text: "The empty setup() and loop() — they are what keeps every build green until Steps 10 and 11 fill them in"
+            correct: true
+          - text: "The #include line, because the library cannot be added later"
+            correct: false
+          - text: "The FUNCTION PROTOTYPES section, because this program needs it"
+            correct: false
+            why: "This program defines its helpers above setup(), so it needs no prototypes section."
+          - text: "The header comment only — setup() and loop() are added in Step 3"
+            correct: false
+
+      - id: L03_A02
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "How many hardware objects does the TRIM Finder declare, and which one is new this lesson?"
+        options:
+          - text: "Five — and motors is the new one"
+            correct: true
+          - text: "Four — and display is the new one"
+            correct: false
+          - text: "Five — and buttonC is the new one"
+            correct: false
+            why: "All three buttons and the display are the same cast as Lesson 2."
+          - text: "Six — motors counts as two, one per side"
+            correct: false
+            why: "The motors object controls BOTH motors together, unlike the buttons which are separate."
+
+      - id: L03_A03
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "updateDisplay() prints the battery as mv / 1000, then a dot, then (mv % 1000) / 100. Why is it written that way?"
+        options:
+          - text: "It splits out whole volts and tenths, so the display shows 5.4V without floating-point math"
+            correct: true
+          - text: "It rounds the reading to compensate for the sensor's error"
+            correct: false
+          - text: "It converts millivolts to milliamps"
+            correct: false
+          - text: "It is the only way to print a number on the OLED"
+            correct: false
+
+      - id: L03_A04
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "printTrimAdvice() prints one of three messages. What does it say when trimValue is positive?"
+        options:
+          - text: "That it is boosting the LEFT motor — use if the robot curves LEFT"
+            correct: true
+          - text: "That it is boosting the RIGHT motor — use if the robot curves RIGHT"
+            correct: false
+          - text: "That it is cutting the LEFT motor — use if the robot curves RIGHT"
+            correct: false
+            why: "That is the negative branch."
+          - text: "That the motors are balanced and no correction is applied"
+            correct: false
+            why: "That is the zero branch."
+
+      - id: L03_A05
+        type: multiple_choice
+        cite: "§6 Step 10"
+        points: 1
+        stem: "setup() deliberately prints no banner. Why not?"
+        options:
+          - text: "Printing at boot is invisible — reset drops the USB port, and the Serial Monitor only reconnects after setup() has already finished"
+            correct: true
+          - text: "Because Serial.begin() has not run yet at that point"
+            correct: false
+          - text: "Because printing in setup() would slow the motors down"
+            correct: false
+          - text: "Because the OLED and Serial cannot both be used in setup()"
+            correct: false
+
+      - id: L03_A06
+        type: multiple_choice
+        cite: "§6 Step 11"
+        points: 1
+        stem: "In loop(), why must the A+C branch come first, with the single-button checks hanging off it as else if?"
+        options:
+          - text: "Otherwise pressing both buttons would also satisfy a single-button branch and fire it instead"
+            correct: true
+          - text: "Because isPressed() is slower than getSingleDebouncedPress()"
+            correct: false
+          - text: "Because the reset must happen before Serial connects"
+            correct: false
+          - text: "Because C++ evaluates else if branches before the leading if"
+            correct: false
+
+      - id: L03_A07
+        type: multiple_choice
+        cite: "§6 Step 11, Quick Reference"
+        points: 1
+        stem: "Why does the A+C reset use isPressed() while the other three branches use getSingleDebouncedPress()?"
+        options:
+          - text: "isPressed() asks whether a button is held down right now, which is what a deliberate two-button combo needs"
+            correct: true
+          - text: "isPressed() is the only one that works on button C"
+            correct: false
+          - text: "getSingleDebouncedPress() cannot be used inside an if statement"
+            correct: false
+          - text: "isPressed() automatically debounces both buttons together"
+            correct: false
+
+      - id: L03_A08
+        type: multiple_choice
+        cite: "§6 Step 12"
+        points: 1
+        stem: "In BREAK IT ON PURPOSE you move runMotorTest() below loop() and rebuild. What exact error do you earn?"
+        options:
+          - text: "error: 'runMotorTest' was not declared in this scope"
+            correct: true
+          - text: "error: 'runMotorTest' redefined"
+            correct: false
+          - text: "error: expected ';' before 'runMotorTest'"
+            correct: false
+          - text: "No error — C++ finds functions anywhere in the file"
+            correct: false
+            why: "The compiler reads top to bottom, so when loop() calls the function it has not seen it yet."
+
+      - id: L03_A09
+        type: multiple_choice
+        cite: "§6 Step 12"
+        points: 1
+        stem: "You have moved runMotorTest() to the bottom of the file and want to keep it there. What is the one-line fix?"
+        options:
+          - text: "Add void runMotorTest(); near the top — a function prototype"
+            correct: true
+          - text: "Add #include <Zumo32U4.h> a second time"
+            correct: false
+          - text: "Mark the function const"
+            correct: false
+          - text: "Call it from setup() instead of loop()"
+            correct: false
+
+      - id: L03_A10
+        type: multiple_choice
+        cite: "§7"
+        points: 1
+        stem: "You keep pressing C long past a sensible TRIM. What does the verification checklist say should happen?"
+        options:
+          - text: "TRIM stops at +50 and goes no further"
+            correct: true
+          - text: "TRIM keeps climbing to +400, the motor limit"
+            correct: false
+          - text: "TRIM wraps around to -50"
+            correct: false
+          - text: "The program resets TRIM to 0"
+            correct: false
+            why: "That is what holding A and C together does."
+
+      - id: L03_A11
+        type: multiple_choice
+        cite: "§9 Challenge 2"
+        points: 1
+        stem: "You build the LOW BATTERY warning and it fires even on a full charge while the robot is plugged into USB. What is going on?"
+        options:
+          - text: "Nothing is wrong with your code — readBatteryMillivolts() reads only the battery, so on USB with the switch off it reads low"
+            correct: true
+          - text: "Your threshold is too high; lower it to 4000"
+            correct: false
+          - text: "The return statement is skipping the real reading"
+            correct: false
+          - text: "USB power confuses the OLED, not the battery monitor"
+            correct: false
+
+      - id: L03_A12
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "In the clamp challenge you upload with both speeds at 200, then at 250, and the robot moves identically. Why?"
+        options:
+          - text: "constrain(250, -200, 200) and constrain(200, -200, 200) both return 200, so the same value reaches the motors"
+            correct: true
+          - text: "The battery cannot supply enough current for 250"
+            correct: false
+          - text: "The library caps every speed at 200"
+            correct: false
+            why: "The library's own cap is 400. The 200 ceiling here is YOUR MAX_SPEED, applied by constrain()."
+          - text: "The delay is too short for the difference to show"
+            correct: false
+
+      - id: L03_A13
+        type: multiple_choice
+        cite: "§9 Challenge 5"
+        points: 1
+        stem: "Challenge 5 stores {150, 200, 250, 300} and starts speedIndex at 1. What speed does the FIRST press of B run, and what comes next?"
+        options:
+          - text: "200 first, then 250, 300, 150, and back to 200"
+            correct: true
+          - text: "150 first, then 200, 250, 300"
+            correct: false
+            why: "150 is slot 0. The index starts at 1, so the first press reads slot 1."
+          - text: "200 first, then 150, 250, 300"
+            correct: false
+          - text: "300 first, counting downward"
+            correct: false
+
+      - id: L03_A14
+        type: multiple_choice
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "You save your measured TRIM but the robot still starts at 0. The challenge warns about one specific mistake. What is it?"
+        options:
+          - text: "Declaring the value inside setup() creates a second, local copy that vanishes when setup() ends, so the driving code still reads the global 0"
+            correct: true
+          - text: "Writing const instead of int"
+            correct: false
+          - text: "Forgetting to press A+C before uploading"
+            correct: false
+          - text: "Setting the value above the plus or minus 50 clamp"
+            correct: false
+
+      - id: L03_A15
+        type: multiple_choice
+        cite: "§9 Challenge 7"
+        points: 1
+        stem: "Your square drifts badly by the fourth corner. What does the challenge say this reveals?"
+        options:
+          - text: "Small errors compound — a 5-degree error over four turns is 20 degrees of total drift, which is why timing-based movement is unreliable"
+            correct: true
+          - text: "Your TRIM was measured at the wrong speed"
+            correct: false
+          - text: "The for loop is running five times instead of four"
+            correct: false
+          - text: "The turn speed is set higher than the drive speed"
+            correct: false
+
+      - id: L03_A16
+        type: multiple_choice
+        cite: "Extra Practice, Bonus Challenge 3"
+        points: 1
+        stem: "A robot has its motor wires soldered on backwards. The bonus challenge fixes it in software with two lines in setup(). What are they?"
+        options:
+          - text: "motors.flipLeftMotor(true); and motors.flipRightMotor(true); — they reverse what positive means for each motor"
+            correct: true
+          - text: "Two setSpeeds() calls with negative values"
+            correct: false
+            why: "The challenge requires the fix without touching driveForward() at all — negating there would not do it."
+          - text: "Two constrain() calls with reversed limits"
+            correct: false
+          - text: "A second Zumo32U4Motors declaration with the sides swapped"
+            correct: false
+
+      - id: L03_A17
+        type: true_false
+        cite: "Extra Practice, Bonus Challenge 1"
+        points: 1
+        stem: "The lowest speed value that still moves the robot is the same for every Zumo in the room."
+        correct: false
+        why: "The creep threshold differs by robot and by battery level — static friction in the gears and treads has to be beaten first. It is why real robot code often carries a MINIMUM_SPEED constant."
+
+      - id: L03_A18
+        type: true_false
+        cite: "Extra Practice, Bonus Challenge 6"
+        points: 1
+        stem: "Running at speed 200 for two seconds carries the robot exactly twice as far as speed 100 for two seconds."
+        correct: false
+        why: "Almost nobody measures exactly 2.0 — friction eats a bigger share of the slow run, the fast run coasts further after the stop, and battery sag hits the two runs differently. That gap IS dead reckoning's error, made measurable."
+
+      - id: L03_A19
+        type: true_false
+        cite: "Extra Practice, Bonus Challenge 2"
+        points: 1
+        stem: "A TRIM value tuned driving forward will usually work just as well driving backward."
+        correct: false
+        why: "Most robots need a different TRIM backward — gearboxes and motors are not symmetric in the two directions. Real rovers store separate calibrations per direction."
+
+      - id: L03_A20
+        type: true_false
+        cite: "§6 Step 9"
+        points: 1
+        stem: "runMotorTest() stops the motors itself, immediately after the timed delay, rather than relying on anything else to stop them."
+        correct: true
+        why: "motors.setSpeeds(0, 0) sits directly after delay(TEST_DURATION). The lesson calls this a safety pattern: always stop motors as soon as possible after a timed run."
+
+      - id: L03_A21
+        type: matching
+        cite: "§5.4, §6 Step 11"
+        points: 4
+        stem: "Match each button action to what the TRIM Finder does."
+        pairs:
+          - left: "Tap A"
+            right: "Decrease TRIM by one step"
+          - left: "Tap B"
+            right: "Run the motor test"
+          - left: "Tap C"
+            right: "Increase TRIM by one step"
+          - left: "Hold A and C together"
+            right: "Reset TRIM to 0, with a double blink to confirm"
+        extra_answers:
+          - "Clear the test counter without changing TRIM"
+          - "Reprint the Serial instruction banner"
+
+      - id: L03_A22
+        type: matching
+        cite: "§9"
+        points: 4
+        stem: "Match each Section 9 challenge to the idea it introduces."
+        pairs:
+          - left: "Challenge 1 — Spin Test"
+            right: "Opposite signs on the two wheels turn the robot in place"
+          - left: "Challenge 3 — Clamp the Speed"
+            right: "A cap that makes bigger numbers stop changing anything"
+          - left: "Challenge 4 — Ramp Up to Speed"
+            right: "Changing a value over time instead of setting it once"
+          - left: "Challenge 5 — Variable Speed Test"
+            right: "An array plus an index that wraps with the modulo operator"
+        extra_answers:
+          - "Reading wheel rotation to correct the robot automatically"
+          - "Storing a calibration number that survives the power switch"

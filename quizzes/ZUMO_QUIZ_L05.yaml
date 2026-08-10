@@ -1,0 +1,1374 @@
+# ZUMO READING QUIZ BANK — LESSON 05
+# Proximity Sensors · Teaching Your Robot to Sense
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_05.html v04.29.0 (post-S140 content fixes)
+#
+# READ -> FIX -> QUIZ. Lesson 05 was read end to end in S140 and four findings were
+# fixed before a single question was written. Three of them are load-bearing here:
+#
+#   1. EXPERIMENT 3 USED TO CONTRADICT §3.4a. It placed a box at 45° — the middle of
+#      the stated 19°-72° blind wedge — and its hint predicted that RIGHT would
+#      respond. Rewritten to demonstrate the dead spot instead. B13, B21, B52, B57
+#      and A17 all rest on the corrected geometry; against v04.28.1 the old hint
+#      would have keyed A17 the opposite way.
+#   2. `static` WAS USED, GLOSSED AND NEVER TAUGHT. §5.11 now teaches the
+#      retained-local sense and flags that L06/L07 use the same keyword for file
+#      scope. B26, B27, B28, B53 and B59 did not exist as askable facts before that
+#      edit. NOTE ON THE PIN: Lesson 06 was edited in the same pass — its
+#      averageCounts() comment now explains ITS `static` — but no answer here depends
+#      on L06's wording (B28 is answered from L05 §5.11's own sentence), so L06 is
+#      deliberately NOT pinned below.
+#   3. BRAIN CHECK 03 Q4 ASKED ABOUT delay() AND ANSWERED ABOUT DUPLICATED CODE.
+#      Both halves now address delay(). No question is keyed to BC03 itself — the
+#      fix matters here because it made §5.11 and BC03 agree, which is what lets B30
+#      ask why the beep timer uses millis() rather than delay() without the book
+#      contradicting itself two sections apart.
+#   4. Challenge 4's CLOSE_THRESHOLD moved 4 -> 5 so its three zones match §3.2's
+#      three distance bands exactly. A14 asks the zones, not the constant.
+#
+# TWO ANSWERS DELIBERATELY NOT ASKED:
+#   - §3.2's "about 13½ milliseconds" for the six-round read. pololu.com is not
+#     reachable from the authoring container, so the figure could not be checked
+#     against its source. Unverified is not the same as wrong — it is just not
+#     quizzable.
+#   - The exact numeric value of Challenge 4's CLOSE_THRESHOLD. The card tells the
+#     student to tune it, so keying a specific number would punish a student who did
+#     what the card asked.
+#
+# FORMATS: multiple_choice, true_false, matching. No fill-in-the-blank by ruling.
+# EVERY QUESTION CARRIES A `cite`.
+#
+# MIX (QUIZ_SPEC v1.1.0: MC ~70%, TF cap ~20%, matching ~10%). DERIVED, not typed —
+# run quiz_bank.py rather than trusting this comment:
+#   before 64 — MC 48 (75%) / TF 10 (16%) / matching 6 (9%)
+#   after  23 — MC 18 (78%) / TF  3 (13%) / matching 2 (9%)
+# Both sets sit above the ~70% MC target, as L03's did, and for the reason QUIZ_SPEC
+# v1.1.0 measured: under the TF and matching caps the MC floor is 76%, so ~75% is
+# essentially the structural minimum. Closing the gap would mean adding true/false,
+# which is 50% guessable — the spec's rule is that when a ratio has to give, it gives
+# to the instrument that measures better.
+
+lesson: "L05"
+title: "Proximity Sensors — Teaching Your Robot to Sense"
+bank_version: "1.0.0"
+source:
+  lesson_05: "v04.29.0"
+  lesson_04: "v04.29.0"
+
+sets:
+
+  # ===================================================================
+  # BEFORE — THE PRE-CLASS GATE
+  # Answerable from the reading alone. Nothing here needs the robot.
+  # Draws on §1-§5, §8, §8A, the Quick Reference and the Glossary.
+  # Suggested Canvas draw: 10, one attempt, locks at period start.
+  # ===================================================================
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone."
+    suggested_draw: 10
+    questions:
+
+      # ---------- §1 / §3.1 How IR proximity sensing works ----------
+      - id: L05_B01
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What are the four steps of infrared proximity sensing, in order?"
+        options:
+          - text: "Emit, reflect, detect, calculate"
+            correct: true
+          - text: "Detect, emit, reflect, calculate"
+            correct: false
+          - text: "Calculate, emit, detect, reflect"
+            correct: false
+          - text: "Emit, detect, calculate, reflect"
+            correct: false
+
+      - id: L05_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "The room is already full of infrared — sunlight especially. Why does that not flood every reading?"
+        options:
+          - text: "The robot blinks its LEDs about 38,000 times per second, and the receiver only reacts to light flickering at that rhythm"
+            correct: true
+          - text: "The receiver filters out any light brighter than its own LEDs"
+            correct: false
+          - text: "Sunlight contains no infrared"
+            correct: false
+            why: "The lesson says the opposite — sunlight is drenched in it, which is exactly why the trick is needed."
+          - text: "The sensors are shielded so no outside light reaches them"
+            correct: false
+
+      - id: L05_B03
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "The lesson compares the 38 kHz trick to picking a friend out of a loud crowd. What is the friend doing in that analogy?"
+        options:
+          - text: "Whistling a rhythm nobody else knows"
+            correct: true
+          - text: "Shouting louder than everyone else"
+            correct: false
+            why: "Loudness is not the trick — the crowd noise never stops. It is the pattern that gets through."
+          - text: "Standing closer than everyone else"
+            correct: false
+          - text: "Wearing a colour nobody else is wearing"
+            correct: false
+
+      # ---------- §3.2 The 0-6 scale ----------
+      - id: L05_B04
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "What range do the Zumo's proximity sensors return?"
+        options:
+          - text: "0 to 6"
+            correct: true
+          - text: "0 to 255"
+            correct: false
+            why: "The lesson flags this as the misconception that trips up beginners. These are brightness levels, not a byte."
+          - text: "0 to 1000"
+            correct: false
+          - text: "0 to 400"
+            correct: false
+
+      - id: L05_B05
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "What does the number you read actually count?"
+        options:
+          - text: "How many of the six pulse rounds, each brighter than the last, produced an echo"
+            correct: true
+          - text: "The distance to the object in centimetres"
+            correct: false
+          - text: "How many of the three detectors saw something"
+            correct: false
+          - text: "The brightness of the reflected light, on a 0-6 scale"
+            correct: false
+            why: "Close, but it is a count of rounds that succeeded, not a measurement of brightness."
+
+      - id: L05_B06
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "An object bounces back even the faintest of the six rounds. What do you read?"
+        options:
+          - text: "6 — every round landed, so the object is very close"
+            correct: true
+          - text: "1 — only the faint round is being counted"
+            correct: false
+            why: "A reading of 1 means only the strongest round got an echo back, which is a distant object."
+          - text: "0 — a faint echo does not register"
+            correct: false
+          - text: "3 — a faint echo counts as a middling reading"
+            correct: false
+
+      - id: L05_B07
+        type: multiple_choice
+        cite: "§3.2, Quick Reference"
+        points: 1
+        stem: "A sensor reads 4. Roughly how far away is the object, according to the lesson's table?"
+        options:
+          - text: "About 10-20 cm"
+            correct: true
+          - text: "Under 10 cm"
+            correct: false
+            why: "That band is 5-6."
+          - text: "About 20-30 cm"
+            correct: false
+            why: "That band is 1-2."
+          - text: "Over 30 cm"
+            correct: false
+
+      # ---------- §3.3 Thresholds ----------
+      - id: L05_B08
+        type: multiple_choice
+        cite: "§3.3, Quick Reference"
+        points: 1
+        stem: "What are the three standard threshold constants and their values?"
+        options:
+          - text: "DETECTION_THRESHOLD 1, CLOSE_THRESHOLD 3, VERY_CLOSE_THRESHOLD 5"
+            correct: true
+          - text: "DETECTION_THRESHOLD 0, CLOSE_THRESHOLD 2, VERY_CLOSE_THRESHOLD 4"
+            correct: false
+            why: "0 cannot be the detection threshold — 0 is the reading that means nothing is there."
+          - text: "DETECTION_THRESHOLD 1, CLOSE_THRESHOLD 4, VERY_CLOSE_THRESHOLD 6"
+            correct: false
+          - text: "DETECTION_THRESHOLD 2, CLOSE_THRESHOLD 4, VERY_CLOSE_THRESHOLD 6"
+            correct: false
+
+      - id: L05_B09
+        type: multiple_choice
+        cite: "§3.3, §3.5"
+        points: 1
+        stem: "How is a threshold different from a sensor reading?"
+        options:
+          - text: "A reading is a fact the hardware hands you; a threshold is a judgment you make about what counts"
+            correct: true
+          - text: "A threshold is measured by the sensor; a reading is calculated by your code"
+            correct: false
+          - text: "They are the same thing under two names"
+            correct: false
+          - text: "A reading can be changed in code; a threshold cannot"
+            correct: false
+            why: "It is the other way round — that is exactly why thresholds live at the top of the file as named constants."
+
+      # ---------- §3.4 Two flashlights, three ears ----------
+      - id: L05_B10
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "The Zumo has four emitter LEDs. How are they wired?"
+        options:
+          - text: "As two teams of two — a LEFT pair and a RIGHT pair — and the two LEDs in a team are in series, so lighting either lights both"
+            correct: true
+          - text: "As four independent flashlights, each switched separately"
+            correct: false
+            why: "The lesson is explicit that this is a wire, not a software choice you could change."
+          - text: "All four fire together every time"
+            correct: false
+          - text: "As a front pair and a rear pair"
+            correct: false
+
+      - id: L05_B11
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "The lesson calls §3.4 the secret decoder ring for the long function names. How do you read countsFrontWithLeftLeds()?"
+        options:
+          - text: "The FRONT detector, listening while the LEFT flashlight team was on"
+            correct: true
+          - text: "The LEFT detector, listening while the front LED was on"
+            correct: false
+          - text: "The front-left detector, which is a fourth sensor"
+            correct: false
+            why: "There are three detectors: left, front and right. There is no front-left detector."
+          - text: "The FRONT detector, reporting only the left half of its field"
+            correct: false
+
+      - id: L05_B12
+        type: multiple_choice
+        cite: "§3.4, §4.1"
+        points: 1
+        stem: "If firing a team floods a wide area, where does directional information actually come from?"
+        options:
+          - text: "From which detector answers — an object out your left flank reads on LEFT because LEFT is the only detector aimed there"
+            correct: true
+          - text: "From which LED team was lit when the echo came back"
+            correct: false
+            why: "That is true for the front detector read twice, but the emitters flood — for the side detectors, direction comes from the ear."
+          - text: "From the strength of the return, since closer objects are always straight ahead"
+            correct: false
+          - text: "From comparing all three readings against each other"
+            correct: false
+
+      # ---------- §3.4a The dead spot ----------
+      - id: L05_B13
+        type: multiple_choice
+        cite: "§3.4a"
+        points: 1
+        stem: "Roughly where are the robot's two blind wedges?"
+        options:
+          - text: "About 19° to 72° off each side"
+            correct: true
+          - text: "Directly behind the robot only"
+            correct: false
+          - text: "About 0° to 19° off each side"
+            correct: false
+            why: "That is FRONT's own coverage — about ±19° of the nose."
+          - text: "There are none; three detectors cover the full circle"
+            correct: false
+            why: "The lesson's own line: three cones do not add up to a circle."
+
+      - id: L05_B14
+        type: multiple_choice
+        cite: "§3.4a"
+        points: 1
+        stem: "A reading drops to 0 while you are turning toward the object you just detected. What does the lesson say this is?"
+        options:
+          - text: "Normal — nothing is aimed into the wedge you are turning through, so the design fix is to remember what you saw and keep turning"
+            correct: true
+          - text: "A sign the detector has failed and needs replacing"
+            correct: false
+          - text: "A bug in the code, which should re-test every frame until the object comes back"
+            correct: false
+            why: "Re-testing every frame is precisely what the lesson warns against — the object is invisible mid-turn."
+          - text: "A sign the object was never there"
+            correct: false
+
+      # ---------- §3.5 Not a ruler ----------
+      - id: L05_B15
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Why can a big white box at 25 cm read HIGHER than a small black cup at 10 cm?"
+        options:
+          - text: "The counts measure echo strength, not distance — more surface and a better reflector make a stronger echo"
+            correct: true
+          - text: "The sensor is faulty and needs calibrating"
+            correct: false
+          - text: "White objects are always detected at a fixed maximum"
+            correct: false
+          - text: "The sensor measures distance to the nearest edge, and the box is wider"
+            correct: false
+
+      - id: L05_B16
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Given that the sensor is not a ruler, why do thresholds still work well in practice?"
+        options:
+          - text: "For the same object, the counts track distance reliably — closer is always higher"
+            correct: true
+          - text: "Because the library corrects for object colour automatically"
+            correct: false
+          - text: "Because the thresholds are recalculated on every read"
+            correct: false
+          - text: "They do not — the lesson says thresholds are unreliable"
+            correct: false
+
+      - id: L05_B17
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "Which object would the sensor detect LEAST well?"
+        options:
+          - text: "A small, dark, glossy object angled away from the sensor"
+            correct: true
+          - text: "A large, white, matte surface facing the sensor square on"
+            correct: false
+            why: "That is the best case on all four factors in §4.3's table."
+          - text: "A large white surface at a slight angle"
+            correct: false
+          - text: "A small white matte object facing the sensor"
+            correct: false
+
+      # ---------- §3.6 readBasic ----------
+      - id: L05_B18
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "How does readBasic() differ from read()?"
+        options:
+          - text: "It never fires the LEDs — it only listens for 38 kHz pulses that someone else is emitting"
+            correct: true
+          - text: "It reads only the front detector instead of all three"
+            correct: false
+          - text: "It returns a distance in centimetres instead of a 0-6 count"
+            correct: false
+          - text: "It fires the LEDs at full brightness for a single round"
+            correct: false
+
+      - id: L05_B19
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "Why is readBasic() interesting in a competition setting?"
+        options:
+          - text: "You could hear an opponent that is actively hunting for you, without switching your own lights on and revealing yourself"
+            correct: true
+          - text: "It uses far less battery than read()"
+            correct: false
+          - text: "It works at a much longer range than read()"
+            correct: false
+          - text: "It is the only read that works after the jumper move"
+            correct: false
+
+      # ---------- §4.1 / §4.2 Hardware ----------
+      - id: L05_B20
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "Where do the three detectors and the four emitters physically live?"
+        options:
+          - text: "The three detectors are on the front sensor array; the four emitters are on the main board — two on the blade, two on the sides between the wheels"
+            correct: true
+          - text: "All seven parts are on the front sensor array"
+            correct: false
+          - text: "The detectors are on the main board and the emitters are on the blade"
+            correct: false
+          - text: "Three detectors and three emitters on the array, one spare emitter on the board"
+            correct: false
+
+      - id: L05_B21
+        type: multiple_choice
+        cite: "§4.1, §3.4a"
+        points: 1
+        stem: "The LEFT and RIGHT detectors are named for the directions they watch. Which direction is that?"
+        options:
+          - text: "Straight out of the robot's flanks — something just off the nose is still FRONT's business"
+            correct: true
+          - text: "Forward-left and forward-right, angled about 45° off the nose"
+            correct: false
+            why: "This is the misconception §4.1's figure exists to kill — and it is why there is a blind wedge at 45° in the first place."
+          - text: "Behind the robot, to cover what FRONT cannot see"
+            correct: false
+          - text: "Downward, at the floor beside each track"
+            correct: false
+
+      - id: L05_B22
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "Why does the library read the FRONT detector twice — once with the left LEDs and once with the right?"
+        options:
+          - text: "Because comparing the two tells you roughly which side of centre the object sits on"
+            correct: true
+          - text: "Because one read is unreliable, so the second is a safety check"
+            correct: false
+          - text: "Because there are two front detectors, one per side"
+            correct: false
+            why: "The FRONT detector is a single IR receiver. What changes between the two reads is which LED team is lit."
+          - text: "To double the effective range of the front sensor"
+            correct: false
+
+      - id: L05_B23
+        type: multiple_choice
+        cite: "§4.2, §5.6"
+        points: 1
+        stem: "readAllSensors() ends with frontValue = max(frontLeftValue, frontRightValue). Why max()?"
+        options:
+          - text: "Either emitter seeing the object counts, so the strongest return answers the question is something in front of me"
+            correct: true
+          - text: "To average out sensor noise between the two reads"
+            correct: false
+            why: "An average would be a different combination. max() is chosen for presence."
+          - text: "Because the smaller reading is always wrong"
+            correct: false
+          - text: "To keep the value inside the 0-6 range"
+            correct: false
+
+      # ---------- §5.5 Prototypes ----------
+      - id: L05_B24
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "What does a function prototype promise the compiler?"
+        options:
+          - text: "That a function with that name, return type and parameters exists, and its full definition appears later in the file"
+            correct: true
+          - text: "That the function will always return a valid value"
+            correct: false
+          - text: "That the function will only be called from loop()"
+            correct: false
+          - text: "That the function has already been compiled elsewhere"
+            correct: false
+
+      - id: L05_B25
+        type: multiple_choice
+        cite: "§5.5, §5.7"
+        points: 1
+        stem: "What do prototypes buy this lesson's program specifically?"
+        options:
+          - text: "The six helpers can sit in any order, even though showBarGraphMode() calls drawBar()"
+            correct: true
+          - text: "The program runs faster because the compiler does less work"
+            correct: false
+          - text: "The helper functions no longer need to be defined at all"
+            correct: false
+          - text: "Variables can be used before they are declared"
+            correct: false
+
+      # ---------- §5.11 static, LEDs, buzzer ----------
+      - id: L05_B26
+        type: multiple_choice
+        cite: "§5.11"
+        points: 1
+        stem: "In updateIndicators(), what does the word static do in static unsigned long lastBeep?"
+        options:
+          - text: "The variable is created once and keeps its value between calls to the function"
+            correct: true
+          - text: "The variable can never be changed after it is set"
+            correct: false
+            why: "That is const. static is about surviving the call, not about being unchangeable."
+          - text: "The variable belongs to this file alone and no other file can see it"
+            correct: false
+            why: "That is the OTHER meaning of the keyword — the one at file scope, which Lesson 6 uses and Lesson 7 explains."
+          - text: "The variable is stored on the stack instead of in RAM"
+            correct: false
+
+      - id: L05_B27
+        type: multiple_choice
+        cite: "§5.11"
+        points: 1
+        stem: "What would break if lastBeep were a plain unsigned long instead of a static one?"
+        options:
+          - text: "It would reset to zero every pass, so millis() - lastBeep would always be about zero and the buzzer would never beep"
+            correct: true
+          - text: "The program would not compile"
+            correct: false
+          - text: "The beep would sound continuously instead of at intervals"
+            correct: false
+          - text: "Nothing — static is only a style choice here"
+            correct: false
+
+      - id: L05_B28
+        type: multiple_choice
+        cite: "§5.11"
+        points: 1
+        stem: "The same keyword static means something different at file scope. What?"
+        options:
+          - text: "That the name belongs to this file alone, and no other file gets to see it — nothing is being remembered"
+            correct: true
+          - text: "That the function runs only once, at startup"
+            correct: false
+          - text: "That the function keeps its local variables between calls"
+            correct: false
+          - text: "That the name is visible to every file in the project"
+            correct: false
+            why: "That is the opposite. static at file scope restricts visibility rather than granting it."
+
+      - id: L05_B29
+        type: multiple_choice
+        cite: "§5.11"
+        points: 1
+        stem: "The buzzer beeps at three different intervals. Which pairing is right?"
+        options:
+          - text: "Very close 100 ms, close 300 ms, detected 600 ms"
+            correct: true
+          - text: "Very close 600 ms, close 300 ms, detected 100 ms"
+            correct: false
+            why: "This has it backwards — closer means a SHORTER interval, so the beeping speeds up."
+          - text: "Very close 100 ms, close 200 ms, detected 300 ms"
+            correct: false
+          - text: "All three beep at 300 ms; only the pitch changes"
+            correct: false
+
+      - id: L05_B30
+        type: multiple_choice
+        cite: "§5.11"
+        points: 1
+        stem: "Why does the beep timer use millis() rather than delay()?"
+        options:
+          - text: "Because the sensors have to keep reading while it waits, and a delay() would freeze everything"
+            correct: true
+          - text: "Because delay() cannot handle intervals under 100 ms"
+            correct: false
+          - text: "Because millis() is more accurate than delay()"
+            correct: false
+          - text: "Because the buzzer needs the exact boot time"
+            correct: false
+
+      # ---------- §5.12 - §5.14 setup, loop, standard helpers ----------
+      - id: L05_B31
+        type: multiple_choice
+        cite: "§5.12, §5.14"
+        points: 1
+        stem: "Where does waitForStart() go, and what does it do?"
+        options:
+          - text: "The last line of setup(), always — it shows Press A to start and freezes until you press it"
+            correct: true
+          - text: "The first line of setup(), so nothing initialises until you are ready"
+            correct: false
+            why: "It goes at the END, so the robot finishes its setup work first — which is why the Serial banner is already waiting when the gate appears."
+          - text: "The top of loop(), so it gates every pass"
+            correct: false
+            why: "That slot belongs to checkBattery()."
+          - text: "Anywhere in setup(); the position does not matter"
+            correct: false
+
+      - id: L05_B32
+        type: multiple_choice
+        cite: "§5.13, §5.14"
+        points: 1
+        stem: "How do you check the battery on a robot running this program?"
+        options:
+          - text: "Hold buttons A and B together at any time — checkBattery() runs at the top of loop()"
+            correct: true
+          - text: "Press button C twice"
+            correct: false
+          - text: "Hold A and C together, as in Lesson 3"
+            correct: false
+            why: "A+C was Lesson 3's TRIM reset. The STANDARD HELPERS use A+B for the battery."
+          - text: "Open the Serial Monitor and type a command"
+            correct: false
+
+      - id: L05_B33
+        type: multiple_choice
+        cite: "§5.13"
+        points: 1
+        stem: "What does the switch statement in loop() do?"
+        options:
+          - text: "Picks one of several blocks based on a value — here, which display mode to show"
+            correct: true
+          - text: "Switches the proximity sensors between read() and readBasic()"
+            correct: false
+          - text: "Toggles the emitter teams between left and right"
+            correct: false
+          - text: "Repeats a block until a condition is false"
+            correct: false
+            why: "That is a loop. A switch chooses; it does not repeat."
+
+      # ---------- §5.15 The for loop ----------
+      - id: L05_B34
+        type: multiple_choice
+        cite: "§5.15"
+        points: 1
+        stem: "What are the three parts of a for loop?"
+        options:
+          - text: "START, CONTINUE IF, UPDATE"
+            correct: true
+          - text: "START, STOP, RESET"
+            correct: false
+          - text: "INITIALISE, EXECUTE, RETURN"
+            correct: false
+          - text: "COUNT, TEST, PRINT"
+            correct: false
+
+      - id: L05_B35
+        type: multiple_choice
+        cite: "§5.15"
+        points: 1
+        stem: "In a 3-2-1 countdown written for (int i = 3; i >= 1; i--), why is the test >= and not plain >?"
+        options:
+          - text: "With a plain > the countdown would show 3 and 2 and then stop, launching the robot a full second early"
+            correct: true
+          - text: "With a plain > the loop would never end"
+            correct: false
+            why: "That is the i++ mistake — the counter running away from its finish line."
+          - text: "With a plain > the loop would count upward instead"
+            correct: false
+          - text: "It makes no difference; both spellings run three times"
+            correct: false
+
+      - id: L05_B36
+        type: multiple_choice
+        cite: "§5.15"
+        points: 1
+        stem: "You write i++ in a loop that starts at 3 and tests i >= 1. What happens?"
+        options:
+          - text: "The counter runs away from its finish line forever and the robot hangs on the number 3"
+            correct: true
+          - text: "The loop runs three times as usual"
+            correct: false
+          - text: "The compiler reports an error"
+            correct: false
+          - text: "The loop runs once and stops"
+            correct: false
+
+      - id: L05_B37
+        type: multiple_choice
+        cite: "§5.15"
+        points: 1
+        stem: "In drawBar()'s loop, two different conditions are at work. What does each decide?"
+        options:
+          - text: "The loop condition decides whether there is another pass at all; the if condition decides what gets printed on this pass"
+            correct: true
+          - text: "The loop condition decides what gets printed; the if condition decides how many passes there are"
+            correct: false
+          - text: "Both decide the same thing, which is why they use the same variable"
+            correct: false
+          - text: "The if condition ends the loop early once the bar is full"
+            correct: false
+            why: "The loop always runs exactly six times. What changes at position 4 is only which character prints."
+
+      - id: L05_B38
+        type: multiple_choice
+        cite: "§5.15"
+        points: 1
+        stem: "drawBar() is called with value 4. What appears on that row?"
+        options:
+          - text: "####-- 4"
+            correct: true
+          - text: "#### 4"
+            correct: false
+            why: "The empty positions still print — as dashes — so the bar is always six characters wide."
+          - text: "------ 4"
+            correct: false
+          - text: "4 ####--"
+            correct: false
+
+      - id: L05_B39
+        type: multiple_choice
+        cite: "§5.15"
+        points: 1
+        stem: "When is a while loop the better choice than a for loop?"
+        options:
+          - text: "When the condition is sensor-based and you do not know how many passes it will take"
+            correct: true
+          - text: "When you know exactly how many times to repeat"
+            correct: false
+            why: "That is a for loop's case — do this 6 times, count down from 3."
+          - text: "Whenever the loop body contains an if statement"
+            correct: false
+          - text: "Whenever the counter needs to go downward"
+            correct: false
+
+      # ---------- §8 Troubleshooting ----------
+      - id: L05_B40
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Every proximity value is stuck at 0. What does the troubleshooting table say to check first?"
+        options:
+          - text: "That proxSensors.initThreeSensors() is in setup()"
+            correct: true
+          - text: "That the jumpers are on DN2 and DN4"
+            correct: false
+            why: "That move happens at the END of this lesson, and it removes two of the three receivers rather than waking them."
+          - text: "That the batteries are charged"
+            correct: false
+          - text: "That the Serial Monitor is open"
+            correct: false
+
+      - id: L05_B41
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The robot boots and then nothing happens at all. What is going on?"
+        options:
+          - text: "You are at the safety gate — press A, because waitForStart() is waiting for you"
+            correct: true
+          - text: "The program crashed during setup()"
+            correct: false
+          - text: "The sensors failed to initialise"
+            correct: false
+          - text: "The display mode is set to a value with no case in the switch"
+            correct: false
+
+      - id: L05_B42
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Readings are erratic and jumpy. What cause does the table name?"
+        options:
+          - text: "Bright lights or sunlight — enough raw IR can deafen the receiver outright"
+            correct: true
+          - text: "A loose jumper"
+            correct: false
+          - text: "The display refreshing too fast"
+            correct: false
+          - text: "Using max() instead of averaging the two front readings"
+            correct: false
+
+      # ---------- §8A The pair ----------
+      - id: L05_B43
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "You have frontLeft and frontRight. Which combination answers which question?"
+        options:
+          - text: "max() answers is something there; the difference answers which way is it"
+            correct: true
+          - text: "max() answers which way is it; the difference answers is something there"
+            correct: false
+          - text: "Both questions need the difference"
+            correct: false
+          - text: "Both questions need max()"
+            correct: false
+
+      - id: L05_B44
+        type: multiple_choice
+        cite: "§8A.3"
+        points: 1
+        stem: "The steering example checks bias > 1 and bias < -1 rather than bias == 0. Why?"
+        options:
+          - text: "Real readings jitter by a count or two even when nothing moves, so a dead band stops the robot twitching left-right-left"
+            correct: true
+          - text: "Because bias can never be exactly zero in C++"
+            correct: false
+          - text: "Because == is slower than > on an AVR"
+            correct: false
+          - text: "Because bias is measured in centimetres, not counts"
+            correct: false
+
+      - id: L05_B45
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "The lesson says this read-a-pair shape comes back in Lesson 6 with the wheel encoders. What do the two encoder numbers give you there?"
+        options:
+          - text: "Their sum tells you distance travelled; their difference tells you how much the robot turned"
+            correct: true
+          - text: "Their sum tells you the turn; their difference tells you the distance"
+            correct: false
+          - text: "Their maximum tells you the speed; their minimum tells you the drag"
+            correct: false
+          - text: "Both numbers are averaged into a single heading"
+            correct: false
+
+      # ---------- §1 / §7.3 The jumper trade ----------
+      - id: L05_B46
+        type: multiple_choice
+        cite: "§1, §7.3"
+        points: 1
+        stem: "Where are your configuration jumpers at the START of this lesson, and why?"
+        options:
+          - text: "At LFT/RGT, the factory position — three line sensors and three proximity receivers, which is what this lesson needs"
+            correct: true
+          - text: "At DN2/DN4, where Lesson 4 left them permanently"
+            correct: false
+            why: "Lesson 4 moved them there for its resolution experiment and then moved them back, precisely so this lesson could borrow all three receivers."
+          - text: "It does not matter; the jumpers only affect Lesson 6 onward"
+            correct: false
+          - text: "At LFT/RGT, giving five line sensors and one proximity receiver"
+            correct: false
+
+      - id: L05_B47
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "What exactly do you trade away when the jumpers move to DN2/DN4?"
+        options:
+          - text: "The left and right proximity receivers, in exchange for line sensors 2 and 4"
+            correct: true
+          - text: "The front proximity receiver, in exchange for line sensors 1 and 5"
+            correct: false
+          - text: "Two line sensors, in exchange for two more proximity receivers"
+            correct: false
+          - text: "Nothing — the move adds sensors without cost"
+            correct: false
+            why: "The board has a fixed number of pins. Sensors 2 and 4 borrow pins 20 and 4, which used to carry the side receivers."
+
+      - id: L05_B48
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "After the jumper move, what does your robot have?"
+        options:
+          - text: "Five line sensors and exactly one proximity sensor — the front one"
+            correct: true
+          - text: "Five line sensors and three proximity sensors"
+            correct: false
+          - text: "Three line sensors and one proximity sensor"
+            correct: false
+          - text: "Five line sensors and no proximity sensors at all"
+            correct: false
+
+      # ---------- true_false (10) ----------
+      - id: L05_B49
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "A proximity reading of 6 means the object is farther away than a reading of 2."
+        correct: false
+        why: "Higher means closer. 6 means every one of the six pulse rounds got an echo back, which only happens very close in."
+
+      - id: L05_B50
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "The left and right emitter teams never fire at the same time."
+        correct: true
+        why: "One control pin picks which team fires. The library runs the whole sequence once with the left team, then once with the right."
+
+      - id: L05_B51
+        type: true_false
+        cite: "§3.5"
+        points: 1
+        stem: "A proximity count can be converted into a distance in centimetres by multiplying it by a fixed number."
+        correct: false
+        why: "The count is echo strength, not distance. Object colour, size, texture and angle all move it, which is why the lesson's distance table says approximate."
+
+      - id: L05_B52
+        type: true_false
+        cite: "§3.4a"
+        points: 1
+        stem: "The three detectors between them cover every direction around the robot."
+        correct: false
+        why: "Three cones do not add up to a circle. Two blind wedges roughly 19° to 72° off each side have nothing aimed into them."
+
+      - id: L05_B53
+        type: true_false
+        cite: "§5.11"
+        points: 1
+        stem: "The keyword static means the same thing whether it sits on a local variable inside a function or on a function at file scope."
+        correct: false
+        why: "Inside a function it asks does this survive the call. Outside one it asks who is allowed to see this. Same spelling, unrelated jobs."
+
+      - id: L05_B54
+        type: true_false
+        cite: "§5.5"
+        points: 1
+        stem: "Without prototypes, a helper function must be defined above every function that calls it."
+        correct: true
+        why: "The compiler reads top to bottom and refuses to call a name it has not heard of. A prototype is the promise that lets the definitions sit anywhere."
+
+      - id: L05_B55
+        type: true_false
+        cite: "§3.1, §3.6"
+        points: 1
+        stem: "Another robot running this same program can make your readings jump, even when nothing in the room is moving."
+        correct: true
+        why: "Its 38 kHz pulses are indistinguishable from your own echoes, because the tuned receiver reacts to the rhythm rather than to the source."
+
+      - id: L05_B56
+        type: true_false
+        cite: "§5.15"
+        points: 1
+        stem: "A for loop must always count upward from zero."
+        correct: false
+        why: "The counter is an ordinary variable and all three parts are yours to set. The 3-2-1 countdown starts high, tests i >= 1, and subtracts."
+
+      - id: L05_B57
+        type: true_false
+        cite: "§4.2, §3.4a"
+        points: 1
+        stem: "Taking max() of the two front readings lets the robot find an object no matter which direction it sits in."
+        correct: false
+        why: "Only inside FRONT's own ±19°. Past that you are in the dead spot, and no amount of combining will find the object."
+
+      - id: L05_B58
+        type: true_false
+        cite: "§7.3"
+        points: 1
+        stem: "Once the jumpers move to DN2/DN4 at the end of this lesson, they move back for later lessons that need the side receivers."
+        correct: false
+        why: "This one is permanent — the robot stays five-down for the rest of the book. Lesson 10 has to work around the missing side receivers rather than restoring them."
+
+      # ---------- matching (6) ----------
+      - id: L05_B59
+        type: matching
+        cite: "Glossary, §3.2, §3.3"
+        points: 4
+        stem: "Match each Lesson 5 term to its definition."
+        pairs:
+          - left: "Proximity sensor"
+            right: "Detects how close an object is without physical contact"
+          - left: "Brightness level"
+            right: "How many IR pulse rounds, at increasing intensity, detected a reflection"
+          - left: "Threshold"
+            right: "A boundary value that turns a measurement into a decision"
+          - left: "Static variable (retained local)"
+            right: "A local variable that keeps its value between calls to its function"
+        extra_answers:
+          - "A value that can never be reassigned once it is set"
+          - "The rhythm the receiver is tuned to hear"
+
+      - id: L05_B60
+        type: matching
+        cite: "§3.2, Quick Reference"
+        points: 4
+        stem: "Match each reading to what it means."
+        pairs:
+          - left: "0"
+            right: "Nothing detected — or a dark or small object"
+          - left: "1-2"
+            right: "Object far, roughly 20-30 cm"
+          - left: "3-4"
+            right: "Object close, roughly 10-20 cm"
+          - left: "5-6"
+            right: "Object very close, under 10 cm"
+        extra_answers:
+          - "Sensor error — re-run initThreeSensors()"
+          - "Object touching the blade"
+
+      - id: L05_B61
+        type: matching
+        cite: "§3.4, §4.1"
+        points: 3
+        stem: "Match each part of the proximity system to where it is and what it does."
+        pairs:
+          - left: "The three detectors"
+            right: "On the front sensor array — one aimed ahead, one out each flank"
+          - left: "The two blade emitters"
+            right: "The clear domes on the front plow, one per team"
+          - left: "The two middle emitters"
+            right: "On the main board between the wheels, hidden by the tracks, aiming straight out"
+        extra_answers:
+          - "Underneath the chassis, aimed at the floor"
+          - "Inside the OLED housing, facing backward"
+
+      - id: L05_B62
+        type: matching
+        cite: "§5.5, §5.6, §5.11, §5.14"
+        points: 4
+        stem: "Match each function to its one job."
+        pairs:
+          - left: "readAllSensors()"
+            right: "Takes one read and fills the five reading variables"
+          - left: "drawBar()"
+            right: "Draws one bar-graph row as # and - characters, then the number"
+          - left: "updateIndicators()"
+            right: "Drives the yellow LED and the beep interval from the front reading"
+          - left: "waitForStart()"
+            right: "Holds the robot at a Press A screen until the button is pressed"
+        extra_answers:
+          - "Wakes the three proximity receivers"
+          - "Switches the display between numeric, bars and alerts"
+
+      - id: L05_B63
+        type: matching
+        cite: "§5.15"
+        points: 3
+        stem: "Match each part of for (int i = 3; i >= 1; i--) to its role."
+        pairs:
+          - left: "int i = 3"
+            right: "START — begin at the top"
+          - left: "i >= 1"
+            right: "CONTINUE IF — stop when it gets too small"
+          - left: "i--"
+            right: "UPDATE — subtract one each pass"
+        extra_answers:
+          - "RESET — return the counter to its starting value"
+          - "BODY — the work done on each pass"
+
+      - id: L05_B64
+        type: matching
+        cite: "§4.3"
+        points: 3
+        stem: "Match each factor to what makes detection WORSE."
+        pairs:
+          - left: "Object colour"
+            right: "Black or dark"
+          - left: "Object size"
+            right: "Small or thin"
+          - left: "Angle"
+            right: "Angled away from the sensor"
+        extra_answers:
+          - "Perpendicular to the sensor"
+          - "Large and white"
+
+  # ===================================================================
+  # AFTER — POST-BUILD CHECK
+  # Assumes the student built the program, ran the tests and did the
+  # jumper move. Draws on §6 steps, §7, §9 challenges and Observation.
+  # BRAIN CHECK 03 asks max(), prototypes, threshold-vs-reading and the
+  # for loop; none of those four is repeated below.
+  # Suggested Canvas draw: 8.
+  # ===================================================================
+  after:
+    description: "Post-build check. Assumes the program was built, run and the jumpers moved."
+    suggested_draw: 8
+    questions:
+
+      - id: L05_A01
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "You paste readAllSensors() and the new loop(), build, and it fails with 'readAllSensors' was not declared in this scope. What happened?"
+        options:
+          - text: "The compiler read top to bottom, hit a name inside loop() it had never heard of, and quit — the function is defined further down"
+            correct: true
+          - text: "The function name is misspelled in one of the two places"
+            correct: false
+          - text: "proxSensors was never initialised"
+            correct: false
+          - text: "The function is missing its return type"
+            correct: false
+
+      - id: L05_A02
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "How many prototypes do you add in Step 4, and where?"
+        options:
+          - text: "Six, in the FUNCTION PROTOTYPES section, below the Maker's two pre-installed lines"
+            correct: true
+          - text: "One — only the function the error named"
+            correct: false
+            why: "The step has you add all six in one trip, so the remaining helpers never produce the same error again."
+          - text: "Eight, replacing the Maker's two"
+            correct: false
+          - text: "Six, at the bottom of the file below loop()"
+            correct: false
+
+      - id: L05_A03
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "Step 5 has you paste an EMPTY drawBar() before writing its body, and the build stays green. Why does that work?"
+        options:
+          - text: "An empty function is legal C++, and its prototype went in during Step 4"
+            correct: true
+          - text: "The compiler skips functions that are never called"
+            correct: false
+          - text: "Because drawBar() returns void"
+            correct: false
+          - text: "It does not work — the build goes red until the body is written"
+            correct: false
+
+      - id: L05_A04
+        type: multiple_choice
+        cite: "§6 Step 5, §6 Step 6"
+        points: 1
+        stem: "Step 5 adds two TEMPORARY lines. What happens to them in Step 6?"
+        options:
+          - text: "Replacing loop() removes the drawBar() test line automatically, but the display.setLayout21x8() in setup() must be deleted by hand"
+            correct: true
+          - text: "Both are removed automatically when loop() is replaced"
+            correct: false
+          - text: "Both must be removed by hand"
+            correct: false
+          - text: "Both stay — the final program needs them"
+            correct: false
+
+      - id: L05_A05
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "Your drawBar() prints the # characters first and then fills the rest, which is not how the reveal does it. Is that a problem?"
+        options:
+          - text: "No — the step says any version is fine as long as the display matches the example"
+            correct: true
+          - text: "Yes — the reveal's version is the only one that compiles"
+            correct: false
+          - text: "Yes — a different loop shape will break showBarGraphMode()"
+            correct: false
+          - text: "Only if you used constrain() differently"
+            correct: false
+
+      - id: L05_A06
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "The JUMPER CHECK program calls lineSensors.initFiveSensors(). What does the lesson say that call is?"
+        options:
+          - text: "A promise — that pins 20 and 4 lead to line sensors. It compiles whether or not the jumpers actually moved"
+            correct: true
+          - text: "A hardware test that fails to compile if the jumpers are wrong"
+            correct: false
+            why: "That is the trap the troubleshooting table names: it compiles anyway, and then lies."
+          - text: "A command that moves the sensor wiring in software"
+            correct: false
+          - text: "A calibration routine for the five sensors"
+            correct: false
+
+      - id: L05_A07
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "You run JUMPER CHECK, slide tape across the array, and digits 2 and 4 sit dead while 1, 3 and 5 answer. What does that mean?"
+        options:
+          - text: "A jumper is not seated — power off and reseat it"
+            correct: true
+          - text: "The jumper move worked correctly"
+            correct: false
+          - text: "Sensors 2 and 4 are damaged and need replacing"
+            correct: false
+          - text: "The tape is too narrow to reach those positions"
+            correct: false
+
+      - id: L05_A08
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "How do you tell the two jumper positions apart on a real board?"
+        options:
+          - text: "By the position of the blue blocks — both move outward, toward the ends of the array"
+            correct: true
+          - text: "By reading the LFT / DN2 / RGT / DN4 labels beside them"
+            correct: false
+            why: "The labels are silkscreened on the other side of the board and cannot be read from that angle."
+          - text: "By the colour of the blocks, which differs between positions"
+            correct: false
+          - text: "By counting how many blocks are fitted"
+            correct: false
+
+      - id: L05_A09
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "Why does the lesson call the jumper move an engineering trade-off rather than an upgrade?"
+        options:
+          - text: "The board has a fixed number of pins, and every pin spent on one job is a pin you cannot spend on another"
+            correct: true
+          - text: "Because the move can be undone at any time"
+            correct: false
+          - text: "Because five line sensors are worse than three"
+            correct: false
+          - text: "Because it costs money to buy the extra jumpers"
+            correct: false
+
+      - id: L05_A10
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "The detection counter uses isDetected && !wasDetected. What does that test catch?"
+        options:
+          - text: "The rising edge — the single moment nothing becomes something"
+            correct: true
+          - text: "Every loop pass while an object is present"
+            correct: false
+            why: "That is what happens WITHOUT the flag: one hand held in place would count thousands of times per second."
+          - text: "The moment an object leaves"
+            correct: false
+          - text: "Objects that appear on the left but not the right"
+            correct: false
+
+      - id: L05_A11
+        type: multiple_choice
+        cite: "§9 Challenge 2"
+        points: 1
+        stem: "The directional LED challenge checks all three readings for zero FIRST. Why does that check have to come first?"
+        options:
+          - text: "Otherwise 0 >= 0 is true and an empty room lights the red LED"
+            correct: true
+          - text: "Otherwise the buzzer code never runs"
+            correct: false
+          - text: "Because ledRed() must always be called before ledGreen()"
+            correct: false
+          - text: "Because the else branch would never be reached"
+            correct: false
+
+      - id: L05_A12
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "Challenge 3 replaces the beep cascade with beepInterval = 700 - (frontValue * 100). What does a reading of 6 give?"
+        options:
+          - text: "100 ms — the fastest beeping"
+            correct: true
+          - text: "600 ms"
+            correct: false
+            why: "600 is what a reading of 1 gives. The formula shortens the interval as the reading climbs."
+          - text: "700 ms"
+            correct: false
+          - text: "0 ms — silent"
+            correct: false
+
+      - id: L05_A13
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "Challenge 3 keeps a guard so the formula only runs when something is detected. What goes wrong without it?"
+        options:
+          - text: "A reading of 0 gives beepInterval = 700, so the robot ticks slowly at an empty room forever"
+            correct: true
+          - text: "The interval goes negative and the buzzer jams on"
+            correct: false
+          - text: "The program crashes on a divide by zero"
+            correct: false
+          - text: "Nothing — the guard is only there for readability"
+            correct: false
+
+      - id: L05_A14
+        type: multiple_choice
+        cite: "§9 Challenge 4"
+        points: 1
+        stem: "In the social-distancing robot, which reading band means TOO CLOSE — back away?"
+        options:
+          - text: "A HIGH reading, because higher means closer"
+            correct: true
+          - text: "A LOW reading, because a low number means a short distance"
+            correct: false
+            why: "The card warns about exactly this inversion: higher reading = closer."
+          - text: "A reading of exactly 0"
+            correct: false
+            why: "0 means no hand at all, which is why the challenge has a fourth branch that holds still."
+          - text: "Any reading that changes between passes"
+            correct: false
+
+      - id: L05_A15
+        type: multiple_choice
+        cite: "§9 Challenge 4"
+        points: 1
+        stem: "Challenge 4 adds a fourth branch for frontValue == 0. Why not let the too-far branch handle it?"
+        options:
+          - text: "0 means no hand at all, and a shy pet waits rather than wandering off hunting"
+            correct: true
+          - text: "Because 0 would make the robot reverse"
+            correct: false
+          - text: "Because the sensor cannot return 0 while the robot is moving"
+            correct: false
+          - text: "Because the motors need a stop command between every move"
+            correct: false
+
+      - id: L05_A16
+        type: multiple_choice
+        cite: "§9 Challenge 5"
+        points: 1
+        stem: "Challenge 5's avoidance turn is motors.setSpeeds(-150, 150) followed by delay(400). What does the card say about that 400?"
+        options:
+          - text: "It is timed, not measured — roughly 90° on a charged battery, and it will drift as the battery drains"
+            correct: true
+          - text: "It is exactly 90° on any robot"
+            correct: false
+          - text: "It is the minimum delay the motors need to respond"
+            correct: false
+          - text: "It is measured by the encoders, so it stays accurate"
+            correct: false
+            why: "Encoders are Lesson 6 — and this drifting timed turn is precisely the problem they exist to solve."
+
+      - id: L05_A17
+        type: multiple_choice
+        cite: "Observation, Experiment 3"
+        points: 1
+        stem: "Experiment 3 puts a box about 45° off to the right, 15 cm out. What should you expect, and why?"
+        options:
+          - text: "Very little — 45° is inside the blind wedge, past FRONT's edge and short of RIGHT's, so nothing is aimed there"
+            correct: true
+          - text: "A strong reading on RIGHT, since the box is on the right side"
+            correct: false
+            why: "RIGHT watches straight out the flank, near 90°. Slide the box out that far and it wakes up; at 45° it is in the dead spot."
+          - text: "A strong reading on FRONT, since the box is ahead of the robot"
+            correct: false
+            why: "FRONT covers only about ±19° of the nose."
+          - text: "Equal readings on FRONT and RIGHT, since the box sits between them"
+            correct: false
+
+      - id: L05_A18
+        type: multiple_choice
+        cite: "Observation, Experiment 6"
+        points: 1
+        stem: "You bring your hand in from the right until R climbs, then take it away. Nothing on screen remembers it came from the right. Why?"
+        options:
+          - text: "readAllSensors() runs at the top of every pass and overwrites all five reading variables, so each one only ever holds right now"
+            correct: true
+          - text: "The display clears itself between passes"
+            correct: false
+          - text: "The right receiver has already been disabled by the jumper move"
+            correct: false
+          - text: "The values are stored but only shown in alert mode"
+            correct: false
+
+      - id: L05_A19
+        type: true_false
+        cite: "Observation, Experiment 1"
+        points: 1
+        stem: "Pointing a bright steady flashlight into the front receiver drives the reading to 6."
+        correct: false
+        why: "A steady beam has no 38 kHz flicker for the tuned receiver to hear. Enough raw IR can deafen it outright — which shows up as erratic readings, not as a high one."
+
+      - id: L05_A20
+        type: true_false
+        cite: "Observation, Experiment 2"
+        points: 1
+        stem: "White paper and a black T-shirt held at the same distance give about the same reading."
+        correct: false
+        why: "White paper is a far better reflector. The sensor is not broken — it is answering how strong is the echo, not how far away is it."
+
+      - id: L05_A21
+        type: true_false
+        cite: "§6 Step 3"
+        points: 1
+        stem: "After Step 3 you upload, press A, and the robot does nothing — which means something has gone wrong."
+        correct: false
+        why: "That is the expected result. The robot is faithfully running an empty loop(): the gate works before the program does."
+
+      - id: L05_A22
+        type: matching
+        cite: "§5.13, §7.1"
+        points: 3
+        stem: "Match each button to what it does while the program is running."
+        pairs:
+          - left: "A"
+            right: "Show the numeric values mode"
+          - left: "B"
+            right: "Show the bar graph mode"
+          - left: "C"
+            right: "Show the detection alerts mode"
+        extra_answers:
+          - "Reset the detection counter to zero"
+          - "Switch the sensors to readBasic()"
+
+      - id: L05_A23
+        type: matching
+        cite: "§9"
+        points: 4
+        stem: "Match each Section 9 challenge to the idea it introduces."
+        pairs:
+          - left: "Challenge 1 — Detection Counter"
+            right: "A boolean flag that remembers the previous pass, so only new arrivals count"
+          - left: "Challenge 2 — Directional LED Alerts"
+            right: "Picking a winner among three readings, checking the all-clear case first"
+          - left: "Challenge 3 — Beep Speed"
+            right: "Replacing a threshold cascade with one line of arithmetic"
+          - left: "Challenge 5 — Obstacle Avoidance"
+            right: "Sense, decide, steer — the first full loop with the robot moving"
+        extra_answers:
+          - "Listening for another robot without emitting any light"
+          - "Rescaling raw readings onto a calibrated 0-1000 scale"

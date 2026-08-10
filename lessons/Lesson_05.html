@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.28.1 -->
+<!-- Lesson version: v04.29.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Proximity Sensors</h1>
 <div class="div-fs-11em">Teaching Your Robot to Sense</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.28 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.29 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -626,6 +626,14 @@ Zumo32U4Buzzer buzzer;</pre>
         lastBeep = millis();
     }
 }</pre>
+
+<p><strong><code>static</code> — one keyword, two different jobs.</strong> There is a word in that function you have not met: <code>static unsigned long lastBeep</code>. This is one of those cases, like <code>const</code> and <code>constrain()</code> back in Lesson 3, where the same spelling does two unrelated things depending on where you put it. Meet both now so neither one ambushes you later.</p>
+
+<p><strong><code>static</code> inside a function — the retained local.</strong> <code>lastBeep</code> is created once, the first time <code>updateIndicators()</code> runs, and it keeps its value between calls. Write it as a plain <code>unsigned long lastBeep = 0;</code> instead and it would be built fresh and reset to zero on every single pass of <code>loop()</code> — so <code>millis() - lastBeep</code> would always be about zero, the interval test would never pass, and the buzzer would never beep at all. <code>static</code> is what gives a local variable a memory.</p>
+
+<p><strong><code>static</code> at file scope — the private name.</strong> In Lesson 6 you will write <code>static long averageCounts()</code>, and there the word means something else entirely: this function belongs to this file alone, and no other file gets to see it. Nothing is being remembered — that one is about who is allowed to look. Lesson 7 takes it apart properly, once your program is eight files and the question of who can see what actually matters.</p>
+
+<p>Same keyword, two questions. Inside a function it asks <em>does this survive the call?</em> Outside one it asks <em>who is allowed to see this?</em> When you meet <code>static</code> in someone else's code, read where it sits before you read what it says.</p>
 
 <h3 id="code-5-12" class="h3-c-433014">5.12 Setup Function</h3>
 
@@ -1815,7 +1823,7 @@ Zumo32U4OLED display;
 Zumo32U4ButtonA buttonA;
 Zumo32U4ButtonB buttonB;
 
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">4</span>;   <span class="tok-7cbf6e">// ~10cm (high reading = close)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CLOSE_THRESHOLD = <span class="tok-b5cea8">5</span>;   <span class="tok-7cbf6e">// ~10cm (high reading = close)</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAR_THRESHOLD = <span class="tok-b5cea8">2</span>;     <span class="tok-7cbf6e">// ~20cm (low reading = far)</span>
 
 <span class="tok-7cbf6e">// FUNCTION PROTOTYPES: waitForStart(); and checkBattery();</span>
@@ -1963,10 +1971,10 @@ Zumo32U4ButtonB buttonB;
     <p>Section 3.5 — the sensor measures echo strength, not distance. White paper is simply a better reflector than black fabric.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-3" data-challenge="5.m3" data-kind="bonus-observation">Experiment 3: The Side-Eye</h4>
-<p>Place a box diagonally ahead and to the right — about 45°, 15&nbsp;cm out. Before you look: which of the three readings will move? Just R? Test it, and watch F's two small numbers too.</p>
+<p>Place a box diagonally ahead and to the right — about 45°, 15&nbsp;cm out. Before you look: which of the three readings will move? Just R? Go back and re-read <a href="#section-3-4a" class="link-c-1f2a3d">Section 3.4a</a> before you commit to an answer. Then test it, and watch F's two small numbers too.</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Sections 3.4 and 8A — two ears can hear one object, and the right flashlight team lights it best. Expect R <em>and</em> the right half of F's pair.</p>
+    <p>45° is inside the blind wedge — 26° past FRONT's edge and 27° short of RIGHT's. Expect very little, and expect it to feel like a fault. It is not one: nothing is aimed there. Now slide the box outward toward 90°, straight off the flank, and watch R wake up — that is where the side detector is actually looking. This is the dead spot you read about in <a href="#section-3-4a" class="link-c-1f2a3d">Section 3.4a</a>, and it is the reason Lesson 10's obstacle logic has to remember what it saw instead of re-testing every frame.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-4" data-challenge="5.m4" data-kind="bonus-observation">Experiment 4: The Two-Number Spy</h4>
 <p>Numeric mode shows F with its two source numbers beside it. Slide your hand slowly from the robot's far left to its far right, keeping the distance steady. Predict what the two small numbers do — and where they trade places.</p>
@@ -2046,9 +2054,11 @@ Zumo32U4ButtonB buttonB;
 
 </details>
 
-<details data-reveal="quiz"><summary>4. Why is using a for loop better than using multiple <code>delay()</code> calls? (§5.15)</summary>
+<details data-reveal="quiz"><summary>4. Why is using a for loop better than writing the same <code>display.print()</code> and <code>delay()</code> lines out three times? (§5.15)</summary>
 
-<div class="div-mt-12px"><p>For loops let you repeat code without duplicating it. Instead of writing <code>delay(1000); display.print(F("3"));</code> then <code>delay(1000); display.print(F("2"));</code> and so on, you can use one loop that handles all iterations. This makes code shorter, easier to modify (change the count in one place), and less error-prone. Loops are a fundamental programming concept you'll use constantly!</p></div>
+<div class="div-mt-12px"><p>Careful — the loop does not get rid of the delays. One <code>delay(1000)</code> lives <em>inside</em> the loop body and still runs three times; that is what makes the countdown a countdown. What the loop gets rid of is the <strong>copies</strong>. Written out, a 3-2-1 is three print-and-delay pairs stacked up, and changing it to a 5-count means editing five. As a loop it is one block whose count you change in one place.</p>
+
+<p>The second half is about <code>delay()</code> itself. While a <code>delay()</code> runs, the robot does nothing else — it cannot read a sensor, watch a button, or update the screen. For a countdown before the robot moves that is exactly what you want; nothing else should be happening. But look at the beep timer in <a href="#code-5-11" class="link-c-1f2a3d">Section 5.11</a>: it never calls <code>delay()</code>, because the sensors have to keep reading while it waits. It checks <code>millis()</code> each pass instead — the same non-blocking clock trick Lesson 4's calibration timer uses. A loop controls <em>how many times</em>; choosing <code>delay()</code> or <code>millis()</code> controls <em>whether the robot can do anything else while it waits</em>.</p></div>
 
 </details>
 
@@ -2099,7 +2109,7 @@ Zumo32U4ButtonB buttonB;
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="5.44"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-infrared">Infrared (IR)</strong></div>Light with wavelengths longer than visible red light. Invisible to humans but useful for proximity sensing because it reflects well off most surfaces.</div>
 
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="5.45"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-static">Static Variable</strong></div>A local variable that retains its value between function calls, unlike normal local variables which reset each time.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="5.45"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-static">Static Variable (retained local)</strong></div>A local variable that retains its value between function calls, unlike normal local variables which reset each time. See <a href="#code-5-11" class="link-c-1f2a3d">Section 5.11</a>. The same keyword means something different at file scope — there it makes a name private to one file, which is Lesson 7's story, not this one.</div>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="5.46"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-threshold-g">Threshold</strong></div>A boundary value used to make decisions. Values above the threshold trigger one action; values below trigger another.</div>
 
