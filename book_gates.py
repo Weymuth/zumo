@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.64.2'
+VERSION = 'v1.64.3'
 # v1.60 (S132): GATE 65 NEW - §27.15f, THE REVEAL BOX. 453 <details> in THIRTEEN spellings
 #   plus 55 with no class at all, whose summaries therefore had NO cursor: pointer - the one
 #   part of the drift a reader would have felt. Graduated to an element rule. The gate is
@@ -2262,7 +2262,16 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'ce43da626bdf82b1'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '2cd8cd623e48bcd4'
+#   S139 move: digest ONLY, TWICE in one session - this is the second and it supersedes the
+#   first. Rules and declarations UNCHANGED at 574/2,033 both times, class SET byte-identical
+#   in both directions, and the acceptance test was the RESOLVED STYLING rather than the rule
+#   count (S134 rule 24): all 574 declaration blocks compare byte-identical across each
+#   cycle, so nothing renders differently. What moved is usage COUNTS: Challenge 4's template
+#   gained a declared LINE_SEEN line, and the Quick Reference gained a 'Startup & safety'
+#   group when waitForStart()/checkBattery() were lifted out of 'Line sensor functions',
+#   where they are not line sensor functions. Coverage 22,178 -> 22,188 across three regenerations in one session.
+#   strip_inline --verify: 0 dead names.
 #   S138 move: digest ONLY. Rules and declarations UNCHANGED at 574/2,033 - zero born,
 #   zero died, and the class SET is byte-identical (checked both directions). What moved
 #   is usage RANK: GRAPHIC 4.7 landing twice in L04 took .img-d-block-3 4->5 and
