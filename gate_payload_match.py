@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.7.1, S56 (S110: runs on stable filenames)
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.8.0, S56 (S110: runs on stable filenames)
+v1.8.0 (S142) THE LINE TEST WAS A SUBSTRING TEST AND WAS BLIND ON ONE SIDE. The
+line-wise fallback asked `l in corpus` — containment in the whole corpus TEXT — so a
+payload line that has LOST a leading qualifier the lesson carries matched trivially as
+a substring of the longer lesson line. MEASURED, NOT THEORISED: during the S142 static
+pass, reverting exactly one of 136 payloads left this gate printing PASS. Additions it
+always saw; a dropped `static`, `const` or `unsigned` it could not see AT ALL — which is
+the §15.6 class it exists to hold. Now line EQUALITY against a stripped corpus line set;
+both sides stripped, so indentation is still irrelevant and every payload that passed on
+real derivation still passes (advisory count unchanged at 635). Control-run five shapes x
+two gate versions from a snapshot with a byte-exact restore: untouched PASSES on both;
+lost-static and lost-const PASS on the old gate and FAIL on the new; a foreign line and a
+changed value FAIL on both, so nothing that used to be caught was lost.
 v1.7.1 (S138) EXEMPTIONS RE-PINNED AFTER THE S137 STARTER FIX. This gate went PASS ->
 FAIL (4) inside the S137 close push and the handoff still claimed PASS, because the gate
 is NOT one of the 69 - nothing in book_gates.py runs it. S137 rewrote the L03 constrain
@@ -217,17 +229,47 @@ def check_boxed_fp(L, key, text, fails, observed):
         fails.append(f"L{L}/{key}: BOXED HEADER CHANGED — pinned {want[0]} lines/{want[1][:12]}, "
                      f"found {len(b)} lines/{h[:12]}. Intentional? run --update-fp.")
 
+def _corpus_lines(corpus, _cache={}):
+    """Stripped line SET of the corpus, memoised per corpus object.
+
+    S142: THE LINE TEST WAS A SUBSTRING TEST AND IT WAS BLIND ON ONE SIDE.
+    `l in corpus` asks whether the payload line appears ANYWHERE in the corpus text,
+    including as part of a LONGER line. So a payload that has LOST a leading keyword
+    the lesson carries matches trivially:
+
+        corpus line : static unsigned int sensorValues[5];     // Array to store ...
+        payload line:        unsigned int sensorValues[5];     // Array to store ...
+
+    The second is a substring of the first, so the gate stayed SILENT. Measured, not
+    theorised: the S142 `static` pass reverted exactly one of 136 payloads and the gate
+    still printed PASS. Additions it could always see; a dropped `static`, `const`,
+    `unsigned` or any other leading qualifier it could not see at all — and a payload
+    silently losing a qualifier is precisely the class §15.6 was written for.
+
+    Line EQUALITY against a stripped set is the property the check always meant to
+    assert. Both sides are stripped, so indentation still does not matter and every
+    payload that passed on real line-for-line derivation still passes.
+    """
+    key = id(corpus)
+    hit = _cache.get(key)
+    if hit is None or hit[0] is not corpus:
+        hit = (corpus, {l.strip() for l in corpus.split('\n') if l.strip()})
+        _cache[key] = hit
+    return hit[1]
+
 def check_payload_text(name, text, corpus, fails):
+    clines = _corpus_lines(corpus)
     chunks = [c for c in re.split(r'\n\s*\n', text) if len(c.strip()) >= MIN_CHARS]
     for c in chunks:
         if c.strip() in corpus:
             continue
         # line-wise fallback: every non-empty line appears verbatim in a canonical
-        # source (handles payload glue assembled from lesson-verbatim lines)
+        # source (handles payload glue assembled from lesson-verbatim lines).
+        # EQUALITY, not containment — see _corpus_lines.
         lines = [l.strip() for l in c.split('\n') if l.strip()]
-        if lines and all(l in corpus for l in lines):
+        if lines and all(l in clines for l in lines):
             continue
-        missing = [l for l in lines if l not in corpus] or [c.strip()[:60]]
+        missing = [l for l in lines if l not in clines] or [c.strip()[:60]]
         parts = name.split("/")
         Lk = (parts[0][1:], parts[1])
         missing = [l for l in missing if (Lk[0], Lk[1], l) not in EXEMPT]

@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.30.1 -->
+<!-- Lesson version: v04.31.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -86,7 +86,7 @@
 <h1 class="h1">Line Following</h1>
 <div class="div-fs-11em">Proportional Control, and Why Bang-Bang Fails</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.30 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.31 — August 2026</div>
 </div>
 
 <!-- New Teaching Approach Notice -->
@@ -792,6 +792,12 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_SPEED = <span class="tok-b5cea8">150</span>;   <span class="tok-7cbf6e">// Speed for straight driving (0-400)</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TURN_SPEED = <span class="tok-b5cea8">150</span>;    <span class="tok-7cbf6e">// Speed for turning (0-400)</span>
 
+<span class="tok-7cbf6e">// Remember TRIM from Lesson 6? It lived at the top of main.cpp,</span>
+<span class="tok-7cbf6e">// buried in a 200-line file. This is where it always belonged:</span>
+<span class="tok-7cbf6e">// a robot-specific number, in the robot-specific numbers file.</span>
+<span class="tok-7cbf6e">// (It was born in Lesson 3, spent in Lesson 6, and filed here.)</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TRIM = <span class="tok-b5cea8">0</span>;   <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER</span>
+
 <span class="tok-7cbf6e">// ===== BATTERY THRESHOLDS =====</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BATTERY_GOOD = <span class="tok-b5cea8">4800</span>; <span class="tok-7cbf6e">// millivolts - fully charged</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BATTERY_LOW = <span class="tok-b5cea8">4200</span>;  <span class="tok-7cbf6e">// millivolts - charge soon</span>
@@ -876,11 +882,11 @@ extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Les
 
 <h3 class="h3-c-433014">Step 4 — RobotSensors.cpp: Creating the Hardware — and Facing the Red Build Solo</h3>
 
-<p>The header promised; this file delivers. The real <code>lineSensors</code> object gets created here, two module-private variables move in, and the first two functions — init and the calibration spin — get bodies.</p>
+<p>The header promised; this file delivers. The real <code>lineSensors</code> object gets created here, two <code>static</code> module-private variables move in, and the first two functions — init and the calibration spin — get bodies.</p>
 
 <div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL" data-callout="8.29">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
-    <p class="p-mb-0">Add <code>#include "RobotConfig.h"</code> near the top (the new code reads <code>LINE_CENTER</code>). Define <code>lineSensors</code> (no extern!), <code>sensorValues[5]</code>, and <code>lastPosition</code>. Then write <code>initLineSensors()</code> — one library call, <code>initFiveSensors()</code> — and <code>calibrateLineSensors()</code>: 100 calibration passes while spinning, first half leftward, second half rightward, motors off at the end.</p>
+    <p class="p-mb-0">Add <code>#include "RobotConfig.h"</code> near the top (the new code reads <code>LINE_CENTER</code>). Define <code>lineSensors</code> (no extern!), then <code>sensorValues[5]</code> and <code>lastPosition</code> — both <code>static</code>, the file-scope sense Lesson 7 gave <code>averageCounts()</code>: belongs to this file alone, invisible to the other seven. Then write <code>initLineSensors()</code> — one library call, <code>initFiveSensors()</code> — and <code>calibrateLineSensors()</code>: 100 calibration passes while spinning, first half leftward, second half rightward, motors off at the end.</p>
 </div>
 
 <div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN" data-callout="8.30">
@@ -919,8 +925,8 @@ Zumo32U4ButtonC buttonC;
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
 Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this file CREATES it</span>
-<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
-<span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
+<span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
+<span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors() {
@@ -1006,8 +1012,8 @@ Zumo32U4ButtonC buttonC;
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
 Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this file CREATES it</span>
-<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
-<span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
+<span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
+<span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors() {
@@ -1277,7 +1283,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
     <p class="p-mb-0">Plan the timer pattern in three numbered lines — <em>stamp once, check elapsed, act on timeout</em> — then answer: why must the visible-branch reset <code>gapStartTime</code> to 0, and what breaks on the <em>second</em> gap if it doesn't? Write the A-button block; the C block is its mirror twin.</p>
 </div>
 
-<p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the elapsed-time idiom is <code>millis() - gapStartTime &gt; MAX_GAP_TIME</code> — same <code>millis()</code> pattern as Lesson 6's timers. Who lives where: <a href="#qr-where" class="link-c-2e86ab">⚡ Quick Reference → Where Does Code Go?</a>.</p>
+<p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the elapsed-time idiom is <code>millis() - gapStartTime &gt; MAX_GAP_TIME</code> — same <code>millis()</code> stamp-and-compare pattern as Lesson 5's beep-interval trick, where <code>lastBeep</code> played the part <code>gapStartTime</code> plays here. Who lives where: <a href="#qr-where" class="link-c-2e86ab">⚡ Quick Reference → Where Does Code Go?</a>.</p>
 
 <details data-reveal="solution">
 <summary>🔓 Compare: the full state block, handleGap(), and the finished loop()</summary>
@@ -1648,7 +1654,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="div-fs-105em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 
-<p>Start with Kp = 0.10 and adjust from there. Most robots work well with Kp between 0.08 and 0.25. Write down your tuned value!</p>
+<p>Start with Kp = 0.10 and adjust from there. Most robots work well with Kp between 0.1 and 0.3 — that is the range for the 75:1 motors this fleet runs. Write down your tuned value!</p>
 
 </div>
 
@@ -1888,11 +1894,13 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h3 class="h3-c-00474b">8A.2 Return Values: Getting Data Back</h3>
 
-<p><code>readLinePosition()</code> returns an integer. But how do you know if that value is valid? What if the line was lost? Advanced code checks return values:</p>
+<p><code>readLinePosition()</code> always returns a number between 0 and 4000 — even when there is no line under the robot. A weighted average of five sensors that all read zero still produces an answer; it just does not mean anything. Your build handles that by asking a <strong>second</strong> question, <code>isLineVisible()</code>, before it trusts the first one. There is another way: fold both answers into one return value.</p>
 
 <div class="div-bg-f5f5f5">
     <pre><span class="tok-569cd6">int</span> readLinePosition() {
-    lineSensors.read(sensorValues);
+    <span class="tok-7cbf6e">// One reading, two questions. readCalibrated() - NOT read() -</span>
+    <span class="tok-7cbf6e">// because the 0-1000 scale is what makes the threshold mean something.</span>
+    lineSensors.readCalibrated(sensorValues);
     <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
     <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
         sum += sensorValues[i];
@@ -1904,6 +1912,10 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
     <span class="tok-569cd6">return</span> lineSensors.readLine(sensorValues);
 }</pre>
 </div>
+
+<p><strong>Why not <code>read()</code> here.</strong> It is tempting to reach for <code>lineSensors.read()</code> — it is the shortest call. But Step 5 already settled this: <code>read()</code> hands back raw timings, and on plain white paper those land in the hundreds. Five sensors of that summed sail past a threshold of 200 <em>on a blank floor</em>, so the <code>-1</code> branch would never fire and the check would be decoration. A threshold is only meaningful on the scale it was written for, and <code>LINE_LOST_THRESHOLD</code> was written for the calibrated one.</p>
+
+<p><strong>-1 is a sentinel</strong> — a return value chosen because it can never be a real answer. Line position runs 0 to 4000, so a negative number is unmistakably "no answer" rather than a low one. It is the same trick the Zumo library uses itself, and the same reason your build never mixes the two questions up.</p>
 
 <div class="callout-4caf50-bg-e8f5e9-3" data-family="CHECKPOINT" data-callout="8.56">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">Checkpoint</div>
@@ -1950,23 +1962,26 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h3 class="h3-c-00474b">8A.4 Proportional Control Structure</h3>
 
-<p>The complete pattern you've implemented in this lesson:</p>
+<p>Here is the <code>followLine()</code> you wrote in Step 7, with the six jobs it does labelled. Nothing is added and nothing is renamed — this is your own function, annotated:</p>
 
-<pre><span class="tok-569cd6">void</span> handleRobotControl() {
+<pre><span class="tok-569cd6">void</span> followLine() {
     <span class="tok-7cbf6e">// 1. READ the current state</span>
     <span class="tok-569cd6">int</span> position = readLinePosition();
     <span class="tok-7cbf6e">// 2. CALCULATE error</span>
-    <span class="tok-569cd6">int</span> error = position - SETPOINT;
-    <span class="tok-7cbf6e">// 3. APPLY proportional formula</span>
-    <span class="tok-569cd6">int</span> correction = Kp * error;
-    <span class="tok-7cbf6e">// 4. CLAMP the output</span>
-    correction = constrain(correction, -MAX_CORRECTION, MAX_CORRECTION);
-    <span class="tok-7cbf6e">// 5. CONVERT to motor commands</span>
+    <span class="tok-569cd6">int</span> error = position - LINE_CENTER;
+    <span class="tok-7cbf6e">// 3. APPLY the proportional formula</span>
+    <span class="tok-569cd6">int</span> correction = currentKp * error;
+    <span class="tok-7cbf6e">// 4. CONVERT to motor commands</span>
     <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
     <span class="tok-569cd6">int</span> rightSpeed = BASE_SPEED - correction;
+    <span class="tok-7cbf6e">// 5. CLAMP the output</span>
+    leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
+    rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
     <span class="tok-7cbf6e">// 6. SEND to motors</span>
     motors.setSpeeds(leftSpeed, rightSpeed);
 }</pre>
+
+<p><strong>Clamp last, and clamp the thing you send.</strong> Step 5 puts <em>convert</em> before <em>clamp</em> on purpose. You could clamp the correction instead — one line rather than two — but the number that has to stay legal is the one that reaches <code>setSpeeds()</code>, and that is the speed. A correction of 100 is harmless on its own and out of range once <code>BASE_SPEED</code> is 320. Clamp the value you are about to hand over, not the one you are about to add.</p>
 
 <div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="8.57">
     <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
@@ -2271,11 +2286,11 @@ ELSE: USE high Kp (aggressive)</pre>
   <span class="tok-569cd6">int</span> absError = abs(error);
   <span class="tok-569cd6">float</span> adaptiveKp;
   <span class="tok-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">500</span>) {
-    adaptiveKp = <span class="tok-b5cea8">0.08</span>;   <span class="tok-7cbf6e">// Gentle - nearly centered</span>
+    adaptiveKp = <span class="tok-b5cea8">0.10</span>;   <span class="tok-7cbf6e">// Gentle - nearly centered</span>
   } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (absError &lt; <span class="tok-b5cea8">1000</span>) {
-    adaptiveKp = <span class="tok-b5cea8">0.15</span>;   <span class="tok-7cbf6e">// Medium - drifting</span>
+    adaptiveKp = <span class="tok-b5cea8">0.20</span>;   <span class="tok-7cbf6e">// Medium - drifting</span>
   } <span class="tok-569cd6">else</span> {
-    adaptiveKp = <span class="tok-b5cea8">0.25</span>;   <span class="tok-7cbf6e">// Aggressive - way off</span>
+    adaptiveKp = <span class="tok-b5cea8">0.30</span>;   <span class="tok-7cbf6e">// Aggressive - way off</span>
   }
   <span class="tok-569cd6">int</span> correction = adaptiveKp * error;
   <span class="tok-569cd6">int</span> leftSpeed = BASE_SPEED + correction;
@@ -2687,7 +2702,7 @@ rightSpeed = BASE_SPEED - correction</pre>
 
 <ul>
 
-<li>Kp: 0.08 - 0.25 (start at 0.10)</li>
+<li>Kp: 0.1 - 0.3 (start at 0.10)</li>
 
 <li>BASE_SPEED: 150 - 300</li>
 

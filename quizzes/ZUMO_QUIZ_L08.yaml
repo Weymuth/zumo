@@ -1,0 +1,1135 @@
+# ZUMO READING QUIZ BANK — LESSON 08
+# Line Following · Proportional Control, and Why Bang-Bang Fails
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_08.html v04.31.0 (post-S142 content fixes)
+#
+# READ -> FIX -> QUIZ. Lesson 08 was read end to end in S142 and six findings were fixed
+# before a question was written. Five of them are load-bearing here:
+#
+#   1. STEP 2's "COMPLETE FILE" REVEAL HAD DELETED THE TRIM BLOCK, and Step 8's
+#      handleGap() uses TRIM. Compiled against the book's own reveal, the build failed
+#      with 'TRIM' was not declared in this scope. The Maker was correct in all seven
+#      L08 payloads; only the book was wrong. B20, B21 and B22 rest on TRIM being IN
+#      RobotConfig.h and on handleGap() using it — every one of them unanswerable, or
+#      answerable only wrongly, against v04.30.1.
+#   2. §8A.2 USED RAW read() AGAINST A CALIBRATED THRESHOLD — the exact thing Step 5
+#      teaches you not to do, in the same lesson. B26, B31 and B32 ask which read call does
+#      what, why a threshold is meaningless against a raw reading, and what the calibration
+#      spin actually buys; a bank written against the old §8A.2 would have keyed read()
+#      as acceptable and marked the students who read Step 5 carefully as wrong.
+#   3. §8A.4 CLAIMED TO BE "the complete pattern you've implemented in this lesson" AND
+#      NAMED THREE IDENTIFIERS THAT DO NOT EXIST — SETPOINT, MAX_CORRECTION and a bare
+#      Kp — and clamped the correction where the lesson clamps the speeds. B27 and A14
+#      ask what gets clamped and in what order. Against v04.30.1 the lesson gave two
+#      different answers.
+#   4. STEP 8's HINT CITED "Lesson 6's timers" AND LESSON 6 CONTAINS NO millis() AT ALL.
+#      Repointed to Lesson 5's beep-interval trick, which is the same non-blocking
+#      stamp-and-compare shape. B37 cites the elapsed-time idiom; the old citation sent
+#      a student to a lesson where the pattern is not present.
+#   5. THE Kp RANGE HAD TWO SPELLINGS — §3.1 and BRAIN CHECK 01 said 0.1-0.3, §7.3 and
+#      the Quick Reference said 0.08-0.25. Settled to 0.1-0.3 by DJ ruling for the 75:1
+#      fleet, and §3.1's own arithmetic proves it was the original: the lesson states
+#      the correction range as "roughly -600 to +600", and 600 = 0.3 x 2000 exactly.
+#      B06 and B08 ask the range and the ceiling. Challenge 5's three adaptive gains had
+#      been sitting on the OLD range's endpoints (0.08/0.15/0.25) and moved with it to
+#      0.10/0.20/0.30 — A16 asks about the bands, not the gains, for that reason.
+#
+#   The sixth: sensorValues[5] and lastPosition were called "module-private" while
+#   declared with external linkage. Both are now `static` — the file-scope sense Lesson 7
+#   gave averageCounts(). B24 and A07 ask what static means on a file-scope variable and
+#   why RobotSensors.cpp uses it. Neither was askable against v04.30.1, because the
+#   lesson's prose and its code disagreed.
+#
+# FOUR ANSWERS DELIBERATELY NOT ASKED:
+#   - THE ROBOT'S TRAVEL SPEED IN cm/s. Challenge 3 states "~15cm/sec at BASE_SPEED=150"
+#     and §7.2 / Step 8's ~8 cm gap figures are consistent with it, but the number has
+#     never been measured on a real robot — it is an open bench item. Every gap question
+#     here asks about the LOGIC (the stamp, the reset, the timeout) and never about a
+#     distance in centimetres.
+#   - THE EXACT LOOP RATE. "fifty times a second" appears in L06, L08, L10 and L11 and
+#     the book agrees with itself, but no timing run backs it. B39 asks WHY followLine()
+#     is a closed loop, not how fast it runs.
+#   - WHETHER MAX_GAP_TIME = 500 IS THE RIGHT NUMBER. Challenge 3's whole task is to
+#     change it, so keying the default as "correct" would mark a student wrong for doing
+#     the challenge.
+#   - ANY 100:1 GEAR-RATIO Kp GUIDANCE. The fleet is 75:1 (Bible §16.1) and the book
+#     names only 75:1. The 100:1 note lives in the teacher-facing resource doc, flagged
+#     as unverified, and is not book content.
+
+lesson: "L08"
+title: "Line Following — Proportional Control, and Why Bang-Bang Fails"
+bank_version: "1.0.0"
+source:
+  lesson_08: "v04.31.0"
+  lesson_07: "v04.31.3"
+  lesson_05: "v04.29.0"
+
+sets:
+  before:
+    description: "Pre-class reading gate. Answerable from §1-§5, §7, §8, §8A, the Glossary and the Quick Reference alone. No robot, no compiler, no built program."
+    suggested_draw: 10
+    questions:
+
+      - id: L08_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "Why is the controller in §1 called \"bang-bang\"?"
+        options:
+          - text: "It bangs back and forth between full-left and full-right corrections, with nothing in between"
+            correct: true
+          - text: "It bangs the robot into the walls of the course"
+            correct: false
+          - text: "It makes a banging noise as the motors reverse"
+            correct: false
+          - text: "It was named after the engineer who invented it"
+            correct: false
+            why: "§1 names it for the motion: the robot bangs between two states."
+
+      - id: L08_B02
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "§1 says bang-bang control is not always bad. What kind of hardware is it genuinely right for?"
+        options:
+          - text: "Binary actuators — relays, solenoids, on/off switches, things with only two states anyway"
+            correct: true
+          - text: "Any actuator, as long as the robot moves slowly"
+            correct: false
+          - text: "Motors, because they respond fastest to a full-power command"
+            correct: false
+            why: "The opposite. A motor is a CONTINUOUS actuator — it can run at any speed — so bang-bang throws away most of the hardware you already own."
+          - text: "Sensors that report a number rather than a yes/no"
+            correct: false
+
+      - id: L08_B03
+        type: true_false
+        cite: "§1"
+        points: 1
+        stem: "Proportional control is a technique invented for line-following robots."
+        correct: false
+        why: "§1's Real-World Connection lists cruise control, thermostats and drone altitude. Proportional control is the P in PID — the most widely used control algorithm in the world."
+
+      - id: L08_B04
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "§3 opens by telling you that you have already written the controller this lesson retires. Where?"
+        options:
+          - text: "The Centering Game in Lesson 4 — hard one way below the threshold, hard the other above it"
+            correct: true
+          - text: "driveDistance() in Lesson 6"
+            correct: false
+          - text: "The eight-file split in Lesson 7"
+            correct: false
+          - text: "The beep-speed formula in Lesson 5"
+            correct: false
+            why: "That is §3.1's spiral, not §3's. The beep formula was a P-TERM you already wrote; the Centering Game was the BANG-BANG controller this lesson replaces."
+
+      - id: L08_B05
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Write the proportional formula as the lesson states it."
+        options:
+          - text: "correction = Kp x error"
+            correct: true
+          - text: "correction = Kp + error"
+            correct: false
+          - text: "error = Kp x correction"
+            correct: false
+          - text: "correction = error / Kp"
+            correct: false
+
+      - id: L08_B06
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What range of Kp values does the lesson call typical?"
+        options:
+          - text: "0.1 to 0.3"
+            correct: true
+          - text: "1 to 3"
+            correct: false
+          - text: "10 to 30"
+            correct: false
+          - text: "0.001 to 0.003"
+            correct: false
+
+      - id: L08_B07
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What is the setpoint for line following, and what scale is it on?"
+        options:
+          - text: "2000, the centre of a 0-4000 position range"
+            correct: true
+          - text: "0, the bottom of a 0-4000 position range"
+            correct: false
+          - text: "500, the centre of a 0-1000 position range"
+            correct: false
+            why: "0-1000 is the CALIBRATED range of a single sensor. The line POSITION runs 0-4000 across all five."
+          - text: "1000, the centre of a 0-2000 position range"
+            correct: false
+
+      - id: L08_B08
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "The error can reach 2000. At the top of the typical Kp range, roughly how large does the correction get?"
+        options:
+          - text: "About 600"
+            correct: true
+          - text: "About 200"
+            correct: false
+            why: "That is the correction at Kp = 0.1, the BOTTOM of the range. §3.1 states the range as roughly -600 to +600."
+          - text: "About 2000"
+            correct: false
+          - text: "About 60"
+            correct: false
+
+      - id: L08_B09
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Which motor gets the correction ADDED?"
+        options:
+          - text: "The left — leftSpeed = baseSpeed + correction, rightSpeed = baseSpeed - correction"
+            correct: true
+          - text: "The right — rightSpeed = baseSpeed + correction"
+            correct: false
+          - text: "Both, so the robot speeds up when it is off the line"
+            correct: false
+          - text: "Whichever motor is currently slower"
+            correct: false
+
+      - id: L08_B10
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The line is to the RIGHT of centre, so the error is positive. What happens, and which way does the robot turn?"
+        options:
+          - text: "The left wheel speeds up and the robot turns right — toward the line"
+            correct: true
+          - text: "The left wheel speeds up and the robot turns left — away from the line"
+            correct: false
+            why: "A robot turns AWAY from its faster wheel. Faster left means it turns right."
+          - text: "The right wheel speeds up and the robot turns right"
+            correct: false
+          - text: "Both wheels slow down until the line is centred again"
+            correct: false
+
+      - id: L08_B11
+        type: true_false
+        cite: "§3.2, §5.1"
+        points: 1
+        stem: "The error is signed — it can be positive or negative."
+        correct: true
+        why: "One number then carries both facts: the SIZE says how much to correct, the SIGN says which way. Strip the sign and the robot knows it is off the line but not which way to steer."
+
+      - id: L08_B12
+        type: multiple_choice
+        cite: "§3.1 Looking Ahead"
+        points: 1
+        stem: "What do the I and D of PID do, and why does this lesson stop at P?"
+        options:
+          - text: "I fixes small persistent errors P cannot eliminate, D damps oscillation by predicting where error is heading — and P alone is enough to get round a course"
+            correct: true
+          - text: "I and D are only used on drones, not ground robots"
+            correct: false
+          - text: "I increases the gain over time and D decreases it; both are obsolete"
+            correct: false
+          - text: "They are the same as P but applied to the left and right motors separately"
+            correct: false
+
+      - id: L08_B13
+        type: multiple_choice
+        cite: "§3.1 Looking Ahead"
+        points: 1
+        stem: "Which lesson picks up the other two letters of PID?"
+        options:
+          - text: "Lesson 15, Advanced PID Control"
+            correct: true
+          - text: "Lesson 9, Intersections & Dead Ends"
+            correct: false
+          - text: "Lesson 12, the gyro lesson"
+            correct: false
+          - text: "None — the book stops at P"
+            correct: false
+
+      - id: L08_B14
+        type: true_false
+        cite: "§4"
+        points: 1
+        stem: "Lesson 8 requires you to add new hardware to the robot."
+        correct: false
+        why: "§4 is called Everything You Already Own. The line sensors came in Lesson 4, the motors in Lesson 3, the OLED in Lesson 1 and the buttons in Lesson 2." 
+
+      - id: L08_B15
+        type: multiple_choice
+        cite: "§5.3, Quick Reference"
+        points: 1
+        stem: "Both motor speeds are BASE_SPEED plus or minus a correction, so either can be pushed past the limit. What stops that?"
+        options:
+          - text: "constrain(), clamping each speed into the range -MAX_SPEED to MAX_SPEED"
+            correct: true
+          - text: "The compiler rejects a speed above MAX_SPEED at build time"
+            correct: false
+          - text: "Nothing — the correction can never be large enough to matter"
+            correct: false
+          - text: "map(), which rescales the speed into the legal range"
+            correct: false
+            why: "map() rescales one range onto another and does NOT clamp — the Quick Reference says so explicitly. constrain() is the one that limits."
+
+      - id: L08_B16
+        type: multiple_choice
+        cite: "§5.4, Quick Reference"
+        points: 1
+        stem: "What does readLinePosition() return?"
+        options:
+          - text: "An int from 0 to 4000 — the line's position, from a calibrated read plus a weighted average"
+            correct: true
+          - text: "A bool — whether the line is visible"
+            correct: false
+          - text: "An int from 0 to 1000 — the darkness under the middle sensor"
+            correct: false
+          - text: "Nothing; it stores the position in a global and returns void"
+            correct: false
+
+      - id: L08_B17
+        type: multiple_choice
+        cite: "§5.4, Quick Reference"
+        points: 1
+        stem: "What does isLineVisible() return, and what does it compare?"
+        options:
+          - text: "A bool — the calibrated sum of all five sensors against LINE_LOST_THRESHOLD"
+            correct: true
+          - text: "A bool — the middle sensor's raw value against LINE_CENTER"
+            correct: false
+          - text: "An int — how many of the five sensors currently see the line"
+            correct: false
+          - text: "A bool — whether readLinePosition() returned exactly 2000"
+            correct: false
+
+      - id: L08_B18
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "Which of these is NOT one of the six line-following constants added to RobotConfig.h?"
+        options:
+          - text: "TURN_SPEED"
+            correct: true
+            why: "TURN_SPEED was already in RobotConfig.h from Lesson 7. The six NEW ones are LINE_CENTER, BASE_SPEED, KP, MAX_SPEED, LINE_LOST_THRESHOLD and MAX_GAP_TIME."
+          - text: "LINE_LOST_THRESHOLD"
+            correct: false
+          - text: "MAX_GAP_TIME"
+            correct: false
+          - text: "BASE_SPEED"
+            correct: false
+
+      - id: L08_B19
+        type: true_false
+        cite: "§6 Step 2"
+        points: 1
+        stem: "Step 2 replaces RobotConfig.h with the six new line-following constants."
+        correct: false
+        why: "It ADDS to it — \"Everything already in the file stays.\" The Lesson 6 distance and turning constants, the speeds, TRIM and the battery thresholds are all still there and still needed." 
+
+      - id: L08_B20
+        type: true_false
+        cite: "§6 Step 2, §6 Step 8"
+        points: 1
+        stem: "TRIM is still in RobotConfig.h in Lesson 8, and Lesson 8's code still uses it."
+        correct: true
+        why: "TRIM was filed into RobotConfig.h in Lesson 7 and stays there. handleGap() uses it — a blind robot driving straight is an open loop, and an open loop needs TRIM."
+
+      - id: L08_B21
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "handleGap() gets TRIM and followLine() must not. What is the one-question test that tells them apart?"
+        options:
+          - text: "Is anything watching? If not, it needs TRIM"
+            correct: true
+          - text: "Is the robot moving? If so, it needs TRIM"
+            correct: false
+          - text: "Are both motors running at the same commanded speed? If so, it needs TRIM"
+            correct: false
+          - text: "Is the battery below BATTERY_LOW? If so, it needs TRIM"
+            correct: false
+
+      - id: L08_B22
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "Why must followLine() NOT get TRIM?"
+        options:
+          - text: "It is a closed loop — it reads the line and steers on what it sees, so correcting motor bias is already its job. TRIM would give the P-term a constant to spend the day undoing"
+            correct: true
+          - text: "TRIM only works when the robot is turning"
+            correct: false
+          - text: "followLine() runs too fast for TRIM to take effect"
+            correct: false
+          - text: "TRIM is an int and followLine() works in floats"
+            correct: false
+
+      - id: L08_B23
+        type: multiple_choice
+        cite: "§6 Step 3, Quick Reference"
+        points: 1
+        stem: "One word separates the RobotSensors.h line from the RobotSensors.cpp line. What does each one mean?"
+        options:
+          - text: "The .h line has extern and PROMISES the object exists elsewhere; the .cpp line has no extern and CREATES it, exactly once"
+            correct: true
+          - text: "The .h line has extern and creates the object; the .cpp line borrows it"
+            correct: false
+          - text: "Both create the object; extern just makes it faster"
+            correct: false
+          - text: "extern means the object is optional and may be skipped"
+            correct: false
+
+      - id: L08_B24
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "sensorValues[5] and lastPosition are declared static in RobotSensors.cpp. What does static mean on a variable at file scope?"
+        options:
+          - text: "It belongs to this file alone — the other seven files cannot see it"
+            correct: true
+          - text: "Its value never changes once set"
+            correct: false
+            why: "That is const, not static. A static file-scope variable is fully writable — it is just invisible outside its own file."
+          - text: "It is created once and keeps its value between calls to a function"
+            correct: false
+            why: "That is the OTHER sense of static — the retained local from Lesson 5. At FILE scope the word means internal linkage."
+          - text: "It is stored in flash instead of SRAM"
+            correct: false
+
+      - id: L08_B25
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Why must RobotSensors.cpp gain #include \"RobotConfig.h\" in Step 4?"
+        options:
+          - text: "Its new code reads constants that live there — LINE_CENTER, and later LINE_LOST_THRESHOLD"
+            correct: true
+          - text: "Because every .cpp file must include every header"
+            correct: false
+          - text: "Because RobotConfig.h creates the lineSensors object"
+            correct: false
+          - text: "Because without it the extern declarations will not compile"
+            correct: false
+
+      - id: L08_B26
+        type: matching
+        cite: "§6 Step 5, Quick Reference"
+        points: 3
+        stem: "The library gives three ways to read the sensors. Match each call to what it actually does."
+        pairs:
+          - left: "lineSensors.read(vals)"
+            right: "Raw timings — uncalibrated, reads in the hundreds even on plain white"
+          - left: "lineSensors.readCalibrated(vals)"
+            right: "Rescales each sensor to 0-1000: 0 is your white, 1000 is your black"
+          - left: "lineSensors.readLine(vals)"
+            right: "Calibrated read plus a weighted average — the position, 0-4000, in one call"
+        extra_answers:
+          - "Sets up the five-sensor array for the first time"
+          - "Spins the robot while sampling the surface" 
+
+      - id: L08_B27
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "In the six-step control pattern, which value gets clamped, and when?"
+        options:
+          - text: "The two motor speeds, AFTER the correction has been converted into them"
+            correct: true
+          - text: "The correction, before it is added to anything"
+            correct: false
+            why: "The number that has to stay legal is the one that reaches setSpeeds(), and that is the speed. A correction of 100 is harmless on its own and out of range once BASE_SPEED is 320."
+          - text: "The error, immediately after it is calculated"
+            correct: false
+          - text: "The position, as soon as it is read"
+            correct: false
+
+      - id: L08_B28
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "At Kp = 0.1, what correction does an error of 1000 produce?"
+        options:
+          - text: "100"
+            correct: true
+          - text: "10"
+            correct: false
+          - text: "1000"
+            correct: false
+          - text: "10000"
+            correct: false
+
+      - id: L08_B29
+        type: true_false
+        cite: "§3.1, §7.3"
+        points: 1
+        stem: "A Kp that is too LOW makes the robot oscillate."
+        correct: false
+        why: "Backwards. Too low is SLUGGISH — the robot drifts wide on curves. Too HIGH oscillates: it overcorrects, overshoots, and wiggles down the line."
+
+      - id: L08_B30
+        type: multiple_choice
+        cite: "§7.3, §8"
+        points: 1
+        stem: "Your robot wiggles back and forth on the straights but takes the curves fine. What do you change?"
+        options:
+          - text: "Decrease Kp, using button A"
+            correct: true
+          - text: "Increase Kp, using button C"
+            correct: false
+          - text: "Increase BASE_SPEED"
+            correct: false
+          - text: "Recalibrate the sensors"
+            correct: false
+
+      - id: L08_B31
+        type: multiple_choice
+        cite: "§6 Step 5, §8A.2"
+        points: 1
+        stem: "Why is a threshold like LINE_LOST_THRESHOLD = 200 only meaningful against a CALIBRATED reading?"
+        options:
+          - text: "Raw values land in the hundreds even on plain white, so five of them summed would sail past 200 on a blank floor"
+            correct: true
+          - text: "Raw values are always zero until calibration writes to them"
+            correct: false
+          - text: "Raw values are floats and cannot be compared to an int"
+            correct: false
+          - text: "Raw values run 0-4000, so 200 would always be exceeded"
+            correct: false
+
+      - id: L08_B32
+        type: multiple_choice
+        cite: "§6 Step 5, Quick Reference"
+        points: 1
+        stem: "What does the calibration spin actually give you?"
+        options:
+          - text: "A 0-1000 scale per sensor, where 0 is YOUR white and 1000 is YOUR black"
+            correct: true
+          - text: "A faster sensor read, because the library caches the values"
+            correct: false
+          - text: "The line's starting position, stored for later comparison"
+            correct: false
+          - text: "A check that all five sensors are physically working"
+            correct: false
+
+      - id: L08_B33
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "In setup(), the safety gate comes BEFORE calibration. Why?"
+        options:
+          - text: "Calibration spins the robot, and that is motion — so the A-press is the one rule with zero exceptions: nothing moves until A"
+            correct: true
+          - text: "Calibration needs the serial connection, which waitForStart() opens"
+            correct: false
+          - text: "The sensors cannot be calibrated until a button has been pressed at least once"
+            correct: false
+          - text: "It does not matter; the order is a style choice"
+            correct: false
+
+      - id: L08_B34
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "In handleGap(), when does the clock get stamped?"
+        options:
+          - text: "Only on the first blind frame — if (gapStartTime == 0) gapStartTime = millis();"
+            correct: true
+          - text: "Every pass through the gap, so the timer always reflects the latest reading"
+            correct: false
+            why: "Re-stamping every pass would reset the elapsed time to zero each frame, and the timeout could never fire."
+          - text: "Once in setup(), when the robot boots"
+            correct: false
+          - text: "Every time the line becomes visible again"
+            correct: false
+
+      - id: L08_B35
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "Why must the line-visible branch reset gapStartTime to 0?"
+        options:
+          - text: "Otherwise the first gap's stamp survives, and on the SECOND gap the elapsed time is already past MAX_GAP_TIME — so the robot gives up on the very first blind frame"
+            correct: true
+          - text: "Otherwise the variable overflows and the robot resets"
+            correct: false
+          - text: "Otherwise the robot will never stop, because the timer keeps counting up"
+            correct: false
+          - text: "It does not have to; the reset is a tidiness habit"
+            correct: false
+
+      - id: L08_B36
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "What does handleGap() do once MAX_GAP_TIME has elapsed?"
+        options:
+          - text: "Stops the motors, sets isRunning to false, and displays LINE LOST"
+            correct: true
+          - text: "Spins in place until it finds the line again"
+            correct: false
+          - text: "Reverses back to where the line was last seen"
+            correct: false
+          - text: "Keeps driving straight but halves the speed"
+            correct: false
+
+      - id: L08_B37
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "Which expression is the elapsed-time idiom the lesson uses?"
+        options:
+          - text: "millis() - gapStartTime > MAX_GAP_TIME"
+            correct: true
+          - text: "millis() > MAX_GAP_TIME"
+            correct: false
+            why: "millis() counts from BOOT, so this fires half a second after the robot powers on and never again. You must compare against a stamp."
+          - text: "delay(MAX_GAP_TIME)"
+            correct: false
+          - text: "gapStartTime - millis() > MAX_GAP_TIME"
+            correct: false
+
+      - id: L08_B38
+        type: true_false
+        cite: "§6 Step 8"
+        points: 1
+        stem: "checkBattery() is guarded so it only runs while the robot is stopped."
+        correct: true
+        why: "The helper BLOCKS while A+B are held, and freezing the loop mid-run would leave the motors locked at their last speeds, driving blind. The guard rule: never block the loop while the robot is moving." 
+
+      - id: L08_B39
+        type: multiple_choice
+        cite: "§6 Step 8, Glossary"
+        points: 1
+        stem: "What makes followLine() a CLOSED loop and handleGap() an OPEN one?"
+        options:
+          - text: "followLine() reads the line and steers on what it sees; in a gap there is nothing to read, so handleGap() drives on faith"
+            correct: true
+          - text: "followLine() runs in a loop and handleGap() runs once"
+            correct: false
+          - text: "followLine() uses the motors and handleGap() uses the display"
+            correct: false
+          - text: "followLine() is in main.cpp and handleGap() is in RobotSensors.cpp"
+            correct: false
+            why: "Both live in main.cpp — the Quick Reference's Where Does Code Go? table says so."
+
+      - id: L08_B40
+        type: true_false
+        cite: "§7"
+        points: 1
+        stem: "Most robotics teams get their Kp right on the first or second try."
+        correct: false
+        why: "§7 says over 90% do NOT — not on the first try, the second, or sometimes the tenth. That is not failure; that IS the work."
+
+      - id: L08_B41
+        type: true_false
+        cite: "§6 Step 9"
+        points: 1
+        stem: "When tuning, you should change one thing and run again — one variable per run."
+        correct: true
+        why: "§6 Step 9 calls this the entire discipline of tuning. Change two things and a better run cannot tell you which change earned it." 
+
+      - id: L08_B42
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The robot says LINE LOST instantly, even sitting on the line. What does §8 tell you to try?"
+        options:
+          - text: "Recalibrate on your track; if it persists, lower LINE_LOST_THRESHOLD"
+            correct: true
+          - text: "Raise LINE_LOST_THRESHOLD until the message stops"
+            correct: false
+          - text: "Increase Kp"
+            correct: false
+          - text: "Increase MAX_GAP_TIME"
+            correct: false
+
+      - id: L08_B43
+        type: multiple_choice
+        cite: "§8, §6 Step 4"
+        points: 1
+        stem: "A missing extern in the header can produce two different errors. What decides which one you get?"
+        options:
+          - text: "What is in your files — if the .cpp still defines the object you get a compiler redefinition error; if you treated the header line as the creation you get a linker multiple definition error"
+            correct: true
+          - text: "Which compiler version PlatformIO is using"
+            correct: false
+          - text: "Whether you build before or after uploading"
+            correct: false
+          - text: "How many files include the header"
+            correct: false
+
+      - id: L08_B44
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Your build says multiple definition of 'followLine()'. What did you do?"
+        options:
+          - text: "Put followLine() in both RobotMotion.cpp and main.cpp"
+            correct: true
+          - text: "Forgot to declare followLine() in a header"
+            correct: false
+          - text: "Called followLine() before defining it"
+            correct: false
+          - text: "Named a local variable followLine"
+            correct: false
+
+      - id: L08_B45
+        type: multiple_choice
+        cite: "Quick Reference"
+        points: 1
+        stem: "map(2000, 0, 4000, 0, 20) returns what, and why?"
+        options:
+          - text: "10 — 2000 is halfway through 0-4000, so it lands halfway through 0-20"
+            correct: true
+          - text: "2000 — map() only clamps, it does not rescale"
+            correct: false
+          - text: "20 — the top of the output range, because the input is not zero"
+            correct: false
+          - text: "0.5 — the fraction of the way through the range"
+            correct: false
+            why: "map() returns an int; the fraction is dropped."
+
+      - id: L08_B46
+        type: true_false
+        cite: "Quick Reference"
+        points: 1
+        stem: "map() keeps its result inside the output range you give it."
+        correct: false
+        why: "It does NOT clamp. A value outside the input range maps to a result outside the output range, so pair it with constrain() when the answer must stay on screen."
+
+      - id: L08_B47
+        type: matching
+        cite: "Quick Reference"
+        points: 4
+        stem: "Match each function to the file it belongs in."
+        pairs:
+          - left: "followLine()"
+            right: "main.cpp ONLY"
+          - left: "readLinePosition()"
+            right: "RobotSensors.cpp"
+          - left: "driveDistance()"
+            right: "RobotMotion.cpp"
+          - left: "KP, BASE_SPEED, MAX_GAP_TIME"
+            right: "RobotConfig.h"
+        extra_answers:
+          - "RobotHelpers.cpp"
+          - "RobotSensors.h" 
+
+      - id: L08_B48
+        type: matching
+        cite: "Glossary"
+        points: 4
+        stem: "Match each Lesson 8 term to its definition."
+        pairs:
+          - left: "Bang-Bang Control"
+            right: "Switching between discrete states with no intermediate values"
+          - left: "Error"
+            right: "The difference between current position and target position"
+          - left: "Setpoint"
+            right: "The target value — 2000 for a centred line"
+          - left: "Oscillation"
+            right: "Back-and-forth motion caused by overcorrection"
+        extra_answers:
+          - "A keyword meaning this variable exists in another file"
+          - "The gain that scales error into a correction"
+
+      - id: L08_B49
+        type: matching
+        cite: "§5.4, Quick Reference"
+        points: 4
+        stem: "Match each function to what it returns."
+        pairs:
+          - left: "readLinePosition()"
+            right: "int, 0-4000"
+          - left: "isLineVisible()"
+            right: "bool"
+          - left: "calibrateLineSensors()"
+            right: "nothing"
+          - left: "lineSensors.readCalibrated(vals)"
+            right: "fills the array with 0-1000 per sensor"
+        extra_answers:
+          - "float, the current Kp"
+          - "unsigned long, milliseconds since boot"
+
+      - id: L08_B50
+        type: multiple_choice
+        cite: "§3, §8A.4"
+        points: 1
+        stem: "§8A.4 says the six-step pattern scales beyond line following. Which is NOT one of the examples given?"
+        options:
+          - text: "Sorting a list of sensor readings"
+            correct: true
+          - text: "Motor speed control — compare target RPM to actual RPM"
+            correct: false
+          - text: "Drone altitude — compare target height to actual height"
+            correct: false
+          - text: "Temperature control — compare target temp to actual temp"
+            correct: false
+
+  after:
+    description: "Post-build check. Assumes the eight-file project was built, tuned and driven. Deliberately does not duplicate BRAIN CHECK 03."
+    suggested_draw: 8
+    questions:
+
+      - id: L08_A01
+        type: true_false
+        cite: "§6 Step 1"
+        points: 1
+        stem: "Step 1 has you COPY the Lesson 7 folder rather than move it, so Lesson 7 survives as a fallback."
+        correct: true
+        why: "Copy, don't move. If Lesson 8 goes badly wrong you still have a working Lesson 7 project to return to." 
+
+      - id: L08_A02
+        type: multiple_choice
+        cite: "§6"
+        points: 1
+        stem: "Of the eight files, how many does this lesson touch?"
+        options:
+          - text: "Four — three edited and one replaced; the other four ride along untouched"
+            correct: true
+          - text: "All eight"
+            correct: false
+          - text: "Two — RobotSensors.h and RobotSensors.cpp"
+            correct: false
+          - text: "One — main.cpp"
+            correct: false
+
+      - id: L08_A03
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Step 4 is the lesson's red build, and it works differently from Lesson 7's. How?"
+        options:
+          - text: "Nobody stages it — if Step 3's extern is wrong the build goes red and the diagnosis is yours"
+            correct: true
+          - text: "It is guaranteed to fail, and the lesson walks you through the fix line by line"
+            correct: false
+          - text: "It fails on the linker instead of the compiler, every time"
+            correct: false
+          - text: "It cannot be fixed without downloading the Maker's catch-up build"
+            correct: false
+
+      - id: L08_A04
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Step 4 says that if you went green first try, you should earn the encounter anyway. How?"
+        options:
+          - text: "Delete the extern keyword, build, read the error, and put it back"
+            correct: true
+          - text: "Skip ahead to Step 5 — the error will surface there instead"
+            correct: false
+          - text: "Download the sabotaged build from the Maker"
+            correct: false
+          - text: "Remove the #include and rebuild"
+            correct: false
+
+      - id: L08_A05
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "In calibrateLineSensors(), how does one loop produce a spin in both directions?"
+        options:
+          - text: "100 passes, with the first 50 spinning one way and the second 50 the other"
+            correct: true
+          - text: "Two separate loops, one after the other"
+            correct: false
+          - text: "The motors reverse automatically when calibrate() has enough data"
+            correct: false
+          - text: "It spins one way only; the return trip happens in setup()"
+            correct: false
+
+      - id: L08_A06
+        type: true_false
+        cite: "§6 Step 4"
+        points: 1
+        stem: "calibrateLineSensors() leaves the motors running when it finishes."
+        correct: false
+        why: "The last line is motors.setSpeeds(0, 0) — the thing that must happen after the loop no matter what."
+
+      - id: L08_A07
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Why are sensorValues and lastPosition declared static in RobotSensors.cpp rather than left as plain globals?"
+        options:
+          - text: "They are the sensor module's private working storage — no other file has any business reading them, and static is what enforces that"
+            correct: true
+          - text: "Because they are arrays, and arrays must be static in C++"
+            correct: false
+          - text: "So their values survive between calls, which a plain global would not do"
+            correct: false
+            why: "A plain global also survives. At FILE scope static controls VISIBILITY, not lifetime."
+          - text: "Because RobotSensors.h declares them extern"
+            correct: false
+
+      - id: L08_A08
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "What does loop() do at the end of Step 6, before followLine() exists?"
+        options:
+          - text: "Polls checkBattery() and nothing else"
+            correct: true
+          - text: "Follows the line at the default Kp"
+            correct: false
+          - text: "Nothing at all — it is an empty function"
+            correct: false
+          - text: "Re-runs the calibration spin continuously"
+            correct: false
+
+      - id: L08_A09
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Run the Step 6 sequence on the robot. What is the correct order?"
+        options:
+          - text: "Boot report -> press A to start -> press B to calibrate -> it spins -> Calibration done -> STOPPED status"
+            correct: true
+          - text: "Boot report -> press B to calibrate -> it spins -> press A to start -> STOPPED status"
+            correct: false
+            why: "That would spin the robot before the safety gate. The A-press comes first precisely because calibration is motion."
+          - text: "Press A -> press B -> boot report -> it spins"
+            correct: false
+          - text: "It calibrates automatically at power-on, then waits for A"
+            correct: false
+
+      - id: L08_A10
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "What does button B do once followLine() is wired in?"
+        options:
+          - text: "Toggles the run — a 3-2-1 countdown before it goes, motors hard-stopped when it stops"
+            correct: true
+          - text: "Raises Kp by 0.02"
+            correct: false
+          - text: "Re-runs the calibration spin"
+            correct: false
+          - text: "Displays the battery report"
+            correct: false
+
+      - id: L08_A11
+        type: true_false
+        cite: "§6 Step 7"
+        points: 1
+        stem: "If your Step 7 robot drives on blindly after losing the line, you have a bug in followLine()."
+        correct: false
+        why: "Expected at that point — noted and unfixed on purpose. Step 8's handleGap() is what addresses it. Wobble at Step 7 is likewise a tuning signal, not a bug." 
+
+      - id: L08_A12
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "What do buttons A and C do, and when do they work?"
+        options:
+          - text: "A drops Kp by 0.02 and C raises it by 0.02 — while STOPPED only"
+            correct: true
+          - text: "A and C steer the robot left and right while running"
+            correct: false
+          - text: "A drops Kp and C raises it, at any time including mid-run"
+            correct: false
+            why: "Both are guarded by !isRunning. You tune between runs, not mid-run."
+          - text: "A calibrates and C starts the run"
+            correct: false
+
+      - id: L08_A13
+        type: true_false
+        cite: "§6 Step 8, Sabotage, Mystery 2"
+        points: 1
+        stem: "A Kp you dialled in with buttons A and C survives a reboot."
+        correct: false
+        why: "It does not. currentKp is initialised from KP every time setup() runs. Sabotage Mystery 2 turns on exactly this — pressing C revives a zeroed gain until the next reboot, because live tuning treats the symptom and the initialiser is the disease. Once you converge, bake the number into KP in RobotConfig.h." 
+
+      - id: L08_A14
+        type: multiple_choice
+        cite: "§6 Step 7, §8A.4"
+        points: 1
+        stem: "Put followLine()'s work in order."
+        options:
+          - text: "Read position -> calculate error -> apply the gain -> convert to two speeds -> clamp both -> send to motors"
+            correct: true
+          - text: "Read position -> clamp it -> calculate error -> apply the gain -> send to motors"
+            correct: false
+          - text: "Calculate error -> read position -> convert to speeds -> send to motors -> clamp"
+            correct: false
+          - text: "Read position -> apply the gain -> clamp the correction -> convert to speeds -> send"
+            correct: false
+            why: "The clamp comes AFTER the conversion, and it clamps the speeds — the numbers that actually reach setSpeeds()."
+
+      - id: L08_A15
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "Challenge 1 asks you to find the fastest BASE_SPEED your robot can handle. What is the method?"
+        options:
+          - text: "Start from your tuned Kp, raise BASE_SPEED by 25, test on curves, and when it loses the line the previous speed was the maximum"
+            correct: true
+          - text: "Set BASE_SPEED to 400 and lower it until the robot stays on"
+            correct: false
+          - text: "Raise BASE_SPEED and Kp together until it fails"
+            correct: false
+            why: "One variable per run — that is the entire discipline of tuning."
+          - text: "Use the speed the robot at the next desk found"
+            correct: false
+
+      - id: L08_A16
+        type: multiple_choice
+        cite: "§9 Challenge 5"
+        points: 1
+        stem: "In the Adaptive Kp challenge, what decides which gain gets used?"
+        options:
+          - text: "How far off centre the robot is — the absolute error, split into three bands"
+            correct: true
+          - text: "How fast the robot is currently travelling"
+            correct: false
+          - text: "Whether the line is to the left or the right"
+            correct: false
+            why: "abs(error) is used precisely so the DIRECTION does not matter — only the distance from centre."
+          - text: "How much time has passed since the run started"
+            correct: false
+
+      - id: L08_A17
+        type: multiple_choice
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "The Racing Line adds a second proportional controller. What does it control, and off what?"
+        options:
+          - text: "The throttle — speed falls as the error grows, off the same error the steering already uses"
+            correct: true
+          - text: "The steering, using a second gain for the right motor"
+            correct: false
+          - text: "The gap timer, shortening it as speed rises"
+            correct: false
+          - text: "The calibration, re-running it when error stays high"
+            correct: false
+
+      - id: L08_A18
+        type: multiple_choice
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "Challenge 6 uses abs(error) in the throttle term. What goes wrong with a plain signed error?"
+        options:
+          - text: "The robot speeds UP when the line drifts one way and brakes when it drifts the other — slowing down has no direction"
+            correct: true
+          - text: "The speed becomes a float and the motors reject it"
+            correct: false
+          - text: "The steering stops working entirely"
+            correct: false
+          - text: "Nothing — abs() is a tidiness habit here"
+            correct: false
+
+      - id: L08_A19
+        type: multiple_choice
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "Why does the throttle term need a MIN_SPEED floor?"
+        options:
+          - text: "A hard corner at a high KS can drive the speed to zero, stalling the robot in exactly the curve it most needed to finish"
+            correct: true
+          - text: "The motors cannot accept a speed below 100"
+            correct: false
+          - text: "Below MIN_SPEED the encoders stop counting"
+            correct: false
+          - text: "It keeps the robot from exceeding MAX_SPEED"
+            correct: false
+
+      - id: L08_A20
+        type: multiple_choice
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "Challenge 6 says to tune Kp before KS. Why that order?"
+        options:
+          - text: "The throttle rides on the steering — a wobbling robot manufactures fake error and brakes for corners that are not there"
+            correct: true
+          - text: "KS has no effect until Kp is above 0.2"
+            correct: false
+          - text: "The compiler evaluates KS first, so it must be set last"
+            correct: false
+          - text: "Either order works equally well"
+            correct: false
+
+      - id: L08_A21
+        type: matching
+        cite: "Sabotage"
+        points: 4
+        stem: "Match each sabotaged build's symptom to the defect that was planted."
+        pairs:
+          - left: "Snaps hard AWAY from the line and spirals off"
+            right: "The two signs in followLine() are swapped"
+          - left: "Perfect on straights, sails off every curve"
+            right: "currentKp is initialised to 0.0"
+          - left: "Screen says Calibrating but the robot never spins"
+            right: "The calibrateLineSensors() call was deleted from setup()"
+          - left: "Coasts through a gap and never stops"
+            right: "MAX_GAP_TIME is 500000 instead of 500"
+        extra_answers:
+          - "LINE_LOST_THRESHOLD is above the highest possible sum"
+          - "TRIM was removed from handleGap()" 
+
+      - id: L08_A22
+        type: multiple_choice
+        cite: "Sabotage, Mystery 5"
+        points: 1
+        stem: "A build declares LINE LOST while parked on a jet-black line, and calibration ran correctly. What is wrong?"
+        options:
+          - text: "LINE_LOST_THRESHOLD was set above the highest possible sum, so the visibility test can never pass"
+            correct: true
+          - text: "Calibration was skipped, so readCalibrated() writes nothing"
+            correct: false
+            why: "That is Mystery 3 — the same SYMPTOM, the opposite end of the pipeline. Same symptom does not mean same cause."
+          - text: "The sensors are physically dirty"
+            correct: false
+          - text: "Kp was set to zero"
+            correct: false
+
+      - id: L08_A23
+        type: true_false
+        cite: "Sabotage, Mystery 3, Mystery 5"
+        points: 1
+        stem: "Mysteries 3 and 5 produce the same symptom, so they have the same cause."
+        correct: false
+        why: "Opposite ends of the pipeline — one starves the reading, the other sets an impossible bar. Same symptom does not mean same cause is the most valuable sentence in debugging."
+
+      - id: L08_A24
+        type: matching
+        cite: "§6 Step 9"
+        points: 4
+        stem: "Match each button press to what the robot does."
+        pairs:
+          - left: "A, at the gate"
+            right: "Arms the robot — nothing moves before this"
+          - left: "B, on the line"
+            right: "Runs the calibration spin"
+          - left: "B, after calibration"
+            right: "3-2-1 countdown, then follows the line"
+          - left: "A or C, while stopped"
+            right: "Steps Kp down or up by 0.02"
+        extra_answers:
+          - "Resets the gap timer to zero"
+          - "Saves the tuned Kp to RobotConfig.h"
+
+      - id: L08_A25
+        type: multiple_choice
+        cite: "§10 Record Your Calibration"
+        points: 1
+        stem: "The lesson asks you to record your tuned Kp and notes the robot at the next desk will disagree. What does that mean?"
+        options:
+          - text: "Kp is your robot's number — both values can be right, because no two robots are identical"
+            correct: true
+          - text: "One of the two robots is miscalibrated and needs recalibrating"
+            correct: false
+          - text: "The number depends on which lesson you are on"
+            correct: false
+          - text: "Kp should be averaged across the class before recording it"
+            correct: false

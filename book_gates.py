@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.65.2'
+VERSION = 'v1.65.4'
 # v1.65.2 (S141): §27.11 DIGEST MOVES, RULES AND DECLARATIONS DO NOT. 574/2,033 both
 #   ends, class SET byte-identical (zero born, zero died), and ALL 574 DECLARATION
 #   BLOCKS byte-identical — so nothing renders differently. Usage RANK only, the S140
@@ -2283,7 +2283,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'f764bfa73ddfac08'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'ba311c0ebe63cc79'
 #   S140 move, FOURTH of the session and it supersedes the first three. Digest ONLY each time.
 #   Rules and declarations UNCHANGED at 574/2,033 across both, class SET byte-identical in
 #   both directions each time, and the acceptance test was the RESOLVED STYLING (rule 24):
