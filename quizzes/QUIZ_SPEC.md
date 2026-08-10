@@ -1,6 +1,13 @@
 # ZUMO READING QUIZ — AUTHORING SPEC
 
-**Spec version: v1.0.0** · Ruled S136 · Applies to all sixteen lessons.
+**Spec version: v1.1.0** · Ruled S136 · Amended S139 · Applies to all sixteen lessons.
+
+**v1.1.0 (S139) — §3 FORMAT MIX.** The three ratios could not all hold at once: at both
+ceilings the multiple-choice floor was 76%, so "~70% MC" was unreachable and L02 met it
+only by running true/false 2 points over its cap. The matching allowance moved to ~10%
+rather than the true/false cap, because matching carries `extra_answers` and true/false
+is 50% guessable. L04 was authored to the amended mix; **L02 still reads TF 22% before /
+83% MC after and has not been rebalanced.**
 
 **Read this before writing a single question.** Everything below was decided once, with
 reasons. None of it needs re-deriving, re-debating, or re-discovering. If a ruling here
@@ -88,9 +95,30 @@ where it lives.
 ## 3. FORMATS
 
 ### Allowed
-- `multiple_choice` — the workhorse. ~70% of a set.
+- `multiple_choice` — the workhorse. **~70% of a set.**
 - `true_false` — the cheap end. **Cap at ~20%.**
-- `matching` — vocabulary only. **One or two per set, no more.**
+- `matching` — vocabulary and grouped facts. **Up to ~10% of a set** (3–6 items in a
+  50-question bank). **One or two is fine for a small set; do not exceed ~10%.**
+
+**THESE THREE NUMBERS WERE ARITHMETICALLY IMPOSSIBLE UNTIL v1.1.0, AND THE FIRST BANK
+BROKE A CAP TO SATISFY THEM.** The original spec said MC ~70%, TF cap ~20%, matching
+"one or two per set, no more." Run the arithmetic: a 50-question set at both ceilings is
+TF 10 plus matching 2, which leaves an **MC floor of 76%** — so ~70% MC was unreachable
+by construction. L02 landed at MC 74% only by running true/false at **22%, over its own
+cap**, and nobody noticed because no instrument checks a mix. Measured in S139 while
+comparing L04 against L02.
+
+**THE MATCHING ALLOWANCE MOVED, NOT THE TF CAP, AND THE REASON IS SIGNAL.** Reaching
+~70% MC needs ~30% non-MC. Getting there by raising the true/false cap would have bought
+the percentage with the *weakest* instrument in the set — true/false is 50% guessable, so
+more of it actively lowers the signal the gate exists to produce. Matching with mandatory
+`extra_answers` absorbs the guess instead, so the signal holds. When a ratio has to give,
+give it to the instrument that measures better, not the one that is easiest to write.
+
+**A MIX IS A TARGET, NOT A GATE.** Nothing validates these ratios — `quiz_bank.py` checks
+structure, not proportions. Land close and move on; do not spend a session chasing a
+percentage. But do not drift far enough that a bank becomes a true/false quiz wearing a
+multiple-choice hat.
 
 ### Banned
 - **`fill_in_blank` — ruled out S136.** Canvas string-matches it, so
@@ -119,7 +147,9 @@ where it lives.
   knows four gets the fifth free. Two spare answers absorb the guess. Validator enforces.
 - No duplicate right-hand answers — two prompts would both be correct.
 - One matching item is really *n* judgments, so it is a heavy pull in a 10-question draw.
-  Price it accordingly and use at most one or two per set.
+  Price it accordingly. **The cap is §3's ~10% of a set — this line said "one or two, no
+  more" until v1.1.0, which is the restatement that made the mix impossible.** A rule
+  restated in two sections is two rules; when one is superseded, fix the other.
 
 ---
 
