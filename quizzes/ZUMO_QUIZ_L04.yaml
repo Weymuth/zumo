@@ -1,0 +1,1136 @@
+# ZUMO READING QUIZ BANK — LESSON 04
+# Seeing the Line · Reflectance Sensors, Arrays, and the First Decision
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_04.html v04.29.0 (post-S139 content fixes)
+#
+# WHY THE SOURCE VERSION IS PINNED: several answers below would have been WRONG
+# against v04.28.3. S139 changed the threshold canon to 600 with the margin stated
+# (§8A.2 KEY TERM and the Glossary), corrected the LEARN 4.38 citation to Lesson 2
+# §3.2, replaced §8A.8's "counts hundreds per crossing" with "counts every loop"
+# where the section's own arithmetic derives FIVE, moved waitForStart() and
+# checkBattery() into their own "Startup & safety" Quick Reference group, and put the
+# FUNCTION PROTOTYPES banner back into Step 2's reveal. Questions B06, B14, B19, B20
+# and B22 all sit directly on those fixes. If the lesson is edited, re-check every
+# question citing the edited section before reusing this bank.
+#
+# READ -> FIX -> QUIZ. Lesson 04 was read end to end in S139 and the applicable
+# findings were fixed before a single question was written.
+#
+# FORMATS: multiple_choice, true_false, matching. No fill-in-the-blank by ruling.
+# EVERY QUESTION CARRIES A `cite`.
+#
+# TWO ANSWERS DELIBERATELY NOT ASKED, because they need the bench and the `before`
+# set must be answerable from the text alone: the wave-test direction (§6 Step 4 says
+# readings "jump"; §8 says a robot in the air already reads maximum) and Act Two's
+# row-1 character budget. Both are open findings, not settled facts.
+
+lesson: "L04"
+title: "Seeing the Line — Reflectance Sensors, Arrays, and the First Decision"
+bank_version: "1.1.0"
+source:
+  lesson_04: "v04.29.0"
+  lesson_03: "v03.40.2"
+  lesson_02: "v03.21.2"
+
+sets:
+
+  # ===================================================================
+  # BEFORE — THE PRE-CLASS GATE
+  # Answerable from the reading alone. Nothing here needs the robot, a
+  # compiler, or a built program. Draws on §1-§5, §8, §8A, Quick
+  # Reference and the Glossary.
+  # Suggested Canvas draw: 10, one attempt, locks at period start.
+  # ===================================================================
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone."
+    suggested_draw: 10
+    questions:
+
+      # ---------- §3.1 How the sensor actually measures ----------
+      - id: L04_B01
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "A line sensor reports a LARGE number. What is under it?"
+        options:
+          - text: "A dark surface, like black electrical tape"
+            correct: true
+          - text: "A bright white surface"
+            correct: false
+            why: "Backwards — and the lesson says this trips up almost everyone once. HIGH = DARK, LOW = LIGHT."
+          - text: "Nothing — a large number means the sensor is disconnected"
+            correct: false
+          - text: "It depends on the room lighting"
+            correct: false
+            why: "The sensor supplies its own infrared, so the reading depends on the surface, not the ceiling lights."
+
+      - id: L04_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "The sensor reading is a measurement of TIME. What is being timed?"
+        options:
+          - text: "How long the sensor's tiny capacitor takes to drain, which happens faster when more infrared returns"
+            correct: true
+          - text: "How long the infrared LED stays lit before it switches off"
+            correct: false
+          - text: "How long the microcontroller waits between one reading and the next"
+            correct: false
+            why: "That is DISPLAY_INTERVAL_MS, a pause you choose — not the reading itself."
+          - text: "How long light takes to travel down to the floor and back"
+            correct: false
+            why: "Light covers a few millimetres far too fast to time this way; the sensor times a draining capacitor instead."
+
+      - id: L04_B04
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Your robot behaves perfectly in the middle of the classroom and goes haywire next to a sunny window. What is the most likely cause?"
+        options:
+          - text: "Sunlight is loaded with infrared and floods the phototransistors, so everything reads bright"
+            correct: true
+          - text: "Sunlight heats the motors, which makes the robot drift"
+            correct: false
+          - text: "The window's glare confuses the OLED display"
+            correct: false
+          - text: "Visible light overwhelms the sensors, which are tuned to visible wavelengths"
+            correct: false
+            why: "These sensors are tuned to infrared, not visible light — that pairing is what filters out most ordinary room light."
+
+      # ---------- §3.2 Eight sensors, six wires ----------
+      - id: L04_B05
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The front sensor board carries eight sensors but only six signal wires. How is that resolved?"
+        options:
+          - text: "Four sensors have their own permanent wire; the other four share two wires, two apiece, and a jumper decides which one is connected"
+            correct: true
+          - text: "All eight share the six wires in rotation, a few times per second"
+            correct: false
+            why: "Nothing switches automatically. The choice is physical and it is yours to make."
+          - text: "Two of the eight sensors are decorative and are never wired"
+            correct: false
+          - text: "The microcontroller reads two sensors per wire at the same time"
+            correct: false
+
+      - id: L04_B06
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Which line sensors are ALWAYS connected, no matter where the jumpers sit?"
+        options:
+          - text: "1, 3 and 5"
+            correct: true
+          - text: "2 and 4"
+            correct: false
+            why: "Exactly backwards — 2 and 4 are the two that share a wire with a proximity receiver."
+          - text: "1 and 5 only"
+            correct: false
+          - text: "All five, once the sensors are calibrated"
+            correct: false
+            why: "Calibration rescales readings; it cannot connect a wire."
+
+      - id: L04_B08
+        type: multiple_choice
+        cite: "§1, §3.2"
+        points: 1
+        stem: "Why does this lesson end by putting both jumpers BACK to the factory position?"
+        options:
+          - text: "Lesson 5 uses the side proximity receivers, which share wires with line sensors 2 and 4"
+            correct: true
+          - text: "Leaving them moved will damage the sensor board"
+            correct: false
+          - text: "The jumpers wear out if they stay in the DN position"
+            correct: false
+          - text: "Five-sensor mode drains the batteries too quickly to store the robot"
+            correct: false
+
+      # ---------- §3.4 Calibration ----------
+      - id: L04_B09
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "A raw reading of 1400 arrives. Is the surface dark or light?"
+        options:
+          - text: "You cannot say — raw readings are not comparable between sensors or between surfaces"
+            correct: true
+          - text: "Dark, because 1400 is more than half of 2000"
+            correct: false
+            why: "This is the '1400 problem' the lesson names. Sensor height, surface texture, dust and manufacturing spread all move a raw number."
+          - text: "Light, because 1400 is below the 2000 ceiling"
+            correct: false
+          - text: "Dark, but only in the five-sensor configuration"
+            correct: false
+
+      - id: L04_B10
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "What does a calibration sweep actually produce?"
+        options:
+          - text: "A per-sensor record of the brightest and darkest values that sensor saw during the sweep"
+            correct: true
+          - text: "A single threshold number shared by all the sensors"
+            correct: false
+          - text: "A corrected wiring map of which sensor sits where"
+            correct: false
+          - text: "A permanent factory setting stored on the sensor board"
+            correct: false
+            why: "Nothing is stored permanently — the record books live in RAM and evaporate at power-off."
+
+      - id: L04_B11
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "Your robot worked yesterday. Today, before any sweep, the readings look like garbage. What is wrong?"
+        options:
+          - text: "Nothing is broken — calibration lives in RAM and does not survive power-off, so every session needs a fresh sweep"
+            correct: true
+          - text: "A sensor window has failed and must be replaced"
+            correct: false
+          - text: "The jumpers moved themselves overnight"
+            correct: false
+          - text: "The calibration data was saved but has been corrupted"
+            correct: false
+            why: "It was never saved. That is by design, and §8's last troubleshooting row says so."
+
+      - id: L04_B13
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "readLine() turns several readings into one number. What kind of calculation is it?"
+        options:
+          - text: "A weighted average of the sensor positions, where darker sensors pull the result harder toward themselves"
+            correct: true
+          - text: "It simply reports the position of whichever single sensor reads darkest"
+            correct: false
+            why: "If it did, the answer could only ever land exactly on a sensor — it could never report a position BETWEEN two of them."
+          - text: "It adds all the readings together"
+            correct: false
+          - text: "It counts how many sensors are over the tape"
+            correct: false
+
+      - id: L04_B15
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "No sensor sees anything dark. What does readLine() report?"
+        options:
+          - text: "0 or 4000 — whichever side the line was last seen on"
+            correct: true
+          - text: "The centre value, as a neutral guess"
+            correct: false
+          - text: "A negative number to signal the error"
+            correct: false
+          - text: "The value from the previous loop, unchanged"
+            correct: false
+            why: "It reports a SIDE, not the old position — the robot's best guess is 'it went that way.'"
+
+      - id: L04_B17
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "What is the strongest argument for waking sensors 2 and 4?"
+        options:
+          - text: "The two wide blind gaps become four small ones, so a narrow strip of tape can no longer hide entirely between sensors"
+            correct: true
+          - text: "Five sensors read faster than three"
+            correct: false
+            why: "The opposite — five sensors take longer to read, and that is one of the costs the lesson insists you weigh."
+          - text: "Five sensors work without calibration"
+            correct: false
+          - text: "Five sensors free up the proximity receivers"
+            correct: false
+            why: "Backwards: waking 2 and 4 is what COSTS you the two side proximity receivers."
+
+      - id: L04_B19
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "In the THREE-sensor configuration, which array box holds the CENTRE sensor?"
+        options:
+          - text: "lineSensorValues[1]"
+            correct: true
+          - text: "lineSensorValues[3], because it is sensor 3"
+            correct: false
+            why: "The number-one Lesson 4 bug. Index counts AWAKE sensors from zero; it does not name the sensor."
+          - text: "lineSensorValues[2]"
+            correct: false
+            why: "That is where the centre sensor lives once FIVE sensors are awake."
+          - text: "lineSensorValues[0]"
+            correct: false
+            why: "Box [0] holds sensor 1, the far-left eye."
+
+      - id: L04_B20
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "Why does the centre sensor change array box between the two configurations?"
+        options:
+          - text: "The array only has boxes for the sensors that are awake, and the index counts them from zero"
+            correct: true
+          - text: "Moving the jumpers physically rewires the sensors into a different order"
+            correct: false
+          - text: "readCalibrated() sorts the values darkest-first"
+            correct: false
+          - text: "It does not change — the centre is always [2]"
+            correct: false
+
+      # ---------- §5.4 The promise the compiler cannot check ----------
+      - id: L04_B21
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "You call initFiveSensors() but leave both jumpers in the factory position. What happens?"
+        options:
+          - text: "It compiles and runs, and sensors 2 and 4 simply report garbage — nothing warns you"
+            correct: true
+          - text: "The program refuses to compile"
+            correct: false
+            why: "The compiler cannot see your jumpers. That is the whole point of §5.4."
+          - text: "The robot resets as soon as it reads a sensor"
+            correct: false
+          - text: "The library falls back to three sensors automatically"
+            correct: false
+
+      - id: L04_B22
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "Why is initThreeSensors() safe in ANY jumper position?"
+        options:
+          - text: "Sensors 1, 3 and 5 each have their own permanent wire, so no jumper can disconnect them"
+            correct: true
+          - text: "It checks the jumper positions before it wakes anything"
+            correct: false
+          - text: "It wakes all five and then ignores two of them"
+            correct: false
+          - text: "It only works after a calibration sweep"
+            correct: false
+
+      # ---------- §5.6 The two standard helpers ----------
+      - id: L04_B23
+        type: multiple_choice
+        cite: "§5.6, Quick Reference"
+        points: 1
+        stem: "Where must waitForStart() be called?"
+        options:
+          - text: "As the LAST line of setup(), always"
+            correct: true
+          - text: "At the top of loop(), always"
+            correct: false
+            why: "That is where checkBattery() goes. Swapping the two is a classic."
+          - text: "First thing in setup(), before anything else"
+            correct: false
+          - text: "Anywhere in setup() — the order does not matter"
+            correct: false
+
+      - id: L04_B24
+        type: multiple_choice
+        cite: "§5.6"
+        points: 1
+        stem: "Today's program never drives a motor. Why does it still need the safety gate?"
+        options:
+          - text: "Because habits only protect you if they are unconditional — the gate has to be second nature before the motors come back"
+            correct: true
+          - text: "Because the sensors cannot be read until Button A is pressed"
+            correct: false
+          - text: "Because calibration will not start without it"
+            correct: false
+          - text: "Because the display needs time to initialise"
+            correct: false
+
+      - id: L04_B25
+        type: multiple_choice
+        cite: "§5.6"
+        points: 1
+        stem: "How do you check the battery on a robot running a Lesson 4 program?"
+        options:
+          - text: "Hold buttons A and B together at any time"
+            correct: true
+          - text: "Press button C once"
+            correct: false
+          - text: "Hold A and C together, as in Lesson 3"
+            correct: false
+            why: "A+C was Lesson 3's reset. The battery check is A+B, and it is the same combo-press pattern."
+          - text: "It appears automatically every ten seconds"
+            correct: false
+
+      # ---------- §8A.1-8A.2 The if statement and the threshold ----------
+      - id: L04_B26
+        type: multiple_choice
+        cite: "§8A.2, Glossary"
+        points: 1
+        stem: "Calibrated readings run 0-1000, so halfway is 500. Why does this book use 600 as its threshold instead?"
+        options:
+          - text: "It is a deliberate margin above halfway, so a scuffed floor or stray light cannot nudge a reading across the line and flip the decision"
+            correct: true
+          - text: "Because 600 is the exact midpoint of the calibrated scale"
+            correct: false
+            why: "500 is the midpoint. 600 sits above it on purpose — the margin is the reason."
+          - text: "Because readings below 600 are discarded as noise"
+            correct: false
+            why: "The noise floor readLine() applies is 50, not 600."
+          - text: "Because the sensors cannot report values below 600 on white"
+            correct: false
+
+      - id: L04_B28
+        type: multiple_choice
+        cite: "§8A.6"
+        points: 1
+        stem: "With NUM_SENSORS set to 3, how many laps does `for (uint8_t i = 0; i < NUM_SENSORS; i++)` run, and which boxes does it touch?"
+        options:
+          - text: "Three laps, touching boxes 0, 1 and 2"
+            correct: true
+          - text: "Three laps, touching boxes 1, 2 and 3"
+            correct: false
+            why: "The counter starts at zero, so it never reaches box 3 — and box 3 does not exist."
+          - text: "Four laps, touching boxes 0 through 3"
+            correct: false
+            why: "The loop stops the MOMENT the test fails: at i = 3, 3 < 3 is false and the body never runs."
+          - text: "Two laps, touching boxes 0 and 1"
+            correct: false
+
+      - id: L04_B29
+        type: multiple_choice
+        cite: "§8A.6"
+        points: 1
+        stem: "What would go wrong with `for (uint8_t i = 0; i <= NUM_SENSORS; i++)`?"
+        options:
+          - text: "It would reach for a box that does not exist"
+            correct: true
+          - text: "It would refuse to compile"
+            correct: false
+          - text: "It would skip the first sensor"
+            correct: false
+          - text: "It would run forever"
+            correct: false
+            why: "That is the failure from forgetting i++ — a different bug in the same WARNING."
+
+      - id: L04_B30
+        type: multiple_choice
+        cite: "§8A.6"
+        points: 1
+        stem: "What does a stray semicolon do here: `for (uint8_t i = 0; i < 3; i++);` ?"
+        options:
+          - text: "The loop runs an empty body three times, then your block executes once"
+            correct: true
+          - text: "The program will not compile"
+            correct: false
+            why: "It compiles clean. The lesson is blunt that neither of these two bugs is the compiler's problem to catch."
+          - text: "The loop is skipped entirely"
+            correct: false
+          - text: "The loop never ends"
+            correct: false
+
+      - id: L04_B32
+        type: multiple_choice
+        cite: "§8A.8"
+        points: 1
+        stem: "`if (lineSensorValues[1] > 600) { crossings++; }` runs every loop. Why is it wrong for counting crossings?"
+        options:
+          - text: "The tape sits under the sensor for several loops, so one crossing adds several counts"
+            correct: true
+          - text: "The comparison operator is wrong"
+            correct: false
+            why: "The lesson is explicit: the comparison is right. The wrong QUESTION was asked."
+          - text: "crossings++ can only be used inside a for loop"
+            correct: false
+          - text: "The threshold is too low to detect tape"
+            correct: false
+
+      - id: L04_B33
+        type: multiple_choice
+        cite: "§8A.8"
+        points: 1
+        stem: "The loop runs about ten times a second and the tape passes under the sensor for about half a second. Roughly how many counts does the broken version add for ONE crossing?"
+        options:
+          - text: "About five"
+            correct: true
+          - text: "Exactly one"
+            correct: false
+          - text: "About fifty"
+            correct: false
+          - text: "About five hundred"
+            correct: false
+            why: "Ten passes per second for half a second is five. Work the arithmetic rather than reaching for a big-sounding number."
+
+      - id: L04_B34
+        type: multiple_choice
+        cite: "§8A.8"
+        points: 1
+        stem: "Why must `onLine` be declared ABOVE loop() rather than inside it?"
+        options:
+          - text: "A variable declared inside loop() is born and dies every trip, so it could not carry a fact from one loop into the next"
+            correct: true
+          - text: "Variables inside loop() cannot be of type bool"
+            correct: false
+          - text: "Only global variables can be compared with &&"
+            correct: false
+          - text: "It makes the program run faster"
+            correct: false
+
+      - id: L04_B35
+        type: multiple_choice
+        cite: "§8A.8"
+        points: 1
+        stem: "What breaks if you forget the final `onLine = nowDark;` line?"
+        options:
+          - text: "The flag never updates, the second half of the test stays true, and you are back to counting every loop"
+            correct: true
+          - text: "The program will not compile"
+            correct: false
+          - text: "The counter stays stuck at zero"
+            correct: false
+          - text: "The sensor stops responding to tape"
+            correct: false
+
+      - id: L04_B36
+        type: multiple_choice
+        cite: "§8A.8"
+        points: 1
+        stem: "A reading flickers across the threshold several times in a few milliseconds. What is the cure the lesson names?"
+        options:
+          - text: "Hysteresis — count when it climbs past 600, but do not re-arm until it drops below 400"
+            correct: true
+          - text: "Raise the threshold until the flicker stops"
+            correct: false
+          - text: "Add a delay so the flicker finishes before the next reading"
+            correct: false
+          - text: "Recalibrate the sensor"
+            correct: false
+
+      # ---------- §8A.9 abs() and the deadband ----------
+      - id: L04_B37
+        type: multiple_choice
+        cite: "§8A.9"
+        points: 1
+        stem: "With three sensors, `int error = position - 1000;`. What two facts does that single subtraction carry?"
+        options:
+          - text: "Its size says how far off you are; its sign says which way"
+            correct: true
+          - text: "Its size says how fast you are moving; its sign says forward or reverse"
+            correct: false
+          - text: "Its size is the sensor number; its sign is the configuration"
+            correct: false
+          - text: "Only one — how far off centre the line is"
+            correct: false
+            why: "The sign is the second fact, and it is the one that tells you which way to correct."
+
+      - id: L04_B38
+        type: multiple_choice
+        cite: "§8A.9"
+        points: 1
+        stem: "Why ask `abs(error) < 100` instead of `error < 100`?"
+        options:
+          - text: "error < 100 is also true for −400, which is not close at all — abs() gives the size without the sign"
+            correct: true
+          - text: "abs() is faster than a plain comparison"
+            correct: false
+          - text: "error < 100 will not compile with a negative value"
+            correct: false
+          - text: "abs() also recalibrates the sensors"
+            correct: false
+
+      - id: L04_B39
+        type: multiple_choice
+        cite: "§8A.9"
+        points: 1
+        stem: "Why not simply demand `error == 0`?"
+        options:
+          - text: "The robot will never land exactly on zero, so it overshoots and corrects forever, buzzing around a target it cannot reach"
+            correct: true
+          - text: "Because == cannot be used with negative numbers"
+            correct: false
+          - text: "Because readLine() never returns exactly 1000"
+            correct: false
+          - text: "Because it would make the robot stop too early"
+            correct: false
+
+      # ---------- §4 Hardware, §8 Troubleshooting ----------
+      - id: L04_B40
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "Sensor numbers are defined from whose point of view?"
+        options:
+          - text: "The robot's own — sensor 1 is the robot's far-left eye"
+            correct: true
+          - text: "Yours, as you look at the robot"
+            correct: false
+            why: "Only in one specific pose: on its back with the blade toward you. Flip it any other way and the row mirrors."
+          - text: "The line's, looking up at the robot"
+            correct: false
+          - text: "Whichever way the USB cable points"
+            correct: false
+
+      - id: L04_B42
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Every reading sits at maximum no matter what you put under the robot. What does §8 name as the likely cause?"
+        options:
+          - text: "The robot is being held in the air — nothing bounces back, so air counts as black"
+            correct: true
+          - text: "The batteries are flat"
+            correct: false
+          - text: "The jumpers are in the wrong position"
+            correct: false
+          - text: "The calibration sweep was too fast"
+            correct: false
+
+      - id: L04_B43
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The position readout is stuck at exactly 0 or exactly 4000. What does that mean?"
+        options:
+          - text: "The line is lost — no sensor sees dark, so readLine() is reporting its last-known side"
+            correct: true
+          - text: "The sensor array has failed"
+            correct: false
+          - text: "The robot is perfectly centred"
+            correct: false
+          - text: "NUM_SENSORS is set to the wrong value"
+            correct: false
+
+      - id: L04_B44
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "§8 opens with a golden first move for any sensor investigation. What is it?"
+        options:
+          - text: "Look at the raw numbers in the Serial Monitor — it does not interpret, calibrate, or guess"
+            correct: true
+          - text: "Recalibrate before doing anything else"
+            correct: false
+            why: "Recalibrating is the cheapest EXPERIMENT and many rows end there — but the first move is to look at raw numbers."
+          - text: "Replace the batteries"
+            correct: false
+          - text: "Reflash the program"
+            correct: false
+
+      # ---------- true_false — kept under the 20% cap ----------
+      - id: L04_B45
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "Calibration data is stored on the robot and survives being switched off."
+        correct: false
+        why: "It lives in RAM and evaporates at power-off, which is why every run starts with a fresh sweep."
+
+      - id: L04_B46
+        type: true_false
+        cite: "§5.4"
+        points: 1
+        stem: "The compiler will warn you if you call initFiveSensors() while the jumpers are still in the factory position."
+        correct: false
+        why: "The compiler cannot see your jumpers. Nothing crashes and nothing warns — sensors 2 and 4 just report garbage."
+
+      - id: L04_B47
+        type: true_false
+        cite: "§5.5"
+        points: 1
+        stem: "In the five-sensor configuration the centre sensor is lineSensorValues[2]."
+        correct: true
+        why: "With five awake, the index of the centre moves from [1] to [2]."
+
+      - id: L04_B48
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "Waking five sensors instead of three is free — there is no cost."
+        correct: false
+        why: "It costs the two side proximity receivers, plus read time and work per loop. Resolution is never free."
+
+      - id: L04_B49
+        type: true_false
+        cite: "§5.8"
+        points: 1
+        stem: "Lesson 4 leaves out display.setLayout21x8() on purpose, so the screen stays at 8 characters by 2 rows."
+        correct: true
+        why: "A choice, not an oversight — you read this display from a foot away while sliding the robot, so bigger wins."
+
+      # ---------- matching — vocabulary, with the mandatory spares ----------
+      - id: L04_B50
+        type: matching
+        cite: "§3.1, §3.4, §3.6, §5.5, §8A.2"
+        points: 5
+        stem: "Match each Lesson 4 term to its definition."
+        pairs:
+          - left: "Reflectance sensor"
+            right: "Measures how much light bounces back off a nearby surface"
+          - left: "Calibration"
+            right: "Measuring each sensor's real minimum and maximum, then rescaling to 0-1000"
+          - left: "Resolution"
+            right: "The smallest difference a measurement system can distinguish"
+          - left: "Array"
+            right: "A numbered row of same-type values under one name, indexed from zero"
+          - left: "Threshold"
+            right: "The cutoff value a condition compares against"
+        extra_answers:
+          - "A pause between readings that sets the refresh rate"
+          - "A plastic block that routes a shared wire to one sensor or another"
+
+      # ---------- added S139 to bring the mix to ~70% MC ----------
+      - id: L04_B51
+        type: true_false
+        cite: "§3.5"
+        points: 1
+        stem: "readLine() can report a line position that falls BETWEEN two sensors."
+        correct: true
+        why: "The worked example lands on 2323 — between sensor 3 and sensor 4. That finer grain is the whole point of a weighted average."
+
+      - id: L04_B52
+        type: true_false
+        cite: "§3.1"
+        points: 1
+        stem: "Direct sunlight on your test surface makes the sensors read DARK."
+        correct: false
+        why: "The opposite. Sunlight floods the phototransistors with infrared, the bucket drains fast, and everything reads bright."
+
+      - id: L04_B53
+        type: true_false
+        cite: "§5.4, §6 Step 7"
+        points: 1
+        stem: "Moving the two jumpers to DN2/DN4 is enough on its own to wake all five sensors."
+        correct: false
+        why: "The software half is still needed — initFiveSensors(). Hardware and software each keep promises the other cannot check."
+
+      - id: L04_B54
+        type: true_false
+        cite: "§8A.6"
+        points: 1
+        stem: "A stray semicolon written as `for (uint8_t i = 0; i < 3; i++);` will be caught by the compiler."
+        correct: false
+        why: "It compiles clean. The lesson is blunt that neither of the two loop traps is the compiler's problem to catch."
+
+      - id: L04_B55
+        type: true_false
+        cite: "§4.1"
+        points: 1
+        stem: "Sensor 1 is the robot's far-left eye, numbered from the robot's point of view."
+        correct: true
+        why: "From the robot's own point of view. Your left only matches it in one pose: on its back, blade toward you."
+
+      - id: L04_B56
+        type: matching
+        cite: "§3.1, §3.4, §3.5"
+        points: 5
+        stem: "Match each number to what it means."
+        pairs:
+          - left: "A raw reading of 2000"
+            right: "The ceiling — the darkest raw reading the robot will report"
+          - left: "A calibrated 0"
+            right: "As bright as that sensor has ever seen on this surface"
+          - left: "A calibrated 1000"
+            right: "As dark as that sensor has ever seen on this surface"
+          - left: "A position of 1000 with THREE sensors awake"
+            right: "The line is dead centre"
+          - left: "A position of 4000 with FIVE sensors awake"
+            right: "The line is at the far right of the array"
+        extra_answers:
+          - "The calibrated value below which readLine() treats a reading as noise"
+          - "The length of the calibration sweep window"
+        note: "Extra answers are mandatory — five prompts against five answers gives the fifth away free."
+
+      - id: L04_B57
+        type: matching
+        cite: "Quick Reference, §5.4"
+        points: 5
+        stem: "Match each library call to its job."
+        pairs:
+          - left: "lineSensors.initThreeSensors()"
+            right: "Wake sensors 1, 3 and 5 — works in any jumper position"
+          - left: "lineSensors.initFiveSensors()"
+            right: "Wake all five — requires both jumpers on DN2 / DN4"
+          - left: "lineSensors.calibrate()"
+            right: "One calibration pass, called repeatedly during the sweep"
+          - left: "lineSensors.readCalibrated(values)"
+            right: "Fill the array on the honest 0-1000 scale"
+          - left: "lineSensors.readLine(values)"
+            right: "Calibrated read plus a weighted-average line position"
+        extra_answers:
+          - "Print the whole array to the Serial Monitor"
+          - "Move both configuration jumpers under software control"
+
+      - id: L04_B58
+        type: matching
+        cite: "§8"
+        points: 5
+        stem: "Match each symptom from the troubleshooting table to its likely cause."
+        pairs:
+          - left: "Every reading sits at maximum whatever the surface"
+            right: "The robot is in the air — nothing bounces back"
+          - left: "Sensors 2 and 4 ignore the tape in five-sensor mode"
+            right: "The jumpers are still in the factory position"
+          - left: "Everything reads bright near one window"
+            right: "Direct sunlight floods the sensors with infrared"
+          - left: "The position readout is stuck at exactly 0 or 4000"
+            right: "The line is lost, so readLine() reports its last-known side"
+          - left: "Fine yesterday, garbage today, before any sweep"
+            right: "Calibration lives in RAM and does not survive power-off"
+        extra_answers:
+          - "The Serial Monitor baud rate does not match the program"
+          - "One motor is drawing too much current"
+
+      - id: L04_B59
+        type: matching
+        cite: "§5.3"
+        points: 3
+        stem: "Match each constant to what it controls."
+        pairs:
+          - left: "NUM_SENSORS"
+            right: "How many sensors are awake — it also sizes the array"
+          - left: "CAL_TIME_MS"
+            right: "How long the calibration sweep window lasts"
+          - left: "DISPLAY_INTERVAL_MS"
+            right: "The pause between readings, about ten per second"
+        extra_answers:
+          - "The cutoff a reading is compared against to call it dark"
+          - "The position value that means dead centre"
+
+      - id: L04_B60
+        type: matching
+        cite: "§3.2, §3.6, §8A.8, §8A.9"
+        points: 4
+        stem: "Match each idea to its description."
+        pairs:
+          - left: "Blind gap"
+            right: "A stretch of floor between sensors that nobody is watching"
+          - left: "Hysteresis"
+            right: "Arming at one value and re-arming at a lower one, so jitter cannot double-count"
+          - left: "Deadband"
+            right: "A band around the target where the robot deliberately does nothing"
+          - left: "Jumper"
+            right: "A plastic block that routes a shared wire to one sensor or the other"
+        extra_answers:
+          - "A reading discarded because it fell below the noise floor"
+          - "The difference between a raw and a calibrated value"
+
+  # ===================================================================
+  # AFTER — POST-BUILD CHECK
+  # Answerable only by having actually built and run it. Draws on §6
+  # steps, §7's controlled experiment, §9 challenges and the Observation
+  # experiments. Overlaps BRAIN CHECK 03 by design but does not
+  # duplicate its items.
+  # Suggested Canvas draw: 8.
+  # NOT ASKED, deliberately: the Step 4 wave-test direction and Act
+  # Two's row-1 character budget. Both are open bench findings.
+  # ===================================================================
+  after:
+    description: "Post-build check. Answerable only by having built and run it."
+    suggested_draw: 8
+    questions:
+
+      - id: L04_A01
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "You add calibrateSensors() to setup() and the build turns red: \"'calibrateSensors' was not declared in this scope.\" What fixes it?"
+        options:
+          - text: "A function prototype up top, with the function itself down in the helpers"
+            correct: true
+          - text: "Moving calibrateSensors() to the top of loop()"
+            correct: false
+          - text: "Recalibrating the sensors"
+            correct: false
+          - text: "Renaming the function to match the library"
+            correct: false
+            why: "You wrote this helper — no library owns the name. The compiler read setup() top to bottom and met a name it had never heard of."
+
+      - id: L04_A02
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "The lesson calls that red build \"a rep,\" not a detour. Why?"
+        options:
+          - text: "It is the same error from Lesson 2 Step 7 — meeting it again is what turns ten minutes of debugging into ten seconds"
+            correct: true
+          - text: "It proves the sensors are wired correctly"
+            correct: false
+          - text: "It is the only way to generate the prototypes"
+            correct: false
+          - text: "It clears the calibration record books"
+            correct: false
+
+      - id: L04_A04
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "After calibration, what changed about the three numbers on plain white?"
+        options:
+          - text: "They sit near 00 and now agree with each other"
+            correct: true
+          - text: "They sit near 99 and agree"
+            correct: false
+          - text: "They still disagree, but by less"
+            correct: false
+          - text: "They stop changing until the tape appears"
+            correct: false
+
+      - id: L04_A05
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Sliding the line from sensor 1 toward sensor 3, you found a position where the dashboard read all-white with the line still under the robot. What is that?"
+        options:
+          - text: "The blind gap — the resolution limit from §3.6, reproduced on your desk"
+            correct: true
+          - text: "A failed calibration sweep"
+            correct: false
+          - text: "The line-lost behaviour of readLine()"
+            correct: false
+            why: "Different thing — that is readLine() reporting 0 or 4000. Here the individual sensor values themselves read white."
+          - text: "A dead sensor"
+            correct: false
+
+      - id: L04_A06
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "In Step 7 you changed the code to five sensors but left the jumpers alone. What did digits 2 and 4 do?"
+        options:
+          - text: "Nothing useful — they did not track the tape, and nothing crashed or warned"
+            correct: true
+          - text: "They read a steady 99"
+            correct: false
+          - text: "They mirrored digits 1 and 5"
+            correct: false
+          - text: "The program refused to upload"
+            correct: false
+
+      - id: L04_A07
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "Why does the lesson make you change the software BEFORE moving the jumpers?"
+        options:
+          - text: "So you see a hardware/software mismatch from the inside — numbers that mean nothing, with no crash and no warning"
+            correct: true
+          - text: "Because moving the jumpers first would damage the board"
+            correct: false
+          - text: "Because initFiveSensors() must run once before the jumpers will work"
+            correct: false
+          - text: "Because the calibration data would otherwise be lost"
+            correct: false
+
+      - id: L04_A08
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "Right after moving the jumpers to DN2/DN4, what must you do before the readings mean anything?"
+        options:
+          - text: "Recalibrate — the two newly woken sensors have blank record books"
+            correct: true
+          - text: "Nothing; the existing calibration covers all five"
+            correct: false
+          - text: "Reflash the program"
+            correct: false
+          - text: "Set NUM_SENSORS back to 3 and then to 5 again"
+            correct: false
+
+      - id: L04_A10
+        type: multiple_choice
+        cite: "§7"
+        points: 1
+        stem: "What makes §7's three-vs-five comparison a genuinely fair test?"
+        options:
+          - text: "With the jumpers on DN2/DN4, sensors 1, 3 and 5 still have their own wires — so you switch configurations purely in software, on identical hardware"
+            correct: true
+          - text: "You move the jumpers between each run"
+            correct: false
+            why: "That would change the hardware between runs, which is exactly what a controlled experiment must not do."
+          - text: "You use two different robots"
+            correct: false
+          - text: "You recalibrate between every single reading"
+            correct: false
+
+      - id: L04_A12
+        type: multiple_choice
+        cite: "§7.1"
+        points: 1
+        stem: "In the five-sensor configuration, why can the line no longer hide?"
+        options:
+          - text: "Before one digit lets go of the line, its neighbour has already caught it"
+            correct: true
+          - text: "readLine() fills in the gaps by estimating"
+            correct: false
+          - text: "The extra sensors are more sensitive"
+            correct: false
+          - text: "Calibration removes the gaps"
+            correct: false
+
+      - id: L04_A13
+        type: multiple_choice
+        cite: "§7.2"
+        points: 1
+        stem: "In Test B you print the position from the THREE-sensor program. What scale does it use?"
+        options:
+          - text: "0–2000, centre 1000"
+            correct: true
+          - text: "0–4000, centre 2000"
+            correct: false
+            why: "That is the five-sensor scale. Comparing the two runs without noticing the scale change is the trap this question exists for."
+          - text: "0–1000, centre 500"
+            correct: false
+          - text: "0–99, centre 50"
+            correct: false
+
+      - id: L04_A14
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "Why must the jumpers go back to LFT/RGT at the end of this lesson?"
+        options:
+          - text: "Lesson 5 is the proximity lesson and needs all three receivers — this was a loan, not a goodbye"
+            correct: true
+          - text: "Because the robot will not boot with them on DN2/DN4"
+            correct: false
+          - text: "Because five-sensor mode is permanently disabled after this lesson"
+            correct: false
+          - text: "Because they will fall off in storage"
+            correct: false
+
+      - id: L04_A15
+        type: multiple_choice
+        cite: "§7.3"
+        points: 1
+        stem: "How does the exit ritual say to confirm the restoration?"
+        options:
+          - text: "Verify with software — flash the three-sensor program, sweep, and confirm sensors 1, 3 and 5 all respond to tape"
+            correct: true
+          - text: "Look at the jumpers and confirm they are seated"
+            correct: false
+            why: "Necessary but not sufficient. The lesson's rule is never to trust a hardware change without a test."
+          - text: "Check that the OLED shows five digits"
+            correct: false
+          - text: "Nothing — the restoration is checked in Lesson 5"
+            correct: false
+
+      - id: L04_A16
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "In Line Light, why must the display work appear in BOTH branches of the if?"
+        options:
+          - text: "The else branch erases the word with spaces — miss it and \"LINE!\" sticks on screen forever after its first appearance"
+            correct: true
+          - text: "Because display.gotoXY() must be called twice per loop"
+            correct: false
+          - text: "Because the LED and the display cannot share a branch"
+            correct: false
+          - text: "Because the else branch runs first"
+            correct: false
+
+      - id: L04_A18
+        type: multiple_choice
+        cite: "Observation Experiment 2"
+        points: 1
+        stem: "You tape over the centre sensor's window, recalibrate, and run. Why do its readings swing wildly?"
+        options:
+          - text: "A covered eye sees the same darkness everywhere, so its brightest and darkest are nearly identical — calibration has almost no range to grade against, and tiny flickers get stretched"
+            correct: true
+          - text: "The sensor reports a constant 1000"
+            correct: false
+          - text: "The tape reflects infrared back into the neighbouring sensors"
+            correct: false
+          - text: "Calibration ignores any sensor that cannot see"
+            correct: false
+
+      - id: L04_A20
+        type: multiple_choice
+        cite: "Observation Experiment 5"
+        points: 1
+        stem: "Sliding the surface fast, the position readout stops keeping up. Which constant would you change to react faster, and roughly how many readings per second is the program taking?"
+        options:
+          - text: "DISPLAY_INTERVAL_MS — the 100 ms pause gives about 10 readings per second"
+            correct: true
+          - text: "CAL_TIME_MS — the 5000 ms sweep sets the reading rate"
+            correct: false
+            why: "CAL_TIME_MS only sizes the calibration window at boot; it has no effect on the loop's pace."
+          - text: "NUM_SENSORS — fewer sensors would read faster"
+            correct: false
+          - text: "There is no such constant; the rate is fixed by the library"
+            correct: false
+
+      - id: L04_A21
+        type: true_false
+        cite: "§7"
+        points: 1
+        stem: "initThreeSensors() still works with the jumpers on DN2/DN4."
+        correct: true
+        why: "Sensors 1, 3 and 5 keep their permanent wires in every jumper position — which is exactly what makes §7's software-only comparison fair."
+
+      - id: L04_A22
+        type: true_false
+        cite: "§6 Step 8"
+        points: 1
+        stem: "The jumpers may be moved with the robot powered on, as long as the USB cable is unplugged."
+        correct: false
+        why: "Power OFF and USB unplugged, in the Section 4 pose, over the table."
+
+      # ---------- added S139 to bring the mix to ~70% MC ----------
+      - id: L04_A23
+        type: true_false
+        cite: "§6 Step 4"
+        points: 1
+        stem: "On plain white, before any calibration, the three raw columns read the same number as each other."
+        correct: false
+        why: "The honesty test exists to show they do NOT — one may idle near 180 while its neighbour idles near 320 on identical floor."
+
+      - id: L04_A24
+        type: true_false
+        cite: "§7.1"
+        points: 1
+        stem: "In the three-sensor configuration the line can hide in two separate places under the robot."
+        correct: true
+        why: "The 1-to-3 gap and the 3-to-5 gap. Five sensors close both."
+
+      - id: L04_A25
+        type: true_false
+        cite: "Observation Experiment 4"
+        points: 1
+        stem: "Wider tape makes the three-sensor blind gap harder to fall into."
+        correct: true
+        why: "The invisible zone is roughly the sensor spacing minus the tape width — which is why wider tape is the classic three-sensor survival trick."
+
+      - id: L04_A26
+        type: matching
+        cite: "§6 Steps 4-8"
+        points: 5
+        stem: "Match each moment in the build to what you should have seen."
+        pairs:
+          - left: "Step 4, raw readings on white"
+            right: "Three columns that disagree with each other on identical floor"
+          - left: "Step 5, adding calibrateSensors() to setup()"
+            right: "A red build naming a function that was not declared in this scope"
+          - left: "Step 6, sliding the line from sensor 1 toward sensor 3"
+            right: "A position where the dashboard reads all-white with the line still underneath"
+          - left: "Step 7, five-sensor code with the jumpers unmoved"
+            right: "Digits 2 and 4 refusing to track the tape, with no crash and no warning"
+          - left: "Step 8, five sensors after a fresh sweep"
+            right: "A hill of dark walking across the row, 90000 to 00009"
+        extra_answers:
+          - "All five digits rising and falling together"
+          - "The display going blank until Button A is pressed"
+
+      - id: L04_A27
+        type: matching
+        cite: "Observation Experiments 1-5"
+        points: 4
+        stem: "Match each observation experiment to what it revealed."
+        pairs:
+          - left: "White World"
+            right: "readLineWhite() flips every value and hunts the brightest thing instead"
+          - left: "The Covered Eye"
+            right: "A sensor with almost no range between brightest and darkest swings wildly"
+          - left: "The Sun Hunter"
+            right: "The phototransistor cannot tell whose infrared it is drinking"
+          - left: "The Speed Reader"
+            right: "About ten readings a second, set by DISPLAY_INTERVAL_MS"
+        extra_answers:
+          - "Calibration data is written to flash and survives a power cycle"
+          - "The emitters switch off automatically in bright light"
