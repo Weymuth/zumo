@@ -51,7 +51,13 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.24.0'
+VERSION = 'v1.24.1'
+
+# The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
+# sentence inside it has claimed that since S138 while nothing produced it, so a fixture
+# built by --handoff carried no marker and the claim was false about its own file.
+HANDOFF_MARKER = ('<!-- VERSION BLOCK: emitted by session_versions.py --handoff.'
+                  ' Never hand-typed. -->')
 # v1.23.0 (S132): registers `glossary_convert.py`, emitted in BOTH blocks. A tool nothing
 #   tracks can only ever have its version hand-typed (§12.6); the ROSTER arm named it
 #   unprompted on its first run - Control G working as designed for the fourth
@@ -72,6 +78,25 @@ VERSION = 'v1.24.0'
 #   nothing compared them. It drifted three times in one day. Bible == LIVE.md == handoff-1.
 # v1.16.0 (S113): _versions_in strips backticks. See the note in that function - the
 #   comparator was blind to every backtick-wrapped entry, which is most of the STATE block.     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
+# v1.24.1 (S139): CONTROL H - A VERSION NAMED IN PROSE IS NOT A VERSION CLAIM. check()
+#   read the WHOLE handoff into _versions_in, which builds its dict with re.findall, so
+#   the LAST occurrence of a key won. The S139 handoff states `Bible **v8.130.2**` in its
+#   STATE block and eighty lines later refers in prose to `(Bible v8.130.1)` - a note
+#   about which version amended 24.10. The prose won, and --check called the STATE block
+#   wrong when the STATE block was right. LIVE.md never had this: its read is already
+#   scoped to line 6, asserted to start with '**Versions:**'. The handoff was the outlier
+#   and now takes the same discipline - the read is a WINDOW anchored on the VERSION BLOCK
+#   marker, one line per line of the emitted block. _versions_in is untouched, because it
+#   is used on generated text too and a rule about prose is meaningless there.
+#   THE MARKER IS NOW EMITTED. Its own sentence has read "emitted by session_versions.py
+#   --handoff. Never hand-typed." since S138 while nothing emitted it, so _fixture_clean -
+#   which rebuilds the handoff from --handoff - produced a file the marker's own claim was
+#   false about. A marker that anchors a read has to come from the emitter.
+#   No whole-file fallback: a missing marker is LOUD, because a fallback reinstates the
+#   defect on exactly the malformed file that most needs the check. And a generated key
+#   ABSENT from the window is now reported instead of skipped - the old loop's `if k in hw`
+#   passed silently over anything the file failed to mention, which under a windowed read
+#   would have turned a reflowed block into silence rather than a finding.
 # v1.12 (S103): CONTROL G LOSES ITS ONLY EXEMPTION, and the handoff block gains the
 #   syllabus. v1.11's G excused 'Syllabus' because it is emitted under its FILENAME - true
 #   of --live, false of --handoff, where it appeared under neither name. The exemption
@@ -301,7 +326,8 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
 
 def emit_handoff(vals, lessons, marks, icons, cen, sha):
     ls = ' · '.join(f"{k} {lessons[k]}" for k in sorted(lessons))
-    return (f"Fresh-clone verified at **`{sha}`**. Census **{cen:,}**.\n"
+    return (f"{HANDOFF_MARKER}\n"
+            f"Fresh-clone verified at **`{sha}`**. Census **{cen:,}**.\n"
             f"Bible **{vals['Bible']}** · `BookComponentStandard` **{vals['BookComponentStandard']}** · "
             f"Maker **{vals['Maker']}** ·\n`marks/` **{marks}** · `icons/` **{icons}** incl. LICENSE.\n"
             f"`ZUMO_Syllabus_WORKING.md` **{vals['Syllabus']}**.\n\n"
@@ -449,11 +475,44 @@ def check():
     if len(handoffs) != 1:
         print(f"  expected exactly one session handoff in root, found {len(handoffs)}")
         return 1
-    hw = _versions_in(_desha(open(handoffs[0], encoding='utf-8').read()))
-    hg = _versions_in(_desha(emit_handoff(vals, lessons, marks, icons, cen, sha)))
-    for k in sorted(hg):
-        if k in hw and hw[k] != hg[k]:
-            print(f"  {os.path.basename(handoffs[0])} {k}: written={hw[k]} files={hg[k]}")
+    # S139: READ THE BLOCK, NOT THE FILE.
+    #
+    # This read the WHOLE handoff and fed it to _versions_in, which builds a dict from
+    # re.findall - so the LAST occurrence of a key wins. The S139 handoff states
+    # `Bible **v8.130.2**` in its STATE block and then, eighty lines later, refers in
+    # PROSE to `(Bible v8.130.1)` - a historical note naming which version amended
+    # 24.10. The prose won, and --check reported the STATE block as wrong when the
+    # STATE block was right. A version named in prose is not a version CLAIM.
+    #
+    # LIVE.md never had this defect because its read is already scoped: line 6, asserted
+    # to start with '**Versions:**'. The handoff path was the outlier, and the fix is to
+    # give it the same discipline rather than to teach _versions_in about prose - the
+    # extractor is used on generated text too, and a rule about prose has no meaning there.
+    #
+    # 24.8: if the answer were the opposite - a stale STATE block and a correct prose
+    # mention - the old code returned exactly what it returned here. It could not tell
+    # the two apart in either direction.
+    #
+    # NO WHOLE-FILE FALLBACK. A fallback when the marker is absent reinstates the defect
+    # on precisely the malformed file that most needs checking, so a missing marker is
+    # LOUD. And a generated key absent from the window is reported rather than skipped:
+    # the old loop's `if k in hw` silently passed any key the file failed to mention,
+    # which under a windowed read would have turned a reflowed block into silence.
+    hname = os.path.basename(handoffs[0])
+    hlines = open(handoffs[0], encoding='utf-8').read().split('\n')
+    gen_h = emit_handoff(vals, lessons, marks, icons, cen, sha)
+    glines = gen_h.split('\n')
+    marks_at = [i for i, ln in enumerate(hlines) if ln.strip() == HANDOFF_MARKER]
+    if len(marks_at) != 1:
+        print(f"  {hname}: expected exactly one VERSION BLOCK marker, found "
+              f"{len(marks_at)} - regenerate with --handoff")
+        return 1
+    m = marks_at[0]
+    hw = _versions_in(_desha('\n'.join(hlines[m:m + len(glines)])))
+    hg = _versions_in(_desha(gen_h))
+    for k in sorted(set(hw) | set(hg)):
+        if hw.get(k) != hg.get(k):
+            print(f"  {hname} {k}: written={hw.get(k)} files={hg.get(k)}")
             bad += 1
 
     if bad:
@@ -846,7 +905,75 @@ def selftest():
     if _missing is not None:
         print("   every registered artefact appears in both emitted blocks\n")
 
-    print("ALL SEVEN CONTROLS PASS - silent when clean, loud when broken, both directions.")
+    print("CONTROL H (the handoff read is SCOPED): prose must not shadow the STATE block, "
+          "and the block must still be checked")
+    # S139. The reader took the LAST match of each key across the WHOLE handoff, so a
+    # version named in prose overwrote the STATE block's claim. Three directions, because
+    # the narrowing that fixes it can fail three ways: it can stay fooled, it can go
+    # blind, or it can lose its grip on the block entirely.
+    #
+    # Every direction runs inside a fixture built clean by construction (S100, rule 14) -
+    # silence here is evidence about the READER, never a reading of whatever the live
+    # tree happens to hold today.
+    tmp3 = tempfile.mkdtemp()
+    try:
+        work = os.path.join(tmp3, 'repo')
+        shutil.copytree(ROOT, work, ignore=shutil.ignore_patterns('.git', '__pycache__'))
+        probe = os.path.join(work, os.path.basename(__file__))
+        _fixture_clean(work, probe)
+        hpath = max(glob.glob(os.path.join(work, 'ZUMO_S*_HANDOFF.md')))
+        pristine = open(hpath, encoding='utf-8').read()
+
+        def _run():
+            r = subprocess.run([sys.executable, probe, '--check'],
+                               capture_output=True, text=True, cwd=work)
+            return r.returncode, (r.stdout or '') + (r.stderr or '')
+
+        rc, out = _run()
+        if rc != 0:
+            print("   FAILED. Not silent on a fixture built clean. What it said:")
+            for ln in out.strip().split('\n'):
+                print("     " + ln)
+            return 1
+        print("   silent on a fixture built clean")
+
+        # H1 - IMMUNITY. A stale version in PROSE, well outside the block, must not be
+        # read as a claim. This is the live S139 defect, reproduced exactly.
+        open(hpath, 'w', encoding='utf-8').write(
+            pristine + "\n\nSome later prose recalling that Bible v0.0.1 amended a rule.\n")
+        rc, out = _run()
+        if rc != 0 and 'Bible' in out:
+            print("   FAILED. A version named in PROSE still shadows the STATE block:")
+            for ln in out.strip().split('\n'):
+                print("     " + ln)
+            return 1
+        print("   a version named in prose does NOT shadow the block")
+
+        # H2 - BLINDING. Narrowing the read must not narrow it to nothing: a wrong value
+        # INSIDE the block must still be loud. Without this, H1 passes by going blind.
+        seeded = pristine.replace('Bible **', 'Bible **v0.0.1** ignore-', 1)
+        assert seeded != pristine, "control H: could not seed inside the block"
+        open(hpath, 'w', encoding='utf-8').write(seeded)
+        rc, out = _run()
+        if rc == 0 or 'Bible' not in out:
+            print("   FAILED. A wrong version INSIDE the block was not reported - the "
+                  "scoped read is blind, not immune.")
+            return 1
+        print("   a wrong version inside the block is still LOUD")
+
+        # H3 - NO SILENT FALLBACK. A missing marker must fail rather than quietly reverting
+        # to the whole-file read, which is the defect this control exists to close.
+        open(hpath, 'w', encoding='utf-8').write(
+            pristine.replace(HANDOFF_MARKER, '<!-- moved -->', 1))
+        rc, out = _run()
+        if rc == 0 or 'VERSION BLOCK' not in out:
+            print("   FAILED. A handoff with no VERSION BLOCK marker did not fail loudly.")
+            return 1
+        print("   a missing VERSION BLOCK marker is LOUD, with no whole-file fallback\n")
+    finally:
+        shutil.rmtree(tmp3, ignore_errors=True)
+
+    print("ALL EIGHT CONTROLS PASS - silent when clean, loud when broken, both directions.")
     return 0
 
 
