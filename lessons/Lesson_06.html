@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.32.0 -->
+<!-- Lesson version: v04.32.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -324,7 +324,34 @@
 
 <h3 class="h3-c-1f2a3d">3.4 Converting Counts to Distance</h3>
 
-<p>The Zumo's wheels are <strong>39mm diameter</strong>. Using circumference = π × diameter:</p>
+<p>The Zumo's wheels are <strong>39&#8239;mm</strong> in diameter — and that number is worth one paragraph, because there are two different things you could measure.</p>
+
+<p>The black sprocket by itself measures <strong>35&#8239;mm</strong> across. The silicone track wraps around it and adds roughly 2&#8239;mm on each side, which brings the outside of the wheel to <strong>39&#8239;mm</strong>. Both numbers are real; they measure different things.</p>
+
+<p>Use <strong>39</strong>. The track is the part that touches the floor, so the track is the part that decides how far one rotation carries the robot — the sprocket never meets the ground at all. Measure the sprocket alone and you would be calculating how far a robot with no tracks on it would travel.</p>
+
+<p><strong>Use calipers for this, not a ruler.</strong> The two answers are only 4&#8239;mm apart, and a ruler held against a curved black track cannot reliably tell you which one you just read. Close the jaws <em>gently</em> — silicone squashes, and a firm squeeze will hand you a number that is too small.</p>
+
+<div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP" data-callout="6.68">
+
+<div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
+<div class="div-fs-105em">Taking the measurement</div>
+
+<ol>
+
+<li><strong>Zero them first.</strong> Close the jaws fully and press ZERO. A caliper reading 0.06 before you start reads 0.06 high all day.</li>
+
+<li><strong>Use the big outside jaws, across the middle</strong> — through the axle. Off-centre gives you a chord, not the diameter, and a chord always reads small.</li>
+
+<li><strong>Squeeze gently.</strong> Silicone gives, and a firm grip hands you a number that is too low.</li>
+
+<li><strong>Take three readings, rotating the wheel between each.</strong> The track is elastic and not perfectly round. One reading is a number; three are a measurement. Put the middle one in your notebook — table A4 wants it.</li>
+
+</ol>
+
+</div>
+
+<p>Using circumference = π × diameter:</p>
 
 <p><strong>Circumference</strong> = π × 39mm = <strong>122.5mm</strong> per rotation</p>
 
@@ -332,7 +359,7 @@
 
 <p>To drive 30 cm: 30 × 74.3 = <strong>2,229 encoder counts</strong></p>
 
-<img src="../images/L06_GRAPHIC_6-05_wheel_circumference.svg" alt="A 39 mm diameter wheel, and the same wheel unrolled along the floor for one full turn to show a circumference of 122.5 mm. Dividing 909.7 counts by 12.25 cm gives 74.3 counts per centimetre." class="img-d-block">
+<img src="../images/L06_GRAPHIC_6-05_wheel_circumference.svg" alt="A wheel measured across the outside of its track at 39 mm — the sprocket underneath is 35 mm — and the same wheel unrolled along the floor for one full turn to show a circumference of 122.5 mm. Dividing 909.7 counts by 12.25 cm gives 74.3 counts per centimetre." class="img-d-block">
 
 <h3 class="h3-c-1f2a3d">3.5 Calculating Turns</h3>
 
@@ -452,7 +479,7 @@
 
 <tr><td class="td-ccc-2">Counts per wheel rotation</td><td class="td-ccc-2">909.7</td></tr>
 
-<tr class="tr-bg-f9f9f9"><td class="td-ccc-2">Wheel diameter</td><td class="td-ccc-2">39mm</td></tr>
+<tr class="tr-bg-f9f9f9"><td class="td-ccc-2">Wheel diameter (over the track)</td><td class="td-ccc-2">39mm — the sprocket alone is 35mm</td></tr>
 
 <tr><td class="td-ccc-2">Wheel circumference</td><td class="td-ccc-2">122.5mm</td></tr>
 
@@ -635,7 +662,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <pre><span class="tok-7cbf6e">// WITHOUT abs — the backward bug</span>
 int targetCounts = -30 * COUNTS_PER_CM;   <span class="tok-7cbf6e">// a NEGATIVE target</span>
-<span class="tok-569cd6">while</span> (encoderCount &lt; targetCounts) { ... }   <span class="tok-7cbf6e">// already true — loop never runs, robot never moves</span></pre>
+<span class="tok-569cd6">while</span> (encoderCount &lt; targetCounts) { ... }   <span class="tok-7cbf6e">// already false — loop never runs, robot never moves</span></pre>
 
 <p>The count starts at 0. A negative target is already below 0, so <code>0 &lt; targetCounts</code> is false on the very first check and the loop exits before the wheels turn. Wrap the distance in <code>abs()</code> and the target is always a positive number the count can climb to, whichever way the robot drives:</p>
 
@@ -808,7 +835,7 @@ int speed;
     <ul class="p-mb-0">
         <li>VS Code with PlatformIO installed</li>
         <li>Zumo 32U4 robot connected via USB</li>
-        <li>A ruler or measuring tape for calibration</li>
+        <li>A ruler or measuring tape for calibration — and calipers if you want to check the wheel itself (§3.4)</li>
         <li>Open floor space (~1 meter)</li>
     </ul>
 </div>
@@ -946,7 +973,7 @@ every loop:
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
 <pre class="pre-b8c4cc">constants (CONFIGURATION section):
 counts per wheel rotation  = 909.7      ← from the gearbox
-wheel diameter             = 39.0 mm    ← from the ruler
+wheel diameter             = 39.0 mm    ← measured OVER the track
 wheel circumference        = π × diameter
 counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 
@@ -2097,7 +2124,7 @@ delay(<span class="tok-b5cea8">50</span>); <span class="tok-7cbf6e">// Small del
 </div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L06</strong> build — or a fresh copy that opens <strong>preloaded with the finished lesson program</strong>, ready to modify: <a href="../newproject.html?lesson=6&amp;kind=smooth_stopping" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-recipes" class="link-c-2e86ab">Code Recipes</a> — two while-loops: cruise zone, then slow zone.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-motors" class="link-c-2e86ab">Motors</a> · <a href="#qr-recipes" class="link-c-2e86ab">Code Recipes</a> — one while-loop, with an <code>if</code> inside it that drops the speed once you are past the mark.</p>
 </div>
 
 <div class="div-bg-f8f9fa">
@@ -2380,7 +2407,7 @@ Stop motors</pre>
 
 <details data-reveal="quiz"><summary>5. Step 13 changed the drive gate from one encoder to <code>averageCounts()</code>. Why does asking both wheels beat asking the better one? (§6 Step 13)</summary>
 
-<div class="div-mt-12px"><p>Because you do not get to choose which wheel misbehaves. The old gate watched the left encoder only, so a slipping left track over-counted and the loop quit early, while a dragging right track was never asked anything at all and the robot sailed straight past the mark. Averaging does not make either wheel honest — it makes the error <em>shared</em>, so a bad track costs you half the distance error instead of all of it, and it costs you that in a direction you can predict.</p></div>
+<div class="div-mt-12px"><p>Because you do not get to choose which wheel misbehaves. The old gate watched the left encoder only: a slipping left track over-counts and the loop quits early, a binding left track under-counts and the loop waits too long — and in both cases the right wheel knew better and was never asked. Averaging does not make either wheel honest — it makes the error <em>shared</em>, so a bad track costs you half the distance error instead of all of it. What it cannot do is see a <em>curve</em>: if the trouble is on the right, the left encoder is telling the truth about its own wheel and the robot is simply not going straight. That is a different bug, and it is what TRIM is for.</p></div>
 
 </details>
 
@@ -2451,10 +2478,10 @@ Stop motors</pre>
     <p>It stops right on schedule — the wheels spun 50&#8239;cm worth of counts while the robot went nowhere. Encoders measure the motor's side of the story, and in the air that story is fiction.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-3" data-challenge="6.m3" data-kind="bonus-observation">Experiment 3: The Uneven Twins</h4>
-<p>Run <code>driveDistance(50)</code> three times. First clean. Then hold a finger <em>lightly</em> against the <strong>left</strong> track while it drives. Then the <strong>right</strong> track instead. Same drag, same distance requested — predict: does the robot stop short, overshoot, or land right, and does it matter <em>which</em> track you touch?</p>
+<p>Run <code>driveDistance(50)</code> three times. First clean — mark where it lands <strong>and which way it points</strong>. Then run it again holding a finger <em>lightly</em> against the <strong>left</strong> track. Then a third time, same finger, the <strong>right</strong> track instead. Same drag, same 50&#8239;cm requested. Predict before each run: <em>where does it stop, and where is it pointing when it gets there?</em></p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Drag the <strong>left</strong> track and the robot <strong>stops short</strong>: that track slips, the left encoder over-counts, and the loop quits early. Drag the <strong>right</strong> and it sails straight past the mark — because before Step 13 the gate was <code>abs(encoders.getCountsLeft())</code> and <em>nothing ever asked the right wheel anything.</em> That is not normal variance. That is a bug you can feel with one finger. <code>averageCounts()</code> asks both wheels, so a stiff track now costs you <em>half</em> the error instead of all of it.</p>
+    <p>Both drags leave you <strong>short</strong> of the mark, and that is the least interesting part. Drag the <strong>left</strong> and the error is in the number: that track slips, the left encoder counts rotation the robot never turned into travel, and the gate quits early. Drag the <strong>right</strong> and the left encoder is telling the truth — the left wheel really did roll 50&#8239;cm — but it rolled it around a <strong>curve</strong>, because the right side was held back. The robot is short <em>and</em> it is aimed somewhere new, and the screen says done at exactly the right moment either way. <code>averageCounts()</code> catches the first lie and halves it, because two encoders disagreeing is something the code can notice. It cannot touch the second one: <strong>no encoder anywhere on this robot can see a curve.</strong> That is what TRIM is for in Step 13 — and why Lesson 12 is called <em>Wheels Lie</em>.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-4" data-challenge="6.m4" data-kind="bonus-observation">Experiment 4: The 440 Ruler</h4>
 <p>Without running it, read <code>driveDistance</code> and predict what happens if you call it with 500&#8239;cm. Now check the Note in Step 7. What is special about the number 32,767 — and what would the robot actually do?</p>
@@ -2515,7 +2542,7 @@ Stop motors</pre>
 
 <tr><td class="td-ccc">Counts per degree (turn)</td><td class="td-ccc">~5.5</td></tr>
 
-<tr class="tr-b-white"><td class="td-ccc">Wheel diameter</td><td class="td-ccc">39mm</td></tr>
+<tr class="tr-b-white"><td class="td-ccc">Wheel diameter (over the track)</td><td class="td-ccc">39mm (sprocket alone: 35mm)</td></tr>
 
 <tr><td class="td-ccc">Wheel base (measure yours!)</td><td class="td-ccc">~85mm</td></tr>
 

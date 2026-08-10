@@ -1,0 +1,1105 @@
+# ZUMO READING QUIZ BANK — LESSON 07
+# Code Organization · The Eight-File Architecture
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_07.html v04.31.2 (post-S141 content fixes)
+#
+# READ -> FIX -> QUIZ. Lesson 07 was read end to end in S141 and seven findings were
+# fixed before a question was written. Four of them are load-bearing here:
+#
+#   1. THREE CALLOUTS TOLD THE STUDENT LESSON 8 CREATES RobotSensors — NOTE 7.3 in §2,
+#      NOTE 7.72 in §8 and the What's Next bullet in §10 — when Steps 3 and 4 create it
+#      TODAY. The lesson contradicted itself: §1's eight-file list, §4's table, §5.2's
+#      table and Challenges 3 and 5 (both saying "your EXISTING RobotSensors files")
+#      all said otherwise, and L08's own Step 3 says "Open RobotSensors.h and read its
+#      own comment header... Today is that day." B09, B10 and A18 ask what the eight
+#      files are and which lesson builds them; against v04.31.1 a student who trusted
+#      the three callouts would have answered all three wrong.
+#   2. STEP 4's GOAL CONTRADICTED STEP 4's OWN MY PLAN, three lines apart — "the same
+#      seven lines your main.cpp has now" against "main.cpp still defines buttonA,
+#      buttonB, and display." The Maker settles it at THREE. A08 and A09 ask how many
+#      objects move and where the other four come from.
+#   3. §8A.3's SCOPE TABLE PUT A NON-CONST GLOBAL IN RobotConfig.h — `int robotSpeed =
+#      200;` — which is the exact shape §8's Error 2 names as the cause of "multiple
+#      definition", in the exact file §8 calls "nothing but const lines." B33, B34 and
+#      A12 all rest on const-in-a-header being safe and non-const not being.
+#   4. BRAIN CHECK 03 ANNOUNCED SEVEN QUESTIONS AND ASKED SIX. No question is keyed to
+#      BC03 itself; the count is noted because it is the kind of thing a careful
+#      student flags, and a bank written before the fix would have inherited the
+#      miscount in its own coverage note.
+#
+#   The other three: Common Pitfall 3 said "File A includes File B, which includes File
+#   B"; IMAGE 7.11 was rebuilt entirely (its banner read ERROR 3 over Error 4's message,
+#   for a function `driveStraight()` that exists nowhere in this project, illustrating a
+#   scenario §3.8's own NOTE says produces no error at all); and §8's Error 3 bullet
+#   claimed a .h in src/ is not found, which contradicts §3.8. B26 and B44 are written
+#   from the CORRECTED text — that PlatformIO searches both folders — and could not
+#   have been asked against v04.31.1 without keying a student to a falsehood.
+#
+# THREE ANSWERS DELIBERATELY NOT ASKED:
+#   - WHETHER monitor_speed MUST MATCH Serial.begin(). §8's Fix 1 was reordered this
+#     session so the real cause (timing) comes first, and nothing now asserts the
+#     numbers must agree — but whether the baud number is IGNORED on native USB rests
+#     on the book alone. Pololu's USB-interface section never mentions baud rate in
+#     either direction and the bench test has not been run. Not quizzable either way.
+#   - THE EXACT LINE NUMBERS in §8's error reproductions. They are illustrative, not
+#     derived from a real build of the student's own file, so keying one would test
+#     whether a student memorised a screenshot.
+#   - ANY TUNED VALUE for WHEEL_DIAMETER_MM or WHEEL_BASE_MM. §7 tells the student to
+#     change one number, re-measure and repeat, and the Quick Reference gives 98-115 as
+#     a TYPICAL tuned range rather than a target. B36 and B37 ask the DIRECTION each
+#     constant moves, which is what §7 actually teaches; B47 and A16 guard the other
+#     side, that neither number has a correct value to copy.
+#
+# NOTE ON SCOPE: L07 is the only lesson in the book where the robot does not gain a new
+# behaviour, so the `after` set cannot ask "what did the robot do?" It asks what the
+# BUILD did instead — which error each step staged, what moved where, and what the
+# tuning menu is for. Step 4's deliberate RED build is the richest source.
+#
+# FORMATS: multiple_choice, true_false, matching. No fill-in-the-blank by ruling.
+# EVERY QUESTION CARRIES A `cite`.
+#
+# MIX (QUIZ_SPEC v1.1.0: MC ~70%, TF cap ~20%, matching ~10%). DERIVED, not typed —
+# run quiz_bank.py rather than trusting this comment:
+#   before 48 — MC 35 (73%) / TF 9 (19%) / matching 4 (8%)
+#   after  21 — MC 16 (76%) / TF 3 (14%) / matching 2 (10%)
+#   69 questions total. The before set lands closest to the ~70% MC target of any
+#   bank so far, because L07 has more distinct askable facts per section than the
+#   hardware lessons and fewer of them reduce to a yes/no.
+
+lesson: "L07"
+title: "Code Organization — The Eight-File Architecture"
+bank_version: "1.0.0"
+source:
+  lesson_07: "v04.31.2"
+  lesson_06: "v04.32.1"
+
+sets:
+
+  # ===================================================================
+  # BEFORE — THE PRE-CLASS GATE
+  # Answerable from the reading alone. Nothing here needs the robot or
+  # a built project. Draws on §1, §3, §4, §5, §8, §8A, Quick Reference
+  # and the Glossary.
+  # Suggested Canvas draw: 10, one attempt, locks at period start.
+  # ===================================================================
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone."
+    suggested_draw: 10
+    questions:
+
+      # ---------- §1 Why split at all ----------
+      - id: L07_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "What is the problem this lesson exists to solve?"
+        options:
+          - text: "One file has grown big enough that finding anything in it is slow, and every change risks breaking something unrelated"
+            correct: true
+          - text: "The program has run out of flash memory"
+            correct: false
+          - text: "The robot has become too slow to run a single large file"
+            correct: false
+          - text: "The Zumo library requires multiple files from Lesson 7 onward"
+            correct: false
+
+      - id: L07_B02
+        type: true_false
+        cite: "§2"
+        points: 1
+        stem: "This lesson adds a new robot behaviour."
+        correct: false
+        why: "§2's note warns it will feel different — less robot doing something new, more reorganising what it already does. The robot ends the lesson doing exactly what it did at the end of Lesson 6."
+
+      # ---------- §3.2-§3.3 Header vs implementation ----------
+      - id: L07_B03
+        type: multiple_choice
+        cite: "§3.2, Glossary"
+        points: 1
+        stem: "What is the difference between a header file and an implementation file?"
+        options:
+          - text: "The header declares what exists; the .cpp holds the actual code that makes it work"
+            correct: true
+          - text: "The header holds the code; the .cpp declares what exists"
+            correct: false
+          - text: "The header is for constants and the .cpp is for functions"
+            correct: false
+          - text: "The header runs first and the .cpp runs second"
+            correct: false
+            why: "Neither one runs. They are both compiled; execution starts at setup()."
+
+      - id: L07_B04
+        type: multiple_choice
+        cite: "§3.2, Glossary"
+        points: 1
+        stem: "How do you tell a declaration from a definition just by looking?"
+        options:
+          - text: "A declaration ends with a semicolon; a definition has curly braces with code inside"
+            correct: true
+          - text: "A declaration has curly braces; a definition ends with a semicolon"
+            correct: false
+          - text: "A declaration is in capitals; a definition is not"
+            correct: false
+          - text: "A declaration always says extern"
+            correct: false
+            why: "extern declares an OBJECT. Plenty of declarations have nothing to do with it."
+
+      - id: L07_B05
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The lesson describes a declaration as a promise. What keeps it?"
+        options:
+          - text: "The definition — the .cpp that actually contains the code"
+            correct: true
+          - text: "The #include that pulls the header in"
+            correct: false
+          - text: "#pragma once"
+            correct: false
+          - text: "The linker, which writes the missing code"
+            correct: false
+            why: "The linker CHECKS that a promise was kept. It cannot keep one — an unkept promise is exactly the undefined reference error."
+
+      # ---------- §3.4 #include ----------
+      - id: L07_B06
+        type: multiple_choice
+        cite: "§3.4, Glossary"
+        points: 1
+        stem: "What does #include actually do?"
+        options:
+          - text: "It copies the contents of another file into yours at that spot, before compiling"
+            correct: true
+          - text: "It tells the linker which files belong to the project"
+            correct: false
+          - text: "It downloads the file if it is missing"
+            correct: false
+          - text: "It runs the other file first"
+            correct: false
+
+      - id: L07_B07
+        type: multiple_choice
+        cite: "§3.4, Quick Reference"
+        points: 1
+        stem: "When do you use angle brackets and when do you use quotes?"
+        options:
+          - text: "Angle brackets for system and library files, quotes for your own project files"
+            correct: true
+          - text: "Quotes for system and library files, angle brackets for your own"
+            correct: false
+          - text: "Angle brackets for headers, quotes for source files"
+            correct: false
+          - text: "It makes no difference which you use"
+            correct: false
+
+      - id: L07_B08
+        type: multiple_choice
+        cite: "§3.8"
+        points: 1
+        stem: "Which folders does PlatformIO search for a header you include with quotes?"
+        options:
+          - text: "Both include/ and src/ — you do not have to write the folder path"
+            correct: true
+          - text: "Only include/, so a header in src/ is never found"
+            correct: false
+            why: "§3.8's note says both are searched automatically."
+          - text: "Only src/"
+            correct: false
+          - text: "Whichever folder you name in platformio.ini"
+            correct: false
+
+      # ---------- §1, §4 The eight files ----------
+      - id: L07_B09
+        type: multiple_choice
+        cite: "§1, §4"
+        points: 1
+        stem: "How many files does the project have at the end of this lesson, and what are they?"
+        options:
+          - text: "Eight — main.cpp, RobotConfig.h, and .h/.cpp pairs for RobotSensors, RobotHelpers and RobotMotion"
+            correct: true
+          - text: "Four — main.cpp plus three headers"
+            correct: false
+          - text: "Eight — main.cpp plus seven headers, one per hardware object"
+            correct: false
+          - text: "Two — main.cpp and RobotConfig.h"
+            correct: false
+
+      - id: L07_B10
+        type: multiple_choice
+        cite: "§4, §5.2"
+        points: 1
+        stem: "Which file owns your robot-specific calibration numbers?"
+        options:
+          - text: "RobotConfig.h — WHEEL_DIAMETER_MM, COUNTS_PER_CM, the speeds, TRIM, the battery thresholds"
+            correct: true
+          - text: "main.cpp, so they are easy to find at the top"
+            correct: false
+          - text: "RobotMotion.cpp, next to the code that uses them"
+            correct: false
+          - text: "RobotSensors.h, with the hardware objects"
+            correct: false
+
+      - id: L07_B11
+        type: multiple_choice
+        cite: "§4"
+        points: 1
+        stem: "Which file holds the one real definition of each hardware object?"
+        options:
+          - text: "RobotSensors.cpp"
+            correct: true
+          - text: "RobotSensors.h"
+            correct: false
+            why: "The header holds the extern DECLARATIONS — the promises. Exactly one .cpp keeps them."
+          - text: "main.cpp"
+            correct: false
+          - text: "RobotConfig.h"
+            correct: false
+
+      - id: L07_B12
+        type: multiple_choice
+        cite: "§4"
+        points: 1
+        stem: "What lives in RobotMotion?"
+        options:
+          - text: "The movement functions — driveDistance() and turnDegrees()"
+            correct: true
+          - text: "The motor and encoder objects themselves"
+            correct: false
+            why: "Those are hardware objects, and all seven live in RobotSensors."
+          - text: "The speed and distance constants"
+            correct: false
+          - text: "setup() and loop()"
+            correct: false
+
+      # ---------- §3.5 #pragma once ----------
+      - id: L07_B13
+        type: multiple_choice
+        cite: "§3.5, Glossary"
+        points: 1
+        stem: "What does #pragma once do, and where does it go?"
+        options:
+          - text: "It stops a header being pasted in twice; it goes at the very top of every header file"
+            correct: true
+          - text: "It stops a function being defined twice; it goes at the top of every .cpp"
+            correct: false
+          - text: "It makes the compiler read the file only once per project rather than once per .cpp"
+            correct: false
+          - text: "It marks a constant as read-only"
+            correct: false
+
+      - id: L07_B14
+        type: multiple_choice
+        cite: "§3.5, Glossary"
+        points: 1
+        stem: "What is an include guard, and how does it relate to #pragma once?"
+        options:
+          - text: "It is the older #ifndef/#define/#endif technique for the same job — #pragma once is the modern replacement"
+            correct: true
+          - text: "It is a newer technique that replaces #pragma once"
+            correct: false
+          - text: "It guards against a header being edited by two people at once"
+            correct: false
+          - text: "It is what #pragma once expands into on this compiler"
+            correct: false
+
+      - id: L07_B15
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "You leave #pragma once out of a header that two different .cpp files include. What happens?"
+        options:
+          - text: "Any .cpp that pulls it in twice gets two copies of everything in it, and the compiler reports a redefinition"
+            correct: true
+          - text: "Nothing — the compiler skips files it has already read"
+            correct: false
+          - text: "The linker reports multiple definition"
+            correct: false
+            why: "Two copies inside ONE translation unit is a compiler error. Multiple definition is the linker's complaint about two .cpp files each defining the same thing."
+          - text: "The second .cpp fails to find the header"
+            correct: false
+
+      - id: L07_B16
+        type: true_false
+        cite: "§3.5"
+        points: 1
+        stem: "#pragma once belongs at the top of .cpp files as well as headers."
+        correct: false
+        why: "Headers get pasted into other files; .cpp files do not. There is nothing for it to guard."
+
+      # ---------- §3.6 extern ----------
+      - id: L07_B17
+        type: multiple_choice
+        cite: "§3.6, Quick Reference"
+        points: 1
+        stem: "What does `extern Zumo32U4OLED display;` in a header say?"
+        options:
+          - text: "\"This object exists somewhere — let me use it\""
+            correct: true
+          - text: "\"Create this object here\""
+            correct: false
+          - text: "\"This object is external to the project — it lives in the library\""
+            correct: false
+          - text: "\"Do not change this object\""
+            correct: false
+
+      - id: L07_B18
+        type: multiple_choice
+        cite: "§3.6, Quick Reference"
+        points: 1
+        stem: "How many .cpp files should contain the line `Zumo32U4OLED display;` with no extern?"
+        options:
+          - text: "Exactly one"
+            correct: true
+          - text: "One per file that uses the display"
+            correct: false
+          - text: "None — the header creates it"
+            correct: false
+          - text: "All of them, so each file has its own copy"
+            correct: false
+
+      - id: L07_B19
+        type: multiple_choice
+        cite: "§3.6, §8, Quick Reference"
+        points: 1
+        stem: "Two .cpp files each define an object with the same name. What happens, and when?"
+        options:
+          - text: "A linker error — multiple definition — reported after both files compiled cleanly on their own"
+            correct: true
+          - text: "A compiler error in the second file"
+            correct: false
+          - text: "Nothing; the second definition silently wins"
+            correct: false
+          - text: "The program builds but the robot uses whichever was created last"
+            correct: false
+
+      - id: L07_B20
+        type: true_false
+        cite: "§3.6, Quick Reference"
+        points: 1
+        stem: "You should write extern in the .cpp file that creates the object."
+        correct: false
+        why: "The Quick Reference says it outright — never write extern in the .cpp that creates the object. Do it and nothing defines it, and the linker reports an undefined reference."
+
+      # ---------- §3.7 scope ----------
+      - id: L07_B21
+        type: multiple_choice
+        cite: "§3.7, §8A.3"
+        points: 1
+        stem: "What is scope?"
+        options:
+          - text: "The region of a program where a name is visible and usable"
+            correct: true
+          - text: "The order in which files are compiled"
+            correct: false
+          - text: "How much memory a variable takes"
+            correct: false
+          - text: "How long a variable keeps its value"
+            correct: false
+            why: "That is lifetime. A variable can be alive and still not be visible where you are."
+
+      - id: L07_B22
+        type: multiple_choice
+        cite: "§8A.3"
+        points: 1
+        stem: "Where is a global object like `motors` accessible from?"
+        options:
+          - text: "Everywhere in the file that defines it, and from other files that declare it with extern"
+            correct: true
+          - text: "Everywhere in the project automatically, with no declaration needed"
+            correct: false
+            why: "Every other file still needs the promise. That is exactly what the extern in RobotSensors.h is for."
+          - text: "Only inside the function that uses it"
+            correct: false
+          - text: "Only in header files"
+            correct: false
+
+      # ---------- §5 The architecture ----------
+      - id: L07_B23
+        type: multiple_choice
+        cite: "§5.2, §4"
+        points: 1
+        stem: "After the split, what is left in main.cpp?"
+        options:
+          - text: "setup(), loop() and the includes — the orchestration, not the machinery"
+            correct: true
+          - text: "Everything except the constants"
+            correct: false
+          - text: "Only the includes"
+            correct: false
+          - text: "The hardware objects and setup()"
+            correct: false
+
+      - id: L07_B24
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "The lesson calls the split an architecture rather than a tidy-up. What does the architecture buy you?"
+        options:
+          - text: "Each file has one job, so a change to one is unlikely to break another, and you know where to look"
+            correct: true
+          - text: "The program compiles faster"
+            correct: false
+          - text: "The program uses less flash memory"
+            correct: false
+          - text: "The robot runs faster because the code is spread out"
+            correct: false
+
+      # ---------- §8 The errors ----------
+      - id: L07_B25
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "What is the difference between a compiler error and a linker error?"
+        options:
+          - text: "The compiler checks one file at a time; the linker checks whether the promises across all of them line up"
+            correct: true
+          - text: "The compiler reports syntax problems and the linker reports logic problems"
+            correct: false
+          - text: "The compiler runs on your computer and the linker runs on the robot"
+            correct: false
+          - text: "They are two names for the same step"
+            correct: false
+
+      - id: L07_B26
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "You get `fatal error: RobotMotion.h: No such file or directory`. What does §8 tell you to check?"
+        options:
+          - text: "The spelling of the filename first, then that it is in include/ or src/, and whether you used <> instead of \"\""
+            correct: true
+          - text: "That the header is in include/, because a header in src/ is never found"
+            correct: false
+            why: "PlatformIO searches both — §3.8 says so, and §8 agrees."
+          - text: "That the .cpp file exists"
+            correct: false
+            why: "A missing .cpp gives you an undefined reference at link time, not a missing-file error at compile time."
+          - text: "That #pragma once is present"
+            correct: false
+
+      - id: L07_B27
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "`undefined reference to 'driveDistance'` — the compiler was happy but the linker is not. What does that combination mean?"
+        options:
+          - text: "The declaration exists, so the compiler believed the promise — but nothing anywhere defines the function"
+            correct: true
+          - text: "The header is missing"
+            correct: false
+            why: "Then the compiler would have stopped first, at the include."
+          - text: "The function is defined twice"
+            correct: false
+          - text: "The function is spelled wrong in the header"
+            correct: false
+
+      - id: L07_B28
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "`'motors' was not declared in this scope`, in a file that uses motors. What is missing?"
+        options:
+          - text: "The #include of the header that declares it — this file never got the promise"
+            correct: true
+          - text: "The object itself, which nothing defines"
+            correct: false
+            why: "That would be a linker complaint. This one is the compiler saying it has never heard the name."
+          - text: "#pragma once in RobotSensors.h"
+            correct: false
+          - text: "extern in RobotSensors.cpp"
+            correct: false
+
+      - id: L07_B29
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The lesson says to read an error message a particular way. Which?"
+        options:
+          - text: "Find the FIRST error, not the last — later ones are often knock-on effects of it"
+            correct: true
+          - text: "Find the last error, because the compiler works backwards"
+            correct: false
+          - text: "Count the errors first, so you know how many fixes you need"
+            correct: false
+          - text: "Ignore anything that says 'warning'"
+            correct: false
+
+      - id: L07_B30
+        type: true_false
+        cite: "§8"
+        points: 1
+        stem: "A build that reports two errors means there are exactly two mistakes."
+        correct: false
+        why: "One mistake can hide another — the compiler can stop before it ever reaches the second, and fixing the first can make new ones appear."
+
+      # ---------- §3.9 / Common pitfalls ----------
+      - id: L07_B31
+        type: multiple_choice
+        cite: "§3.8"
+        points: 1
+        stem: "What is a circular include, and what stops the infinite loop?"
+        options:
+          - text: "File A includes File B which includes File A — #pragma once stops the loop"
+            correct: true
+          - text: "A file that includes itself — only removing the include stops it"
+            correct: false
+          - text: "Two files that define the same object — extern stops it"
+            correct: false
+          - text: "A header included by two .cpp files — the linker stops it"
+            correct: false
+
+      # ---------- §8A functions / scope ----------
+      - id: L07_B32
+        type: multiple_choice
+        cite: "§8A.3"
+        points: 1
+        stem: "A variable declared inside a function — where can you use it?"
+        options:
+          - text: "Only inside that function, and only while it is running"
+            correct: true
+          - text: "Anywhere in the same file"
+            correct: false
+          - text: "Anywhere in the project, if another file declares it extern"
+            correct: false
+          - text: "Anywhere after the line that declares it, including other functions below"
+            correct: false
+
+      - id: L07_B33
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Why can RobotConfig.h define constants directly when a header defining a variable causes multiple definition?"
+        options:
+          - text: "A const at the top of a header is private to each file that reads it, so the copies never collide"
+            correct: true
+          - text: "Constants are stored in flash rather than RAM, so they are exempt"
+            correct: false
+          - text: "#pragma once prevents the collision"
+            correct: false
+            why: "#pragma once stops a header being pasted twice into ONE file. It does nothing about two different .cpp files each getting a copy."
+          - text: "The linker merges identical constants automatically"
+            correct: false
+
+      - id: L07_B34
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "You write `float WHEEL_DIAMETER_MM = 39.0;` in RobotConfig.h, with no const. What breaks, and why?"
+        options:
+          - text: "Every .cpp that includes it builds its own real variable of that name, and the linker reports multiple definition"
+            correct: true
+          - text: "Nothing — this is how RobotConfig.h is meant to look"
+            correct: false
+            why: "§8 says the opposite in as many words: that is why RobotConfig.h is nothing but const lines."
+          - text: "The compiler reports a redefinition in the first file that reads it"
+            correct: false
+          - text: "The value silently becomes 0 in every file but one"
+            correct: false
+
+      # ---------- §7 tuning ----------
+      - id: L07_B35
+        type: multiple_choice
+        cite: "§7, Quick Reference"
+        points: 1
+        stem: "The tuning menu puts one job on each button. Which is which?"
+        options:
+          - text: "A drives forward 10 cm, B turns 90°, C runs a full square to verify both"
+            correct: true
+          - text: "A turns 90°, B drives forward 10 cm, C runs a square"
+            correct: false
+          - text: "A runs a square, B drives forward, C turns"
+            correct: false
+          - text: "A starts the robot, B stops it, C resets the encoders"
+            correct: false
+
+      - id: L07_B36
+        type: multiple_choice
+        cite: "§7, Quick Reference"
+        points: 1
+        stem: "Button A's 10 cm test came out at 11 cm. Which constant do you change, and which way?"
+        options:
+          - text: "Increase WHEEL_DIAMETER_MM — a bigger diameter means fewer counts per cm, so the robot stops sooner"
+            correct: true
+          - text: "Decrease WHEEL_DIAMETER_MM"
+            correct: false
+          - text: "Increase WHEEL_BASE_MM"
+            correct: false
+            why: "That is the turning constant. Button B is the one that tests it."
+          - text: "Decrease DRIVE_SPEED"
+            correct: false
+
+      - id: L07_B37
+        type: multiple_choice
+        cite: "§7, Quick Reference"
+        points: 1
+        stem: "Button B's 90° turn is coming up short. What do you change?"
+        options:
+          - text: "Increase WHEEL_BASE_MM"
+            correct: true
+          - text: "Decrease WHEEL_BASE_MM"
+            correct: false
+          - text: "Increase WHEEL_DIAMETER_MM"
+            correct: false
+          - text: "Increase TRIM"
+            correct: false
+
+      - id: L07_B38
+        type: multiple_choice
+        cite: "§7"
+        points: 1
+        stem: "You measured 85 mm between your wheels but the tuned WHEEL_BASE_MM ends up near 110. What does the lesson say about that?"
+        options:
+          - text: "That is normal — wheel slip, friction and surface all push the working number away from the measured one"
+            correct: true
+          - text: "You measured wrong; re-measure until it reads 110"
+            correct: false
+          - text: "The robot is damaged"
+            correct: false
+          - text: "The constant is in a different unit"
+            correct: false
+
+      - id: L07_B39
+        type: true_false
+        cite: "§2, §7"
+        points: 1
+        stem: "After this lesson, tuning the whole robot means changing numbers in one file."
+        correct: true
+        why: "That is objective 8 and the payoff of the split — RobotConfig.h is the only file you touch to re-tune."
+
+      # ---------- Quick Reference / battery ----------
+      - id: L07_B40
+        type: multiple_choice
+        cite: "Quick Reference"
+        points: 1
+        stem: "What do the battery thresholds do?"
+        options:
+          - text: "At or above 4800 mV the green LED lights; below 4200 mV the red LED lights and it is time to charge"
+            correct: true
+          - text: "At or above 6000 mV green, below 4800 mV red"
+            correct: false
+            why: "6000 is an alkaline number. This fleet runs four NiMH cells."
+          - text: "At or above 4200 mV green, below 3700 mV red"
+            correct: false
+          - text: "They only report; they do not change any LED"
+            correct: false
+
+      # ---------- matching ----------
+      - id: L07_B41
+        type: matching
+        cite: "Glossary"
+        points: 4
+        stem: "Match each Lesson 7 term to its definition."
+        pairs:
+          - left: "Declaration"
+            right: "Telling the compiler a function exists — ends with a semicolon"
+          - left: "Definition"
+            right: "The actual code that makes a function work — has curly braces"
+          - left: "Header File (.h)"
+            right: "Declares what exists, without the implementation code"
+          - left: "Include Guard"
+            right: "The older #ifndef/#define/#endif way of preventing a double include"
+        extra_answers:
+          - "A command that copies another file's contents into your code"
+          - "The step that checks whether every promise was kept"
+
+      - id: L07_B42
+        type: matching
+        cite: "§4, §5.2"
+        points: 4
+        stem: "Match each file to what it owns."
+        pairs:
+          - left: "main.cpp"
+            right: "setup() and loop() — the orchestration"
+          - left: "RobotConfig.h"
+            right: "The calibration numbers, speeds and thresholds"
+          - left: "RobotSensors.cpp"
+            right: "The one real definition of each hardware object"
+          - left: "RobotMotion.cpp"
+            right: "driveDistance() and turnDegrees()"
+        extra_answers:
+          - "The Zumo library's own source code"
+          - "The compiled binary that gets uploaded"
+
+      - id: L07_B43
+        type: matching
+        cite: "§8"
+        points: 4
+        stem: "Match each error message to what actually went wrong."
+        pairs:
+          - left: "'motors' was not declared in this scope"
+            right: "This file never included the header that declares it"
+          - left: "undefined reference to 'driveDistance'"
+            right: "Declared and used, but nothing defines it"
+          - left: "multiple definition of 'display'"
+            right: "Two .cpp files both create the same object"
+          - left: "No such file or directory"
+            right: "The compiler could not find the header at all"
+        extra_answers:
+          - "The header was included twice into one file"
+          - "The robot was disconnected during the build"
+
+      - id: L07_B44
+        type: matching
+        cite: "§3.4, §3.8, Quick Reference"
+        points: 3
+        stem: "Match each rule to the right answer."
+        pairs:
+          - left: "#include for a library file"
+            right: "Angle brackets"
+          - left: "#include for your own project file"
+            right: "Quotes"
+          - left: "Where PlatformIO looks for a quoted header"
+            right: "include/ and src/, both"
+        extra_answers:
+          - "Only the folder named in platformio.ini"
+          - "Curly braces"
+
+      # ---------- remaining true/false ----------
+      - id: L07_B45
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "extern creates the object it names."
+        correct: false
+        why: "It promises one exists elsewhere. Exactly one .cpp creates it, without extern."
+
+      - id: L07_B46
+        type: true_false
+        cite: "§8"
+        points: 1
+        stem: "A file can compile perfectly and the build still fail."
+        correct: true
+        why: "That is the whole point of the linker step — each file was fine on its own, and the promises between them did not line up."
+
+      - id: L07_B47
+        type: true_false
+        cite: "§7"
+        points: 1
+        stem: "The Quick Reference gives 98–115 as the correct WHEEL_BASE_MM to type in."
+        correct: false
+        why: "It calls that a typical TUNED range. Yours comes from your own robot on your own floor, by changing one number and re-measuring."
+
+      - id: L07_B48
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "#include happens before the code is compiled."
+        correct: true
+        why: "It is a preprocessor directive — the copy-paste happens first, and the compiler then sees one combined file."
+
+  # ===================================================================
+  # AFTER — POST-BUILD CHECK
+  # L07 is the only lesson where the robot gains no new behaviour, so
+  # this set asks what the BUILD did: which error each step staged,
+  # what moved where, and what the tuning menu is for.
+  # Suggested Canvas draw: 8.
+  # ===================================================================
+  after:
+    description: "Post-build check. Assumes the eight-file split was completed and the project builds green."
+    suggested_draw: 8
+    questions:
+
+      - id: L07_A01
+        type: multiple_choice
+        cite: "§6"
+        points: 1
+        stem: "The lesson has you split the project one file at a time, building after each. Why not do it all at once?"
+        options:
+          - text: "Building after each step means any error you get belongs to the step you just did"
+            correct: true
+          - text: "PlatformIO cannot create more than one file at a time"
+            correct: false
+          - text: "The compiler needs each file to exist before the next is written"
+            correct: false
+          - text: "It keeps the robot from running unfinished code"
+            correct: false
+
+      - id: L07_A02
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "Step 2 creates RobotConfig.h. Where do its numbers come from?"
+        options:
+          - text: "Your Lesson 6 project — you raid it for the constants you already tuned"
+            correct: true
+          - text: "The Maker, which fills them in for you"
+            correct: false
+          - text: "The Zumo library's defaults"
+            correct: false
+          - text: "You measure them all again from scratch"
+            correct: false
+
+      - id: L07_A03
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Step 4 stages a deliberate RED build. Which error is it, and what causes it?"
+        options:
+          - text: "multiple definition — RobotSensors.cpp now defines the objects that main.cpp still defines too"
+            correct: true
+          - text: "undefined reference — nothing defines the objects yet"
+            correct: false
+          - text: "No such file or directory — RobotSensors.h has not been created"
+            correct: false
+          - text: "redefinition — the header got included twice"
+            correct: false
+
+      - id: L07_A04
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Why does the lesson make you cause that error on purpose rather than avoiding it?"
+        options:
+          - text: "So the one error the split is most likely to produce is one you have already met and fixed deliberately"
+            correct: true
+          - text: "To check the compiler is installed correctly"
+            correct: false
+          - text: "Because there is no way to do the split without it"
+            correct: false
+            why: "There is — you could delete the old lines first. The lesson chooses the error."
+          - text: "To test whether the linker is working"
+            correct: false
+
+      - id: L07_A05
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "How do you clear it?"
+        options:
+          - text: "Delete the object definitions from main.cpp — RobotSensors.cpp owns them now"
+            correct: true
+          - text: "Delete them from RobotSensors.cpp and keep main.cpp's"
+            correct: false
+          - text: "Add extern in front of the ones in RobotSensors.cpp"
+            correct: false
+            why: "Then nothing defines them at all and you trade one linker error for another."
+          - text: "Add #pragma once to RobotSensors.cpp"
+            correct: false
+
+      - id: L07_A06
+        type: multiple_choice
+        cite: "§6"
+        points: 1
+        stem: "You finish a step and the build goes green. What has that actually proved?"
+        options:
+          - text: "That the files you have so far agree with each other — not that the robot behaves correctly"
+            correct: true
+          - text: "That the robot will drive exactly as it did in Lesson 6"
+            correct: false
+          - text: "That the constants are tuned correctly"
+            correct: false
+          - text: "That every file is in the right folder"
+            correct: false
+
+      - id: L07_A07
+        type: multiple_choice
+        cite: "§6"
+        points: 1
+        stem: "At the end of the split, what should the robot do?"
+        options:
+          - text: "Exactly what it did at the end of Lesson 6 — the behaviour is unchanged, only the organisation moved"
+            correct: true
+          - text: "Drive a square without being told to"
+            correct: false
+          - text: "Follow a line"
+            correct: false
+          - text: "Nothing until Lesson 8 adds a behaviour back"
+            correct: false
+
+      - id: L07_A08
+        type: multiple_choice
+        cite: "§6 Step 3, Step 4"
+        points: 1
+        stem: "How many hardware objects does main.cpp define before Step 4, and how many end up in RobotSensors.cpp?"
+        options:
+          - text: "Three in main.cpp — display, buttonA, buttonB — and seven in RobotSensors.cpp"
+            correct: true
+          - text: "Seven in main.cpp and seven in RobotSensors.cpp"
+            correct: false
+          - text: "Three in main.cpp and three in RobotSensors.cpp"
+            correct: false
+          - text: "Seven in main.cpp and three in RobotSensors.cpp"
+            correct: false
+
+      - id: L07_A09
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "RobotSensors.cpp ends up with seven objects. Where do the four that were never in main.cpp come from?"
+        options:
+          - text: "They are new here — buzzer, motors, encoders and buttonC, because the whole project will share one set from now on"
+            correct: true
+          - text: "They are copied from RobotConfig.h"
+            correct: false
+          - text: "The Zumo library supplies them automatically"
+            correct: false
+          - text: "They come from RobotMotion.cpp, which defined them first"
+            correct: false
+
+      - id: L07_A10
+        type: multiple_choice
+        cite: "§6"
+        points: 1
+        stem: "Each header you write gets #pragma once. When does that actually earn its place?"
+        options:
+          - text: "As soon as two different files include the same header, directly or through another header"
+            correct: true
+          - text: "Only when a header includes itself"
+            correct: false
+          - text: "Only in RobotConfig.h, because it holds constants"
+            correct: false
+          - text: "Never in this project — it is a habit for larger ones"
+            correct: false
+
+      - id: L07_A11
+        type: multiple_choice
+        cite: "§6, §8"
+        points: 1
+        stem: "You move driveDistance() into RobotMotion.cpp and the build says undefined reference. What did you forget?"
+        options:
+          - text: "The declaration in RobotMotion.h — main.cpp is calling a function nothing has promised it"
+            correct: true
+          - text: "The #pragma once at the top of RobotMotion.h"
+            correct: false
+          - text: "To delete the copy in main.cpp"
+            correct: false
+            why: "Leaving that copy gives you multiple definition, which is a different message."
+          - text: "extern in front of the function"
+            correct: false
+
+      - id: L07_A12
+        type: multiple_choice
+        cite: "§8A.3, §8"
+        points: 1
+        stem: "You want a new tunable number available everywhere. Where does it go, and how is it written?"
+        options:
+          - text: "In RobotConfig.h, as a const — every file that includes it gets its own private copy and nothing collides"
+            correct: true
+          - text: "In RobotConfig.h, as a plain non-const variable"
+            correct: false
+            why: "That is §8's Error 2 exactly: every .cpp builds a real variable of that name and the linker reports multiple definition."
+          - text: "In RobotSensors.cpp, next to the hardware objects"
+            correct: false
+          - text: "In main.cpp, above setup()"
+            correct: false
+
+      - id: L07_A13
+        type: multiple_choice
+        cite: "§7"
+        points: 1
+        stem: "You run Button A and the robot goes too far, then change WHEEL_DIAMETER_MM and run it again. What is that process called?"
+        options:
+          - text: "Calibration — change one number, re-measure, repeat"
+            correct: true
+          - text: "Debugging"
+            correct: false
+          - text: "Compiling"
+            correct: false
+          - text: "Commissioning"
+            correct: false
+
+      - id: L07_A14
+        type: multiple_choice
+        cite: "§7"
+        points: 1
+        stem: "Why does the tuning menu give Button C a full square rather than a third single test?"
+        options:
+          - text: "A square exercises the distance and the turn together, so it verifies both numbers at once"
+            correct: true
+          - text: "Squares are easier to measure than straight lines"
+            correct: false
+          - text: "It is the shape used in the milestone demo"
+            correct: false
+          - text: "It uses less battery than two separate tests"
+            correct: false
+
+      - id: L07_A15
+        type: true_false
+        cite: "§6"
+        points: 1
+        stem: "Once the split is done, adding a new movement function means touching main.cpp."
+        correct: false
+        why: "It goes in RobotMotion.cpp with its declaration in RobotMotion.h. main.cpp only calls it — that separation is the point of the architecture."
+
+      - id: L07_A16
+        type: true_false
+        cite: "§7"
+        points: 1
+        stem: "Your tuned WHEEL_DIAMETER_MM and WHEEL_BASE_MM should match another student's."
+        correct: false
+        why: "They are your robot's numbers. Motors, tracks and floors differ, which is why the lesson has you tune rather than copy."
+
+      - id: L07_A17
+        type: matching
+        cite: "§6"
+        points: 4
+        stem: "Match each step of the split to what it produced."
+        pairs:
+          - left: "Step 2"
+            right: "RobotConfig.h — the calibration numbers in one place"
+          - left: "Step 4"
+            right: "RobotSensors.cpp — and a deliberate multiple-definition error"
+          - left: "Step 7"
+            right: "RobotMotion — driveDistance() and turnDegrees() move out"
+          - left: "Step 8"
+            right: "The tuning menu in main.cpp's loop()"
+        extra_answers:
+          - "The line-following code"
+          - "The Zumo library, downloaded by lib_deps"
+
+      - id: L07_A21
+        type: matching
+        cite: "§6, §8"
+        points: 4
+        stem: "Match each mistake you might make during the split to the message it produces."
+        pairs:
+          - left: "Left the objects defined in main.cpp too"
+            right: "multiple definition"
+          - left: "Moved the function but never declared it in the .h"
+            right: "undefined reference"
+          - left: "Forgot to include the header in a file that uses motors"
+            right: "'motors' was not declared in this scope"
+          - left: "Misspelled the header name in the #include"
+            right: "No such file or directory"
+        extra_answers:
+          - "redefinition of 'DRIVE_SPEED'"
+          - "The build succeeds and the robot does nothing"
+
+      - id: L07_A18
+        type: multiple_choice
+        cite: "§10"
+        points: 1
+        stem: "Lesson 8 adds line following. What does it do with RobotSensors?"
+        options:
+          - text: "Adds the line-sensor functions to the RobotSensors files you built today"
+            correct: true
+          - text: "Creates RobotSensors.h and RobotSensors.cpp for the first time"
+            correct: false
+            why: "They exist from Step 3 and Step 4 of this lesson — Challenges 3 and 5 already call them your existing files."
+          - text: "Replaces RobotSensors with a new RobotLine module"
+            correct: false
+          - text: "Leaves RobotSensors alone and puts the sensor code in main.cpp"
+            correct: false
+
+      - id: L07_A19
+        type: multiple_choice
+        cite: "§9 Challenge 4"
+        points: 1
+        stem: "Challenge 4 asks for a driveDistanceSlow(). Which file does the function body go in, and why?"
+        options:
+          - text: "RobotMotion.cpp — it is a movement function, and its declaration goes in RobotMotion.h"
+            correct: true
+          - text: "main.cpp, because it is a new function you wrote yourself"
+            correct: false
+          - text: "RobotConfig.h, with the speed constants it uses"
+            correct: false
+          - text: "RobotSensors.cpp, because it reads the encoders"
+            correct: false
+
+      - id: L07_A20
+        type: true_false
+        cite: "§6, §8"
+        points: 1
+        stem: "If you split the files correctly but put a header in the wrong folder, the project still builds."
+        correct: true
+        why: "PlatformIO searches include/ and src/ both, so a header in either is found — which is why a missing-file error usually means the NAME is wrong, not the folder."

@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.28.2 -->
+<!-- Lesson version: v03.28.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -449,7 +449,7 @@
     <li><code>platform</code> — the chip family (Atmel AVR — the family the ATmega32U4 belongs to)</li>
     <li><code>board</code> — the exact board, so the compiler knows its memory size and pin layout</li>
     <li><code>framework</code> — the coding style we use (Arduino: <code>setup()</code> and <code>loop()</code>)</li>
-    <li><code>monitor_speed</code> — how fast the Serial Monitor talks to the robot (must match the code)</li>
+    <li><code>monitor_speed</code> — the speed PlatformIO opens the Serial Monitor at. On this robot it is a formality: the Zumo talks over native USB, which sets its own speed (Section 8). We set it anyway, because on boards like the Arduino Uno matching it is a real requirement</li>
     <li><code>lib_deps</code> — the libraries to download — this is where the Pololu Zumo library comes from. The <code>@2.0.1</code> on the end is a <strong>version pin</strong>: it names the exact release you want. Leave it off and the project quietly takes whatever the authors published most recently — and the robot you build in June stops matching the one you built in September. Pin it, and your build is the same build, forever.</li>
 </ul>
 
@@ -1446,9 +1446,9 @@ void loop() {
     <div class="div-mt-15px">
         <p>There is no code to change — that is the point. Run it on the floor (not in the air) and measure:</p>
         <pre><span class="tok-6a9955">// forward, then back -- identical numbers, opposite signs</span>
-<span class="tok-dcdcaa">motors</span>.setSpeeds(<span class="tok-b5cea8">150</span>, <span class="tok-b5cea8">150</span>);
+<span class="tok-dcdcaa">motors</span>.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">200</span>);
 <span class="tok-dcdcaa">delay</span>(<span class="tok-b5cea8">350</span>);
-<span class="tok-dcdcaa">motors</span>.setSpeeds(<span class="tok-b5cea8">-150</span>, <span class="tok-b5cea8">-150</span>);
+<span class="tok-dcdcaa">motors</span>.setSpeeds(<span class="tok-b5cea8">-200</span>, <span class="tok-b5cea8">-200</span>);
 <span class="tok-dcdcaa">delay</span>(<span class="tok-b5cea8">350</span>);</pre>
         <p><strong>It almost never comes home.</strong> The two motors are not identical twins, the tracks grip differently, and the battery sags a little as it works — so "the same command" does not buy you "the same motion." Lesson 3 gives you a number (<code>TRIM</code>) to compensate for the mismatched motors. Lesson 11 finally shows you why <em>timed</em> driving can never be trusted at all, and what to count instead.</p>
         <p><strong>Keep your measurement.</strong> You will want it later — it is the first honest data your robot ever gave you.</p>
@@ -1596,7 +1596,7 @@ if (voltage &lt; ______) {        // ← your threshold, in millivolts
     <summary>🔓 Click to reveal solution</summary>
     <div class="div-mt-15px">
         <p>Add this code at the beginning of <code>setup()</code>, after <code>Serial.begin()</code>:</p>
-        <pre><code><span class="tok-569cd6">int</span> voltage = readBatteryMillivolts();
+        <pre><code><span class="tok-569cd6">uint16_t</span> voltage = readBatteryMillivolts();
 <span class="tok-4ec9b6">Serial</span>.print("Battery: ");
 <span class="tok-4ec9b6">Serial</span>.print(voltage);
 <span class="tok-4ec9b6">Serial</span>.println(" mV");
@@ -1925,7 +1925,7 @@ Learn to read C++ code like a professional so you can predict what code will do 
 </table>
 <p>One note below this range is worth knowing: <strong>F3 = 175&nbsp;Hz</strong>, the low F in the five-note phrase from Section 9.</p>
 <p><strong>Two ways to name a note.</strong> <code>playFrequency()</code> takes a number in Hertz, which is what these challenges use. <code>playNote()</code> takes a named constant instead, such as <code>NOTE_A(4)</code>, if you would rather think in note names. <code>play()</code> takes a whole melody as a string.</p>
-<p>⚠ <code>play()</code> runs the melody <strong>in the background</strong> — your program keeps running while it plays. That is useful, and it is also why notes fired back-to-back with no <code>delay()</code> collapse into a single blip.</p>
+<p>⚠ Starting a sound does not pause your program — the buzzer plays on in the background while your code runs ahead. That is useful, and it is why <code>playFrequency()</code> calls fired back-to-back with no <code>delay()</code> collapse into a single blip.</p>
 
 
 <h3 class="h4-c-6f7582">VS Code Shortcuts</h3>

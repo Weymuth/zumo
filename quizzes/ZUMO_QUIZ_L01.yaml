@@ -1,0 +1,1247 @@
+# ZUMO READING QUIZ BANK — LESSON 01
+# Hello, Robot! · Your First Program
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_01.html v03.28.3 (post-S141 content fixes)
+#
+# READ -> FIX -> QUIZ. Lesson 01 was read end to end in S141 and four findings were
+# fixed before a single question was written. Two of them are load-bearing here:
+#
+#   1. §5.0's platformio.ini bullet CONTRADICTED §8's OWN TROUBLESHOOTING ROW, in
+#      this same lesson, about 700 lines apart. §8 has said since S136 that the Zumo
+#      talks over native USB and the number in Serial.begin() is ignored; §5.0 still
+#      read "must match the code." S136 fixed §8 and missed §5.0. B14, B15, B16 and
+#      B55 all draw on that bullet list — and B55's matching set deliberately omits
+#      the monitor_speed row, because that is the one line whose meaning the lesson
+#      was answering two ways. No question anywhere in this bank asks what
+#      monitor_speed does; see the omissions below.
+#   2. CHALLENGE 6's SOLUTION REVEAL QUOTED setSpeeds(150, 150) / -150 where the
+#      program uses 200 — and the same card quotes the real block with 200 eight
+#      lines lower. A07, A08 and A16 ask what Challenge 6 MEASURES and why it is run
+#      three times — never the speed value — for exactly that reason: a student who
+#      read the reveal against v03.28.2 saw two different numbers inside one card.
+#
+#   The other two are smaller and nothing is keyed to them: Challenge 11's reveal
+#   declared `int voltage` where the card's own scaffold hands over `uint16_t`, and
+#   the Quick Reference pinned the run-together-blip warning on play() where the
+#   lesson teaches it about playFrequency().
+#
+# THREE ANSWERS DELIBERATELY NOT ASKED:
+#   - WHETHER THE BAUD NUMBER IS IGNORED. This is the single most quizzable trap in
+#     L01 — QUIZ_SPEC §3 even names it as the model true/false stem. It is omitted
+#     anyway. The lesson now states it consistently in §5.0 and §8, so a student
+#     CAN answer it from the text; but the claim is sourced to the book alone.
+#     Pololu's own USB-interface section (0J63 §7 / 0J66 §6) describes the virtual
+#     serial port and never mentions baud rate in either direction, and the bench
+#     test that would settle it for this fleet has not been run. Unverified is not
+#     wrong — it is just not something to key an entry-to-build-time gate on.
+#   - THE 1200-BAUD BOOTLOADER RESET. Real, and confirmed by Pololu's revival
+#     procedure, but the book does not teach it anywhere. Not askable from the text.
+#   - CHALLENGE 11's THRESHOLD VALUE. The card asks the student to choose and defend
+#     one; the reveal's 4500 is an example, not a key. Keying it would punish a
+#     student who did what the card asked. B39 asks the NiMH voltage bands instead,
+#     which the hint states outright.
+#
+# WHY THIS BANK IS SMALLER THAN L03's OR L05's: Lesson 1 has NO §8A. It runs §1-§10
+# with no Extra Practice section, and at 2,183 lines it is the shortest lesson in the
+# book against L03's 4,412. The before set draws on §1, §3, §4, §5, §7, §8, the
+# Glossary and the Quick Reference; there is no sixth theory section to mine.
+#
+# FORMATS: multiple_choice, true_false, matching. No fill-in-the-blank by ruling.
+# EVERY QUESTION CARRIES A `cite`.
+#
+# MIX (QUIZ_SPEC v1.1.0: MC ~70%, TF cap ~20%, matching ~10%). DERIVED, not typed —
+# run quiz_bank.py rather than trusting this comment:
+#   before 59 — MC 44 (75%) / TF 11 (19%) / matching 4 (7%)
+#   after  20 — MC 15 (75%) / TF  3 (15%) / matching 2 (10%)
+#   79 questions total. TF sits at 19% in the before set, just inside the ~20% cap.
+# Both sets sit above the ~70% MC target, as L03's and L05's do, for the reason
+# QUIZ_SPEC v1.1.0 measured: under the TF and matching caps the MC floor is 76%, so
+# ~75% is close to the structural minimum. Closing the gap means adding true/false,
+# which is 50% guessable.
+
+lesson: "L01"
+title: "Hello, Robot! — Your First Program"
+bank_version: "1.0.0"
+source:
+  lesson_01: "v03.28.3"
+
+sets:
+
+  # ===================================================================
+  # BEFORE — THE PRE-CLASS GATE
+  # Answerable from the reading alone. Nothing here needs the robot,
+  # a compiler, or a built program.
+  # Draws on §1, §3, §4, §5, §7, §8, Quick Reference, Glossary.
+  # Suggested Canvas draw: 10, one attempt, locks at period start.
+  # ===================================================================
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone."
+    suggested_draw: 10
+    questions:
+
+      # ---------- §1 The true story of Hello, World ----------
+      - id: L01_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "Who wrote the first \"hello, world\" example, and where did it appear first?"
+        options:
+          - text: "Brian Kernighan, in a 1972 tutorial for a language called B"
+            correct: true
+          - text: "Dennis Ritchie, in the 1978 book The C Programming Language"
+            correct: false
+            why: "Ritchie co-wrote the 1978 book, but the phrase was born six years earlier in Kernighan's B tutorial."
+          - text: "Brian Kernighan, in the 1978 book The C Programming Language"
+            correct: false
+            why: "That is where it became famous, not where it was born."
+          - text: "Ken Thompson, in the original Unix manual"
+            correct: false
+
+      - id: L01_B02
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "The lesson says the 1972 version \"looked strange to modern eyes.\" Why?"
+        options:
+          - text: "B had no printf, so the message had to be spelled out a few characters at a time"
+            correct: true
+          - text: "B wrote text backwards, right to left"
+            correct: false
+          - text: "B had no way to display text at all, so the example used lights"
+            correct: false
+          - text: "B required every program to be written in capital letters"
+            correct: false
+
+      - id: L01_B03
+        type: true_false
+        cite: "§1"
+        points: 1
+        stem: "C is the ancestor of the C++ you write in this course."
+        correct: true
+        why: "§1 says so directly — the 1978 C book is the line that leads to the C++ on your Zumo."
+
+      # ---------- §3.0 What makes a robot a robot ----------
+      - id: L01_B04
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "What are the three steps of the robot cycle, in order?"
+        options:
+          - text: "SENSE, DECIDE, ACT"
+            correct: true
+          - text: "DECIDE, SENSE, ACT"
+            correct: false
+          - text: "SENSE, ACT, DECIDE"
+            correct: false
+          - text: "ACT, SENSE, DECIDE"
+            correct: false
+
+      - id: L01_B05
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "Which of the three steps is the one your program is responsible for?"
+        options:
+          - text: "DECIDE"
+            correct: true
+          - text: "SENSE"
+            correct: false
+            why: "The sensors gather the information; your code decides what it means."
+          - text: "ACT"
+            correct: false
+            why: "The motors, buzzer and display act; your code chooses when."
+          - text: "All three equally"
+            correct: false
+            why: "The lesson's Key Insight is specific: the magic is in DECIDE, and that is where your code lives."
+
+      - id: L01_B06
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "About how often does the sense-decide-act loop run on a robot?"
+        options:
+          - text: "100 times per second or more"
+            correct: true
+          - text: "About once per second"
+            correct: false
+          - text: "About 10 times per minute"
+            correct: false
+          - text: "Once per program run"
+            correct: false
+
+      - id: L01_B07
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "The lesson lists a remote-control car as NOT a robot. Why not?"
+        options:
+          - text: "A human makes all the decisions — the car just obeys"
+            correct: true
+          - text: "It has no motors of its own"
+            correct: false
+          - text: "It cannot move without being plugged in"
+            correct: false
+          - text: "It has no computer chip inside"
+            correct: false
+
+      - id: L01_B08
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "Why does the lesson rate a toaster as only \"barely\" a robot?"
+        options:
+          - text: "It senses heat and acts by turning off, but it cannot really decide"
+            correct: true
+          - text: "It acts and decides, but it has no sensors"
+            correct: false
+          - text: "It senses and decides, but it cannot act on the world"
+            correct: false
+          - text: "It does all three, but too slowly to count"
+            correct: false
+
+      - id: L01_B09
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "A dishwasher runs its cycle on a timer whether the dishes were dirty or already clean. What kind of system is that, and what does it never get?"
+        options:
+          - text: "Open-loop — no information ever flows back in about the results of its own actions"
+            correct: true
+          - text: "Closed-loop — it checks its results but ignores them"
+            correct: false
+          - text: "Open-loop — it has no instructions to follow"
+            correct: false
+            why: "Instructions flow out fine. It is the feedback coming back that is missing."
+          - text: "Closed-loop — it senses everything but cannot act"
+            correct: false
+
+      - id: L01_B10
+        type: multiple_choice
+        cite: "§3"
+        points: 1
+        stem: "What makes a line-following Zumo closed-loop rather than open-loop?"
+        options:
+          - text: "It acts, senses the result, and adjusts — it notices when it has drifted off centre and steers back"
+            correct: true
+          - text: "It runs its instructions in a loop() function rather than once"
+            correct: false
+            why: "Repeating is not the same as checking. The dishwasher repeats too."
+          - text: "It follows a longer list of instructions than an open-loop machine"
+            correct: false
+          - text: "It has more sensors than an open-loop machine"
+            correct: false
+
+      - id: L01_B11
+        type: true_false
+        cite: "§3"
+        points: 1
+        stem: "\"Automatic\" and \"autonomous\" mean the same thing in this course."
+        correct: false
+        why: "§3 draws the line deliberately: automatic follows a fixed script, autonomous checks its own results and adjusts."
+
+      # ---------- §3.1 PlatformIO, the compiler ----------
+      - id: L01_B12
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What does the compiler produce, and how does it reach the robot?"
+        options:
+          - text: "Machine code — a stream of 1s and 0s that travels down the USB cable when you click Upload"
+            correct: true
+          - text: "A text file the robot reads line by line as it runs"
+            correct: false
+            why: "The ATmega32U4 cannot read text at all — that is the whole reason the compiler exists."
+          - text: "A picture of the circuit the chip should build"
+            correct: false
+          - text: "A list of English instructions the chip translates itself"
+            correct: false
+
+      - id: L01_B13
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Why does the lesson say the chip can only speak in 1s and 0s?"
+        options:
+          - text: "A microcontroller is millions of transistors, and each switch knows exactly two states — voltage on or voltage off"
+            correct: true
+          - text: "Because binary files are smaller than text files"
+            correct: false
+          - text: "Because the USB cable can only carry two voltages"
+            correct: false
+          - text: "Because C++ was designed to compile to binary"
+            correct: false
+
+      # ---------- §5.0 platformio.ini ----------
+      - id: L01_B14
+        type: multiple_choice
+        cite: "§5.0, §8"
+        points: 1
+        stem: "The lesson calls platformio.ini the \"recipe card.\" What is the `board` line for?"
+        options:
+          - text: "It names the exact board, so the compiler knows its memory size and pin layout"
+            correct: true
+          - text: "It names the chip family the board belongs to"
+            correct: false
+            why: "That is the `platform` line — atmelavr, the family the ATmega32U4 is in."
+          - text: "It tells PlatformIO which USB port to upload through"
+            correct: false
+          - text: "It names the library to download"
+            correct: false
+            why: "That is `lib_deps`."
+
+      - id: L01_B15
+        type: multiple_choice
+        cite: "§5.0"
+        points: 1
+        stem: "`lib_deps = pololu/Zumo32U4@2.0.1` — what is the `@2.0.1` doing, and why does the lesson insist on it?"
+        options:
+          - text: "It is a version pin: without it the project quietly takes whatever was published most recently, and the robot you build in June stops matching the one you built in September"
+            correct: true
+          - text: "It tells PlatformIO how many times to retry the download"
+            correct: false
+          - text: "It is the Zumo library's product number in Pololu's catalogue"
+            correct: false
+          - text: "It sets the minimum version, so anything newer is used automatically"
+            correct: false
+            why: "That is what a caret range does. A pin names one exact release, which is the point."
+
+      - id: L01_B16
+        type: multiple_choice
+        cite: "§5.0"
+        points: 1
+        stem: "What does the `framework = arduino` line commit you to?"
+        options:
+          - text: "The Arduino coding style — writing setup() and loop()"
+            correct: true
+          - text: "Using the Arduino IDE instead of VS Code"
+            correct: false
+            why: "The framework is the code style, not the editor. You are in VS Code the whole time."
+          - text: "Buying an Arduino-brand board"
+            correct: false
+          - text: "Downloading libraries only from Arduino's website"
+            correct: false
+
+      # ---------- §5.1-§5.2 include and objects ----------
+      - id: L01_B17
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "What does `#include <Zumo32U4.h>` actually do for your program?"
+        options:
+          - text: "It opens the Pololu library that lib_deps downloaded, pouring every Zumo command into your program"
+            correct: true
+          - text: "It downloads the Zumo library from the internet"
+            correct: false
+            why: "The downloading is lib_deps' job, in platformio.ini. The include just opens what is already there."
+          - text: "It connects your computer to the robot over USB"
+            correct: false
+          - text: "It creates the motors, display and buzzer objects"
+            correct: false
+            why: "Those are the four object-declaration lines underneath it."
+
+      - id: L01_B18
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "`Zumo32U4Motors motors;` — what has this line created?"
+        options:
+          - text: "An object: a named bundle of memory plus the commands that work on the motor hardware"
+            correct: true
+          - text: "A copy of the motor hardware in memory"
+            correct: false
+          - text: "A function that spins the motors"
+            correct: false
+          - text: "A constant holding the motors' current speed"
+            correct: false
+
+      - id: L01_B19
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "The lesson describes the pattern as \"name-dot-command.\" What do the two halves mean?"
+        options:
+          - text: "Who, then what to do — the object's name, then the action you want from it"
+            correct: true
+          - text: "What to do, then who — the action first, then the hardware"
+            correct: false
+          - text: "The library name, then the function name"
+            correct: false
+          - text: "The pin number, then the voltage"
+            correct: false
+
+      - id: L01_B20
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "`ledYellow(1)` breaks the name-dot-command pattern — there is no object name in front of it. What does the lesson say about that?"
+        options:
+          - text: "The built-in LEDs are the deliberate exception: the library skips the object and gives them direct commands, 1 for on and 0 for off"
+            correct: true
+          - text: "It is a mistake in the sample code that the compiler tolerates"
+            correct: false
+          - text: "`ledYellow` is an object whose name happens to look like a function"
+            correct: false
+          - text: "LEDs are controlled by the display object, so the name is implied"
+            correct: false
+
+      # ---------- §5.3-§5.4 setup and loop ----------
+      - id: L01_B21
+        type: multiple_choice
+        cite: "§5.3, §5.4"
+        points: 1
+        stem: "How many times does each of the two functions run?"
+        options:
+          - text: "setup() runs exactly once at power-on or reset; loop() runs forever afterward"
+            correct: true
+          - text: "setup() runs forever; loop() runs once"
+            correct: false
+          - text: "Both run once, setup() first"
+            correct: false
+          - text: "Both run forever, alternating"
+            correct: false
+
+      - id: L01_B22
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "What does the word `void` in `void setup()` tell you?"
+        options:
+          - text: "The function returns nothing — it does its job without handing a value back"
+            correct: true
+          - text: "The function is empty"
+            correct: false
+            why: "An empty function and a function that returns nothing are different things. void describes the return, not the body."
+          - text: "The function takes no arguments"
+            correct: false
+            why: "That is what the empty parentheses say."
+          - text: "The function can be deleted safely"
+            correct: false
+
+      - id: L01_B23
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "What happens to anything you write after `//` on a line?"
+        options:
+          - text: "The compiler ignores it completely — it is a note for humans"
+            correct: true
+          - text: "It runs, but only in setup()"
+            correct: false
+          - text: "It is printed to the Serial Monitor"
+            correct: false
+          - text: "It is stored in the robot but never runs"
+            correct: false
+
+      - id: L01_B24
+        type: true_false
+        cite: "§5.4"
+        points: 1
+        stem: "In Lesson 1, loop() is left empty."
+        correct: true
+        why: "Everything happens once at startup, so all the action is in setup() and loop() has nothing to do."
+
+      - id: L01_B25
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "The lesson says most robot programs do their real work in loop(). Why is Lesson 1 the exception?"
+        options:
+          - text: "The test sequence is meant to run once, so it lives in setup()"
+            correct: true
+          - text: "loop() does not work until Lesson 2"
+            correct: false
+          - text: "setup() is faster than loop()"
+            correct: false
+          - text: "The Zumo library requires all code to be in setup()"
+            correct: false
+
+      # ---------- §5.5 The while-loop trapdoor ----------
+      - id: L01_B26
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "`while (!buttonA.getSingleDebouncedPress())` — what does the `!` do?"
+        options:
+          - text: "It is the NOT operator: it flips the answer the library call gives back"
+            correct: true
+          - text: "It makes the call urgent, so the chip checks faster"
+            correct: false
+          - text: "It marks the line as important for the compiler"
+            correct: false
+          - text: "It repeats the call until it succeeds"
+            correct: false
+
+      - id: L01_B27
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "While your finger is OFF the button, what is happening inside that while-loop?"
+        options:
+          - text: "The check keeps coming back true, so the loop runs again — check, wait 10 ms, check again, about a hundred times a second"
+            correct: true
+          - text: "The program is frozen and stops executing until the button is pressed"
+            correct: false
+            why: "The lesson is explicit: the robot was never frozen — it was asking \"pressed yet?\" over and over."
+          - text: "The chip powers down to save battery until the button wakes it"
+            correct: false
+          - text: "The loop runs exactly ten times and then gives up"
+            correct: false
+
+      - id: L01_B28
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "What sets the pace of that check — roughly a hundred times a second?"
+        options:
+          - text: "The delay(10) inside the loop; the chip itself could check far faster"
+            correct: true
+          - text: "The chip's 16 MHz clock, which is as fast as it can go"
+            correct: false
+            why: "The lesson makes a point of this: the ATmega32U4 ticks 16 million times a second and is deliberately slowed down."
+          - text: "The button's debounce circuit, which limits how often it can report"
+            correct: false
+          - text: "The USB connection speed"
+            correct: false
+
+      - id: L01_B29
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "What is \"debouncing,\" and why does the button need it?"
+        options:
+          - text: "The metal contact physically chatters open and closed for a few milliseconds; debouncing filters that into one clean press"
+            correct: true
+          - text: "It stops the button being pressed twice by accident by the user"
+            correct: false
+            why: "The bouncing is mechanical, inside the switch — your finger never notices it."
+          - text: "It slows the chip down so it does not miss the press"
+            correct: false
+          - text: "It rejects presses that are too short to be deliberate"
+            correct: false
+
+      - id: L01_B30
+        type: true_false
+        cite: "§5.5"
+        points: 1
+        stem: "Without debouncing, a chip checking sixteen million times a second could read one press as dozens of presses."
+        correct: true
+        why: "That is exactly the problem §5.5 describes, and what the \"Single\" and \"Debounced\" in the function name are doing."
+
+      # ---------- §5.5 The for-loop ----------
+      - id: L01_B31
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "`for (int i = 0; i < 3; i++)` packs three jobs into one line. What are they, in order?"
+        options:
+          - text: "Initialize the counter, check it before every pass, increment it after every pass"
+            correct: true
+          - text: "Check, initialize, increment"
+            correct: false
+          - text: "Initialize, increment, check"
+            correct: false
+          - text: "Declare, run, delete"
+            correct: false
+
+      - id: L01_B32
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "Trace `for (int i = 0; i < 3; i++)`. How many times does the body run, and what ends it?"
+        options:
+          - text: "Three times; the loop ends when the counter reaches 3 and 3 < 3 is false"
+            correct: true
+          - text: "Four times, because the counter starts at 0"
+            correct: false
+            why: "Counting from zero is exactly why the number in the test equals the number of passes: 0, 1, 2."
+          - text: "Two times, because the counter stops one short"
+            correct: false
+          - text: "Three times; the loop ends when the counter is reset to 0"
+            correct: false
+
+      # ---------- §5.5 Sound ----------
+      - id: L01_B33
+        type: multiple_choice
+        cite: "§5.5, Quick Reference"
+        points: 1
+        stem: "`buzzer.playFrequency(440, 800, 15)` takes three values. What are they, in order?"
+        options:
+          - text: "Frequency in Hertz, duration in milliseconds, volume"
+            correct: true
+          - text: "Volume, frequency, duration"
+            correct: false
+          - text: "Duration, frequency, volume"
+            correct: false
+          - text: "Frequency, volume, duration"
+            correct: false
+
+      - id: L01_B34
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "Change 440 to 880. What happens to the sound, and why?"
+        options:
+          - text: "The pitch jumps exactly one octave higher — the chip flips the buzzer pin twice as fast"
+            correct: true
+          - text: "It gets twice as loud"
+            correct: false
+            why: "Volume is the third value. The first one is pitch."
+          - text: "It plays for twice as long"
+            correct: false
+            why: "Duration is the second value."
+          - text: "The pitch drops one octave"
+            correct: false
+
+      - id: L01_B35
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "Why does the victory jingle put a delay() after each note, longer than the note itself?"
+        options:
+          - text: "Starting a note does not pause the program — without the delay the next note takes the buzzer over and you hear one blip instead of several"
+            correct: true
+          - text: "The delay is what actually produces the sound"
+            correct: false
+            why: "The lesson says the opposite outright: the delay is not making the sound, it is giving the sound room to finish."
+          - text: "The buzzer needs time to cool down between notes"
+            correct: false
+          - text: "Without it the notes would play too quietly to hear"
+            correct: false
+
+      - id: L01_B36
+        type: true_false
+        cite: "§5.5"
+        points: 1
+        stem: "The number 440 in playFrequency means the buzzer's pin is driven through 440 complete high-low cycles every second."
+        correct: true
+        why: "440 Hertz is 440 cycles per second — the note A4, the one orchestras tune to."
+
+      # ---------- §4 Setup and tools ----------
+      - id: L01_B37
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "Why does this course have you install Git?"
+        options:
+          - text: "PlatformIO uses it behind the scenes to download robot libraries — you never use it directly"
+            correct: true
+          - text: "You will use it to submit your work to Canvas"
+            correct: false
+          - text: "It is the editor you write your code in"
+            correct: false
+          - text: "It compiles your C++ into machine code"
+            correct: false
+            why: "That is the compiler, which PlatformIO runs for you."
+
+      - id: L01_B38
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "The lesson tells you to turn AI autocomplete OFF — not \"use it carefully.\" What is the stated reason?"
+        options:
+          - text: "It invents functions that do not exist, routinely — it has produced setMotorPower() and set motorSpeed() for Zumo motor code, when the real one is setSpeeds()"
+            correct: true
+          - text: "It slows the editor down too much on school computers"
+            correct: false
+          - text: "It costs money to use"
+            correct: false
+          - text: "It is against school policy to use any AI in this course"
+            correct: false
+            why: "The lesson says the opposite about asking an AI a question — that is fine, because you judge the answer before you use it."
+
+      - id: L01_B39
+        type: multiple_choice
+        cite: "§6, §9 Challenge 11"
+        points: 1
+        stem: "Your robot runs four AA NiMH cells. What is the pack's nominal voltage?"
+        options:
+          - text: "4.8 V — 1.2 V per cell"
+            correct: true
+          - text: "6.0 V — 1.5 V per cell"
+            correct: false
+            why: "That is alkaline. The lesson warns that every battery number in this book is written for NiMH."
+          - text: "3.7 V"
+            correct: false
+          - text: "9.0 V"
+            correct: false
+
+      - id: L01_B40
+        type: true_false
+        cite: "§6"
+        points: 1
+        stem: "You may mix a fresh alkaline cell with three rechargeables if you are short a battery."
+        correct: false
+        why: "§6's warning lists it first: never mix battery types, and never mix old with new."
+
+      - id: L01_B41
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "The robot is plugged into USB, the display works, but the motors will not turn. What does the lesson say to check first?"
+        options:
+          - text: "The power switch — the cable cannot supply motor power, and the batteries only connect when the switch is ON"
+            correct: true
+          - text: "The USB cable, which is probably power-only"
+            correct: false
+          - text: "The motor wiring under the chassis"
+            correct: false
+          - text: "Whether the code compiled without errors"
+            correct: false
+
+      - id: L01_B42
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Which LEDs tell you the robot is actually running on battery power?"
+        options:
+          - text: "The two blue LEDs under the rear corners — they light only on battery power"
+            correct: true
+          - text: "The green LED, which lights whenever the cable is live"
+            correct: false
+            why: "Green without blue means you are running on USB alone — that is the trap the lesson describes."
+          - text: "The yellow user LED"
+            correct: false
+          - text: "The two red LEDs on the left and right edges"
+            correct: false
+
+      - id: L01_B43
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "PlatformIO creates several folders. Which one holds the program you actually work in?"
+        options:
+          - text: "src — main.cpp lives here"
+            correct: true
+          - text: "include — for your own header files, empty for now"
+            correct: false
+            why: "That one comes into its own in Lesson 7."
+          - text: "lib — for project-private libraries"
+            correct: false
+          - text: ".pio — the compiler's private workspace"
+            correct: false
+            why: "The lesson says never to edit anything inside it."
+
+      - id: L01_B44
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "You see red squiggly lines under `#include <Zumo32U4.h>`. What does the lesson say?"
+        options:
+          - text: "Ignore them — VS Code has not downloaded the library yet, but PlatformIO knows where to find it"
+            correct: true
+          - text: "Stop and reinstall the PlatformIO extension"
+            correct: false
+          - text: "The include is misspelled — check it character by character"
+            correct: false
+          - text: "The build will fail until they go away"
+            correct: false
+
+      # ---------- §6 Step 6 Upload / flash ----------
+      - id: L01_B45
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Engineers call Upload \"flashing.\" What does it do, and why does the robot still have your program tomorrow?"
+        options:
+          - text: "It copies the binary into flash memory, which keeps its contents with the power off"
+            correct: true
+          - text: "It keeps the program in the chip's RAM, which is refreshed by the batteries"
+            correct: false
+          - text: "It stores the program on your computer and streams it over USB each time"
+            correct: false
+          - text: "It writes the program to the SD card on the main board"
+            correct: false
+
+      - id: L01_B46
+        type: true_false
+        cite: "§6 Step 6"
+        points: 1
+        stem: "The chip can hold several programs at once and choose between them at startup."
+        correct: false
+        why: "It holds exactly one. Every upload overwrites the last, and whatever is in flash starts running the moment you switch on."
+
+      # ---------- §7 Serial Monitor ----------
+      - id: L01_B47
+        type: multiple_choice
+        cite: "§7.2"
+        points: 1
+        stem: "Why does the lesson tell you to open the Serial Monitor BEFORE pressing Button A?"
+        options:
+          - text: "The robot says hello the moment you press A — connect afterwards and the message has already gone"
+            correct: true
+          - text: "The Serial Monitor cannot open while a program is running"
+            correct: false
+          - text: "Pressing A closes the serial port"
+            correct: false
+          - text: "The monitor needs to see the program start in order to set its speed"
+            correct: false
+
+      - id: L01_B48
+        type: multiple_choice
+        cite: "§7.2"
+        points: 1
+        stem: "Upload fails with \"could not open port … Resource busy.\" What is holding it?"
+        options:
+          - text: "The Serial Monitor — only one program can use the port at a time, so stop the monitor and upload again"
+            correct: true
+          - text: "The bootloader, which never released the port after the last upload"
+            correct: false
+          - text: "The robot's own program, which must be stopped with the reset button"
+            correct: false
+          - text: "A power-only USB cable"
+            correct: false
+
+      # ---------- §8 Troubleshooting ----------
+      - id: L01_B49
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "An upload fails with \"butterfly_recv(): programmer is not responding.\" What has actually gone wrong?"
+        options:
+          - text: "The upload tool missed the bootloader's roughly 8-second window, so the robot went back to running the old program"
+            correct: true
+          - text: "The robot's programming chip has failed and needs replacing"
+            correct: false
+            why: "The lesson is emphatic that nothing is broken — and the Zumo has no separate programming chip at all."
+          - text: "The library version in platformio.ini does not exist"
+            correct: false
+          - text: "The USB cable carries power but no data"
+            correct: false
+
+      - id: L01_B50
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "What is the first fix the lesson gives for the butterfly error, and why that one first?"
+        options:
+          - text: "The double-tap reset — it targets the actual cause and it is faster"
+            correct: true
+          - text: "Run Clean, then upload — it clears the corrupted build"
+            correct: false
+            why: "Clean is Fix 2, and the lesson admits it works for a sneaky reason: it buys time for the port to settle, not because the build was wrong."
+          - text: "Reinstall the Zumo library"
+            correct: false
+          - text: "Switch to a different USB cable"
+            correct: false
+
+      - id: L01_B51
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The lesson notes your robot shows up as one port while running your program and a different port while the bootloader is awake. What does it suggest if uploads keep failing?"
+        options:
+          - text: "Unplug the USB cable, plug it back in, and give the port a moment to reappear"
+            correct: true
+          - text: "Choose the lower-numbered port every time"
+            correct: false
+          - text: "Change monitor_speed to match the bootloader"
+            correct: false
+          - text: "Delete the .pio folder and rebuild"
+            correct: false
+
+      # ---------- Glossary / Quick Reference matching ----------
+      - id: L01_B52
+        type: matching
+        cite: "Glossary"
+        points: 4
+        stem: "Match each Lesson 1 term to its definition."
+        pairs:
+          - left: "Microcontroller"
+            right: "A small, self-contained computer on a single chip that runs your program"
+          - left: "Library"
+            right: "Pre-written code providing ready-to-use functions for specific hardware"
+          - left: "Object"
+            right: "A named variable that represents and controls a piece of hardware"
+          - left: "PlatformIO"
+            right: "A development environment for programming microcontrollers"
+        extra_answers:
+          - "A window that displays text messages sent from the robot to your computer"
+          - "A version control tool used to download libraries"
+
+      - id: L01_B53
+        type: matching
+        cite: "Quick Reference"
+        points: 4
+        stem: "Match each command to what it does."
+        pairs:
+          - left: "display.clear()"
+            right: "Erase the OLED screen"
+          - left: "buttonA.getSingleDebouncedPress()"
+            right: "Returns true when the button is pressed"
+          - left: "motors.setSpeeds(left, right)"
+            right: "Set motor speeds, -400 to +400"
+          - left: "readBatteryMillivolts()"
+            right: "Get the battery voltage"
+        extra_answers:
+          - "Play a tone at a given pitch and duration"
+          - "Wait for a number of milliseconds"
+
+      - id: L01_B54
+        type: matching
+        cite: "Quick Reference"
+        points: 3
+        stem: "Match each note to its frequency in Hertz."
+        pairs:
+          - left: "C4"
+            right: "262"
+          - left: "A4"
+            right: "440"
+          - left: "A5"
+            right: "880"
+        extra_answers:
+          - "349"
+          - "523"
+
+      - id: L01_B55
+        type: matching
+        cite: "§5.0"
+        points: 4
+        stem: "Match each platformio.ini line to its job."
+        pairs:
+          - left: "platform"
+            right: "The chip family the board belongs to"
+          - left: "board"
+            right: "The exact board, so the compiler knows its memory and pins"
+          - left: "framework"
+            right: "The coding style — setup() and loop()"
+          - left: "lib_deps"
+            right: "The libraries to download, at an exact pinned version"
+        extra_answers:
+          - "The folder your source files live in"
+          - "The port the robot is connected to"
+
+      # ---------- remaining true/false ----------
+      - id: L01_B56
+        type: true_false
+        cite: "§3.3"
+        points: 1
+        stem: "\"Robot brain,\" \"microcontroller\" and \"controller board\" all refer to the same component in this book."
+        correct: true
+        why: "§3.3's note says so explicitly, so that the three names never read as three different parts."
+
+      - id: L01_B57
+        type: true_false
+        cite: "§4.1"
+        points: 1
+        stem: "Visual Studio and Visual Studio Code are the same program under two names."
+        correct: false
+        why: "The lesson flags this specifically: they are completely different programs with confusingly similar names. You want CODE, the blue icon."
+
+      - id: L01_B58
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "The Zumo32U4 library was written by Pololu, the company that designed and built the robot."
+        correct: true
+        why: "§3.2 makes the general point — a hardware library is usually written by the device's manufacturer — and says this is one of those cases."
+
+      - id: L01_B59
+        type: true_false
+        cite: "§5.5, Quick Reference"
+        points: 1
+        stem: "In `motors.setSpeeds(200, 200)` the first number is the left track and the second is the right."
+        correct: true
+        why: "Left then right, in that order — the fact Challenge 8's pirouette depends on."
+
+  # ===================================================================
+  # AFTER — POST-BUILD CHECK
+  # Assumes the program was built, uploaded and run, and that the
+  # student worked at least some of §9's challenges.
+  # Overlaps BRAIN CHECK 03 by design — BC03's four items are NOT
+  # duplicated here; these ask what BC03 leaves alone.
+  # Suggested Canvas draw: 8.
+  # ===================================================================
+  after:
+    description: "Post-build check. Assumes the program was built, uploaded and run."
+    suggested_draw: 8
+    questions:
+
+      - id: L01_A01
+        type: multiple_choice
+        cite: "§7.1"
+        points: 1
+        stem: "In what order does the test sequence happen after you press Button A?"
+        options:
+          - text: "Beep, LED blinks three times, \"Moving!\" and the drive, \"Done!\" and the jingle"
+            correct: true
+          - text: "LED blinks, beep, drive, jingle"
+            correct: false
+          - text: "Drive, beep, LED blinks, jingle"
+            correct: false
+          - text: "Beep, drive, LED blinks, jingle"
+            correct: false
+
+      - id: L01_A02
+        type: multiple_choice
+        cite: "§7.1"
+        points: 1
+        stem: "Why does the lesson have you prop the robot on a box or cup before pressing A the first time?"
+        options:
+          - text: "The motors spin the moment the code passes the button check, and a tethered robot can yank the cable or drive off the desk"
+            correct: true
+          - text: "The tracks need to be off the ground to calibrate"
+            correct: false
+          - text: "The display is easier to read at an angle"
+            correct: false
+          - text: "It stops the batteries from draining during the test"
+            correct: false
+
+      - id: L01_A03
+        type: multiple_choice
+        cite: "§7.1"
+        points: 1
+        stem: "The lesson asks you to write down what you expect BEFORE pressing A, then compare. What is the stated point of that?"
+        options:
+          - text: "Connecting what you saw to the line that caused it is the core skill of debugging"
+            correct: true
+          - text: "It proves you copied the code correctly"
+            correct: false
+          - text: "It is required evidence for the milestone grade"
+            correct: false
+          - text: "It gives the batteries time to settle before the motors run"
+            correct: false
+
+      - id: L01_A04
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "In the Break-It-On-Purpose exercise you switch the power OFF and upload anyway. What is that for?"
+        options:
+          - text: "So the most common upload error is one you have already met and beaten on purpose"
+            correct: true
+          - text: "To confirm the batteries are charged"
+            correct: false
+          - text: "To reset the bootloader before the real upload"
+            correct: false
+          - text: "To check that the USB cable carries data"
+            correct: false
+
+      - id: L01_A05
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "Challenge 3 asks for ten blinks at twice the speed. The lesson warns you get \"a limp\" if you get it wrong. What causes the limp?"
+        options:
+          - text: "Halving only one of the two delay(200) calls — on-fast, off-slow"
+            correct: true
+          - text: "Changing the loop count but not the delays"
+            correct: false
+          - text: "Halving the delays but leaving the count at 3"
+            correct: false
+          - text: "Putting the delays outside the loop"
+            correct: false
+
+      - id: L01_A06
+        type: multiple_choice
+        cite: "§9 Challenge 4"
+        points: 1
+        stem: "Challenge 4 doubles the first delay(350) to delay(700). What does the robot do, and why?"
+        options:
+          - text: "It drives roughly twice as far out as it comes back, because the delay controls how long the motors hold that speed"
+            correct: true
+          - text: "It drives at twice the speed for the same distance"
+            correct: false
+            why: "Speed is setSpeeds(). The delay controls duration, and duration times speed is distance."
+          - text: "It ends up where it started, because both delays changed together"
+            correct: false
+            why: "Only the first one changed — that is what makes it a prediction question."
+          - text: "It stops halfway and waits"
+            correct: false
+
+      - id: L01_A07
+        type: multiple_choice
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "Challenge 6 sends the robot out and back with identical numbers and opposite signs. What does it almost never do, and what is the lesson's explanation?"
+        options:
+          - text: "It does not land where it started — the two motors are not identical, the tracks grip differently, and the battery sags as it works"
+            correct: true
+          - text: "It does land where it started, which proves timed driving is reliable"
+            correct: false
+            why: "The whole point of the card is that identical commands do not buy identical motion."
+          - text: "It spins instead of driving, because the signs are opposite"
+            correct: false
+            why: "Opposite signs on the two numbers spin it — that is Challenge 8. Here both numbers flip together, which reverses."
+          - text: "It stops early, because reverse is slower than forward"
+            correct: false
+
+      - id: L01_A08
+        type: multiple_choice
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "Challenge 6 tells you to run it three times, lifting the robot back onto the tape between runs rather than nudging it. Why three?"
+        options:
+          - text: "So you can see whether the error repeats — the question is not just how far it missed but whether the miss is consistent"
+            correct: true
+          - text: "So the batteries warm up to a steady voltage"
+            correct: false
+          - text: "Because one run is not enough time for the motors to reach full speed"
+            correct: false
+          - text: "Because the tape moves slightly on the first run"
+            correct: false
+
+      - id: L01_A09
+        type: multiple_choice
+        cite: "§9 Challenge 8"
+        points: 1
+        stem: "Challenge 8 makes the two speed numbers opposite. What is this steering method called, and why does the lesson say it is \"the whole course\"?"
+        options:
+          - text: "Differential steering — every turn for the rest of the book comes from running the two tracks at different speeds"
+            correct: true
+          - text: "Ackermann steering — the front axle pivots like a car's"
+            correct: false
+            why: "The lesson is explicit that there is no steering wheel and no front axle."
+          - text: "Skid steering, which the Zumo uses only in Lesson 1"
+            correct: false
+          - text: "Proportional steering, introduced properly in Lesson 8"
+            correct: false
+
+      - id: L01_A10
+        type: multiple_choice
+        cite: "§9 Challenge 8"
+        points: 1
+        stem: "Challenge 8 asks you to check a rule about which way a robot turns. What is the rule?"
+        options:
+          - text: "A robot curves toward its slower track"
+            correct: true
+          - text: "A robot curves toward its faster track"
+            correct: false
+          - text: "A robot curves toward whichever track was commanded first"
+            correct: false
+          - text: "A robot curves left whenever the two numbers differ"
+            correct: false
+
+      - id: L01_A11
+        type: multiple_choice
+        cite: "§9 Challenge 9"
+        points: 1
+        stem: "Challenge 9 has you delete the three-line button wait. What happens, and what does that prove the wait was for?"
+        options:
+          - text: "The show starts the instant the robot powers on or resets — the wait is what gives you time to get the robot positioned"
+            correct: true
+          - text: "The program will not compile without it"
+            correct: false
+          - text: "The robot waits forever, because nothing tells it to start"
+            correct: false
+          - text: "Only the motors are skipped; the sounds still wait for A"
+            correct: false
+
+      - id: L01_A12
+        type: multiple_choice
+        cite: "§9 Challenge 9"
+        points: 1
+        stem: "By Lesson 4 the button wait has a name and a status. Which?"
+        options:
+          - text: "waitForStart(), and it is a safety rule rather than a convenience"
+            correct: true
+          - text: "waitForButton(), and it is optional from then on"
+            correct: false
+          - text: "setupComplete(), and it is required by the library"
+            correct: false
+          - text: "startGate(), and it is only used in competition code"
+            correct: false
+
+      - id: L01_A13
+        type: multiple_choice
+        cite: "§9 Challenge 5"
+        points: 1
+        stem: "Challenge 5 prints the same message to the OLED and the Serial Monitor at once. From Lesson 11 on, why does that choice start to matter?"
+        options:
+          - text: "The robot runs untethered on the floor, where the OLED is the only one of the two you can still read"
+            correct: true
+          - text: "The Serial Monitor stops working after Lesson 11"
+            correct: false
+          - text: "The OLED is switched off to save memory"
+            correct: false
+          - text: "The two devices start disagreeing about what the robot sees"
+            correct: false
+
+      - id: L01_A14
+        type: multiple_choice
+        cite: "§9 Challenge 11"
+        points: 1
+        stem: "Challenge 11's hint gives one catch about readBatteryMillivolts(). What is it?"
+        options:
+          - text: "The reading is only honest on battery power with the switch ON — on USB alone the number reads low and strange"
+            correct: true
+          - text: "It returns volts, not millivolts, despite the name"
+            correct: false
+          - text: "It can only be called once per program run"
+            correct: false
+          - text: "It reads the USB voltage rather than the pack"
+            correct: false
+
+      - id: L01_A15
+        type: multiple_choice
+        cite: "§10 Before You Go"
+        points: 1
+        stem: "You build a ZUMO_Template at the end of the lesson. What is the rule about it?"
+        options:
+          - text: "Never work inside it again — it exists only to be copied"
+            correct: true
+          - text: "Work in it every lesson and rename it afterwards"
+            correct: false
+          - text: "Rebuild it from scratch at the start of each lesson"
+            correct: false
+          - text: "Keep your Lesson 1 code in it as a reference"
+            correct: false
+            why: "Step 4 has you delete everything in main.cpp and replace it with the empty skeleton."
+
+      - id: L01_A16
+        type: true_false
+        cite: "§9 Challenge 6"
+        points: 1
+        stem: "Challenge 6 requires you to change code before you run it."
+        correct: false
+        why: "There is nothing to change, and the card says that is the point — you are measuring what the existing drive block already does."
+
+      - id: L01_A17
+        type: true_false
+        cite: "§9 Challenge 9"
+        points: 1
+        stem: "Challenge 9 tells you to put the deleted lines back when you are finished."
+        correct: true
+        why: "Every program from here on starts with a wait like it — by Lesson 4 it is waitForStart(), and it is a safety rule."
+
+      - id: L01_A18
+        type: true_false
+        cite: "§7.1"
+        points: 1
+        stem: "Pressing the robot's reset button runs the test sequence again from the beginning."
+        correct: true
+        why: "§7.1's tip — reset restarts the program, and setup() runs once per power-on or reset."
+
+      - id: L01_A19
+        type: matching
+        cite: "§6, PlatformIO Toolbar Icons"
+        points: 3
+        stem: "Match each PlatformIO toolbar icon to what it does."
+        pairs:
+          - left: "Checkmark"
+            right: "Build — compile your code"
+          - left: "Right arrow"
+            right: "Upload — send code to the robot"
+          - left: "Plug"
+            right: "Serial Monitor — view robot messages"
+        extra_answers:
+          - "Clean — delete the previous build"
+          - "Reset — restart the running program"
+
+      - id: L01_A20
+        type: matching
+        cite: "§7.2, §8"
+        points: 4
+        stem: "Match each symptom to its cause."
+        pairs:
+          - left: "Build fails: \"Zumo32U4.h: No such file\""
+            right: "The lib_deps line is missing from platformio.ini"
+          - left: "Upload fails: \"Resource busy\""
+            right: "The Serial Monitor is holding the port"
+          - left: "Serial Monitor stays blank"
+            right: "The message printed before the monitor connected"
+          - left: "Robot beeps and blinks but never moves"
+            right: "The power switch is off, so the motors have no battery"
+        extra_answers:
+          - "The board setting in platformio.ini names the wrong chip"
+          - "The program was uploaded to a different robot"

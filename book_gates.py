@@ -2,7 +2,22 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.64.5'
+VERSION = 'v1.65.2'
+# v1.65.2 (S141): §27.11 DIGEST MOVES, RULES AND DECLARATIONS DO NOT. 574/2,033 both
+#   ends, class SET byte-identical (zero born, zero died), and ALL 574 DECLARATION
+#   BLOCKS byte-identical — so nothing renders differently. Usage RANK only, the S140
+#   shape for the fifth time, caused by TIP 6.68 adding uses to existing classes.
+#   Acceptance test was the RESOLVED STYLING, not the rule count (rule 24).
+# v1.65.1 (S141): THREE PINNED DENOMINATORS MOVE TOGETHER for ONE new callout, L06's
+#   TIP 6.68 (caliper technique, §3.4). Labels 255 -> 256, image references 1,202 ->
+#   1,203 (the lightbulb mark), callout population 1,119 -> 1,120. NO gate logic
+#   changed. A callout is never a free edit: it moves a label, a mark reference, the
+#   family map's denominator and the CSS usage ranks, and every one of those is pinned.
+# v1.65.0 (S141): GATE 70 NEW. A STEP PAYLOAD IS THE FILE AS IT STANDS AT THAT STEP.
+#   L06 after_step_7..after_step_11 shipped Step 13's FIXED functions, so five catch-up
+#   entries handed the student a file with both of the bugs Step 13 exists to find already
+#   repaired. gate_payload_match cannot see this: it asserts a payload derives from SOME
+#   lesson <pre>, never from the step's own one. Predicate DERIVED from the lesson reveals.
 # v1.64.5 (S140): the §27.11 digest moved a SECOND time, same session, same cause
 #   class (usage rank). NO gate logic changed. Detail at the CSS_DIGEST line.
 # v1.64.4 (S140): the §27.11 digest moved. NO gate logic changed. L03's last two
@@ -1794,8 +1809,8 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
 # zero blocks passes). The first pins the scoped population; the second pins the hold, so a
 # held label that gets CORRECTED -- or a hold that drifts off its subject -- fails loudly
 # instead of silently certifying nothing (S128 rule 20).
-if seen != 255:
-    bad.append(f'COVERAGE: {seen} labels inspected, expected 255 '
+if seen != 256:
+    bad.append(f'COVERAGE: {seen} labels inspected, expected 256 '
                f'(scheme and data-family must agree; blocks with no title div are gate 34s)')
 if held_seen != _S51_HELD:
     bad.append(f'COVERAGE: the \u00a75.1 hold matched {len(held_seen)} of {len(_S51_HELD)} '
@@ -1842,7 +1857,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1202:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
+if _seen != 1203:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
                                       # 1198 -> 1201 at S135: the three §1 hook figures land. 3
                                       # of the 151 term cards had no key mark; the canon
@@ -1872,7 +1887,7 @@ if _seen != 1202:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands 
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,202 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,203 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2268,7 +2283,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '7cd115ea7810e647'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'f764bfa73ddfac08'
 #   S140 move, FOURTH of the session and it supersedes the first three. Digest ONLY each time.
 #   Rules and declarations UNCHANGED at 574/2,033 across both, class SET byte-identical in
 #   both directions each time, and the acceptance test was the RESOLVED STYLING (rule 24):
@@ -3184,8 +3199,8 @@ try:
         bad.append('... and %d more disagreeing callout(s)' % (_fam_bad - 6))
     if _n == 0:
         bad.append('gate 59 scanned ZERO callouts - a gate that scans nothing passes')
-    elif _n != 1119:
-        bad.append('gate 59 saw %d callouts, expected the 1119 gate 47 holds' % _n)
+    elif _n != 1120:
+        bad.append('gate 59 saw %d callouts, expected the 1120 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -3858,6 +3873,120 @@ try:
 except Exception as _e69:
     bad.append('image_audit.audit() did not run - the rule has no predicate (%s)' % _e69)
 gate('\u00a710   the planned figure population is whole', bad)
+
+
+# ---------------------------------------------------------------- GATE 70 (S141)
+# \u00a715  A STEP PAYLOAD IS THE FILE AS IT STANDS AT THAT STEP, NOT AS IT ENDS UP.
+# L06's after_step_7 through after_step_11 shipped Step 13's FIXED driveDistance() and
+# turnDegrees() -- TRIM on the left motor, an averageCounts() gate -- so the five DISCOVERIES
+# entries that hand a student the file for Step 8, Discovery 6.7, Step 10, Discovery 6.8 and
+# Step 12 arrived with both of Step 13's bugs already repaired. Steps 7-12 build the BROKEN
+# functions BY DESIGN (S24): Step 13 quotes `setSpeeds(speed, speed)` and the lone-encoder
+# gate back at the student and asks them to look at their own file, and neither line was in
+# it. Cause: Maker v2.14's TRIM pass regenerated PAYLOADS[6..9] wholesale.
+# `gate_payload_match` is STRUCTURALLY BLIND to this (\u00a724.8): it asserts a payload derives
+# from SOME lesson <pre>, never from the <pre> belonging to the step the payload is named
+# for, so a payload carrying a LATER step's code passes it every time.
+# THE PREDICATE IS DERIVED, NOT PINNED (rule 19): the expected body is EXTRACTED from the
+# lesson's own reveals. Renaming a constant or rewording a comment moves both sides together;
+# only a payload drifting off its own step fires.
+bad = []
+try:
+    _L70 = open('lessons/Lesson_06.html', encoding='utf-8').read()
+    _pres70 = [html.unescape(re.sub(r'<[^>]+>', '', _m.group(1)))
+               for _m in re.finditer(r'<pre[^>]*>(.*?)</pre>', _L70, re.S)]
+
+    def _one70(head, want_trim):
+        hits = [p for p in _pres70 if p.startswith(head) and (('TRIM' in p) == want_trim)]
+        if len(hits) != 1:
+            raise AssertionError('%r: expected 1 reveal with TRIM=%s, found %d'
+                                 % (head, want_trim, len(hits)))
+        return hits[0]
+
+    _dd_pre = _one70('/*\ndriveDistance(distanceCm)', False)   # Step 7  - broken on purpose
+    _td_pre = _one70('/*\nturnDegrees(degrees)', False)        # Step 10 - broken on purpose
+
+    _M70 = open('newproject.html', encoding='utf-8').read()
+
+    def _pay70(key):
+        a = _M70.find('"%s": "' % key, 4000000)   # inside PAYLOADS["6"]
+        if a < 0:
+            raise AssertionError('payload %s not found in PAYLOADS["6"]' % key)
+        b = a + len('"%s": "' % key)
+        i = b
+        while True:
+            i = _M70.find('"', i)
+            if _M70[i - 1] != '\\':
+                break
+            i += 1
+        return _M70[b:i].encode().decode('unicode_escape')
+
+    for _k70 in ['after_step_7', 'after_step_8', 'after_step_9',
+                 'after_step_10', 'after_step_11']:
+        _t70 = _pay70(_k70)
+        if 'void driveDistance(float distanceCm) {' in _t70 and _dd_pre not in _t70:
+            bad.append('L06 %s carries a driveDistance() that is not the Step 7 reveal - a '
+                       'catch-up file for a step BEFORE 13 must still contain the bug that '
+                       'Step 13 exists to find' % _k70)
+        if 'void turnDegrees(float degrees) {' in _t70 and _td_pre not in _t70:
+            bad.append('L06 %s carries a turnDegrees() that is not the Step 10 reveal' % _k70)
+    # THE FAR SIDE: `finished` IS the Step 13 state. Its first draft asserted only that the
+    # broken block was absent and that the words TRIM/averageCounts appeared somewhere, and a
+    # BLINDING CONTROL (rule 17) proved that blind: removing `+ TRIM` from finished's
+    # driveDistance left the gate silent, because the block no longer matched the broken one
+    # either and the words survived elsewhere in the file. Compared on CODE now, not on prose:
+    # Step 13's own single-line instruction <pre>s supply the two substitutions, so the
+    # expected finished body is DERIVED from the lesson at both ends.
+    def _code70(t):
+        out, inblk = [], False
+        for l in t.split('\n'):
+            l = l.strip()
+            if inblk:
+                if l.endswith('*/'):
+                    inblk = False
+                continue
+            if l.startswith('/*'):
+                inblk = not l.endswith('*/')
+                continue
+            if l and not l.startswith('//'):
+                out.append(l)
+        return tuple(out)
+
+    def _line70(frag):
+        hits = [p for p in _pres70 if p.strip() == frag]
+        if len(hits) != 1:
+            raise AssertionError('Step 13 instruction line %r appears %d times' % (frag, len(hits)))
+        return hits[0].strip()
+
+    _sub70 = {_line70('motors.setSpeeds(speed, speed);'):
+              _line70('motors.setSpeeds(speed + TRIM, speed);'),
+              _line70('while (abs(encoders.getCountsLeft()) < targetCounts) {'):
+              _line70('while (averageCounts() < targetCounts) {')}
+
+    def _want70(pre):
+        return tuple(_sub70.get(l, l) for l in _code70(pre))
+
+    _fin70 = _pay70('finished')
+
+    def _fn70(t, sig):
+        i = t.find(sig)
+        if i < 0:
+            return None
+        j = t.find('\n}\n', i)
+        return t[i:j + 2]
+
+    for _sig70, _pre70, _lbl70 in ((
+            'void driveDistance(float distanceCm) {', _dd_pre, 'driveDistance()'),
+            ('void turnDegrees(float degrees) {', _td_pre, 'turnDegrees()')):
+        _got70 = _fn70(_fin70, _sig70)
+        if _got70 is None:
+            bad.append('L06 finished has no %s at all' % _lbl70)
+        elif _code70(_got70) != _want70(_pre70):
+            bad.append("L06 finished's %s is not the Step 7/10 body with Step 13's two "
+                       'substitutions applied - Step 13 landed partly or not at all' % _lbl70)
+except Exception as _e70:
+    bad.append('the step-payload predicate did not run (%s)' % _e70)
+gate('\u00a715  a step payload is the file as it stands AT that step', bad)
 
 print('=' * 52)
 

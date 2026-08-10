@@ -2,7 +2,10 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.6.0'
+VERSION = 'v1.6.1'
+# v1.6.1 (S141): DENOMINATOR 1119 -> 1120. L06 gained TIP 6.68, the caliper-technique
+#   callout in §3.4, when the 35 mm sprocket / 39 mm over-the-track distinction was
+#   written in. One legitimate addition, one family (TIP), nothing reclassified.
 # v1.5.0 (S132): THE STRUCTURE TIER. A callout inside the GLOSSARY REGION is a KEY TERM.
 #   Seated ABOVE the pin, below the content rules, and it is the FIRST tier since S112
 #   that is not a content rule and not authored — so the distinction it stands on has to
@@ -335,7 +338,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1119   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1120   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))

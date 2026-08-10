@@ -1,0 +1,1264 @@
+# ZUMO READING QUIZ BANK — LESSON 06
+# Encoders · Measuring the World
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_06.html v04.32.1 (post-S141 content fixes)
+#
+# READ -> FIX -> QUIZ. Lesson 06 was edited in S140 but NOT read end to end until
+# S141. The read produced four findings, all fixed before a question was written,
+# and two of them are load-bearing here:
+#
+#   1. §5.4's without-abs() demonstration commented its while-loop
+#      "// already true — loop never runs", where the paragraph directly beneath it
+#      and BRAIN CHECK 01 Q5 both say FALSE — and the comment contradicted itself,
+#      since a true condition is exactly what makes a loop run. B36 asks what a
+#      negative target does to the gate, and B54 asks what the loop's delay is for.
+#      Against v04.32.0 a student who trusted the comment over the prose would have
+#      answered B36 backwards.
+#   2. OBSERVATION EXPERIMENT 3 PREDICTED AN OVERSHOOT THAT CANNOT HAPPEN — "drag
+#      the right and it sails straight past the mark" — while Step 13's own Bug 2
+#      attributes BOTH error directions to the LEFT track. The gate reads the left
+#      encoder, so retarding the right side turns the robot and puts the left wheel
+#      on the OUTSIDE of the arc: it falls short, it cannot overshoot. Rewritten so
+#      the two drags produce two different KINDS of error. A13, A14 and A19 rest on
+#      the corrected version; against v04.32.0 A14 would have been keyed backwards.
+#
+#   The other two were smaller and nothing is keyed to them: Challenge 6's "Where to
+#   look" promised two while-loops where its own pseudocode and template use one
+#   while with an if inside, and the S140 `static` comment in averageCounts().
+#
+# ALSO FIXED THIS SESSION, OUTSIDE THE LESSON FILE: five of L06's Maker catch-up
+# payloads (after_step_7 .. after_step_11) shipped Step 13's FIXED driveDistance()
+# and turnDegrees(). Every question here about what Step 7 and Step 10 build is
+# answered from the lesson's own reveals, which were always correct; the payloads
+# were what disagreed. Gate 70 now holds them. Maker v2.45.6.
+#
+# THREE ANSWERS DELIBERATELY NOT ASKED:
+#   - WHETHER 39 mm IS THE RIGHT DIAMETER FOR THE DISTANCE MATHS. The NUMBER is now
+#     sourced: Pololu gives sprocket 35 mm, diameter WITH TRACK 39 mm, sprockets
+#     85 mm apart, and the Zumo 32U4 User's Guide confirms 12 CPR x 75.81 = 909.7.
+#     The fleet ratio is confirmed 75:1 (DJ, S141). What is NOT settled is whether a
+#     tracked drive travels pi x 39 mm per sprocket revolution or something nearer
+#     the track's pitch line, between 35 and 39. Every derived figure here follows
+#     from the book's 39, the arithmetic is correct, and §8 tells students to tune
+#     WHEEL_DIAMETER_MM against a ruler anyway — so questions ask students to USE
+#     the number and to know WHICH WAY to tune it, never to certify it as physics.
+#   - THE GEAR-RATIO STICKER COLOUR. §3.3 says the colour IS the ratio and cites
+#     Lesson 3 §4.2, which names blue for 75:1. The RATIO is confirmed; the colour
+#     convention is not, and Pololu's own sprocket colours (black, red, white) are
+#     cosmetic options rather than a ratio code, so the two could be confused.
+#     B08 asks what to do when robots disagree, not what colour to expect.
+#   - ANY SPECIFIC TUNED VALUE for WHEEL_DIAMETER_MM or WHEEL_BASE_MM. §8 tells the
+#     student to change one number, re-measure and repeat. Keying a target would
+#     punish a student who calibrated honestly. B43 (wheel diameter) and B44 (wheel
+#     base) ask the DIRECTION each constant moves, which is what §8 actually
+#     teaches, and A05 does the same for TRIM.
+#
+# NOTE ON §5.5: the interior-vs-exterior angle material is theory, answerable from
+# the reading, so it sits in the before set (B39-B42) even though the challenges
+# that use it are build work. A15 and A16 then ask the triangle and pentagon as
+# built work, which is why the same idea appears on both sides.
+#
+# FORMATS: multiple_choice, true_false, matching. No fill-in-the-blank by ruling.
+# EVERY QUESTION CARRIES A `cite`.
+#
+# MIX (QUIZ_SPEC v1.1.0: MC ~70%, TF cap ~20%, matching ~10%). DERIVED, not typed —
+# run quiz_bank.py rather than trusting this comment:
+#   before 58 — MC 45 (78%) / TF 9 (16%) / matching 4 (7%)
+#   after  20 — MC 16 (80%) / TF 2 (10%) / matching 2 (10%)
+#   78 questions total.
+
+lesson: "L06"
+title: "Encoders — Measuring the World"
+bank_version: "1.0.0"
+source:
+  lesson_06: "v04.32.1"
+
+sets:
+
+  # ===================================================================
+  # BEFORE — THE PRE-CLASS GATE
+  # Answerable from the reading alone. Nothing here needs the robot.
+  # Draws on §1, §3, §4, §5, §8A, the Quick Reference and the Glossary.
+  # Suggested Canvas draw: 10, one attempt, locks at period start.
+  # ===================================================================
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone."
+    suggested_draw: 10
+    questions:
+
+      # ---------- §3.1 How encoders work ----------
+      - id: L06_B01
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What are the three steps by which the Zumo's magnetic encoders produce a count?"
+        options:
+          - text: "A magnetic disc on the motor shaft turns, Hall effect sensors detect the changing field, and each pole passing is counted"
+            correct: true
+          - text: "A light shines through a slotted disc, a photosensor sees the flashes, and each flash is counted"
+            correct: false
+            why: "That is an optical encoder. The Zumo's are magnetic."
+          - text: "A brush contacts a metal strip once per rotation and closes a circuit"
+            correct: false
+          - text: "A timer measures how long the motor has been powered and converts it to rotations"
+            correct: false
+            why: "That is the open-loop, time-based approach this whole lesson exists to replace."
+
+      - id: L06_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Do the encoder sensors touch the spinning disc?"
+        options:
+          - text: "No — the sensors read the magnetic field through the air as the disc spins"
+            correct: true
+          - text: "Yes — a contact brush rides on the disc surface"
+            correct: false
+          - text: "Yes, but only at the moment a pole passes"
+            correct: false
+          - text: "Only on the left motor; the right one is optical"
+            correct: false
+
+      - id: L06_B03
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "How does the Zumo library manage to count pulses without your code missing any at high speed?"
+        options:
+          - text: "It uses interrupts, which count in the background whatever else your program is doing"
+            correct: true
+          - text: "It samples the encoders once per loop() pass"
+            correct: false
+            why: "That is exactly what would miss pulses, which is why interrupts are used instead."
+          - text: "It slows the motors down until the counts can keep up"
+            correct: false
+          - text: "It stores pulses in a buffer that your code must empty regularly"
+            correct: false
+
+      # ---------- §3.2 Quadrature ----------
+      - id: L06_B04
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Quadrature encoding uses two offset sensors, A and B. What does the second one buy you?"
+        options:
+          - text: "Direction — which channel triggers first tells you which way the wheel is turning"
+            correct: true
+          - text: "Twice the counting speed"
+            correct: false
+          - text: "A backup in case the first sensor fails"
+            correct: false
+          - text: "The ability to measure how fast the wheel is turning"
+            correct: false
+            why: "One channel alone gives you speed. It is direction that needs the second."
+
+      - id: L06_B05
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Channel B triggers before Channel A. What is the wheel doing?"
+        options:
+          - text: "Turning backward"
+            correct: true
+          - text: "Turning forward"
+            correct: false
+          - text: "Slipping"
+            correct: false
+          - text: "Stopped"
+            correct: false
+
+      - id: L06_B06
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Encoder counts are signed integers. What does that let you do without any extra work?"
+        options:
+          - text: "Track direction automatically — forward adds positive counts, backward adds negative ones"
+            correct: true
+          - text: "Count past 32,767 without overflowing"
+            correct: false
+          - text: "Tell the left encoder's counts from the right's"
+            correct: false
+          - text: "Detect when a wheel has slipped"
+            correct: false
+
+      - id: L06_B07
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "Encoder counts assume the wheels do not slip."
+        correct: true
+        why: "§3.2's accuracy note says so, and it is why the lesson tells you to calibrate empirically rather than trusting the maths alone."
+
+      # ---------- §3.3 Counts per rotation ----------
+      - id: L06_B08
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "Two robots in the room are given the same program and drive noticeably different distances. What does the lesson tell you to suspect?"
+        options:
+          - text: "Different gear ratios — check the sticker before assuming the code is wrong"
+            correct: true
+          - text: "One robot's encoders have failed"
+            correct: false
+          - text: "One robot has a lower battery"
+            correct: false
+          - text: "One robot's wheels are a different diameter"
+            correct: false
+
+      - id: L06_B09
+        type: multiple_choice
+        cite: "§3.3, §4.1"
+        points: 1
+        stem: "Where does the figure of 909.7 counts per wheel rotation come from?"
+        options:
+          - text: "12 counts per motor shaft rotation multiplied by the 75.81:1 gearbox"
+            correct: true
+          - text: "909.7 magnetic poles are spaced around the disc"
+            correct: false
+            why: "The disc gives 12 counts per turn of the MOTOR shaft. The gearbox is what multiplies it."
+          - text: "The wheel circumference in millimetres times 7.4"
+            correct: false
+          - text: "It is measured by driving one metre and dividing"
+            correct: false
+
+      - id: L06_B10
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "Which shaft does the encoder actually watch?"
+        options:
+          - text: "The motor shaft, before the gearbox"
+            correct: true
+          - text: "The wheel axle, after the gearbox"
+            correct: false
+            why: "If it watched the wheel there would be no need to multiply by the gear ratio at all."
+          - text: "Both, one channel each"
+            correct: false
+          - text: "The drive sprocket that carries the track"
+            correct: false
+
+      - id: L06_B11
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "A 100:1 High Torque Zumo would give roughly how many counts per wheel rotation?"
+        options:
+          - text: "About 1,200"
+            correct: true
+          - text: "About 910"
+            correct: false
+            why: "That is the 75:1 standard robot — the one this lesson's maths assumes."
+          - text: "About 600"
+            correct: false
+            why: "That is the 50:1 High Speed version."
+          - text: "About 100"
+            correct: false
+
+      - id: L06_B12
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "The lesson says counting rotations gives you distance. What fact makes that work?"
+        options:
+          - text: "The wheel is a fixed size, so one rotation always covers the same ground"
+            correct: true
+          - text: "The motors always turn at the same speed"
+            correct: false
+            why: "They do not — that is precisely why timed driving fails and encoders are needed."
+          - text: "The encoder counts distance directly rather than rotation"
+            correct: false
+          - text: "The gearbox ratio is exactly 75 to 1"
+            correct: false
+
+      # ---------- §3.4 Counts to distance ----------
+      - id: L06_B13
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "The Zumo's wheels are 39 mm in diameter. What is the circumference, and what does that number mean physically?"
+        options:
+          - text: "122.5 mm — the distance the robot travels in one full wheel rotation"
+            correct: true
+          - text: "122.5 mm — the distance between the two wheel centres"
+            correct: false
+            why: "That is the wheel base, 85 mm, and it is used for turns rather than straight lines."
+          - text: "39π cm — the distance covered per encoder count"
+            correct: false
+          - text: "12.25 mm — one tenth of a rotation"
+            correct: false
+
+      - id: L06_B58
+        type: multiple_choice
+        cite: "§3.4, §4.1"
+        points: 1
+        stem: "A ruler gives two different answers for the Zumo's wheel diameter. What are they, and which one does the distance maths use?"
+        options:
+          - text: "35 mm across the bare sprocket and 39 mm over the track — use 39, because the track is what touches the floor"
+            correct: true
+          - text: "35 mm across the bare sprocket and 39 mm over the track — use 35, because the sprocket is what the motor turns"
+            correct: false
+            why: "The motor does turn the sprocket, but the sprocket never meets the ground. Distance is decided by whatever is in contact with the floor."
+          - text: "39 mm across the sprocket and 43 mm over the track — use 39"
+            correct: false
+          - text: "Both measurements give 39 mm; the difference is between the left and right wheels"
+            correct: false
+
+      - id: L06_B14
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "How is the figure of about 74.3 counts per centimetre arrived at?"
+        options:
+          - text: "909.7 counts per rotation divided by 12.25 cm of travel per rotation"
+            correct: true
+          - text: "909.7 multiplied by 12.25"
+            correct: false
+          - text: "12 counts multiplied by the wheel diameter in cm"
+            correct: false
+          - text: "122.5 divided by the gear ratio"
+            correct: false
+
+      - id: L06_B15
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "You want the robot to drive 30 cm. About how many encoder counts is that?"
+        options:
+          - text: "About 2,229"
+            correct: true
+          - text: "About 909"
+            correct: false
+            why: "That is one wheel rotation, which is only about 12.25 cm."
+          - text: "About 74"
+            correct: false
+            why: "That is one centimetre's worth."
+          - text: "About 30"
+            correct: false
+
+      - id: L06_B16
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "Doubling the number of counts you wait for doubles the distance the robot travels."
+        correct: true
+        why: "§3.3's note puts it plainly — count twice as many ticks and the robot moved twice as far."
+
+      # ---------- §3.5 Turns ----------
+      - id: L06_B17
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "What is the \"wheel base,\" and what is it used to calculate?"
+        options:
+          - text: "The distance between the wheel centres, 85 mm — it sets how far each wheel must travel to turn the robot a given angle"
+            correct: true
+          - text: "The width of one track's contact patch, used to estimate grip"
+            correct: false
+          - text: "The distance from the wheels to the front of the robot"
+            correct: false
+          - text: "The diameter of the wheel, used to find circumference"
+            correct: false
+
+      - id: L06_B18
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "When the robot turns in place, what circle does each wheel trace?"
+        options:
+          - text: "A circle whose diameter is the wheel base — about 267 mm around for a full 360°"
+            correct: true
+          - text: "A circle whose diameter is the wheel diameter, 39 mm"
+            correct: false
+          - text: "A circle whose radius is the wheel base, so about 534 mm around"
+            correct: false
+          - text: "No circle — the wheels turn in place without travelling"
+            correct: false
+            why: "Turning in place means the robot's centre stays put, but each wheel still travels."
+
+      - id: L06_B19
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "About how many encoder counts does one degree of turn take?"
+        options:
+          - text: "About 5.5"
+            correct: true
+          - text: "About 74.3"
+            correct: false
+            why: "That is counts per centimetre of straight travel."
+          - text: "About 267"
+            correct: false
+          - text: "About 909.7"
+            correct: false
+
+      - id: L06_B20
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "The lesson says the 85 mm wheel base is approximate and tells you to measure yours. Why does that matter?"
+        options:
+          - text: "Turn accuracy depends on it, and even small differences show up as angle error"
+            correct: true
+          - text: "It changes how far the robot travels in a straight line"
+            correct: false
+            why: "Straight-line distance comes from wheel diameter. Wheel base is the turning number."
+          - text: "It determines how many counts the encoder produces per rotation"
+            correct: false
+          - text: "It affects the battery drain during turns"
+            correct: false
+
+      # ---------- §3.6 Open vs closed loop ----------
+      - id: L06_B21
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "Which pair of commands shows the open-loop / closed-loop difference?"
+        options:
+          - text: "\"Run motors for 2 seconds\" versus \"run motors until the encoders show 30 cm\""
+            correct: true
+          - text: "\"Run motors at speed 100\" versus \"run motors at speed 200\""
+            correct: false
+          - text: "\"Turn left\" versus \"turn right\""
+            correct: false
+          - text: "\"Run motors\" versus \"stop motors\""
+            correct: false
+
+      - id: L06_B22
+        type: multiple_choice
+        cite: "§3.6, Glossary"
+        points: 1
+        stem: "What does the \"loop\" in closed-loop control refer to?"
+        options:
+          - text: "Command → action → measure → compare → adjust"
+            correct: true
+          - text: "The loop() function, which repeats forever"
+            correct: false
+            why: "Different loop. This one is the feedback path, not a C++ construct."
+          - text: "The while loop inside driveDistance()"
+            correct: false
+          - text: "The circle the robot drives when it turns in place"
+            correct: false
+
+      - id: L06_B23
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "The lesson lists what open-loop control is affected by. What?"
+        options:
+          - text: "Battery level and floor surface"
+            correct: true
+          - text: "Encoder resolution and gear ratio"
+            correct: false
+          - text: "Wheel base and wheel diameter"
+            correct: false
+          - text: "Nothing — that is what makes it repeatable"
+            correct: false
+            why: "It is closed-loop that the lesson calls precise and repeatable."
+
+      # ---------- §4.1 Specs, §4 hardware ----------
+      - id: L06_B24
+        type: multiple_choice
+        cite: "§4"
+        points: 1
+        stem: "What hardware do you have to add to the robot for this lesson?"
+        options:
+          - text: "None — the encoders are built into the motors"
+            correct: true
+          - text: "Two Hall effect sensor boards, one per motor"
+            correct: false
+          - text: "A magnetic disc on each motor shaft"
+            correct: false
+          - text: "An encoder shield that plugs into the expansion header"
+            correct: false
+
+      - id: L06_B25
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "How do encoders differ from the line sensors and proximity sensors you have already met?"
+        options:
+          - text: "They need no initialization — they start counting automatically at power-on"
+            correct: true
+          - text: "They must be calibrated at the start of every run"
+            correct: false
+          - text: "They cannot be read while the motors are running"
+            correct: false
+          - text: "They share pins with the line sensors"
+            correct: false
+
+      - id: L06_B26
+        type: true_false
+        cite: "§4"
+        points: 1
+        stem: "There are two encoders, and they read separately."
+        correct: true
+        why: "Two encoders that do not have to agree — which is the whole basis of Step 13's second bug."
+
+      # ---------- §5.2 Library functions ----------
+      - id: L06_B27
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "What is the difference between getCountsLeft() and getCountsAndResetLeft()?"
+        options:
+          - text: "Both return the current count, but the second one also zeroes it"
+            correct: true
+          - text: "The first returns a count, the second returns a distance in cm"
+            correct: false
+          - text: "The first reads the left wheel, the second reads both and averages"
+            correct: false
+          - text: "The first is signed, the second is always positive"
+            correct: false
+
+      - id: L06_B28
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "Which one belongs at the START of a movement, and which during it?"
+        options:
+          - text: "getCountsAndReset…() at the start, so counting begins from zero; getCounts…() during, to check progress"
+            correct: true
+          - text: "getCounts…() at the start; getCountsAndReset…() during"
+            correct: false
+          - text: "getCountsAndReset…() for both — resetting each check keeps the number small"
+            correct: false
+            why: "Resetting every check would throw away the progress you are trying to measure."
+          - text: "It makes no difference which you use where"
+            correct: false
+
+      - id: L06_B29
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "You forget to reset the encoders at the start of a second movement. What is the classic symptom?"
+        options:
+          - text: "The robot moves the first time and then stops immediately on later moves, because the old count is already past the target"
+            correct: true
+          - text: "The robot moves twice as far every time"
+            correct: false
+          - text: "The display shows zero distance"
+            correct: false
+          - text: "The program fails to compile"
+            correct: false
+
+      # ---------- §5.3 while ----------
+      - id: L06_B30
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "What question does a while loop answer that a for loop does not?"
+        options:
+          - text: "\"Keep going until something becomes true\" — when you cannot know the number of repeats in advance"
+            correct: true
+          - text: "\"Do this a known number of times\""
+            correct: false
+            why: "That is the for loop, from Lesson 4."
+          - text: "\"Do this once, then stop\""
+            correct: false
+          - text: "\"Do this for a fixed number of milliseconds\""
+            correct: false
+
+      - id: L06_B31
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "In driveDistance(), how many times are the motors told to run?"
+        options:
+          - text: "Once, before the loop — the loop itself only watches"
+            correct: true
+          - text: "Once per pass through the while loop"
+            correct: false
+            why: "The lesson makes a point of this: the motors were commanded once, and the loop does nothing but check."
+          - text: "Once every 10 milliseconds"
+            correct: false
+          - text: "Once per encoder count"
+            correct: false
+
+      - id: L06_B32
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "The lesson says every while loop carries a danger. What is it, and what saves this one?"
+        options:
+          - text: "It only stops when its condition goes false — and this one ends because the wheels turn and the count climbs toward the target"
+            correct: true
+          - text: "It can run too fast and miss counts — the delay(10) slows it down"
+            correct: false
+            why: "The delay sets the checking pace, but the danger the lesson names is a loop that can never end."
+          - text: "It cannot be nested inside another loop"
+            correct: false
+          - text: "It runs its body before checking the condition, so it always runs at least once"
+            correct: false
+
+      - id: L06_B33
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "The lesson gives two ways to build an infinite while loop by accident. Which pair?"
+        options:
+          - text: "Forgetting to start the motors before the loop, or comparing against a target the count can never reach"
+            correct: true
+          - text: "Forgetting the delay(10), or using < instead of >"
+            correct: false
+          - text: "Resetting the encoders inside the loop, or forgetting to stop the motors after it"
+            correct: false
+          - text: "Nesting two while loops, or calling a function from inside one"
+            correct: false
+
+      - id: L06_B34
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "The lesson gives one question to answer out loud every time you write a while loop. What is it?"
+        options:
+          - text: "\"What makes this stop?\" — if you cannot point at the thing that turns the condition false, you have written an infinite loop"
+            correct: true
+          - text: "\"How many times will this run?\""
+            correct: false
+            why: "That is the for-loop question. A while loop's whole point is that you do not know."
+          - text: "\"Is the condition true at the start?\""
+            correct: false
+          - text: "\"Could a for loop do this instead?\""
+            correct: false
+
+      # ---------- §5.4 abs and ?: ----------
+      - id: L06_B35
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "What does abs() do, and what is abs(-30)?"
+        options:
+          - text: "It strips the sign, giving distance from zero — abs(-30) is 30"
+            correct: true
+          - text: "It rounds to the nearest whole number — abs(-30) is -30"
+            correct: false
+          - text: "It reverses the sign — abs(-30) is 30 and abs(30) is -30"
+            correct: false
+            why: "It never makes a positive number negative. abs(30) is still 30."
+          - text: "It converts to a float — abs(-30) is -30.0"
+            correct: false
+
+      - id: L06_B36
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "You call driveDistance(-30) and the target is computed WITHOUT abs(). What happens?"
+        options:
+          - text: "The target is negative, the count starts at 0, so the condition is false on the very first check — the loop exits and the robot never moves"
+            correct: true
+          - text: "The loop runs forever, because a negative target can never be reached"
+            correct: false
+            why: "It is the opposite: the gate is already satisfied, so the loop does not run at all."
+          - text: "The robot drives 30 cm forward instead of backward"
+            correct: false
+          - text: "The program will not compile, because targetCounts cannot be negative"
+            correct: false
+
+      - id: L06_B37
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "`int speed = (distanceCm > 0) ? DRIVE_SPEED : -DRIVE_SPEED;` — read the three parts in order."
+        options:
+          - text: "The question, then the answer if yes, then the answer if no"
+            correct: true
+          - text: "The answer if yes, then the question, then the answer if no"
+            correct: false
+          - text: "The variable, then its type, then its value"
+            correct: false
+          - text: "The condition, then the loop body, then the exit test"
+            correct: false
+
+      - id: L06_B38
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "How does `?:` differ from a full if/else, and when does the lesson say to use it?"
+        options:
+          - text: "It produces a value rather than running blocks — use it only when choosing between two values for one variable"
+            correct: true
+          - text: "It runs faster, so use it in any loop that repeats often"
+            correct: false
+            why: "The lesson says it compiles to the same thing and the robot cannot tell the difference."
+          - text: "It can test more than one condition, so use it when an if/else would need an else-if"
+            correct: false
+          - text: "It works on floats where if/else does not"
+            correct: false
+
+      # ---------- §5.5 Closing a shape ----------
+      - id: L06_B39
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "A triangle's corners are 60°. What angle should the robot turn at each corner, and why?"
+        options:
+          - text: "120° — the robot is not inside the corner; it is swinging from one wall onto the next, which is the exterior angle, 180 − 60"
+            correct: true
+          - text: "60° — turn the interior angle at each corner"
+            correct: false
+            why: "Drive that and the shape never closes. The 60° is the angle inside the corner, not the swing the robot makes."
+          - text: "90° — the same as a square, because the robot turns the same way at every corner"
+            correct: false
+          - text: "180° — the robot must reverse direction at each corner"
+            correct: false
+
+      - id: L06_B40
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "Why did driving a square hide this problem from you?"
+        options:
+          - text: "A square is the one shape where the interior and exterior angles are the same number — 180 − 90 is also 90"
+            correct: true
+          - text: "A square has four corners, and the errors cancel out in pairs"
+            correct: false
+          - text: "A square's corners are too shallow for the error to show"
+            correct: false
+          - text: "Squares are driven with driveDistance() rather than turnDegrees()"
+            correct: false
+
+      - id: L06_B41
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "What is the shortcut formula for the turn at each corner of any closed shape?"
+        options:
+          - text: "360 ÷ number of sides"
+            correct: true
+          - text: "180 ÷ number of sides"
+            correct: false
+          - text: "180 − (360 ÷ number of sides)"
+            correct: false
+          - text: "number of sides × 90"
+            correct: false
+
+      - id: L06_B42
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "Why does 360 ÷ sides work for every closed shape?"
+        options:
+          - text: "Driving all the way round any closed shape leaves you facing the way you began — one complete turn, however many corners it took"
+            correct: true
+          - text: "Because every polygon's interior angles add up to 360°"
+            correct: false
+            why: "They do not — a triangle's add to 180, a square's to 360, a pentagon's to 540. It is the EXTERIOR angles that always total 360."
+          - text: "Because the robot turns in place, so the angles are all equal"
+            correct: false
+          - text: "It is an approximation that happens to be close enough for small shapes"
+            correct: false
+
+      # ---------- §8 troubleshooting (readable before class) ----------
+      - id: L06_B43
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "You commanded 30 cm and the ruler says 33. Which way do you move WHEEL_DIAMETER_MM, and why?"
+        options:
+          - text: "Increase it — a bigger diameter means fewer counts per cm, so the robot stops sooner"
+            correct: true
+          - text: "Decrease it — a smaller diameter means the robot travels less per count"
+            correct: false
+          - text: "Leave it and lower COUNTS_PER_CM directly instead"
+            correct: false
+            why: "COUNTS_PER_CM is built FROM the diameter, so the diameter is the number you change."
+          - text: "Increase WHEEL_BASE_MM instead"
+            correct: false
+            why: "That is the turning constant. It has no effect on straight-line distance."
+
+      - id: L06_B44
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Your 90° turns are coming out short — the robot turns less than it should. What does §8 say to do?"
+        options:
+          - text: "Increase WHEEL_BASE_MM, so more counts are commanded per degree"
+            correct: true
+          - text: "Decrease WHEEL_BASE_MM"
+            correct: false
+          - text: "Increase WHEEL_DIAMETER_MM"
+            correct: false
+          - text: "Add TRIM to the left motor"
+            correct: false
+            why: "TRIM is for straight lines that curve, not for turns that come up short."
+
+      - id: L06_B45
+        type: true_false
+        cite: "§8"
+        points: 1
+        stem: "§8 calls adjusting WHEEL_DIAMETER_MM to match your ruler a bug fix."
+        correct: false
+        why: "It says the opposite in as many words — change one number, re-measure, repeat: this is calibration, not a bug."
+
+      - id: L06_B46
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The robot never stops. What does the Quick Fix table name as the likely cause?"
+        options:
+          - text: "The wrong comparison in the while loop — it should be < rather than >"
+            correct: true
+          - text: "COUNTS_PER_CM is zero"
+            correct: false
+            why: "That gives a target of 0, so the robot does not move at all."
+          - text: "The encoders were never reset"
+            correct: false
+          - text: "TRIM is set too high"
+            correct: false
+
+      # ---------- §8A functions ----------
+      - id: L06_B47
+        type: multiple_choice
+        cite: "§8A"
+        points: 1
+        stem: "In §8A's recipe analogy, what plays the part of the parameters?"
+        options:
+          - text: "The ingredients — the things you hand in, like bread type and filling"
+            correct: true
+          - text: "The steps — get bread, add filling, assemble"
+            correct: false
+            why: "Those are the function body."
+          - text: "The sandwich — what you get back"
+            correct: false
+            why: "That is the return value."
+          - text: "The recipe's name"
+            correct: false
+
+      - id: L06_B48
+        type: multiple_choice
+        cite: "§8A"
+        points: 1
+        stem: "`void driveAndTurn(_______ distance)` — what type belongs in the blank, and why that one?"
+        options:
+          - text: "float, so the parameter can accept decimal values like 30.5"
+            correct: true
+          - text: "int, because encoder counts are whole numbers"
+            correct: false
+            why: "The counts are, but the distance handed in is not — 30.5 cm has to survive the trip."
+          - text: "void, matching the function's return type"
+            correct: false
+          - text: "No type is needed; the compiler works it out from the call"
+            correct: false
+
+      - id: L06_B49
+        type: true_false
+        cite: "§8A, Glossary"
+        points: 1
+        stem: "A function's parameters let you call it with different values without rewriting it."
+        correct: true
+        why: "blinkLED(3), blinkLED(5), blinkLED(10) — one definition, three behaviours."
+
+      # ---------- matching ----------
+      - id: L06_B50
+        type: matching
+        cite: "Glossary"
+        points: 4
+        stem: "Match each Lesson 6 term to its definition."
+        pairs:
+          - left: "Encoder"
+            right: "A sensor that converts rotational motion into countable electrical pulses"
+          - left: "Quadrature Encoding"
+            right: "Using two offset sensors to detect both rotation amount and direction"
+          - left: "Hall Effect Sensor"
+            right: "A sensor that detects changes in magnetic fields"
+          - left: "Dead Reckoning"
+            right: "Tracking position by accumulating distance and angle from a known start"
+        extra_answers:
+          - "A control system that uses sensor feedback to decide when to stop"
+          - "A hardware signal that pauses normal execution for a time-critical event"
+
+      - id: L06_B51
+        type: matching
+        cite: "§4.1, Quick Reference"
+        points: 4
+        stem: "Match each property to its value for the standard 75:1 Zumo."
+        pairs:
+          - left: "Counts per motor rotation"
+            right: "12"
+          - left: "Counts per wheel rotation"
+            right: "909.7"
+          - left: "Counts per cm"
+            right: "~74.3"
+          - left: "Counts per degree of turn"
+            right: "~5.5"
+        extra_answers:
+          - "~600"
+          - "~267"
+
+      - id: L06_B52
+        type: matching
+        cite: "§4.1"
+        points: 3
+        stem: "Match each measurement to its figure."
+        pairs:
+          - left: "Wheel diameter"
+            right: "39 mm"
+          - left: "Wheel circumference"
+            right: "122.5 mm"
+          - left: "Wheel base"
+            right: "85 mm"
+        extra_answers:
+          - "267 mm"
+          - "75.81 mm"
+
+      - id: L06_B53
+        type: matching
+        cite: "§5.2"
+        points: 4
+        stem: "Match each encoder call to what it does."
+        pairs:
+          - left: "getCountsLeft()"
+            right: "Returns the left count and keeps counting"
+          - left: "getCountsRight()"
+            right: "Returns the right count and keeps counting"
+          - left: "getCountsAndResetLeft()"
+            right: "Returns the left count and zeroes it"
+          - left: "getCountsAndResetRight()"
+            right: "Returns the right count and zeroes it"
+        extra_answers:
+          - "Averages both encoders and strips the sign"
+          - "Initializes the encoders before first use"
+
+      # ---------- remaining true/false ----------
+      - id: L06_B54
+        type: true_false
+        cite: "§5.3"
+        points: 1
+        stem: "The delay(10) inside driveDistance()'s while loop is what makes the robot move."
+        correct: false
+        why: "The motors were started before the loop. The delay only sets how often the count is re-checked — about a hundred times a second."
+
+      - id: L06_B55
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "Before this lesson, your robot's driving was open-loop."
+        correct: true
+        why: "Run the motors for a number of seconds and hope — no feedback, affected by battery level and floor surface."
+
+      - id: L06_B56
+        type: true_false
+        cite: "§5.4"
+        points: 1
+        stem: "abs() appears again in Step 13, keeping each wheel's measured change positive whichever way that wheel rolled."
+        correct: true
+        why: "§5.4 says so directly, and it is what averageCounts() does with both encoders."
+
+      - id: L06_B57
+        type: true_false
+        cite: "§4.2"
+        points: 1
+        stem: "Today is the first lesson in which the robot drives itself, so the waitForStart() gate stops being a formality."
+        correct: true
+        why: "§4.2 says exactly that — nothing moves until you press A, every single run."
+
+  # ===================================================================
+  # AFTER — POST-BUILD CHECK
+  # Assumes the 13 steps were built and run, the square was driven, and
+  # Step 13's two bugs were found and fixed.
+  # Suggested Canvas draw: 8.
+  # ===================================================================
+  after:
+    description: "Post-build check. Assumes the build was completed through Step 13."
+    suggested_draw: 8
+    questions:
+
+      - id: L06_A01
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "You drive a square: 30 cm forward, turn 90°, four times. What does Step 13 promise will happen?"
+        options:
+          - text: "It will not close — the robot ends off to the side, aimed wrong, with a gap at the fourth corner"
+            correct: true
+          - text: "It closes cleanly, proving the encoders work"
+            correct: false
+          - text: "It closes on carpet but not on tile"
+            correct: false
+          - text: "The robot stops after three sides"
+            correct: false
+
+      - id: L06_A02
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "Bug 1 — your robot has been driving arcs since Step 7. What causes it?"
+        options:
+          - text: "setSpeeds(speed, speed) gives both wheels the same number, and no two motors, gearboxes or tracks are identical"
+            correct: true
+          - text: "The encoders drift over long distances"
+            correct: false
+          - text: "The wheel base constant is wrong"
+            correct: false
+          - text: "The delay(10) lets the robot coast between checks"
+            correct: false
+
+      - id: L06_A03
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "Why can the encoders not detect that the robot has been curving?"
+        options:
+          - text: "Encoders count rotation, not travel — a robot that curves 20° still spins exactly 30 cm worth of counts and reports success"
+            correct: true
+          - text: "They are sampled too slowly to see a gradual curve"
+            correct: false
+          - text: "Only the left encoder is wired, so a curve to the left is invisible"
+            correct: false
+            why: "Both are wired. The pre-Step-13 code only ASKED one — a different bug, and it is Bug 2."
+          - text: "Curving does not change the count, because both wheels still turn"
+            correct: false
+
+      - id: L06_A04
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "Where does TRIM come from, and where do you spend it?"
+        options:
+          - text: "It is the number you measured in Lesson 3, and it is added to the LEFT motor: setSpeeds(speed + TRIM, speed)"
+            correct: true
+          - text: "It is measured fresh in Lesson 6, and added to the right motor"
+            correct: false
+          - text: "It is calculated from the wheel base and applied to both motors"
+            correct: false
+          - text: "It is a Zumo library constant you do not set yourself"
+            correct: false
+
+      - id: L06_A05
+        type: multiple_choice
+        cite: "§6 Step 13, §8"
+        points: 1
+        stem: "Your robot curves LEFT on a straight line. Which way do you move TRIM?"
+        options:
+          - text: "Raise it — that speeds the left wheel up"
+            correct: true
+          - text: "Lower it — that slows the left wheel down"
+            correct: false
+          - text: "Leave TRIM and raise DRIVE_SPEED instead"
+            correct: false
+          - text: "Raise it, which slows the left wheel"
+            correct: false
+            why: "TRIM is ADDED to the left motor, so raising it makes that wheel turn faster, not slower."
+
+      - id: L06_A06
+        type: true_false
+        cite: "§6 Step 13"
+        points: 1
+        stem: "TRIM can be a negative number."
+        correct: true
+        why: "The comment in the CONFIGURATION block says so — curves right, lower it, and it can go negative."
+
+      - id: L06_A07
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "Bug 2 — what had driveDistance()'s while loop been watching?"
+        options:
+          - text: "The left encoder only; the right wheel had been spinning the whole time and nothing ever asked it anything"
+            correct: true
+          - text: "Both encoders, but averaging them incorrectly"
+            correct: false
+          - text: "A timer rather than an encoder"
+            correct: false
+          - text: "The right encoder only"
+            correct: false
+
+      - id: L06_A08
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "The left track is stiff and under-counts. What does the robot do?"
+        options:
+          - text: "Overshoots — the loop waits too long, because the count climbs more slowly than the robot actually travels"
+            correct: true
+          - text: "Stops short"
+            correct: false
+            why: "Stopping short is the slipping case, where the encoder over-counts and the loop quits early."
+          - text: "Stops immediately"
+            correct: false
+          - text: "Drives in a circle"
+            correct: false
+
+      - id: L06_A09
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "What does averageCounts() actually do to the two encoder readings?"
+        options:
+          - text: "Strips the sign off each with abs(), then averages them"
+            correct: true
+          - text: "Takes whichever of the two is larger"
+            correct: false
+          - text: "Subtracts the right from the left to measure curvature"
+            correct: false
+          - text: "Adds them together without averaging"
+            correct: false
+
+      - id: L06_A10
+        type: multiple_choice
+        cite: "§6 Step 13"
+        points: 1
+        stem: "Averaging both encoders does not make a bad track honest. What does it actually buy you?"
+        options:
+          - text: "The error is shared — a bad track costs you half the distance error instead of all of it"
+            correct: true
+          - text: "The error is cancelled completely"
+            correct: false
+          - text: "The robot detects the slip and stops with an error message"
+            correct: false
+          - text: "The robot drives straight even without TRIM"
+            correct: false
+            why: "Straightness is TRIM's job. Averaging is about the distance measurement being honest."
+
+      - id: L06_A11
+        type: multiple_choice
+        cite: "§6 Step 13, §8"
+        points: 1
+        stem: "Step 13's two fixes do two different jobs. Which pairing is right?"
+        options:
+          - text: "TRIM is for straightness; averaging both encoders is for an honest distance measurement"
+            correct: true
+          - text: "TRIM is for distance accuracy; averaging is for straightness"
+            correct: false
+          - text: "Both are for straightness — one on each motor"
+            correct: false
+          - text: "Both are for distance — one per encoder"
+            correct: false
+
+      - id: L06_A12
+        type: multiple_choice
+        cite: "§7"
+        points: 1
+        stem: "You push the robot forward by hand, then push it back the same distance. What should the counts read, and what does that check?"
+        options:
+          - text: "Back to about zero — it confirms the encoders are signed and reading direction correctly"
+            correct: true
+          - text: "Double the one-way count, confirming they accumulate"
+            correct: false
+            why: "They would only add up if the counts were unsigned. Going back should subtract."
+          - text: "Zero, because pushing by hand does not register"
+            correct: false
+          - text: "Whatever the first push read, frozen until the motors run"
+            correct: false
+
+      - id: L06_A13
+        type: multiple_choice
+        cite: "§7, Observation Experiment 3"
+        points: 1
+        stem: "You hold a finger lightly against the LEFT track during a driveDistance(50). What happens, and why?"
+        options:
+          - text: "It stops short — that track slips, the left encoder counts rotation the robot never turned into travel, and the gate quits early"
+            correct: true
+          - text: "It overshoots, because the encoder under-counts"
+            correct: false
+            why: "That is the stiff case from Step 13's Bug 2. Dragging makes it slip, which over-counts."
+          - text: "It drives the full distance but slowly"
+            correct: false
+          - text: "Nothing changes, because the gate averages both wheels"
+            correct: false
+
+      - id: L06_A14
+        type: multiple_choice
+        cite: "Observation Experiment 3"
+        points: 1
+        stem: "Same test, but the finger is on the RIGHT track. What happens?"
+        options:
+          - text: "It ends up short AND aimed somewhere new — the left encoder is telling the truth, but the wheel rolled its distance around a curve"
+            correct: true
+          - text: "It sails straight past the mark, because nothing ever asks the right wheel"
+            correct: false
+            why: "It cannot overshoot. Holding the right side back turns the robot right, which puts the LEFT wheel on the outside of the arc — so its rotation buys less forward travel, not more."
+          - text: "Nothing changes, because the gate reads the left encoder"
+            correct: false
+            why: "The gate is unaffected, but the robot's path is not — it curves, and no encoder can see that."
+          - text: "It spins in place"
+            correct: false
+
+      - id: L06_A15
+        type: multiple_choice
+        cite: "§9 Challenge 2"
+        points: 1
+        stem: "Challenge 2 asks for a triangle. What turn goes at each corner?"
+        options:
+          - text: "120°, from 360 ÷ 3"
+            correct: true
+          - text: "60°, the interior angle"
+            correct: false
+          - text: "90°, the same as the square"
+            correct: false
+          - text: "180°, reversing at each corner"
+            correct: false
+
+      - id: L06_A16
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "Challenge 3 asks for a pentagon. What turn goes at each corner?"
+        options:
+          - text: "72°, from 360 ÷ 5"
+            correct: true
+          - text: "108°, the interior angle"
+            correct: false
+          - text: "120°, the same as the triangle"
+            correct: false
+          - text: "60°"
+            correct: false
+
+      - id: L06_A17
+        type: true_false
+        cite: "§6 Step 13"
+        points: 1
+        stem: "Step 13 tells you to run the square BEFORE reading the explanation of what goes wrong."
+        correct: true
+        why: "Tape the start position to the floor and look at the gap — the fix lands harder if you have seen what it fixes."
+
+      - id: L06_A18
+        type: matching
+        cite: "§8"
+        points: 4
+        stem: "Match each symptom to its fix."
+        pairs:
+          - left: "Robot doesn't move at all"
+            right: "targetCounts is 0 — check COUNTS_PER_CM"
+          - left: "Robot never stops"
+            right: "Wrong comparison — use < in the while loop"
+          - left: "Straight lines curve, square won't close"
+            right: "Spend your Lesson 3 TRIM on the left motor"
+          - left: "One stiff or slipping track wrecks the move"
+            right: "Gate on averageCounts() instead of one encoder"
+        extra_answers:
+          - "Increase WHEEL_BASE_MM until the turns come out square"
+          - "Reset the encoders at the end of each movement instead of the start"
+
+      - id: L06_A19
+        type: matching
+        cite: "§6 Step 13, Observation Experiment 3"
+        points: 3
+        stem: "Match each fault to what the robot does about it."
+        pairs:
+          - left: "Left track slips (over-counts)"
+            right: "The gate quits early and the robot stops short"
+          - left: "Left track binds (under-counts)"
+            right: "The gate waits too long and the robot overshoots"
+          - left: "Right side held back"
+            right: "The robot curves, and no encoder can see it"
+        extra_answers:
+          - "The robot sails past the mark in a straight line"
+          - "The program halts with an encoder error"
+
+      - id: L06_A20
+        type: multiple_choice
+        cite: "§9 Challenge 5"
+        points: 1
+        stem: "Challenge 5 builds an odometer — a running total of distance across many moves. What must it NOT do that driveDistance() does every time?"
+        options:
+          - text: "Throw the count away — an odometer has to accumulate across moves rather than resetting at the start of each one"
+            correct: true
+          - text: "Use the while loop"
+            correct: false
+          - text: "Read both encoders"
+            correct: false
+          - text: "Convert counts to centimetres"
+            correct: false

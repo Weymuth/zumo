@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.31.1 -->
+<!-- Lesson version: v04.31.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -221,7 +221,7 @@
 
 <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 
-<p>This lesson might feel different—less "robot doing cool stuff" and more "organizing code." But trust me: the organization skills you learn today will make <strong>every future lesson easier</strong>. In Lesson 8, you'll add line following. Because of today's work, you'll simply create <code>RobotSensors.h</code> and <code>RobotSensors.cpp</code>—same pattern you're about to learn!</p>
+<p>This lesson might feel different—less "robot doing cool stuff" and more "organizing code." But trust me: the organization skills you learn today will make <strong>every future lesson easier</strong>. In Lesson 8, you'll add line following. Because of today's work you won't build anything new to do it—the line-sensor code drops straight into the <code>RobotSensors</code> pair you are about to create, using the same pattern.</p>
 
 </div>
 
@@ -833,7 +833,7 @@
 
 <li><strong>Missing <code>#include</code>:</strong> New <code>.h</code> file? You must <code>#include "filename.h"</code> in any file that uses it.</li>
 
-<li><strong>Circular includes:</strong> File A includes File B, which includes File B = infinite loop. <code>#pragma once</code> prevents this automatically.</li>
+<li><strong>Circular includes:</strong> File A includes File B, which includes File A = infinite loop. <code>#pragma once</code> prevents this automatically.</li>
 
 </ol>
 
@@ -1331,7 +1331,7 @@ extern Zumo32U4ButtonC buttonC;
 
 <div class="callout-5a6872-bg-f8f9fa-2" data-family="THE GOAL" data-callout="7.42">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
-    <p class="p-mb-0">Banner, both includes (the library and its own header), then the seven real object definitions — the same seven lines your main.cpp has now, no <code>extern</code>.</p>
+    <p class="p-mb-0">Banner, both includes (the library and its own header), then the seven real object definitions, no <code>extern</code>. Three of them — <code>display</code>, <code>buttonA</code>, <code>buttonB</code> — are the lines main.cpp has now. The other four (<code>buzzer</code>, <code>motors</code>, <code>encoders</code>, <code>buttonC</code>) are new here, because from now on the whole project shares one set.</p>
 </div>
 
 <div class="callout-9b6a9e-bg-f3e5f5-2" data-family="MY PLAN" data-callout="7.43">
@@ -2068,9 +2068,9 @@ first defined here...</pre>
 
 <ul>
 
-<li>Typo in filename? (capitalization matters!)</li>
+<li>Typo in the filename? Spelling counts everywhere, and capitalization counts on some systems.</li>
 
-<li>File in wrong folder? (.h should be in include/)</li>
+<li>File outside <code>include/</code> and <code>src/</code>? Those are the two folders PlatformIO searches — either one works, anywhere else does not.</li>
 
 <li>Using <code>&lt;&gt;</code> instead of <code>""</code>?</li>
 
@@ -2082,7 +2082,7 @@ first defined here...</pre>
 
 </table>
 
-<img src="../images/L07_IMAGE_7-11_header_in_wrong_folder.svg" alt="[IMAGE 7.11] The Explorer tree with RobotMotion.h wrongly placed in src/ instead of include/, and the undefined reference error that follows." class="img-d-block">
+<img src="../images/L07_IMAGE_7-11_header_in_wrong_folder.svg" alt="[IMAGE 7.11] The PlatformIO terminal showing fatal error: RobotMotion.h: No such file or directory, with the #include line and the compiler's caret beneath it. The compiler stopped before it reached any of the program." class="img-d-block">
 
 <h3 class="h3-c-00474b">Error 4: "undefined reference to"</h3>
 
@@ -2321,9 +2321,9 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">INFO: The ATmega32U4 uses native USB serial.</div> Unlike boards with a separate serial chip, <code>Serial</code> isn't ready until your computer opens the port. Messages sent before the connection is established are lost.
 
-<p><strong>Fix 1:</strong> Make sure your <code>platformio.ini</code> has <code>monitor_speed = 115200</code> (must match <code>Serial.begin(115200)</code>).</p>
+<p><strong>Fix 1 — the timing, which is what the sentence above is describing.</strong> Your <code>setup()</code> waits up to two seconds for the computer to open the port, and then gives up and carries on. If the Serial Monitor was not already open, the opening messages went out to a port nobody was listening to and they are gone. Close and reopen the Serial Monitor, then press the robot's reset button and watch it boot again.</p>
 
-<p><strong>Fix 2:</strong> The lesson code includes a 2-second timeout that waits for the USB connection. If you still see nothing, close and reopen the Serial Monitor, then press the robot's reset button.</p>
+<p><strong>Fix 2 — only if that did not do it.</strong> Open <code>platformio.ini</code> and check that <code>monitor_speed</code> still reads <code>115200</code>, the value the book ships to go with <code>Serial.begin(115200)</code>. If you have changed one of them, put it back — but note that they already agree in every file you were handed, so this is a check, not a likely cause.</p>
 
 </div>
 
@@ -2491,7 +2491,7 @@ display.gotoXY(0, 0);</pre>
 <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Reuse These Functions!</div>
 
-<p>The functions in RobotMotion will be used throughout the rest of this course. In Lesson 8, you'll add sensor functions to a new <code>RobotSensors</code> module using the same organizational pattern!</p>
+<p>The functions in RobotMotion will be used throughout the rest of this course. In Lesson 8, you'll add sensor functions to the <code>RobotSensors</code> module you built today, using the same declare-then-define pattern.</p>
 
 </div>
 
@@ -2625,7 +2625,7 @@ Zumo32U4Encoders encoders;</pre>
         <td class="td-bb-1pxsolid"><strong>Global</strong></td>
         <td class="td-bb-1pxsolid">Outside all functions, at top of file</td>
         <td class="td-bb-1pxsolid">Everywhere in that file (and other files via extern)</td>
-        <td class="td-bb-1pxsolid"><code>int robotSpeed = 200;</code> at top of RobotConfig.h</td>
+        <td class="td-bb-1pxsolid"><code>Zumo32U4Motors motors;</code> at top of RobotSensors.cpp</td>
     </tr>
     <tr>
         <td class="td-bb-1pxsolid"><strong>Local</strong></td>
@@ -3529,7 +3529,7 @@ Same distance contract as driveDistance().
 
 <div class="div-c-283593"><img src="../images/BrainGear_Incomplete.png" alt="" data-bc-icon="3" class="img-h-135em">BRAIN CHECK 03 · KNOWLEDGE CHECK — What You Just Built</div>
 
-<p>Seven questions about the project you just built. Answer each one, then click to compare. The section number after each question is where to re-read if you missed it.</p>
+<p>Six questions about the project you just built. Answer each one, then click to compare. The section number after each question is where to re-read if you missed it.</p>
 
 
 <p><strong>1. What is the purpose of a header file (.h)? (§3.3)</strong></p>
@@ -3640,7 +3640,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <ul>
 
-<li>You'll create <code>RobotSensors.h</code> and <code>RobotSensors.cpp</code> — same pattern you learned today!</li>
+<li>The line-sensor code goes straight into <code>RobotSensors.h</code> and <code>RobotSensors.cpp</code> — the pair you built today, same pattern</li>
 
 <li>Your motion functions (<code>driveDistance</code>, <code>turnDegrees</code>) are ready to use</li>
 
@@ -3883,7 +3883,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 <tr><td class="td-ddd-2"><strong>[IMAGE 7.8]</strong></td><td class="td-ddd-2">VS Code tab bar showing multiple open files</td><td class="td-ddd-2">Photo / screenshot</td><td class="td-ddd-2">☐ still needed</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 7.9]</strong></td><td class="td-ddd-2">Error message showing 'was not declared in this scope'</td><td class="td-ddd-2">Photo / screenshot</td><td class="td-ddd-2">☐ still needed</td></tr>
 <tr><td class="td-ddd-2"><strong>[IMAGE 7.10]</strong></td><td class="td-ddd-2">Error showing multiple definition</td><td class="td-ddd-2">Photo / screenshot</td><td class="td-ddd-2">☐ still needed</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 7.11]</strong></td><td class="td-ddd-2">File in wrong folder — a .h file incorrectly placed in src/</td><td class="td-ddd-2">Photo / screenshot</td><td class="td-ddd-2">☐ still needed</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 7.11]</strong></td><td class="td-ddd-2">The compiler cannot find a header — fatal error: No such file or directory</td><td class="td-ddd-2">Photo / screenshot</td><td class="td-ddd-2">☐ still needed</td></tr>
 <tr><td class="td-ddd-2"><strong>[IMAGE 7.12]</strong></td><td class="td-ddd-2">Right-click menu showing the Go to Definition option</td><td class="td-ddd-2">Photo / screenshot</td><td class="td-ddd-2">☐ still needed</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>IMAGE 7.13</strong></td><td class="td-ddd-2">Retired — the final project structure is already live as GRAPHIC 7.15 (the project tree) and GRAPHIC 7.16 (the eight-file architecture)</td><td class="td-ddd-2">—</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr><td class="td-ddd-2"><strong>[GRAPHIC 7.2]</strong></td><td class="td-ddd-2">The menu and the kitchen: what a header promises vs. what a .cpp does</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
