@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.28.3 -->
+<!-- Lesson version: v04.29.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Line Sensors</h1>
 <div class="div-fs-11em">Your Robot Cannot See — It Measures</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.28 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.29 — August 2026</div>
 </div>
 
 <div class="callout-ff8c00-bg-ffe4cc" id="what-you-need-l04-p1" data-family="WHAT YOU NEED" data-callout="4.1">
@@ -461,7 +461,7 @@
 
 <h3 class="h4-c-433014">5.5 Reading Into an Array — Three Values, One Variable</h3>
 
-<p>Lesson 3 promised that the line sensors would hand you data "as an array." Here is that moment. One reading produces three numbers at once (five in Act Two) — one per sensor. Rather than juggling three separate variables, the program declares a single <strong>array</strong>:</p>
+<p>Lesson 3 promised that the line sensors would hand you data "as an array," and its §8A.5 gave you the tool — a row of numbered boxes under one name. Here is that moment: the same idea, now holding real sensor readings. One reading produces three numbers at once (five in Act Two) — one per sensor. Rather than juggling three separate variables, the program declares a single <strong>array</strong>:</p>
 
 <pre class="div-m-16px0"><span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
@@ -715,6 +715,8 @@ scratch pad →  one global array, a slot per active sensor —
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">uint8_t</span> NUM_SENSORS = <span class="tok-b5cea8">3</span>;                <span class="tok-6a9955">// Act One: sensors 1, 3, 5</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> CAL_TIME_MS = <span class="tok-b5cea8">5000</span>;        <span class="tok-6a9955">// calibration sweep window</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> DISPLAY_INTERVAL_MS = <span class="tok-b5cea8">100</span>; <span class="tok-6a9955">// refresh rate for readings</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>   <span class="tok-6a9955">// already in your file - leave it where it is</span>
 
 <span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
 <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
@@ -1158,13 +1160,13 @@ Serial Monitor: full values plus the position.
 
 <p>Three parts, always the same three parts. <strong>The condition</strong>, in parentheses — a question with a yes/no answer, usually built from a comparison: <code>&gt;</code> greater than, <code>&lt;</code> less than, <code>==</code> equal to (two equals signs — one is assignment, and that typo is a classic). <strong>The braces</strong>, which fence off the conditional block. <strong>The action</strong> — everything inside the fence, which runs only on "yes."</p>
 
-<p>Reading it out loud helps more than you'd expect. <code>if (sensorValue &gt; 500) { ledYellow(1); }</code> reads: <em>"If the sensor value is greater than 500, turn the yellow LED on."</em> If the value is 500 or below, the whole block is skipped as if it weren't there, and the program carries on underneath.</p>
+<p>Reading it out loud helps more than you'd expect. <code>if (sensorValue &gt; 600) { ledYellow(1); }</code> reads: <em>"If the sensor value is greater than 600, turn the yellow LED on."</em> If the value is 600 or below, the whole block is skipped as if it weren't there, and the program carries on underneath.</p>
 
 <h3 class="h3-c-00474b-3">8A.2 Adding an Else</h3>
 
 <p>Often "skip it" isn't enough — you want a plan for both answers. <code>else</code> attaches the "no" plan:</p>
 
-<pre class="div-m-16px0"><span class="tok-569cd6">if</span> (sensorValue &gt; <span class="tok-b5cea8">500</span>) {
+<pre class="div-m-16px0"><span class="tok-569cd6">if</span> (sensorValue &gt; <span class="tok-b5cea8">600</span>) {
   ledYellow(<span class="tok-b5cea8">1</span>);   <span class="tok-6a9955">// dark detected - LED ON</span>
 } <span class="tok-569cd6">else</span> {
   ledYellow(<span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// light detected - LED OFF</span>
@@ -1174,16 +1176,16 @@ Serial Monitor: full values plus the position.
 
 <div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM" data-callout="4.35">
 <div class="div-c-6a1b9a"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Threshold</strong></div>
-<p class="p-mb-0">The cutoff value a condition compares against — the 500 in <code>sensorValue &gt; 500</code>. On the calibrated 0–1000 scale, 500 is the natural "darker than halfway" line between white and tape. Choosing good thresholds from real data — like the readings in your Step 4 table — is a skill you'll use in every sensor lesson from now on.</p>
+<p class="p-mb-0">The cutoff value a condition compares against — the 600 in <code>sensorValue &gt; 600</code>. Calibrated readings run 0–1000, so dead halfway between white and tape is 500. This book uses <strong>600</strong> — a deliberate margin above halfway, so a scuffed floor or a little stray light cannot nudge a reading across the line and flip the decision. Choosing good thresholds from real data — like the readings in your Step 4 table — is a skill you'll use in every sensor lesson from now on.</p>
 </div>
 
 <h3 class="h3-c-00474b-3">✏️ 8A.3 Worked Example #1: The Dark Detector</h3>
 
-<p><strong>Goal:</strong> yellow LED on whenever the center sensor sees the line. <strong>What we know:</strong> center = <code>lineSensorValues[1]</code> (three-sensor config!); calibrated values run 0–1000; "on the tape" comfortably clears 500. <strong>The code</strong>, inside <code>loop()</code> after the read:</p>
+<p><strong>Goal:</strong> yellow LED on whenever the center sensor sees the line. <strong>What we know:</strong> center = <code>lineSensorValues[1]</code> (three-sensor config!); calibrated values run 0–1000; "on the tape" comfortably clears 600. <strong>The code</strong>, inside <code>loop()</code> after the read:</p>
 
 <pre class="div-m-16px0">lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">500</span>) {
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>) {
   ledYellow(<span class="tok-b5cea8">1</span>);   <span class="tok-6a9955">// dark detected - LED ON</span>
 } <span class="tok-569cd6">else</span> {
   ledYellow(<span class="tok-b5cea8">0</span>);   <span class="tok-6a9955">// light detected - LED OFF</span>
@@ -1214,14 +1216,14 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <p>Complete this code so the <strong>red</strong> LED turns on when the <strong>left</strong> sensor (sensor 1) sees the line:</p>
 <pre class="div-m-16px0">lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6">if</span> (_________ &gt; <span class="tok-b5cea8">500</span>) {
+<span class="tok-569cd6">if</span> (_________ &gt; <span class="tok-b5cea8">600</span>) {
   _________;
 }</pre>
 <details data-reveal="solution"><summary>🔓 Click to reveal the answer</summary>
 <div class="div-p-020px15p">
 <pre class="div-m-16px0">lineSensors.readCalibrated(lineSensorValues);
 
-<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">0</span>] &gt; <span class="tok-b5cea8">500</span>) {
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">0</span>] &gt; <span class="tok-b5cea8">600</span>) {
   ledRed(<span class="tok-b5cea8">1</span>);
 }</pre>
 <p class="p-mb-0"><strong>Explanation:</strong> sensor 1 is the <em>first awake sensor</em>, so in the three-sensor configuration it lives in box <code>[0]</code> — index counts from zero. If you wrote <code>[1]</code>, you just met the number-one Lesson 4 bug from Section 5.5 — better here than in a competition.</p>
@@ -1292,7 +1294,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 
 <p>Now try to count something. Slide a strip of tape under the center sensor and count how many times it passes. The obvious code is a disaster:</p>
 
-<pre><span class="tok-6a9955">// WRONG - this counts hundreds per crossing</span>
+<pre><span class="tok-6a9955">// WRONG - this counts every loop, not every crossing</span>
 <span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>) {
     crossings++;
 }</pre>
@@ -1304,7 +1306,7 @@ display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</sp
 <div class="callout-2196f3-bg-e3f2fd" data-family="LEARN" data-callout="4.38">
 <div class="div-c-1565c0"><img src="../images/marks/book.svg" alt="" data-mark="book">A <code>bool</code> that outlives one trip through the loop</div>
 <div class="div-b-white-3">
-<code>bool</code> — true or false, a yes/no switch — you met it in Lesson 2 §3.2b as a <em>type</em>. Here it takes a <em>job</em>: holding one fact from one loop into the next.
+<code>bool</code> — true or false, a yes/no switch — you met it in Lesson 2 §3.2 as a <em>type</em>. Here it takes a <em>job</em>: holding one fact from one loop into the next.
 </div>
 <p class="p-mb-0-2">A variable declared <strong>above</strong> <code>loop()</code> — in GLOBAL VARIABLES — is created once and keeps its value forever. A variable declared <strong>inside</strong> <code>loop()</code> is born and dies on every trip. That placement is the whole difference between a robot that remembers and one that cannot.</p>
 </div>
@@ -1325,7 +1327,7 @@ onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday<
 
 <p>Read the middle line out loud: <em>"if it is dark now and it was not dark before."</em> That is an <strong>edge</strong> — the moment a value changes, not the stretch of time it stays changed. The five true readings are still five true readings, but only the first of them has a false <code>onLine</code> sitting behind it, so only the first one counts.</p>
 
-<p>The last line is the one people forget, and forgetting it breaks everything in a way that is hard to see: without <code>onLine = nowDark;</code> the flag never updates, the second half of the test is true forever, and you are back to counting hundreds. The flag has to be brought up to date at the end of every trip, whether anything happened or not.</p>
+<p>The last line is the one people forget, and forgetting it breaks everything in a way that is hard to see: without <code>onLine = nowDark;</code> the flag never updates, the second half of the test is true forever, and you are back to counting every loop. The flag has to be brought up to date at the end of every trip, whether anything happened or not.</p>
 
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="4.39">
 <div class="div-c-37474f"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
@@ -1480,7 +1482,7 @@ each loop, read the center sensor:
 </div>
 <div class="div-bb-1pxsolid">
 <iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+2" title="4-minute countdown timer for Challenge 2" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
-<p><strong>The trap (and the whole point):</strong> "if dark, add one" counts hundreds per crossing — the loop runs ten times a second and the line is under the sensor for many loops. You need to count <em>arrivals</em>, not <em>presence</em>: add one only at the moment the sensor <strong>goes from white to dark</strong>. Track where you were with a <code>bool</code> variable.</p>
+<p><strong>The trap (and the whole point):</strong> "if dark, add one" counts every loop, not every crossing — the loop runs ten times a second and the line is under the sensor for many loops. You need to count <em>arrivals</em>, not <em>presence</em>: add one only at the moment the sensor <strong>goes from white to dark</strong>. Track where you were with a <code>bool</code> variable.</p>
 <p><strong>Bonus polish:</strong> use two different thresholds — count at &gt;600, release at &lt;400 — so a reading that jitters around one cutoff can't double-count. (That trick has a name: <em>hysteresis</em>. It's in the glossary.)</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code>display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code>display.print(count)</code> <span class="tok-666">print a number</span></p>
 </div>
@@ -1581,8 +1583,9 @@ each loop: read all sensors — is ANY sensor over the line?
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p class="p-m-008px">Fill the creep speed and the flag you set when a line is seen.</p>
+<p class="p-m-008px">Fill the creep speed, the line threshold, and the flag you set when a line is seen.</p>
 <pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CREEP_SPEED = ____;   <span class="tok-6a9955">// slow</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> LINE_SEEN = ____;     <span class="tok-6a9955">// margin above halfway - check it against your Step 4 table</span>
 <span class="tok-569cd6">bool</span> lineSeen = <span class="tok-569cd6">false</span>;
 <span class="tok-569cd6">for</span> (uint8_t i = <span class="tok-b5cea8">0</span>; i &lt; NUM_SENSORS; i++) {
   <span class="tok-569cd6">if</span> (lineSensorValues[i] &gt; LINE_SEEN) lineSeen = ____;   <span class="tok-6a9955">// any sensor over the line</span>
@@ -1593,7 +1596,7 @@ each loop: read all sensors — is ANY sensor over the line?
 <iframe src="../timer.html?v=4&amp;min=4&amp;label=Challenge+4" title="4-minute countdown timer for Challenge 4" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
 <p><strong>New ingredient:</strong> motors are back — add <code>Zumo32U4Motors motors;</code> to your hardware objects. Keep the speed gentle (<code>80</code> is plenty). "Any sensor" means checking all three boxes of the array — a <code>for</code> loop with an if inside beats writing three ifs.</p>
 <p><strong>Safety notes:</strong> this robot moves by itself — clear runway, and appreciate that <code>waitForStart()</code> is now doing exactly the job it was hired for. If it curves as it creeps, your Lesson 3 TRIM values fix that.</p>
-<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[0] / [2]</code> <span class="tok-666">the edge sensors</span> · <code>ledYellow(1)/ledRed(1)</code> <span class="tok-666">warn</span> · <code>motors.setSpeeds(0,0)</code> <span class="tok-666">stop</span></p>
+<p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[i]</code> <span class="tok-666">every sensor, in a for loop</span> · <code>ledYellow(1)/ledRed(1)</code> <span class="tok-666">warn</span> · <code>motors.setSpeeds(0,0)</code> <span class="tok-666">stop</span></p>
 </div>
 <details data-reveal="solution"><summary>🔓 Click to reveal solution</summary>
 <div class="div-p-020px15p">
@@ -1860,7 +1863,7 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="4.57"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-weighted-average-gloss">Weighted average</strong></div>How readLine() turns five (or three) readings into one position: each sensor's location, weighted by how much darkness it sees. It's why positions between sensors exist.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="4.58"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-resolution-gloss">Resolution</strong></div>How finely a measurement can distinguish positions. More sensors = smaller blind gaps and a smoother position estimate — you measured this in Section 7.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="4.59"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-jumper-gloss">Jumper</strong></div>A small shorting block that connects two of three pins, physically routing a shared microcontroller pin to one sensor or another. The Zumo has two, factory-set to the proximity side.</div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="4.60"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-threshold-gloss">Threshold</strong></div>The cutoff a condition compares against — sensorValue &gt; 500. Choose it from real data, halfway between your measured white and dark readings.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="4.60"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-threshold-gloss">Threshold</strong></div>The cutoff a condition compares against — sensorValue &gt; 600. Start halfway between your measured white and dark readings — 500 on the calibrated 0–1000 scale — then add margin. This book uses 600.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="4.61"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-hysteresis-gloss">Hysteresis</strong></div>Using two thresholds (trigger high, release low) so a jittery reading can't rapidly flip a decision back and forth. The gap between them is a no-change zone.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="4.62"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-if-statement-gloss">If statement</strong></div>The fork in the road: a condition in parentheses, braces around an action, and the action runs only when the condition is true. With else, both answers get a plan.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1898,8 +1901,16 @@ else -> pivot toward the line (the way that shrinks the error)</pre>
 <tr><td class="td-ddd"><code>lineSensors.readCalibrated(values);</code></td><td class="td-ddd">Calibrated readings into the array, 0–1000 per sensor</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>int p = lineSensors.readLine(values);</code></td><td class="td-ddd">Calibrated read + weighted-average line position (dark line)</td></tr>
 <tr><td class="td-ddd"><code>lineSensors.readLineWhite(values);</code></td><td class="td-ddd">Same, hunting a WHITE line on a dark surface</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>waitForStart();</code></td><td class="td-ddd">Safety gate — LAST line of setup(), always</td></tr>
-<tr><td class="td-ddd"><code>checkBattery();</code></td><td class="td-ddd">A+B battery display — TOP of loop(), always</td></tr>
+</table>
+
+<h4 id="qr-startup" class="h4-c-6f7582">Startup &amp; safety</h4>
+<table class="table-bc-collapse-7">
+<tr class="tr-bg-4d535f">
+<th class="th-ddd">Call</th>
+<th class="th-ddd">What it does</th>
+</tr>
+<tr><td class="td-ddd"><code>waitForStart();</code></td><td class="td-ddd">Safety gate — LAST line of setup(), always</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd"><code>checkBattery();</code></td><td class="td-ddd">A+B battery display — TOP of loop(), always</td></tr>
 </table>
 
 <h4 id="qr-configs" class="h4-c-6f7582">The two configurations</h4>
