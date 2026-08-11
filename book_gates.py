@@ -2,7 +2,9 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.65.9'
+VERSION = 'v1.65.10'
+# v1.65.10 (S144): §27.11 baseline moved for the L11 §3.5 cliff rewrite. NO gate logic
+#   changed. Detail at the CSS_DIGEST line.
 # v1.65.9 (S144): §27.11 baseline moved for L10 callout 10.5's amber->green normalisation.
 #   NO gate logic changed. Detail at the CSS_DIGEST line.
 # v1.65.8 (S143): §27.11 baseline moved for L10's new Challenge 6 card. NO gate logic changed.
@@ -2298,7 +2300,14 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'be91baf27252268b'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'fecb7fafb1270897'
+#   S144 move, SECOND of the session. Digest ONLY, 574/2,033 both ends, class SET
+#   byte-identical, usage RANK only: `.h4-c-555` 9 -> 8 and the whole textual diff is that
+#   rule changing rank plus its count comment. Cause: the L11 §3.5 cliff rewrite has one
+#   fewer <h4> than the argument it replaced. Acceptance test is the RESOLVED STYLING
+#   (rule 24), and the proof was RE-DERIVED again this session rather than carried: zero
+#   elements in the sixteen lessons carry two classes, so a frequency reshuffle cannot
+#   decide a cascade.
 #   S144 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical, usage RANK only:
 #   .div-c-3a5a3a 33 -> 34 and .div-c-856404 24 -> 23, both rule bodies untouched, and the
 #   whole textual diff is those two blocks swapping rank. Cause: L10 callout 10.5 is

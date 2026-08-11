@@ -2,7 +2,11 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.6.2'
+VERSION = 'v1.6.3'
+# v1.6.3 (S144): the L11 8A.4 INSIGHT tier pinned 'This is what arithmetic is FOR' - and
+#   S144 REPLACED that arithmetic, because §3.5's cliff premise was wrong. Repointed to the
+#   new headline. No tier logic changed. Second time this session that a literal content
+#   tier owed an edit because the SPELLING it pinned was the thing being corrected.
 # v1.6.2 (S144): the L11 INSIGHT content rule pinned the headline 'The stopwatch has no
 #   readers left' - a SPELLING, and S144 corrected that headline because the claim under it
 #   was false (two writes survived, so deleting the declaration broke the build). Repointed,
@@ -223,7 +227,7 @@ RULE=[
  (lambda l,g,s,_p='The stopwatch is retired in three pieces, no': l.startswith(_p), 'INSIGHT'), # L11:520
  (lambda l,g,s,_p='Leaving the state IS the reset. The odometer': l.startswith(_p), 'INSIGHT'), # L11:636
  (lambda l,g,s,_p='The track did not change. The battery did. O': l.startswith(_p), 'INSIGHT'), # L11:680
- (lambda l,g,s,_p='This is what arithmetic is FOR. It did not j': l.startswith(_p), 'INSIGHT'), # L11:798
+ (lambda l,g,s,_p='Section 8A.2, four sections early and one wor': l.startswith(_p), 'INSIGHT'), # L11:798
  (lambda l,g,s,_p='This is the deepest idea in the lesson. You ': l.startswith(_p), 'INSIGHT'), # L12:281
  (lambda l,g,s,_p='The IMU is the only free sensor on this robo': l.startswith(_p), 'INSIGHT'), # L12:325
  (lambda l,g,s,_p='You just upgraded every turn in the entire b': l.startswith(_p), 'INSIGHT'), # L12:455

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.29.0 -->
+<!-- Lesson version: v02.30.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Time Lies, Distance Doesn't</h1>
 <div class="div-fs-11em">Encoder-Based Gap Crossing</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.29 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.30 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -96,7 +96,7 @@ and it drives straight off the end of the line.</p>
 <div class="div-607d8b" data-family="NOTE" data-callout="11.1"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">The bug is in Lesson 8, and it has been there the whole time.</div>Lesson 8 crosses gaps with a <strong>stopwatch</strong>: <code>MAX_GAP_TIME = 500</code> milliseconds. But a stopwatch measures <em>how long you drove</em>. It has no idea <em>how far you got</em>. A tired battery drives slower — so the same 500&nbsp;ms carries the robot less distance. The code did not break. The code was always broken. The full battery was hiding it.</div>
 <p>This lesson fixes it in one move: <strong>stop counting time, start counting distance.</strong> You already own the hardware to do it — the encoders have been on the robot since Lesson 6.</p>
-<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-05_battery_strength_changes_the_outcome.svg" alt="GRAPHIC 11.5 &mdash; Same track, same 500&nbsp;ms command, two batteries: a fresh pack carries the robot across the gap, a tired pack leaves it short. The code never changed." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.5 — Same track, same 500&nbsp;ms command, two batteries: a fresh pack carries the robot across the gap, a tired pack leaves it short. The code never changed.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-05_battery_strength_changes_the_outcome.svg" alt="GRAPHIC 11.5 — Same track, same 500&nbsp;ms command, two batteries: a fresh pack carries the robot across the gap, a tired pack leaves it short. The code never changed." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.5 — Same track, same 500&nbsp;ms command, two batteries: a fresh pack carries the robot across the gap, a tired pack leaves it short. The code never changed.</div></div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
@@ -111,7 +111,7 @@ and it drives straight off the end of the line.</p>
 <li>☐ Rewrite <code>handleGap()</code> so it asks "how <em>far</em> have I been blind?" instead of "how <em>long</em> have I been blind?"</li>
 <li>☐ Add two new states — <code>GAP_CROSSING</code> and <code>LINE_LOST</code> — to the state machine you built in Lesson 10.</li>
 <li>☐ Measure a real gap with your own robot instead of guessing a threshold.</li>
-<li>☐ Explain, with numbers, <strong>why this robot cannot be programmed to avoid falling off a table</strong> — and what you would have to change to make it possible.</li>
+<li>☐ Explain, with readings you took yourself, <strong>why this robot cannot be programmed to avoid falling off a table</strong> — and what KIND of sensor it would take to make it possible.</li>
 </ul>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
@@ -160,7 +160,7 @@ The conversion is already sitting in <code>RobotConfig.h</code>:</p>
 <pre>const float COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0);</pre>
 <div class="div-607d8b" data-family="NOTE" data-callout="11.3"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">The whole lesson, in one sentence.</div>Lesson 8 asked <strong>"have I been blind for too LONG?"</strong> — a stopwatch.<br>Lesson 11 asks <strong>"have I been blind for too FAR?"</strong> — an odometer.<br><br>Same function. Same call site. Same name. <strong>One question changed.</strong></div>
-<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-01_time_vs_distance.svg" alt="GRAPHIC 11.1 &mdash; The same gap, the same code, two batteries. Only the stopwatch cares." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.1 — The same gap, the same code, two batteries. Only the stopwatch cares.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-01_time_vs_distance.svg" alt="GRAPHIC 11.1 — The same gap, the same code, two batteries. Only the stopwatch cares." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.1 — The same gap, the same code, two batteries. Only the stopwatch cares.</div></div>
 <h3 class="h3-c-1f2a3d">3.4 Two New States</h3>
 <p>In Lesson 10 you learned that a state machine gives each behavior a <em>name</em>.
 Gap crossing needs two new ones:</p>
@@ -169,7 +169,7 @@ Gap crossing needs two new ones:</p>
 <li><code>LINE_LOST</code> — drove the whole budget, never found the line. Stop and say so.</li>
 </ul>
 <p>The difference between them is <strong>one number</strong>: how far you have gone since the line vanished.</p>
-<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-04_gap_state_machine.svg" alt="GRAPHIC 11.4 &mdash; GAP_CROSSING and LINE_LOST. The difference between them is one number." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.4 — GAP_CROSSING and LINE_LOST. The difference between them is one number.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-04_gap_state_machine.svg" alt="GRAPHIC 11.4 — GAP_CROSSING and LINE_LOST. The difference between them is one number." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.4 — GAP_CROSSING and LINE_LOST. The difference between them is one number.</div></div>
 <h3 class="h3-c-1f2a3d">3.5 Why We Cannot Code Our Way Off the Table</h3>
 <p>Here is a question every robotics student asks, and it deserves a real answer:</p>
 <p class="p-ccc" data-family="YOU MIGHT WONDER" data-callout="11.4">
@@ -177,40 +177,49 @@ Gap crossing needs two new ones:</p>
 — and stop before it drives off the edge?"</p>
 <p>It is a good instinct. It is also, on this robot, <strong>impossible</strong> — and understanding
 <em>why</em> is worth more than any line of code in this lesson.</p>
-<h4 class="h4-c-555">The sensor does not see a cliff. It sees white.</h4>
+<h4 class="h4-c-555">The sensor does not see a cliff. It sees black.</h4>
 <p>A line sensor is an <strong>infrared reflectance</strong> sensor. It shines IR light down,
-and measures how much bounces back. Black tape absorbs the light: low reflection.
-White paper returns it: high reflection.</p>
-<p>Now hold the robot over the edge of the table. What bounces back?</p>
-<p><strong>Nothing.</strong> No reflection at all — which reads exactly the same as
-the brightest possible white. The sensor cannot tell you the floor is missing.
-It can only tell you <em>no light came back</em>, and it has no way to say <em>why</em>.</p>
-<h4 class="h4-c-555">So you would have to measure how long you have been blind.</h4>
-<p>Which is exactly the machinery you are building in this lesson. A cliff, in software,
-would have to be <em>"white that never ends."</em></p>
-<p>But a legal gap is also white. Your gaps are several centimeters wide, and the robot has to be
-<em>allowed</em> to cross them. So the alarm cannot fire until the robot has been blind for
-<strong>longer than the widest gap you want to survive</strong>.</p>
-<h4 class="h4-c-555">And that is where the arithmetic kills it.</h4>
-<p>The sensors sit at the <strong>front edge</strong> of the robot. The wheels are a few centimeters
-<em>behind</em> them. So from the moment the sensors cross the edge, you have only the time it takes
-the robot to roll forward a few centimeters — a fraction of a second — before the wheels
-go over too.</p>
-<p>But you just agreed the alarm is not allowed to fire until the robot has driven <em>further</em>
-than a legal gap. And a legal gap is <em>wider</em> than that few-centimeter head start.</p>
-<div class="div-e74c3c" data-family="THE WALL" data-callout="11.5"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">The alarm is not allowed to go off until the robot has already fallen.</div>The distance you must travel before you are <em>permitted</em> to call it a cliff is <strong>larger</strong> than the distance you have <em>available</em> before the wheels leave the table. There is no threshold value that both crosses gaps and stops for cliffs. Not a badly chosen one. <strong>There is no such number.</strong><br><br><em>If you want to check that claim yourself, the full arithmetic is in Section 8A.4.</em></div>
-<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-02_cliff_arithmetic.svg" alt="GRAPHIC 11.2 &mdash; 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.2 — 400 ms &gt; 180 ms. The alarm cannot legally fire until after the robot has fallen.</div></div>
+and measures how much bounces back. White paper returns most of it: high reflection.
+Black tape swallows it: almost nothing comes back.</p>
+<p>Now hold the robot out over the edge of the table. What bounces back?</p>
+<p><strong>Nothing.</strong> And nothing coming back is <em>exactly</em> what black tape looks like.
+The sensor has one scale, running from “lots of light returned” to “none did,”
+and a missing floor pins it at the same end the line does. It can only tell you
+<em>no light came back</em>. It has no way to say <em>why</em>.</p>
+<p><strong>You have already seen this, in Lesson 4.</strong> Its troubleshooting table has an entry for sensors that read maximum no matter what you do, and the cause it names is <em>“robot held in the air”</em> — because <strong>air counts as black</strong>. You met your cliff detector in week two, and it told you the floor was missing by reporting a line.</p>
+<h4 class="h4-c-555">So the robot does not hesitate at a cliff. It accelerates.</h4>
+<p>Follow it through your own code. Over the edge, all five sensors read near 1000 — full
+black. <code>isLineVisible()</code> sums them, gets the largest number it can get, and returns
+<strong>true</strong>. <code>readLinePosition()</code> asks where the line is; with all five equally
+dark the weighted average lands dead centre, on <code>LINE_CENTER</code>. So <code>followLine()</code>
+computes an error of <strong>zero</strong> and drives both motors at <code>BASE_SPEED</code>.</p>
+<p>The robot does not go blind at a cliff. It believes it has found the widest, most perfectly
+centred line it has ever seen, and it drives straight out over the drop at full speed.
+<strong><code>handleGap()</code> is never called. <code>GAP_MAX_CM</code> never gets a vote.</strong>
+Every safeguard you built in this lesson is watching for a line that vanishes, and at a cliff
+the line does not vanish — it arrives.</p>
+<h4 class="h4-c-555">And that is why no threshold can work.</h4>
+<p>The usual next idea is to pick a smarter number. There is no number to pick. The void and
+the tape produce the <em>same reading</em>, so no comparison against that reading can separate
+them — they are not separated in the data.</p>
+<p>Nor can you rescue it with “all five dark is suspicious, a real line is narrow.”
+All five dark is already a legal, meaningful reading on this course: it is what an intersection
+looks like, and Lesson 9 taught your robot to act on it.</p>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="11.5"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">One number, two worlds.</div>A reflectance sensor answers exactly one question — <em>how much light came back?</em> — and the tape you must follow and the drop you must avoid give the same answer. There is no threshold value that both crosses gaps and stops for cliffs. Not a badly chosen one. <strong>There is no such number.</strong><br><br><em>If you want to check that claim yourself, Section 8A.4 shows you how to see it on your own robot in about a minute.</em></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-02_cliff_arithmetic.svg" alt="GRAPHIC 11.2 — black tape and a missing floor both read about 1000. One number, two worlds, and no threshold can separate them." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.2 — Black tape and a missing floor both read about 1000. One number, two worlds.</div></div>
 <h4 class="h4-c-555">The answer is a piece of wood.</h4>
 <p>So we do not solve this in software. We solve it by <strong>running the robot on the floor</strong>,
 or by putting a <strong>physical barrier</strong> at the table edge.</p>
 <p>That is not giving up. That is engineering.</p>
-<div class="div-27ae60" data-family="INSIGHT" data-callout="11.6"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The lesson worth keeping.</div>Sometimes the correct engineering answer is not a better algorithm. It is a piece of wood.<br><br>A good engineer does the arithmetic <em>first</em>, finds out the software cannot win, and spends four dollars on a rail instead of four weeks on a bug that was never fixable. Shipping a guard that <em>almost</em> works would be worse than shipping none — because then people trust it.</div>
-<p>And notice what the arithmetic actually told us. It did not say <em>"impossible."</em>
-It said <strong>the sensor is in the wrong place</strong>. Mount a downward sensor on a boom that sticks out
-<em>in front of</em> the wheels, and the head start gets bigger — the inequality flips, and the
-alarm can fire in time.</p>
-<p><strong>The fix was never a smarter algorithm. It was a mounting position.</strong>
-That is the kind of thing the math tells you, and guessing never does.</p>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="11.6"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The lesson worth keeping.</div>Sometimes the correct engineering answer is not a better algorithm. It is a piece of wood.<br><br>A good engineer checks what the sensor can actually distinguish <em>first</em>, finds out the software cannot win, and spends four dollars on a rail instead of four weeks on a bug that was never fixable. Shipping a guard that <em>almost</em> works would be worse than shipping none — because then people trust it.</div>
+<p>And notice what the investigation actually told us. It did not say <em>"impossible."</em>
+It said <strong>you are asking the wrong sensor</strong>. Reflectance answers <em>how much light came
+back?</em>, and both surfaces answer it identically. A sensor that answered <em>how far away is the
+floor?</em> would separate them instantly — three millimetres over tape, the height of a table over
+nothing.</p>
+<p><strong>The fix was never a smarter algorithm, and it was never a mounting position either.
+It was a different kind of sensor.</strong> That is the kind of thing an experiment tells you,
+and guessing never does.</p>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
@@ -246,7 +255,7 @@ That is the kind of thing the math tells you, and guessing never does.</p>
 <td class="td-ddd">Reports the measured gap width in Section 7A.</td>
 </tr>
 </table>
-<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="GRAPHIC 11.3 &mdash; The five-sensor array. All five must read white before the robot calls it a gap." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.3 — The five-sensor array. All five must read white before the robot calls it a gap.</div></div>
+<div class="div-m-24px0"><img src="../images/L11_GRAPHIC_11-03_line_sensor_array.svg" alt="GRAPHIC 11.3 — The five-sensor array. All five must read white before the robot calls it a gap." class="img-ddd"><div class="div-c-666-2">GRAPHIC 11.3 — The five-sensor array. All five must read white before the robot calls it a gap.</div></div>
 <div class="div-607d8b" data-family="NOTE" data-callout="11.7"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">No new wiring. No new jumpers. No new library.</div>This is what good architecture buys you. In Lesson 7 you organized the code into modules. In Lesson 6 you built <code>averageCounts()</code>. Today you spend that work — the whole lesson is about <strong>asking a better question of hardware you already own.</strong></div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -376,9 +385,9 @@ line came back, and otherwise hands off to <code>handleGap()</code>. The <em>cou
 
 </details>
 
-<details data-reveal="quiz"><summary>5. Hold the robot out over the edge of the table. What does a line sensor report — and why is that the same reading it gives over the brightest possible white? (§3.5)</summary>
+<details data-reveal="quiz"><summary>5. Hold the robot out over the edge of the table. What does a line sensor report — and which of the two things it already knows about does that reading look exactly like? (§3.5)</summary>
 
-<div class="div-mt-12px"><p>Nothing bounces back, and <em>no reflection at all</em> reads exactly the same as the brightest possible white. A line sensor is an infrared reflectance sensor: it shines IR down and measures how much returns. Black tape absorbs it, white paper returns it, and a missing floor returns nothing — which is the low end of the same one scale the sensor has. It can only tell you <strong>no light came back</strong>, and it has no way at all to say why. The sensor does not see a cliff. It sees white.</p></div>
+<div class="div-mt-12px"><p>Nothing bounces back, and <em>nothing coming back</em> reads exactly the same as <strong>black tape</strong>. A line sensor is an infrared reflectance sensor: it shines IR down and measures how much returns. White paper returns most of it, black tape swallows it, and a missing floor returns none at all — pinning the sensor at the same end of its one scale that the line does. It can only tell you <strong>no light came back</strong>, and it has no way at all to say why. So the robot does not go blind at a cliff: all five sensors read near 1000, <code>isLineVisible()</code> returns true, the position lands dead centre, and the robot drives out over the drop at full speed believing it has found a perfect line. The sensor does not see a cliff. It sees black — and black is the thing it was told to follow.</p></div>
 
 </details>
 
@@ -802,49 +811,33 @@ On this robot, for distance, there always is.</p>
 the end of the line is just a gap that never closes. It is infinitely wide.
 Without the budget, a robot that reaches the end of the course drives on forever.
 <code>GAP_MAX_CM</code> is the only thing that catches it.</p>
-<h3 class="h3-c-00474b">8A.4 The Cliff Arithmetic — Checking the Claim from Section 3.5</h3>
+<h3 class="h3-c-00474b">8A.4 Checking the Claim from Section 3.5 — On Your Own Robot</h3>
 <p>Section 3.5 claimed the robot <em>cannot</em> be programmed to stop at a table edge.
-Claims should be checkable. Here is the arithmetic. Do it yourself with your own numbers —
-you may find your robot is even worse off than this one.</p>
-<h4 class="h4-c-555">Step 1 — How fast is the robot?</h4>
-<p><code>BASE_SPEED</code> is 150 on the Zumo's 0–400 scale. Pololu rates the 75:1 gearmotors
-at roughly 65&nbsp;cm/s flat out. Speed is close enough to proportional, so:</p>
-<pre>speed = 150 / 400  x  65 cm/s
-      = 0.375       x  65
-      ~ 24 cm/s          (call it 25 - round numbers are fine here)</pre>
-<h4 class="h4-c-555">Step 2 — How much head start do you have?</h4>
-<p>Measure it on your own robot: the distance from the <strong>line sensor array</strong>
-(front edge, underneath) back to the <strong>wheel contact patch</strong>. On the Zumo 32U4 it is
-about <strong>4.5&nbsp;cm</strong>.</p>
-<p>That is your entire warning. The moment the sensors cross the edge, the robot has 4.5&nbsp;cm of
-travel left before the wheels follow them over.</p>
-<pre>warning distance = 4.5 cm
-warning TIME     = 4.5 cm / 25 cm/s
-                 = 0.18 s   =  180 milliseconds</pre>
-<h4 class="h4-c-555">Step 3 — When are you ALLOWED to sound the alarm?</h4>
-<p>Not immediately — because a legal gap also reads white, and the robot must be permitted
-to cross it. So the alarm cannot fire until the robot has been blind for <em>longer than your widest
-legal gap</em>. Say your gaps are 10&nbsp;cm:</p>
-<pre>alarm distance = 10 cm      (must exceed the widest legal gap)
-alarm TIME     = 10 cm / 25 cm/s
-               = 0.40 s   =  400 milliseconds</pre>
-<h4 class="h4-c-555">Step 4 — Compare them.</h4>
-<pre>you have    180 ms   before the wheels go over the edge
-you must wait 400 ms   before you are allowed to call it a cliff
-
-400 &gt; 180        &lt;-- the alarm fires 220 ms AFTER the robot has fallen</pre>
-<div class="div-e74c3c" data-family="THE WALL" data-callout="11.22"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">There is no threshold that works. Not a badly chosen one — there is no such number.</div>To sound the alarm in time, the trigger distance would have to be <strong>under 4.5 cm</strong>. But any trigger under 4.5&nbsp;cm fires in the middle of every legal 10&nbsp;cm gap. The two requirements are <strong>mutually exclusive</strong>.<br><br>Make the robot slower and both numbers shrink together — the ratio never changes. <strong>You cannot fix this by tuning.</strong></div>
-<h4 class="h4-c-555">Step 5 — So what WOULD fix it?</h4>
-<p>Look at the inequality again. Only one term is under your control:</p>
-<pre>warning distance  &gt;  widest legal gap        &lt;-- what you NEED
-
-     4.5 cm       &gt;        10 cm                &lt;-- what you HAVE (false)
-    25.0 cm       &gt;        10 cm                &lt;-- with a sensor on a 25cm boom (true)</pre>
-<p>The algorithm was never the problem. <strong>The sensor is in the wrong place.</strong>
-Mount a downward-facing sensor on a boom that sticks out <em>ahead of the wheels</em>,
-and the warning distance grows until it exceeds the gap width. The inequality flips.
-The same code that was impossible becomes trivial.</p>
-<div class="div-27ae60" data-family="INSIGHT" data-callout="11.23"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">This is what arithmetic is FOR.</div>It did not just tell you "no." It told you <strong>exactly which term to change</strong>, and roughly how much you would have to change it by.<br><br>Guessing would have told you to write better code. The code was never the problem.</div>
+Claims should be checkable. This one takes about a minute and needs no code at all —
+you already built the instrument in Section 7A.</p>
+<h4 class="h4-c-555">Step 1 — Put the readings on the screen.</h4>
+<p>Any build with a live sensor readout will do. Calibrate as normal, on the floor, over
+your own tape.</p>
+<h4 class="h4-c-555">Step 2 — Read three surfaces.</h4>
+<p>Hold the robot — do not drive it — and write down what all five sensors report over
+each of these:</p>
+<pre>white mat      -&gt; near 0     (lots of IR came back)
+black tape     -&gt; near 1000  (almost none came back)
+out over air   -&gt; near 1000  (none at all came back)</pre>
+<h4 class="h4-c-555">Step 3 — Compare rows two and three.</h4>
+<p>They are the same number. Not close — the same, because <code>readCalibrated()</code>
+clamps at 1000 and both surfaces are already there. That is the entire proof, and you did it
+with a ruler-free experiment rather than a calculation.</p>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="11.22"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">There is no threshold that works. Not a badly chosen one — there is no such number.</div>A threshold is a comparison against a number, so it can only separate readings that differ — and these do not. Your detector would have to fire on one of those rows and not the other, and they are the same row. <strong>No comparison you can write against that number will do it</strong> — not a cleverer one, not a slower robot, not more averaging. The information is not in the reading, so no amount of processing recovers it.</div>
+<h4 class="h4-c-555">Step 4 — So what WOULD fix it?</h4>
+<p>Not a boom. This is the answer most students reach for — mount the sensor further
+forward and buy warning time — and it fails, because a reflectance sensor on the end of a
+boom reads the void as black just the same. You would have moved the wrong thing.</p>
+<p>The fix is a different <strong>kind</strong> of sensor. Reflectance answers <em>how much light
+came back?</em> You need one that answers <em>how far away is the floor?</em> Over black tape the
+answer is about three millimetres; over a table edge it is the height of the table. Those are
+not the same number, and nothing can make them the same number.</p>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="11.23"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">Section 8A.2, four sections early and one word short.</div>It says: <em>“is there a sensor that measures the thing I actually want? On this robot, for distance, there always is.”</em> For distance <em>travelled</em>, yes — the encoders. For distance <em>to the floor</em>, there is not one, and that is the whole difference between a lesson you can finish and a rail you have to buy.<br><br><strong>The question that settles a design is not “can I write this?” It is “does anything on this robot measure the quantity I am reasoning about?”</strong> Ask it before the code, not after.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
@@ -1016,29 +1009,25 @@ Run 3:  const int TRIM = ___;   // DOUBLE your number</pre>
 </div>
 
 <div id="challenge-5" class="div-7d5283" data-challenge="11.5" data-kind="challenge" data-difficulty="easy" data-grasp="moderate">
-<div class="div-bg-7a5905"><strong>Challenge 5: The Cliff Arithmetic — Your Numbers</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
+<div class="div-bg-7a5905"><strong>Challenge 5: The Cliff — Read It Yourself</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
-<p class="pre-m-0">📁 <strong>Work in:</strong> your engineering notebook — plus a ruler and your powered-off robot. No code in this one; the deliverable is a page of checked numbers.</p>
+<p class="pre-m-0">📁 <strong>Work in:</strong> your engineering notebook — plus your robot, powered on, held in your hand. No code in this one; the deliverable is a page of readings you took yourself.</p>
 </div>
 <div class="div-b-white">
-<p class="h4-mt-0">Section 8A.4 ran the cliff arithmetic on a demo robot — 25&nbsp;cm/s, 4.5&nbsp;cm of warning, 10&nbsp;cm gaps — and proved no threshold can work. Every number in that proof is checkable, and two of them are yours.</p>
-<p><strong>Part 1 — your inequality.</strong> Power the robot off, flip it over, and measure YOUR warning distance: from the front edge of the line-sensor array back to where the tracks touch the ground. Compute YOUR speed from your <code>BASE_SPEED</code> (speed ÷ 400 × 65&nbsp;cm/s). Use your course's widest gap. Redo §8A.4 steps 1–4 with those three numbers. By how many milliseconds does your robot lose?</p>
-<p><strong>Part 2 — the boom.</strong> §8A.4 says a sensor boom fixes it. How long, exactly, for YOUR gap width? Write the inequality, produce a number in cm.</p>
-<p><strong>Part 3 — the proof.</strong> §8A.4 claims slowing down cannot help: <em>“the ratio never changes.”</em> Prove it. Call the speed <code>v</code>, write the warning time and the alarm time as expressions in <code>v</code>, and show the comparison comes out the same for every <code>v</code>.</p>
+<p class="h4-mt-0">Section 3.5 claims your robot cannot be programmed to stop at a table edge, and Section 8A.4 shows you how to see why in about a minute. Do not take either on trust. <strong>Go and read the numbers.</strong></p>
+<p><strong>Part 1 — the three surfaces.</strong> Calibrate on the floor as normal. Then hold the robot — do not drive it — and record all five calibrated readings over white mat, over your black tape, and out over the edge of a table or bench. Nine numbers minimum; more if your sensors disagree with each other.</p>
+<p><strong>Part 2 — the comparison.</strong> Put your tape row and your air row side by side. How far apart are they? Write down what a threshold would have to do to separate them, and what happens when you try.</p>
+<p><strong>Part 3 — the sensor you would need.</strong> Reflectance answers <em>how much light came back?</em> Name the quantity that <em>does</em> separate tape from a table edge, state roughly what it reads in each case, and name a sensor that measures it. Then say what it would cost you on this robot — pins, board space, money — and whether you would spend it, or buy the rail.</p>
 <p class="p-mb-0">A number you checked is evidence; a number you were handed is a guess. This page is your evidence.</p>
 </div>
 <details data-reveal="solution">
 <summary>🔓 Click to reveal solution</summary>
-<p><strong>Worked with the demo numbers</strong> (yours will differ — that is the point):</p>
-<pre>warning time = 4.5 cm / v          alarm time = G / v     (G = widest gap)
-
-the alarm fires in time only if:   G / v  &lt;  4.5 / v
-multiply both sides by v:          G      &lt;  4.5 cm
-
-Speed divided OUT. The comparison is between two DISTANCES,
-and v was never really in it. A 10 cm gap loses at every speed:
-with the demo numbers, 400 ms - 180 ms = 220 ms too late.</pre>
-<p class="p-mb-0"><strong>The boom.</strong> The sensor must ride <em>more than G centimeters</em> ahead of the wheel contact patch. For 10&nbsp;cm gaps the stock 4.5&nbsp;cm leaves you at least 5.5&nbsp;cm short before any safety margin — which is why the fix in §8A.4 is mechanical, not a better threshold. The algorithm was never the problem.</p>
+<p><strong>What you should have written down:</strong></p>
+<pre>white mat      -&gt; near 0     (lots of IR came back)
+black tape     -&gt; near 1000  (almost none came back)
+out over air   -&gt; near 1000  (none at all came back)</pre>
+<p><strong>Part 2.</strong> The last two rows are not merely close — they are the same, because <code>readCalibrated()</code> clamps at 1000 and both surfaces are already there. A threshold is a comparison against a number, so it can only separate readings that differ. These do not. There is nothing to tune, and averaging more samples of the same number gives you the same number.</p>
+<p class="p-mb-0"><strong>Part 3.</strong> The quantity is <strong>distance to the floor</strong>: about three millimetres over tape, and the height of the table over nothing. A downward-facing rangefinder — an IR proximity sensor or a time-of-flight module — measures it directly, and no reflectance sensor ever will, at any mounting position. The cost is real: another pin pair on a board where Lesson 5 already made you spend pins 20 and 4, plus a bracket and a part. Whether that beats four dollars of wood at the table edge is a genuine engineering call, and either answer is defensible if you can say what it cost.</p>
 </details>
 </div>
 
@@ -1122,7 +1111,7 @@ Every time. Even with <code>GAP_MAX_CM</code> set to 50.</p>
         <li data-bc-skill="3" class="li-c-pointer">☐ Rewrite <code>handleGap()</code> so it asks "how <em>far</em> have I been blind?" instead of "how <em>long</em> have I been blind?"</li>
         <li data-bc-skill="4" class="li-c-pointer">☐ Add two new states — <code>GAP_CROSSING</code> and <code>LINE_LOST</code> — to the state machine you built in Lesson 10.</li>
         <li data-bc-skill="5" class="li-c-pointer">☐ Measure a real gap with your own robot instead of guessing a threshold.</li>
-        <li data-bc-skill="6" class="li-c-pointer">☐ Explain, with numbers, <strong>why this robot cannot be programmed to avoid falling off a table</strong> — and what you would have to change to make it possible.</li>
+        <li data-bc-skill="6" class="li-c-pointer">☐ Explain, with readings you took yourself, <strong>why this robot cannot be programmed to avoid falling off a table</strong> — and what KIND of sensor it would take to make it possible.</li>
     </ul>
 
     <p class="p-mb-0"><strong>I have…</strong></p>
@@ -1163,16 +1152,16 @@ Both drive the robot forward. <strong>Why the difference?</strong> (§8A.1)</sum
 </details>
 
 <details data-reveal="quiz"><summary>A classmate says: "Just make the robot drive slower — then it'll have time to stop before it
-falls off the table." <strong>Using the arithmetic in 8A.4, explain why this does not work.</strong> (§8A.4)</summary>
+falls off the table." <strong>Explain why speed has nothing to do with it.</strong> (§8A.4)</summary>
 
-<div class="div-mt-12px"><p>Because both numbers shrink together and the ratio never moves. At roughly 25&nbsp;cm/s you have 4.5&nbsp;cm of head start — 180&nbsp;ms — and you are not allowed to sound the alarm until the robot has been blind for longer than the widest legal gap, 10&nbsp;cm, which is 400&nbsp;ms. Halve the speed and the head start becomes 360&nbsp;ms while the alarm wait becomes 800&nbsp;ms; it is still more than double. The real comparison is between two <em>distances</em>, 4.5&nbsp;cm against 10&nbsp;cm, and speed cancels out of both sides of it. You cannot fix this by tuning.</p></div>
+<div class="div-mt-12px"><p>Because there is no alarm to be early or late for. Speed would matter if the robot could <em>tell</em> it was over a cliff and simply needed longer to react — but it cannot tell at all. Black tape and a missing floor produce the same reading, so the robot never notices anything is wrong, at any speed. Drive it at a crawl and it crawls off the edge, still convinced it is following a line. <strong>You cannot buy reaction time for a detection that never happens.</strong></p></div>
 
 </details>
 
 <details data-reveal="quiz"><summary>You are asked to build a robot that <em>can</em> stop at a table edge. <strong>You are not allowed to
-change the code.</strong> What do you change? (§8A.4, §3.5)</summary>
+change the code.</strong> What do you change, and why is moving the existing sensor not enough? (§8A.4, §3.5)</summary>
 
-<div class="div-mt-12px"><p>Where the sensor is. Read the inequality again: the warning distance has to exceed your widest legal gap, and today that is 4.5&nbsp;cm against 10&nbsp;cm. Mount a downward-facing sensor on a boom that sticks out <em>ahead of the wheels</em> and the warning distance grows — at 25&nbsp;cm the inequality flips and the same code that was impossible becomes trivial. The algorithm was never the problem. And the other legal answer, the one Section 3.5 actually recommends for your desk, is a piece of wood at the table edge: sometimes the correct engineering answer costs four dollars instead of four weeks.</p></div>
+<div class="div-mt-12px"><p>The <em>kind</em> of sensor. Moving the existing one changes nothing: a reflectance sensor on the end of a boom still reads the void as black, because it is still answering <em>how much light came back?</em> and the answer is still “none,” exactly as it is over tape. What you need is something that answers <em>how far away is the floor?</em> — three millimetres over tape, the height of a table over nothing, and no threshold trouble at all. And the other legal answer, the one Section 3.5 actually recommends for your desk, is a piece of wood at the table edge: sometimes the correct engineering answer costs four dollars instead of four weeks.</p></div>
 
 </details>
 
@@ -1273,7 +1262,7 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 </tr></thead>
 <tbody>
 <tr><td class="td-ddd-2"><code>[GRAPHIC 11.1]</code></td><td class="td-ddd-2">§3.3</td><td class="td-ddd-2">Time vs. distance — the same gap and the same code, on two batteries. Only the stopwatch cares.</td><td class="td-ddd-2">SVG</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 11.2]</code></td><td class="td-ddd-2">§3.5</td><td class="td-ddd-2">The cliff arithmetic: 410&nbsp;ms needed, 180&nbsp;ms available. The alarm cannot legally fire in time.</td><td class="td-ddd-2">SVG</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 11.2]</code></td><td class="td-ddd-2">§3.5</td><td class="td-ddd-2">Black tape and a missing floor both read about 1000 — one number, two worlds.</td><td class="td-ddd-2">SVG</td></tr>
 <tr><td class="td-ddd-2"><code>[GRAPHIC 11.3]</code></td><td class="td-ddd-2">§4</td><td class="td-ddd-2">The five-sensor line array, top view.</td><td class="td-ddd-2">SVG</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><code>[GRAPHIC 11.4]</code></td><td class="td-ddd-2">§3.4</td><td class="td-ddd-2">The two new states: GAP_CROSSING and LINE_LOST, and the one number between them.</td><td class="td-ddd-2">SVG</td></tr>
 <tr><td class="td-ddd-2"><code>[GRAPHIC 11.5]</code></td><td class="td-ddd-2">§1</td><td class="td-ddd-2">Same track, same 500&nbsp;ms command, two batteries — a fresh pack crosses the gap, a tired pack leaves it short.</td><td class="td-ddd-2">SVG</td></tr>
@@ -1292,7 +1281,7 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 </p>
 
 <!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->
-<div id="brain-check-col" class="div-c5cae9" title="Brain Check progress &mdash; saved only in this browser; not a grade.">
+<div id="brain-check-col" class="div-c5cae9" title="Brain Check progress — saved only in this browser; not a grade.">
     <img id="bc-emblem" src="../images/BrainGear_Incomplete.png" alt="Brain Check progress" class="img-h-auto-2">
     <a href="#brain-check-01" data-bc-pill="1" aria-label="Brain Check 01" class="link-bg-3f51b5">01</a>
     <a href="#brain-check-02" data-bc-pill="2" aria-label="Brain Check 02" class="link-bg-3f51b5">02</a>
