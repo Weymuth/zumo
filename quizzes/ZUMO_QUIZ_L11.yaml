@@ -1,0 +1,1292 @@
+# ZUMO READING QUIZ BANK — LESSON 11
+# Time Lies, Distance Doesn't · Encoder-Based Gap Crossing
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_11.html v02.30.0 (post-S144 cliff correction)
+#
+# READ -> FIX -> QUIZ. L11 was read end to end in S144, fix-passed to v02.29.0, and the §3.5
+# cliff argument was ruled and corrected to v02.30.0 at S144 close. It was read again in S145
+# before a question was written. FOUR S144 FINDINGS ARE LOAD-BEARING HERE:
+#
+#   1. §3.5 SAID A VOID READS WHITE. IT READS BLACK. Six homes changed, and every one of them
+#      is a place a question would have keyed. Against v02.29.0, B18, B20, B21, B22, B23, B24
+#      and B26 would ALL have been keyed backwards — the old text had the robot going blind at
+#      a cliff, where the corrected text has it believing it found a perfect line and
+#      accelerating. This is the single largest re-key risk in any bank written so far, and it
+#      is why the S145 handoff said to discard every question drafted before the correction.
+#   2. STEP 6 RETIRES THE STOPWATCH IN THREE PIECES, NOT ONE. The old text said delete the
+#      declaration because "nothing reads gapStartTime any more" — true, and two lines still
+#      WRITE it, so the step broke the build and §8 blamed the student using the same wrong
+#      word. A07 and A08 ask the corrected mechanic: a write needs the declaration as much as
+#      a read does, and the error appears twice.
+#   3. STEP 6's BYTE CLAIM WAS BACKWARDS. It read "smaller than the one you started with."
+#      Measured on the AVR toolchain against a control that reproduced L10's 20,516 exactly,
+#      the finished build is 20,702 — 186 bytes BIGGER. A09, A10 and A11 ask 20,702, the
+#      direction, and the 7,970 remaining. Against v02.29.0 all three would have keyed wrong,
+#      and A10 in particular would have marked the careful reader wrong.
+#   4. TRIM'S HOME IS LESSON 3 (§16.15, ruled S145). L11's seven sites were corrected at S144;
+#      the book-wide split closed at S145. B34 and A15 cite Lesson 3 and are safe now in a way
+#      they were not two sessions ago.
+#
+# SEVEN ANSWERS DELIBERATELY NOT ASKED, WITH REASONS:
+#
+#   - ANY GAP WIDTH IN CENTIMETERS, AND ANY VALUE OF GAP_MAX_CM. The whole point of §7A is
+#     that the number is MEASURED per robot and per course; the lesson ships the blank at 0.0
+#     on purpose. No such number exists in the book and none has ever touched a floor. A12,
+#     A13 and A14 ask the METHOD — set it huge, run it several times, take the biggest, test
+#     both failure directions — and never a target figure. §7B's "try your 7A reading + 2" is
+#     asked nowhere, because the +2 is a margin heuristic, not a result.
+#   - §7A's 999.0 RULER TRICK AS A VERIFIED PROCEDURE. Carried as an open bench item: the
+#     whole §7 ladder, 999.0 included, has never been run on a real gap. A12 asks what 999.0
+#     is FOR (never give up, so the robot reports instead of quitting), which is stated in the
+#     lesson's own comment and is true independent of whether the rung has been driven.
+#   - THE ROBOT'S TRAVEL SPEED IN cm/s. Still the open bench item carried from L08, L09 and
+#     L10. Nothing here converts between MAX_GAP_TIME's 500 ms and a distance, in either
+#     direction — B06 through B09 ask what the stopwatch MEASURES and why that is the wrong
+#     quantity, never how far 500 ms carries anything.
+#   - "BLIND FOR 12.4 cm". That is an illustrative string in §5.3 showing what a debuggable
+#     message looks like, not a measurement. B37 asks what LINE_LOST puts on the screen that
+#     the old code did not — a distance — never the number.
+#   - L10's ARRIVAL GEOMETRY. L11 inherits RETURNING_TO_LINE from a maneuver whose finishing
+#     pose is UNRULED (S144). Nothing in this bank keys on where the robot ends up after an
+#     avoidance, on the crossing angle, or on the seconds after SEEKING becomes FOLLOWING.
+#     B36's GAP_CROSSING question and A16's re-arm question both live entirely inside
+#     handleGap() and the gap states, which the geometry does not touch.
+#   - ANYTHING THAT LIVES ONLY IN A GRAPHIC. GRAPHIC 11.1, 11.2, 11.4 and 11.5 all restate
+#     content the prose carries — the battery comparison (§1, §3.2), the two-worlds reading
+#     (§3.5, §8A.4), the two states (§3.4). Every question cites the prose home, never the
+#     SVG. A screen reader can answer all fifty-plus without seeing a figure.
+#   - THE COUNTS_PER_CM ARITHMETIC ITSELF. B11 asks WHERE the constant came from (Lesson 6,
+#     already in RobotConfig.h) and what it converts. The 74-counts-per-centimeter figure IS
+#     asked, once, in A22 — it is stated in Sabotage Mystery 4 and it re-derives correctly
+#     from §16.10 (909.7 CPR over a 12.252 cm circumference gives 74.25), so it is checkable
+#     rather than inherited.
+#
+# BRAIN CHECK OVERLAP: the `after` set draws entirely from §6, §7, §9 and Sabotage, so it
+# shares nothing with BRAIN CHECK 03, which asks §3.2, §8A.1, §8A.3 and §8A.4. The `before`
+# set does overlap BRAIN CHECK 01 by subject, which is expected — BC01 is an in-page mental
+# check over the same theory sections and is not a graded instrument.
+
+lesson: "L11"
+title: "Time Lies, Distance Doesn't — Encoder-Based Gap Crossing"
+bank_version: "1.0.0"
+source:
+  lesson_11: "v02.30.0"
+  lesson_10: "v02.29.1"
+  lesson_08: "v04.31.1"
+  lesson_06: "v04.32.1"
+  lesson_04: "v04.29.0"
+  lesson_03: "v03.41.0"
+
+sets:
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone — no robot, no compiler, no built program."
+    suggested_draw: 10
+    questions:
+
+      - id: L11_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "A robot that passed its gap test two weeks ago now drives straight off the end of the line on the same track. According to Section 1, what changed?"
+        options:
+          - text: "Only the battery — the code, the track and the robot are unchanged"
+            correct: true
+          - text: "The tape has aged and now reflects differently"
+            correct: false
+            why: "Section 1 is explicit that nothing changed but the battery. Tape wear is a real thing, but it is not this bug."
+          - text: "The encoders have drifted out of calibration"
+            correct: false
+            why: "Encoders are the instrument that FIXES this bug. They do not drift with charge — that is the whole argument of §3.3."
+          - text: "The line sensors need recalibrating for the new room"
+            correct: false
+            why: "Recalibration is a real Lesson 4 concern, but §1 rules it out by keeping the track the same."
+
+      - id: L11_B02
+        type: true_false
+        cite: "§1"
+        points: 1
+        stem: "Section 1 says the gap bug was introduced by an edit made in Lesson 10."
+        correct: false
+        why: "The bug is in Lesson 8 and has been there the whole time. §1 says so directly — the full battery was hiding it, so nothing had to be edited to break it."
+
+      - id: L11_B03
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "While the robot is inside a gap, what do the five line sensors read, and what does that leave P-control to work with?"
+        options:
+          - text: "All five read white, and P-control has nothing to steer against at all"
+            correct: true
+          - text: "All five read black, and P-control steers toward the centre"
+            correct: false
+            why: "All-black is what a cliff and an intersection look like, not a gap. §3.1 says the robot goes blind because the line is gone — white everywhere."
+          - text: "The outer two read white and the inner three read black"
+            correct: false
+            why: "That is a robot sitting on the line, which is the situation a gap is defined by the ABSENCE of."
+          - text: "The readings are random, which is what makes a gap dangerous"
+            correct: false
+            why: "They are not random. They are uniformly white, which is a perfectly well-defined reading — it just carries no steering information."
+
+      - id: L11_B04
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Section 3.1 says a robot facing a gap has exactly two choices. What are they?"
+        options:
+          - text: "Stop, or drive straight and hope"
+            correct: true
+          - text: "Reverse to the last known line, or sweep left and right for it"
+            correct: false
+            why: "Both are real strategies — they are Challenges 1 and 2 — but §3.1 names the two BASE choices before any challenge modifies them."
+          - text: "Slow down, or raise the gap budget"
+            correct: false
+            why: "Slowing down is Challenge 3 and the budget is the limit itself, not a choice about how to behave when blind."
+          - text: "Follow the last heading, or turn until a sensor sees something"
+            correct: false
+            why: "Following the last heading is the same as 'drive straight and hope'; turning to search is the hunt, which the lesson introduces later as a challenge."
+
+      - id: L11_B05
+        type: true_false
+        cite: "§3.1"
+        points: 1
+        stem: "Section 3.1 says the design problem of this lesson is deciding how much blindness is acceptable."
+        correct: true
+        why: "Stated in those words. Hope has to have a limit, or a robot that runs off the end of the line keeps driving until the battery dies — and setting that limit is the lesson."
+
+      - id: L11_B06
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Which line in Lesson 8's handleGap() makes it a stopwatch?"
+        options:
+          - text: "if (millis() - gapStartTime > MAX_GAP_TIME)"
+            correct: true
+          - text: "if (gapStartTime == 0) { gapStartTime = millis(); }"
+            correct: false
+            why: "That line STARTS the stopwatch, but it is the comparison against MAX_GAP_TIME that makes time the deciding quantity. §3.2 quotes the comparison specifically."
+          - text: "motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);"
+            correct: false
+            why: "That line survives unchanged into the Lesson 11 version. It is the open-loop drive, and it is about TRIM, not about timing."
+          - text: "currentState = STOPPED;"
+            correct: false
+            why: "That is what the old code does after it gives up. It is the consequence, not the measurement."
+
+      - id: L11_B07
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Section 3.2 says the stopwatch is fatal because of one question. What is the question?"
+        options:
+          - text: "How far does the robot travel in 500 milliseconds?"
+            correct: true
+          - text: "How long does it take the robot to cross a 10 cm gap?"
+            correct: false
+            why: "Close, but backwards. The lesson turns the fixed quantity (time) into the unknown one (distance) — that is what exposes the dependence on speed."
+          - text: "How often does loop() run while the robot is blind?"
+            correct: false
+            why: "Loop rate is a real concern elsewhere in the book, but §3.2's argument is about distance covered, not about sampling."
+          - text: "How accurate is millis() on a tired battery?"
+            correct: false
+            why: "millis() is perfectly accurate on any charge — that is exactly why the bug is so hard to see. The clock is right; the assumption behind it is wrong."
+
+      - id: L11_B08
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "A stopwatch measures distance indirectly, which is good enough as long as the robot is on a flat surface."
+        correct: false
+        why: "§3.2's closing line: a stopwatch does not measure distance, it measures time and hopes speed was constant. Flatness is not the variable — battery charge is, and speed is never constant."
+
+      - id: L11_B09
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "What value does MAX_GAP_TIME hold in the Lesson 8 code this lesson replaces?"
+        options:
+          - text: "500 milliseconds"
+            correct: true
+          - text: "500 centimeters"
+            correct: false
+            why: "MAX_GAP_TIME is a time, which is the entire complaint. The centimeter budget is its replacement, GAP_MAX_CM."
+          - text: "5000 milliseconds"
+            correct: false
+            why: "Five seconds of blind driving would carry the robot a long way. The figure §3.2 quotes is 500."
+          - text: "It has no fixed value — the student measures it in Lesson 8"
+            correct: false
+            why: "GAP_MAX_CM is the measured blank. MAX_GAP_TIME arrived from Lesson 8 with a number already in it, which is part of why it was trusted."
+
+      - id: L11_B10
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "Section 3.3 says encoders do not care about your battery. What do they count instead?"
+        options:
+          - text: "Wheel rotation — if the wheel turned, they counted it"
+            correct: true
+          - text: "Motor voltage, which they convert into an estimated distance"
+            correct: false
+            why: "Voltage is exactly the quantity that sags on a tired battery. An instrument reading voltage would inherit the bug rather than fix it."
+          - text: "Elapsed time between motor commands"
+            correct: false
+            why: "That is a stopwatch wearing a different name. Encoders measure a physical rotation, not an interval."
+          - text: "The number of times loop() has executed"
+            correct: false
+            why: "Loop count is another proxy for time. §3.3's point is that encoders measure the thing itself."
+
+      - id: L11_B11
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "The constant that converts encoder counts to centimeters is already in RobotConfig.h. Name it, and the lesson it arrived in."
+        options:
+          - text: "COUNTS_PER_CM, from Lesson 6"
+            correct: true
+          - text: "COUNTS_PER_CM, new in Lesson 11"
+            correct: false
+            why: "The constant is not new. §3.3 says it is already sitting in RobotConfig.h and that driveDistance() has been using it since Lesson 6."
+          - text: "COUNTS_PER_ROTATION, from Lesson 6"
+            correct: false
+            why: "COUNTS_PER_ROTATION is one of the two terms COUNTS_PER_CM is built from, not the conversion itself."
+          - text: "WHEEL_CIRCUMFERENCE_MM, from Lesson 3"
+            correct: false
+            why: "That is the other term in the definition, and it came with the encoder work in Lesson 6, not with TRIM in Lesson 3."
+
+      - id: L11_B12
+        type: true_false
+        cite: "§3.3"
+        points: 1
+        stem: "A slow robot and a fast robot that both travel 10 cm report the same encoder count."
+        correct: true
+        why: "Stated in §3.3 — the slow one just took longer to get there. That independence from speed is the entire reason the odometer fixes what the stopwatch broke."
+
+      - id: L11_B13
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "Section 3.3 summarises the whole lesson as one changed question. Which pair is it?"
+        options:
+          - text: "Lesson 8 asked 'have I been blind for too LONG?'; Lesson 11 asks 'have I been blind for too FAR?'"
+            correct: true
+          - text: "Lesson 8 asked 'is there a line?'; Lesson 11 asks 'was there ever a line?'"
+            correct: false
+            why: "Both versions detect the missing line the same way, through isLineVisible(). What changed is the quantity used to decide when to give up."
+          - text: "Lesson 8 asked 'how fast am I going?'; Lesson 11 asks 'how far have I gone?'"
+            correct: false
+            why: "Neither version measures speed. The old one measured elapsed time — speed is the hidden variable that made time unreliable."
+          - text: "Lesson 8 asked 'should I stop?'; Lesson 11 asks 'should I turn?'"
+            correct: false
+            why: "Turning to search is Challenge 2. The base behaviour in both lessons is to drive straight and decide when to quit."
+
+      - id: L11_B14
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "What single quantity distinguishes GAP_CROSSING from LINE_LOST?"
+        options:
+          - text: "How far the robot has gone since the line vanished"
+            correct: true
+          - text: "Whether the kill switch has been pressed"
+            correct: false
+            why: "The kill switch is checked in GAP_CROSSING, but it is not what separates the two states — a robot can be in either one without touching it."
+          - text: "Whether any sensor currently sees the line"
+            correct: false
+            why: "Seeing the line takes the robot out of GAP_CROSSING entirely, back to FOLLOWING_LINE. Neither gap state is defined by a visible line."
+          - text: "How long the robot has been blind"
+            correct: false
+            why: "That is the retired stopwatch. §3.4 says the difference is one number, and after this lesson that number is a distance."
+
+      - id: L11_B15
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "Which lesson introduced the idea that a state machine gives each behaviour a name, which §3.4 builds on?"
+        options:
+          - text: "Lesson 10"
+            correct: true
+          - text: "Lesson 8"
+            correct: false
+            why: "Lesson 8 is where the stopwatch lives and where P-control was built. §3.4 credits the state-machine idea to Lesson 10."
+          - text: "Lesson 6"
+            correct: false
+            why: "Lesson 6 brought the encoders and driveDistance(). The state machine came later."
+          - text: "Lesson 11 — the states are new here"
+            correct: false
+            why: "The two GAP states are new here; the machine they join is not. §3.4 says so in its first sentence."
+
+      - id: L11_B16
+        type: matching
+        cite: "§3.4, §5.3"
+        points: 3
+        stem: "Match each state to what the robot is doing while it is in that state."
+        pairs:
+          - left: "GAP_CROSSING"
+            right: "Driving blind, counting the distance, budget not yet spent"
+          - left: "LINE_LOST"
+            right: "Drove the whole budget, never found the line — stopped and saying so"
+          - left: "FOLLOWING_LINE"
+            right: "P-control is steering against a line it can actually see"
+        extra_answers:
+          - "Turning on the encoder machinery toward a chosen exit"
+          - "Motors off, waiting for a press of button B"
+
+      - id: L11_B17
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "A line sensor is an infrared reflectance sensor. What single question does it answer?"
+        options:
+          - text: "How much light came back?"
+            correct: true
+          - text: "How far away is the surface below?"
+            correct: false
+            why: "That is precisely the question it CANNOT answer, and §3.5 and §8A.4 both say the fix would be a sensor that could."
+          - text: "What colour is the surface below?"
+            correct: false
+            why: "Colour is an interpretation the student applies afterwards. The sensor reports returned light, which is why a void and black tape are indistinguishable to it."
+          - text: "Is there a surface below at all?"
+            correct: false
+            why: "If it could answer that, the cliff problem would be solved. It cannot — a missing floor and black tape give it the same reading."
+
+      - id: L11_B18
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Hold the robot out over the edge of a table. What do the line sensors report?"
+        options:
+          - text: "Near the maximum — the same reading black tape produces"
+            correct: true
+          - text: "Near zero — the same reading white paper produces"
+            correct: false
+            why: "Zero means lots of light came back. Over air nothing comes back at all, which pins the sensor at the other end of its scale — the same end as tape."
+          - text: "A distinctive out-of-range value the code can test for"
+            correct: false
+            why: "There is no such value. §3.5's whole argument is that the void produces an ordinary, already-meaningful reading."
+          - text: "Nothing at all — the read simply fails"
+            correct: false
+            why: "The read succeeds perfectly. That is what makes this dangerous: the sensor is confident and wrong."
+
+      - id: L11_B19
+        type: multiple_choice
+        cite: "§3.5, Lesson 4 §8"
+        points: 1
+        stem: "Section 3.5 says you have already met this fact once before. Where?"
+        options:
+          - text: "Lesson 4's troubleshooting table, whose entry for sensors reading maximum names 'robot held in the air'"
+            correct: true
+          - text: "Lesson 8's gap-crossing section, which warns about white surfaces"
+            correct: false
+            why: "Lesson 8 is where the stopwatch bug lives. The air-reads-black fact is Lesson 4's, in its troubleshooting table."
+          - text: "Lesson 6's encoder derivation, in a note about reflective surfaces"
+            correct: false
+            why: "Lesson 6 is about wheel rotation and has nothing to say about what a reflectance sensor reads."
+          - text: "Lesson 10's obstacle section, which covers IR and shiny surfaces"
+            correct: false
+            why: "Lesson 10's IR discussion is about the PROXIMITY sensors and what reflects them, not about what the downward line sensors read over a void."
+
+      - id: L11_B20
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Over the edge of a table, all five sensors read near 1000. What does isLineVisible() return?"
+        options:
+          - text: "true — it sums the readings and gets the largest number it can get"
+            correct: true
+          - text: "false — no line is present, so the function reports none"
+            correct: false
+            why: "The function cannot tell a void from tape. It sums darkness, and a void is maximally dark, so it reports a line with total confidence."
+          - text: "true, but only intermittently as the sensors flicker"
+            correct: false
+            why: "There is no flicker. The reading is steady and saturated, which is why the failure is so clean."
+          - text: "It cannot be called in this state, because handleGap() has taken over"
+            correct: false
+            why: "Backwards — handleGap() is never called at a cliff at all, precisely because isLineVisible() returns true."
+
+      - id: L11_B21
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "With all five sensors equally dark over a cliff, what does readLinePosition() report?"
+        options:
+          - text: "Dead centre — LINE_CENTER, because the weighted average of five equal readings lands in the middle"
+            correct: true
+          - text: "Zero, because there is no line to weight"
+            correct: false
+            why: "Zero is the far-left end of the scale, not the absence of a line. Equal weights average to the middle, not to an end."
+          - text: "The last valid position, held over from the previous loop"
+            correct: false
+            why: "The function has no memory of previous positions — it computes fresh from the current five readings, and those readings look like a perfectly centred line."
+          - text: "An error value the caller is expected to check"
+            correct: false
+            why: "There is no error to signal. Every reading is valid and in range; the problem is what they MEAN, which is outside the function's reach."
+
+      - id: L11_B22
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Given a position of dead centre, what does followLine() do as the robot goes over the edge?"
+        options:
+          - text: "Computes an error of zero and drives both motors at BASE_SPEED"
+            correct: true
+          - text: "Computes a large error and swerves hard to one side"
+            correct: false
+            why: "A large error needs an off-centre reading. Dead centre produces zero error, which is why the robot goes straight out rather than veering."
+          - text: "Stops the motors, because zero error means the line was lost"
+            correct: false
+            why: "Zero error means the line is perfectly centred, which is the best possible news as far as the controller is concerned. Nothing tells it to stop."
+          - text: "Hands control to handleGap(), which applies the budget"
+            correct: false
+            why: "handleGap() is never reached. §3.5 is explicit: GAP_MAX_CM never gets a vote at a cliff."
+
+      - id: L11_B23
+        type: true_false
+        cite: "§3.5"
+        points: 1
+        stem: "At a table edge the robot goes blind, so the gap budget in GAP_MAX_CM is what decides whether it stops."
+        correct: false
+        why: "The robot does not go blind at a cliff — it believes it has found the widest, most perfectly centred line it has ever seen. handleGap() is never called and GAP_MAX_CM never gets a vote. Every safeguard in this lesson watches for a line that vanishes, and at a cliff the line arrives."
+
+      - id: L11_B24
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Why can no threshold value separate a cliff from black tape?"
+        options:
+          - text: "A threshold is a comparison against a number, and the two surfaces produce the same number"
+            correct: true
+          - text: "The threshold would have to be recalibrated for every room's lighting"
+            correct: false
+            why: "Lighting sensitivity is a real Lesson 4 issue, but it is not this one. Even a perfectly calibrated sensor gives tape and air the same reading."
+          - text: "Thresholds are too slow — the robot reaches the edge before the comparison finishes"
+            correct: false
+            why: "Speed is irrelevant, which BRAIN CHECK 03 asks directly. There is no detection to be early or late for."
+          - text: "The readings differ, but by less than the sensor's noise floor"
+            correct: false
+            why: "They do not merely differ by a little. §8A.4 shows they are the SAME, because readCalibrated() clamps at 1000 and both surfaces are already there."
+
+      - id: L11_B25
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "One rescue students propose is 'all five dark is suspicious — a real line is narrow.' Why does the lesson reject it?"
+        options:
+          - text: "All five dark is already a legal reading on this course — it is what an intersection looks like, and Lesson 9 taught the robot to act on it"
+            correct: true
+          - text: "Because the sensors are never all dark at once in practice"
+            correct: false
+            why: "They are, routinely. That is exactly the problem — the reading is common and meaningful, not rare."
+          - text: "Because checking five sensors costs too much time in the loop"
+            correct: false
+            why: "The code already reads all five every loop. Cost is not the objection; ambiguity is."
+          - text: "Because a cliff usually darkens only the outer sensors first"
+            correct: false
+            why: "The lesson makes no such claim, and it would not help — the argument is about what the reading MEANS, not about the order sensors reach it."
+
+      - id: L11_B26
+        type: multiple_choice
+        cite: "§3.5, §8A.4"
+        points: 1
+        stem: "Section 3.5 says the investigation did not conclude 'impossible' — it said you are asking the wrong sensor. What KIND of sensor would separate tape from a table edge?"
+        options:
+          - text: "One that answers 'how far away is the floor?' — about three millimetres over tape, the height of a table over nothing"
+            correct: true
+          - text: "The same reflectance sensor, mounted further forward on a boom"
+            correct: false
+            why: "§8A.4 names this as the answer most students reach for and rejects it explicitly: a reflectance sensor on a boom reads the void as black just the same. You would have moved the wrong thing."
+          - text: "A more sensitive reflectance sensor with a wider dynamic range"
+            correct: false
+            why: "Range does not help when both surfaces sit at the same end of the scale. The information is not in the reading, so no amount of processing recovers it."
+          - text: "A colour sensor that can tell black tape from black shadow"
+            correct: false
+            why: "A void is not a colour. There is no surface down there to have a colour at all — which is why the useful quantity is distance, not appearance."
+
+      - id: L11_B27
+        type: multiple_choice
+        cite: "§4"
+        points: 1
+        stem: "What new hardware does Lesson 11 require you to install?"
+        options:
+          - text: "None — every sensor it needs is already bolted on and already wired into the code"
+            correct: true
+          - text: "A second encoder pair, for redundancy across both wheels"
+            correct: false
+            why: "Both wheels already have encoders, and averaging them is the whole point of averageCounts(). Nothing is added."
+          - text: "A downward rangefinder, so the robot can detect the table edge"
+            correct: false
+            why: "§3.5 and §8A.4 describe what such a sensor WOULD do and then rule it out as a purchase decision. It is not installed in this lesson."
+          - text: "A jumper change to free up the encoder pins"
+            correct: false
+            why: "The pin-sharing tradeoff belongs to Lesson 5 and concerns line versus proximity sensors. §4 says there is no new wiring, no new jumpers and no new library."
+
+      - id: L11_B28
+        type: matching
+        cite: "§4"
+        points: 3
+        stem: "Section 4's hardware table lists what each existing part does in this lesson. Match the part to its job here."
+        pairs:
+          - left: "Wheel encoders"
+            right: "Count wheel rotation — they are the odometer, and the star of this lesson"
+          - left: "The five line sensors"
+            right: "Tell you the line vanished — that is the trigger"
+          - left: "OLED display"
+            right: "Report the measured gap width in Section 7A"
+        extra_answers:
+          - "Detect the obstacle so the avoidance maneuver can begin"
+          - "Sound the note that marks the end of a calibration run"
+
+      - id: L11_B29
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "averageCounts() reads both encoders rather than one. Section 5.1 gives a reason. What is it?"
+        options:
+          - text: "One encoder can lie — a wheel that slips under-reports and one that catches over-reports, and a second witness bounds the lie"
+            correct: true
+          - text: "Two readings are twice as precise as one"
+            correct: false
+            why: "§5.1 rejects this framing in its own words: averaging is not about precision, it is about honesty. Sabotage Mystery 1 makes the same point."
+          - text: "The left encoder alone cannot report negative travel"
+            correct: false
+            why: "Both encoders can count either direction, and abs() is applied to both regardless."
+          - text: "The two encoders use different counts-per-centimetre values"
+            correct: false
+            why: "They are identical hardware on identical gearing. COUNTS_PER_CM is one constant for the whole robot."
+
+      - id: L11_B30
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "blindDistanceCm() subtracts gapStartCounts from averageCounts() and then divides. What does it divide by, and what does the function return?"
+        options:
+          - text: "COUNTS_PER_CM, returning distance in centimetres since the line vanished"
+            correct: true
+          - text: "COUNTS_PER_ROTATION, returning wheel revolutions since the line vanished"
+            correct: false
+            why: "Revolutions are not the unit the budget is written in. GAP_MAX_CM is in centimetres, so the function must return centimetres."
+          - text: "MAX_GAP_TIME, returning the fraction of the budget spent"
+            correct: false
+            why: "MAX_GAP_TIME is the retired stopwatch. A fraction-of-budget calculation does exist, but only in Challenge 3, and it divides by GAP_MAX_CM."
+          - text: "2, returning the average of the two encoder readings"
+            correct: false
+            why: "The division by 2 happens inside averageCounts(). blindDistanceCm() takes that average and converts it to a real-world unit."
+
+      - id: L11_B31
+        type: multiple_choice
+        cite: "§5.1, §5.2"
+        points: 1
+        stem: "What does gapStartCounts hold, and when is it written?"
+        options:
+          - text: "The encoder reading at the moment the robot went blind, written on the first step into a gap"
+            correct: true
+          - text: "A running total of counts, updated on every pass through loop()"
+            correct: false
+            why: "A running total would never let you measure a distance SINCE something. It is a snapshot, taken once per gap."
+          - text: "The number of counts remaining in the budget, decremented as the robot drives"
+            correct: false
+            why: "Nothing decrements. The budget comparison is done by subtraction in blindDistanceCm(), against a fixed start value."
+          - text: "The encoder reading when the robot was switched on"
+            correct: false
+            why: "That is what it holds when the code is BROKEN — Sabotage Mystery 2 plants exactly this bug, and the symptom is an enormous blind distance the robot never travelled."
+
+      - id: L11_B32
+        type: true_false
+        cite: "§5.1"
+        points: 1
+        stem: "Section 5.1 says averaging both wheels is a precision improvement over reading one."
+        correct: false
+        why: "It says the opposite in as many words: averaging is not about precision, it is about honesty. The average is wrong by half of any single-wheel error and, more importantly, cannot be wrong by the full amount."
+
+      - id: L11_B33
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "Comparing the new handleGap() with the Lesson 8 version, what stayed the same?"
+        options:
+          - text: "The name, the call site and the job — only the question it asks changed"
+            correct: true
+          - text: "Everything except the state it sets on failure"
+            correct: false
+            why: "The state does change, from STOPPED to LINE_LOST — but so does the entire measurement. §5.2 is making a narrower and more interesting point about the interface."
+          - text: "Only the final setSpeeds() line"
+            correct: false
+            why: "That line does survive, but the section's claim is about the function's contract with the rest of the program, not about one surviving statement."
+          - text: "Nothing — it is a new function with a new name"
+            correct: false
+            why: "The name is deliberately unchanged. §5.2 says nothing that CALLS handleGap() had to change, which is the payoff Lesson 7's architecture bought."
+
+      - id: L11_B34
+        type: multiple_choice
+        cite: "§5.2, §7C"
+        points: 1
+        stem: "The last line of handleGap() adds TRIM to one motor. Which lesson does that number come from, and why does it matter here in particular?"
+        options:
+          - text: "Lesson 3 — inside a gap P-control is asleep, so TRIM is the only thing holding the robot straight"
+            correct: true
+          - text: "Lesson 6 — the encoder work established the correction, and it matters because counts must match on both wheels"
+            correct: false
+            why: "TRIM is Lesson 3's, and its job is straightness, not count matching. Encoders count rotation whether or not the robot is going straight — which is why open loops need TRIM."
+          - text: "Lesson 8 — P-control introduced it, and it matters because the gains interact"
+            correct: false
+            why: "Lesson 8's followLine() deliberately does NOT use TRIM, because P-control already corrects bias fifty times a second."
+          - text: "Lesson 11 — it is measured in Section 7C, and it matters because gaps are wider than turns"
+            correct: false
+            why: "§7C makes you FEEL the effect by zeroing an existing number; it does not create one. The number was tuned in Lesson 3."
+
+      - id: L11_B35
+        type: true_false
+        cite: "§5.2"
+        points: 1
+        stem: "Inside a gap the robot is running an open loop — it acts and hopes, with nothing measuring the result."
+        correct: true
+        why: "There is no line to correct against, so followLine() has nothing to work with. §5.2 and §8A.1 both say it: the robot is driving on faith, and an open loop with mismatched motors curves."
+
+      - id: L11_B36
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "Section 5.3 notes how little the GAP_CROSSING case actually does. What does it do?"
+        options:
+          - text: "Checks the kill switch, checks whether the line came back, and otherwise hands off to handleGap()"
+            correct: true
+          - text: "Counts the encoder ticks and compares them to the budget"
+            correct: false
+            why: "That counting lives in one place, and it is not here — handleGap() and blindDistanceCm() own it. Keeping it in one place is the point being made."
+          - text: "Drives the motors and updates the display each pass"
+            correct: false
+            why: "The motors are driven inside handleGap(). A live display readout is added later, in §7D, as an optional diagnostic."
+          - text: "Re-zeroes the odometer on every pass so the count stays fresh"
+            correct: false
+            why: "Re-zeroing on every pass would mean the distance never grew. The odometer is sampled once on entry, which is what §7D's re-arm question is about."
+
+      - id: L11_B37
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "Section 5.3 says LINE_LOST does something the old code never did. What?"
+        options:
+          - text: "It tells you how far it got, printing the blind distance on the display"
+            correct: true
+          - text: "It waits for button B before it will accept a retry"
+            correct: false
+            why: "The Lesson 8 version already printed 'Press B to retry'. The new thing is the measurement it shows alongside it."
+          - text: "It stops the motors instead of coasting"
+            correct: false
+            why: "Both versions call setSpeeds(0, 0) on giving up. The stop is not what changed."
+          - text: "It backs the robot up to where the line was"
+            correct: false
+            why: "That is Challenge 1 — an extension you write yourself, not what the Section 6 build does."
+
+      - id: L11_B38
+        type: multiple_choice
+        cite: "§5.3, §8A.3"
+        points: 1
+        stem: "Why does the phrase 'Blind for 12.4 cm' make a better failure message than 'LINE LOST!'?"
+        options:
+          - text: "It is debuggable — it tells you how far the robot got, which points at whether the budget or the line was the problem"
+            correct: true
+          - text: "It is shorter, so it fits the display layout better"
+            correct: false
+            why: "It is longer, and the layout has to be widened for it. The value is in the information, not the size."
+          - text: "It avoids alarming the student with an all-caps error"
+            correct: false
+            why: "The message still reads LINE LOST on the line above. Tone is not the point being made."
+          - text: "It proves the encoders are working"
+            correct: false
+            why: "A number on the screen is consistent with encoders that are lying — Sabotage Mysteries 1 and 4 both print confident wrong numbers."
+
+      - id: L11_B39
+        type: matching
+        cite: "§8"
+        points: 4
+        stem: "Section 8's troubleshooting table pairs each symptom with a cause. Match them."
+        pairs:
+          - left: "Robot quits instantly at every gap, reporting 'Blind for 0.1 cm'"
+            right: "GAP_MAX_CM is still 0.0 — the blank was never filled in"
+          - left: "First gap works; every gap after it quits instantly"
+            right: "The odometer is not re-arming — gapStartCounts is not re-sampled on entry"
+          - left: "Robot curves out of the gap and reports LINE LOST, though the line was right there"
+            right: "TRIM — an open loop with nothing to correct against"
+          - left: "Robot runs off the end of the line and keeps driving forever"
+            right: "GAP_MAX_CM is far too large"
+        extra_answers:
+          - "The line sensors need recalibrating for the room's lighting"
+          - "BASE_SPEED is set too high for the loop rate"
+
+      - id: L11_B40
+        type: multiple_choice
+        cite: "§8, §6 Step 6"
+        points: 1
+        stem: "The compiler reports 'gapStartTime' was not declared. According to the troubleshooting table, how many places still mention it, and where?"
+        options:
+          - text: "Two writes — one in FOLLOWING_LINE and one in RETURNING_TO_LINE"
+            correct: true
+          - text: "One read, inside handleGap()"
+            correct: false
+            why: "Step 5 already removed the only code that READ it. The error comes from the writes that remain, which is the distinction the section exists to teach."
+          - text: "Three reads spread across the loop() switch"
+            correct: false
+            why: "There are no remaining reads at all. Every surviving mention is a write, and a write needs the declaration just as much as a read does."
+          - text: "None — the error means the declaration was deleted twice"
+            correct: false
+            why: "You cannot delete a declaration twice, and the compiler names two distinct sites. 'Nothing reads it' is not the same as 'nothing mentions it'."
+
+      - id: L11_B41
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Gap distance reads wildly wrong — sometimes double, sometimes half. What does the troubleshooting table blame?"
+        options:
+          - text: "Gating on one encoder instead of averaging both, with a wheel slipping"
+            correct: true
+          - text: "A COUNTS_PER_CM value derived from the wrong wheel diameter"
+            correct: false
+            why: "A wrong constant would be wrong by a consistent factor every run. Doubling one run and halving the next is the signature of one wheel misbehaving."
+          - text: "GAP_MAX_CM set too high"
+            correct: false
+            why: "The budget affects when the robot gives up, not what distance it reports. This symptom is about the measurement itself."
+          - text: "The display rounding the float to one decimal place"
+            correct: false
+            why: "One decimal place cannot turn a number into double or half of itself."
+
+      - id: L11_B42
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "Section 8A.1 defines the two loops. Which description is the OPEN loop?"
+        options:
+          - text: "The robot acts and hopes — there is nothing to measure, so nothing corrects, and if the motors are mismatched the robot curves and nothing notices"
+            correct: true
+          - text: "The robot measures the thing it is trying to control and corrects fifty times a second"
+            correct: false
+            why: "That is the closed loop, and followLine() is the book's example of it."
+          - text: "The robot alternates between measuring and driving, never doing both at once"
+            correct: false
+            why: "Neither loop is described this way. The distinction is whether feedback exists at all, not how it is scheduled."
+          - text: "The robot drives until a sensor changes state, then stops"
+            correct: false
+            why: "Waiting on a sensor is a form of feedback. An open loop has no such check — it commits and hopes."
+
+      - id: L11_B43
+        type: matching
+        cite: "Quick Reference, §8A.1"
+        points: 3
+        stem: "The Quick Reference's TRIM table gives each function a yes or no and a reason. Match the function to its reason."
+        pairs:
+          - left: "handleGap()"
+            right: "TRIM — open loop, blind, nothing else steers"
+          - left: "followLine()"
+            right: "No TRIM — closed loop, P-control already corrects bias 50x a second"
+          - left: "turnDegrees()"
+            right: "No TRIM — the wheels oppose on purpose and encoders govern the angle"
+        extra_answers:
+          - "No TRIM — the maneuver is short enough that drift cannot accumulate"
+          - "TRIM — the display readout needs a straightness reference"
+
+      - id: L11_B44
+        type: true_false
+        cite: "§8A.1"
+        points: 1
+        stem: "followLine() leaves TRIM out because adding it would make the controller fight its own correction."
+        correct: true
+        why: "§8A.1 states it directly — P-control is already correcting bias fifty times a second, so TRIM would just be fighting its own controller. Open loop needs TRIM; closed loop does not."
+
+      - id: L11_B45
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "Section 8A.2 frames the timer-versus-encoder choice in terms of variables. Which way round is it?"
+        options:
+          - text: "A timer measures the independent variable; an encoder measures the dependent one — and distance is what you actually care about"
+            correct: true
+          - text: "A timer measures the dependent variable, because elapsed time depends on how fast the robot drove"
+            correct: false
+            why: "Elapsed time is what you set and wait out; it does not depend on the robot at all. That independence is exactly the problem."
+          - text: "Both measure independent variables, which is why either works when speed is constant"
+            correct: false
+            why: "Only one of them is independent. If both were, the encoder would inherit the same battery sensitivity, and it does not."
+          - text: "Neither is a variable — both are constants set at compile time"
+            correct: false
+            why: "MAX_GAP_TIME and GAP_MAX_CM are constants, but the quantities they are compared against are measured live every loop."
+
+      - id: L11_B46
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "Section 8A.2 gives you a question to ask whenever you find yourself using delay() or millis() to control motion. What is it?"
+        options:
+          - text: "Is there a sensor that measures the thing I actually want?"
+            correct: true
+          - text: "Is this delay long enough for the slowest battery?"
+            correct: false
+            why: "Tuning the delay for the worst case is the trap, not the escape — it makes the robot slow on a fresh pack and still wrong on a tired one."
+          - text: "Can this timing be moved out of loop() to avoid blocking?"
+            correct: false
+            why: "Non-blocking timing is a genuine technique from Lesson 5, but it does not address the units problem. A non-blocking stopwatch is still a stopwatch."
+          - text: "Have I measured this on both a fresh and a tired battery?"
+            correct: false
+            why: "That is the experiment in §7E, and it demonstrates the problem rather than preventing it. §8A.2's question is the one that stops you writing the bug."
+
+      - id: L11_B47
+        type: multiple_choice
+        cite: "§8A.3"
+        points: 1
+        stem: "GAP_MAX_CM is doing two jobs. The obvious one is letting the robot cross a gap. What is the hidden one?"
+        options:
+          - text: "Stopping the robot at the end of the line"
+            correct: true
+          - text: "Keeping the encoder counts from overflowing on a long run"
+            correct: false
+            why: "Overflow is not a concern the lesson raises, and a budget comparison does nothing to prevent it."
+          - text: "Limiting how far the robot can back up in Challenge 1"
+            correct: false
+            why: "Challenge 1's retreat distance comes from blindDistanceCm(), not from the budget, and the challenge is optional."
+          - text: "Deciding when the robot should slow down inside a gap"
+            correct: false
+            why: "That is Challenge 3, which divides by GAP_MAX_CM to compute a fraction spent. It is an extension, not the constant's second job."
+
+      - id: L11_B48
+        type: true_false
+        cite: "§8A.3"
+        points: 1
+        stem: "Section 8A.3 describes the end of the line as a gap that never closes — infinitely wide."
+        correct: true
+        why: "In those words. Without the budget, a robot that reaches the end of the course drives on forever, and GAP_MAX_CM is the only thing that catches it."
+
+      - id: L11_B49
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "Section 8A.4's experiment reads three surfaces. Which two rows does Step 3 tell you to compare, and what do you find?"
+        options:
+          - text: "Black tape and open air — they are the same number, because readCalibrated() clamps at 1000 and both are already there"
+            correct: true
+          - text: "White mat and black tape — they are far apart, which proves the sensor works"
+            correct: false
+            why: "That comparison is real and reassuring, but it is not the one that settles the cliff question. The point is the pair that CANNOT be separated."
+          - text: "White mat and open air — they are the same, because air reflects nothing and paper reflects everything"
+            correct: false
+            why: "These are opposite ends of the scale. Air reads like tape, not like paper — which is the fact the whole section exists to demonstrate."
+          - text: "Black tape and open air — they differ by roughly the sensor's noise floor"
+            correct: false
+            why: "They do not differ at all. Not close — the same, which is why no threshold and no amount of averaging can recover the difference."
+
+      - id: L11_B50
+        type: matching
+        cite: "Glossary"
+        points: 4
+        stem: "Match each glossary term to its definition."
+        pairs:
+          - left: "Odometer"
+            right: "An instrument that measures distance travelled — your encoders, used this way"
+          - left: "Budget"
+            right: "The maximum blind distance; spend it all and you are LINE_LOST"
+          - left: "Re-arm"
+            right: "Re-zeroing the odometer as the robot enters a new gap, so each gap gets a full budget"
+          - left: "Gap"
+            right: "A break in the line the robot is allowed to cross"
+        extra_answers:
+          - "The distance from the front blade to the sensor array"
+          - "The number of loop passes between two sensor reads"
+
+  after:
+    description: "Post-build check. Assumes you have actually built and run the Section 6 program and worked the Section 7 rungs."
+    suggested_draw: 8
+    questions:
+
+      - id: L11_A01
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "Step 1 tells you to upload the generated Lesson 11 project before changing anything. Why?"
+        options:
+          - text: "It should behave exactly like Lesson 10 did — that is your baseline, and if it does not work now it will not work after you edit it"
+            correct: true
+          - text: "The Project Maker needs one upload before it can generate the later steps"
+            correct: false
+            why: "The Maker generates every step independently. The upload is about establishing a known-good starting point on your robot."
+          - text: "It writes GAP_MAX_CM to EEPROM so the value survives later edits"
+            correct: false
+            why: "GAP_MAX_CM is a compile-time constant in RobotConfig.h. Nothing about this lesson touches EEPROM."
+          - text: "It clears the encoder counts left over from Lesson 10"
+            correct: false
+            why: "Counts reset at power-on regardless. The reason given is diagnostic: prove the baseline before you change it."
+
+      - id: L11_A02
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "Step 2 ships GAP_MAX_CM at 0.0 and the TIP says that is not a mistake. What is the reasoning?"
+        options:
+          - text: "You are going to measure the number in Section 7A rather than guess it — a guessed threshold is why the old code was fragile"
+            correct: true
+          - text: "Zero disables gap crossing until the two new states exist, which keeps the intermediate builds safe"
+            correct: false
+            why: "Zero does not disable anything — it makes any distance at all over budget, which §8's first troubleshooting row describes as an instant quit. The reason is pedagogical."
+          - text: "A float constant must be initialised to zero before it can be reassigned"
+            correct: false
+            why: "It could be initialised to anything. The blank is left empty deliberately, the same way L03's TRIM is."
+          - text: "0.0 is a sentinel the code checks for, to warn you the value is unset"
+            correct: false
+            why: "Nothing checks for it. The symptom is a robot that quits after a millimetre, which is a diagnosis you make yourself from §8."
+
+      - id: L11_A03
+        type: multiple_choice
+        cite: "§6 Step 2b, §8"
+        points: 1
+        stem: "You add GAP_CROSSING to the loop() switch but the compiler says 'GAP_CROSSING' was not declared. What did you miss?"
+        options:
+          - text: "Step 2b — the state has to be added to the RobotState enum in RobotConfig.h, not just used in the switch"
+            correct: true
+          - text: "The case label needs a break statement before the compiler will accept it"
+            correct: false
+            why: "A missing break causes fall-through at runtime, not an undeclared-identifier error at compile time."
+          - text: "showStatus() has to name the state before the switch can use it"
+            correct: false
+            why: "Teaching showStatus() to print the name is Step 6 housekeeping. The compiler's complaint is about the enum."
+          - text: "The state must be declared in main.cpp, above loop()"
+            correct: false
+            why: "Every other state lives in the enum in RobotConfig.h, and these two join them there."
+
+      - id: L11_A04
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "After Step 3 the project holds both gapStartTime and gapStartCounts. The NOTE says this is deliberate. Why?"
+        options:
+          - text: "The stopwatch is still running the robot until Step 5 — you never delete the working thing before the replacement works"
+            correct: true
+          - text: "The two are cross-checked against each other so you can see them disagree"
+            correct: false
+            why: "Nothing compares them. The overlap is about keeping a working robot at every step, not about running a comparison."
+          - text: "Section 7E needs both, so keeping them saves work later"
+            correct: false
+            why: "7E does restore the stopwatch, but it restores it explicitly, and the NOTE there calls it the only time the two coexist. Step 3's reason is different."
+          - text: "The compiler needs the old variable until the new one is used somewhere"
+            correct: false
+            why: "An unused variable is legal C++. Nothing forces the overlap technically."
+
+      - id: L11_A05
+        type: true_false
+        cite: "§6 Step 4"
+        points: 1
+        stem: "After Step 4 adds averageCounts() and blindDistanceCm(), the robot behaves exactly as it did before."
+        correct: true
+        why: "Nothing calls them yet. Step 4's own line: you just built the instrument, you have not picked it up. Every step in Section 6 compiles and runs, so nothing is broken in the middle."
+
+      - id: L11_A06
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "Step 5 replaces the whole body of handleGap(). What did NOT have to change as a result?"
+        options:
+          - text: "Anything that calls handleGap() — the state machine does not know anything happened"
+            correct: true
+          - text: "The RobotState enum, because the new states were already there"
+            correct: false
+            why: "The enum did change, in Step 2b, one step earlier. Step 5's point is about call sites, not about the enum."
+          - text: "RobotConfig.h, because the budget constant already existed"
+            correct: false
+            why: "RobotConfig.h changed twice — the budget in Step 2 and the enum in Step 2b. The untouched thing is the calling code."
+          - text: "showStatus(), because it prints state names rather than distances"
+            correct: false
+            why: "showStatus() does get edited, in Step 6, to name the two new states."
+
+      - id: L11_A07
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Step 6 retires the stopwatch. How many sites have to go, and what are they?"
+        options:
+          - text: "Three — the declaration at the top of main.cpp, plus two lines that still write to it, in FOLLOWING_LINE and RETURNING_TO_LINE"
+            correct: true
+          - text: "One — the declaration, since Step 5 removed the only code that read it"
+            correct: false
+            why: "This is exactly the trap the step warns about. Nothing READS it, and two lines still WRITE it — and C++ needs the declaration for a write just as much as for a read."
+          - text: "Two — the declaration and the comparison inside handleGap()"
+            correct: false
+            why: "The comparison went away with Step 5's rewrite. What remains are two writes elsewhere in the switch."
+          - text: "Four — the declaration and three writes, one per gap-related state"
+            correct: false
+            why: "There are two writes, not three. The section tells you to search the file and count what comes back rather than assume a number."
+
+      - id: L11_A08
+        type: multiple_choice
+        cite: "§6 Step 6, §8"
+        points: 1
+        stem: "If you delete only the declaration of gapStartTime, what does the compiler tell you?"
+        options:
+          - text: "'gapStartTime' was not declared in this scope — twice, once for each surviving write"
+            correct: true
+          - text: "Nothing — an unused variable is silently dropped"
+            correct: false
+            why: "The variable is not unused; two lines still assign to it. Deleting the declaration under them is what produces the error."
+          - text: "'gapStartTime' was declared but never used — a warning, not an error"
+            correct: false
+            why: "That warning appears when a variable exists and nothing touches it. Here it is the reverse: the uses exist and the declaration does not."
+          - text: "One error, at the first write the compiler reaches"
+            correct: false
+            why: "The step and the troubleshooting table both say twice. Each undeclared use is reported on its own line."
+
+      - id: L11_A09
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "How large is the finished Lesson 11 program?"
+        options:
+          - text: "20,702 bytes"
+            correct: true
+          - text: "20,516 bytes"
+            correct: false
+            why: "That is the Lesson 10 project you started from. Lesson 11 is 186 bytes larger than it."
+          - text: "20,364 bytes"
+            correct: false
+            why: "That is the Lesson 10 figure from BEFORE the maneuver was rebuilt in Lesson 10's own Step 9. It is not the starting point for this lesson."
+          - text: "28,672 bytes"
+            correct: false
+            why: "That is the flash ceiling on this board, not the program size. The finished build leaves 7,970 bytes of it free."
+
+      - id: L11_A10
+        type: true_false
+        cite: "§6 Step 6"
+        points: 1
+        stem: "The finished Lesson 11 program is smaller than the Lesson 10 project it started from, because retiring the stopwatch freed more space than the odometer used."
+        correct: false
+        why: "It is 186 bytes BIGGER. Two functions, two states and a handful of new strings are not free, and the one unsigned long deleted was never going to pay for them. The step is blunt about it: it would be a tidier story if the better answer were also the cheaper one, and it is not."
+
+      - id: L11_A11
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "After the finished build, how much flash headroom is left, and what does the step say it was spent on?"
+        options:
+          - text: "7,970 bytes — correctness, spent deliberately, so the robot crosses the same gap on a fresh pack and a tired one"
+            correct: true
+          - text: "7,970 bytes — mostly the new display strings, which are the largest single cost"
+            correct: false
+            why: "The strings are named as part of the cost, but the step does not rank them, and the argument is about what the 186 bytes BOUGHT rather than where they went."
+          - text: "186 bytes — the difference between the two builds"
+            correct: false
+            why: "186 is the growth, not the remaining space. Headroom is the ceiling minus the program."
+          - text: "20,702 bytes — the same figure as the program size"
+            correct: false
+            why: "That is the program. Headroom is what is left after it."
+
+      - id: L11_A12
+        type: multiple_choice
+        cite: "§7A"
+        points: 1
+        stem: "Rung 7A temporarily sets GAP_MAX_CM to 999.0. What is that for?"
+        options:
+          - text: "So the robot never gives up — it crosses the gap and reports how wide it was, instead of quitting partway"
+            correct: true
+          - text: "So the budget is safely above any gap you might build, making 7B's number optional"
+            correct: false
+            why: "7B is not optional — 999 is explicitly temporary, and running the robot with a huge budget is how it runs off the end of the line in 7B's second failure test."
+          - text: "Because 999 is the largest value a float constant can hold on this board"
+            correct: false
+            why: "A float holds vastly more than that. The number is chosen to mean 'never give up', not because of a limit."
+          - text: "To slow the robot so the OLED can keep up with the reading"
+            correct: false
+            why: "The budget has no effect on speed. Slowing as the budget burns is Challenge 3, and it is a separate idea."
+
+      - id: L11_A13
+        type: true_false
+        cite: "§7A"
+        points: 1
+        stem: "Rung 7A tells you to run the measurement several times and take the biggest reading."
+        correct: true
+        why: "The TIP says the readings will vary a little across three or four runs, and to take the biggest — because a budget tuned to an average will quit on the runs that come in wide."
+
+      - id: L11_A14
+        type: multiple_choice
+        cite: "§7B"
+        points: 1
+        stem: "Rung 7B asks you to test both failure directions before settling on your number. What are the two failures?"
+        options:
+          - text: "Too small, and the robot quits in the middle of a legal gap; too big, and it runs off the end of the line and never stops"
+            correct: true
+          - text: "Too small, and the robot never triggers a gap at all; too big, and it triggers on ordinary line noise"
+            correct: false
+            why: "The budget does not decide whether a gap is DETECTED — the line sensors do that. It decides how long the robot is willing to stay blind."
+          - text: "Too small, and the odometer overflows; too big, and the float loses precision"
+            correct: false
+            why: "Neither is a failure the lesson describes, and neither would produce a visible behaviour on a course."
+          - text: "Too small, and TRIM cannot hold the robot straight; too big, and P-control fights the budget"
+            correct: false
+            why: "TRIM's effect is independent of the budget — that is 7C. And P-control is asleep inside a gap, so there is nothing for it to fight."
+
+      - id: L11_A15
+        type: multiple_choice
+        cite: "§7C"
+        points: 1
+        stem: "In rung 7C you set TRIM to 0 and run the gap. What do you see, and what does the rung conclude?"
+        options:
+          - text: "The robot curves instead of going straight — on a wide gap it wanders off the line and reports LINE LOST even though the line was right there"
+            correct: true
+          - text: "The robot goes straight, because encoders count rotation regardless of heading"
+            correct: false
+            why: "Encoders do count rotation regardless of heading, which is exactly why they cannot see the curve. The robot does drift — the odometer just cannot tell you so."
+          - text: "The robot stops immediately, because a TRIM of zero disables the drive"
+            correct: false
+            why: "Zero TRIM means no correction, not no speed. Both motors still run at BASE_SPEED."
+          - text: "Nothing changes, because P-control corrects the imbalance"
+            correct: false
+            why: "P-control is asleep inside a gap. A gap is the one place where an open loop has nowhere to hide — that is the rung's own line."
+
+      - id: L11_A16
+        type: multiple_choice
+        cite: "§7D"
+        points: 1
+        stem: "Rung 7D asks whether the odometer re-arms between two gaps in a row. What makes it re-arm?"
+        options:
+          - text: "handleGap() samples gapStartCounts only when currentState is not already GAP_CROSSING — so leaving the state is the reset"
+            correct: true
+          - text: "The GAP_CROSSING case zeroes gapStartCounts when the line comes back"
+            correct: false
+            why: "That case does not touch gapStartCounts at all. It hands control back to FOLLOWING_LINE, and the re-sample happens on the NEXT entry into a gap."
+          - text: "blindDistanceCm() resets its own baseline once the budget is spent"
+            correct: false
+            why: "blindDistanceCm() only reads and subtracts. It writes nothing."
+          - text: "The encoders are reset to zero at the end of every gap"
+            correct: false
+            why: "Nothing resets the encoders. The odometer works by subtracting a remembered start value from a free-running count, which is why the start value is what has to be refreshed."
+
+      - id: L11_A17
+        type: true_false
+        cite: "§7D"
+        points: 1
+        stem: "The 7D build adds a live blind-distance readout to the display so you can watch the count climb, reset at the second gap, and climb again."
+        correct: true
+        why: "The bottom row reads 'Blind: 6.4cm' and climbs. The TIP's point is that you are not taking the re-arm on faith — you are reading it happen in front of you."
+
+      - id: L11_A18
+        type: multiple_choice
+        cite: "§7E"
+        points: 1
+        stem: "Rung 7E has you restore Lesson 8's timer version of handleGap(). What must you bring back first, and why?"
+        options:
+          - text: "The gapStartTime declaration — you retired it in Step 6, and the restored function writes to it"
+            correct: true
+          - text: "MAX_GAP_TIME, which Step 2 replaced with GAP_MAX_CM"
+            correct: false
+            why: "MAX_GAP_TIME was never deleted. Step 2 ADDED the new budget underneath the Lesson 8 block; the old constant is still in RobotConfig.h."
+          - text: "The STOPPED state, which the Lesson 11 version replaced with LINE_LOST"
+            correct: false
+            why: "STOPPED is still in the enum and still used. 7E's restored function sets LINE_LOST anyway."
+          - text: "Nothing — the old function compiles against the current file as written"
+            correct: false
+            why: "It does not. The variable it stamps was deleted in Step 6, and the NOTE calls this the only time the two instruments coexist."
+
+      - id: L11_A19
+        type: matching
+        cite: "Sabotage"
+        points: 4
+        stem: "Each Sabotage mystery plants one line. Match the planted change to the symptom it produces."
+        pairs:
+          - left: "averageCounts() returns left instead of the average"
+            right: "Gap distances are unreliable — almost fine on tile, a disaster on carpet"
+          - left: "gapStartCounts is never re-sampled on entry"
+            right: "The first gap crosses perfectly; every gap after it fails instantly with an enormous distance"
+          - left: "TRIM is dropped from the setSpeeds() call in handleGap()"
+            right: "The robot curves out of every gap, and tuning TRIM changes nothing at all"
+          - left: "blindDistanceCm() returns the raw count without dividing"
+            right: "The robot stops the instant the line disappears, even with the budget set to 50"
+        extra_answers:
+          - "The robot crosses gaps normally but never reports the width"
+          - "The display shows the wrong state name after every intersection"
+
+      - id: L11_A20
+        type: matching
+        cite: "§6 Step 6"
+        points: 3
+        stem: "Step 6 teaches showStatus() to name the new states. Match each state to the string it prints."
+        pairs:
+          - left: "GAP_CROSSING"
+            right: "GAP"
+          - left: "LINE_LOST"
+            right: "LOST"
+          - left: "RETURNING_TO_LINE"
+            right: "SEEKING"
+        extra_answers:
+          - "BLIND"
+          - "SEARCH"
+
+      - id: L11_A21
+        type: true_false
+        cite: "Sabotage Mystery 3"
+        points: 1
+        stem: "Mystery 3 is worse than a crash because it lets you tune a number for twenty minutes and lose faith in the instrument."
+        correct: true
+        why: "A crash tells you something is wrong. A blank the code never reads is a lie — TRIM is declared but never spent, so you conclude TRIM does not work, or your robot is broken, or you are bad at this. Check the call site, not just the declaration."
+
+      - id: L11_A22
+        type: multiple_choice
+        cite: "Sabotage Mystery 4"
+        points: 1
+        stem: "Mystery 4 removes the division by COUNTS_PER_CM. With GAP_MAX_CM set to 50, roughly how far does the robot actually get?"
+        options:
+          - text: "About 7 millimetres — because there are roughly 74 counts in a centimetre, so a budget of 50 is spent after 50 counts"
+            correct: true
+          - text: "About 50 millimetres — the units are off by a factor of ten"
+            correct: false
+            why: "The error is not a factor of ten. It is the counts-per-centimetre factor, which is roughly 74."
+          - text: "About 50 centimetres — the budget still means centimetres, just measured from the wrong origin"
+            correct: false
+            why: "The origin is fine. The units are wrong, and the robot is over budget almost before it has moved."
+          - text: "It cannot be predicted, because raw counts vary with battery charge"
+            correct: false
+            why: "Counts are the one quantity that does NOT vary with charge — that is the lesson's central claim. The conversion is missing, and the arithmetic is exact."
+
+      - id: L11_A23
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "Challenge 1 makes LINE_LOST retreat to where the line was. Why must you read blindDistanceCm() before stopping the motors?"
+        options:
+          - text: "Because the distance is what you are about to drive back, and you need it captured before anything else changes"
+            correct: true
+          - text: "Because setSpeeds(0, 0) resets the encoder counts"
+            correct: false
+            why: "Stopping the motors does not reset any count. The instruction is about capturing the value into a variable before the case moves on."
+          - text: "Because the robot coasts after the stop, adding distance you did not travel under power"
+            correct: false
+            why: "Coasting is not something the lesson models, and setSpeeds(0, 0) on this robot is a brake rather than a coast."
+          - text: "Because driveDistance() overwrites gapStartCounts as it runs"
+            correct: false
+            why: "The solution re-zeroes gapStartCounts deliberately, AFTER the retreat — which is the opposite of an accident to be avoided."
+
+      - id: L11_A24
+        type: multiple_choice
+        cite: "§9 Challenge 2"
+        points: 1
+        stem: "Challenge 2's sweep turns 30 right, then 60 left, and then a final turn if neither found the line. What is the final turn, and why?"
+        options:
+          - text: "30 right — it undoes the sweep so the robot faces front again, or the next run starts crooked"
+            correct: true
+          - text: "60 right — to return from the far end of the sweep to the starting heading"
+            correct: false
+            why: "The 60 left went 30 degrees PAST centre, not 60 past it. Only 30 is owed to get back."
+          - text: "90 left — to square up against the line's likely direction"
+            correct: false
+            why: "Nothing in the challenge assumes a direction for the line. The final turn is purely bookkeeping."
+          - text: "None — the robot stops wherever the sweep left it"
+            correct: false
+            why: "The pseudocode says explicitly to undo the sweep on failure, for exactly the reason that a crooked robot starts the next run wrong."
+
+      - id: L11_A25
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "Challenge 3 scales the gap speed by how much budget is spent. What does the template insist you keep in the setSpeeds() call, and why?"
+        options:
+          - text: "TRIM — slowing down does not make the loop any less open, it just makes the mistake cheaper"
+            correct: true
+          - text: "BASE_SPEED unmodified on the right motor, so the two wheels stay comparable"
+            correct: false
+            why: "Both motors take the scaled speed. TRIM rides on the left one, exactly as it does everywhere else in the book."
+          - text: "The constrain() call, because setSpeeds() will reject an out-of-range value"
+            correct: false
+            why: "constrain() is applied to the SPENT fraction before the speed is computed, not inside the setSpeeds() call."
+          - text: "A minimum speed floor, so the robot never stalls mid-gap"
+            correct: false
+            why: "The scaling bottoms out at half BASE_SPEED by construction, so no floor is needed and none is in the template."

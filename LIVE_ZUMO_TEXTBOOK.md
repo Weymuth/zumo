@@ -1,7 +1,7 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
 **Date:** August 11, 2026 (Session 145 — **THE S144 CLOSE PUSH HAD NOT LANDED, AND `session_versions --selftest` CONTROL C IS WHAT SAID SO.** The tree at session open read L11 v02.29.0, Bible v8.135.2 and `book_gates` v1.65.9 against a handoff claiming v02.30.0 / v8.135.3 / v1.65.10 at the same SHA; re-checked after 70 s per §12.4, so timing was ruled out. DJ pushed, and the same control went silent on the complete tree — **the loop closed, which is what makes it evidence rather than coincidence.** **THEN THE TRIM SPLIT WAS RULED, AND IT WAS NEVER THE SPLIT S144 DESCRIBED.** Not lesson against lesson but **PROSE against CODE COMMENTS**, with one prose leak in L13; and the 342 payload comments were **TWO SHAPES**, 148 of which already read *born in Lesson 3, spent in Lesson 6, and filed here* and were CORRECT. **A census that reports one number for two shapes has already lost the ruling.** Two S144 claims were false on re-reading — L03 does not *say both* and L09 is a false positive, both text matches read as answers (rule 38).)
-**Status:** ✅ **70/70 GATES · §16.15 NEW — TRIM'S HOME IS LESSON 3, BOOK-WIDE · 194 PAYLOAD CITATIONS FLIPPED, 148 DELIBERATELY KEPT · L11 STILL UNBANKED (NEXT).** DJ ruled Option 2: strip the lesson number from the relocation comment rather than flip it, so line 4 keeps the only sentence in the book that says TRIM MOVED. **The argument I nearly made against flipping did not survive measurement** — L03's finished `main.cpp` is 227 lines against L06's 215, so *buried in a 200-line file* holds either way; the real cost was the deletion, not a falsehood. `gate_payload_match` blinding-controlled: reverting ONE of 342 sites fires it. **CANON DEBT FOUND, RECORDED NOT FIXED: §16.14 HAS NO NUMBERED SECTION BODY** — v8.135.3 announces it and the file carries no `### 16.14` line, so the cliff ruling lives only in a changelog entry.
+**Status:** ✅ **70/70 GATES · §16.15 NEW — TRIM'S HOME IS LESSON 3, BOOK-WIDE · 194 PAYLOAD CITATIONS FLIPPED, 148 DELIBERATELY KEPT · L11 READ, FIXED AND NOW BANKED.** DJ ruled Option 2: strip the lesson number from the relocation comment rather than flip it, so line 4 keeps the only sentence in the book that says TRIM MOVED. **The argument I nearly made against flipping did not survive measurement** — L03's finished `main.cpp` is 227 lines against L06's 215, so *buried in a 200-line file* holds either way; the real cost was the deletion, not a falsehood. `gate_payload_match` blinding-controlled: reverting ONE of 342 sites fires it. **CANON DEBT FOUND, RECORDED NOT FIXED: §16.14 HAS NO NUMBERED SECTION BODY** — v8.135.3 announces it and the file carries no `### 16.14` line, so the cliff ruling lives only in a changelog entry. **BANK L11 v1.0.0 WRITTEN AGAINST v02.30.0** — 50 before + 25 after, 72/18/10 and 72/20/8, banks 10 → 11 of 16 (**derive the total; never read it here**). **SEVEN ANSWERS DELIBERATELY NOT ASKED, EACH WITH ITS REASON IN THE FILE HEADER**, chief among them any value of `GAP_MAX_CM` — the number is measured per robot and the lesson ships the blank at 0.0 on purpose. **AGAINST v02.29.0, SEVEN §3.5 QUESTIONS WOULD HAVE KEYED BACKWARDS**, which is the largest re-key risk any bank has carried.
 
 **Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.2 · L13 v02.28.3 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.135.4** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.2 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `86fd0bf`.**
 
@@ -69,6 +69,37 @@ to ENCODERS, one in L09 to `turnDegrees()`. **A co-occurrence is not a claim.**
 `### 16.14` line at all, so S144's cliff ruling lives only in a changelog entry — the shape v8.103
 closed for §24.14 and v8.110 logged for §3.1. **§16.12 and §16.13 are also seated BELOW §17's
 heading**; §16.15 was seated beside them rather than moving three sections in a pass nobody ruled.
+
+### 4. BANK L11 v1.0.0 — WRITTEN IN THE SAME SESSION AS THE READ
+
+50 `before` + 25 `after`. Mix derived, not counted: **72 / 18 / 10** and **72 / 20 / 8** against
+QUIZ_SPEC v1.1.0's 70 / 20 / 10. Banks **10 → 11 of 16** — derive the question total with
+`--status`, never read it from a document.
+
+**FOUR S144 FINDINGS ARE LOAD-BEARING, AND THE FIRST IS THE BIGGEST RE-KEY RISK ANY BANK HAS
+CARRIED.** Against v02.29.0, **seven §3.5 questions would have been keyed backwards** — the old
+text had the robot going blind at a cliff where the corrected text has it believing it found a
+perfect line and accelerating. B18, B20, B21, B22, B23, B24 and B26 all sit on homes that moved.
+The other three: Step 6 retires the stopwatch in **three pieces** (A07, A08), the byte figure is
+**20,702 and 186 BIGGER** (A09, A10, A11), and TRIM is Lesson 3's (B34, A15) — safe now in a way it
+was not two sessions ago.
+
+**SEVEN ANSWERS DELIBERATELY NOT ASKED, EACH NAMED WITH ITS REASON IN THE HEADER.** Chief among
+them: **any value of `GAP_MAX_CM` or any gap width in centimetres.** The number is measured per
+robot and per course, the lesson ships the blank at 0.0 on purpose, and no such figure has ever
+touched a floor. A12–A14 ask the METHOD — set it huge, run it several times, take the biggest,
+test both failure directions — and never a target. Also excluded: §7A's 999.0 rung as a *verified*
+procedure, cm/s, the illustrative *Blind for 12.4 cm*, **L10's unruled arrival geometry**, and
+anything living only in an SVG.
+
+**THE HEADER-OF-A-THING RULE WAS PAID BEFORE IT COULD FIRE:** all **24** question ids the header
+names were asserted to EXIST in the file, and all **six** `source:` pins were COMPARED against the
+live lesson first lines rather than typed. **The one figure the bank does assert re-derives:**
+Mystery 4's *about 74 counts in one centimetre* comes out at **74.25** from §16.10's 909.7 CPR over
+a 12.252 cm circumference, so it is checkable rather than inherited.
+
+**The `after` set shares nothing with BRAIN CHECK 03** — it draws entirely from §6, §7, §9 and
+Sabotage, where BC03 asks §3.2, §8A.1, §8A.3 and §8A.4.
 
 ---
 ---
