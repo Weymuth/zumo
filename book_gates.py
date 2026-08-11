@@ -2,7 +2,20 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.65.4'
+VERSION = 'v1.65.8'
+# v1.65.8 (S143): §27.11 baseline moved for L10's new Challenge 6 card. NO gate logic changed.
+# v1.65.7 (S143): the §27.11 digest moved a THIRD time, same session, same cause class.
+#   NO gate logic changed. Detail at the CSS_DIGEST line.
+# v1.65.6 (S143): the §27.11 digest moved a SECOND time, same session, same cause class
+#   (usage rank) — L10's maneuver gained two driving phases. NO gate logic changed.
+# v1.65.5 (S143): §27.11 DIGEST MOVES, RULES AND DECLARATIONS DO NOT — 574/2,033 both ends,
+#   class SET byte-identical, and all 574 selector+declaration blocks compare byte-identical,
+#   so nothing renders differently. Usage RANK only, the S140/S141 shape again. Cause: L09's
+#   six off-family TIP/NOTE callouts moved from the WARNING amber (#856404) to the book's
+#   green (#3a5a3a), taking .div-c-3a5a3a 27 -> 33 and .div-c-856404 30 -> 24, plus three
+#   new <td> in §7.2's split gap test (coverage 22,215 -> 22,218). Acceptance test was the
+#   RESOLVED STYLING, not the rule count (rule 24): zero elements in the book carry two
+#   classes, so a frequency reshuffle cannot change a cascade winner. Detail at CSS_DIGEST.
 # v1.65.2 (S141): §27.11 DIGEST MOVES, RULES AND DECLARATIONS DO NOT. 574/2,033 both
 #   ends, class SET byte-identical (zero born, zero died), and ALL 574 DECLARATION
 #   BLOCKS byte-identical — so nothing renders differently. Usage RANK only, the S140
@@ -2283,7 +2296,30 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'ba311c0ebe63cc79'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '826563f4453560fa'
+#   S143 move, FOURTH and last of the session. Cause: L10 Challenge 6 (The Wedge Return) is a
+#   new card, and a challenge card is never a free edit - it brings its own pre block, hint and
+#   difficulty pills. Acceptance test is the RESOLVED STYLING (rule 24).
+#   THIRD S143 move (superseded, kept for the record) and it supersedes the first two. Digest ONLY, 574/2,033
+#   both ends, class SET byte-identical, usage RANK only. Cause: the rest of the L10 read -
+#   §5.2's constants table, §7/§7.6's counts, §8A's five-step claims, and the C2/C4 templates
+#   all moved with the seven-phase maneuver. Acceptance test is the RESOLVED STYLING (rule 24).
+#   SECOND S143 move (superseded, kept for the record). Digest ONLY, and again
+#   574/2,033 both ends with the class SET byte-identical. Usage RANK only. Cause: L10's
+#   avoidance maneuver grew from three driving phases to five (seven phases total), which
+#   added table rows, code lines and a constant across the lesson. Acceptance test is the
+#   RESOLVED STYLING (rule 24), and the proof from the first move still holds: no element
+#   in the sixteen lessons carries two classes, so a frequency reshuffle cannot decide a
+#   cascade. FIRST S143 move (superseded, kept for the record). Digest ONLY. Rules and declarations UNCHANGED at 574/2,033 — zero rules born,
+#   zero died, zero declarations gained or lost, and every one of the 574 selector+declaration
+#   blocks compares byte-identical against the pre-edit stylesheet. Usage RANK only. Cause:
+#   DJ ruled L09's six off-family TIP/NOTE headers back to the book's green, so .div-c-3a5a3a
+#   went 27 -> 33 and .div-c-856404 30 -> 24 and the frequency sort reshuffled them; §7.2's
+#   gap test split into a 5 cm row and a 20 cm row, adding three <td> (22,215 -> 22,218).
+#   Both amber classes are STILL LIVE (33 uses across L01/L02/L04/L05/L10), so no rule was
+#   orphaned. Acceptance test was the RESOLVED STYLING (rule 24) and it has a proof this
+#   time rather than an inspection: no element anywhere in the sixteen lessons carries more
+#   than one class, so cascade order cannot decide anything and a reshuffle cannot be seen.
 #   S140 move, FOURTH of the session and it supersedes the first three. Digest ONLY each time.
 #   Rules and declarations UNCHANGED at 574/2,033 across both, class SET byte-identical in
 #   both directions each time, and the acceptance test was the RESOLVED STYLING (rule 24):

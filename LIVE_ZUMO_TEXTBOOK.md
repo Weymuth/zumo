@@ -1,9 +1,120 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 10, 2026 (Session 142 — **A GATE THAT LOOKS LIKE IT IS WATCHING MAY NOT BE, AND THE ONLY WAY TO KNOW IS TO BLIND IT.** `gate_payload_match`'s line test was a SUBSTRING test, so a payload that had LOST a leading qualifier the lesson carries matched trivially inside the longer lesson line — reverting one of 136 payloads left it printing PASS. The whole `static` pass had been argued safe ON THAT GATE, and the claim was wrong when it was made. Fixed to line equality, control-run five shapes x two gate versions. **AND L08 READ END TO END: Step 2's *complete file* reveal had deleted the TRIM block that Step 8's `handleGap()` uses — the Maker was right in all seven payloads and only the book was wrong.**)
-**Status:** ✅ **70/70 GATES · L08 READ AND FIXED · BANKS 7 → 8 OF 16, 620 QUESTIONS · BIBLE §16.10 AND §16.11 NEW.** **THE ONE TO CARRY: a control that cannot fail is not a control — and that includes the ones you write to check your own work.** The first verifier written to catch drifted quiz-header ids checked them against a mapping typed into the script rather than parsed from the file, and printed ALL HOLD against a file that had not even been written. **Also: 39 mm is the diameter OVER THE TRACK and Kp is 0.1–0.3 on the 75:1 fleet — both now Bible canon, and both were already derivable from the book's own arithmetic.**
+**Date:** August 11, 2026 (Session 143 — **A MANEUVER THE BOOK HAD DRAWN CORRECTLY, DESCRIBED CORRECTLY, AND NAMED CORRECTLY WAS CODED A LEG SHORT — AND NO INSTRUMENT COULD SEE IT BECAUSE EVERY PAYLOAD COPIED IT FAITHFULLY.** L10's obstacle box turned +90, drove, turned −90: net rotation ZERO, so the robot finished on its approach heading displaced sideways and `RETURNING_TO_LINE` ran PARALLEL to the line forever. GRAPHIC 10.2 drew the correct four-leg box; the phase comments described it; §3.3 named it *out · along · back · hunt*. Only the code disagreed. **AND §8.3 supplied a plausible wrong explanation for its own bug** — it blamed turn accuracy, which is the one thing that makes the failure MORE certain.)
+**Status:** ✅ **70/70 GATES · L09 AND L10 READ AND FIXED · BANK L09 SHIPPED, 9 OF 16, 695 QUESTIONS · L10'S MANEUVER REBUILT AT SEVEN PHASES · AVR TOOLCHAIN NOW LIVE AND VERIFIED.** **THE ONE TO CARRY: a gate that certifies agreement is not certifying correctness.** `gate_payload_match` passed for the maneuver's entire life precisely BECAUSE 202 payload files copied the wrong code faithfully. **Also: the compile harness reproduced the book's own printed 20,364 bytes byte-for-byte, which is what makes every other number in this session trustworthy — and four byte claims were wrong, three of them before this session started.**
 
-**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.3 · L08 v04.31.0 · L09 v05.26.1 · L10 v02.27.2 · L11 v02.28.2 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,531** · Bible **v8.134** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.46.0 · **book_gates v1.65.4** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.1 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `8221d96`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.3 · L08 v04.31.0 · **L09 v05.27.0** · **L10 v02.29.0** · L11 v02.28.2 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,608** · Bible **v8.135** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · **Maker v2.49.0** · **book_gates v1.65.8** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.1 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `a8befe7` (the S143 OPENING state; this session's work is not yet pushed).**
+
+**Quiz banks:** 9 of 16 — L01, L03, L04, L05, L06, L07, L08, **L09**, and L10's predecessor set. Derive with `python3 quizzes/quiz_bank.py --status`; do not hand-count.
+
+---
+---
+---
+## WHAT SHIPPED IN S143
+
+### 1. L09 READ END TO END — v05.26.1 → v05.27.0, EIGHT FINDINGS
+
+**§3.4's state table said `AT_INTERSECTION` *"Stop, identify intersection type"* and it does
+NEITHER.** Both happen in `FOLLOWING_LINE`: `checkForIntersection()` runs there,
+`motors.setSpeeds(0,0)` runs there, and `pendingTurn` is set before the state changes. FOUR
+sources agreed against the table — the Quick Reference states table AND its own summary rule
+(*stopping happens at the moment of detection, never deferred*), GRAPHIC 9.4, GRAPHIC 9.6's
+UML, and §3.5's own enum comment. **BRAIN CHECK 01 Q3's reveal repeated the same wrong
+verbs**, so the lesson gave two different answers to a question the bank would have keyed.
+
+**Step 6's MY PLAN said L08's main mentions `isRunning` "five" times. It is TEN, on NINE
+lines** — re-derived from the parsed `PAYLOADS` object and confirmed against L08's own final
+reveal. The L02 *lines 3/7/11* shape: the student greps, gets ten, assumes they misread.
+
+**§7.2's Test 6 asked for a 20 cm gap and expected the robot to cross it.** `MAX_GAP_TIME` is
+500 and L08's own table says 5 cm crosses, 15 cm times out. Split into two rows.
+
+**Step 7's checkpoint opened *"B still rescues you"* and then explained why it cannot.**
+Mystery 4 states the same mechanic correctly. **§3.6 said the timed turn is *"Not used in this
+book"*** — see the correction log below; that sentence was wrong THREE times before it was
+right. Plus a `do&hellip;while` rendering as a literal entity, a dangling em-dash, and six
+TIP/NOTE callouts wearing the WARNING family's amber (DJ ruled: normalise).
+
+### 2. BANK L09 — 50 BEFORE + 25 AFTER, 72/20/8 BOTH SETS
+
+Five of the eight findings are load-bearing. Against v05.26.1, B12 would have keyed the wrong
+answer and only one of A14/A15 was answerable. Five answers deliberately NOT asked, with the
+reasons in the file header. Two citations self-corrected on review — B37 pointed into §6 and
+B32 into §7.2, both wrong for a pre-class gate.
+
+### 3. L10's AVOIDANCE MANEUVER COULD NOT RETURN TO THE LINE — AND STILL CANNOT BE SEEN BY ANY GATE
+
+Three driving phases: `turnDegrees(+90)`, `driveDistance(20)`, `turnDegrees(-90)`. **Net
+rotation ZERO.** The robot finished on its approach heading — along the line — displaced 20 cm
+perpendicular, so the hunt ran PARALLEL and could only time out. Convention-free proof: two
+turns that cancel cannot converge on a line they are already parallel to.
+
+**Everything except the code was right.** GRAPHIC 10.2's four arrows draw *out · along · back ·
+hunt*; `PHASE_DRIVE_PAST`'s comment says *past the obstacle*; `PHASE_TURN_BACK`'s says *toward
+the line*; §3.3 names four movements where the code had three. **§8.3 anticipated the exact
+symptom and blamed turn accuracy** — and a perfectly accurate ±90 pair is what GUARANTEES the
+failure. That is how it survived: the book contained a plausible wrong explanation for its own
+bug, which would have absorbed the first report from the floor.
+
+**DJ RULING: SEVEN PHASES, ONE JOB EACH, verified between every one.** `TURN_AWAY` ·
+`DRIVE_OUT` (new, `AVOID_OUT_CM = 15.0`) · `TURN_ALONG` (new) · `DRIVE_PAST` · `TURN_BACK` ·
+`SEEK_LINE` · `COMPLETE`. Pose asserted after each phase; the box ends 20 cm along and 15 cm
+out, FACING the line, and the hunt crosses perpendicular after 15 cm (~1.0 s against a 5 s
+timeout). The old shape was run as the control and prints PARALLEL.
+
+**112 `RobotConfig.h` and 90 `main.cpp` payloads**, re-derived from the parsed object, not
+trusted from replacement counts. **All three sabotage plants preserved**: `bonus_b3` keeps its
+5 cm, `bonus_b5`'s wrong-way turn-back rebuilt on the new shape, and the timed build now has
+FIVE blind `delay()` windows instead of three — which strengthens Step 8's own argument.
+**`gate_payload_match` earned its keep twice**, catching a banner fixed in the lesson but not
+in 90 payloads, and `AVOID_OUT_CM` existing in payloads with no reveal to derive from.
+
+### 4. DJ RULING: SHOW BOTH SOLUTIONS — CHALLENGE 6, THE WEDGE RETURN
+
+The box is the base build; the **wedge** is the challenge — drop the parallel leg and turn back
+PAST the original heading so the robot closes on a slant. Measured: box crosses square-on after
+~15 cm, wedge after ~30 cm at 120°, all of it open-loop. The card makes the TRADE the
+assignment. `wedge_return` rides the `finished` preload — zero payload authoring.
+
+### 5. THE AVR TOOLCHAIN IS LIVE, AND THE CONTROL WAS EXACT
+
+`sudo apt-get install -y gcc-avr avr-libc` installs `avr-gcc 7.3.0+Atmel3.7.0` in one command.
+The eight Pololu/Arduino repos clone from GitHub; `pololu/Zumo32U4@2.0.1` and the harness's
+`zumo-32u4-arduino-library` are THE SAME CODE under two naming systems, and the other seven
+LIBDIRS are that library's own declared `depends=`.
+
+**CONTROL: the PRE-change finished build compiles to 20,364 bytes — byte-for-byte the figure
+the lesson printed.** That validates the toolchain, the flags, the library set and the 28,672
+ceiling at once. **`platformio.ini` was never touched.**
+
+**Four byte claims corrected, THREE of them wrong before this session:**
+Step 6 *+20* → **+2** · Step 7 *+192* → **+194** · Step 8 *+84* → **+660** · Step 9
+*20,364* → **20,516**. And a claim the compile CONFIRMS: `after_step_7` is byte-identical
+before and after, so the added constant and enum members cost exactly zero — precisely what
+Step 2's checkpoint promises.
+
+**`after_step_8` is new**, built as the file AS IT STANDS AT THAT STEP (rule 47), because no
+payload represented Step 8 and the +84 had no reconstructible baseline.
+
+### 6. GRAPHIC 10.2 — PANEL RE-FLOWED, ROUTE UNTOUCHED
+
+Five rows to seven, keeping the five-driving / two-bookkeeping split §8A.4 teaches. **The four
+route arrows were never touched — they were always correct.** Rendered four times with
+cairosvg before it was clean; the first three passes each had collisions or clipping the
+source alone would not have shown.
+
+### 7. THE CORRECTION LOG — THREE WRONG CLAIMS I MADE AND CAUGHT
+
+1. **§3.6's timed-turn sentence was wrong TWICE.** First *"used exactly once (L05)"* — L10
+   writes three. Then *"twice"* — L03's Spin Test and timed square make it three lessons.
+   Shipped with NO count. **A count in a sentence is a claim; derive it or delete it.**
+2. **Option B's turn-back direction was BACKWARDS.** I recommended turning back LESS than 90;
+   simulation showed that DIVERGES. It must overshoot PAST the original heading. Caught only
+   because DJ asked for a double-check.
+3. **I called `step_8 → after_step_7` a defect and repointed it. It was not.** The derivation
+   across all 64 CATCH-UP rows shows **L07–L10 use an OFFSET convention and L11–L16 use
+   IDENTITY**, cleanly split. Reverted, and the Maker changelog rewritten to remove the false
+   claim. **Had I written the gate I proposed, it would have certified 64 rows and failed 32.**
 
 ---
 ---

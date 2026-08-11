@@ -1,0 +1,1275 @@
+# ZUMO READING QUIZ BANK — LESSON 09
+# Intersections & Dead Ends · Teaching Your Robot to Decide
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_09.html v05.27.0 (post-S143 content fixes)
+#
+# READ -> FIX -> QUIZ. Lesson 09 was read end to end in S143 and eight findings were fixed
+# before a question was written. Five of them are load-bearing here:
+#
+#   1. §3.4's STATE TABLE SAID AT_INTERSECTION "Stop, identify intersection type" AND IT
+#      DOES NEITHER. Both happen in FOLLOWING_LINE: checkForIntersection() runs there,
+#      motors.setSpeeds(0, 0) runs there, and pendingTurn is already set before the state
+#      changes. Four sources agreed against the table — the Quick Reference states table
+#      and its own summary rule, GRAPHIC 9.4, GRAPHIC 9.6's UML, and §3.5's own enum
+#      comment. BRAIN CHECK 01 Q3's reveal repeated the same wrong verbs. B12, B26 and
+#      B47 all rest on this; against v05.26.1 the lesson gave two different answers and
+#      B12 would have keyed the wrong one.
+#   2. §3.6 SAID THE TIMED TURN IS "Not used in this book" AND THE BOOK WRITES SEVERAL.
+#      Derived by scanning every lesson <pre> and every Maker payload for an opposite-sign
+#      setSpeeds followed by delay(): Lesson 3's Spin Test and timed square, Lesson 5's
+#      obstacle challenge, and Lesson 10's deliberately-timed first attempt. B18 asks why
+#      the method is refused rather than whether it appears, for that reason.
+#   3. STEP 6's MY PLAN SAID LESSON 8's main MENTIONS isRunning "five" TIMES. Re-derived
+#      from the parsed PAYLOADS object: ten occurrences on nine lines. A07 asks what
+#      replaces it, not how many there are — the count is the student's own grep to run.
+#   4. §7.2's TEST 6 ASKED FOR A 20 cm GAP AND EXPECTED THE ROBOT TO CROSS IT.
+#      MAX_GAP_TIME is 500, and Lesson 8's own test table says 5 cm crosses and 15 cm
+#      gives LINE LOST after ~0.5 s. Split into a 5 cm row and a 20 cm row. A14 and A15
+#      are the two halves; against v05.26.1 exactly one of them was answerable.
+#   5. STEP 7's CHECKPOINT OPENED "B still rescues you" AND THEN EXPLAINED WHY IT CANNOT.
+#      The robot is parked in AT_INTERSECTION, which has no case yet, and the kill switch
+#      lives in FOLLOWING_LINE. A10 and A19 both turn on this; the old text contradicted
+#      itself inside one parenthesis and Mystery 4 stated the same mechanic correctly.
+#
+#   The remaining three were typographic or cosmetic and are not askable: a double-escaped
+#   entity rendering as literal "do&hellip;while" in Challenge 3, a dangling em-dash in
+#   TIP 9.22, and six TIP/NOTE callouts wearing the WARNING family's amber.
+#
+# FIVE ANSWERS DELIBERATELY NOT ASKED:
+#   - THE SIX GREEN SURVEY NUMBERS. §7.1 and Step 9 are explicit that the only numbers
+#     that matter are the student's own, measured on their tape under their lighting, and
+#     that left and right may differ. 300 and 700 are asked ONLY as the shipped defaults
+#     (B22), never as a correct reading.
+#   - CHALLENGE 6's ALL-BLACK SUM THRESHOLD (~4200). A stated number in a challenge reveal
+#     that has never been measured on a real five-sensor row. A25 asks what Challenge 6
+#     changes, not what the number is.
+#   - THE ROBOT'S TRAVEL SPEED IN cm/s. Still the open bench item carried from L08. A14
+#     and A15 ask which gap survives the timeout and which does not — the logic, never a
+#     distance divided by a speed.
+#   - ANYTHING THAT LIVES ONLY IN A GRAPHIC. GRAPHIC 9.4 and 9.6 both carry the corrected
+#     state behaviour, but so does the Quick Reference in prose, so B12 cites the prose.
+#     Nothing here depends on reading an SVG.
+#   - HOW MANY SENSORS SEE THE LINE WHILE FOLLOWING. §3.3 says "typically only the middle
+#     sensors (2, 3, 4)"; that is a claim about tape width on this array and no bench
+#     measurement backs it. B08 and B09 ask about index-versus-sensor and about what the
+#     geometry is FOR, both of which the lesson states outright.
+
+lesson: "L09"
+title: "Intersections & Dead Ends — Teaching Your Robot to Decide"
+bank_version: "1.0.0"
+source:
+  lesson_09: "v05.27.0"
+  lesson_08: "v04.31.0"
+  lesson_06: "v04.32.1"
+
+sets:
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone — no robot, no compiler."
+    suggested_draw: 10
+    questions:
+
+      - id: L09_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "Lesson 8 had the robot constantly asking \"How much should I adjust?\". §1 says that at an intersection the question changes. To what?"
+        options:
+          - text: "\"Which action should I take?\" — a discrete choice between distinct options"
+            correct: true
+          - text: "\"How fast should I be going?\" — a speed calculation"
+            correct: false
+            why: "Speed is not what changes. §1's point is that the robot moves from a smooth continuous calculation to picking one action out of several."
+          - text: "\"Where am I on the course?\" — a position estimate"
+            correct: false
+            why: "The robot never knows where it is on the course. It only knows what the marker under it says."
+          - text: "\"Is my battery still good?\" — a health check"
+            correct: false
+            why: "The battery guard runs while STOPPED, and it is Lesson 4 machinery, not this lesson's shift."
+
+      - id: L09_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Why does a green marker read in the middle of the calibrated scale rather than at either end?"
+        options:
+          - text: "Green absorbs some of the infrared and reflects the rest"
+            correct: true
+          - text: "Green reflects infrared exactly as well as white, but the sensor is slower to respond to it"
+            correct: false
+            why: "If it reflected like white it would read like white. The mid-band reading comes from partial absorption."
+          - text: "The sensors have a separate colour channel that detects green directly"
+            correct: false
+            why: "The line sensors measure reflectance only. They cannot see colour — green is inferred from where the number lands."
+          - text: "Green tape is thicker than black tape, so the sensor sits further from the floor"
+            correct: false
+            why: "Thickness is not the mechanism. The reading is about how much IR comes back."
+
+      - id: L09_B03
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "On the calibrated 0–1000 scale, roughly where does the white course floor read?"
+        options:
+          - text: "Low — under about 200"
+            correct: true
+          - text: "High — over about 800"
+            correct: false
+            why: "That is black. White reflects the most infrared, so it produces the lowest calibrated number."
+          - text: "In the middle, about 300–700"
+            correct: false
+            why: "That is the green band. Putting white there would make every plain floor look like a marker."
+          - text: "It depends on the tape colour, so no range can be given"
+            correct: false
+            why: "The tape colour sets the top of the scale. Calibration is what pins white near 0."
+
+      - id: L09_B04
+        type: multiple_choice
+        cite: "§3.2, §3.3"
+        points: 1
+        stem: "The green markers are read by sensors 1 and 5. Which array boxes do those two sensors report into?"
+        options:
+          - text: "sensorValues[0] and sensorValues[4]"
+            correct: true
+          - text: "sensorValues[1] and sensorValues[5]"
+            correct: false
+            why: "This is the number-one bug in the book, and §3.3 names it as such: the index counts from zero, it does not name the sensor. There is no box [5]."
+          - text: "sensorValues[1] and sensorValues[3]"
+            correct: false
+            why: "Those two ride just off the line's shoulders. Sabotage Mystery 5 is built on exactly this mistake."
+          - text: "sensorValues[2] alone — the centre box holds the marker reading"
+            correct: false
+            why: "The centre sensor watches the line. Markers sit out at the edges."
+
+      - id: L09_B05
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Green is detected on BOTH sides at once. What is the course asking for?"
+        options:
+          - text: "A dead end — execute a 180° turnaround"
+            correct: true
+          - text: "A cross intersection — drive straight through"
+            correct: false
+            why: "A cross with no green is the drive-straight case. Green on both sides is a marked instruction, not an unmarked crossing."
+          - text: "A choice — pick left or right at random"
+            correct: false
+            why: "Nothing in this lesson picks at random. Both sides green has one defined meaning."
+          - text: "A calibration error — stop and recalibrate"
+            correct: false
+            why: "It is a legal course feature with its own IntersectionType."
+
+      - id: L09_B06
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Neither outer sensor sees green. What does the robot do?"
+        options:
+          - text: "Nothing new — it keeps following the line"
+            correct: true
+          - text: "Stops and waits for a button press"
+            correct: false
+            why: "Stopping on plain line would end the run at the first metre of tape."
+          - text: "Turns 180° to look for a marker it might have missed"
+            correct: false
+            why: "That is the maze-solver behaviour of Challenge 6, and only when the line has vanished."
+          - text: "Slows down until a marker appears"
+            correct: false
+            why: "There is no slow-down behaviour in the base build. NO_INTERSECTION means carry on unchanged."
+
+      - id: L09_B07
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The robot reaches a cross (+) intersection with no green marker anywhere. What does the base build do?"
+        options:
+          - text: "Drives straight through it by default"
+            correct: true
+          - text: "Turns right, following the right-hand rule"
+            correct: false
+            why: "The right-hand rule is Challenge 6, not the base build. §3.3's INSIGHT is explicit that the base build correctly drives straight through an unmarked crossing."
+          - text: "Reads it as a dead end, because all five sensors see black"
+            correct: false
+            why: "A dead end is signalled by green on both sides. All-black is geometry, and the base build takes no decision from geometry."
+          - text: "Stops and announces UNKNOWN on the display"
+            correct: false
+            why: "There is no unknown state. Without green, checkForIntersection() returns NO_INTERSECTION."
+
+      - id: L09_B08
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "§3.3 states one rule about the sensor array in italics, calling it the number-one bug in the book. What is the rule?"
+        options:
+          - text: "The index counts from zero; it does not name the sensor"
+            correct: true
+          - text: "The sensors are numbered right to left, not left to right"
+            correct: false
+            why: "They are numbered 1–5 from left to right. The trap is the array index, not the direction."
+          - text: "Only the outer sensors are calibrated"
+            correct: false
+            why: "Calibration covers the whole array."
+          - text: "The array holds six values, one per sensor plus a checksum"
+            correct: false
+            why: "Five sensors, five boxes, numbered [0] to [4]."
+
+      - id: L09_B09
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "§3.3 shows what the black geometry of each junction looks like to the sensors, then warns you what that table is NOT for. What is the division of labour it states?"
+        options:
+          - text: "The geometry says an intersection exists; the green marker says what to do about it"
+            correct: true
+          - text: "The geometry decides the turn; the green marker only confirms it"
+            correct: false
+            why: "Backwards. The base build takes no decision from the black pattern at all — every decision comes from green."
+          - text: "The geometry is used at T-junctions and the marker at dead ends"
+            correct: false
+            why: "There is no split by junction type. Green drives every decision in the base build."
+          - text: "Both are read together and averaged into a confidence score"
+            correct: false
+            why: "Nothing in this lesson averages or scores. checkForIntersection() asks two sensors two yes-or-no questions."
+
+      - id: L09_B10
+        type: multiple_choice
+        cite: "§3.4, Glossary"
+        points: 1
+        stem: "What is a state machine?"
+        options:
+          - text: "A pattern where a system is in exactly ONE state at a time, with defined rules for moving between them"
+            correct: true
+          - text: "A pattern that lets a program run several behaviours at once and blend the results"
+            correct: false
+            why: "The opposite. §3.4's traffic-light analogy is the point — never two at once."
+          - text: "A loop that repeats the same block until a condition changes"
+            correct: false
+            why: "That is a while loop. A state machine is about which behaviour is active, not about repetition."
+          - text: "A list of every function in the program, in call order"
+            correct: false
+            why: "That is a call graph. A state machine names behaviours and the transitions between them."
+
+      - id: L09_B11
+        type: multiple_choice
+        cite: "§3.4, Quick Reference"
+        points: 1
+        stem: "The robot has seen a marker, announced it, and is now physically turning. Which state is it in?"
+        options:
+          - text: "EXECUTING_TURN"
+            correct: true
+          - text: "AT_INTERSECTION"
+            correct: false
+            why: "AT_INTERSECTION is over by then — it announces and pauses, then hands off."
+          - text: "FOLLOWING_LINE"
+            correct: false
+            why: "FOLLOWING_LINE is where the marker was seen. The turn happens after the robot has left that state."
+          - text: "TURNING_LEFT or TURNING_RIGHT, depending on the marker"
+            correct: false
+            why: "There are exactly four states and neither of those is one of them. The direction lives in pendingTurn, not in the state."
+
+      - id: L09_B12
+        type: multiple_choice
+        cite: "§3.4, Quick Reference"
+        points: 1
+        stem: "What runs in the AT_INTERSECTION state?"
+        options:
+          - text: "showDecision(), a beep, and a 600 ms pause long enough for a human to read it"
+            correct: true
+          - text: "The calibrated read of the outer sensors that works out which kind of intersection this is"
+            correct: false
+            why: "That already happened. checkForIntersection() runs in FOLLOWING_LINE, and pendingTurn is set before the state ever changes."
+          - text: "Stopping the motors, then identifying the intersection type"
+            correct: false
+            why: "The motors were stopped at the moment of detection, inside FOLLOWING_LINE. The Quick Reference states the rule: stopping is never deferred to a later state."
+          - text: "The turn itself, dispatched to turnLeft(), turnRight() or turnAround()"
+            correct: false
+            why: "That is EXECUTING_TURN. AT_INTERSECTION drives nothing at all."
+
+      - id: L09_B13
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "§3.4's TIP says the robot ignores new intersection readings while in EXECUTING_TURN. Which problem does that prevent?"
+        options:
+          - text: "Double detection — starting a second turn because the sensor sees the same marker again"
+            correct: true
+          - text: "Battery drain, by skipping sensor reads while the motors are loaded"
+            correct: false
+            why: "The saving is not the point, and reads are cheap. The point is not acting twice on one marker."
+          - text: "Overshoot, by giving the encoders a clear run"
+            correct: false
+            why: "Overshoot is a physics problem handled by the encoder turn and WHEEL_BASE_MM, not by ignoring readings."
+          - text: "Losing the line, by not steering during the turn"
+            correct: false
+            why: "The robot is deliberately not line-following mid-turn, but that is a consequence of the state, not the problem the TIP names."
+
+      - id: L09_B14
+        type: multiple_choice
+        cite: "§3.5, Glossary"
+        points: 1
+        stem: "What is an enum?"
+        options:
+          - text: "A data type that defines a set of named constants"
+            correct: true
+          - text: "A variable that can hold several values at the same time"
+            correct: false
+            why: "It holds one value, and that is the point — a RobotState variable holds exactly one of the four names."
+          - text: "A function that converts numbers into text for the display"
+            correct: false
+            why: "No conversion happens. The names ARE the values as far as your code is concerned."
+          - text: "A list of sensor readings collected over time"
+            correct: false
+            why: "That is an array. An enum names constants, not readings."
+
+      - id: L09_B15
+        type: multiple_choice
+        cite: "§3.5, §5.2"
+        points: 1
+        stem: "Which enum names the four things a green marker can say?"
+        options:
+          - text: "IntersectionType — NO_INTERSECTION, GO_LEFT, GO_RIGHT, DEAD_END"
+            correct: true
+          - text: "RobotState — STOPPED, FOLLOWING_LINE, AT_INTERSECTION, EXECUTING_TURN"
+            correct: false
+            why: "RobotState names what the robot is DOING. IntersectionType names what the course ASKED for. Keeping those separate is why there are two enums and not one."
+          - text: "MarkerColour — WHITE, GREEN, BLACK, UNKNOWN"
+            correct: false
+            why: "No such enum exists. Colour is decided by isGreen() against the band, not by a named type."
+          - text: "TurnDirection — LEFT, RIGHT, AROUND, NONE"
+            correct: false
+            why: "The turn functions are plain functions. There is no TurnDirection enum in this lesson."
+
+      - id: L09_B16
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "Of the three turn strategies §3.6 lists, which one does this lesson actually use?"
+        options:
+          - text: "The encoder turn — spin until the encoders measure the target angle"
+            correct: true
+          - text: "The timed turn — spin for a fixed number of milliseconds"
+            correct: false
+            why: "§3.6 calls that the naive baseline and refuses it: it depends on battery level and surface."
+          - text: "The line-seeking turn — turn most of the way, then creep until the centre sensor finds the line"
+            correct: false
+            why: "That is the competition upgrade and it is Challenge 3, not the base build."
+          - text: "A gyro turn, reading heading directly"
+            correct: false
+            why: "The gyro arrives in Lesson 12. Lesson 9 turns on the encoders you already own."
+
+      - id: L09_B17
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "Where did turnDegrees() come from?"
+        options:
+          - text: "You built it in Lesson 6, and it has been living in RobotMotion.cpp ever since"
+            correct: true
+          - text: "It ships with the Pololu Zumo32U4 library"
+            correct: false
+            why: "The library gives you encoders and motors. turnDegrees() is your own code from Lesson 6."
+          - text: "You write it from scratch in this lesson's Step 5"
+            correct: false
+            why: "Step 5 is three one-line wrappers around it. §3.6 calls it the Lesson 6 dividend for that reason."
+          - text: "It arrives with the state machine in Lesson 9"
+            correct: false
+            why: "Nothing about turning is new here. That is the whole point of the step taking ninety seconds."
+
+      - id: L09_B18
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "§3.6 refuses the timed turn as a way to turn 90° at an intersection. On what grounds?"
+        options:
+          - text: "It is battery-dependent and surface-dependent — the same command produces a different angle as conditions change"
+            correct: true
+          - text: "It uses too much program memory"
+            correct: false
+            why: "A delay is cheaper than encoder maths. The objection is accuracy, not size."
+          - text: "The Zumo library does not allow delay() inside a switch statement"
+            correct: false
+            why: "There is no such restriction — AT_INTERSECTION itself uses delay(600)."
+          - text: "It cannot turn more than 90° at a time"
+            correct: false
+            why: "A timed turn can spin as far as you like. The problem is that you cannot trust how far it went."
+
+      - id: L09_B19
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "The NOTE in §3.6 points out that turnDegrees() deliberately does NOT use TRIM. Why not?"
+        options:
+          - text: "In a pivot the wheels oppose each other on purpose, so there is no straight line to correct"
+            correct: true
+          - text: "TRIM only works when the battery is fresh"
+            correct: false
+            why: "TRIM has nothing to do with battery level — that is the timed turn's problem."
+          - text: "TRIM is a Lesson 3 constant that was deleted when the project became modular"
+            correct: false
+            why: "TRIM is alive and well in RobotConfig.h, and handleGap() still uses it. It is just wrong for a pivot."
+          - text: "Because the encoders already correct for it automatically"
+            correct: false
+            why: "The encoders govern the ANGLE. They are not compensating for a trim error, because in a pivot there is no straightness to preserve."
+
+      - id: L09_B20
+        type: multiple_choice
+        cite: "§3.6, Glossary"
+        points: 1
+        stem: "What is a tank turn?"
+        options:
+          - text: "Opposite wheels spin in opposite directions, rotating the robot in place"
+            correct: true
+          - text: "One wheel stops and the other drives, swinging the robot around the stopped wheel"
+            correct: false
+            why: "That is a pivot about one wheel, and it needs floor space. A tank turn has zero turn radius."
+          - text: "Both wheels drive forward at different speeds to sweep a curve"
+            correct: false
+            why: "That is what P-control does while line following — a curve, not a turn in place."
+          - text: "The robot reverses, then drives forward at an angle"
+            correct: false
+            why: "No three-point turns here. The Zumo rotates in place."
+
+      - id: L09_B21
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "§4.1 warns that not all greens are created equal. Which kind of green tape does it recommend?"
+        options:
+          - text: "Bright safety green or lime green"
+            correct: true
+          - text: "Dark forest green, because it contrasts with the white floor"
+            correct: false
+            why: "§4.1 warns against exactly this: dark greens may read too close to black, and then a marker looks like a line."
+          - text: "Any green — calibration removes the difference"
+            correct: false
+            why: "Calibration sets white and black. It cannot move green away from an end it is already sitting on."
+          - text: "Glossy green, so it reflects more infrared"
+            correct: false
+            why: "The lesson specifies matte for the course surface and says nothing about gloss for markers. Brightness of the green is what it names."
+
+      - id: L09_B22
+        type: multiple_choice
+        cite: "§5.2, Quick Reference"
+        points: 1
+        stem: "What values do GREEN_LOW_THRESHOLD and GREEN_HIGH_THRESHOLD ship with in RobotConfig.h?"
+        options:
+          - text: "300 and 700 — starting guesses you replace with your own surveyed numbers"
+            correct: true
+          - text: "300 and 700 — measured values that should not be changed"
+            correct: false
+            why: "The numbers are right but the status is wrong. Both §5.2 and §7.1 are explicit that you measure yours and tune them."
+          - text: "0 and 1000 — the full calibrated range"
+            correct: false
+            why: "That band would call everything green, including plain floor and the line itself."
+          - text: "There are no defaults; you must survey before the code will compile"
+            correct: false
+            why: "They ship with values so the program builds and runs. Surveying is Step 9, after the code works."
+
+      - id: L09_B23
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "§5.2 makes a point of what is deliberately NOT added to RobotConfig.h in this lesson. What is it?"
+        options:
+          - text: "A turn speed and any turn durations — TURN_SPEED has been there since Lesson 7, and timing is the encoders' job"
+            correct: true
+          - text: "The green thresholds, which live in RobotSensors.cpp instead"
+            correct: false
+            why: "The thresholds are exactly what Step 2 adds to RobotConfig.h."
+          - text: "The two enums, which belong in main.cpp"
+            correct: false
+            why: "Both enums go in RobotConfig.h. That is why RobotSensors.h has to include it."
+          - text: "BASE_SPEED, which is replaced by TURN_SPEED"
+            correct: false
+            why: "BASE_SPEED survives untouched — followLine() still uses it."
+
+      - id: L09_B24
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "Which module owns isGreen() and checkForIntersection()?"
+        options:
+          - text: "RobotSensors"
+            correct: true
+          - text: "RobotMotion"
+            correct: false
+            why: "RobotMotion owns the three turn wrappers. Reading sensors is RobotSensors' job — the same boundary Lesson 7 drew."
+          - text: "main.cpp"
+            correct: false
+            why: "main.cpp gets showDecision() and the state machine. It asks the sensors module a question; it does not do the reading."
+          - text: "RobotHelpers"
+            correct: false
+            why: "RobotHelpers rides along untouched this lesson."
+
+      - id: L09_B25
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "Where does showDecision() live?"
+        options:
+          - text: "main.cpp"
+            correct: true
+          - text: "RobotSensors.cpp, next to checkForIntersection()"
+            correct: false
+            why: "It announces a decision on the display; it reads nothing."
+          - text: "RobotHelpers.cpp, with the other display helpers"
+            correct: false
+            why: "RobotHelpers is one of the two files this lesson does not touch."
+          - text: "RobotMotion.cpp, because it runs just before the turn"
+            correct: false
+            why: "Running near a turn does not make it motion code. It sits with showStatus() in main.cpp."
+
+      - id: L09_B26
+        type: multiple_choice
+        cite: "§5.4, Quick Reference"
+        points: 1
+        stem: "The outer sensors report a marker. According to §5.4's pseudocode, what happens FIRST?"
+        options:
+          - text: "The motors are stopped, right there at the moment of detection"
+            correct: true
+          - text: "The state changes to AT_INTERSECTION, which then stops the motors"
+            correct: false
+            why: "The Quick Reference states the rule outright: stopping happens at the moment of detection and is never deferred to a later state. Everything between detection and a later stop is distance the robot travels blind."
+          - text: "The decision is announced on the display, then the motors stop"
+            correct: false
+            why: "Announcing is AT_INTERSECTION's job, and it happens after the robot is already stationary."
+          - text: "The turn begins immediately, and the announcement catches up"
+            correct: false
+            why: "Nothing turns until EXECUTING_TURN, two transitions later."
+
+      - id: L09_B27
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "In the FOLLOWING_LINE case, §5.4's pseudocode tests button B before anything else. What does that ordering buy?"
+        options:
+          - text: "The kill switch outranks everything — B stops the robot no matter what else that pass would have done"
+            correct: true
+          - text: "It saves a sensor read on passes where B was pressed"
+            correct: false
+            why: "A saved read is not why safety code goes first, and the lesson never argues efficiency here."
+          - text: "It lets B act as the go button while the robot is already running"
+            correct: false
+            why: "B means go in STOPPED and stop in FOLLOWING_LINE. Same button, two meanings — one per state."
+          - text: "It debounces the button before the sensors are read"
+            correct: false
+            why: "getSingleDebouncedPress() debounces itself wherever it is called."
+
+      - id: L09_B28
+        type: multiple_choice
+        cite: "§5.4, Quick Reference"
+        points: 1
+        stem: "The line has vanished and handleGap() eventually gives up. Where does the robot end up?"
+        options:
+          - text: "In STOPPED, showing LINE LOST — a human decides what happens next"
+            correct: true
+          - text: "In AT_INTERSECTION, treating the missing line as a dead end"
+            correct: false
+            why: "That is Challenge 6's maze-solver policy. §8's NOTE calls the base build's policy honest: it stops and asks for a human."
+          - text: "In EXECUTING_TURN, turning around automatically"
+            correct: false
+            why: "Same confusion — turning around on a lost line is the challenge, not the base build."
+          - text: "It stays in FOLLOWING_LINE and keeps driving straight until the line returns"
+            correct: false
+            why: "Driving on blind is exactly what the timeout exists to prevent."
+
+      - id: L09_B29
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "§5.4's TIP explains why checkForIntersection() reads each outer sensor individually instead of using readLinePosition(). Why?"
+        options:
+          - text: "At a T-junction readLinePosition() can jump unexpectedly, so a position number is not a trustworthy way to ask about one edge sensor"
+            correct: true
+          - text: "readLinePosition() is uncalibrated, so its numbers mean nothing"
+            correct: false
+            why: "readLine() is a calibrated read plus a weighted average. Calibration is not the objection — the position jumping at junctions is."
+          - text: "readLinePosition() only reads the middle three sensors"
+            correct: false
+            why: "It weighs the whole array. The problem is what the single blended number does at a junction."
+          - text: "Calling it twice in one pass would slow the loop too much"
+            correct: false
+            why: "The lesson never argues loop time here."
+
+      - id: L09_B30
+        type: multiple_choice
+        cite: "§5.4, Glossary"
+        points: 1
+        stem: "What is debouncing, as this lesson uses the word?"
+        options:
+          - text: "Requiring several consistent readings in a row before believing a detection"
+            correct: true
+          - text: "Smoothing a sensor value by averaging it with the previous one"
+            correct: false
+            why: "Averaging blends values. Debouncing counts agreements and only then acts."
+          - text: "Ignoring the sensors entirely for a fixed time after a detection"
+            correct: false
+            why: "That is closer to what the EXECUTING_TURN state does by being a different state. Debouncing is about confirming, not about blanking."
+          - text: "Physically damping the button so one press is not read as several"
+            correct: false
+            why: "The word comes from buttons, but here it is applied to sensor readings, and it is done in software."
+
+      - id: L09_B31
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The robot keeps stopping and announcing decisions over plain white floor. §8 names the likely cause. What is it?"
+        options:
+          - text: "GREEN_LOW_THRESHOLD is set too low, so white readings fall inside the green band"
+            correct: true
+          - text: "GREEN_HIGH_THRESHOLD is set too low, so the band is too narrow"
+            correct: false
+            why: "A narrow band causes missed markers, not false ones. False stops on white mean the band's floor has dropped onto white."
+          - text: "The line sensors were never initialised"
+            correct: false
+            why: "Then nothing would work at all, including line following."
+          - text: "The robot is reading sensors [1] and [3] instead of [0] and [4]"
+            correct: false
+            why: "That is Sabotage Mystery 5, and its symptom is the opposite: markers sailed past unnoticed."
+
+      - id: L09_B32
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Every turn the robot makes is off by the same few degrees, in the same direction, every time. What does the lesson say to reach for?"
+        options:
+          - text: "WHEEL_BASE_MM — Lesson 7's one-number tune-up"
+            correct: true
+          - text: "The green thresholds, which must be drifting"
+            correct: false
+            why: "Thresholds decide WHETHER to turn, never how far. A consistent angle error is geometry."
+          - text: "Kp, which is over-steering into the turn"
+            correct: false
+            why: "Kp governs line following. The turn itself is open to the encoders, and P-control is not running during it."
+          - text: "Replace the timed turn with an encoder turn"
+            correct: false
+            why: "The base build already turns on encoders. There is no timed turn left to replace."
+
+      - id: L09_B33
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The robot handles a marker correctly, then immediately detects the SAME marker again. §8 gives the cause and the fix. What are they?"
+        options:
+          - text: "After the turn an outer sensor is still over the marker — advance past it before turning (Challenge 4)"
+            correct: true
+          - text: "Sensor noise produced a second false reading — add debouncing (Challenge 5)"
+            correct: false
+            why: "Debouncing fixes brief false readings on curves. This symptom is a real marker genuinely still under a real sensor."
+          - text: "The turn undershot, so the robot never left the junction — add line-seeking turns (Challenge 3)"
+            correct: false
+            why: "Line-seeking fixes not finding the line after a turn. Re-detection is about where the marker is, not where the line is."
+          - text: "The state machine is missing a break, so the case runs twice"
+            correct: false
+            why: "That is Sabotage Mystery 1, and its symptom is a crawling robot beeping at nothing, not one clean turn repeated."
+
+      - id: L09_B34
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "§8A.1 explains what an enum constant actually is under the hood. What does the compiler do with it?"
+        options:
+          - text: "Assigns each name an integer, starting at 0 — so you get readability and integer-speed comparisons together"
+            correct: true
+          - text: "Stores each name as a string and compares text at run time"
+            correct: false
+            why: "That would cost real time. §8A.1's point is that the readability is free."
+          - text: "Replaces the whole enum with a lookup table in SRAM"
+            correct: false
+            why: "No table exists. The names become plain integers at compile time."
+          - text: "Treats each name as a separate boolean flag"
+            correct: false
+            why: "Flags could be true at once. An enum variable holds exactly one value — which is the property a state machine needs."
+
+      - id: L09_B35
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "§8A.2 lists the three ingredients of a finite state machine. Which set is it?"
+        options:
+          - text: "A set of states, the current state, and transition rules"
+            correct: true
+          - text: "A set of states, a timer, and a priority order"
+            correct: false
+            why: "Neither a timer nor priorities are ingredients. AT_INTERSECTION happens to use a delay, but that is its job, not the pattern."
+          - text: "Sensors, actuators, and a control loop"
+            correct: false
+            why: "That describes the robot, not the pattern. An FSM is about which behaviour is active."
+          - text: "A switch statement, a break, and an enum"
+            correct: false
+            why: "Those are how you implement one on a microcontroller. §8A.2 separates the pattern from the C++ that expresses it."
+
+      - id: L09_B36
+        type: multiple_choice
+        cite: "Quick Reference"
+        points: 1
+        stem: "In turnDegrees(), which sign turns which way?"
+        options:
+          - text: "Positive is right (clockwise); negative is left (counterclockwise)"
+            correct: true
+          - text: "Positive is left; negative is right"
+            correct: false
+            why: "Backwards, and it is the exact inversion Sabotage Mystery 2 plants. turnLeft() is turnDegrees(-90)."
+          - text: "The sign sets the speed, not the direction"
+            correct: false
+            why: "Speed comes from TURN_SPEED. The argument to turnDegrees() is an angle, and its sign is the direction."
+          - text: "Sign is ignored; the robot always turns the shortest way"
+            correct: false
+            why: "Nothing computes a shortest way. The number you pass is the turn you get."
+
+      - id: L09_B37
+        type: true_false
+        cite: "§5.2, §5.3"
+        points: 1
+        stem: "GREEN_LOW_THRESHOLD and GREEN_HIGH_THRESHOLD are compared against RAW sensor readings."
+        correct: false
+        why: "They sit on the calibrated 0–1000 scale, and checkForIntersection() uses readCalibrated() for exactly that reason. Raw readings sit in the hundreds even on plain white, so a 300–700 band would mean nothing."
+
+      - id: L09_B38
+        type: true_false
+        cite: "§3.6, §8A.3"
+        points: 1
+        stem: "The dead-end U-turn is performed by turnAround(), which is a one-line wrapper calling turnDegrees(180)."
+        correct: true
+        why: "All three turn functions are one-liners on Lesson 6's encoder turn. A 180 is just a bigger number."
+
+      - id: L09_B39
+        type: true_false
+        cite: "§5.2, Quick Reference"
+        points: 1
+        stem: "TURN_SPEED is one of the new constants you add to RobotConfig.h in this lesson."
+        correct: false
+        why: "It has lived in RobotConfig.h since Lesson 7. The Quick Reference flags it explicitly: do not re-declare it."
+
+      - id: L09_B40
+        type: true_false
+        cite: "§4"
+        points: 1
+        stem: "Lesson 9 needs a hardware change on the robot before the intersection code will work."
+        correct: false
+        why: "No new hardware — same Zumo, same line sensors as Lesson 8. What is new is green tape on the course."
+
+      - id: L09_B41
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "While executing a turn, the robot is in both the EXECUTING_TURN and FOLLOWING_LINE states at once, because it is still tracking the line."
+        correct: false
+        why: "One state at a time is the defining property — §3.4's traffic light is never two colours at once. And it is not tracking the line during a turn; that is why Challenge 3 exists."
+
+      - id: L09_B42
+        type: true_false
+        cite: "§8A.1"
+        points: 1
+        stem: "Using an enum instead of plain integers makes the program measurably slower at run time."
+        correct: false
+        why: "§8A.1 is explicit that there is no trade-off: the compiler assigns integers, so you get the readability and the speed of integer comparisons."
+
+      - id: L09_B43
+        type: true_false
+        cite: "Quick Reference"
+        points: 1
+        stem: "A do…while loop always runs its body at least once, before the condition is ever tested."
+        correct: true
+        why: "That is the whole reason Challenge 3 uses one: the test asks about a sensor value that nothing has fetched yet when the loop is entered."
+
+      - id: L09_B44
+        type: true_false
+        cite: "Quick Reference"
+        points: 1
+        stem: "A do…while loop needs a semicolon after its closing condition, unlike a plain while loop."
+        correct: true
+        why: "The Quick Reference names leaving it off as the usual compile error."
+
+      - id: L09_B45
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "The line-seeking turn is the method the base build of this lesson uses."
+        correct: false
+        why: "The base build uses the encoder turn. Line-seeking is the competition upgrade and it is Challenge 3."
+
+      - id: L09_B46
+        type: true_false
+        cite: "§3.3"
+        points: 1
+        stem: "A row in which all five sensors read low — no line anywhere — is the signature handleGap() has been dealing with since Lesson 8."
+        correct: true
+        why: "§3.3's INSIGHT names two rows that matter later: the all-black one, which Challenge 6 turns into the right-hand rule, and the all-white one, which is the gap."
+
+      - id: L09_B47
+        type: matching
+        cite: "§3.4, Quick Reference"
+        points: 4
+        stem: "Match each state to what actually runs in it."
+        pairs:
+          - left: "STOPPED"
+            right: "Battery guard and Kp tuning on A / C, waiting for B"
+          - left: "FOLLOWING_LINE"
+            right: "followLine(), gap handling, and the marker check that stops the motors"
+          - left: "AT_INTERSECTION"
+            right: "showDecision(), a beep, and a 600 ms readable pause"
+          - left: "EXECUTING_TURN"
+            right: "Dispatch to turnLeft() / turnRight() / turnAround()"
+        extra_answers:
+          - "The calibration spin that defines the 0–1000 scale"
+          - "Working out which kind of intersection the marker is announcing"
+
+      - id: L09_B48
+        type: matching
+        cite: "§3.2"
+        points: 3
+        stem: "Match what the outer sensors see to the IntersectionType checkForIntersection() returns."
+        pairs:
+          - left: "Green under the left outer sensor only"
+            right: "GO_LEFT"
+          - left: "Green under the right outer sensor only"
+            right: "GO_RIGHT"
+          - left: "Green under both outer sensors"
+            right: "DEAD_END"
+          - left: "Green under neither outer sensor"
+            right: "NO_INTERSECTION"
+        extra_answers:
+          - "GO_STRAIGHT"
+          - "UNKNOWN_MARKER"
+
+      - id: L09_B49
+        type: matching
+        cite: "§5.3"
+        points: 3
+        stem: "Match each new function to the file that owns it."
+        pairs:
+          - left: "checkForIntersection()"
+            right: "RobotSensors"
+          - left: "turnLeft() / turnRight() / turnAround()"
+            right: "RobotMotion"
+          - left: "showDecision()"
+            right: "main.cpp"
+          - left: "turnDegrees()"
+            right: "RobotMotion — and it was already there, from Lesson 6"
+        extra_answers:
+          - "RobotHelpers"
+          - "RobotConfig.h"
+
+      - id: L09_B50
+        type: matching
+        cite: "Glossary"
+        points: 3
+        stem: "Match each term to its definition."
+        pairs:
+          - left: "Threshold"
+            right: "A boundary value used to categorise sensor readings"
+          - left: "Dead End"
+            right: "An intersection marked with green on both sides, signalling a 180° turn"
+          - left: "Right-Hand Rule"
+            right: "A maze-solving algorithm: prefer right, then straight, then left, then back"
+          - left: "Tank Turn"
+            right: "Opposite wheels spinning opposite ways, rotating the robot in place"
+        extra_answers:
+          - "A point where the line branches, crosses, or ends"
+          - "A technique requiring several consistent readings before confirming a detection"
+
+  after:
+    description: "Post-build check. Assumes you have built Lesson 9 and run it on a course."
+    suggested_draw: 8
+    questions:
+
+      - id: L09_A01
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "After copying your Lesson 8 project, the Step 1 checkpoint tells you to build once before touching anything. Why?"
+        options:
+          - text: "So you start from green — the first red you see is then one you caused"
+            correct: true
+          - text: "Because copying a folder can corrupt the source files"
+            correct: false
+            why: "Copying is safe. The point is establishing that the baseline was working before you edit it."
+          - text: "Because PlatformIO will not let you edit a project that has never been built"
+            correct: false
+            why: "No such restriction exists."
+          - text: "To regenerate the eight files, which the copy leaves incomplete"
+            correct: false
+            why: "All eight files copy across intact — four headers in include/, four .cpp in src/."
+
+      - id: L09_A02
+        type: multiple_choice
+        cite: "§6 Step 3, §6 Step 4"
+        points: 1
+        stem: "Step 3 adds #include \"RobotConfig.h\" to RobotSensors.h. If you skip it, when does the build actually go red?"
+        options:
+          - text: "Not at Step 3 — main.cpp already included RobotConfig.h first, so the failure waits until Step 4"
+            correct: true
+          - text: "Immediately at Step 3, because the header names a type it has never seen"
+            correct: false
+            why: "This is the trap the NOTE warns about. Step 3's build stays green because main.cpp bailed you out — a green build there proves less than you would think."
+          - text: "Never — the include is a style preference"
+            correct: false
+            why: "A header that uses a type must include the file that defines it. Every header stands on its own."
+          - text: "Only when you upload, as a run-time error"
+            correct: false
+            why: "Types are resolved at compile time. Nothing about this reaches the robot."
+
+      - id: L09_A03
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "The red build in Step 4 says: error: 'IntersectionType' does not name a type. Which file does the compiler point into?"
+        options:
+          - text: "RobotSensors.h — the header, not the new .cpp code you just wrote"
+            correct: true
+          - text: "RobotSensors.cpp, on the line defining checkForIntersection()"
+            correct: false
+            why: "Read it like a detective: the compiler is complaining about the header, from inside whichever file included it without RobotConfig.h in front."
+          - text: "RobotConfig.h, where the enum is declared"
+            correct: false
+            why: "RobotConfig.h is fine — it defines the type. The complaint comes from a file that used the name without having seen it."
+          - text: "main.cpp, which includes everything"
+            correct: false
+            why: "main.cpp includes RobotConfig.h first, so from main.cpp's point of view the name resolves."
+
+      - id: L09_A04
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "In checkForIntersection(), why must the both-green test come before the left-only and right-only tests?"
+        options:
+          - text: "Both sides green also satisfies \"left is green\", so testing left first would return GO_LEFT and the dead end would never be handled"
+            correct: true
+          - text: "Because DEAD_END is listed first in the enum"
+            correct: false
+            why: "Enum order sets integer values, not evaluation order. The reason is that the tests overlap."
+          - text: "Because reading the left sensor first would leave the right one stale"
+            correct: false
+            why: "Both values come from one readCalibrated() call before any test runs."
+          - text: "It does not matter — the three tests are mutually exclusive"
+            correct: false
+            why: "They are not exclusive, and that is the whole point: the both-green case satisfies each single-side test too."
+
+      - id: L09_A05
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "Step 5 adds three turn functions. How much code is in each body?"
+        options:
+          - text: "One line — a call to turnDegrees() with the right argument"
+            correct: true
+          - text: "A loop that watches the encoders until the angle is reached"
+            correct: false
+            why: "That loop already exists inside turnDegrees(), written in Lesson 6. Re-writing it here would be the opposite of modular."
+          - text: "A setSpeeds pair followed by a delay tuned for 90°"
+            correct: false
+            why: "That is the timed turn this lesson refuses."
+          - text: "Around fifteen lines each, including the encoder maths"
+            correct: false
+            why: "The step is described as taking about ninety seconds for a reason."
+
+      - id: L09_A06
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Step 6 retires Lesson 8's bool isRunning. What takes its place?"
+        options:
+          - text: "RobotState currentState, plus IntersectionType pendingTurn to hold the decision"
+            correct: true
+          - text: "Two bools — one for running and one for turning"
+            correct: false
+            why: "Stretching bools across four behaviours is exactly the spaghetti the step exists to avoid."
+          - text: "An int state variable holding 0 to 3"
+            correct: false
+            why: "That is the magic-number version §3.5 and §8A.1 argue against. state = 0 tells you nothing."
+          - text: "Nothing — isRunning survives alongside the state machine"
+            correct: false
+            why: "It is deleted. The state machine absorbed it, including the line in handleGap() that used to clear it."
+
+      - id: L09_A07
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "At the end of Step 6 you upload, press B, and the status says RUNNING — but the robot sits perfectly still. What is going on?"
+        options:
+          - text: "That is correct: FOLLOWING_LINE contains only the kill switch so far, and the driving code arrives in Step 7"
+            correct: true
+          - text: "The motors failed to initialise, so setup() needs re-running"
+            correct: false
+            why: "Nothing is wrong. The step deliberately builds the STOPPED state and the kill switch before any code that moves the robot."
+          - text: "The line sensors are uncalibrated, so followLine() has nothing to steer by"
+            correct: false
+            why: "You calibrated before pressing B — and followLine() is not being called at all yet."
+          - text: "The state never actually changed, so the robot is still parked in STOPPED"
+            correct: false
+            why: "It did change: the display would still read STOPPED otherwise, and it reads RUNNING."
+
+      - id: L09_A08
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Step 6 builds the kill switch before it builds any code that drives. What does the WARNING call that ordering?"
+        options:
+          - text: "Deliberate, and permanent policy — teach the robot to stop before teaching it to go"
+            correct: true
+          - text: "A convenience for testing, which can be reordered if you prefer"
+            correct: false
+            why: "The WARNING is explicit that the ordering is deliberate and permanent."
+          - text: "A requirement of the Zumo library, which needs a stop path registered first"
+            correct: false
+            why: "The library imposes nothing here. This is a safety habit the book is teaching."
+          - text: "An artefact of the state machine, which cannot compile without it"
+            correct: false
+            why: "It would compile fine either way. That is exactly why the ordering has to be a choice."
+
+      - id: L09_A09
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "At the end of Step 7 the robot follows the line, reaches a green marker, stops dead — and freezes, still saying RUNNING. Pressing B does nothing. Why not?"
+        options:
+          - text: "The kill switch lives in FOLLOWING_LINE, and the robot has moved into AT_INTERSECTION, which has no case yet"
+            correct: true
+          - text: "The motors are stopped, so the button handler is not reached"
+            correct: false
+            why: "Stopped motors do not disable buttons. The switch simply has no case for the state the robot is in."
+          - text: "B only works before the countdown has finished"
+            correct: false
+            why: "B is the kill switch throughout FOLLOWING_LINE. The problem is which state the robot is in, not when."
+          - text: "The 600 ms delay is blocking the button read"
+            correct: false
+            why: "The delay is in AT_INTERSECTION's case body, which does not exist until Step 8."
+
+      - id: L09_A10
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "What does the AT_INTERSECTION case do once Step 8 adds it?"
+        options:
+          - text: "showDecision(), a short beep, delay(600), then hand off to EXECUTING_TURN"
+            correct: true
+          - text: "Stops the motors, then works out which turn to make, then hands off"
+            correct: false
+            why: "Both already happened in FOLLOWING_LINE. By the time this case runs the robot is stationary and pendingTurn is set."
+          - text: "Executes the turn and returns to FOLLOWING_LINE"
+            correct: false
+            why: "That is EXECUTING_TURN's whole job. Splitting announcement from execution is why there are two states and not one."
+          - text: "Waits for a button press confirming the decision"
+            correct: false
+            why: "No confirmation is asked for. The pause is for a human to read, not to respond."
+
+      - id: L09_A11
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "EXECUTING_TURN dispatches the turn. What must it do before returning to FOLLOWING_LINE?"
+        options:
+          - text: "Clear pendingTurn back to NO_INTERSECTION, set the state, and refresh the status display"
+            correct: true
+          - text: "Nothing — the next detection will overwrite pendingTurn anyway"
+            correct: false
+            why: "Leaving stale state behind is how a machine develops symptoms nobody can trace. The case cleans up after itself."
+          - text: "Re-run checkForIntersection() to confirm the turn worked"
+            correct: false
+            why: "EXECUTING_TURN reads no sensors at all — that is what stops it acting twice on one marker."
+          - text: "Recalibrate the line sensors, since the robot has changed heading"
+            correct: false
+            why: "Calibration is about the surface, not the heading. It happens once, in setup()."
+
+      - id: L09_A12
+        type: multiple_choice
+        cite: "§6 Step 9"
+        points: 1
+        stem: "The Green Survey adds a temporary block to the STOPPED case. What does it show you?"
+        options:
+          - text: "Live calibrated values from the two outer sensors, so you can slide white, green and black underneath and read all six numbers"
+            correct: true
+          - text: "The raw values from all five sensors"
+            correct: false
+            why: "Two sensors, and calibrated — calibration is what defines the scale the survey is measured in."
+          - text: "The current IntersectionType verdict, updating continuously"
+            correct: false
+            why: "That is Challenge 1's debug mode, which prints the verdict to the Serial Monitor."
+          - text: "A running average of the last ten readings"
+            correct: false
+            why: "No averaging. It shows what the sensors report right now."
+
+      - id: L09_A13
+        type: multiple_choice
+        cite: "§6 Step 9, §7.1"
+        points: 1
+        stem: "You have surveyed your green. How should you set GREEN_LOW_THRESHOLD and GREEN_HIGH_THRESHOLD?"
+        options:
+          - text: "Bracket both green readings with roughly 100 of margin on each side, staying clear of white and black"
+            correct: true
+          - text: "Set them to the exact green readings you measured"
+            correct: false
+            why: "With no margin, the smallest variation drops a real marker out of the band."
+          - text: "Leave them at 300 and 700 — the survey is only a sanity check"
+            correct: false
+            why: "The survey exists to replace the guesses. Step 9's own instruction is to set them from what you measured."
+          - text: "Set LOW to your white reading and HIGH to your black reading"
+            correct: false
+            why: "That band covers the entire scale, so everything reads as green — which is close to what Sabotage Mystery 3 plants."
+
+      - id: L09_A14
+        type: multiple_choice
+        cite: "§7.2"
+        points: 1
+        stem: "Test 6 covers 5 cm of the line. What should the robot do?"
+        options:
+          - text: "Drive straight across without stopping — the gap timer never runs out"
+            correct: true
+          - text: "Stop and announce LINE LOST"
+            correct: false
+            why: "That is the long-gap test. A short gap is crossed before MAX_GAP_TIME expires."
+          - text: "Turn around, treating the missing line as a dead end"
+            correct: false
+            why: "Turning around on a lost line is Challenge 6's policy, not the base build's."
+          - text: "Stop, then resume once the line reappears under a sensor"
+            correct: false
+            why: "handleGap() keeps driving forward across the gap. It does not park and wait."
+
+      - id: L09_A15
+        type: multiple_choice
+        cite: "§7.2"
+        points: 1
+        stem: "Test 7 covers 20 cm of the line. What should the robot do, and is it a failure?"
+        options:
+          - text: "LINE LOST and STOPPED after about half a second — correct behaviour, not a failure"
+            correct: true
+          - text: "Cross it, the same as the 5 cm gap"
+            correct: false
+            why: "MAX_GAP_TIME is a stopwatch, and 20 cm needs more time than it allows. Crossing it would mean the timeout was not working."
+          - text: "Cross it only if the battery is fresh"
+            correct: false
+            why: "A tired battery does change how far the robot gets in a fixed time — which is the whole complaint about timers, and precisely why Lesson 11 replaces this one with an odometer. But the base build times out on 20 cm regardless."
+          - text: "Stop instantly, before the timer starts"
+            correct: false
+            why: "The robot drives forward first and only gives up when the timer expires."
+
+      - id: L09_A16
+        type: multiple_choice
+        cite: "Sabotage Mystery 1"
+        points: 1
+        stem: "A sabotaged build crawls along, lurching, beeping at nothing, flashing blank announcements. One character is missing. Which, and where?"
+        options:
+          - text: "The break at the end of the FOLLOWING_LINE case, so every pass falls through into AT_INTERSECTION"
+            correct: true
+          - text: "A semicolon after the switch condition"
+            correct: false
+            why: "That would not compile. The sabotage compiles cleanly, which is what makes it worth hunting."
+          - text: "The minus sign in turnDegrees(-90), so left turns go right"
+            correct: false
+            why: "That is Mystery 2's shape, and its symptom is a perfect inversion, not a crawl."
+          - text: "A brace closing the STOPPED case early"
+            correct: false
+            why: "The symptom described is theatre running every pass — announcing, beeping and pausing — which is fall-through, not a scope error."
+
+      - id: L09_A17
+        type: multiple_choice
+        cite: "Sabotage Mystery 3"
+        points: 1
+        stem: "A sabotaged build U-turns at plain black crossings and announces DEAD END where there is no green for a metre. The planted constant sets GREEN_HIGH_THRESHOLD to 1001. Why does that produce this symptom?"
+        options:
+          - text: "Calibrated black tops out at 1000, so every black reading now falls inside the green band — and black under both outer sensors reads as green on both sides"
+            correct: true
+          - text: "1001 overflows the sensor value, wrapping it to a negative number"
+            correct: false
+            why: "Nothing overflows. 1001 is simply above the top of the scale, which is what makes the band swallow black."
+          - text: "The library rejects out-of-range thresholds and substitutes zero"
+            correct: false
+            why: "The threshold is your own constant compared by your own isGreen(). The library never sees it."
+          - text: "It makes the band too narrow, so only black qualifies"
+            correct: false
+            why: "Raising the ceiling widens the band. It now stretches from 300 all the way past black."
+
+      - id: L09_A18
+        type: multiple_choice
+        cite: "Sabotage Mystery 5"
+        points: 1
+        stem: "A sabotaged build sails past every marker, though the survey values are fine and Challenge 1's debug tool says the readings are healthy. checkForIntersection() reads sensorValues[1] and sensorValues[3]. Why does that miss the markers?"
+        options:
+          - text: "Those two ride just off the line's shoulders — the markers sit out at the edges, under [0] and [4]"
+            correct: true
+          - text: "Boxes [1] and [3] are not calibrated"
+            correct: false
+            why: "readCalibrated() fills the whole array. The values are fine; they are just the wrong sensors' values."
+          - text: "Those sensors are disabled under the five-sensor jumper configuration"
+            correct: false
+            why: "All five are live. Geometry, not wiring, is what fails here."
+          - text: "The comments still say outermost, so the compiler reads the wrong index"
+            correct: false
+            why: "Comments do not steer the compiler — which is the trap. The comments still claim outermost while the indexes stopped agreeing."
+
+      - id: L09_A19
+        type: true_false
+        cite: "Sabotage Mystery 4"
+        points: 1
+        stem: "A state that performs its action but never sets the next state will leave the robot stuck there permanently, and the kill switch cannot rescue it."
+        correct: true
+        why: "Mystery 4 plants exactly this: the turn runs, pendingTurn clears, and the state never changes — so every following pass finds all three ifs false and does nothing. B cannot help, because the kill switch lives in FOLLOWING_LINE and the robot is not in it. Every state must name its own exit."
+
+      - id: L09_A20
+        type: true_false
+        cite: "§6 Step 2"
+        points: 1
+        stem: "After Step 2 the build should fail, because the two new enums are declared but nothing uses them yet."
+        correct: false
+        why: "The Step 2 checkpoint says the opposite: enums and constants nobody reads yet are perfectly legal, and the build is green."
+
+      - id: L09_A21
+        type: true_false
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "Challenge 1's debug helper in main.cpp reads into its own local array rather than using RobotSensors' sensorValues."
+        correct: true
+        why: "The module's array is RobotSensors' private property — Lesson 7's boundaries still stand, so a helper in main.cpp declares its own."
+
+      - id: L09_A22
+        type: true_false
+        cite: "§9 Challenge 4"
+        points: 1
+        stem: "MARKER_ADVANCE_CM should be copied from the worked solution, since every Zumo has the same sensor-to-axle distance."
+        correct: false
+        why: "The challenge is explicit that you measure it on your robot rather than copying it. A number you checked is evidence; a number you were handed is a guess."
+
+      - id: L09_A23
+        type: true_false
+        cite: "§6 Step 9"
+        points: 1
+        stem: "The Green Survey block should be left in place permanently, so you can re-check your band at any time."
+        correct: false
+        why: "Step 9's last instruction is to delete the temporary block, rebuild and re-upload. Challenge 1 is the permanent version of the same tool, and it lives behind the STOPPED state on the Serial Monitor."
+
+      - id: L09_A24
+        type: matching
+        cite: "Sabotage"
+        points: 4
+        stem: "Match each sabotaged build's symptom to its cause."
+        pairs:
+          - left: "Crawls and lurches, beeping at nothing, blank announcements"
+            right: "A missing break at the end of the FOLLOWING_LINE case"
+          - left: "Detects and announces perfectly, then turns the wrong way every time"
+            right: "GO_LEFT dispatched to turnRight() and GO_RIGHT to turnLeft()"
+          - left: "U-turns at plain black crossings where there is no green"
+            right: "A green band whose ceiling sits above calibrated black"
+          - left: "One flawless turn, then a statue that B cannot rescue"
+            right: "A state that never sets the next state"
+        extra_answers:
+          - "Calibration was run on a different surface from the course"
+          - "The line sensors were never initialised in setup()"
+
+      - id: L09_A25
+        type: matching
+        cite: "§9"
+        points: 3
+        stem: "Match each challenge to the problem it solves."
+        pairs:
+          - left: "Challenge 3 — Line-Seeking Turns"
+            right: "The robot finishes a turn without finding the line again"
+          - left: "Challenge 4 — Advance to Center"
+            right: "The same marker is detected a second time after the turn"
+          - left: "Challenge 5 — Debounced Detection"
+            right: "A brief false reading on a curve triggers a turn that should not happen"
+          - left: "Challenge 6 — Right-Hand Rule"
+            right: "A maze with no green markers anywhere"
+        extra_answers:
+          - "Turns are consistently off by the same few degrees"
+          - "The battery sags and the robot slows over a long run"
