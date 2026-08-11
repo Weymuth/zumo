@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.26.1 -->
+<!-- Lesson version: v05.27.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@
 <h1 class="h1">Intersections &amp; Dead Ends</h1>
 <div class="div-fs-11em">Teaching Your Robot to Decide</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 05.26 — August 2026</div>
+<div class="div-fs-09em-2">Version 05.27 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -183,8 +183,8 @@
 </div>
 
 <div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP" data-callout="9.8">
-    <div class="div-c-856404-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
-    <div class="div-c-856404">Calibration Required</div>
+    <div class="div-c-3a5a3a-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
+    <div class="div-c-3a5a3a">Calibration Required</div>
     <p>These threshold values are approximate! <strong>Calibrate for YOUR green:</strong> expect mid-range values for green, versus black and white at the extremes. The calibration test in Section 7 gives you exact numbers.</p>
 </div>
 
@@ -203,8 +203,8 @@
 </table>
 
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="9.9">
-    <div class="div-c-856404-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-    <div class="div-c-856404">What About Cross (+) Intersections?</div>
+    <div class="div-c-3a5a3a-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
+    <div class="div-c-3a5a3a">What About Cross (+) Intersections?</div>
     <p>At a cross intersection, all center sensors see black. Without green markers, go <strong>straight</strong> by default. Advanced robots use the "right-hand rule" for maze solving (see Challenge 6)!</p>
 </div>
 
@@ -263,7 +263,7 @@
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-0e1a2c">State</th><th class="th-bg-0e1a2c">What the Robot Does</th><th class="th-bg-0e1a2c">Transitions To</th></tr>
     <tr><td class="td-b-white"><code>FOLLOWING_LINE</code></td><td class="td-b-white">Normal P-control line following</td><td class="td-b-white">→ AT_INTERSECTION (if green)</td></tr>
-    <tr><td class="td-b-white"><code>AT_INTERSECTION</code></td><td class="td-b-white">Stop, identify intersection type</td><td class="td-b-white">→ EXECUTING_TURN</td></tr>
+    <tr><td class="td-b-white"><code>AT_INTERSECTION</code></td><td class="td-b-white">Announce the decision, pause long enough to read</td><td class="td-b-white">→ EXECUTING_TURN</td></tr>
     <tr><td class="td-b-white"><code>EXECUTING_TURN</code></td><td class="td-b-white">Perform the turn maneuver</td><td class="td-b-white">→ FOLLOWING_LINE (when done)</td></tr>
     <tr><td class="td-b-white"><code>STOPPED</code></td><td class="td-b-white">Motors off, waiting for button</td><td class="td-b-white">→ FOLLOWING_LINE (on press)</td></tr>
 </table>
@@ -303,7 +303,7 @@ enum IntersectionType {
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-0e1a2c">Method</th><th class="th-bg-0e1a2c">How It Works</th><th class="th-bg-0e1a2c">Verdict</th></tr>
-    <tr><td class="td-b-white"><strong>Timed Turn</strong></td><td class="td-b-white">Spin for a fixed number of milliseconds and hope</td><td class="td-b-white">❌ Battery-dependent, surface-dependent — the naive baseline. Not used in this book.</td></tr>
+    <tr><td class="td-b-white"><strong>Timed Turn</strong></td><td class="td-b-white">Spin for a fixed number of milliseconds and hope</td><td class="td-b-white">❌ Battery-dependent, surface-dependent — the naive baseline. This book writes one only before encoders exist (Lesson 3's Spin Test and timed square, Lesson 5's obstacle challenge) or to watch it fail on purpose (Lesson 10's first attempt at avoidance). No finished build from Lesson 6 onward keeps one.</td></tr>
     <tr><td class="td-bg-f9f9f9"><strong>Encoder Turn</strong></td><td class="td-bg-f9f9f9">Spin until the encoders measure the target angle</td><td class="td-bg-f9f9f9">✅ <strong>This lesson's method</strong> — and you built it in Lesson 6: it's called <code>turnDegrees()</code> and it has been living in RobotMotion.cpp ever since.</td></tr>
     <tr><td class="td-b-white"><strong>Line-Seeking Turn</strong></td><td class="td-b-white">Turn most of the way, then creep until the center sensor finds the line</td><td class="td-b-white">✅ Self-correcting — the competition upgrade. That's <a href="#challenge-3" class="link-c-2e86ab">Challenge 3</a>.</td></tr>
 </table>
@@ -355,8 +355,8 @@ enum IntersectionType {
 </table>
 
 <div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP" data-callout="9.20">
-    <div class="div-c-856404-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
-    <div class="div-c-856404">Green Color Matters</div>
+    <div class="div-c-3a5a3a-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
+    <div class="div-c-3a5a3a">Green Color Matters</div>
     <p>Not all greens are created equal! Bright "safety green" or "lime green" tape works well. Dark forest greens may read too close to black.</p>
 </div>
 
@@ -437,9 +437,9 @@ enum IntersectionType {
             Clear it, go back to FOLLOWING_LINE</pre>
 
 <div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP" data-callout="9.22">
-    <div class="div-c-856404-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
-    <div class="div-c-856404">Position Bias at Intersections</div>
-    <p>At T-junctions, <code>readLinePosition()</code> can jump unexpectedly. For reliable detection, read the outer sensors <strong>individually</strong> — calibrated, of course —. That's why <code>checkForIntersection()</code> reads each sensor for itself!</p>
+    <div class="div-c-3a5a3a-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
+    <div class="div-c-3a5a3a">Position Bias at Intersections</div>
+    <p>At T-junctions, <code>readLinePosition()</code> can jump unexpectedly. For reliable detection, read the outer sensors <strong>individually</strong> — calibrated, of course. That's why <code>checkForIntersection()</code> reads each sensor for itself!</p>
 </div>
 
 <div class="callout-2196f3-bg-e3f2fd" data-family="LEARN" data-callout="9.23">
@@ -470,7 +470,7 @@ enum IntersectionType {
 
 <details data-reveal="quiz"><summary>3. Name the four states, and say what each one does. (§3.4)</summary>
 
-<div class="div-mt-12px"><p><code>STOPPED</code> — motors off, waiting for button B. <code>FOLLOWING_LINE</code> — normal P-control line following. <code>AT_INTERSECTION</code> — stop and identify which kind of intersection this is. <code>EXECUTING_TURN</code> — perform the turn on encoder counts. One action per state, and only ever one state at a time.</p></div>
+<div class="div-mt-12px"><p><code>STOPPED</code> — motors off, waiting for button B. <code>FOLLOWING_LINE</code> — normal P-control line following. <code>AT_INTERSECTION</code> — announce the decision the marker already gave, and hold it long enough for a human to read. <code>EXECUTING_TURN</code> — perform the turn on encoder counts. One action per state, and only ever one state at a time.</p></div>
 
 </details>
 
@@ -771,7 +771,7 @@ IntersectionType checkForIntersection() {
 
 <div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN" data-callout="9.47">
     <div class="div-fs-105em"><img src="../images/marks/pencil-square.svg" alt="" data-mark="pencil-square">MY PLAN — yours, before any code</div>
-    <p class="p-mb-0">Two plan items. First: list every place Lesson 8's main mentioned <code>isRunning</code> (there are five) and write what each becomes in state language. Second: the B button now appears in TWO cases — write one sentence on what B means in each. Same button, two meanings, zero ambiguity: that's what states buy you.</p>
+    <p class="p-mb-0">Two plan items. First: list every place Lesson 8's main mentioned <code>isRunning</code> (Ctrl+F finds ten, on nine lines) and write what each becomes in state language. Second: the B button now appears in TWO cases — write one sentence on what B means in each. Same button, two meanings, zero ambiguity: that's what states buy you.</p>
 </div>
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> the state list and who-leaves-which-state: <a href="#qr-states" class="link-c-2e86ab">⚡ Quick Reference → The Four States</a>. The countdown and tuning blocks move <strong>unchanged</strong> — copying your own Lesson 8 code into the STOPPED case is the assignment, not a shortcut.</p>
@@ -1069,7 +1069,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="9.52">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Upload. A → B calibrate → B go: it follows the line — Lesson 8 lives. Now let it reach a green marker: it <strong>stops dead and freezes</strong>, still saying RUNNING. Frozen is correct for today: the robot is stuck in a state that has no case yet. It saw the marker, stored the decision, and is waiting for a brain that doesn't exist until Step 8. (B still rescues you — press it, then look at why: the kill switch lives in FOLLOWING_LINE, and the robot isn't <em>in</em> that state anymore. Power-cycle to reset. Add that to your mental map of what states really mean.)</p>
+    <p class="p-mb-0">Upload. A → B calibrate → B go: it follows the line — Lesson 8 lives. Now let it reach a green marker: it <strong>stops dead and freezes</strong>, still saying RUNNING. Frozen is correct for today: the robot is stuck in a state that has no case yet. It saw the marker, stored the decision, and is waiting for a brain that doesn't exist until Step 8. (B won't rescue you this time — press it and look at why: the kill switch lives in FOLLOWING_LINE, and the robot isn't <em>in</em> that state anymore. Power-cycle to reset. Add that to your mental map of what states really mean.)</p>
 </div>
 
 <h3 class="h3-c-433014">Step 8 — The Decision Brain: AT_INTERSECTION and EXECUTING_TURN</h3>
@@ -1276,13 +1276,14 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
     <tr><td class="td-b-white"><strong>Test 3: Dead End</strong></td><td class="td-b-white">Green on BOTH sides</td><td class="td-b-white">Stops, beeps, announces <code>DEAD END - U TURN</code>, 180° turnaround, resumes</td></tr>
     <tr><td class="td-b-white"><strong>Test 4: None</strong></td><td class="td-b-white">No green markers</td><td class="td-b-white">Follows line continuously</td></tr>
     <tr><td class="td-b-white"><strong>Test 5: Kill switch</strong></td><td class="td-b-white">Press B mid-run</td><td class="td-b-white">Motors stop instantly, status returns to STOPPED</td></tr>
-    <tr><td class="td-b-white"><strong>Test 6: Gap</strong></td><td class="td-b-white">Cover 20 cm of line</td><td class="td-b-white">Crosses small gaps; a long gap times out to LINE LOST + STOPPED</td></tr>
-    <tr><td class="td-b-white"><strong>Test 7: A-gate</strong></td><td class="td-b-white">Power-cycle, touch nothing</td><td class="td-b-white">Boot report only — nothing moves before A</td></tr>
+    <tr><td class="td-b-white"><strong>Test 6: Small gap</strong></td><td class="td-b-white">Cover 5 cm of line</td><td class="td-b-white">Drives straight across without stopping — the gap timer never runs out</td></tr>
+    <tr><td class="td-b-white"><strong>Test 7: Long gap</strong></td><td class="td-b-white">Cover 20 cm of line</td><td class="td-b-white">LINE LOST + STOPPED after ~0.5 s — correct: <code>MAX_GAP_TIME</code> is a stopwatch, and 20 cm needs more than it has. Lesson 11 replaces it with an odometer</td></tr>
+    <tr><td class="td-b-white"><strong>Test 8: A-gate</strong></td><td class="td-b-white">Power-cycle, touch nothing</td><td class="td-b-white">Boot report only — nothing moves before A</td></tr>
 </table>
 
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="9.59">
-    <div class="div-c-856404-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-    <div class="div-c-856404">Turn Physics: Momentum & Overshoot</div>
+    <div class="div-c-3a5a3a-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
+    <div class="div-c-3a5a3a">Turn Physics: Momentum & Overshoot</div>
     <p>Tank turns have zero turn radius, and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug — it’s <code>WHEEL_BASE_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
 </div>
 
@@ -1305,8 +1306,8 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 </table>
 
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="9.60">
-    <div class="div-c-856404-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-    <div class="div-c-856404">Lost the Line for Good?</div>
+    <div class="div-c-3a5a3a-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
+    <div class="div-c-3a5a3a">Lost the Line for Good?</div>
     <p class="p-mb-0">The base build’s policy is honest: gap timeout → <code>LINE LOST!</code> → STOPPED, and a human decides. Making the <em>robot</em> decide — treat a vanished line as a dead end and turn around — is maze-solver behavior, and it’s built in <a href="#challenge-6" class="link-c-2e86ab">Challenge 6</a>.</p>
 </div>
 
@@ -1516,7 +1517,7 @@ if (currentState == EXECUTING_TURN) { /* clear! */ }</pre>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
-<p>Three moves: <code>turnDegrees(-60)</code> covers the predictable bulk; a slow spin (half <code>TURN_SPEED</code>) hands control to the sensors; a <code>do&amp;hellip;while</code> watches sensor <code>[2]</code> until its calibrated value says <em>black</em>. Then swap one dispatch line in EXECUTING_TURN — and notice what you did <strong>not</strong> touch: Section 8A’s modularity tip, proven.</p>
+<p>Three moves: <code>turnDegrees(-60)</code> covers the predictable bulk; a slow spin (half <code>TURN_SPEED</code>) hands control to the sensors; a <code>do…while</code> watches sensor <code>[2]</code> until its calibrated value says <em>black</em>. Then swap one dispatch line in EXECUTING_TURN — and notice what you did <strong>not</strong> touch: Section 8A’s modularity tip, proven.</p>
 </div>
 <div class="div-p-15px20px">
 <div class="div-bg-e8f5e9">
