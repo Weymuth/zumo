@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.29.0 -->
+<!-- Lesson version: v02.29.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,7 +159,7 @@ nothing happened. Four subsystems, one brain, one loop.</p>
     <li>☐ Calibrate a timed maneuver <em>one primitive at a time</em> instead of guessing at the whole thing.</li>
 </ul>
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="10.5">
-    <div class="div-c-856404"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
+    <div class="div-c-3a5a3a"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
     <p class="p-mb-0">This lesson assumes your Lesson 9 project <strong>works</strong>.
     Not “compiles” — <em>works</em>. It should follow a line, stop at a green marker, and turn.
     If Lesson 9 is not solid, fix it before you start. Every bug you bring with you will look like an
@@ -483,7 +483,7 @@ frustration generator.</p>
 <div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP" data-callout="10.21">
     <div class="div-c-3a5a3a"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
     <p class="p-mb-0">A cardboard box, a thick book stood on end, or a foam block all work well.
-    A soda can is the classic trap: round, shiny, narrow, and light — it fails four of the five rows above.</p>
+    A soda can is the classic trap: round, shiny, narrow, and light — it fails the surface, width and weight rows all at once, and its curved skin throws the IR sideways even when the robot is right on top of it.</p>
 </div>
 <h3 class="h3-c-433014">4.4 Course Setup</h3>
 <ol>
@@ -1847,7 +1847,7 @@ program is repetition.</p>
 <p><strong>Fix:</strong> Two things to check. <strong>(1)</strong> Is <code>checkForObstacle()</code> the <em>first</em> thing in <code>FOLLOWING_LINE</code>, before the line check? Priority is literally the order of your <code>if</code> statements. <strong>(2)</strong> Use the Step 5 readout: is the number climbing above <code>CLOSE_THRESHOLD</code> at all? If it never reaches 3, the sensor is the problem, not the arbitration.</p>
 <h4 class="h4-c-00393d">🔴 The robot avoids beautifully, then never finds the line again</h4>
 <p><strong>What is actually happening:</strong> The maneuver put it somewhere the line is not — and then it hunted for five seconds, gave up, and stopped. <em>Which is the correct behavior.</em> The timeout is not the bug; it is the bug’s messenger.</p>
-<p><strong>Fix:</strong> Do <em>not</em> just raise <code>RETURN_TIMEOUT</code> — that treats the symptom. The maneuver ends with the robot <em>facing the line square-on</em>, so a correct box crosses it within a few centimetres. If it does not, one of the three turns is off. Go back to <strong>§7A</strong> and re&#8209;prove your 90° turn in isolation: the box uses it three times, so a 10° error becomes 30°, and a robot pointed 30° off runs alongside the line instead of over it.</p>
+<p><strong>Fix:</strong> Do <em>not</em> just raise <code>RETURN_TIMEOUT</code> — that treats the symptom. The maneuver ends with the robot <em>facing the line square-on</em>, so a correct box crosses it within a few centimetres. If it does not, work the primitives in <strong>§7</strong> one at a time rather than guessing at the whole shape. And check the drives before you blame the turns: the box turns <code>+90</code>, <code>−90</code>, <code>−90</code>, so a turn that is consistently a few degrees off largely <em>cancels itself</em> across the three — but nothing cancels a curve. <code>DRIVE_OUT</code> and <code>DRIVE_PAST</code> are 35 cm of open&#8209;loop driving with nothing watching the heading, so an untrimmed robot arrives both displaced <em>and</em> rotated. Re&#8209;prove <strong>§7B</strong> — distance first, then TRIM — before you re&#8209;prove <strong>§7A</strong>.</p>
 <h4 class="h4-c-00393d">🔴 B does not stop the robot during the maneuver</h4>
 <p><strong>What is actually happening:</strong> You are inside a <code>delay()</code>. The robot is not ignoring you — it is not <em>listening</em>. Nothing is.</p>
 <p><strong>Fix:</strong> This is the whole argument of Step 8. If you are still on the timed version, that is expected and it is why the encoder version exists. If you are on the encoder version and B still does not work, you are missing <code>if (killSwitchPressed()) break;</code> at the top of <code>AVOIDING_OBSTACLE</code>.</p>

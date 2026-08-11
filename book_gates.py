@@ -2,7 +2,9 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.65.8'
+VERSION = 'v1.65.9'
+# v1.65.9 (S144): §27.11 baseline moved for L10 callout 10.5's amber->green normalisation.
+#   NO gate logic changed. Detail at the CSS_DIGEST line.
 # v1.65.8 (S143): §27.11 baseline moved for L10's new Challenge 6 card. NO gate logic changed.
 # v1.65.7 (S143): the §27.11 digest moved a THIRD time, same session, same cause class.
 #   NO gate logic changed. Detail at the CSS_DIGEST line.
@@ -2296,7 +2298,16 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '826563f4453560fa'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'be91baf27252268b'
+#   S144 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical, usage RANK only:
+#   .div-c-3a5a3a 33 -> 34 and .div-c-856404 24 -> 23, both rule bodies untouched, and the
+#   whole textual diff is those two blocks swapping rank. Cause: L10 callout 10.5 is
+#   data-family="NOTE" and was wearing the WARNING family's amber; DJ ruled it back to the
+#   book's green. Same cause class as the v1.65.5 move, which did L09's six. Acceptance test
+#   is the RESOLVED STYLING (rule 24), and the proof was RE-DERIVED this session rather than
+#   carried: zero elements in the sixteen lessons carry two classes (the only 7 multi-class
+#   attributes in the tree are hand-authored pairs in index.html and going_deeper.html,
+#   outside the generated digest), so a frequency reshuffle cannot decide a cascade.
 #   S143 move, FOURTH and last of the session. Cause: L10 Challenge 6 (The Wedge Return) is a
 #   new card, and a challenge card is never a free edit - it brings its own pre block, hint and
 #   difficulty pills. Acceptance test is the RESOLVED STYLING (rule 24).
