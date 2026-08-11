@@ -2,7 +2,12 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.6.1'
+VERSION = 'v1.6.2'
+# v1.6.2 (S144): the L11 INSIGHT content rule pinned the headline 'The stopwatch has no
+#   readers left' - a SPELLING, and S144 corrected that headline because the claim under it
+#   was false (two writes survived, so deleting the declaration broke the build). Repointed,
+#   no tier logic changed. The tier is literal by design (last resort, per-block), so a
+#   prose fix in a lesson owes this file an edit - that coupling is the cost of the tier.
 # v1.6.1 (S141): DENOMINATOR 1119 -> 1120. L06 gained TIP 6.68, the caliper-technique
 #   callout in §3.4, when the 35 mm sprocket / 39 mm over-the-track distinction was
 #   written in. One legitimate addition, one family (TIP), nothing reclassified.
@@ -215,7 +220,7 @@ RULE=[
  # --- INSIGHT  (14) ---
  (lambda l,g,s,_p='The lesson worth keeping. Sometimes the corr': l.startswith(_p), 'INSIGHT'), # L11:205
  (lambda l,g,s,_p='The function kept its name, its call site, a': l.startswith(_p), 'INSIGHT'), # L11:464
- (lambda l,g,s,_p='The stopwatch has no readers left. Retire it': l.startswith(_p), 'INSIGHT'), # L11:520
+ (lambda l,g,s,_p='The stopwatch is retired in three pieces, no': l.startswith(_p), 'INSIGHT'), # L11:520
  (lambda l,g,s,_p='Leaving the state IS the reset. The odometer': l.startswith(_p), 'INSIGHT'), # L11:636
  (lambda l,g,s,_p='The track did not change. The battery did. O': l.startswith(_p), 'INSIGHT'), # L11:680
  (lambda l,g,s,_p='This is what arithmetic is FOR. It did not j': l.startswith(_p), 'INSIGHT'), # L11:798

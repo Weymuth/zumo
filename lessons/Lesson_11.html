@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.28.2 -->
+<!-- Lesson version: v02.29.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Time Lies, Distance Doesn't</h1>
 <div class="div-fs-11em">Encoder-Based Gap Crossing</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.28 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.29 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -302,7 +302,7 @@ void handleGap() {
   // loop, and open loops need TRIM or they curve away into the carpet.
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
 }</pre>
-<div class="div-e74c3c" data-family="THE WALL" data-callout="11.9"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Read the last line. That TRIM is not decoration.</div>Inside a gap, <strong>P-control is asleep</strong>. There is no line to correct against, so <code>followLine()</code> has nothing to work with. This is an <strong>open loop</strong> — the robot is driving on faith.<br><br>And an open loop with mismatched motors <em>curves</em>. Nothing is holding the robot straight across that gap except the TRIM number you found in Lesson 6. Set it to 0 and watch the robot wander out of the gap sideways. <strong>Open loop needs TRIM. Closed loop does not.</strong></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="11.9"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Read the last line. That TRIM is not decoration.</div>Inside a gap, <strong>P-control is asleep</strong>. There is no line to correct against, so <code>followLine()</code> has nothing to work with. This is an <strong>open loop</strong> — the robot is driving on faith.<br><br>And an open loop with mismatched motors <em>curves</em>. Nothing is holding the robot straight across that gap except the TRIM number you found in Lesson 3. Set it to 0 and watch the robot wander out of the gap sideways. <strong>Open loop needs TRIM. Closed loop does not.</strong></div>
 <h3 class="h3-c-433014">5.3 The Two New States</h3>
 <pre>    case GAP_CROSSING: {
       if (killSwitchPressed()) break;
@@ -556,9 +556,12 @@ void handleGap() {
     case RETURNING_TO_LINE:  display.print(F("SEEKING"));   break;
     case GAP_CROSSING:       display.print(F("GAP"));       break;
     case LINE_LOST:          display.print(F("LOST"));      break;</pre>
-<p>Finally — <strong>delete this line</strong> from the top of <code>main.cpp</code>:</p>
+<p>Finally — retire the stopwatch. It has <strong>three</strong> sites, not one, and they must all go together. Delete the declaration from the top of <code>main.cpp</code>:</p>
 <pre>unsigned long gapStartTime = 0;  // Lesson 8's stopwatch - retired in Step 6</pre>
-<div class="div-27ae60" data-family="INSIGHT" data-callout="11.14"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The stopwatch has no readers left. Retire it.</div>Nothing reads <code>gapStartTime</code> any more, so it can go. And here is a detail worth noticing: the finished program is <strong>smaller</strong> than the one you started with. The odometer version compiles to fewer bytes than the stopwatch version did.<br><br><strong>The better answer was also the cheaper one.</strong> That happens more often than you would think.</div>
+<p>Then delete the two lines that still <em>write</em> to it — one in <code>case FOLLOWING_LINE</code>, one in <code>case RETURNING_TO_LINE</code>. Both look like this:</p>
+<pre>gapStartTime = 0;   // Line is back - reset the gap timer</pre>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="11.14"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The stopwatch is retired in three pieces, not one.</div>Step 5 removed the only code that <em>read</em> <code>gapStartTime</code>. But two lines still <em>write</em> to it, and C++ needs the declaration for a write just as much as for a read — so deleting the declaration on its own gives you <code>'gapStartTime' was not declared in this scope</code>, twice. <strong>“Nothing reads it” is not the same as “nothing mentions it.”</strong> Before you delete any variable, search the file for its name and count what comes back — every site has to go, whichever direction the data was flowing.</div>
+<p>Build it. <strong>The finished program is 20,702 bytes — 186 more than the Lesson 10 project you started from.</strong> Two functions, two states and a handful of new strings are not free, and the one <code>unsigned long</code> you just deleted was never going to pay for them. It would be a tidier story if the better answer were also the cheaper one — it is not, and you should distrust anyone who tells you it usually is. What 186 bytes bought is a robot that crosses the same gap on a fresh pack and a tired one, and you still have <strong>7,970 bytes</strong> of headroom. Correctness is something you spend flash on, deliberately. You will make this trade again in Lesson 16, with a lot less room.</p>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 6 (finished build)</summary>
 <div class="div-mt-12px">
@@ -637,12 +640,12 @@ const float GAP_MAX_CM = 0.0;   // &lt;-- YOUR NUMBER. Try your 7A reading + 2.<
 <p>Open <code>RobotConfig.h</code>. Find your TRIM line and zero it out:</p>
 <pre>// In a gap you are driving BLIND. P-control is asleep - there is no
 // line to correct against. NOTHING holds you straight except this number.
-const int TRIM = 0;   // &lt;-- YOUR NUMBER (from Lesson 6)</pre>
+const int TRIM = 0;   // &lt;-- YOUR NUMBER (from Lesson 3)</pre>
 <p>Run the gap again.</p>
 <p>Watch the robot carefully as it crosses. It does not go straight — it <strong>curves</strong>.
 On a narrow gap it gets away with it. On a wide one it wanders off the line entirely
 and reports LINE LOST even though the line was right there.</p>
-<p>Now put your Lesson 6 TRIM number back. Run it again. Straight.</p>
+<p>Now put your Lesson 3 TRIM number back. Run it again. Straight.</p>
 <div class="div-e74c3c" data-family="THE WALL" data-callout="11.16"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">This is the moment TRIM stops being homework.</div>For three lessons TRIM has been a number you filled in once and forgot. Inside a gap it is <strong>the only thing steering the robot.</strong><br><br>P-control is asleep. There is no line. Nothing else is holding you straight. A gap is the one place where an open loop has nowhere to hide.</div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — 7C</summary>
@@ -711,7 +714,12 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8's stopwatch, put back</pr
     motors.setSpeeds(0, 0);
     currentState = LINE_LOST;
     return;
-  }</pre>
+  }
+  // Drive straight across. We are BLIND here - no line to correct
+  // against, so P-control has nothing to work with. This is an OPEN
+  // loop, and open loops need TRIM or they curve away into the carpet.
+  motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
+}</pre>
 <p>Now run <strong>the exact same track</strong> twice:</p>
 <ol>
 <li>With a <strong>fresh battery</strong>. The stopwatch version works fine. Of course it does — that is the charge you tuned it on.</li>
@@ -745,7 +753,7 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8's stopwatch, put back</pr
 </tr>
 <tr class="tr-bg-f9f9f9">
 <td class="td-ddd"><strong>Robot curves out of the gap and reports LINE LOST — but the line was right there.</strong></td>
-<td class="td-ddd">TRIM. You are in an open loop with no line to correct against. Fill in your Lesson 6 TRIM value. See Section 7C.</td>
+<td class="td-ddd">TRIM. You are in an open loop with no line to correct against. Fill in your Lesson 3 TRIM value. See Section 7C.</td>
 </tr>
 <tr>
 <td class="td-ddd"><strong>Robot runs off the END of the line and keeps driving forever.</strong></td>
@@ -761,7 +769,7 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8's stopwatch, put back</pr
 </tr>
 <tr class="tr-bg-f9f9f9">
 <td class="td-ddd"><strong>Compiler: <code>'gapStartTime' was not declared</code></strong></td>
-<td class="td-ddd">You deleted the stopwatch in Step 6 but something still reads it. Search <code>main.cpp</code> for <code>gapStartTime</code> — every reader must be gone <em>before</em> the variable is.</td>
+<td class="td-ddd">You deleted the declaration in Step 6 but left a line that still <em>writes</em> to it. Search <code>main.cpp</code> for <code>gapStartTime</code>: there are two writes, one in <code>FOLLOWING_LINE</code> and one in <code>RETURNING_TO_LINE</code>. A write needs the declaration just as much as a read does — every mention has to go, not just every reader.</td>
 </tr>
 </table>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -994,7 +1002,7 @@ motors.setSpeeds(gapSpeed + ____, gapSpeed);    <span class="tok-6a9955">// stil
 <p class="h4-mt-0">Section 7C showed you the effect: in a gap, TRIM is the only thing steering. This challenge makes you <strong>measure</strong> it — and checks a prediction you wrote down eight lessons ago.</p>
 <p><strong>The setup.</strong> Use your widest gap. Place a post-it at your starting point and line the robot's <strong>front blade</strong> up with its edge — put the robot in the same exact spot every run; the blade is the easiest consistent reference.</p>
 <p><strong>Three runs.</strong> Before each run, write a prediction in your notebook: <em>which way</em> the robot will drift, and a guess in cm. Then run it, and place a second post-it where it stops — label it with the run number. After three runs the three post-its ARE your data: measure each one's sideways distance from the line.</p>
-<pre class="pre-m-0">Run 1:  const int TRIM = ___;   // your Lesson 6 number
+<pre class="pre-m-0">Run 1:  const int TRIM = ___;   // your Lesson 3 number
 Run 2:  const int TRIM = 0;     // the correction removed
 Run 3:  const int TRIM = ___;   // DOUBLE your number</pre>
 <p class="p-mb-0">In Lesson 3 §7 you recorded which way YOUR robot naturally curves. Run 2 should reproduce it. Run 3 should mirror it. Do they? Six numbers go in your notebook — three guesses, three measurements. That is a Performance Evaluation table row, measured by you.</p>
