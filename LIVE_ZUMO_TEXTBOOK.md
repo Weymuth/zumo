@@ -1,11 +1,74 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 11, 2026 (Session 144 — **A CLIFF READS BLACK, AND L04 HAD SAID SO ALL ALONG.** L11 §3.5 rested on *no reflection reads like the brightest possible white*. Pololu's QTRSensors header says the opposite twice and names the case — “a black surface OR A VOID” — and **L04's own troubleshooting table already read *air counts as black*.** Two lessons, opposite answers, one physics question, and **the OLDER lesson is right**, which inverts §43's heuristic: the rule is *read the citations*, not *prefer the newer*. Derived from the book's own code, the truth is worse than §3.5 described: over a cliff all five sensors read ~1000, `isLineVisible()` returns TRUE, `readLine()` lands dead centre, the error is ZERO — **the robot drives off the edge at full speed believing it found the widest, most perfectly centred line it has ever seen**, and `handleGap()` is never called. **DJ ruled the correction; all six homes now agree, plus BC03 × 2.** The boom payoff is gone with the premise — **the fix is sensor TYPE, not POSITION** — and §8A.4 is now a one-minute experiment instead of arithmetic. The conclusion, *use a barrier*, is unchanged, so **L13 and L14 were untouched and the cascade stayed inside L11.**)
-**Status:** ✅ **70/70 GATES · S144 CLOSED · L10 READ+FIXED+BANKED · L11 READ+FIXED AND NO LONGER BLOCKED · `ZUMO_S145_HANDOFF.md` WRITTEN.** L10 → v02.29.1 and banked (75 questions; **10 of 16 banks, 770 questions** — derive it, never read it here). L11 → **v02.30.0**: the cliff argument corrected across six homes, plus three earlier defects — **Step 6 broke the build** (it retired `gapStartTime` on a TRUE statement while two lines still WROTE it), **7E's `handleGap()` was truncated mid-function**, and **Step 6's byte claim was backwards** (measured against a control reproducing S143's 20,516 byte-for-byte, the finished build is **20,702 — 186 bytes BIGGER**). **THE ONE TO CARRY: when every artefact agrees, ask whether the DESIGN is right; when two lessons disagree, read the citations rather than preferring the newer.** Four process failures this session were caught by instruments and none by me first: an offset slice taken after length-changing edits, two callouts that failed six gates, a blanket entity pass that hit the byte-compared lesson strip, and a content tier pinning the very sentence being corrected — twice.
+**Date:** August 11, 2026 (Session 145 — **THE S144 CLOSE PUSH HAD NOT LANDED, AND `session_versions --selftest` CONTROL C IS WHAT SAID SO.** The tree at session open read L11 v02.29.0, Bible v8.135.2 and `book_gates` v1.65.9 against a handoff claiming v02.30.0 / v8.135.3 / v1.65.10 at the same SHA; re-checked after 70 s per §12.4, so timing was ruled out. DJ pushed, and the same control went silent on the complete tree — **the loop closed, which is what makes it evidence rather than coincidence.** **THEN THE TRIM SPLIT WAS RULED, AND IT WAS NEVER THE SPLIT S144 DESCRIBED.** Not lesson against lesson but **PROSE against CODE COMMENTS**, with one prose leak in L13; and the 342 payload comments were **TWO SHAPES**, 148 of which already read *born in Lesson 3, spent in Lesson 6, and filed here* and were CORRECT. **A census that reports one number for two shapes has already lost the ruling.** Two S144 claims were false on re-reading — L03 does not *say both* and L09 is a false positive, both text matches read as answers (rule 38).)
+**Status:** ✅ **70/70 GATES · §16.15 NEW — TRIM'S HOME IS LESSON 3, BOOK-WIDE · 194 PAYLOAD CITATIONS FLIPPED, 148 DELIBERATELY KEPT · L11 STILL UNBANKED (NEXT).** DJ ruled Option 2: strip the lesson number from the relocation comment rather than flip it, so line 4 keeps the only sentence in the book that says TRIM MOVED. **The argument I nearly made against flipping did not survive measurement** — L03's finished `main.cpp` is 227 lines against L06's 215, so *buried in a 200-line file* holds either way; the real cost was the deletion, not a falsehood. `gate_payload_match` blinding-controlled: reverting ONE of 342 sites fires it. **CANON DEBT FOUND, RECORDED NOT FIXED: §16.14 HAS NO NUMBERED SECTION BODY** — v8.135.3 announces it and the file carries no `### 16.14` line, so the cliff ruling lives only in a changelog entry.
 
-**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.3 · L08 v04.31.0 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.2 · L13 v02.28.2 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.135.3** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.1 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `6f5a276`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.2 · L13 v02.28.3 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.135.4** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.2 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `86fd0bf`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **L11 is read, fixed and UNBLOCKED: bank it against v02.30.0, and discard any question drafted before the cliff correction, because six homes changed.** L12–L16 are unread and unwritten.
+
+---
+---
+---
+## WHAT SHIPPED IN S145
+
+### 1. THE S144 CLOSE PUSH HAD NOT LANDED — CAUGHT BY A CONTROL, NOT BY A VERSION LINE
+
+Session open read HEAD `6f5a276` and found L11 **v02.29.0**, Bible **v8.135.2**, `book_gates`
+**v1.65.9** and a root handoff named `ZUMO_S144_HANDOFF.md` — against a pasted handoff claiming
+v02.30.0, v8.135.3, v1.65.10 and `ZUMO_S145_HANDOFF.md` **at that same SHA**. `git ls-remote` was
+re-run after 70 seconds per §12.4, so this was not timing.
+
+**`session_versions --check` reported 7 disagreements and `--selftest` CONTROL C fired** — *the
+outgoing handoff is read by S145* — which is the unfinished-documentation-pass signal nothing else in
+the tree can see. Git log corroborated: `6f5a276` carried LIVE.md, the Bible, `build_family_map`,
+`Lesson_11.html` and `newproject.html`, i.e. the L11 read+fix push, **not** the cliff correction.
+The census gap pointed the same way: 40,616 against 40,605, an 11-line fall matching the handoff's
+*the fact became prose instead*.
+
+**DJ pushed. The same control went silent.** That is the closed loop — a control that fires on the
+incomplete tree and goes quiet on the complete one is evidence; a control that only ever passes is
+not.
+
+### 2. §16.15 NEW — TRIM'S HOME IS LESSON 3, AND THE SPLIT WAS TWO SHAPES
+
+**S144 recorded: L01/L02/L04/L06/L11 say Lesson 3; L07/L08/L13 say Lesson 6; L03 says both; 342
+Maker payload comments unswept.** Re-derived from the tree, **two of those claims are false.** L03's
+two Lesson-6 hits are forward pointers to closed-loop control; L09's is `turnDegrees()`. **Neither
+lesson ever claimed a home** — both were text matches read as answers (rule 38).
+
+**The real split is PROSE against CODE COMMENTS.** Every Lesson-3 claim sat in prose; every Lesson-6
+claim sat inside a syntax-highlighted comment span. One prose leak existed: L13's *Straight rows
+(TRIM, Lesson 6)*, in a list whose other three entries each name a single teaching home.
+
+**And the 342 are two comments, not one.** 148 carry a four-line block ending *"(It was born in
+Lesson 3, spent in Lesson 6, and filed here.)"* — L07's relocation thesis, naming the file the
+student is holding when L07 opens, which per S51 is the L06 finished build byte-for-byte, and true:
+L06 declares and uses TRIM in 34 places and links back to Lesson 03. The other 194 hang a bare
+`(Lesson 6)` on TRIM itself, **with zero Lesson-3 credit within 400 characters of any of them.**
+
+**DJ ruled Option 2.** Group A line 1 loses its lesson number entirely (*"// Remember TRIM? It lived
+at the top of main.cpp,"*); Group B's 194 become `(Lesson 3)`; the L13 prose leak and its
+*(Lessons 3 and 6)* sibling both become Lesson 3. **342 payload sites + 6 lesson sites edited; 148
+payload comments deliberately kept.**
+
+**The first argument against flipping Group A did not survive measurement.** It was going to be
+*that would make the sentence false* — and L03's finished `main.cpp` is **227 lines** against L06's
+**215**, so *buried in a 200-line file* is true either way. The real cost is that flipping line 1
+makes line 4 redundant, and deleting line 4 deletes the only sentence saying TRIM moved.
+
+**Residue is five sites and all five read correctly** — two in L13 and two in L03 attach *(Lesson 6)*
+to ENCODERS, one in L09 to `turnDegrees()`. **A co-occurrence is not a claim.**
+
+**No new gate is owed, and the existing hold was blinding-controlled:** reverting exactly ONE of the
+342 payload sites fires `gate_payload_match` naming 1, so lesson `<pre>` and payload cannot separate.
+
+### 3. CANON DEBT FOUND WHILE SEATING §16.15 — RECORDED, NOT FIXED
+
+**§16.14 HAS NO NUMBERED SECTION BODY.** v8.135.3 announces *§16.14 NEW* and the file carries no
+`### 16.14` line at all, so S144's cliff ruling lives only in a changelog entry — the shape v8.103
+closed for §24.14 and v8.110 logged for §3.1. **§16.12 and §16.13 are also seated BELOW §17's
+heading**; §16.15 was seated beside them rather than moving three sections in a pass nobody ruled.
 
 ---
 ---

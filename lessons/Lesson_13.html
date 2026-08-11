@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.28.2 -->
+<!-- Lesson version: v02.28.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +91,7 @@
 
 <p>Count what the line has done for you since Lesson 8. It told the robot <em>where it was</em> — the P-controller's whole error signal is "how far off the line am I?" It told the robot <em>where to go</em> — forward means "along the line." It even defined what the sensors <em>mean</em> — calibration mapped the world onto a scale that runs from the line's white floor to the line's black tape. Position, direction, and meaning. The line was doing all three jobs, and you never had to notice.</p>
 <p>In this lesson the robot drives through a doorway, and on the other side there is no line. Not a gap — Lesson 11 handled gaps, a few blind centimeters with the line waiting on the far side. <strong>Gone.</strong> An open floor with walls around it, somewhere inside it a victim to find, and nothing painted on the ground to follow.</p>
-<p>Pilots have a name for this. When the weather closes in and the window shows nothing but grey, they stop flying by what they see and start flying by what their instruments report. They call it <em>flying on instruments</em>, and it is a separate license, because it is a separate skill. Your robot already owns the instruments: encoders that count distance (Lesson 6), an odometer that survives a dying battery (Lesson 11), a gyro that catches slipping wheels in a lie (Lesson 12), and TRIM to hold a straight line with no line to hold (Lessons 3 and 6). Today they stop being safety nets and become the whole aircraft.</p>
+<p>Pilots have a name for this. When the weather closes in and the window shows nothing but grey, they stop flying by what they see and start flying by what their instruments report. They call it <em>flying on instruments</em>, and it is a separate license, because it is a separate skill. Your robot already owns the instruments: encoders that count distance (Lesson 6), an odometer that survives a dying battery (Lesson 11), a gyro that catches slipping wheels in a lie (Lesson 12), and TRIM to hold a straight line with no line to hold (Lesson 3). Today they stop being safety nets and become the whole aircraft.</p>
 <div class="callout-2e86ab-bg-e8f4f8" data-family="INSIGHT" data-callout="13.1">
 <div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">THE ONE IDEA</div>
 <p class="p-m-8px000">When the reference disappears, you navigate on your instruments — and you sense on the raw channel, because calibration can only describe the world it was shown.</p>
@@ -170,7 +170,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <li><strong>Line sensors, calibrated channel</strong> — unemployed. There is no line, and the door clamps to a lie (Section 3).</li>
 <li><strong>Line sensors, raw channel</strong> — the doorman. <code>silverDetected()</code> watches for all five sensors to read brighter-than-white at once. Only the strip does that.</li>
 <li><strong>Front proximity sensor</strong> — the lookout. Against tall walls it answers exactly one question — <em>"something ahead?"</em> — and it cannot tell you whether that something is the wall or a victim. Section 5 solves that with a witness you already own.</li>
-<li><strong>Encoders + TRIM + gyro</strong> — the whole aircraft. Straight rows (TRIM, Lesson 6), measured rows (odometer, Lesson 11), square corners on a floor that lies to wheels (gyro, Lesson 12).</li>
+<li><strong>Encoders + TRIM + gyro</strong> — the whole aircraft. Straight rows (TRIM, Lesson 3), measured rows (odometer, Lesson 11), square corners on a floor that lies to wheels (gyro, Lesson 12).</li>
 </ul>
 <p>Notice what this lesson costs in pins and hardware: <strong>nothing</strong>. Not one wire moves, not one jumper changes. Lesson 13 is the first lesson in this book that adds zero hardware — every sensor was already aboard. What changes is what you ask of them.</p>
 <h3 class="h3-c-2e86ab">4.3 The Black Ball — Read This Before You Blame Your Code</h3>
@@ -517,7 +517,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
 
-  <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 6). There is no line to correct</span>
+  <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 3). There is no line to correct</span>
   <span class="tok-7cbf6e">// against in the zone - this is an OPEN loop, and open loops need</span>
   <span class="tok-7cbf6e">// TRIM or they curve away into the corner.</span>
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);
@@ -1319,7 +1319,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
 
-  <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 6). There is no line to correct</span>
+  <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 3). There is no line to correct</span>
   <span class="tok-7cbf6e">// against in the zone - this is an OPEN loop, and open loops need</span>
   <span class="tok-7cbf6e">// TRIM or they curve away into the corner.</span>
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);
