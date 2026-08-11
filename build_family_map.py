@@ -2,7 +2,7 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.6.3'
+VERSION = 'v1.6.4'
 # v1.6.3 (S144): the L11 8A.4 INSIGHT tier pinned 'This is what arithmetic is FOR' - and
 #   S144 REPLACED that arithmetic, because §3.5's cliff premise was wrong. Repointed to the
 #   new headline. No tier logic changed. Second time this session that a literal content
@@ -238,7 +238,7 @@ RULE=[
  (lambda l,g,s,_p='The one sentence to walk out with A sensor c': l.startswith(_p), 'INSIGHT'), # L12:1334
  # --- STILL GREEN  (3) ---
  (lambda l,g,s,_p='Build it now. The binary just grew by 800 by': l.startswith(_p), 'STILL GREEN'), # L12:598
- (lambda l,g,s,_p='Build it. 21,342 → 24,534 bytes. +3,192. Tha': l.startswith(_p), 'STILL GREEN'), # L12:705
+ (lambda l,g,s,_p='Build it. 21,502 → 24,694 bytes. +3,192. Tha': l.startswith(_p), 'STILL GREEN'), # L12:705
  (lambda l,g,s,_p='And look at the byte count: 20,626 → 20,422.': l.startswith(_p), 'STILL GREEN'), # L12:780
  # --- WHAT YOU SHOULD SEE  (2) ---
  (lambda l,g,s,_p='The robot turns 90 degrees. On the slick sur': l.startswith(_p), 'WHAT YOU SHOULD SEE'), # L12:844

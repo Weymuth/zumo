@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.31.2 -->
+<!-- Lesson version: v01.31.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -638,7 +638,7 @@ int getTurnAngle() {
 <p><em>About those two giant numbers: they convert the gyro’s raw readings into degrees using pure integer math — this function must run as often as possible, and integer math keeps every call cheap and exact. You do not need to derive that ratio to use it. You need to know what it does — and now you do.</em></p>
 <div class="div-6b8e6b" data-family="TIP" data-callout="12.26"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">The #include &lt;Wire.h&gt; goes at the TOP of the file.</div>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
-<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.27"><div class="div-fs-105em">🏆 Build it now. The binary just grew by 800 bytes.</div>From <strong>20,542</strong> to <strong>21,342</strong>. That is the gyro going live — the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup">
+<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.27"><div class="div-fs-105em">🏆 Build it now. The binary just grew by 800 bytes.</div>From <strong>20,702</strong> to <strong>21,502</strong>. That is the gyro going live — the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 5</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=12&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
@@ -694,7 +694,7 @@ void turnDegreesGyro(float degrees) {
 
   motors.setSpeeds(0, 0);
 }</pre>
-<div class="div-e74c3c" data-family="THE WALL" data-callout="12.28"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Build it. The binary did not change. AT ALL.</div>Step 5 grew the binary by 800 bytes. Steps 6 and 7 grew it by <strong>zero</strong>. Still <strong>21,342</strong>, to the byte.<br><br>You just wrote a 25-line function and the program did not get any bigger. <strong>Did the edit not save?</strong></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.28"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Build it. The binary did not change. AT ALL.</div>Step 5 grew the binary by 800 bytes. Steps 6 and 7 grew it by <strong>zero</strong>. Still <strong>21,502</strong>, to the byte.<br><br>You just wrote a 25-line function and the program did not get any bigger. <strong>Did the edit not save?</strong></div>
 <p>It saved. Look at what you have actually built:</p>
 
 <ul class="ul-lh-19">
@@ -746,7 +746,7 @@ Find <code>setup()</code>. Add this <strong>immediately before</strong> the
   gyroSetup();
 </pre>
 <div class="div-e74c3c" data-family="THE WALL" data-callout="12.31"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">This block MUST come before waitForStart(). Here is why.</div>The next thing <code>setup()</code> does is <code>calibrateLineSensors()</code> — and <strong>that spins the robot.</strong><br><br>If the gyro were still measuring its zero while the robot spun, it would learn that <strong>spinning is what standing still feels like</strong>, subtract that from every future reading, and be catastrophically wrong for the entire run.<br><br>The still measurement comes first, while nothing has moved yet. <strong>Order is not decoration here.</strong></div>
-<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.32"><div class="div-fs-105em">🏆 Build it. 21,342 → 24,534 bytes. +3,192.</div>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable — and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
+<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.32"><div class="div-fs-105em">🏆 Build it. 21,502 → 24,694 bytes. +3,192.</div>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable — and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
 <div class="div-607d8b" data-family="NOTE" data-callout="12.33"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">What just happened to the rest of the book</div>Every intersection turn from Lesson 9. Every obstacle maneuver from Lesson 10. Everything that ever called <code>turnLeft()</code>, <code>turnRight()</code>, or <code>turnAround()</code>.<br><br><strong>All of it now closes on the robot's real angle</strong>, and you did not open a single one of those files.</div>
 <details data-reveal="catchup">
@@ -938,7 +938,7 @@ because this was never a curve. <strong>This was a turn that did not happen, rep
 could not know.</strong></p>
 <p>Now you have a sensor that knows.</p>
 <div class="div-6b8e6b" data-family="TIP" data-callout="12.47"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
-<div class="div-fs-105em">Before you move on: put loop() back.</div>Section 7 replaced your <code>loop()</code> with test sketches. Restore the real one — the Lesson 11 state machine — and rebuild. It should compile to <strong>24,534 bytes</strong> and drive the full course, with every turn now closing on the gyro.</div>
+<div class="div-fs-105em">Before you move on: put loop() back.</div>Section 7 replaced your <code>loop()</code> with test sketches. Restore the real one — the Lesson 11 state machine — and rebuild. It should compile to <strong>24,694 bytes</strong> and drive the full course, with every turn now closing on the gyro.</div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — 7E</summary>
 <div class="div-mt-12px">
@@ -1304,7 +1304,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p>The question is always the same, and it is the actual skill:
 <strong>why does THAT line produce THAT symptom?</strong></p>
 <div class="div-6f7582-5">
-<div data-challenge="12.m1" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B1 — The Calibration That Spins<span class="span-f-right">24,558 bytes</span></div>
+<div data-challenge="12.m1" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B1 — The Calibration That Spins<span class="span-f-right">24,718 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE:
@@ -1316,7 +1316,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b1_spinning_cal" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 </div></div>
 <div class="div-6f7582-5">
-<div data-challenge="12.m2" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B2 — The Turn That Never Ends<span class="span-f-right">23,882 bytes</span></div>
+<div data-challenge="12.m2" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B2 — The Turn That Never Ends<span class="span-f-right">24,042 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE: gyroUpdate() was deleted from this loop.
@@ -1327,11 +1327,11 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
   motors.setSpeeds(0, 0);</pre>
 <p><strong>The symptom:</strong> The robot starts a turn and <strong>never stops turning</strong>. It spins until you cut the power.</p>
 <div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.57">
-<div class="div-fs-105em">Ask yourself:</div> A gyro reports a <em>rate</em>, not an angle. Something has to add the rate up over time. If nobody ever adds anything up, what does <code>getTurnAngle()</code> keep returning? And is <code>0 &lt; 90</code> ever going to become false?<br><br><em>Note the byte count: this build is 648 bytes SMALLER than the correct one. Deleting code makes the program smaller. It does not make it work.</em></div>
+<div class="div-fs-105em">Ask yourself:</div> A gyro reports a <em>rate</em>, not an angle. Something has to add the rate up over time. If nobody ever adds anything up, what does <code>getTurnAngle()</code> keep returning? And is <code>0 &lt; 90</code> ever going to become false?<br><br><em>Note the byte count: this build is 652 bytes SMALLER than the correct one. Deleting code makes the program smaller. It does not make it work.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b2_no_update" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 </div></div>
 <div class="div-6f7582-5">
-<div data-challenge="12.m3" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B3 — The First Turn Works<span class="span-f-right">24,530 bytes</span></div>
+<div data-challenge="12.m3" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B3 — The First Turn Works<span class="span-f-right">24,690 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>void turnDegreesGyro(float degrees) {
@@ -1345,14 +1345,14 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b3_reset_hoisted" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
 </div></div>
 <div class="div-6f7582-5">
-<div data-challenge="12.m4" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B4 — The Helpful TRIM<span class="span-f-right">24,534 bytes</span></div>
+<div data-challenge="12.m4" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B4 — The Helpful TRIM<span class="span-f-right">24,694 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
   motors.setSpeeds(leftSpeed + TRIM, rightSpeed);</pre>
 <p><strong>The symptom:</strong> Turns are subtly, stubbornly off — and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
 <div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.59">
-<div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>open loop</strong> — a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,534</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
+<div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>open loop</strong> — a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,694</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 </div></div>
 <div class="div-e74c3c" data-family="THE WALL" data-callout="12.60"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">What B4 should teach you for the rest of your life</div>Three of these four mysteries change the program's size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
@@ -1414,7 +1414,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 
 </details>
 
-<details data-reveal="quiz"><summary>Bonus B4 adds TRIM to the turn, and the build comes out at <strong>24,534 bytes — exactly the size of the correct build.</strong> Explain how a real bug can cost zero bytes, and what that costs you as a debugging strategy. (§5.2, Bonus B4)</summary>
+<details data-reveal="quiz"><summary>Bonus B4 adds TRIM to the turn, and the build comes out at <strong>24,694 bytes — exactly the size of the correct build.</strong> Explain how a real bug can cost zero bytes, and what that costs you as a debugging strategy. (§5.2, Bonus B4)</summary>
 
 <div class="div-mt-12px"><p>Because you have not filled in your TRIM yet. With <code>TRIM = 0</code>, the expression <code>leftSpeed + TRIM</code> folds away at compile time to plain <code>leftSpeed</code>, and the compiler emits byte-for-byte identical machine code. The bug is genuinely live in the source; it simply costs nothing until the constant stops being zero — so it appears at the exact moment you fix a <em>different</em> problem. What it costs you is a check you had been leaning on: three of the four mysteries in this lesson change the program’s size and could have been caught by watching the byte count. B4 cannot. <strong>A binary that is the right size is not a binary that is right</strong>, and there is no tool that saves you from reading the code and understanding what it does.</p></div>
 
@@ -1551,20 +1551,20 @@ void turnAround() { turnDegreesGyro(180); }</pre>
   <th class="th-ddd-12">Bytes</th>
   <th class="th-ddd-12">Why</th></tr>
 <tr><td class="td-ddd-5">Steps 1–4</td>
-    <td class="td-ddd-5"><strong>20,542</strong></td>
+    <td class="td-ddd-5"><strong>20,702</strong></td>
     <td class="td-ddd-5">Objects, constants and prototypes are free</td></tr>
 <tr class="tr-bg-f8f9fa-2"><td class="td-ddd-5">Step 5</td>
-    <td class="td-ddd-5"><strong>21,342</strong></td>
+    <td class="td-ddd-5"><strong>21,502</strong></td>
     <td class="td-ddd-5">+800 — the gyro goes live</td></tr>
 <tr><td class="td-ddd-5">Steps 6–7</td>
-    <td class="td-ddd-5"><strong>21,342</strong></td>
+    <td class="td-ddd-5"><strong>21,502</strong></td>
     <td class="td-ddd-5">+0 — written, but nobody calls it yet</td></tr>
 <tr class="tr-bg-f8f9fa-2"><td class="td-ddd-5"><strong>Step 8 / finished</strong></td>
-    <td class="td-ddd-5"><strong>24,534</strong></td>
+    <td class="td-ddd-5"><strong>24,694</strong></td>
     <td class="td-ddd-5"><strong>+3,192 — the three turns switch</strong></td></tr>
 </table>
 <div class="div-607d8b" data-family="NOTE" data-callout="12.76"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-<div class="div-fs-105em">And remember what Bonus B4 proved.</div>A build that weighs <strong>24,534</strong> bytes is not necessarily a <em>correct</em> build. B4 weighs exactly that and is wrong. The byte count is a useful signal, never a proof.</div>
+<div class="div-fs-105em">And remember what Bonus B4 proved.</div>A build that weighs <strong>24,694</strong> bytes is not necessarily a <em>correct</em> build. B4 weighs exactly that and is wrong. The byte count is a useful signal, never a proof.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>

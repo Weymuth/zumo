@@ -1,0 +1,1286 @@
+# ZUMO READING QUIZ BANK — LESSON 12
+# Wheels Lie · The Gyro — Measuring the Robot, Not the Wheels
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_12.html v01.31.3 (post-S145 byte re-baselining)
+#
+# READ -> FIX -> QUIZ. L12 was read end to end in S145 and one defect class was found and
+# fixed before a question was written.
+#
+# THE FIX THIS BANK RESTS ON: EVERY ABSOLUTE BYTE FIGURE IN L12 WAS STALE BY EXACTLY 160.
+#   Measured on the AVR toolchain against the standing control (L11 after_step_1 reproduces
+#   20,516 byte-for-byte). L12's chain reads 20,702 -> 21,502 -> 21,502 -> 24,694, where the
+#   book said 20,542 -> 21,342 -> 21,342 -> 24,534. Sixteen sites moved, plus the four
+#   Sabotage headers. A05, A10, A14 and A18 ask the corrected figures; against v01.31.2 all
+#   four would have keyed wrong, and BRAIN CHECK 03 asks 24,534 twice.
+#
+#   EVERY DELTA THE LESSON TEACHES WITH WAS ALREADY CORRECT — +800, +0, +3,192, -204, and
+#   B4 weighing exactly what the correct build weighs. That is why the fix was a pure
+#   re-baselining and why every pedagogical point in the lesson survived it untouched. The
+#   one exception is Mystery B2, which claimed 648 bytes smaller and measures 652; that was
+#   an independent error and A21 asks the corrected figure.
+#
+#   THE SEAM IS AT L10, NOT L12. L07, L08 and L09 measure exactly what L16's byte table
+#   says. L10 onward do not, because S143's maneuver rebuild moved L10 and nothing
+#   propagated. L13, L14, L15 and L16 are all still stale and are a RULED SEPARATE ARC
+#   (DJ, S145). NOTHING IN THIS BANK ASKS A FIGURE FROM ANY LESSON BUT TWELVE.
+#
+# EIGHT ANSWERS DELIBERATELY NOT ASKED, WITH REASONS:
+#
+#   - ANY BYTE FIGURE FROM L13, L14, L15 OR L16. All four are measurably stale and ruled to
+#     a later arc. A05/A10/A14/A18/A21/A22 ask only L12's own figures, every one of which
+#     was compiled in the session that wrote this bank.
+#   - THE 2^29 CONVERSION CONSTANTS. §5's code carries 14680064 / 17578125 and the lesson
+#     says in as many words that you do not need to derive that ratio to use it. B35 and B36
+#     ask what the fixed-point unit BUYS (2^32 = 360°, so the counter wraps correctly for
+#     free) and what getTurnAngle() is for, never the arithmetic.
+#   - ANY REAL GYRO READING FROM A REAL ROBOT. §7A's "a degree, then two, then five" over
+#     thirty seconds is illustrative, and no measured drift figure exists for this fleet.
+#     A13 asks that drift HAPPENS and why gyroReset() runs per turn rather than once, never
+#     a rate.
+#   - §3.2's 5.5 COUNTS PER DEGREE AS ARITHMETIC. The real constant computes to 5.507, so
+#     90° is 495.7 counts and the lesson's 496 is right — but 5.5 x 90 is 495, so asking a
+#     student to reproduce the multiplication sets a trap on a rounding artifact. B07 and
+#     B08 ask WHICH LINK IN THE CHAIN WAS WRONG (none of them), which is the actual point.
+#   - IMAGE 12.1. The delrin photograph is listed "still needed" and does not exist. Nothing
+#     here depends on it, and nothing depends on GRAPHIC 12.1-12.4 either — every figure's
+#     content is carried in prose at §3.2, §3.5, §7E and §1 respectively.
+#   - WHICH IMU CHIP A GIVEN ROBOT CARRIES. §4.3's whole point is that you do not care and
+#     never will. B33 asks the MECHANISM (init() reads WHO_AM_I and branches), which is what
+#     makes the answer "you do not care" true.
+#   - THE DELRIN ITSELF AS A REQUIRED MATERIAL. §7's TIP supplies a no-materials fallback —
+#     grip the chassis and let the wheels fight you. No question assumes a student had
+#     delrin, in either set.
+#   - COUNTS_PER_DEGREE's VALUE. Used in 7C and Challenge 2, defined in RobotConfig.h, and
+#     never stated as a number in L12's prose. A question asking it would be answerable only
+#     from a file, not from the reading.
+#
+# BRAIN CHECK OVERLAP: the `after` set draws from §6, §7, §9 and Sabotage. BRAIN CHECK 03
+# asks §8A.2, §3.6, §5.2 and Bonus B4 — so A22's B4 question is the one place they touch,
+# and it asks the byte mechanism where BC03 asks the debugging consequence.
+
+lesson: "L12"
+title: "Wheels Lie — The Gyro, Measuring the Robot Not the Wheels"
+bank_version: "1.0.0"
+source:
+  lesson_12: "v01.31.3"
+  lesson_11: "v02.30.0"
+  lesson_09: "v05.27.0"
+  lesson_06: "v04.32.1"
+  lesson_05: "v04.29.0"
+  lesson_04: "v04.29.0"
+
+sets:
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone — no robot, no compiler, no built program."
+    suggested_draw: 10
+    questions:
+
+      - id: L12_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "On a slick floor the robot reports a completed 90° turn while still pointing where it started. What went wrong with the encoder?"
+        options:
+          - text: "Nothing — it answered a different question than the one you asked"
+            correct: true
+          - text: "It lost counts while the wheel was spinning too fast"
+            correct: false
+            why: "The counts were all there. §1 is explicit that every number the encoder produced was true."
+          - text: "It needs recalibrating against a known distance"
+            correct: false
+            why: "No calibration would help. The encoder is measuring wheel rotation correctly; the wheel simply was not attached to the floor."
+          - text: "Its constant, COUNTS_PER_DEGREE, is wrong for a slick surface"
+            correct: false
+            why: "The constant describes the geometry of the robot, not the floor. §3.2 says a better constant cannot fix this."
+
+      - id: L12_B02
+        type: true_false
+        cite: "§1"
+        points: 1
+        stem: "The encoder in this scenario is the first sensor in the book to malfunction."
+        correct: false
+        why: "It is the first sensor to LIE, and §1 draws the distinction carefully: not by malfunctioning, but by answering a different question than the one you asked."
+
+      - id: L12_B03
+        type: multiple_choice
+        cite: "§1, §3.2"
+        points: 1
+        stem: "Section 1 compares asking an encoder whether its wheel slipped to something. What?"
+        options:
+          - text: "Asking a witness to confirm their own alibi"
+            correct: true
+          - text: "Asking a clock whether it is running fast"
+            correct: false
+            why: "A memorable image, but not this lesson's. The point is about a sensor watching the very thing in question."
+          - text: "Weighing a scale with itself"
+            correct: false
+            why: "Not the analogy used, and it misses the direction — the encoder is not measuring itself, it is measuring the one part that cannot testify."
+          - text: "Asking a map whether the road has moved"
+            correct: false
+            why: "Not used, and a map is not a sensor at all."
+
+      - id: L12_B04
+        type: matching
+        cite: "§3.1"
+        points: 3
+        stem: "Section 3.1's table lists what each sensor watches. Match them."
+        pairs:
+          - left: "Line sensors"
+            right: "The floor"
+          - left: "Proximity sensor"
+            right: "Whatever is in front of the robot"
+          - left: "Encoders"
+            right: "The robot's own wheels"
+        extra_answers:
+          - "The battery's remaining charge"
+          - "The angle of the chassis relative to the ground"
+
+      - id: L12_B05
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Why is the encoder the odd one out in that table?"
+        options:
+          - text: "It is the only one that watches a part of the robot instead of the world"
+            correct: true
+          - text: "It is the only one that produces a number rather than a yes-or-no"
+            correct: false
+            why: "The line sensors and the proximity sensor both produce numbers. The distinction is what each one is pointed at."
+          - text: "It is the only one that needs no calibration"
+            correct: false
+            why: "True, and §8A.4 says so — but it is not the reason §3.1 singles the encoder out."
+          - text: "It is the only one that was added after Lesson 4"
+            correct: false
+            why: "The proximity sensor arrived in Lesson 5, one lesson before the encoders."
+
+      - id: L12_B06
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Section 3.1 says the encoder measures one thing and not another. Which pair is it?"
+        options:
+          - text: "It measures INTENT, not RESULT — how far the wheel turned, not how far the robot moved"
+            correct: true
+          - text: "It measures RESULT, not INTENT — what happened, not what you commanded"
+            correct: false
+            why: "Backwards. The wheel turning is the intent being carried out; whether the robot moved is the result, and the encoder cannot see it."
+          - text: "It measures SPEED, not DISTANCE"
+            correct: false
+            why: "It measures rotation, from which both can be computed. The distinction §3.1 draws is about intent versus result."
+          - text: "It measures ROTATION, not TIME"
+            correct: false
+            why: "True but trivial, and it is Lesson 11's distinction rather than this one."
+
+      - id: L12_B07
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The code computes a target count, the encoders count to it, the motors stop — and the robot has turned 31 degrees instead of 90. Which link in that chain was wrong?"
+        options:
+          - text: "None of them — every component performed exactly as designed"
+            correct: true
+          - text: "The count target, which was computed for a gripping wheel"
+            correct: false
+            why: "The target is correct for the robot's geometry. Nothing about it assumes grip; grip is the assumption connecting wheel rotation to robot rotation, and it lives outside the arithmetic."
+          - text: "The encoder, which over-counted while the wheel was slipping"
+            correct: false
+            why: "It counted exactly right. From inside the wheel, a slipping rotation is a rotation."
+          - text: "The motor driver, which delivered less torque than commanded"
+            correct: false
+            why: "Torque is not the issue and the lesson never raises it. The wheels spun exactly as far as they were told."
+
+      - id: L12_B08
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "If none of the components failed, what did?"
+        options:
+          - text: "The rubber — and no encoder anywhere has a rubber sensor"
+            correct: true
+          - text: "The firmware's assumption that both wheels turn at the same rate"
+            correct: false
+            why: "Both wheels can turn at identical rates and both can slip. The broken assumption is that a turning wheel moves the robot."
+          - text: "The battery, which sagged and slowed the turn"
+            correct: false
+            why: "That is Lesson 11's failure. An encoder-gated turn is immune to it, because counts do not depend on charge."
+          - text: "The floor, which was not the surface the constant was tuned for"
+            correct: false
+            why: "Close in spirit, but the lesson names the failure precisely: the rubber lost grip. The constant was never a function of the floor."
+
+      - id: L12_B09
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "Wheel slip could be detected from the encoder signal alone with a sufficiently clever algorithm."
+        correct: false
+        why: "A slipping wheel and a gripping wheel produce the IDENTICAL stream of counts. There is nothing to tell apart, so no algorithm can separate them — the information is not present in the signal at all."
+
+      - id: L12_B10
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Section 3.2 says detecting slip requires something specific. What?"
+        options:
+          - text: "A second instrument, watching something else"
+            correct: true
+          - text: "A higher-resolution encoder"
+            correct: false
+            why: "Resolution does not help when both cases produce the same reading. More precision about the wrong quantity is still the wrong quantity."
+          - text: "Sampling the encoder more often during the turn"
+            correct: false
+            why: "Sampling rate is a real concern for the GYRO's accumulation, but it cannot extract information the encoder never had."
+          - text: "Comparing the left and right encoders against each other"
+            correct: false
+            why: "Both wheels can slip together, and in a spin turn they are supposed to disagree in sign. Neither encoder watches anything but a wheel."
+
+      - id: L12_B11
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "What is the gyroscope physically attached to, and what does that let it measure?"
+        options:
+          - text: "The circuit board, which is bolted to the chassis — so it measures the robot"
+            correct: true
+          - text: "The left motor housing, so it measures that motor's rotation directly"
+            correct: false
+            why: "That would make it a second encoder with the same blind spot. The gyro's value is precisely that it is nowhere near a wheel."
+          - text: "The wheel axle, so it can compare against the encoder"
+            correct: false
+            why: "Anything mounted on a wheel shares the wheel's blindness. §3.3's table exists to make that contrast."
+          - text: "The battery holder, which is the most stable part of the chassis"
+            correct: false
+            why: "The IMU is soldered to the main board. The lesson is explicit about the chain: gyro to board, board to chassis."
+
+      - id: L12_B12
+        type: matching
+        cite: "§3.3"
+        points: 3
+        stem: "Section 3.3 contrasts the two instruments across three situations. Match each situation to what the ENCODER does."
+        pairs:
+          - left: "A wheel slips"
+            right: "Never notices — it reports the rotation as real motion"
+          - left: "The robot is lifted off the floor"
+            right: "Still reports the robot as driving"
+          - left: "You turn the robot by hand, motors off"
+            right: "Sees nothing at all — nothing it watches has moved"
+        extra_answers:
+          - "Reports the angle correctly, because rotation is rotation"
+          - "Reports zero, because it detects the loss of traction"
+
+      - id: L12_B13
+        type: multiple_choice
+        cite: "§3.3, §7A"
+        points: 1
+        stem: "You pick the robot up with the motors off and rotate it a quarter turn by hand. What does the gyro report?"
+        options:
+          - text: "Roughly 90 degrees — it measures the robot's rotation whether or not you are driving"
+            correct: true
+          - text: "Zero, because a gyro only accumulates while the motors are running"
+            correct: false
+            why: "The gyro has no idea the motors exist. §3.3 and §7A both make the hand-turn the demonstration of exactly this."
+          - text: "An error, because gyroReset() was not called first"
+            correct: false
+            why: "gyroReset() sets the zero point; without it the reading is simply measured from wherever the last reset was. It does not error."
+          - text: "The same as the encoders — nothing"
+            correct: false
+            why: "The encoders report nothing, and that contrast is the whole point of the row."
+
+      - id: L12_B14
+        type: true_false
+        cite: "§3.3"
+        points: 1
+        stem: "The gyro compensates for wheel slip by comparing its own reading against the encoders'."
+        correct: false
+        why: "The gyro has no idea the wheels exist. It measures the chassis and nothing else — which is why it is unaffected by slip rather than compensating for it. Comparing the two instruments is Challenge 2, and it is something YOUR code does, not something the gyro does."
+
+      - id: L12_B15
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "What does a gyroscope actually report?"
+        options:
+          - text: "A rate — how fast it is spinning right now, in degrees per second"
+            correct: true
+          - text: "An absolute heading, like a compass"
+            correct: false
+            why: "It has no idea where it is facing and never did. A compass measures an absolute direction; a gyro measures change."
+          - text: "The total angle turned since power-on"
+            correct: false
+            why: "That total is something your code builds by accumulating. The sensor itself has no memory."
+          - text: "The angle relative to the last gyroReset()"
+            correct: false
+            why: "That is what getTurnAngle() returns after gyroUpdate() has been accumulating. The raw sensor reports only a rate."
+
+      - id: L12_B16
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "How does the code turn a rate into an angle?"
+        options:
+          - text: "It accumulates — total = total + (rate × dt), over and over in tiny slices"
+            correct: true
+          - text: "It multiplies the rate by the total turn duration, once, at the end"
+            correct: false
+            why: "That works only if the robot spins at one steady rate. It speeds up, slows down and catches on bumps, so the multiplication has to be done repeatedly."
+          - text: "It divides the rate by the loop frequency"
+            correct: false
+            why: "Dividing a rate by a frequency does give an angle per loop, but the lesson's formulation is an explicit accumulation with a measured dt, not an assumed loop rate."
+          - text: "The library maintains the total internally; the code just reads it"
+            correct: false
+            why: "gyroUpdate() is the accumulator and you write it yourself in Step 5. Nothing keeps the total for you."
+
+      - id: L12_B17
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "Why must gyroUpdate() be called as often as possible inside the turn loop?"
+        options:
+          - text: "Every slice you miss is an angle you never counted — the gyro has no memory and only tells you about now"
+            correct: true
+          - text: "The sensor's buffer overflows if it is not drained frequently"
+            correct: false
+            why: "There is no buffer to drain. The rotation that happened while you were not looking is simply gone, not queued."
+          - text: "Calling it less often makes each reading noisier"
+            correct: false
+            why: "Noise is a separate issue handled by the 1,024-sample calibration. The problem with missing calls is lost angle, not noisy angle."
+          - text: "The I2C bus disconnects if it goes idle"
+            correct: false
+            why: "The bus does not time out, and nothing in the lesson suggests it does."
+
+      - id: L12_B18
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "If the robot spins for 40 ms while your code is busy elsewhere, the gyro recovers that rotation on the next reading."
+        correct: false
+        why: "That rotation is gone. It is not recovered later — the gyro has no memory and only ever tells you about NOW. This is why a delay() inside the turn loop is throwing away angle, and why Bonus B2 deleting the call makes the robot turn forever."
+
+      - id: L12_B19
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "You set the Zumo on a table and do not touch it, then ask the gyro how fast it is spinning. What does it say?"
+        options:
+          - text: "Something other than zero — routinely up to 25 degrees per second of rotation that is not happening"
+            correct: true
+          - text: "Exactly zero, which is what makes it a usable reference"
+            correct: false
+            why: "It will not say zero, and that is the whole subject of §3.5. A resting gyro reports motion."
+          - text: "Zero until it warms up, then a steady small value"
+            correct: false
+            why: "The lesson describes no warm-up period. The bias is present from the start and is noisy around its value."
+          - text: "An error code, since there is no rotation to report"
+            correct: false
+            why: "There is no error condition. It reports a number, confidently, and the number is fiction."
+
+      - id: L12_B20
+        type: multiple_choice
+        cite: "§3.5, Glossary"
+        points: 1
+        stem: "What is that non-zero resting reading called, and is it a defect?"
+        options:
+          - text: "Bias, or drift — and it is not a defect; every gyro has it, including a $40,000 aircraft gyro"
+            correct: true
+          - text: "Noise — and it is a defect in cheap consumer parts specifically"
+            correct: false
+            why: "Noise is the jitter AROUND the bias, which is why 1,024 readings are averaged. The steady offset itself is bias, and it is universal."
+          - text: "Offset error — a manufacturing defect that calibration works around"
+            correct: false
+            why: "The lesson is emphatic that it is not a defect. It is a property of how the instrument works."
+          - text: "Saturation — the sensor reporting its maximum when it has nothing to measure"
+            correct: false
+            why: "Saturation is a Lesson 11 idea about clamped readings. A resting gyro reports a small number, not a maximum."
+
+      - id: L12_B21
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "What does gyroSetup() do about the bias?"
+        options:
+          - text: "Reads the gyro 1,024 times while the robot sits still, averages them, and stores the result as gyroOffset to subtract from every future reading"
+            correct: true
+          - text: "Waits until the reading settles to zero, then begins"
+            correct: false
+            why: "It never settles to zero. Waiting would hang forever, which is not what happens."
+          - text: "Reads the gyro once and uses that single value as the offset"
+            correct: false
+            why: "One reading might catch the bias at −23 and the next at −11. Averaging 1,024 cancels the jitter and leaves the steady part."
+          - text: "Adjusts a register inside the chip so the sensor reports zero at rest"
+            correct: false
+            why: "Nothing is written to the chip. The correction lives in your code, as a subtraction on every reading."
+
+      - id: L12_B22
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Section 3.5 asks you to do the arithmetic on an uncorrected bias. What does 20°/sec across a single three-second turn add?"
+        options:
+          - text: "60 degrees of pure fiction — making an uncorrected gyro far worse than the encoder"
+            correct: true
+          - text: "About 7 degrees, which is within tolerance for most turns"
+            correct: false
+            why: "The arithmetic is a straight multiplication: 20 times 3. The point of the passage is that the result is alarmingly large, not tolerable."
+          - text: "60 degrees, but only if the robot is also genuinely turning"
+            correct: false
+            why: "The bias accumulates whether or not the robot moves — §7B has you watch a motionless robot report a hundred degrees."
+          - text: "Nothing, because the errors are random and average out over the turn"
+            correct: false
+            why: "The bias has a steady component, which is exactly what does NOT average out. That steady part is what gets measured and subtracted."
+
+      - id: L12_B23
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "Calibrating the gyro is the same kind of operation as calibrating the line sensors in Lesson 4."
+        correct: false
+        why: "§3.6 calls the difference the deepest idea in the lesson. The line sensors learned a range between two things you could point at — white and black. The gyro is calibrated against NOTHING: you hold it still and tell it that whatever it reads now is what nothing looks like. You are calibrating it against its own error, not against a reference."
+
+      - id: L12_B24
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "Why can a spin never calibrate a gyro?"
+        options:
+          - text: "It would average real rotation into the offset and conclude that spinning is what standing still feels like"
+            correct: true
+          - text: "Spinning makes the readings too noisy for a useful average"
+            correct: false
+            why: "Noise is not the failure. The failure is that a real, steady rotation gets absorbed into the offset and then subtracted from everything afterwards."
+          - text: "The I2C bus cannot keep up while the motors draw current"
+            correct: false
+            why: "Nothing in the lesson suggests a bus problem, and the failure it describes is arithmetic, not electrical."
+          - text: "The calibration loop is too slow to sample a moving robot accurately"
+            correct: false
+            why: "Sampling speed is not the issue. Even perfect sampling of a spinning robot produces a poisoned zero."
+
+      - id: L12_B25
+        type: multiple_choice
+        cite: "§3.6, Quick Reference"
+        points: 1
+        stem: "What is the correct order of the three things setup() does, and why?"
+        options:
+          - text: "gyroSetup(), then waitForStart(), then calibrateLineSensors() — because line calibration spins the robot and the still measurement has to come first"
+            correct: true
+          - text: "calibrateLineSensors(), then gyroSetup(), then waitForStart() — sensors first, safety last"
+            correct: false
+            why: "This is the exact order that poisons the gyro zero, and it puts the safety gate after a routine that spins the robot."
+          - text: "waitForStart(), then calibrateLineSensors(), then gyroSetup() — nothing should run before the safety gate"
+            correct: false
+            why: "gyroSetup() moves nothing, so it is safe before the gate. Running it last means calibrating after a spin."
+          - text: "The order does not matter, because each calibrates a different sensor"
+            correct: false
+            why: "§3.6 says plainly that order is not decoration here. One routine spins the robot and the other requires stillness."
+
+      - id: L12_B26
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "The IMU contains three sensors. Which one does this lesson use, and on which axis?"
+        options:
+          - text: "The gyroscope, on the z axis — the one pointing straight up out of the board"
+            correct: true
+          - text: "The accelerometer, on the z axis, because tilt indicates turning"
+            correct: false
+            why: "The accelerometer is present and unused in this lesson. Rotation around a vertical axis is what turning means, and that is the gyro's job."
+          - text: "The magnetometer, because a compass gives an absolute heading"
+            correct: false
+            why: "A magnetometer would give an absolute heading, which §8A.1 notes would escape drift — but it is explicitly not used here."
+          - text: "The gyroscope, on the x axis, along the robot's direction of travel"
+            correct: false
+            why: "Rotation about the forward axis is roll. Turning is rotation about the vertical axis, which is z."
+
+      - id: L12_B27
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "Section 4.1 calls the IMU the only free sensor on the robot. What does it cost?"
+        options:
+          - text: "Zero pins — it sits on the I2C bus, which nothing else on the Zumo uses"
+            correct: true
+          - text: "Two pins, which is why the rear proximity receivers were given up in Lesson 5"
+            correct: false
+            why: "That trade is real and it belongs to the LINE SENSORS — pins 20 and 4 are shared with the proximity receivers. The IMU is on a different bus entirely."
+          - text: "One analog pin, shared with the battery monitor"
+            correct: false
+            why: "Nothing in the lesson describes such a sharing, and the point being made is that turning the gyro on takes nothing away from you."
+          - text: "Nothing in pins, but about 2 KB of SRAM for its buffers"
+            correct: false
+            why: "The measured RAM cost of the finished build is modest and the lesson makes no such claim. The 'free' claim in §4.1 is specifically about pins."
+
+      - id: L12_B28
+        type: multiple_choice
+        cite: "§4.2, §8"
+        points: 1
+        stem: "You forget Wire.begin(). What happens?"
+        options:
+          - text: "The robot hangs at startup with 'Gyro calibrating / HOLD STILL' on the OLED and never moves on — no error, no red build"
+            correct: true
+          - text: "The build fails with 'imu was not declared in this scope'"
+            correct: false
+            why: "That error means the file cannot see the IMU object — Step 2's extern. Forgetting Wire.begin() compiles cleanly and fails at runtime."
+          - text: "The gyro reports zero for every reading"
+            correct: false
+            why: "It never gets as far as a reading. gyroDataReady() waits forever for data over a bus that was never switched on."
+          - text: "The robot runs normally but every turn is 180° out"
+            correct: false
+            why: "Nothing runs. The while loop inside gyroSetup() spins forever before the robot does anything."
+
+      - id: L12_B29
+        type: true_false
+        cite: "§4.3"
+        points: 1
+        stem: "Zumos built in different years carry different IMU chips, so your code needs an #ifdef to handle both."
+        correct: false
+        why: "You do not care and never will. imu.init() asks the chip who it is — there is a register literally called WHO_AM_I — and configureForTurnSensing() branches to the right setup code for whichever chip answered. Grab a spare Zumo from an older batch and your code runs on it unchanged."
+
+      - id: L12_B30
+        type: multiple_choice
+        cite: "§4.4, §8A.3"
+        points: 1
+        stem: "The running angle is stored as a uint32_t in a fixed-point unit where 2^32 units = 360°. What does that choice buy?"
+        options:
+          - text: "Free, exact angle wrapping — the counter overflows to zero at 360°, which is the correct answer"
+            correct: true
+          - text: "Higher precision than a float could provide on this chip"
+            correct: false
+            why: "Precision is a side effect. The reasons given are speed — the ATmega32U4 has no floating-point hardware — and the wrapping property."
+          - text: "Compatibility with the library's internal angle format"
+            correct: false
+            why: "The accumulation is code you write yourself in Step 5. Nothing external dictates the unit."
+          - text: "The ability to store angles greater than 360° without overflow"
+            correct: false
+            why: "The opposite: it overflows deliberately at 360°, and that overflow IS the feature."
+
+      - id: L12_B31
+        type: multiple_choice
+        cite: "§4.4"
+        points: 1
+        stem: "Section 4.4 says getTurnAngle() is an example of what a good function does. What?"
+        options:
+          - text: "It takes something ugly and necessary and puts a clean door on it — you ask for degrees, you get degrees"
+            correct: true
+          - text: "It validates its inputs so a caller cannot misuse it"
+            correct: false
+            why: "It takes no inputs at all. The point is about hiding an implementation, not about guarding one."
+          - text: "It is short enough to read in one glance"
+            correct: false
+            why: "It is short, but brevity is not the property being praised. The fixed-point arithmetic it hides is described as real, running, and none of your business."
+          - text: "It caches its result so repeated calls are cheap"
+            correct: false
+            why: "It computes fresh every call. Cheapness comes from integer arithmetic, not caching."
+
+      - id: L12_B32
+        type: matching
+        cite: "§5.1"
+        points: 4
+        stem: "Match each gyro function to when you call it."
+        pairs:
+          - left: "gyroSetup()"
+            right: "Once, in setup() — wakes the chip and measures the lie"
+          - left: "gyroReset()"
+            right: "At the start of every turn — sets the running angle back to zero"
+          - left: "gyroUpdate()"
+            right: "Constantly, inside the turn loop — adds one time-slice of rotation"
+          - left: "getTurnAngle()"
+            right: "Whenever you want the running total, in plain degrees"
+        extra_answers:
+          - "Once per lap, to re-establish the robot's absolute heading"
+          - "After every intersection, to clear the accumulated drift"
+
+      - id: L12_B33
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "What goes wrong if gyroReset() is confused with gyroSetup() and run only once, at boot?"
+        options:
+          - text: "The first turn works and every turn after it finishes instantly"
+            correct: true
+          - text: "The robot turns forever and never arrives"
+            correct: false
+            why: "That is the symptom of gyroUpdate() missing from the turn loop — Bonus B2. Here the total is never zeroed, so the loop exits immediately instead of never."
+          - text: "The gyro reports rotation while the robot sits still"
+            correct: false
+            why: "That is an uncalibrated gyro — the bias was never measured. gyroReset() has nothing to do with bias."
+          - text: "Every turn overshoots by the same amount"
+            correct: false
+            why: "A consistent overshoot is what a poisoned calibration produces, Bonus B1. Here the second turn barely moves at all."
+
+      - id: L12_B34
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "Comparing turnDegrees() with turnDegreesGyro(), how many of the four steps differ?"
+        options:
+          - text: "One — the line that decides when to stop"
+            correct: true
+          - text: "Two — the reset and the stop condition"
+            correct: false
+            why: "Both reset something, so that step is structurally the same; only what gets reset differs. §5.2's claim is that three of four steps are identical and one line is the whole lesson."
+          - text: "Three — everything except spinning the wheels in opposite directions"
+            correct: false
+            why: "The reset and the motor stop are both listed as identical alongside the spin."
+          - text: "All four — it is a completely different function"
+            correct: false
+            why: "It is deliberately the same shape, which is what makes the single differing line so pointed."
+
+      - id: L12_B35
+        type: multiple_choice
+        cite: "§5.2, §8A.1"
+        points: 1
+        stem: "turnDegreesGyro() contains no TRIM. Why is adding it not merely unnecessary but wrong?"
+        options:
+          - text: "The turn is a closed loop already correcting its own error, so TRIM would fight a controller that is already right"
+            correct: true
+          - text: "TRIM only applies to forward motion, and this function turns in place"
+            correct: false
+            why: "turnDegrees() also turns in place and also omits TRIM, but the Quick Reference gives a different reason for it — the wheels oppose on purpose and encoders govern the angle. For the gyro turn the reason is the closed loop."
+          - text: "TRIM would be added to both motors and cancel out"
+            correct: false
+            why: "Bonus B4 adds it to one motor only, and the result is a real bug — subtly, stubbornly off turns."
+          - text: "The gyro cannot measure a robot that is being trimmed"
+            correct: false
+            why: "The gyro measures the chassis regardless of what the motors are told. The objection is about control, not measurement."
+
+      - id: L12_B36
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "How does Step 8 upgrade every turn in the book?"
+        options:
+          - text: "By changing three words — the three one-line helpers turnLeft(), turnRight() and turnAround() now call turnDegreesGyro()"
+            correct: true
+          - text: "By deleting turnDegrees() so every caller falls through to the gyro version"
+            correct: false
+            why: "turnDegrees() is deliberately kept. §5.3 says so, and §7C uses it to break it in front of you."
+          - text: "By searching and replacing turnDegrees with turnDegreesGyro across four lessons' files"
+            correct: false
+            why: "That is what it WOULD have taken if the turns had been written longhand at each call site — and §5.3 says you would have missed one."
+          - text: "By adding a global flag that turnDegrees() checks before deciding which instrument to use"
+            correct: false
+            why: "No such flag exists. The change is three call sites in three one-line functions."
+
+      - id: L12_B37
+        type: true_false
+        cite: "§5.3"
+        points: 1
+        stem: "turnDegrees() is deleted in Step 8 once the gyro version takes over."
+        correct: false
+        why: "It stays on purpose. It is still correct, it still works, and on carpet it still agrees with the gyro to within a degree or two — and §7C uses it to break it deliberately in front of you. Deleting the old thing teaches nothing; contradicting it teaches everything."
+
+      - id: L12_B38
+        type: matching
+        cite: "§8"
+        points: 4
+        stem: "Section 8 pairs each symptom with a cause. Match them."
+        pairs:
+          - left: "Hangs at 'Gyro calibrating / HOLD STILL' forever"
+            right: "The I2C bus was never switched on — Wire.begin() is missing"
+          - left: "The angle climbs steadily while the robot sits still"
+            right: "The gyro never learned its own bias, so it reports its resting lie as rotation"
+          - left: "The robot turns and turns and never stops"
+            right: "gyroUpdate() is not being called inside the turn loop, so the total never grows"
+          - left: "Every turn is wildly wrong, and it was fine yesterday"
+            right: "Something moved the robot during the 1,024-sample calibration"
+        extra_answers:
+          - "TURN_SPEED is set higher than the motors can sustain"
+          - "The encoders and the gyro are fighting each other for the I2C bus"
+
+      - id: L12_B39
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "The build fails with 'redefinition of Zumo32U4IMU imu'. What did you do?"
+        options:
+          - text: "Created the object in more than one place — probably put the real definition in the .h as well as the .cpp"
+            correct: true
+          - text: "Declared it extern in two different headers"
+            correct: false
+            why: "extern is a promise and may appear repeatedly. Redefinition means the object was actually MADE more than once."
+          - text: "Included RobotSensors.h from two different .cpp files"
+            correct: false
+            why: "That is normal and expected — it is exactly what the extern pattern is for."
+          - text: "Named a local variable imu inside a function"
+            correct: false
+            why: "A local would shadow, not redefine, and the compiler's wording would differ."
+
+      - id: L12_B40
+        type: multiple_choice
+        cite: "§8"
+        points: 1
+        stem: "Your turns come out consistently a few degrees short or long. What does Section 8 say about it?"
+        options:
+          - text: "A few degrees is normal and expected — the gyro is enormously better than the encoder on a slick floor, not perfect"
+            correct: true
+          - text: "The calibration was poisoned; recalibrate with the robot still"
+            correct: false
+            why: "A poisoned calibration produces wildly wrong turns, not a few degrees. §8 lists those as separate rows."
+          - text: "GYRO_CAL_SAMPLES is too low; raise it above 1024"
+            correct: false
+            why: "The table does suggest checking that constant, but for the steadily-climbing symptom rather than this one. A few degrees is attributed to residual drift and motor coast."
+          - text: "TURN_SPEED is too high for the accumulator to keep up"
+            correct: false
+            why: "No such claim appears. The remedy offered is Challenge 1's absolute headings, so the small errors stop stacking."
+
+      - id: L12_B41
+        type: multiple_choice
+        cite: "§8A.1, Glossary"
+        points: 1
+        stem: "What is dead reckoning, and what is its fatal property?"
+        options:
+          - text: "Working out where you are from where you started plus what you did — and errors accumulate and never cancel"
+            correct: true
+          - text: "Navigating by an absolute reference like a compass — and it fails indoors"
+            correct: false
+            why: "An absolute reference is the thing that ESCAPES dead reckoning. §8A.1 lists a compass, a GPS and a line on the floor as the escapes."
+          - text: "Estimating position from speed and time — and it fails when speed varies"
+            correct: false
+            why: "That is Lesson 11's stopwatch specifically. Dead reckoning is broader and its flaw is accumulation, not speed dependence."
+          - text: "Measuring the same quantity two ways — and it fails when the two agree"
+            correct: false
+            why: "That is §8A.2's cross-check, and two instruments agreeing is the good case, not a failure."
+
+      - id: L12_B42
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "If each of your four square corners is 5° short, how far off is the robot at the end?"
+        options:
+          - text: "20° — the errors add up and do not cancel"
+            correct: true
+          - text: "5° — each corner's error is corrected by the next one"
+            correct: false
+            why: "Nothing corrects them. That is the definition of accumulation, and §7E's Button A shows it on the delrin."
+          - text: "0° — four equal errors around a closed shape cancel exactly"
+            correct: false
+            why: "They would cancel only if they alternated in sign. All four turns go the same way, so all four errors go the same way."
+          - text: "It cannot be predicted, because the errors are random"
+            correct: false
+            why: "A systematic shortfall is not random. The lesson gives the arithmetic directly."
+
+      - id: L12_B43
+        type: true_false
+        cite: "§8A.1"
+        points: 1
+        stem: "The gyro escapes dead reckoning entirely, because it measures the robot rather than the wheels."
+        correct: false
+        why: "It breaks the CHAIN — an error in corner 1 is not inherited by corner 2 — but it is still dead reckoning: it accumulates rate over time and still drifts, just far more slowly. It is a better instrument, not a different kind of instrument. Only something measuring 'where am I, absolutely' escapes, which is exactly why the robot never stopped following the line."
+
+      - id: L12_B44
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "Section 8A.2 says owning two instruments that measure the same thing is not redundancy but a capability. Why?"
+        options:
+          - text: "When two instruments that should agree disagree, the disagreement is itself information neither could produce alone"
+            correct: true
+          - text: "Because if one fails you can fall back on the other"
+            correct: false
+            why: "That is redundancy, and it is precisely the framing the section rejects. The value is in comparing them, not in substituting one for the other."
+          - text: "Because averaging two readings is more accurate than either"
+            correct: false
+            why: "They measure the same quantity in different senses and are not averaged anywhere. The gap between them is the signal."
+          - text: "Because the encoder can calibrate the gyro at runtime"
+            correct: false
+            why: "Nothing calibrates the gyro but the still measurement at boot. The encoder is not a reference for it."
+
+      - id: L12_B45
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "The encoder says 90 degrees and the gyro says 31. What is the 59-degree gap?"
+        options:
+          - text: "The slip — and it is visible only if you hold both numbers at once"
+            correct: true
+          - text: "The gyro's accumulated drift over the turn"
+            correct: false
+            why: "Drift is a few degrees over long idle periods, not 59 across one turn. The gap is the wheels turning without moving the robot."
+          - text: "Calibration error in COUNTS_PER_DEGREE"
+            correct: false
+            why: "A wrong constant would be wrong by the same proportion on every surface, including carpet — where the two instruments agree."
+          - text: "The difference between the commanded angle and the achieved angle"
+            correct: false
+            why: "Close, but it names the symptom rather than the cause. The lesson names it: the wheels are slipping."
+
+      - id: L12_B46
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "Section 8A.4 says the gyro is not simply better. Name a row where the encoder wins."
+        options:
+          - text: "Drift when idle — the encoder is perfectly stable where the gyro drifts constantly"
+            correct: true
+          - text: "Measuring rotation on any surface"
+            correct: false
+            why: "That is the gyro's row. The encoder measures rotation only if the wheels grip."
+          - text: "Detecting when the robot has been lifted"
+            correct: false
+            why: "The encoder happily reports the robot as driving when it is in the air. That row belongs to the gyro."
+          - text: "Requiring no I2C bus"
+            correct: false
+            why: "True but not a row in the table, and the lesson treats the bus as free rather than as a cost."
+
+      - id: L12_B47
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "Which job did you deliberately NOT give the gyro, and why?"
+        options:
+          - text: "Distance — driveDistance() stays with the encoder, because the gyro physically cannot measure distance"
+            correct: true
+          - text: "Intersection turns — those stayed on the encoder for compatibility with Lesson 9"
+            correct: false
+            why: "The opposite: Step 8 routed exactly those through the gyro by changing three words."
+          - text: "Line following — followLine() could use the gyro but does not, for speed"
+            correct: false
+            why: "followLine() is a closed loop on the line itself and has no use for a heading. Speed is not the reason."
+          - text: "Nothing — the gyro replaced the encoder everywhere"
+            correct: false
+            why: "§8A.4 is built around the fact that it did not. Each sensor kept the job it is actually good at."
+
+      - id: L12_B48
+        type: true_false
+        cite: "§8A.4"
+        points: 1
+        stem: "Left powered on for an hour untouched, the encoder still reports the perfect truth while the gyro has invented rotation that never happened."
+        correct: true
+        why: "Stated directly. The encoder is rock solid in exactly the places the gyro is weakest — it never drifts and needs no calibration, where the gyro drifts constantly and needs calibrating every single boot."
+
+      - id: L12_B49
+        type: matching
+        cite: "Glossary"
+        points: 4
+        stem: "Match each glossary term to its definition."
+        pairs:
+          - left: "Bias / drift"
+            right: "The rotation a gyro reports when it is perfectly still — up to 25°/sec of pure fiction"
+          - left: "Integration (accumulation)"
+            right: "Adding up a rate over time to get a total, thousands of times per turn"
+          - left: "Wheel slip"
+            right: "The wheel turns but the robot does not — and from inside the wheel it is real motion"
+          - left: "I2C"
+            right: "A two-wire bus that chips use to talk; must be switched on with Wire.begin()"
+        extra_answers:
+          - "The angle between the robot's heading and the line beneath it"
+          - "The number of encoder counts corresponding to one degree of turn"
+
+      - id: L12_B50
+        type: multiple_choice
+        cite: "§10, §3.1"
+        points: 1
+        stem: "The lesson's closing sentence generalises the whole thing. Which is it?"
+        options:
+          - text: "A sensor can only tell you about the thing it watches"
+            correct: true
+          - text: "Two sensors are always better than one"
+            correct: false
+            why: "§8A.4 argues against exactly this — the skill is knowing what each sensor is FOR, not collecting more of them."
+          - text: "Never trust a sensor you have not calibrated"
+            correct: false
+            why: "True of the gyro and false of the encoder, which needs no calibration. The closing line is broader."
+          - text: "Closed loops are always better than open loops"
+            correct: false
+            why: "driveDistance() and handleGap() remain open loops on purpose. The lesson does not make this claim."
+
+  after:
+    description: "Post-build check. Assumes you have actually built the Section 6 project and worked the Section 7 rungs."
+    suggested_draw: 8
+    questions:
+
+      - id: L12_A01
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "Step 1's NOTE says your project is eight files, and names one whose absence matters most. Which, and why?"
+        options:
+          - text: "RobotHelpers — without it you are missing waitForStart(), your safety gate"
+            correct: true
+          - text: "RobotConfig.h — without it none of the constants resolve"
+            correct: false
+            why: "A missing config would fail to compile immediately and loudly. The warning is about a file whose absence is dangerous rather than obvious."
+          - text: "RobotMotion.cpp — without it the robot cannot turn"
+            correct: false
+            why: "Also a build failure rather than a silent hazard. The NOTE singles out the safety gate."
+          - text: "main.cpp — without it there is no setup() or loop()"
+            correct: false
+            why: "You would have no program at all, which is not a subtle failure worth a NOTE."
+
+      - id: L12_A02
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "Step 2 puts one line in RobotSensors.h and a different line in RobotSensors.cpp. What is the difference?"
+        options:
+          - text: "The .h says the object exists somewhere; the .cpp actually makes it, exactly once"
+            correct: true
+          - text: "The .h creates it and the .cpp initialises it"
+            correct: false
+            why: "Reversed. An extern in a header creates nothing — putting the real definition there is what causes the redefinition error in §8."
+          - text: "The .h version is for other files and the .cpp version is for this file"
+            correct: false
+            why: "There is only one object. The header lets every file talk about the one the .cpp made."
+          - text: "They are the same line, repeated so both files compile independently"
+            correct: false
+            why: "They differ by the word extern, and that word is the whole pattern."
+
+      - id: L12_A03
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "GYRO_CAL_SAMPLES is declared as a plain int rather than uint16_t. Why?"
+        options:
+          - text: "RobotConfig.h does not include <Arduino.h>, so the fixed-width types are not defined there"
+            correct: true
+          - text: "uint16_t cannot hold 1024"
+            correct: false
+            why: "It holds up to 65,535. The reason is about which types are visible in that file."
+          - text: "A signed type is needed because the offset can be negative"
+            correct: false
+            why: "gyroOffset is the value that can be negative, and it is a separate int16_t in RobotSensors.cpp. This constant is a sample count."
+          - text: "Plain int is faster on the ATmega32U4"
+            correct: false
+            why: "It is the same width. The lesson's reason is availability of the type, not speed."
+
+      - id: L12_A04
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "After Step 4 adds four prototypes and nothing else, the project still compiles. What does the NOTE say that proves?"
+        options:
+          - text: "A prototype is a promise, and the compiler is willing to wait until link time to see it kept"
+            correct: true
+          - text: "The functions already exist in the Pololu library"
+            correct: false
+            why: "You write all four yourself in Step 5. Nothing supplies them."
+          - text: "Unused declarations are stripped before compilation"
+            correct: false
+            why: "Stripping happens at link time and applies to unused DEFINITIONS — that is Step 7's lesson, not Step 4's."
+          - text: "The header is not compiled until something includes it"
+            correct: false
+            why: "It is already included. The point is about the difference between declaring and defining."
+
+      - id: L12_A05
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "Step 5 adds the four gyro functions. What does the binary do?"
+        options:
+          - text: "Grows by 800 bytes, from 20,702 to 21,502 — the I2C code, the calibration loop and the accumulator going live"
+            correct: true
+          - text: "Does not change, because nothing calls the new functions yet"
+            correct: false
+            why: "That is Steps 6 and 7, where a written-but-uncalled function is discarded. Step 5's functions are reached from gyroSetup() onward once Step 8 wires them, and the code lands here."
+          - text: "Grows by 3,192 bytes, the largest single jump in the lesson"
+            correct: false
+            why: "That jump is Step 8, when the three turns switch and the whole gyro turn becomes reachable."
+          - text: "Shrinks, because the new functions replace older encoder code"
+            correct: false
+            why: "Nothing is replaced in Step 5. turnDegrees() stays in the project all the way through."
+
+      - id: L12_A06
+        type: true_false
+        cite: "§6 Step 7"
+        points: 1
+        stem: "Writing turnDegreesGyro() in Step 7 made the binary larger."
+        correct: false
+        why: "It stayed at 21,502, to the byte. You wrote a 25-line function and the program did not grow, because nobody calls it — the linker walked the program, found turnDegreesGyro() unreachable from main(), and threw it away before writing the binary."
+
+      - id: L12_A07
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "Why does the linker discard an unreachable function on this chip in particular?"
+        options:
+          - text: "Flash is tight — 32 KB on paper, but 4 KB is the bootloader, leaving 28,672 bytes that are actually yours"
+            correct: true
+          - text: "Because unreachable code would cause undefined behaviour if it ever ran"
+            correct: false
+            why: "It is perfectly well-defined code. The reason given is space, not correctness."
+          - text: "Because the function had no prototype in a header"
+            correct: false
+            why: "It does — Step 6 declares it in RobotMotion.h. Declaration is not what makes it reachable."
+          - text: "Because -Os optimises away any function under 30 lines"
+            correct: false
+            why: "Size of the function is irrelevant. Reachability from main() is the test."
+
+      - id: L12_A08
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "Step 8 makes two edits. What are they?"
+        options:
+          - text: "The three intersection helpers switch to turnDegreesGyro(), and gyroSetup() is added to setup() before waitForStart()"
+            correct: true
+          - text: "turnDegrees() is deleted, and gyroSetup() is added to setup()"
+            correct: false
+            why: "turnDegrees() is deliberately kept — §7C needs it to break it in front of you."
+          - text: "The three helpers switch, and calibrateLineSensors() is moved after the gyro calibration"
+            correct: false
+            why: "The line calibration was already last. What is ADDED is the gyro block, and it is seated before the safety gate."
+          - text: "gyroUpdate() is added to loop(), and the helpers switch"
+            correct: false
+            why: "gyroUpdate() lives inside turnDegreesGyro()'s own loop, not in loop(). Putting it in loop() would not accumulate during a turn."
+
+      - id: L12_A09
+        type: multiple_choice
+        cite: "§6 Step 8"
+        points: 1
+        stem: "What does the binary do at Step 8, and what does the lesson say the jump proves?"
+        options:
+          - text: "21,502 to 24,694, up 3,192 — the three words made turnDegreesGyro() reachable, dragging the whole gyro turn into the binary"
+            correct: true
+          - text: "21,502 to 24,694, up 3,192 — the gyro calibration loop is finally compiled in"
+            correct: false
+            why: "The calibration loop landed in Step 5, which is where the 800 bytes went. Step 8's jump is about reachability."
+          - text: "It does not change, because the helpers were one-liners either way"
+            correct: false
+            why: "The helpers are one-liners, but what they now call was previously discarded as dead weight. That is the entire point of the jump."
+          - text: "21,502 to 24,694, up 3,192 — mostly the new OLED strings for the calibration prompt"
+            correct: false
+            why: "The strings are a small part. The lesson attributes the jump to the turn, the accumulator and the float comparison becoming reachable."
+
+      - id: L12_A10
+        type: multiple_choice
+        cite: "§6 Step 8, §3.6"
+        points: 1
+        stem: "Step 8's gyro block must go before waitForStart(). What breaks if it goes after?"
+        options:
+          - text: "calibrateLineSensors() spins the robot, so the gyro would learn that spinning is what standing still feels like"
+            correct: true
+          - text: "waitForStart() disables interrupts, so the gyro could not be read"
+            correct: false
+            why: "No such claim appears, and the gyro is read over I2C in a blocking loop rather than by interrupt."
+          - text: "The OLED would already be showing the start prompt, so HOLD STILL could not be displayed"
+            correct: false
+            why: "The display could be rewritten either way. The reason is the spin, not the screen."
+          - text: "Nothing — the order is a stylistic preference"
+            correct: false
+            why: "The lesson says explicitly that order is not decoration here, and Bonus B1 breaks it on purpose."
+
+      - id: L12_A11
+        type: multiple_choice
+        cite: "§7A"
+        points: 1
+        stem: "Rung 7A replaces loop() with a sketch in which the motors never run. What is it demonstrating?"
+        options:
+          - text: "That the gyro is an instrument, not a motor command — it measures the world whether or not you are driving"
+            correct: true
+          - text: "That the gyro needs no calibration when the motors are off"
+            correct: false
+            why: "It needs calibration regardless, and 7B exists to show what happens without it."
+          - text: "That the encoders and the gyro agree when nothing is moving"
+            correct: false
+            why: "The encoders report nothing at all in this test, which is the contrast being drawn rather than an agreement."
+          - text: "That turnDegreesGyro() works without the motors"
+            correct: false
+            why: "turnDegreesGyro() is not called here. The sketch only reads and displays."
+
+      - id: L12_A12
+        type: true_false
+        cite: "§7A"
+        points: 1
+        stem: "Leaving the robot untouched for thirty seconds in 7A, the displayed angle slowly wanders — and that is why gyroReset() runs at the start of every turn rather than once at boot."
+        correct: true
+        why: "The wander is leftover bias the 1,024-sample average could not perfectly cancel. Resetting per turn gives the drift as little time as possible to accumulate."
+
+      - id: L12_A13
+        type: multiple_choice
+        cite: "§7B"
+        points: 1
+        stem: "Rung 7B deletes the calibration and compares byte counts. What does it find, and what is the lesson drawn from it?"
+        options:
+          - text: "The broken build is 204 bytes cheaper — the lie costs less than the truth, and honesty is not free"
+            correct: true
+          - text: "The broken build is the same size, because the calibration loop is optimised away"
+            correct: false
+            why: "It is genuinely smaller. A loop that runs 1,024 times is real code and the linker keeps it when it is reachable."
+          - text: "The broken build is larger, because the raw readings need more handling"
+            correct: false
+            why: "Deleting code made it smaller, which is the arithmetic the rung is built on."
+          - text: "The byte count is unchanged but the RAM usage falls"
+            correct: false
+            why: "The rung's figure is a flash comparison, and the difference is 204 bytes."
+
+      - id: L12_A14
+        type: multiple_choice
+        cite: "§7C"
+        points: 1
+        stem: "In 7C the encoder drives the turn and the gyro only watches. Why is 'Encoder: 90' hardcoded in the sketch rather than read back?"
+        options:
+          - text: "Because it does not have to be read — the encoder is always certain, and that certainty is the problem"
+            correct: true
+          - text: "Because reading the encoder after stopping would return zero"
+            correct: false
+            why: "The counts are still there after the stop; Challenge 2 reads related values happily. The point being made is about certainty, not about availability."
+          - text: "To save the bytes a second encoder read would cost"
+            correct: false
+            why: "Nothing in the rung is byte-constrained, and the lesson gives an explicit different reason."
+          - text: "Because the encoder count is in counts, not degrees, and converting would be misleading"
+            correct: false
+            why: "The conversion exists and is used to set the target in the same sketch."
+
+      - id: L12_A15
+        type: true_false
+        cite: "§7D"
+        points: 1
+        stem: "In 7D the gyro-driven turn reaches 90° on the slick surface because the wheels stop slipping once the gyro is in charge."
+        correct: false
+        why: "The wheels are still slipping — you can hear them, and the turn takes noticeably longer than on carpet. The robot simply keeps spinning the motors until the CHASSIS has come around 90°. Slip does not make it wrong; slip just makes it slow."
+
+      - id: L12_A16
+        type: multiple_choice
+        cite: "§7E"
+        points: 1
+        stem: "Rung 7E runs the Lesson 6 square twice. What do the two buttons do, and what happens on the delrin?"
+        options:
+          - text: "A turns the corners with the encoder and the square collapses; C turns them with the gyro and the robot comes home"
+            correct: true
+          - text: "A drives clockwise and C drives counter-clockwise, to show the errors cancel"
+            correct: false
+            why: "Both drive the same square. The variable is the instrument used at the corners, and §8A.1 says the errors do not cancel."
+          - text: "A uses TRIM and C does not, to isolate TRIM's contribution"
+            correct: false
+            why: "TRIM applies to driveDistance() in both runs. Neither turn function uses it."
+          - text: "A runs on carpet and C on delrin"
+            correct: false
+            why: "You run both on carpet first, where they agree, and then both on delrin, where they do not."
+
+      - id: L12_A17
+        type: true_false
+        cite: "§7E"
+        points: 1
+        stem: "After Section 7 you restore the real loop(), and the rebuilt project should compile to 24,694 bytes."
+        correct: true
+        why: "Section 7 replaced loop() with test sketches. Restoring the Lesson 11 state machine and rebuilding gives the finished Lesson 12 figure, and the robot drives the full course with every turn closing on the gyro."
+
+      - id: L12_A18
+        type: matching
+        cite: "Sabotage"
+        points: 4
+        stem: "Each Sabotage mystery changes one line. Match the change to the symptom."
+        pairs:
+          - left: "The motors spin during the calibration loop"
+            right: "Boots, spins briefly, then every turn is wrong — and wrong by a consistent amount"
+          - left: "gyroUpdate() is deleted from the turn loop"
+            right: "The robot starts a turn and never stops turning"
+          - left: "gyroReset() is moved out to setup()"
+            right: "The first turn is perfect; every turn after it finishes instantly"
+          - left: "TRIM is added to the turn's setSpeeds() call"
+            right: "Turns are subtly, stubbornly off — but only once you fill in your TRIM value"
+        extra_answers:
+          - "The robot hangs at boot and never shows anything after HOLD STILL"
+          - "Turns are correct but the display shows the wrong state name"
+
+      - id: L12_A19
+        type: matching
+        cite: "Sabotage"
+        points: 3
+        stem: "Three of the four mysteries change the program's size. Match each build to its byte count."
+        pairs:
+          - left: "B1 — the calibration that spins"
+            right: "24,718 bytes"
+          - left: "B2 — the turn that never ends"
+            right: "24,042 bytes"
+          - left: "B4 — the helpful TRIM"
+            right: "24,694 bytes"
+        extra_answers:
+          - "21,502 bytes"
+          - "20,422 bytes"
+
+      - id: L12_A20
+        type: multiple_choice
+        cite: "Sabotage Mystery B2"
+        points: 1
+        stem: "Mystery B2 deletes gyroUpdate() from the turn loop. How does its size compare to the correct build, and what does the lesson draw from that?"
+        options:
+          - text: "652 bytes smaller — deleting code makes the program smaller, and it does not make it work"
+            correct: true
+          - text: "652 bytes larger, because the empty loop must be padded"
+            correct: false
+            why: "Deleting a call removes work; nothing is padded. The build genuinely shrinks."
+          - text: "Identical, because the call was inlined anyway"
+            correct: false
+            why: "That is B4's property, and B4 is the one mystery that costs zero bytes."
+          - text: "Smaller by 3,192 bytes, the same amount Step 8 added"
+            correct: false
+            why: "Step 8's jump brought in the whole reachable turn. B2 removes one call from inside it."
+
+      - id: L12_A21
+        type: true_false
+        cite: "Sabotage Mystery B4, §5.2"
+        points: 1
+        stem: "Mystery B4 adds TRIM to the gyro turn, and the resulting build is exactly the same size as the correct one."
+        correct: true
+        why: "With TRIM = 0, leftSpeed + TRIM folds away at compile time to plain leftSpeed and the compiler emits byte-for-byte identical machine code. The bug is live in the source and costs nothing until the constant stops being zero — so it appears at the exact moment you fix a different problem. A binary that is the right size is not a binary that is right."
+
+      - id: L12_A22
+        type: multiple_choice
+        cite: "Sabotage"
+        points: 1
+        stem: "What does the lesson say Mystery B4 should teach you for the rest of your life?"
+        options:
+          - text: "Three of the four mysteries could have been caught by watching the byte count; B4 cannot — there is no tool that saves you from having to think"
+            correct: true
+          - text: "Always set TRIM to zero before testing a turn"
+            correct: false
+            why: "Zero TRIM is what HIDES this bug. Setting it to zero as a habit would make the defect permanently invisible."
+          - text: "Never add a correction to a function you did not write"
+            correct: false
+            why: "The objection is specific — TRIM fights a closed loop — not a general rule about editing other people's functions."
+          - text: "Byte counts are unreliable and should not be used as a check"
+            correct: false
+            why: "The lesson calls the byte count a useful signal, never a proof. That is a narrower claim than discarding it."
+
+      - id: L12_A23
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "Challenge 1 writes turnToHeading(). What is HEADING_TOLERANCE for?"
+        options:
+          - text: "The robot will never land on exactly 90.000°, so tolerance is how close is close enough — too tight and it oscillates forever, too loose and turns are sloppy"
+            correct: true
+          - text: "It caps how far the robot is allowed to turn in one call"
+            correct: false
+            why: "The target heading does that. Tolerance governs when the loop is satisfied, not how far it may go."
+          - text: "It is the drift allowance subtracted from every reading"
+            correct: false
+            why: "The drift correction is gyroOffset, measured at boot. Tolerance is a stopping criterion."
+          - text: "It sets how often gyroUpdate() is called during the turn"
+            correct: false
+            why: "gyroUpdate() is called every pass of the loop, as often as possible. Tolerance has nothing to do with rate."
+
+      - id: L12_A24
+        type: multiple_choice
+        cite: "§9 Challenge 2"
+        points: 1
+        stem: "Challenge 2's slip alarm compares two values. What are they?"
+        options:
+          - text: "The gyro's measured angle against the encoder's hardcoded claim of 90 — and a difference beyond SLIP_TOLERANCE means the wheels slipped"
+            correct: true
+          - text: "The left encoder against the right encoder"
+            correct: false
+            why: "Both wheels can slip together, and in a spin turn they are meant to disagree in sign. Neither one watches the chassis."
+          - text: "The commanded turn speed against the achieved turn speed"
+            correct: false
+            why: "Speed is not measured anywhere in the challenge. The comparison is between two angle answers."
+          - text: "The gyro's reading before and after the turn"
+            correct: false
+            why: "That difference is just the turn itself. The audit needs a second, independent instrument to compare against."
+
+      - id: L12_A25
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "Challenge 3 gives turnDegreesGyro() a timeout. What does the lesson insist it must do when the budget runs out?"
+        options:
+          - text: "Stop the motors, report the failure honestly, and halt — a robot that knows it failed and keeps going is more dangerous than one that never knew"
+            correct: true
+          - text: "Retry the turn once at a higher speed before giving up"
+            correct: false
+            why: "No retry appears, and a faster attempt against a jammed wheel just grinds the motors harder."
+          - text: "Fall back to turnDegrees() so the turn completes on the encoder"
+            correct: false
+            why: "The encoder would happily declare a turn that never happened, which is the failure the whole lesson exists to prevent."
+          - text: "Log the failure and continue with the course"
+            correct: false
+            why: "Continuing is exactly what it must not do. If the turn did not happen, everything afterwards rests on a false idea of which way the robot points."

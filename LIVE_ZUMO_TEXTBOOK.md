@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 11, 2026 (Session 145 — **THE S144 CLOSE PUSH HAD NOT LANDED, AND `session_versions --selftest` CONTROL C IS WHAT SAID SO.** The tree at session open read L11 v02.29.0, Bible v8.135.2 and `book_gates` v1.65.9 against a handoff claiming v02.30.0 / v8.135.3 / v1.65.10 at the same SHA; re-checked after 70 s per §12.4, so timing was ruled out. DJ pushed, and the same control went silent on the complete tree — **the loop closed, which is what makes it evidence rather than coincidence.** **THEN THE TRIM SPLIT WAS RULED, AND IT WAS NEVER THE SPLIT S144 DESCRIBED.** Not lesson against lesson but **PROSE against CODE COMMENTS**, with one prose leak in L13; and the 342 payload comments were **TWO SHAPES**, 148 of which already read *born in Lesson 3, spent in Lesson 6, and filed here* and were CORRECT. **A census that reports one number for two shapes has already lost the ruling.** Two S144 claims were false on re-reading — L03 does not *say both* and L09 is a false positive, both text matches read as answers (rule 38).)
-**Status:** ✅ **70/70 GATES · §16.15 NEW — TRIM'S HOME IS LESSON 3, BOOK-WIDE · 194 PAYLOAD CITATIONS FLIPPED, 148 DELIBERATELY KEPT · L11 READ, FIXED AND NOW BANKED.** DJ ruled Option 2: strip the lesson number from the relocation comment rather than flip it, so line 4 keeps the only sentence in the book that says TRIM MOVED. **The argument I nearly made against flipping did not survive measurement** — L03's finished `main.cpp` is 227 lines against L06's 215, so *buried in a 200-line file* holds either way; the real cost was the deletion, not a falsehood. `gate_payload_match` blinding-controlled: reverting ONE of 342 sites fires it. **CANON DEBT FOUND, RECORDED NOT FIXED: §16.14 HAS NO NUMBERED SECTION BODY** — v8.135.3 announces it and the file carries no `### 16.14` line, so the cliff ruling lives only in a changelog entry. **BANK L11 v1.0.0 WRITTEN AGAINST v02.30.0** — 50 before + 25 after, 72/18/10 and 72/20/8, banks 10 → 11 of 16 (**derive the total; never read it here**). **SEVEN ANSWERS DELIBERATELY NOT ASKED, EACH WITH ITS REASON IN THE FILE HEADER**, chief among them any value of `GAP_MAX_CM` — the number is measured per robot and the lesson ships the blank at 0.0 on purpose. **AGAINST v02.29.0, SEVEN §3.5 QUESTIONS WOULD HAVE KEYED BACKWARDS**, which is the largest re-key risk any bank has carried.
+**Date:** August 11, 2026 (Session 145 — **THE BOOK'S BYTE HISTORY HAS BEEN WRONG SINCE S143, AND ONLY A COMPILER COULD SEE IT.** L16 carries a finished-size table for the whole book. Measured against the AVR toolchain — control first, L11 `after_step_1` reproducing **20,516** byte-for-byte — **L07, L08 and L09 are EXACT and L10 through L15 are all stale, by +152, +160, +160, +170, +176 and +180.** The seam is exactly at L10, the lesson S143 rebuilt; every lesson downstream inherited the shift and added its own. **THE CAPSTONE ARITHMETIC IS THE SHARP END:** L16 tells the student they have **638 bytes** to spend and that L16 will spend them and hit the wall. L15 finished measures **28,214**, so the real headroom is **458** — the capstone budget is overstated by 180 bytes, 28% more room than the chip has. Earlier in the session the S144 close push was found never to have landed, and §16.15 ruled TRIM's home to Lesson 3 book-wide.)
+**Status:** ✅ **70/70 GATES · L12 READ, BYTE-FIXED → v01.31.3, AND BANKED · L13–L16 BYTE CASCADE IS A RULED ARC, NOT STARTED.** **EVERY ABSOLUTE IN L12 WAS EXACTLY 160 LOW** — 18 sites moved, and **every delta the lesson teaches with was already correct** (+800, +0, +3,192, −204, and B4 weighing exactly what the correct build weighs), which is why this was a pure re-baselining and not one pedagogical point changed. **The one independent error: Mystery B2 claimed 648 bytes smaller and measures 652.** **RULE 56 FIRED A THIRD TIME** — `build_family_map`'s literal tier pinned *Build it. 21,342 → 24,534 bytes*, the very sentence being corrected, so two gates failed until it was repointed in the same pass (**v1.6.4**). **AND THE DEBT THIS EXPOSES IS NAMED: NOTHING IN THE TREE CAN SEE A WRONG BYTE FIGURE.** Blinding control — revert B1's header to its stale value and all 70 gates pass and `gate_payload_match` passes. Only the toolchain catches it, and nothing runs the toolchain. **BANK L12 v1.0.0** — 50 before + 25 after, 72/18/10 and 72/20/8, banks 11 → 12 of 16. **Every byte figure the bank asserts was re-derived from a compiled build**, and nothing in it asks a figure from any lesson but twelve.
 
-**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.2 · L13 v02.28.3 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.135.4** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.2 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `86fd0bf`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.28.3 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.135.4** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.2 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `d504572`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **L11 is read, fixed and UNBLOCKED: bank it against v02.30.0, and discard any question drafted before the cliff correction, because six homes changed.** L12–L16 are unread and unwritten.
 
@@ -100,6 +100,72 @@ a 12.252 cm circumference, so it is checkable rather than inherited.
 
 **The `after` set shares nothing with BRAIN CHECK 03** — it draws entirely from §6, §7, §9 and
 Sabotage, where BC03 asks §3.2, §8A.1, §8A.3 and §8A.4.
+
+### 5. THE BYTE CASCADE — MEASURED, L12 FIXED, L13-L16 RULED TO A LATER ARC
+
+**L16 carries a finished-size table for the whole book. Against the compiler:**
+
+| | L16 says | measured | |
+|---|---|---|---|
+| L07 | 14,380 | **14,380** | exact |
+| L08 | 17,194 | **17,194** | exact |
+| L09 | 18,158 | **18,158** | exact |
+| L10 | 20,364 | **20,516** | +152 |
+| L11 | 20,542 | **20,702** | +160 |
+| L12 | 24,534 | **24,694** | +160 |
+| L13 | 24,902 | **25,072** | +170 |
+| L14 | 25,640 | **25,816** | +176 |
+| L15 | 28,034 | **28,214** | +180 |
+
+**The control ran first:** L11 `after_step_1` reproduces **20,516** byte-for-byte, which is what licenses
+every other number above.
+
+**L07-L09 are exact and the seam is precisely at L10** - the lesson S143 rebuilt from three driving
+phases to seven. That correction and S144's L11 figure both landed in their own lessons and **neither
+propagated**. L10 and L11 each carry exactly one byte figure and both are already right.
+
+**THE CAPSTONE ARITHMETIC IS THE SHARP CONSEQUENCE.** L16's premise is *"Your Lesson 15 project is 28,034
+of them. You have 638 bytes left - and this lesson is going to spend them, run out, and hit the wall in
+front of you, on purpose."* L15 finished measures **28,214**, so the real headroom is **458 bytes**. The
+capstone budget is overstated by 180 - **28% more room than the chip actually has.** If L16's exercises
+are sized against 638 they overflow before reaching the wall the lesson is built around.
+
+**L12 FIXED, 18 SITES.** 20,542 x2, 21,342 x5, 24,534 x7, and the B1/B2/B3 headers. **Every delta the
+lesson teaches with was already correct** - +800, +0, +3,192, -204, and B4 weighing exactly what the
+correct build weighs - so this was a pure re-baselining and **not one pedagogical point changed.**
+Sections 7A and 7B were **exact and left alone**, because their replacement `loop()` makes the shifted
+code unreachable. **One independent error: Mystery B2 claimed 648 bytes smaller and measures 652.**
+
+**RULE 56, THIRD TIME.** `build_family_map`'s literal tier pinned *"Build it. 21,342 -> 24,534 bytes.
++3,192. Tha"* - the exact sentence being corrected - so §24.14a and §24.14c both failed until it was
+repointed in the same pass. `build_family_map` **v1.6.3 -> v1.6.4**, no tier logic changed.
+
+**THE DEBT, NAMED: NO INSTRUMENT IN THIS TREE CAN SEE A WRONG BYTE FIGURE.** Blinding control - revert
+B1's header to its stale 24,558, a figure outside every pinned literal, and **all 70 gates pass and
+`gate_payload_match` passes.** The first control I ran did fire, but only because that figure happened to
+sit inside the pinned tier: **a hold satisfied by an accident is not a hold** (rule 20). Only the AVR
+toolchain can check a byte claim, and nothing in `book_gates.py` runs it. Same debt shape as *no gate
+holds a quiz bank*.
+
+**DJ RULING S145: fix L12, bank it, and log L13-L16 as a separate arc.** Not started. Price: ~80 byte
+figures across L13 (10), L14 (8), L15 (16) and L16 (47), each needing its own compile.
+
+### 6. BANK L12 v1.0.0 — 50 BEFORE + 25 AFTER, BANKS 11 -> 12 OF 16
+
+Mix derived: **72 / 18 / 10** and **72 / 20 / 8**. **Every byte figure the bank asserts was re-derived
+from a compiled build**, and a sweep of the finished file confirms the only non-measured numbers in it
+are the `$40,000` aircraft gyro and `65,535`. **Nothing asks a figure from any lesson but twelve**, because
+L13-L16 are known stale.
+
+**Eight answers deliberately not asked, each with its reason in the header** - chief among them the
+2^29 conversion constants (the lesson says you do not need to derive them), any real gyro reading from a
+real robot, `IMAGE 12.1` (still needed, does not exist), and **§3.2's 5.5 counts per degree as
+arithmetic**: the real constant computes to **5.507**, so 90° is 495.7 counts and the lesson's **496 is
+right** - but 5.5 x 90 is 495, so asking a student to reproduce that multiplication sets a trap on a
+rounding artifact. Recorded as a lead, not a defect.
+
+**Rule 44 paid before it could fire:** all 12 ids the header names asserted to exist, all six `source:`
+pins compared against the live lesson first lines.
 
 ---
 ---
