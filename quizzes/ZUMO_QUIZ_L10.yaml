@@ -1,0 +1,1274 @@
+# ZUMO READING QUIZ BANK — LESSON 10
+# Obstacles · When the Course Fights Back
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_10.html v02.29.1 (post-S143 maneuver rebuild, post-S144 fixes)
+#
+# READ -> FIX -> QUIZ. Lesson 10 was read end to end in S143 (the maneuver rebuild) and read
+# again in S144 before a question was written. Three S144 findings are load-bearing here:
+#
+#   1. §8.3's TURN-ERROR ARITHMETIC WAS WRONG, IN THE ENTRY S143 HAD JUST REWRITTEN. It read
+#      "the box uses it three times, so a 10° error becomes 30°". The box turns +90, −90, −90
+#      — one way and back twice — so a proportional turn error largely CANCELS: net is
+#      90k − 90k − 90k = −90k, and one turn off by 10° leaves the heading off by 10°, not 30°.
+#      The accumulate-logic was imported from §7D's square, where it IS correct because all
+#      four turns go the same way (2° × 4 = 8°). A16 and B-set item B50's ACCUMULATED ERROR
+#      pair both rest on the square, never on the box, for exactly that reason.
+#   2. §4.3's SODA-CAN COUNT WAS UNVERIFIABLE. "It fails four of the five rows" names four
+#      adjectives across three rows — round and shiny both land on Surface, and a can PASSES
+#      Height at ~12 cm against the table's 5 cm floor. B23 and B24 ask what a single named
+#      property does to the IR, never how many rows anything fails.
+#   3. CALLOUT 10.5 WORE THE WARNING FAMILY'S AMBER on a data-family="NOTE" block. Cosmetic,
+#      not askable, recorded so a later session does not re-find it.
+#
+#   The S143 findings that still shape this bank: the maneuver is SEVEN phases (five that
+#   drive, two that do not), the timed build has FIVE blind delay() windows and not three,
+#   and four byte claims were corrected against a real avr-gcc build — Step 6 +2, Step 7
+#   +194, Step 8 +660, Step 9 20,516. A06, A13 and A18 ask those corrected figures; against
+#   v02.27.x every one of them would have been keyed wrong.
+#
+# SIX ANSWERS DELIBERATELY NOT ASKED:
+#   - WHERE THE ROBOT ENDS UP WHEN THE BOX FINISHES, AND WHAT HAPPENS AFTER THE LINE IS
+#     FOUND. This is the S144 open finding and it is UNRULED. The box turns +90, −90, −90
+#     for a net −90, so it arrives PERPENDICULAR to the line and nothing in the tree turns
+#     the robot back along it. GRAPHIC 10.2 ("LINE FOUND — follow it again"), §3.3 ("ready
+#     to cross it"), §7.7 ("resumes line following as if nothing happened") and Sabotage B5
+#     all agree with each other and with the code — there is no outlier, and only the floor
+#     can settle it. So NOTHING in this bank keys on the finishing pose, on the crossing
+#     angle, or on what the robot does in the seconds after SEEKING becomes FOLLOWING.
+#     B10 and B11 ask what PHASE_SEEK_LINE and PHASE_COMPLETE DO (start a stopwatch, hand
+#     off) — both stated four times over and both independent of the geometry.
+#   - THE BOX-VERSUS-WEDGE CROSSING DISTANCES. Challenge 6 states the box crosses after
+#     roughly 15 cm and the wedge takes about twice that. Both sit on the same unruled
+#     geometry. A25 asks what Challenge 6 CHANGES (drop the parallel leg, turn back past
+#     the heading); B-set asks nothing about it. The SIGN TRAP is asked, because it is
+#     self-contained arithmetic that holds either way: turning back only 70° leaves the
+#     robot pointing 20° away and DIVERGING.
+#   - AVOID_OUT_CM = 15.0 AS A CORRECT DISTANCE. Derived to clear the line and the block,
+#     never measured against a real block. It is asked only as what the constant DECIDES
+#     (B47), never as a right answer to "how far should the robot step out?".
+#   - THE ROBOT'S TRAVEL SPEED IN cm/s. Still the open bench item carried from L08 and L09.
+#     A14 and A15 ask the METHOD for finding TURN_MS and DRIVE_MS — hunt, measure, adjust —
+#     and never a target number. §7A's "somewhere around 350–500" is asked in B-set nowhere
+#     and in A14 only as the starting guess the comment supplies, which is what it is.
+#   - CHALLENGE 6's WEDGE NUMBERS (~30 cm to close at 120°). Simulated, never driven.
+#   - ANYTHING THAT LIVES ONLY IN A GRAPHIC. GRAPHIC 10.2 carries the phase panel, but §3.3's
+#     table and §5.2's enum carry the same content in prose and code, so every phase question
+#     cites those. Nothing here depends on reading an SVG.
+
+lesson: "L10"
+title: "Obstacles — When the Course Fights Back"
+bank_version: "1.0.0"
+source:
+  lesson_10: "v02.29.1"
+  lesson_09: "v05.27.0"
+  lesson_08: "v04.31.0"
+  lesson_06: "v04.32.1"
+  lesson_05: "v04.29.0"
+
+sets:
+  before:
+    description: "Pre-class reading gate. Answerable from the text alone — no robot, no compiler, no built program."
+    suggested_draw: 10
+    questions:
+
+      - id: L10_B01
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "What is the range of a single proximity reading on the Zumo?"
+        options:
+          - text: "0 to 6 — seven possible values in total"
+            correct: true
+          - text: "0 to 1000, the same scale as the calibrated line sensors"
+            correct: false
+            why: "That is the calibrated line-sensor scale. §3.1 warns specifically that the proximity scale is not this one."
+          - text: "0 to 4000, the same scale readLinePosition() returns"
+            correct: false
+            why: "readLinePosition() spans 0–4000 across five sensors. Proximity is a single much smaller number."
+          - text: "0 to 255, one byte"
+            correct: false
+            why: "A reasonable guess for a sensor reading, but not this one. The lesson is blunt about it: zero to six."
+
+      - id: L10_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "The robot triggers its avoidance on CLOSE_THRESHOLD (3) rather than on VERY_CLOSE_THRESHOLD (5). Why?"
+        options:
+          - text: "The robot needs room to stop — at 5 it is nearly touching the block"
+            correct: true
+          - text: "The sensor cannot reliably produce a 5, so waiting for one risks never triggering"
+            correct: false
+            why: "It produces a 5 perfectly well — §6 Step 5's hand test expects 5 or 6 when your hand is almost touching. The issue is stopping distance, not reliability."
+          - text: "A reading of 5 usually means a phantom obstacle rather than a real one"
+            correct: false
+            why: "Phantoms are an ambient-IR problem and §8.2's fix for them is to RAISE the threshold, not lower it."
+          - text: "3 is the midpoint of the 0–6 scale, so it is the statistically safest choice"
+            correct: false
+            why: "The reason given is physical, not statistical: trigger early, because the block is not going anywhere."
+
+      - id: L10_B03
+        type: multiple_choice
+        cite: "§3.1, §5.2"
+        points: 1
+        stem: "What does a reading at or above VERY_CLOSE_THRESHOLD tell you?"
+        options:
+          - text: "That you waited too long — it is a warning sign that your trigger is too late"
+            correct: true
+          - text: "That the obstacle is made of a highly reflective material"
+            correct: false
+            why: "Material affects the reading, but the constant is not a material detector. §5.2's table calls 5 'Too close.'"
+          - text: "That the robot should switch to the side proximity receivers for a direction"
+            correct: false
+            why: "There are no side receivers under five-down. That is §3.2's whole subject."
+          - text: "That the avoidance maneuver has completed successfully"
+            correct: false
+            why: "Nothing about the maneuver is reported by the proximity reading."
+
+      - id: L10_B04
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Under the five-down jumper layout, countsLeftWithLeftLeds() and countsRightWithRightLeds() always return 0. Why is that not a bug?"
+        options:
+          - text: "Pins 20 and 4 are shared, and under five-down they belong to line sensors 2 and 4 — the side receivers are simply not connected"
+            correct: true
+          - text: "The side receivers are connected but their LEDs are disabled to save battery"
+            correct: false
+            why: "It is the receivers themselves that are disconnected. Nothing is being saved; the pins were spent."
+          - text: "The functions were deprecated in version 2.0.1 of the Zumo32U4 library"
+            correct: false
+            why: "The library is fine. This is a hardware wiring choice made in Lesson 5."
+          - text: "They return 0 only until initProxSensors() is called, then they work normally"
+            correct: false
+            why: "initFrontSensor() asks for the front sensor only. Waking the sensor cannot reconnect a receiver whose pins are in use elsewhere."
+
+      - id: L10_B05
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "In Lesson 5 you moved the jumpers to five-down permanently. What did that trade buy, and what did it cost?"
+        options:
+          - text: "It bought five line sensors and the P-control they make possible; it cost the left and right proximity receivers"
+            correct: true
+          - text: "It bought three proximity receivers; it cost two line sensors"
+            correct: false
+            why: "That is the factory three-down layout — the arrangement you moved AWAY from at the end of Lesson 5."
+          - text: "It bought faster sensor reads; it cost some accuracy in the readings"
+            correct: false
+            why: "Speed and accuracy are not what is traded. The trade is which peripheral owns pins 20 and 4."
+          - text: "It bought a longer proximity range; it cost the ability to calibrate"
+            correct: false
+            why: "Calibration is untouched by the jumpers, and range is not what changes."
+
+      - id: L10_B06
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "§3.2 says your sensor tells you THAT, not WHERE. What follows from that, in the lesson's own words?"
+        options:
+          - text: "Directional avoidance — going around the left side because the block is on the right — is physically impossible on this robot, in this configuration"
+            correct: true
+          - text: "Directional avoidance is possible but requires advanced code the course does not cover"
+            correct: false
+            why: "The lesson explicitly rejects this reading: 'Not hard. Not advanced. Impossible.'"
+          - text: "The robot must read the proximity sensor more often to work out the direction"
+            correct: false
+            why: "No sampling rate recovers information a single forward-facing sensor never collected."
+          - text: "The robot should use the line sensors to work out which side the obstacle is on"
+            correct: false
+            why: "Line sensors point down. That is §1's opening argument."
+
+      - id: L10_B07
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "A block sits about 40° off the robot's nose. Under five-down, what does the front proximity sensor report?"
+        options:
+          - text: "A clean 0 — 40° is outside FRONT's cone, and nothing else is aimed there any more"
+            correct: true
+          - text: "A weak but usable reading of 1 or 2, since the block is still partly in view"
+            correct: false
+            why: "Lesson 5 §3.4a measured the blind wedges at roughly 19° to 72° off each side. 40° sits inside one."
+          - text: "A strong reading, because the two LED banks widen the effective cone"
+            correct: false
+            why: "The two banks light the same front sensor from slightly different angles — they help with a slightly off-centre block, not a 40° one."
+          - text: "An error value, because the reading is out of range"
+            correct: false
+            why: "The sensor does not report errors. It reports how much came back, and at 40° that is nothing."
+
+      - id: L10_B08
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Given that the robot cannot tell which side the block is on, what does §3.2 say you can do instead?"
+        options:
+          - text: "Pick a direction and commit — and if you want to get clever, alternate directions with a counter, which needs no sensor at all"
+            correct: true
+          - text: "Sweep the robot left and right to build up a picture before deciding"
+            correct: false
+            why: "Not offered anywhere in the lesson, and it would spend time in front of an obstacle the robot has already stopped for."
+          - text: "Reverse until the block leaves the sensor cone, then guess"
+            correct: false
+            why: "Backing up appears in Challenge 4, and it is about being dangerously close — not about finding a direction."
+          - text: "Wait for the block to move"
+            correct: false
+            why: "§4.3 specifically wants an obstacle heavy enough to stay put."
+
+      - id: L10_B09
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "The KEY TERM defines an avoidance maneuver as a pre-planned sequence. What is the robot doing WHILE the maneuver runs?"
+        options:
+          - text: "Executing a plan it committed to before it started — it is not reacting during the maneuver"
+            correct: true
+          - text: "Continuously re-reading the proximity sensor and adjusting the shape as it goes"
+            correct: false
+            why: "It cannot. Once it turns away, the block is out of the sensor's view — which is exactly why the shape has to be memorized."
+          - text: "Following the line with a reduced Kp until the block is cleared"
+            correct: false
+            why: "The maneuver takes the robot OFF the line. followLine() is not running."
+          - text: "Waiting for the driver to press B and confirm the direction"
+            correct: false
+            why: "B is the kill switch. It stops the robot; it does not steer it."
+
+      - id: L10_B10
+        type: multiple_choice
+        cite: "§3.3, §8A.4"
+        points: 1
+        stem: "Two of the seven phases turn no wheels at all. What does PHASE_SEEK_LINE actually do?"
+        options:
+          - text: "It starts the stopwatch — records the time so the hunt has something to time out against"
+            correct: true
+          - text: "It drives forward slowly while checking isLineVisible() every pass"
+            correct: false
+            why: "That is the hunting itself, and the lesson is emphatic that hunting is a big enough job to deserve its own STATE — RETURNING_TO_LINE — rather than living inside a phase."
+          - text: "It reads the line sensors once to decide which way to look"
+            correct: false
+            why: "No decision is made here. Its job is a single timestamp."
+          - text: "Nothing — it is a placeholder left over from an earlier version"
+            correct: false
+            why: "§3.3 anticipates exactly this reading and rejects it: 'That looks like a mistake. It is not.'"
+
+      - id: L10_B11
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "Why does hunting for the line get its own STATE instead of being one more phase in the maneuver?"
+        options:
+          - text: "It is a big job — it needs its own timeout, its own line check and its own way to give up — and that does not belong buried inside a maneuver"
+            correct: true
+          - text: "Because a switch statement cannot hold more than seven cases"
+            correct: false
+            why: "No such limit exists, and nothing in the lesson suggests one."
+          - text: "Because the phases run in setup() and states run in loop()"
+            correct: false
+            why: "Both live inside loop(). The phase advances one step per pass."
+          - text: "Because hunting needs the proximity sensor and the phases do not"
+            correct: false
+            why: "Hunting uses isLineVisible() — the line sensors. The proximity sensor is what got the robot here."
+
+      - id: L10_B12
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "In one pass of loop(), the line sensors, the green markers and the proximity sensor can all want the motors. What is the ruled priority, highest first?"
+        options:
+          - text: "Obstacle, then intersection, then follow the line"
+            correct: true
+          - text: "Intersection, then obstacle, then follow the line"
+            correct: false
+            why: "This is the swap BRAIN CHECK 03 asks you to think through: the robot would commit to a turn with a block in front of it and drive into the obstacle mid-turn."
+          - text: "Follow the line, then obstacle, then intersection"
+            correct: false
+            why: "Line following is the DEFAULT — what the robot does when nothing more urgent is happening. It sits lowest."
+          - text: "Whichever sensor reported most recently"
+            correct: false
+            why: "That is not a decision. Priority is chosen in advance and in writing."
+
+      - id: L10_B13
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "Why does the obstacle sit at priority 1?"
+        options:
+          - text: "A crash is worse than a missed turn — you can re-run a course you got lost on, but you cannot un-break a robot"
+            correct: true
+          - text: "The proximity sensor is more accurate than the line sensors"
+            correct: false
+            why: "Accuracy is not the argument, and on a 0–6 scale it would be a hard case to make."
+          - text: "Obstacles appear more often than intersections on a rescue course"
+            correct: false
+            why: "Frequency is never offered as the reason. The reason is what each failure costs."
+          - text: "The obstacle check is faster to run than checkForIntersection()"
+            correct: false
+            why: "Speed of the check is not why it goes first."
+
+      - id: L10_B14
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "§3.4 says that if you do not decide the priority on purpose, you still get one. What is it?"
+        options:
+          - text: "Whichever if statement you happened to type first — 'an accident that compiles'"
+            correct: true
+          - text: "Alphabetical order of the state names"
+            correct: false
+            why: "Nothing orders behaviours alphabetically. The order is textual position in the case body."
+          - text: "The compiler picks the most efficient order"
+            correct: false
+            why: "The compiler will not reorder your conditions to suit a robot's safety."
+          - text: "The last behaviour to change state wins"
+            correct: false
+            why: "The FIRST matching if wins, because it breaks out before the others run."
+
+      - id: L10_B15
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "How is behaviour arbitration actually implemented, according to the LEARN callout?"
+        options:
+          - text: "The order of your if statements, plus a break to stop the lower ones from running"
+            correct: true
+          - text: "A priority integer stored alongside each state in the enum"
+            correct: false
+            why: "No such integer exists anywhere in the project."
+          - text: "A separate arbitrate() function that scores each behaviour"
+            correct: false
+            why: "Attractive, and not what this lesson builds. 'The thinking is hard; the typing is easy.'"
+          - text: "Interrupt priorities configured on the microcontroller"
+            correct: false
+            why: "Nothing in this lesson touches interrupt configuration."
+
+      - id: L10_B16
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "The WARNING in §3.5 says 800 ms of delay() is roughly how much lost work?"
+        options:
+          - text: "About 40 passes of loop() that never happened"
+            correct: true
+          - text: "About 8 passes of loop()"
+            correct: false
+            why: "That would put loop() at 100 ms per pass. The lesson's own figure elsewhere is a P-controller correcting fifty times a second."
+          - text: "About 800 passes — one per millisecond"
+            correct: false
+            why: "A pass is not a millisecond. 800 ms works out to roughly forty of them."
+          - text: "None — loop() continues to run during a delay(), just more slowly"
+            correct: false
+            why: "This is the exact misconception the section exists to kill. Not 'runs slower.' Stops."
+
+      - id: L10_B17
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "§3.5 names a second problem with delay(800), 'quieter and worse' than going deaf. What is it?"
+        options:
+          - text: "800 ms is a duration, not a distance — how far the robot actually travels depends on battery charge, grip, surface and motor wear"
+            correct: true
+          - text: "delay() drifts by a few milliseconds each time it is called, and the errors accumulate"
+            correct: false
+            why: "Timer drift is not the argument. The argument is that time was never the quantity you cared about."
+          - text: "delay() consumes more current than an encoder-based drive"
+            correct: false
+            why: "Power is not raised here at all."
+          - text: "delay() cannot accept a variable, only a literal"
+            correct: false
+            why: "It accepts a variable perfectly well — §7A passes TURN_MS to it."
+
+      - id: L10_B18
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "What does §3.5 say you already own that fixes both problems?"
+        options:
+          - text: "driveDistance() and turnDegrees() — built in Lesson 6 and filed in Lesson 7"
+            correct: true
+          - text: "millis() and a stamp-and-compare timer, built in Lesson 5"
+            correct: false
+            why: "That fixes the blindness but not the second problem — a non-blocking stopwatch is still a stopwatch, and still measures time rather than distance."
+          - text: "The P-controller from Lesson 8"
+            correct: false
+            why: "followLine() needs a line under the sensors. The maneuver runs where there is none."
+          - text: "The state machine from Lesson 9"
+            correct: false
+            why: "The state machine organises WHEN things run. It does not measure how far the robot went."
+
+      - id: L10_B19
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "What is RETURN_TIMEOUT for?"
+        options:
+          - text: "So a robot that never finds the line stops and says so, instead of hunting forever and driving off the table"
+            correct: true
+          - text: "To limit how long the avoidance maneuver itself may take"
+            correct: false
+            why: "The maneuver has no timeout. The clock starts at PHASE_SEEK_LINE, for the hunt."
+          - text: "To space out proximity readings so the IR emitters do not overheat"
+            correct: false
+            why: "Nothing in the lesson rations the emitters this way."
+          - text: "To give the driver five seconds to press B before the robot moves"
+            correct: false
+            why: "B is available at every moment in every state, not inside a five-second window."
+
+      - id: L10_B20
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "While the robot is hunting for the line, the drive command is setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED). Why does TRIM belong there?"
+        options:
+          - text: "This is open loop — nothing is watching whether the robot is going straight — so an untrimmed robot curves"
+            correct: true
+          - text: "TRIM makes the robot drive faster, so the hunt finishes before the timeout"
+            correct: false
+            why: "TRIM corrects straightness, not speed. It is a small number with a big effect on heading."
+          - text: "TRIM compensates for the extra current the proximity LEDs are drawing"
+            correct: false
+            why: "TRIM exists because no two motors are the same, which is Lesson 3's argument and nothing to do with LEDs."
+          - text: "TRIM is required by driveDistance(), so it is required here too"
+            correct: false
+            why: "Backwards — TRIM lives INSIDE driveDistance(), which is §7E's point. Here it is written out because this drive is a raw setSpeeds()."
+
+      - id: L10_B21
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "followLine() gets no TRIM. Why would adding it be wrong?"
+        options:
+          - text: "The P-controller is already correcting the heading fifty times a second — adding TRIM would make it fight itself"
+            correct: true
+          - text: "followLine() has no access to the TRIM constant"
+            correct: false
+            why: "TRIM lives in RobotConfig.h, which every file includes. Access is not the issue."
+          - text: "TRIM only works at speeds above BASE_SPEED"
+            correct: false
+            why: "No speed threshold on TRIM appears anywhere in the book."
+          - text: "The line sensors would read the correction as a line position error"
+            correct: false
+            why: "Not the stated mechanism. The stated mechanism is two controllers correcting the same thing at once."
+
+      - id: L10_B22
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "What happens if the jumpers are in the wrong position when initFiveSensors() runs?"
+        options:
+          - text: "It fails silently — no error, no warning; the robot just follows the line badly"
+            correct: true
+          - text: "The build fails with a compiler error naming the jumper configuration"
+            correct: false
+            why: "The compiler cannot see your jumpers. That is what makes this failure so expensive."
+          - text: "The display shows a JUMPER ERROR message at startup"
+            correct: false
+            why: "Nothing reports it. §4.2's whole point is that you must check by hand, first, always."
+          - text: "The robot refuses to leave the STOPPED state"
+            correct: false
+            why: "It will run happily. It will just run badly, and you will blame KP for an hour."
+
+      - id: L10_B23
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "Why does §4.3 rule out a matte black obstacle?"
+        options:
+          - text: "It absorbs IR, so it reads near-zero even when it is touching the robot"
+            correct: true
+          - text: "It reflects too much IR and saturates the sensor at 6"
+            correct: false
+            why: "That is what a light-coloured surface does, and light is what the table recommends."
+          - text: "Black tape and a black obstacle look the same to the line sensors"
+            correct: false
+            why: "A plausible worry, and not the reason given — the reason is about the proximity sensor, not the line sensors."
+          - text: "Black surfaces heat up under the IR emitters"
+            correct: false
+            why: "Not raised anywhere in the lesson."
+
+      - id: L10_B24
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "The table asks for an obstacle taller than the sensor — 5 cm or more. What goes wrong with a short one?"
+        options:
+          - text: "The IR beam passes straight over the top of it"
+            correct: true
+          - text: "The robot drives over it and loses the line"
+            correct: false
+            why: "Climbing is not the failure named. The failure is that the robot never sees it at all."
+          - text: "The line sensors mistake it for a green marker"
+            correct: false
+            why: "The line sensors point down at the mat and are not what is being discussed."
+          - text: "It reflects IR from too many angles at once"
+            correct: false
+            why: "That is the round-surface row, not the height row."
+
+      - id: L10_B25
+        type: multiple_choice
+        cite: "§4.4"
+        points: 1
+        stem: "Why does §4.4 warn against putting your first obstacle near an intersection?"
+        options:
+          - text: "You would be testing arbitration, avoidance and turning all at once, and when it fails you will not know which one broke"
+            correct: true
+          - text: "The green marker reflects IR and causes phantom detections"
+            correct: false
+            why: "Phantoms come from table legs, furniture and sunlight per §8.2 — not from the green tape."
+          - text: "The avoidance maneuver would drive over the marker and smear it"
+            correct: false
+            why: "Not a concern the lesson raises."
+          - text: "Arbitration does not work near intersections"
+            correct: false
+            why: "It works exactly as designed there. The problem is diagnostic, not functional: too many new things failing at once."
+
+      - id: L10_B26
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "Two of the eight files are unchanged in this lesson. Which, and what does the LEARN callout say that proves?"
+        options:
+          - text: "RobotMotion.cpp and RobotHelpers.cpp — obstacle avoidance is not a motion problem, so it does not touch the motion file"
+            correct: true
+          - text: "RobotSensors.h and RobotSensors.cpp — the sensors were finished in Lesson 4"
+            correct: false
+            why: "Both gain new code today: the extern and three prototypes in the header, the object and three functions in the source."
+          - text: "main.cpp and RobotConfig.h — all new code lives in the sensor files"
+            correct: false
+            why: "These two change the most. main.cpp gains three states, arbitration and the kill switch."
+          - text: "RobotHelpers.h and RobotHelpers.cpp — helpers are never touched after Lesson 7"
+            correct: false
+            why: "RobotHelpers.h is unchanged, but its pair here is RobotMotion.cpp, and the point is about the motion boundary."
+
+      - id: L10_B27
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "The state machine goes from four states to seven. What does the INSIGHT say did NOT happen?"
+        options:
+          - text: "You did not rewrite the state machine — you appended three names to a list, and FOLLOWING_LINE and EXECUTING_TURN were untouched"
+            correct: true
+          - text: "You did not have to add a second switch statement"
+            correct: false
+            why: "You did add one — the phase switch inside AVOIDING_OBSTACLE."
+          - text: "You did not need to change RobotConfig.h"
+            correct: false
+            why: "Step 2 adds three blocks to it and replaces the RobotState enum."
+          - text: "You did not have to recompile the unchanged files"
+            correct: false
+            why: "Not a claim the lesson makes, and not what the INSIGHT is about."
+
+      - id: L10_B28
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "What does AVOID_PAST_CM decide?"
+        options:
+          - text: "How far to drive alongside the obstacle — it must exceed the obstacle's width"
+            correct: true
+          - text: "How far to step sideways off the line before running past"
+            correct: false
+            why: "That is AVOID_OUT_CM. PAST is the leg that travels alongside the block."
+          - text: "How far past the line to drive before giving up the hunt"
+            correct: false
+            why: "The hunt is bounded by RETURN_TIMEOUT, which is a time, not a distance."
+          - text: "How far the robot reverses when it is dangerously close"
+            correct: false
+            why: "Reversing is Challenge 4's PHASE_BACK_OFF, which is not in the base build."
+
+      - id: L10_B29
+        type: multiple_choice
+        cite: "§5.2, §3.6"
+        points: 1
+        stem: "RETURN_TIMEOUT is declared as 5000. Five thousand what, and meaning what?"
+        options:
+          - text: "Milliseconds — five seconds of hunting before the robot gives up and stops"
+            correct: true
+          - text: "Encoder counts — how far the robot may hunt before giving up"
+            correct: false
+            why: "It is compared against millis(), and it is declared unsigned long for that reason. Counts would be a distance."
+          - text: "Microseconds — five thousandths of a second"
+            correct: false
+            why: "That would end the hunt before it began. §3.6 states five seconds outright."
+          - text: "Loop passes — five thousand trips through loop() before giving up"
+            correct: false
+            why: "At roughly 20 ms a pass that would be a hundred seconds. The comparison is against millis()."
+
+      - id: L10_B30
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "readFrontProx() and checkForObstacle() are kept separate on purpose. What is the distinction?"
+        options:
+          - text: "readFrontProx() gives you a number — a fact about the world; checkForObstacle() gives you a decision — a policy you chose"
+            correct: true
+          - text: "readFrontProx() is fast and checkForObstacle() is slow, so you call the cheap one more often"
+            correct: false
+            why: "checkForObstacle() calls readFrontProx() and compares it once. Cost is not the reason."
+          - text: "readFrontProx() reads the left LED bank and checkForObstacle() reads the right"
+            correct: false
+            why: "readFrontProx() reads both banks and takes the larger."
+          - text: "readFrontProx() lives in main.cpp and checkForObstacle() lives in RobotSensors.cpp"
+            correct: false
+            why: "Both live in RobotSensors.cpp. Only killSwitchPressed() lives in main.cpp."
+
+      - id: L10_B31
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "readFrontProx() returns max() of the left-LED and right-LED readings. Why take the larger?"
+        options:
+          - text: "The two banks light the same front sensor from slightly different angles — take whichever saw the object better, so a slightly off-centre obstacle still gets seen"
+            correct: true
+          - text: "The larger reading is always the more recent one"
+            correct: false
+            why: "Both come from the same proxSensors.read(). Neither is more recent."
+          - text: "Averaging them would exceed the 0–6 range"
+            correct: false
+            why: "An average of two values in 0–6 is still in 0–6. Range is not the issue."
+          - text: "The left bank is unreliable under five-down, so max() effectively discards it"
+            correct: false
+            why: "Both FRONT calls work under five-down. It is the LEFT and RIGHT receivers that are gone, not the LED banks."
+
+      - id: L10_B32
+        type: multiple_choice
+        cite: "§5.4, §8.2, Quick Reference"
+        points: 1
+        stem: "The Quick Reference marks proxSensors.initThreeSensors() as DO NOT USE. Why?"
+        options:
+          - text: "It takes pins 20 and 4 back for the proximity sensors, which silently breaks line following in a way that looks like a KP tuning problem"
+            correct: true
+          - text: "It does not exist in version 2.0.1 of the library"
+            correct: false
+            why: "It exists and works. That is exactly what makes it dangerous — it succeeds at the wrong thing."
+          - text: "It initialises the sensors too slowly for use in setup()"
+            correct: false
+            why: "Timing is not the objection."
+          - text: "It conflicts with initFiveSensors() and causes a compile error"
+            correct: false
+            why: "Both compile fine together. The conflict is over hardware pins at runtime, and nothing reports it."
+
+      - id: L10_B33
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "§8A.1 poses the core problem: how does a function that forgets everything drive a seven-step plan? What exactly does loop() forget?"
+        options:
+          - text: "Every local variable, and every place in the code it had reached — it starts from the top every single time"
+            correct: true
+          - text: "Only the values of variables that were changed during the pass"
+            correct: false
+            why: "It is not selective. Locals are gone when the pass ends, changed or not."
+          - text: "Nothing — loop() retains everything, which is why globals are unnecessary"
+            correct: false
+            why: "Globals are exactly what §6 Step 7 adds, and the LEARN callout there says why: avoidPhase has to survive between passes."
+          - text: "Only the hardware object states, which is why they are declared extern"
+            correct: false
+            why: "extern is about which file DEFINES an object, not about what survives a loop pass."
+
+      - id: L10_B34
+        type: multiple_choice
+        cite: "§8A.3"
+        points: 1
+        stem: "Why an enum rather than int phase = 3?"
+        options:
+          - text: "PHASE_TURN_BACK means something and 3 does not — and the compiler catches a misspelled enum name at build time, while phase = 7 compiles silently"
+            correct: true
+          - text: "An enum uses less memory than an int"
+            correct: false
+            why: "Memory is not the argument the section makes, and it would be a weak one at this scale."
+          - text: "An int cannot be used in a switch statement"
+            correct: false
+            why: "It can. The compiler will not stop you writing int phase — that is the section's opening concession."
+          - text: "Enums are automatically saved across power cycles"
+            correct: false
+            why: "Nothing on this robot persists across a power cycle without EEPROM, which the book does not use."
+
+      - id: L10_B35
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "§8A.4 offers an analogy for RobotState versus AvoidPhase. What is it?"
+        options:
+          - text: "Which chapter of the book you are in, versus which paragraph of that chapter"
+            correct: true
+          - text: "The map versus the compass"
+            correct: false
+            why: "A reasonable image, and not the one used. The lesson's pair is chapter and paragraph."
+          - text: "The engine versus the gearbox"
+            correct: false
+            why: "Not used anywhere in this section."
+          - text: "The recipe versus the ingredients"
+            correct: false
+            why: "Not the analogy given, and it would suggest the two hold different KINDS of thing, where both are bookmarks."
+
+      - id: L10_B36
+        type: multiple_choice
+        cite: "§8A.5"
+        points: 1
+        stem: "§8A.5 lists places the one-state-many-steps pattern shows up again. Which of these is on that list?"
+        options:
+          - text: "Picking something up: approach, lower, grip, lift, back away"
+            correct: true
+          - text: "Reading five line sensors into an array"
+            correct: false
+            why: "That finishes inside one pass. The pattern is for jobs that take more than one moment."
+          - text: "Converting encoder counts to centimetres"
+            correct: false
+            why: "A calculation, not a sequence that spans passes."
+          - text: "Choosing a Kp value at the tuning menu"
+            correct: false
+            why: "Not in the list, and not a multi-step maneuver."
+
+      - id: L10_B37
+        type: true_false
+        cite: "§3.1"
+        points: 1
+        stem: "A proximity reading and a calibrated line-sensor reading use the same 0–1000 scale, so the same thresholds work for both."
+        correct: false
+        why: "Proximity is 0 to 6 — seven values in total. §3.1's WARNING exists precisely because a threshold written for the line-sensor scale would never be crossed."
+
+      - id: L10_B38
+        type: true_false
+        cite: "§3.2, §8.2"
+        points: 1
+        stem: "If the left and right proximity readings are always 0, you should switch to initThreeSensors() to fix it."
+        correct: false
+        why: "This is the one 'fix' §8.2 warns against by name. Those pins belong to line sensors 2 and 4, and taking them back silently breaks line following — which would break Lessons 6 through 9 too."
+
+      - id: L10_B39
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "Behaviour arbitration is a technique specific to proximity sensors."
+        correct: false
+        why: "§3.4 opens by saying the opposite: it 'has nothing to do with proximity sensors.' It is about which behaviour wins when two want the motors, and the proximity sensor is only what makes the argument possible here."
+
+      - id: L10_B40
+        type: true_false
+        cite: "§3.5"
+        points: 1
+        stem: "During delay(800) the program continues running, just more slowly."
+        correct: false
+        why: "It stops dead. For those 800 ms the robot does not read the line, does not read the proximity sensor, and does not check the kill switch — press B all you like, nothing is listening."
+
+      - id: L10_B41
+        type: true_false
+        cite: "§3.6"
+        points: 1
+        stem: "A robot that stops and reports that it is lost is more useful than one that confidently keeps driving."
+        correct: true
+        why: "§3.6 states this directly, and it is why RETURN_TIMEOUT exists. An honest failure is diagnosable; a confident wrong one ends up under a table."
+
+      - id: L10_B42
+        type: true_false
+        cite: "§5.2"
+        points: 1
+        stem: "The three new states replace the four states Lesson 9 built."
+        correct: false
+        why: "They are appended. The four Lesson 9 states keep their names and their meanings, and nothing that worked yesterday stops working because you added to the end of a list."
+
+      - id: L10_B43
+        type: true_false
+        cite: "§5.4, Quick Reference"
+        points: 1
+        stem: "proxSensors.read() must be called before you ask for the counts."
+        correct: true
+        why: "read() takes a fresh reading; the counts functions return whatever the last read produced. readFrontProx() calls read() first for exactly this reason."
+
+      - id: L10_B44
+        type: true_false
+        cite: "§8A.2, §6 Step 7"
+        points: 1
+        stem: "avoidPhase could be declared as a local variable inside loop() without changing the robot's behaviour."
+        correct: false
+        why: "A local is destroyed the moment loop() ends, and loop() ends thousands of times during one maneuver. The robot would forget which step it was on and start the plan over, forever."
+
+      - id: L10_B45
+        type: true_false
+        cite: "Glossary"
+        points: 1
+        stem: "Closed-loop motion needs TRIM for the same reason open-loop motion does."
+        correct: false
+        why: "Closed loop has a sensor continuously correcting the result, so it does not need TRIM — adding it would make the controller fight itself. Open loop has nothing watching, so it needs the correction supplied in advance."
+
+      - id: L10_B46
+        type: true_false
+        cite: "§4.1, §8.2"
+        points: 1
+        stem: "Proximity readings sag on a tired battery pack."
+        correct: true
+        why: "§4.1 asks for fresh batteries for this reason, and §8.2 lists dead batteries as a cause of a sensor reading 0 — IR emitters are power-hungry and a tired pack cannot drive them."
+
+      - id: L10_B47
+        type: matching
+        cite: "§5.2"
+        points: 4
+        stem: "Match each new constant to what it decides."
+        pairs:
+          - left: "CLOSE_THRESHOLD"
+            right: "The trigger — at or above this, the robot stops and avoids"
+          - left: "AVOID_TURN_DEGREES"
+            right: "How far to turn away from the line"
+          - left: "AVOID_OUT_CM"
+            right: "How far to step sideways off the line before running past"
+          - left: "RETURN_TIMEOUT"
+            right: "How long to hunt for the line before giving up and stopping"
+        extra_answers:
+          - "How far to drive alongside the obstacle"
+          - "How strong an echo counts as a phantom rather than a block"
+
+      - id: L10_B48
+        type: matching
+        cite: "§5.3"
+        points: 3
+        stem: "Match each new function to its job."
+        pairs:
+          - left: "initProxSensors()"
+            right: "Wake the front proximity sensor — called once, in setup()"
+          - left: "readFrontProx()"
+            right: "Return the raw number: how strong is the reflection?"
+          - left: "checkForObstacle()"
+            right: "Return the decision: is it close enough to act on?"
+        extra_answers:
+          - "Convert a proximity reading into a distance in centimetres"
+          - "Choose which side of the obstacle to detour around"
+
+      - id: L10_B49
+        type: matching
+        cite: "§3.4"
+        points: 3
+        stem: "Match each priority level to the behaviour that holds it."
+        pairs:
+          - left: "1 (highest)"
+            right: "Obstacle — a crash is worse than a missed turn"
+          - left: "2"
+            right: "Intersection — the course is asking a question, but not while something is in the way"
+          - left: "3 (lowest)"
+            right: "Follow the line — the default, when nothing more urgent is happening"
+        extra_answers:
+          - "Battery check — refuse to move on a tired pack"
+          - "Kill switch — B stops everything"
+
+      - id: L10_B50
+        type: matching
+        cite: "Glossary"
+        points: 4
+        stem: "Match each glossary term to its definition."
+        pairs:
+          - left: "Open Loop"
+            right: "Motion where nothing is watching the result — you command it and hope"
+          - left: "Pin Sharing"
+            right: "Two peripherals wired to the same microcontroller pins, so you must choose"
+          - left: "Accumulated Error"
+            right: "A small error, repeated in the same direction, becoming a large one"
+          - left: "Phase Variable"
+            right: "A variable that survives between passes of loop() and records how far through a multi-step operation you are"
+        extra_answers:
+          - "A promise that a variable or object exists somewhere else"
+          - "Deciding in advance which behaviour wins when two want control"
+
+  after:
+    description: "Post-build check. Assumes you have built the lesson, run the ladder in §7, and looked at the results."
+    suggested_draw: 8
+    questions:
+
+      - id: L10_A01
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "Your copied Lesson 9 project will not compile at Step 1. What does the WARNING tell you to do?"
+        options:
+          - text: "Stop and fix Lesson 9 first — you have imported a broken project, and every error today will be blamed on obstacle code that is not the problem"
+            correct: true
+          - text: "Carry on to Step 2; the new constants often resolve the errors"
+            correct: false
+            why: "Adding code on top of a broken build stacks a second problem on the first. §6's opening says the same thing about every step."
+          - text: "Start from a blank project instead"
+            correct: false
+            why: "The lesson opens by ruling that out. Lessons 6 through 9 are the foundation this one stands on."
+          - text: "Comment out the failing file until the obstacle code is in"
+            correct: false
+            why: "Not offered, and it would hide the defect rather than fix it."
+
+      - id: L10_A02
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "After Step 2 the checkpoint says the binary is the same size as Step 1. Why?"
+        options:
+          - text: "You added names, not instructions — constants that nothing uses yet cost nothing"
+            correct: true
+          - text: "The compiler has not yet linked the new file"
+            correct: false
+            why: "There is no new file in Step 2 — you edited RobotConfig.h, which is already in the build."
+          - text: "The three new states are the same size as the four they replace"
+            correct: false
+            why: "Nothing was replaced; three names were appended. And enum members are not code."
+          - text: "The new constants live in flash rather than RAM, so they do not count"
+            correct: false
+            why: "Flash IS what the byte figure measures. The reason is that unused constants are optimised away entirely."
+
+      - id: L10_A03
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "Step 3's checkpoint says the green build 'means less than you think'. Why?"
+        options:
+          - text: "You have promised three functions that do not exist yet, and the compiler is fine with that because nothing calls them"
+            correct: true
+          - text: "The header was not saved, so nothing changed"
+            correct: false
+            why: "The header changed. The point is that a promise costs nothing until it is called in."
+          - text: "Green builds never mean anything until the linker runs"
+            correct: false
+            why: "Too broad. This specific green is weak for a specific reason — the promise has not come due."
+          - text: "You cannot test a header without hardware"
+            correct: false
+            why: "Not what the checkpoint says, and not why this green is thin."
+
+      - id: L10_A04
+        type: multiple_choice
+        cite: "§6 Step 4, §8.1"
+        points: 1
+        stem: "You typed it wrong on purpose and got 'redefinition of Zumo32U4ProximitySensors proxSensors'. What is actually happening?"
+        options:
+          - text: "You created the object twice — once in the header and once in the .cpp — and every file including that header gets its own copy"
+            correct: true
+          - text: "You declared the object twice in the same .cpp file"
+            correct: false
+            why: "The two declarations are in different files. It is the header's copy spreading to every includer that causes the pile-up."
+          - text: "The library already defines an object with that name"
+            correct: false
+            why: "The library provides the TYPE. You provide the object."
+          - text: "The prototypes in the header conflict with the definitions in the .cpp"
+            correct: false
+            why: "Prototypes and definitions are supposed to match — that is the contract. This error is about the object, not the functions."
+
+      - id: L10_A05
+        type: multiple_choice
+        cite: "§6 Step 4, §8.1"
+        points: 1
+        stem: "What is the rule that fixes it, in the lesson's own four words?"
+        options:
+          - text: "Declare in many places. Define in one."
+            correct: true
+          - text: "Include once. Compile once."
+            correct: false
+            why: "Not the phrasing, and include guards are a different mechanism from extern."
+          - text: "Header for code. Source for data."
+            correct: false
+            why: "Headers and sources both hold both. The split is declaration versus definition."
+          - text: "One object per file, always."
+            correct: false
+            why: "RobotSensors.cpp defines several objects. The rule is about how many times ONE object is defined."
+
+      - id: L10_A06
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Step 4's checkpoint reports a specific change in binary size once the three sensor functions are in. What is it, and what does it signify?"
+        options:
+          - text: "+50 bytes over Step 3 — small, but not zero, because that is real code now rather than just names"
+            correct: true
+          - text: "No change, because the functions are not called yet"
+            correct: false
+            why: "That was Step 2's situation. Function bodies that exist and are reachable through the header cost something."
+          - text: "+660 bytes, the largest single jump in the lesson"
+            correct: false
+            why: "+660 is Step 8's encoder maneuver, which pulls in driveDistance() and turnDegrees()."
+          - text: "+194 bytes"
+            correct: false
+            why: "That is Step 7 — arbitration plus the OBSTACLE_DETECTED state with its display work and beep."
+
+      - id: L10_A07
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "You added the live readout and put your hand slowly in front of the stopped robot. What should you see?"
+        options:
+          - text: "0 with your hand far away, climbing through 1, 2, 3 as it approaches, 5 or 6 almost touching, back to 0 when you take it away"
+            correct: true
+          - text: "A steady climb from 0 to about 500 as the hand approaches"
+            correct: false
+            why: "That is the calibrated line-sensor scale. Proximity tops out at 6."
+          - text: "6 at any distance, dropping to 0 only when the hand is removed"
+            correct: false
+            why: "The reading is graded by how much IR comes back, so it climbs as the hand nears rather than snapping to the top."
+          - text: "Nothing, because the readout only updates while the robot is running"
+            correct: false
+            why: "The instruction is explicit: leave the robot STOPPED. showStatus() draws the readout regardless."
+
+      - id: L10_A08
+        type: multiple_choice
+        cite: "§6 Step 5, §8.2"
+        points: 1
+        stem: "The readout stays at 0 no matter what you wave at it. What does the WARNING say to do, and what is the single most likely cause?"
+        options:
+          - text: "Stop and go to Section 8 — do not proceed; the most common cause by a wide margin is that initProxSensors() is missing from setup()"
+            correct: true
+          - text: "Carry on to Step 6 and check the sensor once the kill switch is in"
+            correct: false
+            why: "The WARNING forbids exactly this. Everything after this point depends on the number being real."
+          - text: "Raise CLOSE_THRESHOLD until the sensor responds"
+            correct: false
+            why: "Raising a threshold on a dead sensor changes nothing. That fix is for phantom obstacles, the opposite symptom."
+          - text: "Replace the robot — the proximity hardware has failed"
+            correct: false
+            why: "Section 8 lists four candidates before hardware, and a sleeping sensor is far and away the likeliest."
+
+      - id: L10_A09
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Why is the kill switch built at Step 6, before any of the driving code?"
+        options:
+          - text: "Because you are about to write code that makes the robot drive somewhere you did not draw — a robot you cannot stop is not a project, it is a hazard with wheels"
+            correct: true
+          - text: "Because killSwitchPressed() must be defined before the states that call it will compile"
+            correct: false
+            why: "True of the ordering within the file, but not the reason given. The reason is safety, and the lesson calls it a permanent policy."
+          - text: "Because button B is needed to start the calibration spin"
+            correct: false
+            why: "Calibration is Lesson 4 machinery and is not what B does here."
+          - text: "Because the kill switch is the largest piece of new code and is best done while you are fresh"
+            correct: false
+            why: "It costs +2 bytes. It is nearly the smallest thing in the lesson."
+
+      - id: L10_A10
+        type: multiple_choice
+        cite: "§6 Step 7, Sabotage"
+        points: 1
+        stem: "Inside FOLLOWING_LINE, motors.setSpeeds(0, 0) fires BEFORE currentState changes. Why does the order matter?"
+        options:
+          - text: "A robot that changes its mind while still rolling has already hit the block by the time it decides what to do — changing a state variable does not stop a motor"
+            correct: true
+          - text: "Setting the state first would skip the rest of the case body"
+            correct: false
+            why: "It is break that ends the case, and it comes after both lines. The issue is physical, not control flow."
+          - text: "The display cannot be updated while the motors are running"
+            correct: false
+            why: "showStatus() runs with the motors going throughout the book."
+          - text: "The encoders need the motors stopped before they can be read"
+            correct: false
+            why: "Encoders are read while moving — that is how driveDistance() works."
+
+      - id: L10_A11
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "Step 7 says the break after the obstacle check 'is not tidiness. It is the arbitration.' What does it do?"
+        options:
+          - text: "It stops the rest of the case from running, so the line check and the marker check never get a say once the obstacle has fired"
+            correct: true
+          - text: "It exits loop() early so the next pass starts sooner"
+            correct: false
+            why: "break leaves the switch case, not loop(). The rest of loop() after the switch still runs."
+          - text: "It clears the pending turn so the intersection is forgotten"
+            correct: false
+            why: "pendingTurn is untouched here. break simply prevents the lower-priority code from executing."
+          - text: "It resets avoidPhase to the first phase"
+            correct: false
+            why: "That rewind happens in OBSTACLE_DETECTED, on the line that sets avoidPhase = PHASE_TURN_AWAY."
+
+      - id: L10_A12
+        type: multiple_choice
+        cite: "§6 Step 8, Sabotage"
+        points: 1
+        stem: "You pressed B during the deliberately-timed maneuver and nothing happened. Why?"
+        options:
+          - text: "The robot is inside a delay() — it is not ignoring you, it is not listening, because loop() is not running and killSwitchPressed() is never called"
+            correct: true
+          - text: "The kill switch was written for FOLLOWING_LINE only and AVOIDING_OBSTACLE has no check"
+            correct: false
+            why: "The timed case does open with if (killSwitchPressed()) break;. It just never gets a chance to run again until the phase's delay finishes."
+          - text: "getSingleDebouncedPress() ignores presses shorter than one second"
+            correct: false
+            why: "Debouncing rejects electrical noise, not deliberate presses. The problem is that nothing is polling the button at all."
+          - text: "The buzzer and the button share a pin during the maneuver"
+            correct: false
+            why: "No such sharing is described anywhere in the lesson."
+
+      - id: L10_A13
+        type: multiple_choice
+        cite: "§6 Step 8 (continued)"
+        points: 1
+        stem: "You replaced the timed maneuver with the encoder version and counted the lines. What did the trade come to?"
+        options:
+          - text: "+5 lines in, −15 lines out — the fix removed three times what it added"
+            correct: true
+          - text: "+15 in, −5 out — the encoder version is longer but more reliable"
+            correct: false
+            why: "Backwards. The whole point of the section's title is that the fix is smaller than the problem."
+          - text: "The two versions are the same length; only the reliability differs"
+            correct: false
+            why: "The timed version needs three lines per move — command, delay, stop. The encoder version needs one."
+          - text: "+5 in, −5 out — a line-for-line swap"
+            correct: false
+            why: "Each timed move cost three lines. Replacing five of them with five single calls removes fifteen."
+
+      - id: L10_A14
+        type: multiple_choice
+        cite: "§7A"
+        points: 1
+        stem: "You ran 7A and think you have found TURN_MS. What is the checkpoint's sharper test?"
+        options:
+          - text: "Press A four times in a row without moving the robot — four 90° turns make a full circle, so it should finish facing exactly where it started"
+            correct: true
+          - text: "Run the same number three times and check it lands in the same place"
+            correct: false
+            why: "That tests repeatability, which is §7.6's advice for the maneuver as a whole. The checkpoint's test amplifies a small angular error instead."
+          - text: "Compare your number against your neighbour's"
+            correct: false
+            why: "The lesson says outright that yours will not match your neighbour's, and that this is not a mistake."
+          - text: "Measure the turn with a protractor against a tile seam"
+            correct: false
+            why: "Eyeballing a single turn is precisely what the checkpoint says is not sharp enough."
+
+      - id: L10_A15
+        type: multiple_choice
+        cite: "§7B"
+        points: 1
+        stem: "7B's method insists on an order: DRIVE_MS first with TRIM at 0, then TRIM. Why not both at once?"
+        options:
+          - text: "They fix different faults — distance and straightness — and chasing both together means you cannot tell which change did what"
+            correct: true
+          - text: "TRIM has no effect until DRIVE_MS exceeds 1000"
+            correct: false
+            why: "No such threshold. TRIM affects heading at any duration."
+          - text: "Changing TRIM alters the distance travelled, so DRIVE_MS must be re-hunted afterwards anyway"
+            correct: false
+            why: "A curve does change the ground covered, but that is not the reason 7B gives, and the method does not send you back to re-hunt."
+          - text: "DRIVE_MS lives in the sketch and TRIM lives in RobotConfig.h, so they cannot be edited in the same build"
+            correct: false
+            why: "They can both be edited before a single upload. The constraint is diagnostic discipline, not file layout."
+
+      - id: L10_A16
+        type: multiple_choice
+        cite: "§7D"
+        points: 1
+        stem: "Your square does not close, but every corner in 7C was perfect. What does 7D's hint say to check first, and why does 7C not catch it?"
+        options:
+          - text: "The delay(300) momentum settle inside driveOneCorner() — a corner without it looks fine run once, but inside a loop the robot rolls into the next drive before the turn has settled, so every corner inherits the previous one's error"
+            correct: true
+          - text: "TURN_MS — the four turns all go the same way, so a small angular error multiplies by four"
+            correct: false
+            why: "This is a real mechanism in the square and the WHAT YOU SHOULD SEE box names it. But the hint for a REALLY bad square points at the settle first, because it is a defect rather than a tuning residue."
+          - text: "The for loop bounds — corner <= 4 runs five times"
+            correct: false
+            why: "corner = 1; corner <= 4 runs exactly four times, and the display confirms it by printing 'Corner n of 4'."
+          - text: "The encoders, which drift over four corners"
+            correct: false
+            why: "7D has no encoders in it at all. That is 7E, and it is the payoff."
+
+      - id: L10_A17
+        type: multiple_choice
+        cite: "§7E"
+        points: 1
+        stem: "7E drives the same square with no TURN_MS and no DRIVE_MS. The NOTE says one number is still live. Which, and where does it live?"
+        options:
+          - text: "TRIM — and it is inside driveDistance(), because encoders count rotation and cannot tell that the robot curved"
+            correct: true
+          - text: "COUNTS_PER_CM — and it is inside RobotConfig.h"
+            correct: false
+            why: "COUNTS_PER_CM is certainly live, but the NOTE is specifically about the number you still had to TUNE. A perfectly measured 30 cm banana is still a banana."
+          - text: "WHEEL_BASE_MM — and it is inside turnDegrees()"
+            correct: false
+            why: "Also live, and also not the NOTE's subject. The NOTE is about straightness, which no encoder can see."
+          - text: "None — 7E has no tuned numbers anywhere"
+            correct: false
+            why: "That is the section's headline, and the NOTE exists to qualify it. Encoders fix the distance; TRIM fixes the straightness."
+
+      - id: L10_A18
+        type: multiple_choice
+        cite: "§6 Step 9"
+        points: 1
+        stem: "Step 9 teaches showStatus() the new state names. What does the display read while the robot is in RETURNING_TO_LINE?"
+        options:
+          - text: "SEEKING"
+            correct: true
+          - text: "RETURNING"
+            correct: false
+            why: "A fair guess from the state name, but the switch prints SEEKING — and §8.4's table uses that word too."
+          - text: "AVOIDING"
+            correct: false
+            why: "That is AVOIDING_OBSTACLE, the state before it."
+          - text: "LOST THE LINE"
+            correct: false
+            why: "That message appears only after the timeout expires, when the state has already become STOPPED."
+
+      - id: L10_A19
+        type: true_false
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Building the kill switch before the driving code is a Lesson 10 rule that stops applying once the maneuver works."
+        correct: false
+        why: "The WARNING calls it a permanent policy, not a Lesson 10 rule: from here to the end of the book, the kill switch gets built before the driving code, every time. Not after you test it. Not once it mostly works."
+
+      - id: L10_A20
+        type: true_false
+        cite: "§6 Step 8"
+        points: 1
+        stem: "In the encoder version of the maneuver, pressing B stops the robot mid-maneuver."
+        correct: true
+        why: "Each phase is one call per pass of loop(), so the loop is free between phases and killSwitchPressed() runs at the top of AVOIDING_OBSTACLE. If B still does nothing on the encoder version, §8.3 says that line is missing."
+
+      - id: L10_A21
+        type: true_false
+        cite: "§7B"
+        points: 1
+        stem: "TRIM should be tuned in 7A alongside TURN_MS."
+        correct: false
+        why: "TRIM has no job in 7A at all. The wheels are fighting each other on purpose to make a turn — there is no straight line to keep straight."
+
+      - id: L10_A22
+        type: true_false
+        cite: "§7.6"
+        points: 1
+        stem: "After changing one tuning knob you should run the robot three times before believing the result."
+        correct: true
+        why: "A robot that works once worked by accident. If you cannot reproduce it you have not fixed it — you have been lucky in a way you do not understand yet."
+
+      - id: L10_A23
+        type: true_false
+        cite: "§8.3, Sabotage"
+        points: 1
+        stem: "A robot that avoids the block, returns, and then immediately detects the same block again most likely has an AVOID_PAST_CM that is too small."
+        correct: true
+        why: "It went around part of the obstacle rather than past it. §8.3 and Sabotage B3 both make this point, and B3 plants exactly that defect at 5.0 cm — a loop like this usually means a distance, not a logic error."
+
+      - id: L10_A24
+        type: matching
+        cite: "Sabotage"
+        points: 4
+        stem: "Match each Sabotage mystery to the defect that was planted."
+        pairs:
+          - left: "B1 — the robot never sees anything"
+            right: "initProxSensors() is commented out, so the sensor was never woken up"
+          - left: "B2 — the robot hits the block anyway"
+            right: "The state changes but motors.setSpeeds(0, 0) is never called"
+          - left: "B3 — the robot avoids forever"
+            right: "AVOID_PAST_CM is far too small, so the robot never actually gets past the block"
+          - left: "B5 — the robot turns the wrong way back"
+            right: "A single sign: the comment says negative, and the call is positive"
+        extra_answers:
+          - "CLOSE_THRESHOLD is set above the sensor's maximum reading"
+          - "The phase variable is declared inside loop() instead of at file scope"
+
+      - id: L10_A25
+        type: matching
+        cite: "§9"
+        points: 4
+        stem: "Match each challenge to what it adds to the finished build."
+        pairs:
+          - left: "Challenge 1 — The Impatient Beep"
+            right: "Compare readFrontProx() against VERY_CLOSE_THRESHOLD and pick a different note"
+          - left: "Challenge 2 — Alternate Sides"
+            right: "A counter that survives between passes, negating the turn on every other obstacle"
+          - left: "Challenge 4 — The Bump Guard"
+            right: "A new conditional phase at the front of the enum, entered only when already too close"
+          - left: "Challenge 6 — The Wedge Return"
+            right: "Drop the parallel leg and turn back past the original heading, on one new constant"
+        extra_answers:
+          - "Replace the phase enum with a lookup table of function pointers"
+          - "Use the side proximity receivers to choose a detour direction"
