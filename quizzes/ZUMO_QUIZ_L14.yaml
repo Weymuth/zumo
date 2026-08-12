@@ -1,0 +1,1277 @@
+# ZUMO READING QUIZ BANK — LESSON 14
+# Competition Prep · Trust Is Earned at Boot — Reliability as an Engineering Skill
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_14.html v02.34.0 (post-S148 read + fix pass)
+#
+# READ -> FIX -> QUIZ. L14 was read end to end in S147 and again, in full, in S148 before a
+# question was written (QUIZ_SPEC §0: the read does not transfer between sessions). Every
+# defect below was fixed BEFORE this bank existed. Against v02.33.1, TEN items here would
+# have keyed a number that no build produces, and one would have keyed a claim the lesson's
+# own code contradicts.
+#
+# THE FIXES THIS BANK RESTS ON
+#
+#   1. EVERY ABSOLUTE BYTE FIGURE IN L14 WAS STALE, AND TWO OF THREE DELTAS MOVED.
+#      Re-compiled in S148 from a fifth independent clone, control first (L11 after_step_1
+#      reproduces 20,516 byte-for-byte). Thirteen builds plus a composed fourteenth:
+#        Step 1 · Step 2 ......... 25,072   (book said 24,902)
+#        Step 3 .................. 25,816   up 744   (book said 25,640, up 738)
+#        Step 4 / finished ....... 25,816   (book said 25,640)
+#        7C match mode ........... 25,780   36 fewer (book said 25,604, 36 fewer)
+#        B1 ...................... 25,076   740 smaller (book said 24,906, 734 smaller)
+#        B2 / B3 / B4 ............ 25,816   byte-identical — claim held
+#        B4 in match mode ........ 25,772   8 bytes smaller — claim held exactly
+#      +170 at the top of the chain and +176 at the bottom, so the deltas were RECOMPUTED
+#      rather than carried. B04, B05, A02, A05, A06, A09, A15, A16, A20 and A21 ask the
+#      corrected figures.
+#
+#   2. THE §4.3 BATTERY CLAIM CONTRADICTED THE LESSON'S OWN CODE. The callout said 4,800 mV
+#      "is the number selfTest() judges you against." It is not: selfTest() computes
+#      battOK = (mv >= BATTERY_LOW), and BATTERY_LOW is 4200 — which Sabotage B3's reveal
+#      already states ("420 is not 4200"). Found by the S148 end-to-end read, not by any
+#      instrument. B14 and B15 ask the corrected version; against v02.33.1 B15 would have
+#      keyed 4,800 and marked every student who read the code as wrong.
+#
+#   3. THE RULES CITATIONS WERE RE-DATED TO THE 2026 EDITION (DJ ruling S148, "go with the
+#      newest post"). The 2026 changes list deletes the §4.1 "Terms and Definitions" that
+#      2025 inserted, which shifts Section 4 BACK by one — so L14 §4.1's §4.2.7 / §4.2.8 /
+#      §4.1 / §4.1.3 were correct all along and the Engineer's Log's §4.3.7 was the 2025
+#      number. Every citation now names its edition inline. B21, B22 and B23 ask these.
+#
+#   4. THE RAMP ROW NOW MATCHES THE 2026 RULES. The lesson taught an unresolved contradiction
+#      between "per ramp" and "per ramp tile." The 2026 edition deleted the sentence the
+#      contradiction rested on; §3.7.4 awards points per individual inclined tile. B27 asks
+#      the resolved version; against v02.33.1 the question had no correct answer.
+#
+#   5. THREE INSPECTION SPECS THAT EXIST IN NO EDITION WERE DELETED — a 25cm x 25cm
+#      footprint, "no height limit," "no weight limit" — along with "must fit under
+#      obstacles." RCJ 2026 §4.4 Inspection carries no size, height or weight row; obstacles
+#      are >= 15 cm and §3.5.6 expects the robot to go AROUND them. No question asks these,
+#      deliberately: they are gone, and a bank should not memorialise deleted text.
+#
+#   6. SMALLER CORRECTIONS, EACH DERIVED: "260 lines of code" -> 87 (the selfTest() body;
+#      the step adds 108 lines across two files); "Sections 3.3 and 6.3" -> 8.3 (there is no
+#      §6.3 and no section-6-* id in the file); §4.3's "add this to your code:" introduced no
+#      code above a callout reading "zero new code"; §8.2's "Tuning Helper Code" heading had
+#      the same shape; §7E carried a draft self-correction in shipped prose; the Figures table
+#      said "twelve-item Competition Day Kit" where the list holds 11. A04 and B34 ask two of
+#      these.
+#
+# EIGHT ANSWER CLASSES DELIBERATELY NOT ASKED, WITH REASONS
+#
+#   a. Every §7 measurement. 7A's gyro drift, 7D's ten-run tally and 7E's five-minute pit
+#      cycle have never been run on this fleet — the tables ship blank on purpose.
+#   b. The 8-bytes-smaller figure for B4 in match mode is asked as a DIRECTION (A21), not as
+#      an absolute, because the lesson states the delta and not the total.
+#   c. IMAGE 14.1 is unshot. Nothing keys on a figure's contents (QUIZ_SPEC §5).
+#   d. L15's title. The book carries two spellings of it and the split is unruled.
+#   e. The glossary's "95% ten times" against §3.1's 90% — a live inconsistency, unruled.
+#   f. Whether a team SHOULD skip calibration (§5.3.8). The lesson calls it a trade, not a
+#      rule, and a gate question needs a stated answer.
+#   g. Anything about the multiplier that a Zumo could earn. It cannot; the lesson is explicit
+#      and the honest limitation is asked instead (B30).
+#   h. The exact wording of the LoP procedure. That is the Engineer's Log entry, not a fact.
+
+lesson: "L14"
+title: "Competition Prep — Trust Is Earned at Boot"
+bank_version: "1.0.0"
+source:
+  lesson_14: "v02.34.0"
+  lesson_13: "v02.29.0"
+  lesson_12: "v01.31.3"
+  lesson_11: "v02.30.0"
+  lesson_08: "v04.31.1"
+
+sets:
+  before:
+    description: >
+      Pre-class reading gate for Lesson 14. Answerable from the text alone — no robot,
+      no compiler, no built program. 50 questions: 37 multiple choice (74%), 10 true/false
+      (20%), 3 matching (6%). Counts and percentages DERIVED from this file, not typed.
+    suggested_draw: 10
+    questions:
+
+      - id: L14_B01
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Each of your robot's behaviours works 90% of the time, and a full course needs ten of them to succeed. What is the overall chance of completing the course?"
+        options:
+          - text: "About 35%"
+            correct: true
+          - text: "90% — each behaviour is independent, so the rate does not change"
+            correct: false
+            why: "Independence is exactly why they multiply. 0.9 to the tenth power is 0.35."
+          - text: "About 9%"
+            correct: false
+            why: "That would be 0.9 divided by 10. Reliability multiplies, it does not divide."
+          - text: "About 81% — two failures at most"
+            correct: false
+            why: "0.81 is 0.9 squared, which is two behaviours, not ten."
+
+      - id: L14_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Section 3.1 says that to reach roughly 90% success across ten behaviours, each individual behaviour must work about how often?"
+        options:
+          - text: "99% of the time"
+            correct: true
+          - text: "90% of the time"
+            correct: false
+            why: "Ten behaviours at 90% each gives 35%, which is the whole point of the section."
+          - text: "95% of the time"
+            correct: false
+            why: "The lesson names 99%. 95% ten times is around 60%."
+          - text: "9% of the time"
+            correct: false
+
+      - id: L14_B03
+        type: true_false
+        cite: "§3.1"
+        points: 1
+        stem: "\"It worked most of the time\" is an acceptable standard for a competition robot, because judges score progress rather than perfection."
+        correct: false
+        why: "The WARNING callout says the opposite in as many words. Scoring rewards progress; reliability still multiplies."
+
+      - id: L14_B04
+        type: multiple_choice
+        cite: "§1, §3.2"
+        points: 1
+        stem: "This lesson opens by stating that it is NOT about teaching new robot features. What is it about instead?"
+        options:
+          - text: "Making the robot reliable, tuning for unfamiliar conditions, competition strategy, and preparing the operator"
+            correct: true
+          - text: "Adding a gripper so the Zumo can finally earn the rescue multiplier"
+            correct: false
+            why: "The lesson is explicit that the multiplier is out of reach — both motor drivers are spoken for."
+          - text: "Rewriting the state machine to run faster on match day"
+            correct: false
+            why: "COMPETITION_MODE changes theatre, not behaviour. Nothing in the state machine is rewritten."
+          - text: "Replacing the line sensors with a camera"
+            correct: false
+
+      - id: L14_B05
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "Section 5 names the three pieces of code this lesson adds. Which file does each land in?"
+        options:
+          - text: "COMPETITION_MODE and the self-test limits in RobotConfig.h; selfTest() in RobotHelpers.cpp; the startup ritual in main.cpp setup()"
+            correct: true
+          - text: "All three in main.cpp, so the competition build is one file"
+            correct: false
+            why: "The eight-file architecture from Lesson 7 still holds. Each piece lands where its family lives."
+          - text: "All three in RobotConfig.h, because they are all configuration"
+            correct: false
+            why: "Only the switch and the limits are configuration. selfTest() is a helper and the ritual is boot code."
+          - text: "COMPETITION_MODE in main.cpp; selfTest() in RobotSensors.cpp; the limits in RobotHelpers.h"
+            correct: false
+
+      - id: L14_B06
+        type: multiple_choice
+        cite: "§5"
+        points: 1
+        stem: "Why does the lesson say selfTest() belongs in RobotHelpers.cpp specifically, rather than anywhere else?"
+        options:
+          - text: "It joins waitForStart() and checkBattery() — the safety helpers that have shipped since Lesson 4 — and is described as their capstone"
+            correct: true
+          - text: "RobotHelpers.cpp is the only file with room left in flash"
+            correct: false
+            why: "Filing in this book is never about space. Lesson 7 ruled that each file owns a job."
+          - text: "Because selfTest() is called from RobotHelpers.h"
+            correct: false
+            why: "A header declares; it does not call. The caller is setup() in main.cpp."
+          - text: "Because it is the only file that can include RobotConfig.h"
+            correct: false
+
+      - id: L14_B07
+        type: multiple_choice
+        cite: "§5, Quick Reference"
+        points: 1
+        stem: "How many subsystems does selfTest() check, and what are they?"
+        options:
+          - text: "Four — battery, line sensors, gyro zero, and prox"
+            correct: true
+          - text: "Five — battery, line sensors, gyro zero, prox, and the encoders"
+            correct: false
+            why: "The encoder check is Challenge 1. The shipped self-test skips the wheels, which is what makes that challenge worth doing."
+          - text: "Three — battery, line sensors, and gyro zero"
+            correct: false
+            why: "The prox wave-test is the fourth, and it is the only one that needs a human."
+          - text: "Two — battery and gyro zero"
+            correct: false
+
+      - id: L14_B08
+        type: multiple_choice
+        cite: "§5, §6 Step 2"
+        points: 1
+        stem: "Which of selfTest()'s four checks requires a human to do something?"
+        options:
+          - text: "The prox check — it waits for you to wave a hand at the front"
+            correct: true
+          - text: "The battery check — you have to hold A + B"
+            correct: false
+            why: "A + B is checkBattery(), the on-demand tool. selfTest() reads the battery by itself."
+          - text: "The gyro check — you have to spin the robot"
+            correct: false
+            why: "The opposite: the gyro check needs the robot STILL. Spinning it is how 7B makes it fail."
+          - text: "The line check — you have to place a black line under the sensors"
+            correct: false
+            why: "It is a raw read looking for channels that answer at all. Alive is alive on any surface."
+
+      - id: L14_B09
+        type: multiple_choice
+        cite: "§6 Step 3, §5.1"
+        points: 1
+        stem: "The lesson says the POSITION of the selfTest() call is the whole point. Where does it go in setup(), and why?"
+        options:
+          - text: "After gyroSetup(), because the gyro check needs a zero to check — and before anything moves, because a robot that fails inspection does not get to spin or drive"
+            correct: true
+          - text: "First thing in setup(), so a failure is caught as early as possible"
+            correct: false
+            why: "Too early: gyroSetup() has not run, so there is no gyro zero to test."
+          - text: "After the line-calibration spin, so all sensors are calibrated before they are tested"
+            correct: false
+            why: "Too late: the spin is motion, and the pit check comes before the robot is allowed to move."
+          - text: "Inside loop(), so it runs continuously"
+            correct: false
+
+      - id: L14_B10
+        type: multiple_choice
+        cite: "§6 Step 3, Quick Reference"
+        points: 1
+        stem: "Walk the boot order the lesson says is now enforced by code instead of memory. Which sequence is correct?"
+        options:
+          - text: "banner and battery → sensors init → gyro zero (robot still) → self-test → A-gate → line calibration (robot spins) → armed"
+            correct: true
+          - text: "banner and battery → self-test → gyro zero → sensors init → line calibration → A-gate → armed"
+            correct: false
+            why: "The self-test cannot precede gyroSetup(); it has nothing to check."
+          - text: "gyro zero → line calibration → self-test → banner → A-gate → armed"
+            correct: false
+            why: "The calibration spin is motion, and nothing moves before the pit check."
+          - text: "A-gate → banner → sensors init → gyro zero → self-test → armed"
+            correct: false
+
+      - id: L14_B11
+        type: true_false
+        cite: "§6 Step 2"
+        points: 1
+        stem: "If selfTest() fails, the robot refuses to run until the fault is repaired."
+        correct: false
+        why: "The shipped version prints FAILED - A=override and waits for button A. The lesson's rule is that the robot may not refuse the match, but it must never lie to you. A robot that parks instead is Challenge 2."
+
+      - id: L14_B12
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "What is the lesson's stated reason for allowing the A-override at all?"
+        options:
+          - text: "The robot may not refuse the match — but the override is a decision made by a human, with the failure on the screen"
+            correct: true
+          - text: "Because the self-test produces too many false failures to be trusted"
+            correct: false
+            why: "The opposite. 7B exists to prove the checks fail honestly."
+          - text: "Because the rules require a robot to attempt every scheduled run"
+            correct: false
+            why: "No rule cited in the lesson says this. The reason given is about who makes the decision."
+          - text: "To save the eight seconds the prox check would otherwise cost"
+            correct: false
+
+      - id: L14_B13
+        type: multiple_choice
+        cite: "§6 Step 1, §8A.3"
+        points: 1
+        stem: "The lesson calls the three self-test limits \"engineering limits\" rather than blanks. What is the difference?"
+        options:
+          - text: "A blank is measured on your own robot; an engineering limit ships with a value because it ships with a stated reason, and changing it means beating the reason"
+            correct: true
+          - text: "An engineering limit is one the compiler can optimise away"
+            correct: false
+            why: "That describes what COMPETITION_MODE does to the demo pauses, not what an engineering limit is."
+          - text: "A blank is a const; an engineering limit is a #define"
+            correct: false
+            why: "All of them are const. The difference is where the number's authority comes from."
+          - text: "An engineering limit only applies on competition day"
+            correct: false
+
+      - id: L14_B14
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "Your fleet runs four eneloop NiMH cells. What does a pack read fresh off the charger, and what is the floor at which you swap it?"
+        options:
+          - text: "About 5,400 mV fresh; 4,200 mV is the floor"
+            correct: true
+          - text: "About 6,000 mV fresh; 4,800 mV is the floor"
+            correct: false
+            why: "6,000 mV is 1.5 V per cell — alkaline, not NiMH. This fleet is NiMH."
+          - text: "About 4,800 mV fresh; 4,200 mV is the floor"
+            correct: false
+            why: "4,800 is the plateau NiMH spends most of its life on, not the fresh reading."
+          - text: "About 5,400 mV fresh; 4,800 mV is the floor"
+            correct: false
+            why: "4,800 is BATTERY_GOOD, the healthy working level. The floor is BATTERY_LOW at 4,200."
+
+      - id: L14_B15
+        type: multiple_choice
+        cite: "§4.3, §6 Step 2"
+        points: 1
+        stem: "Which constant does selfTest() compare the battery reading against to decide PASS or FAIL?"
+        options:
+          - text: "BATTERY_LOW — the code is battOK = (mv >= BATTERY_LOW)"
+            correct: true
+          - text: "BATTERY_GOOD, so anything under the 4,800 mV plateau fails"
+            correct: false
+            why: "BATTERY_GOOD is the level you want to walk to the start line with, but the self-test's PASS line is BATTERY_LOW."
+          - text: "SELFTEST_BATT_MIN, a new limit added in this lesson"
+            correct: false
+            why: "No such constant exists. Lesson 14 adds three limits and none of them is a battery limit."
+          - text: "It compares against a literal 4200 written inline"
+            correct: false
+            why: "Writing the number inline instead of the constant is close to Sabotage B3's defect."
+
+      - id: L14_B16
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "Why does the lesson insist the battery constants are chemistry rather than round numbers?"
+        options:
+          - text: "NiMH holds a flat plateau for most of its discharge and then falls off a cliff, so a pack can read \"fine\" and die minutes later"
+            correct: true
+          - text: "Because NiMH voltage rises steadily as the pack drains"
+            correct: false
+            why: "Voltage does not rise as a pack drains. The plateau is flat, then it drops."
+          - text: "Because the Zumo's regulator cannot measure below 4,000 mV"
+            correct: false
+          - text: "Because the rules require the constants to be stated to the referee"
+            correct: false
+
+      - id: L14_B17
+        type: multiple_choice
+        cite: "§5.2, §6 Step 4"
+        points: 1
+        stem: "What exactly does COMPETITION_MODE change when it is set to true?"
+        options:
+          - text: "It skips three delay(600) demo pauses — the beats where the robot stops so a human can read the screen"
+            correct: true
+          - text: "It raises the base speed so the robot finishes the course faster"
+            correct: false
+            why: "The lesson is emphatic that the toggle changes theatre, not behaviour, and Section 7C proves it in bytes."
+          - text: "It disables the kill switch to save polling time"
+            correct: false
+            why: "That is Sabotage B4, and the lesson calls it the gravest of the four."
+          - text: "It turns off the self-test so booting is quicker"
+            correct: false
+
+      - id: L14_B18
+        type: multiple_choice
+        cite: "§5.2, §6 Step 4"
+        points: 1
+        stem: "Section 5.2 names three things COMPETITION_MODE must NOT touch. Which list is right?"
+        options:
+          - text: "The countdown, the celebrations at a completed rescue, and above all the kill-switch poll"
+            correct: true
+          - text: "The line calibration, the gyro zero, and the OLED"
+            correct: false
+            why: "Those are boot steps, not the guarded-versus-unguarded distinction Step 4 draws."
+          - text: "The three demo pauses"
+            correct: false
+            why: "Those are precisely what it DOES touch — they are the only thing it touches."
+          - text: "Serial output, the buzzer, and the green LED"
+            correct: false
+
+      - id: L14_B19
+        type: true_false
+        cite: "§8A.2"
+        points: 1
+        stem: "Section 8A.2 argues that if cutting the demo pauses is a legitimate way to buy time, then cutting the kill-switch poll is legitimate for the same reason."
+        correct: false
+        why: "It argues the reverse. The pauses cost 600 ms each and protect nothing; the poll costs microseconds and is the only thing standing between a confused robot and the table edge."
+
+      - id: L14_B20
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "Section 8A.2 says a safety feature that has been optimised away is worse than one that never existed. Why?"
+        options:
+          - text: "Because the team still believes it is there"
+            correct: true
+          - text: "Because removing it costs more bytes than leaving it in"
+            correct: false
+            why: "Removing it saves bytes — B4 measures eight of them. Cheapness is the trap, not the objection."
+          - text: "Because the rules require a kill switch to be present at inspection"
+            correct: false
+            why: "True of the start button under §4.2.8, but it is not the reason 8A.2 gives."
+          - text: "Because the compiler will warn about unreachable code"
+            correct: false
+
+      - id: L14_B21
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "Under the RCJ Rescue Line 2026 rules, what must the robot be equipped with so it can be picked up during a scoring run?"
+        options:
+          - text: "A handle (§4.2.7)"
+            correct: true
+          - text: "A lifting loop of at least 25 mm (§4.4)"
+            correct: false
+            why: "No edition specifies a size for the handle. §4.4 is Inspection and carries no such row."
+          - text: "Two handles, one at each end (§4.2.7)"
+            correct: false
+          - text: "Nothing — referees lift robots by the chassis"
+            correct: false
+            why: "The lesson flags this as the requirement that catches teams by surprise."
+
+      - id: L14_B22
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "The rules require a single physical binary switch or button, clearly visible to the referee. What two jobs does that one control do?"
+        options:
+          - text: "It starts the run, and it is used to recover from a Lack of Progress"
+            correct: true
+          - text: "It starts the run and cuts power"
+            correct: false
+            why: "Power cutting is the one ADDITIONAL switch the rule allows, not a second job for the same button."
+          - text: "It starts the run and triggers the self-test"
+            correct: false
+            why: "The self-test runs from setup() at boot; no button starts it."
+          - text: "It starts the run and calls the referee"
+            correct: false
+
+      - id: L14_B23
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "Section 4.1 says every rule it cites names its EDITION as well as its number. What reason does it give?"
+        options:
+          - text: "Rule numbers move — §4.1 was \"Terms and Definitions\" in 2025 and is \"Control\" in 2026 — so a citation with no edition on it cannot be checked"
+            correct: true
+          - text: "Because each region publishes its own numbering"
+            correct: false
+            why: "Regional variants exist, but the reason given is that the international edition itself renumbers between years."
+          - text: "Because the referee will ask which edition you memorised"
+            correct: false
+          - text: "Because the rules are copyrighted and must be attributed"
+            correct: false
+
+      - id: L14_B24
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "Pre-mapped dead reckoning is prohibited. What does the lesson say this does NOT ban?"
+        options:
+          - text: "Dead reckoning itself — Lesson 13's sweep is legal because it discovers the room instead of assuming it"
+            correct: true
+          - text: "Nothing — all dead reckoning is banned, which is why Lesson 13's sweep is competition-illegal"
+            correct: false
+            why: "The lesson says the opposite in the same bullet: the book is built on dead reckoning."
+          - text: "Using the gyro, which measures rather than assumes"
+            correct: false
+            why: "The distinction is not which sensor you use; it is whether the route was hard-coded from knowledge of the field."
+          - text: "Encoder-based distance, which is measurement rather than reckoning"
+            correct: false
+
+      - id: L14_B25
+        type: true_false
+        cite: "§4.1"
+        points: 1
+        stem: "Pre-mapping — a human telling the robot where the obstacles or the evacuation zone are — costs points but does not end the round."
+        correct: false
+        why: "It disqualifies the robot for the round outright (§5.2.5, RCJ Rescue Line 2026)."
+
+      - id: L14_B26
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Your robot drives a tile for the first time, then a Lack of Progress sends it back and it drives that same tile again. What are the two tiles worth?"
+        options:
+          - text: "5 for the first attempt, 3 for the second"
+            correct: true
+          - text: "5 for both — a tile is a tile"
+            correct: false
+            why: "The value decays: 5, then 3, then 1, then 0."
+          - text: "5 for the first, 0 for the second"
+            correct: false
+            why: "Zero does not arrive until beyond the third attempt."
+          - text: "10 for the first, 5 for the second"
+            correct: false
+            why: "10 is the hazard value for a gap, speed bump or intersection tile, not the base tile value."
+
+      - id: L14_B27
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "A ramp on the course is built from three inclined tiles. Under the 2026 rules, how many points is it worth?"
+        options:
+          - text: "30 — §3.7.4 awards the points for each individual inclined tile"
+            correct: true
+          - text: "10 — the ramp is a single hazard however many tiles it uses"
+            correct: false
+            why: "That was an earlier edition's sentence, and the 2026 edition deleted it."
+          - text: "20 — ramps score like obstacles"
+            correct: false
+            why: "20 is the obstacle and seesaw value. A ramp tile is 10."
+          - text: "Either 10 or 30, and the referee decides on the day"
+            correct: false
+            why: "That is what the lesson used to say. The 2026 edition settles it."
+
+      - id: L14_B28
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "How is the exit bonus calculated?"
+        options:
+          - text: "60 minus 5 for every Lack of Progress on the whole course, floored at zero"
+            correct: true
+          - text: "A flat 20 points for reaching the goal tile"
+            correct: false
+            why: "The lesson opens that subsection by saying it is not 20, it is 60 — and it bleeds."
+          - text: "60 minus 5 for every LoP inside the evacuation zone only"
+            correct: false
+            why: "The −0.05 multiplier penalty is the evacuation-zone-only one. The exit bonus counts every LoP anywhere."
+          - text: "60, multiplied by the evacuation zone multiplier"
+            correct: false
+            why: "The bonus is ADDED to the line score, and the sum is then multiplied."
+
+      - id: L14_B29
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "What must the robot do to earn the exit bonus, and where does that time come from?"
+        options:
+          - text: "Reach the goal tile and stop dead for five seconds — and those five seconds come out of the eight minutes"
+            correct: true
+          - text: "Reach the goal tile; stopping is not required"
+            correct: false
+            why: "The five-second stop is the condition, and §9's time budget allots 7:30–7:35 to it."
+          - text: "Exit the evacuation zone without a Lack of Progress"
+            correct: false
+            why: "That affects the multiplier, not the exit bonus."
+          - text: "Stop for five seconds anywhere on the final tile row"
+            correct: false
+
+      - id: L14_B30
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Rescuing victims affects your score in what way, and can this Zumo do it?"
+        options:
+          - text: "Each rescue is a multiplier of about 1.4, not a points total — and this Zumo cannot rescue, because a gripper would need a motor driver and both are spoken for, one per tread"
+            correct: true
+          - text: "Each rescue is worth 50 points, and this Zumo can earn them with the sweep from Lesson 13"
+            correct: false
+            why: "Section 9 names 50 points as the tempting arithmetic that comes from the wrong rulebook. Rescue is a multiplier."
+          - text: "Each rescue is a multiplier, and this Zumo can earn it by pushing a victim with its blade"
+            correct: false
+            why: "A rescue requires the victim entirely inside the triangle with no part of the robot touching it."
+          - text: "Rescues only matter in the final round"
+            correct: false
+
+      - id: L14_B31
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Three clean rescues multiply your whole score by roughly how much?"
+        options:
+          - text: "About 2.74"
+            correct: true
+          - text: "About 4.2 — the three multipliers add"
+            correct: false
+            why: "1.4 three times is 1.4 cubed, not 1.4 times 3. Multipliers multiply."
+          - text: "Exactly 1.4, however many victims you rescue"
+            correct: false
+            why: "Each successful rescue earns its own multiplier."
+          - text: "About 1.96 — the dead victim does not count"
+            correct: false
+            why: "The dead victim does count, but only once both living victims are already out."
+
+      - id: L14_B32
+        type: true_false
+        cite: "§3.2"
+        points: 1
+        stem: "The dead victim earns its multiplier whenever the robot delivers it, regardless of whether the living victims have been evacuated."
+        correct: false
+        why: "The multiplier for the dead victim applies only after both living victims are already out."
+
+      - id: L14_B33
+        type: multiple_choice
+        cite: "§8.1"
+        points: 1
+        stem: "State the 10x Rule."
+        options:
+          - text: "Every behaviour must succeed at least ten times in a row before you call it reliable; one failure in ten means it is not ready"
+            correct: true
+          - text: "Test each behaviour ten times and keep it if it passes at least eight"
+            correct: false
+            why: "Eight of ten is 80%, which Section 3.1 shows is nowhere near competition-ready."
+          - text: "Run the full course ten times on competition day"
+            correct: false
+            why: "That is 7D, and 7D is the full ritual, not the definition of the rule."
+          - text: "Tune each threshold ten times and average the results"
+            correct: false
+
+      - id: L14_B34
+        type: multiple_choice
+        cite: "§8.2"
+        points: 1
+        stem: "Section 8.2 gives a five-step process for tuning a threshold. What is it?"
+        options:
+          - text: "Observe, Record, Calculate, Test, Document"
+            correct: true
+          - text: "Guess, Test, Adjust, Repeat, Ship"
+            correct: false
+            why: "The point of the section is that a threshold is derived from recorded values, not adjusted by feel."
+          - text: "Observe, Calculate, Ship, Document, Freeze"
+            correct: false
+            why: "Testing against the 10x Rule sits between calculating and documenting."
+          - text: "Measure, Average, Round, Apply, Forget"
+            correct: false
+
+      - id: L14_B35
+        type: multiple_choice
+        cite: "§8.2"
+        points: 1
+        stem: "Section 8.2 says the live sensor display you need for a tuning pass already exists. Where from?"
+        options:
+          - text: "Lesson 13's 7A Surface Meter — raw values and prox count on the OLED, motors parked"
+            correct: true
+          - text: "Lesson 14 adds it as a fourth new piece of code"
+            correct: false
+            why: "The section's closing line is that competition prep is not writing new tools."
+          - text: "The Serial Monitor, which is the only way to see raw values"
+            correct: false
+            why: "The OLED carries it, and the section explicitly points at Lesson 13's tool."
+          - text: "Lesson 4's calibration routine"
+            correct: false
+
+      - id: L14_B36
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "The 15-Minute Rule says what?"
+        options:
+          - text: "Give your robot at least 15 minutes to reach room temperature at the venue before making any calibration decisions"
+            correct: true
+          - text: "Arrive at least 15 minutes before your first match"
+            correct: false
+            why: "Section 10.1 says 30+ minutes for arriving. The 15 minutes is for the robot, not the team."
+          - text: "Re-calibrate every 15 minutes during the competition"
+            correct: false
+          - text: "Allow 15 minutes between code freeze and the first match"
+            correct: false
+
+      - id: L14_B37
+        type: matching
+        cite: "§3.2"
+        points: 4
+        stem: "Match each scoring element to what it is worth."
+        pairs:
+          - left: "A tile, driven on the first attempt"
+            right: "5 points"
+          - left: "A tile, driven on the third attempt"
+            right: "1 point"
+          - left: "A tile with one or more speed bumps"
+            right: "10 points"
+          - left: "An obstacle navigated"
+            right: "20 points"
+        extra_answers:
+          - "0 points"
+          - "60 points"
+
+      - id: L14_B38
+        type: true_false
+        cite: "§8.3"
+        points: 1
+        stem: "If your robot fails several of the stress tests in Section 8.3, the recommended response is to make your thresholds more conservative."
+        correct: true
+        why: "The section says failing those tests suggests the thresholds are too tight."
+
+      - id: L14_B39
+        type: multiple_choice
+        cite: "§8.4"
+        points: 1
+        stem: "Section 8.4 lists the usual causes of intermittent failures. Which one does it name FIRST, and what is the tell?"
+        options:
+          - text: "Threshold boundaries — a sensor reading that is sometimes above and sometimes below the threshold"
+            correct: true
+          - text: "Cosmic rays flipping bits in SRAM"
+            correct: false
+          - text: "A bug in the Pololu library"
+            correct: false
+            why: "Nothing in this book blames the library for an intermittent fault; the investigation starts with your own thresholds."
+          - text: "The compiler optimising differently on each build"
+            correct: false
+
+      - id: L14_B40
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "The code freeze protocol sets three deadlines. Which is right?"
+        options:
+          - text: "Two days before: feature freeze, bug fixes only. Night before: no changes at all. Competition day: threshold VALUES only, never logic."
+            correct: true
+          - text: "One week before: total freeze, no changes of any kind after that point"
+            correct: false
+            why: "A week is not the interval, and threshold values remain adjustable on the day."
+          - text: "Competition day: logic changes are fine as long as they compile"
+            correct: false
+            why: "Compiling is not the bar. Section 8A.1 calls last-minute changes the #1 competition killer."
+          - text: "Freeze only between matches; anything before the event is fair game"
+            correct: false
+
+      - id: L14_B41
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "Which phrase does the lesson call the #1 competition killer?"
+        options:
+          - text: "\"Let me just make one small change before the match...\""
+            correct: true
+          - text: "\"It worked at home!\""
+            correct: false
+            why: "That one is a Common Pitfall in §10.6, but 8A.1 reserves #1 for the small change."
+          - text: "\"We'll calibrate on the field.\""
+            correct: false
+          - text: "\"The battery is probably fine.\""
+            correct: false
+
+      - id: L14_B42
+        type: multiple_choice
+        cite: "§9 Time Management"
+        points: 1
+        stem: "Each team has a maximum of 8 minutes for a game. What does that 8 minutes include?"
+        options:
+          - text: "Everything — calibration and the scoring run both come out of it, so the clock starts before the robot does"
+            correct: true
+          - text: "Only the scoring run; calibration is untimed"
+            correct: false
+            why: "§5.3 is explicit that the game includes the time for calibration."
+          - text: "The scoring run plus a separate 2-minute calibration allowance"
+            correct: false
+          - text: "The scoring run, excluding the five-second stop on the goal tile"
+            correct: false
+            why: "The five-second stop is included in the eight minutes."
+
+      - id: L14_B43
+        type: multiple_choice
+        cite: "§9 Time Management"
+        points: 1
+        stem: "In the lesson's realistic eight-minute budget, how much time is left for the actual scoring run?"
+        options:
+          - text: "About six minutes — 1:30 to 7:30"
+            correct: true
+          - text: "The full eight minutes"
+            correct: false
+            why: "Boot, self-test, the prox wave and the calibration spin all come out of the same clock."
+          - text: "About four minutes"
+            correct: false
+          - text: "About seven and a half minutes"
+            correct: false
+            why: "That would leave no time for the calibration spin or the goal-tile stop."
+
+      - id: L14_B44
+        type: multiple_choice
+        cite: "§9 Point Optimization"
+        points: 1
+        stem: "For a Zumo specifically, the lesson says the evacuation zone is not a scoring decision. What kind of decision is it?"
+        options:
+          - text: "A time decision — entering, sweeping, finding the victim and exiting is defensible; burning three minutes stuck in there is not"
+            correct: true
+          - text: "A scoring decision, because the multiplier is worth more than the line score"
+            correct: false
+            why: "That is true for a robot with a gripper. This one cannot complete a rescue at all."
+          - text: "A safety decision, because the zone has walls"
+            correct: false
+          - text: "It is not a decision — the rules require entering the zone"
+            correct: false
+
+      - id: L14_B45
+        type: true_false
+        cite: "§3.2, §9"
+        points: 1
+        stem: "A team that skips the evacuation zone entirely loses a fixed number of points equal to the victims left behind."
+        correct: false
+        why: "They lose a FACTOR on everything else they scored, not a fixed total. That is what the multiplication sign in the field-score formula means."
+
+      - id: L14_B46
+        type: true_false
+        cite: "§10.6"
+        points: 1
+        stem: "A robot that begins driving as soon as it powers on is fine, as long as the team is standing clear of the field."
+        correct: false
+        why: "§10.6 lists the false start first: always wait for a button press and countdown, never auto-start in setup()."
+
+      - id: L14_B47
+        type: true_false
+        cite: "§10.4"
+        points: 1
+        stem: "The lesson identifies the time between matches as the point at which bad decisions are most likely."
+        correct: true
+        why: "The Between-Match Danger Zone: you have just had a disappointing run, you are frustrated, and you want to fix things."
+
+      - id: L14_B48
+        type: true_false
+        cite: "§3.4"
+        points: 1
+        stem: "Section 3.4 tells you to focus on field conditions, judging decisions and how other teams are performing, so that nothing takes you by surprise."
+        correct: false
+        why: "Those are the three things it lists as outside your control. Focus 100% on preparation, focus, routine and response."
+
+      - id: L14_B49
+        type: matching
+        cite: "§5, Quick Reference"
+        points: 4
+        stem: "Match each piece of Lesson 14's code to the file it lives in."
+        pairs:
+          - left: "selfTest()"
+            right: "RobotHelpers.cpp"
+          - left: "COMPETITION_MODE"
+            right: "RobotConfig.h"
+          - left: "The startup ritual — the call to selfTest()"
+            right: "main.cpp setup()"
+          - left: "The declaration bool selfTest();"
+            right: "RobotHelpers.h"
+        extra_answers:
+          - "RobotSensors.cpp"
+          - "RobotMotion.h"
+
+      - id: L14_B50
+        type: matching
+        cite: "§6 Step 1, §8A.3"
+        points: 3
+        stem: "Match each self-test limit to the reason the lesson states beside it."
+        pairs:
+          - left: "SELFTEST_GYRO_MAX_DEG = 3"
+            right: "A good zero drifts under a degree in half a second; a spun one drifts by dozens — three splits those worlds with margin"
+          - left: "SELFTEST_LINE_MAX = 1800"
+            right: "A live channel over pale floor reads in the hundreds; a dead or unplugged one rides up at its timeout ceiling"
+          - left: "SELFTEST_PROX_WAIT = 8000"
+            right: "How long the wave-test waits for your hand before failing"
+        extra_answers:
+          - "The maximum speed the robot may drive during a self-test"
+          - "The number of milliseconds the gyro takes to calibrate"
+
+  after:
+    description: >
+      Post-build check for Lesson 14. Assumes the student has built the four steps, run the
+      Section 7 ladder and worked the challenges and sabotage files. 25 questions:
+      21 multiple choice (84%), 2 true/false (8%), 2 matching (8%). Counts DERIVED from this
+      file. True/false runs under its cap here on purpose: almost every 'after' claim is a
+      byte count or a mechanism, and both make better multiple choice than a coin flip.
+    suggested_draw: 8
+    questions:
+
+      - id: L14_A01
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "You add COMPETITION_MODE and the three self-test limits to RobotConfig.h and compile. What happens to the byte count, and why?"
+        options:
+          - text: "Nothing — it is byte-identical to Lesson 13 finished, because constants nothing reads are free"
+            correct: true
+          - text: "It grows by a few bytes for each constant declared"
+            correct: false
+            why: "A const nothing reads never reaches the binary. Lesson 13 Step 1 taught the same thing."
+          - text: "It shrinks, because the compiler folds the constants"
+            correct: false
+          - text: "It grows by 744 bytes"
+            correct: false
+            why: "744 is what Step 3 costs, when selfTest() finally gets a caller."
+
+      - id: L14_A02
+        type: multiple_choice
+        cite: "§6 Step 1, §6 Step 2"
+        points: 1
+        stem: "What byte count do Steps 1 and 2 both compile to?"
+        options:
+          - text: "25,072"
+            correct: true
+          - text: "25,816"
+            correct: false
+            why: "That is Step 3 onward, once selfTest() is called."
+          - text: "25,076"
+            correct: false
+            why: "That is Mystery B1 — the build whose self-test was deleted by an early return. See the Sabotage section."
+          - text: "20,516"
+            correct: false
+            why: "That is Lesson 11's after_step_1, the toolchain's standing control."
+
+      - id: L14_A03
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "After Step 2 you have written the whole of selfTest() — declared, defined, and not yet called. What does avr-nm report about it in that build?"
+        options:
+          - text: "Zero selfTest symbols — the uncalled function was dropped entirely"
+            correct: true
+          - text: "One selfTest symbol, sized at 744 bytes"
+            correct: false
+            why: "The function is not in the Step 2 binary at all. 744 is what it costs once Step 3 calls it."
+          - text: "One selfTest symbol, but with all four checks stripped"
+            correct: false
+          - text: "It cannot be inspected until the program runs on the robot"
+            correct: false
+            why: "avr-nm reads the compiled ELF. That is the whole point of the Step 2 compile check."
+
+      - id: L14_A04
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "The Step 2 compile check draws a general moral from a byte count that did not move. What is it?"
+        options:
+          - text: "Never trust a byte count without knowing why it moved — or why it did not"
+            correct: true
+          - text: "Uncalled code is always a mistake and should be deleted"
+            correct: false
+            why: "The lesson deliberately writes it one step before calling it. The moral is about reading the number, not about dead code."
+          - text: "A byte count that does not move means the build failed"
+            correct: false
+            why: "It compiled green. That is stated in the same block."
+          - text: "The compiler cannot see across files"
+            correct: false
+            why: "It clearly can — that is exactly how it knows nothing calls selfTest()."
+
+      - id: L14_A05
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "Step 3 adds one line: the call to selfTest(). What does the build do?"
+        options:
+          - text: "Jumps to 25,816 — up 744, as the linker finally pays for the whole function and its strings at once"
+            correct: true
+          - text: "Grows by about 12 bytes, the cost of one function call"
+            correct: false
+            why: "The call is cheap; what it costs is the entire function, which had been dropped until something referenced it."
+          - text: "Stays at 25,072, because the function was already compiled in Step 2"
+            correct: false
+            why: "Compiled is not the same as linked in. Step 2's binary held no selfTest at all."
+          - text: "Shrinks, because the compiler can now inline the checks"
+            correct: false
+
+      - id: L14_A06
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Step 4 guards three delay(600) calls with if (!COMPETITION_MODE), and the switch is still false. What does the build weigh?"
+        options:
+          - text: "25,816 — unchanged, because the compiler folds if (!false) into nothing and keeps the delay"
+            correct: true
+          - text: "25,780 — the guards themselves cost 36 bytes"
+            correct: false
+            why: "25,780 is what you get when the switch is flipped to true, in Section 7C."
+          - text: "Slightly more, because each guard adds a comparison at runtime"
+            correct: false
+            why: "COMPETITION_MODE is a compile-time constant, so there is no runtime comparison to pay for."
+          - text: "25,072, because the guards remove the delays"
+            correct: false
+
+      - id: L14_A07
+        type: true_false
+        cite: "§6 Step 4"
+        points: 1
+        stem: "In practice mode the guard on each demo pause is free — it costs nothing at all in the compiled binary."
+        correct: true
+        why: "With the switch at false the compiler folds if (!false) away and keeps the delay. The lesson says the guard is literally free in practice mode."
+
+      - id: L14_A08
+        type: multiple_choice
+        cite: "§7C"
+        points: 1
+        stem: "You set COMPETITION_MODE to true and rebuild. What changes, and by how much?"
+        options:
+          - text: "The build drops to 25,780 — 36 fewer bytes, the three demo pauses physically absent from the match binary"
+            correct: true
+          - text: "The build drops by about 1,800 bytes, because the narration strings go too"
+            correct: false
+            why: "Only the three delay(600) calls are guarded. The screen text they existed to let you read stays."
+          - text: "The build grows, because the compiler must emit both branches"
+            correct: false
+          - text: "Nothing changes in the binary; the difference is only at runtime"
+            correct: false
+            why: "The whole point of 7C is that the difference is visible in the compiled bytes."
+
+      - id: L14_A09
+        type: multiple_choice
+        cite: "§7C"
+        points: 1
+        stem: "Section 7C asks you to run the full course in both modes side by side. What should you observe?"
+        options:
+          - text: "Identical line following, turns and rescue — the match run is simply quieter and about two seconds faster"
+            correct: true
+          - text: "The match run takes a noticeably different path, because it skips the obstacle stop"
+            correct: false
+            why: "It skips the PAUSE at the obstacle stop, not the avoidance itself. Behaviour is unchanged."
+          - text: "The match run is less reliable, which is the trade-off"
+            correct: false
+            why: "Nothing about reliability changes. That is what makes the toggle acceptable at all."
+          - text: "The practice run finishes first, because it has fewer instructions"
+            correct: false
+
+      - id: L14_A10
+        type: multiple_choice
+        cite: "§7B"
+        points: 1
+        stem: "Section 7B asks you to break each self-test check on purpose. How do you make the GYRO check fail?"
+        options:
+          - text: "Spin the robot gently in your hands during the HOLD STILL calibration"
+            correct: true
+          - text: "Hold the robot perfectly still for the full half second"
+            correct: false
+            why: "That is how it PASSES. A still robot drifts under a degree."
+          - text: "Cover the gyro chip with your finger"
+            correct: false
+            why: "The gyro is not an optical sensor; covering it does nothing."
+          - text: "Boot the robot on a tired battery"
+            correct: false
+            why: "That is how you make BATT fail."
+
+      - id: L14_A11
+        type: multiple_choice
+        cite: "§7B"
+        points: 1
+        stem: "Why does the lesson insist you watch each self-test check FAIL before trusting it?"
+        options:
+          - text: "A test you have never seen fail is a test you have no reason to trust — the discipline now applied to the tester itself"
+            correct: true
+          - text: "Because the checks are known to be unreliable and need calibrating"
+            correct: false
+            why: "The point is not that they are suspect; it is that a passing result carries no information until you know the test can produce a failing one."
+          - text: "Because the referee will ask you to demonstrate a failure at inspection"
+            correct: false
+          - text: "Because failing the test resets the thresholds"
+            correct: false
+
+      - id: L14_A12
+        type: multiple_choice
+        cite: "§7B"
+        points: 1
+        stem: "How do you make the LINE check fail on purpose?"
+        options:
+          - text: "Boot with the robot held in the air, sensors pointing at the ceiling far away — the channels ride to their ceiling"
+            correct: true
+          - text: "Boot with the robot on a black line, so every channel reads dark"
+            correct: false
+            why: "A dark reading is still a channel answering. The check is looking for channels pinned at the timeout ceiling."
+          - text: "Boot on a white surface with the lights off"
+            correct: false
+          - text: "Run the calibration spin twice"
+            correct: false
+
+      - id: L14_A13
+        type: multiple_choice
+        cite: "§7D"
+        points: 1
+        stem: "Section 7D is Section 3.1's reliability maths executed. What does it ask you to do, and what does nine out of ten mean?"
+        options:
+          - text: "Ten consecutive full rituals with a tally — and nine of ten means Section 8.4's intermittent-failure hunt starts now, a week early, with data"
+            correct: true
+          - text: "Ten runs, and nine of ten is competition-ready"
+            correct: false
+            why: "Ten for ten is the bar. One failure in ten is what the 10x Rule rejects."
+          - text: "Ten runs of each individual behaviour rather than the whole ritual"
+            correct: false
+            why: "That is §8.1's 10x testing protocol. 7D runs the whole boot-to-course cycle."
+          - text: "Ten runs, discarding the worst two"
+            correct: false
+
+      - id: L14_A14
+        type: multiple_choice
+        cite: "§7E"
+        points: 1
+        stem: "Section 7E asks you to run the whole pit cycle against a timer, then repeat it with a planted surprise. What is the surprise?"
+        options:
+          - text: "A teammate secretly covers one line sensor with a finger of tape, so the self-test says LINE FAIL with the clock running"
+            correct: true
+          - text: "A teammate swaps in a dead battery without telling you"
+            correct: false
+            why: "The battery swap is part of the cycle itself, not the planted fault."
+          - text: "A teammate flips COMPETITION_MODE"
+            correct: false
+          - text: "A teammate moves the robot during the gyro calibration"
+            correct: false
+            why: "That is 7B's gyro failure, run at leisure rather than against the clock."
+
+      - id: L14_A15
+        type: multiple_choice
+        cite: "Sabotage B1"
+        points: 1
+        stem: "Mystery B1 plants return true; as the first line of selfTest(). The build gets SMALLER. By how much, and why?"
+        options:
+          - text: "740 bytes smaller, at 25,076 — every line after the early return is unreachable, so the four checks, the report card and all the strings are garbage-collected out of the binary"
+            correct: true
+          - text: "740 bytes smaller, because the compiler replaces the function with a single return instruction and keeps the strings for later"
+            correct: false
+            why: "The strings go too. Nothing references them once the code that printed them is gone."
+          - text: "8 bytes smaller — only the verdict block is removed"
+            correct: false
+            why: "8 bytes is B4's match-mode delta, a single call site."
+          - text: "It is byte-identical, because the function still exists"
+            correct: false
+            why: "B2, B3 and B4 are the byte-identical ones. B1 is the one that moves."
+
+      - id: L14_A16
+        type: multiple_choice
+        cite: "Sabotage B1"
+        points: 1
+        stem: "B1's reveal draws a rule from a test that cannot fail. What is it?"
+        options:
+          - text: "A test that cannot fail is worse than no test — with no test, at least nobody is being reassured"
+            correct: true
+          - text: "A test that cannot fail is harmless, since it only wastes a few bytes"
+            correct: false
+            why: "It saves bytes, and that is the trap. The cost is the false confidence."
+          - text: "A test that cannot fail should be replaced with a louder one"
+            correct: false
+          - text: "A test that cannot fail proves the robot is reliable"
+            correct: false
+
+      - id: L14_A17
+        type: multiple_choice
+        cite: "Sabotage B2"
+        points: 1
+        stem: "Mystery B2 raises SELFTEST_GYRO_MAX_DEG from 3 to 90. What does that break, and what does the build weigh?"
+        options:
+          - text: "A spun calibration drifts by dozens of degrees, which is comfortably under 90, so the exact failure the check exists to catch now passes green — and the build is byte-identical to the correct one"
+            correct: true
+          - text: "The gyro check is skipped entirely, and the build shrinks"
+            correct: false
+            why: "The check still runs, still prints a number, and still looks like vigilance. That is what makes it dangerous."
+          - text: "The check now fails on every boot, and the build is byte-identical"
+            correct: false
+            why: "It fails on nothing. 90 is far above any drift the robot will produce."
+          - text: "The build grows, because 90 needs more storage than 3"
+            correct: false
+            why: "Both are immediate values in the same instruction. The disassembly class from Lessons 12 and 13."
+
+      - id: L14_A18
+        type: multiple_choice
+        cite: "Sabotage B2"
+        points: 1
+        stem: "B2's reveal points out what the check \"kept failing\" actually meant. What was it?"
+        options:
+          - text: "Someone kept jostling the robot during calibration — the limit was never the problem, it was the messenger"
+            correct: true
+          - text: "The gyro chip was faulty and needed replacing"
+            correct: false
+            why: "Nothing in the reveal blames the hardware. The check was reporting a real handling fault."
+          - text: "Three degrees was genuinely too tight for this fleet"
+            correct: false
+            why: "8A.3 gives the reasoning behind 3, and B2 exists to show why loosening it beats no reasoning at all."
+          - text: "The half-second window was too short"
+            correct: false
+
+      - id: L14_A19
+        type: multiple_choice
+        cite: "Sabotage B3"
+        points: 1
+        stem: "Mystery B3 changes the battery check to mv >= 420. What is the symptom?"
+        options:
+          - text: "BATT prints PASS forever — every battery this robot will ever meet reads above 420 mV, so the failure mode that ruins the most matches is now invisible to the check built for it"
+            correct: true
+          - text: "BATT prints FAIL forever, because 420 is below the sensor's range"
+            correct: false
+            why: "The comparison is >=, so a low bar passes everything rather than failing everything."
+          - text: "The robot brownouts on boot"
+            correct: false
+          - text: "The check overflows, because 420 does not fit in an int"
+            correct: false
+            why: "420 fits comfortably. The defect is a dropped zero, not a range error."
+
+      - id: L14_A20
+        type: multiple_choice
+        cite: "Sabotage B4"
+        points: 1
+        stem: "Mystery B4 guards the kill switch with the competition flag: if (!COMPETITION_MODE && killSwitchPressed()) break;. What do the two byte counts tell you?"
+        options:
+          - text: "In practice mode it is byte-identical to the correct build, and in match mode it is 8 bytes smaller with one killSwitchPressed call site gone"
+            correct: true
+          - text: "It is 8 bytes smaller in both modes"
+            correct: false
+            why: "In practice mode !false && folds to nothing, so the build matches the correct one exactly."
+          - text: "It is byte-identical in both modes, so the bytes cannot detect this one"
+            correct: false
+            why: "Match mode is where it shows: the compiler deletes the kill check entirely."
+          - text: "It is 740 bytes smaller in match mode"
+            correct: false
+            why: "740 is B1's delta, where the entire self-test is deleted."
+
+      - id: L14_A21
+        type: true_false
+        cite: "Sabotage B4, §8A.2"
+        points: 1
+        stem: "B4 is dangerous mainly because it would be caught immediately in practice, wasting a team's rehearsal time."
+        correct: false
+        why: "The reverse: every practice run hides it, because in practice mode the build is byte-identical and behaves perfectly. The bug does not exist until the day the switch flips."
+
+      - id: L14_A22
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "Challenge 1 adds a fifth check that passes only when both wheels count. Why must the two flags be independent?"
+        options:
+          - text: "One wheel passing must never carry the other — a wheel that will not count is invisible to the odometer that Lessons 11 and 13 both ride on"
+            correct: true
+          - text: "Because the two encoders share an interrupt pin"
+            correct: false
+            why: "The board XORs the channels to save pins, but that is not why the challenge insists on two flags."
+          - text: "Because the left encoder counts twice as fast as the right"
+            correct: false
+          - text: "So the check can finish faster"
+            correct: false
+
+      - id: L14_A23
+        type: multiple_choice
+        cite: "§9 Challenge 2"
+        points: 1
+        stem: "Challenge 2 removes the A-override so a failed self-test parks the robot. It asks what the loop should wait for, and calls it a trick question. What is the answer?"
+        options:
+          - text: "Nothing — while (true) is deliberate, because no button makes a dead battery charged. The robot parks until a human fixes the cause and power-cycles."
+            correct: true
+          - text: "Wait for button C, so the override moves to a different button"
+            correct: false
+            why: "Moving the override is not removing it. The challenge asks for a policy of fix the robot, not the rules."
+          - text: "Wait for the battery to recover on its own"
+            correct: false
+          - text: "Wait for a fixed timeout, then continue anyway"
+            correct: false
+            why: "A timeout that eventually continues is the override again, wearing a clock."
+
+      - id: L14_A24
+        type: matching
+        cite: "Sabotage B1–B4"
+        points: 4
+        stem: "Match each sabotage build to what it actually does. (Note that a byte count cannot separate all four: B2, B3 and B4-in-practice are all byte-identical to the correct build, which is the point of the set.)"
+        pairs:
+          - left: "B1 — the test that cannot fail"
+            right: "Every boot says nothing at all, and the build is 740 bytes smaller because the whole self-test is unreachable and gets deleted"
+          - left: "B2 — the loosened limit"
+            right: "A spun calibration now passes green, while the check still runs and still prints a number that looks like vigilance"
+          - left: "B3 — the dropped zero"
+            right: "BATT prints PASS on every pack forever, so the failure mode that ruins the most matches is invisible to the check built for it"
+          - left: "B4 — the optimised kill switch"
+            right: "Byte-identical and perfect in practice; in match mode the kill check is deleted entirely and the binary is 8 bytes smaller"
+        extra_answers:
+          - "The robot parks with a red light until a human power-cycles it"
+          - "The prox check times out after eight seconds and fails honestly"
+
+      - id: L14_A25
+        type: matching
+        cite: "§8.5"
+        points: 4
+        stem: "The self-test report card names a failure. Match each verdict to where Section 8.5 sends you first."
+        pairs:
+          - left: "BATT FAIL"
+            right: "Swap the pack — now, not after this run"
+          - left: "LINE FAIL"
+            right: "A channel at its ceiling: dust, a loose jumper, or a robot booted in mid-air"
+          - left: "GYRO FAIL with a big drift"
+            right: "Something moved the robot during HOLD STILL — reboot and nobody touches it"
+          - left: "Everything passes in the pit, robot fails on the field"
+            right: "The self-test checks the robot, not the field — stress-test against the venue"
+        extra_answers:
+          - "Reflash the bootloader"
+          - "Raise the limit until the check stops complaining"

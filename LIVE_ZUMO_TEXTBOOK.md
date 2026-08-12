@@ -1,15 +1,250 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 11, 2026 (Session 147 — **A READ SESSION THAT SHIPPED NOTHING TO THE TREE, AND THE HONEST HEADLINE IS THAT NOTHING WAS WRITTEN.** L14 was read end to end and measured with **twelve compiles**; the entire fix is specified in `ZUMO_S148_HANDOFF.md` to the byte, and not one character of it was applied. **DJ RULED AT OPEN that the L14–L16 arc proceeds despite sitting outside the September scope** — *“so we keep the pattern the same until the end. No risk of drift.”* **THE BYTE CHAIN IS L13's TRAP AGAIN, NOT L12's:** L14 moves **+170 at the top and +176 at the bottom**, so two of its three deltas change — *up 738* is **744**, *734 smaller* is **740**, and only the *36 fewer* at 7C survives. **THE READ FOUND SEVEN DEFECTS NO BASELINE SHIFT WOULD HAVE TOUCHED**, including two paragraphs that each price the same quantity twice with different numbers — Step 3's *up 738 … costs 830 bytes*, and B1's *734 smaller* against a reveal reading *the 820 missing bytes*. **AND THEN THE SESSION TURNED INTO A RULEBOOK INVESTIGATION.** L14 cites §4.2.8 for the LoP procedure in §4.1 and §4.3.7 for the same rule in its Engineer's Log. **Neither is a typo: RCJ 2025 added §4.1 “Terms and Definitions” and pushed all of Section 4 down by one, so every §4.x number in the book is a 2024 number.** §4.3.7 is correct, confirmed independently by a second derived ruleset. **The same pass killed three inspection specs that exist in no edition** — the 25×25 cm footprint, the height bullet and the weight bullet — and established that *must fit under obstacles* is wrong twice over, because obstacles are ≥ 15 cm and the robot goes **around** them; the 25 cm is **bridge** geometry. **`ROBOCUP_RESCUE_LINE_2026.md` IS THE SOURCE OF THE ERROR AND IS ITSELF MISNAMED** — its content is the 2025 edition throughout.)
-**Status:** ⚠️ **S147 CLOSED WITH NO TREE CHANGES · 70/70 GATES · ALL INSTRUMENTS CLEAN · `session_versions --check` EXIT 0 · L14 READ AND MEASURED, FIX NOT APPLIED · `ZUMO_S148_HANDOFF.md` WRITTEN.** **THE TREE IS UNCHANGED AT `0e62713`. No version moved, no bank was written, nothing was pushed.** The toolchain was rebuilt from scratch and **the control held for the fourth time from a fourth clone: L11 `after_step_1` = 20,516**, before a single figure was read. Twelve compiles cover the whole L14 chain including all four Sabotage builds and all three challenge solutions; **B2/B3/B4 are byte-identical to the correct build at 25,816 and B4's *8 bytes smaller* in match mode holds exactly (25,780 → 25,772)**, so those claims survive the re-baselining untouched. **ONE ITEM IS BLOCKED ON DJ AND MUST NOT BE GUESSED:** DJ uploaded **RCAP Junior Rescue Line U19 v2026.0**, a RoboCup **Asia-Pacific** ruleset derived from RCJ 2025 that **deletes the black victim, the red evacuation point and ramps entirely** and caps the multiplier at 1.96. **The black victim is load-bearing in L13 — an in-scope lesson already read, fixed and banked** — appearing as a learning objective twice, as Reflection Question 5, in `IMAGE 13.1`'s caption, and as a banked question. Mercersburg is in Pennsylvania, so RCAP almost certainly does not govern, **but DJ did not answer and the question was still open at close.** L14 §3.2's scoring table is blocked behind it; the byte fix, the seven read defects and the citation fix are **not** blocked. **A third upload, *RoboCup Rescue Robot League 2026D*, is a different competition entirely** — 80 kg teleoperated robots on stepfields — and is recorded so nobody mines it again.
+**Date:** August 11, 2026 (Session 148 — **THE READ ARC IS FINISHED: ALL SIXTEEN LESSONS ARE READ, FIXED AND BANKED.** Three full READ → FIX → QUIZ arcs in one session — L14, L15 and L16 — plus the rules pass DJ ruled at open. **THE HEADLINE IS THAT LESSON 16 DID NOT FIT ON THE CHIP AND SEVENTY GATES PASSED THE WHOLE TIME.** L15's finished build grew 180 bytes, so L16's chain started higher: **Step 3 overflowed by 152 and the FINISHED build — the one both sabotages and the entire capstone derive from — was 84 bytes over the ceiling.** `gate_payload_match` was green too. A lesson whose central build cannot be flashed is, to every instrument in this repo, a perfectly well-formed lesson. **THE FIX WAS A DESIGN RULING AND SIX CUTS WERE PRICED BY DELETION BEFORE IT WAS TAKEN** — and **the largest was the wrong answer**, because §7.4 hands the buzzer to the student as their own reserve. **DJ ruled the Ziegler–Nichols cut**, and it improved the lesson: Step 5 now makes two trades, the easy one that still leaves it 84 over and the hard one that closes it at **28,600 with 72 spare**. **AND S147's CITATION FINDING WAS BACKWARDS.** DJ supplied the official RCJ Rescue Line 2026 PDF — *“Go with the newest post”* — whose changes list DELETES the §4.1 the 2025 edition inserted, so **L14 §4.1 was right all along** and the number has moved twice in three editions to land where it started. **`ROBOCUP_RESCUE_LINE_2026.md` was convicted on an inference and is innocent**; the PDF is now in the root, because an extract with no primary source beside it becomes the primary source by default.)
+**Status:** ✅ **S148 CLOSED WITH 70/70 GATES, ALL INSTRUMENTS CLEAN, AND SIXTEEN OF SIXTEEN BANKS.** The control held from a fifth clone (L11 `after_step_1` = **20,516**) and every payload of three lessons was compiled rather than carried. **TEN DEFECTS NO BASELINE SHIFT WOULD HAVE TOUCHED**, sharpest among them L14 §4.3 claiming 4,800 mV *“is the number `selfTest()` judges you against”* where the code reads `battOK = (mv >= BATTERY_LOW)` — **4200** — which **Sabotage B3's own reveal already stated**. It was found only because `QUIZ_SPEC` §0's read **does not transfer between sessions**, and a bank written on S147's read would have keyed 4,800 and marked every student who read the code as wrong. Also: L15's doorway cost stated **three times, three ways, none of them right** (58 / 68 / 68 against a measured **48**); the capstone headroom overstated by 180; two Maker payloads shipping a comment attached to the wrong variable; six of nine rows in L16's ladder stale; and `GRAPHIC 16.2` redrawn from a scale **derived from its own geometry**, where the first render caught a label collision the numbers alone could not show. **THE DOUBLE CHECK IS THE OTHER HEADLINE.** DJ asked for one, and §24.13 means a DIFFERENT METHOD, so three assertion arms ran over the artefacts: a superseded-figure sweep (**41 hits, zero in any lesson or graphic**), every bank figure compiled (**22 builds, 0 mismatches**), every citation resolved (**142, 0 unresolved**). **Arm 1 found S146's defect recurring in all three new banks** — ten distractors offering a pre-correction figure and explaining it with *“a figure from an earlier baseline,”* which appeals to an edit history no student can reach. All ten rewritten. **Writing that rule down did not stop me committing it in the session that quoted it; the detector did.** Three process failures, all mine, all caught — including **S119's `--include-held` failure repeated verbatim**.
 
-**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.137** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.2 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `0e62713`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.0 · L16 v02.23.0 · going_deeper v01.6.1 — census **40,642** · Bible **v8.139** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.4 · **book_gates v1.65.12** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `8179899`.**
 
-**Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **Fall scope is L01–L13 and all thirteen are banked.** L14, L15 and L16 are unbanked. **L14's read is now DONE and recorded in the handoff, so S148 can run FIX → QUIZ in one sitting** without breaking READ → FIX → QUIZ. L15 and L16 remain unread.
+**Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
 ---
 ---
 ---
+
+---
+## WHAT SHIPPED IN S148
+
+**Three full READ → FIX → QUIZ arcs — L14, L15 and L16 — plus the rules pass. Sixteen of
+sixteen banks now exist, and the read arc that has run since S136 is finished.**
+
+### 1. LESSON 16 DID NOT FIT ON THE CHIP
+
+L15's finished build grew 180 bytes, so L16's whole chain started higher. Measured, control
+first: Step 3 **28,824, over by 152**; Step 4 **29,460, over by 788**; Step 5 after the Serial
+trade **28,756, still over by 84**. **The finished build did not link**, and both sabotage
+builds and the entire four-week capstone derive from it.
+
+**Seventy gates passed. `gate_payload_match` passed.** That is rule 33 in its most expensive
+form: no instrument reads prose, and none compiles either.
+
+**Six cuts were priced by deletion before anything was ruled** — Ziegler–Nichols hint **156**,
+buzzer **1,828**, `checkBattery()` A+B **114**, countdown **104**, WEAVE row **60**, prox
+readout **8**. **The largest was the wrong answer:** §7.4 hands the buzzer to the student as
+their reserve and writes their TDP sentence for them, so spending it in the book would leave
+1,744 bytes of runway in a lesson called *Nothing Left to Take Away*; and §7.1 requires the A+B
+report for benchmark battery honesty. **DJ ruled the Z–N cut.**
+
+It improved the lesson. Step 5 now makes **two** trades: the easy one nobody would defend
+(Serial, a habit that earned nothing for fifteen lessons) and the hard one that costs something
+that works. The book previously modelled only the first kind.
+
+### 2. THE RULES PASS REVERSED S147
+
+DJ supplied the official **RCJ Rescue Line 2026** PDF and ruled *"Go with the newest post."*
+The changes list opens with *Deleted "Terms and Definitions"* — the §4.1 the 2025 edition
+inserted — so Section 4 shifts **back** by one and **L14 §4.1's citations were correct all
+along**. Verified three ways in the PDF. **The number moved twice in three editions and landed
+where it started**, so a bare section number can be *coincidentally* right. Every citation now
+names its edition inline.
+
+`ROBOCUP_RESCUE_LINE_2026.md` was **convicted on an inference and is innocent** — genuinely the
+2026 edition, carrying clauses that exist in no earlier one. **`RCJRescueLine2026-final.pdf` is
+now in the root**, because an extract with nothing to check it against becomes the primary
+source by default. The ramp is resolved: **per inclined tile**, so a three-tile ramp is 30.
+
+### 3. TEN DEFECTS INDEPENDENT OF THE BASELINES
+
+**§4.3 of L14 contradicted its own code**, claiming `selfTest()` judges the battery against
+`BATTERY_GOOD` (4,800) where it reads `BATTERY_LOW` (4,200) — which **Sabotage B3's reveal
+already said** 1,500 lines later. Found only because `QUIZ_SPEC` §0 requires the read in the
+session that writes the bank, and **S147's read does not transfer.**
+
+**L15's doorway cost was stated three times, three different ways, and none was right** — a
+header saying +58, its own prose saying *"Sixty-eight bytes"*, §8A.3 saying *"costs 68"*,
+against a measured **48**. Plus the capstone headroom overstated by 180, and two Maker payloads
+shipping a comment attached to the wrong variable.
+
+**L16:** six of nine ladder rows, the linker error, every step figure, both sabotage sizes, and
+a *"fifth of one percent"* that was wrong by a factor of ten independently of everything else.
+
+### 4. GRAPHIC 16.2, REDRAWN FROM ITS OWN GEOMETRY
+
+The wall chart carried nine stale ladder values and two stale step figures. Scale **derived**
+from the file (0.016006 px/byte, bars grounded at y=660), eleven bars recomputed, Step 3 turned
+red because it now crosses the ceiling, every bar read back against its true value. **The first
+render caught a collision the numbers could not** — Step 3's label ran through the ceiling
+caption. A wrong fact in an SVG is still wrong, and no prose check reaches it.
+
+### 5. THE DOUBLE CHECK FOUND WHAT THE FIRST PASS DID NOT
+
+DJ asked for one. §24.13 means a **different method**, so three assertion arms ran over the
+artefacts rather than re-reading them: a superseded-figure sweep (**41 hits, zero in any lesson
+or graphic**), **every bank figure compiled** (22 builds, 0 mismatches), and **every citation
+resolved** (142, 0 unresolved).
+
+**Arm 1 found S146's defect recurring in all three new banks.** Ten distractors offered a
+pre-correction byte figure and explained it with *"a figure from an earlier baseline"* — an
+appeal to the book's edit history, which a student has never seen and cannot reach. QUIZ_SPEC
+§4's whole contract is that `cite:` tells them **where to re-read**, and *"we changed it"* is
+not a place. All ten rewritten to be wrong for reasons findable in the lesson. **Three of
+thirteen hits were false positives** — `"before the"` inside legitimate prose — read, not acted
+on.
+
+**`quiz_bank --check` was green on all sixteen banks throughout.** Writing the rule down did
+not prevent committing it in the session that quoted it. The detector did.
+
+### 6. THREE PROCESS FAILURES, ALL MINE, ALL CAUGHT
+
+A blinding control **fired for the wrong reason** (§27.13 failed on the restored tree too,
+because the L15 comment repair added two spans). **S119's `--include-held` failure repeated
+verbatim**, reverting the lesson strip to inline styles in all sixteen lessons — the flag is in
+the docstring and in S119's own entry, and knowing the rule conferred no immunity. And a Maker
+re-serialisation that produced **2,726 changed lines for a four-payload edit**, redone as
+targeted splices for **2**.
+
+**Rule 46 paid twice and the second time it won:** giving Step 3 the semantically correct
+`THE WALL` family fired **five gates at once**, because §5.1 exists to stop that family's
+5px-border debt spreading into a lesson that never had it. The block became prose, and four of
+the five cleared with no baseline moved.
+
+Applied S148: L14 **v02.34.0** · L15 **v02.31.0** · L16 **v02.23.0** · Maker **v2.49.4** ·
+`book_gates` **v1.65.12** · Bible **v8.139** · `ZUMO_TDP_Template_v3.md` **v3.1.1** ·
+`ROBOCUP_RESCUE_LINE_2026.md` revised · `GRAPHIC 16.2` redrawn · banks **L14/L15/L16 v1.0.0
+NEW** · `RCJRescueLine2026-final.pdf` NEW. §27.11 moved twice, rules and declarations UNCHANGED
+at 574/2,033 both times with every declaration block byte-identical. Census 40,605 → **40,642**.
+
+---
+## WHAT SHIPPED IN S147
+
+**The whole L14 arc: READ → FIX → QUIZ, in one session.** Eight defects, a re-compiled byte
+chain, a rules pass ruled four ways by DJ, the official rulebook committed to the root, and a
+75-question bank.
+
+### 1. THE CITATION FINDING WAS BACKWARDS, AND THE RULE IT BROKE IS THE RULE IT WROTE
+
+S147 concluded L14 §4.1's `§4.2.7`/`§4.2.8` were stale and the Engineer's Log's `§4.3.7` was
+correct. **DJ supplied the official 2026 PDF and ruled *“Go with the newest post.”* The
+opposite is true.** The 2026 changes list opens with *Deleted “Terms and Definitions”* — the
+§4.1 the 2025 edition inserted — so Section 4 shifts **back** by one. Verified three
+independent ways in the PDF: the contents page reads *4.1 Control · 4.2 Construction · 4.3
+Team · 4.4 Inspection · 4.5 Violations*; §4.2's numbered items land the handle at **7** and the
+switch-plus-LoP at **8**; footnote **[1]** on §4.1 records that it previously said *Terms and
+Definitions*.
+
+**The number moved twice in three editions and landed back where it started** — 2024 §4.2.8 →
+2025 §4.3.7 → 2026 §4.2.8. That is the strongest form of §16.17: **a bare section number is not
+merely undateable, it can be *coincidentally* right**, so a majority vote among citations
+counts how often an edition was copied rather than which one is current.
+
+**S147 had no rulebook.** It reconstructed the shift in the correct direction for the wrong
+edition, from a derived regional variant and the book's own extract. **A changes list you have
+not read is a changes list you are quoting from memory.**
+
+Fixed: the Engineer's Log's `§4.3.7` → **`§4.2.8 (RCJ Rescue Line 2026)`** in all three homes
+it reached — L14, `ZUMO_TDP_Template_v3.md` (**v3.1 → v3.1.1**) and the Bible's §14 table.
+L14 §4.1's five citations now name their edition inline, and **a new paragraph teaches why**,
+using the Terms-and-Definitions shift as the worked example.
+
+### 2. `ROBOCUP_RESCUE_LINE_2026.md` WAS CONVICTED ON AN INFERENCE — AND THE FIX IS A FILE
+
+S147 called it the 2025 ruleset misnamed. **It is not.** It is genuinely the 2026 edition, its
+citations are right, and it carries content in no earlier edition: walls *of any colour except
+red, green and black*, the white-LED clause, the fake-victims clause — **all three on the 2026
+changes list.** It was doubted because there was nothing in the tree to compare it against, so
+**the extract had become the primary source by default.**
+
+**`RCJRescueLine2026-final.pdf` is now in the repo root** (9.8 MB, md5
+`5697ea21d049582a67702f85ea7fa272`), and the extract names it and says which direction to check
+in. Flagged, not ruled: it is larger than everything else in the repo combined, and dropping it
+later is a one-file deletion.
+
+**RCAP was never an independent witness either.** Derived from RCJ 2025, its agreement on one
+section's numbering confirmed only its parentage. **RCJ governs — DJ competes in RoboCupJunior
+Rescue Line — so L13 is unblocked and untouched:** §3.10.4 keeps two live victims and one dead,
+§3.9.7 keeps both evacuation points, §3.7 keeps ramps at ≤ 25°.
+
+### 3. THE RAMP IS RESOLVED, NOT RECORDED
+
+DJ: *“make the ramp info match.”* The lesson and the extract both taught an unresolved
+contradiction between §5.6.1 and §3.7.4. **The 2026 changes list DELETES the sentence the
+contradiction rested on** — *“A ramp as a hazard accounts for all inclined tiles that make up
+one ramp”* — and footnote **[2]** confirms it came out of §5.6.1. §3.7.4 and the Summary both
+say per ramp **tile**. **A three-tile ramp is 30.** Fixed in L14's scoring table and in the
+extract's §2.1a, §2.1 and §7.
+
+**Also deleted: three inspection specs that exist in no edition** — the 25×25 cm footprint, the
+height bullet and the weight bullet — with *“must fit under obstacles.”* RCJ 2026 §4.4
+Inspection carries no size, height or weight row; obstacles are **≥ 15 cm** and §3.5.6 expects
+the robot to go **around** them.
+
+### 4. THE BYTE CHAIN WAS RE-COMPILED, NOT CARRIED
+
+Rule 30. Control first — **L11 `after_step_1` = 20,516 from a fifth independent clone** — then
+thirteen builds plus a composed fourteenth. **Every S147 figure reproduced exactly**, which is
+itself worth recording: the handoff was right and re-deriving cost nothing but certainty.
+
+| site | was | now |
+|---|---|---|
+| §6 lead-in · Step 1 · Step 2 | 24,902 | **25,072** |
+| Step 3 | 25,640 · up 738 | **25,816** · **up 744** |
+| Step 4 / finished · Sabotage header | 25,640 | **25,816** |
+| 7C match mode | 25,604 · 36 fewer | **25,780** · **36 fewer** |
+| B1 | 24,906 · 734 smaller | **25,076** · **740 smaller** |
+| B2 / B3 / B4 | byte-identical | **all 25,816** — held |
+| B4 in match mode | 8 bytes smaller | **25,772** — held exactly |
+
+B4-in-match-mode has no payload kind in the Maker; it was composed by putting
+`bonus_b4_guarded_kill/main.cpp` onto the `ladder_7c_match_mode` tree, **after diffing both
+against `finished` to prove each differs in exactly one file** — so the composition is
+unambiguous rather than assumed.
+
+### 5. EIGHT DEFECTS, NOT SEVEN — AND THE EIGHTH IS THE ENTRY'S POINT
+
+**`QUIZ_SPEC` §0 requires an end-to-end read IN THE SESSION THAT WRITES THE BANK, and S147's
+read does not transfer.** S148 re-read L14 in full before authoring, and found what S147's read
+did not:
+
+**§4.3 claimed 4,800 mV *“is the number `selfTest()` judges you against.”*** The code is
+`battOK = (mv >= BATTERY_LOW)` and `BATTERY_LOW` is **4200** — which **Sabotage B3's own reveal
+already states** (*“420 is not 4200”*). A lesson contradicting itself across 1,500 lines,
+invisible to seventy gates. **A bank written on S147's read would have keyed 4,800 and marked
+every student who read the code as wrong** — which is the exact failure §0 exists to prevent,
+now on its second recorded instance.
+
+The other seven: **830** fixed by *rewriting the sentence*, not swapping the number, because
+`selfTest()` has **no function symbol** in the Step 3 binary — LTO inlined it into `setup()`,
+and the only `selfTest` symbols present are **16 string constants totalling 149 bytes**, so
+nothing measures 830 at all (rule 62). **260 lines → 87**, the derived length of the
+`selfTest()` body. **Sections 3.3 and *6.3* → 8.3** — there is no §6.3 and no `section-6-*` id
+in the file. **§4.3's *“add this to your code:”*** introduced no code above a callout reading
+*zero new code*; **§8.2's *Tuning Helper Code*** heading had the same shape and became *Tuning
+Helpers You Already Have*. **§7E carried a draft self-correction in shipped prose.** **The
+Figures table's *twelve-item* kit → 11**, derived from the `<li>` elements.
+
+### 6. THE L14 BANK — AND A VALIDATOR MESSAGE THAT WAS TWO DIFFERENT BUGS
+
+`quizzes/ZUMO_QUIZ_L14.yaml` **v1.0.0**: 50 before (**37 MC / 10 TF / 3 matching**) + 25 after
+(**21 / 2 / 2**), **counts derived from the file** and every header claim asserted against the
+artefact — each id it names checked to exist, each `source:` pin compared against the live
+lesson version rather than copied. **Banks 14 of 16; 1,091 questions.** Ten items would have
+keyed a number no build produces against v02.33.1, and B15 would have keyed the wrong battery
+constant. Eight answer classes are named in the header as deliberately unasked, chief among
+them **every §7 measurement** — no rung of L14's ladder has ever been run on this fleet.
+
+**`--check` reported *duplicate right-hand answers* four times. Three were the wrong key names**
+(`prompt`/`answer` instead of `left`/`right`), which made every right-hand value `None`. **The
+fourth was real:** A24 matched four sabotages to their byte counts and **B2 and B3 are genuinely
+byte-identical**, so two prompts would both have been correct. **A blanket key rename would
+have cleared all four messages and shipped the duplicate.** Rewritten to match each sabotage to
+its *mechanism*, which is the better question and keeps the byte teaching where the bytes
+actually separate. **New rule 67: when a mechanical fix silences a diagnostic, re-run it and
+then ask whether any of the silenced messages were telling the truth.**
+
+Applied S148: L14 **v02.34.0** (moderate — three `<li>` deleted, a paragraph added, a heading
+reworded, so both §5b homes move) · Bible **v8.138** · `ZUMO_TDP_Template_v3.md` **v3.1.1** ·
+`ROBOCUP_RESCUE_LINE_2026.md` revised · `quizzes/ZUMO_QUIZ_L14.yaml` NEW ·
+`RCJRescueLine2026-final.pdf` NEW. No instrument changed, no gate changed. Census 40,605 →
+**40,601**.
 
 ---
 ## WHAT SHIPPED IN S147

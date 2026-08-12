@@ -2,7 +2,14 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.65.10'
+VERSION = 'v1.65.12'
+# v1.65.12 (S148): §27.11 digest moved for L16's second-trade step (a new <pre>, <h4> and
+#   paragraphs). RULES AND DECLARATIONS UNCHANGED at 574/2,033, class set byte-identical,
+#   EVERY declaration block byte-identical - usage RANK only. NO gate logic changed.
+# v1.65.11 (S148): §27.11 digest moved for L15's two restored syntax-highlight spans (the
+#   orphaned dtSec comment repair). RULES AND DECLARATIONS UNCHANGED at 574/2,033, class set
+#   byte-identical, EVERY declaration block byte-identical — the only textual change in the
+#   generated block is two count comments. NO gate logic changed.
 # v1.65.10 (S144): §27.11 baseline moved for the L11 §3.5 cliff rewrite. NO gate logic
 #   changed. Detail at the CSS_DIGEST line.
 # v1.65.9 (S144): §27.11 baseline moved for L10 callout 10.5's amber->green normalisation.
@@ -2300,7 +2307,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'fecb7fafb1270897'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '16066a1f216acce5'
 #   S144 move, SECOND of the session. Digest ONLY, 574/2,033 both ends, class SET
 #   byte-identical, usage RANK only: `.h4-c-555` 9 -> 8 and the whole textual diff is that
 #   rule changing rank plus its count comment. Cause: the L11 §3.5 cliff rewrite has one

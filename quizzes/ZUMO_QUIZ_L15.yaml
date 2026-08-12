@@ -1,0 +1,1272 @@
+# ZUMO READING QUIZ BANK — LESSON 15
+# The Present Isn't Enough · PID Control — and the Tuning Bench That Proves It
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_15.html v02.31.0 (post-S148 read + fix pass)
+#
+# READ -> FIX -> QUIZ. L15 was read end to end in S148 and every defect below was found and
+# fixed BEFORE a question was written. Against v02.30.1, TWELVE items here would have keyed a
+# number that no build produces.
+#
+# THE FIXES THIS BANK RESTS ON
+#
+#   1. EVERY BYTE FIGURE IN L15 WAS STALE, AND FOUR OF THE FIVE DELTAS MOVED WITH THEM.
+#      Re-compiled in S148, control first (L11 after_step_1 reproduces 20,516 byte-for-byte
+#      from a fifth clone). Sixteen builds. The measured chain:
+#        Step 1 · 2 · 3 ......... 25,816   (book said 25,640)
+#        Step 4 ................. 25,980   +164   (book said 25,802, +162)
+#        Step 5 ................. 27,286   +1,306 (book said 27,098, +1,296)
+#        Step 6 ................. 27,334   +48    (book said 27,156, +58)
+#        Step 7 / finished ...... 28,214   +880   (book said 28,034, +878)
+#        7A ..................... 26,292   (book said 26,116)
+#        7D ..................... 27,400   (book said 27,222)
+#        B1 ..................... 28,214   identical to correct — claim held
+#        B2 ..................... 28,230   16 bigger — delta held
+#        B3 ..................... 28,164   50 smaller (book said 27,986, 48 smaller)
+#        B4 ..................... 28,214   identical to correct — claim held
+#      +176 at the top of the chain and +180 at the bottom, so the deltas were RECOMPUTED from
+#      the compiles rather than shifted. B15, B16, A01, A02, A03, A04, A05, A06, A16, A17,
+#      A18 and A19 ask the corrected figures.
+#
+#   2. THE DOORWAY COST WAS STATED THREE TIMES, THREE DIFFERENT WAYS, AND NONE OF THEM WAS
+#      RIGHT. Step 6's header said +58; its own body prose said "Sixty-eight bytes"; §8A.3 said
+#      "enterFollowing() costs 68". Measured: 48. This is the L14 defect shape repeating — one
+#      quantity priced twice in one lesson — and here it was priced three times. All three sites
+#      now read 48. A06 and B24 ask it.
+#
+#   3. THE CAPSTONE HEADROOM WAS OVERSTATED BY 180 BYTES. The What's Next block told the
+#      student the finished controller is 28,034 bytes with "638 bytes left under the ceiling."
+#      Measured 28,214, so the real headroom is 458 — the lesson was promising 28% more room
+#      than the chip has, and Lesson 16 spends that headroom. Corrected to 28,214 / 458, and
+#      the arithmetic now closes on the 28,672 ceiling. A20 asks it.
+#
+#   4. TWO MAKER PAYLOADS SHIPPED A COMMENT ATTACHED TO THE WRONG VARIABLE. In the 7D and
+#      Challenge 2 builds, inserting a new global consumed dtSec's trailing comment, so
+#      lineIntegral and dFiltered each carried "// How long THIS pass took. One clock, two
+#      loops." — a sentence describing dtSec — while dtSec itself had none. Repaired in both
+#      the lesson reveals and the Maker payloads together (gate_payload_match requires it), and
+#      verified byte-neutral: 7D still compiles to 27,400 and Challenge 2 to 28,292.
+#      NOT ASKED — a comment is not a fact about the controller.
+#
+# NINE ANSWER CLASSES DELIBERATELY NOT ASKED, WITH REASONS
+#
+#   a. Every §7 measurement. No rung of this ladder has ever been run on this fleet: nobody has
+#      read a real dt off the strip chart, found a real Ku, or measured a real Tu. The tables
+#      ship blank on purpose and a gate question needs a stated answer.
+#   b. Any specific value of KD, KP_SPEED or KI_SPEED. All three ship as 0 with a starting
+#      guess in the comment; the lesson's whole point is that the number is yours, not the
+#      book's. The STARTING GUESSES are askable and are asked (B29).
+#   c. The figures' contents. GRAPHIC 15.1–15.3 carry the tenses, the step response and the
+#      windup curve, but the prose states all three, so questions cite the prose (QUIZ_SPEC §5).
+#   d. Challenges 4–7. They ship without solutions by design — "the bench will tell you whether
+#      you got it right" — so there is no key to grade against.
+#   e. Whether Ziegler-Nichols is "correct." The lesson's claim is that it is a starting point,
+#      and that is what is asked (B31), not whether the recipe is good.
+#   f. The exact loop period in microseconds. The lesson says "roughly 2-3 milliseconds" and
+#      "up to 2000 us" for the sensor timeout; asking for a single number would key a range.
+#   g. This lesson's own title. The book carries two spellings of it and the split is unruled.
+#   h. The Going Deeper fixed-point material. The lesson says explicitly it is not on a quiz.
+#   i. Anything requiring the robot, in the `before` set (QUIZ_SPEC §2).
+
+lesson: "L15"
+title: "The Present Isn't Enough — PID Control and the Tuning Bench"
+bank_version: "1.0.0"
+source:
+  lesson_15: "v02.31.0"
+  lesson_14: "v02.34.0"
+  lesson_11: "v02.30.0"
+  lesson_08: "v04.31.1"
+  lesson_06: "v04.32.1"
+
+sets:
+  before:
+    description: >
+      Pre-class reading gate for Lesson 15. Answerable from the text alone — no robot, no
+      compiler, no built program. 50 questions: 37 multiple choice (74%), 10 true/false (20%),
+      3 matching (6%). Counts and percentages DERIVED from this file, not typed.
+    suggested_draw: 10
+    questions:
+
+      - id: L15_B01
+        type: multiple_choice
+        cite: "§1, §3.1"
+        points: 1
+        stem: "The lesson describes P, I and D as three tenses. Which term is which?"
+        options:
+          - text: "P is the present, D is the future, I is the past"
+            correct: true
+          - text: "P is the present, I is the future, D is the past"
+            correct: false
+            why: "Reversed. I accumulates history, so it is the past; D reads the rate of change, which is a statement about where you are heading."
+          - text: "P is the past, D is the present, I is the future"
+            correct: false
+          - text: "All three read the present; only the gains differ"
+            correct: false
+            why: "If that were true P alone would be enough, and the whole lesson exists because it is not."
+
+      - id: L15_B02
+        type: multiple_choice
+        cite: "§3.1"
+        points: 1
+        stem: "Match the arithmetic to the term: which expression is the integral?"
+        options:
+          - text: "Ki × the running sum of error × dt"
+            correct: true
+          - text: "Kd × (error − lastError) ÷ dt"
+            correct: false
+            why: "That is the derivative — a change divided by a time."
+          - text: "Kp × error"
+            correct: false
+            why: "That is proportional control, which Lesson 8 already gave you."
+          - text: "Ki × error ÷ dt"
+            correct: false
+            why: "The integral multiplies by dt. Dividing by it would make it a rate, which is D's job."
+
+      - id: L15_B03
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "Why can no value of Kp make the weave go away?"
+        options:
+          - text: "P commands a correction based only on where the robot is, so it is still correcting hard at the instant it reaches centre — it overshoots, then does the same thing the other way"
+            correct: true
+          - text: "Because Kp is stored as a float and floats lose precision"
+            correct: false
+            why: "Nothing in the lesson blames arithmetic precision. The blind spot is structural."
+          - text: "Because the line sensors are too slow to keep up"
+            correct: false
+            why: "The sensors are fast enough; §4.2's complaint about them is about the loop PERIOD, not the weave."
+          - text: "It can — a small enough Kp removes the weave entirely"
+            correct: false
+            why: "Too small and the robot is lazy; too large and the weave becomes a wobble. Neither end removes it."
+
+      - id: L15_B04
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The lesson's analogy for P alone: you walk toward a wall with your eyes closed while a friend calls out your distance — ten feet, five, two. What is the point of it?"
+        options:
+          - text: "You know exactly where you are at every moment and still hit the wall, because nobody told you how fast you were closing"
+            correct: true
+          - text: "Your friend's numbers are too infrequent to be useful"
+            correct: false
+            why: "The frequency is not the problem; the analogy gives you a continuous stream of positions."
+          - text: "You cannot trust a measurement you did not take yourself"
+            correct: false
+          - text: "Closing your eyes is the mistake — P is fine if you can see"
+            correct: false
+
+      - id: L15_B05
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "The error was 100 last pass and is 50 now. What is the derivative, and what does D do about it?"
+        options:
+          - text: "Negative — the error is closing fast, so D subtracts from the correction and brakes early"
+            correct: true
+          - text: "Negative — so D adds to the correction to close the remaining gap faster"
+            correct: false
+            why: "Adding would defeat the purpose. The whole value of D is that it eases off BEFORE arrival."
+          - text: "Positive — the error is still non-zero, so D pushes harder"
+            correct: false
+            why: "A shrinking error gives a negative derivative. Positive means the error is opening up."
+          - text: "Zero — D only responds when the error changes sign"
+            correct: false
+
+      - id: L15_B06
+        type: true_false
+        cite: "§3.3"
+        points: 1
+        stem: "If the error was 50 last pass and is still 50 now, the derivative term contributes nothing to the correction."
+        correct: true
+        why: "An unchanging error gives a derivative of zero, and the lesson's own table says so: 'Not changing. D has nothing to say.' Note this is not the same as the error being zero — the robot is still 50 off, and P is still working hard."
+
+      - id: L15_B07
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "A drivetrain bias makes the robot pull slightly right. Why does P settle at a small permanent error instead of removing it?"
+        options:
+          - text: "P's output shrinks as the error shrinks, so it comes to rest exactly where its correction cancels the bias — and that point has a non-zero error, because zero error would produce zero output"
+            correct: true
+          - text: "Because Kp is too small; raising it removes the offset"
+            correct: false
+            why: "Raising Kp shrinks the offset but never reaches zero, because the same arithmetic that makes P work is what leaves the residue."
+          - text: "Because the line sensors are miscalibrated"
+            correct: false
+            why: "Calibration is worth checking (§8.1 says so) but the steady-state residue is structural to P, not a calibration fault."
+          - text: "Because the derivative is cancelling P's output"
+            correct: false
+
+      - id: L15_B08
+        type: multiple_choice
+        cite: "§3.4, Glossary"
+        points: 1
+        stem: "What is integral windup?"
+        options:
+          - text: "The error stays large for a while — the robot is picked up, blocked, or loses the line — so the integral piles up into an enormous number that fires all at once on recovery"
+            correct: true
+          - text: "The integral slowly loses precision as it accumulates over a long run"
+            correct: false
+            why: "The failure is not drift in the number; it is a correct number that has grown far too large to spend."
+          - text: "The integral resets itself unexpectedly mid-run"
+            correct: false
+            why: "That would be the opposite problem. The doorway reset in §5.7 is the deliberate version of it."
+          - text: "The derivative and the integral fight each other"
+            correct: false
+
+      - id: L15_B09
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Section 3.5 prices what the I term would buy on the line loop. What is the size of the prize?"
+        options:
+          - text: "About 80 units of error out of a ±2000 half-scale — roughly 4%"
+            correct: true
+          - text: "About 800 units — roughly 40%"
+            correct: false
+            why: "The arithmetic is 8 speed units of bias divided by a Kp of about 0.1, which is 80."
+          - text: "About 8 units — roughly 0.4%"
+            correct: false
+            why: "8 is the size of the TRIM-like bias, not the error it leaves behind."
+          - text: "The lesson does not put a number on it"
+            correct: false
+            why: "It does, deliberately: 'that is the size of the prize.'"
+
+      - id: L15_B10
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Why is a steady error on a curve NOT a mistake?"
+        options:
+          - text: "To hold a constant-radius curve the robot must steer constantly, and the only way P produces a constant steering command is to sit at a constant non-zero error — the steady error IS the steering command"
+            correct: true
+          - text: "Because the sensors read differently on a curve, so the error is an artefact"
+            correct: false
+            why: "The error is real. What is wrong is treating it as something to erase."
+          - text: "Because curves are short enough that the error never accumulates"
+            correct: false
+            why: "The whole failure is that it does accumulate — every curve on the track winds I up."
+          - text: "It is a mistake; the lesson says I fixes it"
+            correct: false
+            why: "The lesson ships the opposite verdict, and 7D makes you watch it fail."
+
+      - id: L15_B11
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "The lesson ships a verdict about where each term belongs. What is it?"
+        options:
+          - text: "The line loop gets P and D. The speed loop gets the I."
+            correct: true
+          - text: "The line loop gets full PID; the speed loop gets P only"
+            correct: false
+            why: "Exactly backwards, and §7D exists to let you watch the line-loop I fail."
+          - text: "Both loops get full PID; the gains differ"
+            correct: false
+          - text: "The line loop gets P and I; the speed loop gets D"
+            correct: false
+
+      - id: L15_B12
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "Section 3.5 names a SECOND bill the line-loop integral runs up, beyond the curve exit. What is it?"
+        options:
+          - text: "When the line goes out from under the sensors readLine() saturates at 0 or 4000 and holds, so the error slams to ±2000 and stays — and an integrator treats that as seconds of maximum wrongness it is duty-bound to repay"
+            correct: true
+          - text: "The integral overflows its float and wraps to a negative number"
+            correct: false
+            why: "Nothing in the lesson describes an overflow. The problem is a correct number that is far too large."
+          - text: "The integral slows the loop down enough to break dt"
+            correct: false
+          - text: "The integral and the derivative cancel on a gap"
+            correct: false
+
+      - id: L15_B13
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "What is derivative kick, and why does line following get a free pass on it?"
+        options:
+          - text: "A one-pass spike caused by a step change in the SETPOINT — and on the line the setpoint is LINE_CENTER, which never changes"
+            correct: true
+          - text: "A spike caused by sensor noise — and line sensors are quiet enough not to trigger it"
+            correct: false
+            why: "That is noise amplification, a different row of the same table. Kick is about the setpoint moving."
+          - text: "A spike when the robot crosses a gap — and handleGap() suppresses it"
+            correct: false
+          - text: "A spike when Kd is raised too far — and the lesson caps Kd at 0.5"
+            correct: false
+
+      - id: L15_B14
+        type: multiple_choice
+        cite: "§3.6"
+        points: 1
+        stem: "Your steering gets twitchy and jittery, and it gets worse every time you raise Kd. What is happening, and what are the two fixes the lesson names?"
+        options:
+          - text: "Noise amplification — D is a rate and sensor noise is a rate too, so D cannot tell them apart. Lower Kd, or low-pass filter the derivative."
+            correct: true
+          - text: "Integral windup — clamp the integral and reset it in the doorway"
+            correct: false
+            why: "Windup shows as a lunge after a blind period, not as a twitch that scales with Kd."
+          - text: "Derivative kick — differentiate the measurement instead of the error"
+            correct: false
+            why: "Kick is a single spike when the target moves. This one gets steadily worse as the gain rises."
+          - text: "The loop is running too fast — add a delay"
+            correct: false
+
+      - id: L15_B15
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "Why can millis() not time this loop?"
+        options:
+          - text: "One pass takes roughly 2–3 milliseconds and millis() resolves to 1 ms, so asked to measure a 2 ms interval it answers 2, or 3, or 0 — and you cannot divide by zero"
+            correct: true
+          - text: "millis() stops counting while the line sensors are discharging"
+            correct: false
+            why: "It keeps counting. The problem is its resolution, not an interruption."
+          - text: "millis() rolls over too often to be trusted"
+            correct: false
+            why: "Rollover is §4.3's topic and is handled safely by subtraction. It is not why millis() fails here."
+          - text: "millis() returns a signed value that goes negative"
+            correct: false
+
+      - id: L15_B16
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "What makes one pass through this loop take as long as it does — and why is the period not even constant?"
+        options:
+          - text: "The five line sensors are RC sensors, and initFiveSensors() sets the discharge timing ceiling to 2000 microseconds — and black discharges slower than white, so the loop period depends on what is under the robot"
+            correct: true
+          - text: "The OLED redraw dominates, and it takes longer when more characters change"
+            correct: false
+            why: "The lesson names the sensors, not the display, and gives the 2000 µs ceiling by name."
+          - text: "The gyro update blocks until a new sample is ready"
+            correct: false
+          - text: "The motors' PWM period sets the loop rate"
+            correct: false
+
+      - id: L15_B17
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "What is micros()' resolution, and what does that make it against this loop?"
+        options:
+          - text: "4 microseconds — about a 0.2% ruler against a 2000 µs loop"
+            correct: true
+          - text: "1 microsecond — a 0.05% ruler"
+            correct: false
+            why: "The lesson states 4 µs, which is the resolution on this hardware."
+          - text: "4 milliseconds — too coarse, which is why the lesson uses millis() instead"
+            correct: false
+            why: "Reversed: micros() is the clock the lesson runs on, precisely because it is fine enough."
+          - text: "It has no fixed resolution; it depends on the CPU load"
+            correct: false
+
+      - id: L15_B18
+        type: true_false
+        cite: "§4.3"
+        points: 1
+        stem: "Because micros() wraps back to zero about every 70 minutes, the elapsed-time subtraction now - lastMicros can produce a wrong answer across the wrap."
+        correct: false
+        why: "Unsigned subtraction wraps the same way the counter does, so the subtraction comes out right across the rollover. The rule is: store the timestamps and subtract them — never store an elapsed total and compare it to a target."
+
+      - id: L15_B19
+        type: multiple_choice
+        cite: "§4.3, §5.2"
+        points: 1
+        stem: "DT_MIN_US is 100 microseconds. The lesson insists it is not a blank. What is it, and why that value?"
+        options:
+          - text: "An engineering limit — 100 µs sits far below this loop's real period, so it can only ever fire if something is already badly wrong"
+            correct: true
+          - text: "A blank you measure on your own robot, like COUNTS_PER_CM"
+            correct: false
+            why: "The lesson draws exactly this distinction: a limit ships with a reason, a blank ships with a measurement."
+          - text: "The target loop period the code tries to hold"
+            correct: false
+            why: "It is a FLOOR under dt, not a target. Nothing in the loop tries to reach it."
+          - text: "The resolution of micros(), rounded up"
+            correct: false
+            why: "micros() resolves to 4 µs. 100 is a deliberate floor, not a hardware figure."
+
+      - id: L15_B20
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "State the rule this whole lesson runs on."
+        options:
+          - text: "followLine() keeps its name and every one of its call sites; only the question it asks gets better"
+            correct: true
+          - text: "Every new controller gets its own function, so the old one stays available"
+            correct: false
+            why: "The lesson is explicit: there is no followLinePD() and no followLinePID()."
+          - text: "Every gain must be a compile-time constant so the compiler can fold it"
+            correct: false
+          - text: "No function may exceed twenty lines"
+            correct: false
+
+      - id: L15_B21
+        type: true_false
+        cite: "§5.1"
+        points: 1
+        stem: "When Lesson 11 upgraded handleGap() from a stopwatch to an odometer, it gave the improved version a new name so the old behaviour stayed available."
+        correct: false
+        why: "It kept the name, the call site and the TRIM — and every state that called it got better for free. That is the precedent §5.1 cites for doing the same to followLine()."
+
+      - id: L15_B22
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "P is stateless. What must the upgraded controller now remember between passes?"
+        options:
+          - text: "The last error, and when the last pass was"
+            correct: true
+          - text: "The last position and the last motor speeds"
+            correct: false
+            why: "Neither is carried. D needs the previous ERROR, and both new terms need a timestamp."
+          - text: "Nothing — dt is recomputed from scratch each pass"
+            correct: false
+            why: "dt is computed by subtracting a REMEMBERED timestamp from the current one."
+          - text: "The whole history of every error, in an array"
+            correct: false
+            why: "The integral is a running total, not a stored history — that is the point of accumulating."
+
+      - id: L15_B23
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "The bench reports three numbers. What does each measure?"
+        options:
+          - text: "MAE is the mean of |error| over the run; PEAK is the largest |error|; WEAVE is error sign-flips per second"
+            correct: true
+          - text: "MAE is the maximum error; PEAK is the mean; WEAVE is the run length"
+            correct: false
+            why: "MAE is the MEAN absolute error — it is the main score, and lower is better."
+          - text: "MAE is measured in centimetres off the line; PEAK in degrees; WEAVE in hertz"
+            correct: false
+            why: "All three are computed from the same unitless error the controller already has."
+          - text: "All three measure the same thing at different time scales"
+            correct: false
+            why: "They can disagree, which is the reason there are three of them."
+
+      - id: L15_B24
+        type: multiple_choice
+        cite: "§5.5"
+        points: 1
+        stem: "Why is TUNING_RUN_MS — the bell that ends every run at the same length — described as 'not a detail'?"
+        options:
+          - text: "Two gains are only comparable if the runs were; a 12-second run and a 7-second run produce two MAE numbers that cannot be compared"
+            correct: true
+          - text: "Because a longer run drains the battery, which changes the result"
+            correct: false
+            why: "Battery state is one of §7.0's three rules, but the bell exists for comparability of the score itself."
+          - text: "Because the robot overheats after 10 seconds"
+            correct: false
+          - text: "Because MAE is only accurate over exactly 10 seconds"
+            correct: false
+            why: "MAE is a mean, so it is defined over any length. The problem is comparing two means taken over different lengths."
+
+      - id: L15_B25
+        type: multiple_choice
+        cite: "§5.6, Quick Reference"
+        points: 1
+        stem: "There are four gains and three buttons. How do you select which gain the buttons are turning?"
+        options:
+          - text: "Hold A and tap C"
+            correct: true
+          - text: "Press A and C together"
+            correct: false
+            why: "Close, but the lesson's spelling is specific: hold A, tap C. A and C alone are down and up."
+          - text: "Hold B"
+            correct: false
+            why: "B starts and stops a scored run."
+          - text: "Hold A and B"
+            correct: false
+            why: "A + B is the battery report, from Lesson 4."
+
+      - id: L15_B26
+        type: true_false
+        cite: "§5.6"
+        points: 1
+        stem: "Sections 7B, 7C and 7E each require you to download a different build from the Project Maker."
+        correct: false
+        why: "All three are the SAME build, run with different knobs — which is the lesson's principle that a tuning rig you have to recompile is not a tuning rig. Only 7A (which does not drive) and 7D (which is designed to fail) change the program."
+
+      - id: L15_B27
+        type: multiple_choice
+        cite: "§5.7, §8A.3"
+        points: 1
+        stem: "The PID reset lives in enterFollowing() rather than at each place that enters the state. What is the general rule, and why?"
+        options:
+          - text: "If something must happen every time you enter a state, put it in the doorway — FOLLOWING_LINE has four doors, and a reset you have to remember at four call sites is a bug with a four-day fuse"
+            correct: true
+          - text: "Because a function call is cheaper than four copies of the same lines"
+            correct: false
+            why: "It costs bytes rather than saving them. The reason is correctness, not size."
+          - text: "Because the compiler will warn if a reset is missing"
+            correct: false
+            why: "It will not, which is exactly why the structure has to make forgetting impossible."
+          - text: "Because C++ requires state to be reset in one place"
+            correct: false
+
+      - id: L15_B28
+        type: multiple_choice
+        cite: "§5.7, §3.5"
+        points: 1
+        stem: "Why does the derivative need resetting when the robot re-enters FOLLOWING_LINE after a gap, a turn or an obstacle?"
+        options:
+          - text: "While the robot was blind readLine() was pinned at 0 or 4000 and the clock kept running, so lastError is holding a number from a different world"
+            correct: true
+          - text: "Because the derivative overflows while the robot is off the line"
+            correct: false
+            why: "Nothing overflows. The stored value is valid arithmetic about a situation that no longer exists."
+          - text: "Because micros() is reset by the state change"
+            correct: false
+            why: "The opposite — the clock kept running, which is why lastMicros is reset deliberately."
+          - text: "It does not; only the integral needs resetting"
+            correct: false
+            why: "resetPID() clears lastError first, and Sabotage B3 is built on that reset never being called."
+
+      - id: L15_B29
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "Three gains ship as 0 with a starting guess in the comment. What starting points does RobotConfig.h suggest?"
+        options:
+          - text: "KD from Kp × Tu / 8 (7B supplies Tu); KP_SPEED try 2; KI_SPEED try 0.5"
+            correct: true
+          - text: "KD 0.5, KP_SPEED 20, KI_SPEED 5"
+            correct: false
+            why: "Those are the knob CEILINGS in adjustKnobs(), not starting guesses."
+          - text: "All three start at 0.1, like Kp"
+            correct: false
+          - text: "The lesson refuses to suggest any starting value"
+            correct: false
+            why: "It refuses to supply the ANSWER. It supplies a starting point, and says so."
+
+      - id: L15_B30
+        type: multiple_choice
+        cite: "§5.8"
+        points: 1
+        stem: "Where does measureSpeedCmPerSec() get its inputs, and what is the lesson's point about that?"
+        options:
+          - text: "averageCounts() and COUNTS_PER_CM from Lesson 6, plus the dt followLine() already measured — you did not buy a single new instrument, you wired three you already owned into a loop that closes"
+            correct: true
+          - text: "A new speed sensor added in this lesson"
+            correct: false
+            why: "The lesson opens Section 4 by saying PID needs no new hardware."
+          - text: "The motor PWM value, converted to cm/s by a lookup table"
+            correct: false
+            why: "That would be an assumption about speed. The encoders MEASURE it."
+          - text: "The gyro, integrated over time"
+            correct: false
+            why: "The gyro measures rotation, not forward speed."
+
+      - id: L15_B31
+        type: multiple_choice
+        cite: "§5.8"
+        points: 1
+        stem: "The speed loop clamps speedIntegral itself, not just speedTrim. Why is clamping the output alone not enough?"
+        options:
+          - text: "The integral keeps growing on the inside, invisibly, and when you need it to come back down it has thousands of accumulated units to unwind first — the robot stays wrong for seconds after the cause is gone"
+            correct: true
+          - text: "Clamping the output introduces a discontinuity that makes the loop chatter"
+            correct: false
+            why: "That is Challenge 1's gain-scheduling caution, about a switched gain, not about a clamp."
+          - text: "The output clamp would also limit the P term, which should be unlimited"
+            correct: false
+          - text: "It is enough; the lesson clamps both only for symmetry"
+            correct: false
+            why: "The lesson calls clamping the memory the point, and names clamping only the output as windup."
+
+      - id: L15_B32
+        type: multiple_choice
+        cite: "§8A.1"
+        points: 1
+        stem: "Section 8A.1 says you have now been burned twice by the same class of mistake. What are the two cases, and what is the class?"
+        options:
+          - text: "Lesson 11's stopwatch could not measure a distance; Lesson 15's millisecond clock cannot measure a two-millisecond loop — an instrument is matched or mismatched to what you are measuring, and being wrong-sized does not make it complain"
+            correct: true
+          - text: "Lesson 11's encoders and Lesson 15's gyro both drift"
+            correct: false
+            why: "Drift is not the class. The class is a ruler too coarse to see the thing it is pointed at."
+          - text: "Lesson 8's Kp and Lesson 15's Kd were both hard-coded"
+            correct: false
+          - text: "Lesson 12 and Lesson 15 both trusted the wheels"
+            correct: false
+
+      - id: L15_B33
+        type: multiple_choice
+        cite: "§8A.2"
+        points: 1
+        stem: "Section 8A.2 names the assumption buried inside the I term. What is it?"
+        options:
+          - text: "That an error which persists is an error which nobody is fixing — true on a dying battery, false on a curve"
+            correct: true
+          - text: "That the error is measured accurately"
+            correct: false
+            why: "Measurement accuracy is §4's concern. 8A.2 is about what a persistent error MEANS."
+          - text: "That dt is constant"
+            correct: false
+            why: "The lesson is explicit that dt is not constant, and measures it every pass for that reason."
+          - text: "That the setpoint never moves"
+            correct: false
+            why: "That is the derivative-kick free pass, from §3.6."
+
+      - id: L15_B34
+        type: multiple_choice
+        cite: "§8A.4"
+        points: 1
+        stem: "Why does the lesson insist that 'smoother' is not a measurement?"
+        options:
+          - text: "Human eyes see the last thing that happened, want the change to have worked, and cannot hold two ten-second runs side by side — an engineer who cannot say HOW MUCH better has not shown it is better at all"
+            correct: true
+          - text: "Because smoothness is not one of MAE, PEAK or WEAVE"
+            correct: false
+            why: "True but circular. The reason given is about what human judgement can and cannot do."
+          - text: "Because the robot moves too fast to see"
+            correct: false
+          - text: "Because judges will not accept subjective claims"
+            correct: false
+            why: "A real consideration in Lesson 14, but not the argument 8A.4 makes."
+
+      - id: L15_B35
+        type: true_false
+        cite: "§1, §8A.4"
+        points: 1
+        stem: "The lesson describes turning knobs and saying 'that looked smoother' as tuning."
+        correct: false
+        why: "It calls it hoping, in the opening honest-warning callout — and says half the lesson is about building an instrument that replaces the squint with a number."
+
+      - id: L15_B36
+        type: true_false
+        cite: "§4"
+        points: 1
+        stem: "Adding PID to this robot requires no new hardware."
+        correct: true
+        why: "Same line sensors, same encoders, same motors. Section 4's good news: everything in this lesson is a change of mind, not a change of parts."
+
+      - id: L15_B37
+        type: true_false
+        cite: "§3.5, §5.8"
+        points: 1
+        stem: "The I term is rejected for the line loop because the arithmetic is wrong."
+        correct: false
+        why: "Nothing is wrong with the math — it does precisely what it was built to do. What is wrong is where it was put. Same three lines are the hero on the speed loop."
+
+      - id: L15_B38
+        type: true_false
+        cite: "§5.4"
+        points: 1
+        stem: "The upgraded followLine() reads the clock more than once per pass."
+        correct: false
+        why: "One clock read per pass, and the speed loop reuses it. Reading twice would give the second reader a dt of nearly zero — the bug §4 warned about, sneaking in through a different door."
+
+      - id: L15_B39
+        type: true_false
+        cite: "§7.0"
+        points: 1
+        stem: "Section 7.0 permits changing two gains at once as long as you record both values."
+        correct: false
+        why: "Change ONE gain at a time — two knobs at once and you will never know which one did it. The same rule that made you calibrate one turn before a square."
+
+      - id: L15_B40
+        type: true_false
+        cite: "§3.6, Quick Reference"
+        points: 1
+        stem: "Too much D causes noise amplification and twitchiness; too much I causes windup and lunging."
+        correct: true
+        why: "Both rows of the Quick Reference's 'too much causes' column, and both are demonstrated on the ladder."
+
+      - id: L15_B41
+        type: multiple_choice
+        cite: "§7B, Glossary"
+        points: 1
+        stem: "What is Ku, and how do you find it?"
+        options:
+          - text: "The ultimate gain — the Kp at which the robot oscillates and will not settle. Set Kd to 0 and double Kp until it breaks, then halve."
+            correct: true
+          - text: "The largest Kp the knob will accept, which is 1.0"
+            correct: false
+            why: "The knob ceiling is a UI limit. Ku is a property of the robot on the track."
+          - text: "The Kp at which MAE is lowest"
+            correct: false
+            why: "That is where you want to END UP. Ku is deliberately past it — the edge of stability."
+          - text: "The Kp at which the robot stops moving"
+            correct: false
+
+      - id: L15_B42
+        type: multiple_choice
+        cite: "§7B"
+        points: 1
+        stem: "Why does the lesson tell you to DOUBLE Kp rather than nudge it up?"
+        options:
+          - text: "Gains live on a logarithmic scale — doubling finds the edge in about six runs where adding 0.01 at a time takes sixty"
+            correct: true
+          - text: "Because the knob only moves in doublings"
+            correct: false
+            why: "The knob steps Kp by 0.02. Doubling is a procedure you follow, not a constraint of the UI."
+          - text: "Because small changes do not affect the robot at all"
+            correct: false
+          - text: "Because MAE is only sensitive to large changes"
+            correct: false
+
+      - id: L15_B43
+        type: multiple_choice
+        cite: "§7B, §5.5"
+        points: 1
+        stem: "The robot hands you Tu for free. What is the formula, and why does it work?"
+        options:
+          - text: "Tu = 2 ÷ WEAVE — WEAVE counts error sign-flips per second, and one full oscillation is two flips"
+            correct: true
+          - text: "Tu = WEAVE ÷ 2, because two flips make half a cycle"
+            correct: false
+            why: "Inverted. WEAVE is a RATE, so the period is 2 divided by it."
+          - text: "Tu = TUNING_RUN_MS ÷ WEAVE"
+            correct: false
+            why: "The run length does not enter it; WEAVE is already per-second."
+          - text: "Tu = MAE ÷ PEAK"
+            correct: false
+
+      - id: L15_B44
+        type: multiple_choice
+        cite: "§7C"
+        points: 1
+        stem: "What is Ziegler–Nichols, and what does the lesson say about trusting it?"
+        options:
+          - text: "A 1940s recipe turning Ku and Tu into starting gains — famously aggressive, it puts you in the right ZIP code but will not get you good; anyone who tells you Z–N is the tuning is selling you something"
+            correct: true
+          - text: "A modern optimal-control method that produces the best gains directly"
+            correct: false
+            why: "The lesson dates it to the 1940s and calls it a starting point in as many words."
+          - text: "The name of the hill-climb procedure"
+            correct: false
+            why: "The hill-climb is what you do AFTER taking the Z–N starting point."
+          - text: "A safety limit on how high Kd may go"
+            correct: false
+
+      - id: L15_B45
+        type: multiple_choice
+        cite: "§7C"
+        points: 1
+        stem: "The hill-climb has a stopping condition, which is what makes it a procedure rather than a vibe. What is it?"
+        options:
+          - text: "Stop when no single ±50% move on any gain improves MAE"
+            correct: true
+          - text: "Stop when MAE drops below 100"
+            correct: false
+            why: "No absolute target is given — the right MAE depends on your robot and your track."
+          - text: "Stop after ten runs"
+            correct: false
+            why: "A run count is not a condition about the result."
+          - text: "Stop when the robot looks smooth"
+            correct: false
+            why: "That is precisely what §8A.4 rejects."
+
+      - id: L15_B46
+        type: multiple_choice
+        cite: "§7C"
+        points: 1
+        stem: "A change makes MAE go DOWN and WEAVE go UP. What does the lesson tell you that means?"
+        options:
+          - text: "It is cutting corners by hunting — fast, ugly, fragile. Suspect it."
+            correct: true
+          - text: "Real improvement — MAE is the main score, so keep it"
+            correct: false
+            why: "MAE down AND weave down is the real-improvement row. MAE alone can hide things, which is why there are three numbers."
+          - text: "You went the wrong way; undo it"
+            correct: false
+            why: "That is the row where everything goes up."
+          - text: "One bad corner is eating the run"
+            correct: false
+            why: "That is the MAE-flat, PEAK-way-up row."
+
+      - id: L15_B47
+        type: matching
+        cite: "§3.6, §8.1"
+        points: 4
+        stem: "Match each failure to the fix the lesson names for it."
+        pairs:
+          - left: "Integral windup"
+            right: "Clamp the integral itself, not just the output, and reset it on re-entry"
+          - left: "Derivative kick"
+            right: "Take the derivative of the measurement instead of the error"
+          - left: "Noise amplification"
+            right: "Lower Kd, or low-pass filter the derivative"
+          - left: "Steady-state error on the speed loop"
+            right: "Add the I term — it is the only term that can drive a steady error to zero"
+        extra_answers:
+          - "Raise Kp until the error disappears"
+          - "Increase TUNING_RUN_MS so the run has time to settle"
+
+      - id: L15_B48
+        type: matching
+        cite: "§3.1, §5.5, Glossary"
+        points: 4
+        stem: "Match each term to the question it answers."
+        pairs:
+          - left: "P"
+            right: "How far off am I right now?"
+          - left: "I"
+            right: "How long have I been wrong?"
+          - left: "D"
+            right: "How fast is the error closing?"
+          - left: "WEAVE"
+            right: "How much did the robot hunt?"
+        extra_answers:
+          - "How many bytes did the controller cost?"
+          - "How long did one pass through the loop take?"
+
+      - id: L15_B49
+        type: matching
+        cite: "§5.6, Quick Reference"
+        points: 4
+        stem: "Match each button press to what it does."
+        pairs:
+          - left: "A"
+            right: "Turn the selected gain down"
+          - left: "C"
+            right: "Turn the selected gain up"
+          - left: "hold A, tap C"
+            right: "Select the next gain"
+          - left: "B, while running"
+            right: "Stop — and still show the score"
+        extra_answers:
+          - "Reset all four gains to zero"
+          - "Recalibrate the line sensors"
+
+      - id: L15_B50
+        type: multiple_choice
+        cite: "§5.5, §7C"
+        points: 1
+        stem: "B stops a run. What does the lesson say that does NOT do?"
+        options:
+          - text: "It does not cancel the score — stopping a run is not the same as cancelling it, so endRun() shows the scorecard"
+            correct: true
+          - text: "It does not stop the motors; you must also press A"
+            correct: false
+            why: "B stops the wheels instantly, and the lesson calls that untouchable."
+          - text: "It does not reset the gains"
+            correct: false
+            why: "True, but not the distinction the lesson draws — the point is about the SCORE surviving."
+          - text: "It does not leave FOLLOWING_LINE"
+            correct: false
+            why: "It moves the machine to RUN_REPORT."
+
+  after:
+    description: >
+      Post-build check for Lesson 15. Assumes the student has built the seven steps, run the
+      Section 7 ladder and worked the challenges and sabotage files. 25 questions: 21 multiple
+      choice (84%), 3 true/false (12%), 1 matching (4%). Counts DERIVED from this file.
+    suggested_draw: 8
+    questions:
+
+      - id: L15_A01
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "Step 1 tells you to compile before touching anything, and calls that number your control. What is it?"
+        options:
+          - text: "25,816 bytes — the finished Lesson 14 build, unchanged"
+            correct: true
+          - text: "25,072 bytes"
+            correct: false
+            why: "That is Lesson 13's finished build — where Lesson 14 STARTED. Section 6, Step 1 starts you from where Lesson 14 ended."
+          - text: "28,214 bytes"
+            correct: false
+            why: "That is where Lesson 15 ENDS, not where it starts."
+          - text: "20,516 bytes"
+            correct: false
+            why: "That is Lesson 11's after_step_1, the toolchain's standing control — a different thing entirely."
+
+      - id: L15_A02
+        type: multiple_choice
+        cite: "§6 Steps 2 and 3"
+        points: 1
+        stem: "Steps 2 and 3 add the constants, the PID state, a new enum value and a whole function — and the byte count does not move. Why not?"
+        options:
+          - text: "A const nothing reads costs nothing, and the linker threw deltaTimeSec() away because no code anywhere reaches it"
+            correct: true
+          - text: "The compiler defers all new code until it is first called at runtime"
+            correct: false
+            why: "There is no runtime deferral on this chip. The code was never put in the binary at all."
+          - text: "The new code exactly replaced code of the same size"
+            correct: false
+            why: "Nothing was removed in Steps 2 or 3 — both are pure additions that cost nothing."
+          - text: "The byte count is rounded to the nearest 256"
+            correct: false
+
+      - id: L15_A03
+        type: true_false
+        cite: "§6 Step 3"
+        points: 1
+        stem: "In Step 3 you write the whole of deltaTimeSec() and the compiler warns you that it is never used."
+        correct: false
+        why: "Nothing complains at all. The linker sees that no code reaches it and throws it away silently — your source file has a clock in it and your robot does not. The lesson stages that on purpose so you recognise it the day it happens by accident."
+
+      - id: L15_A04
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Step 4 replaces followLine()'s body with the PD version. What does the build weigh, and what changed about the clock?"
+        options:
+          - text: "25,980 bytes, +164 — and now the clock IS in the binary, because something calls it"
+            correct: true
+          - text: "25,980 bytes, +164 — and the clock is still absent, because currentKd is 0"
+            correct: false
+            why: "A zero gain does not remove the call. deltaTimeSec() is invoked every pass regardless of Kd."
+          - text: "25,816 bytes, unchanged — the D term contributes nothing at Kd = 0"
+            correct: false
+            why: "The arithmetic contributes nothing to the STEERING; the code still costs flash."
+          - text: "27,286 bytes, +1,306"
+            correct: false
+            why: "That is Step 5, the bench."
+
+      - id: L15_A05
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "You flash Step 4 and drive with KD still at 0. What happens?"
+        options:
+          - text: "The robot behaves exactly as it did in Lesson 14 — the machinery is in and switched off, which is exactly where you want to be before tuning"
+            correct: true
+          - text: "The robot immediately steers better, because the D term is active"
+            correct: false
+            why: "currentKd is 0, so the D term contributes nothing until you turn the knob."
+          - text: "The robot divides by zero and stalls"
+            correct: false
+            why: "DT_MIN_US is the floor that makes that impossible. Kd being zero is a gain, not a divisor."
+          - text: "The robot refuses to leave STOPPED until Kd is non-zero"
+            correct: false
+
+      - id: L15_A06
+        type: multiple_choice
+        cite: "§6 Step 6, §8A.3"
+        points: 1
+        stem: "Step 6 moves the reset into the doorway and replaces four call-site pairs with enterFollowing(). What does that cost?"
+        options:
+          - text: "48 bytes"
+            correct: true
+          - text: "68 bytes"
+            correct: false
+            why: "A figure the lesson used to carry in two of its three statements of this cost. Measured, it is 48."
+          - text: "Nothing — it is a pure refactor"
+            correct: false
+            why: "A function call plus a function body is real flash. The lesson's point is that it is worth paying."
+          - text: "880 bytes"
+            correct: false
+            why: "That is Step 7, the whole speed loop."
+
+      - id: L15_A07
+        type: multiple_choice
+        cite: "§6 Step 6, §5.7"
+        points: 1
+        stem: "What hole does the doorway close, and why can you not see it before you close it?"
+        options:
+          - text: "Coming back from a gap, lastError still holds the pinned value from when the robot was blind, so the first pass back computes a derivative against a value from a different world and the robot flinches"
+            correct: true
+          - text: "The robot forgets which state it was in and re-enters the wrong one"
+            correct: false
+            why: "State handling is correct without the reset; what is stale is the CONTROLLER's memory."
+          - text: "The gap-crossing distance is double-counted"
+            correct: false
+            why: "That is what lastSpeedCounts guards against in Step 7, not what Step 6 is about."
+          - text: "The integral overflows during the blind period"
+            correct: false
+            why: "There is no line-loop integral in the shipped build — that is 7D's deliberate failure."
+
+      - id: L15_A08
+        type: multiple_choice
+        cite: "§6 Step 7"
+        points: 1
+        stem: "Step 7 says one line matters more than the rest. Which, and why?"
+        options:
+          - text: "followLine() steers around currentBase instead of BASE_SPEED — it stops steering around a fixed base speed and starts steering around the speed the loop is actually holding"
+            correct: true
+          - text: "The knob UI grows from two gains to four"
+            correct: false
+            why: "Necessary, but it is UI. The lesson calls the currentBase swap the one that matters."
+          - text: "speedIntegral is cleared in resetPID()"
+            correct: false
+            why: "Also part of Step 7, but it is the doorway learning a second thing, not the line that changes what the controller steers around."
+          - text: "TARGET_SPEED_CMS is set to 25.0"
+            correct: false
+
+      - id: L15_A09
+        type: true_false
+        cite: "§6 Step 7"
+        points: 1
+        stem: "updateSpeedLoop() reads micros() itself, so that the speed loop has its own independent dt."
+        correct: false
+        why: "It takes dtSec as an argument — one clock, two loops. Reading the clock a second time in the same pass would hand the second reader a dt of nearly zero, which is Section 4's bug coming back through a different door."
+
+      - id: L15_A10
+        type: multiple_choice
+        cite: "§7A"
+        points: 1
+        stem: "7A runs with the motors off and you push the robot by hand. What are the two numbers the strip chart exists to show you?"
+        options:
+          - text: "The error and its change, and your own dt — in microseconds and again in what millis() would have said"
+            correct: true
+          - text: "MAE and PEAK, live"
+            correct: false
+            why: "Those are run scores from the bench. 7A does not run and does not score."
+          - text: "Kp and Kd, live"
+            correct: false
+            why: "The knob row shows a gain, but 7A's whole purpose is the error and the clock."
+          - text: "Battery voltage and prox count"
+            correct: false
+
+      - id: L15_A11
+        type: multiple_choice
+        cite: "§7A"
+        points: 1
+        stem: "In 7A you slide the robot from black tape onto white and watch dt. What happens, and what does it prove?"
+        options:
+          - text: "dt changes — the loop is not on a metronome, which is exactly why dt is measured every pass and never assumed"
+            correct: true
+          - text: "dt stays constant, which is why a fixed dt would be safe"
+            correct: false
+            why: "It changes, because black discharges slower than white and the sensor read is inside the loop."
+          - text: "dt goes to zero over white"
+            correct: false
+            why: "It gets shorter over white, not zero. Zero is what millis() reports, which is the other half of the exercise."
+          - text: "dt is unaffected by the surface but changes with battery voltage"
+            correct: false
+
+      - id: L15_A12
+        type: multiple_choice
+        cite: "§7D"
+        points: 1
+        stem: "7D is designed to fail. Why does the lesson make you build it anyway?"
+        options:
+          - text: "You should not believe a textbook that tells you something is wrong and then hides the evidence — build it, run it, watch"
+            correct: true
+          - text: "Because the I term works on the line loop after all, on some tracks"
+            correct: false
+            why: "The lesson's verdict is not conditional. 7D exists to let you SEE the verdict earned."
+          - text: "Because the byte cost of the I term is worth knowing"
+            correct: false
+            why: "The byte cost is incidental; the demonstration is behavioural."
+          - text: "Because Challenge 4 requires it"
+            correct: false
+            why: "Challenge 4 is anti-windup on the SPEED loop."
+
+      - id: L15_A13
+        type: multiple_choice
+        cite: "§7D"
+        points: 1
+        stem: "7D's run table has you drive a long straight with KI_LINE = 0.5, then a long curve with the same gain. What is the contrast?"
+        options:
+          - text: "On the straight it works and MAE may even drop — the steady error was a mistake and I erased it. On the curve the steady error was the steering command, and I keeps adding until the robot is still turning after the curve ends."
+            correct: true
+          - text: "It fails on both, which is why the I term is rejected"
+            correct: false
+            why: "It works on the straight, and that is what makes the lesson honest — the term is not useless, it is misplaced."
+          - text: "It works on both at 0.5 and only fails at 2.0"
+            correct: false
+            why: "The curve already misbehaves at 0.5; 2.0 makes it swing wide."
+          - text: "The straight fails and the curve is fine"
+            correct: false
+
+      - id: L15_A14
+        type: multiple_choice
+        cite: "§7E"
+        points: 1
+        stem: "In 7E you tune the speed loop with KiS at zero first, raising KpS. What do you observe, and why can P not win?"
+        options:
+          - text: "The robot holds roughly the target but is always slow by about the same amount; raising KpS to close the gap makes it hunt — you have traded one problem for another"
+            correct: true
+          - text: "The robot is slow at first and then speeds up on its own"
+            correct: false
+            why: "That is what happens once KiS is turned up. With P alone it stays quietly wrong."
+          - text: "The robot overshoots the target speed immediately"
+            correct: false
+          - text: "The robot ignores KpS entirely until KiS is non-zero"
+            correct: false
+
+      - id: L15_A15
+        type: multiple_choice
+        cite: "§7E"
+        points: 1
+        stem: "7E's demonstration needs a tired battery. What does the robot do with KiS turned up that it will not do with KiS at zero?"
+        options:
+          - text: "It starts slow for about a second and then recovers, because the integral notices the error is not going away and pushes the base speed up until the wheels turn at the speed you asked for"
+            correct: true
+          - text: "It runs at the same speed either way; the difference is only in the score"
+            correct: false
+            why: "The behavioural difference is the whole point of the rung."
+          - text: "It refuses to start until the battery is replaced"
+            correct: false
+            why: "That is Lesson 14's self-test, and 7E specifies a pack that still boots and still passes it."
+          - text: "It slows down further, because the integral fights the P term"
+            correct: false
+
+      - id: L15_A16
+        type: multiple_choice
+        cite: "Sabotage B1"
+        points: 1
+        stem: "B1 changes one word: micros() becomes millis() inside deltaTimeSec(). The symptom is a random violent jerk, worse on white, and it stops if you set Kd to 0. What is the byte count?"
+        options:
+          - text: "28,214 — byte-for-byte identical to the correct program"
+            correct: true
+          - text: "28,164 — 50 bytes smaller"
+            correct: false
+            why: "That is B3, where a function call is deleted."
+          - text: "28,230 — 16 bytes bigger"
+            correct: false
+            why: "That is B2, the missing assignment."
+          - text: "Smaller, because millis() is cheaper than micros()"
+            correct: false
+            why: "The lesson's point is that the size tells you nothing: it is identical."
+
+      - id: L15_A17
+        type: multiple_choice
+        cite: "Sabotage B1, §4.2"
+        points: 1
+        stem: "Why is B1's fault WORSE on white than on black?"
+        options:
+          - text: "White discharges the sensors faster, so the pass is shorter — and a shorter pass is likelier to be the one where the millisecond clock reports 0, which is the division the derivative then performs"
+            correct: true
+          - text: "White reflects more light, so the error reading is noisier"
+            correct: false
+            why: "The lesson ties the surface to the loop PERIOD, not to reading noise."
+          - text: "Because DT_MIN_US only applies over black"
+            correct: false
+            why: "The floor applies always — but B1's elapsed is compared against DT_MIN_US in the wrong units."
+          - text: "It is not worse on white; the symptom is random"
+            correct: false
+            why: "The symptom description states it is worse on white, and the hint tells you to ask why."
+
+      - id: L15_A18
+        type: multiple_choice
+        cite: "Sabotage B2"
+        points: 1
+        stem: "B2 is a DELETION — lastError = error; is missing from followLine(). What does the derivative end up computing, and what is the byte count?"
+        options:
+          - text: "lastError stays 0 forever, so the 'derivative' is really the error itself divided by dt — which is why Kd adds a constant pull instead of damping. 28,230 bytes, 16 bigger than correct."
+            correct: true
+          - text: "lastError holds the first error ever seen, so the derivative is a constant. 28,230 bytes."
+            correct: false
+            why: "It is never assigned at all, so it holds its initialiser, which is 0."
+          - text: "The derivative is always zero, so Kd does nothing. 28,214 bytes."
+            correct: false
+            why: "If it did nothing the symptom would not include a permanent lean at large Kd."
+          - text: "It is byte-identical, like B1 and B4"
+            correct: false
+            why: "Removing an assignment removed instructions — but the build came out BIGGER, which is worth noticing."
+
+      - id: L15_A19
+        type: multiple_choice
+        cite: "Sabotage B3"
+        points: 1
+        stem: "B3 leaves resetPID() perfectly written and correct. What is actually wrong, and what does it cost in bytes?"
+        options:
+          - text: "enterFollowing() never calls it — a function that is never called is not a bug the compiler can see. 28,164 bytes, 50 smaller than correct."
+            correct: true
+          - text: "resetPID() clears the wrong variables. 28,164 bytes."
+            correct: false
+            why: "The hint is explicit that resetPID() is still correct. The defect is one missing call."
+          - text: "enterFollowing() is never called from the four doors. 28,164 bytes."
+            correct: false
+            why: "The doors still call enterFollowing(); it is the line INSIDE it that is gone."
+          - text: "It is byte-identical to correct"
+            correct: false
+            why: "Deleting a call removes instructions, so it is smaller — and B1 and B4 are the identical pair."
+
+      - id: L15_A20
+        type: multiple_choice
+        cite: "Sabotage B4"
+        points: 1
+        stem: "B4 changes one character: p + d becomes p - d. Why does the lesson call it the nastiest one in the book?"
+        options:
+          - text: "At Kd = 0 it is a perfect P controller, so every test you ran before tuning passes — and then every increase in Kd makes the weave smoothly, predictably worse, so you conclude D does not work on this robot and ship a P controller believing you tested a PD one"
+            correct: true
+          - text: "Because it crashes the robot into the wall on the first run"
+            correct: false
+            why: "It never crashes. Its danger is that it looks like an honest negative result."
+          - text: "Because it makes the robot twitchy in a way that looks like noise"
+            correct: false
+            why: "The symptom is explicitly not twitchiness — it is bigger, slower swings."
+          - text: "Because it silently changes the byte count so you cannot diff it"
+            correct: false
+            why: "The byte count is identical, which is a different and larger point."
+
+      - id: L15_A21
+        type: true_false
+        cite: "Sabotage, the closing warning"
+        points: 1
+        stem: "Because B2 and B3 do move the byte count, the lesson concludes that a byte count is a reliable test for those two even though it misses B1 and B4."
+        correct: false
+        why: "It draws the opposite and much stronger conclusion: the byte count proves NOTHING. A file size is not a test, a clean compile is not a test, and a robot that drives across the room is not a test. A number you can compare is a test — that is what the bench is for."
+
+      - id: L15_A22
+        type: multiple_choice
+        cite: "§9 Challenge 1"
+        points: 1
+        stem: "Challenge 1 schedules a sharper Kp when |error| exceeds CORNER_ERROR. What does the lesson warn you will happen, and what does it teach?"
+        options:
+          - text: "The gain jumps the moment the error crosses the threshold, and a discontinuity in a controller is a place where it can chatter — which is why real systems blend between gains instead of switching"
+            correct: true
+          - text: "The corner gain will always be too high, so the robot leaves the track"
+            correct: false
+            why: "The corner gain is a bench-tuned blank; the warning is about the switch itself, not the value."
+          - text: "The two gains will cancel each other out on a straight"
+            correct: false
+          - text: "It costs too many bytes to be worth it"
+            correct: false
+
+      - id: L15_A23
+        type: multiple_choice
+        cite: "§9 Challenge 2"
+        points: 1
+        stem: "Challenge 2 low-pass filters the derivative. The lesson says nothing is free — what does the filter cost?"
+        options:
+          - text: "It delays the derivative, so you are acting on slightly stale information; turn D_FILTER toward 0.95 and you find the point where D is so smooth it is no longer early, which was the entire reason you hired it"
+            correct: true
+          - text: "It costs about 300 bytes of flash"
+            correct: false
+            why: "Bytes are not the cost the lesson names, and the challenge's point is behavioural."
+          - text: "It makes the derivative noisier at low Kd"
+            correct: false
+            why: "Reducing noise is what the filter is for."
+          - text: "It requires a second clock read per pass"
+            correct: false
+
+      - id: L15_A24
+        type: multiple_choice
+        cite: "§9 Challenge 3"
+        points: 1
+        stem: "Challenge 3 tracks the WORST dt of a run rather than the typical one. Why does the worst one matter?"
+        options:
+          - text: "The controller does not divide by the typical dt — it divides by whatever this pass took, so the longest single trip through loop() is a real event the controller had to survive"
+            correct: true
+          - text: "Because the average dt is impossible to compute on this chip"
+            correct: false
+            why: "It would be easy to compute. The point is that the maximum is the one that bites."
+          - text: "Because the worst dt determines TUNING_RUN_MS"
+            correct: false
+          - text: "Because DT_MIN_US is derived from it"
+            correct: false
+            why: "DT_MIN_US is an engineering limit that ships with a reason, not a measured value."
+
+      - id: L15_A25
+        type: matching
+        cite: "Sabotage B1–B4"
+        points: 4
+        stem: "Match each sabotage build to its defect."
+        pairs:
+          - left: "B1 — the clock that cannot see"
+            right: "One word: micros() became millis(), so on a fast pass the derivative divides by zero"
+          - left: "B2 — the derivative that never learns"
+            right: "One deletion: lastError = error; is gone, so lastError stays 0 forever"
+          - left: "B3 — the ghost of the last gap"
+            right: "One omission: enterFollowing() no longer calls resetPID(), so stale state survives a blind period"
+          - left: "B4 — the damper that amplifies"
+            right: "One character: p + d became p - d, so D pushes instead of braking"
+        extra_answers:
+          - "DT_MIN_US was raised until the derivative saturated"
+          - "TUNING_RUN_MS was set to 0, so no run ever ends"

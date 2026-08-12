@@ -2,7 +2,8 @@
 
 **Source:** RoboCupJunior Rescue Line Rules 2026, official English edition, RoboCupJunior Rescue Committee.
 **PDF:** https://junior.robocup.org/wp-content/uploads/2026/02/RCJRescueLine2026-final.pdf
-**Rules last updated:** 2026-03-29 · **This extract compiled:** Session 34
+**Rules last updated:** 2026-03-29 · **This extract compiled:** Session 34 · **Extract revised:** Session 148
+**Primary source in this repo:** `RCJRescueLine2026-final.pdf` (repo root) — check this extract against it, never the other way round.
 
 > The English rules published by the RoboCupJunior Rescue Committee are the only official rules.
 > Corrections and clarifications may be posted on the forum before the rule file is updated. Teams are
@@ -45,31 +46,33 @@ Points are awarded per hazard **when the robot has reached the next tile in sequ
 | Tile with one or more **gaps** | **10** |
 | Tile with one or more **speed bumps** | **10** |
 | **Intersection** or **dead end** (correct path) | **10** |
-| **Ramp** | **10** — ⚠️ see 2.1a, the rules contradict themselves |
+| **Ramp** | **10 per ramp TILE** — §3.7.4; see 2.1a |
 | **Obstacle** (bricks, blocks, weights) | **20** |
 | **Seesaw** tile | **20** |
 
 Hazards inside the evacuation zone are **not** scored.
 
-### 2.1a The ramp contradiction — UNRESOLVED UPSTREAM, ask your referee
+### 2.1a The ramp question — RESOLVED IN THE 2026 EDITION: per ramp TILE
 
-**The 2026 rules state both answers and do not reconcile them.**
+**Settled at S148 against the official 2026 PDF (`RCJRescueLine2026-final.pdf`, in this repo).**
 
-- **§5.6.1** — *a ramp as a hazard accounts for all inclined tiles that make up one ramp*, at
-  **10 points per ramp**.
-- **§3.7.4** — ramp points are awarded **for each individual ramp tile**.
+- **§3.7.4** — *the ramp points will be awarded for each individual ramp tile instead of the entire
+  ramp.* Explicit, and it is the operative rule.
+- **The Summary** (page 3) agrees: *10 points for each successfully navigated ramp tile.*
+- **§5.6.1** lists *10 points per ramp* in a run-on sentence of point allocations. That is loose
+  shorthand, not a competing rule.
 
-A three-tile ramp is therefore worth either 10 or 30 points depending on which line the referee
-reads. This is not a transcription error in this file and it is not new: teams raised the identical
-contradiction against the 2025 edition on the RCJ forum, and again against 2026. It has survived at
-least two editions unresolved.
+**So a three-tile ramp is worth 30.**
 
-**Earlier versions of this file stated "per ramp tile" as settled fact. That was one reading of an
-ambiguous rule presented as though the rule were clear** — the exact failure this document exists to
-prevent. Recorded rather than ruled.
+**What changed, and why this section used to say the opposite.** Earlier editions carried a sentence
+in §5.6.1 reading *"A ramp as a hazard accounts for all inclined tiles that make up one ramp"* — the
+one line that genuinely priced a whole ramp at 10. **The 2026 changes list deletes it**, and footnote
+[2] of the 2026 PDF confirms it was removed from §5.6.1. With that sentence gone there is no text left
+arguing for per-ramp scoring, and §3.7.4 stands alone.
 
-**What to teach:** ask the referee before the scoring run, in the same breath as declaring your LoP
-procedure. It costs one sentence and it is worth up to 20 points on a single ramp.
+**What to teach:** per ramp tile. Confirming with the referee before the scoring run still costs one
+sentence and is still good practice — §5.6.1's phrasing is loose enough to be misread — but the rule
+itself is no longer ambiguous.
 
 ### 2.2 Tile points — and how a Lack of Progress decays them
 
@@ -232,7 +235,7 @@ An honest accounting, for the textbook's own claims:
 | Gaps (10) | ✅ Yes — Lesson 11 |
 | Intersections / dead ends (10) | ✅ Yes — Lesson 9 |
 | Speed bumps (10) | ⚠️ Untested — ≤ 1 cm, likely driveable |
-| Ramps (10 per ramp *or* per tile — see 2.1a) | ⚠️ Untested — up to 25° |
+| Ramps (10 per ramp tile — §3.7.4) | ⚠️ Untested — up to 25° |
 | Obstacles (20) | ✅ Yes — Lesson 10 |
 | Seesaws (20) | ⚠️ Untested |
 | Entering the evacuation zone | ✅ Yes — silver detection, Lesson 13 |

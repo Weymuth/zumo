@@ -1,0 +1,1267 @@
+# ZUMO READING QUIZ BANK — LESSON 16
+# Nothing Left to Take Away · The Capstone Write-Up
+#
+# Bank version: v1.0.0
+# Authored against: lessons/Lesson_16.html v02.23.0 (post-S148 read + fix pass)
+#
+# READ -> FIX -> QUIZ. L16 was read end to end in S148 and every defect below was found and
+# fixed BEFORE a question was written. This is the sixteenth and last bank.
+#
+# THE FIXES THIS BANK RESTS ON
+#
+#   1. THE LESSON DID NOT FIT ON THE CHIP, AND THAT WAS NOT A NUMBERS PROBLEM.
+#      L15's finished build grew 180 bytes, so L16's whole chain started higher. Measured,
+#      control first (L11 after_step_1 = 20,516 from a fifth clone):
+#        Step 1 .......... 28,214   (book said 28,034)
+#        Step 2 .......... 28,464  +250   (book said 28,302, +268)
+#        Step 3 .......... 28,824  OVER by 152   (book said 28,662, "ten bytes to spare")
+#        Step 4 .......... 29,460  OVER by 788   (book said 29,298, over by 626)
+#        Step 5 .......... 28,756  STILL OVER by 84   (book said 28,594, green, 78 spare)
+#        finished / B1 / B2  28,600 after the fix   (book said 28,594)
+#      **The finished build the whole capstone derives from did not link.** The trade the
+#      lesson teaches — Serial out, EEPROM in — no longer paid the bill.
+#
+#   2. DJ RULED A SECOND TRADE. Six candidate cuts were priced by deletion against the
+#      finished build: Ziegler-Nichols hint 156 · buzzer (all 12 calls) 1,828 · checkBattery()
+#      A+B 114 · the 3-2-1 countdown 104 · the WEAVE row 60 · the prox readout 8. Only the
+#      Z-N hint both closes the gap and breaks nothing else: the buzzer is the STUDENT's
+#      reserve (§7.4), and §7.1 requires the A+B battery report for benchmark honesty.
+#      Step 5 now makes TWO trades — the easy one (Serial, −704, still 84 over) and the hard
+#      one (Z-N, −156, green at 28,600 with 72 spare). A17, A18, A19 and B44 ask this.
+#
+#   3. SIX OF THE NINE ROWS IN SECTION 1's LADDER WERE STALE — L10, L11, L12, L13, L14 and
+#      L15. Each was re-derived by compiling that lesson's own finished payload. L7, L8 and
+#      L9 were already correct. B03 asks the ladder.
+#
+#   4. GRAPHIC 16.2 CARRIED THE SAME STALE LADDER PLUS THE STEP 3/4 FIGURES. Redrawn: the
+#      chart's scale was DERIVED from its own geometry (0.016006 px/byte, bars grounded at
+#      y=660) rather than eyeballed, eleven bars recomputed, and Step 3 turned red because it
+#      now crosses the ceiling. NOT ASKED — QUIZ_SPEC §5 forbids figure-only facts, and every
+#      number in it is also in the prose.
+#
+#   5. TWO CLAIMS NOBODY COULD CHECK. §7.4 said cutting only some playNote() calls "saves far
+#      less than you expect" with no number; measured, eleven of twelve frees 130 bytes and
+#      the twelfth frees a further 1,698. That is now in the lesson and is B45. The Bonus
+#      section's "the sabotage was 10 bytes too big" was computed against the old baseline and
+#      names a build that exists in no payload, so nothing can re-derive it — deleted per
+#      rule 50, and not asked.
+#
+# NINE ANSWER CLASSES DELIBERATELY NOT ASKED, WITH REASONS
+#
+#   a. §4.2's audit table. It is marked "Approx. cost" and an avr-nm pass by symbol name
+#      under-counts it badly (it reports the buzzer at 598 B where deletion proves 1,828), so
+#      the figures are not independently confirmable. Only the buzzer line is asked, because
+#      only it can be measured by deletion.
+#   b. Anything about the student's own enhancement, MVP, or A/B result. There is no key.
+#   c. The five §7.3 menu doors as a memorisation list. Which door a student picks is the
+#      capstone; the MENU is asked once, for what it costs (nothing but bytes and thought).
+#   d. Any specific tier award or competition placing.
+#   e. IMAGE 16.1 is unshot.
+#   f. The Going Deeper page — the lesson says explicitly it is not on a quiz.
+#   g. The exact EEPROM byte layout of struct Saved. Padding makes it compiler-dependent, and
+#      the lesson deliberately says put/get copy it "byte for byte" without sizing it.
+#   h. The third sabotage. It exists in no build and its figure was deleted.
+#   i. Anything requiring the robot, in the `before` set (QUIZ_SPEC §2).
+
+lesson: "L16"
+title: "Nothing Left to Take Away — The Capstone Write-Up"
+bank_version: "1.0.0"
+source:
+  lesson_16: "v02.23.0"
+  lesson_15: "v02.31.0"
+  lesson_14: "v02.34.0"
+  lesson_02: "v03.21.2"
+  lesson_01: "v03.28.3"
+
+sets:
+  before:
+    description: >
+      Pre-class reading gate for Lesson 16. Answerable from the text alone — no robot, no
+      compiler, no built program. 50 questions: 37 multiple choice (74%), 10 true/false (20%),
+      3 matching (6%). Counts and percentages DERIVED from this file, not typed.
+    suggested_draw: 10
+    questions:
+
+      - id: L16_B01
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "Every lesson before this one did the same thing. What was it, and what does Lesson 16 teach instead?"
+        options:
+          - text: "They all added — a sensor, a state, a loop. This lesson teaches subtraction."
+            correct: true
+          - text: "They all measured. This lesson teaches estimation."
+            correct: false
+            why: "Measurement runs through the whole book; it is not what changes here."
+          - text: "They all debugged. This lesson teaches testing."
+            correct: false
+          - text: "They all followed instructions. This lesson teaches speed."
+            correct: false
+            why: "The lesson does hand you the keyboard, but the skill it names is subtraction."
+
+      - id: L16_B02
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "The ATmega32U4 has 32,768 bytes of flash but your budget is 28,672. Where did the difference go?"
+        options:
+          - text: "The first 4,096 bytes are the bootloader — the program that answers the USB cable and writes your next program into place"
+            correct: true
+          - text: "4,096 bytes are reserved for EEPROM"
+            correct: false
+            why: "EEPROM is a separate 1,024-byte memory. It does not come out of flash."
+          - text: "4,096 bytes are reserved for the stack and variables"
+            correct: false
+            why: "Those live in RAM — 2,560 bytes of it, a different memory entirely."
+          - text: "The linker reserves it as a safety margin"
+            correct: false
+
+      - id: L16_B03
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "Reading the Section 1 ladder: what is the finished Lesson 15 project, and how much runway is left?"
+        options:
+          - text: "28,214 bytes, leaving 458"
+            correct: true
+          - text: "28,672 bytes, leaving none"
+            correct: false
+            why: "28,672 is the ceiling itself — the budget after the bootloader takes its 4,096. It is not a program size. §4.1."
+          - text: "28,600 bytes, leaving 72"
+            correct: false
+            why: "That is where Lesson 16 ENDS, after two trades — not where it starts."
+          - text: "24,694 bytes, leaving 3,978"
+            correct: false
+            why: "That is Lesson 12 finished."
+
+      - id: L16_B04
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "Which tool produces `region 'text' overflowed`, and what is its job?"
+        options:
+          - text: "The linker — the last tool in the build chain, whose job is to place every function at a real address inside the flash region"
+            correct: true
+          - text: "The compiler, which checks that your code is syntactically valid"
+            correct: false
+            why: "The compiler is happy: the lesson says the program is correct. The failure is about placement, not syntax."
+          - text: "The bootloader, when it refuses an upload that is too large"
+            correct: false
+            why: "The build never gets as far as the bootloader — it fails on your computer."
+          - text: "avr-nm, which reports the size of every function"
+            correct: false
+            why: "avr-nm is the audit tool in §4.2. It reports; it does not refuse."
+
+      - id: L16_B05
+        type: multiple_choice
+        cite: "§4.1"
+        points: 1
+        stem: "The lesson calls the overflow message the most honest error in the book. Why is it different from every error before it?"
+        options:
+          - text: "Every earlier error meant \"you made a mistake.\" This one means you made a choice, and now you must make another one — there is no setting, flag or faster computer that fixes it"
+            correct: true
+          - text: "It is the only error that names a byte count"
+            correct: false
+            why: "The count is useful, but the difference the lesson draws is about what the error asks of you."
+          - text: "It is the only error the compiler cannot explain"
+            correct: false
+          - text: "It is the only error that can be ignored safely"
+            correct: false
+            why: "It cannot be ignored at all — nothing gets flashed."
+
+      - id: L16_B06
+        type: multiple_choice
+        cite: "§4.2"
+        points: 1
+        stem: "Nearly a kilobyte of the audit is heap — malloc and friends — and nothing you wrote ever calls malloc. Whose is it, and what is the general lesson?"
+        options:
+          - text: "Pololu's own sensor library: the QTR line-sensor code heap-allocates its calibration arrays and the proximity code its pin lists. Some of the biggest line items in a real audit were signed by someone else, years ago, and are not yours to cancel."
+            correct: true
+          - text: "The Arduino core reserves it for String objects"
+            correct: false
+            why: "The lesson names the sensor library specifically, and calls the heap the rent the sensors charge."
+          - text: "It is the OLED's frame buffer"
+            correct: false
+            why: "The OLED is its own ~2,600 B line, and a frame buffer would live in RAM."
+          - text: "It is dead code the linker failed to remove"
+            correct: false
+
+      - id: L16_B07
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "What makes EEPROM different from RAM and flash, and how big is it on this chip?"
+        options:
+          - text: "1,024 bytes, and it is non-volatile — write a byte and it is still there next week, battery or no battery"
+            correct: true
+          - text: "2,560 bytes, and it is the fastest memory on the chip"
+            correct: false
+            why: "2,560 is RAM, and RAM is a room the lights go out in."
+          - text: "1,024 bytes, and it is erased on every upload"
+            correct: false
+            why: "The opposite: an upload replaces flash, and the EEPROM is untouched. That is how your robot's name survived fifteen lessons."
+          - text: "28,672 bytes, shared with the program"
+            correct: false
+
+      - id: L16_B08
+        type: multiple_choice
+        cite: "§4.3, Lesson 1"
+        points: 1
+        stem: "You have already read from the EEPROM once in this book. When?"
+        options:
+          - text: "Lesson 1, Challenge 1 — your robot's name, which the lesson said lived in \"permanent memory, not in this file\""
+            correct: true
+          - text: "Lesson 4, when you saved the line-sensor calibration"
+            correct: false
+            why: "Calibration lives in RAM and is lost on every power cycle — which is one of the things this lesson exists to fix."
+          - text: "Lesson 14, when selfTest() read the battery limits"
+            correct: false
+            why: "Those are constants in RobotConfig.h, which live in flash."
+          - text: "You have not — Lesson 16 is the first time either way"
+            correct: false
+            why: "Lesson 16 is the first time the book WRITES. The read was Lesson 1."
+
+      - id: L16_B09
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "Two rules the EEPROM hardware enforces. What are they?"
+        options:
+          - text: "A write costs about 3 ms per byte — longer than a whole control-loop pass — and each cell endures roughly 100,000 writes and then dies permanently"
+            correct: true
+          - text: "A write costs about 3 µs per byte, and cells last forever"
+            correct: false
+            why: "Microseconds would be free. The whole reason saves happen on a button press is that 3 ms stalls a driving loop."
+          - text: "Writes must be a multiple of 16 bytes, and reads are slow"
+            correct: false
+            why: "Reads are fast. There is no block-size rule in the lesson."
+          - text: "Writes only work while the motors are stopped, enforced by the chip"
+            correct: false
+            why: "Nothing enforces that — which is exactly why it is a discipline you have to keep."
+
+      - id: L16_B10
+        type: multiple_choice
+        cite: "§4.3"
+        points: 1
+        stem: "The EEPROM address map assigns three ranges. Which is right?"
+        options:
+          - text: "0–511 is Lesson 16's Saved block; 512–543 is your robot's name from Lesson 1; 544–1023 is unclaimed"
+            correct: true
+          - text: "0–511 is the robot's name; 512–1023 is Lesson 16's block"
+            correct: false
+            why: "Reversed — and writing to 512 is precisely how you erase the name."
+          - text: "The whole 1,024 bytes belong to Lesson 16"
+            correct: false
+            why: "Then your robot would lose its name the first time you saved."
+          - text: "There is no map; the EEPROM has a filesystem that keeps programs apart"
+            correct: false
+            why: "It is one flat space with no filesystem and no protection — the only thing keeping programs apart is an agreement."
+
+      - id: L16_B11
+        type: true_false
+        cite: "§4.3"
+        points: 1
+        stem: "If your program writes to EEPROM address 512, the hardware will report an error because that range belongs to another program."
+        correct: false
+        why: "No error of any kind. To the hardware one byte is exactly as valid as another — your robot simply loses its name, silently. That is why the map is an agreement rather than a protection."
+
+      - id: L16_B12
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "Why does the Saved block carry a magic byte?"
+        options:
+          - text: "A factory-fresh EEPROM reads as all 0xFF, so without the fingerprint the loader would \"restore\" garbage gains and a nonsense baseline — and the robot would trust them, because bytes do not blush"
+            correct: true
+          - text: "To tell the compiler how large the struct is"
+            correct: false
+            why: "The compiler already knows. The magic byte is checked at runtime, by the loader."
+          - text: "To stop another program overwriting the block"
+            correct: false
+            why: "It cannot stop a write. It only tells you whether what is there is yours."
+          - text: "To version the save format so old blocks can be upgraded"
+            correct: false
+            why: "It refuses old blocks rather than upgrading them — and the lesson notes that changing it makes the robot forget everything, on purpose."
+
+      - id: L16_B13
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "The magic byte lives INSIDE the Saved struct rather than beside it. Why does the lesson insist on that?"
+        options:
+          - text: "EEPROM.put() and .get() copy the struct byte for byte, so a layout is only trustworthy if the fingerprint travelled with it"
+            correct: true
+          - text: "Because a separate byte would waste an EEPROM cell"
+            correct: false
+            why: "One cell is not the argument. The argument is that the fingerprint must move with the thing it certifies."
+          - text: "Because the compiler places struct members in address order"
+            correct: false
+          - text: "Because EEPROM.get() cannot read a single byte"
+            correct: false
+            why: "It can. The point is about what travels together."
+
+      - id: L16_B14
+        type: multiple_choice
+        cite: "§5.3"
+        points: 1
+        stem: "loadSettings() returns false. What does the lesson say that means?"
+        options:
+          - text: "This EEPROM has never been written by Lesson 16 — a robot with no saved settings is not broken, it is NEW"
+            correct: true
+          - text: "The EEPROM is faulty and the robot should not be run"
+            correct: false
+            why: "The lesson says the opposite in the comment above the function."
+          - text: "The save was interrupted by a power cut"
+            correct: false
+          - text: "The gains are out of range"
+            correct: false
+            why: "The check is on the magic byte alone; it never looks at the gains."
+
+      - id: L16_B15
+        type: true_false
+        cite: "§5.3, Glossary"
+        points: 1
+        stem: "The magic-byte trick is specific to microcontrollers — no file format on a desktop computer uses it."
+        correct: false
+        why: "Every trustworthy file format you have ever used opens with exactly this trick. The lesson names PNG, ZIP and PDF."
+
+      - id: L16_B16
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "Lesson 15's bell scored a fixed ten-second slice. Why is that the wrong instrument for a course?"
+        options:
+          - text: "A course ends when the course ends, and its length is the very number you are trying to shrink"
+            correct: true
+          - text: "Because a course takes longer than ten seconds to set up"
+            correct: false
+            why: "Setup time is not scored. The problem is that the bell would truncate the thing being measured."
+          - text: "Because MAE cannot be computed over a course"
+            correct: false
+            why: "It still is — the course report shows LAP, MAE and PEAK."
+          - text: "Because the battery drains over a full course"
+            correct: false
+            why: "A real concern in §7.1, but not the reason the bell changes."
+
+      - id: L16_B17
+        type: multiple_choice
+        cite: "§5.1"
+        points: 1
+        stem: "The lesson calls the two-mode design a pattern worth stealing. What is the pattern?"
+        options:
+          - text: "The mode does not change what is measured — every pass feeds the same scoreboard. It only changes when the run ends and which numbers the report leads with. Instruments earn trust by never changing; reports are allowed taste."
+            correct: true
+          - text: "Two modes are always better than one, because a user can pick"
+            correct: false
+            why: "Nothing in the lesson argues for options as a virtue."
+          - text: "The mode should be a compile-time constant so the compiler can fold it"
+            correct: false
+            why: "That describes ENHANCEMENT_ON. currentMode is a runtime global you flip with buttons."
+          - text: "Each mode should have its own scoring code, kept separate"
+            correct: false
+            why: "Exactly what the pattern avoids — one scoreboard, two reports."
+
+      - id: L16_B18
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "What two numbers does a RunScore hold, and why those two?"
+        options:
+          - text: "LAP and MAE — how fast, and how well. A robot that got faster by weaving harder did not get better."
+            correct: true
+          - text: "LAP and PEAK — the total time and the worst single moment"
+            correct: false
+            why: "PEAK is shown on the report but is not in the struct; the two you argue about are speed and quality."
+          - text: "MAE and WEAVE"
+            correct: false
+            why: "WEAVE belongs to tuning mode, which is Lesson 15's job."
+          - text: "The before and after times"
+            correct: false
+            why: "Those are two RunScores, not the contents of one."
+
+      - id: L16_B19
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "`baseline.mae == 0` is used as a sentinel. What does it mean?"
+        options:
+          - text: "No baseline yet — there is nothing to compare against, so the report hides the delta and BASE rows"
+            correct: true
+          - text: "The robot drove a perfect run with zero average error"
+            correct: false
+            why: "A real run never averages exactly zero error, which is what makes the value safe to use as a sentinel."
+          - text: "The EEPROM save failed"
+            correct: false
+          - text: "The baseline was captured in tuning mode"
+            correct: false
+
+      - id: L16_B20
+        type: multiple_choice
+        cite: "§5.2"
+        points: 1
+        stem: "On a course report, which line does the lesson call the only one that matters, and which direction is better?"
+        options:
+          - text: "The delta — how this run compares to the run you blessed. Negative is better in both columns: less time, less error."
+            correct: true
+          - text: "LAP, and lower is better"
+            correct: false
+            why: "LAP alone can improve while the robot gets worse. The lesson's point is comparison, not absolute speed."
+          - text: "The BASE row, because it is the one that persists"
+            correct: false
+            why: "BASE is the reference, not the verdict."
+          - text: "PEAK, and higher is better"
+            correct: false
+
+      - id: L16_B21
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "Where is runEnhancement() called from, and why exactly there?"
+        options:
+          - text: "Once per pass, after followLine() has steered and before the scoreboard samples — so whatever you build is measured by the same instrument that measured the robot you inherited"
+            correct: true
+          - text: "From setup(), once, so it does not slow the driving loop"
+            correct: false
+            why: "An enhancement that runs once at boot could not steer anything. It receives dt because it runs every pass."
+          - text: "From the RUN_REPORT case, after the run ends"
+            correct: false
+          - text: "Wherever you like — the socket has no fixed home"
+            correct: false
+            why: "It has exactly one, and the lesson calls that the deal: you may change anything, but you may not change the ruler."
+
+      - id: L16_B22
+        type: multiple_choice
+        cite: "§5.4"
+        points: 1
+        stem: "Why does runEnhancement() take dt as a parameter instead of reading the clock?"
+        options:
+          - text: "Almost everything worth doing needs it, and recomputing a clock you already own would be paying twice"
+            correct: true
+          - text: "Because micros() cannot be called from more than one function"
+            correct: false
+            why: "It can. The reason is that a second read in the same pass would return a near-zero interval — Lesson 15's bug."
+          - text: "Because dt must be constant for the enhancement to work"
+            correct: false
+            why: "dt is explicitly not constant; Lesson 15 measures it every pass for that reason."
+          - text: "So the enhancement can change dt if it wants to"
+            correct: false
+
+      - id: L16_B23
+        type: true_false
+        cite: "§5.4, §7.2"
+        points: 1
+        stem: "The A/B comparison in Section 7 flips ENHANCEMENT_ON and nothing else."
+        correct: true
+        why: "That is the entire design of the socket: the only variable in the experiment is your code. If A does not match your saved baseline, something else changed and you find it before proceeding."
+
+      - id: L16_B24
+        type: multiple_choice
+        cite: "§1.1"
+        points: 1
+        stem: "The Showcase stands on three pillars. What are they?"
+        options:
+          - text: "A software enhancement you designed and wrote; measured improvement from your own benchmark; and documentation — TDP, video, journal"
+            correct: true
+          - text: "A hardware modification, a software enhancement, and a video"
+            correct: false
+            why: "The menu in §7.3 is explicitly zero-dollar and zero-pin: no new hardware."
+          - text: "Speed, reliability and presentation"
+            correct: false
+            why: "Those are outcomes, not the three required deliverable categories."
+          - text: "A TDP, a poster and a live demo"
+            correct: false
+            why: "The poster belongs to the real RoboCup submission; the pillars are enhancement, measurement and documentation."
+
+      - id: L16_B25
+        type: multiple_choice
+        cite: "§1.1"
+        points: 1
+        stem: "Pillar 2 rejects one kind of claim outright. Which, and what replaces it?"
+        options:
+          - text: "\"It feels faster\" — replaced by a before row and an after row from the same instrument"
+            correct: true
+          - text: "\"It is faster than last year's robot\" — replaced by a comparison against the class"
+            correct: false
+            why: "The comparison the lesson demands is against your own earlier robot, on your own course."
+          - text: "\"It works\" — replaced by a video"
+            correct: false
+          - text: "\"It is more reliable\" — replaced by a ten-run tally"
+            correct: false
+            why: "That is Lesson 14's 10x Rule, not Pillar 2."
+
+      - id: L16_B26
+        type: multiple_choice
+        cite: "§3.2"
+        points: 1
+        stem: "The lesson says the most common way student projects die is not a bug. What is it, and what is the defence?"
+        options:
+          - text: "Scope creep — and the defence is a Minimum Viable Product defined in week one, in writing, and built until the benchmark proves it"
+            correct: true
+          - text: "A dead battery on demo day — and the defence is spare packs"
+            correct: false
+            why: "Real advice elsewhere in the book, but §3.2 names scope creep."
+          - text: "Running out of flash — and the defence is the audit"
+            correct: false
+            why: "That is the middle of the project, and the lesson says the wall is not the point of it."
+          - text: "Poor documentation — and the defence is the journal"
+            correct: false
+            why: "§8.3 lists deferred documentation as a project killer, but the MVP answers scope creep."
+
+      - id: L16_B27
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "How is the TDP weighted, and what does the lesson say that implies?"
+        options:
+          - text: "More than the video and the poster combined — so a well-documented robot with decent performance routinely outscores a brilliant robot with a bad paper"
+            correct: true
+          - text: "Equal to the video, with the poster worth double"
+            correct: false
+          - text: "Less than the live demo, because judges watch the robot first"
+            correct: false
+            why: "The lesson's closing argument in §9.2 is the reverse: a robot that works perfectly with a poor paper loses."
+          - text: "It is not scored — it is a formality"
+            correct: false
+
+      - id: L16_B28
+        type: multiple_choice
+        cite: "§3.3, Glossary"
+        points: 1
+        stem: "What belongs in the Version 2 section of the TDP?"
+        options:
+          - text: "Two or three improvements you would make next time, each justified by your own benchmark data or failure log — \"I would add a compass because my dead reckoning drifted 4 cm per lap\""
+            correct: true
+          - text: "A list of features you ran out of time for"
+            correct: false
+            why: "Close, but the requirement is justification by your own data, not a wish list."
+          - text: "The parts you would buy with a bigger budget"
+            correct: false
+          - text: "A summary of what version 1 achieved"
+            correct: false
+            why: "That is the Performance Evaluation section."
+
+      - id: L16_B29
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "The TDP template forbids one thing outright. What?"
+        options:
+          - text: "Source-code dumps — show the architecture instead"
+            correct: true
+          - text: "Photographs of the robot"
+            correct: false
+            why: "Evidence is one of the judging criteria and explicitly includes photos."
+          - text: "Discussing failures"
+            correct: false
+            why: "The opposite — hiding failures reads as inexperience, not polish."
+          - text: "Any mention of the platform being preconfigured"
+            correct: false
+            why: "The lesson says state it plainly; judges reward honesty about a platform."
+
+      - id: L16_B30
+        type: multiple_choice
+        cite: "§3.3"
+        points: 1
+        stem: "When should the Abstract be written, and why?"
+        options:
+          - text: "Last, with everything else in front of you — an abstract written first is a wish; written last it is a summary"
+            correct: true
+          - text: "First, so it guides the rest of the paper"
+            correct: false
+            why: "The lesson names this as the mistake and says judges can tell."
+          - text: "It does not matter, as long as it is 150–250 words"
+            correct: false
+          - text: "After the video, so the two match"
+            correct: false
+
+      - id: L16_B31
+        type: multiple_choice
+        cite: "§3.4"
+        points: 1
+        stem: "The presentation video is 3–5 minutes in four beats. What are they, in order?"
+        options:
+          - text: "The problem, your approach, the demo, the results"
+            correct: true
+          - text: "The team, the robot, the code, the thanks"
+            correct: false
+          - text: "The results, the demo, the problem, the approach"
+            correct: false
+            why: "Right beats, wrong order — leading with results skips why anyone should care."
+          - text: "An intro, two demos, and an outro"
+            correct: false
+
+      - id: L16_B32
+        type: multiple_choice
+        cite: "§3.5"
+        points: 1
+        stem: "The design journal has five prompts. Which one does the lesson single out as the valuable part?"
+        options:
+          - text: "What didn't work — the failures and dead ends"
+            correct: true
+          - text: "What I accomplished"
+            correct: false
+            why: "Useful, but the lesson calls the failures the valuable part, and §3.3 says hiding them reads as inexperience."
+          - text: "Hours this session"
+            correct: false
+          - text: "Next session's plan"
+            correct: false
+
+      - id: L16_B33
+        type: true_false
+        cite: "§3.5, §8.3"
+        points: 1
+        stem: "The lesson says the TDP assembles itself out of a good journal and fights you out of a bad one."
+        correct: true
+        why: "And §8.3 puts the consequence plainly: no journal, no TDP — just a long night and a paper that reads like one."
+
+      - id: L16_B34
+        type: multiple_choice
+        cite: "§1"
+        points: 1
+        stem: "Before you start cutting features, the lesson tells you to spend a cheaper kind of byte first. What, and why is that failure worse?"
+        options:
+          - text: "Wrap every print string in F() — unlike the flash budget, an SRAM overflow gives you no error at all, just garbled text, resets and variables that change on their own"
+            correct: true
+          - text: "Delete unused variables, because the compiler keeps them"
+            correct: false
+            why: "The compiler discards what nothing reads — Step 2 and Step 3 both demonstrate it."
+          - text: "Shorten your comments, because they are compiled in"
+            correct: false
+            why: "Comments cost nothing; they never reach the binary."
+          - text: "Lower the OLED font size"
+            correct: false
+
+      - id: L16_B35
+        type: multiple_choice
+        cite: "§8.1"
+        points: 1
+        stem: "You cut a lot of code and the program barely shrank. What are the two explanations the lesson gives?"
+        options:
+          - text: "You cut calls but not the LAST call — a library's first caller pays for the whole engine — or the code was already dead and gc-sections had discarded it"
+            correct: true
+          - text: "The linker pads the program to a fixed size"
+            correct: false
+          - text: "You cut comments, which cost nothing"
+            correct: false
+            why: "True but trivial, and not what §8.1 names."
+          - text: "The compiler re-inlines whatever you remove"
+            correct: false
+
+      - id: L16_B36
+        type: multiple_choice
+        cite: "§8.2"
+        points: 1
+        stem: "The robot stutters rhythmically while driving and lap times balloon. What is the cause?"
+        options:
+          - text: "An EEPROM write inside the driving loop — 3 ms per byte, every pass, and it is burning the cell's 100,000-write life as well"
+            correct: true
+          - text: "The benchmark is sampling too often"
+            correct: false
+            why: "runSample() is arithmetic on numbers already in hand; it costs nothing like a millisecond."
+          - text: "The battery is sagging"
+            correct: false
+            why: "That produces a gradual slowdown, not a rhythmic stutter — and it is Lesson 15's speed loop's job."
+          - text: "The OLED is redrawing every pass"
+            correct: false
+
+      - id: L16_B37
+        type: multiple_choice
+        cite: "§8.2"
+        points: 1
+        stem: "Boot says NO SAVED SETTINGS every time, immediately after a clean SAVED TO EEPROM. What is wrong?"
+        options:
+          - text: "The fingerprint written is not the fingerprint checked — or the two sides read different addresses. Both must use EEPROM_ADDR and EEPROM_MAGIC by name, never a retyped number."
+            correct: true
+          - text: "The EEPROM cell has worn out"
+            correct: false
+            why: "Wear takes ~100,000 writes and the save demonstrably works — you can read the bytes back."
+          - text: "The struct is too large for address 0"
+            correct: false
+          - text: "The battery was disconnected too quickly after the save"
+            correct: false
+            why: "Non-volatile means non-volatile; that is the whole point of the memory."
+
+      - id: L16_B38
+        type: multiple_choice
+        cite: "§8.2"
+        points: 1
+        stem: "How do you deliberately force a robot to forget everything it has saved?"
+        options:
+          - text: "Change EEPROM_MAGIC to a new value, upload, and boot once — the loader no longer recognises the block"
+            correct: true
+          - text: "Write zeros to addresses 0–511"
+            correct: false
+            why: "It would work, but it is not the mechanism the lesson gives — and the magic byte exists precisely so you do not have to."
+          - text: "Hold A and C at boot"
+            correct: false
+            why: "No such gesture exists."
+          - text: "Re-upload the program — an upload clears the EEPROM"
+            correct: false
+            why: "An upload replaces flash only. That is how your robot's name survived fifteen lessons of uploads."
+
+      - id: L16_B39
+        type: true_false
+        cite: "§8.3"
+        points: 1
+        stem: "The lesson says the #1 project killer is a bug nobody could find."
+        correct: false
+        why: "It says the #1 killer is the working robot that was \"just one more feature\" away from being demonstrated, four weeks in a row. Freeze the code in week 4 and present what you measured."
+
+      - id: L16_B40
+        type: true_false
+        cite: "§9.1"
+        points: 1
+        stem: "A Bronze project requires the enhancement to have actually improved the robot."
+        correct: false
+        why: "Bronze requires an enhancement ATTEMPTED with A/B numbers — even if B lost. A measured improvement is Silver. A negative delta is a Lessons Learned section with data in it, which judges score higher than an untested success claim."
+
+      - id: L16_B41
+        type: true_false
+        cite: "§7.1"
+        points: 1
+        stem: "If your three baseline laps spread by more than about ten percent, you should average them and continue."
+        correct: false
+        why: "You fix the course or the calibration first. A baseline you cannot repeat is not a baseline; it is an anecdote."
+
+      - id: L16_B42
+        type: true_false
+        cite: "§7.1"
+        points: 1
+        stem: "Benchmarking the inherited robot on a fresh battery and the enhanced robot on a tired one can \"prove\" your code made the robot worse."
+        correct: true
+        why: "Lesson 15 taught that a tired battery is a constant lie the speed loop must fight; the same lie poisons benchmarks. Compare at comparable charge — the A+B report on the STOPPED screen exists for exactly this."
+
+      - id: L16_B43
+        type: true_false
+        cite: "§4.3"
+        points: 1
+        stem: "Everything you tuned across this whole book — Kp, Kd, the speed gains, TRIM, the line calibration — is lost when you pull the battery."
+        correct: true
+        why: "All of it lives in RAM, and RAM is a room the lights go out in: it resets to whatever RobotConfig.h said at compile time. Lesson 16 is the first time anything survives the switch."
+
+      - id: L16_B44
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "Lesson 16 makes two trades. What are they, and what does the lesson say separates them?"
+        options:
+          - text: "Serial out (−704) and the Ziegler–Nichols hint out (−156). The first was housekeeping — nobody would defend a habit that earned nothing. The second cost something that worked, and that is the one the chapter title is about."
+            correct: true
+          - text: "Serial out and the buzzer out"
+            correct: false
+            why: "The buzzer is deliberately left as YOUR reserve for the capstone — §7.4 hands it to you."
+          - text: "The buzzer out and the countdown out"
+            correct: false
+          - text: "Only one trade is made — Serial for the EEPROM"
+            correct: false
+            why: "Serial frees 704 and the EEPROM costs 636, and Step 5's first compile check says the result plainly: still over, by 84. One trade does not pay the bill."
+
+      - id: L16_B45
+        type: multiple_choice
+        cite: "§7.4"
+        points: 1
+        stem: "The buzzer is your reserve — about 1,828 bytes across twelve playNote() calls. What happens if you delete only eleven of them?"
+        options:
+          - text: "You free 130 bytes. The twelfth call frees the other 1,698, because the first caller pays for the whole tone engine."
+            correct: true
+          - text: "You free about 1,675 — roughly eleven twelfths of the total"
+            correct: false
+            why: "The saving is not proportional. Eleven of twelve is worth 130 bytes, measured."
+          - text: "You free nothing until the engine itself is deleted separately"
+            correct: false
+            why: "You free 130 — the call sites themselves. What survives is the engine."
+          - text: "You free about 914 — half, because the note table stays"
+            correct: false
+
+      - id: L16_B46
+        type: multiple_choice
+        cite: "§7.4"
+        points: 1
+        stem: "Whatever you cut, the lesson gives one rule for the TDP. What is it?"
+        options:
+          - text: "Name the trade — \"We removed the buzzer (−1,828 B) to afford compass heading correction (+1,340 B)\" is a sentence that wins Technical Excellence; silence about it is a robot that mysteriously stopped beeping"
+            correct: true
+          - text: "Never cut a feature a judge might ask about"
+            correct: false
+            why: "The reverse: the cut is the thing worth writing about."
+          - text: "Restore anything you cut before demo day"
+            correct: false
+          - text: "Cut only code you wrote yourself"
+            correct: false
+            why: "The Serial trade cuts code the book installed in Lesson 2."
+
+      - id: L16_B47
+        type: true_false
+        cite: "§7.3"
+        points: 1
+        stem: "At least one door on the enhancement menu needs a component you do not already own."
+        correct: false
+        why: "All five are zero dollars and zero pins — the compass, the accelerometer, the encoder's error flags, the USB-power check and the IR pulses are instruments already soldered to your robot that this book never switched on. They cost nothing but bytes and thought."
+
+      - id: L16_B48
+        type: matching
+        cite: "§4.3, Glossary"
+        points: 4
+        stem: "Match each memory or term to what it is."
+        pairs:
+          - left: "Flash"
+            right: "28,672 usable bytes; holds the program; survives power-off; written only by upload"
+          - left: "RAM"
+            right: "2,560 bytes; holds your variables; loses everything when the power goes"
+          - left: "EEPROM"
+            right: "1,024 bytes; survives power-off; ~3 ms per byte to write and ~100,000 writes per cell"
+          - left: "The bootloader"
+            right: "The 4,096-byte resident program that answers the USB cable — the reason the budget is not 32,768"
+        extra_answers:
+          - "The 960 bytes of heap the sensor library allocates"
+          - "The 1,828 bytes the buzzer's tone engine occupies"
+
+      - id: L16_B49
+        type: matching
+        cite: "§3.1"
+        points: 4
+        stem: "Match each stage of the engineering design cycle to what it means for this project."
+        pairs:
+          - left: "Define"
+            right: "One sentence: what will the robot do that it cannot do today, and how will the benchmark show it?"
+          - left: "Ideate"
+            right: "Three candidate designs, on paper, before any code — the second idea is usually better than the first"
+          - left: "Test"
+            right: "Same course, same benchmark, switch off then on — the ruler does not move, only the robot does"
+          - left: "Iterate"
+            right: "Change ONE thing, re-run, and keep it only if the numbers improved"
+        extra_answers:
+          - "Write the Abstract while the ideas are fresh"
+          - "Pick the tier you intend to earn and work backwards from it"
+
+      - id: L16_B50
+        type: matching
+        cite: "Quick Reference"
+        points: 4
+        stem: "Match each button gesture to what it does."
+        pairs:
+          - left: "hold C, tap A"
+            right: "Switch the bell: TUNING ↔ COURSE"
+          - left: "hold A, tap C"
+            right: "Select the next gain"
+          - left: "hold A, tap B"
+            right: "Bless this run as the baseline"
+          - left: "hold C, tap B"
+            right: "Save gains and baseline to EEPROM"
+        extra_answers:
+          - "Reset the EEPROM to factory state"
+          - "Toggle ENHANCEMENT_ON without recompiling"
+
+  after:
+    description: >
+      Post-build check for Lesson 16. Assumes the student has built the six steps, established
+      a baseline, and worked the two sabotage files. 25 questions: 21 multiple choice (84%),
+      3 true/false (12%), 1 matching (4%). Counts DERIVED from this file.
+    suggested_draw: 8
+    questions:
+
+      - id: L16_A01
+        type: multiple_choice
+        cite: "§6 Step 1"
+        points: 1
+        stem: "Step 1 is your untouched Lesson 15 project. What does it weigh, and how much runway is left?"
+        options:
+          - text: "28,214 bytes, with 458 to spare"
+            correct: true
+          - text: "28,464 bytes, with 208 to spare"
+            correct: false
+            why: "That is Step 2, after the second bell lands. Step 1 is the untouched Lesson 15 build, before you add anything."
+          - text: "28,600 bytes, with 72 to spare"
+            correct: false
+            why: "That is where Lesson 16 ends."
+          - text: "28,672 bytes, with none to spare"
+            correct: false
+            why: "28,672 is the ceiling itself, not a program size."
+
+      - id: L16_A02
+        type: multiple_choice
+        cite: "§6 Step 2"
+        points: 1
+        stem: "Step 2 adds the second bell — RunMode, showMode(), a mode-aware showScore() and a new gesture. What does it cost?"
+        options:
+          - text: "250 bytes, landing at 28,464 with 208 to spare"
+            correct: true
+          - text: "360 bytes, landing at 28,824"
+            correct: false
+            why: "That is Step 3, the baseline — and it is the step where the program stops fitting."
+          - text: "Nothing — an enum costs no flash"
+            correct: false
+            why: "The enum is free; the mode-aware report and the new gesture are not."
+          - text: "636 bytes"
+            correct: false
+            why: "That is the EEPROM machinery in Step 4."
+
+      - id: L16_A03
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "Step 3 adds the baseline and the delta row. What happens?"
+        options:
+          - text: "28,824 bytes — it does not fit. You are 152 over, one step earlier than expected, and there is no compile-check box because there is nothing green to put in one."
+            correct: true
+          - text: "28,600 bytes — green, with 72 to spare"
+            correct: false
+            why: "That is where the lesson ENDS, after both of Step 5's trades. Step 3 is where it stops fitting."
+          - text: "It fits comfortably; the wall does not arrive until Step 4"
+            correct: false
+            why: "Step 4 makes it far worse, but Step 3 is where the runway ends."
+          - text: "It fails to compile with a missing-prototype error"
+            correct: false
+            why: "That is a §8.1 symptom with a different cause and a one-line fix."
+
+      - id: L16_A04
+        type: multiple_choice
+        cite: "§6 Step 3"
+        points: 1
+        stem: "Step 3's RUN_REPORT reads the B button once and decides what the press meant afterwards. Why not read it twice?"
+        options:
+          - text: "getSingleDebouncedPress() consumes the press — call it twice in one pass and the second call sees nothing"
+            correct: true
+          - text: "Two reads would double-count the press and run the report twice"
+            correct: false
+            why: "The opposite failure: the second read sees nothing at all, so an outcome silently never fires."
+          - text: "Reading a button twice costs too much flash"
+            correct: false
+          - text: "The debouncer needs 200 ms between reads"
+            correct: false
+            why: "No such interval is described; the issue is that the read is destructive."
+
+      - id: L16_A05
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "Step 4 adds the EEPROM machinery and will not build. What does the linker say?"
+        options:
+          - text: "region 'text' overflowed by 788 bytes — the program is 29,460 and the chip holds 28,672"
+            correct: true
+          - text: "region 'text' overflowed by 152 bytes — the program is 28,824"
+            correct: false
+            why: "That is Step 3's overflow, which you hit one step earlier. Step 4 adds 636 bytes of EEPROM machinery on top of it."
+          - text: "'EEPROM' was not declared in this scope"
+            correct: false
+            why: "A real §8.1 symptom, but it has a one-line fix. The overflow has no fix, only a choice."
+          - text: "It builds, but the EEPROM writes fail at runtime"
+            correct: false
+
+      - id: L16_A06
+        type: multiple_choice
+        cite: "§6 Step 4"
+        points: 1
+        stem: "The lesson tells you specifically NOT to do one thing about the overflow. What?"
+        options:
+          - text: "Do not \"fix\" it by deleting the EEPROM code you just typed — that is retreat, not engineering. The EEPROM feature is worth more than something else the program is carrying."
+            correct: true
+          - text: "Do not run the linker again — the error will not change"
+            correct: false
+            why: "True but trivial. The instruction is about not retreating from the feature."
+          - text: "Do not delete the buzzer yet"
+            correct: false
+            why: "The buzzer is your reserve for later, but it is not what Step 4 warns against."
+          - text: "Do not change EEPROM_MAGIC"
+            correct: false
+
+      - id: L16_A07
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "The first trade deletes the Serial block from setup(). What does it free, and where does that leave the program?"
+        options:
+          - text: "704 bytes — and still 84 over. The trade was real and it was not enough."
+            correct: true
+          - text: "704 bytes — and that is enough; the program is green again"
+            correct: false
+            why: "It frees exactly 704 and the program is still 84 bytes over. Read the compile check, then read on: the second trade is what closes it."
+          - text: "1,900 bytes — the whole USB serial line from the audit table"
+            correct: false
+            why: "The audit's ~1,900 is the whole subsystem; the boot block you delete is 704 of it."
+          - text: "156 bytes"
+            correct: false
+            why: "That is the second trade, the Ziegler–Nichols hint."
+
+      - id: L16_A08
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "Besides the bytes, deleting the Serial block buys something the lesson says you did not ask for. What?"
+        options:
+          - text: "The robot boots two and a half seconds faster, because the wait-for-USB loop died with the rest — two and a half seconds of calibration time on competition day"
+            correct: true
+          - text: "The OLED refreshes faster"
+            correct: false
+          - text: "The control loop runs faster, improving the PID"
+            correct: false
+            why: "The Serial code ran in setup(), not in the driving loop."
+          - text: "The EEPROM writes become faster"
+            correct: false
+
+      - id: L16_A09
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "The second trade deletes the Ziegler–Nichols TRY Kd hint. What is the defence the lesson gives before making the cut?"
+        options:
+          - text: "It only ever printed in MODE TUNING, Lesson 16 benchmarks in MODE COURSE where it never appeared, you have already tuned — and the recipe survives in prose in Lesson 15's Quick Reference"
+            correct: true
+          - text: "Ziegler–Nichols is inaccurate, so removing it improves the tuning"
+            correct: false
+            why: "Lesson 15 calls it a starting point that puts you in the right ZIP code. It works — that is what makes this a real trade."
+          - text: "Nobody used it, so nothing is lost"
+            correct: false
+            why: "You used it a week ago. What is given up is the convenience, not the method."
+          - text: "It was the largest cuttable line in the audit table"
+            correct: false
+            why: "That is the buzzer, at ~1,828 bytes — and it is deliberately left to you."
+
+      - id: L16_A10
+        type: multiple_choice
+        cite: "§6 Step 5"
+        points: 1
+        stem: "After both trades, what does the program weigh, and what does the lesson say the pair of them demonstrates?"
+        options:
+          - text: "28,600 bytes with 72 to spare — two trades, one you would have made anyway and one you had to argue yourself into, and the second kind is what the chapter title means"
+            correct: true
+          - text: "28,464 bytes with 208 to spare"
+            correct: false
+            why: "That is Step 2. Step 5 is the last step in this lesson that changes the byte count at all — Step 6's socket is free."
+          - text: "26,928 bytes with 1,744 to spare"
+            correct: false
+            why: "That is what cutting the buzzer would give — and the buzzer is left for your enhancement."
+          - text: "28,756 bytes, still over"
+            correct: false
+            why: "That is after the first trade only."
+
+      - id: L16_A11
+        type: multiple_choice
+        cite: "§6 Step 6"
+        points: 1
+        stem: "Step 6 adds a constant, a function and a call — and the byte count does not move at all. Why?"
+        options:
+          - text: "ENHANCEMENT_ON is a const false, so runEnhancement() begins with a return that always happens — and the compiler deletes the whole empty room, call and all. Run avr-nm and the function is not small, it is absent."
+            correct: true
+          - text: "The function body is empty, and empty functions cost nothing"
+            correct: false
+            why: "An empty function that something calls still costs a call. What makes this free is that the call itself is provably unreachable."
+          - text: "The linker rounds program size to the nearest 16 bytes"
+            correct: false
+          - text: "The socket is stored in EEPROM rather than flash"
+            correct: false
+
+      - id: L16_A12
+        type: multiple_choice
+        cite: "§6 Step 6, Lesson 15 Step 3"
+        points: 1
+        stem: "Step 6 says Lesson 15 taught this trick from one side and Step 6 shows the other. What are the two sides?"
+        options:
+          - text: "Lesson 15: a function nothing CALLS is discarded. Lesson 16: a call the compiler can prove never RUNS is discarded too."
+            correct: true
+          - text: "Lesson 15: constants are free. Lesson 16: functions are free."
+            correct: false
+            why: "Constants nothing reads are free — Step 2 shows that — but it is not the pairing Step 6 draws."
+          - text: "Lesson 15: the linker discards dead code. Lesson 16: the compiler adds it back."
+            correct: false
+          - text: "Lesson 15: bytes only matter at the end. Lesson 16: they matter throughout."
+            correct: false
+
+      - id: L16_A13
+        type: multiple_choice
+        cite: "§7.1"
+        points: 1
+        stem: "The order of §7.1's baseline procedure matters. What comes last, and what does it prove?"
+        options:
+          - text: "Hold C, tap B to write it to EEPROM — then pull the battery, put it back, and boot to SETTINGS RESTORED. Your gains and baseline just survived a power cycle, the first numbers in this book that ever have."
+            correct: true
+          - text: "Blessing the middle run with hold A, tap B"
+            correct: false
+            why: "That comes before the save — blessing puts it in RAM, saving makes it permanent."
+          - text: "Switching to MODE COURSE"
+            correct: false
+            why: "That is the first step, not the last."
+          - text: "Writing the LAP number in your journal"
+            correct: false
+
+      - id: L16_A14
+        type: multiple_choice
+        cite: "§7.1"
+        points: 1
+        stem: "§7.1 says to do the whole baseline before writing a single line of your enhancement. Why does the order matter?"
+        options:
+          - text: "The baseline is the robot you inherited. Once you have changed the robot, you can never measure it again."
+            correct: true
+          - text: "Because the EEPROM can only be written once"
+            correct: false
+            why: "It endures roughly 100,000 writes per cell."
+          - text: "Because the enhancement would change the benchmark's code"
+            correct: false
+            why: "It cannot — that is the point of the socket. You may change anything, but not the ruler."
+          - text: "Because ENHANCEMENT_ON defaults to true"
+            correct: false
+            why: "It ships false: the robot you inherited."
+
+      - id: L16_A15
+        type: multiple_choice
+        cite: "§7.2"
+        points: 1
+        stem: "In the A/B protocol, you build with ENHANCEMENT_ON = false and run three laps. The lesson says something specific should be true of those laps. What?"
+        options:
+          - text: "They should match your saved baseline — if they do not, something else changed and you find it before proceeding"
+            correct: true
+          - text: "They should be faster than the baseline, because the robot is warmed up"
+            correct: false
+            why: "A drift in either direction means the experiment has a second variable."
+          - text: "They should be discarded — only the B runs are scored"
+            correct: false
+            why: "A is half the comparison."
+          - text: "They should be run on a different course to check generality"
+            correct: false
+            why: "Same course, same battery, same session — that is the discipline."
+
+      - id: L16_A16
+        type: true_false
+        cite: "§7.2"
+        points: 1
+        stem: "A positive delta — your enhancement made the robot slower or less accurate — means the capstone failed."
+        correct: false
+        why: "It is a Lessons Learned section with data in it, which judges score higher than an untested success claim. Bronze requires an enhancement attempted with A/B numbers, even if B lost."
+
+      - id: L16_A17
+        type: multiple_choice
+        cite: "Bonus B1"
+        points: 1
+        stem: "B1 changes one word in the bell: MODE_TUNING becomes MODE_COURSE. What are the two symptoms?"
+        options:
+          - text: "Every course lap scores exactly 10.0 seconds — that is the bell, not your lap — and tuning runs stop ringing their bell at all, running until you press B"
+            correct: true
+          - text: "Course runs never end and tuning runs end immediately"
+            correct: false
+            why: "Reversed. The bell now fires in the mode that should have none."
+          - text: "The lap timer reads zero in both modes"
+            correct: false
+          - text: "The report shows MAE where LAP should be"
+            correct: false
+            why: "The report is fine; the run length is what is wrong."
+
+      - id: L16_A18
+        type: multiple_choice
+        cite: "Bonus B1"
+        points: 1
+        stem: "B1's hint draws a general rule from the fact that the sabotage is byte-identical to the correct build. What is it?"
+        options:
+          - text: "When a benchmark reports a number that never changes, suspect the benchmark before the robot"
+            correct: true
+          - text: "Always diff the source against the book's version"
+            correct: false
+            why: "Good practice, but the rule the hint states is about distrusting an unchanging measurement."
+          - text: "A byte-identical build cannot contain a bug"
+            correct: false
+            why: "Both sabotages in this lesson are byte-identical to the correct program."
+          - text: "Read the disassembly before the source"
+            correct: false
+            why: "The disassembly is offered as corroboration — one instruction, same size, opposite meaning — not as the first move."
+
+      - id: L16_A19
+        type: multiple_choice
+        cite: "Bonus B2"
+        points: 1
+        stem: "B2's loader checks for 0x15 where saveSettings() writes EEPROM_MAGIC — 0x16. What is the symptom, and what is the lesson?"
+        options:
+          - text: "SAVED TO EEPROM works and the bytes really are there, but every boot says NO SAVED SETTINGS — the trust check is asking for a fingerprint nobody wrote. Use the constant by NAME on both sides; a retyped number is two numbers wearing one name."
+            correct: true
+          - text: "The save silently fails, so there is nothing to load"
+            correct: false
+            why: "The save works — the hint says you can prove the bytes are in the EEPROM with a reader."
+          - text: "The struct layout differs between save and load"
+            correct: false
+            why: "Both use the same struct; only the compared constant differs."
+          - text: "The EEPROM address is wrong on one side"
+            correct: false
+            why: "A real variant of this bug named in §8.2, but B2's planted defect is the magic value."
+
+      - id: L16_A20
+        type: true_false
+        cite: "Bonus"
+        points: 1
+        stem: "Both Lesson 16 sabotage builds are byte-for-byte the same size as the correct program."
+        correct: true
+        why: "Both are 28,600. The compiler will not warn you and the linker will not warn you — only the instruments will, and in this lesson the sabotage is inside the instruments. The lesson calls that the hardest class of bug there is: the lying ruler."
+
+      - id: L16_A21
+        type: multiple_choice
+        cite: "§9.1"
+        points: 1
+        stem: "What separates a Silver project from a Bronze one?"
+        options:
+          - text: "A working enhancement with a measured improvement — a negative delta in LAP or MAE, repeatable across three runs — plus a named byte trade, plus the top half of the time trial"
+            correct: true
+          - text: "A finished TDP and video"
+            correct: false
+            why: "Those are Bronze requirements."
+          - text: "A podium finish in at least one event"
+            correct: false
+            why: "That is Gold."
+          - text: "An enhancement that uses a sensor the book never switched on"
+            correct: false
+            why: "The §7.3 menu is available at every tier."
+
+      - id: L16_A22
+        type: multiple_choice
+        cite: "§9.2"
+        points: 1
+        stem: "Competition day runs three events. What is judged in Technical Excellence?"
+        options:
+          - text: "The TDP, the video, and five minutes of questions — depth, evidence, honesty about failures, and the quality of the Version 2 section"
+            correct: true
+          - text: "The fastest lap, read from the robot's own benchmark screen"
+            correct: false
+            why: "That is Event 1, the Time Trial."
+          - text: "A head-to-head bracket on a mirrored course"
+            correct: false
+            why: "That is Event 2."
+          - text: "The robot's byte count and how much headroom is left"
+            correct: false
+
+      - id: L16_A23
+        type: multiple_choice
+        cite: "§9.2"
+        points: 1
+        stem: "The lesson closes Section 9 with a claim about the rubric's arithmetic. What is it?"
+        options:
+          - text: "A robot that works perfectly with a poor paper loses to a well-documented robot with decent performance — and that is not a classroom rule, it is the real rubric"
+            correct: true
+          - text: "The three events are weighted equally"
+            correct: false
+          - text: "The time trial is worth the most because it is objective"
+            correct: false
+          - text: "Documentation is a tie-breaker only"
+            correct: false
+            why: "The lesson puts it far higher than a tie-breaker: engineering is communication wearing safety glasses."
+
+      - id: L16_A24
+        type: true_false
+        cite: "§7.4, §6 Step 5"
+        points: 1
+        stem: "After Lesson 16's two trades you have 72 bytes, and the lesson expects that to be enough for your enhancement."
+        correct: false
+        why: "It says the opposite: \"You have 72 bytes. Your enhancement will want more.\" It then points you at the buzzer — about 1,828 bytes, all optional — and tells you to name the trade in your TDP."
+
+      - id: L16_A25
+        type: matching
+        cite: "§6 Steps 1–6"
+        points: 4
+        stem: "Match each step of the build to what the compiler said."
+        pairs:
+          - left: "Step 2 — the second bell"
+            right: "28,464 bytes, +250, and 208 to spare"
+          - left: "Step 3 — the baseline"
+            right: "28,824 bytes — over by 152, and there is no green box to put it in"
+          - left: "Step 4 — the EEPROM"
+            right: "29,460 bytes — will not link, over by 788"
+          - left: "Step 5 — both trades"
+            right: "28,600 bytes, green, 72 to spare"
+        extra_answers:
+          - "26,928 bytes — what cutting the buzzer would give"
+          - "20,516 bytes — the Lesson 10 finished build"

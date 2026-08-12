@@ -257,7 +257,7 @@
 **Feeds from → Log #14 (L14):**
 
 **LoP procedure + self-test card (L14):**
-> RCJ rule 4.3.7 requires you to tell the referee your Lack-of-Progress procedure before each scoring run. Write that procedure here.
+> RCJ rule §4.2.8 (RCJ Rescue Line 2026) requires you to tell the referee your Lack-of-Progress procedure before each scoring run. Write that procedure here.
 > _[L14 entry]_
 
 ---
@@ -283,4 +283,4 @@
 - [ ] 5–10 pages total
 
 ---
-*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.1 — prose pass applied S113.*
+*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.1.1 — LoP citation re-dated to the 2026 edition, S148.*

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.22.1 -->
+<!-- Lesson version: v02.23.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +74,7 @@
 <h1 class="h1">Nothing Left to Take Away</h1>
 <div class="div-fs-11em">The Capstone Write-Up</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.22 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.23 — August 2026</div>
 </div>
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
 <div class="div-bg-1f2a3d-3">
@@ -97,12 +97,12 @@ worth trusting. Fifteen lessons of addition — and here is the bill:</p>
 <tr><th class="th-bg-4d535f-2">Finished project</th>
 <th class="th-bg-4d535f-2">Lesson</th>
 <th class="th-bg-4d535f-3">Program size</th></tr>
-<tr><td class="td-b-white-2">Lesson 7</td><td class="td-b-white-2">Code Organization</td><td class="td-b-white-3">14,380 B</td></tr><tr><td class="td-b-white-2">Lesson 8</td><td class="td-b-white-2">Line Following (P)</td><td class="td-b-white-3">17,194 B</td></tr><tr><td class="td-b-white-2">Lesson 9</td><td class="td-b-white-2">Intersections</td><td class="td-b-white-3">18,158 B</td></tr><tr><td class="td-b-white-2">Lesson 10</td><td class="td-b-white-2">Obstacles</td><td class="td-b-white-3">20,364 B</td></tr><tr><td class="td-b-white-2">Lesson 11</td><td class="td-b-white-2">Time Lies, Distance Doesn't</td><td class="td-b-white-3">20,542 B</td></tr><tr><td class="td-b-white-2">Lesson 12</td><td class="td-b-white-2">Wheels Lie</td><td class="td-b-white-3">24,534 B</td></tr><tr><td class="td-b-white-2">Lesson 13</td><td class="td-b-white-2">Rescue Zone</td><td class="td-b-white-3">24,902 B</td></tr><tr><td class="td-b-white-2">Lesson 14</td><td class="td-b-white-2">Competition Prep</td><td class="td-b-white-3">25,640 B</td></tr><tr><td class="td-b-white-2">Lesson 15</td><td class="td-b-white-2">The Present Isn't Enough</td><td class="td-b-white-3">28,034 B</td></tr>
+<tr><td class="td-b-white-2">Lesson 7</td><td class="td-b-white-2">Code Organization</td><td class="td-b-white-3">14,380 B</td></tr><tr><td class="td-b-white-2">Lesson 8</td><td class="td-b-white-2">Line Following (P)</td><td class="td-b-white-3">17,194 B</td></tr><tr><td class="td-b-white-2">Lesson 9</td><td class="td-b-white-2">Intersections</td><td class="td-b-white-3">18,158 B</td></tr><tr><td class="td-b-white-2">Lesson 10</td><td class="td-b-white-2">Obstacles</td><td class="td-b-white-3">20,516 B</td></tr><tr><td class="td-b-white-2">Lesson 11</td><td class="td-b-white-2">Time Lies, Distance Doesn't</td><td class="td-b-white-3">20,702 B</td></tr><tr><td class="td-b-white-2">Lesson 12</td><td class="td-b-white-2">Wheels Lie</td><td class="td-b-white-3">24,694 B</td></tr><tr><td class="td-b-white-2">Lesson 13</td><td class="td-b-white-2">Rescue Zone</td><td class="td-b-white-3">25,072 B</td></tr><tr><td class="td-b-white-2">Lesson 14</td><td class="td-b-white-2">Competition Prep</td><td class="td-b-white-3">25,816 B</td></tr><tr><td class="td-b-white-2">Lesson 15</td><td class="td-b-white-2">The Present Isn't Enough</td><td class="td-b-white-3">28,214 B</td></tr>
 <tr><td class="td-bg-fdecea-2" colspan="2">The chip’s ceiling</td>
 <td class="td-bg-fdecea">28,672 B</td></tr>
 </table>
 <p>Read the last two lines again. Your robot’s brain holds <b>28,672 bytes</b> of program.
-Your Lesson 15 project is <b>28,034</b> of them. You have <b>638 bytes left</b> — about a fifth of one
+Your Lesson 15 project is <b>28,214</b> of them. You have <b>458 bytes left</b> — about one and a half
 percent of everything you have built — and this lesson is going to spend them, run out, and hit the
 wall in front of you, on purpose.</p>
 <p>Because that is the capstone. In Lessons 1–15, I told you what to build, and adding was free.
@@ -306,18 +306,18 @@ program that answers the USB cable and writes your <i>next</i> program into plac
 still runs — once. You could never upload again without a hardware programmer.</p>
 <p>So the budget is 32,768&nbsp;−&nbsp;4,096 = <b>28,672 bytes</b>. That number is not a suggestion.
 It is enforced by the linker, the last tool in the build chain, whose job is to place every function at a
-real address inside the region. Ask it to place 29,298 bytes into 28,672 and it does not warn you, round
+real address inside the region. Ask it to place 29,460 bytes into 28,672 and it does not warn you, round
 down, or try its best. It refuses, and prints the most honest error message in this entire book:</p>
-<div class="div-bg-2c3e50"><span class="span-ff-uimonosp">ld: region `text' overflowed by 626 bytes<br>
+<div class="div-bg-2c3e50"><span class="span-ff-uimonosp">ld: region `text' overflowed by 788 bytes<br>
 collect2: error: ld returned 1 exit status</span></div>
-<p><i>Region text</i> is the flash. <i>Overflowed by 626 bytes</i> means exactly what it says:
-your program is 626 bytes bigger than the space that exists. There is no setting to change, no flag to
+<p><i>Region text</i> is the flash. <i>Overflowed by 788 bytes</i> means exactly what it says:
+your program is 788 bytes bigger than the space that exists. There is no setting to change, no flag to
 pass, no faster computer to buy. Something has to go.</p>
 <div class="div-m-16px0"><b>Why did nobody tell you sooner?</b> Because it never mattered. Lesson 7’s finished
 project was 14,380 bytes — half the chip sat empty. The budget only becomes real at the end, which is
 exactly how it happens on real products: nobody counts bytes in month one, and everybody counts them in
 the month before shipping.</div>
-<h3 class="h3-c-433014-2">4.2 The audit: where YOUR 28,034 bytes are</h3>
+<h3 class="h3-c-433014-2">4.2 The audit: where YOUR 28,214 bytes are</h3>
 <p>You cannot cut what you have not counted. Here is the Lesson 15 finished project, weighed
 subsystem by subsystem with the toolchain’s own scale (<code>avr-nm</code> reads the compiled program
 and reports the size of every function in it):</p>
@@ -623,16 +623,16 @@ the only variable in the experiment is <b>your code</b>.</div>
 or keep working in your Lesson 15 folder; Step 1 is the same either way. Every step below ends with a
 compile check and a byte count. The byte counts are real — they are what the compiler produced
 — and this time, <b>the byte counts are the plot</b>.</p>
-<h3 class="h3-c-433014-2">Step 1 — Start from Lesson 15 &nbsp;<span class="span-c-607d8b">(28,034 bytes)</span></h3>
-<p>Your finished Lesson 15 project, untouched. Build it once and read the number: 28,034 of
-28,672. <b>638 bytes of runway.</b> Keep that number in your head; every step from here spends it.</p>
-<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.9">🔨 <b>COMPILE CHECK</b> — 28,034 bytes. Green. 638 to spare.</div>
+<h3 class="h3-c-433014-2">Step 1 — Start from Lesson 15 &nbsp;<span class="span-c-607d8b">(28,214 bytes)</span></h3>
+<p>Your finished Lesson 15 project, untouched. Build it once and read the number: 28,214 of
+28,672. <b>458 bytes of runway.</b> Keep that number in your head; every step from here spends it.</p>
+<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.9">🔨 <b>COMPILE CHECK</b> — 28,214 bytes. Green. 458 to spare.</div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 1</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=16&amp;kind=step_1" class="link-c-2e86ab">Open Step 1 in Project Maker</a></p></div>
 </details>
-<h3 class="h3-c-433014-2">Step 2 — THE LAP — a second bell &nbsp;<span class="span-c-607d8b">(28,302 bytes)</span></h3>
+<h3 class="h3-c-433014-2">Step 2 — THE LAP — a second bell &nbsp;<span class="span-c-607d8b">(28,464 bytes)</span></h3>
 <p>Add the <code>RunMode</code> block to <code>RobotConfig.h</code> (Section 5.1 shows it in
 full) and the <code>currentMode</code> global and <code>showMode()</code> to <code>main.cpp</code>.
 Then replace <code>showScore()</code> with the mode-aware version, in full:</p>
@@ -731,13 +731,13 @@ the bell check becomes:</p>
 down” already means <i>turn the gain up</i>. A gesture that means two things must be checked before
 the gesture that means one, or the two-thing gesture can never happen — the one-thing gesture eats
 it every time. You will meet this bug again in every UI you ever build.</div>
-<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.10">🔨 <b>COMPILE CHECK</b> — 28,302 bytes. +268 for a second bell. 370 to spare.</div>
+<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.10">🔨 <b>COMPILE CHECK</b> — 28,464 bytes. +250 for a second bell. 208 to spare.</div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 2</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=16&amp;kind=step_2" class="link-c-2e86ab">Open Step 2 in Project Maker</a></p></div>
 </details>
-<h3 class="h3-c-433014-2">Step 3 — THE BASELINE — the before row &nbsp;<span class="span-c-607d8b">(28,662 bytes)</span></h3>
+<h3 class="h3-c-433014-2">Step 3 — THE BASELINE — the before row &nbsp;<span class="span-c-607d8b">(28,824 bytes — and it does not fit)</span></h3>
 <p>Add <code>RunScore</code> to <code>RobotConfig.h</code> and the <code>baseline</code>
 global and <code>saveBaseline()</code> to <code>main.cpp</code> (Section 5.2, in full).</p>
 <p>Inside <code>showScore()</code>, the course branch grows the delta row:</p>
@@ -802,8 +802,12 @@ global and <code>saveBaseline()</code> to <code>main.cpp</code> (Section 5.2, in
 asks ONCE, then decides what the press meant by looking at what else is held down. If you ever wonder why
 your button code “misses” presses, you called a consuming read twice. Lesson 14 warned you;
 now you have seen the correct shape.</div>
-<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.11">🔨 <b>COMPILE CHECK</b> — 28,662 bytes. <b>Ten bytes to spare.</b> Read
-that again. Ten. The runway is gone. Nothing about the code is wrong — and nothing else fits.</div>
+<p><b>28,824 bytes. It does not fit — you are 152 over.</b> Read that again. There is no
+compile-check box for this step, because there is nothing green to put in one. The runway did not
+shrink; it ended, and it ended one step earlier than you were expecting. Nothing about the code is
+wrong: the baseline is correct, the delta row is correct, and the chip is full. You have not made a
+mistake — you have run out of room, which is a different thing and needs a different kind of answer.
+Step 4 is going to make it worse before anyone makes it better.</p>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 3</summary>
 <div class="div-mt-12px">
@@ -814,8 +818,8 @@ that again. Ten. The runway is gone. Nothing about the code is wrong — and not
 <code>#include &lt;EEPROM.h&gt;</code>, the <code>Saved</code> struct with <code>saveSettings()</code> and
 <code>loadSettings()</code>. The include joins the family at the top of <code>main.cpp</code>:</p>
 <div class="div-m-22px0">
-<img src="../images/L16_GRAPHIC_16-02_the_wall.svg" alt="Flash budget bar: 28,672 bytes available on the chip, the program at 29,298 bytes, overflowing by 626 bytes" class="img-h-auto-3">
-<div class="div-c-666"><strong>[GRAPHIC 16.2]</strong> The wall: 29,298 bytes into a 28,672-byte chip. Over by 626 — and that is the lesson (File: L16_GRAPHIC_16-02_the_wall.svg)</div>
+<img src="../images/L16_GRAPHIC_16-02_the_wall.svg" alt="Flash budget bar: 28,672 bytes available on the chip, the program at 29,460 bytes, overflowing by 788 bytes" class="img-h-auto-3">
+<div class="div-c-666"><strong>[GRAPHIC 16.2]</strong> The wall: 29,460 bytes into a 28,672-byte chip. Over by 788 — and that is the lesson (File: L16_GRAPHIC_16-02_the_wall.svg)</div>
 </div>
 
 <pre>
@@ -870,10 +874,10 @@ that again. Ten. The runway is gone. Nothing about the code is wrong — and not
     }
 </pre>
 <p>Type all of it. Build it.</p>
-<div class="div-bg-2c3e50"><span class="span-ff-uimonosp">ld: region `text' overflowed by 626 bytes<br>
+<div class="div-bg-2c3e50"><span class="span-ff-uimonosp">ld: region `text' overflowed by 788 bytes<br>
 collect2: error: ld returned 1 exit status</span></div>
 <p><b>Your first red build that no fix can cure.</b> There is no missing semicolon. No
-misspelled name. No prototype to add. The program is <i>correct</i> — all 29,298 bytes of it —
+misspelled name. No prototype to add. The program is <i>correct</i> — all 29,460 bytes of it —
 and the chip holds 28,672. For fifteen lessons, every error message meant “you made a mistake.”
 This one means something new: <b>you made a choice, and now you must make another one.</b></p>
 <p>Sit with it for a second, because this is the moment the lesson is named after. Nothing more can be
@@ -886,7 +890,7 @@ carrying. Step 5 finds that something.</div>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=16&amp;kind=step_4" class="link-c-2e86ab">Open Step 4 in Project Maker</a></p></div>
 </details>
-<h3 class="h3-c-433014-2">Step 5 — THE TRADE — the robot gives up its voice &nbsp;<span class="span-c-607d8b">(28,594 bytes)</span></h3>
+<h3 class="h3-c-433014-2">Step 5 — THE TRADES — the easy one, then the hard one &nbsp;<span class="span-c-607d8b">(28,600 bytes)</span></h3>
 <p>Look at the audit table in Section 4.2. The biggest cuttable line is one this book
 installed in Lesson 2 and has carried ever since, purely out of professional habit: <b>the USB serial
 port</b>. Every boot, your robot opens <code>Serial</code>, waits up to two seconds for a computer that
@@ -986,14 +990,48 @@ run all year — the OLED took over that job in Lesson 3.</p>
 
   <span class="tok-7cbf6e">// ===== CALIBRATION =====</span>
 </pre>
-<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.13">🔨 <b>COMPILE CHECK</b> — 28,594 bytes. Green again. The robot traded its
-voice for a memory: Serial freed 704 bytes, EEPROM cost 636, and you are 78 bytes in the black. Notice
-the bonus you did not ask for: <b>the robot now boots two and a half seconds faster</b>, because the
-wait-for-USB loop died with the rest. On competition day, that is two and a half seconds of calibration
-time you just bought back.</div>
-<div class="callout-6b8e6b-bg-f0f7f0-3" data-family="TIP" data-callout="16.14"><b><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">Write this trade down in your journal tonight.</b> It is the single best
+<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.13">🔨 <b>COMPILE CHECK</b> — 28,756 bytes. <b>Still over. By 84.</b>
+Serial freed exactly 704 bytes and the EEPROM cost exactly 636, so the trade was real and it was not
+enough. Notice the bonus you did get: <b>the robot now boots two and a half seconds faster</b>, because
+the wait-for-USB loop died with the rest — on competition day, two and a half seconds of calibration
+time you just bought back. But 84 bytes is 84 bytes, and the second trade is the one that teaches you
+something. Read on.</div>
+<h4 class="h4-c-433014-2">The second trade — and this one costs you something you like</h4>
+<p>The first cut was easy. Nobody was going to defend <code>Serial</code>: it was a habit, it earned
+nothing for fifteen lessons, and deleting it made the robot <i>better</i>. Trades like that are not
+really trades. They are housekeeping.</p>
+<p>This one is a trade. Open <code>showScore()</code> and find the Ziegler–Nichols block — the
+one that reads <code>TRY Kd</code> at the bottom of a tuning report. It works. You used it a week ago.
+It computed a starting gain out of your own WEAVE number and it put you in the right ZIP code. Delete
+it:</p>
+<pre>
+<span class="tok-7cbf6e">// Ziegler-Nichols, computed on the robot.</span>
+<span class="tok-7cbf6e">// At the Kp where it oscillates and will NOT settle (that is Ku), the</span>
+<span class="tok-7cbf6e">// WEAVE number gives you the oscillation period:  Tu = 2 / WEAVE.</span>
+<span class="tok-7cbf6e">// The classical starting point is then Kp = 0.6*Ku and Kd = Kp*Tu/8.</span>
+<span class="tok-7cbf6e">//</span>
+<span class="tok-7cbf6e">// It is a STARTING POINT, not an answer. Z-N is famously aggressive.</span>
+<span class="tok-7cbf6e">// It puts you in the right ZIP code. You still have to hill-climb.</span>
+    <span class="tok-569cd6">float</span> weave = runCross / secs;
+    <span class="tok-569cd6">if</span> (weave &gt; <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">2</span>) {
+      <span class="tok-569cd6">float</span> tu = <span class="tok-b5cea8">2</span>.<span class="tok-b5cea8">0</span> / weave;
+      display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
+      display.print(F(<span class="tok-ce9178">"TRY Kd "</span>)); display.print(currentKp * <span class="tok-b5cea8">0</span>.<span class="tok-b5cea8">6</span> * tu / <span class="tok-b5cea8">8</span>.<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">3</span>);
+    }
+</pre>
+<p><b>Defend the cut before you make it.</b> That hint only ever printed in
+<code>MODE TUNING</code>, and Lesson 16 benchmarks in <code>MODE COURSE</code>, where it never appeared
+at all. You already tuned. And the recipe itself is not gone — it is three rows of Lesson 15's Quick
+Reference, in prose: read WEAVE at K<sub>u</sub>, T<sub>u</sub> = 2 ÷ WEAVE, K<sub>d</sub> =
+K<sub>p</sub>·T<sub>u</sub>/8. What you gave up is the convenience of the robot doing that arithmetic
+for you. What you bought is a memory that survives the power switch.</p>
+<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.30">🔨 <b>COMPILE CHECK</b> — 28,600 bytes. <b>Green. 72 to spare.</b>
+The hint cost 156 bytes and you will never miss it in this lesson. Two trades: one you would have made
+anyway, and one you had to argue yourself into. <b>The second kind is what the chapter title means.</b></div>
+<div class="callout-6b8e6b-bg-f0f7f0-3" data-family="TIP" data-callout="16.14"><b><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">Write both trades down in your journal tonight.</b> They are the single best
 “Lessons Learned” paragraph available to you: <i>a feature we shipped for fifteen lessons was
-costing 704 bytes and two and a half seconds, and earning nothing. We found it by auditing, not by
+costing 704 bytes and two and a half seconds and earning nothing — and when cutting it was still
+not enough, we gave up a tuning aid we liked and no longer needed. We found both by auditing, not by
 guessing.</i> Judges read a thousand pages of “what we added.” They remember the team that
 wrote about what they removed.</div>
 <details data-reveal="catchup">
@@ -1001,11 +1039,11 @@ wrote about what they removed.</div>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=16&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
 </details>
-<h3 class="h3-c-433014-2">Step 6 — THE SOCKET — and then it is yours &nbsp;<span class="span-c-607d8b">(28,594 bytes — and that is not a typo)</span></h3>
+<h3 class="h3-c-433014-2">Step 6 — THE SOCKET — and then it is yours &nbsp;<span class="span-c-607d8b">(28,600 bytes — and that is not a typo)</span></h3>
 <p>Add <code>ENHANCEMENT_ON</code> to <code>RobotConfig.h</code> and
 <code>runEnhancement()</code> to <code>main.cpp</code> (Section 5.4, in full), and wire the call into
 <code>FOLLOWING_LINE</code> right after <code>followLine()</code>. Build it.</p>
-<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.15">🔨 <b>COMPILE CHECK</b> — 28,594 bytes. <b>The program did not grow by one
+<div class="div-433014-2" data-family="STILL GREEN" data-callout="16.15">🔨 <b>COMPILE CHECK</b> — 28,600 bytes. <b>The program did not grow by one
 byte.</b> You added a constant, a function, and a call — and the size did not move. Lesson 15,
 Step 3 taught you this trick from one side; here is the other. The compiler can see that
 <code>ENHANCEMENT_ON</code> is a <code>const false</code>, so <code>runEnhancement()</code> begins with a
@@ -1097,13 +1135,15 @@ speed loop’s own trim, prox-sensor brightness tuning (<code>setBrightnessLevel
 nineteen library methods this book never called), a smarter gap strategy. The socket does not care. The
 benchmark will.</p>
 <h3 class="h3-c-00474b-2">7.4 Paying for it: your byte reserve</h3>
-<p>You have <b>78 bytes</b>. Your enhancement will want more. You know the drill now —
+<p>You have <b>72 bytes</b>. Your enhancement will want more. You know the drill now —
 and the audit already found your war chest:</p>
 <div class="div-2e86ab">
 <b>The buzzer: ~1,828 bytes, all optional.</b> Twelve <code>playNote()</code> calls carry the entire tone
 engine and note table. Delete every one — the countdown, the GO fanfare, the self-test chirps, the
 victim celebration — and the robot goes silent and rich. Delete only some and you save far less than
-you expect: the <i>first</i> call pays for the engine; the rest ride free. All or nothing is the honest
+you expect, and the gap is bigger than anyone guesses: deleting <b>eleven of the twelve</b> frees
+<b>130 bytes</b>. Deleting the twelfth frees a further <b>1,698</b>. The <i>first</i> call pays for the
+engine; the rest ride free. All or nothing is the honest
 trade.</div>
 <p>Whatever you cut, the TDP rule is the same: <b>name the trade</b>. “We removed the buzzer
 (−1,828 B) to afford compass heading correction (+1,340 B)” is a sentence that wins Technical
@@ -1266,7 +1306,7 @@ take away — and can show you the number that made the decision.</i></div>
 <div class="div-6f7582">
 
 <p>Two builds. Both compile. Both flash. Both are <b>wrong</b> — and both are
-<b>byte-for-byte the same size as the correct program: 28,594 bytes</b>. The compiler will not warn you.
+<b>byte-for-byte the same size as the correct program: 28,600 bytes</b>. The compiler will not warn you.
 The linker will not warn you. Only the instruments will — and this time, the sabotage is <i>inside
 the instruments</i>. Welcome to the hardest class of bug there is: the lying ruler.</p>
 <h3 class="h3-c-6f7582-2">B1 — The Stopwatch With an Opinion</h3>
@@ -1274,7 +1314,7 @@ the instruments</i>. Welcome to the hardest class of bug there is: the lying rul
 every single lap scores <b>exactly 10.0 seconds</b>. Short course, long course, fast gains, slow gains:
 LAP&nbsp;10.0s. Meanwhile tuning mode has stopped ringing its bell entirely — a tuning run now goes
 until you press B, however long that is.<br><br>
-<b>Program size: 28,594 bytes. The correct program is 28,594 bytes. Identical.</b></div>
+<b>Program size: 28,600 bytes. The correct program is 28,600 bytes. Identical.</b></div>
 <p>Here is the planted bell. One word is wrong:</p>
 <pre>
       <span class="tok-7cbf6e">// THE BELL. Every TUNING run is the same length, or two scores mean</span>
@@ -1298,7 +1338,7 @@ before the robot.</div></details>
 <div class="div-bg-2c3e50"><b>THE SYMPTOM.</b> Hold C, tap B: <i>SAVED TO EEPROM</i>, clean and confident. Power
 cycle. Boot: <b>NO SAVED SETTINGS</b>. Every time. The save works — you can prove the bytes are in
 the EEPROM with a reader — and the robot refuses to remember them anyway.<br><br>
-<b>Program size: 28,594 bytes. The correct program is 28,594 bytes. Identical.</b></div>
+<b>Program size: 28,600 bytes. The correct program is 28,600 bytes. Identical.</b></div>
 <p>Here is the planted loader. One number is wrong:</p>
 <pre>
 <span class="tok-7cbf6e">// Returns false if this EEPROM has never been written by Lesson 16.</span>
@@ -1347,7 +1387,7 @@ a retyped number is two numbers wearing one name. In the disassembly the whole b
 <div class="div-m-16px0">
 <b>The third sabotage that isn’t here.</b> We built one more for you: an EEPROM save planted inside
 the driving loop, so the robot would stutter and its own benchmark would bill it for the stalls.
-It would not link. <b>The sabotage was 10 bytes too big for the chip.</b> The wall you hit in Step 4 does
+It would not link — the planted save pushed the program back over the ceiling. The wall you hit in Step 4 does
 not care whether the bytes are good bytes or bad ones — and a full chip, it turns out, is a modest
 form of sabotage-proofing. The bug still fits in prose: Section 8.2, row three, is its obituary.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1382,9 +1422,10 @@ form of sabotage-proofing. The bug still fits in prose: Section 8.2, row three, 
 <tr><th class="th-bg-4d535f-2">Number</th>
 <th class="th-bg-4d535f-2">Value</th></tr>
 <tr><td class="td-b-white-2">Flash budget (32,768 − 4,096 bootloader)</td><td class="td-b-white-4">28,672 B</td></tr>
-<tr><td class="td-b-white-2">This lesson’s finished build</td><td class="td-b-white-4">28,594 B (78 spare)</td></tr>
+<tr><td class="td-b-white-2">This lesson’s finished build</td><td class="td-b-white-4">28,600 B (72 spare)</td></tr>
 <tr><td class="td-b-white-2">EEPROM size / write cost / endurance</td><td class="td-b-white-4">1,024 B · ~3 ms/B · ~100k writes</td></tr>
 <tr><td class="td-b-white-2">The Serial habit / the EEPROM feature</td><td class="td-b-white-4">−704 B / +636 B</td></tr>
+<tr><td class="td-b-white-2">The Ziegler–Nichols hint (the second trade)</td><td class="td-b-white-4">−156 B</td></tr>
 <tr><td class="td-b-white-2">The buzzer reserve (all-or-nothing)</td><td class="td-b-white-4">~1,828 B</td></tr>
 </table>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
