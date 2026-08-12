@@ -1,6 +1,6 @@
 # ZUMO READING QUIZ — AUTHORING SPEC
 
-**Spec version: v1.1.0** · Ruled S136 · Amended S139 · Applies to all sixteen lessons.
+**Spec version: v1.2.0** · Ruled S136 · Amended S139, S146 · Applies to all sixteen lessons.
 
 **v1.1.0 (S139) — §3 FORMAT MIX.** The three ratios could not all hold at once: at both
 ceilings the multiple-choice floor was 76%, so "~70% MC" was unreachable and L02 met it
@@ -8,6 +8,11 @@ only by running true/false 2 points over its cap. The matching allowance moved t
 rather than the true/false cap, because matching carries `extra_answers` and true/false
 is 50% guessable. L04 was authored to the amended mix; **L02 still reads TF 22% before /
 83% MC after and has not been rebalanced.**
+
+**v1.2.0 (S146) — §9 FALL SCOPE IS RULED.** DJ ruled the Fall 2026 course scope is
+**L01–L13**, not L01–L12. L13 is therefore a required bank and was written the same session
+it was read. **THREE banks remain optional for September, not four.** The open question in
+§9 is closed and restated there.
 
 **Read this before writing a single question.** Everything below was decided once, with
 reasons. None of it needs re-deriving, re-debating, or re-discovering. If a ruling here
@@ -255,8 +260,10 @@ audits is not a control.
 ## 9. OPEN, NOT YET RULED
 
 - Where the `after` set lives in the grade split, if it is graded at all.
-- Whether the L13–L16 banks are needed for Fall 2026 at all — the course scope is
-  **L01–L12**, so four of the sixteen may never be required.
+- ~~Whether the L13–L16 banks are needed for Fall 2026~~ — **RULED S146: the Fall course
+  scope is L01–L13.** L13 is required and is written. **L14, L15 and L16 remain optional
+  for September** — three of the sixteen, not four. Their byte figures are also still
+  stale, so writing them means running their byte pass first (READ -> FIX -> QUIZ).
 - `to_qti.py` — unwritten.
 - **No gate holds the quiz banks.** `quiz_bank.py --check` exists and is loud, but nothing
   in `book_gates.py` calls it, so a broken bank can be pushed. Same debt shape as the nav

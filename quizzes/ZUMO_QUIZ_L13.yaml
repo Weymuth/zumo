@@ -1,0 +1,1652 @@
+# ZUMO READING QUIZ BANK — LESSON 13
+# Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
+#
+# Bank version: v1.0.1
+# Authored against: lessons/Lesson_13.html v02.29.0 (post-S146 read + byte re-baselining)
+#
+# READ -> FIX -> QUIZ. L13 was read end to end in S146 and every defect below was found and
+# fixed BEFORE a question was written. Against v02.28.3, six items in this bank would have
+# keyed wrong.
+#
+# THE FIXES THIS BANK RESTS ON
+#
+#   1. EVERY ABSOLUTE BYTE FIGURE IN L13 WAS STALE, AND TWO DELTAS MOVED WITH THEM.
+#      Measured on the AVR toolchain against the standing control (L11 after_step_1
+#      reproduces 20,516 byte-for-byte). The measured chain is
+#        24,694 -> 24,694 -> 24,874 -> 24,874 -> 25,114 -> 25,072
+#      where the book said 24,534 / 24,534 / 24,714 / 24,714 / 24,946 / 24,902.
+#      Step 3's +180 survived; Step 5's +232 is +240 and Step 6's -44 is -42, so unlike
+#      L12 this was NOT a pure re-baselining — two sentences the lesson teaches with had to
+#      change. Total cost moved 368 -> 378. A02, A06, A13, A15, A16, A24 and A31 ask the
+#      corrected figures.
+#
+#   2. SECTION 7E's 64-BYTE CLAIM WAS FALSE AND ITS EXPLANATION DESCRIBED NO DIFFERENCE.
+#      The gyro-corner and encoder-corner builds differ by one call site in main.cpp; both
+#      turn functions are alive in BOTH binaries. Measured, the two builds are byte-identical
+#      at 25,072. The lesson claimed 24,902 against 24,966 — 'the price of keeping both turn
+#      functions alive' — which is not a difference between them at all. Rewritten, and the
+#      pedagogical point ('the size of the file will never tell you which line') got stronger.
+#      A24 asks the corrected version.
+#
+#   3. STEP 6's DECOMPOSITION WAS ARITHMETICALLY BROKEN INDEPENDENT OF BASELINE.
+#      '120 bytes tighter ... bookkeeping cost only 26' nets -94 against a stated -44 and a
+#      measured -42. Symbol diff: main -68, showStatus -50, growth +81. No honest pair of
+#      numbers closes on 42 without naming linker section padding, so per QUIZ_SPEC §5 and
+#      Bible rule 50 the two sub-numbers were DELETED rather than replaced with a guess.
+#      NOTHING IN THIS BANK ASKS THAT DECOMPOSITION.
+#
+#   4. THE 'FIRST LESSON THAT ADDS ZERO HARDWARE' SUPERLATIVE WAS FALSE, IN TWO PLACES.
+#      L09 §4 already says 'no new hardware required' and L12 §4.1 says 'You do not have to
+#      plug anything in. You do not have to move a jumper.' The claim appeared in §4.2 and
+#      again in BRAIN CHECK 01's answer 3. Both were narrowed to the true statement. B19 asks
+#      what the lesson costs in pins and hardware — never whether it is the first to cost
+#      nothing.
+#
+#   5. THE FIGURES TABLE UNDER-DESCRIBED GRAPHIC 13.2 (silver/white/black, where the caption
+#      and the SVG both carry green). Corrected. Not asked — see below.
+#
+# EIGHT ANSWERS DELIBERATELY NOT ASKED, WITH REASONS:
+#
+#   - ANY BYTE FIGURE FROM L14, L15 OR L16. All three are measurably stale and ruled to a
+#     later arc. L14 alone carries three sites keyed to L13's old 24,902 and they are
+#     knowingly left standing. Every figure this bank asks was compiled in the session that
+#     wrote it.
+#   - STEP 6's 120/26 DECOMPOSITION. Deleted from the lesson as underived (finding 3).
+#   - ANY 7A MEASUREMENT. No raw reading or prox count for silver, white, black or either
+#     ball has ever been taken on this fleet; the 7A table ships blank on purpose. B07 and
+#     B08 ask the RELATIONSHIP (brighter = lower on the raw channel), never a value.
+#   - GRAPHIC 13.2's PLOTTED NUMBERS AS SUCH. 250 / 400 / 1200 / 2400 appear in the SVG, and
+#     QUIZ_SPEC §5 forbids figure-only facts. B36 and B37 ask them only because §8A.1 states
+#     the same worked example in prose — calmin 400, maximum 2400, raw 250, x = -75.
+#   - THE GREEN MARKER'S CALIBRATED VALUE (~500). Lives only inside the SVG. Not asked.
+#   - IMAGE 13.1 AND IMAGE 13.2. Both unshot. Nothing in this bank depends on a photograph.
+#   - WHETHER LESSON 13 IS THE FIRST ZERO-HARDWARE LESSON. False, and now removed (finding 4).
+#   - PROX BEHAVIOUR AGAINST THE BLACK BALL AS A NUMBER. §4.3 says the signal is not there to
+#     threshold and 7A is where you measure that; no count exists. B20, B21 and B22 ask the
+#     physics and the engineering ethic, never a reading.
+#
+# FORMAT MIX (QUIZ_SPEC v1.1.0 §3): before 71/18/11, after 72/20/8 (MC/TF/matching).
+#
+lesson: L13
+title: Rescue Zone — Flying on Instruments, Navigating Where the Line Cannot Go
+bank_version: 1.0.1
+source:
+  lesson_13: v02.29.0
+  lesson_03: v03.41.0
+  lesson_06: v04.32.1
+  lesson_10: v02.29.1
+  lesson_11: v02.30.0
+  lesson_12: v01.31.3
+sets:
+  before:
+    description: Pre-class reading gate. Answerable from the text alone — no robot, no compiler, no built
+      program.
+    suggested_draw: 10
+    questions:
+    - id: L13_B01
+      type: multiple_choice
+      cite: §1
+      points: 1
+      stem: Section 1 counts three jobs the line had been doing for the robot since Lesson 8. What are
+        they?
+      options:
+      - text: Position, direction, and meaning
+        correct: true
+      - text: Speed, steering, and stopping
+        correct: false
+        why: Those are things the robot DOES. §1 is about what the line was silently supplying to it.
+      - text: Calibration, following, and intersections
+        correct: false
+        why: Those are lesson topics, not the three jobs §1 names.
+      - text: Distance, heading, and battery state
+        correct: false
+        why: Distance and heading come from the encoders and gyro; the line never supplied either.
+    - id: L13_B02
+      type: multiple_choice
+      cite: §1
+      points: 1
+      stem: How does §1 distinguish the rescue zone from the gap you handled in Lesson 11?
+      options:
+      - text: A gap is a few blind centimeters with the line waiting on the far side; in the zone the
+          line is simply gone
+        correct: true
+      - text: A gap is wider than the sensor array and the zone is narrower
+        correct: false
+        why: Width is not the distinction §1 draws. What matters is whether the line returns.
+      - text: A gap has walls around it and the zone does not
+        correct: false
+        why: Backwards — the zone is the walled space.
+      - text: A gap is detected on the raw channel and the zone on the calibrated channel
+        correct: false
+        why: The doorway is the raw-channel job; the gap was handled with the calibrated channel all along.
+    - id: L13_B03
+      type: multiple_choice
+      cite: §1
+      points: 1
+      stem: Section 1 borrows a phrase from aviation for what the robot must now do. What is it, and why
+        does the lesson say it is worth borrowing?
+      options:
+      - text: Flying on instruments — it is a separate license because it is a separate skill
+        correct: true
+      - text: Dead reckoning — it is what sailors did before satellites
+        correct: false
+        why: Dead reckoning appears in this lesson, but the aviation phrase §1 borrows is a different
+          one.
+      - text: Visual flight rules — the robot flies by what it can see
+        correct: false
+        why: 'That is the opposite: the window shows nothing, which is exactly why the instruments take
+          over.'
+      - text: Autopilot — the robot flies itself
+        correct: false
+        why: Nothing in §1 is about handing control away; it is about which information you trust.
+    - id: L13_B04
+      type: matching
+      cite: §1
+      points: 4
+      stem: Section 1 lists the instruments the robot already owns and credits each to a lesson. Match
+        the instrument to the lesson that taught it.
+      pairs:
+      - left: Encoders that count distance
+        right: Lesson 6
+      - left: An odometer that survives a dying battery
+        right: Lesson 11
+      - left: A gyro that catches slipping wheels in a lie
+        right: Lesson 12
+      - left: TRIM, to hold a straight line with no line to hold
+        right: Lesson 3
+      extra_answers:
+      - Lesson 8
+      - Lesson 10
+    - id: L13_B05
+      type: multiple_choice
+      cite: §1
+      points: 1
+      stem: What does "THE ONE IDEA" callout say you must do about the sensing channel once the reference
+        disappears?
+      options:
+      - text: Sense on the raw channel, because calibration can only describe the world it was shown
+        correct: true
+      - text: Recalibrate inside the zone so the calibrated channel still works
+        correct: false
+        why: There is nothing in the zone to calibrate against — no line, no black tape.
+      - text: Keep using the calibrated channel, because it is comparable across lighting
+        correct: false
+        why: Comparability is real, but it is exactly what clamps the doorway to a lie.
+      - text: Switch every sensor to raw, not just the line sensors
+        correct: false
+        why: Only the line sensors have two channels; the prox and encoders are unaffected.
+    - id: L13_B06
+      type: multiple_choice
+      cite: §3
+      points: 1
+      stem: Silver is the most reflective thing on the course. Why does readCalibrated() report it as
+        0?
+      options:
+      - text: 'The clamp: a value brighter than the calibrated minimum computes negative, and if (x <
+          0) x = 0 rounds it up'
+        correct: true
+      - text: The sensor saturates and returns its floor value
+        correct: false
+        why: The hardware reports silver fine — the raw number is smaller than white's. The loss happens
+          in software.
+      - text: Silver reflects infrared away at an angle, so nothing returns
+        correct: false
+        why: That is a geometry story; §3 attributes the loss to a specific line of library code.
+      - text: Calibration never sampled silver, so the sensor returns a default
+        correct: false
+        why: There is no default. The formula runs and produces a real negative number, which the clamp
+          then discards.
+    - id: L13_B07
+      type: multiple_choice
+      cite: §3
+      points: 1
+      stem: On the raw channel, what do the line sensors actually report?
+      options:
+      - text: Infrared decay time in microseconds — brighter surface, faster discharge, lower number
+        correct: true
+      - text: A 0-to-1000 brightness score with no calibration applied
+        correct: false
+        why: 0..1000 IS the calibrated scale. Raw values are times, in the hundreds and thousands.
+      - text: Reflected light intensity, where brighter means a higher number
+        correct: false
+        why: 'The polarity is inverted: raw counts a discharge TIME, so brighter reads LOWER.'
+      - text: A voltage, in millivolts, from the detector
+        correct: false
+        why: §3 names the unit explicitly, and it is time, not voltage.
+    - id: L13_B08
+      type: true_false
+      cite: §3
+      points: 1
+      stem: On the raw channel, a brighter surface produces a higher number.
+      correct: false
+      why: Inverted. Brighter means the detector discharges faster, so the number is SMALLER — which is
+        why silver reads below white and SILVER_RAW_MAX is a ceiling, not a floor.
+    - id: L13_B09
+      type: multiple_choice
+      cite: §3
+      points: 1
+      stem: Since Lesson 8 the book has insisted on readCalibrated() and never raw read(). §3 says this
+        lesson does not break that rule. What was the rule actually?
+      options:
+      - text: Match the channel to the question
+        correct: true
+      - text: Calibrated readings are always more accurate
+        correct: false
+        why: §3 says the rule was never 'calibrated is holy'; accuracy was never the claim.
+      - text: Use raw only when calibration has failed
+        correct: false
+        why: Calibration has not failed here. It is working exactly as designed, and the design is what
+          loses silver.
+      - text: Raw values are for debugging and calibrated values for shipping
+        correct: false
+        why: The shipped doorman uses raw deliberately, not for debugging.
+    - id: L13_B10
+      type: multiple_choice
+      cite: §3
+      points: 1
+      stem: Which of these is a question that belongs on the CALIBRATED channel?
+      options:
+      - text: Where is the line?
+        correct: true
+      - text: Is this brighter than anything I calibrated on?
+        correct: false
+        why: That is a question about the EDGE of the calibrated world — the channel clamps the answer
+          to a lie.
+      - text: Is the robot over the silver doorway?
+        correct: false
+        why: The doorway is brighter than calibration ever saw, so the calibrated channel reads it as
+          ordinary floor.
+      - text: How reflective is this surface compared with silver?
+        correct: false
+        why: Anything at or beyond silver's brightness collapses to the same 0.
+    - id: L13_B11
+      type: multiple_choice
+      cite: §3
+      points: 1
+      stem: The KEY TERM callout says calibration is a contract. What does the contract buy, and what
+        does it cost?
+      options:
+      - text: It buys comparability and it costs range
+        correct: true
+      - text: It buys speed and it costs precision
+        correct: false
+        why: Nothing in §3 is about how fast the read is.
+      - text: It buys range and it costs comparability
+        correct: false
+        why: Backwards. The 0..1000 mapping is exactly what makes readings comparable across lighting.
+      - text: It buys accuracy and it costs memory
+        correct: false
+        why: Memory is not the trade §3 names.
+    - id: L13_B12
+      type: multiple_choice
+      cite: §3
+      points: 1
+      stem: Section 3 says the information about silver is destroyed at a specific moment. When?
+      options:
+      - text: Before your code ever sees the number — inside readCalibrated(), at the clamp
+        correct: true
+      - text: When the calibration spin records its minimum
+        correct: false
+        why: The spin records honestly. The loss happens later, when a reading is mapped.
+      - text: When your threshold comparison runs
+        correct: false
+        why: By then the value is already 0; no threshold can recover it.
+      - text: When the sensor's detector saturates
+        correct: false
+        why: The hardware never saturates here; the raw read is perfectly informative.
+    - id: L13_B13
+      type: multiple_choice
+      cite: §4
+      points: 1
+      stem: What physically makes up the rescue zone?
+      options:
+      - text: A drivable floor, walls tall enough that the robot cannot leave, a silver strip across the
+          line at the doorway, and victim balls inside
+        correct: true
+      - text: A drivable floor with a painted boundary the robot must not cross
+        correct: false
+        why: A painted boundary would be a code problem. §4.1 is explicit that the barrier is physical.
+      - text: A walled space with a line running through it to the victim
+        correct: false
+        why: There is no line in the zone — that is the whole premise of the lesson.
+      - text: A raised platform with a cliff edge the robot must detect
+        correct: false
+        why: Lesson 11 proved this hardware cannot detect a cliff, which is why walls are used instead.
+    - id: L13_B14
+      type: multiple_choice
+      cite: §4.1
+      points: 1
+      stem: How many lines of containment code keep the robot inside the zone?
+      options:
+      - text: Zero — not one boundary check
+        correct: true
+      - text: One — a single guard in the sweep loop
+        correct: false
+        why: §4.1 says zero, and makes a point of it.
+      - text: Three — one per new state
+        correct: false
+        why: The new states handle entering, sweeping and celebrating; none of them contains the robot.
+      - text: It depends on how the walls are built
+        correct: false
+        why: It does not. The number is zero regardless.
+    - id: L13_B15
+      type: multiple_choice
+      cite: §4.1
+      points: 1
+      stem: Besides containment, §4.1 credits the walls with a second job. What is it?
+      options:
+      - text: They are a landmark — every row ends on one, so accumulated dead-reckoning error resets
+          to zero each pass
+        correct: true
+      - text: They reflect infrared, so the prox reads more consistently
+        correct: false
+        why: Reflectance is not the job §4.1 names.
+      - text: They keep the lighting even, so calibration holds
+        correct: false
+        why: Lighting is a Lesson 4 concern and not what the walls do here.
+      - text: They give the gyro a fixed reference to zero against
+        correct: false
+        why: The gyro learns its zero at startup from stillness, not from the walls.
+    - id: L13_B16
+      type: true_false
+      cite: §4.1
+      points: 1
+      stem: Section 4.1 describes the rescue course as Lesson 11's cliff rule made of wood.
+      correct: true
+      why: Lesson 11 ruled that when hardware cannot support a behaviour you use a physical barrier or
+        the floor rather than shipping a guard that mostly works. The walls are that ruling, built.
+    - id: L13_B17
+      type: matching
+      cite: §4.2
+      points: 4
+      stem: With no line, every sensor's job changes. Match each to its new job description.
+      pairs:
+      - left: Line sensors, calibrated channel
+        right: Unemployed — there is no line, and the door clamps to a lie
+      - left: Line sensors, raw channel
+        right: The doorman — all five reading brighter than white at once
+      - left: Front proximity sensor
+        right: The lookout — 'something ahead?' and nothing more
+      - left: Encoders, TRIM and gyro
+        right: The whole aircraft — straight rows, measured rows, square corners
+      extra_answers:
+      - The referee — deciding when a run has ended
+      - The odometer's backup, if a wheel slips
+    - id: L13_B18
+      type: multiple_choice
+      cite: §4.2
+      points: 1
+      stem: What can the front proximity sensor NOT tell you against a tall wall?
+      options:
+      - text: Whether the thing ahead is the wall or a victim
+        correct: true
+      - text: Whether anything is ahead at all
+        correct: false
+        why: That is the one question it answers well.
+      - text: How reflective the surface ahead is
+        correct: false
+        why: Reflectance is essentially what it measures; the problem is that it cannot name the object.
+      - text: How fast the robot is closing on it
+        correct: false
+        why: Closing speed is not the ambiguity §5.2 resolves with the odometer.
+    - id: L13_B19
+      type: multiple_choice
+      cite: §4.2
+      points: 1
+      stem: What does this lesson cost in pins and hardware?
+      options:
+      - text: Nothing — not one wire moves, not one jumper changes; every sensor was already aboard
+        correct: true
+      - text: One jumper move, to free a pin for the prox
+        correct: false
+        why: The jumper move belongs to Lesson 5. Nothing physical changes here.
+      - text: A second proximity sensor on the front
+        correct: false
+        why: No sensor is added. What changes is what is asked of the ones already there.
+      - text: A gyro daughterboard
+        correct: false
+        why: The IMU has been soldered to the main board since the robot was built — Lesson 12 said so.
+    - id: L13_B20
+      type: multiple_choice
+      cite: §4.3
+      points: 1
+      stem: Why will this robot drive straight past the black victim ball?
+      options:
+      - text: A black ball absorbs infrared, so almost nothing returns to the prox — the signal is not
+          there to threshold
+        correct: true
+      - text: The threshold is tuned for silver and would need retuning for black
+        correct: false
+        why: §4.3 is explicit that no threshold helps, because there is no signal to set one against.
+      - text: The prox is disabled during the sweep to save bytes
+        correct: false
+        why: The prox is the sweep's only lookout; it runs the whole time.
+      - text: The black ball is smaller than the silver one
+        correct: false
+        why: Size is not the issue §4.3 raises; the physics of absorption is.
+    - id: L13_B21
+      type: multiple_choice
+      cite: §4.3
+      points: 1
+      stem: Why does the lesson refuse to ship a black-ball detector that mostly works?
+      options:
+      - text: Because a rescuer would trust it — a detector that mostly finds victims is worse than none
+        correct: true
+      - text: Because it would cost too many bytes
+        correct: false
+        why: Byte cost is not the argument §4.3 makes.
+      - text: Because the competition rules forbid it
+        correct: false
+        why: No rule is cited here; the argument is about honesty and trust.
+      - text: Because it would slow the sweep down
+        correct: false
+        why: Speed is the Mystery B3 trade, not this one.
+    - id: L13_B22
+      type: true_false
+      cite: §4.3
+      points: 1
+      stem: Driving past the black ball is a bug in your threshold that Section 7A will help you tune
+        out.
+      correct: false
+      why: §7A is where you MEASURE the limitation, not tune it away. The black ball's row in the 7A table
+        is the evidence that the signal is absent.
+    - id: L13_B23
+      type: matching
+      cite: §5
+      points: 4
+      stem: Four new pieces land in four files. Match each to the file it belongs in.
+      pairs:
+      - left: Four tunables, StopReason, and three new states
+        right: RobotConfig.h
+      - left: silverDetected()
+        right: RobotSensors.cpp
+      - left: driveUntil()
+        right: RobotMotion.cpp
+      - left: Three new cases in the state switch
+        right: main.cpp
+      extra_answers:
+      - RobotHelpers.cpp
+      - RobotMotion.h
+    - id: L13_B24
+      type: multiple_choice
+      cite: §5.1
+      points: 1
+      stem: What is the one thing driveDistance() cannot do that driveUntil() can?
+      options:
+      - text: Be interrupted — driveDistance() stares at the odometer until the centimeters run out
+        correct: true
+      - text: Drive in a straight line using TRIM
+        correct: false
+        why: Both use TRIM; §5.1 says so explicitly.
+      - text: Average both encoders
+        correct: false
+        why: Both do. §5.1 lists the sameness deliberately before naming the difference.
+      - text: Report the distance it covered
+        correct: false
+        why: driveUntil() does report it, but the disqualifying limitation §5.1 names is the inability
+          to stop early.
+    - id: L13_B25
+      type: multiple_choice
+      cite: §5.1
+      points: 1
+      stem: StopReason has exactly three values. Which set is right?
+      options:
+      - text: STOP_DISTANCE, STOP_PROX, STOP_KILL
+        correct: true
+      - text: STOP_DISTANCE, STOP_WALL, STOP_VICTIM
+        correct: false
+        why: The primitive cannot tell a wall from a victim — that is the caller's job, and the enum is
+          named to keep it that way.
+      - text: STOP_TIME, STOP_PROX, STOP_KILL
+        correct: false
+        why: Nothing in this lesson stops on time; Lesson 11 retired that habit.
+      - text: STOP_DISTANCE, STOP_PROX, STOP_LINE
+        correct: false
+        why: There is no line in the zone to stop on.
+    - id: L13_B26
+      type: multiple_choice
+      cite: §5.1
+      points: 1
+      stem: STOP_PROX's comment says 'wall or victim, the CALLER decides.' What principle is that comment
+        defending?
+      options:
+      - text: Measurement below, judgment above — the primitive reports facts and the state machine interprets
+          them
+        correct: true
+      - text: Fail-safe defaults — assume the worst case when unsure
+        correct: false
+        why: Nothing here picks a safe default; it deliberately declines to decide at all.
+      - text: Encapsulation — hiding the prox reading from the caller
+        correct: false
+        why: 'The opposite: it hands the fact up rather than hiding it.'
+      - text: Early return — leaving the loop as soon as possible
+        correct: false
+        why: The early exit is a mechanism, not the principle the comment names.
+    - id: L13_B27
+      type: multiple_choice
+      cite: §5.2
+      points: 1
+      stem: Which parts is the lawnmower sweep built from?
+      options:
+      - text: driveUntil() for the rows, turnDegreesGyro() for the corners, driveDistance() for the sidestep
+        correct: true
+      - text: driveUntil() for everything, with different arguments
+        correct: false
+        why: The corners and the sidestep are different primitives.
+      - text: driveDistance() for the rows and turnDegrees() for the corners
+        correct: false
+        why: Rows must be able to stop early, which driveDistance() cannot do; and 7E shows what encoder
+          corners cost.
+      - text: A new sweep() primitive written from scratch in RobotMotion.cpp
+        correct: false
+        why: The point of §5.2 is that the sweep is assembled from parts you already own.
+    - id: L13_B28
+      type: multiple_choice
+      cite: §5.2
+      points: 1
+      stem: How does the sweep tell a victim from a wall?
+      options:
+      - text: The row's length is a measuring stick — a leg that ends much shorter than the last row ended
+          on something that is not the wall
+        correct: true
+      - text: The prox count is higher for a ball than for a wall
+        correct: false
+        why: The prox cannot distinguish them; that ambiguity is the whole problem.
+      - text: The gyro heading changes when the robot meets a curved surface
+        correct: false
+        why: Nothing in the sweep reads heading against the obstacle.
+      - text: The line sensors read the ball's colour
+        correct: false
+        why: The line sensors face the floor, and the zone floor carries no markings.
+    - id: L13_B29
+      type: multiple_choice
+      cite: §5.2
+      points: 1
+      stem: §5.2 says this is the third time the book has played one particular card. Which card?
+      options:
+      - text: Cross-examination — when one sensor cannot answer alone, find a second that can call its
+          bluff
+        correct: true
+      - text: Averaging two measurements to cancel noise
+        correct: false
+        why: Averaging both encoders is a related habit, but it is not the card §5.2 names here.
+      - text: Cutting a feature the hardware cannot support
+        correct: false
+        why: That is Lesson 11's discipline, invoked elsewhere in this lesson.
+      - text: Replacing time with distance
+        correct: false
+        why: That is Lesson 11's odometer lesson, not the sensor-fusion move.
+    - id: L13_B30
+      type: true_false
+      cite: §5.2
+      points: 1
+      stem: Because the prox looks ahead of the robot, the sweep's rows can be spaced wider apart than
+        the robot is wide.
+      correct: true
+      why: '§5.2 and §5.3 both say so — and §5.3 adds the price: every centimeter you add is floor the
+        sweep never inspects. Mystery B3 is that price collected.'
+    - id: L13_B31
+      type: matching
+      cite: §5.3
+      points: 4
+      stem: Four new tunables ship as blanks. Match each to what it controls.
+      pairs:
+      - left: SILVER_RAW_MAX
+        right: The fence between silver's raw reading and white's
+      - left: WALL_STOP_COUNT
+        right: The prox count that means 'wall, close enough, turn now'
+      - left: ROW_STEP_CM
+        right: The sidestep between rows
+      - left: VICTIM_SHORT_CM
+        right: How much shorter than the last row means 'victim, not wall'
+      extra_answers:
+      - The number of rows before the sweep gives up
+      - The speed the robot drives each row
+    - id: L13_B32
+      type: multiple_choice
+      cite: §5.3
+      points: 1
+      stem: You already own CLOSE_THRESHOLD from Lesson 10. Why does §5.3 add WALL_STOP_COUNT instead
+        of reusing it?
+      options:
+      - text: Because a wall is not an obstacle — you stop for obstacles to avoid them and stop at walls
+          to turn
+        correct: true
+      - text: Because CLOSE_THRESHOLD is measured in centimeters and this one is in counts
+        correct: false
+        why: Both are prox counts. The reason is the job, not the unit.
+      - text: Because CLOSE_THRESHOLD was retired in Lesson 11
+        correct: false
+        why: It is still live — obstacle avoidance still uses it.
+      - text: Because the zone's walls reflect differently from an obstacle
+        correct: false
+        why: Reflectance may differ, but §5.3's argument is about the two behaviours needing independent
+          tuning.
+    - id: L13_B33
+      type: multiple_choice
+      cite: §5.3
+      points: 1
+      stem: What happens if you leave WALL_STOP_COUNT at 0?
+      options:
+      - text: Every leg ends instantly, because zero is below every possible prox count
+        correct: true
+      - text: The robot ignores the prox entirely and drives the full budget
+        correct: false
+        why: Backwards — the comparison is >=, so zero is satisfied on the very first poll.
+      - text: The build fails to compile
+        correct: false
+        why: It compiles fine; a blank that fails loudly at runtime is the design.
+      - text: The robot turns continuously without driving
+        correct: false
+        why: It drives a leg of essentially zero length first, then turns — but the symptom §8 names is
+          that every leg ends instantly.
+    - id: L13_B34
+      type: multiple_choice
+      cite: §5.3
+      points: 1
+      stem: And what happens if you leave SILVER_RAW_MAX at 0?
+      options:
+      - text: The door is invisible — nothing reads brighter than zero, so the strip never triggers
+        correct: true
+      - text: Every surface reads as a door
+        correct: false
+        why: That is the failure at the other extreme, above white's reading.
+      - text: The robot stops at the first white patch it sees
+        correct: false
+        why: White reads well above zero on the raw channel, so it never trips the check.
+      - text: Calibration fails at startup
+        correct: false
+        why: SILVER_RAW_MAX is not used during calibration at all — the raw channel needs none.
+    - id: L13_B35
+      type: true_false
+      cite: §5.3
+      points: 1
+      stem: The lesson deliberately ships the four tunables as blanks so the robot refuses to work until
+        you have measured them.
+      correct: true
+      why: §5.3 says a blank that secretly half-works teaches you nothing; a blank that parks the robot
+        sends you to §7A, which is where the answers live.
+    - id: L13_B36
+      type: multiple_choice
+      cite: §8A.1
+      points: 1
+      stem: Calibration recorded calmin = 400 and a maximum of 2400. The robot rolls onto silver and a
+        sensor reads a raw 250. What does the library's formula compute before the clamp?
+      options:
+      - text: '-75'
+        correct: true
+      - text: '0'
+        correct: false
+        why: 0 is what the CLAMP produces. The formula itself produces a negative number, and the sign
+          is the information.
+      - text: '-150'
+        correct: false
+        why: -150 is the numerator's first step, (250 - 400). It is then multiplied by 1000 and divided
+          by the denominator of 2000.
+      - text: '125'
+        correct: false
+        why: That would require silver to read brighter than the calibrated minimum in the wrong direction;
+          on the raw channel brighter is LOWER.
+    - id: L13_B37
+      type: multiple_choice
+      cite: §8A.1
+      points: 1
+      stem: In that same worked example, what is the denominator?
+      options:
+      - text: 2000 — the maximum minus calmin
+        correct: true
+      - text: 1000 — the width of the calibrated scale
+        correct: false
+        why: 1000 is the multiplier that maps onto the output scale, not the denominator.
+      - text: 2400 — the calibrated maximum
+        correct: false
+        why: The maximum alone is not the span; calmin must be subtracted from it.
+      - text: 400 — the calibrated minimum
+        correct: false
+        why: calmin is subtracted from the reading and from the maximum, but it is not the denominator
+          itself.
+    - id: L13_B38
+      type: multiple_choice
+      cite: §8A.1
+      points: 1
+      stem: §8A.1 sums the whole clamp story in one line. Which?
+      options:
+      - text: The subtraction knew; the clamp forgot
+        correct: true
+      - text: The sensor lied; the code believed it
+        correct: false
+        why: The sensor is honest throughout — that is what makes the failure interesting.
+      - text: The calibration was wrong; the reading was right
+        correct: false
+        why: Calibration is working exactly as designed.
+      - text: The number was too small; the scale was too large
+        correct: false
+        why: Neither is the point; the point is that a negative value carried information and was discarded.
+    - id: L13_B39
+      type: multiple_choice
+      cite: §8A.2
+      points: 1
+      stem: The victim test compares this row against the last row. What does the FIRST row compare against?
+      options:
+      - text: Nothing — the code explicitly believes row zero's prox stop is the wall
+        correct: true
+      - text: The width of the zone, measured at startup
+        correct: false
+        why: Nothing measures the zone before the sweep begins.
+      - text: The distance driven since the doorway
+        correct: false
+        why: That distance is not retained as a baseline for the victim test.
+      - text: A default value in RobotConfig.h
+        correct: false
+        why: There is no default row length; the guard simply skips the test when rowCount is 0.
+    - id: L13_B40
+      type: multiple_choice
+      cite: §8A.2
+      points: 1
+      stem: What does the row-zero choice cost, in §8A.2's own words?
+      options:
+      - text: A victim in row zero's path is recorded as a very close wall, and the sweep steps politely
+          around it
+        correct: true
+      - text: The first row is always driven twice
+        correct: false
+        why: That is Challenge 3's insurance, not the base design's cost.
+      - text: The robot cannot detect the doorway on the first pass
+        correct: false
+        why: The doorway is detected before the sweep begins.
+      - text: The first row is shorter than every other row
+        correct: false
+        why: Row zero runs to the wall like any other row.
+    - id: L13_B41
+      type: multiple_choice
+      cite: §8A.3
+      points: 1
+      stem: Why would a camera see the black ball when the prox cannot?
+      options:
+      - text: A camera reads ambient light rather than its own echo, so a black ball on a light floor
+          is high contrast
+        correct: true
+      - text: A camera uses a brighter infrared emitter
+        correct: false
+        why: Brighter IR does not help against a surface whose job is to absorb IR.
+      - text: A camera measures distance rather than reflectance
+        correct: false
+        why: That describes a time-of-flight sensor, which §8A.3 lists separately.
+      - text: A camera can be calibrated for black surfaces
+        correct: false
+        why: Calibration is not the difference; what the sensor measures is.
+    - id: L13_B42
+      type: multiple_choice
+      cite: §8A.3
+      points: 1
+      stem: §8A.3 says a whisker or bumper would find the ball honestly and cheaply. What is its drawback?
+      options:
+      - text: It finds the victim by running it over, which rather misses the spirit of a rescue
+        correct: true
+      - text: It cannot tell a wall from a ball
+        correct: false
+        why: Touch would distinguish them by position as well as anything else; that is not the objection
+          raised.
+      - text: It needs a driver channel the Zumo does not have
+        correct: false
+        why: That objection belongs to the gripper, not the whisker.
+      - text: It only works on a smooth floor
+        correct: false
+        why: No such limitation is claimed.
+    - id: L13_B43
+      type: multiple_choice
+      cite: §8A.3
+      points: 1
+      stem: Why can this Zumo not simply add a gripper to carry the victim out?
+      options:
+      - text: Both DRV8838 drivers are already spoken for, one per tread — there is no driver channel
+          to spare
+        correct: true
+      - text: The chassis cannot carry the extra weight
+        correct: false
+        why: Weight is not the constraint §8A.3 names.
+      - text: There is no flash left for the servo code
+        correct: false
+        why: Flash is Lesson 16's constraint; §8A.3's is electrical.
+      - text: The competition rules forbid manipulators
+        correct: false
+        why: No such rule is cited.
+    - id: L13_B44
+      type: multiple_choice
+      cite: §8A.4
+      points: 1
+      stem: §8A.4 says pure dead reckoning has a law you have now met three times. What fixes it?
+      options:
+      - text: Nothing inside the robot — only a landmark outside it, checked against regularly
+        correct: true
+      - text: A better instrument, such as the gyro instead of the encoders
+        correct: false
+        why: '§8A.4 is explicit: better instruments only slow the leak.'
+      - text: Averaging both wheels' counts
+        correct: false
+        why: Averaging cancels some noise but does not stop error accumulating.
+      - text: Recalibrating between rows
+        correct: false
+        why: Calibration maps sensor readings; it does not correct position.
+    - id: L13_B45
+      type: multiple_choice
+      cite: §8A.4
+      points: 1
+      stem: What is the grown-up name §8A.4 gives for building a map of landmarks and correcting dead
+        reckoning against it?
+      options:
+      - text: SLAM — simultaneous localization and mapping
+        correct: true
+      - text: PID — proportional, integral, derivative control
+        correct: false
+        why: PID is Lesson 15's control technique, not a mapping one.
+      - text: Sensor fusion
+        correct: false
+        why: Sensor fusion is the glossary's name for cross-examination, a different idea in this lesson.
+      - text: Odometry
+        correct: false
+        why: Odometry is the dead reckoning itself — the thing that drifts.
+    - id: L13_B46
+      type: matching
+      cite: §8
+      points: 4
+      stem: Match each symptom from the troubleshooting table to what you should look at.
+      pairs:
+      - left: Robot sails over the silver strip like it is not there
+        right: SILVER_RAW_MAX still 0, or set below silver's reading
+      - left: Enters the zone, then freezes — every leg ends instantly
+        right: WALL_STOP_COUNT still 0
+      - left: Victims announced where there are none
+        right: VICTIM_SHORT_CM too small — corner noise promoted to rescues
+      - left: Rows arc instead of running straight
+        right: TRIM — the zone floor is a new surface
+      extra_answers:
+      - The gyro was never reset after the doorway
+      - ROW_STEP_CM smaller than the robot is wide
+    - id: L13_B47
+      type: multiple_choice
+      cite: §8
+      points: 1
+      stem: The troubleshooting table lists 'drives right past the black ball.' What does it say to look
+        at?
+      options:
+      - text: Nothing — it is working as measured, which is §4.3, not a bug
+        correct: true
+      - text: VICTIM_SHORT_CM, which is too large
+        correct: false
+        why: That is the entry for driving past the SILVER ball.
+      - text: ROW_STEP_CM, which is too wide
+        correct: false
+        why: Also the silver-ball entry. The black ball's row in the table points at physics, not a tunable.
+      - text: SILVER_RAW_MAX, which is set too low
+        correct: false
+        why: That governs the doorway, not victim detection.
+    - id: L13_B48
+      type: multiple_choice
+      cite: §8
+      points: 1
+      stem: Corners drift and rows fan apart even though the gyro turns are in place. What does the table
+        blame?
+      options:
+      - text: The gyro's zero was learned while the robot moved — it must be dead still, and gyroSetup()
+          must run before the line-sensor spin
+        correct: true
+      - text: The gyro needs recalibrating for the zone's floor surface
+        correct: false
+        why: The gyro measures the robot, not the floor; surface is exactly what it is immune to.
+      - text: WALL_STOP_COUNT is set too high, so corners start late
+        correct: false
+        why: Where a leg ends does not bend the turn that follows it.
+      - text: TRIM is wrong for this floor
+        correct: false
+        why: Bad TRIM arcs the ROWS; the table lists that as a separate symptom.
+    - id: L13_B49
+      type: multiple_choice
+      cite: Glossary
+      points: 1
+      stem: How does the glossary define a landmark?
+      options:
+      - text: A fixed feature of the world used to erase accumulated dead-reckoning error
+        correct: true
+      - text: Any object the proximity sensor can detect reliably
+        correct: false
+        why: Detectability is not the definition; being fixed and external is.
+      - text: The starting position the robot returns to at the end of a run
+        correct: false
+        why: Nothing in this lesson returns home.
+      - text: A calibration reference recorded at startup
+        correct: false
+        why: Calibration references live inside the robot's own memory, which is exactly what a landmark
+          is not.
+    - id: L13_B50
+      type: multiple_choice
+      cite: Glossary
+      points: 1
+      stem: The glossary defines the lawnmower sweep as parallel wall-to-wall rows joined by turn-step-turn
+        corners. What does it say the pattern guarantees — and on what condition?
+      options:
+      - text: That the prox inspects every band of floor — if the step is sized to overlap
+        correct: true
+      - text: That the robot never revisits floor it has already covered
+        correct: false
+        why: Overlap is required, so bands are revisited by design.
+      - text: That the robot finds a victim within a fixed number of rows
+        correct: false
+        why: No such bound is claimed.
+      - text: That dead-reckoning error never exceeds one row's width
+        correct: false
+        why: The walls erase the error entirely each row; no bound like this is stated.
+    - id: L13_B51
+      type: true_false
+      cite: §1
+      points: 1
+      stem: The rescue zone is really just a very long gap, so Lesson 11's gap handling would carry the
+        robot through it.
+      correct: false
+      why: '§1 draws the line carefully: a gap is a few blind centimeters with the line waiting on the
+        far side. In the zone the line is gone, and Mystery B4 shows exactly what happens when handleGap()
+        is left to deal with it.'
+    - id: L13_B52
+      type: true_false
+      cite: §3
+      points: 1
+      stem: A smarter comparison against the calibrated reading could still recover silver, because the
+        sensor read it correctly.
+      correct: false
+      why: The sensor did read it correctly, but §3 is explicit that the information is destroyed before
+        your code ever sees the number. No threshold applied after the clamp can recover it.
+    - id: L13_B53
+      type: true_false
+      cite: §4.2
+      points: 1
+      stem: A high enough prox count tells you the thing ahead is a wall rather than a victim.
+      correct: false
+      why: Against tall walls the prox answers exactly one question — 'something ahead?' — and §4.2 says
+        it cannot tell you which. The odometer supplies the missing half.
+    - id: L13_B54
+      type: true_false
+      cite: §5.2
+      points: 1
+      stem: driveDistance() is retired in Lesson 13 and replaced everywhere by driveUntil().
+      correct: false
+      why: The sweep still uses driveDistance() for the sidestep between rows. driveUntil() takes over
+        only the rows, which must be able to end early.
+    - id: L13_B55
+      type: true_false
+      cite: §8A.4
+      points: 1
+      stem: A good enough instrument eventually eliminates dead-reckoning drift.
+      correct: false
+      why: §8A.4 says no instrument fixes it — better instruments only slow the leak. What fixes it is
+        a landmark, which is outside the robot.
+    - id: L13_B56
+      type: matching
+      cite: Glossary
+      points: 4
+      stem: Match each glossary term to its definition.
+      pairs:
+      - left: Raw channel
+        right: The line sensors' unprocessed reading — infrared decay time in microseconds
+      - left: Calibration clamp
+        right: The if (x < 0) x = 0 that folds anything brighter than the calibrated minimum onto the
+          same 0 as white
+      - left: Dead reckoning
+        right: Knowing where you are by adding up your own movements, with no external reference
+      - left: Row zero / leap of faith
+        right: The sweep's first row, which has no previous row and must believe its prox stop is the
+          wall
+      extra_answers:
+      - The prox count at which the robot stops to turn
+      - The alternating turn direction that produces the lawnmower pattern
+  after:
+    description: Post-build check. Assumes the six build steps, the 7A-7E ladder, the challenges and the
+      Sabotage files.
+    suggested_draw: 8
+    questions:
+    - id: L13_A01
+      type: multiple_choice
+      cite: §6
+      points: 1
+      stem: Section 6 says every step compiles green on its own, and warns you about steps whose byte
+        count does not move. Why does that happen?
+      options:
+      - text: The linker discards code that nothing calls
+        correct: true
+      - text: The compiler optimizes duplicate code away
+        correct: false
+        why: It is not duplication — the code is unique and simply unreachable.
+      - text: The edit did not save
+        correct: false
+        why: §6 says explicitly that this is not your edit vanishing.
+      - text: Flash is allocated in fixed blocks, so small additions round to zero
+        correct: false
+        why: No block rounding is described; Step 5 proves the code arrives the moment something calls
+          it.
+    - id: L13_A02
+      type: multiple_choice
+      cite: §6 Step 1
+      points: 1
+      stem: Step 1 adds four tunables, a StopReason enum, and three new states. What does the COMPILE
+        CHECK report?
+      options:
+      - text: 24,694 bytes — byte-identical to the Lesson 12 finished build
+        correct: true
+      - text: 24,694 bytes — up 180 from Lesson 12
+        correct: false
+        why: Step 1 changes nothing the linker keeps; the 180 arrives at Step 3.
+      - text: 24,874 bytes — the enum names cost flash
+        correct: false
+        why: Enum names nothing uses are free; they exist only for the compiler.
+      - text: 25,072 bytes — the finished size
+        correct: false
+        why: That is Step 6.
+    - id: L13_A03
+      type: true_false
+      cite: §6 Step 1
+      points: 1
+      stem: Constants nothing reads and enum names nothing uses cost flash as soon as you declare them.
+      correct: false
+      why: 'Step 1''s whole point: they are free. Its byte count is identical to the Lesson 12 finished
+        build, and Step 5 is where the deferred cost finally arrives.'
+    - id: L13_A04
+      type: multiple_choice
+      cite: §6 Step 2
+      points: 1
+      stem: Step 2 defines silverDetected() and declares it, but nothing calls it yet. What does the byte
+        count do, and how was it confirmed?
+      options:
+      - text: It stays at 24,694, confirmed with avr-nm — the symbol is genuinely absent, not hiding
+        correct: true
+      - text: It rises slightly, because the function body is compiled either way
+        correct: false
+        why: The object code is produced and then discarded at link time.
+      - text: It stays flat, but only because the function is small
+        correct: false
+        why: Size is irrelevant — an uncalled function is dropped whatever its size.
+      - text: It cannot be measured until something calls it
+        correct: false
+        why: It can, and Step 2 does exactly that.
+    - id: L13_A05
+      type: multiple_choice
+      cite: §6 Step 2
+      points: 1
+      stem: Why does silverDetected() require ALL FIVE sensors to read brighter than the fence?
+      options:
+      - text: Because that is the strip's signature and nothing else's — glare might blind one sensor,
+          a worn patch might brighten two
+        correct: true
+      - text: Because a single sensor's raw read is too noisy to threshold
+        correct: false
+        why: Noise is part of it, but the argument is about what only a full-width strip can produce.
+      - text: Because the array must be centred on the strip to trigger
+        correct: false
+        why: Centring is not tested; the AND across all five is.
+      - text: Because readCalibrated() returns all five values at once
+        correct: false
+        why: The doorman does not use readCalibrated() at all.
+    - id: L13_A06
+      type: multiple_choice
+      cite: §6 Step 3
+      points: 1
+      stem: Step 3 wires the door live. What does the COMPILE CHECK report?
+      options:
+      - text: 24,874 bytes — up 180
+        correct: true
+      - text: 24,694 bytes — still flat
+        correct: false
+        why: Step 3 is where the door starts running, and running code costs bytes.
+      - text: 25,114 bytes — up 240
+        correct: false
+        why: That is Step 5, when driveUntil() finally gets a caller.
+      - text: 24,874 bytes — up 240
+        correct: false
+        why: The absolute is right; the delta from Step 2's 24,694 is 180.
+    - id: L13_A07
+      type: multiple_choice
+      cite: §6 Step 3
+      points: 1
+      stem: The silver check slots in as PRIORITY 2 inside FOLLOWING_LINE, and the lesson calls the placement
+        load-bearing. What goes wrong if the raw check does not get there first?
+      options:
+      - text: Silver clamps to 0 on all five sensors, isLineVisible() reports no line, and handleGap()
+          drives straight through the doorway
+        correct: true
+      - text: The robot stops on the strip but never announces it
+        correct: false
+        why: It does not stop at all — it treats the doorway as a gap and keeps going.
+      - text: The kill switch stops responding during the check
+        correct: false
+        why: The kill switch is unaffected by this ordering.
+      - text: The state machine deadlocks between FOLLOWING_LINE and ENTERING_ZONE
+        correct: false
+        why: There is no deadlock; the zone transition simply never fires.
+    - id: L13_A08
+      type: true_false
+      cite: §6 Step 3
+      points: 1
+      stem: Step 3 also fixes two banner lines in setup() that had been introducing the project as Lesson
+        10 since Lesson 11.
+      correct: true
+      why: Step 3 calls it housekeeping and takes the opportunity while it is in the neighbourhood.
+    - id: L13_A09
+      type: multiple_choice
+      cite: §6 Step 4
+      points: 1
+      stem: RobotMotion.h needs an include it never needed before. Why?
+      options:
+      - text: driveUntil() returns a StopReason, and that type is declared in the config
+        correct: true
+      - text: driveUntil() calls readFrontProx(), which lives in the sensors header
+        correct: false
+        why: The call is in the .cpp, which already had what it needed; the HEADER's new need is the return
+          type.
+      - text: driveUntil() uses buttonB, which needs the Pushbutton library
+        correct: false
+        why: The button is used in the .cpp, not named in the header's declaration.
+      - text: The four new tunables must be visible to the header
+        correct: false
+        why: The tunables are used in the body, not in the declaration.
+    - id: L13_A10
+      type: multiple_choice
+      cite: §6 Step 4
+      points: 1
+      stem: driveUntil() differs from driveDistance() in exactly three ways. Which set?
+      options:
+      - text: The poll, the early exits, and the report
+        correct: true
+      - text: The TRIM, the encoder reset, and the averaging
+        correct: false
+        why: Those three are exactly what the two primitives SHARE.
+      - text: The speed, the distance, and the direction
+        correct: false
+        why: None of these differ.
+      - text: The kill switch, the gyro, and the odometer
+        correct: false
+        why: driveUntil() polls the kill switch and the prox; it uses no gyro.
+    - id: L13_A11
+      type: multiple_choice
+      cite: §6 Step 4
+      points: 1
+      stem: In driveUntil()'s loop, which check runs first, and why?
+      options:
+      - text: The kill-switch poll — mid-leg, mid-zone, B must work now, not after the wall
+        correct: true
+      - text: The prox check — stopping safely outranks everything
+        correct: false
+        why: The prox check is second; the kill switch outranks it.
+      - text: The odometer check — the loop condition is tested before either poll
+        correct: false
+        why: The while condition is tested first mechanically, but the question is which POLL comes first
+          inside the loop, and it is the kill switch.
+      - text: The TRIM correction — it must be applied every pass
+        correct: false
+        why: TRIM is applied once, in the setSpeeds() call before the loop.
+    - id: L13_A12
+      type: multiple_choice
+      cite: §6 Step 4
+      points: 1
+      stem: The last line of driveUntil() writes lastLegCm whatever happened. Why does that matter?
+      options:
+      - text: Even a leg that ends early reports honestly how far it got — which is what Step 6 turns
+          into the victim detector
+        correct: true
+      - text: It resets the odometer for the next leg
+        correct: false
+        why: The encoder reset happens at the START of the next call, not here.
+      - text: It is required for the kill switch to report correctly
+        correct: false
+        why: The kill branch reads its own bookkeeping; lastLegCm serves the victim test.
+      - text: It prevents the value from overflowing between rows
+        correct: false
+        why: No overflow concern is raised.
+    - id: L13_A13
+      type: multiple_choice
+      cite: §6 Step 5
+      points: 1
+      stem: Step 5 makes the sweep live. What does the COMPILE CHECK report, and why the jump?
+      options:
+      - text: 25,114 bytes — up 240, because driveUntil() finally has a caller and the linker pays for
+          it
+        correct: true
+      - text: 25,114 bytes — up 240, because the sweep case is unusually large
+        correct: false
+        why: The sweep case is part of it, but the lesson attributes the jump to Step 4's deferred code
+          finally arriving.
+      - text: 24,874 bytes — flat, the same as Steps 2 and 4
+        correct: false
+        why: Step 4 was explicitly the last free step. Everything after it RUNS, and running code costs
+          bytes.
+      - text: 25,072 bytes — the finished size
+        correct: false
+        why: That is Step 6, which is SMALLER than Step 5.
+    - id: L13_A14
+      type: multiple_choice
+      cite: §6 Step 5
+      points: 1
+      stem: What single expression produces the whole lawnmower alternation — right-right, then left-left?
+      options:
+      - text: 90.0 * sweepDir
+        correct: true
+      - text: rowCount % 2
+        correct: false
+        why: rowCount counts rows but does not set the turn direction.
+      - text: -turnDegreesGyro(90.0)
+        correct: false
+        why: There is no negated call; the sign lives in the argument.
+      - text: sweepDir += ROW_STEP_CM
+        correct: false
+        why: That mixes the sidestep with the direction flag.
+    - id: L13_A15
+      type: multiple_choice
+      cite: §6 Step 6
+      points: 1
+      stem: Step 6 is the finished build. What does the COMPILE CHECK report?
+      options:
+      - text: 25,072 bytes — down 42, and the finished robot is smaller than Step 5
+        correct: true
+      - text: 25,072 bytes — up 42 from Step 5
+        correct: false
+        why: Down, not up. That the finished build shrinks is the point Step 6 makes.
+      - text: 25,114 bytes — unchanged from Step 5
+        correct: false
+        why: It changes, and the direction is the surprise.
+      - text: 24,694 bytes — back to where Step 1 started
+        correct: false
+        why: Lesson 13's whole cost is 378 bytes over Lesson 12, not zero. Step 6 gives back 42 of them,
+          not all of them.
+    - id: L13_A16
+      type: multiple_choice
+      cite: §6 Step 6
+      points: 1
+      stem: What is Lesson 13's total cost over the Lesson 12 finished build?
+      options:
+      - text: 378 bytes
+        correct: true
+      - text: 462 bytes
+        correct: false
+        why: That ADDS Step 6's 42 instead of subtracting it. The finished build is smaller than Step 5,
+          which is the whole point of that COMPILE CHECK — 180 + 240 − 42 = 378.
+      - text: 240 bytes
+        correct: false
+        why: 240 is Step 5's delta alone.
+      - text: 42 bytes
+        correct: false
+        why: 42 is what Step 6 gives BACK.
+    - id: L13_A17
+      type: matching
+      cite: §6 Step 6
+      points: 3
+      stem: Step 6's victim test has three guard conditions, each doing real engineering. Match each to
+        what it prevents.
+      pairs:
+      - left: reason == STOP_PROX
+        right: A leg that ran out its distance budget being read as a victim
+      - left: rowCount > 0
+        right: Row zero being compared against a previous row that does not exist
+      - left: lastLegCm < lastRowCm - VICTIM_SHORT_CM
+        right: A few centimeters of honest corner noise being called a victim
+      extra_answers:
+      - A victim being counted twice on the same row
+      - The kill switch firing during the victim announcement
+    - id: L13_A18
+      type: multiple_choice
+      cite: §6 Step 6
+      points: 1
+      stem: What does Step 6 call the design decision of the lesson?
+      options:
+      - text: Finding it is the rescue — a robot that reports a verified location is doing what search
+          dogs and avalanche beacons do
+        correct: true
+      - text: Reporting beats retrieving, because the rules award more points for it
+        correct: false
+        why: No scoring argument is made here.
+      - text: Stopping at the victim is safer than driving around it
+        correct: false
+        why: Safety is not the argument; capability and honesty are.
+      - text: The robot should keep sweeping after finding a victim
+        correct: false
+        why: That is Challenge 1, which changes this decision deliberately.
+    - id: L13_A19
+      type: multiple_choice
+      cite: §7A
+      points: 1
+      stem: In the 7A Surface Meter rung, what is conspicuously missing from setup(), and why?
+      options:
+      - text: The calibration spin — the raw channel needs no calibration, which is §3 sitting in the
+          code's silence
+        correct: true
+      - text: The gyro setup — nothing turns in this rung
+        correct: false
+        why: The motors never run, but it is the calibration spin the lesson points at.
+      - text: The OLED initialization — the readings go to the serial monitor
+        correct: false
+        why: The rung is built around reading numbers off the screen.
+      - text: The line-sensor initialization — the prox does all the work
+        correct: false
+        why: The line sensors are precisely what 7A measures.
+    - id: L13_A20
+      type: true_false
+      cite: §7A
+      points: 1
+      stem: In the 7A rung the motors never run — you are the drivetrain, rolling the robot by hand.
+      correct: true
+      why: 'That is how 7A is framed: roll the robot over every surface the course owns and hold each
+        ball in front of its nose.'
+    - id: L13_A21
+      type: multiple_choice
+      cite: §7B
+      points: 1
+      stem: 7B tells you to break SILVER_RAW_MAX in both directions. What happens when you set it ABOVE
+        white's reading?
+      options:
+      - text: The robot screams RESCUE ZONE at plain floor — every surface is a door
+        correct: true
+      - text: The robot sails over the strip as if it were not there
+        correct: false
+        why: That is the failure BELOW silver's reading.
+      - text: The robot stops on the strip but never leaves FOLLOWING_LINE
+        correct: false
+        why: Nothing about the state transition changes; only what trips it does.
+      - text: The build refuses to compile
+        correct: false
+        why: It compiles; the failure is behavioural.
+    - id: L13_A22
+      type: multiple_choice
+      cite: §7C
+      points: 1
+      stem: 7C tests the atom of the sweep. The robot arcs sideways on its way to the wall. What does
+        7C tell you to look at?
+      options:
+      - text: TRIM — the zone floor is not the line course, and open loops feel every surface change
+        correct: true
+      - text: WALL_STOP_COUNT — the leg is ending at the wrong distance
+        correct: false
+        why: That is the diagnosis for stopping too early or too late, not for arcing.
+      - text: The gyro calibration — hold the robot still at startup
+        correct: false
+        why: That is the diagnosis for a corner that is not square.
+      - text: ROW_STEP_CM — the sidestep is misaligned
+        correct: false
+        why: 7C runs one leg and one turn; there is no sidestep in the rung.
+    - id: L13_A23
+      type: multiple_choice
+      cite: §7D
+      points: 1
+      stem: 7D asks you to make a false victim happen on purpose. How?
+      options:
+      - text: Set VICTIM_SHORT_CM to 2 and watch gyro noise get promoted to a rescue
+        correct: true
+      - text: Set VICTIM_SHORT_CM very large and watch the wall be called a victim
+        correct: false
+        why: Too large goes the other way — real victims near the wall are missed.
+      - text: Put the black ball in the robot's path
+        correct: false
+        why: The black ball produces no detection at all, false or otherwise.
+      - text: Double ROW_STEP_CM so the rows fan
+        correct: false
+        why: That is Mystery B3's blind stripe, which causes misses rather than false positives.
+    - id: L13_A24
+      type: multiple_choice
+      cite: §7E
+      points: 1
+      stem: 7E swaps the sweep's gyro corners back to encoder turns. What do the two builds' byte counts
+        show?
+      options:
+      - text: They are identical — 25,072 bytes each, because both turn functions live in both binaries
+          and only the call site moved
+        correct: true
+      - text: The encoder build is 64 bytes larger
+        correct: false
+        why: Nothing is added or removed — turnDegrees() and turnDegreesGyro() both already exist in the
+          finished build, so calling the other one costs nothing.
+      - text: The gyro build is larger, because gyro maths costs flash
+        correct: false
+        why: Both functions are compiled into both builds; swapping which one is called changes nothing.
+      - text: The comparison cannot be made, because the rungs are different projects
+        correct: false
+        why: They differ by one call site in main.cpp and are directly comparable.
+    - id: L13_A25
+      type: multiple_choice
+      cite: §7E
+      points: 1
+      stem: What does 7E say happens to the rows on a smooth floor once the corners come from the encoders?
+      options:
+      - text: Each corner is off by a few degrees, every row inherits every corner before it, and by row
+          five the rows are a fan
+        correct: true
+      - text: The rows stay parallel but drift steadily to one side
+        correct: false
+        why: Parallel drift would be a TRIM story; the compounding of corner error produces a fan.
+      - text: The robot stops turning altogether once the wheels slip
+        correct: false
+        why: The turns complete; they are simply wrong.
+      - text: The rows get progressively shorter until the sweep ends
+        correct: false
+        why: Row length is set by the walls, which do not move.
+    - id: L13_A26
+      type: multiple_choice
+      cite: §9 C1
+      points: 1
+      stem: 'Challenge 1 asks a bookkeeping question: after stepping around a victim, should lastRowCm
+        update? What is the answer and why?'
+      options:
+      - text: No — lastRowCm is the wall's address, and updating it corrupts the very ruler that caught
+          the victim
+        correct: true
+      - text: Yes — otherwise the next row compares against a stale measurement
+        correct: false
+        why: The measurement is not stale; it is the wall's position, which does not move.
+      - text: Yes, but only on the first victim of each row
+        correct: false
+        why: No conditional update is correct; the ruler must stay the wall's address.
+      - text: It does not matter, because rowCount resets after a victim
+        correct: false
+        why: rowCount is not reset, and the comparison is against lastRowCm, not the count.
+    - id: L13_A27
+      type: multiple_choice
+      cite: §9 C3
+      points: 1
+      stem: Challenge 3 insures row zero with a one-shot retry. Why must the retry happen once and only
+        once?
+      options:
+      - text: Without the flag a genuinely close wall retries forever — sidestep, remeasure, sidestep,
+          remeasure
+        correct: true
+      - text: Because a second retry would exceed the flash budget
+        correct: false
+        why: No byte constraint is invoked; the reason is behavioural.
+      - text: Because the gyro drifts too far to trust a third measurement
+        correct: false
+        why: Drift is not the argument; an infinite loop is.
+      - text: Because the competition allows one restart per run
+        correct: false
+        why: No rule is cited here.
+    - id: L13_A28
+      type: true_false
+      cite: §9 C3
+      points: 1
+      stem: Challenge 3 says two agreeing measurements from different lanes are believable, and calls
+        that the same instinct as averaging both encoders.
+      correct: true
+      why: '§8A.2 makes the link explicitly: one retry converts ''possibly wrong once'' into ''confirmed
+        twice.'''
+    - id: L13_A29
+      type: multiple_choice
+      cite: Sabotage
+      points: 1
+      stem: The Sabotage header makes a point about file size. What is it?
+      options:
+      - text: Two of the four sabotaged builds are byte-identical to the correct build, and the other
+          two land within 16 bytes
+        correct: true
+      - text: All four sabotaged builds are byte-identical to the correct build
+        correct: false
+        why: Two are identical; the other two are close but not equal.
+      - text: Each sabotaged build is smaller, because the sabotage removes code
+        correct: false
+        why: One is smaller by 16, one by 2, and two are exactly equal.
+      - text: The compiler warns on three of the four
+        correct: false
+        why: The header says the compiler will not warn you at all.
+    - id: L13_A30
+      type: multiple_choice
+      cite: Sabotage B1
+      points: 1
+      stem: B1's classmate tidied setup() by putting both calibrations together. Why does that bend every
+        corner in the run?
+      options:
+      - text: The line-sensor spin runs first, so the gyro learns its zero mid-pirouette and subtracts
+          that fiction from every turn afterwards
+        correct: true
+      - text: The two calibrations compete for the I2C bus and one of them fails
+        correct: false
+        why: No bus conflict is described; the gyro calibration completes — with a wrong answer.
+      - text: Calibrating twice in a row overwrites the line sensors' minimum
+        correct: false
+        why: The line sensors are unaffected; B1's symptom is the corners, and the line follower is fine.
+      - text: The gyro needs the line sensors' calibration values to compute its offset
+        correct: false
+        why: They are unrelated; the only coupling is that one of them spins the robot.
+    - id: L13_A31
+      type: multiple_choice
+      cite: Sabotage B2
+      points: 1
+      stem: B2's student measured TRIM honestly and the rows still arc. What is the planted defect, and
+        what makes it so hard to catch?
+      options:
+      - text: TRIM never reaches the motors, and the build is byte-identical to the correct one at 25,072
+          bytes
+        correct: true
+      - text: TRIM is applied to the wrong motor, and the build is 8 bytes larger
+        correct: false
+        why: The build is identical in size, and the defect is that the value is never spent at all.
+      - text: TRIM is declared twice, so the compiler picks the wrong one
+        correct: false
+        why: There is one declaration; it simply is not used.
+      - text: TRIM is set to 8 instead of the measured value
+        correct: false
+        why: The 8 is honestly measured — that is what makes the sabotage cruel.
+    - id: L13_A32
+      type: multiple_choice
+      cite: Sabotage B2
+      points: 1
+      stem: How did the lesson prove B2's defect is real, given that the two builds weigh the same?
+      options:
+      - text: By disassembling both — the correct build loads 158 into the left motor and 150 into the
+          right; the sabotage loads 150 and 150
+        correct: true
+      - text: By comparing the two files byte by byte
+        correct: false
+        why: They are byte-identical in SIZE; the lesson goes to the disassembly for the instruction-level
+          difference.
+      - text: By running avr-nm and finding a missing symbol
+        correct: false
+        why: That technique settled Step 2's uncalled function, not this one.
+      - text: By reading the compiler's warnings
+        correct: false
+        why: There are none — that is the point.
+    - id: L13_A33
+      type: true_false
+      cite: Sabotage B3
+      points: 1
+      stem: B3 doubles ROW_STEP_CM, and the resulting misses are intermittent because the ball is found
+        when it sits in a covered band and missed when it sits in a blind stripe.
+      correct: true
+      why: 'B3 calls intermittent failure the cruelest kind, and names the trade honestly: speed was bought
+        with coverage and nobody was told the price.'
+    - id: L13_A34
+      type: multiple_choice
+      cite: Sabotage B4
+      points: 1
+      stem: 'B4 ''fixes'' silverDetected() to use the calibrated read. Trace the failure: what does the
+        robot actually do at the doorway?'
+      options:
+      - text: It reports a gap, drives blind across the doorway, runs out GAP_MAX_CM on open floor, and
+          parks in LINE_LOST inside a room it never knew it entered
+        correct: true
+      - text: It stops on the strip and announces the zone twice
+        correct: false
+        why: It never detects the strip at all.
+      - text: It turns around and re-follows the line backwards
+        correct: false
+        why: No reversal is described.
+      - text: It enters the zone but never starts sweeping
+        correct: false
+        why: It never registers entering the zone.
+    - id: L13_A35
+      type: multiple_choice
+      cite: Sabotage B4
+      points: 1
+      stem: B4's reveal links the blinded doorman to something else in the lesson. What?
+      options:
+      - text: 'The black ball — bright-outside-the-contract and dark-absorbing-the-signal are two edges
+          of the same lesson: a sensor only answers the question its channel can carry'
+        correct: true
+      - text: Mystery B1 — both are calibration-order defects
+        correct: false
+        why: B1 is about the gyro's zero; B4 is about which channel a question belongs on.
+      - text: Challenge 3 — both concern row zero's baseline
+        correct: false
+        why: Row zero is unrelated to the doorway check.
+      - text: The wall's role as a landmark
+        correct: false
+        why: Landmarks are §8A.4's subject, not B4's.
+    - id: L13_A36
+      type: true_false
+      cite: §6 Step 5
+      points: 1
+      stem: Step 5's sweep already includes the victim test — it mows the zone and stops when it finds
+        the ball.
+      correct: false
+      why: 'Step 5 is walls only, by design: first prove the pattern, then teach it to notice. The victim
+        test arrives in Step 6.'
+    - id: L13_A37
+      type: true_false
+      cite: §7D
+      points: 1
+      stem: The 7D rung is the finished build with all four blanks filled and a silver ball on the floor.
+      correct: true
+      why: '7D is the full run: line, strip, announcement, rows, and somewhere mid-row the stop that is
+        not a wall.'
+    - id: L13_A38
+      type: true_false
+      cite: Sabotage B1
+      points: 1
+      stem: In Mystery B1 the line follower works perfectly — it is 7C's single turn that is not fine.
+      correct: true
+      why: 'B1 says so explicitly, and that split is the clue: a defect in the gyro''s zero touches every
+        turn and leaves line following untouched.'
+    - id: L13_A39
+      type: matching
+      cite: §7
+      points: 4
+      stem: Match each rung of the Section 7 ladder to what it puts under test.
+      pairs:
+      - left: 7A — The Surface Meter
+        right: Raw readings and prox counts for every surface and both balls
+      - left: 7B — The Silver Brake
+        right: SILVER_RAW_MAX, broken in both directions
+      - left: 7C — One Leg, One Turn
+        right: 'The atom of the sweep: one watchful leg and one gyro corner'
+      - left: 7E — The Payoff
+        right: What the gyro is worth across a whole job, not one turn
+      extra_answers:
+      - The victim test's margin, VICTIM_SHORT_CM
+      - The kill switch's response time mid-leg
+    - id: L13_A40
+      type: matching
+      cite: Sabotage
+      points: 4
+      stem: Match each planted defect to the symptom it produces.
+      pairs:
+      - left: Both calibrations tidied into one place
+        right: Every sweep corner overshoots and the rows corkscrew
+      - left: TRIM measured honestly and never spent
+        right: The rows arc even though the number in RobotConfig.h is right
+      - left: The row step doubled
+        right: The ball is missed about half the time, intermittently
+      - left: The doorman switched to the calibrated read
+        right: The robot reports a gap at the doorway and parks in LINE_LOST
+      extra_answers:
+      - The kill switch stops working mid-leg
+      - The victim is announced twice on the same row

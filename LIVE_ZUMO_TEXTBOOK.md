@@ -1,11 +1,111 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 11, 2026 (Session 145 — **THE BOOK'S BYTE HISTORY HAS BEEN WRONG SINCE S143, AND ONLY A COMPILER COULD SEE IT.** L16 carries a finished-size table for the whole book. Measured against the AVR toolchain — control first, L11 `after_step_1` reproducing **20,516** byte-for-byte — **L07, L08 and L09 are EXACT and L10 through L15 are all stale, by +152, +160, +160, +170, +176 and +180.** The seam is exactly at L10, the lesson S143 rebuilt; every lesson downstream inherited the shift and added its own. **THE CAPSTONE ARITHMETIC IS THE SHARP END:** L16 tells the student they have **638 bytes** to spend and that L16 will spend them and hit the wall. L15 finished measures **28,214**, so the real headroom is **458** — the capstone budget is overstated by 180 bytes, 28% more room than the chip has. Earlier in the session the S144 close push was found never to have landed, and §16.15 ruled TRIM's home to Lesson 3 book-wide.)
-**Status:** ✅ **S145 CLOSED · 70/70 GATES · L12 READ, BYTE-FIXED → v01.31.3, AND BANKED · L13–L16 BYTE CASCADE IS A RULED ARC, NOT STARTED · `ZUMO_S146_HANDOFF.md` WRITTEN.** **EVERY ABSOLUTE IN L12 WAS EXACTLY 160 LOW** — 18 sites moved, and **every delta the lesson teaches with was already correct** (+800, +0, +3,192, −204, and B4 weighing exactly what the correct build weighs), which is why this was a pure re-baselining and not one pedagogical point changed. **The one independent error: Mystery B2 claimed 648 bytes smaller and measures 652.** **RULE 56 FIRED A THIRD TIME** — `build_family_map`'s literal tier pinned *Build it. 21,342 → 24,534 bytes*, the very sentence being corrected, so two gates failed until it was repointed in the same pass (**v1.6.4**). **AND THE DEBT THIS EXPOSES IS NAMED: NOTHING IN THE TREE CAN SEE A WRONG BYTE FIGURE.** Blinding control — revert B1's header to its stale value and all 70 gates pass and `gate_payload_match` passes. Only the toolchain catches it, and nothing runs the toolchain. **BANK L12 v1.0.0** — 50 before + 25 after, 72/18/10 and 72/20/8, banks 11 → 12 of 16. **Every byte figure the bank asserts was re-derived from a compiled build**, and nothing in it asks a figure from any lesson but twelve.
+**Date:** August 11, 2026 (Session 146 — **THE FALL SCOPE IS L01–L13, RULED BY DJ AT SESSION OPEN, AND THAT RULING MOVED L13 FROM A PARKED ARC ONTO THE SEPTEMBER CRITICAL PATH.** L13 was read end to end, byte-fixed against the AVR toolchain, and banked — the full READ -> FIX -> QUIZ arc in one session. **UNLIKE L12, THIS WAS NOT A PURE RE-BASELINING.** L12's eighteen figures all moved by exactly 160 and not one sentence needed rewriting. L13's absolutes moved by 160 at the top of the chain and 170 at the bottom, so **two deltas the lesson teaches with had to change** — Step 5's +232 is +240, Step 6's -44 is -42, and the total cost moved 368 -> 378. **AND THE READ FOUND THREE DEFECTS NO BASELINE SHIFT WOULD HAVE TOUCHED:** §7E's 64-byte claim is false and its explanation described no difference between the two builds; Step 6's 120/26 decomposition nets -94 against a measured -42 and was deleted rather than guessed at; and the *first lesson that adds zero hardware* superlative is false in two places, because L09 and L12 both got there first.)
+**Status:** ✅ **S146 CLOSED · 70/70 GATES · FALL SCOPE RULED L01–L13 · L13 READ, BYTE-FIXED → v02.29.0, AND BANKED · `QUIZ_SPEC` → v1.2.0 · `ZUMO_S147_HANDOFF.md` WRITTEN.** **THE TOOLCHAIN CONTROL HELD BOTH WAYS:** L11 `after_step_1` reproduced **20,516** byte-for-byte before a single figure was touched, and after the edits the chain parsed back OUT of the HTML matches the compiles STEP BY STEP — the endpoint form (180 + 240 − 42 = 378) was blinding-controlled and is BLIND, because reverting Step 5 alone leaves the total intact and all 70 gates green. **NINE COMPILES BACKED TWELVE EDITS**, including the four Sabotage builds: B2 and B3 are byte-identical to the correct build and B1 and B4 land 2 and 16 bytes off, so the lesson's *"two exactly, the other two within 16"* is **still exactly right** at the new baseline. **NO BLINDING CONTROL WAS RUN ON A BYTE FIGURE, ON PURPOSE** — S145 established that nothing in this tree can see one, so a control there would fire for the wrong reason or not at all (rule 59). The control that WAS run is the arithmetic re-derivation above, which reads the file rather than my intent. **BANK L13 v1.0.1** — 56 before + 40 after, 71/18/11 and 72/20/8, banks 12 → 13 of 16. **Six of its items would have keyed wrong against v02.28.3.** **AND THE DOUBLE-CHECK EARNED ITSELF.** Asked to double check, the bank was re-verified by a script that parses its own header and asserts a forbidden-string set — §24.13's *different method*, not a second read — and it found **three distractors offering the PRE-CORRECTION figure, with feedback reading *“before the byte re-baselining”***, which explains a wrong answer by an event outside the book. **One was actively dangerous: L14 still carries three `24,902` sites, so a student reading ahead would have found the distractor corroborated.** All replaced with lesson-internal traps; bank **v1.0.1**, Bible **v8.136.1**. **The first sweep caught only two of the three** — `368 bytes` is not comma-formatted, so only scanning for the PHRASE found it. **A defect class is not a list of its instances.** **AND THE TRIPLE CHECK CAUGHT TWO MORE.** The session's own byte control was blinding-controlled and the ENDPOINT form is BLIND — revert Step 5 alone and the total still closes and all 70 gates pass; the per-step form fires. **And three files this session never authored appeared in the delivery directory** — a modified `Lesson_14.html` with an L14 byte fix, a `quizzes/ZUMO_QUIZ_L14.yaml` in no commit, and an edited `ZUMO_TDP_Template_v3.md` — with prose describing that work already inside the Bible, LIVE.md and the handoff. **`session_versions --check` named it** (*LIVE.md L14 written=v02.34.0 files=v02.33.1*). All three quarantined; every deliverable rebuilt from the one tree measured clean. Bible **v8.136.2**. **THE COST OF THE SCOPE RULING, NAMED:** `IMAGE 13.1` and `IMAGE 13.2` are both unshot, so **two photographs joined the September critical path this session.**
 
-**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.28.3 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.135.4** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.2 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `ab720ba`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.33.1 · L15 v02.30.1 · L16 v02.22.1 · going_deeper v01.6.1 — census **40,605** · Bible **v8.136.2** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.2 · **book_gates v1.65.10** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.24.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `97106d0`.**
 
-**Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **L11 is read, fixed and UNBLOCKED: bank it against v02.30.0, and discard any question drafted before the cliff correction, because six homes changed.** L12–L16 are unread and unwritten.
+**Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **Fall scope is L01–L13 and all thirteen are banked.** L14, L15 and L16 are unread, unbanked, and **optional for September** — and each needs its byte pass before its bank (READ -> FIX -> QUIZ).
+
+---
+---
+---
+## WHAT SHIPPED IN S146
+
+### 1. DJ RULED THE FALL SCOPE: L01–L13, NOT L01–L12
+
+`quizzes/QUIZ_SPEC.md` §9 had carried *"whether the L13–L16 banks are needed for Fall 2026 at
+all — the course scope is **L01–L12**"* as an open question since S136. **DJ closed it at
+S146 open: the scope is L01–L13.** §9 is restated and the spec moved **v1.1.0 → v1.2.0**,
+because a scope ruling is not a typo fix.
+
+**The ruling changed what this session was.** At open, the whole byte cascade and the whole
+remaining read arc sat in L13–L16 — which is to say, entirely outside September. One
+sentence from DJ moved a quarter of it back inside.
+
+### 2. L13 READ END TO END, AND THE BYTE FIX WAS NOT A RE-BASELINING
+
+Nine compiles on the AVR toolchain, control first:
+
+| Step | book said | measured |
+|---|---|---|
+| 1 | 24,534 | **24,694** |
+| 2 | 24,534 | **24,694** |
+| 3 | 24,714 · up 180 | **24,874** · up 180 — unchanged |
+| 4 | 24,714 | **24,874** |
+| 5 | 24,946 · up 232 | **25,114** · **up 240** |
+| 6 | 24,902 · down 44 · 368 total | **25,072** · **down 42** · **378 total** |
+
+**L12's lesson does not generalize.** S145 closed with the corollary *when the deltas are
+already right, the swap is safe* — true of L12, where all eighteen figures moved by exactly
+160. **L13's chain moves by 160 at the top and 170 at the bottom**, so two of its three
+deltas are different numbers now. The corollary is not a rule about byte fixes; it is a
+statement about one lesson that happened to shift uniformly. **Check the deltas every time.**
+
+### 3. §7E's 64-BYTE CLAIM WAS FALSE, AND ITS EXPLANATION DESCRIBED NOTHING
+
+The lesson said the gyro-corner and encoder-corner builds *"differ by just 64 bytes — 24,902
+against 24,966, the price of keeping both turn functions alive in the binary."*
+
+**Both functions are alive in BOTH builds.** The two projects differ by one call site in
+`main.cpp` — `turnDegreesGyro` → `turnDegrees`, twice. So the stated explanation does not
+name a difference between them at all, and measured, **they are byte-identical at 25,072.**
+
+Rewritten to say so — and **the pedagogical point got stronger**, because *the size of the
+file will never tell you which line* lands harder on two identical builds than on two that
+differ by 64. It now agrees with Mystery B2 four sections later, which makes the same point
+with a sabotage.
+
+### 4. STEP 6's DECOMPOSITION WAS BROKEN INDEPENDENT OF BASELINE — AND WAS DELETED, NOT GUESSED
+
+*"The rewritten hand-off and the recompiled state switch came out 120 bytes tighter than the
+stubs they replaced, while the victim bookkeeping cost only 26."* That nets **−94**, against
+a stated −44 and a measured −42. It was wrong at the old baseline too.
+
+Symbol diff (`avr-nm --size-sort -S`, both ELFs): `main` −68, `showStatus` −50 — so the *120
+tighter* was close — against growth of +81 (`rescueCount` 2, `lastRowCm` 4, four strings 33,
+one OLED layout helper 42). **118 − 81 = 37, and the remaining 5 is section padding.** No
+honest pair of numbers closes on 42 without teaching a student about linker padding in the
+middle of a lesson about rescue zones.
+
+**So both sub-numbers came out.** Rule 50 says a count inside a sentence is a claim — derive
+it or delete it — and the third option, *replace it with a number that nearly works*, is the
+one that put the sentence there in the first place.
+
+### 5. THE ZERO-HARDWARE SUPERLATIVE IS FALSE, IN TWO PLACES
+
+§4.2 and BRAIN CHECK 01's answer 3 both claimed **Lesson 13 is the first lesson in this book
+that adds zero hardware.** A jumper/rewire sweep says otherwise: **L09 §4 already says "no new
+hardware required"** and **L12 §4.1 says "You do not have to plug anything in. You do not have
+to move a jumper."** Both L13 sentences were narrowed to the true claim, which loses nothing —
+*not one wire moves, not one jumper changes* was always the interesting half.
+
+**This is rule 33 again: no instrument reads prose.** Seventy gates certify that the sentence
+is well-formed. Only reading L09 and L12 says it is false.
+
+### 6. THE FIGURES TABLE UNDER-DESCRIBED GRAPHIC 13.2
+
+The table said the raw side keeps *silver, white and black* distinct. The caption and the SVG
+both carry **green** (`GREEN marker – 1200`). Corrected. Not asked in the bank — the plotted
+values live only in the SVG, and QUIZ_SPEC §5 forbids figure-only facts.
+
+### 7. BANK L13 v1.0.1 — 96 QUESTIONS, SIX OF THEM UNWRITEABLE YESTERDAY
+
+56 before + 40 after; **71/18/11** and **72/20/8** against the v1.1.0 mix. Every byte figure
+it asks was compiled in this session. **A02, A06, A13, A15, A16, A24 and A31 would have keyed
+wrong against v02.28.3**, and A24 would have keyed a number that never existed.
+
+Eight answer classes are named in the bank header as deliberately not asked, with reasons —
+including every 7A measurement (the fleet has never taken one), GRAPHIC 13.2's plotted numbers
+as such, and Step 6's deleted decomposition.
+
+### 8. WHAT WAS LEFT ALONE, AND WHY
+
+**L14 carries three `24,902` sites keyed to L13's old finished figure** (lines 699, 732, 861).
+They were **not** fixed. L14 holds eight byte figures in total; correcting three would leave a
+lesson where some figures are compiled and some are stale **with nothing marking which**, which
+is worse than a lesson that is uniformly out of date and known to be. L14 is fixed whole or not
+at all.
 
 ---
 ---
