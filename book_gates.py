@@ -2,7 +2,19 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.65.12'
+VERSION = 'v1.66.0'
+# v1.66.0 (S150): GATE 71 NEW, §6.5c. The <title> tag carries the strip's CATALOG name.
+#   Nothing in this repo read <title> at all, which is why L15 and L16 could put their
+#   <h1> in the tab and stand that way from S70 to S150 - every GENERATED title slot
+#   (next_pointer, title_feed) agreed with the strip, and the one authored slot was the
+#   outlier (rule 51). Predicate DERIVED from the strip, never pinned (rule 19): renaming
+#   a lesson moves both sides together. COVERAGE arm, because a gate that scans zero pages
+#   passes. Control-run six ways from a snapshot with read-back asserts - five defect
+#   shapes each fire 71 ALONE at 70 of 70 others green, and the BLINDING control (rename
+#   Lesson 6 in all sixteen strips) fires it on L06 ALONE, which is the derivation proving
+#   itself. ASSERTS THE NAME, NOT THE SEPARATOR: its first run found L03 and L04 writing
+#   ' | Zumo 32U4 Robotics' against fourteen em dashes, an unruled split, and a gate
+#   widened to swallow it would be certifying what nobody ruled (rule 26).
 # v1.65.12 (S148): §27.11 digest moved for L16's second-trade step (a new <pre>, <h4> and
 #   paragraphs). RULES AND DECLARATIONS UNCHANGED at 574/2,033, class set byte-identical,
 #   EVERY declaration block byte-identical - usage RANK only. NO gate logic changed.
@@ -772,6 +784,54 @@ if strips:
         if s2 != ref:
             bad.append(f'{L(f)}: lesson strip differs from L{L(ref_f)}')
 gate('§6.5a lesson strip present and byte-identical in all 16', bad)
+
+# ---- §6.5c: the <title> tag carries the CATALOG name, which is the strip's own title=.
+# A lesson has THREE title slots and they are NOT required to agree (§6.5c): the <h1>
+# banner is the hook, the strip/index/<title> triple is the handle. L01 runs
+# "Sense, Decide, Act" over "Hello, Robot!" and that is the design, not drift.
+#
+# The one slot nothing watched was <title>. S70 recorded the three sources disagreeing
+# and it stood open to S150, when L15 and L16 were found carrying their <h1> in the tab
+# while the other fourteen carried the catalog name. next_pointer derives from the strip,
+# so L14's footer pointer was GENERATED right and the tab was TYPED wrong - rule 51's
+# shape: every generated artefact agreed with every other one and the hand-authored slot
+# was the outlier.
+#
+# The predicate is DERIVED from the strip, never pinned (S126 rule 19). Renaming a lesson
+# in the strip moves both sides together; only a real divergence fires. The strip is
+# already asserted byte-identical above, so `strips[0]` is canonical by construction.
+bad = []
+if strips:
+    _canon = strips[0][1]
+    _cat = {int(a): html.unescape(b) for a, b in
+            re.findall(r'href="Lesson_(\d\d)\.html"[^>]*title="([^"]*)"', _canon)}
+    if sorted(_cat) != list(range(1, 17)):
+        bad.append(f'strip does not name all sixteen lessons: {sorted(_cat)}')
+    scanned = 0
+    for f in files:
+        n = int(L(f))
+        m = re.search(r'<title>([^<]*)</title>', R[f])
+        if not m:
+            bad.append(f'{L(f)}: no <title> tag')
+            continue
+        scanned += 1
+        got = html.unescape(m.group(1))
+        # Assert the NAME, which is what S150 ruled - not the separator, which is a
+        # SEPARATE unruled split (L03 and L04 write " | Zumo 32U4 Robotics" where the
+        # other fourteen write an em dash). Rule 26: measure the property the ruling
+        # names, not a proxy for it. A gate widened to swallow the separator would be
+        # certifying a split nobody has ruled on.
+        want = f'Lesson {n}: {_cat[n]}'
+        if not got.startswith(want + ' '):
+            bad.append(f'{L(f)}: <title> reads {got!r}, strip name is {_cat[n]!r}')
+        elif 'Zumo 32U4 Robotics' not in got:
+            bad.append(f'{L(f)}: <title> {got!r} lost the book suffix')
+    # COVERAGE arm - a gate that scans zero pages passes (S117/S118).
+    if scanned != 16:
+        bad.append(f'COVERAGE: scanned {scanned} of 16 lesson <title> tags')
+else:
+    bad.append('COVERAGE: no lesson strip to derive catalog titles from')
+gate('§6.5c the <title> tag carries the strip\u2019s catalog name, all 16', bad)
 
 # ---- §25.6: header hero + footer, identical across all 17 pages (S89: build banner dropped)
 import hashlib

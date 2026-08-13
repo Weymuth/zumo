@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 12, 2026 (Session 149 — **THE CATCH-UP SPLIT IS RULED, AND `byte_audit.py` GIVES THE REPO ITS FIRST INSTRUMENT THAT COMPILES.** Rule 33 said no instrument reads prose and none compiles either; ARM 1 closes the second half by compiling **every one of the 213 payloads the Maker defines**, with no parsing and no mapping — the arm that would have caught S148's unflashable Lesson 16. **THE HEADLINE IS THAT I MADE THE S27 ERROR AND DJ'S *“double check your work first”* IS WHAT CAUGHT IT.** Ruling the catch-up split needed a measurement, and I made it by comparing compiled sizes: all ten `after_step_1` payloads match the previous lesson's `finished`, so all ten `step_1` rows looked coincidental. Re-run as **md5 over the materialised source, L13 and L14 differ** — their Step 1 adds a real configuration block that **costs zero bytes, because an unreferenced `const` or `enum` emits no code.** The corrected tally is **27 genuine identity against 28 offset**, near even, not 35 against 28. **DJ ruled the split legitimate (§16.22)** — L07–L10 hand a stuck student the starting line because the doing is the lesson; L11–L16 hand them the result because one step behind blocks the chain. **§16.23 gives a deliberately unbuildable payload a way to say so in markup**, since `broken_code` and `step_4_RED` were declared in prose only.)
-**Status:** ✅ **S149 CLOSED WITH 70/70 GATES, ALL INSTRUMENTS CLEAN, AND 213 OF 213 PAYLOADS COMPILED.** The control held from a seventh clone (L11 `after_step_1` = **20,516**), and flash was re-derived a second way from the ELF's own section headers (`.text` 28,416 + `.data` 184 = **28,600**) rather than trusted to `avr-size`. **THREE OF `byte_audit`'S OWN BUGS WERE CAUGHT BY ITS CONTROLS RATHER THAN BY KNOWING THE RULES:** the overflow control's pad was collected by `--gc-sections` and reported PASS, a control that never fired (rule 59); the payload wrapper was gated first on a substring test that L01's comment boxes trip (rule 55) and then on a directive test that L01 c01's own `<EEPROM.h>` trips, when **`mainCpp()` prepends its head unconditionally** — the fix controlled by **0 of 197 previously-passing sizes moving**; and the step parser knew only `Step 3 — Title`, reading **L11 and L12, which write `📁 Step 2b: Title`, as having no steps at all.** **THE STALE BANK KEYINGS WERE FIXED WITHOUT FALSIFYING PROVENANCE:** `Authored against:` records when a bank was read and was left exactly as written (rule 37), with a new **`Verified against:`** line added to five banks. **The first method was a keyword grep returning zero, which is a weak way to prove a negative** (rule 38) — redone by resolving each changed diff hunk to its enclosing section with a blinding control, which found **11 questions citing §5.4, the section L08 changed.** All eleven read; none touches it. **ONE FINDING IS OPEN AND `byte_audit` EXITS 1 ON IT:** L16 Step 5 promises **28,756** and **no payload produces that state**, so the figure is correct and permanently unverifiable.
+**Date:** August 12, 2026 (Session 150 — **A LESSON HAS TWO NAMES, AND THE ONE SLOT NOTHING WATCHED IS THE ONE THAT DRIFTED.** DJ ruled the `<title>` tag to the catalog name: *“I would like it to match 1-14.”* **The banner name and the catalog name are NOT required to agree** — L01 has run *Sense, Decide, Act* over *Hello, Robot!* since it was written, and that hero split is six lessons wide. **The real defect was two lessons**: L15 and L16 had put their `h1` in the `<title>` tag where the other fourteen carry the catalog name. **EVERY GENERATED SLOT WAS RIGHT AND THE HAND-AUTHORED ONE WAS THE OUTLIER** — `next_pointer` and `title_feed` both derive from the §6.5a strip, so L14's footer pointer read *Advanced PID Control* while L15's own browser tab read *The Present Isn't Enough*. That is rule 51 in its purest form: **unanimity among the generated artefacts certified nothing about the slot nobody generated.** **AND NOTHING IN THIS REPO READ THE `<title>` TAG AT ALL** — not `book_gates`, not `title_feed`, not `next_pointer` — which is why S70 recorded three title sources disagreeing and §25.9 carried it under *not built, not ruled* for **eighty sessions**. §6.5c NEW, gate 71 NEW, and both homes of the S70 open item are struck.)
+**Status:** ✅ **S150 CLOSED WITH 71/71 GATES AND EVERY INSTRUMENT CLEAN.** Gate 71's predicate is **DERIVED from the lesson strip, never pinned** (rule 19), and **the blinding control is what proves it**: renaming Lesson 6 in all sixteen strips fires gate 71 on **L06 ALONE**, with fifteen untouched lessons silent — a pinned predicate fires on all sixteen or on none. Five further defect shapes each fire it **ALONE at 70 of 70 others green** (L15 reverted to its `h1`, L16 reverted, an untouched lesson drifting, the book suffix dropped, the tag deleted), every injection read back from disk before the gate ran, every restore verified by md5 against a full-tree snapshot. **THE GATE FOUND A THIRD SPLIT ON ITS FIRST RUN AND IT IS RECORDED, NOT FIXED:** L03 and L04 write `Lesson N: Name | Zumo 32U4 Robotics` against fourteen em dashes. Widening the gate to accept both would certify a split nobody ruled; narrowing it to the em dash would convict two lessons on a ruling that was never made — **rule 26, measure the property the ruling names, not a proxy for it** — so the gate asserts the NAME and the separator is DJ's to rule. **AND THE EDIT THAT FILED THE BIBLE ENTRY WALKED INTO §6.12c ON ITS FIRST TRY**: the anchor *v8.140, S149, moderate* occurs in BOTH Bible homes, so a bare `find()` targeted line 17's chain rather than the changelog. The assert caught it before the write and the anchor was made line-start.
 
-**Versions:** L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.0 · L16 v02.23.0 · going_deeper v01.6.1 — census **40,642** · Bible **v8.140** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.4 · **book_gates v1.65.12** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.25.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4f806ee`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1 · going_deeper v01.6.1 — census **40,642** · Bible **v8.141** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.4 · **book_gates v1.66.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.25.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `0a08cd1`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
@@ -11,6 +11,59 @@
 ---
 ---
 
+---
+## WHAT SHIPPED IN S150
+
+**§6.5c NEW · gate 71 NEW · two `<title>` tags and one table cell corrected · the S70 open item
+struck in both of its homes. No lesson prose changed; census unchanged at 40,642.**
+
+### 1. THE SPLIT THAT IS DESIGN, AND THE SPLIT THAT WAS DRIFT
+
+A lesson has a **BANNER** name and a **CATALOG** name. The banner is the hook (`<h1>`, §5b footer);
+the catalog is the handle (the §6.5a strip's `title=`, `index.html`, the `<title>` tag, and both
+generated pointers). **They are not required to agree, and six lessons legitimately differ** —
+L01 *Sense, Decide, Act* / *Hello, Robot!* is the oldest instance in the book.
+
+Fourteen lessons put the CATALOG name in `<title>`. **L15 and L16 put their `h1` there.** Fixed:
+
+| File | was | now |
+|---|---|---|
+| `Lesson_15.html` `<title>` | The Present Isn't Enough | **Advanced PID Control** |
+| `Lesson_16.html` `<title>` | Nothing Left to Take Away | **Engineering Showcase** |
+| `Lesson_16.html` byte table, L15 row | The Present Isn't Enough | **Advanced PID Control** |
+
+Both `h1` banners and both §5b footer banners are **untouched** — the footer carries the `h1` in
+16 of 16 lessons, so L15 and L16 already matched L01–L14 there. Nothing generated moved.
+
+### 2. WHY IT SURVIVED EIGHTY SESSIONS
+
+**Nothing in this repo read the `<title>` tag.** Not `book_gates`, not `title_feed`, not
+`next_pointer`. It was the only title slot with no instrument on it. S70 recorded the three
+sources disagreeing; §25.9 has carried *`<title>`/strip vs hero titles* under *not built, not
+ruled* ever since. **Both homes of that item are now struck.**
+
+The shape is rule 51 at its sharpest: **every GENERATED slot agreed with the strip and was right**,
+so L14's footer pointer said *Advanced PID Control* while L15's own tab said something else. A
+reader checking the generated artefacts against each other would have found perfect agreement.
+
+### 3. GATE 71 — DERIVED, AND THE BLINDING CONTROL IS THE PROOF
+
+Predicate built from the strip's own `title=`, so renaming a lesson moves both sides together.
+COVERAGE arm, because a gate that scans zero pages passes (S117/S118).
+
+**Six controls from a full-tree snapshot, read-back asserted, md5-verified restores:**
+five defect shapes each fire gate 71 **ALONE at 70 of 70 others green**; and the blinding control
+— Lesson 6 renamed in all sixteen strips — fires it on **L06 alone**, which is the derivation
+proving itself. §3.1b fired independently on L05 for the same rename.
+
+### 4. THE THIRD SPLIT, RECORDED NOT FIXED — DJ TO RULE
+
+Gate 71's first run found **L03 and L04 writing `Lesson N: Name | Zumo 32U4 Robotics` where the
+other fourteen write an em dash.** The gate asserts the NAME and deliberately not the separator:
+widening it certifies an unruled split, narrowing it convicts two lessons on a ruling nobody made
+(rule 26). **This is open.**
+
+---
 ---
 ## WHAT SHIPPED IN S149
 

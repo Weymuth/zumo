@@ -1,4 +1,4 @@
-# ZUMO — S150 HANDOFF (rewritten at S149 close · paste at top of Session 150)
+# ZUMO — S151 HANDOFF (rewritten at S150 close · paste at top of Session 151)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** A stale answer is
@@ -6,25 +6,28 @@
    **AND THE SHA IS NOT THE CHECK. `session_versions --check` IS** (rule 60, S145).
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. **Do NOT grep the Bible version.** `session_versions.bible_consistency()` parses it.
-4. Run the full suite and **READ THE EXIT CODE, NOT THE LAST LINE**. Plus
-   **`callout_id.py --selftest` then `--audit`**, **`keyterm_prefix.py --audit`**,
-   **`quizzes/quiz_bank.py --selftest` then `--check`**, and
+4. Run the full suite and **READ THE EXIT CODE, NOT THE LAST LINE**. **THE SUITE IS 71 GATES
+   NOW, NOT 70.** Plus **`callout_id.py --selftest` then `--audit`**,
+   **`keyterm_prefix.py --audit`**, **`quizzes/quiz_bank.py --selftest` then `--check`**, and
    **`session_versions.py --selftest`** — **its CONTROL C is the unfinished-documentation-pass
    signal and nothing else in the tree can see one.**
 5. **`--anomalies` BELONGS TO `lesson_inventory`, NOT `session_versions`.**
    **`svg_layout_audit.py` TAKES FILENAMES. A bare invocation prints usage and exits 1 —
-   that is a usage error, not a finding (S148 nearly recorded it as one).**
+   that is a usage error, not a finding.** **`pill_sweep.py` and `class_sweep.py` also take
+   arguments; a bare run is a usage error, not a finding either.**
 6. `pip install cairosvg --break-system-packages` **and `pyyaml`. Needed every session.**
 7. **NEVER run `build_css.py --help` or `session_versions.py --help`.** Read the docstring.
-8. **Do not hand-type a version, and do not hand-type a COUNT.**
-9. **`gate_payload_match.py` needs `newproject.html` FIRST, then the full lesson glob.**
-10. **A CLONE IS NOT THE SITE.** Run `site_parity.py` after any push.
-11. **VERIFY THE PUSH BY FRESH CLONE AND MD5 — AND DIFF THE STAGE AGAINST THE CLONE.**
-12. **`css/semantic.css` AND `ZUMO_FAMILY_PINS.md` ARE HAND-AUTHORED PRESERVED LAYERS.**
-13. **`rm -rf __pycache__` BEFORE `git status`. Also `find . -name pbuild -exec rm -rf {} +`**
-    if the toolchain has been run — the harness leaves build dirs inside the project trees.
+8. **`book_gates.py` TAKES NO ARGUMENTS. Passing it the lesson glob makes `build_family_map`
+   resolve ROOT to a lesson FILE and the run dies at gate 60** (S150 lost a run to this).
+9. **Do not hand-type a version, and do not hand-type a COUNT.**
+10. **`gate_payload_match.py` needs `newproject.html` FIRST, then the full lesson glob.**
+11. **A CLONE IS NOT THE SITE.** Run `site_parity.py` after any push.
+12. **VERIFY THE PUSH BY FRESH CLONE AND MD5 — AND DIFF THE STAGE AGAINST THE CLONE.**
+13. **`css/semantic.css` AND `ZUMO_FAMILY_PINS.md` ARE HAND-AUTHORED PRESERVED LAYERS.**
+14. **`rm -rf __pycache__` BEFORE `git status`. Also `find . -name pbuild -exec rm -rf {} +`**
+    if the toolchain has been run.
 
-## 14. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. S148 RAN THEM AGAIN.
+## 15. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. NOT RUN IN S150.
 
 `apt-get install -y gcc-avr avr-libc` **(no `sudo` — it is not on this box, exit 127).** Clone
 into `/home/claude/harness` **FLAT, not under a `pololu/` subdirectory**.
@@ -34,44 +37,41 @@ INCLUDING THIS ONE.** Also clone `arduino/ArduinoCore-avr`. Zumo library at tag 
 (plain clone then `git checkout 2.0.1`; `--depth 1` cannot check out a tag). `cp pio_harness.sh`
 into `$H`, then `bash pio_harness.sh --setup`. **Expect *objects: 41*.**
 
-**THE CONTROL: L11 `after_step_1` MUST COMPILE TO 20,516.** Held in S144–S148, from five
-clones. **The harness prints `flash=` on success and `OVER flash=` on an overflow — parse
-both, or an over-ceiling build reads as a crash** (S148 lost a run to this).
+**THE CONTROL: L11 `after_step_1` MUST COMPILE TO 20,516.** Held S144–S149, from five clones.
+**The harness prints `flash=` on success and `OVER flash=` on an overflow — parse both.**
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S149
+# THE ONE THING TO CARRY OUT OF S150
 
-**I CLASSIFIED TEN PAYLOADS BY COMPILED SIZE AND TWO OF THEM WERE DIFFERENT SOURCE.**
+**THE `<title>` TAG WAS THE ONLY TITLE SLOT WITH NO INSTRUMENT ON IT, AND THAT IS EXACTLY WHERE
+THE BOOK DRIFTED.**
 
-Ruling the catch-up split needed a measurement. I made it by compiling `after_step_1` for L07–L16
-and comparing each figure to the previous lesson's `finished`. All ten matched, so I reported that
-all ten `step_1` rows are coincidental — both conventions agree there because Step 1 is a copy.
+A lesson has a BANNER name (`<h1>`, §5b footer) and a CATALOG name (the §6.5a strip's `title=`,
+`index.html`, `<title>`, and both generated pointers). **They are not required to agree** — L01
+runs *Sense, Decide, Act* over *Hello, Robot!* and five other lessons do the same. **The defect
+was L15 and L16 putting their `h1` in the `<title>` tag.**
 
-**That is S27 verbatim, and DJ's "double check your work first" is the only reason it was caught.**
-Re-run as md5 over the materialised files, **L13 and L14 differ.** Their `after_step_1` already
-carries the lesson's own Step 1 work — L13's five new states plus `SILVER_RAW_MAX`,
-`WALL_STOP_COUNT`, `ROW_STEP_CM`, `VICTIM_SHORT_CM` and the `StopReason` enum; L14's
-`COMPETITION_MODE` and three self-test limits. **Both cost ZERO BYTES, because a `const` or an
-`enum` that nothing references yet emits no code.** The lessons confirm it: L12 Step 1 is *Copy
-Your Lesson 11 Project*, L13's is *The Numbers, the Names, the Reasons*, L14's is *One Switch,
-Three Limits*.
+**EVERY GENERATED SLOT WAS RIGHT.** `next_pointer` and `title_feed` both derive from the strip,
+so L14's footer pointer read *Advanced PID Control* while L15's own tab read *The Present Isn't
+Enough*. **Rule 51 at its sharpest: unanimity among the generated artefacts certified nothing
+about the slot nobody generated.** S70 found it; §25.9 carried it under *not built, not ruled*
+for **eighty sessions**, because no instrument opened the tag.
 
-**The corrected tally is 27 genuine identity against 28 offset — near even — not 35 against 28.**
+**§6.5c NEW · GATE 71 NEW.** Predicate DERIVED from the strip, never pinned. **The blinding
+control is the proof: rename Lesson 6 in all sixteen strips and gate 71 names L06 ALONE.**
 
-**AND IT IS A STANDING LIMIT ON `byte_audit`, NOT A ONE-OFF:** a payload can ship an entirely wrong
-configuration block and ARM 1 will never see it, because unreferenced declarations are free.
-**The compiler is an instrument for what the program DOES, never for what the source SAYS.**
+**AND THE GATE FOUND A THIRD SPLIT ON ITS FIRST RUN — SEE THE QUEUE. DJ TO RULE.**
 
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`4f806ee`**. Census **40,642**.
-Bible **v8.140** · `BookComponentStandard` **v01.13.0** · Maker **v2.49.4** ·
+Fresh-clone verified at **`0a08cd1`**. Census **40,642**.
+Bible **v8.141** · `BookComponentStandard` **v01.13.0** · Maker **v2.49.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.65.12** · `lesson_inventory` **v1.3.5** ·
+Instruments: `book_gates` **v1.66.0** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.4** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.25.0** · `fit_raster_svg` **v1.2** ·
@@ -96,89 +96,31 @@ Instruments: `book_gates` **v1.65.12** · `lesson_inventory` **v1.3.5** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.0 · L16 v02.23.0.
-
-`quizzes/QUIZ_SPEC.md` **v1.2.0** · banks L02/L07/L08/L09/L10 **v1.0.1** ·
-`ZUMO_TDP_Template_v3.md` **v3.1.1**.
+Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1.
 
 **Derive the bank count, never read it out of a sentence:** `python3 quizzes/quiz_bank.py --status`
 
 ---
 
-# WHAT S149 SHIPPED
+# S150's OPEN FINDINGS
 
-## 1. `byte_audit.py` v1.1 — THE ONLY INSTRUMENT HERE THAT COMPILES
+- **THE `<title>` SEPARATOR IS SPLIT AND IS DJ'S TO RULE.** **L03 and L04 write
+  `Lesson N: Name | Zumo 32U4 Robotics`; the other fourteen write an em dash.** Found by gate
+  71 on its first run. **Gate 71 deliberately asserts the NAME and not the separator** — widening
+  it certifies a split nobody ruled, narrowing it convicts two lessons on a ruling never made
+  (rule 26). Two minor bumps if DJ rules the em dash; the gate then tightens in one line.
+- **`byte_audit` STILL EXITS 1 ON EXACTLY ONE ROW.** L16 Step 5's first COMPILE CHECK promises
+  **28,756** — the state after the Serial trade, before the Z–N trade. The number is right.
+  **No Maker payload produces it**, so a student stuck at that intermediate has no catch-up and
+  no instrument can verify the figure. **Author the payload or rule the figure exempt. DJ was
+  shown both at S150 open and ruled neither — it is still open.**
+- **§16.18 THROUGH §16.21 HAVE NO NUMBERED SECTION BODIES**, same as §16.14. §6.5c was seated
+  properly this session to avoid making it worse.
+- **ARM 2 OF `byte_audit` REACHES TWO LESSONS.** L11–L14 quote byte figures in tables and prose,
+  not in step headings, so they are covered only by ARM 2b's leads.
 
-Rule 33 said no instrument reads prose and none compiles either. This closes the second half.
-It cannot live in `book_gates.py` — no toolchain in a normal session — so run it whenever the
-harness is up.
 
-- **ARM 1 CEILING** — compiles **every** payload the Maker defines. No parsing, no mapping, no
-  inference. **This is the arm that would have caught S148's unflashable L16.** 213 payloads,
-  0 undeclared overflows.
-- **ARM 2 FIGURES** — every step figure must equal a compiled payload of its lesson.
-- **ARM 2b LEADS** — every figure in the compiled band, book-wide. A lead, never a verdict.
-- **ARM 3 CONVENTION** — written, and **it can only see L15 and L16**, because no other lesson
-  states per-step byte figures. Do not read its verdict as book-wide (rule 27).
-
-**SEVEN CONTROLS, AND THREE OF MY OWN BUGS WERE CAUGHT BY THEM RATHER THAN BY KNOWING THE RULES:**
-
-1. The overflow control's pad was **collected by `--gc-sections`** and reported PASS — a control
-   that never fired (rule 59). Moved to PROGMEM and read at runtime; now 31,054.
-2. The wrapper test asked whether the body contained `#include`. **L01's challenge comment boxes
-   mention it** (rule 55). Changed to a directive test — which **L01 c01's own `<EEPROM.h>`
-   tripped.** `mainCpp()` prepends its head **unconditionally**; the fix was to do what the Maker
-   does. Control: **0 of 197 previously-passing sizes moved.**
-3. The step parser knew only `Step 3 — Title`. **L11 and L12 write `📁 Step 2b: Title`** and were
-   read as having no steps at all.
-
-## 2. §16.22 — THE CATCH-UP SPLIT IS RULED LEGITIMATE
-
-DJ ruled it. **L07–L10 OFFSET, L11–L16 IDENTITY, both correct.** L07–L10 are the lessons where the
-*doing* is the content, so a finished step deletes the lesson; L11–L16 are integration lessons
-where one step behind blocks the chain. Rule 32.
-
-**A gate may assert this per range only, and must exclude the eight coincidental `step_1` rows** —
-they satisfy either convention, so counting them certifies nothing. **That gate is not written.**
-
-## 3. §16.23 — A DELIBERATELY UNBUILDABLE PAYLOAD DECLARES ITSELF
-
-`L02 broken_code` and `L10 step_4_RED` are correct by design and were declared **in prose only**,
-which no instrument reads. `data-nobuild` on the catch-up link now **names the reason**; a bare
-boolean was rejected because a label is not the thing (rule 31). Control G is loud on a missing
-attribute **and on an empty one**.
-
-## 4. THE STALE BANK KEYINGS — AND THE METHOD THAT FOUND WHAT A GREP DID NOT
-
-Six keyings across five banks named lesson versions that had moved. **`Authored against:` was left
-exactly as written** — it records when the bank was read, and rewriting it asserts a read that
-never happened (rule 37). A **`Verified against:`** line was added instead.
-
-**The first method was a keyword grep and it returned zero, which is a weak way to prove a
-negative** (rule 38). Redone by resolving each changed diff hunk to its enclosing section, with a
-blinding control that fires on a seeded cite: **11 bank questions across L08/L09/L10 cite §5.4 —
-the section L08 changed.** All eleven were read. None touches the changed comment. Conclusion
-unchanged; evidence real.
-
----
-
-# S149's OPEN FINDINGS
-
-- **`byte_audit` CURRENTLY EXITS 1 ON EXACTLY ONE ROW, AND IT IS A REAL GAP.** L16 Step 5's first
-  COMPILE CHECK promises **28,756** — the state after the Serial trade, before the Z–N trade. The
-  number is right. **No Maker payload produces it**, so a student stuck at that intermediate has no
-  catch-up and no instrument can ever verify the figure. Either author the payload or rule the
-  figure exempt. **DJ to rule.**
-- **§16.18 THROUGH §16.21 HAVE NO NUMBERED SECTION BODIES**, same as §16.14. Four rules now live
-  only in changelog entries. §16.22 and §16.23 were seated properly to avoid making it six.
-- **THE `IMAGE 7.9`–`7.12` QUEUE ITEM IS ALREADY FIXED** and should be struck: L07 v04.31.4 reads
-  `Diagram (SVG)` / `✅ in the lesson` on all five rows.
-- **ARM 2 REACHES TWO LESSONS.** L11–L14 quote byte figures in tables and prose, not in step
-  headings, so they are covered only by ARM 2b's leads. Widening ARM 2 is real work.
-
----
-
-# S150 QUEUE
+# S151 QUEUE
 
 **The read arc is finished. Every lesson is read, fixed and banked.** What is left is not
 content.
