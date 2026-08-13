@@ -12,6 +12,87 @@
 ---
 
 ---
+## WHAT SHIPPED IN S151
+
+**The `<title>` separator ruled to the em dash · two `<title>` tags corrected · gate 71
+tightened in one line · one queue entry struck as already-ruled. No lesson prose changed;
+census unchanged at 40,642.**
+
+### 1. THE RULING
+
+DJ at session open: *"em dash is fine for all of them that need it."* The ruled form is
+
+> `Lesson N: <catalog name> — Zumo 32U4 Robotics`
+
+| File | was | now |
+|---|---|---|
+| `Lesson_03.html` `<title>` | Lesson 3: Motors & TRIM **\|** Zumo 32U4 Robotics | **—** |
+| `Lesson_04.html` `<title>` | Lesson 4: Line Sensors **\|** Zumo 32U4 Robotics | **—** |
+
+Both MINOR: a `<title>` tag does not render on the page, so the visible §5b banners correctly
+stay at 03.41 and 04.29.
+
+**THE SWEEP RAN BEFORE THE EDIT.** All **21** `<title>` tags in the tree were read — sixteen
+lessons plus `index.html`, `going_deeper.html` and the three tool pages. The pipe appeared in
+exactly two, both lessons. **The three tool pages carry no separator at all and therefore
+*need* nothing**, which is the ruling's own words scoping itself rather than an exception
+someone has to remember.
+
+### 2. GATE 71 TIGHTENED, AND RE-CONTROLLED RATHER THAN ASSUMED
+
+Gate 71 found this split on its FIRST run at S150 and **correctly left it alone**: with no
+ruling to measure against, widening the predicate would have certified a split nobody ruled
+and narrowing it would have convicted two lessons on a ruling that did not exist (rule 26).
+**The interval between RECORDING and RULING was one session**, which is what makes *recorded,
+not fixed* a working disposition rather than a parking lot.
+
+The NAME half stays **DERIVED from the strip** (rule 19); only the separator and the book
+suffix are literal, and both are what was ruled. **Seven defect shapes each fire gate 71 ALONE
+at 70 of 70 others green** — a pipe on L03, a pipe on L04, a hyphen on an untouched lesson,
+L15 reverted to its `h1`, the book suffix dropped, **a single trailing space** (rule 23), and
+the tag deleted, which fires the COVERAGE arm at *scanned 15 of 16*. **The BLINDING control
+renamed Lesson 6 in all sixteen strips and gate 71 named L06 ALONE**, fifteen lessons silent —
+the derivation proving itself, since a pinned predicate fires on all sixteen or on none.
+§3.1b fired independently on L05 for the same rename, as it did at S150.
+
+### 3. THE PROCESS FINDING — RULE 71 NEW
+
+**The control harness snapshotted the tree BEFORE the em-dash edit**, so every `restore()`
+reverted the session's own work instead of the injection. The first control left L03 carrying
+a pipe, and the six controls after it ran against a tree already failing for an unrelated
+reason. **All six printed FAIL at 70 of 71 green — the exact shape of a clean control run.**
+
+What exposed it was reading the gate's **failure DETAIL** rather than its verdict: every run
+named `03`, including the runs that had injected into L09, L12 and L15. **A control that names
+a file it never touched is reporting contamination, not a finding.** Rule 21 in a new place;
+redone from a post-edit snapshot with md5-verified restores and the untouched tree passing at
+**both** ends.
+
+### 4. A QUEUE ENTRY THAT OUTLIVED ITS OWN RULING — RULE 72 NEW
+
+**S151 opened by reporting to DJ that *L15's title is split book-wide* was the largest un-ruled
+item in the book. It had been ruled the session before.** v8.141 established that BANNER ≠
+CATALOG is design, and the split is six lessons wide — **L01, L02, L03, L08, L15, L16**,
+re-derived here rather than carried. L15 is one of the six, so `next_pointer` deriving L14's
+footer pointer from the strip is **correct**, not *generated wrong*.
+
+The entry was carried forward from S147/S148 and never restruck when the ruling landed.
+**A QUEUE IS NOT CANON, AND AN ITEM THAT SURVIVES THE SESSION THAT RULES IT WILL BE
+RE-REPORTED AS OPEN BY THE NEXT READER.** Struck. Read the queue against the Bible before
+reporting it.
+
+### 5. FOUND BY THE DOUBLE CHECK, RECORDED NOT FIXED
+
+**This file carries TWO `## WHAT SHIPPED IN S147` blocks** (a pre-existing duplicate), and
+**nothing in the tree reads this file's per-session block structure at all** — which is how
+S151 came within one command of closing with no S151 block, its header naming a session the
+body never mentioned. `session_versions --check` reads line 6 only, by design.
+
+**Applied S151:** L03 **v03.41.1** · L04 **v04.29.1**, both MINOR · `book_gates` **v1.66.1** ·
+Bible **v8.142**. 71/71 gates, every instrument clean, census unchanged at **40,642**.
+
+---
+---
 ## WHAT SHIPPED IN S150
 
 **§6.5c NEW · gate 71 NEW · two `<title>` tags and one table cell corrected · the S70 open item
