@@ -2,8 +2,9 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.66.0'
+VERSION = 'v1.66.1'
 # v1.66.0 (S150): GATE 71 NEW, §6.5c. The <title> tag carries the strip's CATALOG name.
+# v1.66.1 (S151): gate 71 tightened to the ruled em-dash form (DJ ruling S151).
 #   Nothing in this repo read <title> at all, which is why L15 and L16 could put their
 #   <h1> in the tab and stand that way from S70 to S150 - every GENERATED title slot
 #   (next_pointer, title_feed) agreed with the strip, and the one authored slot was the
@@ -816,16 +817,17 @@ if strips:
             continue
         scanned += 1
         got = html.unescape(m.group(1))
-        # Assert the NAME, which is what S150 ruled - not the separator, which is a
-        # SEPARATE unruled split (L03 and L04 write " | Zumo 32U4 Robotics" where the
-        # other fourteen write an em dash). Rule 26: measure the property the ruling
-        # names, not a proxy for it. A gate widened to swallow the separator would be
-        # certifying a split nobody has ruled on.
-        want = f'Lesson {n}: {_cat[n]}'
-        if not got.startswith(want + ' '):
-            bad.append(f'{L(f)}: <title> reads {got!r}, strip name is {_cat[n]!r}')
-        elif 'Zumo 32U4 Robotics' not in got:
-            bad.append(f'{L(f)}: <title> {got!r} lost the book suffix')
+        # S151: DJ ruled the separator to the em dash ("em dash is fine for all of them
+        # that need it"), so the whole form is now ruled and the gate asserts it whole.
+        # S150 asserted the NAME alone because the separator was an unruled split (L03
+        # and L04 wrote " | Zumo 32U4 Robotics" against fourteen em dashes) and rule 26
+        # forbids convicting on a ruling nobody made. That ruling now exists.
+        # The NAME half stays DERIVED from the strip (rule 19) - renaming a lesson moves
+        # both sides together. Only the separator and the book suffix are literal, and
+        # both are what DJ ruled.
+        want = f'Lesson {n}: {_cat[n]} \u2014 Zumo 32U4 Robotics'
+        if got != want:
+            bad.append(f'{L(f)}: <title> reads {got!r}, expected {want!r}')
     # COVERAGE arm - a gate that scans zero pages passes (S117/S118).
     if scanned != 16:
         bad.append(f'COVERAGE: scanned {scanned} of 16 lesson <title> tags')

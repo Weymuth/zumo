@@ -1,4 +1,4 @@
-# ZUMO — S151 HANDOFF (rewritten at S150 close · paste at top of Session 151)
+# ZUMO — S152 HANDOFF (rewritten at S151 close · paste at top of Session 152)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** A stale answer is
@@ -6,8 +6,8 @@
    **AND THE SHA IS NOT THE CHECK. `session_versions --check` IS** (rule 60, S145).
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. **Do NOT grep the Bible version.** `session_versions.bible_consistency()` parses it.
-4. Run the full suite and **READ THE EXIT CODE, NOT THE LAST LINE**. **THE SUITE IS 71 GATES
-   NOW, NOT 70.** Plus **`callout_id.py --selftest` then `--audit`**,
+4. Run the full suite and **READ THE EXIT CODE, NOT THE LAST LINE**. **THE SUITE IS 71 GATES,
+   NOT 70.** Plus **`callout_id.py --selftest` then `--audit`**,
    **`keyterm_prefix.py --audit`**, **`quizzes/quiz_bank.py --selftest` then `--check`**, and
    **`session_versions.py --selftest`** — **its CONTROL C is the unfinished-documentation-pass
    signal and nothing else in the tree can see one.**
@@ -42,36 +42,62 @@ into `$H`, then `bash pio_harness.sh --setup`. **Expect *objects: 41*.**
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S150
+# THE ONE THING TO CARRY OUT OF S151
 
-**THE `<title>` TAG WAS THE ONLY TITLE SLOT WITH NO INSTRUMENT ON IT, AND THAT IS EXACTLY WHERE
-THE BOOK DRIFTED.**
+**A CONTROL THAT NAMES A FILE IT NEVER TOUCHED IS REPORTING CONTAMINATION, NOT A FINDING.**
 
-A lesson has a BANNER name (`<h1>`, §5b footer) and a CATALOG name (the §6.5a strip's `title=`,
-`index.html`, `<title>`, and both generated pointers). **They are not required to agree** — L01
-runs *Sense, Decide, Act* over *Hello, Robot!* and five other lessons do the same. **The defect
-was L15 and L16 putting their `h1` in the `<title>` tag.**
+The snapshot for gate 71's re-control was taken **before** the em-dash edit, so every
+`restore()` reverted **this session's own work** instead of the injection. The first control
+left L03 carrying a pipe, and the six controls after it ran against a tree already failing for
+a reason that had nothing to do with them.
 
-**EVERY GENERATED SLOT WAS RIGHT.** `next_pointer` and `title_feed` both derive from the strip,
-so L14's footer pointer read *Advanced PID Control* while L15's own tab read *The Present Isn't
-Enough*. **Rule 51 at its sharpest: unanimity among the generated artefacts certified nothing
-about the slot nobody generated.** S70 found it; §25.9 carried it under *not built, not ruled*
-for **eighty sessions**, because no instrument opened the tag.
+**ALL SIX PRINTED FAIL AND ALL SIX LOOKED LIKE EVIDENCE.** Exit 1, one gate down, 70 of 71
+green — the exact shape a clean control run produces.
 
-**§6.5c NEW · GATE 71 NEW.** Predicate DERIVED from the strip, never pinned. **The blinding
-control is the proof: rename Lesson 6 in all sixteen strips and gate 71 names L06 ALONE.**
+What exposed it was reading the gate's **failure DETAIL** rather than its verdict: every run
+named `03`, including the runs that had injected into L09, L12 and L15. **Rule 21 in a new
+place** — snapshot the state you are IN, not the state you started from — and the reusable
+half is the tell, because the verdict alone is identical either way.
 
-**AND THE GATE FOUND A THIRD SPLIT ON ITS FIRST RUN — SEE THE QUEUE. DJ TO RULE.**
+Redone from a post-edit snapshot with md5-verified restores and the untouched tree passing at
+**both** ends.
+
+---
+
+# S151's RULING
+
+**THE `<title>` SEPARATOR IS THE EM DASH, BOOK-WIDE.** DJ at open: *"em dash is fine for all
+of them that need it."* Ruled form:
+
+> `Lesson N: <catalog name> — Zumo 32U4 Robotics`
+
+Two sites, both `<title>` tags, both MINOR (the tag does not render on the page, so the visible
+§5b banners correctly stay put). **A sweep of all 21 `<title>` tags in the tree ran FIRST** —
+the pipe appears in exactly two, both lessons; the three tool pages carry no separator at all
+and therefore *need* nothing, which is the ruling's own words scoping it.
+
+**GATE 71 TIGHTENED IN ONE LINE.** The NAME half stays DERIVED from the strip (rule 19); only
+the separator and the book suffix are literal, and both are what was ruled. Seven defect shapes
+each fire it **ALONE at 70 of 70 others green**, and the **BLINDING control — Lesson 6 renamed
+in all sixteen strips — names L06 ALONE.**
+
+**AND A QUEUE ENTRY OUTLIVED THE RULING THAT SETTLED IT.** S151 opened by reporting *L15's
+title is split book-wide* to DJ as the largest un-ruled item in the book. **v8.141 had already
+ruled it**: BANNER ≠ CATALOG is design, six lessons wide — L01, L02, L03, L08, **L15, L16** —
+so `next_pointer` deriving L14's footer pointer from the strip is CORRECT, not *generated
+wrong*. The entry was carried from S147/S148 and never restruck when the ruling landed. **A
+QUEUE IS NOT CANON, AND AN ITEM THAT SURVIVES THE SESSION THAT RULES IT WILL BE RE-REPORTED AS
+OPEN BY THE NEXT READER.** Struck. **Read the queue against the Bible before reporting it.**
 
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`0a08cd1`**. Census **40,642**.
-Bible **v8.141** · `BookComponentStandard` **v01.13.0** · Maker **v2.49.4** ·
+Fresh-clone verified at **`2f61c6e`**. Census **40,642**.
+Bible **v8.142** · `BookComponentStandard` **v01.13.0** · Maker **v2.49.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.66.0** · `lesson_inventory` **v1.3.5** ·
+Instruments: `book_gates` **v1.66.1** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.4** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.25.0** · `fit_raster_svg` **v1.2** ·
@@ -96,34 +122,19 @@ Instruments: `book_gates` **v1.66.0** · `lesson_inventory` **v1.3.5** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1.
+Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1.
+
+Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 ·
+L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 ·
+L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1.
 
 **Derive the bank count, never read it out of a sentence:** `python3 quizzes/quiz_bank.py --status`
 
 ---
 
-# S150's OPEN FINDINGS
+# S152 QUEUE
 
-- **THE `<title>` SEPARATOR IS SPLIT AND IS DJ'S TO RULE.** **L03 and L04 write
-  `Lesson N: Name | Zumo 32U4 Robotics`; the other fourteen write an em dash.** Found by gate
-  71 on its first run. **Gate 71 deliberately asserts the NAME and not the separator** — widening
-  it certifies a split nobody ruled, narrowing it convicts two lessons on a ruling never made
-  (rule 26). Two minor bumps if DJ rules the em dash; the gate then tightens in one line.
-- **`byte_audit` STILL EXITS 1 ON EXACTLY ONE ROW.** L16 Step 5's first COMPILE CHECK promises
-  **28,756** — the state after the Serial trade, before the Z–N trade. The number is right.
-  **No Maker payload produces it**, so a student stuck at that intermediate has no catch-up and
-  no instrument can verify the figure. **Author the payload or rule the figure exempt. DJ was
-  shown both at S150 open and ruled neither — it is still open.**
-- **§16.18 THROUGH §16.21 HAVE NO NUMBERED SECTION BODIES**, same as §16.14. §6.5c was seated
-  properly this session to avoid making it worse.
-- **ARM 2 OF `byte_audit` REACHES TWO LESSONS.** L11–L14 quote byte figures in tables and prose,
-  not in step headings, so they are covered only by ARM 2b's leads.
-
-
-# S151 QUEUE
-
-**The read arc is finished. Every lesson is read, fixed and banked.** What is left is not
-content.
+**The read arc is finished. The `<title>` arc is finished.** What is left is not content.
 
 ## 1. THE PHOTOGRAPHY — THE ONLY THING BETWEEN THE BOOK AND SEPTEMBER
 Stills **3.2 · 3.5 · 3.6 · 4.1 · 4.3 · 12.1 · 13.1 · 13.2**, videos **3.1 · 4.1 · 6.1 · 8.1**.
@@ -131,32 +142,38 @@ Stills **3.2 · 3.5 · 3.6 · 4.1 · 4.3 · 12.1 · 13.1 · 13.2**, videos **3.1
 *(`IMAGE 14.1` and `IMAGE 16.1` are also unshot but both lessons sit outside the September
 scope.)*
 
-## 2. FOUR INVARIANTS WITH NO GATE — AND THE CASE FOR CLOSING ONE IS NOW STRONGER
-**NO GATE HOLDS A QUIZ BANK · A NAV PILL · A BYTE FIGURE · A RULE CITATION.**
-**S148 makes the byte-figure gate look cheap and the quiz-bank gate look urgent.** The
-compile-against-figure verifier written this session is ~40 lines: parse the figures out of a
-lesson, compile the payload each one names, assert equality. **It would have caught L16's
-unbuildable finished build months ago.** It cannot live in `book_gates.py` (no toolchain in a
-normal session) but it could be a standalone `byte_audit.py` run whenever the harness is up.
-**The citation one is also cheaper than it was**, because every L14 citation now names its
-edition — a gate can assert the edition string is present without validating a section number
-it cannot look up.
+## 2. TWO OPEN RULINGS DJ WAS SHOWN AT S151 AND DID NOT TAKE
+Both are harness-gated — neither can be verified without the AVR toolchain up.
+- **`byte_audit` STILL EXITS 1 ON EXACTLY ONE ROW.** L16 Step 5's first COMPILE CHECK promises
+  **28,756** — the state after the Serial trade, before the Z–N trade. The number is right.
+  **No Maker payload produces it**, so a student stuck at that intermediate has no catch-up and
+  no instrument can verify the figure. **Author the payload or rule the figure exempt.** DJ was
+  shown both at S150 open and at S151 open and has ruled neither.
+- **THE CATCH-UP CONVENTION IS SPLIT.** L07–L10 OFFSET, L11–L16 IDENTITY. **§16.22 (v8.140)
+  ruled the split LEGITIMATE** and `byte_audit` ARM 3 measures it rather than judging it — so
+  what is actually open is only whether a gate should pin the measurement. **A gate pinning
+  either convention would certify 64 rows and fail 32.** Read §16.22 before re-raising this.
 
-## 3. STILL OPEN, CARRIED
-- **THE CATCH-UP CONVENTION IS SPLIT.** L07–L10 OFFSET, L11–L16 IDENTITY, clean across all 64
-  rows. **A gate pinning either would certify 64 and fail 32.** DJ to rule.
-- **L15's TITLE IS SPLIT BOOK-WIDE AND THE GENERATOR IS ON THE WRONG SIDE.** L15 names itself
-  *The Present Isn't Enough*; the nav strip in all 16 lessons says *Advanced PID Control*, and
-  `next_pointer.py` derives from the strip — so L14's footer pointer is **generated wrong, not
-  typed wrong** (rule 51). **S147 and S148 both held it deliberately. With the read arc closed
-  this is now the largest un-ruled item in the book.**
+## 3. THREE INVARIANTS WITH NO GATE
+**NO GATE HOLDS A QUIZ BANK · A NAV PILL · A RULE CITATION.** (The byte figure now has one:
+`byte_audit.py` v1.1, which cannot live in `book_gates.py` because a normal session has no
+toolchain.) **The quiz-bank gate is the urgent one** — `quiz_bank --check` is loud but nothing
+calls it, so a broken bank can be pushed. **The citation one is cheaper than it was**, because
+every L14 citation now names its edition: a gate can assert the edition string is present
+without validating a section number it cannot look up.
+
+## 4. STILL OPEN, CARRIED
 - **`GRAPHIC 16.1` OVERFLOWS ITS PANEL BY 31 UNITS** — *"the sensors rent ~960 B of it (heap)"*
-  spans 410..690 inside 435..665. Found by `svg_layout_audit` at S148 close; that file was not
-  touched this session, so it is pre-existing. **Recorded, not fixed.**
+  spans 410..690 inside 435..665. Found by `svg_layout_audit` at S148 close. **Recorded, not
+  fixed**, and pre-existing.
 - **§4.2's AUDIT TABLE IS UNCONFIRMED AND MAY NOT BE CONFIRMABLE.** An `avr-nm` pass by symbol
   name under-counts it badly (buzzer 598 B where deletion proves 1,828). The table says
   "Approx. cost" and the one row measurable by deletion matches. **Left alone deliberately —
   the instrument, not the table, is what failed.**
+- **§16.14 AND §16.18–§16.21 HAVE NO NUMBERED SECTION BODIES.** §16.12 and §16.13 sit BELOW
+  §17's heading. §6.5c was seated properly at S150 to avoid making it worse.
+- **ARM 2 OF `byte_audit` REACHES TWO LESSONS.** L11–L14 quote byte figures in tables and prose,
+  not in step headings, so they are covered only by ARM 2b's leads.
 - **L10's ARRIVAL GEOMETRY (S144, unruled)** — every artefact agrees with the code; only the
   floor can settle it.
 - **§8A.4's 65 cm/s IS UNVERIFIED** (pololu.com unreachable). · **L14 §8A.2's "five orders of
@@ -165,7 +182,6 @@ it cannot look up.
 - **L14's GLOSSARY says "95% ten times" where §3.1 teaches 90%** — confirmed live, deliberately
   not fixed (both are true of the same principle), and named in the bank as unasked.
 - **THE RESOURCE SECTION AS A BOOK PAGE — PARKED UNTIL AFTER SEPTEMBER 8.**
-- **§16.14 HAS NO NUMBERED SECTION BODY.** §16.12 and §16.13 sit BELOW §17's heading.
 - **L14 §10 IS THE ONLY §10 THAT IS NOT AN EXIT TICKET** — the Competition Day Playbook. Unruled.
 
 ## Carried from S141/S140, still unruled
@@ -206,9 +222,9 @@ overflow** · **L05 Experiment 3 at 45°** · **L06 Experiment 3 both drags** ·
 Challenge 6's wedge** · **HOLD THE ROBOT OVER A TABLE EDGE AND READ THE FIVE CALIBRATED
 VALUES** (expect ~1000 each) · **L11's §7 ladder** · **L12's §7 ladder** · **L13's ENTIRE §7
 LADDER** — 7A's surface-meter table gates all four of L13's tunables and no student can finish
-Lesson 13 without it · **L14's §7 ladder** · **NEW: L15's WHOLE §7 LADDER — nobody has read a
-real dt off the strip chart, found a real K<sub>u</sub>, or measured a real T<sub>u</sub> on
-this fleet** · **NEW: L16's §7.1 baseline — no course has ever been benchmarked.**
+Lesson 13 without it · **L14's §7 ladder** · **L15's WHOLE §7 LADDER — nobody has read a real
+dt off the strip chart, found a real K<sub>u</sub>, or measured a real T<sub>u</sub> on this
+fleet** · **L16's §7.1 baseline — no course has ever been benchmarked.**
 **Every §7 measurement in L13, L14, L15 and L16 is named in those banks as deliberately unasked
 for exactly this reason.**
 
@@ -314,3 +330,11 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
     104, 60, 8 — and **the largest was the wrong answer**, because §7.4 hands the buzzer to the
     student and §7.1 depends on the A+B report. **A menu with numbers on it turns a preference
     into a ruling.**
+71. **NEW, S151: A CONTROL THAT NAMES A FILE IT NEVER TOUCHED IS REPORTING CONTAMINATION, NOT
+    A FINDING.** Six controls printed FAIL at 70 of 71 green — the exact shape of a clean run —
+    because the snapshot predated the edit and the first restore reverted the session's own
+    work. **Read the failure DETAIL, not the verdict.** Rule 21's tell.
+72. **NEW, S151: A QUEUE IS NOT CANON.** An item that survives the session that rules it will be
+    re-reported as open by the next reader. **Check the queue against the Bible before
+    reporting it.** S151 opened by telling DJ that L15's title split was the largest un-ruled
+    item in the book; v8.141 had ruled it the session before.
