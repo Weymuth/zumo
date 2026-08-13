@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-quiz_bank.py v1.0.0 - validate the reading-quiz banks and REPORT STATUS BY DERIVATION.
+quiz_bank.py - validate the reading-quiz banks and REPORT STATUS BY DERIVATION.
 
     python3 quizzes/quiz_bank.py --status     what exists, derived from the tree
     python3 quizzes/quiz_bank.py --check      validate every bank; exit 1 on any problem
@@ -18,6 +18,11 @@ WHY THE COUNTS ARE NEVER TYPED
     into LIVE.md - run --status and copy what it says.
 
 A LIBRARY MAY NOT EXIT. Import-safe: no sys.exit() outside main().
+
+ONE VERSION HOME. The version lives ONLY in the VERSION constant below; this
+docstring deliberately does not repeat it. Two homes with nothing comparing them
+is how a version goes stale silently, and every printer here interpolates the
+constant rather than spelling a number.
 """
 
 import os
@@ -25,7 +30,7 @@ import re
 import sys
 import glob
 
-VERSION = "1.0.0"
+VERSION = "v1.0.1"
 
 QUIZ_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(QUIZ_DIR)
@@ -161,7 +166,7 @@ def bank_for(num):
 def status():
     """Derived progress report. Reads the tree; keeps no list."""
     nums = lesson_numbers()
-    print("quiz_bank.py v%s - status DERIVED from %s" % (VERSION, QUIZ_DIR))
+    print("quiz_bank.py %s - status DERIVED from %s" % (VERSION, QUIZ_DIR))
     print()
     done = 0
     total_q = 0
@@ -198,12 +203,21 @@ def status():
 
 
 def check(verbose=True):
-    """Validate every bank. Returns a list of problems."""
+    """Validate every bank. Returns a list of problems.
+
+    A SCAN THAT FOUND NOTHING IS NOT A SCAN THAT FOUND NOTHING WRONG.
+    Until S153 an empty glob returned [] and main() exited 0, so moving every
+    bank aside - or running from the wrong tree, or a rename - read as "banks
+    are fine" to anyone checking by hand. A hold that is also satisfied by an
+    accident is not a hold. Zero banks scanned is now a PROBLEM.
+    """
     all_bad = []
     banks = sorted(glob.glob(BANK_GLOB))
     if not banks:
+        all_bad.append("no banks found in %s - zero banks scanned is a "
+                       "PROBLEM, not a clean result" % QUIZ_DIR)
         if verbose:
-            print("  no banks found in %s" % QUIZ_DIR)
+            print("  %s" % all_bad[0])
         return all_bad
     for path in banks:
         name = os.path.basename(path)
@@ -295,8 +309,37 @@ def selftest():
     controls.append(("I  non-boolean true_false answer is LOUD",
                      any("must be true or false" in x for x in validate(b, "t"))))
 
+    # CONTROL J - BOTH DIRECTIONS, and it must fire for the RIGHT reason.
+    # A control that is loud on an empty directory is worthless if it is also
+    # loud on a populated one, so J asserts the silent direction too. It runs
+    # against temp directories and never reads or writes quizzes/ - a control
+    # that depends on the state of what it audits is not a control.
+    import tempfile
+    global BANK_GLOB
+    _saved_glob = BANK_GLOB
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            BANK_GLOB = os.path.join(td, "ZUMO_QUIZ_L*.yaml")
+            empty_loud = any("zero banks scanned" in x
+                             for x in check(verbose=False))
+
+            y = _yaml()
+            if y is None:
+                populated_silent = None
+            else:
+                with open(os.path.join(td, "ZUMO_QUIZ_L99.yaml"), "w",
+                          encoding="utf-8") as fh:
+                    y.safe_dump(_good_bank(), fh)
+                populated_silent = check(verbose=False) == []
+    finally:
+        BANK_GLOB = _saved_glob
+
+    controls.append(("J  an EMPTY scan is LOUD", empty_loud))
+    controls.append(("J2 a populated scan is still SILENT",
+                     populated_silent is not False))
+
     ok = True
-    print("quiz_bank.py v%s SELFTEST - silent when clean, loud when broken" % VERSION)
+    print("quiz_bank.py %s SELFTEST - silent when clean, loud when broken" % VERSION)
     for label, passed in controls:
         print("   %-46s %s" % (label, "PASS" if passed else "*** FAIL ***"))
         ok = ok and passed
@@ -309,12 +352,13 @@ def main(argv):
     if "--selftest" in argv:
         return 0 if selftest() else 1
     if "--check" in argv:
-        print("quiz_bank.py v%s --check" % VERSION)
+        print("quiz_bank.py %s --check" % VERSION)
         problems = check()
         return 1 if problems else 0
     if "--status" in argv or len(argv) == 1:
         status()
         return 0
+    print("quiz_bank.py %s" % VERSION)
     print(__doc__)
     return 0
 
