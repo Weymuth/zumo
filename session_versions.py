@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.24.1'
+VERSION = 'v1.25.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -78,6 +78,10 @@ HANDOFF_MARKER = ('<!-- VERSION BLOCK: emitted by session_versions.py --handoff.
 #   nothing compared them. It drifted three times in one day. Bible == LIVE.md == handoff-1.
 # v1.16.0 (S113): _versions_in strips backticks. See the note in that function - the
 #   comparator was blind to every backtick-wrapped entry, which is most of the STATE block.     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
+# v1.25.0 (S149): byte_audit registered in ARTEFACTS and in BOTH emitted blocks. It is
+#   the only instrument in the repo that COMPILES (rule 33), so it cannot run in a
+#   normal session - but an unregistered root .py with a VERSION constant makes
+#   CONTROL E fire, and CONTROL C reported it the moment the file landed.
 # v1.24.1 (S139): CONTROL H - A VERSION NAMED IN PROSE IS NOT A VERSION CLAIM. check()
 #   read the WHOLE handoff into _versions_in, which builds its dict with re.findall, so
 #   the LAST occurrence of a key won. The S139 handoff states `Bible **v8.130.2**` in its
@@ -212,6 +216,7 @@ ARTEFACTS = [
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
+    ('byte_audit',            'byte_audit.py',            r"VERSION = '(v[\d.]+)'"),
     ('build_palette',         'build_palette.py',         r"VERSION = '(v[\d.]+)'"),
     ('color_index',           'color_index.py',           r"VERSION = '(v[\d.]+)'"),
     ('entity_sweep',          'entity_sweep.py',          r"VERSION = '(v[\d.]+)'"),
@@ -310,6 +315,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
             f"regex_audit {vals['regex_audit']} · "
+            f"byte_audit {vals['byte_audit']} · "
             f"build_palette {vals['build_palette']} · "
             f"class_sweep {vals['class_sweep']} · "
             f"color_index {vals['color_index']} · "
@@ -346,6 +352,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
+            f"`byte_audit` **{vals['byte_audit']}** ·\n"
             f"`build_palette` **{vals['build_palette']}** ·\n"
             f"`class_sweep` **{vals['class_sweep']}** ·\n"
             f"`color_index` **{vals['color_index']}** ·\n"

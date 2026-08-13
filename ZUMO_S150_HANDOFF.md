@@ -1,4 +1,4 @@
-# ZUMO — S149 HANDOFF (rewritten at S148 close · paste at top of Session 149)
+# ZUMO — S150 HANDOFF (rewritten at S149 close · paste at top of Session 150)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** A stale answer is
@@ -40,63 +40,48 @@ both, or an over-ceiling build reads as a crash** (S148 lost a run to this).
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S148
+# THE ONE THING TO CARRY OUT OF S149
 
-**LESSON 16 DID NOT FIT ON THE CHIP, AND NOTHING IN THE TREE COULD SEE IT.**
+**I CLASSIFIED TEN PAYLOADS BY COMPILED SIZE AND TWO OF THEM WERE DIFFERENT SOURCE.**
 
-L15's finished build grew 180 bytes, so L16's whole chain started higher. Measured: **Step 3
-overflowed by 152, and the FINISHED build — the one both sabotages and the entire capstone
-derive from — was 84 bytes over the ceiling.** The trade the lesson teaches (Serial out,
-EEPROM in) no longer paid the bill.
+Ruling the catch-up split needed a measurement. I made it by compiling `after_step_1` for L07–L16
+and comparing each figure to the previous lesson's `finished`. All ten matched, so I reported that
+all ten `step_1` rows are coincidental — both conventions agree there because Step 1 is a copy.
 
-**Seventy gates passed the whole time.** `gate_payload_match` passed. A lesson whose central
-build cannot be flashed is, to every instrument in this repo, a perfectly well-formed lesson.
-**Rule 33 in its most expensive form yet: no instrument reads prose, and no instrument
-compiles anything either — only the toolchain does, and only when you point it at every kind.**
+**That is S27 verbatim, and DJ's "double check your work first" is the only reason it was caught.**
+Re-run as md5 over the materialised files, **L13 and L14 differ.** Their `after_step_1` already
+carries the lesson's own Step 1 work — L13's five new states plus `SILVER_RAW_MAX`,
+`WALL_STOP_COUNT`, `ROW_STEP_CM`, `VICTIM_SHORT_CM` and the `StopReason` enum; L14's
+`COMPETITION_MODE` and three self-test limits. **Both cost ZERO BYTES, because a `const` or an
+`enum` that nothing references yet emits no code.** The lessons confirm it: L12 Step 1 is *Copy
+Your Lesson 11 Project*, L13's is *The Numbers, the Names, the Reasons*, L14's is *One Switch,
+Three Limits*.
 
-**The fix was a design ruling, not a number.** Six candidate cuts were priced by deletion
-against the finished build:
+**The corrected tally is 27 genuine identity against 28 offset — near even — not 35 against 28.**
 
-| cut | frees | lands |
-|---|---|---|
-| **Ziegler–Nichols hint (CHOSEN)** | **156** | 28,600 · 72 spare |
-| buzzer, all 12 `playNote()` calls | 1,828 | 26,928 · 1,744 spare |
-| `checkBattery()` A+B report | 114 | 28,642 · 30 spare |
-| the 3-2-1 countdown | 104 | 28,652 · 20 spare |
-| the WEAVE row | 60 | still over by 24 |
-| `showStatus()` prox readout | 8 | still over by 76 |
-
-**The buzzer was rejected even though it is by far the biggest.** §7.4 hands it to the STUDENT
-as their reserve and writes their TDP sentence for them; spending it in the book would leave
-1,744 bytes of runway, so no student would ever have to trade anything — in a lesson called
-*Nothing Left to Take Away*. **`checkBattery()` was rejected because §7.1 requires the A+B
-report for benchmark battery honesty.** Only Z–N both closes the gap and breaks nothing.
-
-**And it made the lesson better.** Step 5 now makes TWO trades: the easy one (Serial, −704,
-**still 84 over**) and the hard one (Z–N, −156, green at 28,600). The book previously modelled
-only the kind of cut everyone agrees with. **The sentence it can now write is *the obvious cut
-was not enough*.**
+**AND IT IS A STANDING LIMIT ON `byte_audit`, NOT A ONE-OFF:** a payload can ship an entirely wrong
+configuration block and ARM 1 will never see it, because unreferenced declarations are free.
+**The compiler is an instrument for what the program DOES, never for what the source SAYS.**
 
 ---
 
-# STATE
-
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`8179899`**. Census **40,642**.
-Bible **v8.139** · `BookComponentStandard` **v01.13.0** · Maker **v2.49.4** ·
+Fresh-clone verified at **`4f806ee`**. Census **40,642**.
+Bible **v8.140** · `BookComponentStandard` **v01.13.0** · Maker **v2.49.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
 Instruments: `book_gates` **v1.65.12** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.4** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
-`gen_part_banners` **v1.2** · `session_versions` **v1.24.1** · `fit_raster_svg` **v1.2** ·
+`gen_part_banners` **v1.2** · `session_versions` **v1.25.0** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
 `build_css` **v1.3.0** ·
 `image_audit` **v1.2** ·
 `strip_inline` **v1.2** ·
 `build_worklist` **v1.1** ·
 `regex_audit` **v1.0** ·
+`byte_audit` **v1.1** ·
 `build_palette` **v1.1** ·
 `class_sweep` **v1.0** ·
 `color_index` **v1.0** ·
@@ -111,155 +96,89 @@ Instruments: `book_gates` **v1.65.12** · `lesson_inventory` **v1.3.5** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.28.3 · L02 v03.21.2 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.1 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.0 · L16 v02.23.0.
+Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.0 · L04 v04.29.0 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.0 · L16 v02.23.0.
 
-`quizzes/QUIZ_SPEC.md` **v1.2.0** · banks L14, L15, L16 **v1.0.0** NEW ·
-`ZUMO_TDP_Template_v3.md` **v3.1.1** · `RCJRescueLine2026-final.pdf` NEW (repo root, 9.8 MB).
+`quizzes/QUIZ_SPEC.md` **v1.2.0** · banks L02/L07/L08/L09/L10 **v1.0.1** ·
+`ZUMO_TDP_Template_v3.md` **v3.1.1**.
 
-**ALL SIXTEEN LESSONS ARE READ, FIXED AND BANKED. Derive the count, never read it out of this
-sentence:** `python3 quizzes/quiz_bank.py --status`
-
----
-
-# WHAT S148 SHIPPED
-
-Three full READ → FIX → QUIZ arcs — **L14, L15 and L16** — plus the rules pass. Sixteen of
-sixteen banks now exist.
-
-## 1. THE RULES PASS — S147's CITATION FINDING WAS BACKWARDS
-
-DJ supplied the official **RCJ Rescue Line 2026** PDF and ruled *"Go with the newest post."*
-**The 2026 changes list opens with *Deleted "Terms and Definitions"*** — the §4.1 the 2025
-edition inserted — so Section 4 shifts **back** by one and **L14 §4.1's citations were right
-all along**; the Engineer's Log's `§4.3.7` was the 2025 number. Verified three ways in the PDF
-(contents page, §4.2's item numbering, footnote **[1]** on §4.1). **The number moved twice in
-three editions and landed where it started: 2024 §4.2.8 → 2025 §4.3.7 → 2026 §4.2.8** — so a
-bare section number can be *coincidentally* right. Every citation now names its edition inline.
-
-**`ROBOCUP_RESCUE_LINE_2026.md` was convicted on an inference and is innocent** — it is
-genuinely the 2026 edition, carrying the wall-colour, white-LED and fake-victim clauses that
-exist in no earlier one. S147 doubted it because **there was nothing in the tree to compare it
-to**, which is why the PDF is now in the root. **RCJ governs, so L13 is untouched.**
-
-**The ramp is resolved:** §3.7.4 awards per inclined tile, the 2026 changes list DELETES the
-sentence the contradiction rested on (footnote [2]), so a three-tile ramp is **30**.
-
-## 2. THE BYTE CASCADE, RE-COMPILED AT EVERY LEVEL
-
-Not carried from any handoff. Control first, then every payload of three lessons.
-
-**L14** — every S147 figure reproduced exactly: 25,072 · 25,816 (+744) · 25,780 (36 fewer) ·
-25,076 (740 smaller) · B2/B3/B4 identical at 25,816 · **B4-in-match-mode 25,772, composed by
-putting B4's `main.cpp` on the match-mode config after diffing to prove the composition
-unambiguous.**
-
-**L15** — +176 at the top, +180 at the bottom, **four of five deltas moved**: 25,816 · 25,980
-(+164) · 27,286 (+1,306) · 27,334 (+48) · 28,214 (+880) · 7A 26,292 · 7D 27,400 · B2 28,230 ·
-B3 28,164 (−50, delta changed).
-
-**L16** — 28,214 · 28,464 (+250) · 28,824 **over by 152** · 29,460 **over by 788** · 28,756
-**still over by 84** · **28,600 after the second trade**, 72 spare. Six of nine rows in the
-Section 1 ladder were stale and were re-derived by compiling each lesson's own `finished`.
-
-## 3. TEN DEFECTS NO BASELINE SHIFT WOULD HAVE TOUCHED
-
-**L14, and the eighth is the one that matters:** `QUIZ_SPEC` §0 requires an end-to-end read *in
-the session that writes the bank*, and **S147's read does not transfer.** The re-read found
-**§4.3 claiming 4,800 mV "is the number `selfTest()` judges you against"** where the code reads
-`battOK = (mv >= BATTERY_LOW)` — **4200** — which **Sabotage B3's own reveal already stated**
-(*"420 is not 4200"*). A bank written on S147's read would have keyed 4,800 and marked every
-student who read the code as wrong. Also: `830` rewritten rather than swapped (`selfTest()` has
-**no function symbol** in the Step 3 binary — LTO inlined it into `setup()`; the only
-`selfTest` symbols are **16 string constants totalling 149 bytes**); *260 lines* → **87**;
-*Sections 3.3 and 6.3* → **8.3** (no §6.3 exists); §4.3's empty colon promise; §8.2's *Tuning
-Helper Code* heading; §7E's shipped draft self-correction; *twelve-item* kit → **11**.
-
-**L15: the doorway cost was stated three times, three different ways, and none was right.**
-Step 6's header said +58, its own prose said *"Sixty-eight bytes"*, §8A.3 said *"costs 68"*.
-Measured **48**. Also: **the capstone headroom was overstated by 180** (*"638 bytes left"* →
-**458**), and **two Maker payloads shipped a comment attached to the wrong variable** — the 7D
-and Challenge 2 builds had `lineIntegral` and `dFiltered` each carrying *"How long THIS pass
-took"*, a sentence describing `dtSec`, while `dtSec` had none. Repaired on both sides together
-and verified byte-neutral.
-
-**L16:** the ladder, the linker error (626 → **788**), §4.2's heading, every step figure, both
-sabotage sizes, §7.4's reserve, the Quick Reference. *"638 bytes … about a fifth of one
-percent"* was **also wrong by a factor of ten** independently of the re-baselining.
-
-## 4. GRAPHIC 16.2 WAS REDRAWN FROM ITS OWN GEOMETRY
-
-The wall chart carried the whole stale ladder plus the Step 3/4 figures. **The scale was
-DERIVED from the file — 0.016006 px/byte, bars grounded at y=660 — not eyeballed.** Eleven bars
-recomputed; Step 3 turned red because it now crosses the ceiling; every bar read back and
-checked against its true value. **The first render caught a collision** the numbers alone would
-not have shown: Step 3's label ran straight through the ceiling caption. Caption moved left,
-Step 3's label matched to Step 4's `+N` form. Its subtitle said *"the step that finally hits
-it"*; two do now.
-
-## 5. THE BANKS — AND THE DOUBLE CHECK THAT FOUND WHAT THE FIRST PASS DID NOT
-
-L14 **v1.0.0** (75) · L15 **v1.0.0** (75) · L16 **v1.0.0** (75). **16 of 16 banks.**
-
-**DJ ASKED FOR A DOUBLE CHECK AND §24.13 MEANS A DIFFERENT METHOD.** Three assertion arms were
-run over the artefacts rather than re-reading them:
-
-1. **A superseded-figure sweep** over three lessons, three banks and the SVG — 41 hits, every
-   one read. **Zero in any lesson and zero in the graphic.**
-2. **Every byte figure a bank keys as correct, compiled** — 22 builds, **0 mismatches**.
-3. **Every `cite:` resolved against the lesson's real section ids** — 142 distinct citations,
-   **0 unresolved**.
-
-**ARM 1 FOUND S146's DEFECT REPEATING IN ALL THREE BANKS.** Ten distractors offered a
-pre-correction figure and explained it with *"a figure from an earlier baseline"* or *"the old
-baseline's figures"* — **which is an appeal to the book's edit history, and a student has never
-seen those numbers and cannot reach that history.** QUIZ_SPEC §4's whole contract is that
-`cite:` tells the student **where to re-read**. All ten rewritten so the wrong answer is wrong
-for a reason findable in the lesson: Step 3's own overflow, Mystery B1's figure, the ceiling
-itself, Step 2's delta. **Three of the thirteen hits were false positives** — `"before the"`
-matching *"the pit check comes before the robot is allowed to move"* — read, not acted on
-(rule 38).
-
-**The first pass could not have found this.** `quiz_bank --check` validates structure and was
-green on all sixteen banks the whole time. **No gate holds a quiz bank, and no gate can hold
-this.**
-
-## 6. TWO PROCESS FAILURES, BOTH MINE, BOTH CAUGHT
-
-**A blinding control fired for the wrong reason** (rule 59). §27.13 failed on the *restored*
-tree too, because the L15 comment repair added two syntax-highlight spans. Re-run clean
-afterwards: the seeded mid-chain defect passes all 70 gates **and** `gate_payload_match`, and
-is loud only to the compile-against-figure verifier. The endpoint-only form stays blind, as
-S146 measured.
-
-**Then I ran step 3 of the CSS cycle without `--include-held`** — **S119's documented failure,
-verbatim** — reverting the lesson strip from `class=` to inline `style=` in all sixteen
-lessons. Re-running with the flag returned the fourteen untouched lessons byte-identical to
-HEAD. The flag is in the docstring and in S119's changelog entry; knowing the rule conferred
-no immunity.
-
-**A third near-miss worth recording:** the first Maker edit re-serialised the whole PAYLOADS
-object with `json.dumps` — **2,726 changed lines and +58 KB for a four-payload change.**
-Restored and redone as targeted encoded-string splices: **2 changed lines, same result.**
-**A diff you cannot read is not a reviewable edit.**
-
-## 7. RULE 46 PAID TWICE, AND THE SECOND TIME IT WON
-
-Step 3's compile-check callout was `data-family="STILL GREEN"` and Step 3 is no longer green.
-I gave it **`THE WALL`** — a family that already exists in L11–L13, is semantically exact, and
-that Lesson 16, *the lesson named after hitting it*, carried none of. **Five gates fired at
-once.** The sharpest was **§5.1: `THE WALL`'s 5px border is frozen debt, baseline zero for L16,
-and the gate exists to stop it spreading.** So Step 3's overflow became **prose** — *"there is
-no compile-check box for this step, because there is nothing green to put in one"* — and the
-new compile check took the callout slot. **Net zero callouts, zero family moves, zero new
-marks; four of the five cleared without touching a baseline.** S144's precedent arriving live.
-
-Baselines that did move, each derived and blinding-controlled: **§27.11 twice** (rules and
-declarations UNCHANGED at 574/2,033 both times, class set byte-identical, every declaration
-block byte-identical — usage rank only), `book_gates` **v1.65.10 → v1.65.12**.
+**Derive the bank count, never read it out of a sentence:** `python3 quizzes/quiz_bank.py --status`
 
 ---
 
-# S149 QUEUE
+# WHAT S149 SHIPPED
+
+## 1. `byte_audit.py` v1.1 — THE ONLY INSTRUMENT HERE THAT COMPILES
+
+Rule 33 said no instrument reads prose and none compiles either. This closes the second half.
+It cannot live in `book_gates.py` — no toolchain in a normal session — so run it whenever the
+harness is up.
+
+- **ARM 1 CEILING** — compiles **every** payload the Maker defines. No parsing, no mapping, no
+  inference. **This is the arm that would have caught S148's unflashable L16.** 213 payloads,
+  0 undeclared overflows.
+- **ARM 2 FIGURES** — every step figure must equal a compiled payload of its lesson.
+- **ARM 2b LEADS** — every figure in the compiled band, book-wide. A lead, never a verdict.
+- **ARM 3 CONVENTION** — written, and **it can only see L15 and L16**, because no other lesson
+  states per-step byte figures. Do not read its verdict as book-wide (rule 27).
+
+**SEVEN CONTROLS, AND THREE OF MY OWN BUGS WERE CAUGHT BY THEM RATHER THAN BY KNOWING THE RULES:**
+
+1. The overflow control's pad was **collected by `--gc-sections`** and reported PASS — a control
+   that never fired (rule 59). Moved to PROGMEM and read at runtime; now 31,054.
+2. The wrapper test asked whether the body contained `#include`. **L01's challenge comment boxes
+   mention it** (rule 55). Changed to a directive test — which **L01 c01's own `<EEPROM.h>`
+   tripped.** `mainCpp()` prepends its head **unconditionally**; the fix was to do what the Maker
+   does. Control: **0 of 197 previously-passing sizes moved.**
+3. The step parser knew only `Step 3 — Title`. **L11 and L12 write `📁 Step 2b: Title`** and were
+   read as having no steps at all.
+
+## 2. §16.22 — THE CATCH-UP SPLIT IS RULED LEGITIMATE
+
+DJ ruled it. **L07–L10 OFFSET, L11–L16 IDENTITY, both correct.** L07–L10 are the lessons where the
+*doing* is the content, so a finished step deletes the lesson; L11–L16 are integration lessons
+where one step behind blocks the chain. Rule 32.
+
+**A gate may assert this per range only, and must exclude the eight coincidental `step_1` rows** —
+they satisfy either convention, so counting them certifies nothing. **That gate is not written.**
+
+## 3. §16.23 — A DELIBERATELY UNBUILDABLE PAYLOAD DECLARES ITSELF
+
+`L02 broken_code` and `L10 step_4_RED` are correct by design and were declared **in prose only**,
+which no instrument reads. `data-nobuild` on the catch-up link now **names the reason**; a bare
+boolean was rejected because a label is not the thing (rule 31). Control G is loud on a missing
+attribute **and on an empty one**.
+
+## 4. THE STALE BANK KEYINGS — AND THE METHOD THAT FOUND WHAT A GREP DID NOT
+
+Six keyings across five banks named lesson versions that had moved. **`Authored against:` was left
+exactly as written** — it records when the bank was read, and rewriting it asserts a read that
+never happened (rule 37). A **`Verified against:`** line was added instead.
+
+**The first method was a keyword grep and it returned zero, which is a weak way to prove a
+negative** (rule 38). Redone by resolving each changed diff hunk to its enclosing section, with a
+blinding control that fires on a seeded cite: **11 bank questions across L08/L09/L10 cite §5.4 —
+the section L08 changed.** All eleven were read. None touches the changed comment. Conclusion
+unchanged; evidence real.
+
+---
+
+# S149's OPEN FINDINGS
+
+- **`byte_audit` CURRENTLY EXITS 1 ON EXACTLY ONE ROW, AND IT IS A REAL GAP.** L16 Step 5's first
+  COMPILE CHECK promises **28,756** — the state after the Serial trade, before the Z–N trade. The
+  number is right. **No Maker payload produces it**, so a student stuck at that intermediate has no
+  catch-up and no instrument can ever verify the figure. Either author the payload or rule the
+  figure exempt. **DJ to rule.**
+- **§16.18 THROUGH §16.21 HAVE NO NUMBERED SECTION BODIES**, same as §16.14. Four rules now live
+  only in changelog entries. §16.22 and §16.23 were seated properly to avoid making it six.
+- **THE `IMAGE 7.9`–`7.12` QUEUE ITEM IS ALREADY FIXED** and should be struck: L07 v04.31.4 reads
+  `Diagram (SVG)` / `✅ in the lesson` on all five rows.
+- **ARM 2 REACHES TWO LESSONS.** L11–L14 quote byte figures in tables and prose, not in step
+  headings, so they are covered only by ARM 2b's leads. Widening ARM 2 is real work.
+
+---
+
+# S150 QUEUE
 
 **The read arc is finished. Every lesson is read, fixed and banked.** What is left is not
 content.
