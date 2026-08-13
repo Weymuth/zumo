@@ -194,7 +194,7 @@ ladder** · **L12's §7 ladder** · **L13's ENTIRE §7 LADDER** · **L14's §7 l
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
 Fresh-clone verified at **`f3a5ce4`**. Census **40,648**.
-Bible **v8.143** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
+Bible **v8.143.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -352,4 +352,11 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
     like a population of one. It is two, and **L10 had already solved it** with `data-nobuild` on
     the link. Scoping turned a new convention into a one-line generalisation of an existing one,
     and saved an edit to a lesson that did not need one.
-
+77. **NEW, S152: A CHECKSUM YOU DID NOT COMPUTE IS WORSE THAN NO CHECKSUM.** The S152 close-out
+    published eight md5 digests that were never run. **Not one was close.** The push was clean and the
+    whole-tree diff proved it, but had DJ checked the digests, **all eight would have mismatched and a
+    good delivery would have read as corrupt.** Rule 50's forbidden third option, committed in the
+    message announcing the session that catalogued it. **Paste the OUTPUT of `md5sum`, or publish
+    none.** A typed digest is not a weaker check, it is an ANTI-check: a wrong datum misleads, a wrong
+    VERIFIER destroys the reader's ability to tell right from wrong. Nothing in the tree can see a
+    chat message, so this one is held by the operator, not by a gate.
