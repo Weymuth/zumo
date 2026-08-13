@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.25.0'
+VERSION = 'v1.26.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -78,6 +78,13 @@ HANDOFF_MARKER = ('<!-- VERSION BLOCK: emitted by session_versions.py --handoff.
 #   nothing compared them. It drifted three times in one day. Bible == LIVE.md == handoff-1.
 # v1.16.0 (S113): _versions_in strips backticks. See the note in that function - the
 #   comparator was blind to every backtick-wrapped entry, which is most of the STATE block.     # the only version home in this file (S96; v1.4 S98; v1.15 S110)
+# v1.26.0 (S153): quiz_bank registered in ARTEFACTS and in BOTH emitted blocks. It sits
+#   in quizzes/, and CONTROL E's scope pin was glob('*.py') - ROOT - so it declared a
+#   VERSION and was invisible for seventeen sessions. Its match pin was ^VERSION = '
+#   too, a SINGLE QUOTE, which keyterm_prefix.py has never satisfied; that file passed
+#   only because it had been registered by hand. Both pins were spellings; the control
+#   now ast-parses for a module-level VERSION anywhere in the tree, in any quoting, and
+#   carries a COVERAGE arm because a scan of zero files passes (rule 27).
 # v1.25.0 (S149): byte_audit registered in ARTEFACTS and in BOTH emitted blocks. It is
 #   the only instrument in the repo that COMPILES (rule 33), so it cannot run in a
 #   normal session - but an unregistered root .py with a VERSION constant makes
@@ -227,6 +234,7 @@ ARTEFACTS = [
     ('mark_wire',             'mark_wire.py',             r"VERSION = '(v[\d.]+)'"),
     ('glyph_scan',            'glyph_scan.py',            r"VERSION = '(v[\d.]+)'"),
     ('title_feed',            'title_feed.py',            r"VERSION = '(v[\d.]+)'"),
+    ('quiz_bank',             'quizzes/quiz_bank.py',     r'VERSION = "(v[\d.]+)"'),
     ('Timer',                 'timer.html',               r'Timer version: (v[\d.]+)'),
 ]
 
@@ -325,6 +333,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"family_tag {vals['family_tag']} · glossary_convert {vals['glossary_convert']} · mark_wire {vals['mark_wire']} · "
             f"glyph_scan {vals['glyph_scan']} · "
             f"title_feed {vals['title_feed']} · "
+            f"quiz_bank {vals['quiz_bank']} · "
             f"Timer {vals['Timer']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
@@ -364,6 +373,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`mark_wire` **{vals['mark_wire']}** ·\n"
             f"`glyph_scan` **{vals['glyph_scan']}** ·\n"
             f"`title_feed` **{vals['title_feed']}** ·\n"
+            f"`quiz_bank` **{vals['quiz_bank']}** ·\n"
             f"`timer.html` **{vals['Timer']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
@@ -397,9 +407,25 @@ UNVERSIONED = {'engine.py', 'extract_project.py'}
 
 
 def roster_coverage():
-    """-> list of root .py files in neither ARTEFACTS nor UNVERSIONED."""
+    """-> list of tracked .py files in neither ARTEFACTS nor UNVERSIONED.
+
+    S153: `found` was ROOT ONLY, and it compared BASENAMES against ARTEFACTS'
+    RELATIVE PATHS. Both halves were spellings (rule 19). quizzes/quiz_bank.py
+    was invisible here for the same reason it was invisible to CONTROL E, so
+    the tree carried TWO root-scoped mechanisms and neither could see a
+    subdirectory - which is not redundancy, it is one blind spot counted twice.
+    Now walks the tree and compares relative paths on both sides.
+
+    UNVERSIONED still holds bare names; both its members sit in root, where the
+    relative path IS the basename, so they keep matching.
+    """
     rostered = {rel for _, rel, _ in ARTEFACTS}
-    found = {os.path.basename(p) for p in glob.glob(os.path.join(ROOT, '*.py'))}
+    found = set()
+    for p in glob.glob(os.path.join(ROOT, '**', '*.py'), recursive=True):
+        rel = os.path.relpath(p, ROOT).replace(os.sep, '/')
+        if '__pycache__' in rel:
+            continue
+        found.add(rel)
     return sorted(found - rostered - UNVERSIONED)
 
 
@@ -462,7 +488,7 @@ def check():
 
     unrostered = roster_coverage()
     for f in unrostered:
-        print("  ROSTER: %s is in the repo root and in no version roster - add it to"
+        print("  ROSTER: %s is in the repo and in no version roster - add it to"
               " ARTEFACTS, or to UNVERSIONED if it carries no version by design" % f)
     bad += len(unrostered)
 
@@ -802,27 +828,55 @@ def selftest():
     finally:
         shutil.rmtree(tmp3, ignore_errors=True)
 
-    print("CONTROL E (registry completeness): a root .py with a VERSION constant must be "
-          "REGISTERED")
+    print("CONTROL E (registry completeness): ANY tracked .py with a VERSION constant must "
+          "be REGISTERED")
     # Three sessions running, a new instrument was written and left out of ARTEFACTS, so its
     # version never reached LIVE.md or the handoff and the recorded toolchain silently stopped
     # matching the repo. Care did not fix it twice; this asks the question mechanically.
+    #
+    # S153: THIS CONTROL CARRIED TWO PINS AND BOTH WERE SPELLINGS, NOT PROPERTIES (rule 19).
+    #   glob('*.py')     scoped it to ROOT, so quizzes/quiz_bank.py declared a VERSION for
+    #                    seventeen sessions and was invisible - a completeness control you
+    #                    can route around by putting a file in a subdirectory.
+    #   ^VERSION = '     pinned the SINGLE QUOTE, so keyterm_prefix.py - a ROOT file that
+    #                    writes VERSION = "v1.0.1" - was invisible too. It passed only
+    #                    because somebody had registered it by hand. A hold that is also
+    #                    satisfied by an accident is not a hold (rule 20).
+    # The property is: a module-level assignment to VERSION, anywhere in the tree, in any
+    # quoting. Parsed with ast rather than matched, because the quote was half the defect.
     import glob as _glob
+    import ast as _ast
     _registered = {rel for _lab, rel, _pat in ARTEFACTS}
     _unregistered = []
-    for _f in sorted(_glob.glob('*.py')):
+    _scanned = 0
+    for _f in sorted(_glob.glob('**/*.py', recursive=True)):
+        if '__pycache__' in _f:
+            continue
         try:
             _src = open(_f, encoding='utf-8', errors='replace').read()
-        except OSError:
+            _tree = _ast.parse(_src)
+        except (OSError, SyntaxError):
             continue
-        if re.search(r"^VERSION = '", _src, re.M) and _f not in _registered:
+        _has = any(isinstance(_t, _ast.Name) and _t.id == 'VERSION'
+                   for _n in _tree.body if isinstance(_n, _ast.Assign)
+                   for _t in _n.targets)
+        if not _has:
+            continue
+        _scanned += 1
+        if _f not in _registered:
             _unregistered.append(_f)
+    # COVERAGE ARM. A control that scanned nothing passes, and that is not a result.
+    if _scanned == 0:
+        print("   FAILED. CONTROL E scanned ZERO files carrying a VERSION - the scan is "
+              "broken, not the tree.")
+        return 1
     if _unregistered:
         for _u in _unregistered:
             print(f"   FAILED. {_u} declares a VERSION but is not in ARTEFACTS - its version "
                   f"will never be emitted.")
         return 1
-    print(f"   all {len(_registered)} registered; no root .py carries an unregistered VERSION\n")
+    print(f"   {_scanned} .py carry a VERSION, all registered; {len(_registered)} artefacts "
+          f"in ARTEFACTS\n")
 
     print("CONTROL F (Bible self-consistency, both ways): header, Current: and the newest "
           "changelog entry must agree")

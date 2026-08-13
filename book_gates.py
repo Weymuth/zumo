@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.66.2'
+VERSION = 'v1.67.0'
 # v1.66.0 (S150): GATE 71 NEW, §6.5c. The <title> tag carries the strip's CATALOG name.
 # v1.66.2 (S152): §27.11 stylesheet digest baseline moved after the L16 Step 5
 #                 mid-trade catch-up landed. Rules and declarations UNCHANGED at
@@ -4116,6 +4116,85 @@ try:
 except Exception as _e70:
     bad.append('the step-payload predicate did not run (%s)' % _e70)
 gate('\u00a715  a step payload is the file as it stands AT that step', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 72 (S153) - EVERY LESSON HAS A BANK, AND EVERY BANK VALIDATES.
+#
+# `quiz_bank.py --check` has been loud since S136 and NOTHING IN THIS SUITE
+# CALLED IT, so a broken bank could be pushed past a green run. Bible v8.130
+# recorded that as debt in the session that created it; this closes it.
+#
+# WIRED AS A LIBRARY, NOT A SUBPROCESS, FOR TWO REASONS.
+#   1. The denominator must be THIS suite's lesson list - the same `files` glob
+#      every other gate reads - so the two cannot disagree about how many
+#      lessons the book has (rule 29: pin the denominator).
+#   2. `--check`'s exit code is not the property. Control-run S153 against a
+#      scratch copy: with all sixteen banks moved aside, `check()` prints
+#      "no banks found" and RETURNS AN EMPTY PROBLEM LIST, so `main()` exits 0.
+#      A gate that shelled out would inherit that - deleting the entire quiz
+#      directory would PASS. A hold that is also satisfied by an accident is
+#      not a hold (rule 20), and a coverage count measures blocks scanned, not
+#      blocks asserted (rule 27). So this gate counts what it ASSERTED and
+#      fails if that is not exactly the lesson count.
+#
+# It also asserts the bank's own `lesson:` field against the filename it was
+# found under. `quiz_bank.validate()` never compares them, so a bank declaring
+# L05 inside ZUMO_QUIZ_L06.yaml validates clean and keys a whole lesson's
+# reading quiz to the wrong lesson (rule 18: a derived key is not an identity).
+bad = []
+try:
+    _qdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'quizzes')
+    if _qdir not in sys.path:
+        sys.path.insert(0, _qdir)
+    import quiz_bank as _qb
+
+    _want72 = [L(f) for f in files]                 # THIS suite's lesson list
+    if not _want72:
+        bad.append('no lessons found - the gate scanned nothing')
+
+    _seen72 = 0
+    for _n72 in _want72:
+        _p72 = _qb.bank_for(_n72)
+        if not _p72:
+            bad.append('L%s has no quiz bank (quizzes/ZUMO_QUIZ_L%s.yaml)'
+                       % (_n72, _n72))
+            continue
+        _d72, _e72 = _qb.load(_p72)
+        if _e72:
+            bad.append('L%s bank: %s' % (_n72, _e72))
+            continue
+        _probs72 = _qb.validate(_d72, os.path.basename(_p72))
+        if _probs72:
+            for _b72 in _probs72[:6]:
+                bad.append(_b72)
+            if len(_probs72) > 6:
+                bad.append('L%s: ...and %d more problem(s) - run '
+                           'quizzes/quiz_bank.py --check'
+                           % (_n72, len(_probs72) - 6))
+            continue
+        _decl72 = str((_d72 or {}).get('lesson', ''))
+        if _decl72 != 'L' + _n72:
+            bad.append("%s declares lesson %r, expected 'L%s' - a bank keyed "
+                       'to the wrong lesson validates clean'
+                       % (os.path.basename(_p72), _decl72, _n72))
+            continue
+        _seen72 += 1
+
+    # COVERAGE ARM. Zero asserted is not zero problems.
+    if _seen72 != len(_want72):
+        bad.append('asserted %d of %d lesson banks - a bank that could not be '
+                   'read is not a bank that passed' % (_seen72, len(_want72)))
+
+    # ORPHAN ARM. A bank file for a lesson that does not exist is a lead.
+    _onfile72 = sorted(os.path.basename(p) for p in
+                       glob.glob(os.path.join(_qdir, 'ZUMO_QUIZ_L*.yaml')))
+    _expect72 = {'ZUMO_QUIZ_L%s.yaml' % n for n in _want72}
+    for _f72 in _onfile72:
+        if _f72 not in _expect72:
+            bad.append('quizzes/%s matches no lesson in lessons/' % _f72)
+except Exception as _e72:                                   # noqa: BLE001
+    bad.append('the quiz-bank predicate did not run (%s)' % _e72)
+gate('\u00a724.2 every lesson has a quiz bank and every bank validates', bad)
 
 print('=' * 52)
 

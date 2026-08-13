@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 13, 2026 (Session 152 — **THE MAKER'S LABELS WERE LYING AND NOTHING IN THE REPO COULD SEE THEM.** DJ opened by bringing a GPT lesson review; the paste carried only L15, L16 and an overarching pass, because a select-all copies the rendered page and not the conversation. Triage of what DID arrive converted two claims to findings against the tree — L16's `saveBaseline()` reads `millis() - runStart` at CALL time from `RUN_REPORT`, so the saved lap grows while the student reads the report, and `showScore()` recomputes it the same way, so the number is climbing ON SCREEN; and `followLine()` is gated by `isLineVisible()`, so the line integrator cannot accumulate during a gap and L15's predicted gap-windup demonstration is architecturally impossible. **Neither was fixed this session** — both move bytes and belong to a full lesson arc. **What was fixed is what the toolchain exposed underneath them.**)
-**Status:** ✅ **S152 CLOSED WITH 71/71 GATES AND `byte_audit` AT EXIT 0 FOR THE FIRST TIME IN THREE SESSIONS.** The L16 Step 5 figure of **28,756** — open and unruled since S150 — is closed. DJ ruled *author the payload*, and it was priced before it was written (rule 70): the state was BUILT and compiled to 28,756 exactly, `+84 over`, which is the lesson's own wording. **Then the label check fired.** Every one of the five L16 KINDS labels carrying a byte figure was stale — −180, −162, −162, −6, −6 — and `step_3` read *“28,662 bytes — TEN to spare”* for a payload **152 OVER the ceiling**, in the step whose entire subject is that it does not fit. **They hid because each clause was arithmetically consistent with its own stale figure — a label agreeing with itself (rule 51).** Scoped book-wide before fixing: 297 KINDS rows, 5 carry a figure, all 5 in L16, all 5 wrong. **DJ ruled DERIVE**, so `byte_audit` gained **ARM 4**, whose expectation comes from the size table and never from a typed number — the BLINDING control rewords a label and the arm stays silent.
+**Date:** August 13, 2026 (Session 153 — **THE QUIZ BANK GOT ITS GATE, AND THE GATE FOUND THAT THE INSTRUMENT IT WIRED IN REPORTED CLEAN ON AN EMPTY DIRECTORY.** DJ ruled the quiz-bank gate first. `quiz_bank --check` has been loud since S136 and nothing called it; control-run before a line was written, `check()` returns an EMPTY problem list when the glob finds nothing, so **deleting all sixteen banks exits 0**. A gate that shelled out would have inherited that exactly. **Then the version bump exposed the session's real finding:** `quizzes/quiz_bank.py` carries a VERSION and was registered in nothing, because `roster_coverage()` and CONTROL E were BOTH pinned to the repo root — two mechanisms, one blind spot counted twice.)
+**Status:** ✅ **S153 CLOSED AT 72/72 GATES.** Gate 72 closes the *no gate holds a quiz bank* debt v8.130 recorded in the session that created it, S136 — the oldest open ungated invariant in the book. Eight controls, each firing it ALONE at 71 of 71 others green, every restore md5-exact; **rewording a stem is SILENT**, which is the predicate proving itself derived rather than pinned. `quiz_bank` **v1.0.1** makes an empty scan a problem in its own right, collapses two version homes to one, and takes the book's `v` prefix. `session_versions` **v1.26.0** registers it and widens BOTH root-pinned mechanisms to ast-parsed, whole-tree, any-quoting predicates. **A claim made to DJ mid-session was wrong and a FAILING CONTROL is what corrected it** — CONTROL E's single-quote pin was reported as a live exposure and is not, because `roster_coverage()` covers root regardless of quoting. No lesson file changed; census unchanged at **40,648**.
 
-**Versions:** L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.24.0 · going_deeper v01.6.1 — census **40,648** · Bible **v8.143.1** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.50 · **book_gates v1.66.2** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.25.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `f3a5ce4`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.24.0 · going_deeper v01.6.1 — census **40,648** · Bible **v8.144** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.50 · **book_gates v1.67.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.26.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.0.1 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `c9be73a`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
@@ -12,6 +12,87 @@
 ---
 
 ---
+## WHAT SHIPPED IN S153
+
+**Gate 72 NEW · `quiz_bank` v1.0.1 · `session_versions` v1.26.0 · 72/72.
+No lesson file changed. Census unchanged at 40,648.**
+
+### 1. THE OLDEST UNGATED INVARIANT IN THE BOOK
+
+v8.130 recorded *no gate holds a quiz bank* as debt in S136, **the same session that created it**.
+`quiz_bank.py --check` was loud the whole time and `book_gates.py` never called it, so a broken bank
+could be pushed past a green suite. Gate 72 closes it.
+
+**It is wired as a LIBRARY, not a subprocess, and the control run is why.** Against a scratch copy,
+with all sixteen banks moved aside, `check()` prints *no banks found* and **returns an empty problem
+list** — `main()` exits 0. Deleting the entire quiz directory read as *banks are fine*. A gate that
+shelled out to `--check` would have inherited that verbatim (rule 20). So gate 72 counts what it
+ASSERTED and fails unless that equals the lesson count, with the denominator taken from THIS suite's
+own `lessons/` glob rather than the quiz tool's (rule 29).
+
+It also asserts an identity nothing compared: `validate()` never checks a bank's `lesson:` field
+against the filename it was found under, so **a bank declaring L05 inside `ZUMO_QUIZ_L06.yaml`
+validates clean** and keys a lesson's reading quiz to the wrong lesson (rule 18).
+
+**Eight controls, each firing gate 72 ALONE at 71 of 71 others green, every restore md5-exact.**
+One bank deleted names L07 · all sixteen deleted is LOUD while `--check` exits 0 · a removed `cite:`
+names `L09_B01` · a swapped `lesson:` is LOUD while `--check` exits 0 · an orphan bank names the file
+· **and rewording a stem is SILENT**, the blinding control (rule 19).
+
+### 2. TWO MECHANISMS, ONE BLIND SPOT COUNTED TWICE
+
+Bumping `quiz_bank` moved `session_versions --check` **not at all**, while the `book_gates` bump was
+named instantly. It sits in `quizzes/`, and both mechanisms that should have caught it were pinned to
+the repo root: CONTROL E's scope was `glob('*.py')`, and `roster_coverage()` was root-only *and*
+compared BASENAMES against `ARTEFACTS`' relative paths. That is S123's `timer.html` shape — a file
+whose version can only ever be hand-typed (§12.6) — surviving seventeen sessions.
+
+**A CLAIM MADE TO DJ WAS WRONG AND A FAILING CONTROL CORRECTED IT.** CONTROL E carries a second pin,
+`^VERSION = '` — a SINGLE QUOTE, which `keyterm_prefix.py` has never satisfied — and this was reported
+as a live exposure. It is not: `roster_coverage()` covers every root `.py` regardless of quoting, and
+runs on every `--check` where CONTROL E runs only on `--selftest`. **The quote pin was redundant, not
+load-bearing — and the redundancy was only ever true in root.** Fixing CONTROL E alone would have left
+the every-session check with the identical hole (rule 41), so both moved in the same pass.
+
+Controlled four predicates deep — `roster_old`, `E_old`, `roster_new`, `E_new` — against four planted
+shapes. The live quiz_bank shape (subdir, double quote) is blind to both old and loud in both new;
+scope pin alone the same; **quote pin alone is LOUD in `roster_old`, which is the correction made
+visible**; and a subdir `.py` with no version is loud in ROSTER and **silent in CONTROL E**, proving
+it measures versions rather than files.
+
+### 3. A SECOND HOME IS NOT ALWAYS WORTH WATCHING
+
+`quiz_bank` carried its version in the docstring AND the constant with nothing comparing them. The fix
+is to DELETE one rather than watch it: `ARTEFACTS` pins one regex per file, so registering would have
+guarded whichever home it named while the other stayed blind. **A second home earns its keep only when
+something reads it that cannot read the first** — which is why §5b's visible banner stays and a
+docstring duplicating what `main()` already prints does not. The `__doc__` fallback was the only path
+fed by the docstring and now prints the constant.
+
+### 4. THREE PROCESS FAILURES, ALL MINE, ALL CAUGHT BY CONTROLS
+
+**A re-derivation inside a triple check committed rule 38.** Asked how many sites print the version, a
+regex too narrow to see `% (VERSION, QUIZ_DIR)` returned TWO against an `ast`-derived THREE — a text
+match trusted as an answer, in the check whose whole purpose was to stop doing that.
+
+**The first CONTROL E harness excluded `images/`**, which `assets()` needs, so the selftest died before
+CONTROL E printed and **all five controls reported the section ABSENT — including the clean copy.**
+Contamination, not a finding (rule 71). The tell was that the one control whose only job is to have
+nothing wrong with it had something wrong with it.
+
+**That same harness scored a blinding control OK because the section was absent**, reading absence as
+silence — rule 59 committed inside a control written to enforce rule 59.
+
+### 5. RECORDED, NOT FIXED
+
+**§24.11–§24.16 have no numbered section bodies**, so this ruling is seated the way its six
+predecessors were — a rule whose home is a changelog entry holds only where someone happens to look.
+Six sections is a pass of its own and nobody has ruled it.
+
+---
+---
+---
+
 ## WHAT SHIPPED IN S152
 
 **One payload authored · five stale Maker labels corrected · `byte_audit` ARM 4 NEW ·

@@ -1,4 +1,4 @@
-# ZUMO — S153 HANDOFF (rewritten at S152 close · paste at top of Session 153)
+# ZUMO — S154 HANDOFF (rewritten at S153 close · paste at top of Session 154)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** A stale answer is
@@ -6,8 +6,10 @@
    **AND THE SHA IS NOT THE CHECK. `session_versions --check` IS** (rule 60, S145).
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. **Do NOT grep the Bible version.** `session_versions.bible_consistency()` parses it.
-4. Run the full suite and **READ THE EXIT CODE, NOT THE LAST LINE**. **THE SUITE IS 71 GATES,
-   NOT 70.** Plus **`callout_id.py --selftest` then `--audit`**,
+   **S153 measured why: the phrase `Bible version: v` occurs THREE times, and two of them are
+   grep COMMANDS quoted inside the Bible.** A naive `grep -o` returns `v8.144`, `v`, `v`.
+4. Run the full suite and **READ THE EXIT CODE, NOT THE LAST LINE**. **THE SUITE IS 72 GATES,
+   NOT 71** (gate 72 new, S153). Plus **`callout_id.py --selftest` then `--audit`**,
    **`keyterm_prefix.py --audit`**, **`quizzes/quiz_bank.py --selftest` then `--check`**, and
    **`session_versions.py --selftest`** — **its CONTROL C is the unfinished-documentation-pass
    signal and nothing else in the tree can see one.**
@@ -24,10 +26,13 @@
 11. **A CLONE IS NOT THE SITE.** Run `site_parity.py` after any push.
 12. **VERIFY THE PUSH BY FRESH CLONE AND MD5 — AND DIFF THE STAGE AGAINST THE CLONE.**
 13. **`css/semantic.css` AND `ZUMO_FAMILY_PINS.md` ARE HAND-AUTHORED PRESERVED LAYERS.**
-14. **`rm -rf __pycache__` BEFORE `git status`. Also `find . -name pbuild -exec rm -rf {} +`**
-    if the toolchain has been run.
+14. **`rm -rf __pycache__` BEFORE `git status`. Also `quizzes/__pycache__` — S153's gate 72
+    imports `quiz_bank` as a library, so the suite now CREATES that directory every run.**
+    Also `find . -name pbuild -exec rm -rf {} +` if the toolchain has been run.
+15. **THE FULL SUITE TAKES ~40 SECONDS.** Budget control harnesses accordingly; S153 lost a
+    run to a harness that fired eight suite invocations inside one command timeout.
 
-## 15. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. RUN AND VERIFIED IN S152.
+## 16. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. NOT RUN IN S153.
 
 `apt-get install -y gcc-avr avr-libc` **(no `sudo` — it is not on this box, exit 127).** Clone
 into `/home/claude/harness` **FLAT, not under a `pololu/` subdirectory**.
@@ -42,105 +47,100 @@ into `$H`, then `bash pio_harness.sh --setup`. **Expect *objects: 41*.**
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S152
+# THE ONE THING TO CARRY OUT OF S153
 
-**A LABEL CAN AGREE WITH ITSELF AND BE WRONG ABOUT THE WORLD.**
+**TWO MECHANISMS PINNED TO THE SAME SCOPE ARE NOT REDUNDANCY. THEY ARE ONE BLIND SPOT
+COUNTED TWICE.**
 
-Five L16 KINDS labels carried byte figures. All five were stale. `step_3` read
-*"28,662 bytes — TEN to spare"* for a payload that is **152 OVER the ceiling**, in the step whose
-entire subject is that it does not fit.
+`quizzes/quiz_bank.py` declared a `VERSION` and was registered in nothing for seventeen
+sessions. Two separate instruments should have caught it — `roster_coverage()`, which runs on
+every `--check`, and CONTROL E, which runs on `--selftest`. **Both spelled their scope as
+`glob('*.py')`: the repo root.** Having two of them felt like defence in depth and bought
+exactly nothing, because they shared the assumption, not the coverage.
 
-They survived because **each label's spare clause was arithmetically correct for its own stale
-figure.** `28,672 − 28,662 = 10`. Nothing looked wrong because nothing internally *was* wrong.
-Rule 51 in a new place: the label was certifying agreement with itself.
+**The corollary is how to audit for this.** When two controls cover one property, do not ask
+whether both exist — ask what they would each say if the property were violated **in a place
+neither was written for**. If the answer is the same silence, there is one control.
 
-And nothing in the tree could see them. `gate_payload_match` asserts payload BYTES against lesson
-`<pre>`. ARM 2 asserts the LESSON's figures. **No instrument read a label** — the one string the
-student actually reads in the dropdown.
-
-**`byte_audit` v1.2 ARM 4 now derives the expectation from the size table.** Reword a label and it
-stays silent; move a figure or a clause and it is loud.
-
----
-
-# S152's RULINGS
-
-**AUTHOR THE PAYLOAD, DO NOT EXEMPT THE FIGURE.** DJ ruled after both options were priced. The
-28,756 state was BUILT before the recommendation was made (rule 70) — twice, by independent
-routes — and both landed on `+84 over`, the lesson's own wording. `step_5_serial_traded` ships
-with a catch-up door seated between the failed first trade and the second, which is where a
-stuck student actually is. **The missing payload was the defect the figure pointed at**: every
-other step in L16 has a door and this one did not.
-
-**DERIVE THE LABEL FIGURES.** DJ's word. ARM 4's predicate comes from the compile, never from a
-typed number, so a sixth stale label cannot be authored the way the first five were.
-
-**`data-midstep` DECLARES A NON-ENDPOINT DOOR.** Chosen after scoping: the population is TWO, and
-**L10 Step 4 has carried two doors since it was written**, with the RED build declared by
-`data-nobuild` on the link. The convention already existed and was merely ungeneralised, so the
-new attribute matches its shape and `step_blocks()` learned ONE rule covering both. **L10 needed
-no edit.**
+And the session's own correction belongs here: **CONTROL E's single-quote pin was reported to
+DJ as a live exposure and was not one.** `roster_coverage()` covered root regardless of
+quoting. **A failing control is what found the second mechanism** — the claim had survived a
+triple check, because the triple check read CONTROL E and never asked what else was watching.
 
 ---
 
-# S153 QUEUE
+# S153's RULINGS
 
-## 0. THE GPT REVIEW — INCOMPLETE, AND THE MISSING PART IS THE VALUABLE PART
-DJ ran a sixteen-lesson review in another model. **The paste carried only L15, L16 and an
-overarching 26-item pass** — a select-all copies the rendered page, not the conversation, so
-fourteen of sixteen replies were dropped while every one of DJ's own turns survived. A data
-export was requested and **had not arrived at S152 close.**
+**DO THE QUIZ-BANK GATE FIRST.** DJ's word at open. It was the urgent one of the four ungated
+invariants because `quiz_bank --check` was loud and nothing called it.
 
-**The overlap/deletion work DJ cared most about lives in the missing fourteen.** Overlap is a
-cross-lesson claim (rule 34) and cannot be judged one lesson at a time.
+**FIX `check()`'s EMPTY SCAN.** DJ ruled after the gate was written and the hole was measured:
+the gate protects the book, and nothing protected a person running `--check` by hand and
+reading exit 0 as a result.
 
-**Triage rules established, apply them when it lands:**
-- **STRIKE, already ruled:** the spiral audit (ruled, enumerated, 13 of 171, deliberately not
-  started) · tie competition claims to a year (S148, rule 63) · the absolutes pass (§16.16,
-  rule 61) · measured-facts discipline (§24.15) · "write a canon sheet first" (that is the Bible).
-- **ONE RULING WEARING FOUR HATS:** the L15 theory notes (D-knows-the-future, P-always-weaves,
-  I-never-belongs, I-is-the-only-term) are not four defects. They are one — **the book teaches
-  conditional physics as absolutes** — and it is DJ's call, not a fix.
-- **GPT CANNOT SEE A RULING (rule 39)** and will re-report settled items. Read its list against
-  the Bible before reporting any of it (rule 72).
-- **GPT'S OWN RULEBOOK CLAIMS CARRY NO EDITION** — TDP at 60% of rubrics, rubrics at 20% of the
-  total, a required poster, video length deferred to league docs. **Rule 63, in the review that
-  was auditing this book for unsourced numbers.** Settle them against
+**REGISTER `quiz_bank` AND WIDEN BOTH MECHANISMS.** DJ asked for a recommendation, then for a
+triple check, then ruled. The triple check confirmed the plan and **corrected one claim inside
+it**, which is the strongest argument for the ritual that exists so far.
+
+---
+
+# S154 QUEUE
+
+## 0. THE GPT REVIEW — STILL INCOMPLETE, AND THE SHARE LINK DOES NOT WORK
+DJ supplied `https://chatgpt.com/share/6a7dd392-c0d0-83ea-995e-4ace30278903` in S153.
+**It cannot be read from here.** The page renders client-side, so both extraction methods
+return the page TITLE and zero turns, and `chatgpt.com` is not on this box's allowed-domain
+list either. The title is **"Zumo Asset Audit L01-16"**, which is **not obviously the same
+conversation** the S152 handoff describes — do not assume it is.
+
+**ASK FOR THE DATA EXPORT, NOT A PASTE.** ChatGPT → Settings → Data controls → Export data
+produces a zip containing `conversations.json` with every turn intact. **A select-all copies
+the rendered page, not the conversation** (rule 75) — that is what lost fourteen of sixteen
+replies the first time. **Count sixteen replies before working from whatever arrives.**
+
+**Triage rules from S152 still stand, apply them when it lands:**
+- **STRIKE, already ruled:** the spiral audit · tie competition claims to a year (rule 63) ·
+  the absolutes pass (§16.16, rule 61) · measured-facts discipline (§24.15) · "write a canon
+  sheet first" (that is the Bible).
+- **ONE RULING WEARING FOUR HATS:** the L15 theory notes are one item — the book teaches
+  conditional physics as absolutes — and it is DJ's call, not a fix.
+- **GPT CANNOT SEE A RULING (rule 39)** and will re-report settled items. Read its list
+  against the Bible before reporting any of it (rule 72).
+- **GPT'S OWN RULEBOOK CLAIMS CARRY NO EDITION.** Settle them against
   `RCJRescueLine2026-final.pdf` in the root before any of them reaches a lesson.
 
-## 1. TWO CONFIRMED CODE FINDINGS, DELIBERATELY NOT FIXED
-Both verified against the tree at S152. Both move bytes, so both need the toolchain and a full
-lesson arc — patching either alone compiles the chain twice.
+## 1. TWO CONFIRMED CODE FINDINGS, STILL DELIBERATELY NOT FIXED
+Both verified against the tree at S152, untouched in S153. Both move bytes, so both need the
+toolchain and a full lesson arc — patching either alone compiles the chain twice.
 - **L16's RUN IS NOT FROZEN WHEN IT ENDS.** `saveBaseline()` computes `millis() - runStart` at
-  CALL time, and it is called from `RUN_REPORT` — after the run is over. Every second the student
-  spends reading the report inflates the saved lap. **`showScore()` recomputes it the same way,
-  so the displayed number is climbing while they read it.** GPT caught the save and missed the
-  display.
-- **L15's GAP-WINDUP DEMONSTRATION IS ARCHITECTURALLY IMPOSSIBLE.** `followLine()` is called only
-  inside `if (isLineVisible())`, so `lineIntegral` cannot accumulate during a gap. Prose and code
-  disagree **and the code is right.**
+  CALL time from `RUN_REPORT`, so the saved lap inflates while the student reads the report.
+  **`showScore()` recomputes it the same way, so the displayed number is climbing on screen.**
+- **L15's GAP-WINDUP DEMONSTRATION IS ARCHITECTURALLY IMPOSSIBLE.** `followLine()` is called
+  only inside `if (isLineVisible())`, so `lineIntegral` cannot accumulate during a gap. Prose
+  and code disagree **and the code is right.**
 
 ## 2. THE PHOTOGRAPHY — STILL THE ONLY THING BETWEEN THE BOOK AND SEPTEMBER
 Stills **3.2 · 3.5 · 3.6 · 4.1 · 4.3 · 12.1 · 13.1 · 13.2**, videos **3.1 · 4.1 · 6.1 · 8.1**.
 **VIDEO 3.1 carries L03's opening page.** Nothing in the tree can produce them.
 *(`IMAGE 14.1` and `IMAGE 16.1` are also unshot; both lessons sit outside the September scope.)*
+**September 8 is the launch date. This is the critical path and nothing else is.**
 
-## 3. THE CATCH-UP CONVENTION — READ §16.22 BEFORE RE-RAISING
-**§16.22 (v8.140) ruled the split LEGITIMATE** and ARM 3 measures rather than judges it. What is
-open is only whether a gate should pin the measurement. **A gate pinning either convention would
-certify 64 rows and fail 32.** Note ARM 3 reaches only TWO rows book-wide, because it needs a
-stated byte figure and only L15 and L16 state them.
+## 3. INVARIANTS WITH NO GATE — ONE CLOSED, TWO LEFT
+**The quiz bank is CLOSED (gate 72, S153).** The Maker label closed at S152 (ARM 4).
+**Still open: A NAV PILL · A RULE CITATION.** Neither is urgent; neither has a measured
+defect outstanding. Do not open one without a ruling.
 
-## 4. INVARIANTS WITH NO GATE
-**NO GATE HOLDS A QUIZ BANK · A NAV PILL · A RULE CITATION.** The byte figure has `byte_audit`
-v1.1+, and **the Maker label now has ARM 4** — that one is closed. **The quiz-bank gate is the
-urgent one**: `quiz_bank --check` is loud but nothing calls it, so a broken bank can be pushed.
+## 4. THE CATCH-UP CONVENTION — READ §16.22 BEFORE RE-RAISING
+**§16.22 (v8.140) ruled the split LEGITIMATE** and ARM 3 measures rather than judges it. What
+is open is only whether a gate should pin the measurement. **A gate pinning either convention
+would certify 64 rows and fail 32.** ARM 3 reaches only TWO rows book-wide.
 
 ## 5. STILL OPEN, CARRIED
-- **`GRAPHIC 16.1` OVERFLOWS ITS PANEL BY 31 UNITS** — recorded at S148, not fixed, pre-existing.
-- **§4.2's AUDIT TABLE IS UNCONFIRMED AND MAY NOT BE CONFIRMABLE.** Left alone deliberately — the
-  instrument, not the table, is what failed.
-- **§16.14 AND §16.18–§16.21 HAVE NO NUMBERED SECTION BODIES.** §16.12 and §16.13 sit BELOW §17.
+- **`GRAPHIC 16.1` OVERFLOWS ITS PANEL BY 31 UNITS** — recorded S148, not fixed, pre-existing.
+- **§4.2's AUDIT TABLE IS UNCONFIRMED AND MAY NOT BE CONFIRMABLE.**
+- **§16.14, §16.18–§16.21 AND §24.11–§24.16 HAVE NO NUMBERED SECTION BODIES.** §16.12 and
+  §16.13 sit BELOW §17. **S153 added §24.17's ruling to the changelog-only pile rather than
+  seating one section beside six that need the same treatment** — that is a pass of its own.
 - **ARM 2 OF `byte_audit` REACHES TWO LESSONS.** L11–L14 quote figures in tables and prose.
 - **L10's ARRIVAL GEOMETRY (S144, unruled)** — only the floor can settle it.
 - **§8A.4's 65 cm/s IS UNVERIFIED** · **L14 §8A.2's "five orders of magnitude"** · **`AVOID_OUT_CM
@@ -151,6 +151,11 @@ urgent one**: `quiz_bank --check` is loud but nothing calls it, so a broken bank
 - **L14 §10 IS THE ONLY §10 THAT IS NOT AN EXIT TICKET.** Unruled.
 - **`shim.cpp` IS REFERENCED BY `pio_harness.sh` AND EXISTS NOWHERE IN THE REPO.** The `[ -f ]`
   guard makes it optional and *objects: 41* is unaffected. Recorded so nobody hunts for it.
+- **THREE BANKS ARE PINNED TO SUPERSEDED LESSON VERSIONS** (S153 lead, not a finding): L15's
+  bank names `lesson_15=v02.31.0` against a live `.1`, L16's names `lesson_16=v02.23.0` against
+  `.24.0` and `lesson_02=v03.21.2` against `.3`. All three bumps were title-separator and
+  Maker-label work, so the odds a question is now wrong are low — **but it is unverified, and
+  rule 37 says the read does not transfer.** Do not rewrite the pins without doing the read.
 
 ## Carried from S141/S140, still unruled
 **THE BAUD BENCH TEST** · **THE 1200-BAUD RESET HAS NO HOME** · **`IMAGE 7.9`–`7.12` INDEXED AS
@@ -193,15 +198,15 @@ ladder** · **L12's §7 ladder** · **L13's ENTIRE §7 LADDER** · **L14's §7 l
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`f3a5ce4`**. Census **40,648**.
-Bible **v8.143.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
+Fresh-clone verified at **`c9be73a`**. Census **40,648**.
+Bible **v8.144** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.66.2** · `lesson_inventory` **v1.3.5** ·
+Instruments: `book_gates` **v1.67.0** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.4** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
-`gen_part_banners` **v1.2** · `session_versions` **v1.25.0** · `fit_raster_svg` **v1.2** ·
+`gen_part_banners` **v1.2** · `session_versions` **v1.26.0** · `fit_raster_svg` **v1.2** ·
 `flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
 `build_css` **v1.3.0** ·
 `image_audit` **v1.2** ·
@@ -220,6 +225,7 @@ Instruments: `book_gates` **v1.66.2** · `lesson_inventory` **v1.3.5** ·
 `mark_wire` **v1.0.2** ·
 `glyph_scan` **v1.1** ·
 `title_feed` **v1.0** ·
+`quiz_bank` **v1.0.1** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
@@ -263,33 +269,28 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 30. **A WORKING COPY YOU HAVE RUN TOOLS IN IS NOT THE REPO.** When two readings disagree, RE-CLONE.
 31. **A LABEL IS NOT THE THING IT NAMES.**
 32. **NOT EVERY SPLIT IS DRIFT.**
-33. **NO INSTRUMENT READS PROSE — AND NONE COMPILES EITHER.** **S148's completion: seventy
-    gates and `gate_payload_match` all passed on a Lesson 16 whose finished build could not be
-    flashed. Structure was perfect. The program did not fit. Point the toolchain at every kind.**
+33. **NO INSTRUMENT READS PROSE — AND NONE COMPILES EITHER.** Point the toolchain at every kind.
 34. **A NUMBER IS ONLY CHECKABLE AGAINST THE OTHER FIFTEEN LESSONS.**
 35. **COMPILE THE SNIPPET; LET THE BOOK'S OWN CODE TESTIFY.**
-36. **A FACT THAT LIVES ONLY IN AN SVG IS NOT IN THE BOOK.** **S148's corollary: and a WRONG
-    fact in an SVG is still wrong. `GRAPHIC 16.2` carried nine stale ladder values and two
-    stale step figures that no prose check would ever have reached. Derive the chart's scale
-    from its own geometry and recompute, rather than swapping labels over bars that then lie.**
+36. **A FACT THAT LIVES ONLY IN AN SVG IS NOT IN THE BOOK** — and a WRONG one is still wrong.
 37. **READ -> FIX -> QUIZ, NEVER QUIZ FIRST — AND THE READ DOES NOT TRANSFER BETWEEN SESSIONS.**
-38. **A TEXT MATCH LOCATES; IT NEVER ANSWERS.** **S148: three of thirteen sweep hits were
-    `"before the"` inside legitimate prose. Read every hit.**
+38. **A TEXT MATCH LOCATES; IT NEVER ANSWERS.** **S153: committed again, inside a TRIPLE CHECK.
+    A regex too narrow to see `% (VERSION, QUIZ_DIR)` returned TWO where `ast` returned THREE.**
 39. **NO INSTRUMENT THAT READS THE TREE CAN SEE A RULING.**
 40. **PULL THE PAYLOAD, NOT THE CARD.**
-41. **AN ENTRY FILED IN ONE HOME IS NOT FILED.**
+41. **AN ENTRY FILED IN ONE HOME IS NOT FILED.** **S153's second face: a DEFECT fixed in one of
+    two homes is not fixed. CONTROL E and `roster_coverage()` shared a scope pin, and mending
+    only the one that failed would have left the every-session check identically blind.**
 42. **A SPEC'S OWN NUMBERS CAN BE ARITHMETICALLY IMPOSSIBLE.**
 43. **WHEN TWO SECTIONS DISAGREE, READ THE CITATIONS — AND WHEN THE CITATIONS DISAGREE, READ
     THE RULEBOOK'S CHANGELOG. If you do not HAVE the rulebook, say so and stop.**
-44. **THE HEADER OF A THING IS NOT THE THING.** **S148 paid it three times — every bank's own
-    description line was wrong about the bank until it was re-derived from the file.**
+44. **THE HEADER OF A THING IS NOT THE THING.** **S153: CONTROL E's label said *a root .py*
+    and its code carried a SECOND pin the label never mentioned. Read the predicate.**
 45. **A SNAPSHOT YOU HAVE RUN TOOLS IN HIDES ITS OWN DEBRIS.**
-46. **A CALLOUT IS NEVER A FREE EDIT.** **S148: one family change fired FIVE gates. Prose cost
-    nothing and cleared four of them.**
+46. **A CALLOUT IS NEVER A FREE EDIT.**
 47. **A STEP PAYLOAD IS THE FILE AS IT STANDS AT THAT STEP.**
 48. **A VERIFIER THAT READS YOUR INTENT INSTEAD OF THE ARTEFACT VALIDATES NOTHING.**
 49. **A NUMBER THAT A SENTENCE DERIVES FROM CANNOT BE SWAPPED WITHOUT REWRITING THE SENTENCE.**
-    The S145 corollary stays REVOKED. **Four consecutive sessions now.**
 50. **A COUNT INSIDE A SENTENCE IS A CLAIM. DERIVE IT OR DELETE IT.**
 51. **A GATE THAT CERTIFIES AGREEMENT IS NOT CERTIFYING CORRECTNESS.**
 52. **WHEN THE ART AND THE CODE DISAGREE, ASK WHICH ONE IS THE DESIGN.**
@@ -299,64 +300,39 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 56. **A CONTENT TIER THAT PINS A SPELLING OWES AN EDIT WHEN THE SPELLING IS THE DEFECT.**
 57. **AN EDIT THAT CHANGES LENGTH INVALIDATES OFFSETS COMPUTED BEFORE IT.**
 58. **A CONTROL RUN ON THE PRE-EDIT FILE IS HOW YOU KNOW A FINDING IS YOURS.**
-59. **A CONTROL THAT FIRES FOR THE WRONG REASON IS NOT A CONTROL.**
+59. **A CONTROL THAT FIRES FOR THE WRONG REASON IS NOT A CONTROL.** **S153: and a control that
+    PASSES for the wrong reason is not one either — a harness read an ABSENT section as a
+    silent one, committed inside a harness written to enforce this rule.**
 60. **A SHA THAT MATCHES DOES NOT MEAN THE CONTENT LANDED. The version block is the check.**
 61. **A SUPERLATIVE IS A CROSS-LESSON CLAIM, AND IT IS ALWAYS CHECKABLE.**
 62. **AN EXPLANATION CAN BE WRONG WITHOUT ANY NUMBER BEING WRONG.**
 63. **A CITATION IS A CLAIM ABOUT AN EDITION, NOT ABOUT A NUMBER.**
 64. **A FILE NAMED FOR A YEAR IS NOT EVIDENCE OF THAT YEAR — BUT VERIFY BEFORE CONVICTING.**
-    **The fix is to put the primary source in the tree, not to distrust the extract.**
 65. **CHECK THE LEAGUE BEFORE THE EDITION.**
 66. **A REGIONAL VARIANT IS A DIFFERENT GAME, NOT A REPRINT — AND NOT A WITNESS.**
-67. **A SCHEMA ERROR AND A CONTENT ERROR CAN ARRIVE IN THE SAME VALIDATOR MESSAGE, AND FIXING
-    THE SCHEMA WILL HIDE THE CONTENT ONE.** When a mechanical fix silences a diagnostic, re-run
-    it and ask whether any of the silenced messages were telling the truth.
-68. **NEW, S148: A DISTRACTOR MUST BE WRONG FOR A REASON THE STUDENT CAN FIND IN THE BOOK.**
-    Ten items across three banks offered a pre-correction byte figure and explained it with
-    *"a figure from an earlier baseline."* **A student has never seen those numbers and has no
-    access to the book's edit history.** `cite:`'s entire contract (QUIZ_SPEC §4) is to tell
-    them where to re-read, and *"we changed it"* is not a place. **This is S146's finding
-    recurring in the very session that quoted S146 — writing the rule down did not prevent
-    committing it. The detector did.**
-69. **NEW, S148: A DIFF YOU CANNOT READ IS NOT A REVIEWABLE EDIT.** Re-serialising the Maker's
-    PAYLOADS object to change four payloads produced **2,726 changed lines and +58 KB**. The
-    same change as targeted encoded-string splices produced **2**. When an edit's diff is
-    orders of magnitude larger than the edit, the method is wrong even when the output is right.
-70. **NEW, S148: PRICE EVERY CANDIDATE BEFORE RULING, AND PRICE IT BY DELETION.** L16 needed 84
-    bytes. Six cuts were measured by actually removing them and compiling — 156, 1,828, 114,
-    104, 60, 8 — and **the largest was the wrong answer**, because §7.4 hands the buzzer to the
-    student and §7.1 depends on the A+B report. **A menu with numbers on it turns a preference
-    into a ruling.**
-71. **NEW, S151: A CONTROL THAT NAMES A FILE IT NEVER TOUCHED IS REPORTING CONTAMINATION, NOT
-    A FINDING.** Six controls printed FAIL at 70 of 71 green — the exact shape of a clean run —
-    because the snapshot predated the edit and the first restore reverted the session's own
-    work. **Read the failure DETAIL, not the verdict.** Rule 21's tell.
-72. **S151: A QUEUE IS NOT CANON.** An item that survives the session that rules it will be
-    re-reported as open by the next reader. **Check the queue against the Bible before
-    reporting it.** S151 opened by telling DJ that L15's title split was the largest un-ruled
-    item in the book; v8.141 had ruled it the session before.
-73. **NEW, S152: A LABEL CAN AGREE WITH ITSELF AND BE WRONG ABOUT THE WORLD.** Five L16 KINDS
-    labels carried stale byte figures whose spare clauses were arithmetically correct FOR THE
-    STALE FIGURE. `28,672 - 28,662 = 10`, so *"TEN to spare"* read fine for a payload 152 OVER.
-    **Internal consistency is not correctness (rule 51).** Check a derived number against the
-    thing it is derived FROM, never against its own neighbours.
-74. **NEW, S152: THE STRING THE USER READS IS AN ARTEFACT, AND IT NEEDS A GATE LIKE ANY OTHER.**
-    `gate_payload_match` guarded payload bytes; ARM 2 guarded lesson figures. The Maker's dropdown
-    label — the one string a stuck student actually reads — was guarded by nothing, and every
-    instance of it was wrong. **Ask what the reader sees, not only what the tree contains.**
-75. **NEW, S152: A SELECT-ALL COPIES THE PAGE, NOT THE CONVERSATION.** Fourteen of sixteen
-    replies were dropped from a pasted review while every one of the user's own turns survived.
-    **The tell was positional, not length-based.** When a paste's structure is lopsided, count
-    what should be there before working from it.
-76. **NEW, S152: SCOPE A DEFECT BEFORE BUILDING A CONVENTION FOR IT.** The mid-step door looked
-    like a population of one. It is two, and **L10 had already solved it** with `data-nobuild` on
-    the link. Scoping turned a new convention into a one-line generalisation of an existing one,
-    and saved an edit to a lesson that did not need one.
-77. **NEW, S152: A CHECKSUM YOU DID NOT COMPUTE IS WORSE THAN NO CHECKSUM.** The S152 close-out
-    published eight md5 digests that were never run. **Not one was close.** The push was clean and the
-    whole-tree diff proved it, but had DJ checked the digests, **all eight would have mismatched and a
-    good delivery would have read as corrupt.** Rule 50's forbidden third option, committed in the
-    message announcing the session that catalogued it. **Paste the OUTPUT of `md5sum`, or publish
-    none.** A typed digest is not a weaker check, it is an ANTI-check: a wrong datum misleads, a wrong
-    VERIFIER destroys the reader's ability to tell right from wrong. Nothing in the tree can see a
-    chat message, so this one is held by the operator, not by a gate.
+67. **A SCHEMA ERROR AND A CONTENT ERROR CAN ARRIVE IN THE SAME VALIDATOR MESSAGE.**
+68. **A DISTRACTOR MUST BE WRONG FOR A REASON THE STUDENT CAN FIND IN THE BOOK.**
+69. **A DIFF YOU CANNOT READ IS NOT A REVIEWABLE EDIT.**
+70. **PRICE EVERY CANDIDATE BEFORE RULING, AND PRICE IT BY DELETION.**
+71. **A CONTROL THAT NAMES A FILE IT NEVER TOUCHED IS REPORTING CONTAMINATION, NOT A FINDING.**
+    **S153's variant: a control reporting the section ABSENT — on the CLEAN copy as well as
+    the seeded ones — is reporting a broken harness. Read the failure DETAIL, not the verdict.**
+72. **A QUEUE IS NOT CANON.** Check the queue against the Bible before reporting it.
+73. **A LABEL CAN AGREE WITH ITSELF AND BE WRONG ABOUT THE WORLD.**
+74. **THE STRING THE USER READS IS AN ARTEFACT, AND IT NEEDS A GATE LIKE ANY OTHER.**
+75. **A SELECT-ALL COPIES THE PAGE, NOT THE CONVERSATION.** **S153: and a SHARE LINK carries
+    neither — the page renders client-side, so a fetch returns the title and zero turns.
+    Ask for the data export.**
+76. **SCOPE A DEFECT BEFORE BUILDING A CONVENTION FOR IT.**
+77. **A CHECKSUM YOU DID NOT COMPUTE IS WORSE THAN NO CHECKSUM.** Paste the OUTPUT of
+    `md5sum`, or publish none. Nothing in the tree can see a chat message.
+78. **NEW, S153: A SCAN THAT FOUND NOTHING IS NOT A SCAN THAT FOUND NOTHING WRONG.**
+    `quiz_bank.check()` returned an empty problem list on an empty glob, so `--check` exited 0
+    with **every bank deleted**. Zero asserted is not zero problems (rule 27's other face), and
+    any checker that can return clean from an empty population owes a coverage arm.
+79. **NEW, S153: TWO MECHANISMS PINNED TO THE SAME SCOPE ARE ONE MECHANISM.** Ask what each
+    would say if the property were violated where NEITHER was written to look.
+80. **NEW, S153: A SECOND HOME IS ONLY WORTH WATCHING IF SOMETHING READS IT THAT CANNOT READ
+    THE FIRST.** `quiz_bank` carried its version in a docstring and a constant. The fix was to
+    DELETE one, not to register a watcher — §5b's visible banner earns its second home because
+    a student reads it; a docstring duplicating what `main()` already prints does not.
