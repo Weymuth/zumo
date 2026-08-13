@@ -1,4 +1,4 @@
-# ZUMO — S152 HANDOFF (rewritten at S151 close · paste at top of Session 152)
+# ZUMO — S153 HANDOFF (rewritten at S152 close · paste at top of Session 153)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** A stale answer is
@@ -27,7 +27,7 @@
 14. **`rm -rf __pycache__` BEFORE `git status`. Also `find . -name pbuild -exec rm -rf {} +`**
     if the toolchain has been run.
 
-## 15. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. NOT RUN IN S150.
+## 15. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. RUN AND VERIFIED IN S152.
 
 `apt-get install -y gcc-avr avr-libc` **(no `sudo` — it is not on this box, exit 127).** Clone
 into `/home/claude/harness` **FLAT, not under a `pololu/` subdirectory**.
@@ -42,62 +42,163 @@ into `$H`, then `bash pio_harness.sh --setup`. **Expect *objects: 41*.**
 
 ---
 
-# THE ONE THING TO CARRY OUT OF S151
+# THE ONE THING TO CARRY OUT OF S152
 
-**A CONTROL THAT NAMES A FILE IT NEVER TOUCHED IS REPORTING CONTAMINATION, NOT A FINDING.**
+**A LABEL CAN AGREE WITH ITSELF AND BE WRONG ABOUT THE WORLD.**
 
-The snapshot for gate 71's re-control was taken **before** the em-dash edit, so every
-`restore()` reverted **this session's own work** instead of the injection. The first control
-left L03 carrying a pipe, and the six controls after it ran against a tree already failing for
-a reason that had nothing to do with them.
+Five L16 KINDS labels carried byte figures. All five were stale. `step_3` read
+*"28,662 bytes — TEN to spare"* for a payload that is **152 OVER the ceiling**, in the step whose
+entire subject is that it does not fit.
 
-**ALL SIX PRINTED FAIL AND ALL SIX LOOKED LIKE EVIDENCE.** Exit 1, one gate down, 70 of 71
-green — the exact shape a clean control run produces.
+They survived because **each label's spare clause was arithmetically correct for its own stale
+figure.** `28,672 − 28,662 = 10`. Nothing looked wrong because nothing internally *was* wrong.
+Rule 51 in a new place: the label was certifying agreement with itself.
 
-What exposed it was reading the gate's **failure DETAIL** rather than its verdict: every run
-named `03`, including the runs that had injected into L09, L12 and L15. **Rule 21 in a new
-place** — snapshot the state you are IN, not the state you started from — and the reusable
-half is the tell, because the verdict alone is identical either way.
+And nothing in the tree could see them. `gate_payload_match` asserts payload BYTES against lesson
+`<pre>`. ARM 2 asserts the LESSON's figures. **No instrument read a label** — the one string the
+student actually reads in the dropdown.
 
-Redone from a post-edit snapshot with md5-verified restores and the untouched tree passing at
-**both** ends.
+**`byte_audit` v1.2 ARM 4 now derives the expectation from the size table.** Reword a label and it
+stays silent; move a figure or a clause and it is loud.
 
 ---
 
-# S151's RULING
+# S152's RULINGS
 
-**THE `<title>` SEPARATOR IS THE EM DASH, BOOK-WIDE.** DJ at open: *"em dash is fine for all
-of them that need it."* Ruled form:
+**AUTHOR THE PAYLOAD, DO NOT EXEMPT THE FIGURE.** DJ ruled after both options were priced. The
+28,756 state was BUILT before the recommendation was made (rule 70) — twice, by independent
+routes — and both landed on `+84 over`, the lesson's own wording. `step_5_serial_traded` ships
+with a catch-up door seated between the failed first trade and the second, which is where a
+stuck student actually is. **The missing payload was the defect the figure pointed at**: every
+other step in L16 has a door and this one did not.
 
-> `Lesson N: <catalog name> — Zumo 32U4 Robotics`
+**DERIVE THE LABEL FIGURES.** DJ's word. ARM 4's predicate comes from the compile, never from a
+typed number, so a sixth stale label cannot be authored the way the first five were.
 
-Two sites, both `<title>` tags, both MINOR (the tag does not render on the page, so the visible
-§5b banners correctly stay put). **A sweep of all 21 `<title>` tags in the tree ran FIRST** —
-the pipe appears in exactly two, both lessons; the three tool pages carry no separator at all
-and therefore *need* nothing, which is the ruling's own words scoping it.
+**`data-midstep` DECLARES A NON-ENDPOINT DOOR.** Chosen after scoping: the population is TWO, and
+**L10 Step 4 has carried two doors since it was written**, with the RED build declared by
+`data-nobuild` on the link. The convention already existed and was merely ungeneralised, so the
+new attribute matches its shape and `step_blocks()` learned ONE rule covering both. **L10 needed
+no edit.**
 
-**GATE 71 TIGHTENED IN ONE LINE.** The NAME half stays DERIVED from the strip (rule 19); only
-the separator and the book suffix are literal, and both are what was ruled. Seven defect shapes
-each fire it **ALONE at 70 of 70 others green**, and the **BLINDING control — Lesson 6 renamed
-in all sixteen strips — names L06 ALONE.**
+---
 
-**AND A QUEUE ENTRY OUTLIVED THE RULING THAT SETTLED IT.** S151 opened by reporting *L15's
-title is split book-wide* to DJ as the largest un-ruled item in the book. **v8.141 had already
-ruled it**: BANNER ≠ CATALOG is design, six lessons wide — L01, L02, L03, L08, **L15, L16** —
-so `next_pointer` deriving L14's footer pointer from the strip is CORRECT, not *generated
-wrong*. The entry was carried from S147/S148 and never restruck when the ruling landed. **A
-QUEUE IS NOT CANON, AND AN ITEM THAT SURVIVES THE SESSION THAT RULES IT WILL BE RE-REPORTED AS
-OPEN BY THE NEXT READER.** Struck. **Read the queue against the Bible before reporting it.**
+# S153 QUEUE
+
+## 0. THE GPT REVIEW — INCOMPLETE, AND THE MISSING PART IS THE VALUABLE PART
+DJ ran a sixteen-lesson review in another model. **The paste carried only L15, L16 and an
+overarching 26-item pass** — a select-all copies the rendered page, not the conversation, so
+fourteen of sixteen replies were dropped while every one of DJ's own turns survived. A data
+export was requested and **had not arrived at S152 close.**
+
+**The overlap/deletion work DJ cared most about lives in the missing fourteen.** Overlap is a
+cross-lesson claim (rule 34) and cannot be judged one lesson at a time.
+
+**Triage rules established, apply them when it lands:**
+- **STRIKE, already ruled:** the spiral audit (ruled, enumerated, 13 of 171, deliberately not
+  started) · tie competition claims to a year (S148, rule 63) · the absolutes pass (§16.16,
+  rule 61) · measured-facts discipline (§24.15) · "write a canon sheet first" (that is the Bible).
+- **ONE RULING WEARING FOUR HATS:** the L15 theory notes (D-knows-the-future, P-always-weaves,
+  I-never-belongs, I-is-the-only-term) are not four defects. They are one — **the book teaches
+  conditional physics as absolutes** — and it is DJ's call, not a fix.
+- **GPT CANNOT SEE A RULING (rule 39)** and will re-report settled items. Read its list against
+  the Bible before reporting any of it (rule 72).
+- **GPT'S OWN RULEBOOK CLAIMS CARRY NO EDITION** — TDP at 60% of rubrics, rubrics at 20% of the
+  total, a required poster, video length deferred to league docs. **Rule 63, in the review that
+  was auditing this book for unsourced numbers.** Settle them against
+  `RCJRescueLine2026-final.pdf` in the root before any of them reaches a lesson.
+
+## 1. TWO CONFIRMED CODE FINDINGS, DELIBERATELY NOT FIXED
+Both verified against the tree at S152. Both move bytes, so both need the toolchain and a full
+lesson arc — patching either alone compiles the chain twice.
+- **L16's RUN IS NOT FROZEN WHEN IT ENDS.** `saveBaseline()` computes `millis() - runStart` at
+  CALL time, and it is called from `RUN_REPORT` — after the run is over. Every second the student
+  spends reading the report inflates the saved lap. **`showScore()` recomputes it the same way,
+  so the displayed number is climbing while they read it.** GPT caught the save and missed the
+  display.
+- **L15's GAP-WINDUP DEMONSTRATION IS ARCHITECTURALLY IMPOSSIBLE.** `followLine()` is called only
+  inside `if (isLineVisible())`, so `lineIntegral` cannot accumulate during a gap. Prose and code
+  disagree **and the code is right.**
+
+## 2. THE PHOTOGRAPHY — STILL THE ONLY THING BETWEEN THE BOOK AND SEPTEMBER
+Stills **3.2 · 3.5 · 3.6 · 4.1 · 4.3 · 12.1 · 13.1 · 13.2**, videos **3.1 · 4.1 · 6.1 · 8.1**.
+**VIDEO 3.1 carries L03's opening page.** Nothing in the tree can produce them.
+*(`IMAGE 14.1` and `IMAGE 16.1` are also unshot; both lessons sit outside the September scope.)*
+
+## 3. THE CATCH-UP CONVENTION — READ §16.22 BEFORE RE-RAISING
+**§16.22 (v8.140) ruled the split LEGITIMATE** and ARM 3 measures rather than judges it. What is
+open is only whether a gate should pin the measurement. **A gate pinning either convention would
+certify 64 rows and fail 32.** Note ARM 3 reaches only TWO rows book-wide, because it needs a
+stated byte figure and only L15 and L16 state them.
+
+## 4. INVARIANTS WITH NO GATE
+**NO GATE HOLDS A QUIZ BANK · A NAV PILL · A RULE CITATION.** The byte figure has `byte_audit`
+v1.1+, and **the Maker label now has ARM 4** — that one is closed. **The quiz-bank gate is the
+urgent one**: `quiz_bank --check` is loud but nothing calls it, so a broken bank can be pushed.
+
+## 5. STILL OPEN, CARRIED
+- **`GRAPHIC 16.1` OVERFLOWS ITS PANEL BY 31 UNITS** — recorded at S148, not fixed, pre-existing.
+- **§4.2's AUDIT TABLE IS UNCONFIRMED AND MAY NOT BE CONFIRMABLE.** Left alone deliberately — the
+  instrument, not the table, is what failed.
+- **§16.14 AND §16.18–§16.21 HAVE NO NUMBERED SECTION BODIES.** §16.12 and §16.13 sit BELOW §17.
+- **ARM 2 OF `byte_audit` REACHES TWO LESSONS.** L11–L14 quote figures in tables and prose.
+- **L10's ARRIVAL GEOMETRY (S144, unruled)** — only the floor can settle it.
+- **§8A.4's 65 cm/s IS UNVERIFIED** · **L14 §8A.2's "five orders of magnitude"** · **`AVOID_OUT_CM
+  = 15.0` HAS NEVER TOUCHED A FLOOR** · **CHALLENGE 6's WEDGE NUMBERS ARE SIMULATED** · **L11
+  §7A's 999.0 RULER TRICK.**
+- **L14's GLOSSARY says "95% ten times" where §3.1 teaches 90%** — deliberate, named in the bank.
+- **THE RESOURCE SECTION AS A BOOK PAGE — PARKED UNTIL AFTER SEPTEMBER 8.**
+- **L14 §10 IS THE ONLY §10 THAT IS NOT AN EXIT TICKET.** Unruled.
+- **`shim.cpp` IS REFERENCED BY `pio_harness.sh` AND EXISTS NOWHERE IN THE REPO.** The `[ -f ]`
+  guard makes it optional and *objects: 41* is unaffected. Recorded so nobody hunts for it.
+
+## Carried from S141/S140, still unruled
+**THE BAUD BENCH TEST** · **THE 1200-BAUD RESET HAS NO HOME** · **`IMAGE 7.9`–`7.12` INDEXED AS
+*Photo / screenshot*** · **§3.2's *about 13½ milliseconds*** · **L05 §3.6 alkaline tension** ·
+**the `static` split glossaries still disagree.**
+
+## Carried from S137/S138/S139, still unruled
+**§4.2's stall-current multiple** · **`IMAGE 4.1` IS A PHANTOM IN THE FIGURE COUNT** · **CONSTANTS
+vs CONFIGURATION DRIFT** · **THE 3Pi+ NOTE COMES OUT OF L03** · **L03 C1's hint hands over the
+numbers its own blanks ask for** · **§3.3's header-contents bullet in L07 still lists *Include
+guards*** · **§7's BANNER is three spellings** · **whether the `after` quiz set is graded at all.**
+
+## Carried from S135/S133/S134, still open
+**THE SPIRAL ARC — RULED, ENUMERATED, DELIBERATELY NOT STARTED.** 13 of 171 units. · **THE FIGURE
+BLOCK HAS FOUR SPELLINGS** · **`svg_layout_audit.py` HAS FOUR MEASURED DEFECTS, NONE FIXED** · KEY
+TERM paint is five grounds across 238 blocks · L03 `3.44` carries `id="glossary-trim"` on a BODY
+block · `BookComponentStandard` §7.4 says 184 where the measured figure is 238 · §6.5's nav-pill
+rule says 12–14 where the live range is 10 to 19 · **THE AMBER LEAK: L02 §2.7 is the last of three.**
+
+## AFTER SEPTEMBER 8 — PARKED ON PURPOSE, DO NOT START EARLY
+**THE RESOURCE SECTION PAGE** · **REDO `GRAPHIC 4.7` IN THE BLUEPRINT COMPOSITION** (chips run
+**5 4 3 2 1** left to right — do not re-derive) · Challenge card Pass B · monetization/ebook ·
+DISCOVERIES tagging · TDP template v3 A5 Lab Log.
+
+## Learner mode & book content
+L03_C05 Variable Speed · L03 C01/C05/C06 reference a `finished` payload that does not exist for
+L03 · whole-template starters L08/L09/L10 · Maker batch · L01 VS Code multi-root step.
+
+## Bench (need the robot — parked with photography)
+Q017 L09 six numbers · Q044 calibration-spin · Q046 gyro-bias · L02 §5 green-LED · Constrain
+RUN_MS · **cm/s at a stated BASE_SPEED** · the floor rig for 3.2 / 3.5 / VIDEO 3.1 · a real TRIM
+run for `IMAGE 3.6` · **run 7E on a lab tile** · **L04's wave test and Act Two row-1 overflow** ·
+**L05 Experiment 3 at 45°** · **L06 Experiment 3 both drags** · **the baud test** · **commanded
+30 cm vs measured across a few robots** · **DRIVE THE SEVEN-PHASE BOX** · **drive Challenge 6's
+wedge** · **HOLD THE ROBOT OVER A TABLE EDGE AND READ THE FIVE CALIBRATED VALUES** · **L11's §7
+ladder** · **L12's §7 ladder** · **L13's ENTIRE §7 LADDER** · **L14's §7 ladder** · **L15's WHOLE
+§7 LADDER** · **L16's §7.1 baseline.**
+**Every §7 measurement in L13, L14, L15 and L16 is named in those banks as deliberately unasked.**
 
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`2f61c6e`**. Census **40,642**.
-Bible **v8.142** · `BookComponentStandard` **v01.13.0** · Maker **v2.49.4** ·
+Fresh-clone verified at **`f3a5ce4`**. Census **40,648**.
+Bible **v8.143** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
-Instruments: `book_gates` **v1.66.1** · `lesson_inventory` **v1.3.5** ·
+Instruments: `book_gates` **v1.66.2** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.4** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.25.0** · `fit_raster_svg` **v1.2** ·
@@ -107,7 +208,7 @@ Instruments: `book_gates` **v1.66.1** · `lesson_inventory` **v1.3.5** ·
 `strip_inline` **v1.2** ·
 `build_worklist` **v1.1** ·
 `regex_audit` **v1.0** ·
-`byte_audit` **v1.1** ·
+`byte_audit` **v1.2** ·
 `build_palette` **v1.1** ·
 `class_sweep` **v1.0** ·
 `color_index` **v1.0** ·
@@ -122,111 +223,7 @@ Instruments: `book_gates` **v1.66.1** · `lesson_inventory` **v1.3.5** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1.
-
-Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 ·
-L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 ·
-L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1.
-
-**Derive the bank count, never read it out of a sentence:** `python3 quizzes/quiz_bank.py --status`
-
----
-
-# S152 QUEUE
-
-**The read arc is finished. The `<title>` arc is finished.** What is left is not content.
-
-## 1. THE PHOTOGRAPHY — THE ONLY THING BETWEEN THE BOOK AND SEPTEMBER
-Stills **3.2 · 3.5 · 3.6 · 4.1 · 4.3 · 12.1 · 13.1 · 13.2**, videos **3.1 · 4.1 · 6.1 · 8.1**.
-**VIDEO 3.1 carries L03's opening page.** Nothing in the tree can produce them.
-*(`IMAGE 14.1` and `IMAGE 16.1` are also unshot but both lessons sit outside the September
-scope.)*
-
-## 2. TWO OPEN RULINGS DJ WAS SHOWN AT S151 AND DID NOT TAKE
-Both are harness-gated — neither can be verified without the AVR toolchain up.
-- **`byte_audit` STILL EXITS 1 ON EXACTLY ONE ROW.** L16 Step 5's first COMPILE CHECK promises
-  **28,756** — the state after the Serial trade, before the Z–N trade. The number is right.
-  **No Maker payload produces it**, so a student stuck at that intermediate has no catch-up and
-  no instrument can verify the figure. **Author the payload or rule the figure exempt.** DJ was
-  shown both at S150 open and at S151 open and has ruled neither.
-- **THE CATCH-UP CONVENTION IS SPLIT.** L07–L10 OFFSET, L11–L16 IDENTITY. **§16.22 (v8.140)
-  ruled the split LEGITIMATE** and `byte_audit` ARM 3 measures it rather than judging it — so
-  what is actually open is only whether a gate should pin the measurement. **A gate pinning
-  either convention would certify 64 rows and fail 32.** Read §16.22 before re-raising this.
-
-## 3. THREE INVARIANTS WITH NO GATE
-**NO GATE HOLDS A QUIZ BANK · A NAV PILL · A RULE CITATION.** (The byte figure now has one:
-`byte_audit.py` v1.1, which cannot live in `book_gates.py` because a normal session has no
-toolchain.) **The quiz-bank gate is the urgent one** — `quiz_bank --check` is loud but nothing
-calls it, so a broken bank can be pushed. **The citation one is cheaper than it was**, because
-every L14 citation now names its edition: a gate can assert the edition string is present
-without validating a section number it cannot look up.
-
-## 4. STILL OPEN, CARRIED
-- **`GRAPHIC 16.1` OVERFLOWS ITS PANEL BY 31 UNITS** — *"the sensors rent ~960 B of it (heap)"*
-  spans 410..690 inside 435..665. Found by `svg_layout_audit` at S148 close. **Recorded, not
-  fixed**, and pre-existing.
-- **§4.2's AUDIT TABLE IS UNCONFIRMED AND MAY NOT BE CONFIRMABLE.** An `avr-nm` pass by symbol
-  name under-counts it badly (buzzer 598 B where deletion proves 1,828). The table says
-  "Approx. cost" and the one row measurable by deletion matches. **Left alone deliberately —
-  the instrument, not the table, is what failed.**
-- **§16.14 AND §16.18–§16.21 HAVE NO NUMBERED SECTION BODIES.** §16.12 and §16.13 sit BELOW
-  §17's heading. §6.5c was seated properly at S150 to avoid making it worse.
-- **ARM 2 OF `byte_audit` REACHES TWO LESSONS.** L11–L14 quote byte figures in tables and prose,
-  not in step headings, so they are covered only by ARM 2b's leads.
-- **L10's ARRIVAL GEOMETRY (S144, unruled)** — every artefact agrees with the code; only the
-  floor can settle it.
-- **§8A.4's 65 cm/s IS UNVERIFIED** (pololu.com unreachable). · **L14 §8A.2's "five orders of
-  magnitude"** needs the kill-switch poll at ~6 µs. · **`AVOID_OUT_CM = 15.0` HAS NEVER TOUCHED
-  A FLOOR** · **CHALLENGE 6's WEDGE NUMBERS ARE SIMULATED** · **L11 §7A's 999.0 RULER TRICK.**
-- **L14's GLOSSARY says "95% ten times" where §3.1 teaches 90%** — confirmed live, deliberately
-  not fixed (both are true of the same principle), and named in the bank as unasked.
-- **THE RESOURCE SECTION AS A BOOK PAGE — PARKED UNTIL AFTER SEPTEMBER 8.**
-- **L14 §10 IS THE ONLY §10 THAT IS NOT AN EXIT TICKET** — the Competition Day Playbook. Unruled.
-
-## Carried from S141/S140, still unruled
-- **THE BAUD BENCH TEST** · **THE 1200-BAUD RESET HAS NO HOME** · **`IMAGE 7.9`–`7.12` INDEXED
-  AS *Photo / screenshot*** where four drawn SVGs exist · **§3.2's *about 13½ milliseconds***
-  · **L05 §3.6 alkaline tension** · **the `static` split glossaries still disagree.**
-
-## Carried from S137/S138/S139, still unruled
-- **§4.2's stall-current multiple** · **`IMAGE 4.1` IS A PHANTOM IN THE FIGURE COUNT** ·
-  **CONSTANTS vs CONFIGURATION DRIFT** · **THE 3Pi+ NOTE COMES OUT OF L03** · **L03 C1's hint
-  hands over the numbers its own blanks ask for** (L07 C4, L08 C4 are instances two and three)
-  · **§3.3's header-contents bullet in L07 still lists *Include guards*** · **§7's BANNER is
-  three spellings** · **whether the `after` quiz set is graded at all.**
-
-## Carried from S135/S133/S134, still open
-- **THE SPIRAL ARC — RULED, ENUMERATED, DELIBERATELY NOT STARTED.** 13 of 171 units.
-- **THE FIGURE BLOCK HAS FOUR SPELLINGS** (L12's is best) · **`svg_layout_audit.py` HAS FOUR
-  MEASURED DEFECTS, NONE FIXED** · KEY TERM paint is five grounds across 238 blocks · L03
-  `3.44` carries `id="glossary-trim"` on a BODY block · `BookComponentStandard` §7.4 says 184
-  where the measured figure is 238 · §6.5's nav-pill rule says 12–14 where the live range is
-  10 to 19 · **THE AMBER LEAK: L02 §2.7 is the last of three.**
-
-## AFTER SEPTEMBER 8 — PARKED ON PURPOSE, DO NOT START EARLY
-**THE RESOURCE SECTION PAGE** · **REDO `GRAPHIC 4.7` IN THE BLUEPRINT COMPOSITION** (chips run
-**5 4 3 2 1** left to right — do not re-derive) · Challenge card Pass B · monetization/ebook ·
-DISCOVERIES tagging · TDP template v3 A5 Lab Log.
-
-## Learner mode & book content
-L03_C05 Variable Speed · L03 C01/C05/C06 reference a `finished` payload that does not exist for
-L03 · whole-template starters L08/L09/L10 · Maker batch · L01 VS Code multi-root step.
-
-## Bench (need the robot — parked with photography)
-Q017 L09 six numbers · Q044 calibration-spin · Q046 gyro-bias · L02 §5 green-LED · Constrain
-RUN_MS · **cm/s at a stated BASE_SPEED** · the floor rig for 3.2 / 3.5 / VIDEO 3.1 · a real
-TRIM run for `IMAGE 3.6` · **run 7E on a lab tile** · **L04's wave test and Act Two row-1
-overflow** · **L05 Experiment 3 at 45°** · **L06 Experiment 3 both drags** · **the baud test**
-· **commanded 30 cm vs measured across a few robots** · **DRIVE THE SEVEN-PHASE BOX** · **drive
-Challenge 6's wedge** · **HOLD THE ROBOT OVER A TABLE EDGE AND READ THE FIVE CALIBRATED
-VALUES** (expect ~1000 each) · **L11's §7 ladder** · **L12's §7 ladder** · **L13's ENTIRE §7
-LADDER** — 7A's surface-meter table gates all four of L13's tunables and no student can finish
-Lesson 13 without it · **L14's §7 ladder** · **L15's WHOLE §7 LADDER — nobody has read a real
-dt off the strip chart, found a real K<sub>u</sub>, or measured a real T<sub>u</sub> on this
-fleet** · **L16's §7.1 baseline — no course has ever been benchmarked.**
-**Every §7 measurement in L13, L14, L15 and L16 is named in those banks as deliberately unasked
-for exactly this reason.**
+Lessons: L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.24.0.
 
 ---
 
@@ -334,7 +331,25 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
     A FINDING.** Six controls printed FAIL at 70 of 71 green — the exact shape of a clean run —
     because the snapshot predated the edit and the first restore reverted the session's own
     work. **Read the failure DETAIL, not the verdict.** Rule 21's tell.
-72. **NEW, S151: A QUEUE IS NOT CANON.** An item that survives the session that rules it will be
+72. **S151: A QUEUE IS NOT CANON.** An item that survives the session that rules it will be
     re-reported as open by the next reader. **Check the queue against the Bible before
     reporting it.** S151 opened by telling DJ that L15's title split was the largest un-ruled
     item in the book; v8.141 had ruled it the session before.
+73. **NEW, S152: A LABEL CAN AGREE WITH ITSELF AND BE WRONG ABOUT THE WORLD.** Five L16 KINDS
+    labels carried stale byte figures whose spare clauses were arithmetically correct FOR THE
+    STALE FIGURE. `28,672 - 28,662 = 10`, so *"TEN to spare"* read fine for a payload 152 OVER.
+    **Internal consistency is not correctness (rule 51).** Check a derived number against the
+    thing it is derived FROM, never against its own neighbours.
+74. **NEW, S152: THE STRING THE USER READS IS AN ARTEFACT, AND IT NEEDS A GATE LIKE ANY OTHER.**
+    `gate_payload_match` guarded payload bytes; ARM 2 guarded lesson figures. The Maker's dropdown
+    label — the one string a stuck student actually reads — was guarded by nothing, and every
+    instance of it was wrong. **Ask what the reader sees, not only what the tree contains.**
+75. **NEW, S152: A SELECT-ALL COPIES THE PAGE, NOT THE CONVERSATION.** Fourteen of sixteen
+    replies were dropped from a pasted review while every one of the user's own turns survived.
+    **The tell was positional, not length-based.** When a paste's structure is lopsided, count
+    what should be there before working from it.
+76. **NEW, S152: SCOPE A DEFECT BEFORE BUILDING A CONVENTION FOR IT.** The mid-step door looked
+    like a population of one. It is two, and **L10 had already solved it** with `data-nobuild` on
+    the link. Scoping turned a new convention into a one-line generalisation of an existing one,
+    and saved an edit to a lesson that did not need one.
+

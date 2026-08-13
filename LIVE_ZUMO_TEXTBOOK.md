@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 12, 2026 (Session 151 — **THE SEPARATOR IS RULED, THE GATE TIGHTENED IN ONE LINE, AND A QUEUE ENTRY THAT OUTLIVED ITS OWN RULING WAS REPORTED TO DJ AS OPEN.** DJ ruled the `<title>` separator at open: *“em dash is fine for all of them that need it.”* The ruled form is `Lesson N: <catalog name> — Zumo 32U4 Robotics`. **Gate 71 found this split on its FIRST run at S150 and correctly left it alone**, because there was no ruling to measure against — widening the predicate would have certified a split nobody ruled, narrowing it would have convicted L03 and L04 on a ruling that did not exist (rule 26). **The interval between RECORDING and RULING was one session**, which is what makes *recorded, not fixed* a working disposition rather than a parking lot. Two sites, both `<title>` tags, both MINOR. **A book-wide sweep ran FIRST and found no third site** — all 21 `<title>` tags in the tree were read; the three tool pages carry no separator at all and therefore *need* nothing, which is the ruling's own words scoping it. **AND THE SESSION OPENED BY REPORTING A SETTLED ITEM AS OPEN:** the S151 queue carried *L15's title is split book-wide* as the largest un-ruled item, but v8.141 had already ruled BANNER ≠ CATALOG to be design, six lessons wide — and L15 is one of the six. The entry was carried from S147/S148 and never restruck when the ruling landed. **A queue is not canon, and an item that survives the session that rules it will be re-reported as open by the next reader.** Struck.)
-**Status:** ✅ **S151 CLOSED WITH 71/71 GATES AND EVERY INSTRUMENT CLEAN.** Gate 71 now asserts the WHOLE ruled form; the NAME half stays **DERIVED from the strip, never pinned** (rule 19), and only the separator and the book suffix are literal — both of which are what DJ ruled. **The tightening did not spend the S150 controls; it was re-controlled in full.** Seven defect shapes each fire gate 71 **ALONE at 70 of 70 others green** — a pipe on L03, a pipe on L04, a hyphen on an untouched lesson, L15 reverted to its `h1`, the book suffix dropped, **a single trailing space** (rule 23), and the tag deleted, which fires the COVERAGE arm at *scanned 15 of 16*. **The BLINDING control renamed Lesson 6 in all sixteen strips and gate 71 named L06 ALONE**, fifteen lessons silent — the derivation proving itself, since a pinned predicate fires on all sixteen or on none. §3.1b fired independently on L05 for the same rename, as at S150. **AND THE CONTROL HARNESS COMMITTED RULE 21 ON ITS FIRST RUN, WHICH IS THIS SESSION'S PROCESS FINDING.** The snapshot was taken BEFORE the em-dash edit, so every restore reverted the session's own work instead of the injection, leaving L03 carrying a pipe for all six controls that followed. **All six printed FAIL and all six looked like evidence.** The tell was in the gate's failure DETAIL rather than its verdict: every run named `03`, including the runs that injected into L09, L12 and L15. **A control that names a file it never touched is reporting contamination, not a finding.** Redone from a post-edit snapshot, md5-verified restores, untouched tree passing at BOTH ends.
+**Date:** August 13, 2026 (Session 152 — **THE MAKER'S LABELS WERE LYING AND NOTHING IN THE REPO COULD SEE THEM.** DJ opened by bringing a GPT lesson review; the paste carried only L15, L16 and an overarching pass, because a select-all copies the rendered page and not the conversation. Triage of what DID arrive converted two claims to findings against the tree — L16's `saveBaseline()` reads `millis() - runStart` at CALL time from `RUN_REPORT`, so the saved lap grows while the student reads the report, and `showScore()` recomputes it the same way, so the number is climbing ON SCREEN; and `followLine()` is gated by `isLineVisible()`, so the line integrator cannot accumulate during a gap and L15's predicted gap-windup demonstration is architecturally impossible. **Neither was fixed this session** — both move bytes and belong to a full lesson arc. **What was fixed is what the toolchain exposed underneath them.**)
+**Status:** ✅ **S152 CLOSED WITH 71/71 GATES AND `byte_audit` AT EXIT 0 FOR THE FIRST TIME IN THREE SESSIONS.** The L16 Step 5 figure of **28,756** — open and unruled since S150 — is closed. DJ ruled *author the payload*, and it was priced before it was written (rule 70): the state was BUILT and compiled to 28,756 exactly, `+84 over`, which is the lesson's own wording. **Then the label check fired.** Every one of the five L16 KINDS labels carrying a byte figure was stale — −180, −162, −162, −6, −6 — and `step_3` read *“28,662 bytes — TEN to spare”* for a payload **152 OVER the ceiling**, in the step whose entire subject is that it does not fit. **They hid because each clause was arithmetically consistent with its own stale figure — a label agreeing with itself (rule 51).** Scoped book-wide before fixing: 297 KINDS rows, 5 carry a figure, all 5 in L16, all 5 wrong. **DJ ruled DERIVE**, so `byte_audit` gained **ARM 4**, whose expectation comes from the size table and never from a typed number — the BLINDING control rewords a label and the arm stays silent.
 
-**Versions:** L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.23.1 · going_deeper v01.6.1 — census **40,642** · Bible **v8.142** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.49.4 · **book_gates v1.66.1** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.25.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `2f61c6e`.**
+**Versions:** L01 v03.28.3 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.1 · L16 v02.24.0 · going_deeper v01.6.1 — census **40,648** · Bible **v8.143** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.50 · **book_gates v1.66.2** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.4 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.25.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `f3a5ce4`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
@@ -12,86 +12,67 @@
 ---
 
 ---
-## WHAT SHIPPED IN S151
+## WHAT SHIPPED IN S152
 
-**The `<title>` separator ruled to the em dash · two `<title>` tags corrected · gate 71
-tightened in one line · one queue entry struck as already-ruled. No lesson prose changed;
-census unchanged at 40,642.**
+**One payload authored · five stale Maker labels corrected · `byte_audit` ARM 4 NEW ·
+one catch-up door · 71/71. Census 40,642 -> 40,648.**
 
-### 1. THE RULING
+### 1. THE FIGURE THAT NO PAYLOAD PRODUCED
 
-DJ at session open: *"em dash is fine for all of them that need it."* The ruled form is
+L16 Step 5's first COMPILE CHECK promises **28,756** — the state after the `Serial` trade and before
+the Ziegler-Nichols trade. The figure was right and nothing produced it, so a student who made the
+first cut and stalled on the second had **no door**, and no instrument could verify the number.
+Priced before ruling: the diff between `after_step_4` and `after_step_5` resolves into exactly three
+hunks — one Z-N block of 13 lines and two `Serial` blocks of 8 each — so the intermediate is a splice
+of two payloads that already exist, not new authoring. Built twice by independent routes (disk slice,
+then payload-text diff) and **both landed on 28,756, `+84 over`**, which is the lesson's own wording.
+`step_5_serial_traded` is DECLARED automatically, because ARM 1 reads a declaration as *the lesson
+states this figure* and L16 has stated it all along. The Maker edit was a targeted splice: **3 changed
+lines**, against the 2,726 that re-serialising the object costs (rule 69).
 
-> `Lesson N: <catalog name> — Zumo 32U4 Robotics`
+### 2. THE FOURTH UNGATED INVARIANT
 
-| File | was | now |
-|---|---|---|
-| `Lesson_03.html` `<title>` | Lesson 3: Motors & TRIM **\|** Zumo 32U4 Robotics | **—** |
-| `Lesson_04.html` `<title>` | Lesson 4: Line Sensors **\|** Zumo 32U4 Robotics | **—** |
+Nothing in this repo read a Maker KINDS label. `gate_payload_match` asserts payload BYTES against
+lesson `<pre>`; ARM 2 asserts the LESSON's figures. The label is what the STUDENT reads in the
+dropdown, and all five were stale. **ARM 4** derives the expectation from the size table and checks
+the spare/over clause too, because the clause is where the self-consistency hid. **CONTROL H**, folded
+into `--selftest`: a wrong figure is LOUD, a stale clause alone is LOUD, **rewording a label is
+SILENT** — the predicate is derived, not pinned (rule 19) — zero labels scanned does not pass, and
+`newproject.html` restores byte-for-byte. Eight controls now, was seven.
 
-Both MINOR: a `<title>` tag does not render on the page, so the visible §5b banners correctly
-stay at 03.41 and 04.29.
+### 3. A SECOND DOOR IN A STEP, AND THE CONVENTION THAT ALREADY EXISTED
 
-**THE SWEEP RAN BEFORE THE EDIT.** All **21** `<title>` tags in the tree were read — sixteen
-lessons plus `index.html`, `going_deeper.html` and the three tool pages. The pipe appeared in
-exactly two, both lessons. **The three tool pages carry no separator at all and therefore
-*need* nothing**, which is the ruling's own words scoping itself rather than an exception
-someone has to remember.
+Seating the mid-trade door pushed ARM 3's L16 row to **NEITHER**, because `step_blocks()` took the
+FIRST kind link in the step and a mid-step door is neither IDENTITY nor OFFSET *by design*. ARM 3
+reaches only two rows in the whole book — it needs a stated figure, and only L15 and L16 state them —
+so one bad row was **half its signal**. The scope check found the population is TWO: **L10 Step 4 has
+carried two doors all along**, with the RED build declared by `data-nobuild` **on the link**. So the
+convention was already here and merely ungeneralised. `data-midstep` matches that shape and
+`step_blocks()` learned one rule — *a step's own kind is the first door not declared non-canonical* —
+which covers both members, so **L10 needed no edit**. Controlled: strip the declaration and the
+NEITHER row returns; restore is md5-exact. ARM 3 back to IDENTITY, **restored rather than tidied**.
 
-### 2. GATE 71 TIGHTENED, AND RE-CONTROLLED RATHER THAN ASSUMED
+### 4. WHAT THE REVIEW COST AND WHAT IT BOUGHT
 
-Gate 71 found this split on its FIRST run at S150 and **correctly left it alone**: with no
-ruling to measure against, widening the predicate would have certified a split nobody ruled
-and narrowing it would have convicted two lessons on a ruling that did not exist (rule 26).
-**The interval between RECORDING and RULING was one session**, which is what makes *recorded,
-not fixed* a working disposition rather than a parking lot.
+L01-L14's findings never arrived — a select-all copies the rendered page, not the conversation, so
+fourteen of GPT's sixteen replies were dropped while every one of DJ's turns survived. The export was
+requested and had not landed at close. **Of what did arrive, the most valuable items were not the
+lesson-content notes but two architecture contradictions**, both confirmed against the tree and both
+deliberately left unfixed because they move bytes. **And GPT's own L16 rulebook claims — TDP at 60%
+of the rubrics score, rubrics at 20% of the total, a required poster, video length deferred to league
+docs — carry no edition citation**, which is rule 63 exactly, in the review that was auditing this
+book for unsourced numbers.
 
-The NAME half stays **DERIVED from the strip** (rule 19); only the separator and the book
-suffix are literal, and both are what was ruled. **Seven defect shapes each fire gate 71 ALONE
-at 70 of 70 others green** — a pipe on L03, a pipe on L04, a hyphen on an untouched lesson,
-L15 reverted to its `h1`, the book suffix dropped, **a single trailing space** (rule 23), and
-the tag deleted, which fires the COVERAGE arm at *scanned 15 of 16*. **The BLINDING control
-renamed Lesson 6 in all sixteen strips and gate 71 named L06 ALONE**, fifteen lessons silent —
-the derivation proving itself, since a pinned predicate fires on all sixteen or on none.
-§3.1b fired independently on L05 for the same rename, as it did at S150.
+### 5. S151, WHICH NEVER GOT A BLOCK
 
-### 3. THE PROCESS FINDING — RULE 71 NEW
+S151 closed without a `WHAT SHIPPED` entry — the file jumped S150 to S149 — so its narrative survived
+only in the Date/Status header this session was about to overwrite. Preserved verbatim below rather
+than reconstructed.
 
-**The control harness snapshotted the tree BEFORE the em-dash edit**, so every `restore()`
-reverted the session's own work instead of the injection. The first control left L03 carrying
-a pipe, and the six controls after it ran against a tree already failing for an unrelated
-reason. **All six printed FAIL at 70 of 71 green — the exact shape of a clean control run.**
+> **Date:** August 12, 2026 (Session 151 — **THE SEPARATOR IS RULED, THE GATE TIGHTENED IN ONE LINE, AND A QUEUE ENTRY THAT OUTLIVED ITS OWN RULING WAS REPORTED TO DJ AS OPEN.** DJ ruled the `<title>` separator at open: *“em dash is fine for all of them that need it.”* The ruled form is `Lesson N: <catalog name> — Zumo 32U4 Robotics`. **Gate 71 found this split on its FIRST run at S150 and correctly left it alone**, because there was no ruling to measure against — widening the predicate would have certified a split nobody ruled, narrowing it would have convicted L03 and L04 on a ruling that did not exist (rule 26). **The interval between RECORDING and RULING was one session**, which is what makes *recorded, not fixed* a working disposition rather than a parking lot. Two sites, both `<title>` tags, both MINOR. **A book-wide sweep ran FIRST and found no third site** — all 21 `<title>` tags in the tree were read; the three tool pages carry no separator at all and therefore *need* nothing, which is the ruling's own words scoping it. **AND THE SESSION OPENED BY REPORTING A SETTLED ITEM AS OPEN:** the S151 queue carried *L15's title is split book-wide* as the largest un-ruled item, but v8.141 had already ruled BANNER ≠ CATALOG to be design, six lessons wide — and L15 is one of the six. The entry was carried from S147/S148 and never restruck when the ruling landed. **A queue is not canon, and an item that survives the session that rules it will be re-reported as open by the next reader.** Struck.)
+>
+> **Status:** ✅ **S151 CLOSED WITH 71/71 GATES AND EVERY INSTRUMENT CLEAN.** Gate 71 now asserts the WHOLE ruled form; the NAME half stays **DERIVED from the strip, never pinned** (rule 19), and only the separator and the book suffix are literal — both of which are what DJ ruled. **The tightening did not spend the S150 controls; it was re-controlled in full.** Seven defect shapes each fire gate 71 **ALONE at 70 of 70 others green** — a pipe on L03, a pipe on L04, a hyphen on an untouched lesson, L15 reverted to its `h1`, the book suffix dropped, **a single trailing space** (rule 23), and the tag deleted, which fires the COVERAGE arm at *scanned 15 of 16*. **The BLINDING control renamed Lesson 6 in all sixteen strips and gate 71 named L06 ALONE**, fifteen lessons silent — the derivation proving itself, since a pinned predicate fires on all sixteen or on none. §3.1b fired independently on L05 for the same rename, as at S150. **AND THE CONTROL HARNESS COMMITTED RULE 21 ON ITS FIRST RUN, WHICH IS THIS SESSION'S PROCESS FINDING.** The snapshot was taken BEFORE the em-dash edit, so every restore reverted the session's own work instead of the injection, leaving L03 carrying a pipe for all six controls that followed. **All six printed FAIL and all six looked like evidence.** The tell was in the gate's failure DETAIL rather than its verdict: every run named `03`, including the runs that injected into L09, L12 and L15. **A control that names a file it never touched is reporting contamination, not a finding.** Redone from a post-edit snapshot, md5-verified restores, untouched tree passing at BOTH ends.
 
-What exposed it was reading the gate's **failure DETAIL** rather than its verdict: every run
-named `03`, including the runs that had injected into L09, L12 and L15. **A control that names
-a file it never touched is reporting contamination, not a finding.** Rule 21 in a new place;
-redone from a post-edit snapshot with md5-verified restores and the untouched tree passing at
-**both** ends.
-
-### 4. A QUEUE ENTRY THAT OUTLIVED ITS OWN RULING — RULE 72 NEW
-
-**S151 opened by reporting to DJ that *L15's title is split book-wide* was the largest un-ruled
-item in the book. It had been ruled the session before.** v8.141 established that BANNER ≠
-CATALOG is design, and the split is six lessons wide — **L01, L02, L03, L08, L15, L16**,
-re-derived here rather than carried. L15 is one of the six, so `next_pointer` deriving L14's
-footer pointer from the strip is **correct**, not *generated wrong*.
-
-The entry was carried forward from S147/S148 and never restruck when the ruling landed.
-**A QUEUE IS NOT CANON, AND AN ITEM THAT SURVIVES THE SESSION THAT RULES IT WILL BE
-RE-REPORTED AS OPEN BY THE NEXT READER.** Struck. Read the queue against the Bible before
-reporting it.
-
-### 5. FOUND BY THE DOUBLE CHECK, RECORDED NOT FIXED
-
-**This file carries TWO `## WHAT SHIPPED IN S147` blocks** (a pre-existing duplicate), and
-**nothing in the tree reads this file's per-session block structure at all** — which is how
-S151 came within one command of closing with no S151 block, its header naming a session the
-body never mentioned. `session_versions --check` reads line 6 only, by design.
-
-**Applied S151:** L03 **v03.41.1** · L04 **v04.29.1**, both MINOR · `book_gates` **v1.66.1** ·
-Bible **v8.142**. 71/71 gates, every instrument clean, census unchanged at **40,642**.
-
----
 ---
 ## WHAT SHIPPED IN S150
 

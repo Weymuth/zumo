@@ -14,6 +14,10 @@ session does not have. Run it whenever the harness is up.
   ARM 2  FIGURES     every byte figure a lesson promises for a build (step
                      headings and COMPILE CHECK callouts) must equal the
                      compiled size of a payload of that lesson.
+  ARM 4  LABELS      every byte figure in a Maker KINDS label must equal the
+                     compiled size of the payload that row points at. Nothing
+                     else in this repo reads a label. S152 found all five
+                     stale, each agreeing with its own arithmetic (rule 51).
   ARM 3  CONVENTION  measure, per lesson, whether the catch-up link under
                      Step N serves the file as it stands AT step N (IDENTITY)
                      or BEFORE it (OFFSET). A measurement, not a verdict.
@@ -33,7 +37,19 @@ libcore_lto.a built by --setup), and extract_project.py beside this file.
 """
 import re, sys, os, json, subprocess, tempfile, shutil
 
-VERSION = 'v1.1'
+VERSION = 'v1.2'
+# v1.2 (S152): ARM 4 NEW - every byte figure in a Maker KINDS label must equal the
+#   compiled size of the payload its row points at. Nothing in this repo read a label:
+#   gate_payload_match asserts payload BYTES against lesson <pre>, ARM 2 asserts the
+#   LESSON's figures. All five L16 labels were stale (-180/-162/-162/-6/-6) and step_3's
+#   read '28,662 bytes - TEN to spare' for a payload 152 OVER, in the step whose subject
+#   is that it does not fit. They hid because each clause was arithmetically consistent
+#   with its own stale figure - a label agreeing with itself (rule 51). Predicate DERIVED
+#   from the size table, never typed (rule 19), so rewording a label moves nothing: the
+#   BLINDING control in CONTROL H proves it. COVERAGE arm - zero labels scanned fails.
+#   step_blocks() now picks a step's kind as the first door NOT declared non-canonical
+#   (data-nobuild, data-midstep), because L16 Step 5 and L10 Step 4 each carry two and
+#   neither property is inferable from the URL (the §16.23 shape).
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 HARNESS = os.environ.get("ZUMO_HARNESS", "/home/claude/harness")
@@ -161,7 +177,16 @@ def step_blocks(L):
         hf = re.search(FIG + r"\s*bytes", htxt)
         cfs = [int(x.replace(",", "")) for x in
                re.findall(r"COMPILE CHECK</b>\s*[—–-]?\s*" + FIG, body)]
-        kd = re.search(r"\?lesson=%d&(?:amp;)?kind=([A-Za-z0-9_]+)" % L, body)
+        # A step may carry more than one door. The step's OWN kind is the first
+        # link not DECLARED non-canonical: data-nobuild (L10's RED build) or
+        # data-midstep (L16 Step 5's between-the-trades state, S152). Neither is
+        # inferable from the URL, so both are declared in markup (the §16.23 shape).
+        kd = None
+        for a in re.finditer(r"<a\b[^>]*?\?lesson=%d&(?:amp;)?kind=([A-Za-z0-9_]+)[^>]*>" % L, body):
+            if "data-nobuild" in a.group(0) or "data-midstep" in a.group(0):
+                continue
+            kd = a
+            break
         blocks.append({
             "step": m.group(1),
             "title": re.sub(r"<[^>]+>", "", htxt).strip(),
@@ -323,6 +348,75 @@ def arm2_leads(tbl, only=None):
     print("   %d figure(s) in band, %d not produced by their own lesson\n" % (tot, un))
 
 
+
+# ------------------------------------------------- ARM 4: the Maker's labels
+
+CEILING = 28672
+
+def kind_rows(maker=MAKER):
+    """Parse the KINDS registry: (lesson, kind id, decoded label, payloadRef).
+
+    The label is what the STUDENT reads in the Maker's dropdown. Nothing else
+    in this repo reads it -- gate_payload_match asserts payload BYTES against
+    lesson <pre>, and ARM 2 asserts the LESSON's figures. A byte figure typed
+    into a label was, until S152, unreachable by every instrument."""
+    src = open(maker, encoding="utf-8").read()
+    i = src.index("var KINDS")
+    blk = src[i:i + 900000]
+    out = []
+    for L, body in re.findall(r'\n    (\d+): \[(.*?)\n    \]', blk, re.S):
+        for m in re.finditer(r'\["([^"]+)",\s*"((?:[^"\\]|\\.)*)"(.*?)\]', body, re.S):
+            kid, label, rest = m.group(1), m.group(2), m.group(3)
+            refs = re.findall(r'"([^"]+)"', rest)
+            out.append((int(L), kid, label.encode().decode("unicode_escape"),
+                        refs[-1] if refs else None))
+    return out
+
+
+def expected_clause(n):
+    """DERIVED from the compile and the ceiling -- never typed (rule 19)."""
+    return ("%s to spare" % format(CEILING - n, ",")) if n <= CEILING else \
+           ("%s OVER" % format(n - CEILING, ","))
+
+
+def arm4(tbl, only=None):
+    """Every byte figure in a KINDS label must equal its payload's compiled size.
+
+    The expectation is DERIVED from the size table, so rewording a label moves
+    nothing and only a real drift fires. The spare/over clause is checked too,
+    because S152 found five labels whose clauses were arithmetically consistent
+    with their own stale figures -- a label agreeing with itself (rule 51)."""
+    print("ARM 4 - LABELS: every byte figure in a KINDS label equals its compile")
+    bad, seen = [], 0
+    for L, kid, label, ref in kind_rows():
+        if only and L != only:
+            continue
+        figs = re.findall(r'\b(\d{2},\d{3})\b', label)
+        if not figs:
+            continue
+        seen += 1
+        rec = tbl.get("%d/%s" % (L, ref))
+        got = rec.get("flash") if isinstance(rec, dict) else rec
+        claim = int(figs[0].replace(",", ""))
+        if got is None:
+            bad.append((L, kid, claim, None, "no compiled size for ref %r" % ref))
+            continue
+        if claim != got:
+            bad.append((L, kid, claim, got, "label figure != compile"))
+            continue
+        want = expected_clause(got)
+        if re.search(r'\d{1,3},?\d*\s+(?:to spare|OVER)', label) and want not in label:
+            bad.append((L, kid, claim, got, "clause should read %r" % want))
+    for L, kid, claim, got, why in bad:
+        print("   L%-2d %-24s label %s  compiled %s  -- %s"
+              % (L, kid, format(claim, ","), got, why))
+    print("   %d label(s) carry a figure, %d unmatched" % (seen, len(bad)))
+    if not seen:
+        print("   COVERAGE: ZERO labels scanned - the parser found nothing")
+        return False
+    print()
+    return not bad
+
 def arm3(tbl, only=None):
     """Measure the catch-up convention. Report, not verdict."""
     print("ARM 3 — CONVENTION: does Step N's catch-up link serve the file AT step N?")
@@ -457,11 +551,59 @@ def selftest():
     chk("Lesson_02 restored byte-for-byte",
         open(lesson_path(2), encoding="utf-8").read() == bak)
 
+
+    print("\nCONTROL H (ARM 4: the label figure is DERIVED, and drift is LOUD)")
+    mbak = open(MAKER, encoding="utf-8").read()
+    tbl_h = load_sizes() if os.path.exists(CACHE) else {}
+    try:
+        rows = [(L, k, lb, rf) for L, k, lb, rf in kind_rows()
+                if re.search(r'\b\d{2},\d{3}\b', lb)]
+        chk("the KINDS parser finds labels carrying a figure", bool(rows),
+            "%d row(s)" % len(rows))
+        chk("clean tree is SILENT", arm4(tbl_h) is True)
+
+        # a wrong FIGURE is loud
+        L, kid, lab, ref = rows[0]
+        fig = re.search(r'\b(\d{2},\d{3})\b', lab).group(1)
+        esc = lab.replace("\u2014", "\\u2014")
+        bad = esc.replace(fig, format(int(fig.replace(",", "")) + 1, ","), 1)
+        s2 = mbak.replace(esc, bad, 1)
+        chk("the seed landed in the intended shape", s2 != mbak)
+        open(MAKER, "w", encoding="utf-8").write(s2)
+        chk("a wrong label figure is LOUD", arm4(tbl_h) is False)
+        open(MAKER, "w", encoding="utf-8").write(mbak)
+
+        # a wrong CLAUSE with a correct figure is loud (the S152 shape)
+        m = re.search(r'(\d{1,3}(?:,\d{3})?) to spare', mbak)
+        if m:
+            s3 = mbak.replace(m.group(0),
+                              format(int(m.group(1).replace(",", "")) + 1, ",")
+                              + " to spare", 1)
+            open(MAKER, "w", encoding="utf-8").write(s3)
+            chk("a stale spare/over CLAUSE is LOUD (rule 51)", arm4(tbl_h) is False)
+            open(MAKER, "w", encoding="utf-8").write(mbak)
+
+        # BLINDING: reword a label, leave the figure alone -> must stay silent
+        word = re.search(r'"(Step \d \\u2014 [A-Za-z ]+)', mbak)
+        if word:
+            s4 = mbak.replace(word.group(1), word.group(1) + " Now", 1)
+            open(MAKER, "w", encoding="utf-8").write(s4)
+            chk("BLINDING: rewording a label is SILENT (predicate is derived)",
+                arm4(tbl_h) is True)
+            open(MAKER, "w", encoding="utf-8").write(mbak)
+
+        # COVERAGE: a parser that finds nothing must not pass
+        chk("ZERO labels scanned does not pass", arm4({}, only=99) is False)
+    finally:
+        open(MAKER, "w", encoding="utf-8").write(mbak)
+    chk("newproject.html restored byte-for-byte",
+        open(MAKER, encoding="utf-8").read() == mbak)
+
     print()
     if fails:
         print("SELFTEST FAILED: " + ", ".join(fails))
         return 1
-    print("ALL SEVEN CONTROLS PASS - silent when clean, loud when broken.")
+    print("ALL EIGHT CONTROLS PASS - silent when clean, loud when broken.")
     return 0
 
 
@@ -513,11 +655,12 @@ def main():
         return 0
     ok1 = arm1(tbl, only)
     ok2 = arm2(tbl, only)
+    ok4 = arm4(tbl, only)
     arm2_leads(tbl, only)
     if a[0] == "--lesson" or "--convention" in a:
         arm3(tbl, only)
-    print("byte_audit: " + ("PASS" if ok1 and ok2 else "FAIL"))
-    return 0 if (ok1 and ok2) else 1
+    print("byte_audit: " + ("PASS" if ok1 and ok2 and ok4 else "FAIL"))
+    return 0 if (ok1 and ok2 and ok4) else 1
 
 
 if __name__ == "__main__":

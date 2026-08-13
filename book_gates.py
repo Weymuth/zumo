@@ -2,8 +2,12 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.66.1'
+VERSION = 'v1.66.2'
 # v1.66.0 (S150): GATE 71 NEW, §6.5c. The <title> tag carries the strip's CATALOG name.
+# v1.66.2 (S152): §27.11 stylesheet digest baseline moved after the L16 Step 5
+#                 mid-trade catch-up landed. Rules and declarations UNCHANGED at
+#                 574/2,033 and every declaration block byte-identical - usage rank
+#                 only. Blinding-controlled: still fires on a deleted declaration.
 # v1.66.1 (S151): gate 71 tightened to the ruled em-dash form (DJ ruling S151).
 #   Nothing in this repo read <title> at all, which is why L15 and L16 could put their
 #   <h1> in the tab and stand that way from S70 to S150 - every GENERATED title slot
@@ -2369,7 +2373,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '16066a1f216acce5'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'f22ca041a311338f'
 #   S144 move, SECOND of the session. Digest ONLY, 574/2,033 both ends, class SET
 #   byte-identical, usage RANK only: `.h4-c-555` 9 -> 8 and the whole textual diff is that
 #   rule changing rank plus its count comment. Cause: the L11 §3.5 cliff rewrite has one
