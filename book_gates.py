@@ -2,7 +2,37 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.67.0'
+VERSION = 'v1.68.1'
+# v1.68.1 (S154): §27.11 stylesheet digest baseline moved after gate 73's five index
+#                 rows landed. Rules and declarations UNCHANGED at 574/2,033, every
+#                 declaration block byte-identical, zero selectors added or removed -
+#                 usage rank only (+15 inline attributes, 5 rows x 3 cells), which
+#                 reordered .td-ccc above .tr-bg-f8f9fa. Same shape as v1.66.2 (S152).
+#                 Blinding-controlled: still fires on a deleted declaration. Rule 24 -
+#                 the acceptance test is the RESOLVED STYLING, not the rule count, and
+#                 resolved styling is identical by construction when no block changed.
+# v1.68.0 (S154): GATE 73 NEW, §10. A figure the lesson PRINTS has a row in that
+#                 lesson's own Figures index. Found by the GPT review, confirmed by
+#                 measurement: L01 prints nineteen tags and indexes fifteen - GRAPHIC
+#                 1.11, GRAPHIC 1.12, IMAGE 1.14, IMAGE 1.18 are LANDED, captioned, and
+#                 absent from their own record; L15 prints an unshot GRAPHIC 15.4 and
+#                 indexes 15.1-15.3. Gate 69 could not see it and is not broken: 69 pins
+#                 the planned DENOMINATOR (146), a different property, and its name reads
+#                 broader than its predicate (rule 44). Region located STRUCTURALLY by
+#                 id="figures" - measured present exactly once in all sixteen - and rows
+#                 by <tr>, which is what keeps L04's prose note "[IMAGE 4.1] and [GRAPHIC
+#                 4.1] are two different figures" from reading as an index row. NO
+#                 outstanding exemption: L15's unshot 15.4 was the candidate, but L03's
+#                 3.2/3.5/3.6 and L12's 12.1 are equally unshot and ARE indexed, so an
+#                 exemption would have certified the second instance rather than
+#                 described a convention (rule 20). Coverage arm counts lessons ASSERTED
+#                 (rule 27). Control-run three ways from a scratch copy: A adds the five
+#                 rows and 73 goes green at 72/72 others; B deletes one L14 row from that
+#                 clean state and 73 fires on L14 ALONE; C breaks the anchor on L09 - a
+#                 lesson that is SILENT today - and both the anchor report and the
+#                 coverage arm speak. STATED BLIND SPOT (rule 78): it compares PRINTED to
+#                 INDEXED, so a figure landed with no caption tag and no index row is
+#                 invisible; nine lessons print fewer than half their indexed figures.
 # v1.66.0 (S150): GATE 71 NEW, §6.5c. The <title> tag carries the strip's CATALOG name.
 # v1.66.2 (S152): §27.11 stylesheet digest baseline moved after the L16 Step 5
 #                 mid-trade catch-up landed. Rules and declarations UNCHANGED at
@@ -2373,7 +2403,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'f22ca041a311338f'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '192779c80766492b'
 #   S144 move, SECOND of the session. Digest ONLY, 574/2,033 both ends, class SET
 #   byte-identical, usage RANK only: `.h4-c-555` 9 -> 8 and the whole textual diff is that
 #   rule changing rank plus its count comment. Cause: the L11 §3.5 cliff rewrite has one
@@ -4195,6 +4225,78 @@ try:
 except Exception as _e72:                                   # noqa: BLE001
     bad.append('the quiz-bank predicate did not run (%s)' % _e72)
 gate('\u00a724.2 every lesson has a quiz bank and every bank validates', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 73 (S154) - A FIGURE THE LESSON PRINTS HAS A ROW IN THAT LESSON'S INDEX.
+#
+# FOUND BY THE GPT REVIEW, CONFIRMED BY MEASUREMENT. L01 prints nineteen figure
+# tags and its index table carries fifteen rows: GRAPHIC 1.11, GRAPHIC 1.12,
+# IMAGE 1.14 and IMAGE 1.18 are LANDED figures with captions whose art renders
+# perfectly and whose index row does not exist. L15 prints GRAPHIC 15.4 - an
+# outstanding placeholder - and indexes 15.1 to 15.3 only.
+#
+# WHY GATE 69 DOES NOT SEE THIS, AND IS NOT BROKEN. Gate 69 pins
+# PLANNED_EXPECTED = 146, the figure DENOMINATOR, because S135 landed art by
+# deleting a tag's only occurrence and the population shrank so `outstanding`
+# fell like progress. That is a different property. A tag can be printed in the
+# body, counted in the planned 146, and have no index row - the denominator is
+# whole and the index is short. Its name reads broader than its predicate
+# (rule 44: the header of a thing is not the thing), which is exactly why this
+# sat green for the whole life of the book.
+#
+# THE PREDICATE IS STRUCTURAL, NOT A SPELLING (rule 19). The index region is
+# `id="figures"` - present exactly once in all sixteen lessons, measured, not
+# assumed. Rows are <tr> elements inside it. That matters: L04's Figures
+# section carries the prose note "[IMAGE 4.1] and [GRAPHIC 4.1] are two
+# different figures, by design", which a region-wide tag scan would read as an
+# index row and a <tr> scan correctly does not.
+#
+# WHAT THIS GATE CANNOT SEE, STATED SO NOBODY READS ITS SILENCE AS PROOF
+# (rule 78). It compares tags PRINTED to tags INDEXED. A figure that is landed
+# with no caption tag anywhere AND no index row is invisible to it, because
+# nothing in the tree says that figure was ever meant to exist. Nine lessons
+# print fewer than half their indexed figures - the caption-tag convention is
+# not uniform - so for those lessons this gate is weaker than it looks. It
+# catches the defect that exists; it does not certify the index is complete.
+#
+# NO OUTSTANDING EXEMPTION, DELIBERATELY. L15's GRAPHIC 15.4 is unshot and was
+# the obvious candidate for one. Measured instead: L03's IMAGE 3.2 / 3.5 / 3.6
+# and L12's IMAGE 12.1 are equally unshot and ARE indexed. Fourteen of sixteen
+# lessons have zero gap. So an exemption would not have described a convention,
+# it would have certified the second instance of the defect - a hold that is
+# also satisfied by an accident is not a hold (rule 20).
+#
+# COVERAGE ARM, because a gate that scans zero lessons passes (rule 27).
+_TAG73 = re.compile(r'\[((?:IMAGE|GRAPHIC|VIDEO)\s+\d+\.\d+[a-z]?)\]')
+_TR73 = re.compile(r'<tr\b.*?</tr>', re.S)
+bad = []
+_seen73 = 0
+for _f73 in files:
+    try:
+        _h73 = open(_f73, encoding='utf-8').read()
+    except Exception as _e73:                               # noqa: BLE001
+        bad.append('%s could not be read (%s)' % (_f73, _e73))
+        continue
+    _anchor73 = _h73.count('id="figures"')
+    if _anchor73 != 1:
+        bad.append('%s has %d id="figures" anchors, expected exactly 1 - the index '
+                   'region cannot be located, so this lesson was NOT asserted'
+                   % (_f73, _anchor73))
+        continue
+    _i73 = _h73.index('id="figures"')
+    _printed73 = set(_TAG73.findall(_h73[:_i73]))
+    _indexed73 = set()
+    for _tr73 in _TR73.findall(_h73[_i73:]):
+        _indexed73 |= set(_TAG73.findall(_tr73))
+    _seen73 += 1
+    for _t73 in sorted(_printed73 - _indexed73):
+        bad.append('L%s prints [%s] but its Figures index has no row for it - the '
+                   'figure exists in the lesson and not in its own record (S154)'
+                   % (L(_f73), _t73))
+if _seen73 != len(files):
+    bad.append('asserted %d of %d lessons - a lesson whose index region could not be '
+               'located is not a lesson that passed' % (_seen73, len(files)))
+gate('\u00a710   every figure the lesson prints has an index row', bad)
 
 print('=' * 52)
 
