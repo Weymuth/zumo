@@ -1,4 +1,4 @@
-# ZUMO — S155 HANDOFF (rewritten at S154 close · paste at top of Session 155)
+# ZUMO — S156 HANDOFF (rewritten at S155 close · paste at top of Session 156)
 
 ## Session open ritual (do this without being asked)
 1. **`git ls-remote https://github.com/Weymuth/zumo.git HEAD` FIRST.** A stale answer is
@@ -7,7 +7,7 @@
 2. Read `LIVE_ZUMO_TEXTBOOK.md` — verify date / status / versions.
 3. **Do NOT grep the Bible version.** `session_versions.bible_consistency()` parses it.
    The phrase `Bible version: v` occurs THREE times and two of them are grep COMMANDS quoted
-   inside the Bible; a naive `grep -o` returns `v8.145`, `v`, `v`.
+   inside the Bible; a naive `grep -o` returns `v8.145.1`, `v`, `v`.
 4. Run the full suite and **READ THE EXIT CODE, NOT THE LAST LINE**. **THE SUITE IS 73 GATES,
    NOT 72** (gate 73 new, S154). Plus **`callout_id.py --selftest` then `--audit`**,
    **`keyterm_prefix.py --audit`**, **`quizzes/quiz_bank.py --selftest` then `--check`**, and
@@ -28,7 +28,7 @@
 14. **`rm -rf __pycache__` BEFORE `git status`. Also `quizzes/__pycache__`.**
 15. **THE FULL SUITE TAKES ~40 SECONDS.** Budget control harnesses accordingly.
 
-## 16. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. NOT RUN IN S153 OR S154.
+## 16. THE AVR TOOLCHAIN — S146's INSTRUCTIONS STILL HOLD. NOT RUN IN S153, S154 OR S155.
 
 `apt-get install -y gcc-avr avr-libc` **(no `sudo` — it is not on this box, exit 127).** Clone
 into `/home/claude/harness` **FLAT, not under a `pololu/` subdirectory**.
@@ -39,6 +39,30 @@ INCLUDING THIS ONE.** Also clone `arduino/ArduinoCore-avr`. Zumo library at tag 
 `bash pio_harness.sh --setup`. **Expect *objects: 41*.**
 
 **THE CONTROL: L11 `after_step_1` MUST COMPILE TO 20,516.** Held S144–S149, from five clones.
+
+---
+
+# THE ONE THING TO CARRY OUT OF S155
+
+**A TRIPLE CHECK THAT VARIES THE MECHANISM AND NOT THE PREDICATE IS A SINGLE CHECK RUN THREE
+TIMES.**
+
+§16.25 was written at S154 to stop the fleet-hardware question recurring, and it priced the fix at
+*13 / 8 / 1 / ~1* A-Star occurrences. **All four were `grep -c` output, which counts matching
+LINES.** Rule 50 committed inside the section that cites it.
+
+**THE RE-DERIVATION THEN WENT WRONG A SECOND TIME, AND THAT IS THE PART TO KEEP.** Asked for a
+triple check, the correction ran three genuinely independent mechanisms — `grep -o | wc -l`,
+`re.finditer` over raw bytes, and `len(re.split()) - 1`. **All three agreed at 15 / 16 / 54. All
+three were wrong**, because the widened pattern `a[-_ ]?star` matches the phrase *"a start line"*,
+36 times in `newproject.html` alone. The agreement was real and meant nothing: the three shared
+the predicate, and the predicate was the defect.
+
+**§24.13's *re-derive, do not re-read* is satisfied only when the PREDICATE varies.** What settled
+it was reading the hits — at which point the count stopped being the useful output and the
+INVENTORY became it: six of L01's fifteen are the CORRECT build target, two are element ids, and
+two of L03's ten are a photograph's filename. **A fix pass scoped by the total would have edited
+things that are right.**
 
 ---
 
@@ -66,6 +90,13 @@ Every row still owes its own check before it becomes an edit.
 
 ---
 
+# S155's RULINGS
+
+**TRIPLE CHECK, THEN CORRECT, THEN REISSUE THE HANDOFF.** DJ's word on being shown the count
+error. The triple check is what caught the second, worse error.
+
+---
+
 # S154's RULINGS
 
 **THE FLEET IS ZUMO 32U4 WITH OLED (§16.25, v8.145).** Ruled so it stops recurring. And the
@@ -85,12 +116,14 @@ the wrong question; correctness needs **three** terms, not a swap.
 
 ---
 
-# S155 QUEUE
+# S156 QUEUE
 
 ## 0. THE GPT REVIEW IS INTAKEN. NOTHING IS RULED. NOTHING IS FIXED.
 **`ZUMO_GPT_REVIEW_WORKLIST.md` v1.1 is the artefact** — 18 documents, 68,123 words, **245
-findings indexed**, 7 measured, 0 fixed. **IT IS NOT IN THE REPO** unless DJ pushed it; it was
-delivered as a working file. Ask before assuming it is on disk.
+findings indexed**, 7 measured, 0 fixed. **IT IS STILL NOT IN THE REPO.** S155 confirmed this by
+inspection: `GPT_WORKLIST.md` in the root is the unrelated S103 graphics list. The file exists
+only as a working deliverable and was re-delivered at S155. **Ask for it; do not assume it is on
+disk, and do not mistake `GPT_WORKLIST.md` for it.**
 
 **THE FIRST DECISION IS THE SIX CANON STATEMENTS, NOT THE 245 ROWS.** Each collapses 15–40
 findings, and fixing them lesson-by-lesson means fixing L08 three times:
@@ -135,12 +168,38 @@ L14 and L16 are rulebook claims, and `RCJRescueLine2026-final.pdf` is in the rep
 settles all eight. **The reviewer's rulebook claims carry no edition (rule 63) and must not reach
 a lesson unchecked.**
 
-## 1. THE A-STAR FIX — RULED, MEASURED, NOT STARTED
-§16.25 is canon. **13 hits `Lesson_01.html` · 8 `Lesson_03.html` · 1 `newproject.html` · ~1
-Bible · ZERO quiz banks.** Three terms: `Zumo 32U4 Main Board` (hardware, inherits the *brain*
-framing) · `ATmega32U4` (chip) · `a-star32U4` (build target only, uppercase U). **`board =
-a-star32U4` in `platformio.ini` is CORRECT and must survive the sweep.** Do this in the single
-L01 pass with the rest of L01's findings, not alone.
+## 1. THE A-STAR FIX — RULED, RE-MEASURED AT S155, NOT STARTED
+§16.25 is canon (Bible **v8.145.1**). **The S154 figures were LINE counts from `grep -c` and are
+corrected: 15 `Lesson_01.html` · 10 `Lesson_03.html` · 2 `newproject.html` · 2 pre-existing in
+the Bible · ZERO quiz banks.** Three terms: `Zumo 32U4 Main Board` (hardware, inherits the
+*brain* framing) · `ATmega32U4` (chip) · `a-star32U4` (build target only). **`board = a-star32u4`
+is CORRECT and must survive the sweep.**
+
+**USE THE INVENTORY, NOT THE TOTAL.** L01's 15 = **5 wrong-claim** (§3.3 *built around*, the KEY
+TERM and its glossary twin both reading *the brain of your Zumo robot*, the Brain Check answer,
+and the §3.3 checklist line) · **6 legitimate build-target** · **2 element ids** (`term-a-star`,
+`term-a-star-gloss`) · **2 checklist/quiz**. L03's 10 = **8 wrong-claim** (four prose sentences
+attributing motor control to the A-Star, the IMAGE 3.14 caption, the Figures-index row, the
+battery-monitoring sentence, and the TDP header block) · **2 asset filename**.
+`newproject.html`'s 2 are both correct build-target.
+
+**TWO OPEN QUESTIONS THE COUNT WOULD HAVE HIDDEN — BOTH NEED A DJ RULING BEFORE THE PASS.**
+- **THE CAPITALIZATION IS SPLIT AND THE BIBLE IS ON THE OTHER SIDE OF IT.** Lessons and Maker
+  ship `a-star32u4` with a **LOWERCASE u** in six places; this Bible writes `a-star32U4` twelve
+  times including §16.8's `boards/a-star32U4.json`, `pio_harness.sh` agrees with the Bible, and
+  §16.25 declares uppercase canonical. **The book contradicts its own canon in six places.**
+  PlatformIO evidently tolerates lowercase — the book has shipped that way — so **normalising is
+  a RULING, not a defect fix.**
+- **L03's PHOTOGRAPH IS NAMED FOR A BOARD THE ROBOT DOES NOT CONTAIN:**
+  `L03_IMAGE_3-14_astar_board.jpg`, a top view of the Zumo 32U4 main board. Renaming is disk work
+  plus `image_audit`. The pass may correct the caption and keep the filename — but **decide it,
+  do not miss it.**
+
+**AND §11 CARRIES ONE OF THE WRONG CLAIMS ITSELF:** *"A-Star32U4 capitalization for the
+microcontroller"*, where the microcontroller is the ATmega32U4. §16.25 contradicts a line in its
+own file.
+
+Do this in the single L01 pass with the rest of L01's findings, not alone.
 
 ## 2. THE PHOTOGRAPHY — STILL THE ONLY THING BETWEEN THE BOOK AND SEPTEMBER
 Stills **3.2 · 3.5 · 3.6 · 4.1 · 4.3 · 12.1 · 13.1 · 13.2**, videos **3.1 · 4.1 · 6.1 · 8.1**.
@@ -224,8 +283,8 @@ ladder** · **L12's §7 ladder** · **L13's ENTIRE §7 LADDER** · **L14's §7 l
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`d8e0d8d`**. Census **40,668**.
-Bible **v8.145** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
+Fresh-clone verified at **`208cc94`**. Census **40,668**.
+Bible **v8.145.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -304,7 +363,10 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 37. **READ -> FIX -> QUIZ, NEVER QUIZ FIRST — AND THE READ DOES NOT TRANSFER BETWEEN SESSIONS.**
 38. **A TEXT MATCH LOCATES; IT NEVER ANSWERS.** **S154: committed AGAIN, on the stale-pin count —
     a regex reading `lesson_NN: vX` returned TWO because the pins are double-QUOTED, where a YAML
-    parse returned TWENTY-FOUR. Caught only by re-deriving.**
+    parse returned TWENTY-FOUR. S155: committed a THIRD time, on §16.25's own scope figures, which
+    were `grep -c` LINE counts reported as occurrences. THE HITS MUST BE READ: L03's photograph
+    filename and L01's two element ids are hits that are not defects, and six of L01's fifteen are
+    the CORRECT build target.**
 39. **NO INSTRUMENT THAT READS THE TREE CAN SEE A RULING.**
 40. **PULL THE PAYLOAD, NOT THE CARD.**
 41. **AN ENTRY FILED IN ONE HOME IS NOT FILED.**
@@ -367,3 +429,12 @@ Named-file CLI for adds and modifies; **GitHub Desktop for deletions.** **Never 
 82. **NEW, S154: AN AGREEMENT RATE IS A PROPERTY OF THE INSTRUMENTS, NOT OF THE CLAIM.** 200 of
     245 findings drew agreement and the calibration pass still refuted one of the first seven
     measured. **Measure a sample you can decide before weighting the ones you cannot.**
+83. **NEW, S155: THREE METHODS THAT SHARE A PREDICATE ARE ONE METHOD.** §24.13 says re-derive
+    rather than re-read, and a triple check ran `grep -o | wc -l`, `re.finditer` over raw bytes,
+    and `len(re.split()) - 1` over the same widened pattern. **All three agreed and all three were
+    wrong**, because the pattern `a[-_ ]?star` matches the phrase *"a start line"* — 36 times in
+    one file. **Vary the PREDICATE, not merely the mechanism**, and read the hits before reporting
+    the count. Rule 79 applied to a regex instead of to a gate.
+84. **NEW, S155: `grep -c` COUNTS LINES.** Four figures in a hardware ruling were line counts
+    reported as occurrence counts, in a section whose subject is *measure it, do not re-litigate
+    it*. **If a number will be used to scope a fix, it must be the number the fix will encounter.**
