@@ -95,6 +95,27 @@ Every row still owes its own check before it becomes an edit.
 **TRIPLE CHECK, THEN CORRECT, THEN REISSUE THE HANDOFF.** DJ's word on being shown the count
 error. The triple check is what caught the second, worse error.
 
+**NORMALISE THE PlatformIO BOARD ID TO UPPERCASE U — RULED, APPLIED, AND THEN MEASURED.** DJ's
+reasoning: *"it's called 32U4 by the company."* All six shipped sites changed — 4 in
+`Lesson_01.html`, 2 in `newproject.html`'s `var INI` string, which writes the `platformio.ini` for
+every downloaded project.
+
+**MEASURED FACT (§24.15), DJ's machine, August 2026: PlatformIO's board ID is CASE-INSENSITIVE
+here. `board = a-star32u4` and `board = a-star32U4` BOTH BUILD SUCCESSFULLY.** Instrument: two
+real builds in VS Code, lowercase evidenced by screenshot and uppercase reported by DJ. Scope of
+the claim: one machine, one PlatformIO version, this board — which is one instrument, not a
+universal property, but it is the instrument that matters because it is the toolchain the class
+uses.
+
+**WHY THIS WAS WORTH TESTING RATHER THAN ASSUMING.** Pololu's PRODUCT NAME and PlatformIO's BOARD
+ID are different namespaces, and the ruling reasoned from the first to the second. Nothing on the
+authoring box could resolve a board ID — PlatformIO is not installed, no `a-star32*.json` exists,
+`docs.platformio.org` is unreachable, and **`pio_harness.sh` calls `avr-gcc` directly with
+`-mmcu=atmega32u4`, so the 20,516-byte control cannot witness this and never could.** Had the
+answer gone the other way, the change would have broken the first string every student pastes in
+L01 §4. **The cost of the test was one build; the cost of skipping it was a launch-day failure
+with no instrument in the tree able to see it coming.**
+
 ---
 
 # S154's RULINGS
@@ -119,11 +140,12 @@ the wrong question; correctness needs **three** terms, not a swap.
 # S156 QUEUE
 
 ## 0. THE GPT REVIEW IS INTAKEN. NOTHING IS RULED. NOTHING IS FIXED.
-**`ZUMO_GPT_REVIEW_WORKLIST.md` v1.1 is the artefact** — 18 documents, 68,123 words, **245
-findings indexed**, 7 measured, 0 fixed. **IT IS STILL NOT IN THE REPO.** S155 confirmed this by
-inspection: `GPT_WORKLIST.md` in the root is the unrelated S103 graphics list. The file exists
-only as a working deliverable and was re-delivered at S155. **Ask for it; do not assume it is on
-disk, and do not mistake `GPT_WORKLIST.md` for it.**
+**`ZUMO_GPT_REVIEW_WORKLIST.md` v1.2 IS NOW IN THE REPO ROOT** (pushed S155) — 18 documents,
+68,123 words, **245 findings indexed**, 7 measured, 0 fixed. **Do not confuse it with
+`GPT_WORKLIST.md`, which is the unrelated S103 graphics list.** Note that **v1 was pushed first by
+mistake and overwritten** — v1 reads `L02-07` as AGREE where the calibration pass REFUTED it, and
+has no Part 5b. **Check the header says v1.2 before working from it** (pushing rule 2: verify by
+md5, never by suffix — the stale copy had no suffix to warn anyone).
 
 **THE FIRST DECISION IS THE SIX CANON STATEMENTS, NOT THE 245 ROWS.** Each collapses 15–40
 findings, and fixing them lesson-by-lesson means fixing L08 three times:
@@ -283,8 +305,8 @@ ladder** · **L12's §7 ladder** · **L13's ENTIRE §7 LADDER** · **L14's §7 l
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`208cc94`**. Census **40,668**.
-Bible **v8.145.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.50** ·
+Fresh-clone verified at **`d99c7df`**. Census **40,668**.
+Bible **v8.145.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.51** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.2**.
 
@@ -314,7 +336,7 @@ Instruments: `book_gates` **v1.68.1** · `lesson_inventory` **v1.3.5** ·
 `timer.html` **v1.3.2** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.28.4 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.2 · L16 v02.24.0.
+Lessons: L01 v03.28.5 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.2 · L16 v02.24.0.
 
 ---
 
