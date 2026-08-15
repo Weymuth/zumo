@@ -1,10 +1,11 @@
-# ZUMO — GPT REVIEW WORKLIST (v1)
+# ZUMO — GPT REVIEW WORKLIST (v1.2)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **STATUS OF EVERY LINE IN THIS FILE: UNVERIFIED.**
-> These are GPT's claims plus my assessment of them. **None has been checked against the live
-> tree.** A text match locates; it never answers (rule 38). GPT cannot see a ruling (rule 39).
-> Verification is a separate pass that happens *after* DJ rules on the canon statements.
+> **STATUS: 7 findings MEASURED (Part 5b), 238 UNVERIFIED.**
+> These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
+> been checked against the live tree.** A text match locates; it never answers (rule 38). GPT
+> cannot see a ruling (rule 39). Verification is a separate pass that happens *after* DJ rules on
+> the canon statements. **AGREE means the claim is coherent, not that it is measured.**
 
 ---
 
@@ -131,7 +132,7 @@ claims carry no edition (S154 handoff, triage rules).
 | ID | Finding | Verdict |
 |---|---|---|
 | L01-01 | **§6 "Break It On Purpose" is a classroom trap.** Lesson says switch robot power OFF, click Upload, watch it fail. The Zumo 32U4 is designed so USB powers the MCU with the main switch off — upload succeeds. A student following the instructions exactly disproves the book in lesson one. Related: "Upload fails → robot not connected/powered" and "Make sure robot power is ON" in troubleshooting. | **AGREE — P0.** GPT's proposed replacement (invalid `board =` ID → read error → restore → SUCCESS) is deterministic and teaches config diagnosis. |
-| L01-02 | **§3.3 + glossary: the Zumo is not built around an A-Star32U4 board.** KEY TERM `term-a-star` and glossary twin `term-a-star-gloss` call it "the brain of your Zumo robot." | **AGREE — P0, CONFIRMED.** DJ ruled S154: fleet is Zumo 32U4 w/ OLED. DJ's rebuttal to GPT cited *Zumo Robot for Arduino* pages — a different product (shield + separate A-Star). Measured scope: 13 hits `Lesson_01.html`, 8 `Lesson_03.html`, 1 `newproject.html`, ~1 Bible, 0 quiz banks. **Fix = 3 terms, not a rename:** `Zumo 32U4 Main Board` (hardware) · `ATmega32U4` (chip) · `a-star32U4` (build target only). Absorbs L01-10. |
+| L01-02 | **§3.3 + glossary: the Zumo is not built around an A-Star32U4 board.** KEY TERM `term-a-star` and glossary twin `term-a-star-gloss` call it "the brain of your Zumo robot." | **AGREE — P0, CONFIRMED.** DJ ruled S154: fleet is Zumo 32U4 w/ OLED. DJ's rebuttal to GPT cited *Zumo Robot for Arduino* pages — a different product (shield + separate A-Star). **Scope RE-MEASURED at S155 — the S154 figures were `grep -c` LINE counts:** **15** `Lesson_01.html` · **10** `Lesson_03.html` · **2** `newproject.html` · **2** pre-existing Bible · **0** quiz banks. **USE THE INVENTORY, NOT THE TOTAL:** L01's 15 are 5 wrong-claim, **6 CORRECT build-target**, 2 element ids, 2 checklist/quiz; L03's 10 are 8 wrong-claim and **2 asset filename** (`L03_IMAGE_3-14_astar_board.jpg`). **Fix = 3 terms, not a rename:** `Zumo 32U4 Main Board` (hardware) · `ATmega32U4` (chip) · `a-star32U4` (build target only). Absorbs L01-10. **Two open questions needing a ruling first:** the lessons and Maker ship `a-star32u4` LOWERCASE-u in six places while the Bible writes `a-star32U4` twelve times and §16.25 declares uppercase canonical; and §11 of the Bible itself says *"A-Star32U4 capitalization for the microcontroller"*, which §16.25 contradicts. |
 | L01-03 | **§4.2 Git presented as required for the Zumo library**, but `lib_deps = pololu/Zumo32U4@2.0.1` is a PlatformIO Registry dependency, not a git source. | **VERIFY — unsettled since S137.** DJ says PlatformIO won't run on Mac without it; GPT folded without testing. Neither settled it. This is queue item "§4.2's audit table is unconfirmed and may not be confirmable." Needs a Mac. |
 | L01-04 | **Challenge 9 removes the startup wait and puts a tethered robot on the floor.** No unplug instruction. | **AGREE — P0.** GPT's floor-test ritual (upload raised → SUCCESS → close Serial → disconnect USB → place → power on) is worth making a reusable convention. |
 | L01-05 | **Challenge 4 solution is wrong.** Prompt changes only the *first* `delay(350)` to 700; solution says both directions become 700. Actual: 2× forward, ½ back. | **AGREE.** Straight correction. |
@@ -143,7 +144,7 @@ claims carry no edition (S154 handoff, triage rules).
 | L01-11 | **§3 "that feedback loop is what separates a robot from an appliance"** — a thermostat is closed-loop. Related: the toaster row's "can't really decide." | **AGREE.** C5. GPT's replacement sets up P-control better than the original. |
 | L01-12 | **§6.4 "you should hear a USB connection sound"** is Windows-centric. | **AGREE.** DJ asked for wording; GPT supplied it (Windows sound / Mac "Allow accessory to connect?"). |
 | L01-13 | **Project path disagrees with itself.** Turn-in says `Documents/PlatformIO/Projects`; template creation says `Documents/PlatformIO`. | **VERIFY** then fix — cheap. |
-| L01-14 | **Figure Index incomplete.** `IMAGE 1.14`, `IMAGE 1.18`, `GRAPHIC 1.11`, `GRAPHIC 1.12` used but not all in the table. Column header says *Image* though the list holds both IMAGE and GRAPHIC. | **VERIFY.** `image_audit.py` and gate 10 (*the planned figure population is whole*) both passed this session — so either GPT is wrong or the gate has a scope pin. **Worth checking regardless of outcome; this is exactly rule 79 territory.** |
+| L01-14 | **Figure Index incomplete.** `IMAGE 1.14`, `IMAGE 1.18`, `GRAPHIC 1.11`, `GRAPHIC 1.12` used but not all in the table. Column header says *Image* though the list holds both IMAGE and GRAPHIC. | **CONFIRMED — MEASURED, both halves.** L01's body carries 19 figure tags; its index table has 15 rows, and the four GPT named are **exactly** the four missing. All four are **landed figures with captions** — the art renders, only the index row is absent. **L01 is unique:** across all 16 lessons 14 have zero gap; L15's lone gap is `GRAPHIC 15.4`, legitimately outstanding (unshot). Header confirmed as `Image` over a table containing GRAPHIC rows. **Regenerate the table; never hand-patch it.** |
 | L01-15 | **Lesson strip titles stale** — nav still reads "Lesson 15 — Advanced PID Control" and "Lesson 16 — Engineering Showcase." Strip is declared byte-identical across all 16. | **VERIFY.** If real, fix in the generator, never per-file. `title_feed.py` exists. |
 
 **L01 lower-priority wording:** "every robot follows Sense→Decide→Act ... 100 times per second"
@@ -163,7 +164,7 @@ character of your syntax" (it's a toolchain). All **C5 / DJ'S CALL**.
 | L02-04 | **§3.3 "every program you have written so far has been a straight road."** False — L01's main program used `while` and `for`; C11 previewed `if`. | **AGREE.** C2-adjacent continuity error. |
 | L02-05 | **§3.3 says the student already ran an `if` "in the very first warm-up."** Warm-Up 1 is the LED blink; Warm-Up 2 is the first `if`. | **AGREE.** One-word fix. |
 | L02-06 | **Code anatomy gives global variables no named home**, yet Challenge 3 introduces three (`countA/B/C`) and §5 spends real time on global scope and SRAM. | **AGREE — cheap, and we've met this bug before.** S51 fixed the *payload* face of exactly this (blank starter missing `// ===== GLOBAL VARIABLES =====`, root-caused to Bible §18.3 naming four of five sections). GPT found the *prose* face. |
-| L02-07 | **§7 says "about 85–95 lines"** against a Maker payload nearer 119. | **AGREE.** Either derive the count or delete it (rule 50: a count inside a sentence is a claim). |
+| L02-07 | **§7 says "about 85–95 lines"** against a Maker payload GPT claims is nearer 119. | **DISAGREE — MEASURED, GPT IS WRONG.** The L02 `finished` payload is **95 total lines / 86 non-blank / 75 code**. The lesson's stated range is correct. *(Derived by parsing the `PAYLOADS` object out of `newproject.html` and counting `finished` under key `"2"`.)* **No action.** |
 | L02-08 | **§4 hardware continuity:** "Lesson 1 used one button, one light, and the screen" and "the motors ... still idle, exactly as in Lesson 1" — but L01 used motors and buzzer, and Warm-Up 4 literally spins the motors. | **AGREE.** Same defect class as L01-07. |
 | L02-09 | **Step 2's comment teaches the generic baud rule** (`// 115200 = the speed; the Serial Monitor must match it`) while the lesson correctly explains a few paragraphs later that native USB ignores it. | **AGREE.** Touches the carried "1200-baud reset has no home" and "baud bench test" queue items. |
 | L02-10 | **Step 3 Button C: "change one letter in two places — the build tells you which one you missed."** Not true: `Zumo32U4ButtonC buttonA;` compiles fine while the name lies. | **AGREE, and GPT's replacement is better than the original** — it becomes a *compiling ≠ correct* lesson, which is a course theme. |
@@ -192,7 +193,7 @@ character of your syntax" (it's a toolchain). All **C5 / DJ'S CALL**.
 | L03-07 | **§3.25 duplicates L01 Challenge 6.** Same three repeated timed runs, same scatter observation — and L01 C6 explicitly told students to keep the data for Lesson 3. | **AGREE, strongly.** Retrieval beats repetition: *"Open your Lesson 1 notebook. Were the three measurements identical?"* This is more Saxon than repeating the experiment. |
 | L03-08 | **"Avoid full speed (400) for more than 30 seconds without a cooldown."** No support found; Pololu's concern is load/current, not a speed-duration rule. | **AGREE — C4.** GPT's replacement teaches the right mechanism (current, not the speed number). |
 | L03-09 | **§4.3 "`readBatteryMillivolts()` is approximately ±10%."** Not in Pololu's documentation. | **VERIFY / C4.** If it isn't a RoboLore fleet measurement, it has no pedigree. |
-| L03-10 | **"Below 4200 damages the cells."** 4200 mV is a course recharge threshold, not a damage boundary. Also the alkaline-competition aside introduces a variable the lesson doesn't need. | **AGREE — C4/C5.** Keep "at or below 4200: stop and recharge" as course policy. Alkaline paragraph is **DJ'S CALL** (carried queue item: "L05 §3.6 alkaline tension"). ??I THINK WE NEED ALKALINE INFO, SO DO IT??
+| L03-10 | **"Below 4200 damages the cells."** 4200 mV is a course recharge threshold, not a damage boundary. Also the alkaline-competition aside introduces a variable the lesson doesn't need. | **AGREE — C4/C5.** Keep "at or below 4200: stop and recharge" as course policy. Alkaline paragraph is **DJ'S CALL** (carried queue item: "L05 §3.6 alkaline tension"). |
 
 **Verified as CORRECT by GPT (no action):** `setSpeeds(0,0)` = brake for the DRV8838 (TI PH/EN truth
 table) · the 20 kHz Timer-1 phase-correct PWM explanation with TOP 400 · stall current ≈ 1.6 A at 6 V
@@ -620,11 +621,9 @@ checked the final 2026 rules updated 29 March 2026 — which is plausible and, i
 useful. **We have `RCJRescueLine2026-final.pdf` in the repo root.** Rule 43: when the citations
 disagree, read the rulebook. These are checkable in one pass.
 
-**D-6 — L01-14 (Figure Index incomplete) is worth checking precisely because our gates disagree.**
-`image_audit.py` and gate 10 (*the planned figure population is whole*) both passed this session.
-Either GPT is wrong, or a gate has a scope pin it was never written to see. **Rule 79: two
-mechanisms pinned to the same scope are one mechanism.** Cheap to check, and the answer is
-informative either way.
+**D-6 — RESOLVED BY MEASUREMENT, AND IT EXPOSED AN UNGATED INVARIANT.**
+GPT was right about L01-14 and our gates were not wrong — they were watching a different property. **Gate 69 / §10 pins `PLANNED_EXPECTED = 146`, the figure *denominator*.** It exists because of S135, where landing art deleted a tag's only occurrence and shrank the population so `outstanding` fell like progress. That gate does its job correctly. **It never asks whether every figure a lesson uses has a row in that lesson's own index table** — and nothing else does either. Rule 44: the header of a thing is not the thing; *the planned figure population is whole* reads broader than the predicate underneath it.
+**This is a new ungated invariant, not a broken gate.** Measured book-wide: 5 used-but-unindexed tags exist — 4 in L01 (real defect) and `GRAPHIC 15.4` in L15 (legitimately outstanding). A gate would need to exempt outstanding figures, which `image_audit.audit()` already enumerates. **Cheap, and it currently fails on exactly one lesson.**
 
 **D-7 — GPT's category scheme (C4) is good but is a new convention.**
 *Hardware/library fact · fleet measured fact · starting value · policy value.* Genuinely useful.
@@ -664,6 +663,34 @@ Recorded so nothing is lost. None of these is a correctness finding.
 
 ---
 
+# PART 5b — THE CALIBRATION PASS (S154, run before any ruling)
+
+Seven findings decidable from the repo alone were measured, to establish how much weight the
+~200 unverified AGREEs deserve. **GPT went 6 for 7.**
+
+| ID | Measured result |
+|---|---|
+| L02-02 | ✅ §8A.2 and §8A.3 use `ledRed(1)/ledRed(0)`; the other seven `blinkLED` definitions use `ledYellow`. 34 `ledYellow` vs 6 `ledRed` in the lesson |
+| L02-03 | ✅ Same two blocks — `void blinkLED()` with `{` on its own line. Free: same passage as L02-02 |
+| L02-05 | ✅ §3.3 says "the very first warm-up"; Warm-Up 1 has no `if(`, Warm-Up 2 does |
+| **L02-07** | ❌ **GPT WRONG.** Payload is 95 total / 86 non-blank / 75 code. The lesson's 85–95 is correct |
+| L08-13 | ✅ One challenge says "21-column screen position", then "the 20-column display", and maps to `0-20`. `setLayout21x8` |
+| L06-01 | ✅ `(distanceCm > 0) ? DRIVE_SPEED : -DRIVE_SPEED` then `setSpeeds(speed + TRIM, speed)` — in `driveDistance`, the finished build, and `driveDistanceSmooth` |
+| L01-14 | ✅ Both halves, and L01 is the only lesson with the defect |
+
+**What this licenses and what it does not.** GPT is a reliable instrument on checkable claims —
+it named the four missing figures exactly. But 6/7 is not 7/7, and **L02-07 is the shape of the
+miss to watch for: a confident, specific, plausible number that is simply wrong.** Every remaining
+row still needs its own check before it becomes an edit. My AGREE means *the claim is coherent and
+the fix would make sense*; it does not mean *measured*.
+
+**Correlated instruments.** GPT and Claude are the same kind of tool reading the same HTML with no
+robot and no compiler. Agreement between us is weak evidence of correctness and strong evidence of
+a shared blind spot (rule 79). The bench items and the toolchain are the uncorrelated instruments,
+and they are the ones that settle a physical claim.
+
+---
+
 # PART 6 — WHAT I NEED FROM DJ
 
 **Rulings, in the order that minimises rework:**
@@ -691,4 +718,4 @@ Recorded so nothing is lost. None of these is a correctness finding.
 - READ → FIX → QUIZ, and the read does not transfer between sessions (rule 37).
 
 ---
-*Worklist v1 · Session 154 · 18 documents, 68,123 words · 245 findings indexed · 0 verified · 0 fixed*
+*Worklist v1.2 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 0 fixed · L01-02's scope re-measured after the S154 figures proved to be line counts*
