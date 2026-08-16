@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.34.1 -->
+<!-- Lesson version: v02.35.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Competition Prep</h1>
 <div class="div-fs-11em">Trust Is Earned at Boot — Reliability as an Engineering Skill</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.34 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.35 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -89,7 +89,7 @@
 <div class="div-bg-1f2a3d-2"><div id="section-1"><span class="span-d-block-2">Section 1</span><span class="span-d-block">The Robot That Has To Work THIS Time</span></div></div>
 <div class="div-1f2a3d">
 
-<p>You've done it. You've built a fully functional rescue robot.</p>
+<p>You've done it. You've built the complete robot this course set out to build.</p>
 
 
 
@@ -115,7 +115,9 @@
 
 
 
-<p>That's a <em>real</em> rescue robot. The same fundamental capabilities used by robots in actual search and rescue operations. You should be proud of what you've accomplished.</p>
+<p>That's real robotics doing real work — the same fundamental capabilities used by robots in actual search and rescue operations. You should be proud of what you've accomplished.</p>
+
+<p><strong>Official RoboCupJunior rule.</strong> One word deserves precision here, because a referee will be precise about it. In Rescue Line, finding a victim is not rescuing one: §5.6.6 awards a <em>successful victim rescue</em> only when the victim is entirely moved into its designated evacuation point with no part of the robot still touching it. Victims are 4–5 cm spheres and the evacuation points are walled triangles in the corners of the zone (§3.9, §3.10). <strong>RoboLore course adaptation.</strong> Your robot locates victims. It has no gripper, so it transports none of them — and that is deliberate: locating is a sensing problem this fleet can solve, and transporting is a mechanical problem it has no hardware for. Say it that way in your TDP. Judges reward a team that knows exactly where its robot stops.</p>
 
 
 
@@ -396,9 +398,9 @@ When your robot gets stuck, goes off course, or otherwise can't continue, you ca
 <div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP" data-callout="14.8">
 
 <div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
-<div class="div-fs-105em">The 15-Minute Rule</div>
+<div class="div-fs-105em">The 15-Minute Habit (RoboLore team policy)</div>
 
-When you arrive at competition, give your robot at least 15 minutes to acclimate to room temperature before making any calibration decisions. Cold robots behave differently than warm robots.
+This is <em>our</em> rule, not RoboCupJunior's — the rulebook says nothing about acclimation. When you arrive at competition, give your robot at least 15 minutes to reach room temperature before you make any calibration decisions. Cold robots behave differently than warm robots. The rule that <em>does</em> bind you is the clock: §5.3.1 gives you eight minutes for the whole game, calibration included, so the acclimating happens in the pit and not on the field.
 
 </div>
 
@@ -678,8 +680,9 @@ Give your robot a thorough physical exam:
 <img src="../images/L14_GRAPHIC_14-02_startup_ritual.svg" alt="The seven-stage startup ritual: banner and battery, sensor init, gyro zero with the robot still, the self-test, the waitForStart gate, the line calibration spin, and armed" class="img-ddd">
 <p class="p-c-666-2">[GRAPHIC 14.2] The boot order, enforced by code instead of remembered.</p>
 </div>
-<h3 class="h3-c-2e86ab">5.2 One Switch, Zero Behavior Changes</h3>
-<p><code>COMPETITION_MODE</code> touches exactly one category of code: the <code>delay(600)</code> demo pauses — the beats where the robot stops to let a human read OBSTACLE! or RESCUE ZONE off the screen. Beautiful in a classroom demo; in a match, each one is six tenths of a second the clock never gives back. The toggle skips them. It changes <strong>nothing else</strong> — and Section 7C proves that claim in the most unforgiving currency there is: the compiled bytes.</p>
+<h3 class="h3-c-2e86ab">5.2 One Switch, Two Jobs</h3>
+<p><code>COMPETITION_MODE</code>’s first job is theater: the <code>delay(600)</code> demo pauses — the beats where the robot stops to let a human read OBSTACLE! or RESCUE ZONE off the screen. Beautiful in a classroom demo; in a match, each one is six tenths of a second the clock never gives back. The toggle skips them, and it changes no behavior doing it.</p>
+<p>Its second job was forced on you by a rule. Line calibration spins the robot, and §5.3.6 does not permit a robot to move on its own while calibrating — so in match mode the spin comes out and your hand sweeps instead. That <em>is</em> a behavior change, the only one the switch makes, and the difference is worth stating plainly: the first job removes something that protects nothing, and the second changes who moves the robot without changing what the robot learns. Section 7C proves both in the most unforgiving currency there is: the compiled bytes.</p>
 <div class="div-m-25px0">
 <img src="../images/L14_GRAPHIC_14-04_competition_mode.svg" alt="A two-column diagram: the left shows the three delay(600) demo pauses that COMPETITION_MODE removes, the right shows the kill-switch poll, self-test and start gate that it must never remove" class="img-ddd">
 <p class="p-c-666-2">[GRAPHIC 14.4] One switch. It strips theatre. It must never touch safety.</p>
@@ -881,7 +884,7 @@ one report card, no motion.
   <span class="tok-7cbf6e">// get to spin, drive, or race. The pit check comes first.</span>
   selfTest();
 </pre>
-<p>Walk the full boot order once, out loud, because it is now enforced by code instead of memory: banner and battery → sensors init → <strong>gyro zero, robot still</strong> → <strong>self-test</strong> → A-gate → <strong>line calibration, robot spins</strong> → armed. Every arrow has a reason, and the self-test now sits guard over the most fragile one: nothing spins until the gyro’s zero is learned <em>and verified</em>.</p>
+<p>Walk the full boot order once, out loud, because it is now enforced by code instead of memory: banner and battery → sensors init → <strong>gyro zero, robot still</strong> → <strong>self-test</strong> → A-gate → <strong>line calibration</strong> → armed. Every arrow has a reason, and the self-test now sits guard over the most fragile one: nothing spins until the gyro’s zero is learned <em>and verified</em>.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="14.19">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>25,942 bytes — up 744.</strong> <code>selfTest()</code> finally has a caller, so the linker finally pays for it: Step 2’s whole function, plus its strings, arriving at once. That is what the report card costs. A dead battery discovered mid-match costs the match.</p>
@@ -899,7 +902,24 @@ one report card, no motion.
 <p>Three <code>delay(600)</code> lines in <code>main.cpp</code> exist purely so a human can read the screen — at the intersection call, at the obstacle stop, and at the rescue-zone door. Each one gets the same one-word guard:</p><pre>
       <span class="tok-569cd6">if</span> (!COMPETITION_MODE) delay(<span class="tok-b5cea8">600</span>);   <span class="tok-7cbf6e">// demo pause - free in practice, 0.6s in a match</span>
 </pre>
-<p>All three sites, same edit. Note what is <em>not</em> guarded: the countdown, the celebrations at a completed rescue, and above all the kill-switch poll. The toggle strips theater. It does not touch safety, and it does not touch behavior — a claim Section 7C will make you prove.</p>
+<p>All three sites, same edit. Note what is <em>not</em> guarded: the countdown, the celebrations at a completed rescue, and above all the kill-switch poll.</p>
+<p>Then one more guard, in <code>RobotSensors.cpp</code>, and this one is not theater — it is a rule. <strong>Official RoboCupJunior rule.</strong> §5.3.6: <em>teams may calibrate their robot in as many locations as desired on the field, but the clock will continue to run. Robots are not permitted to move on their own while calibrating.</em> Your calibration spins the robot. On a practice floor that is fine, and it is what you built in Lesson 8. On a competition field it is illegal, so on match day <em>your hand</em> does the sweeping — exactly the way you first calibrated in Lesson 4:</p><pre>
+  <span class="tok-569cd6">void</span> calibrateLineSensors() {
+    <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">100</span>; i++) {
+      <span class="tok-569cd6">if</span> (COMPETITION_MODE) {
+        delay(<span class="tok-b5cea8">50</span>);                    <span class="tok-7cbf6e">// your hand does the sweeping</span>
+      } <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (i &lt; <span class="tok-b5cea8">50</span>) {
+        motors.setSpeeds(-<span class="tok-b5cea8">100</span>, <span class="tok-b5cea8">100</span>);  <span class="tok-7cbf6e">// Spin left</span>
+      } <span class="tok-569cd6">else</span> {
+        motors.setSpeeds(<span class="tok-b5cea8">100</span>, -<span class="tok-b5cea8">100</span>);  <span class="tok-7cbf6e">// Spin right</span>
+      }
+      lineSensors.calibrate();
+    }
+    motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
+  }
+</pre>
+<p>The algorithm did not change. One hundred samples, same call, same rescaling — the only thing that changed is what moves the sensors across the tape. And the window is not arbitrary: a hundred passes, 50 ms apiece, is the <code>CAL_TIME_MS</code> sweep window you swept by hand in Lesson 4, unchanged. The trailing <code>setSpeeds(0, 0)</code> is deliberately left unguarded — commanding a stop is not moving, and a robot that reaches calibration with its wheels already turning should be stopped by something.</p>
+<p>The toggle strips theater. It does not touch safety — and the one behavior it does change, it changes because a rule says so, which Section 7C will make you prove in bytes.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="14.21">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
 <p class="p-m-8px000"><strong>25,942 bytes — unchanged, and this is the finished build.</strong> With the switch at <code>false</code> the compiler folds <code>if (!false)</code> into nothing and keeps the delay — the guard is literally free in practice mode. Where did the toggle go? Flip it and see: Section 7C.</p>
@@ -948,7 +968,7 @@ one report card, no motion.
 <p>One edit in <code>RobotConfig.h</code> (Maker: <em>Lesson 14 → 7C Match Mode</em>):</p><pre>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">bool</span> COMPETITION_MODE = <span class="tok-569cd6">true</span>;
 </pre>
-<p>Compile and read the number: <strong>25,906 bytes — 36 fewer than the practice build.</strong> Those 36 bytes are the three demo pauses, physically absent from the match binary; the compiler saw <code>if (!true)</code> and deleted the delays entirely. Now run the full course in both modes, side by side. Same line following, same turns, same rescue — the match run is simply <em>quieter and about two seconds faster</em>. That is what “the toggle changes theater, not behavior” looks like when the bytes testify to it. Flip it back to <code>false</code> until match day.</p>
+<p>Compile and read the number: <strong>25,886 bytes — 56 fewer than the practice build.</strong> The 56 decomposes, and the two halves differ in kind. <strong>36</strong> are the three demo pauses, physically absent from the match binary; the compiler saw <code>if (!true)</code> and deleted the delays entirely. The other <strong>20</strong> are the two <code>setSpeeds</code> calls inside the calibration loop, deleted the same way — bytes you did not save by being clever, but by obeying §5.3.6. Now run the full course in both modes, side by side. Same line following, same turns, same rescue; the match run is simply <em>quieter and about two seconds faster</em>, and you sweep the robot by hand instead of watching it spin. Flip it back to <code>false</code> until match day.</p>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — 7C</summary>
 <div class="div-mt-12px">
@@ -1296,7 +1316,9 @@ Place your robot on the competition surface (or similar) AND on a different surf
 
 
 
-<p>This is crucial: <strong>establish a code freeze deadline.</strong></p>
+<p><strong>Official RoboCupJunior rule.</strong> There is exactly one code freeze the rules impose, and it is very late: §5.3.7 — once a scoring run has begun, no more calibration is permitted, <em>including changing code or code selection</em>. Until the moment the referee starts your run, the rulebook lets you edit anything you like.</p>
+
+<p><strong>RoboLore team policy.</strong> That is precisely why we stop much earlier. The rules say when you <em>must</em> stop; discipline says when you <em>should</em>. Establish a code freeze deadline:</p>
 
 
 
@@ -1465,14 +1487,14 @@ Place your robot on the competition surface (or similar) AND on a different surf
 <div class="callout-c0392b-bg-fdecea-2" data-family="WARNING" data-callout="14.27">
 <p><strong><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">The eight minutes is not eight minutes of driving.</strong></p>
 <p>Rules §5.3: <em>each team has a maximum of 8 minutes for a game, and the game includes the time for <strong>calibration</strong> and the scoring run.</em> The clock starts before the robot does.</p>
-<p>So the boot banner, the self-test, the wave for the proximity check, the gyro hold-still, and the line-calibration spin all come out of the same eight minutes. So does the five-second stop on the goal tile that the exit bonus requires. Time your <em>whole</em> pit-to-goal cycle in Section 7E, not just the driving.</p>
+<p>So the boot banner, the self-test, the wave for the proximity check, the gyro hold-still, and the line calibration all come out of the same eight minutes. So does the five-second stop on the goal tile that the exit bonus requires. Time your <em>whole</em> pit-to-goal cycle in Section 7E, not just the driving.</p>
 </div>
 
 <div class="div-ddd-2">
 <strong>👀 A realistic eight-minute budget</strong>
 <ul>
 <li><strong>0:00–1:00</strong> — place the robot, boot, self-test, wave for the prox check</li>
-<li><strong>1:00–1:30</strong> — line-sensor calibration spin on the actual venue floor</li>
+<li><strong>1:00–1:30</strong> — line-sensor calibration on the actual venue floor, swept by hand (§5.3.6)</li>
 <li><strong>1:30–7:30</strong> — the scoring run. <em>Six minutes, not eight.</em></li>
 <li><strong>7:30–7:35</strong> — the five-second stop on the goal tile, for the exit bonus</li>
 </ul>
@@ -2096,7 +2118,7 @@ This is when bad decisions happen. You just had a disappointing run, you're frus
 <div class="div-6f7582">
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="14.36"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-self-test-gloss">Self-test</strong></div>A boot-time inspection of every subsystem — battery, line sensors, gyro zero, prox — with a per-check PASS/FAIL verdict, before anything is allowed to move. The pit check, in code.</div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="14.37"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-startup-ritual-gloss">Startup ritual</strong></div>The enforced boot order: banner → init → gyro zero (still) → self-test → A-gate → line calibration (spin) → armed. Enforced by code, not memory.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="14.37"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-startup-ritual-gloss">Startup ritual</strong></div>The enforced boot order: banner → init → gyro zero (still) → self-test → A-gate → line calibration (robot spins in practice, your hand sweeps in a match) → armed. Enforced by code, not memory.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="14.38"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-competition-mode-gloss">Competition mode</strong></div>A config switch that removes demo theater (the human-readable pauses) from a match build — provably, in the byte count — while changing no behavior and touching no safety code.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="14.39"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-code-freeze-gloss">Code freeze</strong></div>The point before competition after which code changes stop — because an untested improvement is a tested robot traded for an untested one. (Section 8A.1.)</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="14.40"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-engineering-limit-gloss">Engineering limit</strong></div>A threshold that ships with a stated <em>reason</em> instead of a per-robot measurement. Changing one means beating the reason, not just editing the number.</div>
@@ -2117,7 +2139,7 @@ This is when bad decisions happen. You just had a disappointing run, you're frus
 <th class="th-p-10px15px">One line</th>
 </tr>
 <tr><td class="td-bb-1pxsolid-2"><code>selfTest()</code></td><td class="td-bb-1pxsolid-2">RobotHelpers.cpp</td><td class="td-bb-1pxsolid-2">Four checks, one report card, no motion; A overrides a failure</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-bb-1pxsolid-2"><code>COMPETITION_MODE</code></td><td class="td-bb-1pxsolid-2">RobotConfig.h</td><td class="td-bb-1pxsolid-2">false = practice (narrated), true = match (36 bytes of theater removed)</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-bb-1pxsolid-2"><code>COMPETITION_MODE</code></td><td class="td-bb-1pxsolid-2">RobotConfig.h</td><td class="td-bb-1pxsolid-2">false = practice (narrated, calibration spins), true = match (56 bytes gone: 36 of theater, 20 of motor commands §5.3.6 forbids)</td></tr>
 <tr><td class="td-bb-1pxsolid-2"><code>SELFTEST_GYRO_MAX_DEG</code> · <code>SELFTEST_LINE_MAX</code> · <code>SELFTEST_PROX_WAIT</code></td><td class="td-bb-1pxsolid-2">RobotConfig.h</td><td class="td-bb-1pxsolid-2">Engineering limits — each ships with its reason in the comment</td></tr>
 </table>
 <h3 class="h3-c-2e86ab">The boot order, verbatim</h3>

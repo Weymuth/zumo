@@ -5,7 +5,7 @@
 >
 > Make **one copy** (File → Make a copy), add your name and the date to every entry, and keep it in your own Drive all semester.
 >
-> Target 5–10 pages. **No source code** — use diagrams and prose. The TDP is weighted more than the video and poster combined. Judges reward **graphics, tables, and measured data** over adjectives; the running tables below give you that evidence.
+> Target 5–10 pages. **No source code** — use diagrams and prose. The TDP is weighted more than the video and poster combined (RCJ Rescue Line 2026 §6 scores the rubrics at TDP 0.6, video 0.2, poster 0.2). **Official RoboCupJunior rule:** §7.3 requires all three documents, and §7.3.4 scores a TDP **0** if it does not strictly follow the official template. This outline is the RoboLore class version; rebuild the same content inside the official template if you submit to a real event. Judges reward **graphics, tables, and measured data** over adjectives; the running tables below give you that evidence.
 
 ---
 
@@ -281,6 +281,7 @@
 - [ ] Version 2 items each cite a number (from A2)
 - [ ] Abstract written LAST, 150–250 words
 - [ ] 5–10 pages total
+- [ ] **Poster** distilled from this paper — the graded deliverable rides with the TDP
 
 ---
-*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.1.1 — LoP citation re-dated to the 2026 edition, S148.*
+*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.2.0 — poster added as a graded deliverable and the official-template rule stated, S159.*

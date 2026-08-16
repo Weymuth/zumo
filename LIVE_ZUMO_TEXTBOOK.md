@@ -1,15 +1,90 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 16, 2026 (Session 158 — **THE ROLLOUT REACHED THE LESSON THAT INVENTED THE THING IT WAS ROLLING OUT.** Lesson 13 has shipped `enum StopReason { STOP_DISTANCE, STOP_PROX, STOP_KILL }` since it was written, includes `RobotConfig.h` for it, and its `driveUntil()` already polled the button and reported why the leg ended — option C before option C had a name — so S156/S157 back-porting the name to Lesson 10 meant converting L13 mechanically would have declared the enum twice and failed to compile.)
-**Status:** ✅ **S158 — L11 THROUGH L16 CONVERTED; `gate_payload_match` IS GREEN AT BOTH ENDS FOR THE FIRST TIME.** 73/73 gates, `byte_audit --check` PASS (215 compiled, 3 declared overflow, 0 undeclared), `callout_id` 1125/0, 16 banks valid. **RULED: Lesson 10 OWNS `StopReason`, Lesson 13 ADDS its third value `STOP_PROX`** — L13 Step 1 now extends a contract instead of declaring one, and Step 4's *“one include it never needed before”* arrived at Lesson 10. **L12 is the first converted lesson that prints a primitive of its own** (`turnDegreesGyro`), so its prose converted with its payloads; converting the gyro turn was FORCED, since `turnLeft()` has returned `StopReason` since L10 and the gyro's blocking loop had no kill poll (C3). §5.3's *“three words”* survives untouched. **`ladder_7c` did not LINK** — it calls the gyro turn, which calls `killSwitchPressed()`, which that rung never defined; leaving 7a/7c `void` was recommended and was wrong, because the gate's inheritance rule makes a `void` signature permanently red. **THE CAPSTONE WENT 54 BYTES OVER**: the conversion costs **+126**, not the projected +64, decomposed by reverting one piece at a time (guards 30 · encoder polls 28 · gyro poll 20 · report 6 · plumbing 42), and no piece can be dropped without deleting the safety the rollout exists to add. **DJ ruled a THIRD TRADE in Step 5** and the candidates were priced by deletion first (rule 70): WEAVE row −64, BASE row −84, **the WEAVE metric entirely −162, green at 28,564 with 108 spare.** Ruled on the protocol rather than on taste — §7 scores MAE and LAP and has no WEAVE column, and Lesson 15 keeps WEAVE where the hill-climb reads it. **A TRIPLE CHECK RAN SIX ARMS AND CAUGHT THREE REAL MISSES**: L16's table stale for L14/L15, and the L14 and L15 banks never re-keyed at all. **Two of the six arms failed on their own predicate before they failed on the tree.** **AND THE SESSION'S OWN INSTRUMENT BECAME A GATE ARM: `byte_audit` v1.3.2 gains ARM 5 — CLOSURE**, asserting the arithmetic AROUND a figure (DELTA against the previous STEP, SPARE against `CEILING − fig`, OVER against `fig − CEILING`) because ARM 2 asserts figures and is blind to the middle. 14 closure claims, six controls, blinding control silent, COVERAGE arm loud on a blind parser — and **it found two of its own bugs before it found any of the book's, the second only because a seeded control DID NOT FIRE.**
+**Date:** August 16, 2026 (Session 159 — **THE BOOK'S CALIBRATION ROUTINE WAS ILLEGAL AT COMPETITION, AND THE FIRST ROUTINE I FOUND WAS THE INNOCENT ONE.** RCJ Rescue Line 2026 §5.3.6 does not permit a robot to move on its own while calibrating, and `calibrateLineSensors()` drove the motors for 100 passes. L04's `calibrateSensors()` — a human sweep with no motor call at all — was measured first and reported to DJ as compliant, which was wrong: the competition build uses the other routine. C6 is closed, nine findings, all as prose labels.)
+**Status:** ✅ **S159 — THE CALIBRATION GUARD SHIPS AND THE PRACTICE BUILD IS BYTE-IDENTICAL.** 73/73 gates, `gate_payload_match` PASS, `byte_audit --check` PASS, `callout_id` 1125/0, 16 banks valid. **Guarded on `COMPETITION_MODE` in the 37 payloads that carry the switch** (L14 12, L15 16, L16 9); the 102 L08–L13 payloads are deliberately UNCHANGED, because the spin is legal on a practice floor and the switch is not born until L14 — the split is the ruling, not drift. **Practice: +0 everywhere** (L14 25,942 · L15 28,340 · L16 28,564, all unmoved) and **byte-identical by disassembly**, with a seeded one-character change moving the hash so the identity is evidence rather than an artefact. **Match mode PAYS**: L14 25,906 → **25,886**, L16 28,528 → **28,504**. The window is 100 × 50 ms = 5,000 ms, which is L04's own `CAL_TIME_MS`. **MY FIRST DESIGN WAS UNSHIPPABLE** — a branch with its own loop and a `SWEEP!` prompt cost **+372 in L16 match mode, 228 over the ceiling** — and the compiler killed it before DJ saw it ship. **One `setSpeeds` remains in match mode on purpose**, the trailing stop: commanding a stop is not moving. **§16.26 fired on this session's own work** — 36 findings, all L14, twelve payloads × three lines, L15/L16 silent by inheritance — so Step 4 now PRINTS the guarded loop. **AND A CASCADE NO GATE COULD SEE: 25,906 was a CORRECT ANSWER in the L14 bank**, and `byte_audit` ARM 2 passed throughout because §7C's figure lives in prose rather than in a COMPILE CHECK. **C6 CLOSED — nine findings, not the eight the queue carried** (two are dual C4/C6, derived by parsing). All nine ship as PROSE labels, never a new callout family (rule 46). **DJ ruled the poster a GRADED DELIVERABLE**, folded into the existing 25% so no other weight moved.
 
-**Versions:** L01 v03.28.5 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.30.0 · L11 v02.30.1 · L12 v01.32.0 · L13 v02.30.0 · L14 v02.34.1 · L15 v02.31.3 · L16 v02.25.0 · going_deeper v01.6.1 — census **40,840** · Bible **v8.148** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.57 · **book_gates v1.68.5** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.26.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.3.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.0.1 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.2 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `e43be7a`.**
+**Versions:** L01 v03.28.5 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.30.0 · L11 v02.30.1 · L12 v01.32.0 · L13 v02.31.0 · L14 v02.35.0 · L15 v02.31.3 · L16 v02.26.0 · going_deeper v01.6.1 — census **40,878** · Bible **v8.149** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.58 · **book_gates v1.68.6** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.26.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.3.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.0.1 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `6a89fe2`; S159 edits are on top of it and NOT yet pushed.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
 ---
 ---
 ---
+
+---
+## WHAT SHIPPED IN S159
+
+**L13 v02.31.0 · L14 v02.35.0 · L16 v02.26.0 · Maker v2.58 · book_gates v1.68.6 ·
+banks L14/L16 v1.0.2 · TDP template v3.2.0 · Syllabus v1.3 · 73/73. Census 40,840 → 40,878.**
+
+### 1. TWO CALIBRATION ROUTINES, AND I MEASURED THE HARMLESS ONE
+
+L04's `calibrateSensors()` prints *Sweep!* and samples while the HUMAN slides the robot — no motor
+call, 2 definitions, legal. I found it first and told DJ the code was compliant and only the prose
+was wrong. **The competition build uses `calibrateLineSensors()`, born in L08, 139 definitions, and
+it spins the robot for 100 passes.** A search for one spelling cannot return the routine spelled
+differently (§24.10). The correction cost a full turn because the first answer was confidently
+wrong rather than blank.
+
+### 2. THE PRICING WAS WRONG AND THE COMPILER SAID SO
+
+Option A was sold as *procedure only, likely zero bytes*. Compiled, that design costs **+0 in
+practice and +372 in L16 match mode — 28,900, over by 228.** It fails in the only mode it exists
+for. The shipped form guards the two motor calls instead of adding a routine, and it **pays**.
+
+| build | practice | match |
+|---|---|---|
+| L14 `finished` | 25,942 → **25,942** | 25,906 → **25,886** |
+| L15 `finished` | 28,340 → **28,340** | — |
+| L16 `finished` | 28,564 → **28,564** | 28,528 → **28,504** |
+
+`COMPETITION_MODE` is a `const bool`, so the dead branch folds either way — **§7C's own byte lesson
+now pays for the fix instead of merely demonstrating itself.** The window, 100 × 50 ms, is L04's
+`CAL_TIME_MS` unchanged; it was not tuned to that, it is what 50 ms produced.
+
+### 3. A ZERO DELTA PROVES NOTHING, SO IT WAS DISASSEMBLED
+
+Practice-mode instruction streams with addresses stripped are **equal** in L14 and L16. The
+blinding control — `-100` → `-99`, one character — **moves that hash**, which is what makes the
+identity evidence. Read at the function level without LTO: base 41 instructions / 2 `setSpeeds` in
+both modes; patched practice identical; patched match **31 / 1**, with `delay` present. **The one
+surviving `setSpeeds` is the trailing stop and is deliberate** — commanding a stop is not moving,
+and a robot arriving at calibration with its wheels turning should be stopped by something.
+Inverting the condition mirrors the whole result, so the arm measures the property.
+
+### 4. SCOPE DERIVED TWICE, AND THE THIRD NUMBER IS THE CROSS-CHECK
+
+Raw text: 139 spin blocks, 139 definitions, **37 `COMPETITION_MODE` declarations.** Resolved walk:
+139 and 37, set exactly {14, 15, 16}. **Every L08–L16 payload stores its own `RobotSensors.cpp`
+and zero inherit it**, which is why the edit cannot leak into L08–L13.
+
+### 5. THE CASCADE NO INSTRUMENT COULD SEE
+
+The match-mode figure moved and **25,906 was a correct answer in the L14 bank.** Four homes fixed.
+`byte_audit` ARM 2 passed the whole time because §7C's figure lives in prose rather than in a
+COMPILE CHECK callout — **recorded as a stated blind spot.** The lesson improved: the toggle now
+removes 56 bytes, **36 of theatre and 20 of motor commands a rule forbids.** §5.2 is now *One
+Switch, Two Jobs*. **GRAPHIC 14.4 survives, checked rather than assumed** — its columns are theatre
+and safety, and the calibration guard is neither.
+
+### 6. C6 CLOSED — NINE FINDINGS, NOT EIGHT
+
+Two are dual C4/C6, derived by parsing the worklist. All nine confirmed against the PDF, read
+visually on page 21 rather than grepped, and **the 2026 changes list does not touch §5.3 at all**,
+so the clause carried over from 2025 unchanged. All nine ship as prose labels — *Official
+RoboCupJunior rule* / *RoboLore course adaptation* / *RoboLore team policy* — never a new callout
+family (rule 46). L13/L14 gain §5.6.6; L14's *15-Minute Rule* is labelled ours against §5.3.1's
+eight-minute clock; the code freeze names §5.3.7; L16 states §7.3.4's score-0 template rule and
+§7.3's three documents; the ten-percent spread is defined; the EEPROM map is labelled a fleet
+convention and verified against `ZUMO_NAME_WRITER_main.cpp`. **The LoP citation was already correct
+and was checked rather than fixed.** Free finding: §3.10.5's **fake victims** are live rulebook
+support for L13's false-victim threshold.
+
+### 7. RECORDED, NOT FIXED
+
+**The Maker changelog records nothing between v2.49 and v2.58** — eight releases bumped on the
+version line with no entry. Not back-filled: reconstructing them from the Bible asserts a read that
+never happened.
 
 ---
 ## WHAT SHIPPED IN S153

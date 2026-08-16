@@ -1,6 +1,6 @@
 # Robotics — Zumo Autonomous Robot
 ### How This Class Works · Fall Trimester · Mercersburg Academy · Mr. Weymuth
-<!-- ZUMO_Syllabus_WORKING.md v1.2 — S113, Aug 3 2026 -->
+<!-- ZUMO_Syllabus_WORKING.md v1.3 — S159, Aug 16 2026: poster folded into the TDP category (DJ ruling) -->
 
 > **This is a working draft.** Sections marked _[TBD]_ aren't finalized yet. Everything else reflects decisions made as of this planning session. This document will grow into the student-facing syllabus.
 
@@ -105,7 +105,7 @@ You keep one document all term; you never submit a new file.
 | Category | Weight | What it is |
 |---|---|---|
 | **Milestones** | 35% | The 7 checkpoints — code (60%) + task performance (40%) |
-| **Engineering Notebook / TDP** | 25% | Your running notebook, filled in as you go |
+| **Engineering Notebook / TDP + Poster** | 25% | Your running notebook, filled in as you go — plus the poster you distill from it at the end |
 | **Reading Quizzes** | 20% | Short pre-class quizzes — read before class |
 | **Exit Tickets / Checklists** | 10% | End-of-lesson "can you do this?" self-checks |
 | **Materials** | 5% | Come ready: robot, case, charged batteries, programming cable |
@@ -304,4 +304,4 @@ Do not start a build with a setup item missing and hope it sorts itself out. Fix
 - Late-milestone penalty amount
 
 ---
-*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.2*
+*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.3*
