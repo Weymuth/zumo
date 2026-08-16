@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.29.2 -->
+<!-- Lesson version: v02.30.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@
 <h1 class="h1">Obstacles</h1>
 <div class="div-fs-11em">When the Course Fights Back</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.29 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.30 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -892,7 +892,7 @@ meant.</p>
 }</pre>
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="10.43">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Build (✓). <strong>Green.</strong> +50 bytes over Step 3 — small, but not zero. That is real code now, not just names.</p>
+    <p class="p-mb-0">Build (✓). <strong>Green.</strong> +44 bytes over Step 3 — small, but not zero. That is real code now, not just names.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 4</summary>
@@ -968,6 +968,15 @@ Off the line. Into open floor. Based on a sensor reading you have known about fo
     Not after you test it. Not once it “mostly works.” Before. A robot you cannot stop is not a
     project — it is a hazard with wheels.</p>
 </div>
+<div class="callout-2da99d-bg-e9f7f5" data-family="INSIGHT" data-callout="10.113">
+    <div class="div-c-165a53"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT</div>
+    <p>Until now <code>driveDistance()</code> returned nothing. It could not — there was only ever one way for it
+    to end: it finished. Now there are two. A press of B ends a leg early, and a function that can end two
+    different ways has to say <strong>which one happened</strong>. The caller cannot tell from the fact that it returned.</p>
+    <p class="p-mb-0">That is what <code>StopReason</code> is. <code>STOP_DISTANCE</code> means the leg ran its full
+    length. <code>STOP_KILL</code> means a person stopped it. And the phase only advances on the first — because a
+    maneuver that steps forward after being killed is a maneuver that ignored you.</p>
+</div>
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="10.50">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
     <p class="p-mb-0">Build (✓). Green, +2 bytes. Press B while the robot runs the Lesson 9 course — it stops dead and the display reads <code>STOPPED</code>.</p>
@@ -976,6 +985,107 @@ Off the line. Into open floor. Based on a sensor reading you have known about fo
 <summary>📦 Catch Up with Project Maker — Step 6</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=10&amp;kind=step_6" class="link-c-2e86ab">Open Step 6 in Project Maker</a></p></div>
+</details>
+<h3 class="h3-c-433014">Step 6b — Make Every Move Report Back</h3>
+<div class="callout-2e86ab-bg-eef4f8" data-family="(card header)" data-callout="10.114">
+    <div class="div-c-0e1a2c">Work in:</div> <code>RobotConfig.h</code>, <code>RobotMotion.h</code>, <code>RobotMotion.cpp</code>, <code>src/main.cpp</code><br>
+    <strong class="strong-c-0e1a2c">Where to look:</strong> four files, four small edits
+</div>
+<p>The kill switch works — but only in the states you just guarded. <code>driveDistance()</code> and
+<code>turnDegrees()</code> still run to completion no matter what you press, because they spin inside a
+<code>while</code> loop that asks nothing. This step reaches inside them.</p>
+
+
+<p><strong>1. Name the two answers.</strong> In <code>RobotConfig.h</code>, above the <code>AvoidPhase</code> block:</p>
+<pre><span class="tok-6a9955">// ===== WHY A MOVE ENDED (NEW for Lesson 10) =====</span>
+<span class="tok-6a9955">// A move that can be interrupted has to say WHICH thing ended it.</span>
+<span class="tok-6a9955">// The caller cannot tell from the fact that the function returned.</span>
+<span class="tok-569cd6">enum</span> StopReason {
+  STOP_DISTANCE,   <span class="tok-6a9955">// Drove the whole way - nothing interrupted</span>
+  STOP_KILL        <span class="tok-6a9955">// B pressed - the human stopped it</span>
+};</pre>
+
+<p><strong>2. Change the promises.</strong> In <code>RobotMotion.h</code> — every one of these said
+<code>void</code> yesterday:</p>
+<pre>#include <span class="tok-ce9178">"RobotConfig.h"</span>   <span class="tok-6a9955">// NEW for Lesson 10 - these report a StopReason</span>
+
+StopReason driveDistance(<span class="tok-569cd6">float</span> centimeters);
+StopReason turnDegrees(<span class="tok-569cd6">float</span> degrees);
+
+<span class="tok-6a9955">// ===== INTERSECTION TURNS (NEW for Lesson 9) =====</span>
+StopReason turnLeft();
+StopReason turnRight();
+StopReason turnAround();</pre>
+
+<div class="callout-ffc107-bg-fff8e1-2" data-family="WARNING" data-callout="10.115">
+    <div class="div-c-856404"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
+    <p class="p-mb-0">Change the header and stop there and <em>nothing compiles.</em> A declaration is a promise;
+    the definition in <code>RobotMotion.cpp</code> has to make the same one. Two files, one signature — that is the
+    architectural contract Lesson 7 named, and this is the first time in this book you have had to move it.
+    Change both, then build.</p>
+</div>
+
+<p><strong>3. Keep the promises.</strong> In <code>RobotMotion.cpp</code>. Three changes to each function: the
+return type, one line inside the loop, one line at the end.</p>
+<pre><span class="tok-569cd6">extern</span> <span class="tok-569cd6">bool</span> killSwitchPressed();   <span class="tok-6a9955">// NEW for Lesson 10 - a move must be interruptible</span>
+
+StopReason driveDistance(<span class="tok-569cd6">float</span> centimeters) {
+  <span class="tok-6a9955">// ...unchanged setup...</span>
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">return</span> STOP_KILL;   <span class="tok-6a9955">// the human outranks the leg</span>
+    delay(<span class="tok-b5cea8">10</span>); <span class="tok-6a9955">// Small delay to prevent hogging the CPU</span>
+  }
+  motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
+  <span class="tok-569cd6">return</span> STOP_DISTANCE;
+}
+
+<span class="tok-6a9955">// turnDegrees() takes the SAME three changes.</span>
+StopReason turnDegrees(<span class="tok-569cd6">float</span> degrees) {
+  <span class="tok-6a9955">// ...unchanged setup...</span>
+  <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
+    <span class="tok-569cd6">if</span> (killSwitchPressed()) <span class="tok-569cd6">return</span> STOP_KILL;   <span class="tok-6a9955">// the human outranks the turn</span>
+    delay(<span class="tok-b5cea8">10</span>);
+  }
+  motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
+  <span class="tok-569cd6">return</span> STOP_DISTANCE;
+}
+
+<span class="tok-6a9955">// The three one-liners now PASS THE ANSWER UP instead of swallowing it.</span>
+StopReason turnLeft()   { <span class="tok-569cd6">return</span> turnDegrees(-<span class="tok-b5cea8">90</span>); }
+StopReason turnRight()  { <span class="tok-569cd6">return</span> turnDegrees(<span class="tok-b5cea8">90</span>);  }
+StopReason turnAround() { <span class="tok-569cd6">return</span> turnDegrees(<span class="tok-b5cea8">180</span>); }</pre>
+
+<p><strong>4. Ask the answer.</strong> One caller already exists — <code>EXECUTING_TURN</code>, in
+<code>src/main.cpp</code>. It has been throwing the answer away:</p>
+<pre>    <span class="tok-569cd6">case</span> EXECUTING_TURN: {
+      StopReason why = STOP_DISTANCE;
+      <span class="tok-569cd6">if</span> (pendingTurn == GO_LEFT)       why = turnLeft();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == GO_RIGHT) why = turnRight();
+      <span class="tok-569cd6">else</span> <span class="tok-569cd6">if</span> (pendingTurn == DEAD_END) why = turnAround();
+      <span class="tok-569cd6">if</span> (why == STOP_KILL) <span class="tok-569cd6">break</span>;          <span class="tok-6a9955">// B won - stay stopped, do not clear the turn</span>
+      pendingTurn = NO_INTERSECTION;
+      currentState = FOLLOWING_LINE;
+      showStatus();
+      <span class="tok-569cd6">break</span>;
+    }</pre>
+
+<div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="10.116">
+    <div class="div-c-3a5a3a"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
+    <p class="p-mb-0">A returned value nobody reads is the same as no returned value at all. Making the
+    function report is only half the job — somebody has to <em>ask</em>. Every call you write from here on
+    has to decide what it does when the answer is <code>STOP_KILL</code>.</p>
+</div>
+
+<div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="10.117">
+    <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
+    <p class="p-mb-0">Build (✓). Green, +44 bytes. Nothing behaves differently yet — the robot drives exactly as it
+    did before Step 6b. That is the point: you changed a contract, not a behaviour. Press B mid-turn and the
+    robot now stays stopped instead of finishing the turn first.</p>
+</div>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 6b</summary>
+<div class="div-mt-12px">
+<p><a href="../newproject.html?lesson=10&amp;kind=step_6b" class="link-c-2e86ab">Open Step 6b in Project Maker</a></p></div>
 </details>
 <h3 class="h3-c-433014">Step 7 — Arbitration: Teach the Robot What Matters Most</h3>
 <div class="callout-2e86ab-bg-eef4f8" data-family="(card header)" data-callout="10.51">
@@ -1057,7 +1167,7 @@ is not tidiness. It is the arbitration.</p>
 </div>
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="10.54">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Build (✓). Green, +194 bytes. Run the course into an obstacle: the robot follows the line, <strong>stops</strong> in front of the block, displays <code>OBSTACLE!</code> and beeps. It does not go around it yet — that is Step 8. But it <em>noticed</em>, and it <em>stopped</em>. That is the hard half.</p>
+    <p class="p-mb-0">Build (✓). Green, +176 bytes. Run the course into an obstacle: the robot follows the line, <strong>stops</strong> in front of the block, displays <code>OBSTACLE!</code> and beeps. It does not go around it yet — that is Step 8. But it <em>noticed</em>, and it <em>stopped</em>. That is the hard half.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 7</summary>
@@ -1187,27 +1297,27 @@ touched them since. Replace the whole timed maneuver with this:</p>
       <span class="tok-569cd6">switch</span> (avoidPhase) {
 
         <span class="tok-569cd6">case</span> PHASE_TURN_AWAY:
-          turnDegrees(AVOID_TURN_DEGREES);    <span class="tok-6a9955">// 90 degrees. Measured, not guessed.</span>
+          <span class="tok-569cd6">if</span> (turnDegrees(AVOID_TURN_DEGREES) == STOP_KILL) <span class="tok-569cd6">break</span>;   <span class="tok-6a9955">// 90 degrees. Measured, not guessed.</span>
           avoidPhase = PHASE_DRIVE_OUT;
           <span class="tok-569cd6">break</span>;
 
         <span class="tok-569cd6">case</span> PHASE_DRIVE_OUT:
-          driveDistance(AVOID_OUT_CM);        <span class="tok-6a9955">// Step out 15 cm. Now clear of the line.</span>
+          <span class="tok-569cd6">if</span> (driveDistance(AVOID_OUT_CM) == STOP_KILL) <span class="tok-569cd6">break</span>;       <span class="tok-6a9955">// Step out 15 cm. Now clear of the line.</span>
           avoidPhase = PHASE_TURN_ALONG;
           <span class="tok-569cd6">break</span>;
 
         <span class="tok-569cd6">case</span> PHASE_TURN_ALONG:
-          turnDegrees(-AVOID_TURN_DEGREES);   <span class="tok-6a9955">// Original heading again - parallel to the line.</span>
+          <span class="tok-569cd6">if</span> (turnDegrees(-AVOID_TURN_DEGREES) == STOP_KILL) <span class="tok-569cd6">break</span>;  <span class="tok-6a9955">// Original heading again - parallel to the line.</span>
           avoidPhase = PHASE_DRIVE_PAST;
           <span class="tok-569cd6">break</span>;
 
         <span class="tok-569cd6">case</span> PHASE_DRIVE_PAST:
-          driveDistance(AVOID_PAST_CM);       <span class="tok-6a9955">// 20 cm. Measured, not guessed.</span>
+          <span class="tok-569cd6">if</span> (driveDistance(AVOID_PAST_CM) == STOP_KILL) <span class="tok-569cd6">break</span>;      <span class="tok-6a9955">// 20 cm. Measured, not guessed.</span>
           avoidPhase = PHASE_TURN_BACK;
           <span class="tok-569cd6">break</span>;
 
         <span class="tok-569cd6">case</span> PHASE_TURN_BACK:
-          turnDegrees(-AVOID_TURN_DEGREES);   <span class="tok-6a9955">// Now FACE the line. Negative = left.</span>
+          <span class="tok-569cd6">if</span> (turnDegrees(-AVOID_TURN_DEGREES) == STOP_KILL) <span class="tok-569cd6">break</span>;  <span class="tok-6a9955">// Now FACE the line. Negative = left.</span>
           avoidPhase = PHASE_SEEK_LINE;
           <span class="tok-569cd6">break</span>;
 
@@ -1241,7 +1351,7 @@ encoders make sure it happens whether the batteries are fresh, tired, or somewhe
 </div>
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="10.61">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Build (✓). Green, +660 bytes. Run it into the block: the robot stops, turns away, drives past, turns back, finds the line, and carries on. <strong>Same result on fresh batteries and tired ones.</strong></p>
+    <p class="p-mb-0">Build (✓). Green, +710 bytes. Run it into the block: the robot stops, turns away, drives past, turns back, finds the line, and carries on. <strong>Same result on fresh batteries and tired ones.</strong></p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 8 (the encoder fix)</summary>
@@ -1287,8 +1397,8 @@ display.print(F(<span class="tok-ce9178">"===== Lesson 10 ====="</span>));</pre>
 </div>
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="10.64">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Build (✓). Green, 20,516 bytes. The robot completes the full course
-    without you touching it — and when it does need stopping, B still works, in every state, at every moment.</p>
+    <p class="p-mb-0">Build (✓). Green, 20,592 bytes. The robot completes the full course
+    without you touching it — and when it does need stopping, B still works the whole time the wheels are turning — every leg, every turn.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 9 (the finished project)</summary>
@@ -1774,7 +1884,7 @@ program is repetition.</p>
     <li>Drives the full box around it and finds the line on the far side.</li>
     <li>Resumes line following as if nothing happened.</li>
     <li>Still stops at green markers and turns the right way.</li>
-    <li>Stops <strong>immediately</strong> when B is pressed — <em>in every state, including mid&#8209;maneuver.</em></li>
+    <li>Stops <strong>immediately</strong> when B is pressed — <em>at any point in a leg or a turn, not just between them.</em></li>
     <li>Stops and <em>says so</em> if the line never comes back, instead of driving off the table.</li>
 </ul>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1850,7 +1960,7 @@ program is repetition.</p>
 <p><strong>Fix:</strong> Do <em>not</em> just raise <code>RETURN_TIMEOUT</code> — that treats the symptom. The maneuver ends with the robot <em>facing the line square-on</em>, so a correct box crosses it within a few centimetres. If it does not, work the primitives in <strong>§7</strong> one at a time rather than guessing at the whole shape. And check the drives before you blame the turns: the box turns <code>+90</code>, <code>−90</code>, <code>−90</code>, so a turn that is consistently a few degrees off largely <em>cancels itself</em> across the three — but nothing cancels a curve. <code>DRIVE_OUT</code> and <code>DRIVE_PAST</code> are 35 cm of open&#8209;loop driving with nothing watching the heading, so an untrimmed robot arrives both displaced <em>and</em> rotated. Re&#8209;prove <strong>§7B</strong> — distance first, then TRIM — before you re&#8209;prove <strong>§7A</strong>.</p>
 <h4 class="h4-c-00393d">🔴 B does not stop the robot during the maneuver</h4>
 <p><strong>What is actually happening:</strong> You are inside a <code>delay()</code>. The robot is not ignoring you — it is not <em>listening</em>. Nothing is.</p>
-<p><strong>Fix:</strong> This is the whole argument of Step 8. If you are still on the timed version, that is expected and it is why the encoder version exists. If you are on the encoder version and B still does not work, you are missing <code>if (killSwitchPressed()) break;</code> at the top of <code>AVOIDING_OBSTACLE</code>.</p>
+<p><strong>Fix:</strong> This is the whole argument of Step 8. If you are still on the timed version, that is expected — its legs are <code>delay()</code> calls, and nothing runs during a <code>delay()</code>. That is why the encoder version exists. On the encoder version B is checked <em>inside</em> the wait, so a press lands mid&#8209;leg. If it still does nothing there, check that <code>driveDistance()</code> and <code>turnDegrees()</code> return a <code>StopReason</code> and that the phase calls test it — a leg whose result is discarded stops the robot but lets the maneuver march on.</p>
 <h3 class="h3-c-00474b">8.4 When You Have No Idea</h3>
 <p>Read the display. Seriously — you built it for exactly this. It tells you the state name,
 and the state name tells you where to look:</p>
@@ -1914,12 +2024,12 @@ variable that remembers <em>which one you are on.</em></p>
 <span class="tok-569cd6">switch</span> (avoidPhase) {
 
   <span class="tok-569cd6">case</span> PHASE_TURN_AWAY:
-    turnDegrees(AVOID_TURN_DEGREES);  <span class="tok-6a9955">// 90 degrees. Measured, not guessed.</span>
+    <span class="tok-569cd6">if</span> (turnDegrees(AVOID_TURN_DEGREES) == STOP_KILL) <span class="tok-569cd6">break</span>; <span class="tok-6a9955">// 90 degrees. Measured, not guessed.</span>
     avoidPhase = PHASE_DRIVE_OUT;
     <span class="tok-569cd6">break</span>;
 
   <span class="tok-569cd6">case</span> PHASE_DRIVE_OUT:
-    driveDistance(AVOID_OUT_CM);      <span class="tok-6a9955">// Step out 15 cm. Now clear of the line.</span>
+    <span class="tok-569cd6">if</span> (driveDistance(AVOID_OUT_CM) == STOP_KILL) <span class="tok-569cd6">break</span>; <span class="tok-6a9955">// Step out 15 cm. Now clear of the line.</span>
     avoidPhase = PHASE_TURN_ALONG;
     <span class="tok-569cd6">break</span>;
 
@@ -2181,8 +2291,8 @@ turnDegrees(-AVOID_RETURN_DEGREES);   <span class="tok-6a9955">// past the headi
 <ul>
     <li>A robot that senses something it was never told about, and reacts.</li>
     <li>A <strong>priority</strong> — chosen by you, on purpose — that decides which sensor wins when two disagree.</li>
-    <li>A seven&#8209;phase maneuver that runs across many passes of <code>loop()</code> without ever going deaf.</li>
-    <li>A kill switch that works in <em>every</em> state, including mid&#8209;maneuver.</li>
+    <li>A seven&#8209;phase maneuver that runs across many passes of <code>loop()</code> while staying awake inside each one.</li>
+    <li>A kill switch that works while the robot is moving — inside a drive, inside a turn, not only between them. <em>The two 600&#8239;ms announcements do not check B, and they do not need to: the wheels are stopped and the pause exists so a human can read what the robot decided.</em></li>
     <li>An honest failure mode: when the robot cannot find the line, it stops and says so.</li>
 </ul>
 <div id="brain-check-02" class="callout-3f51b5" data-family="BRAIN CHECK" data-callout="10.92">
@@ -2373,7 +2483,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <summary>🔓 What is actually wrong</summary>
 <div class="div-mt-12px">
 <p><strong>PHASE_TURN_BACK, as planted:</strong></p><pre>        <span class="tok-569cd6">case</span> PHASE_TURN_BACK:
-          turnDegrees(AVOID_TURN_DEGREES);    <span class="tok-6a9955">// Now FACE the line. Negative = left.</span></pre>
+          <span class="tok-569cd6">if</span> (turnDegrees(AVOID_TURN_DEGREES) == STOP_KILL) <span class="tok-569cd6">break</span>;   <span class="tok-6a9955">// Now FACE the line. Negative = left.</span></pre>
 <p>Read the comment, then read the code. The comment says <em>“Negative = left”</em> — and the call is <strong>positive</strong>. The box turns three times: away, back along, and then this one, which is supposed to swing the robot round to <em>face</em> the line. Positive swings it the other way instead, so the robot finishes <strong>180° from where it should be pointing</strong> — square-on to the line, and facing away from it.</p><p><strong>The lesson:</strong> one minus sign. It compiles, it runs, it drives a perfectly confident shape — and the shape is wrong. This is why you tape the floor and watch the robot, instead of reading the code and assuming.</p></div>
 </details>
     <p class="p-mb-0"><a href="../newproject.html?lesson=10&amp;kind=bonus_b5" class="link-c-2e86ab">Open B5 in the Project Maker</a></p>

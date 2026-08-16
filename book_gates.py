@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.68.1'
+VERSION = 'v1.68.2'
 # v1.68.1 (S154): §27.11 stylesheet digest baseline moved after gate 73's five index
 #                 rows landed. Rules and declarations UNCHANGED at 574/2,033, every
 #                 declaration block byte-identical, zero selectors added or removed -
@@ -1929,8 +1929,12 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
 # zero blocks passes). The first pins the scoped population; the second pins the hold, so a
 # held label that gets CORRECTED -- or a hold that drifts off its subject -- fails loudly
 # instead of silently certifying nothing (S128 rule 20).
-if seen != 256:
-    bad.append(f'COVERAGE: {seen} labels inspected, expected 256 '
+# 256 -> 258 at S157: L10 Step 6b is new and carries WARNING 10.115 and NOTE 10.116.
+# Those are the only two of its four new callouts inside _SCHEME's three families -
+# the card header and the CHECKPOINT resolve to no scheme and are correctly out of
+# scope. DERIVED from _SCHEME, not read off the gate's own complaint (rule 29).
+if seen != 258:
+    bad.append(f'COVERAGE: {seen} labels inspected, expected 258 '
                f'(scheme and data-family must agree; blocks with no title div are gate 34s)')
 if held_seen != _S51_HELD:
     bad.append(f'COVERAGE: the \u00a75.1 hold matched {len(held_seen)} of {len(_S51_HELD)} '
@@ -1977,7 +1981,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1203:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
+if _seen != 1207:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
                                       # 1198 -> 1201 at S135: the three §1 hook figures land. 3
                                       # of the 151 term cards had no key mark; the canon
@@ -2007,7 +2011,11 @@ if _seen != 1203:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands 
                                       # photo and L03 IMAGE 3.14 was wired in. The number
                                       # moves ONLY when a figure genuinely lands - that is
                                       # the whole point of the assert.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,203 — a reference '
+                                      # 1,203 -> 1,207 at S157: four marks land, all in
+                                      # L10. stars.svg in INSIGHT 10.113 (the StopReason
+                                      # teaching block) plus exclamation-triangle, sticky
+                                      # and check-circle in Step 6b's three new callouts.
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,207 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2403,7 +2411,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '192779c80766492b'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '8c20234e73752bb7'
 #   S144 move, SECOND of the session. Digest ONLY, 574/2,033 both ends, class SET
 #   byte-identical, usage RANK only: `.h4-c-555` 9 -> 8 and the whole textual diff is that
 #   rule changing rank plus its count comment. Cause: the L11 §3.5 cliff rewrite has one
@@ -3358,8 +3366,10 @@ try:
         bad.append('... and %d more disagreeing callout(s)' % (_fam_bad - 6))
     if _n == 0:
         bad.append('gate 59 scanned ZERO callouts - a gate that scans nothing passes')
-    elif _n != 1120:
-        bad.append('gate 59 saw %d callouts, expected the 1120 gate 47 holds' % _n)
+    # 1120 -> 1125 at S157: INSIGHT 10.113 plus Step 6b's four (card header, WARNING,
+    # NOTE, CHECKPOINT). build_family_map assigns all five, UNASSIGNED 0.
+    elif _n != 1125:
+        bad.append('gate 59 saw %d callouts, expected the 1125 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
