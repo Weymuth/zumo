@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 12
 # Wheels Lie · The Gyro — Measuring the Robot, Not the Wheels
 #
-# Bank version: v1.0.0
+# Bank version: v1.0.1
 # Authored against: lessons/Lesson_12.html v01.31.3 (post-S145 byte re-baselining)
 #
 # READ -> FIX -> QUIZ. L12 was read end to end in S145 and one defect class was found and
@@ -9,7 +9,7 @@
 #
 # THE FIX THIS BANK RESTS ON: EVERY ABSOLUTE BYTE FIGURE IN L12 WAS STALE BY EXACTLY 160.
 #   Measured on the AVR toolchain against the standing control (L11 after_step_1 reproduces
-#   20,516 byte-for-byte). L12's chain reads 20,702 -> 21,502 -> 21,502 -> 24,694, where the
+#   20,516 byte-for-byte). L12's chain read 20,702 -> 21,502 -> 21,502 -> 24,694, where the
 #   book said 20,542 -> 21,342 -> 21,342 -> 24,534. Sixteen sites moved, plus the four
 #   Sabotage headers. A05, A10, A14 and A18 ask the corrected figures; against v01.31.2 all
 #   four would have keyed wrong, and BRAIN CHECK 03 asks 24,534 twice.
@@ -19,6 +19,16 @@
 #   re-baselining and why every pedagogical point in the lesson survived it untouched. The
 #   one exception is Mystery B2, which claimed 648 bytes smaller and measures 652; that was
 #   an independent error and A21 asks the corrected figure.
+#
+#   RE-KEYED S158 (bank v1.0.1): the option-C rollout converted all twenty-one L12 payloads
+#   AND, for the first time in the rollout, the lesson's OWN printed code — L12 is the first
+#   converted lesson that prints a primitive of its own, turnDegreesGyro(), so its <pre>
+#   blocks changed with its payloads. Re-derived from the harness: 20,778 -> 21,578 ->
+#   21,578 -> 24,790, Sabotage B1 24,814 / B2 24,086 / B3 24,786 / B4 24,790, and the
+#   step-7 block is 27 lines rather than 25. TWO DELTAS MOVED AND THE REST DID NOT: +3,192
+#   is +3,212 and B2's 652 is 704, because the gyro turn now carries a kill-switch poll and
+#   B2's loop body is where the difference lands. +800, +0 and -204 are untouched, and B4
+#   still weighs EXACTLY what the correct build weighs, which is the whole point of B4.
 #
 #   THE SEAM IS AT L10, NOT L12. L07, L08 and L09 measure exactly what L16's byte table
 #   says. L10 onward do not, because S143's maneuver rebuild moved L10 and nothing
@@ -965,12 +975,12 @@ sets:
         points: 1
         stem: "Step 5 adds the four gyro functions. What does the binary do?"
         options:
-          - text: "Grows by 800 bytes, from 20,702 to 21,502 — the I2C code, the calibration loop and the accumulator going live"
+          - text: "Grows by 800 bytes, from 20,778 to 21,578 — the I2C code, the calibration loop and the accumulator going live"
             correct: true
           - text: "Does not change, because nothing calls the new functions yet"
             correct: false
             why: "That is Steps 6 and 7, where a written-but-uncalled function is discarded. Step 5's functions are reached from gyroSetup() onward once Step 8 wires them, and the code lands here."
-          - text: "Grows by 3,192 bytes, the largest single jump in the lesson"
+          - text: "Grows by 3,212 bytes, the largest single jump in the lesson"
             correct: false
             why: "That jump is Step 8, when the three turns switch and the whole gyro turn becomes reachable."
           - text: "Shrinks, because the new functions replace older encoder code"
@@ -983,7 +993,7 @@ sets:
         points: 1
         stem: "Writing turnDegreesGyro() in Step 7 made the binary larger."
         correct: false
-        why: "It stayed at 21,502, to the byte. You wrote a 25-line function and the program did not grow, because nobody calls it — the linker walked the program, found turnDegreesGyro() unreachable from main(), and threw it away before writing the binary."
+        why: "It stayed at 21,578, to the byte. You wrote a 27-line function and the program did not grow, because nobody calls it — the linker walked the program, found turnDegreesGyro() unreachable from main(), and threw it away before writing the binary."
 
       - id: L12_A07
         type: multiple_choice
@@ -1027,15 +1037,15 @@ sets:
         points: 1
         stem: "What does the binary do at Step 8, and what does the lesson say the jump proves?"
         options:
-          - text: "21,502 to 24,694, up 3,192 — the three words made turnDegreesGyro() reachable, dragging the whole gyro turn into the binary"
+          - text: "21,578 to 24,790, up 3,212 — the three words made turnDegreesGyro() reachable, dragging the whole gyro turn into the binary"
             correct: true
-          - text: "21,502 to 24,694, up 3,192 — the gyro calibration loop is finally compiled in"
+          - text: "21,578 to 24,790, up 3,212 — the gyro calibration loop is finally compiled in"
             correct: false
             why: "The calibration loop landed in Step 5, which is where the 800 bytes went. Step 8's jump is about reachability."
           - text: "It does not change, because the helpers were one-liners either way"
             correct: false
             why: "The helpers are one-liners, but what they now call was previously discarded as dead weight. That is the entire point of the jump."
-          - text: "21,502 to 24,694, up 3,192 — mostly the new OLED strings for the calibration prompt"
+          - text: "21,578 to 24,790, up 3,212 — mostly the new OLED strings for the calibration prompt"
             correct: false
             why: "The strings are a small part. The lesson attributes the jump to the turn, the accumulator and the float comparison becoming reachable."
 
@@ -1149,7 +1159,7 @@ sets:
         type: true_false
         cite: "§7E"
         points: 1
-        stem: "After Section 7 you restore the real loop(), and the rebuilt project should compile to 24,694 bytes."
+        stem: "After Section 7 you restore the real loop(), and the rebuilt project should compile to 24,790 bytes."
         correct: true
         why: "Section 7 replaced loop() with test sketches. Restoring the Lesson 11 state machine and rebuilding gives the finished Lesson 12 figure, and the robot drives the full course with every turn closing on the gyro."
 
@@ -1178,13 +1188,13 @@ sets:
         stem: "Three of the four mysteries change the program's size. Match each build to its byte count."
         pairs:
           - left: "B1 — the calibration that spins"
-            right: "24,718 bytes"
+            right: "24,814 bytes"
           - left: "B2 — the turn that never ends"
-            right: "24,042 bytes"
+            right: "24,086 bytes"
           - left: "B4 — the helpful TRIM"
-            right: "24,694 bytes"
+            right: "24,790 bytes"
         extra_answers:
-          - "21,502 bytes"
+          - "21,578 bytes"
           - "20,422 bytes"
 
       - id: L12_A20
@@ -1193,15 +1203,15 @@ sets:
         points: 1
         stem: "Mystery B2 deletes gyroUpdate() from the turn loop. How does its size compare to the correct build, and what does the lesson draw from that?"
         options:
-          - text: "652 bytes smaller — deleting code makes the program smaller, and it does not make it work"
+          - text: "704 bytes smaller — deleting code makes the program smaller, and it does not make it work"
             correct: true
-          - text: "652 bytes larger, because the empty loop must be padded"
+          - text: "704 bytes larger, because the empty loop must be padded"
             correct: false
             why: "Deleting a call removes work; nothing is padded. The build genuinely shrinks."
           - text: "Identical, because the call was inlined anyway"
             correct: false
             why: "That is B4's property, and B4 is the one mystery that costs zero bytes."
-          - text: "Smaller by 3,192 bytes, the same amount Step 8 added"
+          - text: "Smaller by 3,212 bytes, the same amount Step 8 added"
             correct: false
             why: "Step 8's jump brought in the whole reachable turn. B2 removes one call from inside it."
 

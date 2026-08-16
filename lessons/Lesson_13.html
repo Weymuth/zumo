@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.29.0 -->
+<!-- Lesson version: v02.30.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.29 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.30 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -196,7 +196,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <th class="th-p-12px15px">Job</th>
 </tr>
 <tr>
-<td class="td-bb-1pxsolid">Four tunables + <code>StopReason</code> + three states</td>
+<td class="td-bb-1pxsolid">Four tunables + a third <code>StopReason</code> + three states</td>
 <td class="td-bb-1pxsolid"><code>RobotConfig.h</code></td>
 <td class="td-bb-1pxsolid">Every number you will tune, in the numbers file</td>
 </tr>
@@ -220,13 +220,14 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p><code>driveDistance()</code> has served since Lesson 6, and it has one blind spot: once a leg starts, <em>nothing can interrupt it</em>. It holds the wheel and stares at the odometer until the centimeters run out. In the zone that is disqualifying — a sweep row must end early the instant the prox sees something, and the kill switch must work <em>mid-leg</em>, not between legs.</p>
 <p><code>driveUntil()</code> is <code>driveDistance()</code>'s watchful twin. Same TRIM, same both-encoder average, same open-loop discipline — plus one poll inside the loop, and a report at the end. And the report is the interesting part. A leg can end three ways, and the caller <em>needs to know which</em>:</p>
 <pre>
-<span class="tok-7cbf6e">// ===== WHY DID THE LEG END? (NEW for Lesson 13) =====</span>
-<span class="tok-7cbf6e">// driveUntil() drives a straight line that can end three ways.</span>
-<span class="tok-7cbf6e">// A primitive that reports WHY it stopped is worth two that don't.</span>
+<span class="tok-7cbf6e">// ===== WHY A MOVE ENDED (NEW for Lesson 10) =====</span>
+<span class="tok-7cbf6e">// A move that can be interrupted has to say WHICH thing ended it.</span>
+<span class="tok-7cbf6e">// The caller cannot tell from the fact that the function returned.</span>
 <span class="tok-569cd6">enum</span> StopReason {
-  STOP_DISTANCE,   <span class="tok-7cbf6e">// Drove the full budget - saw nothing</span>
-  STOP_PROX,       <span class="tok-7cbf6e">// Something ahead - wall or victim, the CALLER decides</span>
-  STOP_KILL        <span class="tok-7cbf6e">// B pressed - stop everything</span>
+  STOP_DISTANCE,   <span class="tok-7cbf6e">// Drove the whole way - nothing interrupted</span>
+  STOP_PROX,       <span class="tok-7cbf6e">// NEW for Lesson 13: something ahead - a wall or a</span>
+                   <span class="tok-7cbf6e">// victim. The CALLER decides which.</span>
+  STOP_KILL        <span class="tok-7cbf6e">// B pressed - the human stopped it</span>
 };
 </pre>
 <p>Read <code>STOP_PROX</code>'s comment twice: <em>"wall or victim, the CALLER decides."</em> The primitive reports facts; the state machine interprets them. That split — measurement below, judgment above — is the same one that keeps <code>RobotSensors.cpp</code> from ever setting a motor speed. It is what lets Section 6 test each layer alone.</p>
@@ -294,7 +295,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <h3 class="h3-c-2e86ab">Step 1 — The Numbers, the Names, the Reasons</h3>
 <div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL" data-callout="13.5">
 <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
-<p class="p-m-8px000">Everything tunable and everything nameable lands in <code>RobotConfig.h</code> first: four blanks, a <code>StopReason</code> enum, and three new robot states. No behavior changes — this step is pure vocabulary.</p>
+<p class="p-m-8px000">Everything tunable and everything nameable lands in <code>RobotConfig.h</code> first: four blanks, one more <code>StopReason</code>, and three new robot states. No behavior changes — this step is pure vocabulary.</p>
 </div>
 <p>Open <code>RobotConfig.h</code> and add the whole rescue block at the bottom of the file:</p><pre>
 <span class="tok-7cbf6e">// ===== RESCUE ZONE (NEW for Lesson 13) =====</span>
@@ -329,13 +330,14 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <span class="tok-7cbf6e">// misses the wall, this ends the row before the robot grinds against it.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MAX_ROW_CM = <span class="tok-b5cea8">300.0</span>;
 
-<span class="tok-7cbf6e">// ===== WHY DID THE LEG END? (NEW for Lesson 13) =====</span>
-<span class="tok-7cbf6e">// driveUntil() drives a straight line that can end three ways.</span>
-<span class="tok-7cbf6e">// A primitive that reports WHY it stopped is worth two that don't.</span>
+<span class="tok-7cbf6e">// ===== WHY A MOVE ENDED (NEW for Lesson 10) =====</span>
+<span class="tok-7cbf6e">// A move that can be interrupted has to say WHICH thing ended it.</span>
+<span class="tok-7cbf6e">// The caller cannot tell from the fact that the function returned.</span>
 <span class="tok-569cd6">enum</span> StopReason {
-  STOP_DISTANCE,   <span class="tok-7cbf6e">// Drove the full budget - saw nothing</span>
-  STOP_PROX,       <span class="tok-7cbf6e">// Something ahead - wall or victim, the CALLER decides</span>
-  STOP_KILL        <span class="tok-7cbf6e">// B pressed - stop everything</span>
+  STOP_DISTANCE,   <span class="tok-7cbf6e">// Drove the whole way - nothing interrupted</span>
+  STOP_PROX,       <span class="tok-7cbf6e">// NEW for Lesson 13: something ahead - a wall or a</span>
+                   <span class="tok-7cbf6e">// victim. The CALLER decides which.</span>
+  STOP_KILL        <span class="tok-7cbf6e">// B pressed - the human stopped it</span>
 };
 </pre>
 <p>Then find the <code>RobotState</code> enum and grow it by three. (The comments on the Lesson 11 lines change from NEW to From — they have seniority now.)</p><pre>
@@ -358,7 +360,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 </pre>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.6">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>24,694 bytes</strong> — byte-identical to your Lesson 12 finished build. Constants nothing reads and enum names nothing uses are <em>free</em>. Write that down; Step 5 cashes it in.</p>
+<p class="p-m-8px000"><strong>24,790 bytes</strong> — byte-identical to your Lesson 12 finished build. Constants nothing reads and enum names nothing uses are <em>free</em>. Write that down; Step 5 cashes it in.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 1</summary>
@@ -396,7 +398,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p>Why <em>all five</em> sensors? Because that is the strip's signature and nothing else's. A glare spot might blind one sensor; a worn patch of floor might brighten two. Only a strip of silver spanning the whole array pulls all five below the fence at the same instant. The AND of five noisy witnesses is a quiet, confident yes.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.8">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>24,694 bytes.</strong> Still identical — the function exists and nobody calls it, so the linker leaves it out of the build entirely. (We verified with <code>avr-nm</code>: the symbol is genuinely absent, not hiding.)</p>
+<p class="p-m-8px000"><strong>24,790 bytes.</strong> Still identical — the function exists and nobody calls it, so the linker leaves it out of the build entirely. (We verified with <code>avr-nm</code>: the symbol is genuinely absent, not hiding.)</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 2</summary>
@@ -475,7 +477,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 </pre>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.10">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>24,874 bytes — up 180.</strong> The door is live: the silver check, the state transition, the announcement. One hundred eighty bytes is what "see the invisible" costs.</p>
+<p class="p-m-8px000"><strong>24,970 bytes — up 180.</strong> The door is live: the silver check, the state transition, the announcement. One hundred eighty bytes is what "see the invisible" costs.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 3</summary>
@@ -487,9 +489,9 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
 <p class="p-m-8px000"><code>driveUntil()</code> in <code>RobotMotion.cpp</code> — <code>driveDistance()</code>’s body with its eyes open. Defined, declared, not yet called. You know what the byte count will say.</p>
 </div>
-<p><code>RobotMotion.h</code> needs one include it never needed before — <code>driveUntil()</code> returns a <code>StopReason</code>, and that type lives in the config:</p><pre>
+<p><code>RobotMotion.h</code> already includes <code>RobotConfig.h</code> — it has since Lesson 10, when the movement primitives started returning a <code>StopReason</code>. <code>driveUntil()</code> returns one too, so the line you need is already there:</p><pre>
 #pragma once
-#include "RobotConfig.h"  <span class="tok-7cbf6e">// NEW for Lesson 13: driveUntil() returns a StopReason</span>
+#include "RobotConfig.h"   <span class="tok-7cbf6e">// NEW for Lesson 10 - these report a StopReason</span>
 </pre>
 <p>Declare it at the bottom of the header:</p><pre>
 /*
@@ -543,7 +545,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <p>Two lines deserve a second look. The kill-switch poll is <em>first</em> in the loop — inside a leg, mid-zone, B must work <strong>now</strong>, not after the wall. And the last line writes <code>lastLegCm</code> whatever happened: even a leg that ends early reports honestly how far it got. Step 6 turns that honest report into the victim detector.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.12">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>24,874 bytes.</strong> Flat again, same reason as Step 2 — and this is the last free step. Everything after this costs bytes, because everything after this <em>runs</em>.</p>
+<p class="p-m-8px000"><strong>24,970 bytes.</strong> Flat again, same reason as Step 2 — and this is the last free step. Everything after this costs bytes, because everything after this <em>runs</em>.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 4</summary>
@@ -609,7 +611,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <p>Trace <code>sweepDir</code> through two rows on paper before you trust it. Row one ends: turn right 90, step, turn right 90 — now facing back the way you came, one lane over. <code>sweepDir</code> flips. Row two ends: turn <em>left</em> 90, step, turn <em>left</em> 90. Right-right, left-left, right-right — that alternation is the entire lawnmower, and it is one multiplication: <code>90.0 * sweepDir</code>.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.14">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>25,114 bytes — up 240.</strong> There it is: <code>driveUntil()</code> finally has a caller, so the linker finally pays for it — Steps 4’s "free" code just arrived in the build, alongside the sweep case itself. The flat steps were never missing code. They were code waiting for a reason.</p>
+<p class="p-m-8px000"><strong>25,240 bytes — up 270.</strong> There it is: <code>driveUntil()</code> finally has a caller, so the linker finally pays for it — Steps 4’s "free" code just arrived in the build, alongside the sweep case itself. The flat steps were never missing code. They were code waiting for a reason.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 5</summary>
@@ -674,7 +676,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <p>The closing comment is the design decision of the lesson: <strong>finding it is the rescue.</strong> This robot has no gripper, no arm, no way to carry anyone anywhere — and a rescue that <em>reports a verified location</em> is a real rescue; it is what search dogs and avalanche beacons do. The day a robot must carry the victim out is the day it needs an arm; Section 8A.3 prices that out.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.16">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>25,072 bytes — down 42, and this is the finished build.</strong> Read that again: the finished robot is <em>smaller</em> than Step 5. We disassembled both to find out why: the rewritten hand-off and the recompiled state switch came out tighter than the stubs they replaced — by more than the victim bookkeeping cost. Code you delete pays you back — a preview of Lesson 16, where that becomes the whole game. Total cost of Lesson 13: 378 bytes over Lesson 12. A doorway, a sweep, and a witness — for less than four hundred bytes.</p>
+<p class="p-m-8px000"><strong>25,198 bytes — down 42, and this is the finished build.</strong> Read that again: the finished robot is <em>smaller</em> than Step 5. We disassembled both to find out why: the rewritten hand-off and the recompiled state switch came out tighter than the stubs they replaced — by more than the victim bookkeeping cost. Code you delete pays you back — a preview of Lesson 16, where that becomes the whole game. Total cost of Lesson 13: 408 bytes over Lesson 12. A doorway, a sweep, and a witness — for less than four hundred bytes.</p>
 </div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
@@ -800,6 +802,17 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <span class="tok-7cbf6e">// turn. If the atom is right, the sweep is a for-loop away. If the</span>
 <span class="tok-7cbf6e">// atom is wrong, no amount of sweeping will hide it.</span>
 
+<span class="tok-7cbf6e">// The shared kill switch (Lesson 10). This rung has no state machine</span>
+<span class="tok-7cbf6e">// to fall back into, so it does the one thing that always applies:</span>
+<span class="tok-7cbf6e">// stop the motors and say so. turnDegreesGyro() polls it while it turns.</span>
+<span class="tok-569cd6">bool</span> killSwitchPressed() {
+  <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+    motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
+    <span class="tok-569cd6">return</span> <span class="tok-569cd6">true</span>;
+  }
+  <span class="tok-569cd6">return</span> <span class="tok-569cd6">false</span>;
+}
+
 <span class="tok-569cd6">void</span> setup() {
   Serial.begin(<span class="tok-b5cea8">115200</span>);
   delay(<span class="tok-b5cea8">500</span>);
@@ -878,7 +891,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
       <span class="tok-569cd6">break</span>;
 </pre>
 <p>Run it on the smooth zone floor and watch the rows. Each encoder corner is off by a few degrees the wheels never felt; each row inherits every corner before it; by row five the "parallel" rows are a fan, and the sweep is inspecting the same patch of floor twice while leaving another patch forever unvisited. Now put <code>turnDegreesGyro</code> back and run again: rows like ruled paper.</p>
-<p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> — the wheels, which the floor lies to, or the gyro, which measures the robot itself. These two builds compile to <strong>exactly the same size</strong> — 25,072 bytes each, because both turn functions are alive in both binaries and only the call site moved — and nothing in that number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
+<p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> — the wheels, which the floor lies to, or the gyro, which measures the robot itself. These two builds compile to <strong>exactly the same size</strong> — 25,198 bytes each, because both turn functions are alive in both binaries and only the call site moved — and nothing in that number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
@@ -1232,7 +1245,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Four Messed Up Files</span></div></div>
 <div class="div-6f7582">
 
-<p>Four saboteurs, four builds, and here is the frightening part: <strong>two of the four compile to exactly 25,072 bytes — byte-identical to the correct build — and the other two land within 16 bytes of it.</strong> The file size cannot save you. The compiler will not warn you. Only reading the code — and knowing what each line is <em>for</em> — catches these. Each mystery shows you the planted line up front; your job is not to find the typo. It is to explain <strong>why this line produces that symptom.</strong> Every sabotaged build is in the Maker under <em>Lesson 13 → BONUS</em> if you want to watch the crime happen.</p>
+<p>Four saboteurs, four builds, and here is the frightening part: <strong>two of the four compile to exactly 25,198 bytes — byte-identical to the correct build — and the other two land within 16 bytes of it.</strong> The file size cannot save you. The compiler will not warn you. Only reading the code — and knowing what each line is <em>for</em> — catches these. Each mystery shows you the planted line up front; your job is not to find the typo. It is to explain <strong>why this line produces that symptom.</strong> Every sabotaged build is in the Maker under <em>Lesson 13 → BONUS</em> if you want to watch the crime happen.</p>
 <h4 data-challenge="13.m1" data-kind="bonus-sabotage" class="h4-c-6f7582-3">Mystery B1 — The Corkscrew</h4>
 <p>A classmate “tidied” <code>setup()</code>: <em>“both calibrations, together — it’s cleaner.”</em> The planted change:</p><pre>
   calibrateLineSensors();
@@ -1248,7 +1261,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 </pre>
 <details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
-<p>Compare against the real line: <code>setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED)</code>. The student’s 8 is declared, tuned, believed in — and <strong>never reaches the motors.</strong> A declared blank the code never spends is a lie in the worksheet: the student adjusts the number, nothing changes, and they learn to distrust the instrument instead of the build.</p><p>Here is the part that should worry you: with <code>TRIM = 8</code> set, this build and the correct one are <em>still</em> byte-identical — 25,072 bytes each. We disassembled both to prove the difference is real: the correct build loads <strong>158</strong> into the left motor and 150 into the right; the sabotage loads <strong>150 and 150</strong>. One instruction’s immediate value. The file size is blind to it; only the disassembly — or the arc on your floor — tells the truth.</p></div></details>
+<p>Compare against the real line: <code>setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED)</code>. The student’s 8 is declared, tuned, believed in — and <strong>never reaches the motors.</strong> A declared blank the code never spends is a lie in the worksheet: the student adjusts the number, nothing changes, and they learn to distrust the instrument instead of the build.</p><p>Here is the part that should worry you: with <code>TRIM = 8</code> set, this build and the correct one are <em>still</em> byte-identical — 25,198 bytes each. We disassembled both to prove the difference is real: the correct build loads <strong>158</strong> into the left motor and 150 into the right; the sabotage loads <strong>150 and 150</strong>. One instruction’s immediate value. The file size is blind to it; only the disassembly — or the arc on your floor — tells the truth.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b2_unspent" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 <h4 data-challenge="13.m3" data-kind="bonus-sabotage" class="h4-c-6f7582-3">Mystery B3 — The Stripes of Blindness</h4>
 <p>“I made the sweep twice as fast,” says the saboteur, proudly. And the runs <em>are</em> faster — and the robot misses the silver ball about half the time, on a course where it used to score every run. The planted line:</p><pre>
@@ -1276,7 +1289,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.25"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-dead-reckoning-gloss">Dead reckoning</strong></div>Knowing where you are by adding up your own movements — encoders, TRIM, gyro — with no external reference. Drifts, always; the only question is how fast.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.26"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-landmark-gloss">Landmark</strong></div>A fixed feature of the world used to erase accumulated dead-reckoning error. In this lesson: the walls, once per row, for free.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.27"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-lawnmower-sweep-gloss">Lawnmower sweep</strong></div>Coverage pattern of parallel wall-to-wall rows joined by turn–step–turn corners with alternating direction. Guarantees the prox inspects every band of floor — if the step is sized to overlap.</div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.28"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-stopreason-gloss">StopReason</strong></div>The enum <code>driveUntil()</code> returns: <code>STOP_DISTANCE</code>, <code>STOP_PROX</code>, or <code>STOP_KILL</code>. A primitive that reports facts and leaves judgment to the caller.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.28"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-stopreason-gloss">StopReason</strong></div>The enum every interruptible move returns, since Lesson 10. Lesson 13 adds its third value: <code>STOP_DISTANCE</code>, <code>STOP_PROX</code>, or <code>STOP_KILL</code>. A primitive that reports facts and leaves judgment to the caller.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.29"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-cross-examination-sensor-fusion-gloss">Cross-examination (sensor fusion)</strong></div>Using one sensor to resolve another’s ambiguity. The gyro checked the encoders (Lesson 12); the odometer now checks the prox. The grown-up name is sensor fusion.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="13.30"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-row-zero-leap-of-faith-gloss">Row zero / leap of faith</strong></div>The sweep’s first row, which has no previous row to compare against and therefore must believe its prox stop is the wall. Insurable (Challenge 3), not eliminable.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>

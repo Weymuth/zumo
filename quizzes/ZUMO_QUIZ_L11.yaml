@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 11
 # Time Lies, Distance Doesn't · Encoder-Based Gap Crossing
 #
-# Bank version: v1.0.0
+# Bank version: v1.0.1
 # Authored against: lessons/Lesson_11.html v02.30.0 (post-S144 cliff correction)
 #
 # READ -> FIX -> QUIZ. L11 was read end to end in S144, fix-passed to v02.29.0, and the §3.5
@@ -20,10 +20,15 @@
 #      word. A07 and A08 ask the corrected mechanic: a write needs the declaration as much as
 #      a read does, and the error appears twice.
 #   3. STEP 6's BYTE CLAIM WAS BACKWARDS. It read "smaller than the one you started with."
-#      Measured on the AVR toolchain against a control that reproduced L10's 20,516 exactly,
-#      the finished build is 20,702 — 186 bytes BIGGER. A09, A10 and A11 ask 20,702, the
-#      direction, and the 7,970 remaining. Against v02.29.0 all three would have keyed wrong,
-#      and A10 in particular would have marked the careful reader wrong.
+#      Measured on the AVR toolchain against a control that reproduced L10's figure exactly,
+#      the finished build is 186 bytes BIGGER than the project it starts from. A09, A10 and
+#      A11 ask the size, the direction, and the headroom remaining. Against v02.29.0 all three
+#      would have keyed wrong, and A10 in particular would have marked the careful reader wrong.
+#      RE-KEYED S158 (bank v1.0.1): the option-C rollout converted all seventeen L11 payloads,
+#      so the two ENDPOINTS moved by the same 76 bytes and the DELTA did not. Start 20,516 ->
+#      20,592, finished 20,702 -> 20,778, headroom 7,970 -> 7,894, and 186 stands untouched.
+#      A10 therefore needed no edit at all, which is the S157 shape: a bank that asks a delta
+#      survives a rebaseline, and a bank that asks an endpoint does not.
 #   4. TRIM'S HOME IS LESSON 3 (§16.15, ruled S145). L11's seven sites were corrected at S144;
 #      the book-wide split closed at S145. B34 and A15 cite Lesson 3 and are safe now in a way
 #      they were not two sessions ago.
@@ -1033,17 +1038,17 @@ sets:
         points: 1
         stem: "How large is the finished Lesson 11 program?"
         options:
-          - text: "20,702 bytes"
+          - text: "20,778 bytes"
             correct: true
-          - text: "20,516 bytes"
+          - text: "20,592 bytes"
             correct: false
             why: "That is the Lesson 10 project you started from. Lesson 11 is 186 bytes larger than it."
-          - text: "20,364 bytes"
+          - text: "20,406 bytes"
             correct: false
-            why: "That is the Lesson 10 figure from BEFORE the maneuver was rebuilt in Lesson 10's own Step 9. It is not the starting point for this lesson."
+            why: "That subtracts the 186 instead of adding it. Retiring the stopwatch did not pay for the odometer — the step says so directly."
           - text: "28,672 bytes"
             correct: false
-            why: "That is the flash ceiling on this board, not the program size. The finished build leaves 7,970 bytes of it free."
+            why: "That is the flash ceiling on this board, not the program size. The finished build leaves 7,894 bytes of it free."
 
       - id: L11_A10
         type: true_false
@@ -1059,15 +1064,15 @@ sets:
         points: 1
         stem: "After the finished build, how much flash headroom is left, and what does the step say it was spent on?"
         options:
-          - text: "7,970 bytes — correctness, spent deliberately, so the robot crosses the same gap on a fresh pack and a tired one"
+          - text: "7,894 bytes — correctness, spent deliberately, so the robot crosses the same gap on a fresh pack and a tired one"
             correct: true
-          - text: "7,970 bytes — mostly the new display strings, which are the largest single cost"
+          - text: "7,894 bytes — mostly the new display strings, which are the largest single cost"
             correct: false
             why: "The strings are named as part of the cost, but the step does not rank them, and the argument is about what the 186 bytes BOUGHT rather than where they went."
           - text: "186 bytes — the difference between the two builds"
             correct: false
             why: "186 is the growth, not the remaining space. Headroom is the ceiling minus the program."
-          - text: "20,702 bytes — the same figure as the program size"
+          - text: "20,778 bytes — the same figure as the program size"
             correct: false
             why: "That is the program. Headroom is what is left after it."
 

@@ -36,8 +36,9 @@ Requires: harness at $ZUMO_HARNESS or /home/claude/harness (pio_harness.sh,
 libcore_lto.a built by --setup), and extract_project.py beside this file.
 """
 import re, sys, os, json, subprocess, tempfile, shutil
+import html as H
 
-VERSION = 'v1.2'
+VERSION = 'v1.3.2'
 # v1.2 (S152): ARM 4 NEW - every byte figure in a Maker KINDS label must equal the
 #   compiled size of the payload its row points at. Nothing in this repo read a label:
 #   gate_payload_match asserts payload BYTES against lesson <pre>, ARM 2 asserts the
@@ -417,6 +418,127 @@ def arm4(tbl, only=None):
     print()
     return not bad
 
+
+# ---------------------------------------------------------------- ARM 5
+
+DELTA_RE = re.compile(r"\b(?:up|down)\s+([\d,]+)|(?<![\w,])([+\u2212-])\s?([\d,]{2,6})\b")
+SPARE_RE = re.compile(r"([\d,]+)\s*(?:B\s*)?to spare", re.I)
+OVER_RE  = re.compile(r"\bBy\s+([\d,]+)\.|over(?:flowed)?[^.]{0,24}?by\s+([\d,]+)", re.I)
+
+
+def checkpoints(L):
+    """Every CHECKPOINT a lesson states, in document order.
+
+    A checkpoint is a step <h3> heading or the 230 characters following the
+    literal COMPILE CHECK - the two places this book puts a build figure next
+    to a claim about it. Both are PARSED; neither is typed here (rule 19).
+
+    Returns [{'pos','kind','fig','delta','spare','over','text'}].
+    """
+    if not os.path.exists(lesson_path(L)):
+        return []
+    t = open(lesson_path(L), encoding="utf-8").read()
+    sites = []
+    for m in re.finditer(r"<h3[^>]*>(.*?)</h3>", t, re.S):
+        sites.append((m.start(), "heading", H.unescape(re.sub(r"<[^>]+>", "", m.group(1)))))
+    for m in re.finditer(r"COMPILE CHECK", t):
+        win = H.unescape(re.sub(r"<[^>]+>", " ", t[m.start():m.start() + 700]))[:230]
+        sites.append((m.start(), "check", win))
+    sites.sort()
+    out = []
+    for pos, kind, txt in sites:
+        f = re.search(FIG, txt)
+        if not f:
+            continue
+        d = DELTA_RE.search(txt)
+        sp = SPARE_RE.search(txt)
+        ov = OVER_RE.search(txt)
+        def num(x):
+            return int(x.replace(",", "").rstrip(".")) if x else None
+        delta = None
+        if d:
+            if d.group(1):
+                delta = num(d.group(1))
+                if re.search(r"\bdown\s+" + re.escape(d.group(1)), txt, re.I):
+                    delta = -delta
+            else:
+                delta = num(d.group(3))
+                if d.group(2) in ("-", "\u2212"):
+                    delta = -delta
+        out.append({"pos": pos, "kind": kind, "fig": num(f.group(1)),
+                    "delta": delta, "spare": num(sp.group(1)) if sp else None,
+                    "over": num(ov.group(1) or ov.group(2)) if ov else None,
+                    "text": re.sub(r"\s+", " ", txt)[:56]})
+    return out
+
+
+def arm5(tbl, only=None):
+    """ARM 5 - CLOSURE: the arithmetic AROUND a figure must close.
+
+    ARM 2 asserts that a figure equals a compile. It is BLIND to the middle:
+    S146 proved that reverting one figure inside a chain leaves the endpoints
+    and the stated total intact and every gate green. This arm asserts the
+    three claims a lesson makes NEXT TO a figure:
+
+      DELTA   'up 270' / '+164' / 'down 42'  ==  fig - the previous figure
+      SPARE   'N to spare'                   ==  CEILING - fig
+      OVER    'over by N' / 'By N.'          ==  fig - CEILING
+
+    Every one is derived from the lesson's own text and the compiled sizes.
+    Nothing here is pinned to a value.
+    """
+    print("ARM 5 - CLOSURE: every delta, spare and over-figure must close on its own figure")
+    ok, checked, bad = True, 0, []
+    for L in range(1, 17):
+        if only and L != only:
+            continue
+        cps = checkpoints(L)
+        # A DELTA is a claim about the previous STEP, not the previous mention.
+        # A step heading and its own COMPILE CHECK restate one build state, so
+        # walking mentions makes every such pair read as +0 (found by the arm's
+        # own first run, on L16 Step 2).
+        # EVERY h3, not only the ones that carry a figure. Segmenting on the
+        # figure-bearing headings alone mis-assigns L13, whose step headings
+        # state no figure at all - and the DELTA arm then goes silent on a
+        # seeded wrong delta, which is how this was caught (rule 59).
+        heads = [m.start() for m in re.finditer(r"<h3[^>]*>", 
+                 open(lesson_path(L), encoding="utf-8").read())] if os.path.exists(lesson_path(L)) else []
+        def step_of(pos):
+            n = 0
+            for h in heads:
+                if h <= pos:
+                    n += 1
+            return n
+        step_fig = {}
+        for c in cps:
+            step_fig.setdefault(step_of(c["pos"]), c["fig"])
+        for c in cps:
+            n = step_of(c["pos"])
+            prev = step_fig.get(n - 1)
+            if c["delta"] is not None and prev is not None:
+                checked += 1
+                if step_fig[n] - prev != c["delta"]:
+                    ok = False
+                    bad.append((L, "DELTA", c["delta"], step_fig[n] - prev, c["text"]))
+            if c["spare"] is not None:
+                checked += 1
+                if CEILING - c["fig"] != c["spare"]:
+                    ok = False
+                    bad.append((L, "SPARE", c["spare"], CEILING - c["fig"], c["text"]))
+            if c["over"] is not None:
+                checked += 1
+                if c["fig"] - CEILING != c["over"]:
+                    ok = False
+                    bad.append((L, "OVER", c["over"], c["fig"] - CEILING, c["text"]))
+    for L, what, said, real, ti in bad:
+        print("   L%02d %-5s states %-7s  arithmetic gives %-7s   (%s)"
+              % (L, what, "{:+,}".format(said), "{:+,}".format(real), ti))
+    print("   %d closure claim(s) checked, %d broken" % (checked, len(bad)))
+    if checked == 0:                      # rule 27: a scan of zero passes
+        print("   COVERAGE: zero closure claims parsed - the parser is blind, not the book clean")
+        ok = False
+    return ok
+
 def arm3(tbl, only=None):
     """Measure the catch-up convention. Report, not verdict."""
     print("ARM 3 — CONVENTION: does Step N's catch-up link serve the file AT step N?")
@@ -656,11 +778,12 @@ def main():
     ok1 = arm1(tbl, only)
     ok2 = arm2(tbl, only)
     ok4 = arm4(tbl, only)
+    ok5 = arm5(tbl, only)
     arm2_leads(tbl, only)
     if a[0] == "--lesson" or "--convention" in a:
         arm3(tbl, only)
-    print("byte_audit: " + ("PASS" if ok1 and ok2 and ok4 else "FAIL"))
-    return 0 if (ok1 and ok2 and ok4) else 1
+    print("byte_audit: " + ("PASS" if ok1 and ok2 and ok4 and ok5 else "FAIL"))
+    return 0 if (ok1 and ok2 and ok4 and ok5) else 1
 
 
 if __name__ == "__main__":

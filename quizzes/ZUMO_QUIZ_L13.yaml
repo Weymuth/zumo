@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 13
 # Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
 #
-# Bank version: v1.0.1
+# Bank version: v1.0.2
 # Authored against: lessons/Lesson_13.html v02.29.0 (post-S146 read + byte re-baselining)
 #
 # READ -> FIX -> QUIZ. L13 was read end to end in S146 and every defect below was found and
@@ -18,6 +18,17 @@
 #      Step 3's +180 survived; Step 5's +232 is +240 and Step 6's -44 is -42, so unlike
 #      L12 this was NOT a pure re-baselining — two sentences the lesson teaches with had to
 #      change. Total cost moved 368 -> 378. A02, A06, A13, A15, A16, A24 and A31 ask the
+#
+#      RE-KEYED S158 (bank v1.0.2): the option-C rollout reached L13, and L13 is where it
+#      collided with the book's own history — L13 INVENTED StopReason, and S156/S157 had
+#      back-ported the name to Lesson 10. Ruled S158: Lesson 10 owns the enum, Lesson 13
+#      ADDS its third value STOP_PROX. Step 1 therefore extends a contract instead of
+#      declaring one, and Step 4's include 'it never needed before' arrived at Lesson 10.
+#      Re-derived from the harness: 24,790 -> 24,790 -> 24,970 -> 24,970 -> 25,240 -> 25,198.
+#      ONE DELTA MOVED: Step 5 is +270, not +240, so the total is 408 rather than 378.
+#      +180 and -42 are untouched, 7D and 7E still weigh the same as each other, and B2's
+#      TRIM build is still byte-identical to the correct one — every pedagogical claim in
+#      the lesson survived the rebaseline.
 #      corrected figures.
 #
 #   2. SECTION 7E's 64-BYTE CLAIM WAS FALSE AND ITS EXPLANATION DESCRIBED NO DIFFERENCE.
@@ -1029,15 +1040,15 @@ sets:
       stem: Step 1 adds four tunables, a StopReason enum, and three new states. What does the COMPILE
         CHECK report?
       options:
-      - text: 24,694 bytes — byte-identical to the Lesson 12 finished build
+      - text: 24,790 bytes — byte-identical to the Lesson 12 finished build
         correct: true
-      - text: 24,694 bytes — up 180 from Lesson 12
+      - text: 24,790 bytes — up 180 from Lesson 12
         correct: false
         why: Step 1 changes nothing the linker keeps; the 180 arrives at Step 3.
-      - text: 24,874 bytes — the enum names cost flash
+      - text: 24,970 bytes — the enum names cost flash
         correct: false
         why: Enum names nothing uses are free; they exist only for the compiler.
-      - text: 25,072 bytes — the finished size
+      - text: 25,198 bytes — the finished size
         correct: false
         why: That is Step 6.
     - id: L13_A03
@@ -1055,7 +1066,7 @@ sets:
       stem: Step 2 defines silverDetected() and declares it, but nothing calls it yet. What does the byte
         count do, and how was it confirmed?
       options:
-      - text: It stays at 24,694, confirmed with avr-nm — the symbol is genuinely absent, not hiding
+      - text: It stays at 24,790, confirmed with avr-nm — the symbol is genuinely absent, not hiding
         correct: true
       - text: It rises slightly, because the function body is compiled either way
         correct: false
@@ -1090,17 +1101,17 @@ sets:
       points: 1
       stem: Step 3 wires the door live. What does the COMPILE CHECK report?
       options:
-      - text: 24,874 bytes — up 180
+      - text: 24,970 bytes — up 180
         correct: true
-      - text: 24,694 bytes — still flat
+      - text: 24,790 bytes — still flat
         correct: false
         why: Step 3 is where the door starts running, and running code costs bytes.
-      - text: 25,114 bytes — up 240
+      - text: 25,240 bytes — up 270
         correct: false
         why: That is Step 5, when driveUntil() finally gets a caller.
-      - text: 24,874 bytes — up 240
+      - text: 24,970 bytes — up 270
         correct: false
-        why: The absolute is right; the delta from Step 2's 24,694 is 180.
+        why: The absolute is right; the delta from Step 2's 24,790 is 180.
     - id: L13_A07
       type: multiple_choice
       cite: §6 Step 3
@@ -1205,18 +1216,18 @@ sets:
       points: 1
       stem: Step 5 makes the sweep live. What does the COMPILE CHECK report, and why the jump?
       options:
-      - text: 25,114 bytes — up 240, because driveUntil() finally has a caller and the linker pays for
+      - text: 25,240 bytes — up 270, because driveUntil() finally has a caller and the linker pays for
           it
         correct: true
-      - text: 25,114 bytes — up 240, because the sweep case is unusually large
+      - text: 25,240 bytes — up 270, because the sweep case is unusually large
         correct: false
         why: The sweep case is part of it, but the lesson attributes the jump to Step 4's deferred code
           finally arriving.
-      - text: 24,874 bytes — flat, the same as Steps 2 and 4
+      - text: 24,970 bytes — flat, the same as Steps 2 and 4
         correct: false
         why: Step 4 was explicitly the last free step. Everything after it RUNS, and running code costs
           bytes.
-      - text: 25,072 bytes — the finished size
+      - text: 25,198 bytes — the finished size
         correct: false
         why: That is Step 6, which is SMALLER than Step 5.
     - id: L13_A14
@@ -1242,17 +1253,17 @@ sets:
       points: 1
       stem: Step 6 is the finished build. What does the COMPILE CHECK report?
       options:
-      - text: 25,072 bytes — down 42, and the finished robot is smaller than Step 5
+      - text: 25,198 bytes — down 42, and the finished robot is smaller than Step 5
         correct: true
-      - text: 25,072 bytes — up 42 from Step 5
+      - text: 25,198 bytes — up 42 from Step 5
         correct: false
         why: Down, not up. That the finished build shrinks is the point Step 6 makes.
-      - text: 25,114 bytes — unchanged from Step 5
+      - text: 25,240 bytes — unchanged from Step 5
         correct: false
         why: It changes, and the direction is the surprise.
-      - text: 24,694 bytes — back to where Step 1 started
+      - text: 24,790 bytes — back to where Step 1 started
         correct: false
-        why: Lesson 13's whole cost is 378 bytes over Lesson 12, not zero. Step 6 gives back 42 of them,
+        why: Lesson 13's whole cost is 408 bytes over Lesson 12, not zero. Step 6 gives back 42 of them,
           not all of them.
     - id: L13_A16
       type: multiple_choice
@@ -1260,12 +1271,12 @@ sets:
       points: 1
       stem: What is Lesson 13's total cost over the Lesson 12 finished build?
       options:
-      - text: 378 bytes
+      - text: 408 bytes
         correct: true
       - text: 462 bytes
         correct: false
         why: That ADDS Step 6's 42 instead of subtracting it. The finished build is smaller than Step 5,
-          which is the whole point of that COMPILE CHECK — 180 + 240 − 42 = 378.
+          which is the whole point of that COMPILE CHECK — 180 + 270 − 42 = 408.
       - text: 240 bytes
         correct: false
         why: 240 is Step 5's delta alone.
@@ -1392,7 +1403,7 @@ sets:
       stem: 7E swaps the sweep's gyro corners back to encoder turns. What do the two builds' byte counts
         show?
       options:
-      - text: They are identical — 25,072 bytes each, because both turn functions live in both binaries
+      - text: They are identical — 25,198 bytes each, because both turn functions live in both binaries
           and only the call site moved
         correct: true
       - text: The encoder build is 64 bytes larger
@@ -1514,7 +1525,7 @@ sets:
       stem: B2's student measured TRIM honestly and the rows still arc. What is the planted defect, and
         what makes it so hard to catch?
       options:
-      - text: TRIM never reaches the motors, and the build is byte-identical to the correct one at 25,072
+      - text: TRIM never reaches the motors, and the build is byte-identical to the correct one at 25,198
           bytes
         correct: true
       - text: TRIM is applied to the wrong motor, and the build is 8 bytes larger

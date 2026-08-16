@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.31.3 -->
+<!-- Lesson version: v01.32.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Wheels Lie</h1>
 <div class="div-fs-11em">The Gyro — Measuring the Robot, Not the Wheels</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 01.31 — August 2026</div>
+<div class="div-fs-09em-2">Version 01.32 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -427,7 +427,7 @@ when to stop — and that one line is the entire lesson.</p>
 // The encoder cannot catch this. The wheel IS what it is watching.
 //
 // The gyro watches the ROBOT. It does not care what the wheels do.
-void turnDegreesGyro(float degrees) {
+StopReason turnDegreesGyro(float degrees) {
   gyroReset();                 // "we are at zero degrees, starting now"
 
   int leftSpeed  = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
@@ -438,10 +438,12 @@ void turnDegreesGyro(float degrees) {
   motors.setSpeeds(leftSpeed, rightSpeed);
 
   while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    if (killSwitchPressed()) return STOP_KILL;   // the human outranks the turn
     gyroUpdate();              // add up the angle, slice by slice
   }
 
   motors.setSpeeds(0, 0);
+  return STOP_DISTANCE;
 }</pre>
 <div class="div-e74c3c" data-family="THE WALL" data-callout="12.16"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Notice what is NOT in there: TRIM.</div>There is no <code>TRIM</code> in <code>turnDegreesGyro()</code>, and that is correct.<br><br><strong>TRIM is for open loops.</strong> It corrects a robot that drifts when nothing is watching — <code>driveDistance()</code>, <code>handleGap()</code>. But this turn <em>is being watched</em>. The gyro checks the real angle thousands of times per second and stops the motors at exactly the right moment.<br><br>Adding TRIM here would mean <strong>fighting a controller that is already correct.</strong> It is not just unnecessary — it is wrong. <strong>Bonus B4</strong> adds it anyway, and the result is genuinely nasty: <em>the binary is exactly the same size.</em></div>
 <h3 class="h3-c-433014-3">5.3 The Three Words</h3>
@@ -449,13 +451,13 @@ void turnDegreesGyro(float degrees) {
 
 <p>Since Lesson 9, every intersection turn in the book has gone through three little helpers.
 They looked like this:</p>
-<pre>void turnLeft()   { turnDegrees(-90); }
-void turnRight()  { turnDegrees(90);  }
-void turnAround() { turnDegrees(180); }</pre>
+<pre>StopReason turnLeft()   { return turnDegrees(-90); }
+StopReason turnRight()  { return turnDegrees(90);  }
+StopReason turnAround() { return turnDegrees(180); }</pre>
 <p>In Step 8, they become this:</p>
-<pre>void turnLeft()   { turnDegreesGyro(-90); }
-void turnRight()  { turnDegreesGyro(90);  }
-void turnAround() { turnDegreesGyro(180); }</pre>
+<pre>StopReason turnLeft()   { return turnDegreesGyro(-90); }
+StopReason turnRight()  { return turnDegreesGyro(90);  }
+StopReason turnAround() { return turnDegreesGyro(180); }</pre>
 <div class="div-27ae60" data-family="INSIGHT" data-callout="12.17"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">You just upgraded every turn in the entire book.</div>You did not touch the Lesson 9 state machine. You did not touch <code>followLine()</code>. You did not touch the intersection logic, or Lesson 10's obstacle code, or Lesson 11's gap crossing.<br><br><strong>You changed three words inside three one-line functions</strong> — and every turn the robot makes, anywhere in the book, now closes on its <em>real</em> angle.<br><br>This is what Lesson 7 was <em>for</em>. If those turns had been written out longhand at each call site, this change would have been a fifty-line search-and-replace across four lessons, and you would have missed one.</div>
 <div class="div-607d8b" data-family="NOTE" data-callout="12.18"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">turnDegrees() is still there. On purpose.</div>We did not delete it. It is still correct, it still works, and on carpet it still agrees with the gyro to within a degree or two.<br><br>You are going to use it again in <strong>Section 7C</strong> — to <em>break</em> it, deliberately, in front of your own eyes. <strong>Deleting the old thing teaches nothing. Contradicting it teaches everything.</strong></div>
@@ -638,7 +640,7 @@ int getTurnAngle() {
 <p><em>About those two giant numbers: they convert the gyro’s raw readings into degrees using pure integer math — this function must run as often as possible, and integer math keeps every call cheap and exact. You do not need to derive that ratio to use it. You need to know what it does — and now you do.</em></p>
 <div class="div-6b8e6b" data-family="TIP" data-callout="12.26"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">The #include &lt;Wire.h&gt; goes at the TOP of the file.</div>It goes with the other <code>#include</code> lines, not down here with the functions. Everything else in this block goes at the bottom.</div>
-<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.27"><div class="div-fs-105em">🏆 Build it now. The binary just grew by 800 bytes.</div>From <strong>20,702</strong> to <strong>21,502</strong>. That is the gyro going live — the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup">
+<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.27"><div class="div-fs-105em">🏆 Build it now. The binary just grew by 800 bytes.</div>From <strong>20,778</strong> to <strong>21,578</strong>. That is the gyro going live — the I2C code, the calibration loop, the accumulator, all of it.<br><br>The robot does not <em>behave</em> any differently yet, because nothing calls these functions. But they are in there, and they are real.</div><details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 5</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=12&amp;kind=step_5" class="link-c-2e86ab">Open Step 5 in Project Maker</a></p></div>
@@ -659,7 +661,7 @@ The SAME turn as turnDegrees() - but it asks a different question.
 On carpet they agree. On a slick floor they do not, and only one
 of them is still right.
 */
-void turnDegreesGyro(float degrees);
+StopReason turnDegreesGyro(float degrees);
 </pre>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 6</summary>
@@ -678,7 +680,7 @@ void turnDegreesGyro(float degrees);
 // The encoder cannot catch this. The wheel IS what it is watching.
 //
 // The gyro watches the ROBOT. It does not care what the wheels do.
-void turnDegreesGyro(float degrees) {
+StopReason turnDegreesGyro(float degrees) {
   gyroReset();                 // "we are at zero degrees, starting now"
 
   int leftSpeed  = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
@@ -689,12 +691,14 @@ void turnDegreesGyro(float degrees) {
   motors.setSpeeds(leftSpeed, rightSpeed);
 
   while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    if (killSwitchPressed()) return STOP_KILL;   // the human outranks the turn
     gyroUpdate();              // add up the angle, slice by slice
   }
 
   motors.setSpeeds(0, 0);
+  return STOP_DISTANCE;
 }</pre>
-<div class="div-e74c3c" data-family="THE WALL" data-callout="12.28"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Build it. The binary did not change. AT ALL.</div>Step 5 grew the binary by 800 bytes. Steps 6 and 7 grew it by <strong>zero</strong>. Still <strong>21,502</strong>, to the byte.<br><br>You just wrote a 25-line function and the program did not get any bigger. <strong>Did the edit not save?</strong></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.28"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Build it. The binary did not change. AT ALL.</div>Step 5 grew the binary by 800 bytes. Steps 6 and 7 grew it by <strong>zero</strong>. Still <strong>21,578</strong>, to the byte.<br><br>You just wrote a 27-line function and the program did not get any bigger. <strong>Did the edit not save?</strong></div>
 <p>It saved. Look at what you have actually built:</p>
 
 <ul class="ul-lh-19">
@@ -722,16 +726,16 @@ and the linker will not carry dead weight to a chip this small. The ATmega32U4 h
 <p>Two edits, and the lesson lands.</p>
 <p><strong>First</strong>, in <code>RobotMotion.cpp</code>, find the three intersection helpers.
 They currently read:</p>
-<pre>void turnLeft()   { turnDegrees(-90); }
-void turnRight()  { turnDegrees(90);  }
-void turnAround() { turnDegrees(180); }</pre>
+<pre>StopReason turnLeft()   { return turnDegrees(-90); }
+StopReason turnRight()  { return turnDegrees(90);  }
+StopReason turnAround() { return turnDegrees(180); }</pre>
 <p>Replace them with:</p>
 <pre>// NEW for Lesson 12 - three words changed, and every turn in the
 // book stops guessing. turnDegrees() is still here, still correct
 // when the wheels grip. These three just stopped depending on that.
-void turnLeft()   { turnDegreesGyro(-90); }
-void turnRight()  { turnDegreesGyro(90);  }
-void turnAround() { turnDegreesGyro(180); }</pre>
+StopReason turnLeft()   { return turnDegreesGyro(-90); }
+StopReason turnRight()  { return turnDegreesGyro(90);  }
+StopReason turnAround() { return turnDegreesGyro(180); }</pre>
 <p><strong>Second</strong>, in <code>main.cpp</code>, the gyro has to learn its zero at boot.
 Find <code>setup()</code>. Add this <strong>immediately before</strong> the
 <code>waitForStart()</code> safety gate:</p>
@@ -746,7 +750,7 @@ Find <code>setup()</code>. Add this <strong>immediately before</strong> the
   gyroSetup();
 </pre>
 <div class="div-e74c3c" data-family="THE WALL" data-callout="12.31"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">This block MUST come before waitForStart(). Here is why.</div>The next thing <code>setup()</code> does is <code>calibrateLineSensors()</code> — and <strong>that spins the robot.</strong><br><br>If the gyro were still measuring its zero while the robot spun, it would learn that <strong>spinning is what standing still feels like</strong>, subtract that from every future reading, and be catastrophically wrong for the entire run.<br><br>The still measurement comes first, while nothing has moved yet. <strong>Order is not decoration here.</strong></div>
-<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.32"><div class="div-fs-105em">🏆 Build it. 21,502 → 24,694 bytes. +3,192.</div>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable — and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
+<div class="div-27ae60" data-family="STILL GREEN" data-callout="12.32"><div class="div-fs-105em">🏆 Build it. 21,578 → 24,790 bytes. +3,212.</div>That jump is the proof. Steps 6 and 7 cost nothing because nothing called the new turn. The instant those three words changed, <code>turnDegreesGyro()</code> became reachable — and it dragged the entire gyro turn, the accumulator, and the float comparison into the binary with it.<br><br><strong>The binary got bigger because the robot got honest.</strong></div>
 <div class="div-607d8b" data-family="NOTE" data-callout="12.33"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">What just happened to the rest of the book</div>Every intersection turn from Lesson 9. Every obstacle maneuver from Lesson 10. Everything that ever called <code>turnLeft()</code>, <code>turnRight()</code>, or <code>turnAround()</code>.<br><br><strong>All of it now closes on the robot's real angle</strong>, and you did not open a single one of those files.</div>
 <details data-reveal="catchup">
@@ -938,7 +942,7 @@ because this was never a curve. <strong>This was a turn that did not happen, rep
 could not know.</strong></p>
 <p>Now you have a sensor that knows.</p>
 <div class="div-6b8e6b" data-family="TIP" data-callout="12.47"><div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
-<div class="div-fs-105em">Before you move on: put loop() back.</div>Section 7 replaced your <code>loop()</code> with test sketches. Restore the real one — the Lesson 11 state machine — and rebuild. It should compile to <strong>24,694 bytes</strong> and drive the full course, with every turn now closing on the gyro.</div>
+<div class="div-fs-105em">Before you move on: put loop() back.</div>Section 7 replaced your <code>loop()</code> with test sketches. Restore the real one — the Lesson 11 state machine — and rebuild. It should compile to <strong>24,790 bytes</strong> and drive the full course, with every turn now closing on the gyro.</div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — 7E</summary>
 <div class="div-mt-12px">
@@ -1304,7 +1308,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p>The question is always the same, and it is the actual skill:
 <strong>why does THAT line produce THAT symptom?</strong></p>
 <div class="div-6f7582-5">
-<div data-challenge="12.m1" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B1 — The Calibration That Spins<span class="span-f-right">24,718 bytes</span></div>
+<div data-challenge="12.m1" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B1 — The Calibration That Spins<span class="span-f-right">24,814 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE:
@@ -1316,7 +1320,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b1_spinning_cal" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 </div></div>
 <div class="div-6f7582-5">
-<div data-challenge="12.m2" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B2 — The Turn That Never Ends<span class="span-f-right">24,042 bytes</span></div>
+<div data-challenge="12.m2" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B2 — The Turn That Never Ends<span class="span-f-right">24,086 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE: gyroUpdate() was deleted from this loop.
@@ -1327,14 +1331,14 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
   motors.setSpeeds(0, 0);</pre>
 <p><strong>The symptom:</strong> The robot starts a turn and <strong>never stops turning</strong>. It spins until you cut the power.</p>
 <div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.57">
-<div class="div-fs-105em">Ask yourself:</div> A gyro reports a <em>rate</em>, not an angle. Something has to add the rate up over time. If nobody ever adds anything up, what does <code>getTurnAngle()</code> keep returning? And is <code>0 &lt; 90</code> ever going to become false?<br><br><em>Note the byte count: this build is 652 bytes SMALLER than the correct one. Deleting code makes the program smaller. It does not make it work.</em></div>
+<div class="div-fs-105em">Ask yourself:</div> A gyro reports a <em>rate</em>, not an angle. Something has to add the rate up over time. If nobody ever adds anything up, what does <code>getTurnAngle()</code> keep returning? And is <code>0 &lt; 90</code> ever going to become false?<br><br><em>Note the byte count: this build is 704 bytes SMALLER than the correct one. Deleting code makes the program smaller. It does not make it work.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b2_no_update" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 </div></div>
 <div class="div-6f7582-5">
-<div data-challenge="12.m3" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B3 — The First Turn Works<span class="span-f-right">24,690 bytes</span></div>
+<div data-challenge="12.m3" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B3 — The First Turn Works<span class="span-f-right">24,786 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
-<pre>void turnDegreesGyro(float degrees) {
+<pre>StopReason turnDegreesGyro(float degrees) {
   // THE PLANTED LINE: gyroReset() was moved OUT of here
   // and now runs only once, back in setup().</pre>
 <p class="p-c-555-3">…and over in <code>main.cpp</code>, inside <code>setup()</code>:</p>
@@ -1345,14 +1349,14 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b3_reset_hoisted" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
 </div></div>
 <div class="div-6f7582-5">
-<div data-challenge="12.m4" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B4 — The Helpful TRIM<span class="span-f-right">24,694 bytes</span></div>
+<div data-challenge="12.m4" data-kind="bonus-sabotage" class="div-bg-6f7582-2">🕵️ Mystery B4 — The Helpful TRIM<span class="span-f-right">24,790 bytes</span></div>
 <div class="div-p-16px18px">
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
   motors.setSpeeds(leftSpeed + TRIM, rightSpeed);</pre>
 <p><strong>The symptom:</strong> Turns are subtly, stubbornly off — and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
 <div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.59">
-<div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>open loop</strong> — a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,694</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
+<div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>open loop</strong> — a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,790</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 </div></div>
 <div class="div-e74c3c" data-family="THE WALL" data-callout="12.60"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">What B4 should teach you for the rest of your life</div>Three of these four mysteries change the program's size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
@@ -1414,7 +1418,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 
 </details>
 
-<details data-reveal="quiz"><summary>Bonus B4 adds TRIM to the turn, and the build comes out at <strong>24,694 bytes — exactly the size of the correct build.</strong> Explain how a real bug can cost zero bytes, and what that costs you as a debugging strategy. (§5.2, Bonus B4)</summary>
+<details data-reveal="quiz"><summary>Bonus B4 adds TRIM to the turn, and the build comes out at <strong>24,790 bytes — exactly the size of the correct build.</strong> Explain how a real bug can cost zero bytes, and what that costs you as a debugging strategy. (§5.2, Bonus B4)</summary>
 
 <div class="div-mt-12px"><p>Because you have not filled in your TRIM yet. With <code>TRIM = 0</code>, the expression <code>leftSpeed + TRIM</code> folds away at compile time to plain <code>leftSpeed</code>, and the compiler emits byte-for-byte identical machine code. The bug is genuinely live in the source; it simply costs nothing until the constant stops being zero — so it appears at the exact moment you fix a <em>different</em> problem. What it costs you is a check you had been leaning on: three of the four mysteries in this lesson change the program’s size and could have been caught by watching the byte count. B4 cannot. <strong>A binary that is the right size is not a binary that is right</strong>, and there is no tool that saves you from reading the code and understanding what it does.</p></div>
 
@@ -1491,7 +1495,7 @@ void gyroUpdate();
 int  getTurnAngle();</pre>
 <h3 class="h3-c-6f7582-4">The Honest Turn</h3>
 <p class="p-c-666-4">In <code>RobotMotion.cpp</code>:</p>
-<pre>void turnDegreesGyro(float degrees) {
+<pre>StopReason turnDegreesGyro(float degrees) {
   gyroReset();                 // "we are at zero degrees, starting now"
 
   int leftSpeed  = (degrees &gt; 0) ? TURN_SPEED : -TURN_SPEED;
@@ -1502,16 +1506,18 @@ int  getTurnAngle();</pre>
   motors.setSpeeds(leftSpeed, rightSpeed);
 
   while (abs(getTurnAngle()) &lt; abs(degrees)) {
+    if (killSwitchPressed()) return STOP_KILL;   // the human outranks the turn
     gyroUpdate();              // add up the angle, slice by slice
   }
 
   motors.setSpeeds(0, 0);
+  return STOP_DISTANCE;
 }</pre>
 <h3 class="h3-c-6f7582-4">The Three Intersection Turns</h3>
 <p class="p-c-666-4">In <code>RobotMotion.cpp</code>:</p>
-<pre>void turnLeft()   { turnDegreesGyro(-90); }
-void turnRight()  { turnDegreesGyro(90);  }
-void turnAround() { turnDegreesGyro(180); }</pre>
+<pre>StopReason turnLeft()   { return turnDegreesGyro(-90); }
+StopReason turnRight()  { return turnDegreesGyro(90);  }
+StopReason turnAround() { return turnDegreesGyro(180); }</pre>
 <h3 class="h3-c-6f7582-4">Boot Sequence — the order matters</h3>
 <p class="p-c-666-4">In <code>main.cpp</code>, inside <code>setup()</code>:</p>
 <pre>  // ===== GYRO SETUP (NEW for Lesson 12) =====
@@ -1551,20 +1557,20 @@ void turnAround() { turnDegreesGyro(180); }</pre>
   <th class="th-ddd-12">Bytes</th>
   <th class="th-ddd-12">Why</th></tr>
 <tr><td class="td-ddd-5">Steps 1–4</td>
-    <td class="td-ddd-5"><strong>20,702</strong></td>
+    <td class="td-ddd-5"><strong>20,778</strong></td>
     <td class="td-ddd-5">Objects, constants and prototypes are free</td></tr>
 <tr class="tr-bg-f8f9fa-2"><td class="td-ddd-5">Step 5</td>
-    <td class="td-ddd-5"><strong>21,502</strong></td>
+    <td class="td-ddd-5"><strong>21,578</strong></td>
     <td class="td-ddd-5">+800 — the gyro goes live</td></tr>
 <tr><td class="td-ddd-5">Steps 6–7</td>
-    <td class="td-ddd-5"><strong>21,502</strong></td>
+    <td class="td-ddd-5"><strong>21,578</strong></td>
     <td class="td-ddd-5">+0 — written, but nobody calls it yet</td></tr>
 <tr class="tr-bg-f8f9fa-2"><td class="td-ddd-5"><strong>Step 8 / finished</strong></td>
-    <td class="td-ddd-5"><strong>24,694</strong></td>
-    <td class="td-ddd-5"><strong>+3,192 — the three turns switch</strong></td></tr>
+    <td class="td-ddd-5"><strong>24,790</strong></td>
+    <td class="td-ddd-5"><strong>+3,212 — the three turns switch</strong></td></tr>
 </table>
 <div class="div-607d8b" data-family="NOTE" data-callout="12.76"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-<div class="div-fs-105em">And remember what Bonus B4 proved.</div>A build that weighs <strong>24,694</strong> bytes is not necessarily a <em>correct</em> build. B4 weighs exactly that and is wrong. The byte count is a useful signal, never a proof.</div>
+<div class="div-fs-105em">And remember what Bonus B4 proved.</div>A build that weighs <strong>24,790</strong> bytes is not necessarily a <em>correct</em> build. B4 weighs exactly that and is wrong. The byte count is a useful signal, never a proof.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>

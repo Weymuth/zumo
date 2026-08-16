@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.68.2'
+VERSION = 'v1.68.5'
 # v1.68.1 (S154): §27.11 stylesheet digest baseline moved after gate 73's five index
 #                 rows landed. Rules and declarations UNCHANGED at 574/2,033, every
 #                 declaration block byte-identical, zero selectors added or removed -
@@ -2411,7 +2411,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '8c20234e73752bb7'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '32f652a66661d703'
 #   S144 move, SECOND of the session. Digest ONLY, 574/2,033 both ends, class SET
 #   byte-identical, usage RANK only: `.h4-c-555` 9 -> 8 and the whole textual diff is that
 #   rule changing rank plus its count comment. Cause: the L11 §3.5 cliff rewrite has one
