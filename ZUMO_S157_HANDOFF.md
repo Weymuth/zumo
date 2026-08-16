@@ -233,11 +233,44 @@ unique landmark is `#include "RobotMotion.h"\n\n// ===== FUNCTION IMPLEMENTATION
 
 ---
 
-<!-- VERSION BLOCK -->
-Repo unchanged at **`edd3d46`**. Census **40,668**. Bible **v8.145.1** · Maker **v2.51**
-(working copy modified, unversioned — **the version bump is owed when L10 lands**) ·
-L10 **v02.29.2** (working copy modified, unversioned).
-All other artefact versions as recorded in the S156 handoff's version block.
+<!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
+Fresh-clone verified at **`1bb0300`**. Census **40,668**.
+Bible **v8.145.2** · `BookComponentStandard` **v01.13.0** · Maker **v2.51** ·
+`marks/` **41** · `icons/` **49** incl. LICENSE.
+`ZUMO_Syllabus_WORKING.md` **v1.2**.
+
+Instruments: `book_gates` **v1.68.1** · `lesson_inventory` **v1.3.5** ·
+`gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
+`build_family_map` **v1.6.4** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
+`gen_part_banners` **v1.2** · `session_versions` **v1.26.0** · `fit_raster_svg` **v1.2** ·
+`flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
+`build_css` **v1.3.0** ·
+`image_audit` **v1.2** ·
+`strip_inline` **v1.2** ·
+`build_worklist` **v1.1** ·
+`regex_audit` **v1.0** ·
+`byte_audit` **v1.2** ·
+`build_palette` **v1.1** ·
+`class_sweep` **v1.0** ·
+`color_index` **v1.0** ·
+`entity_sweep` **v1.0** ·
+`font_stack_sweep` **v1.3.0** ·
+`next_pointer` **v1.2** ·
+`family_tag` **v1.2.1** ·
+`glossary_convert` **v1.0** ·
+`mark_wire` **v1.0.2** ·
+`glyph_scan` **v1.1** ·
+`title_feed` **v1.0** ·
+`quiz_bank` **v1.0.1** ·
+`timer.html` **v1.3.2** ·
+`going_deeper` **v01.6.1**.
+
+Lessons: L01 v03.28.5 · L02 v03.21.3 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.1 · L07 v04.31.4 · L08 v04.31.1 · L09 v05.27.0 · L10 v02.29.2 · L11 v02.30.0 · L12 v01.31.3 · L13 v02.29.0 · L14 v02.34.0 · L15 v02.31.2 · L16 v02.24.0.
+
+**S156 SHIPPED NO ARTEFACT AND WROTE NO BIBLE ENTRY**, so the newest Bible entry legitimately
+still reads S155. That is not drift — it is the honest trace of a session that produced
+measurements and no files. The Maker and `Lesson_10.html` in the working copy are modified and
+UNVERSIONED; **the version bump is owed when L10 lands.**
 
 **NO VERSION WAS BUMPED IN S156 BECAUSE NOTHING SHIPPED.** When L10 lands: Maker and L10 both
 bump, and **LIVE.md is regenerated LAST** (§12.6 — a push that bumps a version and omits LIVE.md
