@@ -1,8 +1,8 @@
 # ZUMO READING QUIZ BANK — LESSON 12
 # Wheels Lie · The Gyro — Measuring the Robot, Not the Wheels
 #
-# Bank version: v1.0.1
-# Authored against: lessons/Lesson_12.html v01.31.3 (post-S145 byte re-baselining)
+# Bank version: v1.0.2
+# Authored against: lessons/Lesson_12.html v01.32.1 (post-S160 C2 sensor-as-truth pass)
 #
 # READ -> FIX -> QUIZ. L12 was read end to end in S145 and one defect class was found and
 # fixed before a question was written.
@@ -213,7 +213,7 @@ sets:
             why: "Both wheels can turn at identical rates and both can slip. The broken assumption is that a turning wheel moves the robot."
           - text: "The battery, which sagged and slowed the turn"
             correct: false
-            why: "That is Lesson 11's failure. An encoder-gated turn is immune to it, because counts do not depend on charge."
+            why: "That is Lesson 11's failure. An encoder-gated turn stops on counted rotation rather than on elapsed time, so a sagging battery makes it slower rather than shorter."
           - text: "The floor, which was not the surface the constant was tuned for"
             correct: false
             why: "Close in spirit, but the lesson names the failure precisely: the rubber lost grip. The constant was never a function of the floor."
@@ -852,7 +852,7 @@ sets:
         type: true_false
         cite: "§8A.4"
         points: 1
-        stem: "Left powered on for an hour untouched, the encoder still reports the perfect truth while the gyro has invented rotation that never happened."
+        stem: "Left powered on for an hour untouched, the encoder counts wheel rotation exactly as well as it did on minute one, while the gyro has invented rotation that never happened."
         correct: true
         why: "Stated directly. The encoder is rock solid in exactly the places the gyro is weakest — it never drifts and needs no calibration, where the gyro drifts constantly and needs calibrating every single boot."
 

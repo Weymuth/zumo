@@ -1,8 +1,8 @@
 # ZUMO READING QUIZ BANK — LESSON 10
 # Obstacles · When the Course Fights Back
 #
-# Bank version: v1.0.1
-# Authored against: lessons/Lesson_10.html v02.29.1 (post-S143 maneuver rebuild, post-S144 fixes)
+# Bank version: v1.0.2
+# Authored against: lessons/Lesson_10.html v02.30.1 (post-S160 C2 sensor-as-truth pass)
 # Verified against: lessons/Lesson_08.html v04.31.1 — S149. Three citations name section 5.4; all three were
 # read (B31, B32, B43 - readFrontProx and initThreeSensors) and none touches the change.
 #
@@ -98,7 +98,7 @@ sets:
         points: 1
         stem: "The robot triggers its avoidance on CLOSE_THRESHOLD (3) rather than on VERY_CLOSE_THRESHOLD (5). Why?"
         options:
-          - text: "The robot needs room to stop — at 5 it is nearly touching the block"
+          - text: "The robot needs room to stop, and with these blocks a 5 arrives too late to halt and turn cleanly"
             correct: true
           - text: "The sensor cannot reliably produce a 5, so waiting for one risks never triggering"
             correct: false
@@ -108,7 +108,7 @@ sets:
             why: "Phantoms are an ambient-IR problem and §8.2's fix for them is to RAISE the threshold, not lower it."
           - text: "3 is the midpoint of the 0–6 scale, so it is the statistically safest choice"
             correct: false
-            why: "The reason given is physical, not statistical: trigger early, because the block is not going anywhere."
+            why: "The reason given is physical, not statistical: trigger early, because the block is not going anywhere. The reading is not a distance either — it counts emitter levels that came back, so the midpoint of the scale is not the midpoint of anything in the room."
 
       - id: L10_B03
         type: multiple_choice
@@ -476,11 +476,11 @@ sets:
         points: 1
         stem: "Why does §4.3 rule out a matte black obstacle?"
         options:
-          - text: "It absorbs IR, so it reads near-zero even when it is touching the robot"
+          - text: "It absorbs much of the IR, so it has read very low here even at close range"
             correct: true
           - text: "It reflects too much IR and saturates the sensor at 6"
             correct: false
-            why: "That is what a light-coloured surface does, and light is what the table recommends."
+            why: "That is closer to what a pale flat surface does, and pale is what the table recommends. The count climbs with reflectivity as well as with closeness."
           - text: "Black tape and a black obstacle look the same to the line sensors"
             correct: false
             why: "A plausible worry, and not the reason given — the reason is about the proximity sensor, not the line sensors."

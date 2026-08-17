@@ -1,8 +1,8 @@
 # ZUMO READING QUIZ BANK — LESSON 11
 # Time Lies, Distance Doesn't · Encoder-Based Gap Crossing
 #
-# Bank version: v1.0.1
-# Authored against: lessons/Lesson_11.html v02.30.0 (post-S144 cliff correction)
+# Bank version: v1.0.2
+# Authored against: lessons/Lesson_11.html v02.30.2 (post-S160 C2 sensor-as-truth pass)
 #
 # READ -> FIX -> QUIZ. L11 was read end to end in S144, fix-passed to v02.29.0, and the §3.5
 # cliff argument was ruled and corrected to v02.30.0 at S144 close. It was read again in S145
@@ -545,11 +545,11 @@ sets:
         points: 1
         stem: "averageCounts() reads both encoders rather than one. Section 5.1 gives a reason. What is it?"
         options:
-          - text: "One encoder can lie — a wheel that slips under-reports and one that catches over-reports, and a second witness bounds the lie"
+          - text: "An encoder measures wheel rotation, not distance travelled — averaging halves the error one wheel makes"
             correct: true
           - text: "Two readings are twice as precise as one"
             correct: false
-            why: "§5.1 rejects this framing in its own words: averaging is not about precision, it is about honesty. Sabotage Mystery 1 makes the same point."
+            why: "§5.1 says the average is wrong by only half of any single-wheel error and cannot be wrong by the full amount — that is bounding an error, not doubling precision."
           - text: "The left encoder alone cannot report negative travel"
             correct: false
             why: "Both encoders can count either direction, and abs() is applied to both regardless."
@@ -597,9 +597,9 @@ sets:
         type: true_false
         cite: "§5.1"
         points: 1
-        stem: "Section 5.1 says averaging both wheels is a precision improvement over reading one."
+        stem: "Section 5.1 says averaging both wheels removes the error a slipping wheel introduces."
         correct: false
-        why: "It says the opposite in as many words: averaging is not about precision, it is about honesty. The average is wrong by half of any single-wheel error and, more importantly, cannot be wrong by the full amount."
+        why: "It bounds that error, it does not remove it: the average is wrong by half of any single-wheel error. And an error BOTH wheels make together survives the averaging untouched — which is the hole Lesson 12 opens."
 
       - id: L11_B33
         type: multiple_choice

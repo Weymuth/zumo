@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.26.0 -->
+<!-- Lesson version: v02.26.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1178,8 +1178,8 @@ build is the invoice.</p>
 <th class="th-bg-4d535f-2">What it gives you</th>
 <th class="th-bg-4d535f-2">First stop</th></tr>
 <tr><td class="td-b-white-2"><b>The compass</b> (magnetometer)</td>
-<td class="td-b-white-2">Absolute heading. Lesson 12 told you the gyro drifts forever and only “a compass, a GPS, a line on the floor” escapes — the compass has been soldered to your I²C bus all along. Correct sweep-row drift in the rescue zone, or hold a heading across the longest gap on the course.</td>
-<td class="td-b-white-2"><code>imu.readMag()</code>, <code>imu.m</code>. Beware: motors are magnets — calibrate with them running.</td></tr>
+<td class="td-b-white-2">A heading that does not drift with time — <em>if</em> you can characterise the field it is sitting in. A magnetometer measures the total magnetic field at the chip, and inside this robot that is the Earth’s field plus your motors, your currents and every steel screw around it. Lesson 12 told you the gyro drifts forever and only “a compass, a GPS, a line on the floor” escapes; the compass has been soldered to your I²C bus all along — but turning it into a heading is a measurement project, not a library call. Correct sweep-row drift in the rescue zone, or hold a heading across the longest gap on the course.</td>
+<td class="td-b-white-2"><code>imu.readMag()</code>, <code>imu.m</code>. <strong>Read it with the motors off, then at each speed, and see how far the number moves before you trust any of it.</strong> Motors are magnets. This is the most ambitious door on this table, not the easiest.</td></tr>
 <tr><td class="td-b-white-2"><b>The accelerometer</b></td>
 <td class="td-b-white-2">Tilt and impact. Detect the ramp and switch speed profiles; detect a crash and stop the clock honestly; detect “I am upside down” and refuse to drive.</td>
 <td class="td-b-white-2"><code>imu.readAcc()</code>, <code>imu.a</code> — the third axis of a chip you already initialize.</td></tr>

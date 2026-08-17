@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.30.1 -->
+<!-- Lesson version: v02.30.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -268,8 +268,9 @@ and guessing never does.</p>
 <p>Two small functions do all the work. Neither one is new to you — <code>averageCounts()</code> is lifted straight out of Lesson 6's <code>driveDistance()</code>.</p>
 <pre>// ===== HOW FAR HAVE WE BEEN BLIND? (NEW for Lesson 11) =====
 // Ask BOTH wheels, exactly like Lesson 6's driveDistance() does.
-// One encoder can lie: a wheel that slips or catches reports a distance
-// the robot never travelled. Two encoders, averaged, tell the truth.
+// An encoder measures WHEEL ROTATION, not ground travelled. A wheel that
+// slips keeps turning while the robot goes nowhere. Averaging both wheels
+// halves one wheel's error; it cannot see an error both wheels make.
 long averageCounts() {
   long left  = abs(encoders.getCountsLeft());
   long right = abs(encoders.getCountsRight());
@@ -283,7 +284,7 @@ float blindDistanceCm() {
   return travelled / COUNTS_PER_CM;
 }</pre>
 <div class="div-607d8b" data-family="NOTE" data-callout="11.8"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-<div class="div-fs-105em">Why average BOTH wheels?</div>Because <strong>one encoder can lie.</strong> If the left wheel slips on a smooth patch, it under-reports. If it catches on a seam, it over-reports. Either way, a robot that gates on one encoder is trusting a single witness.<br><br>Averaging both is not about precision. It is about <strong>honesty</strong>. This is the same rule <code>driveDistance()</code> and <code>turnDegrees()</code> have followed since Lesson 6.</div>
+<div class="div-fs-105em">Why average BOTH wheels?</div>Because an encoder measures <strong>wheel rotation</strong>, not distance travelled. The two are equal only while the wheel rolls without slipping. A wheel that slips on a smooth patch keeps turning while the robot goes nowhere, so it <strong>over</strong>-counts. A wheel that catches on a seam stops turning while the robot is still moving, so it <strong>under</strong>-counts.<br><br>Averaging both wheels halves the error one wheel makes. It cannot see an error <em>both</em> wheels make together — which is exactly the hole Lesson 12 opens. This is the same rule <code>driveDistance()</code> and <code>turnDegrees()</code> have followed since Lesson 6.</div>
 <h3 class="h3-c-433014">5.2 The Function That Changed Its Mind</h3>
 <p>Here is the new <code>handleGap()</code>. Compare it to the Lesson 8 version in Section 3.2 — same name, same call site, same job:</p>
 <pre>// The SAME function you have called since Lesson 8. Same name, same
@@ -464,8 +465,9 @@ long gapStartCounts = 0;   // Encoder reading at the moment we went blind</pre>
 <p>Add these two functions. Put them right below <code>killSwitchPressed()</code>:</p>
 <pre>// ===== HOW FAR HAVE WE BEEN BLIND? (NEW for Lesson 11) =====
 // Ask BOTH wheels, exactly like Lesson 6's driveDistance() does.
-// One encoder can lie: a wheel that slips or catches reports a distance
-// the robot never travelled. Two encoders, averaged, tell the truth.
+// An encoder measures WHEEL ROTATION, not ground travelled. A wheel that
+// slips keeps turning while the robot goes nowhere. Averaging both wheels
+// halves one wheel's error; it cannot see an error both wheels make.
 long averageCounts() {
   long left  = abs(encoders.getCountsLeft());
   long right = abs(encoders.getCountsRight());
@@ -1058,7 +1060,7 @@ Why does <em>THIS</em> line produce <em>THAT</em> symptom?</p>
 <p><strong>Symptom:</strong> gap distances are unreliable. Sometimes the robot quits early;
 sometimes it runs long. On a clean floor it is <em>almost</em> fine. On carpet it is a disaster.</p>
 <p><strong>Q:</strong> Why does surface texture change the behavior of a line that never mentions the surface?</p>
-<details data-reveal="solution"><summary><img src="../images/marks/unlock.svg" alt="" data-mark="unlock">Answer</summary><div class="div-mt-12px"><p>The robot is now trusting a <strong>single witness</strong>. If the left wheel slips, it under-counts, so <code>blindDistanceCm()</code> reports <em>less</em> distance than the robot really travelled — and the budget never runs out at the right place. If the left wheel catches on a seam, it over-counts, and the robot quits early.</p><p>On smooth tile, both wheels behave, and the bug hides. On carpet, they do not.</p><p><strong>This is why the rule is average BOTH.</strong> Not for precision — for honesty. The average is wrong by <em>half</em> of any single-wheel error, and more importantly, it <em>cannot</em> be wrong by the full amount. A second witness bounds the lie.</p></div></details>
+<details data-reveal="solution"><summary><img src="../images/marks/unlock.svg" alt="" data-mark="unlock">Answer</summary><div class="div-mt-12px"><p>The robot is now reading <strong>one wheel's rotation</strong> and calling it the distance the robot travelled. If the left wheel slips, it keeps turning while the robot goes nowhere, so it <em>over</em>-counts and <code>blindDistanceCm()</code> reports more distance than the robot really covered — the budget runs out early and the robot quits before it reaches the line. If the left wheel catches on a seam, it stops turning while the robot is still moving, so it <em>under</em>-counts and the budget never runs out where it should.</p><p>On smooth tile, both wheels roll cleanly, the rotation and the travel agree, and the bug hides. On carpet, they do not.</p><p><strong>This is why the rule is average BOTH.</strong> Not because two readings are more precise — because the average is wrong by only <em>half</em> of any single-wheel error, and <em>cannot</em> be wrong by the full amount. What it still cannot do is notice when both wheels are wrong the same way. Lesson 12 is about that.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b1_onewheel" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 <h3 class="h3-bg-f5eef8" id="mystery-2" data-challenge="11.m2" data-kind="bonus-sabotage">🕵️ Mystery 2: The Gap That Only Works Once</h3>
 <p><strong>The planted line</strong> — inside <code>handleGap()</code>:</p>

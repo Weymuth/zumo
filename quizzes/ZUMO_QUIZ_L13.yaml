@@ -2,7 +2,7 @@
 # Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
 #
 # Bank version: v1.0.2
-# Authored against: lessons/Lesson_13.html v02.29.0 (post-S146 read + byte re-baselining)
+# Authored against: lessons/Lesson_13.html v02.31.1 (post-S160 C2 sensor-as-truth pass)
 #
 # READ -> FIX -> QUIZ. L13 was read end to end in S146 and every defect below was found and
 # fixed BEFORE a question was written. Against v02.28.3, six items in this bank would have
@@ -346,8 +346,8 @@ sets:
       points: 1
       stem: Besides containment, §4.1 credits the walls with a second job. What is it?
       options:
-      - text: They are a landmark — every row ends on one, so accumulated dead-reckoning error resets
-          to zero each pass
+      - text: They are a landmark — every row ends against something real, so dead-reckoning error
+          stops accumulating across rows
         correct: true
       - text: They reflect infrared, so the prox reads more consistently
         correct: false
@@ -423,18 +423,18 @@ sets:
       points: 1
       stem: Why will this robot drive straight past the black victim ball?
       options:
-      - text: A black ball absorbs infrared, so almost nothing returns to the prox — the signal is not
-          there to threshold
+      - text: On the balls in this kit, measured in 7A, almost nothing returns to the prox from the
+          black one — the signal is not there to threshold
         correct: true
       - text: The threshold is tuned for silver and would need retuning for black
         correct: false
-        why: §4.3 is explicit that no threshold helps, because there is no signal to set one against.
+        why: §4.3 is explicit that no threshold helps once 7A shows there is no signal to set one against.
       - text: The prox is disabled during the sweep to save bytes
         correct: false
         why: The prox is the sweep's only lookout; it runs the whole time.
       - text: The black ball is smaller than the silver one
         correct: false
-        why: Size is not the issue §4.3 raises; the physics of absorption is.
+        why: Size is not the issue §4.3 raises; what this kit's black ball actually returns to the prox is.
     - id: L13_B21
       type: multiple_choice
       cite: §4.3
@@ -904,7 +904,7 @@ sets:
         correct: true
       - text: The gyro needs recalibrating for the zone's floor surface
         correct: false
-        why: The gyro measures the robot, not the floor; surface is exactly what it is immune to.
+        why: The gyro measures the chassis turning rather than the wheels, so a change of floor is not what moved this.
       - text: WALL_STOP_COUNT is set too high, so corners start late
         correct: false
         why: Where a leg ends does not bend the turn that follows it.

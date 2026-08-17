@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.32.1 -->
+<!-- Lesson version: v04.32.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -420,9 +420,9 @@
 
 <tr>
 
-<td class="td-ccc-2">Affected by battery level, floor surface</td>
+<td class="td-ccc-2">Battery level changes how far it goes</td>
 
-<td class="td-ccc-2">Self-correcting regardless of conditions</td>
+<td class="td-ccc-2">Corrects itself until the counts arrive</td>
 
 </tr>
 
@@ -430,7 +430,7 @@
 
 <td class="td-ccc-2">Inconsistent results</td>
 
-<td class="td-ccc-2"><strong>Precise, repeatable movement!</strong></td>
+<td class="td-ccc-2"><strong>Repeatable — as far as the wheels are concerned</strong></td>
 
 </tr>
 
@@ -438,7 +438,7 @@
 
 <div class="callout-9c27b0-bg-f3e5f5-3" data-family="KEY TERM" data-callout="6.13">
 
-<div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Closed-Loop Control</strong></div>A control system that uses sensor feedback to determine when to stop. The "loop" refers to: command → action → measure → compare → adjust.
+<div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Closed-Loop Control</strong></div>A control system that uses sensor feedback to determine when to stop. The "loop" refers to: command → action → measure → compare → adjust.<br><br><strong>Closed on WHAT, though?</strong> That is the question to keep asking, and it has two separate answers here. <code>driveDistance()</code> is <em>closed-loop on distance</em>: it watches the encoders and does not stop until the counts arrive. It is still <em>open-loop on heading</em>: nothing on this robot is watching whether the path was straight, which is why Step 13 says an encoder-driven straight line still needs <code>TRIM</code>. Both statements are true at once because they are about two different questions. In Lesson 8 you close the heading loop too.
 
 </div>
 
@@ -2481,7 +2481,7 @@ Stop motors</pre>
 <p>Run <code>driveDistance(50)</code> three times. First clean — mark where it lands <strong>and which way it points</strong>. Then run it again holding a finger <em>lightly</em> against the <strong>left</strong> track. Then a third time, same finger, the <strong>right</strong> track instead. Same drag, same 50&#8239;cm requested. Predict before each run: <em>where does it stop, and where is it pointing when it gets there?</em></p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Both drags leave you <strong>short</strong> of the mark, and that is the least interesting part. Drag the <strong>left</strong> and the error is in the number: that track slips, the left encoder counts rotation the robot never turned into travel, and the gate quits early. Drag the <strong>right</strong> and the left encoder is telling the truth — the left wheel really did roll 50&#8239;cm — but it rolled it around a <strong>curve</strong>, because the right side was held back. The robot is short <em>and</em> it is aimed somewhere new, and the screen says done at exactly the right moment either way. <code>averageCounts()</code> catches the first lie and halves it, because two encoders disagreeing is something the code can notice. It cannot touch the second one: <strong>no encoder anywhere on this robot can see a curve.</strong> That is what TRIM is for in Step 13 — and why Lesson 12 is called <em>Wheels Lie</em>.</p>
+    <p>Both drags leave you <strong>short</strong> of the mark, and that is the least interesting part. Drag the <strong>left</strong> and the error is in the number: that track slips, the left encoder counts rotation the robot never turned into travel, and the gate quits early. Drag the <strong>right</strong> and the left encoder is telling the truth — the left wheel really did roll 50&#8239;cm — but it rolled it around a <strong>curve</strong>, because the right side was held back. The robot is short <em>and</em> it is aimed somewhere new, and the screen says done at the counts it was asked for, either way. <code>averageCounts()</code> halves the first error, because two encoders disagreeing is something the code can notice. It cannot touch the second one: <strong>no encoder anywhere on this robot can see a curve.</strong> That is what TRIM is for in Step 13 — and why Lesson 12 is called <em>Wheels Lie</em>.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-4" data-challenge="6.m4" data-kind="bonus-observation">Experiment 4: The 440 Ruler</h4>
 <p>Without running it, read <code>driveDistance</code> and predict what happens if you call it with 500&#8239;cm. Now check the Note in Step 7. What is special about the number 32,767 — and what would the robot actually do?</p>

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.30.0 -->
+<!-- Lesson version: v02.30.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,9 +204,13 @@ how much came back. Close object → strong reflection → high reading.</p>
 </tbody></table>
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="10.7">
     <div class="div-c-3a5a3a"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-    <p class="p-mb-0">Why trigger on 3 and not 5? Because the robot needs <em>room to stop</em>.
-    At 5 you are nearly touching the block. Stopping at 3 gives the robot space to halt, think, and turn
-    without scraping the obstacle on the way around. Trigger early; the block is not going anywhere.</p>
+    <p class="p-mb-0">Why trigger on 3 and not 5? First, be clear about what the number is: it counts how many
+    emitter brightness levels came back strongly enough to register. It rises as an object gets closer — but also as
+    it gets paler and flatter. It is <em>not</em> centimetres, and 3 is not a distance.
+    <br><br>3 is a <strong>policy you are choosing</strong>: with the blocks used here, a 5 arrives so late that the robot
+    has no room to halt, think, and turn without scraping the obstacle on the way around. Trigger early; the block is not
+    going anywhere. If your obstacle is darker or rounder than the one this was tuned on, the number that gives you that
+    room will be a different one — go and find it.</p>
 </div>
 <h3 class="h3-c-1f2a3d">3.2 The Sensor You Do NOT Own (And Why)</h3>
 <p>Here is where this lesson gets honest with you.</p>
@@ -317,7 +321,7 @@ It cannot see the block at all once it turns away. So it does the only thing a b
 <ul>
     <li>The line sensors say: <em>the line curves left, correct now.</em></li>
     <li>The green markers say: <em>there is an intersection here, stop and turn right.</em></li>
-    <li>The proximity sensor says: <em>there is a block 3&nbsp;cm in front of you.</em></li>
+    <li>The proximity sensor says: <em>something ahead is bouncing back a lot of infrared — reading 3.</em></li>
 </ul>
 
 <p>All three are correct. All three want the motors. <strong>Only one can have them.</strong></p>
@@ -466,7 +470,7 @@ frustration generator.</p>
 <tbody>
 <tr><td class="td-ddd"><strong>Color</strong></td>
 <td class="td-ddd">Light. White, tan, light gray.</td>
-<td class="td-ddd"><strong>Matte black.</strong> Absorbs IR. Reads near&#8209;zero even when touching the robot.</td></tr>
+<td class="td-ddd"><strong>Matte black.</strong> Absorbs much of the IR. Dark obstacles have read very low here even at close range — hold one up and watch the number before you trust it.</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd"><strong>Surface</strong></td>
 <td class="td-ddd">Flat, facing the robot.</td>
 <td class="td-ddd">Round or angled. Bounces IR <em>away</em> instead of back.</td></tr>
@@ -650,7 +654,7 @@ see <a href="#section-8a" class="link-c-2e86ab-2">Section 8A</a>.</p>
 
 <details data-reveal="quiz"><summary>1. What is the range of a single proximity reading, and how does it compare with the line-sensor scale you have been using? (§3.1)</summary>
 
-<div class="div-mt-12px"><p>Zero to six. Seven possible values, total — not 0–1000 like the calibrated line sensors and not 0–4000 like <code>readLinePosition()</code>. Every threshold you write today lives inside that tiny range, which is why a “big” change is 1. The three thresholds carry over from Lesson 5 unchanged: <strong>DETECTION_THRESHOLD 1</strong>, <strong>CLOSE_THRESHOLD 3</strong>, <strong>VERY_CLOSE_THRESHOLD 5</strong>. You trigger on 3 rather than 5 because the robot needs room to stop; at 5 you are nearly touching the block.</p></div>
+<div class="div-mt-12px"><p>Zero to six. Seven possible values, total — not 0–1000 like the calibrated line sensors and not 0–4000 like <code>readLinePosition()</code>. Every threshold you write today lives inside that tiny range, which is why a “big” change is 1. The three thresholds carry over from Lesson 5 unchanged: <strong>DETECTION_THRESHOLD 1</strong>, <strong>CLOSE_THRESHOLD 3</strong>, <strong>VERY_CLOSE_THRESHOLD 5</strong>. You trigger on 3 rather than 5 because the robot needs room to stop. The reading is not centimetres — it counts emitter brightness levels that came back, so it climbs with closeness and with reflectivity together — and 3 is the policy that left room with these blocks, not a measured distance.</p></div>
 
 </details>
 
@@ -1340,8 +1344,9 @@ touched them since. Replace the whole timed maneuver with this:</p>
     added — and the code it removed was the code that kept breaking.</p>
 </div>
 <p>And look at what the new version <em>says</em>. Not “run the motors for 800 milliseconds and
-hope.” It says <code>driveDistance(20.0)</code> — <strong>go twenty centimeters</strong> — and the
-encoders make sure it happens whether the batteries are fresh, tired, or somewhere in between.</p>
+hope.” It says <code>driveDistance(20.0)</code> — <strong>go twenty centimeters</strong> — and it stops on
+counted wheel rotation instead of on the clock, so a tired pack takes longer rather than falling short. (The wheels still
+have to grip the floor for those counts to mean twenty centimetres. That assumption gets tested in Lesson 12.)</p>
 <div class="callout-2da99d-bg-e9f7f5" data-family="INSIGHT" data-callout="10.60">
     <div class="div-c-165a53"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT</div>
     <p class="p-mb-0">This is what it feels like to finally use the right abstraction. All that
@@ -1351,7 +1356,7 @@ encoders make sure it happens whether the batteries are fresh, tired, or somewhe
 </div>
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="10.61">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Build (✓). Green, +710 bytes. Run it into the block: the robot stops, turns away, drives past, turns back, finds the line, and carries on. <strong>Same result on fresh batteries and tired ones.</strong></p>
+    <p class="p-mb-0">Build (✓). Green, +710 bytes. Run it into the block: the robot stops, turns away, drives past, turns back, finds the line, and carries on. <strong>The same maneuver on fresh batteries and tired ones</strong> — a tired pack drives it more slowly, not more briefly.</p>
 </div>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — Step 8 (the encoder fix)</summary>
@@ -2495,7 +2500,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.102"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-obstacle">Obstacle</strong></div>Anything physically blocking the robot’s path that is <em>not</em> part of the drawn course. The line is on the mat; the obstacle is on top of it — and it can appear after the run has started.</div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.103"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-proximity-sensor">Proximity Sensor</strong></div>An infrared emitter and receiver pair. It fires IR light forward and measures how much bounces back. Strong echo = close object. On the Zumo it reports a value from <strong>0 to 6</strong> — not 0–1000.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.103"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-proximity-sensor">Proximity Sensor</strong></div>An infrared emitter and receiver pair. It fires IR forward at six rising brightness levels and counts how many of them bounced back strongly enough to register. On the Zumo that count runs <strong>0 to 6</strong> — not 0–1000. It climbs as an object comes closer, and also as the object gets paler and flatter, so two obstacles at the same distance can report different numbers.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.104"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-arbitration">Behavior Arbitration</strong></div>Deciding, <em>in advance and in writing</em>, which behavior wins when two or more want control of the robot at the same time. If you do not choose the priority on purpose, you still get one — whichever <code>if</code> you happened to type first.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.105"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-avoidance-maneuver">Avoidance Maneuver</strong></div>A pre&#8209;planned sequence of moves that takes the robot off the line, around an obstacle, and back again. The robot is not reacting while it runs — it is executing a plan it committed to before it started.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.106"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-phase-variable">Phase Variable</strong></div>A variable that survives between passes of <code>loop()</code> and records how far through a multi&#8209;step operation you are. The robot’s bookmark: <em>“I am on step 3 of 7.”</em></div>

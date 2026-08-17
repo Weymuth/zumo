@@ -2,7 +2,13 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.68.6'
+VERSION = 'v1.68.7'
+# v1.68.7 (S160): §27.11 stylesheet digest baseline moved for the C2 pass. Rules and
+#                 declarations UNCHANGED at 574/2,033; the entire textual diff is two
+#                 COUNT COMMENTS (header census 22,462 -> 22,464 and .tok-7cbf6e x1501 ->
+#                 x1503) because L15 5.8's speed-loop comment grew by two printed lines.
+#                 No selector, no declaration and no usage RANK moved. Blinding-controlled
+#                 below. NO gate logic changed. Detail at the CSS_DIGEST line.
 # v1.68.1 (S154): §27.11 stylesheet digest baseline moved after gate 73's five index
 #                 rows landed. Rules and declarations UNCHANGED at 574/2,033, every
 #                 declaration block byte-identical, zero selectors added or removed -
@@ -2411,7 +2417,15 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '8bb9da2ca242c5e0'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '790d57359b8acffc'
+#   S160 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical, and the whole
+#   textual diff is TWO COUNT COMMENTS: the header census 22,462 -> 22,464 and `.tok-7cbf6e`
+#   x1501 -> x1503. No selector, no declaration, and not even a usage RANK moved — the rule
+#   was already third among the tok- colours and stayed there. Cause: L15 5.8's speed-loop
+#   comment went from two lines to four for C2 (an encoder measures wheel rotation, not
+#   ground speed), and each printed comment line wears one tok-7cbf6e span, so +2 spans is
+#   the arithmetic. RE-DERIVED, not carried: the diff was read in full, both sides, and it
+#   is two lines long. A count comment cannot decide a cascade.
 #   S144 move, SECOND of the session. Digest ONLY, 574/2,033 both ends, class SET
 #   byte-identical, usage RANK only: `.h4-c-555` 9 -> 8 and the whole textual diff is that
 #   rule changing rank plus its count comment. Cause: the L11 §3.5 cliff rewrite has one

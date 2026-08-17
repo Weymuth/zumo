@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.27.0 -->
+<!-- Lesson version: v05.27.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -168,7 +168,7 @@
 
 <div class="callout-2196f3-bg-e3f2fd" data-family="LEARN" data-callout="9.6">
     <div class="div-c-0d47a1"><img src="../images/marks/book.svg" alt="" data-mark="book">Why Green Works</div>
-    <p>Green surfaces absorb <em>some</em> IR light but reflect the rest. This gives us <strong>mid-range values</strong> (~300–700) that are distinctly different from both white and black.</p>
+    <p>The line sensors measure <strong>infrared reflectance</strong>, not colour — they cannot see green at all. What makes this work is that the green tape most schools buy reflects <em>some</em> of the IR and absorbs the rest, landing it between white and black on the calibrated scale. On the fleet tape that is roughly <strong>300–700</strong>, but that is a starting guess, not a property of the colour green. Section 7\u2019s Green Survey is where you find out what <em>your</em> tape does.</p>
 </div>
 
 <table class="table-bc-collapse-2">
@@ -315,7 +315,7 @@ enum IntersectionType {
 <div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="9.18">
     <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
     <div class="div-fs-105em">The Lesson 6 Dividend</div>
-    <p class="p-mb-0">Remember <code>turnDegrees()</code> from Lesson 6? It already turns by <strong>encoder counts</strong>, already averages <strong>both wheels</strong>, already ignores battery sag. And it deliberately does <strong>not</strong> use TRIM — in a pivot the wheels oppose each other <em>on purpose</em>, so there is no straight line to correct. TRIM is for open-loop <em>straight</em> lines; the encoders govern the angle. This lesson's three turn functions are one-line wrappers around it — Step 5 of Section 6 takes about ninety seconds.</p>
+    <p class="p-mb-0">Remember <code>turnDegrees()</code> from Lesson 6? It already turns by <strong>encoder counts</strong>, already averages <strong>both wheels</strong>, and does not use the clock to decide when the turn is done, so a tired battery changes how <em>fast</em> it turns rather than how <em>far</em>. And it deliberately does <strong>not</strong> use TRIM — in a pivot the wheels oppose each other <em>on purpose</em>, so there is no straight line to correct. TRIM is for open-loop <em>straight</em> lines; the encoders govern the angle. This lesson's three turn functions are one-line wrappers around it — Step 5 of Section 6 takes about ninety seconds.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -357,7 +357,7 @@ enum IntersectionType {
 <div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP" data-callout="9.20">
     <div class="div-c-3a5a3a-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
     <div class="div-c-3a5a3a">Green Color Matters</div>
-    <p>Not all greens are created equal! Bright "safety green" or "lime green" tape works well. Dark forest greens may read too close to black.</p>
+    <p>Not all greens are created equal, and you cannot tell by looking — your eye is judging visible colour and the sensor is measuring infrared. Bright "safety green" and "lime green" tapes have worked well here; dark forest greens have tended to read close to black. Treat that as where to start shopping, not as a rule: the Green Survey in Section 7 is the only thing that settles it for your tape.</p>
 </div>
 
 <h3 class="h3-c-433014">4.2 Simple Test Course Layout</h3>
@@ -714,7 +714,7 @@ IntersectionType checkForIntersection() {
 
 <h3 class="h3-c-433014">Step 5 — RobotMotion: Three Turns for the Price of Zero</h3>
 
-<p>The old version of this lesson built timed turns here — spin for 300 milliseconds and hope. You already own something better: <code>turnDegrees()</code>, the encoder-driven, TRIM-independent, battery-independent turn you built in Lesson 6 and modularized in Lesson 7. It has been sitting in RobotMotion.cpp this whole time, waiting. Today's entire step is <strong>three one-line wrappers</strong>.</p>
+<p>The old version of this lesson built timed turns here — spin for 300 milliseconds and hope. You already own something better: <code>turnDegrees()</code>, the encoder-driven turn you built in Lesson 6 — it needs no TRIM, and it stops on counted rotation rather than on elapsed time and modularized in Lesson 7. It has been sitting in RobotMotion.cpp this whole time, waiting. Today's entire step is <strong>three one-line wrappers</strong>.</p>
 
 <div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL" data-callout="9.41">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
@@ -1198,7 +1198,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <h3 class="h3-c-433014">Step 9 — Course Day: The Green Survey and the Full Run</h3>
 
-<p>The code is done; now make the <em>numbers</em> yours. The 300–700 green band in RobotConfig.h is a starting guess — your tape, your lighting, your sensors will disagree. The Green Survey measures reality with a five-line temporary block, then you bake the truth into your constants.</p>
+<p>The code is done; now make the <em>numbers</em> yours. The 300–700 green band in RobotConfig.h is a starting guess — your tape, your lighting, your sensors will disagree. The Green Survey measures your own tape with a five-line temporary block, then you bake those numbers into your constants.</p>
 
 <div class="callout-ff8c00-bg-ffe4cc" data-family="TRY THIS" data-callout="9.57">
     <div class="div-fs-105em">📝 THE GREEN SURVEY</div>
@@ -1284,7 +1284,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="9.59">
     <div class="div-c-3a5a3a-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
     <div class="div-c-3a5a3a">Turn Physics: Momentum & Overshoot</div>
-    <p>Tank turns have zero turn radius, and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug — it’s <code>WHEEL_BASE_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
+    <p>A tank turn is meant to rotate the robot in place — nominally a zero-radius path for the robot\u2019s centre, though tracks skid rather than pivot cleanly — and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug — it’s <code>WHEEL_BASE_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1851,7 +1851,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <details data-reveal="quiz"><summary>3. Why are encoder-based turns more reliable than timed turns? (§3.6)</summary>
 
-<div class="div-mt-12px"><p>Encoders measure actual wheel rotation, working consistently regardless of battery level or surface friction.</p></div>
+<div class="div-mt-12px"><p>A timed turn spends a fixed number of milliseconds spinning, so anything that changes the spin rate — a tired battery most of all — changes the angle. An encoder turn stops on counted wheel rotation instead, so a slower spin takes longer rather than turning less far. It is not immune to everything: the wheels still have to grip, and on a slick floor they can rotate more than the robot does. That is Lesson 12.</p></div>
 
 </details>
 
@@ -1978,7 +1978,7 @@ lineSensors.readCalibrated(sensorValues); <span class="tok-7cbf6e">// The read b
   <span class="tok-b5cea8">180</span>       = U-turn                 turnAround() is turnDegrees(<span class="tok-b5cea8">180</span>)
 
 Under the hood: right turn = setSpeeds(+TURN_SPEED, -TURN_SPEED)
-counted on encoders - battery sag and TRIM cannot bend it</pre>
+counted on encoders - a tired battery slows the turn, it does not shorten it</pre>
 
 <h3 id="qr-dowhile" class="h3-c-4d535f">do…while — Run First, Then Check</h3>
 
