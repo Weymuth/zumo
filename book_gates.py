@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.69.0'
+VERSION = 'v1.70.0'
 # v1.68.7 (S160): §27.11 stylesheet digest baseline moved for the C2 pass. Rules and
 #                 declarations UNCHANGED at 574/2,033; the entire textual diff is two
 #                 COUNT COMMENTS (header census 22,462 -> 22,464 and .tok-7cbf6e x1501 ->
@@ -4417,6 +4417,92 @@ if _seen75 != len(files):
     bad.append('asserted %d banks against %d lessons - every lesson has a bank '
                '(gate §24.2), so these must agree' % (_seen75, len(files)))
 gate('\u00a724.18 every bank source: pin matches the live lesson it names', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 76 (S163, §16.25): THE RETIRED HARDWARE-IDENTITY CLAIM APPEARS NOWHERE.
+# §16.25 shipped at S162 and the claim it retired survived in TWO sites its own
+# inventory did not reach, because BOTH RESTATE THE CLAIM WITHOUT USING THE WORD
+# "A-STAR": §3.3's NOTE made "controller board" a synonym for the chip two lines
+# under the KEY TERM that separates them, and §5.0's `board` bullet glossed the
+# build-target line as "the exact board". An inventory of a TERM is not an
+# inventory of the CLAIM'S HOMES. Both are fixed; this gate holds them shut.
+# EXEMPTIONS ARE STRUCTURAL, NOT A NAME LIST (rule 20): a bank may quote a retired
+# form in a `#` comment (provenance) or as a DECLARED-WRONG option (teaching the
+# trap - B14 does exactly that). Nothing else may assert it.
+# COVERAGE ARM on both populations, because a scan of zero files passes (rule 27).
+_RETIRED76 = [
+    (r'controller board',                          'controller board (= the chip)'),
+    (r'the exact board',                           'the exact board (as the `board` line)'),
+    (r'(A-?Star.{0,80}brain|brain.{0,80}A-?Star)', 'A-Star described as the brain'),
+    (r'built around.{0,40}A-?Star',                'the robot built around an A-Star'),
+    (r'[Yy]our A-?Star',                           'your A-Star (as possessed hardware)'),
+    (r'the A-?Star(32U4)? board',                   'the A-Star board (as this robot\'s board)'),
+]
+
+
+def _assert_true_text76(q):
+    """The strings in one question that ASSERT something. A declared-wrong option
+    asserts nothing - it is the trap - so it is excluded by structure."""
+    out, typ = [], q.get('type')
+    correct = q.get('correct')
+    if typ == 'true_false':
+        if correct is True:
+            out.append(str(q.get('stem', '')))
+            out.append(str(q.get('why', '')))
+    else:
+        out.append(str(q.get('stem', '')))
+        if correct is True:
+            out.append(str(q.get('why', '')))
+    for _o in q.get('options', []) or []:
+        if isinstance(_o, dict) and _o.get('correct') is True:
+            out.append(str(_o.get('text', '')))
+            out.append(str(_o.get('why', '')))
+    for _p in q.get('pairs', []) or []:
+        if isinstance(_p, dict):
+            out.append(str(_p.get('left', '')))
+            out.append(str(_p.get('right', '')))
+    return '\n'.join(out)
+
+
+bad = []
+_pages76 = sorted(glob.glob('lessons/Lesson_*.html')) + ['newproject.html']
+_seenp76 = 0
+for _f76 in _pages76:
+    try:
+        _s76 = html.unescape(re.sub(r'<[^>]+>', ' ', open(_f76, encoding='utf-8').read()))
+    except Exception as _e76:                                   # noqa: BLE001
+        bad.append('%s could not be read (%s)' % (os.path.basename(_f76), _e76))
+        continue
+    _seenp76 += 1
+    for _p76, _lab76 in _RETIRED76:
+        _n76 = len(re.findall(_p76, _s76, re.S))
+        if _n76:
+            bad.append('%s carries the RETIRED identity claim "%s" x%d - §16.25: the '
+                       'board is the Zumo 32U4 Main Board, the chip is the ATmega32U4, '
+                       'and a-star32U4 is only the build target'
+                       % (os.path.basename(_f76), _lab76, _n76))
+_banks76 = sorted(glob.glob(os.path.join('quizzes', 'ZUMO_QUIZ_*.yaml')))
+_seenb76 = 0
+for _b76 in _banks76:
+    _d76, _e76 = _QB75.load(_b76)
+    if _e76:
+        bad.append('%s: %s' % (os.path.basename(_b76), _e76))
+        continue
+    _seenb76 += 1
+    for _set76 in (_d76.get('sets') or {}).values():
+        for _q76 in (_set76 or {}).get('questions', []) or []:
+            _txt76 = _assert_true_text76(_q76)
+            for _p76, _lab76 in _RETIRED76:
+                if re.search(_p76, _txt76, re.S):
+                    bad.append('%s %s ASSERTS the RETIRED identity claim "%s" - a bank may '
+                               'quote it in a comment or as a declared-wrong option, never '
+                               'as a graded truth (§16.25)'
+                               % (os.path.basename(_b76), _q76.get('id', '?'), _lab76))
+if _seenp76 != len(_pages76) or _seenb76 != len(_banks76):
+    bad.append('scanned %d of %d pages and %d of %d banks - a file that could not be '
+               'read is not a file that passed'
+               % (_seenp76, len(_pages76), _seenb76, len(_banks76)))
+gate('\u00a716.25 the retired hardware-identity claim appears nowhere in the book', bad)
 
 print('=' * 52)
 

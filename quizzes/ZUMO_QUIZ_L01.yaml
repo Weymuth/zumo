@@ -1,8 +1,29 @@
 # ZUMO READING QUIZ BANK — LESSON 01
 # Hello, Robot! · Your First Program
 #
-# Bank version: v1.0.0
+# Bank version: v1.1.0
 # Authored against: lessons/Lesson_01.html v03.28.3 (post-S141 content fixes)
+# Verified against: lessons/Lesson_01.html v03.30.0 — S163, the QUIZ_L01 arc of the UNREAD_PINS
+# backlog. The pinned v03.28.3 lives at commit 5e7a3eb, so the read was one diff: §2's checklist
+# line, §3.3, §5.0, §5.5, §6 Step 2, the glossary KEY TERM and four new Quick-Reference figure-index
+# rows — §16.25's A-Star identity fix plus a-star32u4 -> a-star32U4 casing. Every question citing a
+# changed region was read in full. THREE were graded against claims §16.25 retired, and all three
+# are corrected above; the lesson was corrected in the same session and this bank now pins v03.30.0:
+#   B14 graded "It names the exact board, so the compiler knows its memory size and pin layout" as
+#     CORRECT. §5.0's own bullet said that, and §3.3 and §5.5 now say a-star32U4 is a DIFFERENT
+#     Pololu board. The lesson's bullet was fixed; B14's right answer is now the build profile, and
+#     the retired claim is its strongest distractor, carrying a `why` that names 3.3.
+#   B55's matching pair carried the same retired wording for `board` — corrected to the profile.
+#   B56 graded "'Robot brain,' 'microcontroller' and 'controller board' all refer to the same
+#     component" as TRUE, citing §3.3's NOTE, which said exactly that. That NOTE collapsed the board
+#     into the chip two lines under the new KEY TERM that separates them. The NOTE was fixed
+#     ("controller board" appeared in only two places in the whole tree: that sentence and this
+#     question). B56 now grades the distinction directly and its answer is FALSE.
+#   B52's glossary matching was READ AND LEFT: its four pairs are Microcontroller, Library, Object
+#     and PlatformIO — no retired A-Star pair, even though the glossary entry beside them changed.
+#   B15, B16, B20, B26-B36, B39-B46, B53, B54, B59, A04 and A19 cite changed regions and were read:
+#     none touches the identity claim, and the §9 setSpeeds 150 -> 200 and int -> uint16_t voltage
+#     fixes predate v03.28.3, so B59's "setSpeeds(200, 200)" already matched.
 #
 # READ -> FIX -> QUIZ. Lesson 01 was read end to end in S141 and four findings were
 # fixed before a single question was written. Two of them are load-bearing here:
@@ -62,9 +83,9 @@
 
 lesson: "L01"
 title: "Hello, Robot! — Your First Program"
-bank_version: "1.0.0"
+bank_version: "1.1.0"
 source:
-  lesson_01: "v03.28.3"
+  lesson_01: "v03.30.0"
 
 sets:
 
@@ -279,13 +300,14 @@ sets:
         points: 1
         stem: "The lesson calls platformio.ini the \"recipe card.\" What is the `board` line for?"
         options:
-          - text: "It names the exact board, so the compiler knows its memory size and pin layout"
+          - text: "It names the build profile the compiler builds for, so it knows the chip's memory size and pin layout"
             correct: true
+          - text: "It names the exact board you are holding, so the compiler matches your hardware"
+            correct: false
+            why: "This is the trap. `board = a-star32U4` names a DIFFERENT Pololu board — see 3.3. It works because that board carries the same ATmega32U4 and the same bootloader, so the compiler and uploader behave identically."
           - text: "It names the chip family the board belongs to"
             correct: false
             why: "That is the `platform` line — atmelavr, the family the ATmega32U4 is in."
-          - text: "It tells PlatformIO which USB port to upload through"
-            correct: false
           - text: "It names the library to download"
             correct: false
             why: "That is `lib_deps`."
@@ -902,7 +924,7 @@ sets:
           - left: "platform"
             right: "The chip family the board belongs to"
           - left: "board"
-            right: "The exact board, so the compiler knows its memory and pins"
+            right: "The build profile the compiler builds for — a-star32U4 on this robot"
           - left: "framework"
             right: "The coding style — setup() and loop()"
           - left: "lib_deps"
@@ -916,9 +938,9 @@ sets:
         type: true_false
         cite: "§3.3"
         points: 1
-        stem: "\"Robot brain,\" \"microcontroller\" and \"controller board\" all refer to the same component in this book."
-        correct: true
-        why: "§3.3's note says so explicitly, so that the three names never read as three different parts."
+        stem: "The Zumo 32U4 Main Board and the ATmega32U4 are two names for the same part."
+        correct: false
+        why: "§3.3 keeps them apart on purpose: the ATmega32U4 is the chip — the \"robot brain\" — and the board is what it is mounted on, carrying the motors, sensors and screen as well."
 
       - id: L01_B57
         type: true_false

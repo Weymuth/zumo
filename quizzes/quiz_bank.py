@@ -30,7 +30,7 @@ import re
 import sys
 import glob
 
-VERSION = "v1.4.0"
+VERSION = "v1.4.2"
 
 QUIZ_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(QUIZ_DIR)
@@ -131,9 +131,6 @@ SOURCE_PIN_RE = re.compile(r"^\s*(lesson_\d{2})\s*:\s*[\"']?(v[\d.]+)[\"']?\s*$"
 #     read fails (the name no longer matches), and the list can only SHRINK.
 #     A count could do none of those three.
 UNREAD_PINS = {
-        ("ZUMO_QUIZ_L01.yaml", "lesson_01"): "v03.28.3",
-        ("ZUMO_QUIZ_L02.yaml", "lesson_01"): "v03.28.2",
-        ("ZUMO_QUIZ_L02.yaml", "lesson_02"): "v03.21.2",
         ("ZUMO_QUIZ_L03.yaml", "lesson_02"): "v03.21.2",
         ("ZUMO_QUIZ_L03.yaml", "lesson_03"): "v03.41.0",
         ("ZUMO_QUIZ_L04.yaml", "lesson_02"): "v03.21.2",
