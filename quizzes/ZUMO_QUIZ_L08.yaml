@@ -1,8 +1,14 @@
 # ZUMO READING QUIZ BANK — LESSON 08
 # Line Following · Proportional Control, and Why Bang-Bang Fails
 #
-# Bank version: v1.0.1
+# Bank version: v1.0.2
 # Authored against: lessons/Lesson_08.html v04.31.0 (post-S142 content fixes)
+# Re-keyed against: lessons/Lesson_08.html v04.32.0 — S161, canon C1. §6 Step 8's one-question
+# test ("is anything watching?") became the two-question test ("is anything watching the
+# HEADING?"), because driveDistance() closes its loop on DISTANCE and leaves HEADING open.
+# B21's correct answer WAS the old test verbatim and would have marked the corrected
+# reader wrong; it is re-stemmed to the discrimination the correction makes askable, and
+# the retired slogan is now its strongest distractor. B20's why and B22's stem moved with it.
 # Verified against: lessons/Lesson_07.html v04.31.4, lessons/Lesson_08.html v04.31.1 — S149. The only change
 # is one code comment in section 5.4. Three of this bank's citations name 5.4; all three
 # were read (B16, B17, B49 - readLinePosition/isLineVisible returns) and none touches it.
@@ -62,9 +68,9 @@
 
 lesson: "L08"
 title: "Line Following — Proportional Control, and Why Bang-Bang Fails"
-bank_version: "1.0.0"
+bank_version: "1.0.2"
 source:
-  lesson_08: "v04.31.0"
+  lesson_08: "v04.32.0"
   lesson_07: "v04.31.3"
   lesson_05: "v04.29.0"
 
@@ -345,28 +351,28 @@ sets:
         points: 1
         stem: "TRIM is still in RobotConfig.h in Lesson 8, and Lesson 8's code still uses it."
         correct: true
-        why: "TRIM was filed into RobotConfig.h in Lesson 7 and stays there. handleGap() uses it — a blind robot driving straight is an open loop, and an open loop needs TRIM."
+        why: "TRIM was filed into RobotConfig.h in Lesson 7 and stays there. handleGap() uses it — in a gap nothing is watching the heading, and an unwatched heading is what TRIM is for."
 
       - id: L08_B21
         type: multiple_choice
         cite: "§6 Step 8"
         points: 1
-        stem: "handleGap() gets TRIM and followLine() must not. What is the one-question test that tells them apart?"
+        stem: "driveDistance() and followLine() BOTH have a sensor in the loop - encoders in one, line sensors in the other. Only one of them gets TRIM. What is the difference?"
         options:
-          - text: "Is anything watching? If not, it needs TRIM"
+          - text: "driveDistance() closes its loop on DISTANCE and leaves its HEADING open - the encoders count rotation, so nothing can tell it the path curved. followLine() closes the heading loop itself"
             correct: true
-          - text: "Is the robot moving? If so, it needs TRIM"
+          - text: "driveDistance() is open loop and followLine() is closed loop - one has a sensor watching and the other does not"
             correct: false
-          - text: "Are both motors running at the same commanded speed? If so, it needs TRIM"
+          - text: "Encoders are less accurate than line sensors, so driveDistance() needs a correction and followLine() does not"
             correct: false
-          - text: "Is the battery below BATTERY_LOW? If so, it needs TRIM"
+          - text: "followLine() runs fifty times a second and driveDistance() runs once, so there is no time for TRIM to act"
             correct: false
 
       - id: L08_B22
         type: multiple_choice
         cite: "§6 Step 8"
         points: 1
-        stem: "Why must followLine() NOT get TRIM?"
+        stem: "followLine() is the one straight-driving function in this book that deliberately does NOT get TRIM. Why?"
         options:
           - text: "It is a closed loop — it reads the line and steers on what it sees, so correcting motor bias is already its job. TRIM would give the P-term a constant to spend the day undoing"
             correct: true

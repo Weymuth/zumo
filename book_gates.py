@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.68.7'
+VERSION = 'v1.68.8'
 # v1.68.7 (S160): §27.11 stylesheet digest baseline moved for the C2 pass. Rules and
 #                 declarations UNCHANGED at 574/2,033; the entire textual diff is two
 #                 COUNT COMMENTS (header census 22,462 -> 22,464 and .tok-7cbf6e x1501 ->
@@ -4218,6 +4218,17 @@ try:
             bad.append('L%s bank: %s' % (_n72, _e72))
             continue
         _probs72 = _qb.validate(_d72, os.path.basename(_p72))
+        # S161: a bank states its version in TWO homes and nothing compared
+        # them - ten of sixteen disagreed, so --status reported the ORIGINAL
+        # version of banks re-keyed twice. The predicate is IMPORTED, never
+        # re-implemented, so the two readers cannot drift apart.
+        try:
+            with open(_p72, encoding='utf-8') as _fh72:
+                _probs72 = _probs72 + _qb.version_homes(
+                    _fh72.read(), _d72, os.path.basename(_p72))
+        except OSError as _ve72:                            # noqa: BLE001
+            _probs72 = _probs72 + ['%s: version homes unreadable (%s)'
+                                   % (os.path.basename(_p72), _ve72)]
         if _probs72:
             for _b72 in _probs72[:6]:
                 bad.append(_b72)

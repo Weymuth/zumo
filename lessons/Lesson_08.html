@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.31.1 -->
+<!-- Lesson version: v04.32.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -86,7 +86,7 @@
 <h1 class="h1">Line Following</h1>
 <div class="div-fs-11em">Proportional Control, and Why Bang-Bang Fails</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.31 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.32 — August 2026</div>
 </div>
 
 <!-- New Teaching Approach Notice -->
@@ -207,7 +207,7 @@ If the line is centered, go straight.</pre>
 <li>☐ Implement <code>followLine()</code> — the whole algorithm, in eight lines</li>
 <li>☐ Tune Kp from evidence, one variable per run, without re-flashing</li>
 <li>☐ Handle a gap in the line, and make the robot give up <em>on schedule</em> instead of driving on blind</li>
-<li>☐ Explain why a closed loop must <strong>not</strong> get TRIM</li>
+<li>☐ Explain why TRIM belongs in a blind straight line and is deliberately left out of <code>followLine()</code></li>
 </ul>
 
 </div>
@@ -1312,9 +1312,9 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="callout-17a2b8-bg-d1ecf1" data-family="NOTE" data-callout="8.46">
     <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">Why TRIM here — and NOT in followLine()</div>
-    <p class="p-mb-0">In a gap the robot is <strong>blind</strong>. No line, nothing to read, nothing correcting it — it is driving on faith, exactly like <code>driveDistance()</code> in Lesson 6. That is an <strong>OPEN loop</strong>, and an open loop needs <code>TRIM</code> or it curves.<br><br>
-    <code>followLine()</code> is the opposite. It reads the line <strong>fifty times a second</strong> and steers on what it sees. It is a <strong>CLOSED loop</strong>, and correcting motor bias is <em>already its job</em>. Add TRIM there and the robot fights its own controller — the P-term would spend its day undoing a constant you put in on purpose.<br><br>
-    <strong>Is anything watching? If not, it needs TRIM.</strong></p>
+    <p class="p-mb-0">In a gap the robot is <strong>blind</strong>. No line, nothing to read, nothing correcting it — it is driving on faith — blinder even than <code>driveDistance()</code> in Lesson 6, which at least counts its own wheels. Nothing here is watching the <strong>heading</strong>, and a straight line nobody is watching needs <code>TRIM</code> or it curves.<br><br>
+    <code>followLine()</code> is the opposite. It reads the line <strong>fifty times a second</strong> and steers on what it sees. It is a <strong>CLOSED loop</strong>, and correcting motor bias is <em>already its job</em>. Add TRIM there and the robot fights its own controller — the P-term would spend its day undoing a constant you put in deliberately. And it IS deliberate: we leave TRIM out of <code>followLine()</code> so that while you tune Kp the line error is the only thing steering.<br><br>
+    <strong>Is anything watching the heading? If not, it needs TRIM.</strong></p>
 </div>
 <pre><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
 <span class="tok-7cbf6e">// A = Kp down   B = start/stop   C = Kp up</span>
@@ -2503,7 +2503,7 @@ ELSE: USE high Kp (aggressive)</pre>
         <li data-bc-skill="6" class="li-c-pointer">☐ Implement <code>followLine()</code> — the whole algorithm, in eight lines</li>
         <li data-bc-skill="7" class="li-c-pointer">☐ Tune Kp from evidence, one variable per run, without re-flashing</li>
         <li data-bc-skill="8" class="li-c-pointer">☐ Handle a gap in the line, and make the robot give up <em>on schedule</em> instead of driving on blind</li>
-        <li data-bc-skill="9" class="li-c-pointer">☐ Explain why a closed loop must <strong>not</strong> get TRIM</li>
+        <li data-bc-skill="9" class="li-c-pointer">☐ Explain why TRIM belongs in a blind straight line and is deliberately left out of <code>followLine()</code></li>
     </ul>
 
 <p class="p-m-12px00"><button type="button" data-bc-btn="2" class="button">Mark Brain Check 02 done</button></p>
@@ -2578,7 +2578,7 @@ Same root cause, two faces. What decides is what is in your files.</p>
 
 <summary>Show answer</summary>
 
-<p><em>Is anything watching?</em> If not, it needs TRIM. <code>driveDistance()</code> is an <strong>open</strong> loop — nothing reads the floor, so motor bias goes uncorrected and TRIM is what keeps it straight. <code>followLine()</code> is a <strong>closed</strong> loop: it reads the line fifty times a second and correcting bias is already its job, so TRIM there just gives the P-term a constant to spend the day undoing. <code>handleGap()</code> gets TRIM because a blind robot is open loop again.</p>
+<p><em>Is anything watching the heading?</em> If not, it needs TRIM. <code>driveDistance()</code> closes its loop on <strong>distance</strong> and leaves the <strong>heading</strong> open — the encoders count rotation, so nothing can tell it the path curved, and TRIM is what keeps it straight. <code>followLine()</code> is a <strong>closed</strong> loop: it reads the line fifty times a second and correcting bias is already its job, so TRIM there just gives the P-term a constant to spend the day undoing. <code>handleGap()</code> gets TRIM because a blind robot is open loop again.</p>
 
 </details>
 

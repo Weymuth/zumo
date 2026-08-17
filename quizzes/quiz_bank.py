@@ -30,7 +30,7 @@ import re
 import sys
 import glob
 
-VERSION = "v1.0.1"
+VERSION = "v1.1.0"
 
 QUIZ_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(QUIZ_DIR)
@@ -62,6 +62,43 @@ def load(path):
             return y.safe_load(fh), None
     except Exception as exc:                      # noqa: BLE001
         return None, "unparseable: %s" % exc
+
+
+BANK_VER_RE = re.compile(r"^#\s*Bank version:\s*v?([0-9]+(?:\.[0-9]+)*)\s*$", re.M)
+
+
+def version_homes(src, data, name):
+    """A bank states its version TWICE and until S161 nothing compared them.
+
+    The `# Bank version:` comment is the home a HUMAN reads; the
+    `bank_version:` field is the home --status and every tool reads. At S161
+    eight of nine bumped banks disagreed - seven fields still read 1.0.0 after
+    two rounds of edits, so --status reported the ORIGINAL version of a bank
+    that had been re-keyed twice. That is the sB version-homes shape in a new
+    construct: a second home earns its keep only when something reads it that
+    cannot read the first, and here BOTH are read, by different readers.
+
+    The comparison is on the PARSED value against the RAW comment, because
+    safe_load discards comments - the field alone can never see its twin.
+    """
+    bad = []
+    hits = BANK_VER_RE.findall(src or "")
+    field = str((data or {}).get("bank_version", "")).strip()
+    if not hits:
+        bad.append("%s: no '# Bank version:' comment - the human-read home "
+                   "is missing, so nothing can disagree and nothing can check"
+                   % name)
+    elif len(hits) > 1:
+        bad.append("%s: %d '# Bank version:' comments - one home, one spelling"
+                   % (name, len(hits)))
+    if not field:
+        bad.append("%s: bank_version field is empty or absent" % name)
+    if hits and field and hits[0] != field:
+        bad.append("%s: version homes DISAGREE - comment says v%s, "
+                   "bank_version field says %s. --status reads the FIELD, so "
+                   "an edited bank keeps reporting its old version"
+                   % (name, hits[0], field))
+    return bad
 
 
 def validate(data, name):
@@ -226,6 +263,12 @@ def check(verbose=True):
             all_bad.append("%s: %s" % (name, err))
             continue
         all_bad.extend(validate(data, name))
+        try:
+            with open(path, encoding="utf-8") as fh:
+                all_bad.extend(version_homes(fh.read(), data, name))
+        except OSError as exc:                          # noqa: BLE001
+            all_bad.append("%s: could not re-read for version homes: %s"
+                           % (name, exc))
     if verbose:
         if all_bad:
             print("  %d problem(s):" % len(all_bad))
@@ -329,10 +372,40 @@ def selftest():
             else:
                 with open(os.path.join(td, "ZUMO_QUIZ_L99.yaml"), "w",
                           encoding="utf-8") as fh:
+                    # safe_dump writes no comments, so the fixture must state
+                    # the human-read home itself or version_homes fires on it
+                    # (correctly) and J2 reports a defect that is its own.
+                    fh.write("# Bank version: v%s\n"
+                             % _good_bank()["bank_version"])
                     y.safe_dump(_good_bank(), fh)
                 populated_silent = check(verbose=False) == []
     finally:
         BANK_GLOB = _saved_glob
+
+    # ---- VERSION HOMES (S161). In-memory: a control that depends on the
+    # state of what it audits is not a control.
+    _vsrc = "# Bank version: v1.0.2\nlesson: L99\n"
+    _vdat = {"bank_version": "1.0.2"}
+    controls.append(("K  agreeing version homes are SILENT",
+                     version_homes(_vsrc, _vdat, "t") == []))
+    controls.append(("L  disagreeing version homes are LOUD",
+                     any("DISAGREE" in x for x in
+                         version_homes(_vsrc, {"bank_version": "1.0.0"}, "t"))))
+    controls.append(("M  a MISSING version comment is LOUD",
+                     any("no '# Bank version:'" in x for x in
+                         version_homes("lesson: L99\n", _vdat, "t"))))
+    controls.append(("N  TWO version comments are LOUD",
+                     any("one home, one spelling" in x for x in
+                         version_homes(_vsrc + "# Bank version: v1.0.3\n",
+                                       _vdat, "t"))))
+    controls.append(("O  an ABSENT bank_version field is LOUD",
+                     any("field is empty or absent" in x for x in
+                         version_homes(_vsrc, {}, "t"))))
+    # BLINDING CONTROL: the arm measures VERSIONS, not banks. Rewriting a
+    # question must leave it silent, or it is not measuring the property.
+    controls.append(("P  rewording a QUESTION is SILENT to version homes",
+                     version_homes(_vsrc + 'stem: "reworded"\n',
+                                   _vdat, "t") == []))
 
     controls.append(("J  an EMPTY scan is LOUD", empty_loud))
     controls.append(("J2 a populated scan is still SILENT",

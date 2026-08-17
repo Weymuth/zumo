@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.30.1 -->
+<!-- Lesson version: v02.30.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -411,7 +411,7 @@ watching whether it is going <em>straight</em>. You know what that needs by now:
 <pre>motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);   <span class="tok-6a9955">// Blind AND straight = TRIM</span></pre>
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="10.18">
     <div class="div-c-3a5a3a"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-    <p class="p-mb-0"><strong>Open loop needs TRIM. Closed loop does not.</strong>
+    <p class="p-mb-0"><strong>An open heading loop needs TRIM. A closed one does not.</strong>
     While hunting, nothing is correcting the robot’s heading — so an untrimmed robot curves, and a
     curving robot can cross <em>beside</em> the line instead of over it and hunt right past it into the timeout.
     Compare that with <code>followLine()</code>, which gets <strong>no</strong> TRIM, because the P&#8209;controller is
@@ -2341,7 +2341,7 @@ turnDegrees(-AVOID_RETURN_DEGREES);   <span class="tok-6a9955">// past the headi
 
 <details data-reveal="quiz"><summary>3. <code>driveDistance()</code> gets TRIM. <code>followLine()</code> does not. Why not? (§3.6)</summary>
 
-<div class="div-mt-12px"><p>Open loop needs TRIM; closed loop does not. While the robot is driving blind — hunting for the line, or driving past the block — nothing is watching whether it is going straight, so an untrimmed robot curves, and a curving robot can cross beside the line instead of over it and hunt straight past it into the timeout. <code>followLine()</code> is a P&#8209;controller already correcting the heading fifty times a second; adding TRIM there would make it fight itself.</p></div>
+<div class="div-mt-12px"><p>An open heading loop needs TRIM; a closed one does not. While the robot is driving blind — hunting for the line, or driving past the block — nothing is watching whether it is going straight, so an untrimmed robot curves, and a curving robot can cross beside the line instead of over it and hunt straight past it into the timeout. <code>followLine()</code> is a P&#8209;controller already correcting the heading fifty times a second; adding TRIM there would make it fight itself.</p></div>
 
 </details>
 
@@ -2504,8 +2504,8 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.104"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-arbitration">Behavior Arbitration</strong></div>Deciding, <em>in advance and in writing</em>, which behavior wins when two or more want control of the robot at the same time. If you do not choose the priority on purpose, you still get one — whichever <code>if</code> you happened to type first.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.105"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-avoidance-maneuver">Avoidance Maneuver</strong></div>A pre&#8209;planned sequence of moves that takes the robot off the line, around an obstacle, and back again. The robot is not reacting while it runs — it is executing a plan it committed to before it started.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.106"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-phase-variable">Phase Variable</strong></div>A variable that survives between passes of <code>loop()</code> and records how far through a multi&#8209;step operation you are. The robot’s bookmark: <em>“I am on step 3 of 7.”</em></div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.107"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-open-loop">Open Loop</strong></div>Motion where <strong>nothing is watching the result</strong>. You command it and hope. <code>driveDistance()</code> is open loop with respect to <em>heading</em> — the encoders count rotation, so they cannot tell you the robot curved. <strong>Open loop needs TRIM.</strong></div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.108"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-closed-loop">Closed Loop</strong></div>Motion where a sensor <strong>continuously corrects</strong> the result. <code>followLine()</code> reads the line and adjusts fifty times a second. <strong>Closed loop does not need TRIM</strong> — adding it would make the controller fight itself.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.107"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-open-loop">Open Loop</strong></div>Motion where <strong>nothing is watching the result</strong>. You command it and hope. <code>driveDistance()</code> is open loop with respect to <em>heading</em> — the encoders count rotation, so they cannot tell you the robot curved. <strong>An open heading loop needs TRIM.</strong></div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.108"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-closed-loop">Closed Loop</strong></div>Motion where a sensor <strong>continuously corrects</strong> the result. <code>followLine()</code> reads the line and adjusts fifty times a second. <strong>A closed heading loop does not need TRIM</strong> — adding it would make the controller fight itself.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.109"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-extern">extern</strong></div>A promise that a variable or object <strong>exists somewhere else</strong>. The header <em>declares</em> it; exactly one <code>.cpp</code> file <em>defines</em> it. Declare in many places. Define in one.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.110"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-pin-sharing">Pin Sharing</strong></div>Two peripherals wired to the same microcontroller pins. On the Zumo, <strong>pins 20 and 4</strong> are shared between the side proximity receivers and line sensors 2 and 4. You must choose — and this book chose five line sensors.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="10.111"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-accumulated-error">Accumulated Error</strong></div>A small error, repeated, becoming a large one. Four corners each off by 2° leave the robot 8° off heading — and every degree pushes the next move further astray. <strong>Errors do not cancel.</strong></div>
@@ -2534,7 +2534,7 @@ else. Open each in the Project Maker, run it, and figure out what is actually ha
 <h4 class="h4-c-4d535f">Where TRIM Goes — and Where It Does Not</h4>
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="10.112">
     <div class="div-c-3a5a3a"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-    <p class="p-mb-0"><strong>OPEN LOOP needs TRIM. CLOSED LOOP does not.</strong><br>
+    <p class="p-mb-0"><strong>AN OPEN HEADING LOOP needs TRIM. A CLOSED ONE does not.</strong><br>
     TRIM is for straightness. Averaging both encoders is for honesty. They are different jobs.</p>
 </div>
 <table class="table-bc-collapse-3">
