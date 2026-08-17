@@ -16,10 +16,13 @@ carried controls reproduced exactly on a harness rebuilt from scratch.
 L03 ×2 · L04 ×2 · L06 ×1 · L07 ×2 · L08 ×1 · L09 ×3 · L10 ×4 · L11 ×5 · L12 ×4 · L13 ×6 ·
 L14 ×5 · L15 ×5 · L16 ×5.
 
-**6 files changed** against `43391d8`: `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_SUPER_BIBLE.md` ·
+**7 files changed** at the S163 push (`2899729`): `LIVE_ZUMO_TEXTBOOK.md` · `ZUMO_SUPER_BIBLE.md` ·
 `book_gates.py` · `lessons/Lesson_01.html` · `quizzes/quiz_bank.py` ·
-`quizzes/ZUMO_QUIZ_L01.yaml` · `quizzes/ZUMO_QUIZ_L02.yaml` (7 — count read off the generator,
-not the typing).
+`quizzes/ZUMO_QUIZ_L01.yaml` · `quizzes/ZUMO_QUIZ_L02.yaml`, plus `ZUMO_S164_HANDOFF.md` new and
+`ZUMO_S163_HANDOFF.md` deleted. **THE FIRST DRAFT OF THIS LINE SAID SIX AND THEN LISTED SEVEN**, in
+the clause claiming the count came off the generator — rule 50 committed in the sentence citing it,
+and it shipped. Caught at the post-push verification, not by re-reading. **A follow-up push
+(`book_gates` v1.70.1 · Bible v8.155.1 · this file · LIVE.md) corrects it and hardens gate 76.**
 
 ---
 
@@ -61,7 +64,16 @@ to remember — it is a property of where the string sits (rule 20).
 the very provenance comments this session wrote into `QUIZ_L01`'s header, and `L01_B14`'s new distractor
 *is* the retired claim, deliberately.
 
-Five controls, **one per invocation with an explicit timeout** (S162's contaminated-tree lesson):
+**AND ITS COVERAGE ARM WAS BLIND WHEN IT SHIPPED, WHICH A CONTROL FOUND AFTER THE PUSH.** It
+compared SCANNED against FOUND — both from its own globs — so an **empty** population left both at
+zero and passed. Measured rather than argued: with every bank moved aside, gate 76 printed **PASS**
+while §24.2 and §24.18 fired. **`book_gates` v1.70.1** adds a POPULATION arm whose denominator is the
+suite's own lesson list (rule 29): every lesson plus the Maker, and one bank per lesson. Controlled
+three ways — banks emptied is now LOUD naming *asserted 17 pages and 0 banks against 16 lessons* ·
+the Maker removed is LOUD on the original coverage arm · the untouched tree PASSES at 76 of 76.
+**Rule 27 committed inside the arm written to satisfy rule 27.**
+
+Six controls, **one per invocation with an explicit timeout** (S162's contaminated-tree lesson):
 lesson prose LOUD · retired wording as a `correct: true` option LOUD naming `L01_B14` · two retired forms
 inside a `correct: false` option SILENT · retired forms in a YAML comment SILENT · **blinding reword of an
 unrelated L05 paragraph SILENT, and the md5 was checked mid-flight to prove the plant landed** — a
@@ -166,12 +178,12 @@ reserves: whether a §3.3 edit should wait for Sept 8 alongside the deferred hoi
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`43391d8`**. Census **40,889**.
-Bible **v8.155** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.4** ·
+Fresh-clone verified at **`2899729`**. Census **40,889**.
+Bible **v8.155.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
-Instruments: `book_gates` **v1.70.0** · `lesson_inventory` **v1.3.5** ·
+Instruments: `book_gates` **v1.70.1** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.6** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.26.0** · `fit_raster_svg` **v1.2** ·

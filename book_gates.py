@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.70.0'
+VERSION = 'v1.70.1'
 # v1.68.7 (S160): §27.11 stylesheet digest baseline moved for the C2 pass. Rules and
 #                 declarations UNCHANGED at 574/2,033; the entire textual diff is two
 #                 COUNT COMMENTS (header census 22,462 -> 22,464 and .tok-7cbf6e x1501 ->
@@ -4502,6 +4502,16 @@ if _seenp76 != len(_pages76) or _seenb76 != len(_banks76):
     bad.append('scanned %d of %d pages and %d of %d banks - a file that could not be '
                'read is not a file that passed'
                % (_seenp76, len(_pages76), _seenb76, len(_banks76)))
+# POPULATION ARM, and it is not the same check (S163): the coverage arm above compares
+# SCANNED against FOUND, both from this gate's own globs, so an EMPTY directory leaves
+# both at zero and passes - measured, not argued: with every bank moved aside this gate
+# printed PASS while §24.2 and §24.18 fired. The denominator therefore comes from the
+# suite's own lesson list (rule 29): 16 lessons + the Maker, and one bank per lesson.
+if _seenp76 != len(files) + 1 or _seenb76 != len(files):
+    bad.append('asserted %d pages and %d banks against %d lessons - the population is '
+               'every lesson plus the Maker, and one bank per lesson (§24.2); a gate '
+               'that scans a SHRUNKEN population passes for the wrong reason (rule 27)'
+               % (_seenp76, _seenb76, len(files)))
 gate('\u00a716.25 the retired hardware-identity claim appears nowhere in the book', bad)
 
 print('=' * 52)
