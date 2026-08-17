@@ -30,7 +30,7 @@ import re
 import sys
 import glob
 
-VERSION = "v1.1.0"
+VERSION = "v1.4.0"
 
 QUIZ_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(QUIZ_DIR)
@@ -98,6 +98,148 @@ def version_homes(src, data, name):
                    "bank_version field says %s. --status reads the FIELD, so "
                    "an edited bank keeps reporting its old version"
                    % (name, hits[0], field))
+    return bad
+
+
+
+SOURCE_PIN_RE = re.compile(r"^\s*(lesson_\d{2})\s*:\s*[\"']?(v[\d.]+)[\"']?\s*$", re.M)
+
+
+
+# ---------------------------------------------------------------------------
+# THE S162 UNREAD-PIN BACKLOG, NAMED RATHER THAN COUNTED (§25.2a).
+#
+# 52 pins were stale at S162. FOUR were bumped on EVIDENCE - lesson_04
+# v04.29.0 -> v04.29.1, whose entire diff is the version comment plus S151's
+# `<title>` em-dash separator, a tag that does not render and that no bank
+# cites - and the diff was READ, not inferred from a section-level "(none)".
+#
+# THE OTHER 48 OWE A REAL READ AND S162 DID NOT DO IT. The scoping attempt is
+# recorded because its FAILURE is the finding: flagging questions that share
+# vocabulary with text that moved returned **3,146 of ~3,400 question-instances**,
+# naming 71 of 75 questions off a 30-sentence diff. A predicate that returns
+# nearly the whole population has measured nothing (rule 79). No cheap predicate
+# separates an at-risk question from a safe one here, so the honest cost is the
+# READ -> FIX -> QUIZ arc, per lesson, and that is not one session's work.
+#
+# WHY A NAMED BACKLOG RATHER THAN A HARD FAIL OR NO GATE AT ALL:
+#   * A permanently red gate trains its readers to ignore red, which is worse
+#     than no gate (v8.130's shape: a check that punishes the attentive).
+#   * Bulk-bumping 48 pins would assert 3,146 reads nobody performed - rule 37
+#     at scale, and exactly what S161 correctly declined for 3 of 52.
+#   * Naming them means NEW drift fails immediately, a pin bumped WITHOUT its
+#     read fails (the name no longer matches), and the list can only SHRINK.
+#     A count could do none of those three.
+UNREAD_PINS = {
+        ("ZUMO_QUIZ_L01.yaml", "lesson_01"): "v03.28.3",
+        ("ZUMO_QUIZ_L02.yaml", "lesson_01"): "v03.28.2",
+        ("ZUMO_QUIZ_L02.yaml", "lesson_02"): "v03.21.2",
+        ("ZUMO_QUIZ_L03.yaml", "lesson_02"): "v03.21.2",
+        ("ZUMO_QUIZ_L03.yaml", "lesson_03"): "v03.41.0",
+        ("ZUMO_QUIZ_L04.yaml", "lesson_02"): "v03.21.2",
+        ("ZUMO_QUIZ_L04.yaml", "lesson_03"): "v03.41.0",
+        ("ZUMO_QUIZ_L06.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L07.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L07.yaml", "lesson_07"): "v04.31.2",
+        ("ZUMO_QUIZ_L08.yaml", "lesson_07"): "v04.31.3",
+        ("ZUMO_QUIZ_L09.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L09.yaml", "lesson_08"): "v04.31.0",
+        ("ZUMO_QUIZ_L09.yaml", "lesson_09"): "v05.27.0",
+        ("ZUMO_QUIZ_L10.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L10.yaml", "lesson_08"): "v04.31.0",
+        ("ZUMO_QUIZ_L10.yaml", "lesson_09"): "v05.27.0",
+        ("ZUMO_QUIZ_L10.yaml", "lesson_10"): "v02.29.1",
+        ("ZUMO_QUIZ_L11.yaml", "lesson_03"): "v03.41.0",
+        ("ZUMO_QUIZ_L11.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L11.yaml", "lesson_08"): "v04.31.1",
+        ("ZUMO_QUIZ_L11.yaml", "lesson_10"): "v02.29.1",
+        ("ZUMO_QUIZ_L11.yaml", "lesson_11"): "v02.30.0",
+        ("ZUMO_QUIZ_L12.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L12.yaml", "lesson_09"): "v05.27.0",
+        ("ZUMO_QUIZ_L12.yaml", "lesson_11"): "v02.30.0",
+        ("ZUMO_QUIZ_L12.yaml", "lesson_12"): "v01.31.3",
+        ("ZUMO_QUIZ_L13.yaml", "lesson_03"): "v03.41.0",
+        ("ZUMO_QUIZ_L13.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L13.yaml", "lesson_10"): "v02.29.1",
+        ("ZUMO_QUIZ_L13.yaml", "lesson_11"): "v02.30.0",
+        ("ZUMO_QUIZ_L13.yaml", "lesson_12"): "v01.31.3",
+        ("ZUMO_QUIZ_L13.yaml", "lesson_13"): "v02.29.0",
+        ("ZUMO_QUIZ_L14.yaml", "lesson_08"): "v04.31.1",
+        ("ZUMO_QUIZ_L14.yaml", "lesson_11"): "v02.30.0",
+        ("ZUMO_QUIZ_L14.yaml", "lesson_12"): "v01.31.3",
+        ("ZUMO_QUIZ_L14.yaml", "lesson_13"): "v02.29.0",
+        ("ZUMO_QUIZ_L14.yaml", "lesson_14"): "v02.34.0",
+        ("ZUMO_QUIZ_L15.yaml", "lesson_06"): "v04.32.1",
+        ("ZUMO_QUIZ_L15.yaml", "lesson_08"): "v04.31.1",
+        ("ZUMO_QUIZ_L15.yaml", "lesson_11"): "v02.30.0",
+        ("ZUMO_QUIZ_L15.yaml", "lesson_14"): "v02.34.0",
+        ("ZUMO_QUIZ_L15.yaml", "lesson_15"): "v02.31.0",
+        ("ZUMO_QUIZ_L16.yaml", "lesson_01"): "v03.28.3",
+        ("ZUMO_QUIZ_L16.yaml", "lesson_02"): "v03.21.2",
+        ("ZUMO_QUIZ_L16.yaml", "lesson_14"): "v02.34.0",
+        ("ZUMO_QUIZ_L16.yaml", "lesson_15"): "v02.31.0",
+        ("ZUMO_QUIZ_L16.yaml", "lesson_16"): "v02.23.0",
+}
+
+
+def source_pins(data, name, lesson_versions):
+    """A bank's `source:` block is its VERIFIED-AGAINST pin, and until S162
+    nothing compared it to anything.
+
+    §24.18 one layer along: a pin nothing compares is a version home with no
+    comparator. Measured at S161 close and again at S162 open: **52 of 57 pins
+    were stale**, drift accumulated S148-S161, and `--status` printed every one
+    of them as provenance.
+
+    S162 also found the banks stating provenance TWICE and disagreeing - the
+    header `# Authored against:` comment against this YAML block - in SEVEN of
+    sixteen banks, and **the disagreement ran BOTH directions** (six
+    header-newer, L08 field-newer), so neither home was reliably the fresher
+    one and neither could simply be preferred. Ruled at S162:
+
+      * `source:`               = VERIFIED against. Gated. Must equal live.
+      * `# Authored against:`   = HISTORY. Ungated, never rewritten (rule 37).
+
+    Bumping a pin therefore ASSERTS A READ. That is why S161 correctly declined
+    to bump 3 of 52: a tree where some pins are verified and some are stale with
+    nothing marking which is worse than one uniformly out of date and known to
+    be (S148's L14 reasoning).
+
+    `lesson_versions` is passed IN rather than derived here, so the caller owns
+    the denominator (rule 29) and this function has exactly one job.
+    """
+    bad = []
+    src = (data or {}).get("source") or {}
+    if not src:
+        bad.append("%s: no `source:` block - a bank with no pin cannot be stale "
+                   "and cannot be checked" % name)
+        return bad
+    for key in sorted(src):
+        pinned = str(src[key]).strip()
+        if key not in lesson_versions:
+            bad.append("%s: `source:` pins %s, which is not a lesson in this "
+                       "book" % (name, key))
+            continue
+        live = lesson_versions[key]
+        # The backlog is keyed on (bank, lesson) and CARRIES the version it was
+        # recorded stale at. Keying it on the pinned version instead was the first
+        # draft, and CONTROL C2 killed it: bumping a pin made its own backlog entry
+        # unfindable, so the gate went SILENT on exactly the move it exists to catch.
+        # A backlog you can abandon by editing the thing it tracks is not a backlog.
+        recorded = UNREAD_PINS.get((name, key))
+        if recorded is None:
+            if pinned != live:
+                bad.append("%s: `source:` pins %s at %s but the live lesson is %s, "
+                           "and this pin is NOT in the S162 UNREAD_PINS backlog - it "
+                           "is NEW drift. Either read the bank against the live "
+                           "lesson and bump the pin, or add it to the backlog "
+                           "deliberately (§24.18)" % (name, key, pinned, live))
+        elif pinned != recorded:
+            bad.append("%s: `source:` pins %s at %s, but UNREAD_PINS records it stale "
+                       "at %s. The pin MOVED while still in the backlog. If the read "
+                       "was done, delete the backlog entry in the same commit; if it "
+                       "was not, the bump asserts a read nobody performed (rule 37)"
+                       % (name, key, pinned, recorded))
     return bad
 
 
@@ -406,6 +548,43 @@ def selftest():
     controls.append(("P  rewording a QUESTION is SILENT to version homes",
                      version_homes(_vsrc + 'stem: "reworded"\n',
                                    _vdat, "t") == []))
+
+    # ---- source_pins controls (S162). ADDED BECAUSE THE S162 DOUBLE CHECK FOUND
+    # THE FUNCTION CONTROLLED ONLY FROM book_gates AND NOT HERE - S153's shape, a
+    # function whose only control lives in a different tool. Each control builds its
+    # OWN fixture rather than reusing _good_bank(), whose `source:` deliberately
+    # carries `lesson_99`: source_pins would correctly flag that, so reusing it
+    # would fail and read as an ARM defect when it is a FIXTURE defect (S161's
+    # control-J2 finding verbatim - the fixture was incomplete, not the arm).
+    _plive = {"lesson_07": "v04.31.4"}
+    controls.append(("Q  a pin MATCHING the live lesson is SILENT",
+                     source_pins({"source": {"lesson_07": "v04.31.4"}}, "t",
+                                 _plive) == []))
+    controls.append(("R  a stale pin NOT in the backlog is LOUD",
+                     any("NEW drift" in x for x in
+                         source_pins({"source": {"lesson_07": "v04.31.2"}}, "t",
+                                     _plive))))
+    controls.append(("S  a pin naming a NON-lesson is LOUD",
+                     any("not a lesson in this book" in x for x in
+                         source_pins({"source": {"lesson_99": "v01.0.0"}}, "t",
+                                     _plive))))
+    controls.append(("T  a MISSING source: block is LOUD",
+                     any("no `source:` block" in x for x in
+                         source_pins({}, "t", _plive))))
+    # A backlog entry whose pin has MOVED is loud even when it moved to the RIGHT
+    # value - because the read is what earns the bump, and the entry must be
+    # deleted in the same commit. This is the arm CONTROL C2 forced into existence.
+    _bk = list(UNREAD_PINS.items())[0]
+    (_bname, _blesson), _bver = _bk
+    controls.append(("U  a BACKLOG pin that has moved is LOUD",
+                     any("MOVED while still in the backlog" in x for x in
+                         source_pins({"source": {_blesson: "v99.99.99"}}, _bname,
+                                     {_blesson: "v99.99.99"}))))
+    # BLINDING CONTROL: the arm measures PINS. Rewording a question must be silent.
+    controls.append(("V  rewording a QUESTION is SILENT to source pins",
+                     source_pins({"source": {"lesson_07": "v04.31.4"},
+                                  "sets": {"before": {"questions":
+                                      [{"stem": "reworded"}]}}}, "t", _plive) == []))
 
     controls.append(("J  an EMPTY scan is LOUD", empty_loud))
     controls.append(("J2 a populated scan is still SILENT",

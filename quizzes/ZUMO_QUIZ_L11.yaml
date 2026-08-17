@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 11
 # Time Lies, Distance Doesn't · Encoder-Based Gap Crossing
 #
-# Bank version: v1.0.2
+# Bank version: v1.0.4
 # Authored against: lessons/Lesson_11.html v02.30.2 (post-S160 C2 sensor-as-truth pass)
 #
 # READ -> FIX -> QUIZ. L11 was read end to end in S144, fix-passed to v02.29.0, and the §3.5
@@ -74,13 +74,13 @@
 
 lesson: "L11"
 title: "Time Lies, Distance Doesn't — Encoder-Based Gap Crossing"
-bank_version: "1.0.2"
+bank_version: "1.0.4"
 source:
   lesson_11: "v02.30.0"
   lesson_10: "v02.29.1"
   lesson_08: "v04.31.1"
   lesson_06: "v04.32.1"
-  lesson_04: "v04.29.0"
+  lesson_04: "v04.29.1"
   lesson_03: "v03.41.0"
 
 sets:
@@ -629,7 +629,7 @@ sets:
             correct: true
           - text: "Lesson 6 — the encoder work established the correction, and it matters because counts must match on both wheels"
             correct: false
-            why: "TRIM is Lesson 3's, and its job is straightness, not count matching. Encoders count rotation whether or not the robot is going straight — which is why open loops need TRIM."
+            why: "TRIM is Lesson 3's, and its job is straightness, not count matching. Encoders count rotation whether or not the robot is going straight — which is why an unwatched heading needs TRIM."
           - text: "Lesson 8 — P-control introduced it, and it matters because the gains interact"
             correct: false
             why: "Lesson 8's followLine() deliberately does NOT use TRIM, because P-control already corrects bias fifty times a second."
@@ -778,9 +778,9 @@ sets:
         stem: "The Quick Reference's TRIM table gives each function a yes or no and a reason. Match the function to its reason."
         pairs:
           - left: "handleGap()"
-            right: "TRIM — open loop, blind, nothing else steers"
+            right: "TRIM — heading unwatched, blind, nothing else steers"
           - left: "followLine()"
-            right: "No TRIM — closed loop, P-control already corrects bias 50x a second"
+            right: "No TRIM — heading watched, P-control already corrects bias 50x a second"
           - left: "turnDegrees()"
             right: "No TRIM — the wheels oppose on purpose and encoders govern the angle"
         extra_answers:
@@ -793,7 +793,7 @@ sets:
         points: 1
         stem: "followLine() leaves TRIM out because adding it would make the controller fight its own correction."
         correct: true
-        why: "§8A.1 states it directly — P-control is already correcting bias fifty times a second, so TRIM would just be fighting its own controller. Open loop needs TRIM; closed loop does not."
+        why: "§8A.1 states it directly — P-control is already correcting bias fifty times a second, so TRIM would just be fighting its own controller. An open heading loop needs TRIM; a closed one does not."
 
       - id: L11_B45
         type: multiple_choice

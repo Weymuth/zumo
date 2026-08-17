@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.68.8'
+VERSION = 'v1.69.0'
 # v1.68.7 (S160): §27.11 stylesheet digest baseline moved for the C2 pass. Rules and
 #                 declarations UNCHANGED at 574/2,033; the entire textual diff is two
 #                 COUNT COMMENTS (header census 22,462 -> 22,464 and .tok-7cbf6e x1501 ->
@@ -4332,6 +4332,91 @@ if _seen73 != len(files):
     bad.append('asserted %d of %d lessons - a lesson whose index region could not be '
                'located is not a lesson that passed' % (_seen73, len(files)))
 gate('\u00a710   every figure the lesson prints has an index row', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 74 (S162, §16.31): THE RETIRED C1 SLOGAN APPEARS NOWHERE.
+# C1's defect was never a co-occurrence of TRIM with loop vocabulary - it was a
+# SLOGAN, and §16.31's table names the six retired phrasings. This gate asserts
+# the LEFT column is absent from every lesson, every bank and the Maker.
+# It carries NO exemption list, and that is measured rather than assumed: the
+# declared distractors in ZUMO_QUIZ_L08 and the true statements in ZUMO_QUIZ_L12
+# do not match any retired form, so nothing legitimate has to be excused (rule 20).
+# COVERAGE ARM, because a scan of zero files passes (rule 27).
+_RETIRED74 = [
+    (r'[Oo]pen[ -]loop needs TRIM',           'Open loop needs TRIM'),
+    (r'OPEN LOOP[^<.]{0,20}needs TRIM',       'OPEN LOOP needs TRIM'),
+    (r'open loops need TRIM',                 'open loops need TRIM'),
+    (r'TRIM is for (an )?open[ -]loops?',     'TRIM is for open loops'),
+    (r'[Cc]losed[ -]loop does not\.',         'Closed loop does not.'),
+    (r'Does not need TRIM',                   'Does not need TRIM'),
+    (r'closed[ -]loop tuning',                'closed-loop tuning'),
+    (r'only term that (kills|removes) steady', 'the only term that kills steady-state error'),
+    (r'[Ee]very open-loop straight line',     'Every open-loop straight line carries TRIM'),
+]
+bad = []
+_scan74 = sorted(glob.glob('lessons/Lesson_*.html')) \
+        + sorted(glob.glob('quizzes/ZUMO_QUIZ_*.yaml')) \
+        + ['newproject.html']
+_seen74 = 0
+for _f74 in _scan74:
+    try:
+        _s74 = open(_f74, encoding='utf-8').read()
+    except Exception as _e74:                               # noqa: BLE001
+        bad.append('%s could not be read (%s)' % (os.path.basename(_f74), _e74))
+        continue
+    _seen74 += 1
+    if _f74.endswith('.html'):
+        _s74 = html.unescape(re.sub(r'<[^>]+>', ' ', _s74))
+    for _p74, _label74 in _RETIRED74:
+        _n74 = len(re.findall(_p74, _s74))
+        if _n74:
+            bad.append('%s carries the RETIRED C1 phrasing "%s" x%d - §16.31 ruled it '
+                       'out; the two-question test is "is anything watching THE HEADING?"'
+                       % (os.path.basename(_f74), _label74, _n74))
+if _seen74 != len(_scan74):
+    bad.append('scanned %d of %d files - a file that could not be read is not a file '
+               'that passed' % (_seen74, len(_scan74)))
+gate('\u00a716.31 the retired C1 slogan appears nowhere in the book', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 75 (S162, §24.18): A BANK'S source: PIN IS COMPARED AGAINST THE LIVE LESSON.
+# Measured at S161 close and again at S162 open: 52 of 57 pins were STALE, drift
+# accumulated S148-S161, and --status printed every one as provenance. A pin that
+# nothing compares is a version home with no comparator.
+# Ruled S162: source: = VERIFIED against (gated); the header `# Authored against:`
+# comment = HISTORY (ungated, never rewritten, rule 37). Bumping a pin ASSERTS A READ.
+# The predicate is IMPORTED from quiz_bank.source_pins - ONE definition, TWO readers
+# (rule 83) - and the DENOMINATOR is this suite's own lessons/ glob (rule 29).
+# COVERAGE ARM, because a scan of zero banks passes (rule 27).
+_qdir75 = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'quizzes')
+if _qdir75 not in sys.path:
+    sys.path.insert(0, _qdir75)
+import quiz_bank as _QB75
+bad = []
+_live75 = {}
+for _f75 in files:
+    _m75 = re.search(r'Lesson_(\d+)', _f75)
+    _v75 = re.search(r'Lesson version: (v[\d.]+)', open(_f75, encoding='utf-8').read())
+    if not (_m75 and _v75):
+        bad.append('%s has no parseable lesson version - it cannot anchor a pin' % _f75)
+        continue
+    _live75['lesson_%s' % _m75.group(1)] = _v75.group(1)
+_banks75 = sorted(glob.glob(os.path.join('quizzes', 'ZUMO_QUIZ_*.yaml')))
+_seen75 = 0
+for _b75 in _banks75:
+    _d75, _e75 = _QB75.load(_b75)
+    if _e75:
+        bad.append('%s: %s' % (os.path.basename(_b75), _e75))
+        continue
+    _seen75 += 1
+    bad.extend(_QB75.source_pins(_d75, os.path.basename(_b75), _live75))
+if _seen75 != len(_banks75):
+    bad.append('asserted %d of %d banks - a bank that could not be parsed is not a '
+               'bank that passed' % (_seen75, len(_banks75)))
+if _seen75 != len(files):
+    bad.append('asserted %d banks against %d lessons - every lesson has a bank '
+               '(gate §24.2), so these must agree' % (_seen75, len(files)))
+gate('\u00a724.18 every bank source: pin matches the live lesson it names', bad)
 
 print('=' * 52)
 

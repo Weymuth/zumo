@@ -1,15 +1,140 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 17, 2026 (Session 161 — **C1 IS RULED AND THE SLOGAN WAS THE DEFECT, NOT THE ARGUMENT.** *An open HEADING loop needs TRIM.* *"Open loop needs TRIM. Closed loop does not"* fails on the book's own central function — `driveDistance()` has encoders in its loop, so the one-question test run honestly returns *no TRIM*, while the book correctly puts TRIM on every straight line it drives. **The practice was right in every lesson and the reason was wrong in every lesson**, which is why it survived 150 sessions: nobody following the practice was ever contradicted by the robot. **L06 STATED THE CORRECT RULE AND THE WRONG RULE ON ONE PAGE** — §3.6's S160 fix reads *"still open-loop on heading… two different questions"* while Step 13 four sections later published the absolute slogan as *the rule, for the rest of this book*. Bible **§16.31** is the canon, with the six ruled phrasings in a table.)
-**Status:** ✅ **S161 — C1 RULED, THREE LESSONS AND ELEVEN BANKS SHIPPED, AND THE DOUBLE CHECK CAUGHT MY OWN DEFECT.** 73/73 gates, `gate_payload_match` PASS, `callout_id` 1125/0, 16 banks valid, `quiz_bank --selftest` all controls pass, census **40,889** unchanged. **THE POPULATION IS A SLOGAN SWEEP, NOT A REWRITE** — read in full, the surrounding prose was already heading-scoped almost everywhere (L10's KEY TERM *"open loop with respect to heading — the encoders count rotation, so they cannot tell you the robot curved"*, L11's Quick Reference *"encoders count rotation, not straightness"*, L10's BC03 *"nothing is watching whether it is going straight"*), **each of them ending in the unqualified slogan. A correct argument with a false headline reads as canon, because the headline is the part that gets quoted.** Zero bytes: every reached site is prose, a comment or a bank field. **THE CO-OCCURRENCE COUNT WAS NEVER THE DEFECT COUNT** — 150 windows across 9 lessons, 6 banks and the Maker, and the Maker's 89 collapse to **exactly TWO comment blocks** (L11 `handleGap()` at 87 payloads, L13 `driveUntil()` at 52), re-derived by exact-string count rather than by the dedup key that first produced the figure. **AND THE PREDICATE DOES NOT REACH THE TAGGED POPULATION:** L15-08 is tagged C1 and returns ZERO hits at any window width, so a second predicate is owed before the population is claimed whole. **I FIXED L08 AND REPORTED IT COMPLETE WHILE ITS BANK STILL GRADED THE RETIRED RULE** — `L08_B21`'s CORRECT ANSWER was the old one-question test verbatim, citing the very section just corrected; **nothing gates a bank against the lesson version it keys**, so all 73 gates were green, and a SECOND PREDICATE rather than a re-read is what found it. B21 is re-stemmed to the question the correction makes askable — *both functions have a sensor in the loop; only one gets TRIM; why?* — **with the retired slogan as its strongest distractor**, so the loose predicate now costs a student instead of rewarding one. **§24.18 NEW: A VERSION WITH TWO HOMES AND NO COMPARATOR IS TWO VERSIONS** (DJ: *"Bump all after writing the gate."*). Every bank states its version twice and nothing compared them: **ten of sixteen disagreed**, seven fields still reading 1.0.0 after two rounds of edits, so `--status` reported the ORIGINAL version of every bank S160 re-keyed. **§5b's shape in a new construct and S153's rule answering the other way** — `safe_load` discards comments, so the field can never see its twin; both homes are legitimate and **what was missing was not a home but a comparator.** `quiz_bank.version_homes()` is ONE definition with TWO readers, gate §24.2 by IMPORT rather than a third regex, six controls with the blinding one being *rewording a QUESTION is SILENT*. **THE GATE THEN CORRECTED MY OWN COUNT** — reported as SEVEN banks, hand-enumerated over L02–L13 because that is where my typing stopped rather than where the banks stop; the gate derived TEN and named L14, L15 and L16. **TWO PROCESS FAILURES, BOTH CAUGHT BY INSTRUMENTS:** control J2 began FAILING the moment the arm landed because `safe_dump` writes no comments and its fixture had only one version home (**the fixture was incomplete, not the arm**); and **the bump script pinned DOUBLE QUOTES, died on L13's bare `bank_version: 1.0.1` after writing six banks, and left L13–L16 silently behind** — S153's own finding committed again in the file S153 was written about. **A LINE-COUNT DELTA OF ZERO IS A REAL CHECK:** every edit landed inside an existing line, so the clone-vs-work lesson line delta is 0 and the census held without trusting any gate.
+**Date:** August 17, 2026 (Session 162 — **C1 IS CLOSED, AND THE SECOND PREDICATE FOUND THREE POPULATIONS THE DERIVED LIST DID NOT NAME.** S161's residue was described as L11 ×6 · L03 ×2 · L12 ×1 · `QUIZ_L11` ×2 · the two Maker-coupled comment blocks · **and L15-08 under a predicate not yet written.** That predicate is written — it sweeps the SLOGAN vocabulary of §16.31's retired column rather than a TRIM-near-loop window — and **it reaches L15-08 at the first attempt**, plus **L09**'s *Lesson 6 Dividend* NOTE, **`QUIZ_L10`** B45's `why`, and **L13**'s *same open-loop discipline*, none of which any tag or list carried. **THE L11 COUNT WAS RIGHT AND ITS MEMBERSHIP WAS WRONG:** read in full, §7C's eyebrow and Challenge 3's template *describe a blind moment* rather than state the rule, while §8A.1's NOTE carries **two** rule sentences — so the ruled line is now **the defect is a sentence that states the RULE, and a sentence that describes a moment is correct in context.**)
+**Status:** ✅ **S162 — C1 CLOSED AT ZERO BYTES, WITH GATE 74 AND NO EXEMPTION LIST.** 74/74 gates, `gate_payload_match` PASS both ends, `callout_id` 1125/0, 16 banks valid, `quiz_bank --selftest` all controls pass, census **40,889** unchanged with all sixteen lesson line deltas at **0**. **THE MAKER'S 89 RE-DERIVED EXACTLY AND BOTH BLOCKS MOVED WITH THEIR TWINS** — L11 `handleGap()` **3 lesson twins + 87 payloads**, L13 `driveUntil()` **2 + 52**, counted per line by exact string; **three comment lines in and three out, so the `tok-` span census cannot move**, and a comment emits no code, so every S160 control figure holds and `byte_audit` was owed nothing. **L13's first comment line was already correct and was left alone.** **`QUIZ_L11` WAS ×3, NOT ×2, AND THE THIRD IS THE `L08_B21` SHAPE AGAIN** — a matching item grades L11's Quick Reference *TRIM Rule* table **by its exact strings**, so correcting the table alone would have left the bank grading text the lesson no longer contains. **`QUIZ_L12` WAS READ AND RULED NOT-A-DEFECT:** `turnDegreesGyro()` genuinely closes on HEADING, so *TRIM fights a closed loop* is true there — three hits, zero edits, §16.15 answering in the other direction. **B4 IS RE-PREMISED AND NOT RE-PLANTED (DJ ruling):** the planted `leftSpeed + TRIM` constant-folds at `TRIM = 0`, so B4 compiles to **24,790, byte-identical to the correct build**, and that property has five prose homes plus a bank `why` — both GPT replacement sabotages destroy it. The defect was two sentences plus **a third the predicate missed**, B4's *Ask yourself* block spelling the retired one-question test as *"Is this turn an open loop?"*. **The corrected symptom is the better lesson:** the gyro still supplies the stopping criterion, so the ANGLE is right and the robot **arcs instead of pivoting and walks out of position** — §16.30 verbatim. **The displacement magnitude is deliberately unstated** (DJ): direction is derivable, magnitude is a bench measurement, and rule 50 gives a number two legal fates. **GATE 74 NEEDS NO EXEMPTION LIST AND THAT WAS MEASURED** — five controls, four firing 74 ALONE at 73 of 73 green, the blinding one being *rewording a glossary sentence that carries no slogan is SILENT*. **AND THE CONTROL HARNESS COMMITTED S121's DEFECT, WHICH md5 CAUGHT AND THE PROBE COULD NOT:** it timed out mid-run and left the BLINDING control's reword on disk, and **the retired-phrasing probe returned ZERO on that contaminated tree** — a blinding control contains no slogan by construction, so the instrument that normally confirms cleanliness was structurally blind to exactly this contamination. Only the md5 against the pre-control record showed it. **§27.16 also caught one of my own edits**, an `&rsquo;` where the literal is visible in source. **AND §16.25 SHIPPED IN THE SAME SESSION — THE A-STAR HARDWARE IDENTITY FIX, GPT's P0, UNBUILT FOR EIGHT SESSIONS.** The inventory reproduced row for row before a word changed, and **L01's total held at 15 while its wrong-claim count went 5 → 0**, because the new KEY TERM and BRAIN CHECK name A-Star deliberately in order to retire it — *"Your robot does not contain an A-Star board."* **A count is not a defect count in either direction.** L03 fell 10 → 2, both the asset filename; **all six of L01's legitimate build-target sites and both of the Maker's are byte-untouched, asserted by NAME rather than by count.** **L03's PHOTOGRAPH ALREADY DESCRIBED ITSELF CORRECTLY** — its `alt` text says *Zumo 32U4 main board* where its own caption said *A-Star 32U4 board*, so the accessible description was the right one and no reshoot is owed. **The filename stays, recorded not taken:** 51 captions carry the *(File: …)* clause, so dropping one creates an exception, and a rename needs a deletion through GitHub Desktop (§24.17). **AND THE HANDOFF CARRIED AS OPEN A THING S156 HAD ALREADY DONE** — §16.25's stale body — which is rule 32 against the very section whose previous entry was the same shape.
 
-**Versions:** L01 v03.28.5 · L02 v03.21.4 · L03 v03.41.1 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.3 · L07 v04.31.4 · L08 v04.32.0 · L09 v05.27.1 · L10 v02.30.2 · L11 v02.30.2 · L12 v01.32.2 · L13 v02.31.1 · L14 v02.35.0 · L15 v02.31.4 · L16 v02.26.1 · going_deeper v01.6.1 — census **40,889** · Bible **v8.151** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.58.3 · **book_gates v1.68.8** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.26.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.3.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.1.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4a9e1d1`.**
+**Versions:** L01 v03.29.0 · L02 v03.21.4 · L03 v03.43.0 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.3 · L07 v04.31.4 · L08 v04.32.0 · L09 v05.27.2 · L10 v02.30.2 · L11 v02.31.0 · L12 v01.33.0 · L13 v02.31.2 · L14 v02.35.0 · L15 v02.31.5 · L16 v02.26.1 · going_deeper v01.6.1 — census **40,889** · Bible **v8.154.1** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.58.4 · **book_gates v1.69.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.26.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.3.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.4.0 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `afdb91f`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
 ---
 ---
 ---
+
+---
+## WHAT SHIPPED IN S162
+
+**`ZUMO_AFTER_LAUNCH.md` OPENED (S162, DJ ruling).** The deferred queue had no durable home — it
+lived in the session handoff, which is rewritten every session, and the S163 handoff's first draft
+dropped it. **A record whose only home is a document the next session overwrites is not a record**
+(the S161 shape one layer along), and an ungated root file nothing links is §24.15's warning, which
+is why it is pointed at from BOTH the handoff and here. **It is not yet complete** — absence from it
+does not mean an item was finished. Opened with three items: the L01 §3.3 one-liner hoist, the L03
+photograph filename, and migrating the pre-S162 deferred queue into it from git history rather than
+from memory.
+
+**C1 IS CLOSED. L03 v03.42.0 · L09 v05.27.2 · L11 v02.31.0 · L12 v01.33.0 · L13 v02.31.2 ·
+L15 v02.31.5 · Maker v2.58.4 · `book_gates` v1.68.9 (74 gates) · banks L10/L11/L12 1.0.3 ·
+Bible v8.152. 74/74. Census 40,889 unchanged — every edit landed inside an existing line, and
+all sixteen lesson line deltas are 0.**
+
+**GATE 74 NEW (§16.31) and it needs NO exemption list** — the declared distractors in `QUIZ_L08`
+and the true statements in `QUIZ_L12` match no retired form, measured rather than assumed.
+Five controls; the blinding one is *rewording a glossary sentence that carries no slogan is SILENT*.
+
+**The second predicate reached L15-08 at the first attempt** and named three sites no tag and no
+derived list carried: **L09**'s NOTE, **`QUIZ_L10`** B45's `why`, and **L13**'s
+*same open-loop discipline*. `QUIZ_L11` was **×3, not ×2** — the third grades L11's *TRIM Rule*
+table by its exact strings, the `L08_B21` shape. `QUIZ_L12`'s three hits were **read and ruled
+not-a-defect**: `turnDegreesGyro()` genuinely closes on HEADING.
+
+**B4 is re-premised, not re-planted (DJ ruling).** The plant constant-folds to 24,790 — byte-identical
+to the correct build — and that property has five prose homes plus a bank `why`; both GPT
+replacement sabotages destroy it. The corrected symptom: the gyro still stops the turn at the right
+**angle**, and the robot **arcs instead of pivoting and walks out of position.**
+**The displacement magnitude is deliberately unstated** (DJ) — direction is derivable, magnitude is
+a bench measurement.
+
+**AND THE CONTROL HARNESS COMMITTED S121's DEFECT, WHICH md5 CAUGHT AND THE PROBE COULD NOT.**
+It timed out mid-run and left the BLINDING control's reword on disk. **The retired-phrasing probe
+returned ZERO on that contaminated tree**, because a blinding control contains no slogan by
+construction — so the instrument that normally confirms cleanliness was structurally blind to
+exactly this contamination. Only the md5 against the pre-control record showed it. Restored
+md5-exact; one control per invocation with an explicit timeout thereafter.
+**§27.16 also caught one of my own edits** — an `&rsquo;` where the literal is visible in source.
+
+See Bible **§16.31** (now CLOSED, with the ruled scope line) and gate **74**.
+
+**AND THE DOUBLE CHECK FOUND TWO INSTRUMENT DEFECTS OF ITS OWN.** `source_pins()` shipped controlled
+from `book_gates` and **not** from `quiz_bank --selftest`, where `version_homes()` has six controls —
+S153's shape. Six added (**Q–V**, now 14 total), each with its own fixture, because `_good_bank()`
+carries `lesson_99` and reusing it would have failed as an *arm* defect when it is a *fixture* defect.
+**And the arm written to audit this session's own prose compared a derived number against a constant
+typed into the checker** — it never read the document's sentence. Rebuilt to parse each claim out of
+the prose, then blinding-controlled with two seeded false numbers (51→58, 48→44) that **the first
+draft could not have seen.** `quiz_bank` **v1.4.0** · Bible **v8.154.1**.
+
+**AND GATE 75 (§24.18) — THE BANK `source:` PIN FINALLY HAS A COMPARATOR.** `book_gates` **v1.69.0**
+(75 gates) · `quiz_bank` **v1.3.1** · banks L04 **1.1.2** · L05 **1.0.1** · L11 **1.0.4** · L12 **1.0.4**
+· Bible **v8.154**.
+
+**THE FIX IS 9 OF 57, NOT 52, AND THE SCOPING INSTRUMENT'S FAILURE IS WHY.** Every stale pin resolved
+to the commit that held it — **all 52, none unresolved** — but flagging questions that share
+vocabulary with the text that moved returned **3,146 of ~3,400 question-instances**, naming **71 of 75
+questions off a 30-sentence diff**. **A predicate that returns nearly the whole population has measured
+nothing.** Banks and lessons share their whole vocabulary by construction, so no cheap predicate
+separates an at-risk question from a safe one. **The honest cost of the remaining 48 is a
+READ → FIX → QUIZ arc per lesson.**
+
+**FOUR PINS BUMPED ON EVIDENCE, WITH THE DIFF READ RATHER THAN INFERRED:** `lesson_04`
+v04.29.0 → v04.29.1 is **two lines** — the version comment and S151's `<title>` em-dash — a tag that
+does not render and that no bank cites. **A section-level "(none)" is a lead; the diff is the answer.**
+
+**THE 48 ARE NAMED, NOT COUNTED.** `quiz_bank.UNREAD_PINS` records each with the version it went stale
+at, so **new drift fails immediately, a backlog pin bumped without its read fails, and the list can only
+shrink.** A hard fail would leave a permanently red gate, which trains its readers to ignore red;
+bulk-bumping would assert 3,146 reads nobody performed — rule 37 at scale, exactly what S161 declined.
+
+**CONTROL C2 KILLED THE FIRST DRAFT OF THAT BACKLOG.** Keyed on the pinned version, **bumping a pin made
+its own entry unfindable and the gate went silent on the very move the arm exists to catch.** Re-keyed
+to `(bank, lesson)`. **A backlog you can abandon by editing the thing it tracks is not a backlog** — and
+the control found it, not the reasoning.
+
+**SEVEN OF SIXTEEN BANKS DISAGREED WITH THEMSELVES ABOUT THEIR OWN LESSON**, header comment against YAML
+pin, **in both directions** — so neither home was reliably fresher. Ruled: `source:` = **verified
+against**, gated; `# Authored against:` = **history**, never rewritten.
+
+**THE TRIPLE CHECK RAN FOUR ARMS AND THE SEED BROKE ONE.** ARM 1 fresh-clone md5 both directions (446
+tracked, 17 changed, 0 missing) · ARM 2 the pin census by a **different predicate**, raw regex not
+`safe_load`, closing at 48 = 48 with zero orphans · ARM 3 delta closure, 17 of 17 changed files bumped,
+0 unbumped. **ARM 3 IS BLIND TO A SECOND EDIT AFTER A BUMP** — proved by seeding an unbumped L09 prose
+change it could not see, S146's middle-of-chain blindness in a new place. **ARM 4 closes it:** content
+hashes sealed at version-final state and re-compared immediately before push.
+
+**AND ARM 1's FIRST RUN REPORTED 37 MISSING FILES THAT ALL EXIST** — the shell loop word-split on
+filenames containing spaces. **The instrument was broken, not the tree**, caught by the absurdity of the
+result rather than by any check. **`__pycache__` regenerates on every gate run**, so deleting it is the
+LAST step before push, not an early one.
+
+**AND §16.25 SHIPPED — THE A-STAR HARDWARE IDENTITY FIX, GPT's P0, UNBUILT FOR EIGHT SESSIONS.**
+L01 **v03.29.0** · L03 **v03.43.0** · Bible **v8.153**. The inventory **reproduced row for row
+before a word changed** (L01 15 · L03 10 · Maker 2), with the S155 false-positive control re-run —
+the loose pattern still returns 38 in the Maker and **36 are the phrase "a star"**.
+
+**L01's TOTAL HELD AT 15 WHILE ITS WRONG-CLAIM COUNT WENT 5 → 0**, because the new KEY TERM and
+BRAIN CHECK name A-Star deliberately in order to retire it — *"Your robot does not contain an
+A-Star board."* **A count is not a defect count in either direction.** L03 fell 10 → 2, both the
+asset filename. **All six of L01's legitimate build-target sites and both of the Maker's are
+byte-untouched, asserted by NAME rather than by count.**
+
+The KEY TERM **became the place the three terms are distinguished** rather than being deleted;
+`term-a-star` → `term-zumo-main-board`, and **renaming the ids was free because nothing in the tree
+links either one** — measured, so §27.14 was never at risk.
+
+**A FREE FINDING: L03's PHOTOGRAPH ALREADY DESCRIBED ITSELF CORRECTLY.** Its `alt` text reads *Top
+view of the Zumo 32U4 main board* while its own caption, in the same element, read *The A-Star 32U4
+board.* **The accessible description was the right one** — so the photograph is right, no reshoot is
+owed, and the filename is a misnomer with no evidentiary force. **The filename is RECORDED, NOT
+TAKEN:** dropping the *(File: …)* clause was priced and rejected because **51 captions carry it**,
+and a rename needs a deletion through GitHub Desktop.
+
+**§11's LINE IS FIXED** — *"A-Star32U4 capitalization for the microcontroller"* named a board
+profile as the chip; the Bible no longer contradicts §16.25.
+
+**AND A QUEUE ENTRY OUTLIVED THE RULING THAT SETTLED IT, IN THIS SECTION, FOR THE SECOND TIME.**
+The handoff carried *§16.25's body is stale by one session — still not done.* **S156 had already
+done it**, and v8.145.2 records doing it. **The file was the source of truth and the handoff was
+not** (rule 32).
 
 ---
 ## WHAT SHIPPED IN S161

@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.32.2 -->
+<!-- Lesson version: v01.33.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Wheels Lie</h1>
 <div class="div-fs-11em">The Gyro — Measuring the Robot, Not the Wheels</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 01.32 — August 2026</div>
+<div class="div-fs-09em-2">Version 01.33 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -445,7 +445,7 @@ StopReason turnDegreesGyro(float degrees) {
   motors.setSpeeds(0, 0);
   return STOP_DISTANCE;
 }</pre>
-<div class="div-e74c3c" data-family="THE WALL" data-callout="12.16"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Notice what is NOT in there: TRIM.</div>There is no <code>TRIM</code> in <code>turnDegreesGyro()</code>, and that is correct.<br><br><strong>TRIM is for open loops.</strong> It corrects a robot that drifts when nothing is watching — <code>driveDistance()</code>, <code>handleGap()</code>. But this turn <em>is being watched</em>. The gyro is measuring the turn as it happens, thousands of times a second, and the motors stop when that measurement reaches the target.<br><br>Adding TRIM here would mean <strong>fighting a controller that is already correct.</strong> It is not just unnecessary — it is wrong. <strong>Bonus B4</strong> adds it anyway, and the result is genuinely nasty: <em>the binary is exactly the same size.</em></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="12.16"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Notice what is NOT in there: TRIM.</div>There is no <code>TRIM</code> in <code>turnDegreesGyro()</code>, and that is correct.<br><br><strong>TRIM is for unwatched headings.</strong> It corrects a robot that drifts when nothing is watching — <code>driveDistance()</code>, <code>handleGap()</code>. But this turn <em>is being watched</em>. The gyro is measuring the turn as it happens, thousands of times a second, and the motors stop when that measurement reaches the target.<br><br>Adding TRIM here would mean <strong>fighting a controller that is already correct.</strong> It is not just unnecessary — it is wrong. <strong>Bonus B4</strong> adds it anyway, and the result is genuinely nasty: <em>the binary is exactly the same size.</em></div>
 <h3 class="h3-c-433014-3">5.3 The Three Words</h3>
 <p>Here is the payoff, and it is almost anticlimactic.</p>
 
@@ -1355,9 +1355,9 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
   motors.setSpeeds(leftSpeed + TRIM, rightSpeed);</pre>
-<p><strong>The symptom:</strong> Turns are subtly, stubbornly off — and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
+<p><strong>The symptom:</strong> The turn still stops at the right <em>angle</em> — the gyro sees to that — but the robot no longer pivots in place. It arcs, and walks out of position while it turns. Only once you have filled in your TRIM value: With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
 <div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.59">
-<div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>open loop</strong> — a robot driving straight with nothing watching. Is this turn an open loop? What is watching it? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,790</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
+<div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>unwatched heading</strong> — a robot driving straight with nothing watching where it points. Is anything watching this turn’s heading? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,790</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
 </div></div>
 <div class="div-e74c3c" data-family="THE WALL" data-callout="12.60"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">What B4 should teach you for the rest of your life</div>Three of these four mysteries change the program's size. You could have caught them by watching the byte count.<br><br><strong>B4 does not.</strong> It is a real bug, in a shipped robot, that is completely invisible to every check except <em>reading the code and understanding what it does.</em><br><br>There is no tool that will save you from having to think.</div>
@@ -1413,7 +1413,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 
 </details>
 
-<details data-reveal="quiz"><summary>Every open-loop straight line in this book carries TRIM. <code>turnDegreesGyro()</code> has <strong>none</strong>. Say why that is correct — and why adding it would be not merely unnecessary but wrong. (§5.2)</summary>
+<details data-reveal="quiz"><summary>Every straight line in this book whose heading nothing watches carries TRIM. <code>turnDegreesGyro()</code> has <strong>none</strong>. Say why that is correct — and why adding it would be not merely unnecessary but wrong. (§5.2)</summary>
 
 <div class="div-mt-12px"><p>TRIM exists to correct a robot that drifts <em>when nothing is watching</em> — <code>driveDistance()</code>, <code>handleGap()</code>, any timed open-loop maneuver. This turn is being watched. The gyro is measuring the turn as it happens, thousands of times a second, and the motors stop when that measurement reaches the target, which makes it a <strong>closed loop</strong> that is already correcting its own error. Adding TRIM means introducing a second correction that fights a controller that is already right, so the turn ends up subtly and stubbornly off. There is also nothing straight here for TRIM to protect: the wheels oppose each other <em>on purpose</em>, and the gyro — not the wheels — decides when the turn is done.</p></div>
 

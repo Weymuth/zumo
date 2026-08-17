@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.31.1 -->
+<!-- Lesson version: v02.31.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -218,7 +218,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 </table>
 <h3 class="h3-c-2e86ab">5.1 A Primitive That Reports Why It Stopped</h3>
 <p><code>driveDistance()</code> has served since Lesson 6, and it has one blind spot: once a leg starts, <em>nothing can interrupt it</em>. It holds the wheel and stares at the odometer until the centimeters run out. In the zone that is disqualifying — a sweep row must end early the instant the prox sees something, and the kill switch must work <em>mid-leg</em>, not between legs.</p>
-<p><code>driveUntil()</code> is <code>driveDistance()</code>'s watchful twin. Same TRIM, same both-encoder average, same open-loop discipline — plus one poll inside the loop, and a report at the end. And the report is the interesting part. A leg can end three ways, and the caller <em>needs to know which</em>:</p>
+<p><code>driveUntil()</code> is <code>driveDistance()</code>'s watchful twin. Same TRIM, same both-encoder average, same unwatched heading — plus one poll inside the loop, and a report at the end. And the report is the interesting part. A leg can end three ways, and the caller <em>needs to know which</em>:</p>
 <pre>
 <span class="tok-7cbf6e">// ===== WHY A MOVE ENDED (NEW for Lesson 10) =====</span>
 <span class="tok-7cbf6e">// A move that can be interrupted has to say WHICH thing ended it.</span>
@@ -520,8 +520,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
   <span class="tok-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
 
   <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 3). There is no line to correct</span>
-  <span class="tok-7cbf6e">// against in the zone - this is an OPEN loop, and open loops need</span>
-  <span class="tok-7cbf6e">// TRIM or they curve away into the corner.</span>
+  <span class="tok-7cbf6e">// against in the zone - the encoders watch DISTANCE, nothing watches</span>
+  <span class="tok-7cbf6e">// the HEADING, and an unwatched heading curves into the corner.</span>
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);
 
   StopReason reason = STOP_DISTANCE;
@@ -1334,8 +1334,8 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
   <span class="tok-569cd6">long</span> targetCounts = maxCm * COUNTS_PER_CM;
 
   <span class="tok-7cbf6e">// TRIM keeps it STRAIGHT (Lesson 3). There is no line to correct</span>
-  <span class="tok-7cbf6e">// against in the zone - this is an OPEN loop, and open loops need</span>
-  <span class="tok-7cbf6e">// TRIM or they curve away into the corner.</span>
+  <span class="tok-7cbf6e">// against in the zone - the encoders watch DISTANCE, nothing watches</span>
+  <span class="tok-7cbf6e">// the HEADING, and an unwatched heading curves into the corner.</span>
   motors.setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED);
 
   StopReason reason = STOP_DISTANCE;

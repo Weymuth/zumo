@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.30.2 -->
+<!-- Lesson version: v02.31.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Time Lies, Distance Doesn't</h1>
 <div class="div-fs-11em">Encoder-Based Gap Crossing</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.30 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.31 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -307,12 +307,12 @@ void handleGap() {
     currentState = LINE_LOST;
     return;
   }
-  // Drive straight across. We are BLIND here - no line to correct
-  // against, so P-control has nothing to work with. This is an OPEN
-  // loop, and open loops need TRIM or they curve away into the carpet.
+  // Drive straight across. We are BLIND - P-control has nothing to
+  // work with. Nothing watches the HEADING, and an unwatched heading
+  // needs TRIM or it curves away into the carpet.
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
 }</pre>
-<div class="div-e74c3c" data-family="THE WALL" data-callout="11.9"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Read the last line. That TRIM is not decoration.</div>Inside a gap, <strong>P-control is asleep</strong>. There is no line to correct against, so <code>followLine()</code> has nothing to work with. This is an <strong>open loop</strong> — the robot is driving on faith.<br><br>And an open loop with mismatched motors <em>curves</em>. Nothing is holding the robot straight across that gap except the TRIM number you found in Lesson 3. Set it to 0 and watch the robot wander out of the gap sideways. <strong>Open loop needs TRIM. Closed loop does not.</strong></div>
+<div class="div-e74c3c" data-family="THE WALL" data-callout="11.9"><div class="div-fs-105em"><img src="../images/marks/bricks.svg" alt="" data-mark="bricks">Read the last line. That TRIM is not decoration.</div>Inside a gap, <strong>P-control is asleep</strong>. There is no line to correct against, so <code>followLine()</code> has nothing to work with. This is an <strong>open loop</strong> — the robot is driving on faith.<br><br>And an open loop with mismatched motors <em>curves</em>. Nothing is holding the robot straight across that gap except the TRIM number you found in Lesson 3. Set it to 0 and watch the robot wander out of the gap sideways. <strong>An open <strong>heading</strong> loop needs TRIM. A closed one does not.</strong></div>
 <h3 class="h3-c-433014">5.3 The Two New States</h3>
 <pre>    case GAP_CROSSING: {
       if (killSwitchPressed()) break;
@@ -508,9 +508,9 @@ void handleGap() {
     currentState = LINE_LOST;
     return;
   }
-  // Drive straight across. We are BLIND here - no line to correct
-  // against, so P-control has nothing to work with. This is an OPEN
-  // loop, and open loops need TRIM or they curve away into the carpet.
+  // Drive straight across. We are BLIND - P-control has nothing to
+  // work with. Nothing watches the HEADING, and an unwatched heading
+  // needs TRIM or it curves away into the carpet.
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
 }</pre>
 <div class="div-27ae60" data-family="INSIGHT" data-callout="11.13"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">The function kept its name, its call site, and its job.</div>Nothing that <em>calls</em> <code>handleGap()</code> had to change. The state machine does not know anything happened. You swapped the instrument inside the box and the rest of the robot never noticed.<br><br>That is what Lesson 7 bought you.</div>
@@ -726,9 +726,9 @@ unsigned long gapStartTime = 0;   // 7E ONLY: Lesson 8's stopwatch, put back</pr
     currentState = LINE_LOST;
     return;
   }
-  // Drive straight across. We are BLIND here - no line to correct
-  // against, so P-control has nothing to work with. This is an OPEN
-  // loop, and open loops need TRIM or they curve away into the carpet.
+  // Drive straight across. We are BLIND - P-control has nothing to
+  // work with. Nothing watches the HEADING, and an unwatched heading
+  // needs TRIM or it curves away into the carpet.
   motors.setSpeeds(BASE_SPEED + TRIM, BASE_SPEED);
 }</pre>
 <p>Now run <strong>the exact same track</strong> twice:</p>
@@ -797,7 +797,7 @@ If it drifts, it sees the drift and fixes it. Mismatched motors do not matter �
 so there is nothing to correct against. If the motors are mismatched, the robot curves —
 and <em>nothing notices.</em></p>
 <div class="div-607d8b" data-family="NOTE" data-callout="11.21"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-<div class="div-fs-105em">This is why TRIM lives where it lives.</div>Every open-loop straight line in this book carries TRIM: <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive.<br><br>And <code>followLine()</code> <strong>deliberately does not</strong> — because P-control is already correcting bias 50 times a second, and TRIM would just be fighting its own controller.<br><br><strong>Open loop needs TRIM. Closed loop does not.</strong></div>
+<div class="div-fs-105em">This is why TRIM lives where it lives.</div>Every straight line in this book whose heading nothing watches carries TRIM: <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive.<br><br>And <code>followLine()</code> <strong>deliberately does not</strong> — because P-control is already correcting bias 50 times a second, and TRIM would just be fighting its own controller.<br><br><strong>An open <strong>heading</strong> loop needs TRIM. A closed one does not.</strong></div>
 <h3 class="h3-c-00474b">8A.2 Why Encoders Beat Timers</h3>
 <p>A timer measures the <em>independent</em> variable. An encoder measures the <em>dependent</em> one.</p>
 <p>You do not actually care how long the robot drove. You care how far it went. Time is only a
@@ -1142,7 +1142,7 @@ same track, it quits halfway. <strong>Name the instrument that caused this, and 
 <details data-reveal="quiz"><summary><code>followLine()</code> does <em>not</em> use TRIM. <code>handleGap()</code> <em>does</em>.
 Both drive the robot forward. <strong>Why the difference?</strong> (§8A.1)</summary>
 
-<div class="div-mt-12px"><p>Open loop needs TRIM; closed loop does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors — the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code>followLine()</code> is a P&#8209;controller reading line position fifty times a second and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every open-loop straight line in this book carries TRIM — <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive — and the one closed loop deliberately does not.</p></div>
+<div class="div-mt-12px"><p>An open <strong>heading</strong> loop needs TRIM; a closed one does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors — the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code>followLine()</code> is a P&#8209;controller reading line position fifty times a second and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every straight line in this book whose heading nothing watches carries TRIM — <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive — and the one loop that watches where it is going deliberately does not.</p></div>
 
 </details>
 
@@ -1206,8 +1206,8 @@ change the code.</strong> What do you change, and why is moving the existing sen
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.34"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-odometer-gloss">Odometer</strong></div>An instrument that measures <em>distance travelled</em>. Your encoders, used this way.</div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.35"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-open-loop-gloss">Open loop</strong></div>Acting without measuring the result. Driving blind across a gap. <strong>Needs TRIM.</strong></div>
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.36"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-closed-loop-gloss">Closed loop</strong></div>Measuring the result and correcting. <code>followLine()</code>. <strong>Does not need TRIM.</strong></div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.35"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-open-loop-gloss">Open loop</strong></div>Acting without measuring the result. Driving blind across a gap. <strong>An unwatched heading needs TRIM.</strong></div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.36"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-closed-loop-gloss">Closed loop</strong></div>Measuring the result and correcting. <code>followLine()</code>. <strong>It watches where it is going, so it needs no TRIM.</strong></div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.37"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-gap-gloss">Gap</strong></div>A break in the line the robot is <em>allowed</em> to cross.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.38"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-budget-gloss">Budget</strong></div>The maximum blind distance (<code>GAP_MAX_CM</code>). Spend it all and you are LINE_LOST.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.39"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-re-arm-gloss">Re-arm</strong></div>Re-zeroing the odometer as the robot enters a new gap, so each gap gets a full budget.</div>
@@ -1238,13 +1238,13 @@ float blindDistanceCm()    // how far since the line vanished</pre>
 <th class="th-ddd-13">Why</th></tr>
 <tr class="tr-bg-f9f9f9"><td class="td-ddd-6"><code>handleGap()</code></td>
 <td class="td-ddd-6"><strong>YES</strong></td>
-<td class="td-ddd-6">Open loop — blind, nothing else steers.</td></tr>
+<td class="td-ddd-6">Heading unwatched — blind, nothing else steers.</td></tr>
 <tr><td class="td-ddd-6"><code>driveDistance()</code></td>
 <td class="td-ddd-6"><strong>YES</strong></td>
-<td class="td-ddd-6">Open loop — encoders count rotation, not straightness.</td></tr>
+<td class="td-ddd-6">Heading unwatched — encoders count rotation, not straightness.</td></tr>
 <tr class="tr-bg-f9f9f9"><td class="td-ddd-6"><code>followLine()</code></td>
 <td class="td-ddd-6"><strong>NO</strong></td>
-<td class="td-ddd-6">Closed loop — P-control already corrects bias 50x/sec.</td></tr>
+<td class="td-ddd-6">Heading watched — P-control already corrects bias 50x/sec.</td></tr>
 <tr><td class="td-ddd-6"><code>turnDegrees()</code></td>
 <td class="td-ddd-6"><strong>NO</strong></td>
 <td class="td-ddd-6">The wheels oppose on purpose. Encoders govern the angle.</td></tr>

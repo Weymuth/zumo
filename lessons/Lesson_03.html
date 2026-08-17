@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.41.1 -->
+<!-- Lesson version: v03.43.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,7 +101,7 @@
 <h1 class="h1">Motor TRIM</h1>
 <div class="div-fs-11em">No Two Motors Are the Same</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.41 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.43 — August 2026</div>
 </div>
 
 <div class="callout-ffc107-bg-fff8e1" id="what-you-need-l03-p1" data-family="WHAT YOU NEED" data-callout="3.1">
@@ -188,7 +188,7 @@ Motor imbalance comes from tiny differences in <strong>torque</strong> (rotation
 
 <ul>
 
-<li>Learn how the A-Star 32U4 board controls your motors</li>
+<li>Learn how the Zumo 32U4 Main Board controls your motors</li>
 
 <li>Discover YOUR robot's unique imbalance</li>
 
@@ -254,7 +254,7 @@ After this lesson, your robot will finally drive straight—but it's still <em>b
 
 <h3 id="section-3-1" class="h3-c-2e86ab">3.1 The Two Motors</h3>
 
-<p>Your Zumo has two DC motors—one for the left wheels and one for the right wheels. This is called a <strong>differential drive</strong> system, and it's one of the most common designs in robotics. The <strong>A-Star 32U4 board</strong> on your Zumo controls both motors, converting your code commands into electrical signals.</p>
+<p>Your Zumo has two DC motors—one for the left wheels and one for the right wheels. This is called a <strong>differential drive</strong> system, and it's one of the most common designs in robotics. The <strong>Zumo 32U4 Main Board</strong> on your Zumo controls both motors, converting your code commands into electrical signals.</p>
 
 <div class="div-m-20px0"><img src="../images/L03_GRAPHIC_3-09_differential_drive.svg" alt="Top view of the Zumo showing left and right motors with speed arrows: equal speeds drive straight, unequal speeds curve, opposite speeds spin" class="img-h-auto"><div class="div-c-666"><strong>[GRAPHIC 3.9]</strong> Differential drive — how two track speeds combine into straight lines, curves, and spins (File: L03_GRAPHIC_3-09_differential_drive.svg)</div></div>
 
@@ -520,7 +520,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </div>
 
-<p>When you call <code>motors.setSpeeds(200, 200)</code>, you're telling the A-Star 32U4 board to apply a certain amount of power to the motors. But you have <strong>NO feedback</strong> about:</p>
+<p>When you call <code>motors.setSpeeds(200, 200)</code>, you're telling the Zumo 32U4 Main Board to apply a certain amount of power to the motors. But you have <strong>NO feedback</strong> about:</p>
 
 <ul>
 
@@ -1110,9 +1110,9 @@ This means one motor is about 7.5% weaker than the other—totally normal!
 
 <h3 class="h3-c-433014">4.2 The Motor Hardware</h3>
 
-<p>Your Zumo's motors are <strong>brushed DC motors</strong> with built-in gearboxes. The gearbox trades speed for torque (turning power)—your robot moves slower but can push harder. The <strong>A-Star 32U4 board</strong> converts your code commands into electrical signals that control motor speed.</p>
+<p>Your Zumo's motors are <strong>brushed DC motors</strong> with built-in gearboxes. The gearbox trades speed for torque (turning power)—your robot moves slower but can push harder. The <strong>Zumo 32U4 Main Board</strong> converts your code commands into electrical signals that control motor speed.</p>
 
-<div class="div-m-20px0"><img src="../images/L03_IMAGE_3-14_astar_board.jpg" alt="Top view of the Zumo 32U4 main board with the chassis removed: the ATmega32U4 microcontroller near the centre, the buzzer above it, the user buttons A, B and C along the bottom edge beside the reset button, the power switch and the USB connector at the bottom, and the OLED header across the top." class="img-h-auto"><div class="div-c-666"><strong>[IMAGE 3.14]</strong> The A-Star 32U4 board, seen from above with the chassis out of the way — the microcontroller that runs your code, the buttons you press, and the USB connector you upload through all live on this one board (File: L03_IMAGE_3-14_astar_board.jpg)</div></div>
+<div class="div-m-20px0"><img src="../images/L03_IMAGE_3-14_astar_board.jpg" alt="Top view of the Zumo 32U4 main board with the chassis removed: the ATmega32U4 microcontroller near the centre, the buzzer above it, the user buttons A, B and C along the bottom edge beside the reset button, the power switch and the USB connector at the bottom, and the OLED header across the top." class="img-h-auto"><div class="div-c-666"><strong>[IMAGE 3.14]</strong> The Zumo 32U4 Main Board, seen from above with the chassis out of the way — the microcontroller that runs your code, the buttons you press, and the USB connector you upload through all live on this one board (File: L03_IMAGE_3-14_astar_board.jpg)</div></div>
 
 <div class="callout-6b8e6b-bg-f0f7f0" data-family="LEARN" data-callout="3.36">
 
@@ -1196,7 +1196,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <h3 class="h3-c-433014">4.3 Battery Monitoring</h3>
 
-<p>The A-Star 32U4 board can read its own battery voltage using:</p>
+<p>The Zumo 32U4 Main Board can read its own battery voltage using:</p>
 
 <pre class="pre-m-0"><span class="tok-569cd6">int</span> batteryMV = readBatteryMillivolts();</pre>
 
@@ -1366,7 +1366,7 @@ leftSpeed  = BASE_SPEED + trimValue;     <span class="tok-6a9955">// left wheel 
 rightSpeed = BASE_SPEED;                 <span class="tok-6a9955">// right wheel = baseline</span>
 motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
-<p>If the robot veers <strong>left</strong>, the left wheel is too slow → raise <code>trimValue</code> (positive). If it veers <strong>right</strong>, lower it (negative). Each button press changes <code>trimValue</code> by <code>TRIM_STEP</code>, so you converge on "straight" by trial and observation. This is your first taste of <strong>closed-loop tuning</strong>: change a value, observe, adjust.</p>
+<p>If the robot veers <strong>left</strong>, the left wheel is too slow → raise <code>trimValue</code> (positive). If it veers <strong>right</strong>, lower it (negative). Each button press changes <code>trimValue</code> by <code>TRIM_STEP</code>, so you converge on "straight" by trial and observation. This is your first taste of <strong>manual iterative tuning</strong>: change a value, observe, adjust.</p>
 
 <div class="callout-9c27b0-bg-f3e5f5-2" data-family="KEY TERM" data-callout="3.44">
     <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong id="glossary-trim">TRIM</strong></div>A single adjustable value added to one motor's speed to compensate for mechanical imbalance, making a robot drive straight without changing hardware.
@@ -1616,7 +1616,7 @@ PROCEDURE:
 4. Repeat until robot drives straight
 5. Write down your TRIM value!
 HARDWARE:
-- Zumo 32U4 with A-Star 32U4 board, motors, OLED, buttons
+- Zumo 32U4 Main Board, motors, OLED, buttons
 AUTHOR: [Your Name]
 DATE: [Today's Date]
 =====================================================
@@ -2856,7 +2856,7 @@ motors.setSpeeds(BASE_SPEED + trimValue, BASE_SPEED);</pre>
 <span class="tok-b5cea8">3</span>. Adjust the value          (too coarse? TRIM_STEP = <span class="tok-b5cea8">2</span>)
 <span class="tok-b5cea8">4</span>. Repeat until good enough</pre>
 
-<p>This is <strong>closed-loop tuning</strong> — the human is the feedback loop now; later, sensors will be. The reason your tunables sit together at the top is so step 3 takes five seconds, not five minutes.</p>
+<p>This is <strong>human-in-the-loop tuning</strong> — <em>you</em> are the feedback loop now; later, sensors will be. The reason your tunables sit together at the top is so step 3 takes five seconds, not five minutes.</p>
 
 <div class="callout-2da99d-bg-e9f7f5-3" data-family="INSIGHT" data-callout="3.89">
     <div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars"><strong>INSIGHT:</strong></div> Every robot you'll ever build has "knobs" — speeds, thresholds, timings, gains. Pros put all the knobs in one labeled box at the top of the file. You just built your first knob (<code>TRIM_STEP</code>); in Lesson 8 you'll tune a control gain the exact same way.
@@ -4281,7 +4281,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <tr><td class="td-ddd-2"><strong>IMAGE 3.4</strong></td><td class="td-ddd-2">Retired — the build result is now a live terminal block in Step 12, not a screenshot</td><td class="td-ddd-2">—</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 3.5]</strong></td><td class="td-ddd-2">Testing setup with robot on floor, tape starting line, clear path ahead</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">⬜ still needed</td></tr>
 <tr><td class="td-ddd-2"><strong>[IMAGE 3.6]</strong></td><td class="td-ddd-2">Serial Monitor log showing several test runs with TRIM adjustments</td><td class="td-ddd-2">Photo / screenshot</td><td class="td-ddd-2">⬜ still needed</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 3.14]</strong></td><td class="td-ddd-2">Top view of the A-Star 32U4 board — microcontroller, buzzer, buttons A/B/C, power switch and USB connector</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 3.14]</strong></td><td class="td-ddd-2">Top view of the Zumo 32U4 Main Board — microcontroller, buzzer, buttons A/B/C, power switch and USB connector</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr><td class="td-ddd-2"><strong>[IMAGE 3.15]</strong></td><td class="td-ddd-2">Top view of the Zumo 32U4 OLED board with the two DRV8838 motor driver chips highlighted</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 3.7]</strong></td><td class="td-ddd-2">TRIM adjustment flowchart: curve direction → TRIM adjustment → test → repeat</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr><td class="td-ddd-2"><strong>[GRAPHIC 3.8]</strong></td><td class="td-ddd-2">TRIM before and after: a robot pulling to one side, then corrected and driving straight</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
