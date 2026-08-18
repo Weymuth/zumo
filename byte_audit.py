@@ -38,7 +38,7 @@ libcore_lto.a built by --setup), and extract_project.py beside this file.
 import re, sys, os, json, glob, subprocess, tempfile, shutil
 import html as H
 
-VERSION = 'v1.4.0'
+VERSION = 'v1.5'
 
 # The standing control build (rule 30): reproduce this BEFORE trusting any
 # other figure. It MOVES whenever the book re-baselines - S158's option-C
@@ -531,6 +531,126 @@ def arm6(tbl, only=None, quiz_dir=None):
     return not bad
 
 
+
+# ---------------------------------------------------------------- ARM 7
+
+# ARM 7's patterns are DELIBERATELY TIGHT. The bare "By N." form is ARM 5's and
+# STAYS there: inside a COMPILE CHECK window it is unambiguous, and in ARM 7's
+# book-wide scope it matched ordinary arithmetic prose in three banks. A loose "By N." pattern was tried
+# first and matched "0.9 divided by 10." in QUIZ_L14 and "divided by 12.25" in
+# QUIZ_L06 - arithmetic prose that is not a headroom claim at all. Measured
+# before it was narrowed: the loose form returned 4 leads of which 2 were that
+# false positive. A predicate that convicts prose it does not understand trains
+# its reader to skip it (rule 20).
+A7_SPARE = re.compile(r"([\d,]{2,6})\s*(?:bytes\s*)?to spare", re.I)
+A7_HAVE  = re.compile(r"you have\s+(?:<b>\s*)?([\d,]{2,6})\s*bytes", re.I)
+A7_OVER  = re.compile(r"still\s+(?:over,?\s+by\s+|([\d,]{2,6})\s+over)|"
+                      r"\bover,?\s+by\s+([\d,]{2,6})\b", re.I)
+
+
+def a7_sentences(text):
+    """Split on sentence enders so a claim can be judged with its own context."""
+    return re.split(r"(?<=[.!?])\s+", text)
+
+
+def headroom_claims(quiz_dir=None):
+    """-> [(file, kind, n, sentence)] for every spare/over claim in the corpus.
+
+    Scope is the RENDERED lesson text and the LIVE bank questions. A bank's `#`
+    header is provenance and is excluded, because S169 measured that region and
+    found every superseded figure in the book living there legitimately - it
+    narrates what the figures USED to be (rule 37). An arm that reads history as
+    a claim reports the record as a defect.
+    """
+    out = []
+    for p in sorted(glob.glob(os.path.join(HERE, "lessons", "Lesson_*.html"))):
+        txt = H.unescape(re.sub(r"<[^>]+>", " ", open(p, encoding="utf-8").read()))
+        for s in a7_sentences(txt):
+            for m in A7_SPARE.finditer(s):
+                out.append((os.path.basename(p), "spare", _a7n(m.group(1)), s))
+            for m in A7_HAVE.finditer(s):
+                out.append((os.path.basename(p), "spare", _a7n(m.group(1)), s))
+            for m in A7_OVER.finditer(s):
+                g = next((x for x in m.groups() if x), None)
+                if g:
+                    out.append((os.path.basename(p), "over", _a7n(g), s))
+    qd = quiz_dir or QUIZ_DIR
+    for p in sorted(glob.glob(os.path.join(qd, "ZUMO_QUIZ_L*.yaml"))):
+        body = "\n".join(l for l in open(p, encoding="utf-8").read().splitlines()
+                         if not l.lstrip().startswith("#"))
+        for s in a7_sentences(body):
+            for m in A7_SPARE.finditer(s):
+                out.append((os.path.basename(p), "spare", _a7n(m.group(1)), s))
+            for m in A7_HAVE.finditer(s):
+                out.append((os.path.basename(p), "spare", _a7n(m.group(1)), s))
+            for m in A7_OVER.finditer(s):
+                g = next((x for x in m.groups() if x), None)
+                if g:
+                    out.append((os.path.basename(p), "over", _a7n(g), s))
+    return sorted(set(out))
+
+
+def _a7n(s):
+    return int(str(s).replace(",", ""))
+
+
+def arm7(tbl, only=None, quiz_dir=None):
+    """ARM 7 - HEADROOM: a stated spare/over claim equals ceiling minus a compile.
+
+    THE HOLE THIS CLOSES. ARM 2 asserts a lesson's byte FIGURES and ARM 5 asserts
+    the delta/spare/over clauses BESIDE them - but both are scoped to step
+    headings and COMPILE CHECK windows, so a headroom claim written in ordinary
+    prose or inside a bank option is reached by nothing. S169 found three such
+    claims stale in one lesson and its bank, all of them survivors of S168's +54
+    rebaseline: Lesson_16 SS7.4 promised 108 bytes of reserve where the compiled
+    finished build leaves 54 - contradicting SS5 of the same lesson, which says
+    "Green. 54 to spare" - and QUIZ_L16 A07 and B44 both said "still 210 over"
+    where the compile says 264. A07 keyed that as its CORRECT answer while its
+    OWN distractor rationale said 264: a question disagreeing with itself
+    (rule 51), and the exact shape v8.130 forbids, because a student reading the
+    live lesson and answering 264 was marked wrong.
+
+    WHY A COMMA SWEEP COULD NEVER HAVE FOUND THEM. 210, 108 and 54 carry no
+    comma and sit below the byte band, so every figure-shaped predicate in this
+    tool is structurally blind to them. What makes them checkable is not their
+    shape but their RELATION: a headroom claim is ceiling minus a build, so the
+    expectation is DERIVED from the size table and never typed (rule 19).
+
+    STATED SCOPE LIMITS (rule 78), both real and neither papered over:
+      1. It is blind to a claim naming the WRONG build, exactly as ARM 6 is: a
+         stale figure that still equals SOME build's headroom is silent.
+      2. A CONDITIONAL claim is out of scope by property, not by name list
+         (rule 20). L16 offers "26,790 bytes with 1,882 to spare" as a
+         distractor and explains it as "what cutting the buzzer WOULD give" -
+         a hypothetical the book hands to the student, with no payload by
+         design. The subjunctive is what separates a hypothetical from an
+         assertion, so the arm reads it rather than carrying an exemption.
+    """
+    print("ARM 7 - HEADROOM: a stated spare/over claim equals ceiling minus a compile")
+    flash = [v.get("flash") for v in tbl.values() if isinstance(v, dict) and v.get("flash")]
+    spare = {CEILING - f for f in flash if f <= CEILING}
+    over = {f - CEILING for f in flash if f > CEILING}
+    bad, seen, skipped = [], 0, 0
+    for fn, kind, n, sent in headroom_claims(quiz_dir):
+        if n < 10 or n > 5000:
+            continue
+        if re.search(r"\bwould\b", sent, re.I):      # conditional: not an assertion
+            skipped += 1
+            continue
+        seen += 1
+        if n not in (spare if kind == "spare" else over):
+            bad.append((fn, kind, n, sent.strip()[:96]))
+    for fn, kind, n, sent in bad:
+        print("   %-24s %-5s %-7s no build has that headroom -- %s"
+              % (fn, kind, format(n, ","), sent))
+    print("   %d headroom claim(s) checked, %d conditional skipped, %d unmatched"
+          % (seen, skipped, len(bad)))
+    if not seen:
+        print("   COVERAGE: ZERO headroom claims scanned - the parser found nothing")
+        return False
+    print()
+    return not bad
+
 # ---------------------------------------------------------------- ARM 5
 
 DELTA_RE = re.compile(r"\b(?:up|down)\s+([\d,]+)|(?<![\w,])([+\u2212-])\s?([\d,]{2,6})\b")
@@ -908,11 +1028,88 @@ def selftest():
     chk("newproject.html restored byte-for-byte",
         open(MAKER, encoding="utf-8").read() == mbak)
 
+    # ---- CONTROL J (ARM 7: a headroom claim equals ceiling minus a compile) ----
+    # These live HERE, not in a session transcript. S167 and S168 each wrote a
+    # claim-audit arm, each paid for it, and each threw it away with the session,
+    # so S169 rebuilt it from scratch a third time. An arm whose controls do not
+    # ship is an arm the next session pays for again.
+    print("\nCONTROL J (ARM 7: HEADROOM claims)")
+    l16 = os.path.join(HERE, "lessons", "Lesson_16.html")
+    q16 = os.path.join(QUIZ_DIR, "ZUMO_QUIZ_L16.yaml")
+    lbak = open(l16, encoding="utf-8").read()
+    qbak = open(q16, encoding="utf-8").read()
+    try:
+        chk("clean tree is SILENT", arm7(tbl_h) is True)
+
+        # the REAL S169 defect: SS7.4 promised the pre-rebaseline reserve
+        chk("anchor: the SS7.4 reserve line is uniquely findable",
+            lbak.count("You have <b>54 bytes</b>") == 1)
+        if True:
+            open(l16, "w", encoding="utf-8").write(
+                lbak.replace("You have <b>54 bytes</b>", "You have <b>108 bytes</b>", 1))
+            chk("a stale PROSE reserve is LOUD (the S169 defect)", arm7(tbl_h) is False)
+            open(l16, "w", encoding="utf-8").write(lbak)
+
+        # the REAL S169 bank defect, in a CORRECT answer
+        chk("anchor: the A07 over-claim is uniquely findable",
+            qbak.count("and still 264 over.") == 1)
+        if True:
+            open(q16, "w", encoding="utf-8").write(
+                qbak.replace("and still 264 over.", "and still 210 over.", 1))
+            chk("a stale OVER claim in a bank option is LOUD", arm7(tbl_h) is False)
+            open(q16, "w", encoding="utf-8").write(qbak)
+
+        # The conditional skip must be a PROPERTY, not a hole: drop the
+        # subjunctive and the same sentence becomes an assertion, and fires.
+        # ANCHORED ON THE LIVE OPTION, not the bare phrase. S169: the bare
+        # phrase also occurs in this bank's own header narration, so the
+        # first draft's count==1 guard SILENTLY SKIPPED this control and
+        # printed nothing - which reads exactly like a control that passed.
+        # A guard is an ASSERTION here, never a condition (rule 59).
+        _cond = "buzzer would give \u2014 and the buzzer is left"
+        chk("anchor: the conditional claim is uniquely findable",
+            qbak.count(_cond) == 1)
+        open(q16, "w", encoding="utf-8").write(
+            qbak.replace(_cond, "buzzer gives \u2014 and the buzzer is left", 1))
+        chk("a hypothetical made ASSERTIVE is LOUD (the skip is a property)",
+            arm7(tbl_h) is False)
+        open(q16, "w", encoding="utf-8").write(qbak)
+
+        # STATED BLIND SPOT (rule 78), demonstrated rather than claimed: a wrong
+        # build's headroom is still SOME build's headroom, and is silent.
+        if True:
+            open(l16, "w", encoding="utf-8").write(
+                lbak.replace("You have <b>54 bytes</b>", "You have <b>270 bytes</b>", 1))
+            chk("BLIND SPOT: a claim naming the WRONG build is SILENT",
+                arm7(tbl_h) is True)
+            open(l16, "w", encoding="utf-8").write(lbak)
+
+        # COVERAGE: a parser that finds nothing must not pass (rule 27).
+        # An empty quiz dir is NOT enough - the lessons still supply claims, so
+        # that form of the control could never fail. Blind the patterns instead.
+        import tempfile as _tf
+        _sv = (A7_SPARE, A7_HAVE, A7_OVER)
+        try:
+            globals()["A7_SPARE"] = globals()["A7_HAVE"] = globals()["A7_OVER"] = \
+                re.compile(r"(?!x)x")
+            chk("ZERO headroom claims scanned does not pass",
+                arm7(tbl_h, quiz_dir=_tf.mkdtemp()) is False)
+        finally:
+            globals()["A7_SPARE"], globals()["A7_HAVE"], globals()["A7_OVER"] = _sv
+        chk("and the un-blinded arm is SILENT again", arm7(tbl_h) is True)
+    finally:
+        open(l16, "w", encoding="utf-8").write(lbak)
+        open(q16, "w", encoding="utf-8").write(qbak)
+    chk("Lesson_16.html restored byte-for-byte",
+        open(l16, encoding="utf-8").read() == lbak)
+    chk("ZUMO_QUIZ_L16.yaml restored byte-for-byte",
+        open(q16, encoding="utf-8").read() == qbak)
+
     print()
     if fails:
         print("SELFTEST FAILED: " + ", ".join(fails))
         return 1
-    print("ALL NINE CONTROLS PASS - silent when clean, loud when broken.")
+    print("ALL CONTROLS PASS - silent when clean, loud when broken.")
     return 0
 
 
@@ -967,10 +1164,11 @@ def main():
     ok4 = arm4(tbl, only)
     ok5 = arm5(tbl, only)
     ok6 = arm6(tbl, only)
+    ok7 = arm7(tbl, only)
     arm2_leads(tbl, only)
     if a[0] == "--lesson" or "--convention" in a:
         arm3(tbl, only)
-    ok = ok1 and ok2 and ok4 and ok5 and ok6
+    ok = ok1 and ok2 and ok4 and ok5 and ok6 and ok7
     print("byte_audit: " + ("PASS" if ok else "FAIL"))
     return 0 if ok else 1
 

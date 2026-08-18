@@ -2512,7 +2512,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'ac01246be00f9410'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '39e0b7c99cd1e41e'
 #   S160 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical, and the whole
 #   textual diff is TWO COUNT COMMENTS: the header census 22,462 -> 22,464 and `.tok-7cbf6e`
 #   x1501 -> x1503. No selector, no declaration, and not even a usage RANK moved — the rule

@@ -1,5 +1,5 @@
 #!/bin/sh
-# harness_setup.sh v1.0.1 — rebuild the AVR compile harness from pinned upstream SHAs.
+# harness_setup.sh v1.1 — rebuild the AVR compile harness from pinned upstream SHAs.
 #
 # WHY THIS FILE EXISTS. The harness is NOT in this repo (see the RULING note at the
 # bottom), so every session that needs a byte figure has to rebuild it. Until S166 the
@@ -17,6 +17,9 @@
 #
 #   sh harness_setup.sh         (the target dir is read out of pio_harness.sh)
 #
+# PREREQUISITE: the AVR toolchain. `apt-get install -y gcc-avr avr-libc`.
+# This script CHECKS for it and fails with that command; it does not install it.
+#
 # INVOKED WITH `sh`, DELIBERATELY. This file went into the repo through GitHub Desktop and
 # arrived tracked as 100644 — the executable bit did not survive the transfer, so `./harness_setup.sh`
 # fails on a fresh clone. Rather than depend on a mode bit that this project's push path does not
@@ -28,6 +31,30 @@
 
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
+
+# THE TOOLCHAIN IS A PREREQUISITE AND THIS SCRIPT DOES NOT INSTALL IT.
+# Found S169: a fresh container has NO avr-gcc at all. Without this check the
+# clones all succeed, the core build then fails inside pio_harness.sh, and
+# `set -e` kills the script on a line that has nothing to do with the cause -
+# so the operator reads a git/build error and goes hunting for a bad pin.
+# CHECK rather than INSTALL, deliberately: provisioning the machine is a bigger
+# and less reversible move than this script's job (rebuild the harness from
+# pinned SHAs), it needs privileges this script cannot assume, and a script that
+# silently mutates the box is worse than one that tells you what is missing.
+# The message therefore carries the exact command instead of the tool's own.
+for t in avr-gcc avr-g++ avr-size avr-gcc-ar; do
+  command -v "$t" >/dev/null 2>&1 || {
+    echo "FAIL: $t not found - the AVR toolchain is not installed."
+    echo "      This script builds the harness; it does not provision the machine."
+    echo "      Install it first, then re-run:"
+    echo ""
+    echo "          apt-get install -y gcc-avr avr-libc"
+    echo ""
+    echo "      Verified S169 on gcc-avr 7.3.0 / avr-libc 2.0.0+Atmel3.7.0, which"
+    echo "      reproduces all eight standing controls (L11 after_step_1 = 20,592)."
+    exit 1
+  }
+done
 
 # The target is DERIVED from pio_harness.sh, not accepted as an argument. An earlier
 # draft of this script took a target directory, cloned into it, and then ran
