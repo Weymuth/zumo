@@ -13,7 +13,7 @@ EIGHT CONTROLS · `callout_id` **1125/0** · `keyterm_prefix` 0 to convert · 16
 **1,242** questions · census **40,890** · `site_parity` PARITY on two consecutive runs ·
 `build_css --check` current at 574 rules · `image_audit --check` current · `next_pointer` clean.
 
-**33 files changed, 0 new, 1 deleted.** Fifteen lessons (all but L12) · sixteen banks · `newproject.html` ·
+**12 files changed on the post-push pass** (L15 · ten banks · `newproject.html`), plus `ZUMO_SUPER_BIBLE.md`, `LIVE_ZUMO_TEXTBOOK.md` and this handoff. Fifteen lessons (all but L12) · sixteen banks · `newproject.html` ·
 `ZUMO_SUPER_BIBLE.md` · `ZUMO_AFTER_LAUNCH.md` · `LIVE_ZUMO_TEXTBOOK.md` · **`ZUMO_S168_HANDOFF.md` new**
 and **`ZUMO_S167_HANDOFF.md` deleted**.
 
@@ -54,22 +54,26 @@ therefore REWORDED rather than the mask relied on. **NINE gates share the same t
 measured, not fixed, because widening nine gates three weeks from launch is a blast radius nobody has
 measured (rule 26).
 
-## 4. THE DOUBLE CHECK CAUGHT THE SESSION'S OWN LESSON, ONE LAYER ALONG.
+## 4. THREE PREDICATES, THREE UNDER-REACHES, AND EVERY ONE WAS A WORD LIST.
 
-A WIDER predicate over the delivered files returned **33 survivors the sweep could not reach** — the
-`-ise` family and `defence`, none of them in the word list the first sweep was assembled from.
-**§24.6c committed inside the entry that cites §24.6c.** The book was ALREADY US-dominant on every one
-(`initialize` 32:17, `optimize` 11:7, `categorize` 3:1), so this was never a second ruling, only a second
-reach — and **`defence` ×6 in `QUIZ_L16` sat against `defense` ×1 in `Lesson_16` itself**, the `L08_B21`
-shape a seventh time.
+The sweep was declared complete three times and was wrong three times. The first list missed the `-ise`
+family and `defence` (**33 survivors**). The second missed **its own words' INFLECTIONS** — `organises`,
+`summarises`, `generalises`, `recognises`, `normalises`, the `-ises` forms of words already fixed bare —
+found only by an arm run in the PUSHED clone. Only the fourth predicate closed it, and it closed because
+it **derives** candidates instead of enumerating them: any `\w*is(e|es|ed|ing|er|ation)` whose `-iz` twin
+is a real word, plus the non-`-ise` British set.
 
-**And two survivors were written by this session's own prose.** The Maker changelog entry spelled
-`centre` and `travelled` inside the sentence asserting the Maker contained neither — **v8.109's trap
-verbatim**, a sentence asserting a zero about a file it has just falsified. Reworded, not masked.
+**THE RULE, IN ITS STRONG FORM: a spelling sweep's predicate must be MORPHOLOGICAL, never enumerated,
+because a word list is the one instrument that cannot report what it omits.** §24.6c stated it about a
+lead's vocabulary; this is the same rule about the sweeper's own.
 
-**THE REUSABLE HALF: A SPELLING SWEEP'S PREDICATE IS A WORD LIST, AND A WORD LIST IS THE ONE THING THAT
-CANNOT TELL YOU WHAT IT OMITS.** The only honest close is a SECOND, WIDER list run over the delivered
-files — which is what found these. Run it before believing any sweep of this shape is complete.
+**And two survivors were written by this session's own prose** — the Maker changelog spelled `centre` and
+`travelled` inside the sentence asserting the Maker contained neither, v8.109's trap verbatim. Reworded.
+
+**READING did the last mile, not the predicate.** 27 real sites separated from **15 false positives that
+are US spelling too** — `compromise` ×7, `premise`, `advertised` ×2, `improvising`, `imprecise`,
+`specialist` (§16.15). **DJ ruled `grey` STAYS**: four sites, all prose, read as a colour word rather than
+a spelling. 23 shipped.
 
 
 ---
@@ -151,8 +155,8 @@ unmeasured. **Both were measured and handed over; neither ruling was taken.**
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`a430cf7`**. Census **40,890**.
-Bible **v8.160.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.6** ·
+Fresh-clone verified at **`75dd9ea`**. Census **40,890**.
+Bible **v8.160.2** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.7** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
@@ -184,4 +188,4 @@ Instruments: `book_gates` **v1.71.0** · `lesson_inventory` **v1.3.5** ·
 `pio_harness.sh` **v3.0** ·
 `going_deeper` **v01.6.1**.
 
-Lessons: L01 v03.30.1 · L02 v03.21.5 · L03 v03.43.2 · L04 v04.29.2 · L05 v04.29.1 · L06 v04.32.4 · L07 v04.31.5 · L08 v04.32.1 · L09 v05.27.4 · L10 v02.30.3 · L11 v02.31.1 · L12 v01.33.1 · L13 v02.32.0 · L14 v02.35.1 · L15 v02.31.6 · L16 v02.26.4.
+Lessons: L01 v03.30.1 · L02 v03.21.5 · L03 v03.43.2 · L04 v04.29.2 · L05 v04.29.1 · L06 v04.32.4 · L07 v04.31.5 · L08 v04.32.1 · L09 v05.27.4 · L10 v02.30.3 · L11 v02.31.1 · L12 v01.33.1 · L13 v02.32.0 · L14 v02.35.1 · L15 v02.31.7 · L16 v02.26.4.
