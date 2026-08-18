@@ -78,6 +78,140 @@ a spelling. 23 shipped.
 
 ---
 
+# S168 OPENS HERE — L13-03 AND L13-01, DESIGN RULED, COST MEASURED
+
+**DJ ruled candidate D at S167 close, and the expensive half is already done: the design is settled and
+the byte cost is compiled rather than estimated. S168 opens on BUILDING, not on re-deciding.**
+
+
+## THE TRIPLE CHECK CHANGED THE ARC — READ THIS BEFORE BUILDING
+
+**The defect is THREE MOVES WIDE AND FOUR LESSONS DEEP, not one move in one lesson.** Verifying a
+proposed step title against the artefact killed a superlative and enlarged the finding (§16.16).
+
+```
+turnDegreesGyro(90.0 * sweepDir);   <- returns StopReason, DISCARDED
+driveDistance(ROW_STEP_CM);          <- returns StopReason, DISCARDED
+turnDegreesGyro(90.0 * sweepDir);   <- returns StopReason, DISCARDED
+```
+
+**THE KILL SWITCH IS DEAD FOR THE WHOLE CORNER** — press B during either turn or the sidestep and the
+robot finishes the maneuver anyway. That is C3's subject, live, in the last in-scope lesson.
+
+**TWO INDEPENDENT INSTRUMENTS AGREE (§24.13, a DIFFERENT METHOD).** A parser deriving the
+returning-function set out of `RobotMotion.h` finds **9 calls using the return and 3 discarding it**, at
+lines 495-497. The COMPILER, with every `StopReason` declaration marked `warn_unused_result`, names the
+same three. **ARM 2 WAS BLIND ON ITS FIRST RUN AND REPORTED PASS** — `pio_harness.sh` compiles with `-w`
+and `2>/dev/null`, so the instrument could not speak. Re-run directly with warnings on, it fires; a
+SEEDED fourth discard takes it **3 -> 4** (rule 59: a control that cannot fail is not evidence).
+
+**AND THE THIRD ARM IS WHAT CHANGED THE ARC:**
+
+| lesson | StopReason fns | discarded |
+|---|---|---|
+| L10 / L11 / L12 | 5 / 5 / 6 | **0** |
+| L13 / L14 / L15 / L16 | 7 | **3 each, same three lines** |
+
+**The corner is not an L13 defect. L13 introduces it and L14, L15 and L16 INHERIT it unchanged**, so the
+kill switch is dead through the corner in every build from L13 to the capstone. **One fix propagates by
+inheritance** — but so does its byte cost.
+
+**PRICED BEFORE IT IS RULED (rule 70), compiled not estimated:**
+
+| build | before | after | delta | spare after |
+|---|---|---|---|---|
+| `13/finished` | 25,198 | 25,244 | **+46** | 3,428 |
+| `16/finished` | 28,564 | **28,642** | **+78** | **30** |
+
+**IT FITS AND NO TRADE IS OWED — BY THIRTY BYTES**, in the lesson whose entire subject is that thin
+margins bite. Verify that figure again on a scratch-built harness before writing a word of L16, and if
+it has moved, price the trade before touching the Maker.
+
+## THE DEFECT, IN THE LESSON'S OWN WORDS
+
+`case SWEEPING_ZONE` drives a row, decides wall-or-victim, then fires the sidestep with
+`driveDistance(ROW_STEP_CM)` and turns again — **forever**. There is no completion condition, so the
+robot eventually sidesteps into the far wall. L14 §8's 10x table already lists *Rescue zone exit — 10
+trials* for a behaviour that does not exist. That is **L13-03**, GPT's #1 algorithmic hole in L13, and
+it is ADJUDICATED AGREE.
+
+**L13-01 is the same sentence one clause along:** Step 5's `if (reason == STOP_KILL)` is the only
+branch on the return, so a leg that ran out `MAX_ROW_CM` because the prox MISSED the wall is recorded
+as a wall. `driveUntil()` reports three reasons and the sweep reads one.
+
+## THE RULING — CANDIDATE D, WATCH THE SIDESTEP
+
+```
+driveDistance(ROW_STEP_CM);        ->   if (driveUntil(ROW_STEP_CM) == STOP_PROX) {
+                                          currentState = SWEEP_DONE;
+                                          showStatus();
+                                          break;
+                                        }
+```
+
+**Four candidates were compiled against the live `13/finished` (25,198, 3,474 spare) and ALL FOUR FIT** —
+A row count **+42** · B prox-after-the-turn **+42** · C covered area **+72** · **D watched sidestep +34**.
+**Byte cost is therefore NOT the discriminator, and that is itself the finding**: this was a teaching
+decision, not a budget one.
+
+**D wins on three grounds, in order of weight.** (1) It fixes an inconsistency the lesson ALREADY has
+vocabulary for — L13's whole thesis is that an interruptible move must report why it ended, and the
+corner's three calls all discard theirs; the completion condition falls out of watching the middle one.
+(2) The sensor is already aimed: after the first 90 degree turn the robot faces along the sidestep, front
+prox square on the far wall. **B uses the same geometry but checks BEFORE moving**, so it can command a
+full `ROW_STEP_CM` into a wall it is already touching; D detects and stops in one call. (3) Cheapest,
+and adds no blank — A and C each need a number a student cannot derive without measuring the room, and
+**A is open-loop on completion, the exact thinking L11 spends a lesson retiring.**
+
+**KEEP A AS THE STRAWMAN THE LESSON ARGUES AGAINST.** A row counter is what a student reaches for first,
+and the reveal is that it stops you short of the wall or marches you into it. Do not delete the idea —
+teach against it.
+
+## THE FOUR SEATING DECISIONS (§24.17 and §24.19, decided and reported)
+
+1. **`Step 6b — The Blind Corner`, NOT a challenge and NOT a renumbered Step 7.** The title is the
+   complement of Step 4's **The Watchful Leg** — Leg against Corner, Watchful against Blind — so a student
+   who met the move that reports two steps ago reads the title and already knows what the step will do. L13 runs Step 1 *The Numbers,
+   the Names, the Reasons* / 2 *The Doorman* / 3 *Wire the Door* / 4 *The Watchful Leg* / 5 *The Sweep
+   (Walls Only)* / 6 *The Witness*. **A sweep that never ends is not optional polish** — it is a student
+   whose robot marches into the wall in front of the class in week 9 of the Fall term. The `b` suffix is
+   S157's precedent verbatim: it moves no step numbers, no catch-up doors, no `KINDS` rows and no bank
+   citations, where a real Step 7 moves all of them.
+2. **THE STUDENT DISCOVERS IT IN §7D. DO NOT HAND IT OVER.** §7D already runs the full sweep and already
+   stages a false victim on purpose; it now also says watch what happens AFTER THE LAST ROW. The robot
+   sidesteps into the wall in front of them. Then the question, which answers itself because they built
+   the tool in Step 1: **"Every move in this program says why it ended. Why is the sidestep the only one
+   you fire blind?"** A fill-in-the-blank throws that away.
+3. **`SWEEP_DONE` IS A NEW STATE.** Reusing `STOPPED` saves an enum value and a display case and loses
+   the one distinction that matters at 9pm in the lab: **the robot FINISHED** versus **the robot QUIT**.
+   And a state machine gaining a state that names a distinction is on-thesis for the lesson whose subject
+   is two outcomes that look identical until you ask the right instrument.
+4. **L13-01 FOLDS INTO THE SAME CARD.** D as sketched branches on `STOP_PROX` only, so it kills the kill
+   switch during the sidestep — the identical defect as L13-01. **One card, one contract, both fixes:**
+   *the leg ended; which of the three reasons was it?* Teaching them apart teaches the same thing twice
+   and lets a student fix one and keep the other.
+
+## WHAT S168 OWES
+
+- `after_step_6b` cut from the built state (**§11 EXTRACTION, never reconstructed**), `step_7`'s door
+  repointed, and the new `KINDS` row labelled.
+- The L13 byte chain **recompiled and every delta RE-DERIVED** — Step 6b's checkpoint becomes a banked
+  number, so it must be right before the bank is touched (v8.130: an auto-graded gate that punishes the
+  attentive is worse than no gate).
+- ~19 L13 payloads; the 37 inheriting L14/L15/L16 payloads move with L13's `finished`. **`gate_payload_match`
+  will be RED at every intermediate state by construction** — green at L13-unconverted and green again
+  only at L16 (S157's rollout shape). That is the correct checkpoint, not a defect.
+- The `QUIZ_L13` arc walked in the SAME session (READ -> FIX -> QUIZ). The bank already grades the guard
+  conditions in `L13_A17` and the assumptions in `L13_A17b`; both are touched by this change.
+- §8's troubleshooting table gains the row this creates, and L14 §8's *Rescue zone exit* line finally
+  names a behaviour that exists.
+
+**BEFORE ANY OF IT: the tag-strip measurement.** ~30 minutes, and it answers whether the gates that will
+certify this work can see past their own predicates. **Measure, record, do NOT widen** — a predicate
+widened against an unmeasured population is the mistake S167 made four times.
+
+---
+
 # S168 NEXT
 
 - **THE TAG-STRIP BLIND REGION IS THE LARGEST OPEN INSTRUMENT ITEM.** Nine gates use
@@ -111,6 +245,65 @@ a spelling. 23 shipped.
   `ZUMO_L03_TEMPLATES.md` staging · Bible §14 TDP-canon entry · day-by-day grid + syllabus.
 - **The poster is a GRADED deliverable** (DJ, S159). **Photography is OFF the critical path** (DJ, S156).
 - **Fall launch Sept 8 — three weeks out.**
+
+---
+
+# TWO INSTRUMENT FIXES S167 EARNED — BUILD THEM IN S168
+
+**Both would have prevented what S167 spent a day finding, and neither is speculative: each has a
+named defect behind it that this repo actually shipped.**
+
+## 1. `pio_harness.sh` COMPILES WITH `-w` AND `2>/dev/null`, SO THE COMPILER CANNOT SPEAK
+
+Line 21 reads `CCF="$DEF -Os -w …"` and line 31 pipes `2>/dev/null`. **The one instrument in this repo
+that could have caught the blind corner was gagged.**
+
+**MEASURED, NOT ARGUED (S167):** marking every `StopReason` declaration `warn_unused_result` and
+compiling through the harness printed **PASS and nothing else**. Compiled directly with `-Wall` and
+stderr open, the same source names all three discarded returns at lines 495-497, and a SEEDED fourth
+takes it **3 -> 4**. The harness was the difference between silence and three warnings.
+
+**AND IT HAD BEEN SILENT FOR FOUR LESSONS.** The corner has been in L13, L14, L15 and L16 since the
+S158 rollout gave those primitives a return; nothing surfaced it because nothing was listening.
+
+**THE FIX IS ONE FLAG AND THE SCOPE QUESTION IS THE REAL WORK.** `-Wunused-result` needs the
+declarations marked `warn_unused_result` to fire, which is a `RobotMotion.h` edit reaching **every
+payload from L10 onward** — so this is NOT a one-line change to a shell script, it is a header change
+priced across the Maker. **Measure the population before writing anything** (rule 34): how many call
+sites across all payloads discard a `StopReason`, and are they all defects or are some deliberate?
+**S167 measured L10-L16 finished builds only** — L10/L11/L12 discard zero, L13-L16 discard three each.
+The other ~180 payloads are UNMEASURED and that is a stated gap, not a claim.
+
+**Second question, cheaper and separable:** should the harness stop swallowing stderr regardless? A
+build tool that hides warnings is an instrument that cannot report, and **`-w` also hid whatever else
+the compiler has been trying to say for 160 sessions.** Turning stderr on and READING one clean build
+is the first move — it costs nothing and it may return more than this one finding.
+
+## 2. NOTHING IN THIS REPO CHECKS A NUMBER STATED IN PROSE
+
+S162 recorded that nothing here reads prose; **S167 put five compiled figures into LIVE.md, the Bible
+and this handoff, and not one of them is asserted by anything.** The claim-audit arm written at S167
+close re-derived all eleven and passed — **and it was thrown away when the session ended.**
+
+**THE PREDICATE IS ALREADY KNOWN AND IT IS NARROW ON PURPOSE (rule 20, rule 78):** a byte-shaped figure
+that a session document states ALONGSIDE A NAMED BUILD must equal that build's compile. `byte_audit`
+ARM 6 already does exactly this for QUIZ BANKS and its scope limit is written down; **this is ARM 6
+pointed at `LIVE_ZUMO_TEXTBOOK.md` and the handoff instead of at a bank.** Do not widen it to every
+number in every document — a figure with no named build beside it is not a claim this can check, and
+**an instrument built on what you can reach rather than on what the property requires is the wrong
+instrument** (S165).
+
+**CONTROLS IT OWES, one per invocation:** a stale figure beside its own build label is LOUD · rewording
+a sentence that carries no figure is SILENT (blinding) · zero figures scanned FAILS on coverage
+(rule 27) · and a HISTORICAL per-session block is correctly OUT of scope, because **S165's version of
+this arm first reported fifteen failures that were all correct as history** — the arm was unscoped, not
+the document.
+
+**THE HONEST CAVEAT:** neither of these would have caught most of what S167 actually found. **Four of
+five findings this session were wrong SENTENCES, not wrong numbers** — a spelling predicate that could
+not report its own omissions, a claim asserted in three files and corrected in one, a section seated in
+the wrong place. **Nothing gates a sentence, and these two instruments do not change that.** They close
+two named holes; they do not close the class.
 
 ---
 
@@ -155,8 +348,8 @@ unmeasured. **Both were measured and handed over; neither ruling was taken.**
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`75dd9ea`**. Census **40,890**.
-Bible **v8.160.2** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.7** ·
+Fresh-clone verified at **`543ca21`**. Census **40,890**.
+Bible **v8.160.7** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.7** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
