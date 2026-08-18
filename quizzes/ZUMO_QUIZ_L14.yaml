@@ -1,7 +1,25 @@
 # ZUMO READING QUIZ BANK — LESSON 14
 # Competition Prep · Trust Is Earned at Boot — Reliability as an Engineering Skill
 #
-# Bank version: v1.0.6
+# Bank version: v1.0.7
+# Verified against: S168 — the L13 Step 6b arc, which moved every build from L13 onward. This
+#   bank's figures are the L13->L14 chain and all six live sites were re-derived AGAINST A COMPILE
+#   rather than swapped by pattern: A05's 25,198 -> 25,246 and 25,942 -> 26,000, A09's up-744 ->
+#   up-754, A11's unchanged-figure, and two distractors.
+#   ONE DELTA MOVED AND THAT IS WHY THIS IS A READ RATHER THAN A RE-BASELINING: Step 3 is +754,
+#   not +744, because L13's fix lands inside code Step 2 and Step 3 both reach. The other two
+#   deltas the lesson teaches with SURVIVED — 7C match mode is still 56 fewer and B1 is still
+#   750 smaller (it was 740), and B2/B3/B4 are still byte-identical to correct.
+#   Lesson_14's own PROSE carried SIX stale figures that no arm reaches — ARM 2 states its scope
+#   as lessons that put figures in step headings, which is L15 and L16 only — so they were found
+#   by reading the lesson, not by an instrument, and every one was re-derived and its arithmetic
+#   re-checked against the compiled table. Lesson_14 -> v02.35.2.
+#   AND THE TRIPLE CHECK FOUND FIVE MORE IN THIS BANK, WHICH IS WHY THE ARM EXISTS: a pattern
+#   sweep over the six known spellings missed 25,886 x3 and 25,202 x2, because they are written
+#   INSIDE prose options rather than as bare figures. An independent arm asserting EVERY comma
+#   figure in the file against the compiled table named all five. 25,886 -> 25,944 and
+#   25,202 -> 25,250, with B1's delta moving 740 -> 750. A word list is the one instrument that
+#   cannot report what it omits (S167's rule, reached from the figure side).
 # Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
 #   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
 #   but those substitutions and the version line — so this pin bump is earned by a closed diff
@@ -106,10 +124,10 @@
 
 lesson: "L14"
 title: "Competition Prep — Trust Is Earned at Boot"
-bank_version: "1.0.6"
+bank_version: "1.0.7"
 source:
-  lesson_14: "v02.35.1"
-  lesson_13: "v02.32.0"
+  lesson_14: "v02.35.2"
+  lesson_13: "v02.33.0"
   lesson_12: "v01.33.1"
   lesson_11: "v02.31.1"
   lesson_08: "v04.32.1"
@@ -919,12 +937,12 @@ sets:
         points: 1
         stem: "What byte count do Steps 1 and 2 both compile to?"
         options:
-          - text: "25,198"
+          - text: "25,246"
             correct: true
-          - text: "25,942"
+          - text: "26,000"
             correct: false
             why: "That is Step 3 onward, once selfTest() is called."
-          - text: "25,202"
+          - text: "25,250"
             correct: false
             why: "That is Mystery B1 — the build whose self-test was deleted by an early return. See the Sabotage section."
           - text: "20,592"
@@ -972,12 +990,12 @@ sets:
         points: 1
         stem: "Step 3 adds one line: the call to selfTest(). What does the build do?"
         options:
-          - text: "Jumps to 25,942 — up 744, as the linker finally pays for the whole function and its strings at once"
+          - text: "Jumps to 26,000 — up 754, as the linker finally pays for the whole function and its strings at once"
             correct: true
           - text: "Grows by about 12 bytes, the cost of one function call"
             correct: false
             why: "The call is cheap; what it costs is the entire function, which had been dropped until something referenced it."
-          - text: "Stays at 25,198, because the function was already compiled in Step 2"
+          - text: "Stays at 25,246, because the function was already compiled in Step 2"
             correct: false
             why: "Compiled is not the same as linked in. Step 2's binary held no selfTest at all."
           - text: "Shrinks, because the compiler can now inline the checks"
@@ -989,15 +1007,15 @@ sets:
         points: 1
         stem: "Step 4 guards three delay(600) calls with if (!COMPETITION_MODE), and the switch is still false. What does the build weigh?"
         options:
-          - text: "25,942 — unchanged, because the compiler folds if (!false) into nothing and keeps the delay"
+          - text: "26,000 — unchanged, because the compiler folds if (!false) into nothing and keeps the delay"
             correct: true
-          - text: "25,886 — the guards themselves cost 56 bytes"
+          - text: "25,944 — the guards themselves cost 56 bytes"
             correct: false
-            why: "25,886 is what you get when the switch is flipped to true, in Section 7C."
+            why: "25,944 is what you get when the switch is flipped to true, in Section 7C."
           - text: "Slightly more, because each guard adds a comparison at runtime"
             correct: false
             why: "COMPETITION_MODE is a compile-time constant, so there is no runtime comparison to pay for."
-          - text: "25,198, because the guards remove the delays"
+          - text: "25,246, because the guards remove the delays"
             correct: false
 
       - id: L14_A07
@@ -1014,7 +1032,7 @@ sets:
         points: 1
         stem: "You set COMPETITION_MODE to true and rebuild. What changes, and by how much?"
         options:
-          - text: "The build drops to 25,886 — 56 fewer bytes: the three demo pauses, plus the two motor commands the calibration guard removes"
+          - text: "The build drops to 25,944 — 56 fewer bytes: the three demo pauses, plus the two motor commands the calibration guard removes"
             correct: true
           - text: "The build drops by about 1,800 bytes, because the narration strings go too"
             correct: false
@@ -1132,7 +1150,7 @@ sets:
         points: 1
         stem: "Mystery B1 plants return true; as the first line of selfTest(). The build gets SMALLER. By how much, and why?"
         options:
-          - text: "740 bytes smaller, at 25,202 — every line after the early return is unreachable, so the four checks, the report card and all the strings are garbage-collected out of the binary"
+          - text: "750 bytes smaller, at 25,250 — every line after the early return is unreachable, so the four checks, the report card and all the strings are garbage-collected out of the binary"
             correct: true
           - text: "740 bytes smaller, because the compiler replaces the function with a single return instruction and keeps the strings for later"
             correct: false

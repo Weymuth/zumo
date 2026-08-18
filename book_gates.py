@@ -2,7 +2,67 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.71.0'
+VERSION = 'v1.72.3'
+# v1.72.3 (S168): §27.11 digest final for the session, after the L15 enum edit and the L13
+#                 7E/B3 code blocks. Rank-only again: 574 rules, 2,033 declarations,
+#                 coverage 22,464 -> 22,512 attributes, no declaration block moved.
+# v1.72.2 (S168): §27.11 digest re-baselined a SECOND time in the same session, after the
+#                 rest of the L13 arc landed (two §8 rows, §7D's line, the figure sweep in
+#                 L15/L16). Still rank-only: 574 rules, 2,033 declarations, every block
+#                 byte-identical, .p-ta-right above .td-ddd-2 and three count comments.
+#                 Coverage 22,464 -> 22,503 attributes. NOTE FOR THE NEXT SESSION:
+#                 `strip_inline --restore` does NOT respect the held LESSON STRIP block, so
+#                 the documented restore -> build -> apply cycle rewrites the strip to inline
+#                 styles in all sixteen lessons. The stylesheet here was regenerated in a
+#                 SCRATCH COPY and only css/book.css brought back. Measured, not fixed.
+# v1.72.1 (S168): BASELINES MOVED FOR L13 STEP 6B, no gate logic touched. Image references
+#                 1,207 -> 1,208 (the step's THE GOAL callout lands one bullseye mark);
+#                 gate 59's callout total 1,125 -> 1,127 (THE GOAL + its STILL GREEN
+#                 checkpoint), with build_family_map's denominator moved in the same commit
+#                 because the gate reads that generator's own line; and the §27.11 digest
+#                 790d5735 -> b440f054. THE STYLESHEET MOVE IS RANK-ONLY: 574 rules and
+#                 2,033 declarations UNCHANGED, every declaration block byte-identical, and
+#                 the entire textual diff is three usage-count comments plus .p-ta-right
+#                 rising above .td-ddd-2 because Step 6b adds one back-to-top link. Same
+#                 shape as v1.68.1 (S154) and v1.68.7 (S160); resolved styling is identical
+#                 by construction when no block moved.
+#                 THE THIRD BOX WAS DEMOTED TO PROSE RATHER THAN SEATED: a THINK ABOUT IT
+#                 in L13 would have been the first off-canon 5px #6f7582 block in that
+#                 lesson, and gate 5.1's frozen debt is FROZEN, not a budget.
+# v1.72.0 (S168): THE TAG-STRIP IDIOM NOW LIVES IN ONE PLACE, AND IT HANDLES COMMENTS AS
+#                 COMMENTS. Nine sites ran `re.sub(r'<[^>]+>', ...)` directly; `[^>]+`
+#                 runs from any `<` to the NEXT `>`, so a comment containing a `<` is
+#                 swallowed as one tag and the swallow's boundaries are set by bracket
+#                 placement. S167 exposed it by accident - a retired C1 slogan sat masked
+#                 in the Maker changelog with gate 74 GREEN, and a literal `<pre>` in a
+#                 new entry closed the swallow early and surfaced it.
+#                 MEASURED FIRST, BOTH DIRECTIONS (rule 34): 0 words of RENDERED prose are
+#                 hidden anywhere in the tree - the book escapes body `<` as `&lt;`, so
+#                 that safety is a CONVENTION, not a property of the regex. Comments are
+#                 5,554 words in 583 comments across 20 files, of which 2,715 are
+#                 invisible and 2,839 visible, split arbitrarily; `newproject.html` alone
+#                 is 3,300 words split 520 / 2,780. 0 latent hits - no gate-74 or gate-76
+#                 pattern matched any comment text, hidden or visible - so this closes a
+#                 MASK and repairs no live defect, which is why the whole reroute is
+#                 provably a no-op on the clean tree (gate output BYTE-IDENTICAL).
+#                 THE SCOPE DECISION, WHICH IS THE REAL CONTENT (§16.31 / §16.25 assert a
+#                 claim appears NOWHERE, not merely nowhere on screen): comments are IN
+#                 scope for gates 74 and 76 (`comments='keep'`) and OUT of scope for every
+#                 other site (`comments='drop'`), because everything else asks what a
+#                 READER sees. S167's precedent is the same ruling made by hand - when 74
+#                 fired on the Maker changelog the narration was REWORDED, not masked.
+#                 CONTROLS, one per invocation, from a scratch copy: A seeds the retired
+#                 C1 slogan inside a LESSON comment - LOUD here, and PASS under v1.71.0,
+#                 which is what proves the mask was real. B seeds the retired identity
+#                 claim inside the Maker's changelog comment - 76 LOUD here, PASS under
+#                 v1.71.0. C is the blinding arm: a reworded comment carrying no retired
+#                 phrase leaves both gates SILENT. Coverage is unchanged - 74 and 76 each
+#                 already count files ASSERTED (rule 27).
+#                 STATED BLIND SPOT (rule 78): four OTHER instruments carry the same raw
+#                 idiom - `byte_audit`, `lesson_inventory`, `glossary_convert`,
+#                 `strip_inline` - and are NOT rerouted here. Their populations are
+#                 measured but untouched; widening them is a separate move.
+
 # v1.68.7 (S160): §27.11 stylesheet digest baseline moved for the C2 pass. Rules and
 #                 declarations UNCHANGED at 574/2,033; the entire textual diff is two
 #                 COUNT COMMENTS (header census 22,462 -> 22,464 and .tok-7cbf6e x1501 ->
@@ -445,8 +505,41 @@ def gate(name, bad):
         FAIL.append(name)
 
 
+_HTML_COMMENT = re.compile(r'<!--.*?-->', re.S)
+
+
+def notags(s, comments='drop', sep=' '):
+    """THE ONE TAG-STRIP IDIOM (S168). `re.sub(r'<[^>]+>', ...)` on its own runs from any
+    `<` to the NEXT `>`, so an HTML comment that contains a `<` is swallowed as if it were
+    a single tag - and where the swallow starts and stops is set by where the brackets
+    happen to fall, not by anything meaningful. S167 hit this by accident: a retired C1
+    slogan sat masked in the Maker changelog with gate 74 green, and a literal `<pre>` in
+    a NEW entry closed the swallow early and exposed it.
+
+    MEASURED AT S168, both directions, before anything was changed:
+      - 0 words of RENDERED prose are hidden anywhere in the tree. The book escapes body
+        `<` as `&lt;`, so the swallow never reaches real text - and that safety is a
+        CONVENTION, not a property of this regex.
+      - Comments are 5,554 words across 583 comments in 20 files. 2,715 of those words
+        are invisible to the naive strip and 2,839 are visible, split arbitrarily.
+        `newproject.html` alone is 3,300 words split 520 / 2,780.
+      - 0 latent hits: no gate-74 or gate-76 retired pattern matches any comment text,
+        hidden or visible, so this closes a mask rather than repairing a live defect.
+
+    Comments are handled AS COMMENTS first, then tags:
+      comments='drop'  what a reader sees; a comment is not rendered text (default)
+      comments='keep'  the comment's own text is scanned too - for a gate whose claim is
+                       that something appears NOWHERE, not merely nowhere on screen
+    """
+    if comments == 'keep':
+        s = _HTML_COMMENT.sub(lambda m: sep + m.group(0)[4:-3] + sep, s)
+    else:
+        s = _HTML_COMMENT.sub(sep, s)
+    return re.sub(r'<[^>]+>', sep, s)
+
+
 def txt(s):
-    return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', s)))
+    return re.sub(r'\s+', ' ', html.unescape(notags(s)))
 
 
 files = sorted(glob.glob('lessons/Lesson_*.html'))
@@ -560,7 +653,7 @@ for f in files:
     s = R[f]
     for m in re.finditer(r'<pre.*?</pre>', s, re.S):
         blk = m.group(0)
-        t = re.sub(r'<[^>]+>', '', blk)
+        t = notags(blk, sep='')
         if re.search(r'error:|undefined reference|\[SUCCESS\]|\[FAILED\]|Writing \||Verifying \|', t):
             if '[SUCCESS]' in t and 'color: #6a9955;">[SUCCESS]' not in blk:
                 bad.append(f'{L(f)}@{m.start()}: [SUCCESS] not green')
@@ -1142,7 +1235,7 @@ def _enclosing_reveal(card, pre_start):
 
 
 def _is_finished_code(code):
-    body = html.unescape(re.sub(r'<[^>]+>', '', code))
+    body = html.unescape(notags(code, sep=''))
     if any(k in code or k in body for k in _LAND):
         return 0
     return len([ln for ln in body.splitlines() if ln.strip().endswith((';', '{', '}'))])
@@ -1212,7 +1305,7 @@ for f in files:
         a, b = rs[k], rs[k + 1]
         if b[0] < a[1]:
             continue                                    # nested, not a sibling
-        if re.sub(r'\s+', '', re.sub(r'<[^>]+>', '', s[a[1]:b[0]])):
+        if re.sub(r'\s+', '', notags(s[a[1]:b[0]], sep='')):
             continue                                    # prose between them
         if ('padding' in a[3]) != ('padding' in b[3]):
             bad.append(f'{f}: {a[2]} reveal stacked directly above {b[2]} reveal, '
@@ -1287,7 +1380,7 @@ def _fence_title(s):
                 t = eyebrow.split(d, 1)[1].strip()
                 break
         t = t or html.unescape(spans[-1]).strip()
-        return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', t)).strip().upper()
+        return re.sub(r'\s+', ' ', notags(t, sep='')).strip().upper()
     t = html.unescape(s).strip()
     while t and not t[0].isalnum():
         t = t[1:].lstrip()
@@ -1922,7 +2015,7 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
         seen += 1
         # unescape: glyphs are numeric entities in some lessons (L11/L12), and a matcher that
         # forgets that reports every entity-encoded block as broken. S92 hit this exact bug.
-        label = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', m.group(1)))).strip()
+        label = re.sub(r'\s+', ' ', html.unescape(notags(m.group(1), sep=''))).strip()
         rest = _undecorate(label)
         if rest == fam:
             continue
@@ -1987,7 +2080,9 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1207:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
+if _seen != 1208:                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
+                                      # lands one bullseye mark.
+                                      # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
                                       # 1198 -> 1201 at S135: the three §1 hook figures land. 3
                                       # of the 151 term cards had no key mark; the canon
@@ -2021,7 +2116,7 @@ if _seen != 1207:                     # 1201 -> 1202 at S138: GRAPHIC 4.7 lands 
                                       # L10. stars.svg in INSIGHT 10.113 (the StopReason
                                       # teaching block) plus exclamation-triangle, sticky
                                       # and check-circle in Step 6b's three new callouts.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,207 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,208 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2417,7 +2512,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '790d57359b8acffc'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'ac01246be00f9410'
 #   S160 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical, and the whole
 #   textual diff is TWO COUNT COMMENTS: the header census 22,462 -> 22,464 and `.tok-7cbf6e`
 #   x1501 -> x1503. No selector, no declaration, and not even a usage RANK moved — the rule
@@ -3380,10 +3475,13 @@ try:
         bad.append('... and %d more disagreeing callout(s)' % (_fam_bad - 6))
     if _n == 0:
         bad.append('gate 59 scanned ZERO callouts - a gate that scans nothing passes')
+    # 1125 -> 1127 at S168: L13 Step 6b lands THE GOAL and its STILL GREEN checkpoint.
+    # The step's third box was demoted to prose rather than seat a NEW off-canon
+    # geometry in L13 - gate 5.1's frozen debt is frozen, not a budget.
     # 1120 -> 1125 at S157: INSIGHT 10.113 plus Step 6b's four (card header, WARNING,
     # NOTE, CHECKPOINT). build_family_map assigns all five, UNASSIGNED 0.
-    elif _n != 1125:
-        bad.append('gate 59 saw %d callouts, expected the 1125 gate 47 holds' % _n)
+    elif _n != 1127:
+        bad.append('gate 59 saw %d callouts, expected the 1127 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -4076,7 +4174,7 @@ gate('\u00a710   the planned figure population is whole', bad)
 bad = []
 try:
     _L70 = open('lessons/Lesson_06.html', encoding='utf-8').read()
-    _pres70 = [html.unescape(re.sub(r'<[^>]+>', '', _m.group(1)))
+    _pres70 = [html.unescape(notags(_m.group(1), sep=''))
                for _m in re.finditer(r'<pre[^>]*>(.*?)</pre>', _L70, re.S)]
 
     def _one70(head, want_trim):
@@ -4366,7 +4464,7 @@ for _f74 in _scan74:
         continue
     _seen74 += 1
     if _f74.endswith('.html'):
-        _s74 = html.unescape(re.sub(r'<[^>]+>', ' ', _s74))
+        _s74 = html.unescape(notags(_s74, comments='keep'))
     for _p74, _label74 in _RETIRED74:
         _n74 = len(re.findall(_p74, _s74))
         if _n74:
@@ -4469,7 +4567,7 @@ _pages76 = sorted(glob.glob('lessons/Lesson_*.html')) + ['newproject.html']
 _seenp76 = 0
 for _f76 in _pages76:
     try:
-        _s76 = html.unescape(re.sub(r'<[^>]+>', ' ', open(_f76, encoding='utf-8').read()))
+        _s76 = html.unescape(notags(open(_f76, encoding='utf-8').read(), comments='keep'))
     except Exception as _e76:                                   # noqa: BLE001
         bad.append('%s could not be read (%s)' % (os.path.basename(_f76), _e76))
         continue

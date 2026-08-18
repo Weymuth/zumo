@@ -1,7 +1,18 @@
 # ZUMO READING QUIZ BANK — LESSON 16
 # Nothing Left to Take Away · The Capstone Write-Up
 #
-# Bank version: v1.0.7
+# Bank version: v1.0.8
+#   The lesson_14 and lesson_15 pins move with those files' own figure re-derivations; no
+#   question here asserts either lesson's prose.
+# Verified against: S168 — the L13 Step 6b arc. Every L16 build moved +54 and the whole trade
+#   ladder was re-derived against a compile: 28,340/332 -> 28,402/270, 28,590/+250/82 ->
+#   28,644/+242/28, 28,950/278 OVER -> 29,004/332 OVER, 29,586/914 OVER -> 29,640/968 OVER,
+#   28,882/210 OVER -> 28,936/264 OVER, 28,564/108 -> 28,618/54. TWO FIGURES ARE INFERRED
+#   RATHER THAN COMPILED and are marked as such: the 28,726 mid-trade checkpoint has no
+#   payload, and 26,736 is stated as finished minus the buzzer — both moved +54 on the
+#   ground that every compiled L16 build from Step 2 onward moved exactly +54.
+#   THE LESSON'S ARGUMENT IS UNCHANGED: it still does not fit at Step 3, it still takes three
+#   trades, and B1/B2 are still byte-identical to correct.
 # Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
 #   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
 #   but those substitutions and the version line — so this pin bump is earned by a closed diff
@@ -99,11 +110,11 @@
 
 lesson: "L16"
 title: "Nothing Left to Take Away — The Capstone Write-Up"
-bank_version: "1.0.7"
+bank_version: "1.0.8"
 source:
-  lesson_16: "v02.26.4"
-  lesson_15: "v02.31.7"
-  lesson_14: "v02.35.1"
+  lesson_16: "v02.26.5"
+  lesson_15: "v02.31.8"
+  lesson_14: "v02.35.2"
   lesson_02: "v03.21.5"
   lesson_01: "v03.30.1"
 
@@ -156,12 +167,12 @@ sets:
         points: 1
         stem: "Reading the Section 1 ladder: what is the finished Lesson 15 project, and how much runway is left?"
         options:
-          - text: "28,340 bytes, leaving 332"
+          - text: "28,402 bytes, leaving 270"
             correct: true
           - text: "28,672 bytes, leaving none"
             correct: false
             why: "28,672 is the ceiling itself — the budget after the bootloader takes its 4,096. It is not a program size. §4.1."
-          - text: "28,564 bytes, leaving 108"
+          - text: "28,618 bytes, leaving 54"
             correct: false
             why: "That is where Lesson 16 ENDS, after three trades — not where it starts."
           - text: "24,790 bytes, leaving 3,882"
@@ -783,7 +794,7 @@ sets:
             correct: true
           - text: "Serial out (−704) and the Ziegler–Nichols hint out (−156), and that pair is enough to fit"
             correct: false
-            why: "Those are the first two, and after both the build is 28,726 — still over by 54. The audit does not owe you a round number, and the third trade is what closes it."
+            why: "Those are the first two, and after both the build is 28,780 — still over by 108. The audit does not owe you a round number, and the third trade is what closes it."
           - text: "Serial out and the buzzer out"
             correct: false
             why: "The buzzer is deliberately left as YOUR reserve for the capstone — §7.4 hands it to you."
@@ -901,12 +912,12 @@ sets:
         points: 1
         stem: "Step 1 is your untouched Lesson 15 project. What does it weigh, and how much runway is left?"
         options:
-          - text: "28,340 bytes, with 332 to spare"
+          - text: "28,402 bytes, with 270 to spare"
             correct: true
-          - text: "28,590 bytes, with 82 to spare"
+          - text: "28,644 bytes, with 28 to spare"
             correct: false
             why: "That is Step 2, after the second bell lands. Step 1 is the untouched Lesson 15 build, before you add anything."
-          - text: "28,564 bytes, with 108 to spare"
+          - text: "28,618 bytes, with 54 to spare"
             correct: false
             why: "That is where Lesson 16 ends."
           - text: "28,672 bytes, with none to spare"
@@ -919,9 +930,9 @@ sets:
         points: 1
         stem: "Step 2 adds the second bell — RunMode, showMode(), a mode-aware showScore() and a new gesture. What does it cost?"
         options:
-          - text: "250 bytes, landing at 28,590 with 82 to spare"
+          - text: "242 bytes, landing at 28,644 with 28 to spare"
             correct: true
-          - text: "360 bytes, landing at 28,950"
+          - text: "360 bytes, landing at 29,004"
             correct: false
             why: "That is Step 3, the baseline — and it is the step where the program stops fitting."
           - text: "Nothing — an enum costs no flash"
@@ -937,9 +948,9 @@ sets:
         points: 1
         stem: "Step 3 adds the baseline and the delta row. What happens?"
         options:
-          - text: "28,950 bytes — it does not fit. You are 278 over, one step earlier than expected, and there is no compile-check box because there is nothing green to put in one."
+          - text: "29,004 bytes — it does not fit. You are 332 over, one step earlier than expected, and there is no compile-check box because there is nothing green to put in one."
             correct: true
-          - text: "28,564 bytes — green, with 108 to spare"
+          - text: "28,618 bytes — green, with 54 to spare"
             correct: false
             why: "That is where the lesson ENDS, after both of Step 5's trades. Step 3 is where it stops fitting."
           - text: "It fits comfortably; the wall does not arrive until Step 4"
@@ -972,9 +983,9 @@ sets:
         points: 1
         stem: "Step 4 adds the EEPROM machinery and will not build. What does the linker say?"
         options:
-          - text: "region 'text' overflowed by 914 bytes — the program is 29,586 and the chip holds 28,672"
+          - text: "region 'text' overflowed by 968 bytes — the program is 29,640 and the chip holds 28,672"
             correct: true
-          - text: "region 'text' overflowed by 278 bytes — the program is 28,950"
+          - text: "region 'text' overflowed by 332 bytes — the program is 29,004"
             correct: false
             why: "That is Step 3's overflow, which you hit one step earlier. Step 4 adds 636 bytes of EEPROM machinery on top of it."
           - text: "'EEPROM' was not declared in this scope"
@@ -1010,7 +1021,7 @@ sets:
             correct: true
           - text: "704 bytes — and that is enough; the program is green again"
             correct: false
-            why: "It frees exactly 704 and the program is still 210 bytes over, at 28,882. Read the compile check, then read on: it takes two more trades to close it."
+            why: "It frees exactly 704 and the program is still 264 bytes over, at 28,936. Read the compile check, then read on: it takes two more trades to close it."
           - text: "1,900 bytes — the whole USB serial line from the audit table"
             correct: false
             why: "The audit's ~1,900 is the whole subsystem; the boot block you delete is 704 of it."
@@ -1058,15 +1069,15 @@ sets:
         points: 1
         stem: "After both trades, what does the program weigh, and what does the lesson say the pair of them demonstrates?"
         options:
-          - text: "28,564 bytes with 108 to spare — three trades: one you would have made anyway, one you had to argue yourself into, and one the second trade made obvious"
+          - text: "28,618 bytes with 54 to spare — three trades: one you would have made anyway, one you had to argue yourself into, and one the second trade made obvious"
             correct: true
-          - text: "28,590 bytes with 82 to spare"
+          - text: "28,644 bytes with 28 to spare"
             correct: false
             why: "That is Step 2. Step 5 is the last step in this lesson that changes the byte count at all — Step 6's socket is free."
-          - text: "26,736 bytes with 1,936 to spare"
+          - text: "26,790 bytes with 1,882 to spare"
             correct: false
             why: "That is what cutting the buzzer would give — and the buzzer is left for your enhancement."
-          - text: "28,882 bytes, still over"
+          - text: "28,936 bytes, still over"
             correct: false
             why: "That is after the first trade only."
 
@@ -1222,7 +1233,7 @@ sets:
         points: 1
         stem: "Both Lesson 16 sabotage builds are byte-for-byte the same size as the correct program."
         correct: true
-        why: "Both are 28,564. The compiler will not warn you and the linker will not warn you — only the instruments will, and in this lesson the sabotage is inside the instruments. The lesson calls that the hardest class of bug there is: the lying ruler."
+        why: "Both are 28,618. The compiler will not warn you and the linker will not warn you — only the instruments will, and in this lesson the sabotage is inside the instruments. The lesson calls that the hardest class of bug there is: the lying ruler."
 
       - id: L16_A21
         type: multiple_choice
@@ -1290,13 +1301,13 @@ sets:
         stem: "Match each step of the build to what the compiler said."
         pairs:
           - left: "Step 2 — the second bell"
-            right: "28,590 bytes, +250, and 82 to spare"
+            right: "28,644 bytes, +242, and 28 to spare"
           - left: "Step 3 — the baseline"
-            right: "28,950 bytes — over by 278, and there is no green box to put it in"
+            right: "29,004 bytes — over by 332, and there is no green box to put it in"
           - left: "Step 4 — the EEPROM"
-            right: "29,586 bytes — will not link, over by 914"
+            right: "29,640 bytes — will not link, over by 968"
           - left: "Step 5 — both trades"
-            right: "28,564 bytes, green, 108 to spare"
+            right: "28,618 bytes, green, 54 to spare"
         extra_answers:
-          - "26,736 bytes — what cutting the buzzer would give"
+          - "26,790 bytes — what cutting the buzzer would give"
           - "20,592 bytes — the Lesson 10 finished build"

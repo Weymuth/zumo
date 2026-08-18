@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.32.0 -->
+<!-- Lesson version: v02.33.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.32 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.33 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -233,7 +233,7 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <p>Read <code>STOP_PROX</code>'s comment twice: <em>"wall or victim, the CALLER decides."</em> The primitive reports facts; the state machine interprets them. That split — measurement below, judgment above — is the same one that keeps <code>RobotSensors.cpp</code> from ever setting a motor speed. It is what lets Section 6 test each layer alone.</p>
 <h3 class="h3-c-2e86ab">5.2 The Lawnmower Sweep</h3>
 <div class="div-m-25px0"><img src="../images/L13_GRAPHIC_13-01_lawnmower_sweep.svg" alt="Lawnmower sweep pattern with wall-reset rows" class="img-br-8px"><div class="div-c-666-2">GRAPHIC 13.1 — The sweep. Every row runs wall-to-wall; every wall contact zeroes the accumulated drift. The prox looks ahead of the robot, so rows can be coarser than the robot is wide.</div></div>
-<p>Mow a lawn and you already know the algorithm: run to the far edge, turn, step over one mower-width, turn again, run back. The sweep is exactly that, built from parts you already own — <code>driveUntil()</code> for the rows, <code>turnDegreesGyro()</code> for the corners, <code>driveDistance()</code> for the sidestep. Look at the geometry of what the walls contribute: a row does not end after a <em>guessed</em> distance; it ends <strong>when the wall says so</strong>. Every pass, whatever error TRIM let through and whatever the gyro's corners smeared, the wall wipes the slate. Dead reckoning that gets corrected forty times a run is dead reckoning you can trust.</p>
+<p>Mow a lawn and you already know the algorithm: run to the far edge, turn, step over one mower-width, turn again, run back. The sweep is exactly that, built from parts you already own — <code>driveUntil()</code> for the rows, <code>turnDegreesGyro()</code> for the corners, and one step sideways between them. Look at the geometry of what the walls contribute: a row does not end after a <em>guessed</em> distance; it ends <strong>when the wall says so</strong>. Every pass, whatever error TRIM let through and whatever the gyro's corners smeared, the wall wipes the slate. Dead reckoning that gets corrected forty times a run is dead reckoning you can trust.</p>
 <p>And here is the payoff of a sweep whose rows have <em>consistent length</em>: the row itself becomes a measuring stick. The walls do not move. This row should run about as long as the last one did. So when the prox fires and the odometer says the leg is twenty centimeters <em>short</em> of where the wall stood last pass — the thing ahead is not the wall. <strong>The prox says "something ahead"; the odometer says which something.</strong> Lesson 12 taught you the pattern: when one sensor cannot answer alone, find a second sensor that can call its bluff. The gyro cross-examined the encoders. Now the odometer cross-examines the prox. This is the third time the book has played this card, and it will not be the last — sensor fusion is the whole future of this field.</p>
 <h3 class="h3-c-2e86ab">5.3 Four Blanks, Four Measurements</h3>
 <p>Four new tunables ship as blanks — <code>= 0</code>, with the starting guess in the comment, exactly as always. Fill them from Section 7A's measurements, not from hope:</p>
@@ -678,7 +678,74 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <p><strong>Official RoboCupJunior rule.</strong> Be clear-eyed about the difference, because it is worth points at a real event. §5.6.6 awards a <em>successful victim rescue</em> only when the victim is entirely moved into its designated evacuation point with no part of the robot still touching it — a red triangle for the dead victim, a green one for the two live ones (§3.9.7, §3.10.4). Finding a victim scores nothing on its own. <strong>RoboLore course adaptation.</strong> This course stops at finding, on purpose, and you should say so plainly rather than blur it: your robot solves the sensing half of the problem completely and does not attempt the mechanical half at all. Naming the line you stopped at is engineering. Pretending it is not there is not.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.16">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>25,198 bytes — down 42, and this is the finished build.</strong> Read that again: the finished robot is <em>smaller</em> than Step 5. We disassembled both to find out why: the rewritten hand-off and the recompiled state switch came out tighter than the stubs they replaced — by more than the victim bookkeeping cost. Code you delete pays you back — a preview of Lesson 16, where that becomes the whole game. Total cost of Lesson 13: 408 bytes over Lesson 12. A doorway, a sweep, and a witness — for less than four hundred bytes.</p>
+<p class="p-m-8px000"><strong>25,198 bytes — down 42.</strong> Read that again: the robot after Step 6 is <em>smaller</em> than it was after Step 5. We disassembled both to find out why: the rewritten hand-off and the recompiled state switch came out tighter than the stubs they replaced — by more than the victim bookkeeping cost. Code you delete pays you back — a preview of Lesson 16, where that becomes the whole game. One step left.</p>
+</div>
+<p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
+<h3 class="h3-c-2e86ab">Step 6b — The Blind Corner</h3>
+<div class="callout-2e86ab-bg-e8f4f8" data-family="THE GOAL" data-callout="13.31">
+<div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
+<p class="p-m-8px000">The sweep gets an ending, and the corner starts reporting. Three moves in this program still run blind — and the one in the middle already knows when the job is done.</p>
+</div>
+<p><strong>Do not write anything yet. Run what you have.</strong> Put the robot in the zone with <em>no</em> victim on the floor, press B, and watch it all the way to the end. Not the first row — the last one. Watch what happens after the sweep runs out of floor.</p>
+<details data-reveal="catchup">
+<summary>📦 Catch Up with Project Maker — Step 6 (the build you are about to break)</summary>
+<div class="div-mt-12px">
+<p><a href="../newproject.html?lesson=13&amp;kind=step_6" class="link-c-2e86ab">Open the Step 6 build in Project Maker</a></p></div>
+</details>
+<p>It mows the whole zone. It finds nothing, because there is nothing to find. And then it turns, steps sideways, turns again, and drives a row straight into the wall it just finished parking against — and does it again, and again, until you catch it or the battery does. <strong>Your sweep has no ending.</strong></p>
+<p>Now run it once more and press B <em>during the corner</em> — while it is turning, or mid-sidestep. The robot completes the whole maneuver anyway and only stops at the end of the next row. The kill switch you built in Lesson 10 is <em>dead</em> for that entire stretch.</p>
+<p>Two failures, one cause, and the lesson has been staring at it since Step 4. Here is the corner, exactly as you wrote it:</p><pre>
+      lastRowCm = lastLegCm;
+      rowCount++;
+      turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);
+      driveDistance(ROW_STEP_CM);
+      turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);
+      sweepDir = -sweepDir;
+      <span class="tok-569cd6">break</span>;
+</pre>
+<p><strong>Every one of those three moves returns a <code>StopReason</code>, and every one of them is thrown away.</strong> That is why B does nothing: the move reports that a human stopped it, and nobody reads the report. Your leg, one screen up, does it right — <code>StopReason reason = driveUntil(MAX_ROW_CM);</code> and then a question about the answer. The corner never asks.</p>
+<p><strong>Stop and answer this before you read on.</strong> Every move in this program says why it ended. Why is the sidestep the only one you fire blind? And while you are at it: what is the robot pointing at while it takes that sidestep, and what would it feel if the zone had run out of floor?</p>
+<p>After the first 90° turn the robot is facing <em>along</em> the sidestep — which means the front prox is aimed square at the far wall, the one that ends the sweep. The sensor is already pointing at the answer. The sidestep is not merely <em>a</em> move that should report; it is the move that knows when the job is finished.</p>
+<p>So the sidestep stops being blind. Swap <code>driveDistance()</code> for the watchful twin you built in Step 4:</p><pre>
+      lastRowCm = lastLegCm;
+      rowCount++;
+
+      <span class="tok-7cbf6e">// The corner is THREE moves, and until now not one of them was</span>
+      <span class="tok-7cbf6e">// asked why it ended. The sidestep is the one that also answers</span>
+      <span class="tok-7cbf6e">// "is there any room left?" - if it stops on the prox, the far</span>
+      <span class="tok-7cbf6e">// wall is there and every row has been swept.</span>
+      <span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;
+
+      reason = driveUntil(ROW_STEP_CM);
+      <span class="tok-569cd6">if</span> (reason == STOP_KILL) {
+        currentState = STOPPED;
+        showStatus();
+        <span class="tok-569cd6">break</span>;
+      }
+      <span class="tok-569cd6">if</span> (reason == STOP_PROX) {
+        currentState = SWEEP_DONE;
+        showStatus();
+        <span class="tok-569cd6">break</span>;
+      }
+
+      <span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;
+      sweepDir = -sweepDir;
+      <span class="tok-569cd6">break</span>;
+</pre>
+<p>Read the two kill branches, because they are deliberately <em>not</em> the same shape. The turns get a bare <code>break</code>: <code>turnDegreesGyro()</code> goes through <code>killSwitchPressed()</code>, which already set the state and already put it on the screen — the same reason <code>EXECUTING_TURN</code> has been written that way since Lesson 9. <code>driveUntil()</code> does not; it polls the button itself and leaves the bookkeeping to you, which is why the leg above sets <code>STOPPED</code> by hand and so does this one. Two primitives, two contracts, and you cannot copy one branch onto the other without reading which is which.</p>
+<p>The sweep also needs somewhere to <em>arrive</em>. Add one state to the enum in <code>RobotConfig.h</code>:</p><pre>
+  VICTIM_FOUND,        <span class="tok-7cbf6e">// NEW for Lesson 13: stopped short of the wall - someone is here</span>
+  SWEEP_DONE           <span class="tok-7cbf6e">// NEW for Lesson 13: the far wall - every row is swept</span>
+};
+</pre>
+<p>and one line to <code>showStatus()</code> so the screen can say it:</p><pre>
+    <span class="tok-569cd6">case</span> SWEEP_DONE:         display.print(F("SWEPT"));     <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
+</pre>
+<p><strong>Why a new state, when <code>STOPPED</code> already exists and costs nothing?</strong> Because at nine o’clock at night in the lab, a motionless robot is the most ambiguous object in the room, and there are two completely different reasons it might be sitting there: <em>it finished</em>, or <em>it quit</em>. <code>STOPPED</code> answers neither. <code>SWEPT</code> on the screen answers both. A state machine that gains a state to name a distinction you actually have to act on is a state machine getting better — and naming two outcomes that look identical until you ask the right instrument is what this entire lesson is about.</p>
+<p><strong>The answer you probably reached for first.</strong> Most engineers meet a sweep with no ending and reach for a row counter: mow ten rows and stop. It compiles, it is easy to explain, and it is wrong in both directions at once. Guess low and the robot stops with floor left unswept and a victim still on it; guess high and you are back to driving into the wall. And where would the number come from? You would have to measure the zone — a zone that is a different size at every venue, which is exactly the assumption Section 8A.1 warns you not to bake in. <strong>A row count is open-loop on completion</strong>, and Lesson 11 spent an entire lesson retiring open-loop thinking about distance. Do not put it back for the last move of the last build.</p>
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.33">
+<div class="div-fs-105em">🔩 COMPILE CHECK</div>
+<p class="p-m-8px000"><strong>25,246 bytes — up 48, and <em>this</em> is the finished build.</strong> Forty-eight bytes bought a sweep that ends, a kill switch that works through the corner, and a robot that tells you which of the two happened. Total cost of Lesson 13: 456 bytes over Lesson 12. A doorway, a sweep, a witness, and an ending — for well under five hundred bytes.</p>
 </div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
@@ -874,26 +941,38 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 </details>
 <h3 class="h3-c-2e86ab">7D — The Full Sweep</h3>
 <p>The finished build (Maker: <em>Lesson 13 → Finished</em>), all four blanks filled, silver ball on the floor. Line → strip → announcement → rows → and somewhere mid-row, the stop that is not a wall: <strong>VICTIM FOUND</strong>, with the distance on the screen.</p>
-<p>Watch a full run with your eyes on the <em>walls</em>: every row ends flush against one, no matter what the corners smeared. That is the drift being erased in real time — the landmark doing its quiet work. Then watch a false victim happen on purpose: set <code>VICTIM_SHORT_CM</code> to 2 and watch gyro noise get promoted to a rescue. Set it back to what the margin needs to be. Both failure directions, always.</p>
+<p>Watch a full run with your eyes on the <em>walls</em>: every row ends flush against one, no matter what the corners smeared. That is the drift being erased in real time — the landmark doing its quiet work. And this time let it run to the end of the zone: the sidestep meets the far wall, the screen says <strong>SWEPT</strong>, and the robot stops because it is <em>finished</em> — not because you caught it. Then watch a false victim happen on purpose: set <code>VICTIM_SHORT_CM</code> to 2 and watch gyro noise get promoted to a rescue. Set it back to what the margin needs to be. Both failure directions, always.</p>
 <details data-reveal="catchup">
 <summary>📦 Catch Up with Project Maker — 7D</summary>
 <div class="div-mt-12px">
 <p><a href="../newproject.html?lesson=13&amp;kind=cal_7d" class="link-c-2e86ab">Open 7D — The Full Sweep</a></p></div>
 </details>
 <h3 class="h3-c-2e86ab">7E — The Payoff: Fire the Gyro</h3>
-<p>Lesson 12 proved the gyro beats the encoders <em>on one turn</em>. Here is what that is worth across a whole job. This rung is the finished build with exactly one change — the sweep’s corners go back to the encoder turn (Maker: <em>Lesson 13 → 7E Encoder Turns</em>):</p><pre>
+<p>Lesson 12 proved the gyro beats the encoders <em>on one turn</em>. Here is what that is worth across a whole job. This rung is the finished build with exactly one change — the sweep’s two corner turns go back to the encoder turn — Step 6b's watched sidestep stays exactly as it is (Maker: <em>Lesson 13 → 7E Encoder Turns</em>):</p><pre>
       lastRowCm = lastLegCm;
       rowCount++;
       <span class="tok-7cbf6e">// 7E: the WHEELS decide when the turn is done. Same 90 degrees -</span>
       <span class="tok-7cbf6e">// in theory. Run it on the smooth floor and watch the rows fan.</span>
-      turnDegrees(<span class="tok-b5cea8">90.0</span> * sweepDir);
-      driveDistance(ROW_STEP_CM);
-      turnDegrees(<span class="tok-b5cea8">90.0</span> * sweepDir);
+      <span class="tok-569cd6">if</span> (turnDegrees(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;
+
+      reason = driveUntil(ROW_STEP_CM);
+      <span class="tok-569cd6">if</span> (reason == STOP_KILL) {
+        currentState = STOPPED;
+        showStatus();
+        <span class="tok-569cd6">break</span>;
+      }
+      <span class="tok-569cd6">if</span> (reason == STOP_PROX) {
+        currentState = SWEEP_DONE;
+        showStatus();
+        <span class="tok-569cd6">break</span>;
+      }
+
+      <span class="tok-569cd6">if</span> (turnDegrees(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;
       sweepDir = -sweepDir;
       <span class="tok-569cd6">break</span>;
 </pre>
 <p>Run it on the smooth zone floor and watch the rows. Each encoder corner is off by a few degrees the wheels never felt; each row inherits every corner before it; by row five the "parallel" rows are a fan, and the sweep is inspecting the same patch of floor twice while leaving another patch forever unvisited. Now put <code>turnDegreesGyro</code> back and run again: rows like ruled paper.</p>
-<p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> — the wheels, which the floor lies to, or the gyro, which measures the robot itself. These two builds compile to <strong>exactly the same size</strong> — 25,198 bytes each, because both turn functions are alive in both binaries and only the call site moved — and nothing in that number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
+<p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> — the wheels, which the floor lies to, or the gyro, which measures the robot itself. These two builds compile to <strong>exactly the same size</strong> — 25,246 bytes each, because both turn functions are alive in both binaries and only the call site moved — and nothing in that number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
@@ -920,6 +999,10 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <td class="td-bb-1pxsolid"><code>VICTIM_SHORT_CM</code> too small — corner noise is being promoted to rescues. Widen the margin.</td></tr>
 <tr><td class="td-bb-1pxsolid">Drives right past the silver ball</td>
 <td class="td-bb-1pxsolid"><code>VICTIM_SHORT_CM</code> too large (a victim near the wall reads as the wall), or <code>ROW_STEP_CM</code> so wide the ball sat between rows and off the prox’s sightline.</td></tr>
+<tr><td class="td-bb-1pxsolid">Sweep never ends — keeps sidestepping into the far wall</td>
+<td class="td-bb-1pxsolid"><code>WALL_STOP_COUNT</code> too high to fire on the <em>sidestep</em>: the row-ending wall is close and square, the far wall is met at an angle, and a threshold tuned only on rows can miss it. Re-read it in 7A with the robot facing the far wall. (If the sidestep is still <code>driveDistance()</code>, it is Step 6b that is missing, not a number.)</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-bb-1pxsolid">Screen says SWEPT after one or two rows</td>
+<td class="td-bb-1pxsolid"><code>WALL_STOP_COUNT</code> low enough that the sidestep trips on nothing, or <code>ROW_STEP_CM</code> so wide the step reaches the far wall immediately. The sweep is ending honestly — it is being told the wall is there.</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-bb-1pxsolid">Drives right past the <strong>black</strong> ball</td>
 <td class="td-bb-1pxsolid">Working as measured. That is Section 4.3, not a bug — check your 7A table.</td></tr>
 </table>
@@ -1247,7 +1330,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Four Messed Up Files</span></div></div>
 <div class="div-6f7582">
 
-<p>Four saboteurs, four builds, and here is the frightening part: <strong>two of the four compile to exactly 25,198 bytes — byte-identical to the correct build — and the other two land within 16 bytes of it.</strong> The file size cannot save you. The compiler will not warn you. Only reading the code — and knowing what each line is <em>for</em> — catches these. Each mystery shows you the planted line up front; your job is not to find the typo. It is to explain <strong>why this line produces that symptom.</strong> Every sabotaged build is in the Maker under <em>Lesson 13 → BONUS</em> if you want to watch the crime happen.</p>
+<p>Four saboteurs, four builds, and here is the frightening part: <strong>two of the four compile to exactly 25,246 bytes — byte-identical to the correct build — and the other two land within 16 bytes of it.</strong> The file size cannot save you. The compiler will not warn you. Only reading the code — and knowing what each line is <em>for</em> — catches these. Each mystery shows you the planted line up front; your job is not to find the typo. It is to explain <strong>why this line produces that symptom.</strong> Every sabotaged build is in the Maker under <em>Lesson 13 → BONUS</em> if you want to watch the crime happen.</p>
 <h4 data-challenge="13.m1" data-kind="bonus-sabotage" class="h4-c-6f7582-3">Mystery B1 — The Corkscrew</h4>
 <p>A classmate “tidied” <code>setup()</code>: <em>“both calibrations, together — it’s cleaner.”</em> The planted change:</p><pre>
   calibrateLineSensors();
@@ -1267,7 +1350,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b2_unspent" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 <h4 data-challenge="13.m3" data-kind="bonus-sabotage" class="h4-c-6f7582-3">Mystery B3 — The Stripes of Blindness</h4>
 <p>“I made the sweep twice as fast,” says the saboteur, proudly. And the runs <em>are</em> faster — and the robot misses the silver ball about half the time, on a course where it used to score every run. The planted line:</p><pre>
-      driveDistance(ROW_STEP_CM * <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// as planted: "cover ground faster"</span>
+      reason = driveUntil(ROW_STEP_CM * <span class="tok-b5cea8">2</span>);   <span class="tok-7cbf6e">// as planted: "cover ground faster"</span>
 </pre>
 <details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">

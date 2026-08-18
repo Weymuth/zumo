@@ -1,7 +1,22 @@
 # ZUMO READING QUIZ BANK — LESSON 13
 # Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
 #
-# Bank version: v1.0.6
+# Bank version: v1.0.7
+# Verified against: S168 — STEP 6b, THE BLIND CORNER. L13's sweep gained a completion condition
+#   and its corner started reading the StopReasons it had been discarding, so this bank was
+#   WALKED rather than swept. Six questions rested on the old corner and every one was read in
+#   full: B27 and B54 named driveDistance() as the sidestep's primitive (B27's option retuned and
+#   §5.2's own parts list no longer pins it, so neither the before-quiz nor the prose grades a
+#   primitive the finished build stops using); A15's stem called Step 6 the finished build, which
+#   it no longer is; A16's total moved 408 -> 456 and its distractor's arithmetic with it
+#   (180 + 270 - 42 + 48); A24's and A13's 'the finished size' distractors moved to 25,246; 7E's
+#   pair and B2's byte-identical claim both moved to 25,246 AND BOTH SURVIVE AS CLAIMS - 7E's two
+#   builds still weigh the same as each other, and B2 is still byte-identical to correct.
+#   B3 was patched in its SABOTAGED spelling (driveUntil(ROW_STEP_CM * 2)) so the planted defect
+#   stays the only difference from the finished build.
+#   THREE NEW QUESTIONS grade the new material: A41 why the sidestep is the move that can end the
+#   sweep, A42 why the two kill branches are deliberately different shapes, A43 why SWEEP_DONE is
+#   a new state rather than a reuse of STOPPED. after 41 -> 44, total 97 -> 100.
 # Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
 #   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
 #   but those substitutions and the version line — so this pin bump is earned by a closed diff
@@ -94,9 +109,9 @@
 #
 lesson: L13
 title: Rescue Zone — Flying on Instruments, Navigating Where the Line Cannot Go
-bank_version: "1.0.6"
+bank_version: "1.0.7"
 source:
-  lesson_13: v02.32.0
+  lesson_13: v02.33.0
   lesson_03: v03.43.2
   lesson_06: v04.32.4
   lesson_10: v02.30.3
@@ -553,7 +568,7 @@ sets:
       points: 1
       stem: Which parts is the lawnmower sweep built from?
       options:
-      - text: driveUntil() for the rows, turnDegreesGyro() for the corners, driveDistance() for the sidestep
+      - text: driveUntil() for the rows, turnDegreesGyro() for the corners, and one step sideways between them
         correct: true
       - text: driveUntil() for everything, with different arguments
         correct: false
@@ -994,8 +1009,9 @@ sets:
       points: 1
       stem: driveDistance() is retired in Lesson 13 and replaced everywhere by driveUntil().
       correct: false
-      why: The sweep still uses driveDistance() for the sidestep between rows. driveUntil() takes over
-        only the rows, which must be able to end early.
+      why: driveDistance() still drives the obstacle maneuver you built in Lesson 10. driveUntil() takes
+        over only where a move has to be able to end early — and by the end of Lesson 13 that is the
+        rows AND the sidestep.
     - id: L13_B55
       type: true_false
       cite: §8A.4
@@ -1062,9 +1078,9 @@ sets:
       - text: 24,970 bytes — the enum names cost flash
         correct: false
         why: Enum names nothing uses are free; they exist only for the compiler.
-      - text: 25,198 bytes — the finished size
+      - text: 25,246 bytes — the finished size
         correct: false
-        why: That is Step 6.
+        why: That is Step 6b, the finished build.
     - id: L13_A03
       type: true_false
       cite: §6 Step 1
@@ -1248,9 +1264,9 @@ sets:
         correct: false
         why: Step 4 was explicitly the last free step. Everything after it RUNS, and running code costs
           bytes.
-      - text: 25,198 bytes — the finished size
+      - text: 25,246 bytes — the finished size
         correct: false
-        why: That is Step 6, which is SMALLER than Step 5.
+        why: That is Step 6b, the finished build. Step 6 alone is SMALLER than Step 5.
     - id: L13_A14
       type: multiple_choice
       cite: §6 Step 5
@@ -1272,19 +1288,19 @@ sets:
       type: multiple_choice
       cite: §6 Step 6
       points: 1
-      stem: Step 6 is the finished build. What does the COMPILE CHECK report?
+      stem: Step 6 adds the witness. What does its COMPILE CHECK report?
       options:
-      - text: 25,198 bytes — down 42, and the finished robot is smaller than Step 5
+      - text: 25,198 bytes — down 42, and the robot after Step 6 is smaller than it was after Step 5
         correct: true
       - text: 25,198 bytes — up 42 from Step 5
         correct: false
-        why: Down, not up. That the finished build shrinks is the point Step 6 makes.
+        why: Down, not up. That the build shrinks here is the point Step 6 makes.
       - text: 25,240 bytes — unchanged from Step 5
         correct: false
         why: It changes, and the direction is the surprise.
       - text: 24,790 bytes — back to where Step 1 started
         correct: false
-        why: Lesson 13's whole cost is 408 bytes over Lesson 12, not zero. Step 6 gives back 42 of them,
+        why: Lesson 13's whole cost is 456 bytes over Lesson 12, not zero. Step 6 gives back 42 of them,
           not all of them.
     - id: L13_A16
       type: multiple_choice
@@ -1292,12 +1308,12 @@ sets:
       points: 1
       stem: What is Lesson 13's total cost over the Lesson 12 finished build?
       options:
-      - text: 408 bytes
+      - text: 456 bytes
         correct: true
-      - text: 462 bytes
+      - text: 540 bytes
         correct: false
-        why: That ADDS Step 6's 42 instead of subtracting it. The finished build is smaller than Step 5,
-          which is the whole point of that COMPILE CHECK — 180 + 270 − 42 = 408.
+        why: That ADDS Step 6's 42 instead of subtracting it. Step 6 is smaller than Step 5, which is the
+          whole point of that COMPILE CHECK — 180 + 270 − 42 + 48 = 456.
       - text: 240 bytes
         correct: false
         why: 240 is Step 5's delta alone.
@@ -1447,7 +1463,7 @@ sets:
       stem: 7E swaps the sweep's gyro corners back to encoder turns. What do the two builds' byte counts
         show?
       options:
-      - text: They are identical — 25,198 bytes each, because both turn functions live in both binaries
+      - text: They are identical — 25,246 bytes each, because both turn functions live in both binaries
           and only the call site moved
         correct: true
       - text: The encoder build is 64 bytes larger
@@ -1569,7 +1585,7 @@ sets:
       stem: B2's student measured TRIM honestly and the rows still arc. What is the planted defect, and
         what makes it so hard to catch?
       options:
-      - text: TRIM never reaches the motors, and the build is byte-identical to the correct one at 25,198
+      - text: TRIM never reaches the motors, and the build is byte-identical to the correct one at 25,246
           bytes
         correct: true
       - text: TRIM is applied to the wrong motor, and the build is 8 bytes larger
@@ -1705,3 +1721,54 @@ sets:
       extra_answers:
       - The kill switch stops working mid-leg
       - The victim is announced twice on the same row
+    - id: L13_A41
+      type: multiple_choice
+      cite: §6 Step 6b
+      points: 1
+      stem: Step 6b makes the sidestep watchful. Of the three moves in the corner, why is the
+        sidestep the one that can tell you the sweep is finished?
+      options:
+      - text: After the first turn the robot faces along the sidestep, so the front prox is aimed
+          square at the far wall — the wall that ends the sweep
+        correct: true
+      - text: It is the longest of the three moves, so it has the most time to notice something
+        correct: false
+        why: Length is not the reason. The row is far longer than the sidestep; what matters is
+          what the sensor is pointing at.
+      - text: The gyro reports its angle during the sidestep, and a blocked turn reads short
+        correct: false
+        why: The sidestep is a straight drive, not a turn, and the gyro is not consulted. The
+          front prox is.
+      - text: rowCount reaches its limit during the sidestep
+        correct: false
+        why: There is no row limit. A row count is exactly the answer Step 6b argues against,
+          because the number would have to come from measuring the zone.
+    - id: L13_A42
+      type: multiple_choice
+      cite: §6 Step 6b
+      points: 1
+      stem: In Step 6b the two gyro turns handle a STOP_KILL with a bare break, while the sidestep
+        sets currentState = STOPPED and calls showStatus() first. Why the difference?
+      options:
+      - text: turnDegreesGyro() goes through killSwitchPressed(), which already set the state and
+          showed it; driveUntil() polls the button itself and leaves that bookkeeping to the caller
+        correct: true
+      - text: A turn cannot be interrupted, so its return value is decorative
+        correct: false
+        why: It can be, and that is the point — it returns STOP_KILL and Step 6b finally reads it.
+      - text: The state only needs setting once per pass through the case
+        correct: false
+        why: Any of the three branches can be the one that fires. The difference is which primitive
+          already did the work.
+      - text: showStatus() cannot be called between two turns
+        correct: false
+        why: It can. The reason is the contract of the primitive, not a restriction on the display.
+    - id: L13_A43
+      type: true_false
+      cite: §6 Step 6b
+      points: 1
+      stem: SWEEP_DONE could have been left out by reusing STOPPED, at no cost to the student.
+      correct: false
+      why: It would save an enum value and a display case and lose the one distinction that matters
+        standing over the robot at night — the robot FINISHED versus the robot QUIT. A motionless
+        robot is the most ambiguous object in the room, and the screen is what disambiguates it.

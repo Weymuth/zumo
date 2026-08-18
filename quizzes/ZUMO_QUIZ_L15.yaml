@@ -1,7 +1,18 @@
 # ZUMO READING QUIZ BANK — LESSON 15
 # The Present Isn't Enough · PID Control — and the Tuning Bench That Proves It
 #
-# Bank version: v1.0.5
+# Bank version: v1.0.6
+#   The lesson_14 pin moves with L14 v02.35.2, whose diff is six re-derived figures and its
+#   own version line; no question in this bank asserts L14 prose.
+# Verified against: S168 — the L13 Step 6b arc, which shifted every build from L13 onward.
+#   Ten figures re-derived here against a compile: A01's control 25,942 -> 26,000 and its
+#   distractors 25,198 -> 25,246 and 28,340 -> 28,402; A04's 26,106/+164 -> 26,172/+172 and
+#   27,412/+1,306 -> 27,460/+1,288; the B1/B2/B3 sabotage set 28,340 / 28,356 / 28,290 ->
+#   28,402 / 28,418 / 28,348. TWO DELTAS MOVED and are stated here so they are not mistaken
+#   for a re-baselining: Step 4 is +172 rather than +164 and Step 5 is +1,288 rather than
+#   +1,306, because L13's fix lands inside code Step 4 and Step 5 rewrite. B3 is now 54
+#   smaller than correct rather than 50; B1 and B4 are still byte-identical, and B2 is still
+#   16 bigger — every pedagogical claim survived.
 # Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
 #   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
 #   but those substitutions and the version line — so this pin bump is earned by a closed diff
@@ -13,11 +24,11 @@
 #   term that can drive a steady error to zero', where S162 scoped that superlative to 'the
 #   only one of the THREE GAINS' (§16.16 — a superlative is a cross-lesson claim). Everything
 #   else held. EVERY BYTE FIGURE RE-VERIFIED AGAINST A COMPILE and all are correct: A01
-#   25,942 with 25,198 and 28,340 and 20,592 as distractors; A04 26,106/+164 and 27,412/+1,306;
-#   A16, A18 and A19 at 28,340, 28,356 (+16) and 28,290 (-50). L15's own diff is the title tag,
+#   26,000 with 25,246 and 28,402 and 20,592 as distractors; A04 26,172/+172 and 27,460/+1,288;
+#   A16, A18 and A19 at 28,402, 28,418 (+16) and 28,348 (-54). L15's own diff is the title tag,
 #   which no question grades, and the C2 caveat on the speed-loop COMMENT — §5.8's prose did
 #   not move, so B30 and B32 still match their cite. The L06, L08 and L11 diffs are graded by
-#   nothing here; the only L14 figure cited is 25,942, which is correct.
+#   nothing here; the only L14 figure cited is 26,000, which is correct.
 #
 # READ -> FIX -> QUIZ. L15 was read end to end in S148 and every defect below was found and
 # fixed BEFORE a question was written. Against v02.30.1, TWELVE items here would have keyed a
@@ -42,9 +53,9 @@
 #
 #      RE-KEYED S158 (bank v1.0.1): the option-C rollout converted all sixteen L15
 #      payloads. L15 prints no primitive code, so only the ABSOLUTES moved and every
-#      delta survived: 25,942 / 25,942 / 25,942 / 26,106 (+164) / 27,412 (+1,306) /
-#      27,460 (+48) / 28,340 (+880); 7A 26,418, 7D 27,526; B1 and B4 still byte-identical
-#      at 28,340, B2 28,356 (16 bigger), B3 28,290 (50 smaller). HEADROOM 458 -> 332,
+#      delta survived: 26,000 / 26,000 / 26,000 / 26,172 (+172) / 27,460 (+1,288) /
+#      27,508 (+48) / 28,402 (+894); 7A 26,468, 7D 27,574; B1 and B4 still byte-identical
+#      at 28,402, B2 28,418 (16 bigger), B3 28,348 (54 smaller). HEADROOM 458 -> 270,
 #      which is the number Lesson 16 spends.
 #      +176 at the top of the chain and +180 at the bottom, so the deltas were RECOMPUTED from
 #      the compiles rather than shifted. B15, B16, A01, A02, A03, A04, A05, A06, A16, A17,
@@ -92,10 +103,10 @@
 
 lesson: "L15"
 title: "The Present Isn't Enough — PID Control and the Tuning Bench"
-bank_version: "1.0.5"
+bank_version: "1.0.6"
 source:
-  lesson_15: "v02.31.7"
-  lesson_14: "v02.35.1"
+  lesson_15: "v02.31.8"
+  lesson_14: "v02.35.2"
   lesson_11: "v02.31.1"
   lesson_08: "v04.32.1"
   lesson_06: "v04.32.4"
@@ -892,12 +903,12 @@ sets:
         points: 1
         stem: "Step 1 tells you to compile before touching anything, and calls that number your control. What is it?"
         options:
-          - text: "25,942 bytes — the finished Lesson 14 build, unchanged"
+          - text: "26,000 bytes — the finished Lesson 14 build, unchanged"
             correct: true
-          - text: "25,198 bytes"
+          - text: "25,246 bytes"
             correct: false
             why: "That is Lesson 13's finished build — where Lesson 14 STARTED. Section 6, Step 1 starts you from where Lesson 14 ended."
-          - text: "28,340 bytes"
+          - text: "28,402 bytes"
             correct: false
             why: "That is where Lesson 15 ENDS, not where it starts."
           - text: "20,592 bytes"
@@ -935,15 +946,15 @@ sets:
         points: 1
         stem: "Step 4 replaces followLine()'s body with the PD version. What does the build weigh, and what changed about the clock?"
         options:
-          - text: "26,106 bytes, +164 — and now the clock IS in the binary, because something calls it"
+          - text: "26,172 bytes, +172 — and now the clock IS in the binary, because something calls it"
             correct: true
-          - text: "26,106 bytes, +164 — and the clock is still absent, because currentKd is 0"
+          - text: "26,172 bytes, +172 — and the clock is still absent, because currentKd is 0"
             correct: false
             why: "A zero gain does not remove the call. deltaTimeSec() is invoked every pass regardless of Kd."
-          - text: "25,942 bytes, unchanged — the D term contributes nothing at Kd = 0"
+          - text: "26,000 bytes, unchanged — the D term contributes nothing at Kd = 0"
             correct: false
             why: "The arithmetic contributes nothing to the STEERING; the code still costs flash."
-          - text: "27,412 bytes, +1,306"
+          - text: "27,460 bytes, +1,288"
             correct: false
             why: "That is Step 5, the bench."
 
@@ -1133,12 +1144,12 @@ sets:
         points: 1
         stem: "B1 changes one word: micros() becomes millis() inside deltaTimeSec(). The symptom is a random violent jerk, worse on white, and it stops if you set Kd to 0. What is the byte count?"
         options:
-          - text: "28,340 — byte-for-byte identical to the correct program"
+          - text: "28,402 — byte-for-byte identical to the correct program"
             correct: true
-          - text: "28,290 — 50 bytes smaller"
+          - text: "28,348 — 54 bytes smaller"
             correct: false
             why: "That is B3, where a function call is deleted."
-          - text: "28,356 — 16 bytes bigger"
+          - text: "28,418 — 16 bytes bigger"
             correct: false
             why: "That is B2, the missing assignment."
           - text: "Smaller, because millis() is cheaper than micros()"
@@ -1169,12 +1180,12 @@ sets:
         points: 1
         stem: "B2 is a DELETION — lastError = error; is missing from followLine(). What does the derivative end up computing, and what is the byte count?"
         options:
-          - text: "lastError stays 0 forever, so the 'derivative' is really the error itself divided by dt — which is why Kd adds a constant pull instead of damping. 28,356 bytes, 16 bigger than correct."
+          - text: "lastError stays 0 forever, so the 'derivative' is really the error itself divided by dt — which is why Kd adds a constant pull instead of damping. 28,418 bytes, 16 bigger than correct."
             correct: true
-          - text: "lastError holds the first error ever seen, so the derivative is a constant. 28,356 bytes."
+          - text: "lastError holds the first error ever seen, so the derivative is a constant. 28,418 bytes."
             correct: false
             why: "It is never assigned at all, so it holds its initializer, which is 0."
-          - text: "The derivative is always zero, so Kd does nothing. 28,340 bytes."
+          - text: "The derivative is always zero, so Kd does nothing. 28,402 bytes."
             correct: false
             why: "If it did nothing the symptom would not include a permanent lean at large Kd."
           - text: "It is byte-identical, like B1 and B4"
@@ -1187,12 +1198,12 @@ sets:
         points: 1
         stem: "B3 leaves resetPID() perfectly written and correct. What is actually wrong, and what does it cost in bytes?"
         options:
-          - text: "enterFollowing() never calls it — a function that is never called is not a bug the compiler can see. 28,290 bytes, 50 smaller than correct."
+          - text: "enterFollowing() never calls it — a function that is never called is not a bug the compiler can see. 28,348 bytes, 54 smaller than correct."
             correct: true
-          - text: "resetPID() clears the wrong variables. 28,290 bytes."
+          - text: "resetPID() clears the wrong variables. 28,348 bytes."
             correct: false
             why: "The hint is explicit that resetPID() is still correct. The defect is one missing call."
-          - text: "enterFollowing() is never called from the four doors. 28,290 bytes."
+          - text: "enterFollowing() is never called from the four doors. 28,348 bytes."
             correct: false
             why: "The doors still call enterFollowing(); it is the line INSIDE it that is gone."
           - text: "It is byte-identical to correct"
