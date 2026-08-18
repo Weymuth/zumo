@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 17, 2026 (Session 164 — **A PROVENANCE LINE IS A CLAIM ABOUT A READ, NOT A READ.** Four unread-pin arcs closed, and three of them found a `Verified against:` header naming a lesson version the gated `source:` pin never reached — and in every case the evidence beside the claim was aimed at a different file or a different section. S149's line for `QUIZ_L08` cites Lesson_08's §5.4; its `QUIZ_L07` twin puts that lesson's changes in §5.3 where the diff is §6 and Challenge 4. **The population was measured rather than left at three anecdotes: EIGHT header-newer pairs across seven banks**, cleanly separated from three *pin-newer* pairs that are S162's ruling working as designed. **NO GATE IS OWED AND A CONTROL PROVED IT** — the recurrence puts a pin below live with no backlog entry, which gate 75 already catches, so the condition can only shrink. **GATE 74 FIRED ON THIS SESSION'S OWN PROVENANCE AND WAS DELIBERATELY NOT WIDENED**, the opposite disposition to S163's gate-76 exemption, because a distractor that IS the retired claim cannot be reworded and my narration could.)
-**Status:** ✅ **S164 — UNREAD_PINS 45 → 37, AND THE `why` FIELD IS WHERE THE DEFECTS WERE.** 76/76 gates, `gate_payload_match` PASS both ends, `callout_id` 1125/0, `keyterm_prefix` 0 to convert, 16 banks valid at 1,241 questions, `quiz_bank --selftest` all 24 controls pass, census **40,889** unchanged. Four arcs: `QUIZ_L08`/l07, `QUIZ_L07`/l07+l06, and `QUIZ_L03`+`QUIZ_L04`/l03+l02 owed **zero content edits**, each confirmed by reading every question that ASSERTS the changed material rather than by counting citations. **`QUIZ_L06` OWED TWO, BOTH THE SAME SHAPE: a `why` naming a fact its own `cite` no longer contains** — B55 explaining an open loop with *floor surface* the corrected §3.6 table no longer names, and A10's distractor saying averaging makes the measurement *honest* where A10's own stem says it does not. **THE S164 HANDOFF'S QUEUED ITEM FOR `QUIZ_L03` RESTED ON A FALSE PREMISE** — its narration describes BRAIN CHECK 03 Q5, which the diff never touched. §24.18 controlled three ways on this session's own move (new drift LOUD · unearned bump LOUD · reworded stem SILENT, md5-proven), every restore md5-exact. **§24.2 caught my own edit before anything else ran**, the header version bumped without its `bank_version:` twin. **`byte_audit --check` WAS NOT RUN and that is a stated omission, not a pass** — the harness is not in the repo and nothing this session touched can move a byte figure.
+**Date:** August 17, 2026 (Session 165 — **A CHARACTER ESCAPE IS NOT A SPELLING.** `Lesson_09.html` has rendered `Section 7\\u2019s Green Survey` and `the robot\\u2019s centre` to every reader since S160 — eight literal characters each, a Python `repr` written into prose by the C2 pass. **§27.16 passed throughout and is not broken:** it rules one spelling per character and has two cases, literal and entity, because nothing in this book had ever written a character a third way. An escape is not a second spelling of a character the gate knows — it is a character it has never met wearing seven others as a costume, all seven ordinary and legal. `entity_sweep` sweeps CHARACTERS and a backslash is one; `glyph_scan` reads GLYPH fields. Population measured script-aware before the gate was written: **exactly two, both in one lesson**, against a nine-per-lesson baseline that is entirely inside the Brain Check button script and correct. **And the thing that found it was a routine unread-pin read** — the first diff of the `QUIZ_L09` arc, which itself owed zero content edits.)
+**Status:** ✅ **S165 — GATE 77 NEW, AND A BANK WAS GRADING A BYTE FIGURE THE LESSON STOPPED PRINTING EIGHT SESSIONS AGO.** 77/77 gates, `gate_payload_match` PASS both ends, `callout_id` 1125/0, `keyterm_prefix` 0 to convert, 16 banks valid at 1,241 questions, `quiz_bank --selftest` all 24 controls pass, `site_parity` PARITY, `build_css --check` current at 574 rules, census **40,889** unchanged. **§27.16a NEW** forbids `\\uXXXX`, `\\UXXXXXXXX` and `\\xNN` in rendered text and in the banks, `<script>`/`<style>` excluded by property; five controls, one per invocation — the real defect, a planted `\\x41` and a bank-field plant each fire **77 ALONE**, an escape inside a `<script>` body is **SILENT**, and the blinding reword is **SILENT at 77/77**. **TWO PIN ARCS CLOSED, UNREAD_PINS 37 → 30.** `QUIZ_L09`'s three pins owed **zero content edits**, confirmed by reading every question that ASSERTS the changed material. **`QUIZ_L10` owed two, and the first is live:** **A06 keyed *+50 bytes over Step 3* where the lesson has read *+44* since S157**, with both numeric distractors stale as well (+660→+710, +194→+176) — **a student reading the live lesson was marked wrong**, and nothing gates a bank figure against its lesson. The second is S164's shape a third time: **A20's `why` named a mechanism its own cite no longer contains.** **`byte_audit --check` WAS NOT RUN** — the harness is not in the repo and no payload or compiled figure moved, but that is a stated omission, not a pass. **DOUBLE-CHECKED BEFORE PUSH, SEVEN ARMS (§24.13, a different method).** A whole-tree md5 diff against a fresh clone shows exactly 7 modified, 1 new, 1 deleted and **no unauthored file**. **ARM 3 — every byte figure in EVERY bank asserted against the lesson corpus, the prototype of the gate this session says is owed — returned nine and reading them separated THREE DEFECTS from six correct cross-lesson figures**, all three in `QUIZ_L16` (24,694, 26,928 ×2, 20,516), all in distractors or rationales, all appearing in no lesson: **recorded and deliberately not fixed**, because 26,928 needs a compile and v8.136 rules a bank's figures fixed whole or not at all. **ARM 2 found gate 77's stated scope limit** — it does not exclude `<pre>`, and a lesson legitimately printing an escape in code will fire it; no exemption written for a population of zero. **And the claim-audit arm was wrong before it was right**, reporting fifteen failures that were all historical per-session blocks — the arm was unscoped, not the document.
 
-**Versions:** L01 v03.30.0 · L02 v03.21.4 · L03 v03.43.0 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.3 · L07 v04.31.4 · L08 v04.32.0 · L09 v05.27.2 · L10 v02.30.2 · L11 v02.31.0 · L12 v01.33.0 · L13 v02.31.2 · L14 v02.35.0 · L15 v02.31.5 · L16 v02.26.1 · going_deeper v01.6.1 — census **40,889** · Bible **v8.156** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.58.4 · **book_gates v1.70.1** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.26.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.3.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.4.5 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `32e1ef5`.**
+**Versions:** L01 v03.30.0 · L02 v03.21.4 · L03 v03.43.0 · L04 v04.29.1 · L05 v04.29.0 · L06 v04.32.3 · L07 v04.31.4 · L08 v04.32.0 · L09 v05.27.3 · L10 v02.30.2 · L11 v02.31.0 · L12 v01.33.0 · L13 v02.31.2 · L14 v02.35.0 · L15 v02.31.5 · L16 v02.26.1 · going_deeper v01.6.1 — census **40,889** · Bible **v8.158.1** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.58.4 · **book_gates v1.71.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.26.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.1 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.3.2 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.4.7 · Timer v1.3.2 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `564fd7e`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
@@ -12,6 +12,57 @@
 ---
 
 ---
+---
+## WHAT SHIPPED IN S165
+**THE DEFECT AND ITS GATE.** Two literal `\u2019` escapes in `Lesson_09.html` prose, landed at S160's C2 pass
+(v05.27.1) and rendered to every reader for five sessions. Fixed to the literal `’` — L09's own convention at
+60 occurrences and zero entities — inside existing lines, so the census cannot move and the visible §5b banner
+correctly stays at 05.27. **GATE 77 / §27.16a** was written in the same pass as the fix, with a COVERAGE arm
+taking its denominator from the suite's own lesson list (rule 29). **The scope exclusion is a control, not an
+assertion:** an escape planted inside a `<script>` body leaves the gate SILENT, which is what proves the
+predicate measures rendered text rather than the file.
+
+**TWO HARNESS FAILURES, BOTH MINE, BOTH CAUGHT BY md5 RATHER THAN BY A GATE.** The first bank-field plant broke
+the YAML and fired four gates — it measured *malformed bank*, not the property — and was rebuilt inside the
+quotes, where it fires 77 alone. Then the batched five-control harness timed out mid-run and left control B's
+plant on disk in `Lesson_05.html`, S162's contamination shape verbatim. **A batch is not a control harness,
+because a batch that dies leaves the tree in a state nothing declared.** Restored md5-exact and re-run one
+control per invocation.
+
+**`QUIZ_L09` — THREE PINS, ZERO CONTENT EDITS, AND THAT IS A RESULT.** Read by S164's method: resolve each
+pinned version to the commit that held it, diff against HEAD, map every changed line to its enclosing section,
+read IN FULL every question that ASSERTS the changed material rather than every question whose `cite` lands
+there. L09 moved in eight places and B02, B03, B16–B22, B32, B38, B45, B50, A05, A12, A13, A15 and A23 all
+assert it and were already consistent — B20 and B21 already carry S162's corrected wording. L08's diff is
+entirely C1 and no L09 question grades it; B19 is the bank's only TRIM question and it grades L09's own §3.6
+NOTE, which moved with it. L06's diff is graded by nothing here.
+
+**AND THE SECTION MAP WAS WRONG BEFORE IT WAS RIGHT.** An `<h2>/<h3>` walk put NOTE 9.59 and the troubleshooting
+table in §7.2, which read as B31 and B32 citing a §8 that does not contain their answers — **§8's banner is a
+`<div>`, not a heading**, so the parser's last-heading-seen was two sections stale. The citations were correct
+and the instrument was not.
+
+**`QUIZ_L10` — TWO CONTENT EDITS, AND THE FIRST WAS COSTING STUDENTS MARKS.** A06's CORRECT answer keyed
+*+50 bytes over Step 3*; S157 recompiled the chain and the lesson has read **+44** since v02.30.0, and both
+numeric distractors were stale too (*+660* → **+710**, *+194* → **+176**). **All three figures re-derived from
+the artefact and mapped to their own steps** — +44 Step 4, +44 Step 6b, +176 Step 7, +710 Step 8, 20,592 Step 9
+— which matters because **L10 now prints +44 twice**, so a swap driven by the changelog had one chance in two of
+landing on the wrong one. **Nothing gates a bank figure against its lesson:** `byte_audit` ARM 2 reads the
+LESSON's figures and has never read a bank, and §24.18 compares a PIN and is silent on what the questions say.
+The backlog is what carried this in. A20's `why` was S164's shape a third time — it explained B stopping the
+maneuver by *the loop is free between phases*, the pre-rollout reason, and closed with *§8.3 says that line is
+missing* where §8.3 now names `StopReason`; since Step 6b the primitives poll B inside their own wait, so a
+press lands MID-leg.
+
+**§24.18 CONTROLLED BOTH DIRECTIONS ON THIS SESSION'S OWN MOVES:** a pin reverted with its backlog entry deleted
+is LOUD naming *NEW drift*; a backlog entry restored under a bumped pin is LOUD naming *the pin MOVED while
+still in the backlog*. Every restore md5-exact, untouched tree green at both ends. All seven backlog deletions
+landed in the same change as their bumps.
+
+Applied S165: L09 **v05.27.3** (minor — two characters inside existing lines) · `book_gates` **v1.71.0**
+(77 gates) · `quiz_bank` **v1.4.7** · banks `QUIZ_L09` **1.0.3** and `QUIZ_L10` **1.0.4** · Bible **v8.158**
+(§27.16a seated as a numbered section body, both entries filed in both homes). **UNREAD_PINS 37 → 30.**
+
 ## WHAT SHIPPED IN S164
 **FOUR UNREAD-PIN ARCS, AND THE DEFECT SHAPE REPEATED THREE TIMES.** S162 ruled `source:` the gated
 verified-against pin and the `#` header comment HISTORY, never rewritten (rule 37). The consequence nobody had

@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.70.1'
+VERSION = 'v1.71.0'
 # v1.68.7 (S160): §27.11 stylesheet digest baseline moved for the C2 pass. Rules and
 #                 declarations UNCHANGED at 574/2,033; the entire textual diff is two
 #                 COUNT COMMENTS (header census 22,462 -> 22,464 and .tok-7cbf6e x1501 ->
@@ -4513,6 +4513,59 @@ if _seenp76 != len(files) + 1 or _seenb76 != len(files):
                'that scans a SHRUNKEN population passes for the wrong reason (rule 27)'
                % (_seenp76, _seenb76, len(files)))
 gate('\u00a716.25 the retired hardware-identity claim appears nowhere in the book', bad)
+
+
+# ---- GATE 77 (\u00a727.16a): A CHARACTER ESCAPE IS NOT A SPELLING.
+# S165. \u00a727.16 rules ONE SPELLING PER CHARACTER and derives its held set from the
+# property "invisible in source" - literal, or an entity where the literal cannot be
+# seen. It has no third case, because until S165 nothing in the book had written a
+# character in SOURCE-CODE escape form. S160's C2 pass did: Lesson_09.html shipped
+# `Section 7\u2019s Green Survey` and `the robot\u2019s centre` as EIGHT LITERAL
+# CHARACTERS EACH, backslash included, and rendered them that way to every student.
+# Neither `entity_sweep` nor `glyph_scan` can see it - the first sweeps CHARACTERS and
+# a backslash is a legal one, the second reads GLYPH fields - and \u00a727.16 passed
+# throughout, because an escape is not a second spelling of a character the gate knows
+# about; it is a character the gate has never met wearing seven others as a costume.
+# The predicate covers the Python/JS forms an editing script leaks: \uXXXX, \UXXXXXXXX
+# and \xNN. Scope is RENDERED text - <script> and <style> are raw text the parser never
+# decodes and every legitimate occurrence in the book lives there (nine per lesson, all
+# inside the Brain Check button script) - plus the quiz banks, whose text reaches a
+# student through Canvas and which are clean today.
+bad = []
+_ESCAPE77 = re.compile(r'\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|x[0-9a-fA-F]{2})')
+_seen77 = 0
+for _f77 in site:
+    try:
+        _raw77 = open(_f77, encoding='utf-8').read()
+    except Exception as _e77:                                   # noqa: BLE001
+        bad.append('%s could not be read (%s)' % (os.path.basename(_f77), _e77))
+        continue
+    _seen77 += 1
+    _body77 = _ES.RAWTEXT.sub('', _raw77)
+    for _m77 in _ESCAPE77.finditer(_body77):
+        bad.append('%s: %r is a source-code ESCAPE in rendered text, not a character '
+                   '- it renders as its own %d literal characters (\u00a727.16a)'
+                   % (os.path.basename(_f77), _m77.group(0), len(_m77.group(0))))
+_banks77 = sorted(glob.glob(os.path.join('quizzes', 'ZUMO_QUIZ_*.yaml')))
+_seenb77 = 0
+for _b77 in _banks77:
+    try:
+        _t77 = open(_b77, encoding='utf-8').read()
+    except Exception as _e77:                                   # noqa: BLE001
+        bad.append('%s could not be read (%s)' % (os.path.basename(_b77), _e77))
+        continue
+    _seenb77 += 1
+    for _m77 in _ESCAPE77.finditer(_t77):
+        bad.append('%s: %r is a source-code ESCAPE in bank text (\u00a727.16a)'
+                   % (os.path.basename(_b77), _m77.group(0)))
+# COVERAGE ARM (rule 27), and the denominator is the suite's own lesson list rather
+# than this gate's globs (rule 29) - a gate that scans a shrunken population passes
+# for the wrong reason.
+if _seen77 != len(site) or _seenb77 != len(files):
+    bad.append('scanned %d of %d pages and %d of %d banks against %d lessons - a file '
+               'that could not be read is not a file that passed (\u00a727.16a)'
+               % (_seen77, len(site), _seenb77, len(files), len(files)))
+gate('\u00a727.16a a character escape is not a spelling: none reaches rendered text', bad)
 
 print('=' * 52)
 

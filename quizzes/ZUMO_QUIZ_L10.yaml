@@ -1,10 +1,28 @@
 # ZUMO READING QUIZ BANK — LESSON 10
 # Obstacles · When the Course Fights Back
 #
-# Bank version: v1.0.3
+# Bank version: v1.0.4
 # Authored against: lessons/Lesson_10.html v02.30.1 (post-S160 C2 sensor-as-truth pass)
 # Verified against: lessons/Lesson_08.html v04.31.1 — S149. Three citations name section 5.4; all three were
 # read (B31, B32, B43 - readFrontProx and initThreeSensors) and none touches the change.
+# Verified against: lessons/Lesson_10.html v02.30.2, lessons/Lesson_09.html v05.27.3,
+# lessons/Lesson_08.html v04.32.0 and lessons/Lesson_06.html v04.32.3 — S165. All four backlog pins
+# read by resolving each pinned version to the commit that held it, diffing that commit against HEAD,
+# and reading IN FULL every question that ASSERTS the changed material. TWO CONTENT EDITS OWED, BOTH
+# IN THE AFTER SET. **A06 KEYED A BYTE FIGURE THE LESSON HAS NOT PRINTED SINCE S157**: its correct
+# answer said +50 over Step 3 where the recompiled lesson says +44, and BOTH its numeric distractors
+# were stale too (+660 is now +710, +194 is now +176). A student reading the live lesson would have
+# been marked wrong — v8.130s rule reached from the byte side. All three re-derived from the lesson
+# and mapped to their own steps: +44 Step 4, +176 Step 7, +710 Step 8, 20,592 Step 9.
+# **A20s `why` NAMED A MECHANISM ITS OWN CITE NO LONGER CONTAINS**: it explained B stopping the
+# maneuver by the loop being free BETWEEN phases, which is the pre-S157 reason, and closed with
+# "§8.3 says that line is missing" where §8.3 now says to check that driveDistance() and turnDegrees()
+# return a StopReason. Since Step 6b the primitives poll B inside their own wait, so a press lands
+# MID-leg; the `why` now carries both halves. Everything else asserting the diff was already correct —
+# B01, B02, B03, B18, B20, B23, B27, B45, B48, B50, A03, A09, A12 and A17 were read in full, and B02,
+# B23 and B45 already carry S160s and S162s corrected wording. B48s "how strong is the reflection?"
+# matches §5.3s live table verbatim and was left. The inherited L06, L08 and L09 diffs are graded by
+# nothing in this bank.
 #
 # READ -> FIX -> QUIZ. Lesson 10 was read end to end in S143 (the maneuver rebuild) and read
 # again in S144 before a question was written. Three S144 findings are load-bearing here:
@@ -60,12 +78,12 @@
 
 lesson: "L10"
 title: "Obstacles — When the Course Fights Back"
-bank_version: "1.0.3"
+bank_version: "1.0.4"
 source:
-  lesson_10: "v02.29.1"
-  lesson_09: "v05.27.0"
-  lesson_08: "v04.31.0"
-  lesson_06: "v04.32.1"
+  lesson_10: "v02.30.2"
+  lesson_09: "v05.27.3"
+  lesson_08: "v04.32.0"
+  lesson_06: "v04.32.3"
   lesson_05: "v04.29.0"
 
 sets:
@@ -971,15 +989,15 @@ sets:
         points: 1
         stem: "Step 4's checkpoint reports a specific change in binary size once the three sensor functions are in. What is it, and what does it signify?"
         options:
-          - text: "+50 bytes over Step 3 — small, but not zero, because that is real code now rather than just names"
+          - text: "+44 bytes over Step 3 — small, but not zero, because that is real code now rather than just names"
             correct: true
           - text: "No change, because the functions are not called yet"
             correct: false
             why: "That was Step 2's situation. Function bodies that exist and are reachable through the header cost something."
-          - text: "+660 bytes, the largest single jump in the lesson"
+          - text: "+710 bytes, the largest single jump in the lesson"
             correct: false
-            why: "+660 is Step 8's encoder maneuver, which pulls in driveDistance() and turnDegrees()."
-          - text: "+194 bytes"
+            why: "+710 is Step 8's encoder maneuver, which pulls in driveDistance() and turnDegrees()."
+          - text: "+176 bytes"
             correct: false
             why: "That is Step 7 — arbitration plus the OBSTACLE_DETECTED state with its display work and beep."
 
@@ -1213,7 +1231,7 @@ sets:
         points: 1
         stem: "In the encoder version of the maneuver, pressing B stops the robot mid-maneuver."
         correct: true
-        why: "Each phase is one call per pass of loop(), so the loop is free between phases and killSwitchPressed() runs at the top of AVOIDING_OBSTACLE. If B still does nothing on the encoder version, §8.3 says that line is missing."
+        why: "Two things make it true. Each phase is one call per pass of loop(), so the loop is free between phases and killSwitchPressed() runs at the top of AVOIDING_OBSTACLE — and since Step 6b the primitives poll B inside their own wait and report a StopReason, so a press lands MID-leg rather than waiting for the leg to finish. If B still does nothing there, §8.3 says to check that driveDistance() and turnDegrees() return a StopReason and that the phase advances only on STOP_DISTANCE."
 
       - id: L10_A21
         type: true_false
