@@ -35,10 +35,16 @@ Usage:
 Requires: harness at $ZUMO_HARNESS or /home/claude/harness (pio_harness.sh,
 libcore_lto.a built by --setup), and extract_project.py beside this file.
 """
-import re, sys, os, json, subprocess, tempfile, shutil
+import re, sys, os, json, glob, subprocess, tempfile, shutil
 import html as H
 
-VERSION = 'v1.3.2'
+VERSION = 'v1.4.0'
+
+# The standing control build (rule 30): reproduce this BEFORE trusting any
+# other figure. It MOVES whenever the book re-baselines - S158's option-C
+# rollout took it from 20,516 to 20,592 and this constant was not moved with
+# it, so --selftest was red for three sessions while --check printed PASS.
+STANDING_CONTROL = 20592
 # v1.2 (S152): ARM 4 NEW - every byte figure in a Maker KINDS label must equal the
 #   compiled size of the payload its row points at. Nothing in this repo read a label:
 #   gate_payload_match asserts payload BYTES against lesson <pre>, ARM 2 asserts the
@@ -419,6 +425,112 @@ def arm4(tbl, only=None):
     return not bad
 
 
+
+# ------------------------------------------------- ARM 6: the banks' figures
+
+QUIZ_DIR = os.path.join(HERE, "quizzes")
+
+# A figure that NAMES a build is a claim about that build. This is the whole
+# predicate, and it is deliberately narrow: "appears in some lesson" is NOT the
+# property (it convicts a legitimate synthetic distractor such as L16's 20,406),
+# and "equals some compile" is not either. What a bank owes is that a figure it
+# LABELS as a named build equals what that build compiles to.
+_BANK_LABEL = re.compile(
+    r"(?:Lesson[\s\u00a0]*(\d{1,2})(?:'s)?[\s\u00a0]*finished"
+    r"|finished[\s\u00a0]*Lesson[\s\u00a0]*(\d{1,2}))", re.I)
+_BANK_FIG = re.compile(r"\b(\d{2},\d{3})\b")
+
+
+def _bank_units(q):
+    """The text units a claim can live in.
+
+    A label and its figure are frequently split across an option's `text` and
+    its own `why` (that is exactly where S165 found three of them), so an
+    option is read as ONE unit as well as two."""
+    out = []
+    for k in ("stem",):
+        if isinstance(q.get(k), str):
+            out.append(q[k])
+    for o in q.get("options", []) or []:
+        t, w = o.get("text") or "", o.get("why") or ""
+        out += [t, w, t + " || " + w]
+    for pr in q.get("pairs", []) or []:
+        out.append((pr.get("left") or "") + " || " + (pr.get("right") or ""))
+    for e in q.get("extra_answers", []) or []:
+        if isinstance(e, str):
+            out.append(e)
+    return [u for u in dict.fromkeys(out) if u]
+
+
+def bank_claims(quiz_dir=None):
+    """Yield (bankfile, qid, lesson_n, claimed_figure, unit) for every figure
+    that sits beside a name of a lesson's finished build."""
+    import yaml
+    seen, out = set(), []
+    for f in sorted(glob.glob(os.path.join(quiz_dir or QUIZ_DIR, "ZUMO_QUIZ_L*.yaml"))):
+        try:
+            d = yaml.safe_load(open(f, encoding="utf-8"))
+        except Exception:
+            continue
+        if not isinstance(d, dict) or "sets" not in d:
+            continue
+        for _sn, S in (d.get("sets") or {}).items():
+            for q in (S.get("questions") or []):
+                for u in _bank_units(q):
+                    m = _BANK_LABEL.search(u)
+                    if not m:
+                        continue
+                    figs = _BANK_FIG.findall(u)
+                    if not figs:
+                        continue
+                    n = int(m.group(1) or m.group(2))
+                    key = (os.path.basename(f), q.get("id"), n, figs[0])
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    out.append((os.path.basename(f), q.get("id"), n,
+                                int(figs[0].replace(",", "")), u))
+    return out
+
+
+def arm6(tbl, only=None, quiz_dir=None):
+    """ARM 6 - BANK FIGURES: a bank figure that names a build must equal it.
+
+    Nothing in this repo compared a bank's numbers to anything. ARM 2 asserts
+    the LESSON's figures against a compile and has never read a bank; §24.18
+    compares a `source:` PIN and is silent on what the questions say. S165 found
+    four stale figures across two banks by hand, one of them a CORRECT answer -
+    so a student reading the live lesson was marked wrong.
+
+    STATED SCOPE LIMIT (rule 78): this reaches a figure only where the text
+    NAMES a lesson's finished build. A figure labelled by something the Maker
+    does not define - L16's "what cutting the buzzer would give" - is a real
+    claim this arm cannot see, because there is no payload to compile against
+    it. Recorded rather than papered over with an exemption list (rule 20)."""
+    print("ARM 6 - BANK FIGURES: a bank figure that names a build equals that build")
+    claims = bank_claims(quiz_dir)
+    bad, seen = [], 0
+    for bank, qid, n, claim, unit in claims:
+        if only and n != only:
+            continue
+        seen += 1
+        rec = tbl.get("%d/finished" % n)
+        got = rec.get("flash") if isinstance(rec, dict) else rec
+        if got is None:
+            bad.append((bank, qid, n, claim, None, "no compiled size for %d/finished" % n))
+        elif claim != got:
+            bad.append((bank, qid, n, claim, got, "bank figure != compile"))
+    for bank, qid, n, claim, got, why in bad:
+        print("   %-24s %-10s names L%-2d finished: bank %s  compiled %s  -- %s"
+              % (bank, qid, n, format(claim, ","), got, why))
+    print("   %d labelled bank figure(s) checked, %d unmatched" % (seen, len(bad)))
+    if not seen:
+        print("   COVERAGE: ZERO labelled bank figures scanned - the parser found nothing")
+        return False
+    print()
+    return not bad
+
+
 # ---------------------------------------------------------------- ARM 5
 
 DELTA_RE = re.compile(r"\b(?:up|down)\s+([\d,]+)|(?<![\w,])([+\u2212-])\s?([\d,]{2,6})\b")
@@ -589,9 +701,16 @@ def selftest():
         if not cond:
             fails.append(name)
 
-    print("CONTROL A (the control build): L11 after_step_1 must be 20,516")
+    print("CONTROL A (the control build): L11 after_step_1 must be %s"
+          % f"{STANDING_CONTROL:,}")
     st, fl = compile_kind(11, "after_step_1", P, incs)
-    chk("harness reproduces the control", (st, fl) == ("PASS", 20516), str(fl))
+    chk("harness reproduces the control", (st, fl) == ("PASS", STANDING_CONTROL),
+        str(fl) if (st, fl) == ("PASS", STANDING_CONTROL) else
+        "%s - the harness may be wrong, or STANDING_CONTROL may be STALE after a "
+        "re-baseline. Check the Bible's control list before blaming the harness "
+        "(S166: this constant sat at 20,516 for three sessions after S158 moved it "
+        "to 20,592, and --selftest was red the whole time while --check said PASS)"
+        % fl)
 
     print("\nCONTROL B (an OVER build is read as OVER, not as a crash)")
     P2 = json.loads(json.dumps(P))
@@ -610,11 +729,15 @@ def selftest():
     j = body.index("{", i) + 1
     body = body[:j] + "\n  ba_sink = pgm_read_dword(&ba_pad[millis() % 600]);\n" + body[j:]
     P2["16"]["finished"]["main.cpp"] = body
+    st0, fl0 = compile_kind(16, "finished", P, incs)      # the UNPADDED baseline
     st, fl = compile_kind(16, "finished", P2, incs)
     chk("padded L16 finished reports OVER with a flash figure",
-        st == "OVER" and fl is not None and fl > 28672, "%s %s" % (st, fl))
+        st == "OVER" and fl is not None and fl > CEILING, "%s %s" % (st, fl))
+    # DERIVED, never pinned (rule 19): the seed fired iff the padded image is
+    # bigger than the same payload compiled without the pad. The old form
+    # compared against a literal 28,600, which is a spelling of a baseline.
     chk("the pad actually grew the image (the seed fired)",
-        fl is not None and fl > 28600, "%s vs 28600" % fl)
+        fl is not None and fl0 is not None and fl > fl0, "%s vs %s" % (fl, fl0))
 
     print("\nCONTROL C (a broken build is read as FAIL, not silently sized)")
     P3 = json.loads(json.dumps(P))
@@ -637,7 +760,14 @@ def selftest():
     bak = src
     try:
         clean = arm2_probe(tbl, 16)
-        seeded = src.replace("COMPILE CHECK</b> — 28,600", "COMPILE CHECK</b> — 27,999", 1)
+        # The seed target is DERIVED, never spelled (rule 19). Pinning the literal
+        # "28,600" left this control unable to land from S158 to S166.
+        m = re.search(r"COMPILE CHECK</b> — ([\d,]+)", src)
+        chk("the seed target was found by pattern, not by spelling", bool(m),
+            m.group(1) if m else "no COMPILE CHECK figure in L16")
+        seeded = src.replace(m.group(0), "COMPILE CHECK</b> — 27,999", 1) if m else src
+        tbl = {"16/finished": {"status": "PASS",
+                               "flash": int(m.group(1).replace(",", ""))}} if m else tbl
         chk("the seed landed in the intended shape", seeded != src)   # §24.6b
         open(lesson_path(16), "w", encoding="utf-8").write(seeded)
         loud = arm2_probe(tbl, 16)
@@ -673,6 +803,63 @@ def selftest():
     chk("Lesson_02 restored byte-for-byte",
         open(lesson_path(2), encoding="utf-8").read() == bak)
 
+
+
+    print("\nCONTROL I (ARM 6: a bank figure that NAMES a build is asserted)")
+    import tempfile as _tf, shutil as _sh, glob as _g
+    tbl6 = {"12/finished": {"status": "PASS", "flash": 24790},
+            "10/finished": {"status": "PASS", "flash": 20592}}
+
+    def _fixture(body):
+        d = _tf.mkdtemp()
+        open(os.path.join(d, "ZUMO_QUIZ_L99.yaml"), "w", encoding="utf-8").write(body)
+        return d
+
+    good = ('lesson: L99\nbank_version: "1.0.0"\nsets:\n  before:\n    questions:\n'
+            '      - id: L99_B01\n        type: multiple_choice\n'
+            '        stem: "Which build is it?"\n        options:\n'
+            '          - text: "24,790 bytes"\n            correct: true\n'
+            '            why: "That is Lesson 12 finished."\n')
+    d = _fixture(good)
+    try:
+        cl = arm6(tbl6, quiz_dir=d)
+        chk("clean labelled figure is SILENT", cl is True)
+    finally:
+        _sh.rmtree(d)
+
+    d = _fixture(good.replace('"24,790 bytes"', '"24,694 bytes"'))
+    try:
+        chk("a stale figure beside its own label is LOUD", arm6(tbl6, quiz_dir=d) is False)
+    finally:
+        _sh.rmtree(d)
+
+    # BLINDING: reword the sentence, keep the figure and the label correct.
+    d = _fixture(good.replace('"Which build is it?"', '"Name the build this figure belongs to."'))
+    try:
+        chk("BLINDING: rewording a question is SILENT (the predicate is the claim)",
+            arm6(tbl6, quiz_dir=d) is True)
+    finally:
+        _sh.rmtree(d)
+
+    # The label and the figure split across text and why -- S165's actual shape.
+    split = good.replace('            why: "That is Lesson 12 finished."',
+                         '            why: "That is Lesson 12 finished, and it is 24,694."')
+    d = _fixture(split)
+    try:
+        chk("a figure carried in the `why` beside the label is reached",
+            arm6(tbl6, quiz_dir=d) is False)
+    finally:
+        _sh.rmtree(d)
+
+    d = _tf.mkdtemp()   # no banks at all
+    try:
+        chk("ZERO labelled figures scanned does not pass (rule 27)",
+            arm6(tbl6, quiz_dir=d) is False)
+    finally:
+        _sh.rmtree(d)
+
+    chk("the real banks were never touched by this control",
+        all(os.path.exists(f) for f in _g.glob(os.path.join(QUIZ_DIR, "ZUMO_QUIZ_L*.yaml"))))
 
     print("\nCONTROL H (ARM 4: the label figure is DERIVED, and drift is LOUD)")
     mbak = open(MAKER, encoding="utf-8").read()
@@ -725,7 +912,7 @@ def selftest():
     if fails:
         print("SELFTEST FAILED: " + ", ".join(fails))
         return 1
-    print("ALL EIGHT CONTROLS PASS - silent when clean, loud when broken.")
+    print("ALL NINE CONTROLS PASS - silent when clean, loud when broken.")
     return 0
 
 
@@ -779,11 +966,13 @@ def main():
     ok2 = arm2(tbl, only)
     ok4 = arm4(tbl, only)
     ok5 = arm5(tbl, only)
+    ok6 = arm6(tbl, only)
     arm2_leads(tbl, only)
     if a[0] == "--lesson" or "--convention" in a:
         arm3(tbl, only)
-    print("byte_audit: " + ("PASS" if ok1 and ok2 and ok4 and ok5 else "FAIL"))
-    return 0 if (ok1 and ok2 and ok4 and ok5) else 1
+    ok = ok1 and ok2 and ok4 and ok5 and ok6
+    print("byte_audit: " + ("PASS" if ok else "FAIL"))
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

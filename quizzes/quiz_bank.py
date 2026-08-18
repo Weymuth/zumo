@@ -30,7 +30,7 @@ import re
 import sys
 import glob
 
-VERSION = "v1.4.7"
+VERSION = "v1.6.1"
 
 QUIZ_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(QUIZ_DIR)
@@ -131,36 +131,6 @@ SOURCE_PIN_RE = re.compile(r"^\s*(lesson_\d{2})\s*:\s*[\"']?(v[\d.]+)[\"']?\s*$"
 #     read fails (the name no longer matches), and the list can only SHRINK.
 #     A count could do none of those three.
 UNREAD_PINS = {
-        ("ZUMO_QUIZ_L11.yaml", "lesson_03"): "v03.41.0",
-        ("ZUMO_QUIZ_L11.yaml", "lesson_06"): "v04.32.1",
-        ("ZUMO_QUIZ_L11.yaml", "lesson_08"): "v04.31.1",
-        ("ZUMO_QUIZ_L11.yaml", "lesson_10"): "v02.29.1",
-        ("ZUMO_QUIZ_L11.yaml", "lesson_11"): "v02.30.0",
-        ("ZUMO_QUIZ_L12.yaml", "lesson_06"): "v04.32.1",
-        ("ZUMO_QUIZ_L12.yaml", "lesson_09"): "v05.27.0",
-        ("ZUMO_QUIZ_L12.yaml", "lesson_11"): "v02.30.0",
-        ("ZUMO_QUIZ_L12.yaml", "lesson_12"): "v01.31.3",
-        ("ZUMO_QUIZ_L13.yaml", "lesson_03"): "v03.41.0",
-        ("ZUMO_QUIZ_L13.yaml", "lesson_06"): "v04.32.1",
-        ("ZUMO_QUIZ_L13.yaml", "lesson_10"): "v02.29.1",
-        ("ZUMO_QUIZ_L13.yaml", "lesson_11"): "v02.30.0",
-        ("ZUMO_QUIZ_L13.yaml", "lesson_12"): "v01.31.3",
-        ("ZUMO_QUIZ_L13.yaml", "lesson_13"): "v02.29.0",
-        ("ZUMO_QUIZ_L14.yaml", "lesson_08"): "v04.31.1",
-        ("ZUMO_QUIZ_L14.yaml", "lesson_11"): "v02.30.0",
-        ("ZUMO_QUIZ_L14.yaml", "lesson_12"): "v01.31.3",
-        ("ZUMO_QUIZ_L14.yaml", "lesson_13"): "v02.29.0",
-        ("ZUMO_QUIZ_L14.yaml", "lesson_14"): "v02.34.0",
-        ("ZUMO_QUIZ_L15.yaml", "lesson_06"): "v04.32.1",
-        ("ZUMO_QUIZ_L15.yaml", "lesson_08"): "v04.31.1",
-        ("ZUMO_QUIZ_L15.yaml", "lesson_11"): "v02.30.0",
-        ("ZUMO_QUIZ_L15.yaml", "lesson_14"): "v02.34.0",
-        ("ZUMO_QUIZ_L15.yaml", "lesson_15"): "v02.31.0",
-        ("ZUMO_QUIZ_L16.yaml", "lesson_01"): "v03.28.3",
-        ("ZUMO_QUIZ_L16.yaml", "lesson_02"): "v03.21.2",
-        ("ZUMO_QUIZ_L16.yaml", "lesson_14"): "v02.34.0",
-        ("ZUMO_QUIZ_L16.yaml", "lesson_15"): "v02.31.0",
-        ("ZUMO_QUIZ_L16.yaml", "lesson_16"): "v02.23.0",
 }
 
 
@@ -556,12 +526,33 @@ def selftest():
     # A backlog entry whose pin has MOVED is loud even when it moved to the RIGHT
     # value - because the read is what earns the bump, and the entry must be
     # deleted in the same commit. This is the arm CONTROL C2 forced into existence.
-    _bk = list(UNREAD_PINS.items())[0]
-    (_bname, _blesson), _bver = _bk
-    controls.append(("U  a BACKLOG pin that has moved is LOUD",
-                     any("MOVED while still in the backlog" in x for x in
-                         source_pins({"source": {_blesson: "v99.99.99"}}, _bname,
-                                     {_blesson: "v99.99.99"}))))
+    #
+    # S166: this control USED to build its fixture by taking the first live
+    # UNREAD_PINS entry. When S166 emptied the backlog - which is the whole point
+    # of the backlog, it can only shrink - the control died with an IndexError and
+    # took the entire selftest with it. A control whose fixture is borrowed from
+    # the population it audits stops working exactly when that population reaches
+    # the state you were aiming for. It now builds its OWN entry (S161's control-J2
+    # finding, arriving from the far side), so it holds at a backlog of any size,
+    # zero included.
+    _bname, _blesson = "ZUMO_QUIZ_L99.yaml", "lesson_07"
+    _saved = dict(UNREAD_PINS)
+    try:
+        UNREAD_PINS[(_bname, _blesson)] = "v04.31.2"
+        controls.append(("U  a BACKLOG pin that has moved is LOUD",
+                         any("MOVED while still in the backlog" in x for x in
+                             source_pins({"source": {_blesson: "v99.99.99"}}, _bname,
+                                         {_blesson: "v99.99.99"}))))
+        # And the same fixture with the entry ABSENT must report NEW drift instead,
+        # which is what proves the arm is reading the backlog rather than the pin.
+        del UNREAD_PINS[(_bname, _blesson)]
+        controls.append(("U2 the same pin with NO backlog entry is NEW drift",
+                         any("NEW drift" in x for x in
+                             source_pins({"source": {_blesson: "v99.99.99"}}, _bname,
+                                         {_blesson: "v04.31.4"}))))
+    finally:
+        UNREAD_PINS.clear()
+        UNREAD_PINS.update(_saved)
     # BLINDING CONTROL: the arm measures PINS. Rewording a question must be silent.
     controls.append(("V  rewording a QUESTION is SILENT to source pins",
                      source_pins({"source": {"lesson_07": "v04.31.4"},

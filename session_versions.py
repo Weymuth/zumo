@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.26.0'
+VERSION = 'v1.28.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -236,6 +236,8 @@ ARTEFACTS = [
     ('title_feed',            'title_feed.py',            r"VERSION = '(v[\d.]+)'"),
     ('quiz_bank',             'quizzes/quiz_bank.py',     r'VERSION = "(v[\d.]+)"'),
     ('Timer',                 'timer.html',               r'Timer version: (v[\d.]+)'),
+    ('harness_setup',         'harness_setup.sh',         r'harness_setup\.sh (v[\d.]+)'),
+    ('pio_harness',           'pio_harness.sh',           r'ZUMO COMPILE HARNESS (v[\d.]+)'),
 ]
 
 
@@ -335,6 +337,8 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"title_feed {vals['title_feed']} · "
             f"quiz_bank {vals['quiz_bank']} · "
             f"Timer {vals['Timer']} · "
+            f"harness_setup {vals['harness_setup']} · "
+            f"pio_harness {vals['pio_harness']} · "
             f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
@@ -375,6 +379,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`title_feed` **{vals['title_feed']}** ·\n"
             f"`quiz_bank` **{vals['quiz_bank']}** ·\n"
             f"`timer.html` **{vals['Timer']}** ·\n"
+            f"`harness_setup.sh` **{vals['harness_setup']}** ·\n"
+            f"`pio_harness.sh` **{vals['pio_harness']}** ·\n"
             f"`going_deeper` **{vals['going_deeper']}**.\n\n"
             f"Lessons: {ls}.")
 

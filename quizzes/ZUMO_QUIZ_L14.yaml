@@ -1,8 +1,22 @@
 # ZUMO READING QUIZ BANK — LESSON 14
 # Competition Prep · Trust Is Earned at Boot — Reliability as an Engineering Skill
 #
-# Bank version: v1.0.2
+# Bank version: v1.0.3
 # Authored against: lessons/Lesson_14.html v02.34.0 (post-S148 read + fix pass)
+# Verified against: Lesson_14 v02.35.0, Lesson_13 v02.31.2, Lesson_12 v01.33.1,
+#   Lesson_11 v02.31.0, Lesson_08 v04.32.0 — S166. Five diffs read; every question ASSERTING
+#   the changed material read in full. SIX owed edits, and five of the six are ONE claim:
+#   S159 gave COMPETITION_MODE a SECOND job — it guards the calibration motor calls, because
+#   §5.3.6 forbids a robot to move while calibrating — which made §5.2's old 'changes theater,
+#   never behavior' line FALSE and retitled the section One Switch, TWO Jobs. B17's keyed
+#   answer named only the theater half; the retired claim survived in B17's, B04's and B18's
+#   distractor rationales, which is §16.30's finding again. B36's stem named 'The 15-Minute
+#   Rule', relabelled at S159 to 'The 15-Minute Habit (RoboLore team policy)', and the label is
+#   now what the question asks about. B43 said 'calibration spin' of the venue, where match
+#   mode sweeps by hand. EVERY BYTE FIGURE RE-VERIFIED AGAINST A COMPILE and all are correct
+#   (25,198 · 25,942/+744 · 25,886/-56 · 25,202/-740), so S158's and S159's re-baselines
+#   reached them — only the prose around them was left behind. The L08, L11 and L12 diffs are
+#   graded by nothing in this bank.
 #
 # READ -> FIX -> QUIZ. L14 was read end to end in S147 and again, in full, in S148 before a
 # question was written (QUIZ_SPEC §0: the read does not transfer between sessions). Every
@@ -88,13 +102,13 @@
 
 lesson: "L14"
 title: "Competition Prep — Trust Is Earned at Boot"
-bank_version: "1.0.2"
+bank_version: "1.0.3"
 source:
-  lesson_14: "v02.34.0"
-  lesson_13: "v02.29.0"
-  lesson_12: "v01.31.3"
-  lesson_11: "v02.30.0"
-  lesson_08: "v04.31.1"
+  lesson_14: "v02.35.0"
+  lesson_13: "v02.31.2"
+  lesson_12: "v01.33.1"
+  lesson_11: "v02.31.0"
+  lesson_08: "v04.32.0"
 
 sets:
   before:
@@ -161,7 +175,7 @@ sets:
             why: "The lesson is explicit that the multiplier is out of reach — both motor drivers are spoken for."
           - text: "Rewriting the state machine to run faster on match day"
             correct: false
-            why: "COMPETITION_MODE changes theatre, not behaviour. Nothing in the state machine is rewritten."
+            why: "Nothing in the state machine is rewritten. COMPETITION_MODE changes theater and, in one place, obeys a rule — it never makes the robot faster."
           - text: "Replacing the line sensors with a camera"
             correct: false
 
@@ -366,13 +380,13 @@ sets:
         type: multiple_choice
         cite: "§5.2, §6 Step 4"
         points: 1
-        stem: "What exactly does COMPETITION_MODE change when it is set to true?"
+        stem: "Section 5.2 gives COMPETITION_MODE two jobs. What are they?"
         options:
-          - text: "It skips three delay(600) demo pauses — the beats where the robot stops so a human can read the screen"
+          - text: "It skips three delay(600) demo pauses — pure theater, no behavior change — and it takes the motor commands out of the line calibration, which IS a behavior change and is there because §5.3.6 forbids a robot to move while calibrating"
             correct: true
-          - text: "It raises the base speed so the robot finishes the course faster"
+          - text: "It skips the three delay(600) demo pauses, and that is the only thing it touches — the toggle changes theater and never behavior"
             correct: false
-            why: "The lesson is emphatic that the toggle changes theatre, not behaviour, and Section 7C proves it in bytes."
+            why: "This was true until the calibration guard landed. The switch now makes exactly one behavior change: in match mode the calibration spin comes out and your hand sweeps instead. §5.2 is titled One Switch, TWO Jobs for that reason, and §7C prices both halves — 36 bytes of theater plus 20 bytes of motor commands a rule forbids."
           - text: "It disables the kill switch to save polling time"
             correct: false
             why: "That is Sabotage B4, and the lesson calls it the gravest of the four."
@@ -392,7 +406,7 @@ sets:
             why: "Those are boot steps, not the guarded-versus-unguarded distinction Step 4 draws."
           - text: "The three demo pauses"
             correct: false
-            why: "Those are precisely what it DOES touch — they are the only thing it touches."
+            why: "Those are precisely what it DOES touch. They are not the ONLY thing it touches either — the calibration guard is its second job — but the question asks what it must leave alone."
           - text: "Serial output, the buzzer, and the green LED"
             correct: false
 
@@ -665,9 +679,9 @@ sets:
         type: multiple_choice
         cite: "§3.3"
         points: 1
-        stem: "The 15-Minute Rule says what?"
+        stem: "The 15-Minute Habit is labelled RoboLore team policy rather than a rule. What does it say, and why is the label there?"
         options:
-          - text: "Give your robot at least 15 minutes to reach room temperature at the venue before making any calibration decisions"
+          - text: "Give your robot at least 15 minutes to reach room temperature at the venue before making any calibration decisions — and it is OUR rule, because the RoboCupJunior rulebook says nothing about acclimation"
             correct: true
           - text: "Arrive at least 15 minutes before your first match"
             correct: false
@@ -779,12 +793,12 @@ sets:
             correct: true
           - text: "The full eight minutes"
             correct: false
-            why: "Boot, self-test, the prox wave and the calibration spin all come out of the same clock."
+            why: "Boot, self-test, the prox wave and the line calibration all come out of the same clock — §5.3.1 gives you eight minutes for the whole game, calibration included."
           - text: "About four minutes"
             correct: false
           - text: "About seven and a half minutes"
             correct: false
-            why: "That would leave no time for the calibration spin or the goal-tile stop."
+            why: "That would leave no time for the line calibration or the goal-tile stop."
 
       - id: L14_B44
         type: multiple_choice

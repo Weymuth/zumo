@@ -1,8 +1,12 @@
 # ZUMO READING QUIZ BANK — LESSON 12
 # Wheels Lie · The Gyro — Measuring the Robot, Not the Wheels
 #
-# Bank version: v1.0.4
+# Bank version: v1.0.5
 # Authored against: lessons/Lesson_12.html v01.32.1 (post-S160 C2 sensor-as-truth pass)
+# Verified against: Lesson_12 v01.33.1, Lesson_11 v02.31.0, Lesson_09 v05.27.3, Lesson_06 v04.32.3 — S166.
+#   Every question asserting the four diffs was read in full. Two owed edits: B06 (its keyed answer
+#   was the §3.1 headline the S160 C2 pass replaced) and A18's B4 row (the symptom S162 re-premised).
+#   The L06, L09 and L11 diffs are graded by nothing in this bank.
 #
 # READ -> FIX -> QUIZ. L12 was read end to end in S145 and one defect class was found and
 # fixed before a question was written.
@@ -71,12 +75,12 @@
 
 lesson: "L12"
 title: "Wheels Lie — The Gyro, Measuring the Robot Not the Wheels"
-bank_version: "1.0.4"
+bank_version: "1.0.5"
 source:
-  lesson_12: "v01.31.3"
-  lesson_11: "v02.30.0"
-  lesson_09: "v05.27.0"
-  lesson_06: "v04.32.1"
+  lesson_12: "v01.33.1"
+  lesson_11: "v02.31.0"
+  lesson_09: "v05.27.3"
+  lesson_06: "v04.32.3"
   lesson_05: "v04.29.0"
   lesson_04: "v04.29.1"
 
@@ -168,16 +172,16 @@ sets:
         type: multiple_choice
         cite: "§3.1"
         points: 1
-        stem: "Section 3.1 says the encoder measures one thing and not another. Which pair is it?"
+        stem: "Section 3.1 is careful about what the encoder measures. What does it say?"
         options:
-          - text: "It measures INTENT, not RESULT — how far the wheel turned, not how far the robot moved"
+          - text: "It measures a result — just not the result you care about: the wheel really did turn, but how far the robot moved is a different question"
             correct: true
-          - text: "It measures RESULT, not INTENT — what happened, not what you commanded"
+          - text: "It measures INTENT, not RESULT — the wheel turning is only what you asked for, never what happened"
             correct: false
-            why: "Backwards. The wheel turning is the intent being carried out; whether the robot moved is the result, and the encoder cannot see it."
+            why: "The catchy version, and it is wrong: the wheel really did turn, and a rotation that really happened is a result. The encoder is not reporting an intention — it is reporting the wrong result."
           - text: "It measures SPEED, not DISTANCE"
             correct: false
-            why: "It measures rotation, from which both can be computed. The distinction §3.1 draws is about intent versus result."
+            why: "It measures rotation, from which both can be computed. The distinction §3.1 draws is between the result the encoder reports and the result you wanted."
           - text: "It measures ROTATION, not TIME"
             correct: false
             why: "True but trivial, and it is Lesson 11's distinction rather than this one."
@@ -1176,7 +1180,7 @@ sets:
           - left: "gyroReset() is moved out to setup()"
             right: "The first turn is perfect; every turn after it finishes instantly"
           - left: "TRIM is added to the turn's setSpeeds() call"
-            right: "Turns are subtly, stubbornly off — but only once you fill in your TRIM value"
+            right: "The turn still stops at the right angle, but the robot arcs out of position instead of pivoting — and only once you fill in your TRIM value"
         extra_answers:
           - "The robot hangs at boot and never shows anything after HOLD STILL"
           - "Turns are correct but the display shows the wrong state name"

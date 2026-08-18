@@ -1,8 +1,18 @@
 # ZUMO READING QUIZ BANK — LESSON 13
 # Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
 #
-# Bank version: v1.0.2
+# Bank version: v1.0.3
 # Authored against: lessons/Lesson_13.html v02.31.1 (post-S160 C2 sensor-as-truth pass)
+# Verified against: Lesson_13 v02.31.2, Lesson_12 v01.33.1, Lesson_11 v02.31.0,
+#   Lesson_10 v02.30.2, Lesson_06 v04.32.3, Lesson_03 v03.43.0 — S166. Six diffs read; every
+#   question ASSERTING the changed material read in full. THREE owed edits, all one shape —
+#   §16.27's provenance ruling (S158 gave Lesson 10 the StopReason enum and left Lesson 13
+#   ADDING a third value). A09's stem asked why RobotMotion.h needs an include it never needed
+#   before; the live Step 4 says the opposite, that the line has been there since Lesson 10.
+#   A02 and B23 called Step 1's addition 'a StopReason enum' where the lesson now says one more
+#   value. EVERY BYTE FIGURE IN THIS BANK WAS RE-VERIFIED AGAINST A COMPILE this session and
+#   all seven are correct (A02 24,790 · A04 24,790 · A06 24,970/+180 · A13 25,240/+270 ·
+#   A15 25,198/-42 · A24 25,198 · A31 25,198), so S158's re-baseline reached them.
 #
 # READ -> FIX -> QUIZ. L13 was read end to end in S146 and every defect below was found and
 # fixed BEFORE a question was written. Against v02.28.3, six items in this bank would have
@@ -80,14 +90,14 @@
 #
 lesson: L13
 title: Rescue Zone — Flying on Instruments, Navigating Where the Line Cannot Go
-bank_version: "1.0.2"
+bank_version: "1.0.3"
 source:
-  lesson_13: v02.29.0
-  lesson_03: v03.41.0
-  lesson_06: v04.32.1
-  lesson_10: v02.29.1
-  lesson_11: v02.30.0
-  lesson_12: v01.31.3
+  lesson_13: v02.31.2
+  lesson_03: v03.43.0
+  lesson_06: v04.32.3
+  lesson_10: v02.30.2
+  lesson_11: v02.31.0
+  lesson_12: v01.33.1
 sets:
   before:
     description: Pre-class reading gate. Answerable from the text alone — no robot, no compiler, no built
@@ -467,7 +477,7 @@ sets:
       points: 4
       stem: Four new pieces land in four files. Match each to the file it belongs in.
       pairs:
-      - left: Four tunables, StopReason, and three new states
+      - left: Four tunables, a third StopReason value, and three new states
         right: RobotConfig.h
       - left: silverDetected()
         right: RobotSensors.cpp
@@ -1037,8 +1047,8 @@ sets:
       type: multiple_choice
       cite: §6 Step 1
       points: 1
-      stem: Step 1 adds four tunables, a StopReason enum, and three new states. What does the COMPILE
-        CHECK report?
+      stem: Step 1 adds four tunables, one more StopReason value, and three new states. What does
+        the COMPILE CHECK report?
       options:
       - text: 24,790 bytes — byte-identical to the Lesson 12 finished build
         correct: true
@@ -1143,20 +1153,27 @@ sets:
       type: multiple_choice
       cite: §6 Step 4
       points: 1
-      stem: RobotMotion.h needs an include it never needed before. Why?
+      stem: driveUntil() returns a StopReason, so RobotMotion.h has to have RobotConfig.h
+        included. What does Step 4 say you must do about that include?
       options:
-      - text: driveUntil() returns a StopReason, and that type is declared in the config
+      - text: Nothing — the line is already there, and has been since Lesson 10, when the movement
+          primitives started returning a StopReason
         correct: true
-      - text: driveUntil() calls readFrontProx(), which lives in the sensors header
+      - text: Add it — RobotMotion.h has never needed RobotConfig.h before, because until now no
+          declaration in it named a type from the config
         correct: false
-        why: The call is in the .cpp, which already had what it needed; the HEADER's new need is the return
-          type.
-      - text: driveUntil() uses buttonB, which needs the Pushbutton library
+        why: This is what the lesson used to say, and the Lesson 10 rollout made it false. driveDistance()
+          and turnDegrees() have returned a StopReason since Lesson 10, so the header has carried the
+          include ever since. Step 4 shows you the line and tells you it is already there.
+      - text: Move it — it belongs in RobotMotion.cpp rather than the header, now that a second file
+          depends on it
         correct: false
-        why: The button is used in the .cpp, not named in the header's declaration.
-      - text: The four new tunables must be visible to the header
+        why: A declaration that names StopReason is in the HEADER, so the header is exactly where the
+          include has to be. Moving it to the .cpp would break every other file that includes RobotMotion.h.
+      - text: Replace it with a forward declaration of StopReason, to keep the header light
         correct: false
-        why: The tunables are used in the body, not in the declaration.
+        why: An enum used as a return type must be complete, not forward-declared, and the lesson never
+          raises this. The point of the step is that the architecture already paid for this.
     - id: L13_A10
       type: multiple_choice
       cite: §6 Step 4

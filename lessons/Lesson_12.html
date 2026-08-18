@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.33.0 -->
+<!-- Lesson version: v01.33.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -472,7 +472,7 @@ StopReason turnAround() { return turnDegreesGyro(180); }</pre>
 
 <details data-reveal="quiz"><summary>1. You have used three kinds of sensor so far. Name what each one watches — and say what makes the encoder the odd one out. (§3.1)</summary>
 
-<div class="div-mt-12px"><p>Line sensors watch <strong>the floor</strong> (Lesson 4), the proximity sensors watch <strong>whatever is in front of the robot</strong> (Lesson 5), and the encoders watch <strong>the robot’s own wheels</strong> (Lesson 6). The encoder is the only one that watches a part of the robot instead of the world, and that is the whole problem: it measures <em>intent</em>, not <em>result</em>. It tells you how far the wheel turned; it cannot tell you how far the robot moved. The two are connected by <strong>friction</strong>, and friction is not something the encoder can see. When friction is good the encoder’s answer happens to also be the right answer — which is what six lessons of being quietly lucky looks like.</p></div>
+<div class="div-mt-12px"><p>Line sensors watch <strong>the floor</strong> (Lesson 4), the proximity sensors watch <strong>whatever is in front of the robot</strong> (Lesson 5), and the encoders watch <strong>the robot’s own wheels</strong> (Lesson 6). The encoder is the only one that watches a part of the robot instead of the world, and that is the whole problem: it measures a result — just not the result you care about. It tells you how far the wheel turned, and that really happened; it cannot tell you how far the robot moved. The two are connected by <strong>friction</strong>, and friction is not something the encoder can see. When friction is good the encoder’s answer happens to also be the right answer — which is what six lessons of being quietly lucky looks like.</p></div>
 
 </details>
 
@@ -1355,7 +1355,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 <p class="h4-mt-0"><strong>The planted line:</strong></p>
 <pre>  // THE PLANTED LINE: someone "helpfully" added TRIM to the turn.
   motors.setSpeeds(leftSpeed + TRIM, rightSpeed);</pre>
-<p><strong>The symptom:</strong> The turn still stops at the right <em>angle</em> — the gyro sees to that — but the robot no longer pivots in place. It arcs, and walks out of position while it turns. Only once you have filled in your TRIM value: With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
+<p><strong>The symptom:</strong> The turn still stops at the right <em>angle</em> — the gyro sees to that — but the robot no longer pivots in place. It arcs, and walks out of position while it turns — and only once you have filled in your TRIM value. With <code>TRIM = 0</code> everything is fine. The bug appears the moment you fix a <em>different</em> problem.</p>
 <div class="div-6f7582-4" data-family="THINK ABOUT IT" data-callout="12.59">
 <div class="div-fs-105em">Ask yourself:</div> TRIM exists to correct an <strong>unwatched heading</strong> — a robot driving straight with nothing watching where it points. Is anything watching this turn’s heading? What is it already doing about the error?<br><br><strong>And now the nasty part.</strong> Look at the byte count: <strong>24,790</strong>. That is <em>exactly</em> the size of the correct build — not close, <em>identical</em>. With <code>TRIM = 0</code>, <code>leftSpeed + 0</code> folds away to <code>leftSpeed</code> and the compiler emits the same machine code.<br><br><em>A binary that is the right size is not a binary that is right.</em></div>
 <p class="p-mb-0"><a href="../newproject.html?lesson=12&amp;kind=b4_trim_in_turn" class="link-c-2e86ab">Open B4 in the Project Maker</a></p>
@@ -1415,7 +1415,7 @@ The changed line is <strong>shown to you</strong> — this is not a hunt for a t
 
 <details data-reveal="quiz"><summary>Every straight line in this book whose heading nothing watches carries TRIM. <code>turnDegreesGyro()</code> has <strong>none</strong>. Say why that is correct — and why adding it would be not merely unnecessary but wrong. (§5.2)</summary>
 
-<div class="div-mt-12px"><p>TRIM exists to correct a robot that drifts <em>when nothing is watching</em> — <code>driveDistance()</code>, <code>handleGap()</code>, any timed open-loop maneuver. This turn is being watched. The gyro is measuring the turn as it happens, thousands of times a second, and the motors stop when that measurement reaches the target, which makes it a <strong>closed loop</strong> that is already correcting its own error. Adding TRIM means introducing a second correction that fights a controller that is already right, so the turn ends up subtly and stubbornly off. There is also nothing straight here for TRIM to protect: the wheels oppose each other <em>on purpose</em>, and the gyro — not the wheels — decides when the turn is done.</p></div>
+<div class="div-mt-12px"><p>TRIM exists to correct a robot that drifts <em>when nothing is watching</em> — <code>driveDistance()</code>, <code>handleGap()</code>, any timed open-loop maneuver. This turn is being watched. The gyro is measuring the turn as it happens, thousands of times a second, and the motors stop when that measurement reaches the target, which makes it a <strong>closed loop</strong> that is already correcting its own error. Adding TRIM means introducing a second correction that fights a controller that is already right: the gyro still stops the turn at the right angle, but the robot arcs instead of pivoting and walks out of position. There is also nothing straight here for TRIM to protect: the wheels oppose each other <em>on purpose</em>, and the gyro — not the wheels — decides when the turn is done.</p></div>
 
 </details>
 
