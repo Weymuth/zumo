@@ -77,7 +77,7 @@ does not hold.**
   forces it** — a predicate widened against a population of zero defects is a guess.
 - **`26,736` IS CORRECT BY MEASUREMENT AND GATED BY NOTHING.** It is labelled *what cutting the
   buzzer would give*, and the Maker defines no such payload. Recorded, not papered over.
-- **THE HARNESS IS NOT IN THE REPO AND THE RECIPE NOW IS.** `./harness_setup.sh` clones all nine
+- **THE HARNESS IS NOT IN THE REPO AND THE RECIPE NOW IS.** `sh harness_setup.sh` clones all nine
   repos at pinned SHAs, derives `LIBDIRS` out of `pio_harness.sh`, and fails if that script declares
   a library it does not clone. Rebuild takes minutes. **Vendoring is priced and NOT taken:** 746
   files / 27 MB, ~24 MB of it firmwares and drivers this build never opens, deletions need GitHub
@@ -94,6 +94,12 @@ does not hold.**
 - **`ZUMO_AFTER_LAUNCH.md`** — read at every session open alongside this handoff. Three items, all
   still open; its footer names the CURRENT handoff and must be re-aimed at every close. **It named a
   deleted file at S164 and again at S166.**
+- **`site_parity` IS NOT TRUSTWORTHY ON ITS FIRST RUN AFTER A PUSH** (S166 post-push). The first
+  run reported 1 MISMATCH; three runs after it reported PARITY, tree untouched — Pages was
+  mid-rebuild. **Both directions are unsafe alone: a first-run MISMATCH is a phantom, and a
+  first-run PARITY can be the OLD site agreeing with itself before the new content deploys.**
+  That second case is the dangerous one because it passes. **Run it at least twice and believe
+  the repeat.** Not gated — the honest predicate would have to poll the deployment.
 - **FREE LEAD, MEASURED AND NOT CHASED:** `centre` appears in prose across at least eight lessons
   beside `center`. US-versus-British spelling has never been ruled.
 - **GATE 77 DOES NOT EXCLUDE `<pre>`** (S165, unchanged). A lesson that legitimately prints a
@@ -122,8 +128,11 @@ does not hold.**
 # HARNESS — IT IS NOT IN THE REPO. RUN THE SCRIPT.
 
 ```
-./harness_setup.sh
+sh harness_setup.sh
 ```
+**Invoke it through `sh`, not `./`.** The file is tracked **100644** — the executable bit did not
+survive GitHub Desktop, so `./harness_setup.sh` fails on a fresh clone. `sh` works either way, and
+that is the reason the instruction is written this way rather than the bit being chased (S166).
 That is the whole recipe now. It installs the toolchain if missing, clones the nine repos at PINNED
 SHAs, cross-checks them against `pio_harness.sh`'s own `LIBDIRS`, and builds the core. **Correct
 setup prints `objects: 41`.** Then, in order:
@@ -165,8 +174,8 @@ than about bytes. The measurement was done and handed over; the ruling was not t
 ---
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`540d6fe`**. Census **40,889**.
-Bible **v8.159** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.4** ·
+Fresh-clone verified at **`5d8366d`**. Census **40,889**.
+Bible **v8.159.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.58.4** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
@@ -194,7 +203,7 @@ Instruments: `book_gates` **v1.71.0** · `lesson_inventory` **v1.3.5** ·
 `title_feed` **v1.0** ·
 `quiz_bank` **v1.6.1** ·
 `timer.html` **v1.3.2** ·
-`harness_setup.sh` **v1.0.0** ·
+`harness_setup.sh` **v1.0.1** ·
 `pio_harness.sh` **v3.0** ·
 `going_deeper` **v01.6.1**.
 

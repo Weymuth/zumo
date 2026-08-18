@@ -1,5 +1,5 @@
 #!/bin/sh
-# harness_setup.sh v1.0.0 — rebuild the AVR compile harness from pinned upstream SHAs.
+# harness_setup.sh v1.0.1 — rebuild the AVR compile harness from pinned upstream SHAs.
 #
 # WHY THIS FILE EXISTS. The harness is NOT in this repo (see the RULING note at the
 # bottom), so every session that needs a byte figure has to rebuild it. Until S166 the
@@ -15,7 +15,14 @@
 # something against a fixed toolchain AND a fixed library set. If a pin below is moved,
 # every control must be re-reproduced before any figure is trusted (rule 30).
 #
-#   ./harness_setup.sh          (the target dir is read out of pio_harness.sh)
+#   sh harness_setup.sh         (the target dir is read out of pio_harness.sh)
+#
+# INVOKED WITH `sh`, DELIBERATELY. This file went into the repo through GitHub Desktop and
+# arrived tracked as 100644 — the executable bit did not survive the transfer, so `./harness_setup.sh`
+# fails on a fresh clone. Rather than depend on a mode bit that this project's push path does not
+# carry, every instruction in the book invokes it through `sh`, which works whether or not the bit
+# is ever set. A script invoked the same way regardless of how it was transferred is one fewer
+# thing that can rot (S166 post-push verification).
 #
 # Correct setup prints "objects: 41". Then: python3 byte_audit.py --sizes, then --check.
 
