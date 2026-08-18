@@ -90,7 +90,7 @@ history, pull each deferred item with its provenance, and record here only what 
 pointed at. **Do not seed this file from a summary.**
 
 ---
-*Opened S162 · pointed at from the CURRENT session handoff (`ZUMO_S167_HANDOFF.md`) and
+*Opened S162 · pointed at from the CURRENT session handoff (`ZUMO_S168_HANDOFF.md`) and
 `LIVE_ZUMO_TEXTBOOK.md` · the pointer names a file that is deleted and rewritten every session, so it
-is re-aimed at each close (S164: it still named `ZUMO_S163_HANDOFF.md`; S166: it still named `ZUMO_S165_HANDOFF.md` — both deleted at their own push, which is why this line is re-aimed rather than trusted) · not versioned,
+is re-aimed at each close (S164: it still named `ZUMO_S163_HANDOFF.md`; S166: it still named `ZUMO_S165_HANDOFF.md` — both deleted at their own push, which is why this line is re-aimed rather than trusted. S167 re-aimed it at close, deliberately, as the convention now requires) · not versioned,
 by the same convention as `ZUMO_PARKED_EXIT_ITEMS.md` and `ZUMO_SHELVED_CARDS.md`*

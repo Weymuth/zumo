@@ -1,7 +1,11 @@
 # ZUMO READING QUIZ BANK — LESSON 11
 # Time Lies, Distance Doesn't · Encoder-Based Gap Crossing
 #
-# Bank version: v1.0.5
+# Bank version: v1.0.7
+# Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
+#   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
+#   but those substitutions and the version line — so this pin bump is earned by a closed diff
+#   rather than by a re-read (rule 37). No answer, stem or rationale changed meaning.
 # Authored against: lessons/Lesson_11.html v02.30.2 (post-S160 C2 sensor-as-truth pass)
 # Verified against: Lesson_11 v02.31.0, Lesson_10 v02.30.2, Lesson_08 v04.32.0,
 #   Lesson_06 v04.32.3, Lesson_03 v03.43.0 — S166. All five diffs read; every question that
@@ -83,14 +87,14 @@
 
 lesson: "L11"
 title: "Time Lies, Distance Doesn't — Encoder-Based Gap Crossing"
-bank_version: "1.0.5"
+bank_version: "1.0.7"
 source:
-  lesson_11: "v02.31.0"
-  lesson_10: "v02.30.2"
-  lesson_08: "v04.32.0"
-  lesson_06: "v04.32.3"
-  lesson_04: "v04.29.1"
-  lesson_03: "v03.43.0"
+  lesson_11: "v02.31.1"
+  lesson_10: "v02.30.3"
+  lesson_08: "v04.32.1"
+  lesson_06: "v04.32.4"
+  lesson_04: "v04.29.2"
+  lesson_03: "v03.43.2"
 
 sets:
   before:
@@ -132,7 +136,7 @@ sets:
         options:
           - text: "All five read white, and P-control has nothing to steer against at all"
             correct: true
-          - text: "All five read black, and P-control steers toward the centre"
+          - text: "All five read black, and P-control steers toward the center"
             correct: false
             why: "All-black is what a cliff and an intersection look like, not a gap. §3.1 says the robot goes blind because the line is gone — white everywhere."
           - text: "The outer two read white and the inner three read black"
@@ -290,7 +294,7 @@ sets:
             why: "Neither version measures speed. The old one measured elapsed time — speed is the hidden variable that made time unreliable."
           - text: "Lesson 8 asked 'should I stop?'; Lesson 11 asks 'should I turn?'"
             correct: false
-            why: "Turning to search is Challenge 2. The base behaviour in both lessons is to drive straight and decide when to quit."
+            why: "Turning to search is Challenge 2. The base behavior in both lessons is to drive straight and decide when to quit."
 
       - id: L11_B14
         type: multiple_choice
@@ -314,7 +318,7 @@ sets:
         type: multiple_choice
         cite: "§3.4"
         points: 1
-        stem: "Which lesson introduced the idea that a state machine gives each behaviour a name, which §3.4 builds on?"
+        stem: "Which lesson introduced the idea that a state machine gives each behavior a name, which §3.4 builds on?"
         options:
           - text: "Lesson 10"
             correct: true
@@ -355,9 +359,9 @@ sets:
           - text: "How far away is the surface below?"
             correct: false
             why: "That is precisely the question it CANNOT answer, and §3.5 and §8A.4 both say the fix would be a sensor that could."
-          - text: "What colour is the surface below?"
+          - text: "What color is the surface below?"
             correct: false
-            why: "Colour is an interpretation the student applies afterwards. The sensor reports returned light, which is why a void and black tape are indistinguishable to it."
+            why: "Color is an interpretation the student applies afterwards. The sensor reports returned light, which is why a void and black tape are indistinguishable to it."
           - text: "Is there a surface below at all?"
             correct: false
             why: "If it could answer that, the cliff problem would be solved. It cannot — a missing floor and black tape give it the same reading."
@@ -422,14 +426,14 @@ sets:
         points: 1
         stem: "With all five sensors equally dark over a cliff, what does readLinePosition() report?"
         options:
-          - text: "Dead centre — LINE_CENTER, because the weighted average of five equal readings lands in the middle"
+          - text: "Dead center — LINE_CENTER, because the weighted average of five equal readings lands in the middle"
             correct: true
           - text: "Zero, because there is no line to weight"
             correct: false
             why: "Zero is the far-left end of the scale, not the absence of a line. Equal weights average to the middle, not to an end."
           - text: "The last valid position, held over from the previous loop"
             correct: false
-            why: "The function has no memory of previous positions — it computes fresh from the current five readings, and those readings look like a perfectly centred line."
+            why: "The function has no memory of previous positions — it computes fresh from the current five readings, and those readings look like a perfectly centered line."
           - text: "An error value the caller is expected to check"
             correct: false
             why: "There is no error to signal. Every reading is valid and in range; the problem is what they MEAN, which is outside the function's reach."
@@ -438,16 +442,16 @@ sets:
         type: multiple_choice
         cite: "§3.5"
         points: 1
-        stem: "Given a position of dead centre, what does followLine() do as the robot goes over the edge?"
+        stem: "Given a position of dead center, what does followLine() do as the robot goes over the edge?"
         options:
           - text: "Computes an error of zero and drives both motors at BASE_SPEED"
             correct: true
           - text: "Computes a large error and swerves hard to one side"
             correct: false
-            why: "A large error needs an off-centre reading. Dead centre produces zero error, which is why the robot goes straight out rather than veering."
+            why: "A large error needs an off-center reading. Dead center produces zero error, which is why the robot goes straight out rather than veering."
           - text: "Stops the motors, because zero error means the line was lost"
             correct: false
-            why: "Zero error means the line is perfectly centred, which is the best possible news as far as the controller is concerned. Nothing tells it to stop."
+            why: "Zero error means the line is perfectly centered, which is the best possible news as far as the controller is concerned. Nothing tells it to stop."
           - text: "Hands control to handleGap(), which applies the budget"
             correct: false
             why: "handleGap() is never reached. §3.5 is explicit: GAP_MAX_CM never gets a vote at a cliff."
@@ -458,7 +462,7 @@ sets:
         points: 1
         stem: "At a table edge the robot goes blind, so the gap budget in GAP_MAX_CM is what decides whether it stops."
         correct: false
-        why: "The robot does not go blind at a cliff — it believes it has found the widest, most perfectly centred line it has ever seen. handleGap() is never called and GAP_MAX_CM never gets a vote. Every safeguard in this lesson watches for a line that vanishes, and at a cliff the line arrives."
+        why: "The robot does not go blind at a cliff — it believes it has found the widest, most perfectly centered line it has ever seen. handleGap() is never called and GAP_MAX_CM never gets a vote. Every safeguard in this lesson watches for a line that vanishes, and at a cliff the line arrives."
 
       - id: L11_B24
         type: multiple_choice
@@ -510,9 +514,9 @@ sets:
           - text: "A more sensitive reflectance sensor with a wider dynamic range"
             correct: false
             why: "Range does not help when both surfaces sit at the same end of the scale. The information is not in the reading, so no amount of processing recovers it."
-          - text: "A colour sensor that can tell black tape from black shadow"
+          - text: "A color sensor that can tell black tape from black shadow"
             correct: false
-            why: "A void is not a colour. There is no surface down there to have a colour at all — which is why the useful quantity is distance, not appearance."
+            why: "A void is not a color. There is no surface down there to have a color at all — which is why the useful quantity is distance, not appearance."
 
       - id: L11_B27
         type: multiple_choice
@@ -554,7 +558,7 @@ sets:
         points: 1
         stem: "averageCounts() reads both encoders rather than one. Section 5.1 gives a reason. What is it?"
         options:
-          - text: "An encoder measures wheel rotation, not distance travelled — averaging halves the error one wheel makes"
+          - text: "An encoder measures wheel rotation, not distance traveled — averaging halves the error one wheel makes"
             correct: true
           - text: "Two readings are twice as precise as one"
             correct: false
@@ -600,7 +604,7 @@ sets:
             why: "Nothing decrements. The budget comparison is done by subtraction in blindDistanceCm(), against a fixed start value."
           - text: "The encoder reading when the robot was switched on"
             correct: false
-            why: "That is what it holds when the code is BROKEN — Sabotage Mystery 2 plants exactly this bug, and the symptom is an enormous blind distance the robot never travelled."
+            why: "That is what it holds when the code is BROKEN — Sabotage Mystery 2 plants exactly this bug, and the symptom is an enormous blind distance the robot never traveled."
 
       - id: L11_B32
         type: true_false
@@ -891,7 +895,7 @@ sets:
         stem: "Match each glossary term to its definition."
         pairs:
           - left: "Odometer"
-            right: "An instrument that measures distance travelled — your encoders, used this way"
+            right: "An instrument that measures distance traveled — your encoders, used this way"
           - left: "Budget"
             right: "The maximum blind distance; spend it all and you are LINE_LOST"
           - left: "Re-arm"
@@ -936,9 +940,9 @@ sets:
           - text: "Zero disables gap crossing until the two new states exist, which keeps the intermediate builds safe"
             correct: false
             why: "Zero does not disable anything — it makes any distance at all over budget, which §8's first troubleshooting row describes as an instant quit. The reason is pedagogical."
-          - text: "A float constant must be initialised to zero before it can be reassigned"
+          - text: "A float constant must be initialized to zero before it can be reassigned"
             correct: false
-            why: "It could be initialised to anything. The blank is left empty deliberately, the same way L03's TRIM is."
+            why: "It could be initialized to anything. The blank is left empty deliberately, the same way L03's TRIM is."
           - text: "0.0 is a sentinel the code checks for, to warn you the value is unset"
             correct: false
             why: "Nothing checks for it. The symptom is a robot that quits after a millimetre, which is a diagnosis you make yourself from §8."
@@ -1124,7 +1128,7 @@ sets:
             why: "The budget does not decide whether a gap is DETECTED — the line sensors do that. It decides how long the robot is willing to stay blind."
           - text: "Too small, and the odometer overflows; too big, and the float loses precision"
             correct: false
-            why: "Neither is a failure the lesson describes, and neither would produce a visible behaviour on a course."
+            why: "Neither is a failure the lesson describes, and neither would produce a visible behavior on a course."
           - text: "Too small, and TRIM cannot hold the robot straight; too big, and P-control fights the budget"
             correct: false
             why: "TRIM's effect is independent of the budget — that is 7C. And P-control is asleep inside a gap, so there is nothing for it to fight."
@@ -1279,7 +1283,7 @@ sets:
             correct: true
           - text: "60 right — to return from the far end of the sweep to the starting heading"
             correct: false
-            why: "The 60 left went 30 degrees PAST centre, not 60 past it. Only 30 is owed to get back."
+            why: "The 60 left went 30 degrees PAST center, not 60 past it. Only 30 is owed to get back."
           - text: "90 left — to square up against the line's likely direction"
             correct: false
             why: "Nothing in the challenge assumes a direction for the line. The final turn is purely bookkeeping."

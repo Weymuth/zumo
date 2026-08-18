@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.31.0 -->
+<!-- Lesson version: v02.31.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -191,10 +191,10 @@ and a missing floor pins it at the same end the line does. It can only tell you
 <p>Follow it through your own code. Over the edge, all five sensors read near 1000 — full
 black. <code>isLineVisible()</code> sums them, gets the largest number it can get, and returns
 <strong>true</strong>. <code>readLinePosition()</code> asks where the line is; with all five equally
-dark the weighted average lands dead centre, on <code>LINE_CENTER</code>. So <code>followLine()</code>
+dark the weighted average lands dead center, on <code>LINE_CENTER</code>. So <code>followLine()</code>
 computes an error of <strong>zero</strong> and drives both motors at <code>BASE_SPEED</code>.</p>
 <p>The robot does not go blind at a cliff. It believes it has found the widest, most perfectly
-centred line it has ever seen, and it drives straight out over the drop at full speed.
+centered line it has ever seen, and it drives straight out over the drop at full speed.
 <strong><code>handleGap()</code> is never called. <code>GAP_MAX_CM</code> never gets a vote.</strong>
 Every safeguard you built in this lesson is watching for a line that vanishes, and at a cliff
 the line does not vanish — it arrives.</p>
@@ -268,7 +268,7 @@ and guessing never does.</p>
 <p>Two small functions do all the work. Neither one is new to you — <code>averageCounts()</code> is lifted straight out of Lesson 6's <code>driveDistance()</code>.</p>
 <pre>// ===== HOW FAR HAVE WE BEEN BLIND? (NEW for Lesson 11) =====
 // Ask BOTH wheels, exactly like Lesson 6's driveDistance() does.
-// An encoder measures WHEEL ROTATION, not ground travelled. A wheel that
+// An encoder measures WHEEL ROTATION, not ground traveled. A wheel that
 // slips keeps turning while the robot goes nowhere. Averaging both wheels
 // halves one wheel's error; it cannot see an error both wheels make.
 long averageCounts() {
@@ -280,11 +280,11 @@ long averageCounts() {
 // Distance driven since the line vanished, in centimeters.
 // COUNTS_PER_CM turns wheel rotation into real-world distance.
 float blindDistanceCm() {
-  long travelled = averageCounts() - gapStartCounts;
-  return travelled / COUNTS_PER_CM;
+  long traveled = averageCounts() - gapStartCounts;
+  return traveled / COUNTS_PER_CM;
 }</pre>
 <div class="div-607d8b" data-family="NOTE" data-callout="11.8"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-<div class="div-fs-105em">Why average BOTH wheels?</div>Because an encoder measures <strong>wheel rotation</strong>, not distance travelled. The two are equal only while the wheel rolls without slipping. A wheel that slips on a smooth patch keeps turning while the robot goes nowhere, so it <strong>over</strong>-counts. A wheel that catches on a seam stops turning while the robot is still moving, so it <strong>under</strong>-counts.<br><br>Averaging both wheels halves the error one wheel makes. It cannot see an error <em>both</em> wheels make together — which is exactly the hole Lesson 12 opens. This is the same rule <code>driveDistance()</code> and <code>turnDegrees()</code> have followed since Lesson 6.</div>
+<div class="div-fs-105em">Why average BOTH wheels?</div>Because an encoder measures <strong>wheel rotation</strong>, not distance traveled. The two are equal only while the wheel rolls without slipping. A wheel that slips on a smooth patch keeps turning while the robot goes nowhere, so it <strong>over</strong>-counts. A wheel that catches on a seam stops turning while the robot is still moving, so it <strong>under</strong>-counts.<br><br>Averaging both wheels halves the error one wheel makes. It cannot see an error <em>both</em> wheels make together — which is exactly the hole Lesson 12 opens. This is the same rule <code>driveDistance()</code> and <code>turnDegrees()</code> have followed since Lesson 6.</div>
 <h3 class="h3-c-433014">5.2 The Function That Changed Its Mind</h3>
 <p>Here is the new <code>handleGap()</code>. Compare it to the Lesson 8 version in Section 3.2 — same name, same call site, same job:</p>
 <pre>// The SAME function you have called since Lesson 8. Same name, same
@@ -388,7 +388,7 @@ line came back, and otherwise hands off to <code>handleGap()</code>. The <em>cou
 
 <details data-reveal="quiz"><summary>5. Hold the robot out over the edge of the table. What does a line sensor report — and which of the two things it already knows about does that reading look exactly like? (§3.5)</summary>
 
-<div class="div-mt-12px"><p>Nothing bounces back, and <em>nothing coming back</em> reads exactly the same as <strong>black tape</strong>. A line sensor is an infrared reflectance sensor: it shines IR down and measures how much returns. White paper returns most of it, black tape swallows it, and a missing floor returns none at all — pinning the sensor at the same end of its one scale that the line does. It can only tell you <strong>no light came back</strong>, and it has no way at all to say why. So the robot does not go blind at a cliff: all five sensors read near 1000, <code>isLineVisible()</code> returns true, the position lands dead centre, and the robot drives out over the drop at full speed believing it has found a perfect line. The sensor does not see a cliff. It sees black — and black is the thing it was told to follow.</p></div>
+<div class="div-mt-12px"><p>Nothing bounces back, and <em>nothing coming back</em> reads exactly the same as <strong>black tape</strong>. A line sensor is an infrared reflectance sensor: it shines IR down and measures how much returns. White paper returns most of it, black tape swallows it, and a missing floor returns none at all — pinning the sensor at the same end of its one scale that the line does. It can only tell you <strong>no light came back</strong>, and it has no way at all to say why. So the robot does not go blind at a cliff: all five sensors read near 1000, <code>isLineVisible()</code> returns true, the position lands dead center, and the robot drives out over the drop at full speed believing it has found a perfect line. The sensor does not see a cliff. It sees black — and black is the thing it was told to follow.</p></div>
 
 </details>
 
@@ -465,7 +465,7 @@ long gapStartCounts = 0;   // Encoder reading at the moment we went blind</pre>
 <p>Add these two functions. Put them right below <code>killSwitchPressed()</code>:</p>
 <pre>// ===== HOW FAR HAVE WE BEEN BLIND? (NEW for Lesson 11) =====
 // Ask BOTH wheels, exactly like Lesson 6's driveDistance() does.
-// An encoder measures WHEEL ROTATION, not ground travelled. A wheel that
+// An encoder measures WHEEL ROTATION, not ground traveled. A wheel that
 // slips keeps turning while the robot goes nowhere. Averaging both wheels
 // halves one wheel's error; it cannot see an error both wheels make.
 long averageCounts() {
@@ -477,8 +477,8 @@ long averageCounts() {
 // Distance driven since the line vanished, in centimeters.
 // COUNTS_PER_CM turns wheel rotation into real-world distance.
 float blindDistanceCm() {
-  long travelled = averageCounts() - gapStartCounts;
-  return travelled / COUNTS_PER_CM;
+  long traveled = averageCounts() - gapStartCounts;
+  return traveled / COUNTS_PER_CM;
 }</pre>
 <p><strong>Upload it.</strong> The robot behaves <em>exactly</em> as before — because nothing calls these yet. That is fine. You just built the instrument; you have not picked it up.</p>
 <details data-reveal="catchup">
@@ -839,7 +839,7 @@ boom reads the void as black just the same. You would have moved the wrong thing
 came back?</em> You need one that answers <em>how far away is the floor?</em> Over black tape the
 answer is about three millimetres; over a table edge it is the height of the table. Those are
 not the same number, and nothing can make them the same number.</p>
-<div class="div-27ae60" data-family="INSIGHT" data-callout="11.23"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">Section 8A.2, four sections early and one word short.</div>It says: <em>“is there a sensor that measures the thing I actually want? On this robot, for distance, there always is.”</em> For distance <em>travelled</em>, yes — the encoders. For distance <em>to the floor</em>, there is not one, and that is the whole difference between a lesson you can finish and a rail you have to buy.<br><br><strong>The question that settles a design is not “can I write this?” It is “does anything on this robot measure the quantity I am reasoning about?”</strong> Ask it before the code, not after.</div>
+<div class="div-27ae60" data-family="INSIGHT" data-callout="11.23"><div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">Section 8A.2, four sections early and one word short.</div>It says: <em>“is there a sensor that measures the thing I actually want? On this robot, for distance, there always is.”</em> For distance <em>traveled</em>, yes — the encoders. For distance <em>to the floor</em>, there is not one, and that is the whole difference between a lesson you can finish and a rail you have to buy.<br><br><strong>The question that settles a design is not “can I write this?” It is “does anything on this robot measure the quantity I am reasoning about?”</strong> Ask it before the code, not after.</div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
@@ -910,7 +910,7 @@ not the same number, and nothing can make them the same number.</p>
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
 <pre class="pre-m-0">sweep a quarter-turn each way (you own turnDegrees() and isLineVisible()):
     turn 30 right                -&gt; line visible? resume FOLLOWING_LINE
-    turn 60 left (past centre)   -&gt; line visible? resume FOLLOWING_LINE
+    turn 60 left (past center)   -&gt; line visible? resume FOLLOWING_LINE
     neither: turn 30 right to face front again, then STOP
 undo the sweep on failure - otherwise the next run starts crooked</pre>
 </div>
@@ -1060,7 +1060,7 @@ Why does <em>THIS</em> line produce <em>THAT</em> symptom?</p>
 <p><strong>Symptom:</strong> gap distances are unreliable. Sometimes the robot quits early;
 sometimes it runs long. On a clean floor it is <em>almost</em> fine. On carpet it is a disaster.</p>
 <p><strong>Q:</strong> Why does surface texture change the behavior of a line that never mentions the surface?</p>
-<details data-reveal="solution"><summary><img src="../images/marks/unlock.svg" alt="" data-mark="unlock">Answer</summary><div class="div-mt-12px"><p>The robot is now reading <strong>one wheel's rotation</strong> and calling it the distance the robot travelled. If the left wheel slips, it keeps turning while the robot goes nowhere, so it <em>over</em>-counts and <code>blindDistanceCm()</code> reports more distance than the robot really covered — the budget runs out early and the robot quits before it reaches the line. If the left wheel catches on a seam, it stops turning while the robot is still moving, so it <em>under</em>-counts and the budget never runs out where it should.</p><p>On smooth tile, both wheels roll cleanly, the rotation and the travel agree, and the bug hides. On carpet, they do not.</p><p><strong>This is why the rule is average BOTH.</strong> Not because two readings are more precise — because the average is wrong by only <em>half</em> of any single-wheel error, and <em>cannot</em> be wrong by the full amount. What it still cannot do is notice when both wheels are wrong the same way. Lesson 12 is about that.</p></div></details>
+<details data-reveal="solution"><summary><img src="../images/marks/unlock.svg" alt="" data-mark="unlock">Answer</summary><div class="div-mt-12px"><p>The robot is now reading <strong>one wheel's rotation</strong> and calling it the distance the robot traveled. If the left wheel slips, it keeps turning while the robot goes nowhere, so it <em>over</em>-counts and <code>blindDistanceCm()</code> reports more distance than the robot really covered — the budget runs out early and the robot quits before it reaches the line. If the left wheel catches on a seam, it stops turning while the robot is still moving, so it <em>under</em>-counts and the budget never runs out where it should.</p><p>On smooth tile, both wheels roll cleanly, the rotation and the travel agree, and the bug hides. On carpet, they do not.</p><p><strong>This is why the rule is average BOTH.</strong> Not because two readings are more precise — because the average is wrong by only <em>half</em> of any single-wheel error, and <em>cannot</em> be wrong by the full amount. What it still cannot do is notice when both wheels are wrong the same way. Lesson 12 is about that.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b1_onewheel" class="link-c-2e86ab">Open B1 in the Project Maker</a></p>
 <h3 class="h3-bg-f5eef8" id="mystery-2" data-challenge="11.m2" data-kind="bonus-sabotage">🕵️ Mystery 2: The Gap That Only Works Once</h3>
 <p><strong>The planted line</strong> — inside <code>handleGap()</code>:</p>
@@ -1070,7 +1070,7 @@ sometimes it runs long. On a clean floor it is <em>almost</em> fine. On carpet i
 <p><strong>Symptom:</strong> the first gap crosses perfectly. Every gap after it fails instantly,
 reporting an enormous blind distance the robot obviously did not travel.</p>
 <p><strong>Q:</strong> The robot did not move. Where did that huge distance come from?</p>
-<details data-reveal="solution"><summary><img src="../images/marks/unlock.svg" alt="" data-mark="unlock">Answer</summary><div class="div-mt-12px"><p><code>gapStartCounts</code> is never updated — it is still <code>0</code>, its startup value. So <code>blindDistanceCm()</code> is not measuring "distance since the line vanished." It is measuring <strong>distance since the robot was switched on</strong>.</p><p>By the time the robot reaches the second gap, it has driven a metre of line. That whole metre is now counted as "blind" distance — wildly over budget, so <code>LINE_LOST</code> fires on the first loop iteration.</p><p>The first gap worked purely because the robot had not driven far <em>yet</em>. <strong>A bug that works once is the most dangerous kind.</strong> It passes your first test.</p></div></details>
+<details data-reveal="solution"><summary><img src="../images/marks/unlock.svg" alt="" data-mark="unlock">Answer</summary><div class="div-mt-12px"><p><code>gapStartCounts</code> is never updated — it is still <code>0</code>, its startup value. So <code>blindDistanceCm()</code> is not measuring "distance since the line vanished." It is measuring <strong>distance since the robot was switched on</strong>.</p><p>By the time the robot reaches the second gap, it has driven a meter of line. That whole meter is now counted as "blind" distance — wildly over budget, so <code>LINE_LOST</code> fires on the first loop iteration.</p><p>The first gap worked purely because the robot had not driven far <em>yet</em>. <strong>A bug that works once is the most dangerous kind.</strong> It passes your first test.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=11&amp;kind=b2_norearm" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 <h3 class="h3-bg-f5eef8" id="mystery-3" data-challenge="11.m3" data-kind="bonus-sabotage">🕵️ Mystery 3: The Blank That Does Nothing</h3>
 <p><strong>The planted line</strong> — the last line of <code>handleGap()</code>:</p>
@@ -1085,8 +1085,8 @@ Why does the robot completely ignore it?</p>
 <h3 class="h3-bg-f5eef8" id="mystery-4" data-challenge="11.m4" data-kind="bonus-sabotage">🕵️ Mystery 4: Centimeters That Are Not Centimeters</h3>
 <p><strong>The planted line</strong> — inside <code>blindDistanceCm()</code>:</p>
 <pre>float blindDistanceCm() {
-  long travelled = averageCounts() - gapStartCounts;
-  return travelled;                 // &lt;-- PLANTED
+  long traveled = averageCounts() - gapStartCounts;
+  return traveled;                 // &lt;-- PLANTED
 }</pre>
 <p><strong>Symptom:</strong> the robot stops the <em>instant</em> the line disappears.
 Every time. Even with <code>GAP_MAX_CM</code> set to 50.</p>
@@ -1205,7 +1205,7 @@ change the code.</strong> What do you change, and why is moving the existing sen
 
 <div class="div-bg-6f7582"><div id="glossary"><span class="span-d-block">Glossary</span></div></div>
 <div class="div-6f7582">
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.34"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-odometer-gloss">Odometer</strong></div>An instrument that measures <em>distance travelled</em>. Your encoders, used this way.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.34"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-odometer-gloss">Odometer</strong></div>An instrument that measures <em>distance traveled</em>. Your encoders, used this way.</div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.35"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-open-loop-gloss">Open loop</strong></div>Acting without measuring the result. Driving blind across a gap. <strong>An unwatched heading needs TRIM.</strong></div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.36"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-closed-loop-gloss">Closed loop</strong></div>Measuring the result and correcting. <code>followLine()</code>. <strong>It watches where it is going, so it needs no TRIM.</strong></div>
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="11.37"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-gap-gloss">Gap</strong></div>A break in the line the robot is <em>allowed</em> to cross.</div>

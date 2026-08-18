@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.29.1 -->
+<!-- Lesson version: v04.29.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1338,7 +1338,7 @@ onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday<
 
 <p>Some questions are not "is it dark?" but "how far off am I?" Ask the line sensors for a position with <code>readLine()</code> and you get a number from 0 to 2000, with 1000 meaning dead center. Subtract, and you have the most useful quantity in robotics:</p>
 
-<pre><span class="tok-569cd6">int</span> error = position - <span class="tok-b5cea8">1000</span>;   <span class="tok-6a9955">// how far off centre, and which way</span></pre>
+<pre><span class="tok-569cd6">int</span> error = position - <span class="tok-b5cea8">1000</span>;   <span class="tok-6a9955">// how far off center, and which way</span></pre>
 
 <p>That single subtraction carries two facts at once. Its <strong>size</strong> says how wrong you are; its <strong>sign</strong> says which way. Position 1400 gives <code>error = 400</code>; position 600 gives <code>error = -400</code>. Equally wrong, opposite directions — which is exactly what you need to know to correct it.</p>
 
@@ -1352,7 +1352,7 @@ onLine = nowDark;           <span class="tok-6a9955">// today becomes yesterday<
 <p class="p-mb-0-2">Use it whenever you care <strong>how far off</strong> something is but not <strong>which side</strong> it is off on. Keep the signed value too — you still need the sign to know which way to correct.</p>
 </div>
 
-<p>So <code>abs(error) &lt; 100</code> asks the real question: am I within 100 of centre, on either side?</p>
+<p>So <code>abs(error) &lt; 100</code> asks the real question: am I within 100 of center, on either side?</p>
 
 <p>Why not simply demand <code>error == 0</code>? Because the robot will never get there, and it will destroy itself trying. Position 1002 is off by 2, so it corrects. The correction overshoots to 997, so it corrects the other way. Overshoot, correct, overshoot, correct — the robot buzzes in place around the target it cannot quite land on, forever. It is not broken. It is doing precisely what you asked, and what you asked was impossible.</p>
 
@@ -1368,7 +1368,7 @@ A <strong>deadband</strong> is a tolerance around the target inside which you ta
 
 <div class="callout-d4a574-bg-e8d4c4" data-family="WHERE THIS GOES" data-callout="4.42">
 <div class="div-c-8a5a2b"><img src="../images/marks/rocket.svg" alt="" data-mark="rocket">Where this goes next</div>
-<p class="p-mb-0">Right now the correction is blunt: off-centre, so pivot. In Lesson 8 you will make the correction <em>proportional</em> to the error — a small error gets a gentle nudge, a big one a hard shove — and the robot stops lurching and starts gliding. The <code>error = position - 1000</code> line you write in Challenge 5 today is the same line that becomes line following four lessons from now. This is not a warm-up for it; it <em>is</em> it, without a name yet.</p>
+<p class="p-mb-0">Right now the correction is blunt: off-center, so pivot. In Lesson 8 you will make the correction <em>proportional</em> to the error — a small error gets a gentle nudge, a big one a hard shove — and the robot stops lurching and starts gliding. The <code>error = position - 1000</code> line you write in Challenge 5 today is the same line that becomes line following four lessons from now. This is not a warm-up for it; it <em>is</em> it, without a name yet.</p>
 </div>
 
 <div class="callout-d4a574-bg-e8d4c4" data-family="WHERE THIS GOES" data-callout="4.43">
@@ -1642,18 +1642,18 @@ lineSensors.readCalibrated(lineSensorValues);
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
 <pre class="pre-m-0">read the line position, compare to CENTER (1000)
 error = position - CENTER
-if |error| is small (within DEADBAND) -> stop, it’s centred
+if |error| is small (within DEADBAND) -> stop, it’s centered
 else -> pivot toward the line (the way that shrinks the error)</pre>
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p class="p-m-008px">Fill the centre value and the error calculation.</p>
+<p class="p-m-008px">Fill the center value and the error calculation.</p>
 <pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> CENTER = ____;      <span class="tok-6a9955">// middle of the 0-2000 scale</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DEADBAND = <span class="tok-b5cea8">100</span>;
 <span class="tok-569cd6">int</span> position = lineSensors.readLine(lineSensorValues);
-<span class="tok-569cd6">int</span> error = position - ____;   <span class="tok-6a9955">// how far off centre</span>
+<span class="tok-569cd6">int</span> error = position - ____;   <span class="tok-6a9955">// how far off center</span>
 <span class="tok-569cd6">if</span> (abs(error) &lt; DEADBAND) {
-  motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);      <span class="tok-6a9955">// centred - stop</span>
+  motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);      <span class="tok-6a9955">// centered - stop</span>
 } <span class="tok-569cd6">else</span> {
   <span class="tok-6a9955">// pivot toward the line</span>
 }</pre>

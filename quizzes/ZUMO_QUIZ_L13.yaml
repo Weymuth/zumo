@@ -1,7 +1,11 @@
 # ZUMO READING QUIZ BANK — LESSON 13
 # Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
 #
-# Bank version: v1.0.3
+# Bank version: v1.0.5
+# Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
+#   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
+#   but those substitutions and the version line — so this pin bump is earned by a closed diff
+#   rather than by a re-read (rule 37). No answer, stem or rationale changed meaning.
 # Authored against: lessons/Lesson_13.html v02.31.1 (post-S160 C2 sensor-as-truth pass)
 # Verified against: Lesson_13 v02.31.2, Lesson_12 v01.33.1, Lesson_11 v02.31.0,
 #   Lesson_10 v02.30.2, Lesson_06 v04.32.3, Lesson_03 v03.43.0 — S166. Six diffs read; every
@@ -82,7 +86,7 @@
 #   - THE GREEN MARKER'S CALIBRATED VALUE (~500). Lives only inside the SVG. Not asked.
 #   - IMAGE 13.1 AND IMAGE 13.2. Both unshot. Nothing in this bank depends on a photograph.
 #   - WHETHER LESSON 13 IS THE FIRST ZERO-HARDWARE LESSON. False, and now removed (finding 4).
-#   - PROX BEHAVIOUR AGAINST THE BLACK BALL AS A NUMBER. §4.3 says the signal is not there to
+#   - PROX BEHAVIOR AGAINST THE BLACK BALL AS A NUMBER. §4.3 says the signal is not there to
 #     threshold and 7A is where you measure that; no count exists. B20, B21 and B22 ask the
 #     physics and the engineering ethic, never a reading.
 #
@@ -90,13 +94,13 @@
 #
 lesson: L13
 title: Rescue Zone — Flying on Instruments, Navigating Where the Line Cannot Go
-bank_version: "1.0.3"
+bank_version: "1.0.5"
 source:
-  lesson_13: v02.31.2
-  lesson_03: v03.43.0
-  lesson_06: v04.32.3
-  lesson_10: v02.30.2
-  lesson_11: v02.31.0
+  lesson_13: v02.32.0
+  lesson_03: v03.43.2
+  lesson_06: v04.32.4
+  lesson_10: v02.30.3
+  lesson_11: v02.31.1
   lesson_12: v01.33.1
 sets:
   before:
@@ -374,7 +378,7 @@ sets:
       points: 1
       stem: Section 4.1 describes the rescue course as Lesson 11's cliff rule made of wood.
       correct: true
-      why: Lesson 11 ruled that when hardware cannot support a behaviour you use a physical barrier or
+      why: Lesson 11 ruled that when hardware cannot support a behavior you use a physical barrier or
         the floor rather than shipping a guard that mostly works. The walls are that ruling, built.
     - id: L13_B17
       type: matching
@@ -576,7 +580,7 @@ sets:
       - text: The gyro heading changes when the robot meets a curved surface
         correct: false
         why: Nothing in the sweep reads heading against the obstacle.
-      - text: The line sensors read the ball's colour
+      - text: The line sensors read the ball's color
         correct: false
         why: The line sensors face the floor, and the zone floor carries no markings.
     - id: L13_B29
@@ -641,7 +645,7 @@ sets:
         why: It is still live — obstacle avoidance still uses it.
       - text: Because the zone's walls reflect differently from an obstacle
         correct: false
-        why: Reflectance may differ, but §5.3's argument is about the two behaviours needing independent
+        why: Reflectance may differ, but §5.3's argument is about the two behaviors needing independent
           tuning.
     - id: L13_B33
       type: multiple_choice
@@ -1099,7 +1103,7 @@ sets:
       - text: Because a single sensor's raw read is too noisy to threshold
         correct: false
         why: Noise is part of it, but the argument is about what only a full-width strip can produce.
-      - text: Because the array must be centred on the strip to trigger
+      - text: Because the array must be centered on the strip to trigger
         correct: false
         why: Centring is not tested; the AND across all five is.
       - text: Because readCalibrated() returns all five values at once
@@ -1316,6 +1320,29 @@ sets:
       extra_answers:
       - A victim being counted twice on the same row
       - The kill switch firing during the victim announcement
+    - id: L13_A17b
+      type: multiple_choice
+      cite: "§6 Step 6"
+      points: 1
+      stem: Step 6 names three things that must be TRUE ABOUT THE ROOM before the odometer's
+        victim test means anything. Which of these is NOT one of them?
+      options:
+      - text: The silver strip is laid square across the line rather than at an angle
+        correct: true
+        why: That is the doorway, not the sweep. The three stated assumptions are a rectangular
+          zone, parallel rows, and a previous row that actually reached a wall.
+      - text: The zone is rectangular, so neighboring rows really should run about the same length
+        correct: false
+        why: Stated first. If the zone is not rectangular, two honest rows differ in length and
+          the comparison convicts the wall.
+      - text: The rows are parallel, so a wide corner has not quietly shortened this row on its own
+        correct: false
+        why: Stated second. A 5-degree corner error shortens the row for a reason that has nothing
+          to do with a victim.
+      - text: The PREVIOUS row actually reached a wall rather than ending on MAX_ROW_CM
+        correct: false
+        why: Stated third, and the sharpest. If the prox missed, lastRowCm is not a wall distance
+          at all and every comparison built on it is measuring nothing.
     - id: L13_A18
       type: multiple_choice
       cite: §6 Step 6

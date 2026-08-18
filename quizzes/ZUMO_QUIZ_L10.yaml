@@ -1,7 +1,11 @@
 # ZUMO READING QUIZ BANK — LESSON 10
 # Obstacles · When the Course Fights Back
 #
-# Bank version: v1.0.4
+# Bank version: v1.0.6
+# Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
+#   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
+#   but those substitutions and the version line — so this pin bump is earned by a closed diff
+#   rather than by a re-read (rule 37). No answer, stem or rationale changed meaning.
 # Authored against: lessons/Lesson_10.html v02.30.1 (post-S160 C2 sensor-as-truth pass)
 # Verified against: lessons/Lesson_08.html v04.31.1 — S149. Three citations name section 5.4; all three were
 # read (B31, B32, B43 - readFrontProx and initThreeSensors) and none touches the change.
@@ -78,13 +82,13 @@
 
 lesson: "L10"
 title: "Obstacles — When the Course Fights Back"
-bank_version: "1.0.4"
+bank_version: "1.0.6"
 source:
-  lesson_10: "v02.30.2"
-  lesson_09: "v05.27.3"
-  lesson_08: "v04.32.0"
-  lesson_06: "v04.32.3"
-  lesson_05: "v04.29.0"
+  lesson_10: "v02.30.3"
+  lesson_09: "v05.27.4"
+  lesson_08: "v04.32.1"
+  lesson_06: "v04.32.4"
+  lesson_05: "v04.29.1"
 
 sets:
   before:
@@ -213,7 +217,7 @@ sets:
             why: "Lesson 5 §3.4a measured the blind wedges at roughly 19° to 72° off each side. 40° sits inside one."
           - text: "A strong reading, because the two LED banks widen the effective cone"
             correct: false
-            why: "The two banks light the same front sensor from slightly different angles — they help with a slightly off-centre block, not a 40° one."
+            why: "The two banks light the same front sensor from slightly different angles — they help with a slightly off-center block, not a 40° one."
           - text: "An error value, because the reading is out of range"
             correct: false
             why: "The sensor does not report errors. It reports how much came back, and at 40° that is nothing."
@@ -336,11 +340,11 @@ sets:
             correct: true
           - text: "Alphabetical order of the state names"
             correct: false
-            why: "Nothing orders behaviours alphabetically. The order is textual position in the case body."
+            why: "Nothing orders behaviors alphabetically. The order is textual position in the case body."
           - text: "The compiler picks the most efficient order"
             correct: false
             why: "The compiler will not reorder your conditions to suit a robot's safety."
-          - text: "The last behaviour to change state wins"
+          - text: "The last behavior to change state wins"
             correct: false
             why: "The FIRST matching if wins, because it breaks out before the others run."
 
@@ -348,14 +352,14 @@ sets:
         type: multiple_choice
         cite: "§3.4"
         points: 1
-        stem: "How is behaviour arbitration actually implemented, according to the LEARN callout?"
+        stem: "How is behavior arbitration actually implemented, according to the LEARN callout?"
         options:
           - text: "The order of your if statements, plus a break to stop the lower ones from running"
             correct: true
           - text: "A priority integer stored alongside each state in the enum"
             correct: false
             why: "No such integer exists anywhere in the project."
-          - text: "A separate arbitrate() function that scores each behaviour"
+          - text: "A separate arbitrate() function that scores each behavior"
             correct: false
             why: "Attractive, and not what this lesson builds. 'The thinking is hard; the typing is easy.'"
           - text: "Interrupt priorities configured on the microcontroller"
@@ -638,7 +642,7 @@ sets:
         points: 1
         stem: "readFrontProx() returns max() of the left-LED and right-LED readings. Why take the larger?"
         options:
-          - text: "The two banks light the same front sensor from slightly different angles — take whichever saw the object better, so a slightly off-centre obstacle still gets seen"
+          - text: "The two banks light the same front sensor from slightly different angles — take whichever saw the object better, so a slightly off-center obstacle still gets seen"
             correct: true
           - text: "The larger reading is always the more recent one"
             correct: false
@@ -661,7 +665,7 @@ sets:
           - text: "It does not exist in version 2.0.1 of the library"
             correct: false
             why: "It exists and works. That is exactly what makes it dangerous — it succeeds at the wrong thing."
-          - text: "It initialises the sensors too slowly for use in setup()"
+          - text: "It initializes the sensors too slowly for use in setup()"
             correct: false
             why: "Timing is not the objection."
           - text: "It conflicts with initFiveSensors() and causes a compile error"
@@ -760,9 +764,9 @@ sets:
         type: true_false
         cite: "§3.4"
         points: 1
-        stem: "Behaviour arbitration is a technique specific to proximity sensors."
+        stem: "Behavior arbitration is a technique specific to proximity sensors."
         correct: false
-        why: "§3.4 opens by saying the opposite: it 'has nothing to do with proximity sensors.' It is about which behaviour wins when two want the motors, and the proximity sensor is only what makes the argument possible here."
+        why: "§3.4 opens by saying the opposite: it 'has nothing to do with proximity sensors.' It is about which behavior wins when two want the motors, and the proximity sensor is only what makes the argument possible here."
 
       - id: L10_B40
         type: true_false
@@ -800,7 +804,7 @@ sets:
         type: true_false
         cite: "§8A.2, §6 Step 7"
         points: 1
-        stem: "avoidPhase could be declared as a local variable inside loop() without changing the robot's behaviour."
+        stem: "avoidPhase could be declared as a local variable inside loop() without changing the robot's behavior."
         correct: false
         why: "A local is destroyed the moment loop() ends, and loop() ends thousands of times during one maneuver. The robot would forget which step it was on and start the plan over, forever."
 
@@ -858,7 +862,7 @@ sets:
         type: matching
         cite: "§3.4"
         points: 3
-        stem: "Match each priority level to the behaviour that holds it."
+        stem: "Match each priority level to the behavior that holds it."
         pairs:
           - left: "1 (highest)"
             right: "Obstacle — a crash is worse than a missed turn"
@@ -886,7 +890,7 @@ sets:
             right: "A variable that survives between passes of loop() and records how far through a multi-step operation you are"
         extra_answers:
           - "A promise that a variable or object exists somewhere else"
-          - "Deciding in advance which behaviour wins when two want control"
+          - "Deciding in advance which behavior wins when two want control"
 
   after:
     description: "Post-build check. Assumes you have built the lesson, run the ladder in §7, and looked at the results."
@@ -927,7 +931,7 @@ sets:
             why: "Nothing was replaced; three names were appended. And enum members are not code."
           - text: "The new constants live in flash rather than RAM, so they do not count"
             correct: false
-            why: "Flash IS what the byte figure measures. The reason is that unused constants are optimised away entirely."
+            why: "Flash IS what the byte figure measures. The reason is that unused constants are optimized away entirely."
 
       - id: L10_A03
         type: multiple_choice
@@ -1138,9 +1142,9 @@ sets:
           - text: "Run the same number three times and check it lands in the same place"
             correct: false
             why: "That tests repeatability, which is §7.6's advice for the maneuver as a whole. The checkpoint's test amplifies a small angular error instead."
-          - text: "Compare your number against your neighbour's"
+          - text: "Compare your number against your neighbor's"
             correct: false
-            why: "The lesson says outright that yours will not match your neighbour's, and that this is not a mistake."
+            why: "The lesson says outright that yours will not match your neighbor's, and that this is not a mistake."
           - text: "Measure the turn with a protractor against a tile seam"
             correct: false
             why: "Eyeballing a single turn is precisely what the checkpoint says is not sharp enough."
@@ -1156,7 +1160,7 @@ sets:
           - text: "TRIM has no effect until DRIVE_MS exceeds 1000"
             correct: false
             why: "No such threshold. TRIM affects heading at any duration."
-          - text: "Changing TRIM alters the distance travelled, so DRIVE_MS must be re-hunted afterwards anyway"
+          - text: "Changing TRIM alters the distance traveled, so DRIVE_MS must be re-hunted afterwards anyway"
             correct: false
             why: "A curve does change the ground covered, but that is not the reason 7B gives, and the method does not send you back to re-hunt."
           - text: "DRIVE_MS lives in the sketch and TRIM lives in RobotConfig.h, so they cannot be edited in the same build"

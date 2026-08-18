@@ -1,7 +1,11 @@
 # ZUMO READING QUIZ BANK — LESSON 09
 # Intersections & Dead Ends · Teaching Your Robot to Decide
 #
-# Bank version: v1.0.3
+# Bank version: v1.0.5
+# Verified against: S167 — the US-spelling ruling (DJ, S167). Every British form in this bank
+#   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
+#   but those substitutions and the version line — so this pin bump is earned by a closed diff
+#   rather than by a re-read (rule 37). No answer, stem or rationale changed meaning.
 # Authored against: lessons/Lesson_09.html v05.27.1 (post-S160 C2 sensor-as-truth pass)
 # Verified against: lessons/Lesson_08.html v04.31.1 — S149. Five citations name section 5.4, the changed
 # section; all five were read (B26-B30, pseudocode order and debouncing) and none
@@ -64,7 +68,7 @@
 #     and A15 ask which gap survives the timeout and which does not — the logic, never a
 #     distance divided by a speed.
 #   - ANYTHING THAT LIVES ONLY IN A GRAPHIC. GRAPHIC 9.4 and 9.6 both carry the corrected
-#     state behaviour, but so does the Quick Reference in prose, so B12 cites the prose.
+#     state behavior, but so does the Quick Reference in prose, so B12 cites the prose.
 #     Nothing here depends on reading an SVG.
 #   - HOW MANY SENSORS SEE THE LINE WHILE FOLLOWING. §3.3 says "typically only the middle
 #     sensors (2, 3, 4)"; that is a claim about tape width on this array and no bench
@@ -73,11 +77,11 @@
 
 lesson: "L09"
 title: "Intersections & Dead Ends — Teaching Your Robot to Decide"
-bank_version: "1.0.3"
+bank_version: "1.0.5"
 source:
-  lesson_09: "v05.27.3"
-  lesson_08: "v04.32.0"
-  lesson_06: "v04.32.3"
+  lesson_09: "v05.27.4"
+  lesson_08: "v04.32.1"
+  lesson_06: "v04.32.4"
 
 sets:
   before:
@@ -114,9 +118,9 @@ sets:
           - text: "Green reflects infrared exactly as well as white, but the sensor is slower to respond to it"
             correct: false
             why: "If it reflected like white it would read like white. The mid-band reading comes from partial absorption."
-          - text: "The sensors have a separate colour channel that detects green directly"
+          - text: "The sensors have a separate color channel that detects green directly"
             correct: false
-            why: "The line sensors measure reflectance only. They cannot see colour — green is inferred from where the number lands."
+            why: "The line sensors measure reflectance only. They cannot see color — green is inferred from where the number lands."
           - text: "Green tape is thicker than black tape, so the sensor sits further from the floor"
             correct: false
             why: "Thickness is not the mechanism. The reading is about how much IR comes back."
@@ -135,9 +139,9 @@ sets:
           - text: "In the middle, about 300–700"
             correct: false
             why: "That is the green band. Putting white there would make every plain floor look like a marker."
-          - text: "It depends on the tape colour, so no range can be given"
+          - text: "It depends on the tape color, so no range can be given"
             correct: false
-            why: "The tape colour sets the top of the scale. Calibration is what pins white near 0."
+            why: "The tape color sets the top of the scale. Calibration is what pins white near 0."
 
       - id: L09_B04
         type: multiple_choice
@@ -153,9 +157,9 @@ sets:
           - text: "sensorValues[1] and sensorValues[3]"
             correct: false
             why: "Those two ride just off the line's shoulders. Sabotage Mystery 5 is built on exactly this mistake."
-          - text: "sensorValues[2] alone — the centre box holds the marker reading"
+          - text: "sensorValues[2] alone — the center box holds the marker reading"
             correct: false
-            why: "The centre sensor watches the line. Markers sit out at the edges."
+            why: "The center sensor watches the line. Markers sit out at the edges."
 
       - id: L09_B05
         type: multiple_choice
@@ -185,13 +189,13 @@ sets:
             correct: true
           - text: "Stops and waits for a button press"
             correct: false
-            why: "Stopping on plain line would end the run at the first metre of tape."
+            why: "Stopping on plain line would end the run at the first meter of tape."
           - text: "Turns 180° to look for a marker it might have missed"
             correct: false
-            why: "That is the maze-solver behaviour of Challenge 6, and only when the line has vanished."
+            why: "That is the maze-solver behavior of Challenge 6, and only when the line has vanished."
           - text: "Slows down until a marker appears"
             correct: false
-            why: "There is no slow-down behaviour in the base build. NO_INTERSECTION means carry on unchanged."
+            why: "There is no slow-down behavior in the base build. NO_INTERSECTION means carry on unchanged."
 
       - id: L09_B07
         type: multiple_choice
@@ -255,15 +259,15 @@ sets:
         options:
           - text: "A pattern where a system is in exactly ONE state at a time, with defined rules for moving between them"
             correct: true
-          - text: "A pattern that lets a program run several behaviours at once and blend the results"
+          - text: "A pattern that lets a program run several behaviors at once and blend the results"
             correct: false
             why: "The opposite. §3.4's traffic-light analogy is the point — never two at once."
           - text: "A loop that repeats the same block until a condition changes"
             correct: false
-            why: "That is a while loop. A state machine is about which behaviour is active, not about repetition."
+            why: "That is a while loop. A state machine is about which behavior is active, not about repetition."
           - text: "A list of every function in the program, in call order"
             correct: false
-            why: "That is a call graph. A state machine names behaviours and the transitions between them."
+            why: "That is a call graph. A state machine names behaviors and the transitions between them."
 
       - id: L09_B11
         type: multiple_choice
@@ -350,7 +354,7 @@ sets:
             why: "RobotState names what the robot is DOING. IntersectionType names what the course ASKED for. Keeping those separate is why there are two enums and not one."
           - text: "MarkerColour — WHITE, GREEN, BLACK, UNKNOWN"
             correct: false
-            why: "No such enum exists. Colour is decided by isGreen() against the band, not by a named type."
+            why: "No such enum exists. Color is decided by isGreen() against the band, not by a named type."
           - text: "TurnDirection — LEFT, RIGHT, AROUND, NONE"
             correct: false
             why: "The turn functions are plain functions. There is no TurnDirection enum in this lesson."
@@ -366,7 +370,7 @@ sets:
           - text: "The timed turn — spin for a fixed number of milliseconds"
             correct: false
             why: "§3.6 calls that the naive baseline and refuses it: it depends on battery level and surface."
-          - text: "The line-seeking turn — turn most of the way, then creep until the centre sensor finds the line"
+          - text: "The line-seeking turn — turn most of the way, then creep until the center sensor finds the line"
             correct: false
             why: "That is the competition upgrade and it is Challenge 3, not the base build."
           - text: "A gyro turn, reading heading directly"
@@ -437,7 +441,7 @@ sets:
             correct: true
           - text: "One wheel stops and the other drives, swinging the robot around the stopped wheel"
             correct: false
-            why: "That is a pivot about one wheel, and it needs floor space. A tank turn is meant to rotate in place — nominally zero radius at the robot centre."
+            why: "That is a pivot about one wheel, and it needs floor space. A tank turn is meant to rotate in place — nominally zero radius at the robot center."
           - text: "Both wheels drive forward at different speeds to sweep a curve"
             correct: false
             why: "That is what P-control does while line following — a curve, not a turn in place."
@@ -458,7 +462,7 @@ sets:
             why: "§4.1 warns against exactly this: dark greens have tended to read close to black here, and then a marker looks like a line. It also says your eye cannot settle it — the Green Survey can."
           - text: "Any green — calibration removes the difference"
             correct: false
-            why: "Calibration sets white and black. It cannot move a tape away from an end its reflectance already sits on — which is why §4.1 sends you to measure rather than to trust the colour."
+            why: "Calibration sets white and black. It cannot move a tape away from an end its reflectance already sits on — which is why §4.1 sends you to measure rather than to trust the color."
           - text: "Glossy green, so it reflects more infrared"
             correct: false
             why: "The lesson specifies matte for the course surface and says nothing about gloss for markers. Brightness of the green is what it names."
@@ -636,7 +640,7 @@ sets:
           - text: "GREEN_HIGH_THRESHOLD is set too low, so the band is too narrow"
             correct: false
             why: "A narrow band causes missed markers, not false ones. False stops on white mean the band's floor has dropped onto white."
-          - text: "The line sensors were never initialised"
+          - text: "The line sensors were never initialized"
             correct: false
             why: "Then nothing would work at all, including line following."
           - text: "The robot is reading sensors [1] and [3] instead of [0] and [4]"
@@ -710,7 +714,7 @@ sets:
             why: "Neither a timer nor priorities are ingredients. AT_INTERSECTION happens to use a delay, but that is its job, not the pattern."
           - text: "Sensors, actuators, and a control loop"
             correct: false
-            why: "That describes the robot, not the pattern. An FSM is about which behaviour is active."
+            why: "That describes the robot, not the pattern. An FSM is about which behavior is active."
           - text: "A switch statement, a break, and an enum"
             correct: false
             why: "Those are how you implement one on a microcontroller. §8A.2 separates the pattern from the C++ that expresses it."
@@ -771,7 +775,7 @@ sets:
         points: 1
         stem: "While executing a turn, the robot is in both the EXECUTING_TURN and FOLLOWING_LINE states at once, because it is still tracking the line."
         correct: false
-        why: "One state at a time is the defining property — §3.4's traffic light is never two colours at once. And it is not tracking the line during a turn; that is why Challenge 3 exists."
+        why: "One state at a time is the defining property — §3.4's traffic light is never two colors at once. And it is not tracking the line during a turn; that is why Challenge 3 exists."
 
       - id: L09_B42
         type: true_false
@@ -874,7 +878,7 @@ sets:
         stem: "Match each term to its definition."
         pairs:
           - left: "Threshold"
-            right: "A boundary value used to categorise sensor readings"
+            right: "A boundary value used to categorize sensor readings"
           - left: "Dead End"
             right: "An intersection marked with green on both sides, signalling a 180° turn"
           - left: "Right-Hand Rule"
@@ -990,7 +994,7 @@ sets:
             correct: true
           - text: "Two bools — one for running and one for turning"
             correct: false
-            why: "Stretching bools across four behaviours is exactly the spaghetti the step exists to avoid."
+            why: "Stretching bools across four behaviors is exactly the spaghetti the step exists to avoid."
           - text: "An int state variable holding 0 to 3"
             correct: false
             why: "That is the magic-number version §3.5 and §8A.1 argue against. state = 0 tells you nothing."
@@ -1006,7 +1010,7 @@ sets:
         options:
           - text: "That is correct: FOLLOWING_LINE contains only the kill switch so far, and the driving code arrives in Step 7"
             correct: true
-          - text: "The motors failed to initialise, so setup() needs re-running"
+          - text: "The motors failed to initialize, so setup() needs re-running"
             correct: false
             why: "Nothing is wrong. The step deliberately builds the STOPPED state and the kill switch before any code that moves the robot."
           - text: "The line sensors are uncalibrated, so followLine() has nothing to steer by"
@@ -1148,7 +1152,7 @@ sets:
         points: 1
         stem: "Test 7 covers 20 cm of the line. What should the robot do, and is it a failure?"
         options:
-          - text: "LINE LOST and STOPPED after about half a second — correct behaviour, not a failure"
+          - text: "LINE LOST and STOPPED after about half a second — correct behavior, not a failure"
             correct: true
           - text: "Cross it, the same as the 5 cm gap"
             correct: false
@@ -1182,7 +1186,7 @@ sets:
         type: multiple_choice
         cite: "Sabotage Mystery 3"
         points: 1
-        stem: "A sabotaged build U-turns at plain black crossings and announces DEAD END where there is no green for a metre. The planted constant sets GREEN_HIGH_THRESHOLD to 1001. Why does that produce this symptom?"
+        stem: "A sabotaged build U-turns at plain black crossings and announces DEAD END where there is no green for a meter. The planted constant sets GREEN_HIGH_THRESHOLD to 1001. Why does that produce this symptom?"
         options:
           - text: "Calibrated black tops out at 1000, so every black reading now falls inside the green band — and black under both outer sensors reads as green on both sides"
             correct: true
@@ -1270,7 +1274,7 @@ sets:
             right: "A state that never sets the next state"
         extra_answers:
           - "Calibration was run on a different surface from the course"
-          - "The line sensors were never initialised in setup()"
+          - "The line sensors were never initialized in setup()"
 
       - id: L09_A25
         type: matching
