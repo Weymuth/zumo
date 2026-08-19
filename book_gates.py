@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.5'
+VERSION = 'v1.72.7'
 # v1.72.3 (S168): §27.11 digest final for the session, after the L15 enum edit and the L13
 #                 7E/B3 code blocks. Rank-only again: 574 rules, 2,033 declarations,
 #                 coverage 22,464 -> 22,512 attributes, no declaration block moved.
@@ -4674,6 +4674,101 @@ if _seen77 != len(site) or _seenb77 != len(files):
                'that could not be read is not a file that passed (\u00a727.16a)'
                % (_seen77, len(site), _seenb77, len(files), len(files)))
 gate('\u00a727.16a a character escape is not a spelling: none reaches rendered text', bad)
+
+# ---- §16.44 a stated discard figure is the CURRENT one (v8.168.2 - NEW, S175)
+# ARM 9 already asserts DISCARD_BASELINE against a COMPILE, both directions. What
+# nothing asserted is the other half: a DOCUMENT that states that figure stating the
+# current one. This is byte_audit ARM 2's blind spot ("nothing here reads a figure in
+# prose") closed for exactly one claim shape, at zero compile cost.
+#
+# ONE DEFINITION, TWO READERS (rules 83/84): the truth comes from byte_audit's own
+# DISCARD_BASELINE by IMPORT, never re-implemented and never a typed constant, so the
+# figure cannot go stale here without ARM 9 going loud there first.
+#
+# THE PREDICATE IS A CLAIM FORM, NOT A SPELLING (rule 19). It matches the ASSERTIVE
+# register - DIGITS and the explicit noun, outside inline code - and is deliberately
+# blind to the NARRATIVE register, because this book's documents quote their own defects:
+# S174's "it read NINE discards over SEVEN payloads" is excluded because it is SPELLED IN
+# WORDS, and `15 discards over 7 payloads` inside BACKTICKS is excluded because inline code
+# marks a quoted spelling rather than an assertion. Both are correct prose about a wrong
+# number, and a predicate convicting them would be unusable. Measured, not assumed - a
+# whole-file predicate fired LOUD on a clean tree at S175 for exactly this reason.
+#
+# THE BOLD-ADJACENT FORM WAS TRIED FIRST AND UNDER-REACHED (S175 triple check): it required
+# ** immediately before the digit, so the handoff's own "**ARM 9: 15 discards over 7 of 105
+# payloads" - bold opening before the number - was a genuine assertion the gate could not
+# see. An independent token-walk found 5 claims where the gate reached 3. Widened to
+# digits-outside-code, which reaches the assertion and still ignores the quotation.
+#
+# SCOPE EXCLUDES HISTORY BY PROPERTY, NOT BY A NAME LIST (rule 20). The Bible's
+# changelog is history (§16.37) and is not read. LIVE.md is read only in its CURRENT
+# session region - the header plus the newest WHAT SHIPPED block, both regenerated every
+# session by construction - and the handoff is read whole, because a handoff is current
+# by definition. A per-session block that has scrolled into history is out of scope the
+# moment a newer one is written, with no list to maintain.
+#
+# STATED SCOPE LIMIT (rule 78): a session that states the figure in some OTHER form is
+# not reached. That is an under-reach and it is declared rather than hidden - the
+# coverage arm asserts the SCOPE resolved, never that a claim was found, because a
+# session with nothing to say about discards is not a defect.
+import byte_audit as _BA78
+bad = []
+_want = (sum(_BA78.DISCARD_BASELINE.values()), len(_BA78.DISCARD_BASELINE))
+if _want[0] <= 0 or _want[1] <= 0:
+    bad.append('DISCARD_BASELINE is empty - the gate has no truth to assert against '
+               '(\u00a716.44)')
+
+_FIG78 = re.compile(r'(\d+) discards? over (\d+)(?: of (\d+))? payloads?')
+# Inline code marks a QUOTED SPELLING, not a claim. Blanked at equal length so the
+# offsets a failure message would report stay true to the source.
+_CODE78 = re.compile(r'`[^`\n]*`')
+_scopes78, _claims78 = [], 0
+
+_LIVE78 = 'LIVE_ZUMO_TEXTBOOK.md'
+if os.path.exists(_LIVE78):
+    _lt = open(_LIVE78, encoding='utf-8').read()
+    _ll = _lt.split('\n')
+    _cs = re.search(r'Session (\d+)', _ll[2]) if len(_ll) > 2 else None
+    _hd = ('## WHAT SHIPPED IN S%s' % _cs.group(1)) if _cs else None
+    if _cs and _hd and _hd in _lt:
+        _i = _lt.index(_hd)
+        _nx = re.search(r'## WHAT SHIPPED IN S(?!%s\b)\d+' % _cs.group(1), _lt[_i + 10:])
+        _j = _i + 10 + _nx.start() if _nx else len(_lt)
+        _scopes78.append((_LIVE78, '\n'.join(_ll[2:6]) + '\n' + _lt[_i:_j]))
+    else:
+        bad.append('%s: could not resolve the CURRENT session region (header session or '
+                   'its WHAT SHIPPED block is missing) - an unresolved scope is not a '
+                   'clean scope (\u00a716.44)' % _LIVE78)
+else:
+    bad.append('%s is missing - the gate cannot read what is not there (\u00a716.44)' % _LIVE78)
+
+_HO78 = sorted(g for g in glob.glob('ZUMO_S*_HANDOFF.md')
+               if re.fullmatch(r'ZUMO_S\d+_HANDOFF\.md', g))
+if len(_HO78) == 1:
+    _scopes78.append((_HO78[0], open(_HO78[0], encoding='utf-8').read()))
+else:
+    bad.append('expected exactly one session handoff to read, found %d - \u00a712.2 names '
+               'this too, and a gate that reads none of them passes for the wrong reason '
+               '(\u00a716.44)' % len(_HO78))
+
+for _nm, _sc in _scopes78:
+    _sc = _CODE78.sub(lambda m: ' ' * len(m.group(0)), _sc)
+    for _m in _FIG78.finditer(_sc):
+        _claims78 += 1
+        _got = (int(_m.group(1)), int(_m.group(2)))
+        if _got != _want:
+            bad.append('%s: states %d discards over %d payloads, but the adjudicated '
+                       'baseline ARM 9 asserts against a compile is %d over %d '
+                       '(\u00a716.44)' % (_nm, _got[0], _got[1], _want[0], _want[1]))
+# COVERAGE ARM (rule 27): the SCOPE must have resolved. Zero CLAIMS is legitimate - a
+# session with nothing to say about discards owes nothing - so the denominator is the
+# scopes, never the claims.
+if len(_scopes78) != 2:
+    bad.append('resolved %d of 2 scopes (LIVE.md current region, the session handoff) - '
+               'a gate that reads a shrunken population passes for the wrong reason '
+               '(\u00a716.44)' % len(_scopes78))
+gate('\u00a716.44 a stated discard figure is the one ARM 9 measures', bad)
+
 
 print('=' * 52)
 

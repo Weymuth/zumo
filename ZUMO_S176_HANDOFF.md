@@ -6,7 +6,7 @@
 `git rm ZUMO_S175_HANDOFF.md` is part of that push. **If `__pycache__/` exists in your tree,
 delete it LAST, immediately before pushing** — it REGENERATES on every gate run.
 
-**77/77 gates** · `gate_payload_match` **PASS** · `quiz_bank` 16 banks at **1,246** questions ·
+**78/78 gates** · `gate_payload_match` **PASS** · `quiz_bank` 16 banks at **1,246** questions ·
 `build_css --check` current at 574 rules · `image_audit --check` current ·
 `build_worklist --check` current · `callout_id` **1127/0** · census **40,993** ·
 `next_pointer` clean.
@@ -16,9 +16,9 @@ verified as of **S175** — do not re-prove them unless the toolchain or a paylo
 `--sizes`, `--selftest` (all controls incl. CONTROL L) and `--check` (eight arms) all PASS;
 `--discards` (ARM 9) run and clean.
 
-**S175 TOUCHED NO LESSON, NO BANK, NO GATE, NO PAYLOAD AND NO INSTRUMENT.** One document and
-one generated file: `ZUMO_SUPER_BIBLE.md` → **v8.168.1**, `GPT_WORKLIST.md` regenerated
-(stamp line only).
+**S175 TOUCHED NO LESSON, NO BANK AND NO PAYLOAD.** One document, one gate and one generated
+file: `ZUMO_SUPER_BIBLE.md` → **v8.168.3**, `book_gates` → **v1.72.7** (78 gates, §16.44 NEW),
+`GPT_WORKLIST.md` regenerated (stamp line only).
 
 **`site_parity` WAS NOT RUN — it needs a published tree.** Run it AFTER the push, at least
 twice, and believe the repeat (§16.42, and S166's convention).
@@ -82,22 +82,55 @@ generated artefact in this tree carrying a DERIVED session stamp. `css/book.css`
 
 ---
 
-# 3. PRICED AND NOT SHIPPED — A GATE ON A STATED DISCARD FIGURE
+# 3. GATE 78 SHIPPED — §16.44, AND THE PRICING THAT SAID IT COULDN'T BE BUILT WAS WRONG
 
-The cheap form costs **no compile at all**: assert the documents against
-`sum(DISCARD_BASELINE.values())`, one definition and two readers (rules 83/84), since ARM 9
-already proves the baseline against the artefact.
+**It was first recorded as owed-not-built**, on the argument that the pair is spelled
+`NINE over SEVEN`, `15 over 7` and `15 discards over 7 payloads`, and appears in the Bible as a
+live claim, as history, and as a **narration of the defect itself** — three registers, one
+spelling. **That was not speculation: the double check's first arm FIRED LOUD ON A CLEAN TREE**
+for exactly that reason, because the S175 entry quotes the defect verbatim three times per home.
 
-**It is the PREDICATE that kills it, not the price.** The pair is spelled `NINE over SEVEN`,
-`15 over 7` and `15 discards over 7 payloads` in the live tree — words and digits both — and the
-same pair appears in the Bible as a **live claim**, as a **historical record**, and as a
-**narration of the defect itself**: three registers, one spelling, so a predicate that catches
-the live one convicts the other two. That is ARM 6's and ARM 7's historical-block problem inside
-a document that is nothing but history, and S167's ruling against enumerated predicates bites
-from the far side.
+**DJ ruled BUILD IT. The scope was wrong, not the predicate.**
 
-Recorded as owed, not shipped three weeks from launch (S174's disposition for `GPT_WORKLIST.md`,
-applied again).
+The registers only collide when the WHOLE FILE is read. **History is excludable BY PROPERTY, not
+by a name list (rule 20):** the Bible's changelog IS history (§16.37) and is not read at all;
+LIVE.md is read only in its **current session region** — the header plus the newest
+`## WHAT SHIPPED IN S<n>` block, both regenerated every session by construction; the handoff is
+read whole, because a handoff is current by definition. **A per-session block leaves scope the
+moment a newer one is written, so there is no list to maintain.**
+
+**THE PREDICATE IS A CLAIM FORM, NOT A SPELLING (rule 19).** It matches the ASSERTIVE register —
+DIGITS and the explicit noun, **outside inline code** — and is **deliberately blind to the
+NARRATIVE register**. Two exclusions, both structural: a figure spelled in WORDS is not a claim,
+and a figure inside BACKTICKS is a quoted spelling rather than an assertion.
+
+**THE FIRST FORM UNDER-REACHED AND THE TRIPLE CHECK CAUGHT IT.** It required `**` immediately
+before the digit, so this handoff's own **ARM 9: 15 discards over 7 of 105 payloads** — bold
+opening before the number — was a real assertion the gate could not see. **An INDEPENDENT
+re-implementation found it (§24.13):** a token walk with the baseline read by AST from
+`byte_audit.py`'s SOURCE rather than by import returned **5 claims where the gate reached 3**.
+Widened; the two now agree at 5, the one exclusion being the backticked quotation — **and that
+exclusion is controlled, not asserted**: a deliberately wrong value inside backticks is SILENT.
+
+**THE TRUTH IS IMPORTED, NEVER TYPED (rules 83/84):**
+`sum(byte_audit.DISCARD_BASELINE.values())` over its length — the same baseline ARM 9 asserts
+against a COMPILE in both directions, so the figure cannot rot here without going loud there
+first. **The gate costs ZERO compiles**, which is why it can live in `book_gates` where ARM 9
+deliberately cannot (S173).
+
+**EIGHT CONTROLS, ONE PER INVOCATION, EVERY RESTORE md5-EXACT.** Stale figure in LIVE.md → 78
+**alone** · stale figure in the handoff → alone · emptied baseline → fires rather than passing on
+no truth · unresolvable LIVE.md region → COVERAGE arm, whose denominator is the **scopes** and
+never the claims, because a session with nothing to say about discards owes nothing · **the
+NARRATIVE-register plant is SILENT** · **a wrong figure inside backticks is SILENT** · the blinding reword is SILENT · handoff removed entirely
+fires §12.2 **and** §16.44, complementarity rather than a fault (v8.154's shape).
+
+**STATED SCOPE LIMIT (rule 78): a session stating the figure in some OTHER form is not reached.**
+Declared, not hidden — S167's word-list problem surviving in miniature. When it first bites, the
+answer is a ruling on the claim form, not a looser predicate.
+
+**THIS CLOSES ONE CLAIM SHAPE, NOT THE CLASS.** `byte_audit` ARM 2 still cannot see a figure in
+prose, and nothing here reads a sentence.
 
 ---
 
@@ -168,11 +201,11 @@ moves that are irreversible or expensive to undo; and RoboLore brand and course 
 ---
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
 Fresh-clone verified at **`294cfae`**. Census **40,993**.
-Bible **v8.168.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.62** ·
+Bible **v8.168.3** · `BookComponentStandard` **v01.13.0** · Maker **v2.62** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
-Instruments: `book_gates` **v1.72.5** · `lesson_inventory` **v1.3.5** ·
+Instruments: `book_gates` **v1.72.7** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.6.1** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.30.0** · `fit_raster_svg` **v1.2** ·
