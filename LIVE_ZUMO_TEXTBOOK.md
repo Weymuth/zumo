@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 19, 2026 (Session 173 — **AGREEMENT IS NOT CURRENCY, AND THE DEFECT WAS IN THE TEMPLATE.** S167's `-Wunused-result` half is measured at last, and without touching the repo to do it: the attribute injected on every `StopReason` declaration at EXTRACT time, all 216 payloads compiled, so the population was known before any `RobotMotion.h` edit was proposed. **23 discards over 9 payloads and ZERO in any `finished` build.** Seven are correct by design and were left alone — including **L11's two challenge solutions, which discard in a lesson that has not taught the guard contract yet, correct for where the STUDENT is.** Two were not: L13's Challenge 1 and Challenge 3 each ship a four-move step-around discarding all four returns, twelve lines after the section that retired that defect — **and it is in the TEMPLATE**, handed to the student pre-written under *Fill the two blanks*, so the discards are scaffolding the book supplies and instructs them to accept. Guarded in four places, **blanks and difficulty pills unchanged.** **AND THE TRIPLE CHECK NEARLY BOUGHT A WRONG FIX:** the bare-`break` shape looked like it would replay the celebration forever, until `killSwitchPressed()` showed it sets the state and paints the screen itself — **which `L13_A42` already teaches. The ruling existed and had not been read.**)
-**Status:** ✅ **S172 — §16.41 and §24.11 NEW.** 77/77 gates, `gate_payload_match` PASS, `byte_audit --check` PASS across EIGHT arms with `--selftest` ALL CONTROLS PASS, `quiz_bank --selftest` all controls at **1,246** questions, `session_versions --selftest` eight controls, **`--currency` NEW at exit 0**, `site_parity` PARITY, census **40,993**. **§24.11: TWO MAKER PAYLOADS WERE EDITED AND THE MAKER WAS NEVER BUMPED** — LIVE.md, the handoff and `newproject.html` all read v2.61, so they AGREED, perfectly and wrongly, and `--check` reported nothing. **`session_versions --currency` ships in the same pass as the fix (rule 72):** for every file differing from git HEAD it asserts the version MOVED, predicated on the work tree rather than a fresh clone **because a gate must run without a network**, with version-less files REPORTED and never asserted since an arm that failed on `css/book.css` would be switched off inside a session. Controlled on the exact defect, both directions, md5-exact. **AND `gate_payload_match` IS ONE-DIRECTIONAL, MEASURED:** a guard removed from the PAYLOAD only passes, and removed from the LESSON only passes — a subset satisfies *derives from* both ways, **so a challenge whose printed reveal and whose downloaded code disagree is caught by nothing.** Left un-widened three weeks from launch, with a working reproduction. **ARM 7's SKIP LIST WAS A POPULATION NOBODY HAD READ:** seven skipped, **one** genuinely conditional — a YAML option ends with a quote, not a full stop, so a distant `would` silenced six live assertions, correct by luck rather than by assertion. Narrowed to the claim's own option, **7 → 3 skipped, 15 → 19 checked.** **THE BANK PIN ARC REFUTED ITS OWN PREMISE** — S171's suspect figures are all in the `#` provenance header, none in a question body — but reading the bodies found **`L13_A16`'s CORRECT ANSWER was 456 where the live lesson says 458**, with every instrument green on it, plus a `240` distractor stale since S168. `L13_A43b` NEW grades S171's `case SWEEP_DONE:`. **`26,790` → `26,798`**, measured. Bible **v8.167**.
+**Date:** August 19, 2026 (Session 174 — **AN UNRECOGNIZED ARGUMENT MUST NOT BE A WRITE, AND THE GENERATED FILE WITH NO COMPARATOR WAS THE ONE THAT HAD ROTTED.** A one-line lead carried since S169 — *`build_css.py --help` is not a flag, it runs and writes the stylesheet* — named one tool and one argument, and the real predicate was neither: the write branch is the FALL-THROUGH, so **a typo of `--check` is indistinguishable from a bare run.** The population was measured EMPIRICALLY, every one of 36 instruments handed an unrecognized argument in its own pristine copy of the tree — **and the first probe measured the wrong property and reported `build_css` CLEAN**, because it hashed CONTENT and the stylesheet is normally current, so the tool rewrote IDENTICAL BYTES. Re-predicated on inode and mtime, the true population is **3 of 36**. **THE THIRD ONE CHANGED CONTENT, AND THAT WAS THE SESSION'S REAL FINDING:** `GPT_WORKLIST.md` was STALE — **36 files where the live audit finds 38**, two SVGs missing from the backlog entirely, in the file the graphics chat works from. It rotted because it is **the one generated artefact in this repo with neither a `--check` nor a gate.** `build_worklist` v1.2 gains one, and it fired on the exact defect it was built for on its first run. **Its session stamp was a pinned literal too** — `'102'`, two sessions older than the tool shipping it, so a regeneration made the stamp go BACKWARDS. Now derived from `session_versions.current_session()`, imported not re-implemented. **AND THE PROBE'S OWN CONTROL FAILED THE MOMENT THE DEFECT WAS FIXED** — it anchored on `build_css` as a known writer, a fixture borrowed from the population being audited, third occurrence of a shape this book has named twice. It plants its own synthetic writer now. Bible **v8.168**.)
+**Status:** ✅ **S174 — §24.20 NEW.** 77/77 gates, `gate_payload_match` PASS, `quiz_bank` 16 banks at **1,246** questions with `--selftest` all controls, `session_versions --selftest` EIGHT CONTROLS and **`--currency` exit 0**, `build_css --check` current at 574 rules, `image_audit --check` current, **`build_worklist --check` current — NEW**, `callout_id` 1127/0, `next_pointer` clean, census **40,993**. **THE BUMP INVALIDATED ITS OWN OUTPUT AND THE GATES CAUGHT IT:** `css/book.css` and `IMAGE_WORKLIST.md` each stamp their GENERATOR's version, so bumping `build_css` and `image_audit` took the suite to **75/77** — §27.13 and §10 firing on a one-line staleness. Measured rather than feared: **one comment line each, rules and declarations UNCHANGED at 574/2,033**, §27.11's digest unmoved, no class set change, so §27.8b's cycle was NOT owed and no lesson file moved. **A generator's version bump is a regeneration obligation.** **PRICED AND NOT TAKEN:** a gate asserting `GPT_WORKLIST.md` current on every run — it costs an `svg_layout_audit` pass over every SVG each time, and an arm that makes the routine slower is one somebody eventually skips. Recorded as owed. **DELIBERATELY LEFT:** eight instruments die on an unrecognized argument with a raw traceback; they are ugly and **none of them writes**, and refusal was the property that mattered. No lesson file, no bank, no gate, no payload changed.
 
-**Versions:** L01 v03.30.1 · L02 v03.21.5 · L03 v03.43.2 · L04 v04.29.2 · L05 v04.29.1 · L06 v04.32.4 · L07 v04.31.5 · L08 v04.32.1 · L09 v05.27.4 · L10 v02.30.3 · L11 v02.31.1 · L12 v01.33.1 · L13 v02.35.0 · L14 v02.36.0 · L15 v02.32.0 · L16 v02.28.0 · going_deeper v01.6.1 — census **40,993** · Bible **v8.167** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.62 · **book_gates v1.72.5** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6.1 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.29.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2 · build_css v1.3.0 · image_audit v1.2 · strip_inline v1.2 · build_worklist v1.1 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `8142aeb`.**
+**Versions:** L01 v03.30.1 · L02 v03.21.5 · L03 v03.43.2 · L04 v04.29.2 · L05 v04.29.1 · L06 v04.32.4 · L07 v04.31.5 · L08 v04.32.1 · L09 v05.27.4 · L10 v02.30.3 · L11 v02.31.1 · L12 v01.33.1 · L13 v02.35.0 · L14 v02.36.0 · L15 v02.32.0 · L16 v02.28.0 · going_deeper v01.6.1 — census **40,993** · Bible **v8.168** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.62 · **book_gates v1.72.5** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.8.0 · build_family_map v1.6.6.1 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.30.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `fb8e6e5`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -12,6 +12,57 @@
 
 ---
 ---
+## WHAT SHIPPED IN S174
+**FOUR INSTRUMENTS AND THREE GENERATED FILES — AND THE SESSION'S BEST FINDING WAS A BACKLOG
+NOBODY COULD SEE WAS STALE.**
+`build_worklist` **v1.2** (`--check` NEW, derived session stamp, strict arguments) ·
+`session_versions` **v1.30.0** (`current_session()` NEW, one definition and two readers) ·
+`build_css` **v1.4.0** · `image_audit` **v1.3** (both: an unrecognized argument is refused, not
+ignored) · `GPT_WORKLIST.md` regenerated **36 → 38 files** · `css/book.css` and
+`IMAGE_WORKLIST.md` regenerated, generator stamp only · Bible **v8.168**.
+
+**THE LEAD WAS ONE LINE AND THE PREDICATE WAS NOT WHAT IT NAMED.** *`build_css.py --help` is not
+a flag* has been in the handoff since S169. Read, the dispatch is `--selftest` → exit, build,
+`--check` → exit, **else WRITE** — so the write is the fall-through and `--help`, `--dry-run` and
+**a typo of `--check`** all regenerate the file. §24.6c: a lead names a symptom and the artefact
+answers it.
+
+**THE FIRST PROBE WAS WRONG AND SAID `build_css` WAS CLEAN.** It hashed CONTENT, and the
+stylesheet is normally current, so the tool rewrote **identical bytes** and the hash saw nothing —
+this repo's own rule from the far side, **a byte-identical result never proves an edit did not
+land.** Re-predicated on (inode, mtime, size, content), because `os.replace` swaps the inode:
+**3 of 36, not 1.**
+
+**AND THE THIRD ONE CHANGED CONTENT.** `GPT_WORKLIST.md` was stale — header stamped
+`svg_layout_audit v1.19` against a live v1.20, body claiming **36 files needing a human where the
+audit finds 38.** `L11_GRAPHIC_11-05_battery_strength_changes_the_outcome.svg` and
+`L13_GRAPHIC_13-03_the_line_was_doing_three_jobs.svg` were **missing from the backlog entirely**,
+and `L10_GRAPHIC_10-02`'s marker count read 3 against a live 2. **The graphics chat works from
+this file**, so two real defects were invisible to the person whose whole job is to fix them — and
+the file's own second line reads *Do not hand-edit — regenerate.*
+
+**WHY IT ROTTED IS STRUCTURAL. IT IS THE ONE GENERATED ARTEFACT WITH NEITHER A `--check` NOR A
+GATE.** `css/book.css` has both, `IMAGE_WORKLIST.md` has both, `GPT_WORKLIST.md` had **zero
+mentions in `book_gates.py`**. A generated file whose only relation to its generator is that
+somebody remembers to re-run it is not generated, it is transcribed — **v1.0's own opening
+argument about the hand-assembled `GPT_WORKLIST_S99.md`, committed by its successor.**
+`--check` **fired on the exact defect it was built for on its first run.**
+
+**THE SESSION STAMP WAS A PINNED LITERAL (rule 19).** `session = '102'`, hardcoded, **two
+sessions older than the v1.1 that shipped it**, so regenerating the live file made the stamp go
+**BACKWARDS**, S103 → S102 — defeating v1.1's whole ruling, which moved the stamp INTO the file so
+a stale copy could not look current. Now `session_versions.current_session()`, factored out of
+`session_numbers()`'s own inline regex: **one definition, two readers (rules 83/84)**, imported
+rather than re-implemented, raising rather than guessing. It stamped S174 on its own.
+
+**AND THE PROBE'S CONTROL FAILED THE MOMENT THE DEFECT WAS FIXED.** It anchored on `build_css` as
+a KNOWN writer — **a fixture borrowed from the population being audited** — so with the population
+emptied the probe refused to report. **A control whose fixture is borrowed from the population it
+audits fails when you SUCCEED** (S166, S171), committed here inside the instrument written to
+find the defect. It plants its own synthetic writer now, asserting both that the rewrite is seen
+AND that it was same-byte, so it proves the predicate is WRITES and not content.
+**Post-fix population: 0 of 36.**
+
 ## WHAT SHIPPED IN S173
 **ONE LESSON, THREE BANKS, THE MAKER AND THREE INSTRUMENTS — AND THE SESSION'S TWO BEST FINDINGS
 CAME FROM CHECKING ITS OWN WORK, NOT FROM DOING IT.**

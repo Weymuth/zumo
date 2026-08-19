@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.1'
+VERSION = 'v1.2'
 # ---------------------------------------------------------------------------------------------
 # build_worklist.py - regenerate the graphics work list from svg_layout_audit, reproducibly.
 #
@@ -239,24 +239,103 @@ def _selftest():
     return ok
 
 
+USAGE = """build_worklist.py - regenerate GPT_WORKLIST.md from svg_layout_audit.
+
+  python3 build_worklist.py              # regenerate GPT_WORKLIST.md
+  python3 build_worklist.py --check      # render to memory, diff against disk, NEVER write
+  python3 build_worklist.py --session N  # override the stamp (default: derived)
+  python3 build_worklist.py --selftest   # controls
+  python3 build_worklist.py --help       # this text
+
+exit 0 = clean. exit 1 = a control failed or --check found a difference.
+exit 2 = an argument this tool does not recognize.
+
+AN UNRECOGNIZED ARGUMENT IS REFUSED, NOT IGNORED (S174). Until S174 the dispatch
+was `--selftest` -> exit, else build, and the write branch was the FALL-THROUGH -
+so `--help`, `--dry-run` and a typo of `--check` all regenerated the file. A flag
+whose whole purpose is to be safe must not be the one that writes."""
+
+KNOWN = {'--check', '--selftest', '--session', '--help', '-h'}
+
+
+def _parse_argv(argv):
+    """Return (mode, session_override). Refuses anything not in KNOWN."""
+    session = None
+    mode = 'write'
+    i = 1
+    while i < len(argv):
+        a = argv[i]
+        if a not in KNOWN:
+            sys.stderr.write(f'build_worklist: unrecognized argument {a!r}\n'
+                             f'known: {", ".join(sorted(KNOWN))}\n'
+                             f'run --help for usage. Nothing was written.\n')
+            sys.exit(2)
+        if a in ('--help', '-h'):
+            mode = 'help'
+        elif a == '--selftest':
+            mode = 'selftest'
+        elif a == '--check':
+            mode = 'check'
+        elif a == '--session':
+            if i + 1 >= len(argv):
+                sys.stderr.write('build_worklist: --session needs a number. '
+                                 'Nothing was written.\n')
+                sys.exit(2)
+            session = argv[i + 1]
+            i += 1
+        i += 1
+    return mode, session
+
+
+def _session_stamp(override):
+    """DERIVED, never pinned (rule 19).
+
+    Until S174 this defaulted to the literal '102' - a number two sessions older
+    than the tool version shipping it - so every regeneration without an explicit
+    flag stamped the file with a session that had already passed, and the stamp
+    could go BACKWARDS relative to the file it replaced. That defeats v1.1's whole
+    ruling: the stamp was moved INTO the file so a stale copy could not look
+    current, and a pinned default makes a FRESH copy look stale instead.
+
+    One definition, two readers (rules 83/84): session_versions.current_session()
+    is the same derivation session_numbers() asserts LIVE.md and the handoff
+    against. It is imported, not re-implemented.
+    """
+    if override is not None:
+        return override
+    import session_versions as SV
+    return str(SV.current_session())
+
+
 if __name__ == '__main__':
-    if '--selftest' in sys.argv:
+    mode, override = _parse_argv(sys.argv)
+    if mode == 'help':
+        print(USAGE)
+        sys.exit(0)
+    if mode == 'selftest':
         sys.exit(0 if _selftest() else 1)
     if not _audit_version_ok():
         sys.exit(f'svg_layout_audit is {SLA.VERSION}; this generator requires v1.18 or newer, '
                  f'because earlier versions could not read a font-size out of CSS and every '
                  f'ordering they produced inherited that error.')
-    session = '102'
-    for i, a in enumerate(sys.argv):
-        if a == '--session' and i + 1 < len(sys.argv):
-            session = sys.argv[i + 1]
+    session = _session_stamp(override)
     wl, lo = build('images')
     out = render(wl, lo, session)
     dest = 'GPT_WORKLIST.md'
+    summary = (f'{len(wl)} files needing a human, '
+               f'{sum(len(v) for v in lo.values())} local-fix findings across {len(lo)} files')
+    print(f'build_worklist {VERSION}  (svg_layout_audit {SLA.VERSION})')
+
+    if mode == 'check':
+        cur = open(dest, encoding='utf-8').read() if os.path.exists(dest) else None
+        if cur == out:
+            print(f'  {dest} is current ({summary})')
+            sys.exit(0)
+        print(f'  {dest} DIFFERS from what the sources generate - re-run without --check')
+        sys.exit(1)
+
     tmp = dest + '.tmp'
     with open(tmp, 'w', encoding='utf-8') as fh:
         fh.write(out)
     os.replace(tmp, dest)
-    print(f'build_worklist {VERSION}  (svg_layout_audit {SLA.VERSION})')
-    print(f'  wrote {dest}: {len(wl)} files needing a human, '
-          f'{sum(len(v) for v in lo.values())} local-fix findings across {len(lo)} files')
+    print(f'  wrote {dest}: {summary}')

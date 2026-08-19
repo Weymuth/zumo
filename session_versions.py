@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.29.1'
+VERSION = 'v1.30.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -435,6 +435,29 @@ def roster_coverage():
     return sorted(found - rostered - UNVERSIONED)
 
 
+def current_session():
+    """The session that just ran, DERIVED from the newest Bible changelog entry.
+
+    ONE DEFINITION, TWO READERS (rules 83/84). session_numbers() below already
+    treated the newest `vX.Y, SNN, kind` entry as the canonical answer and
+    asserted LIVE.md and the handoff against it; that regex was inline and
+    therefore unreachable by anything else, so `build_worklist.py` carried its
+    own answer as the hardcoded literal `session = '102'` and stamped every
+    regeneration with it (S174).
+
+    Raises ValueError rather than returning a guess: a session stamp that is
+    wrong is worse than one that is absent, because a stale list stamped with a
+    plausible number is exactly the failure v1.1 of build_worklist moved the
+    stamp into the file to prevent.
+    """
+    bible = open(os.path.join(ROOT, 'ZUMO_SUPER_BIBLE.md'), encoding='utf-8').read()
+    m = re.search(r'^v[\d.]+,\s*S(\d+),\s*(?:major|moderate|minor)\b', bible, re.M)
+    if not m:
+        raise ValueError('ZUMO_SUPER_BIBLE.md: no "vX.Y, SNN, kind" changelog '
+                         'entry to read the session from')
+    return int(m.group(1))
+
+
 def session_numbers():
     """-> list of disagreements about WHICH SESSION THIS IS.
 
@@ -453,11 +476,10 @@ def session_numbers():
     """
     import glob as _g
     bad = []
-    bible = open(os.path.join(ROOT, 'ZUMO_SUPER_BIBLE.md'), encoding='utf-8').read()
-    m = re.search(r'^v[\d.]+,\s*S(\d+),\s*(?:major|moderate|minor)\b', bible, re.M)
-    if not m:
-        return ['ZUMO_SUPER_BIBLE.md: no "vX.Y, SNN, kind" changelog entry to read the session from']
-    n = int(m.group(1))
+    try:
+        n = current_session()
+    except ValueError as e:
+        return [str(e)]
 
     live = open(os.path.join(ROOT, 'LIVE_ZUMO_TEXTBOOK.md'), encoding='utf-8').read()
     lm = re.search(r'Session (\d+)', live)

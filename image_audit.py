@@ -37,7 +37,7 @@ exit 0 = clean. exit 1 = a control failed or --check found a difference.
 """
 import re, os, sys, glob, collections
 
-VERSION = 'v1.2'          # the only version home in this file (S104)
+VERSION = 'v1.3'          # the only version home in this file (S104)
 OUT = 'IMAGE_WORKLIST.md'
 
 TAG_RE = re.compile(r'\[(IMAGE|GRAPHIC|VIDEO)\s+(\d+)\.(\d+)([a-z]?)\]')
@@ -274,7 +274,32 @@ def selftest():
     return 0 if ok else 1
 
 
+_USAGE = """image_audit.py - regenerate IMAGE_WORKLIST.md from the lessons and images/.
+
+  python3 image_audit.py             # regenerate IMAGE_WORKLIST.md
+  python3 image_audit.py --check     # emit to memory, diff against disk, never write
+  python3 image_audit.py --selftest  # controls
+  python3 image_audit.py --help      # this text
+
+exit 0 = clean. exit 1 = a control failed or --check found a difference.
+exit 2 = an argument this tool does not recognize.
+
+AN UNRECOGNIZED ARGUMENT IS REFUSED, NOT IGNORED (S174). The write branch was
+the fall-through, so `--help` and a typo of `--check` both regenerated the
+worklist."""
+
+_KNOWN = {'--check', '--selftest', '--help', '-h'}
+
 if __name__ == '__main__':
+    _bad = [a for a in sys.argv[1:] if a not in _KNOWN]
+    if _bad:
+        sys.stderr.write(f'image_audit: unrecognized argument(s) {", ".join(map(repr, _bad))}\n'
+                         f'known: {", ".join(sorted(_KNOWN))}\n'
+                         f'run --help for usage. Nothing was written.\n')
+        sys.exit(2)
+    if '--help' in sys.argv or '-h' in sys.argv:
+        print(_USAGE)
+        sys.exit(0)
     if '--selftest' in sys.argv:
         sys.exit(selftest())
     text = emit(*audit())

@@ -1,8 +1,8 @@
 # GPT graphics work list (generated)
 
-Work list session: S103 · `build_worklist.py v1.1` · `svg_layout_audit v1.19`
+Work list session: S174 · `build_worklist.py v1.2` · `svg_layout_audit v1.20`
 
-**36 files** needing a human, from an audit of all SVGs in `images/`.
+**38 files** needing a human, from an audit of all SVGs in `images/`.
 Worst-first by how far text runs outside its panel.
 
 **Do not hand-edit — regenerate.** Any list built against an audit below v1.18 was
@@ -15,7 +15,7 @@ and `fit_raster_svg`. They are listed at the end so the backlog stays visible.
 Send one file at a time. Attach the SVG, paste its block, bring the result back before
 moving on.
 
-13 of these 36 have text outside a panel; the rest are structural.
+13 of these 38 have text outside a panel; the rest are structural.
 
 ## L07_GRAPHIC_7-15_platformio_file_tree.svg
 *worst overflow: 128 units*
@@ -90,6 +90,15 @@ moving on.
 *worst overflow: 3 units*
 
 - text overflows its panel by 3 units: "END — nowhere near" spans 48..176 inside 45..525
+
+## L11_GRAPHIC_11-05_battery_strength_changes_the_outcome.svg
+
+- leader of callout-3 crosses the box of callout-1
+- leader of callout-3 crosses the box of callout-1
+- leader of callout-3 crosses the box of callout-1
+- highlight box of callout-1 overlaps that of callout-3
+- highlight box of callout-1 overlaps that of callout-3
+- highlight box of callout-1 overlaps that of callout-3
 
 ## L03_GRAPHIC_3-11_command_anatomy.svg
 
@@ -180,7 +189,7 @@ moving on.
 
 ## L10_GRAPHIC_10-02_avoidance_box_five_phases.svg
 
-- 3 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
+- 2 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
 
 ## L10_GRAPHIC_10-03_course_setup_clearance.svg
 
@@ -190,15 +199,19 @@ moving on.
 
 - 1 rotated/skewed <text> NOT checked for overflow or collision - this tool measures horizontal extent only. Eyeball them.
 
+## L13_GRAPHIC_13-03_the_line_was_doing_three_jobs.svg
+
+- photograph is 360x342 but its box renders about 943 CSS px wide (box 1200 of a 1400 viewBox at a 1100 px column) = 0.38x - under the 2x floor. Needs a source at least 1885 px wide.
+
 ---
 
 ## Local-fix backlog (no redraw needed)
 
-15 findings across 5 files.
+9 findings across 5 files.
 
-- **L02_IMAGE_2-07_ir_sensors_r02.svg** — <image> uses a plain href; photo carries a fully-opaque alpha channel doing nothing; 2,914,438 B
-- **L02_IMAGE_2-07_ir_sensors_r13.svg** — <image> uses a plain href; photo carries a fully-opaque alpha channel doing nothing; 593,152 B
-- **L05_GRAPHIC_5-08_three_sensor_array.svg** — <image> uses a plain href; photo carries a fully-opaque alpha channel doing nothing; 1,692,366 B
-- **L05_GRAPHIC_5-09_five_sensor_array.svg** — <image> uses a plain href; photo carries a fully-opaque alpha channel doing nothing; 1,681,958 B
-- **L05_GRAPHIC_5-10_jumper_positions.svg** — <image> uses a plain href; <image> uses a plain href; 1,095,876 B
+- **L02_IMAGE_2-07_ir_sensors_r02.svg** — photo carries a fully-opaque alpha channel doing nothing; 2,914,487 B
+- **L02_IMAGE_2-07_ir_sensors_r13.svg** — photo carries a fully-opaque alpha channel doing nothing; 593,201 B
+- **L05_GRAPHIC_5-08_three_sensor_array.svg** — photo carries a fully-opaque alpha channel doing nothing; 1,692,415 B
+- **L05_GRAPHIC_5-09_five_sensor_array.svg** — photo carries a fully-opaque alpha channel doing nothing; 1,682,007 B
+- **L05_GRAPHIC_5-10_jumper_positions.svg** — 1,095,931 B
 

@@ -41,7 +41,7 @@ import re, os, sys, glob, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lesson_inventory as LI      # ONE expander, shared (the S83 rule)
 
-VERSION = 'v1.3.0'        # the only version home in this file (S105)
+VERSION = 'v1.4.0'        # the only version home in this file (S105)
 # v1.3.0 (S123): THE SEMANTIC LAYER (§27.15). DJ: "I thought since we weren't using canvas
 #   we didn't need the inline code" - correct, and measured: the lessons carry ZERO inline
 #   style attributes and 25,752 class attributes, so the inline representation this
@@ -370,7 +370,35 @@ def selftest():
     return 0 if ok else 1
 
 
+_USAGE = """build_css.py - generate css/book.css from the lessons' inline styles.
+
+  python3 build_css.py             # regenerate css/book.css
+  python3 build_css.py --check     # emit to memory, diff against disk, never write
+  python3 build_css.py --selftest  # controls
+  python3 build_css.py --help      # this text
+
+exit 0 = clean. exit 1 = a control failed or --check found a difference.
+exit 2 = an argument this tool does not recognize.
+
+AN UNRECOGNIZED ARGUMENT IS REFUSED, NOT IGNORED (S174). The dispatch was
+`--selftest` -> exit, build, `--check` -> exit, else WRITE - so the write branch
+was the fall-through and `--help`, `--dry-run` and a typo of `--check` all
+regenerated the stylesheet. It was invisible because the file is normally
+current, so the rewrite was byte-identical: measured by inode and mtime, not by
+content, because a byte-identical result never proves an edit did not land."""
+
+_KNOWN = {'--check', '--selftest', '--help', '-h'}
+
 if __name__ == '__main__':
+    _bad = [a for a in sys.argv[1:] if a not in _KNOWN]
+    if _bad:
+        sys.stderr.write(f'build_css: unrecognized argument(s) {", ".join(map(repr, _bad))}\n'
+                         f'known: {", ".join(sorted(_KNOWN))}\n'
+                         f'run --help for usage. Nothing was written.\n')
+        sys.exit(2)
+    if '--help' in sys.argv or '-h' in sys.argv:
+        print(_USAGE)
+        sys.exit(0)
     if '--selftest' in sys.argv:
         sys.exit(selftest())
     text, rows, chosen = build()
