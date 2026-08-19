@@ -21,6 +21,12 @@ session does not have. Run it whenever the harness is up.
   ARM 3  CONVENTION  measure, per lesson, whether the catch-up link under
                      Step N serves the file as it stands AT step N (IDENTITY)
                      or BEFORE it (OFFSET). A measurement, not a verdict.
+  ARM 8  WARNINGS    report the whole compiler-warning population; ASSERT it
+                     only in `finished` builds, where the build-up model cannot
+                     explain a warning away. Arrived with the harness release
+                     that stopped compiling with -w.
+                     (No version token above this file's own VERSION home —
+                      grep_trap caught exactly that here in S170.)
 
 The step -> payload association is PARSED from the lesson's own catch-up link
 (?lesson=N&kind=K), never typed into this script (rules 48, 49).
@@ -35,10 +41,10 @@ Usage:
 Requires: harness at $ZUMO_HARNESS or /home/claude/harness (pio_harness.sh,
 libcore_lto.a built by --setup), and extract_project.py beside this file.
 """
-import re, sys, os, json, glob, subprocess, tempfile, shutil
+import re, sys, os, json, glob, subprocess, tempfile, shutil, collections
 import html as H
 
-VERSION = 'v1.5'
+VERSION = 'v1.6'
 
 # The standing control build (rule 30): reproduce this BEFORE trusting any
 # other figure. It MOVES whenever the book re-baselines - S158's option-C
@@ -101,6 +107,30 @@ def kinds(P):
 
 # ---------------------------------------------------------------- compiling
 
+WSIG = re.compile(r"([^/\s]+\.(?:cpp|h|c)):\d+:\d+:\s+warning:\s+(.*?)\s*$")
+
+def wsigs(errpath):
+    """Warning signatures for one build: 'file.cpp: message [-Wflag]'.
+
+    Returns None when there is NO err file — a harness older than pio_harness
+    v3.1 writes none — and a (possibly empty) list when there is one. The two
+    are not the same thing and ARM 8 depends on telling them apart.
+
+    LINE AND COLUMN ARE DROPPED ON PURPOSE. A signature that carried them would
+    change every time a line was added above it, which would make this a diff of
+    file layout rather than of what the compiler objects to. The file and the
+    message are what identify a warning; where it sits is not.
+    """
+    if not os.path.exists(errpath):
+        return None
+    out = set()
+    for line in open(errpath, encoding="utf-8", errors="replace"):
+        m = WSIG.search(line)
+        if m:
+            out.add("%s: %s" % (m.group(1), m.group(2)))
+    return sorted(out)
+
+
 def compile_kind(lesson, kind, P, incs, keep=None):
     """-> (status, flash) where status in PASS | OVER | FAIL. flash None on FAIL."""
     d = keep or tempfile.mkdtemp(prefix="ba_")
@@ -128,9 +158,14 @@ def compile_kind(lesson, kind, P, incs, keep=None):
         st, fl = "OVER", int(m.group(1))
     else:
         st, fl = "FAIL", None
+    # pio_harness v3.1 writes stderr beside the build, so it must be read BEFORE
+    # the tempdir goes. Under v3.0 there is no such file and this is [] — which
+    # is why ARM 8 checks the harness version rather than reading an empty list
+    # as "no warnings".
+    ws = wsigs(os.path.join(d, "pbuild", "err.txt"))
     if keep is None:
         shutil.rmtree(d, ignore_errors=True)
-    return st, fl
+    return st, fl, ws
 
 
 def build_sizes(P, only=None, quiet=False):
@@ -139,8 +174,15 @@ def build_sizes(P, only=None, quiet=False):
     if only:
         ks = [x for x in ks if x[0] == only]
     for n, (L, k) in enumerate(ks, 1):
-        st, fl = compile_kind(L, k, P, incs)
-        tbl["%d/%s" % (L, k)] = {"status": st, "flash": fl}
+        st, fl, ws = compile_kind(L, k, P, incs)
+        row = {"status": st, "flash": fl}
+        # "warn" is written ONLY when the harness produced an err file to read.
+        # An absent key means "not measured"; an empty list means "measured and
+        # clean". Collapsing those two would let a v3.0 harness — which writes no
+        # err file at all — read as a book with no warnings in it.
+        if ws is not None:
+            row["warn"] = ws
+        tbl["%d/%s" % (L, k)] = row
         if not quiet:
             print("  [%3d/%3d] L%02d %-28s %-4s %s"
                   % (n, len(ks), L, k, st, fl if fl else "-"), flush=True)
@@ -651,6 +693,137 @@ def arm7(tbl, only=None, quiz_dir=None):
     print()
     return not bad
 
+# ---------------------------------------------------------------- ARM 8
+
+# ARM 8 IS DELIBERATELY NARROW, AND THE REASON IS THE BUILD-UP MODEL.
+#
+# For its whole life pio_harness.sh compiled with -w. The header claimed -Wall —
+# which is what PlatformIO really passes, so every warning this book's students
+# see on their own machines was discarded here. v3.1 turned the flag on. The
+# population that appeared was measured before any of this was written (rule 34):
+# 113 warnings across 70 of 216 payloads, in two classes and fourteen sites.
+#
+# 109 OF THOSE 113 ARE THE BUILD-UP MODEL WORKING AS DESIGNED. A state enters
+# RobotState in the lesson that declares it and gets its `case` a step or two
+# later, so the intermediate payload legitimately does not handle it; L08 step 4
+# declares two variables that step 5 fills. That is signal a student SHOULD get,
+# and asserting on it would mean this arm fired on every correct lesson edit that
+# added a step. An arm that cries at correct work gets switched off.
+#
+# ONE MORE IS CORRECT AND USEFUL: 11/b1_onewheel's unused `right` is the compiler
+# pointing straight at that payload's deliberate `// <-- PLANTED` bug. Worth
+# knowing that a student's real PlatformIO has always handed them that hint.
+#
+# SO ARM 8 ASSERTS ONLY WHERE THE BUILD-UP MODEL CANNOT EXPLAIN A WARNING: the
+# `finished` payloads. A finished build is the terminal, student-facing program
+# of its lesson; nothing is coming later to use the thing being warned about.
+# Intermediate steps are COUNTED AND REPORTED but never asserted.
+#
+# WHAT THIS ARM IS BLIND TO, STATED SO NOBODY DISCOVERS IT LATER (rule 78):
+#   1. A warning that appears in an intermediate step and is genuinely wrong will
+#      be printed in the population line and asserted by nothing. The build-up
+#      model is an explanation, not a proof, and this arm takes it on trust.
+#   2. It reads only what the compiler chose to say. A defect gcc has no warning
+#      for is invisible here, exactly as it is to every other arm.
+#   3. It cannot tell a signature that MOVED from one that was fixed and a new
+#      one raised, because the signature drops line numbers on purpose.
+#   4. IT COUNTS SIGNATURES, NOT LINES, and the two differ. The book's raw
+#      population is 113 warning lines; this arm reports 99, over the same 70
+#      payloads. The gap is 14 lines in 6 payloads where the SAME enum value is
+#      unhandled in TWO switches in one file — the showStatus() display switch
+#      and the loop() dispatch switch — which collapse to one signature. So this
+#      arm cannot distinguish "unhandled in one switch" from "unhandled in two."
+#      Both numbers are right; they answer different questions, and the payload
+#      count is the one that agrees across both.
+
+# The adjudicated baseline. Every entry is a warning in a `finished` build that
+# was read, understood and left standing on purpose. An entry here is a claim
+# that somebody looked; it is not a claim that the code is right.
+FINISHED_WARN_BASELINE = {
+    # S170. SWEEP_DONE is the one RobotState member with no case in the loop()
+    # dispatch switch, in the terminal build of each of the last four lessons.
+    # It is HALF-WIRED BY DESIGN AS FAR AS L13 GOES: L13 argues for the state
+    # explicitly -- "at nine o'clock at night in the lab, a motionless robot is
+    # the most ambiguous object" -- and gives it a showStatus() line so the
+    # screen can say SWEPT. What L13 could not have weighed is what arrived
+    # later. case STOPPED is what reads button B to restart, so B is dead in
+    # SWEEP_DONE; and from L15 every other ending routes through endRun() ->
+    # RUN_REPORT, where L16 keeps saveBaseline() and the baseline-vs-enhanced
+    # comparison. The run that sweeps every row to the far wall -- the BEST
+    # outcome -- is the one ending that yields no scorecard. L15 names the state
+    # only in the enum; L16 never names it at all.
+    # OPEN WITH DJ, S170. This baseline holds the current behaviour so that a
+    # CHANGE to it is loud either way: fix it and this arm reports the surplus,
+    # let it drift further and this arm reports the addition.
+    "13/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
+    "14/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
+    "15/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
+    "16/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
+}
+
+
+def arm8(tbl, only=None):
+    """ARM 8 - WARNINGS: a finished build warns only where somebody adjudicated it.
+
+    -> True/False. Reports the whole population; asserts the finished builds.
+    """
+    print("ARM 8 - WARNINGS: every warning in a finished build is one somebody read")
+    rows = {k: v for k, v in tbl.items()
+            if only is None or k.split("/")[0] == str(only)}
+
+    unmeasured = [k for k, v in rows.items() if "warn" not in v]
+    if unmeasured:
+        # Not a failure: --lesson writes a partial table, and an older harness
+        # writes none at all. But it MUST be said, because an arm that silently
+        # scanned nothing is the shape S169 caught inside its own control suite.
+        print("   %d payload(s) carry no warning data - harness older than "
+              "pio_harness v3.1, or a partial --sizes. Re-run --sizes." % len(unmeasured))
+        if len(unmeasured) == len(rows):
+            print("   COVERAGE: NOTHING was measured. Not a pass.")
+            return False
+
+    measured = {k: v["warn"] for k, v in rows.items() if "warn" in v}
+    total = sum(len(v) for v in measured.values())
+    classes = collections.Counter()
+    for sigs in measured.values():
+        for s in sigs:
+            m = re.search(r"\[-W[^\]]+\]", s)
+            classes[m.group(0) if m else "(unclassified)"] += 1
+    print("   population: %d warning(s) over %d of %d payload(s)   %s"
+          % (total, sum(1 for v in measured.values() if v), len(measured),
+             "  ".join("%s x%d" % (c, n) for c, n in classes.most_common())))
+
+    bad = []
+    fin = {k: v for k, v in measured.items() if k.endswith("/finished")}
+    for k in sorted(fin, key=lambda x: int(x.split("/")[0])):
+        want = FINISHED_WARN_BASELINE.get(k, [])
+        got = fin[k]
+        for s in got:
+            if s not in want:
+                bad.append((k, "NEW", s))
+        for s in want:
+            if s not in got:
+                bad.append((k, "GONE", s))
+    # A baseline entry for a finished build that no longer exists is stale too.
+    for k in FINISHED_WARN_BASELINE:
+        if k not in fin and (only is None or k.split("/")[0] == str(only)):
+            bad.append((k, "GONE", "the whole payload"))
+
+    for k, why, s in bad:
+        print("   %-16s %-5s %s" % (k, why, s))
+    if bad:
+        print("   %d unadjudicated - a NEW warning needs reading; a GONE one needs "
+              "the baseline updated." % len(bad))
+    else:
+        print("   %d finished build(s) checked, %d adjudicated warning(s), 0 unadjudicated"
+              % (len(fin), sum(len(v) for v in fin.values())))
+    if not fin:
+        print("   COVERAGE: ZERO finished builds scanned - the table has none")
+        return False
+    print()
+    return not bad
+
+
 # ---------------------------------------------------------------- ARM 5
 
 DELTA_RE = re.compile(r"\b(?:up|down)\s+([\d,]+)|(?<![\w,])([+\u2212-])\s?([\d,]{2,6})\b")
@@ -823,7 +996,7 @@ def selftest():
 
     print("CONTROL A (the control build): L11 after_step_1 must be %s"
           % f"{STANDING_CONTROL:,}")
-    st, fl = compile_kind(11, "after_step_1", P, incs)
+    st, fl, _ = compile_kind(11, "after_step_1", P, incs)
     chk("harness reproduces the control", (st, fl) == ("PASS", STANDING_CONTROL),
         str(fl) if (st, fl) == ("PASS", STANDING_CONTROL) else
         "%s - the harness may be wrong, or STANDING_CONTROL may be STALE after a "
@@ -849,8 +1022,8 @@ def selftest():
     j = body.index("{", i) + 1
     body = body[:j] + "\n  ba_sink = pgm_read_dword(&ba_pad[millis() % 600]);\n" + body[j:]
     P2["16"]["finished"]["main.cpp"] = body
-    st0, fl0 = compile_kind(16, "finished", P, incs)      # the UNPADDED baseline
-    st, fl = compile_kind(16, "finished", P2, incs)
+    st0, fl0, _ = compile_kind(16, "finished", P, incs)      # the UNPADDED baseline
+    st, fl, _ = compile_kind(16, "finished", P2, incs)
     chk("padded L16 finished reports OVER with a flash figure",
         st == "OVER" and fl is not None and fl > CEILING, "%s %s" % (st, fl))
     # DERIVED, never pinned (rule 19): the seed fired iff the padded image is
@@ -862,15 +1035,15 @@ def selftest():
     print("\nCONTROL C (a broken build is read as FAIL, not silently sized)")
     P3 = json.loads(json.dumps(P))
     P3["16"]["finished"]["main.cpp"] = "this is not c++\n"
-    st, fl = compile_kind(16, "finished", P3, incs)
+    st, fl, _ = compile_kind(16, "finished", P3, incs)
     chk("unbuildable payload reports FAIL and no size", st == "FAIL" and fl is None)
 
     print("\nCONTROL D (the omitted wrapper comments are byte-neutral)")
     d1 = tempfile.mkdtemp(prefix="ba_d1_")
-    st1, f1 = compile_kind(3, "finished", P, incs)
+    st1, f1, _ = compile_kind(3, "finished", P, incs)
     fat = ("/*\n a comment block exactly like mainCpp's head\n*/\n\n"
            "// ==== MY PLAN ====\n// 1.\n// 2.\n\n") + incs
-    st2, f2 = compile_kind(3, "finished", P, fat)
+    st2, f2, _ = compile_kind(3, "finished", P, fat)
     chk("comments before the payload change nothing", f1 == f2 and f1, "%s vs %s" % (f1, f2))
     shutil.rmtree(d1, ignore_errors=True)
 
@@ -1105,6 +1278,49 @@ def selftest():
     chk("ZUMO_QUIZ_L16.yaml restored byte-for-byte",
         open(q16, encoding="utf-8").read() == qbak)
 
+    # ---- CONTROL K (ARM 8: a finished build warns only where somebody read) ----
+    # ARM 8 takes a TABLE and touches no file, so these controls are synthetic
+    # and cheap. That is a property worth keeping: a control that has to compile
+    # is a control somebody eventually skips.
+    print("\nCONTROL K (ARM 8: WARNINGS in finished builds)")
+    import copy as _copy
+    SWEEP = "main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"
+
+    # The live table is the fixture. ANCHOR FIRST, as an ASSERTION: if the
+    # baseline and the table have drifted apart, every control below would be
+    # testing a fiction. S169's lesson - a guard is never a condition (rule 59).
+    chk("anchor: the live table matches the adjudicated baseline",
+        arm8(tbl_h) is True)
+    chk("anchor: 16/finished really carries the SWEEP_DONE signature",
+        SWEEP in tbl_h.get("16/finished", {}).get("warn", []))
+
+    t = _copy.deepcopy(tbl_h)
+    t["16/finished"]["warn"] = sorted(t["16/finished"]["warn"] +
+        ["main.cpp: unused variable \u2018plantedByControlK\u2019 [-Wunused-variable]"])
+    chk("a NEW warning in a finished build is LOUD", arm8(t) is False)
+
+    t = _copy.deepcopy(tbl_h)
+    t["16/finished"]["warn"] = [s for s in t["16/finished"]["warn"] if s != SWEEP]
+    chk("a baseline warning that VANISHED is LOUD (the baseline is stale too)",
+        arm8(t) is False)
+
+    # The build-up model is taken on trust in intermediate steps, and that is a
+    # STATED blind spot (rule 78). Demonstrated, not claimed: the same planted
+    # signature in a step payload is correctly SILENT.
+    t = _copy.deepcopy(tbl_h)
+    t["16/after_step_2"]["warn"] = sorted(t["16/after_step_2"].get("warn", []) +
+        ["main.cpp: unused variable \u2018plantedByControlK\u2019 [-Wunused-variable]"])
+    chk("BLIND SPOT: the same plant in an INTERMEDIATE step is SILENT",
+        arm8(t) is True)
+
+    # COVERAGE, two ways. An empty table could pass vacuously, and a table whose
+    # rows carry no warning data at all is what an older harness produces - the
+    # exact condition under which "no warnings" is a lie.
+    chk("an EMPTY table does not pass", arm8({}) is False)
+    t = {k: {"status": v["status"], "flash": v["flash"]} for k, v in tbl_h.items()}
+    chk("a table with NO warning data anywhere does not pass", arm8(t) is False)
+    chk("and the un-blinded arm is SILENT again", arm8(tbl_h) is True)
+
     print()
     if fails:
         print("SELFTEST FAILED: " + ", ".join(fails))
@@ -1165,10 +1381,11 @@ def main():
     ok5 = arm5(tbl, only)
     ok6 = arm6(tbl, only)
     ok7 = arm7(tbl, only)
+    ok8 = arm8(tbl, only)
     arm2_leads(tbl, only)
     if a[0] == "--lesson" or "--convention" in a:
         arm3(tbl, only)
-    ok = ok1 and ok2 and ok4 and ok5 and ok6 and ok7
+    ok = ok1 and ok2 and ok4 and ok5 and ok6 and ok7 and ok8
     print("byte_audit: " + ("PASS" if ok else "FAIL"))
     return 0 if ok else 1
 
