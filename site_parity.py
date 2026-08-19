@@ -36,7 +36,7 @@ exit 0 = the site matches the repo. exit 1 = a mismatch or a 404.
 """
 import re, os, sys, glob, hashlib, urllib.request, urllib.error
 
-VERSION = 'v1.1'   # the only version home in this file (S100; v1.1 S104)
+VERSION = 'v1.2'   # the only version home in this file (S100; v1.1 S104; v1.2 S172)
 
 SITE = 'https://weymuth.github.io/zumo/'
 BASE = SITE + 'images/'          # kept: v1.0's name, still used by the fetch controls
@@ -102,17 +102,45 @@ def referenced():
     return sorted(out)
 
 
-def fetch(name, want_bytes=False):
+# S172. A TRANSIENT HTTP STATUS IS NOT A FINDING, AND v1.1 REPORTED IT AS ONE.
+# A socket error already returned -1 and was counted as unreachable noise, but ANY
+# HTTPError code came back as a hard MISMATCH reading "LIVE 404" - so a CDN 503 or a
+# 429 accused the repo of not publishing a file it publishes. Only 404 and 410 mean
+# the site does not serve this name; 5xx and 429 mean ask again. Measured honestly:
+# one MISMATCH was observed in 19 runs at S172 and then NOT reproduced in 59 more, so
+# this is not offered as that flap's proven cause. It is wrong on its own terms, and
+# it is the only path by which a healthy site can be reported as broken.
+TRANSIENT = (408, 425, 429, 500, 502, 503, 504)
+
+
+def fetch(name, want_bytes=False, _retry=True):
     """`name` is a SITE-RELATIVE PATH (images/x.svg, css/book.css). Returns (status, size,
-    blob). status 0 = OK, else the HTTP code or -1 for a network error. Never raises: an
-    unreachable site must report as unknown, not crash the run."""
+    blob). status 0 = OK, -1 = unreachable (network error OR a transient HTTP status),
+    else the HTTP code. Never raises: an unreachable site must report as unknown, not
+    crash the run.
+
+    A transient status is retried ONCE before it is called unreachable, and the retry is
+    NOTED on stderr with the asset and the code - so the next intermittent failure names
+    itself even when the retry succeeds. An instrument whose noise leaves no trace is one
+    nobody can ever diagnose."""
     try:
         with urllib.request.urlopen(SITE + name, timeout=TIMEOUT) as r:
             blob = r.read()
             return 0, len(blob), (blob if want_bytes else None)
     except urllib.error.HTTPError as e:
+        if e.code in TRANSIENT:
+            print(f'  note: {name} returned HTTP {e.code} (transient)'
+                  f'{" - retrying once" if _retry else " on retry too - counted unreachable"}',
+                  file=sys.stderr)
+            if _retry:
+                return fetch(name, want_bytes, _retry=False)
+            return -1, 0, None
         return e.code, 0, None
-    except Exception:
+    except Exception as e:
+        if _retry:
+            print(f'  note: {name} network error ({type(e).__name__}) - retrying once',
+                  file=sys.stderr)
+            return fetch(name, want_bytes, _retry=False)
         return -1, 0, None
 
 
@@ -135,7 +163,8 @@ def check(deep=False):
             unreachable += 1
             continue
         if st != 0:
-            bad.append(f'{n}: HTTP {st} on the published site - LIVE 404, repo has {lsz:,} B')
+            bad.append(f'{n}: HTTP {st} on the published site - the repo has {lsz:,} B and '
+                       f'the site does not serve it')
             continue
         if rsz != lsz:
             bad.append(f'{n}: site serves {rsz:,} B, repo has {lsz:,} B - the site is showing '
@@ -290,6 +319,48 @@ def selftest():
     finally:
         os.chdir(here)
         shutil.rmtree(tmp, ignore_errors=True)
+
+    print('CONTROL H (transient): a 503 must be UNREACHABLE, a 404 must be a FINDING')
+    # S172. The whole point of v1.2. Synthetic - it replaces urlopen for the duration,
+    # so it needs no network and cannot be silenced by a healthy site. Both directions,
+    # and the retry is asserted by COUNTING calls: a retry that never happens would
+    # otherwise look identical to one that succeeded.
+    import urllib.request as _u
+    real = _u.urlopen
+    calls = {'n': 0}
+
+    class _Boom:
+        def __init__(self, code): self.code = code
+        def __call__(self, *a, **k):
+            calls['n'] += 1
+            raise urllib.error.HTTPError(a[0] if a else '', self.code, 'x', {}, None)
+
+    _u.urlopen = _Boom(503)
+    calls['n'] = 0
+    st, _, _ = fetch('images/__control_d__.svg')
+    tries_503 = calls['n']
+    _u.urlopen = _Boom(404)
+    calls['n'] = 0
+    st404, _, _ = fetch('images/__control_d__.svg')
+    tries_404 = calls['n']
+    _u.urlopen = real
+
+    if st != -1:
+        print(f'   FAILED. A 503 reported as status {st} - a transient must be unreachable.')
+        ok = False
+    elif tries_503 != 2:
+        print(f'   FAILED. A 503 was tried {tries_503}x - it must be retried exactly once.')
+        ok = False
+    else:
+        print('   HTTP 503 -> unreachable, tried twice (retried once)')
+    if st404 != 404:
+        print(f'   FAILED. A 404 reported as status {st404} - a real 404 must stay a finding.')
+        ok = False
+    elif tries_404 != 1:
+        print(f'   FAILED. A 404 was tried {tries_404}x - a finding must not be retried.')
+        ok = False
+    else:
+        print('   HTTP 404 -> finding, tried once (not retried)')
 
     print('\n' + ('ALL CONTROLS PASS' if ok else 'CONTROLS FAILED'))
     return 0 if ok else 1

@@ -153,9 +153,35 @@ and an unlabelled trap inside a SOLUTION destroys the distinction that makes the
 teach.**
 
 ---
+---
+
+# 5. `site_parity` v1.2 — A TRANSIENT STATUS WAS BEING REPORTED AS A FINDING
+
+**Post-push, `site_parity` flapped once in 19 runs: PARITY, PARITY, 1 MISMATCH, then PARITY.**
+The mismatched asset never named itself, because the finding is printed and the run is not kept.
+
+**MEASURED FIRST, AND IT DID NOT REPRODUCE.** 163 assets probed over three passes: every status 0,
+no size disagreement anywhere. Then 59 further whole runs: no flap. **So v1.2 is NOT offered as
+that flap's proven cause** — it fixes something wrong on its own terms that happens to be the only
+path by which a healthy site can be reported as broken.
+
+**WHAT WAS WRONG.** A socket error returned -1 and was counted as unreachable NOISE, but **any**
+`HTTPError` code came back as a hard MISMATCH reading *LIVE 404*. So a CDN **503**, or a **429**,
+accused the repo of not publishing a file it publishes. Only 404 and 410 mean the site does not
+serve a name; 5xx and 429 mean ask again.
+
+**v1.2:** transient statuses (408/425/429/500/502/503/504) are UNREACHABLE, **retried once**, and
+**NOTED on stderr with the asset and the code even when the retry succeeds** — an instrument whose
+noise leaves no trace is one nobody can ever diagnose. The old *LIVE 404* wording is gone for codes
+that are not one. **CONTROL H NEW**, synthetic and network-free: a 503 must be unreachable AND tried
+exactly twice, a 404 must stay a finding AND be tried exactly once. **The retry is asserted by
+COUNTING calls — a retry that never happens looks identical to one that succeeded.**
+
+**STILL OPEN:** the original flap is unexplained. If it recurs, the stderr note now names the asset.
+
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`d1204fe`**. Census **40,993**.
-Bible **v8.165** · `BookComponentStandard` **v01.13.0** · Maker **v2.62** ·
+Fresh-clone verified at **`fef0ac4`**. Census **40,993**.
+Bible **v8.166** · `BookComponentStandard` **v01.13.0** · Maker **v2.62** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
@@ -163,7 +189,7 @@ Instruments: `book_gates` **v1.72.5** · `lesson_inventory` **v1.3.5** ·
 `gen_component` **v1.6.1** · `pill_sweep` **v1.1** · `gate_payload_match` **v1.8.0** ·
 `build_family_map` **v1.6.6.1** · `callout_id` **v1.0** · `keyterm_prefix` **v1.0.1** · `build_mark_index` **v1.1.0** · `gen_bonus_banner` **v1.4.1** ·
 `gen_part_banners` **v1.2** · `session_versions` **v1.29.1** · `fit_raster_svg` **v1.2** ·
-`flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.1** ·
+`flatten_alpha` **v1.2** · `svg_layout_audit` **v1.20** · `site_parity` **v1.2** ·
 `build_css` **v1.3.0** ·
 `image_audit` **v1.2** ·
 `strip_inline` **v1.2** ·
