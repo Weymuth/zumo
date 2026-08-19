@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.3'
+VERSION = 'v1.72.4'
 # v1.72.3 (S168): §27.11 digest final for the session, after the L15 enum edit and the L13
 #                 7E/B3 code blocks. Rank-only again: 574 rules, 2,033 declarations,
 #                 coverage 22,464 -> 22,512 attributes, no declaration block moved.
@@ -2512,7 +2512,12 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '39e0b7c99cd1e41e'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '331300caa5e5fe43'
+#   S171 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13 gains a
+#   printed <pre> for the new `case SWEEP_DONE:` in loop(), and a printed comment line
+#   wears a tok- span, so the USAGE CENSUS moves without any rule moving: tok-7cbf6e
+#   2,680 -> 2,683 and tok-569cd6 1,511 -> 1,514, three of each, which is exactly the
+#   three comment lines and the three keywords (case / if / break) the new block prints.
 #   S160 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical, and the whole
 #   textual diff is TWO COUNT COMMENTS: the header census 22,462 -> 22,464 and `.tok-7cbf6e`
 #   x1501 -> x1503. No selector, no declaration, and not even a usage RANK moved — the rule

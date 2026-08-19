@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 15
 # The Present Isn't Enough · PID Control — and the Tuning Bench That Proves It
 #
-# Bank version: v1.0.6
+# Bank version: v1.0.7
 #   The lesson_14 pin moves with L14 v02.35.2, whose diff is six re-derived figures and its
 #   own version line; no question in this bank asserts L14 prose.
 # Verified against: S168 — the L13 Step 6b arc, which shifted every build from L13 onward.
@@ -103,10 +103,10 @@
 
 lesson: "L15"
 title: "The Present Isn't Enough — PID Control and the Tuning Bench"
-bank_version: "1.0.6"
+bank_version: "1.0.7"
 source:
-  lesson_15: "v02.31.8"
-  lesson_14: "v02.35.2"
+  lesson_15: "v02.32.0"
+  lesson_14: "v02.36.0"
   lesson_11: "v02.31.1"
   lesson_08: "v04.32.1"
   lesson_06: "v04.32.4"
@@ -903,12 +903,12 @@ sets:
         points: 1
         stem: "Step 1 tells you to compile before touching anything, and calls that number your control. What is it?"
         options:
-          - text: "26,000 bytes — the finished Lesson 14 build, unchanged"
+          - text: "26,002 bytes — the finished Lesson 14 build, unchanged"
             correct: true
-          - text: "25,246 bytes"
+          - text: "25,248 bytes"
             correct: false
             why: "That is Lesson 13's finished build — where Lesson 14 STARTED. Section 6, Step 1 starts you from where Lesson 14 ended."
-          - text: "28,402 bytes"
+          - text: "28,406 bytes"
             correct: false
             why: "That is where Lesson 15 ENDS, not where it starts."
           - text: "20,592 bytes"
@@ -946,15 +946,15 @@ sets:
         points: 1
         stem: "Step 4 replaces followLine()'s body with the PD version. What does the build weigh, and what changed about the clock?"
         options:
-          - text: "26,172 bytes, +172 — and now the clock IS in the binary, because something calls it"
+          - text: "26,174 bytes, +172 — and now the clock IS in the binary, because something calls it"
             correct: true
-          - text: "26,172 bytes, +172 — and the clock is still absent, because currentKd is 0"
+          - text: "26,174 bytes, +172 — and the clock is still absent, because currentKd is 0"
             correct: false
             why: "A zero gain does not remove the call. deltaTimeSec() is invoked every pass regardless of Kd."
-          - text: "26,000 bytes, unchanged — the D term contributes nothing at Kd = 0"
+          - text: "26,002 bytes, unchanged — the D term contributes nothing at Kd = 0"
             correct: false
             why: "The arithmetic contributes nothing to the STEERING; the code still costs flash."
-          - text: "27,460 bytes, +1,288"
+          - text: "27,464 bytes, +1,290"
             correct: false
             why: "That is Step 5, the bench."
 
@@ -1144,12 +1144,12 @@ sets:
         points: 1
         stem: "B1 changes one word: micros() becomes millis() inside deltaTimeSec(). The symptom is a random violent jerk, worse on white, and it stops if you set Kd to 0. What is the byte count?"
         options:
-          - text: "28,402 — byte-for-byte identical to the correct program"
+          - text: "28,406 — byte-for-byte identical to the correct program"
             correct: true
-          - text: "28,348 — 54 bytes smaller"
+          - text: "28,352 — 54 bytes smaller"
             correct: false
             why: "That is B3, where a function call is deleted."
-          - text: "28,418 — 16 bytes bigger"
+          - text: "28,422 — 16 bytes bigger"
             correct: false
             why: "That is B2, the missing assignment."
           - text: "Smaller, because millis() is cheaper than micros()"
@@ -1180,12 +1180,12 @@ sets:
         points: 1
         stem: "B2 is a DELETION — lastError = error; is missing from followLine(). What does the derivative end up computing, and what is the byte count?"
         options:
-          - text: "lastError stays 0 forever, so the 'derivative' is really the error itself divided by dt — which is why Kd adds a constant pull instead of damping. 28,418 bytes, 16 bigger than correct."
+          - text: "lastError stays 0 forever, so the 'derivative' is really the error itself divided by dt — which is why Kd adds a constant pull instead of damping. 28,422 bytes, 16 bigger than correct."
             correct: true
-          - text: "lastError holds the first error ever seen, so the derivative is a constant. 28,418 bytes."
+          - text: "lastError holds the first error ever seen, so the derivative is a constant. 28,422 bytes."
             correct: false
             why: "It is never assigned at all, so it holds its initializer, which is 0."
-          - text: "The derivative is always zero, so Kd does nothing. 28,402 bytes."
+          - text: "The derivative is always zero, so Kd does nothing. 28,406 bytes."
             correct: false
             why: "If it did nothing the symptom would not include a permanent lean at large Kd."
           - text: "It is byte-identical, like B1 and B4"
@@ -1198,12 +1198,12 @@ sets:
         points: 1
         stem: "B3 leaves resetPID() perfectly written and correct. What is actually wrong, and what does it cost in bytes?"
         options:
-          - text: "enterFollowing() never calls it — a function that is never called is not a bug the compiler can see. 28,348 bytes, 54 smaller than correct."
+          - text: "enterFollowing() never calls it — a function that is never called is not a bug the compiler can see. 28,352 bytes, 54 smaller than correct."
             correct: true
-          - text: "resetPID() clears the wrong variables. 28,348 bytes."
+          - text: "resetPID() clears the wrong variables. 28,352 bytes."
             correct: false
             why: "The hint is explicit that resetPID() is still correct. The defect is one missing call."
-          - text: "enterFollowing() is never called from the four doors. 28,348 bytes."
+          - text: "enterFollowing() is never called from the four doors. 28,352 bytes."
             correct: false
             why: "The doors still call enterFollowing(); it is the line INSIDE it that is gone."
           - text: "It is byte-identical to correct"

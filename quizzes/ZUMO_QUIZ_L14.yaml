@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 14
 # Competition Prep · Trust Is Earned at Boot — Reliability as an Engineering Skill
 #
-# Bank version: v1.0.7
+# Bank version: v1.0.8
 # Verified against: S168 — the L13 Step 6b arc, which moved every build from L13 onward. This
 #   bank's figures are the L13->L14 chain and all six live sites were re-derived AGAINST A COMPILE
 #   rather than swapped by pattern: A05's 25,198 -> 25,246 and 25,942 -> 26,000, A09's up-744 ->
@@ -124,10 +124,10 @@
 
 lesson: "L14"
 title: "Competition Prep — Trust Is Earned at Boot"
-bank_version: "1.0.7"
+bank_version: "1.0.8"
 source:
-  lesson_14: "v02.35.2"
-  lesson_13: "v02.33.0"
+  lesson_14: "v02.36.0"
+  lesson_13: "v02.34.0"
   lesson_12: "v01.33.1"
   lesson_11: "v02.31.1"
   lesson_08: "v04.32.1"
@@ -937,12 +937,12 @@ sets:
         points: 1
         stem: "What byte count do Steps 1 and 2 both compile to?"
         options:
-          - text: "25,246"
+          - text: "25,248"
             correct: true
-          - text: "26,000"
+          - text: "26,002"
             correct: false
             why: "That is Step 3 onward, once selfTest() is called."
-          - text: "25,250"
+          - text: "25,252"
             correct: false
             why: "That is Mystery B1 — the build whose self-test was deleted by an early return. See the Sabotage section."
           - text: "20,592"
@@ -990,12 +990,12 @@ sets:
         points: 1
         stem: "Step 3 adds one line: the call to selfTest(). What does the build do?"
         options:
-          - text: "Jumps to 26,000 — up 754, as the linker finally pays for the whole function and its strings at once"
+          - text: "Jumps to 26,002 — up 754, as the linker finally pays for the whole function and its strings at once"
             correct: true
           - text: "Grows by about 12 bytes, the cost of one function call"
             correct: false
             why: "The call is cheap; what it costs is the entire function, which had been dropped until something referenced it."
-          - text: "Stays at 25,246, because the function was already compiled in Step 2"
+          - text: "Stays at 25,248, because the function was already compiled in Step 2"
             correct: false
             why: "Compiled is not the same as linked in. Step 2's binary held no selfTest at all."
           - text: "Shrinks, because the compiler can now inline the checks"
@@ -1007,15 +1007,15 @@ sets:
         points: 1
         stem: "Step 4 guards three delay(600) calls with if (!COMPETITION_MODE), and the switch is still false. What does the build weigh?"
         options:
-          - text: "26,000 — unchanged, because the compiler folds if (!false) into nothing and keeps the delay"
+          - text: "26,002 — unchanged, because the compiler folds if (!false) into nothing and keeps the delay"
             correct: true
-          - text: "25,944 — the guards themselves cost 56 bytes"
+          - text: "25,946 — the guards themselves cost 56 bytes"
             correct: false
-            why: "25,944 is what you get when the switch is flipped to true, in Section 7C."
+            why: "25,946 is what you get when the switch is flipped to true, in Section 7C."
           - text: "Slightly more, because each guard adds a comparison at runtime"
             correct: false
             why: "COMPETITION_MODE is a compile-time constant, so there is no runtime comparison to pay for."
-          - text: "25,246, because the guards remove the delays"
+          - text: "25,248, because the guards remove the delays"
             correct: false
 
       - id: L14_A07
@@ -1032,7 +1032,7 @@ sets:
         points: 1
         stem: "You set COMPETITION_MODE to true and rebuild. What changes, and by how much?"
         options:
-          - text: "The build drops to 25,944 — 56 fewer bytes: the three demo pauses, plus the two motor commands the calibration guard removes"
+          - text: "The build drops to 25,946 — 56 fewer bytes: the three demo pauses, plus the two motor commands the calibration guard removes"
             correct: true
           - text: "The build drops by about 1,800 bytes, because the narration strings go too"
             correct: false
@@ -1150,7 +1150,7 @@ sets:
         points: 1
         stem: "Mystery B1 plants return true; as the first line of selfTest(). The build gets SMALLER. By how much, and why?"
         options:
-          - text: "750 bytes smaller, at 25,250 — every line after the early return is unreachable, so the four checks, the report card and all the strings are garbage-collected out of the binary"
+          - text: "750 bytes smaller, at 25,252 — every line after the early return is unreachable, so the four checks, the report card and all the strings are garbage-collected out of the binary"
             correct: true
           - text: "740 bytes smaller, because the compiler replaces the function with a single return instruction and keeps the strings for later"
             correct: false

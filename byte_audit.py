@@ -44,7 +44,7 @@ libcore_lto.a built by --setup), and extract_project.py beside this file.
 import re, sys, os, json, glob, subprocess, tempfile, shutil, collections
 import html as H
 
-VERSION = 'v1.6'
+VERSION = 'v1.7'
 
 # The standing control build (rule 30): reproduce this BEFORE trusting any
 # other figure. It MOVES whenever the book re-baselines - S158's option-C
@@ -740,33 +740,42 @@ def arm7(tbl, only=None, quiz_dir=None):
 # was read, understood and left standing on purpose. An entry here is a claim
 # that somebody looked; it is not a claim that the code is right.
 FINISHED_WARN_BASELINE = {
-    # S170. SWEEP_DONE is the one RobotState member with no case in the loop()
-    # dispatch switch, in the terminal build of each of the last four lessons.
-    # It is HALF-WIRED BY DESIGN AS FAR AS L13 GOES: L13 argues for the state
-    # explicitly -- "at nine o'clock at night in the lab, a motionless robot is
-    # the most ambiguous object" -- and gives it a showStatus() line so the
-    # screen can say SWEPT. What L13 could not have weighed is what arrived
-    # later. case STOPPED is what reads button B to restart, so B is dead in
-    # SWEEP_DONE; and from L15 every other ending routes through endRun() ->
-    # RUN_REPORT, where L16 keeps saveBaseline() and the baseline-vs-enhanced
-    # comparison. The run that sweeps every row to the far wall -- the BEST
-    # outcome -- is the one ending that yields no scorecard. L15 names the state
-    # only in the enum; L16 never names it at all.
-    # OPEN WITH DJ, S170. This baseline holds the current behaviour so that a
-    # CHANGE to it is loud either way: fix it and this arm reports the surplus,
-    # let it drift further and this arm reports the addition.
-    "13/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
-    "14/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
-    "15/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
-    "16/finished": ["main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"],
+    # EMPTY, AND THAT IS THE RESTING STATE THIS ARM WAS BUILT FOR. S171 closed
+    # the only entries it has ever carried.
+    #
+    # S170 recorded four: SWEEP_DONE was the one RobotState member with no case
+    # in the loop() dispatch switch, in the terminal build of L13, L14, L15 and
+    # L16. S171 gave it one - read B, return to STOPPED, the shape LINE_LOST
+    # already uses in the same file - and the four signatures went with it.
+    #
+    # ONE CLAIM IN THE S170 ENTRY WAS TOO STRONG AND IS CORRECTED HERE RATHER
+    # THAN CARRIED FORWARD: it said the sweep ending was the only one yielding
+    # no scorecard. It was not. VICTIM_FOUND routes to STOPPED in L15 and L16
+    # too, and only two paths ever reach RUN_REPORT - the kill switch during
+    # FOLLOWING_LINE, and the TUNING_RUN_MS bell. SWEEP_DONE was never uniquely
+    # unscored. It was uniquely UNRECOVERABLE: the one state in the enum the
+    # program could not leave, whose only exit was the power switch, in the
+    # lesson that spends a paragraph teaching that a dead B is TEMPORARY.
+    #
+    # AN EMPTY BASELINE IS NOT A WEAKER CONTROL. arm8() fails on an empty TABLE
+    # and on a table carrying no warning data, so "nothing to adjudicate" and
+    # "nothing was measured" cannot be confused. CONTROL K now carries its own
+    # synthetic baseline for exactly this reason: a control that needed the live
+    # baseline to be non-empty is a control that gets deleted the day somebody
+    # cleans one up.
 }
 
 
-def arm8(tbl, only=None):
+def arm8(tbl, only=None, baseline=None):
     """ARM 8 - WARNINGS: a finished build warns only where somebody adjudicated it.
 
     -> True/False. Reports the whole population; asserts the finished builds.
+
+    `baseline` is injectable so CONTROL K can supply its own fixture instead of
+    depending on whatever the live baseline happens to hold - which today is
+    nothing at all.
     """
+    base = FINISHED_WARN_BASELINE if baseline is None else baseline
     print("ARM 8 - WARNINGS: every warning in a finished build is one somebody read")
     rows = {k: v for k, v in tbl.items()
             if only is None or k.split("/")[0] == str(only)}
@@ -796,7 +805,7 @@ def arm8(tbl, only=None):
     bad = []
     fin = {k: v for k, v in measured.items() if k.endswith("/finished")}
     for k in sorted(fin, key=lambda x: int(x.split("/")[0])):
-        want = FINISHED_WARN_BASELINE.get(k, [])
+        want = base.get(k, [])
         got = fin[k]
         for s in got:
             if s not in want:
@@ -805,7 +814,7 @@ def arm8(tbl, only=None):
             if s not in got:
                 bad.append((k, "GONE", s))
     # A baseline entry for a finished build that no longer exists is stale too.
-    for k in FINISHED_WARN_BASELINE:
+    for k in base:
         if k not in fin and (only is None or k.split("/")[0] == str(only)):
             bad.append((k, "GONE", "the whole payload"))
 
@@ -1216,19 +1225,19 @@ def selftest():
 
         # the REAL S169 defect: SS7.4 promised the pre-rebaseline reserve
         chk("anchor: the SS7.4 reserve line is uniquely findable",
-            lbak.count("You have <b>54 bytes</b>") == 1)
+            lbak.count("You have <b>46 bytes</b>") == 1)
         if True:
             open(l16, "w", encoding="utf-8").write(
-                lbak.replace("You have <b>54 bytes</b>", "You have <b>108 bytes</b>", 1))
+                lbak.replace("You have <b>46 bytes</b>", "You have <b>108 bytes</b>", 1))
             chk("a stale PROSE reserve is LOUD (the S169 defect)", arm7(tbl_h) is False)
             open(l16, "w", encoding="utf-8").write(lbak)
 
         # the REAL S169 bank defect, in a CORRECT answer
         chk("anchor: the A07 over-claim is uniquely findable",
-            qbak.count("and still 264 over.") == 1)
+            qbak.count("and still 272 over.") == 1)
         if True:
             open(q16, "w", encoding="utf-8").write(
-                qbak.replace("and still 264 over.", "and still 210 over.", 1))
+                qbak.replace("and still 272 over.", "and still 210 over.", 1))
             chk("a stale OVER claim in a bank option is LOUD", arm7(tbl_h) is False)
             open(q16, "w", encoding="utf-8").write(qbak)
 
@@ -1282,36 +1291,54 @@ def selftest():
     # ARM 8 takes a TABLE and touches no file, so these controls are synthetic
     # and cheap. That is a property worth keeping: a control that has to compile
     # is a control somebody eventually skips.
+    #
+    # S171: the baseline is now EMPTY, so this control supplies its OWN. It used
+    # to lean on the live baseline holding four SWEEP_DONE entries; the day those
+    # were fixed, a control written that way either fails or gets deleted. It
+    # plants its own signature in its own fixture instead, and therefore tests
+    # the ARM rather than the state of the book.
     print("\nCONTROL K (ARM 8: WARNINGS in finished builds)")
     import copy as _copy
-    SWEEP = "main.cpp: enumeration value \u2018SWEEP_DONE\u2019 not handled in switch [-Wswitch]"
+    PLANT = "main.cpp: unused variable \u2018plantedByControlK\u2019 [-Wunused-variable]"
 
-    # The live table is the fixture. ANCHOR FIRST, as an ASSERTION: if the
-    # baseline and the table have drifted apart, every control below would be
-    # testing a fiction. S169's lesson - a guard is never a condition (rule 59).
-    chk("anchor: the live table matches the adjudicated baseline",
+    # The fixture: the live table with ONE planted signature in ONE finished
+    # build, and a synthetic baseline that adjudicates exactly that signature.
+    # ANCHOR FIRST, as an ASSERTION - if fixture and baseline disagree, every
+    # control below tests a fiction. S169's lesson: a guard is never a
+    # condition (rule 59).
+    fixture = _copy.deepcopy(tbl_h)
+    fixture["16/finished"]["warn"] = sorted(fixture["16/finished"].get("warn", []) + [PLANT])
+    BASE = {"16/finished": [PLANT]}
+
+    chk("anchor: the LIVE table matches the LIVE baseline",
         arm8(tbl_h) is True)
-    chk("anchor: 16/finished really carries the SWEEP_DONE signature",
-        SWEEP in tbl_h.get("16/finished", {}).get("warn", []))
+    chk("anchor: the fixture matches its own synthetic baseline",
+        arm8(fixture, baseline=BASE) is True)
 
-    t = _copy.deepcopy(tbl_h)
+    t = _copy.deepcopy(fixture)
     t["16/finished"]["warn"] = sorted(t["16/finished"]["warn"] +
-        ["main.cpp: unused variable \u2018plantedByControlK\u2019 [-Wunused-variable]"])
-    chk("a NEW warning in a finished build is LOUD", arm8(t) is False)
+        ["main.cpp: enumeration value \u2018MADE_UP\u2019 not handled in switch [-Wswitch]"])
+    chk("a NEW warning in a finished build is LOUD", arm8(t, baseline=BASE) is False)
 
-    t = _copy.deepcopy(tbl_h)
-    t["16/finished"]["warn"] = [s for s in t["16/finished"]["warn"] if s != SWEEP]
+    t = _copy.deepcopy(fixture)
+    t["16/finished"]["warn"] = [x for x in t["16/finished"]["warn"] if x != PLANT]
     chk("a baseline warning that VANISHED is LOUD (the baseline is stale too)",
-        arm8(t) is False)
+        arm8(t, baseline=BASE) is False)
 
     # The build-up model is taken on trust in intermediate steps, and that is a
     # STATED blind spot (rule 78). Demonstrated, not claimed: the same planted
     # signature in a step payload is correctly SILENT.
-    t = _copy.deepcopy(tbl_h)
-    t["16/after_step_2"]["warn"] = sorted(t["16/after_step_2"].get("warn", []) +
-        ["main.cpp: unused variable \u2018plantedByControlK\u2019 [-Wunused-variable]"])
+    t = _copy.deepcopy(fixture)
+    t["16/after_step_2"]["warn"] = sorted(t["16/after_step_2"].get("warn", []) + [PLANT])
     chk("BLIND SPOT: the same plant in an INTERMEDIATE step is SILENT",
-        arm8(t) is True)
+        arm8(t, baseline=BASE) is True)
+
+    # An EMPTY baseline must still assert. This is the live shape as of S171, and
+    # it is the one a reader is most likely to mistake for "switched off".
+    t = _copy.deepcopy(tbl_h)
+    t["16/finished"]["warn"] = sorted(t["16/finished"].get("warn", []) + [PLANT])
+    chk("with an EMPTY baseline, ANY finished warning is LOUD",
+        arm8(t, baseline={}) is False)
 
     # COVERAGE, two ways. An empty table could pass vacuously, and a table whose
     # rows carry no warning data at all is what an older harness produces - the

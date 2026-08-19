@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.33.0 -->
+<!-- Lesson version: v02.34.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.33 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.34 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -741,11 +741,24 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <p>and one line to <code>showStatus()</code> so the screen can say it:</p><pre>
     <span class="tok-569cd6">case</span> SWEEP_DONE:         display.print(F("SWEPT"));     <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// NEW for Lesson 13</span>
 </pre>
+<p>and one <code>case</code> in <code>loop()</code> so the robot can <em>leave</em> it again:</p><pre>
+    <span class="tok-569cd6">case</span> SWEEP_DONE: {
+      <span class="tok-7cbf6e">// The far wall - every row is swept. The screen says SWEPT and the</span>
+      <span class="tok-7cbf6e">// robot waits here. B is the way out, the same B that starts a run:</span>
+      <span class="tok-7cbf6e">// a state with no case is a state with no exit but the power switch.</span>
+      <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
+        currentState = STOPPED;
+        showStatus();
+      }
+      <span class="tok-569cd6">break</span>;
+    }
+</pre>
+<p><strong>A state your program never dispatches on is a room with no door.</strong> Both of the lines above are about the <em>screen</em>; neither of them is about the <em>robot</em>. <code>loop()</code> switches on <code>currentState</code>, and a value with no <code>case</code> falls through the whole switch every pass and does nothing at all — forever. The motors are stopped, so nothing is in danger; the robot simply sits there saying SWEPT, and the only thing that gets it out is the power switch. Read the shape against <code>LINE_LOST</code>, three cases up: it prints its message and then waits on B, because a build that ends and cannot be restarted is a build you have to walk across the room for. <strong>And notice which button.</strong> One screen up you read that B does nothing through the corner and <em>why</em> — that is a sentence about three moves, not about the rest of the robot's life. <code>case STOPPED</code> is what reads B to start a run; this case is what hands B back.</p>
 <p><strong>Why a new state, when <code>STOPPED</code> already exists and costs nothing?</strong> Because at nine o’clock at night in the lab, a motionless robot is the most ambiguous object in the room, and there are two completely different reasons it might be sitting there: <em>it finished</em>, or <em>it quit</em>. <code>STOPPED</code> answers neither. <code>SWEPT</code> on the screen answers both. A state machine that gains a state to name a distinction you actually have to act on is a state machine getting better — and naming two outcomes that look identical until you ask the right instrument is what this entire lesson is about.</p>
 <p><strong>The answer you probably reached for first.</strong> Most engineers meet a sweep with no ending and reach for a row counter: mow ten rows and stop. It compiles, it is easy to explain, and it is wrong in both directions at once. Guess low and the robot stops with floor left unswept and a victim still on it; guess high and you are back to driving into the wall. And where would the number come from? You would have to measure the zone — a zone that is a different size at every venue, which is exactly the assumption Section 8A.1 warns you not to bake in. <strong>A row count is open-loop on completion</strong>, and Lesson 11 spent an entire lesson retiring open-loop thinking about distance. Do not put it back for the last move of the last build.</p>
 <div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.33">
 <div class="div-fs-105em">🔩 COMPILE CHECK</div>
-<p class="p-m-8px000"><strong>25,246 bytes — up 48, and <em>this</em> is the finished build.</strong> Forty-eight bytes bought a sweep that ends, a kill switch that works through the corner, and a robot that tells you which of the two happened. Total cost of Lesson 13: 456 bytes over Lesson 12. A doorway, a sweep, a witness, and an ending — for well under five hundred bytes.</p>
+<p class="p-m-8px000"><strong>25,248 bytes — up 50, and <em>this</em> is the finished build.</strong> Fifty bytes bought a sweep that ends, a kill switch that works through the corner, and a robot that tells you which of the two happened. Total cost of Lesson 13: 458 bytes over Lesson 12. A doorway, a sweep, a witness, and an ending — for well under five hundred bytes.</p>
 </div>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
@@ -972,7 +985,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
       <span class="tok-569cd6">break</span>;
 </pre>
 <p>Run it on the smooth zone floor and watch the rows. Each encoder corner is off by a few degrees the wheels never felt; each row inherits every corner before it; by row five the "parallel" rows are a fan, and the sweep is inspecting the same patch of floor twice while leaving another patch forever unvisited. Now put <code>turnDegreesGyro</code> back and run again: rows like ruled paper.</p>
-<p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> — the wheels, which the floor lies to, or the gyro, which measures the robot itself. These two builds compile to <strong>exactly the same size</strong> — 25,246 bytes each, because both turn functions are alive in both binaries and only the call site moved — and nothing in that number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
+<p>Same robot, same floor, same 90.0 in the code. The only difference is <em>which instrument decides when the turn is done</em> — the wheels, which the floor lies to, or the gyro, which measures the robot itself. These two builds compile to <strong>exactly the same size</strong> — 25,248 bytes each, because both turn functions are alive in both binaries and only the call site moved — and nothing in that number tells you which robot sweeps straight. Every important difference in this book eventually comes down to one line, and the size of the file will never tell you which line.</p>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>
@@ -1330,7 +1343,7 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <div class="div-bg-6f7582"><div id="bonus-challenges"><span class="span-d-block-2">Sabotage</span><span class="span-d-block">Four Messed Up Files</span></div></div>
 <div class="div-6f7582">
 
-<p>Four saboteurs, four builds, and here is the frightening part: <strong>two of the four compile to exactly 25,246 bytes — byte-identical to the correct build — and the other two land within 16 bytes of it.</strong> The file size cannot save you. The compiler will not warn you. Only reading the code — and knowing what each line is <em>for</em> — catches these. Each mystery shows you the planted line up front; your job is not to find the typo. It is to explain <strong>why this line produces that symptom.</strong> Every sabotaged build is in the Maker under <em>Lesson 13 → BONUS</em> if you want to watch the crime happen.</p>
+<p>Four saboteurs, four builds, and here is the frightening part: <strong>two of the four compile to exactly 25,248 bytes — byte-identical to the correct build — and the other two land within 16 bytes of it.</strong> The file size cannot save you. The compiler will not warn you. Only reading the code — and knowing what each line is <em>for</em> — catches these. Each mystery shows you the planted line up front; your job is not to find the typo. It is to explain <strong>why this line produces that symptom.</strong> Every sabotaged build is in the Maker under <em>Lesson 13 → BONUS</em> if you want to watch the crime happen.</p>
 <h4 data-challenge="13.m1" data-kind="bonus-sabotage" class="h4-c-6f7582-3">Mystery B1 — The Corkscrew</h4>
 <p>A classmate “tidied” <code>setup()</code>: <em>“both calibrations, together — it’s cleaner.”</em> The planted change:</p><pre>
   calibrateLineSensors();
@@ -1346,7 +1359,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 </pre>
 <details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
-<p>Compare against the real line: <code>setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED)</code>. The student’s 8 is declared, tuned, believed in — and <strong>never reaches the motors.</strong> A declared blank the code never spends is a lie in the worksheet: the student adjusts the number, nothing changes, and they learn to distrust the instrument instead of the build.</p><p>Here is the part that should worry you: with <code>TRIM = 8</code> set, this build and the correct one are <em>still</em> byte-identical — 25,198 bytes each. We disassembled both to prove the difference is real: the correct build loads <strong>158</strong> into the left motor and 150 into the right; the sabotage loads <strong>150 and 150</strong>. One instruction’s immediate value. The file size is blind to it; only the disassembly — or the arc on your floor — tells the truth.</p></div></details>
+<p>Compare against the real line: <code>setSpeeds(DRIVE_SPEED + TRIM, DRIVE_SPEED)</code>. The student’s 8 is declared, tuned, believed in — and <strong>never reaches the motors.</strong> A declared blank the code never spends is a lie in the worksheet: the student adjusts the number, nothing changes, and they learn to distrust the instrument instead of the build.</p><p>Here is the part that should worry you: with <code>TRIM = 8</code> set, this build and the correct one are <em>still</em> byte-identical — 25,248 bytes each. We disassembled both to prove the difference is real: the correct build loads <strong>158</strong> into the left motor and 150 into the right; the sabotage loads <strong>150 and 150</strong>. One instruction’s immediate value. The file size is blind to it; only the disassembly — or the arc on your floor — tells the truth.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b2_unspent" class="link-c-2e86ab">Open B2 in the Project Maker</a></p>
 <h4 data-challenge="13.m3" data-kind="bonus-sabotage" class="h4-c-6f7582-3">Mystery B3 — The Stripes of Blindness</h4>
 <p>“I made the sweep twice as fast,” says the saboteur, proudly. And the runs <em>are</em> faster — and the robot misses the silver ball about half the time, on a course where it used to score every run. The planted line:</p><pre>
