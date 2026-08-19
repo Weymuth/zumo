@@ -29,10 +29,20 @@ weeks from a launch, and it goes forward with a reproduction rather than a note.
 
 **AND S167's DEBT IS CLOSED — NOT THE WAY IT WAS WRITTEN.** The plan was *mark the `StopReason` declarations `warn_unused_result`*, and that was **priced and RULED AGAINST** (§16.43): **four of the seven remaining discard payloads HAVE DOORS**, so the flag would emit eight warnings for code those lessons consider correct — and it contradicts the ruling, made an hour earlier, that L11's and L12's discards are correct for where the STUDENT is. **You cannot both leave those correct and ship a flag that flags them, and it is the pedagogy that must not give.** The earlier framing is corrected: **`finished` is not the same as student-facing** — ladder rungs and challenge solutions are things students download. The L13-only variant was priced too, not waved away: it works, but **Step 6b is built as DISCOVERY** — run it, press B, watch the robot ignore you — and a build-log line is a weaker teacher than a robot that will not stop. **`byte_audit` ARM 9 answers the real question instead**, injecting the attribute at STAGE TIME so the repo never carries it: **15 discards over 7 payloads, every one adjudicated by a reading**, verified against an independent implementation payload-for-payload, and leak-checked in three places. **AND THE DOUBLE CHECK FOUND ITS STANDING ASSERTION HAD NEVER RUN** — ARM 9 refuses a discard in a `finished` build no matter what the baseline says, but nothing in the baseline or the population is one, **so that branch had never been asked a question. An unexercised branch is not a check.** CONTROL L now plants a real discard in `13/finished`, really compiles it, and asserts the arm fires even with a baseline explicitly blessing it.
 
-**WHAT S173 SHOULD DO FIRST:** mark the `StopReason` declarations `warn_unused_result`. The
-ordering is finally satisfied — the book is at NINE discards over SEVEN payloads, every one
-explained, so the flag adds **no noise to any finished build**. It costs zero bytes and reaches
-147 payloads.
+**THE FORWARD INSTRUCTION THAT STOOD HERE IS STRUCK (S174).** It read *WHAT S173 SHOULD DO
+FIRST: mark the `StopReason` declarations `warn_unused_result`* — **written at S172 close, and
+left standing when this block's header was renamed at S173 close**, so a *what shipped* block
+ended by instructing the session it reports on. **§16.43 ruled against exactly that edit in that
+same session**, four lines above where the instruction still sat, and the S174 handoff says DO NOT
+RE-OPEN IT. Two governing documents disagreed and **LIVE.md is the one that wins over memory**, so
+the instruction is deleted rather than annotated. Rule 72: a queue is not canon, and an item that
+survives the session that rules it is re-reported as open by the next reader — here by the reader
+of the file that outranks every other. **ITS FIGURE WAS STALE TOO AND IS DELIBERATELY NOT
+CORRECTED:** it read NINE discards over SEVEN payloads where the paragraph above it states
+**15 over 7**, `byte_audit` ARM 9's measurement. The payload count agrees and the discard count
+does not, which reads like the pre-fix payload count 9 transposed into the discard slot — **but
+that is a lead and not a finding (§24.6c)**, and rule 50 gives a number two fates. It is deleted
+with the sentence that carried it; **`byte_audit --discards` is what answers the question now.**
 
 ## WHAT SHIPPED IN S171
 **FOUR LESSONS, FOUR BANKS, THE MAKER, TWO INSTRUMENTS AND ONE GRAPHIC — AND 62 OF THE 63 EDITS WERE NUMERALS.**
