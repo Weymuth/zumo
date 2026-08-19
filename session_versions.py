@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.28.0'
+VERSION = 'v1.29.1'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -1044,12 +1044,102 @@ def selftest():
     return 0
 
 
+
+# --- CURRENCY -----------------------------------------------------------------
+CURRENCY_HOMES = [
+    # PATH -> that file's OWN version home. Keyed by PATH, never by first regex
+    # to match, because ZUMO_SUPER_BIBLE.md quotes `<!-- Maker version: v... -->`
+    # in its prose about the convention: the first draft of this arm read the
+    # Bible's OWN change as an unbumped MAKER at v2.45.1. That is grep_trap's
+    # finding reproduced inside the instrument built to prevent it (S172).
+    (lambda r: r == 'newproject.html',
+     r'<!-- Maker version: (v[\d.]+) -->', 'Maker'),
+    (lambda r: r.startswith('lessons/Lesson_') and r.endswith('.html'),
+     r'<!-- Lesson version: (v[\d.]+) -->', 'Lesson'),
+    (lambda r: r == 'ZUMO_SUPER_BIBLE.md',
+     r'\*\*Bible version: (v[\d.]+)\*\*', 'Bible'),
+    (lambda r: r.startswith('quizzes/ZUMO_QUIZ_') and r.endswith('.yaml'),
+     r'^# Bank version: (v[\d.]+)', 'Bank'),
+    (lambda r: r.endswith('.py') or r.endswith('.sh'),
+     r'^VERSION\s*=\s*[\'"]([^\'"]+)', 'VERSION'),
+]
+
+
+def _currency_home(rel):
+    for pred, pat, label in CURRENCY_HOMES:
+        if pred(rel):
+            return pat, label
+    return None, None
+
+
+def currency():
+    """AGREEMENT IS NOT CURRENCY - assert that a CHANGED file's version MOVED.
+
+    S172 built this because check() cannot catch what it is not looking at.
+    Two Maker payloads were edited and the Maker was never bumped; LIVE.md, the
+    handoff and newproject.html all said v2.61, so they AGREED - perfectly, and
+    wrongly - and check() reported no disagreement. Two different files would
+    have shipped claiming one version, the second after the first was already
+    downloaded (SS5, unique version per delivery).
+
+    The predicate is the working tree against git HEAD, not against a fresh
+    clone: a clone needs a network and a gate must run without one. Files with
+    no version home are REPORTED, never asserted, because css/book.css is
+    generated and ZUMO_AFTER_LAUNCH.md carries no version by design - an arm
+    that failed on those would be switched off inside a session.
+    """
+    try:
+        out = subprocess.run(['git', 'diff', '--name-only', 'HEAD'],
+                             capture_output=True, text=True, cwd=ROOT)
+        staged = subprocess.run(['git', 'diff', '--name-only', '--cached', 'HEAD'],
+                                capture_output=True, text=True, cwd=ROOT)
+    except Exception as e:
+        print(f"  currency: git unavailable ({e}) - NOT a pass, NOT a check")
+        return 2
+    if out.returncode:
+        print("  currency: not a git work tree - NOT a pass, NOT a check")
+        return 2
+    files = sorted({f for f in (out.stdout + staged.stdout).split('\n') if f.strip()})
+    if not files:
+        print("  currency: no file differs from HEAD - nothing to assert")
+        return 0
+    unbumped, noted = [], []
+    for rel in files:
+        cur = os.path.join(ROOT, rel)
+        if not os.path.exists(cur):
+            continue
+        try:
+            now = open(cur, encoding='utf-8', errors='replace').read()
+        except Exception:
+            continue
+        was = subprocess.run(['git', 'show', f'HEAD:{rel}'],
+                             capture_output=True, text=True, cwd=ROOT).stdout
+        pat, label = _currency_home(rel)
+        home = None
+        if pat:
+            a, b = re.search(pat, now, re.M), re.search(pat, was, re.M)
+            if a and b:
+                home = (label, b.group(1), a.group(1))
+        if home is None:
+            noted.append(rel)
+        elif home[1] == home[2]:
+            unbumped.append((rel, home[0], home[2]))
+    for rel, label, v in unbumped:
+        print(f"   {rel:44s} {label:8s} CHANGED but still {v}")
+    for rel in noted:
+        print(f"   {rel:44s} (no version home - reported, not asserted)")
+    print(f"  {len(files)} file(s) differ from HEAD, {len(unbumped)} unbumped")
+    return 1 if unbumped else 0
+
+
 def main():
     arg = sys.argv[1] if len(sys.argv) > 1 else ''
     if arg == '--selftest':
         sys.exit(selftest())
     if arg == '--check':
         sys.exit(check())
+    if arg == '--currency':
+        sys.exit(currency())
     if arg == '--_grep':
         # internal: grep_trap only. The full table calls assets(), which needs images/,
         # and control D's work tree deliberately omits it - the first version of that

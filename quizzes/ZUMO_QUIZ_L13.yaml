@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 13
 # Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
 #
-# Bank version: v1.0.8
+# Bank version: v1.0.10
 # Verified against: S168 — STEP 6b, THE BLIND CORNER. L13's sweep gained a completion condition
 #   and its corner started reading the StopReasons it had been discarding, so this bank was
 #   WALKED rather than swept. Six questions rested on the old corner and every one was read in
@@ -109,9 +109,9 @@
 #
 lesson: L13
 title: Rescue Zone — Flying on Instruments, Navigating Where the Line Cannot Go
-bank_version: "1.0.8"
+bank_version: "1.0.10"
 source:
-  lesson_13: v02.34.0
+  lesson_13: v02.35.0
   lesson_03: v03.43.2
   lesson_06: v04.32.4
   lesson_10: v02.30.3
@@ -1300,7 +1300,7 @@ sets:
         why: It changes, and the direction is the surprise.
       - text: 24,790 bytes — back to where Step 1 started
         correct: false
-        why: Lesson 13's whole cost is 456 bytes over Lesson 12, not zero. Step 6 gives back 42 of them,
+        why: Lesson 13's whole cost is 458 bytes over Lesson 12, not zero. Step 6 gives back 42 of them,
           not all of them.
     - id: L13_A16
       type: multiple_choice
@@ -1308,15 +1308,15 @@ sets:
       points: 1
       stem: What is Lesson 13's total cost over the Lesson 12 finished build?
       options:
-      - text: 456 bytes
+      - text: 458 bytes
         correct: true
-      - text: 540 bytes
+      - text: 542 bytes
         correct: false
         why: That ADDS Step 6's 42 instead of subtracting it. Step 6 is smaller than Step 5, which is the
-          whole point of that COMPILE CHECK — 180 + 270 − 42 + 48 = 456.
-      - text: 240 bytes
+          whole point of that COMPILE CHECK — 180 + 270 − 42 + 50 = 458.
+      - text: 270 bytes
         correct: false
-        why: 240 is Step 5's delta alone.
+        why: 270 is Step 5's delta alone.
       - text: 42 bytes
         correct: false
         why: 42 is what Step 6 gives BACK.
@@ -1763,6 +1763,30 @@ sets:
       - text: showStatus() cannot be called between two turns
         correct: false
         why: It can. The reason is the contract of the primitive, not a restriction on the display.
+    - id: L13_A43b
+      type: multiple_choice
+      cite: §6 Step 6b
+      points: 1
+      stem: Step 6b gives SWEEP_DONE a line in showStatus() so the screen can say SWEPT, and a case
+        in the loop() dispatch that reads button B. What would happen if the dispatch case were left
+        out and only the display line shipped?
+      options:
+      - text: The screen would say SWEPT and the robot would sit there forever — loop() switches on
+          currentState, and a value with no case falls through every pass and does nothing, so the
+          only way out is the power switch
+        correct: true
+      - text: The program would not compile, because every enum value must be handled
+        correct: false
+        why: It compiles. The compiler warns about an unhandled enum value in a switch; it does not
+          refuse. That warning is exactly the kind of thing a build log buries.
+      - text: The robot would fall through to the next case and behave like VICTIM_FOUND
+        correct: false
+        why: A switch with no matching case runs nothing at all. Fall-through happens between cases
+          that are entered, not into one that never matched.
+      - text: The robot would be in danger, because the motors keep their last command
+        correct: false
+        why: The sidestep already stopped the motors before the state changed. Nothing is in danger
+          — the robot is simply stuck, which is a different and quieter kind of defect.
     - id: L13_A43
       type: true_false
       cite: §6 Step 6b

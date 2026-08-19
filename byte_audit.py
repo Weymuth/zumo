@@ -44,7 +44,7 @@ libcore_lto.a built by --setup), and extract_project.py beside this file.
 import re, sys, os, json, glob, subprocess, tempfile, shutil, collections
 import html as H
 
-VERSION = 'v1.7'
+VERSION = 'v1.8'
 
 # The standing control build (rule 30): reproduce this BEFORE trusting any
 # other figure. It MOVES whenever the book re-baselines - S158's option-C
@@ -595,6 +595,32 @@ def a7_sentences(text):
     return re.split(r"(?<=[.!?])\s+", text)
 
 
+A7_BOUND = re.compile(r"(?:^|\s)-\s+(?:text|left|id):|(?:^|\s)stem:")
+
+
+def a7_clause(sent, n):
+    """The OPTION-sized window around one claim, for judging the conditional.
+
+    S172. a7_sentences() splits on sentence enders, and a YAML option ends with a
+    quote and a newline rather than a full stop - so a whole run of options
+    concatenates into one "sentence" and a `would` in a distant `why` silenced a
+    claim six options away. MEASURED, not argued: seven claims were being skipped
+    as conditional and only ONE of them was, so six live assertions - among them
+    L16's 336-over, 972-over and two 24-spare claims - were reaching no check at
+    all, and were correct today by luck rather than by assertion (rule 59).
+
+    The window is bounded by the option markers themselves, so `text` and its
+    sibling `why` are judged together: the subjunctive that governs a distractor
+    usually lives in the rationale beneath it, not in the option text.
+    """
+    m = re.search(re.escape(format(n, ",") if n >= 1000 else str(n)) + r"\b", sent)
+    if not m:
+        return sent
+    starts = [x.start() for x in A7_BOUND.finditer(sent) if x.start() <= m.start()]
+    ends = [x.start() for x in A7_BOUND.finditer(sent) if x.start() > m.end()]
+    return sent[(starts[-1] if starts else 0):(ends[0] if ends else len(sent))]
+
+
 def headroom_claims(quiz_dir=None):
     """-> [(file, kind, n, sentence)] for every spare/over claim in the corpus.
 
@@ -662,11 +688,28 @@ def arm7(tbl, only=None, quiz_dir=None):
       1. It is blind to a claim naming the WRONG build, exactly as ARM 6 is: a
          stale figure that still equals SOME build's headroom is silent.
       2. A CONDITIONAL claim is out of scope by property, not by name list
-         (rule 20). L16 offers "26,790 bytes with 1,882 to spare" as a
+         (rule 20). L16 offers "26,798 bytes with 1,874 to spare" as a
          distractor and explains it as "what cutting the buzzer WOULD give" -
          a hypothetical the book hands to the student, with no payload by
          design. The subjunctive is what separates a hypothetical from an
          assertion, so the arm reads it rather than carrying an exemption.
+      3. AND THE SUBJUNCTIVE TEST IS A WORD TEST, WHICH OVER-CATCHES (S172).
+         `would` is ordinary English, so a flat assertion sharing a sentence
+         with it is skipped: L16's CORRECT answer "28,626 bytes with 46 to
+         spare - three trades: one you WOULD have made anyway" is an assertion
+         the arm does not check, and no windowing can separate those two, because
+         the word sits inside the claim's own string. TWO claims skip for this
+         reason today, both equal to a real headroom. Narrowing the window to the
+         option (S172) took the skip list from 7 to 3 and gained four real
+         assertions; the residue is stated rather than papered over, because the
+         honest fix is not a better word test. S167's rule from the far side:
+         a word test cannot report what it OVER-catches either.
+      4. AND THE CONDITIONAL'S FIGURE IS STILL DERIVED FROM A COMPILE, WHICH IS
+         WHY 1,882 WENT STALE. S171 moved 16/finished +8 and the hypothetical
+         moved with it - measured, not inferred: finished with all twelve
+         playNote() lines removed weighs 26,798, so the buzzer still costs
+         exactly 1,828 and only the base moved. The subjunctive tells you the
+         ROBOT never does this. It does not tell you the NUMBER is free.
     """
     print("ARM 7 - HEADROOM: a stated spare/over claim equals ceiling minus a compile")
     flash = [v.get("flash") for v in tbl.values() if isinstance(v, dict) and v.get("flash")]
@@ -676,7 +719,7 @@ def arm7(tbl, only=None, quiz_dir=None):
     for fn, kind, n, sent in headroom_claims(quiz_dir):
         if n < 10 or n > 5000:
             continue
-        if re.search(r"\bwould\b", sent, re.I):      # conditional: not an assertion
+        if re.search(r"\bwould\b", a7_clause(sent, n), re.I):   # conditional, judged on its OWN option
             skipped += 1
             continue
         seen += 1

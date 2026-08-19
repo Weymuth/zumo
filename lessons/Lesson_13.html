@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.34.0 -->
+<!-- Lesson version: v02.35.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.34 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.35 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1083,12 +1083,12 @@ DO NOT update lastRowCm — the victim is not the wall.</pre>
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p class="p-m-008px">Fill the two blanks — the rejoin is the whole trick.</p>
+<p class="p-m-008px">Fill the two blanks — the rejoin is the whole trick. Every move in the step-around is guarded the way Step 6b guards the corner: four more interruptible moves, four more chances for B to matter.</p>
 <pre class="pre-m-0"><span class="tok-6a9955">// in VICTIM_FOUND, after the celebration:</span>
-driveDistance(-<span class="tok-b5cea8">10.0</span>);              <span class="tok-6a9955">// back off the victim</span>
-turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);  <span class="tok-6a9955">// early lawnmower turn</span>
-driveDistance(ROW_STEP_CM);
-turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);
+<span class="tok-569cd6">if</span> (driveDistance(-<span class="tok-b5cea8">10.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;          <span class="tok-6a9955">// back off the victim</span>
+<span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;  <span class="tok-6a9955">// early lawnmower turn</span>
+<span class="tok-569cd6">if</span> (driveDistance(ROW_STEP_CM) == STOP_KILL) <span class="tok-569cd6">break</span>;
+<span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;
 sweepDir = ____;                   <span class="tok-6a9955">// flip the sweep direction</span>
 currentState = ____;               <span class="tok-6a9955">// hand back to the sweep</span>
 <span class="tok-569cd6">break</span>;
@@ -1102,10 +1102,10 @@ currentState = ____;               <span class="tok-6a9955">// hand back to the 
       <span class="tok-7cbf6e">// sweeping. Step around the victim - back off, sidestep, rejoin -</span>
       <span class="tok-7cbf6e">// and hand control back to the sweep. lastRowCm is NOT updated:</span>
       <span class="tok-7cbf6e">// the victim's address is not the wall's address.</span>
-      driveDistance(-<span class="tok-b5cea8">10.0</span>);                  <span class="tok-7cbf6e">// back off the victim</span>
-      turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);      <span class="tok-7cbf6e">// the early lawnmower turn</span>
-      driveDistance(ROW_STEP_CM);
-      turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir);
+      <span class="tok-569cd6">if</span> (driveDistance(-<span class="tok-b5cea8">10.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;          <span class="tok-7cbf6e">// back off the victim</span>
+      <span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;  <span class="tok-7cbf6e">// the early lawnmower turn</span>
+      <span class="tok-569cd6">if</span> (driveDistance(ROW_STEP_CM) == STOP_KILL) <span class="tok-569cd6">break</span>;
+      <span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span> * sweepDir) == STOP_KILL) <span class="tok-569cd6">break</span>;
       sweepDir = -sweepDir;
       currentState = SWEEPING_ZONE;
       <span class="tok-569cd6">break</span>;
@@ -1198,16 +1198,16 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p class="p-m-008px">Fill the three blanks — the flag is what makes it one-shot.</p>
+<p class="p-m-008px">Fill the three blanks — the flag is what makes it one-shot. The retry is four interruptible moves, so all four carry the Step 6b guard.</p>
 <pre class="pre-m-0"><span class="tok-569cd6">bool</span> rowZeroRetried = ____;   <span class="tok-6a9955">// row zero gets ONE benefit of the doubt</span>
 
 <span class="tok-6a9955">// ahead of the victim test:</span>
 <span class="tok-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount == <span class="tok-b5cea8">0</span> &amp;&amp; !____) {   <span class="tok-6a9955">// first row, not yet retried</span>
   rowZeroRetried = ____;       <span class="tok-6a9955">// spend the one retry</span>
-  driveDistance(-<span class="tok-b5cea8">10.0</span>);
-  turnDegreesGyro(<span class="tok-b5cea8">90.0</span>);
-  driveDistance(ROW_STEP_CM);
-  turnDegreesGyro(-<span class="tok-b5cea8">90.0</span>);      <span class="tok-6a9955">// sidestep, SAME heading - still row zero</span>
+  <span class="tok-569cd6">if</span> (driveDistance(-<span class="tok-b5cea8">10.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;
+  <span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;
+  <span class="tok-569cd6">if</span> (driveDistance(ROW_STEP_CM) == STOP_KILL) <span class="tok-569cd6">break</span>;
+  <span class="tok-569cd6">if</span> (turnDegreesGyro(-<span class="tok-b5cea8">90.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;      <span class="tok-6a9955">// sidestep, SAME heading - still row zero</span>
   <span class="tok-569cd6">break</span>;
 }</pre>
 </div>
@@ -1225,10 +1225,10 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
       <span class="tok-7cbf6e">// wall really is that close.</span>
       <span class="tok-569cd6">if</span> (reason == STOP_PROX &amp;&amp; rowCount == <span class="tok-b5cea8">0</span> &amp;&amp; !rowZeroRetried) {
         rowZeroRetried = <span class="tok-569cd6">true</span>;
-        driveDistance(-<span class="tok-b5cea8">10.0</span>);
-        turnDegreesGyro(<span class="tok-b5cea8">90.0</span>);
-        driveDistance(ROW_STEP_CM);
-        turnDegreesGyro(-<span class="tok-b5cea8">90.0</span>);   <span class="tok-7cbf6e">// sidestep, SAME heading - still row zero</span>
+        <span class="tok-569cd6">if</span> (driveDistance(-<span class="tok-b5cea8">10.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;
+        <span class="tok-569cd6">if</span> (turnDegreesGyro(<span class="tok-b5cea8">90.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;
+        <span class="tok-569cd6">if</span> (driveDistance(ROW_STEP_CM) == STOP_KILL) <span class="tok-569cd6">break</span>;
+        <span class="tok-569cd6">if</span> (turnDegreesGyro(-<span class="tok-b5cea8">90.0</span>) == STOP_KILL) <span class="tok-569cd6">break</span>;   <span class="tok-7cbf6e">// sidestep, SAME heading - still row zero</span>
         <span class="tok-569cd6">break</span>;
       }
 </pre>
