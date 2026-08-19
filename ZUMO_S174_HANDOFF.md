@@ -1,9 +1,9 @@
-# ZUMO — S173 HANDOFF (written at S172 close · paste at top of Session 173)
+# ZUMO — S174 HANDOFF (written at S173 close · paste at top of Session 174)
 
 ## READ THIS FIRST
 
-**S172's work IS PUSHABLE and DJ verifies the push himself (standing ruling, S158).**
-`git rm ZUMO_S172_HANDOFF.md` is part of that push. **If `__pycache__/` exists in your tree,
+**S173's work IS PUSHABLE and DJ verifies the push himself (standing ruling, S158).**
+`git rm ZUMO_S173_HANDOFF.md` is part of that push. **If `__pycache__/` exists in your tree,
 delete it LAST, immediately before pushing** — it REGENERATES on every gate run.
 
 **77/77 gates** · `gate_payload_match` **PASS** · **`byte_audit --check` PASS across EIGHT arms,
@@ -94,13 +94,17 @@ Measured: finished minus twelve `playNote()` lines weighs 26,798, so the buzzer 
 
 ---
 
-# 4. S173 OPENS HERE
+# 4. S174 OPENS HERE
 
-- **MARK THE `StopReason` DECLARATIONS `warn_unused_result`.** The ordering is now satisfied — the
-  book is at NINE discards over SEVEN payloads, every one explained, so the flag adds **no noise to
-  any finished build**. It is a `RobotMotion.h` edit reaching **147 payloads** and needs its own
-  recompile-and-verify pass; it costs **zero bytes** (measured: `13/finished` is 25,248 either way).
-  Then the arm.
+- **S167's DEBT IS CLOSED — AND NOT THE WAY IT WAS WRITTEN. DO NOT RE-OPEN IT.** The plan was
+  *mark the `StopReason` declarations `warn_unused_result`*. **That was priced and RULED AGAINST**
+  (Bible §16.43): four of the seven remaining discard payloads HAVE DOORS, so the flag would emit
+  eight warnings for code those lessons consider correct, and it contradicts the ruling that L11's
+  and L12's discards are correct for where the STUDENT is. **`finished` is not the same as
+  student-facing** — ladder rungs and challenge solutions are things students download.
+  **`byte_audit --discards` (ARM 9) answers the real question instead**, injecting the attribute at
+  STAGE TIME so the repo never carries it. If a future session is tempted by the header edit again,
+  read §16.43 first.
 - **`gate_payload_match`'s one-directionality** (above) — a ruling, then a design.
 - **ARM 7's two remaining false skips** are stated blind spots, not bugs. `would` is ordinary
   English and no windowing separates it from the claim's own string.
@@ -115,6 +119,33 @@ Measured: finished minus twelve `playNote()` lines weighs 26,798, so the buzzer 
   `ZUMO_L03_TEMPLATES.md` staging · Bible §14 TDP-canon entry · day-by-day grid + syllabus.
 - **The poster is a GRADED deliverable** (DJ, S159). **Photography is OFF the critical path** (S156).
 - **Fall launch Sept 8. L13 is the last in-scope lesson and it is whole.**
+
+---
+
+# 6. `byte_audit --discards` — ARM 9, NEW, AND IT IS NOT IN `--check`
+
+```
+python3 byte_audit.py --discards    # ~3 min: recompiles the 105 payloads that
+                                    # carry the StopReason declarations
+```
+
+**15 discards over 7 payloads, 7 adjudicated, 0 unexplained.** Every baseline entry is a READING,
+not a tolerance: `13/after_step_5` and `13/after_step_6` ARE the blind corner Step 6b exists to fix;
+`13/ladder_7c_leg_and_turn` and L12's `cal_7d`/`cal_7e` are bare maneuvers with no caller; **L11's
+`c1_backup` and `c2_hunt` are correct for where the STUDENT is** and resolve on their own at L13.
+
+**IT IS DELIBERATELY OUT OF `--check`'s PATH.** It costs minutes, and an arm that made the routine
+run slower is one somebody eventually skips. Run it when payload code changes, not every session.
+
+**THREE STATED SCOPE LIMITS (rule 78):** it counts DISCARDS, not sites that ought to guard — so
+**deleting a maneuver LOWERS the count**, and it must be read beside ARM 1; it is blind to a return
+value assigned and then never read; and it costs minutes.
+
+**CONTROL L's LAST TWO ASSERTIONS EXIST BECAUSE THE DOUBLE CHECK FOUND A BRANCH THAT HAD NEVER RUN.**
+ARM 9 refuses a discard in a `finished` build no matter what the baseline says — but no baseline
+entry and no measured discard is a `finished` build, **so that code had never once been asked a
+question.** The control now strips a guard from `13/finished`, really compiles it, and asserts the
+arm fires even with a baseline explicitly blessing it. **An unexercised branch is not a check.**
 
 ---
 
@@ -180,8 +211,8 @@ COUNTING calls — a retry that never happens looks identical to one that succee
 **STILL OPEN:** the original flap is unexplained. If it recurs, the stderr note now names the asset.
 
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`fef0ac4`**. Census **40,993**.
-Bible **v8.166** · `BookComponentStandard` **v01.13.0** · Maker **v2.62** ·
+Fresh-clone verified at **`8142aeb`**. Census **40,993**.
+Bible **v8.167** · `BookComponentStandard` **v01.13.0** · Maker **v2.62** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
@@ -195,7 +226,7 @@ Instruments: `book_gates` **v1.72.5** · `lesson_inventory` **v1.3.5** ·
 `strip_inline` **v1.2** ·
 `build_worklist` **v1.1** ·
 `regex_audit` **v1.0** ·
-`byte_audit` **v1.8** ·
+`byte_audit` **v1.9.1** ·
 `build_palette` **v1.1** ·
 `class_sweep` **v1.0** ·
 `color_index` **v1.0** ·

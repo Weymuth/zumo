@@ -35,6 +35,9 @@ Usage:
   byte_audit.py --selftest            controls, both directions
   byte_audit.py --sizes               build/refresh the size table
   byte_audit.py --check               ARM 1 + ARM 2   (exit 1 on failure)
+  byte_audit.py --discards            ARM 9 only - recompiles 105 payloads with
+                                      warn_unused_result INJECTED AT STAGE TIME.
+                                      Minutes, so it is deliberately NOT in --check.
   byte_audit.py --convention          ARM 3 report    (no exit code)
   byte_audit.py --lesson N            one lesson, all arms
 
@@ -44,7 +47,7 @@ libcore_lto.a built by --setup), and extract_project.py beside this file.
 import re, sys, os, json, glob, subprocess, tempfile, shutil, collections
 import html as H
 
-VERSION = 'v1.8'
+VERSION = 'v1.9.1'
 
 # The standing control build (rule 30): reproduce this BEFORE trusting any
 # other figure. It MOVES whenever the book re-baselines - S158's option-C
@@ -131,8 +134,14 @@ def wsigs(errpath):
     return sorted(out)
 
 
-def compile_kind(lesson, kind, P, incs, keep=None):
-    """-> (status, flash) where status in PASS | OVER | FAIL. flash None on FAIL."""
+def compile_kind(lesson, kind, P, incs, keep=None, transform=None):
+    """-> (status, flash) where status in PASS | OVER | FAIL. flash None on FAIL.
+
+    `transform(filename, body) -> body` runs on each file just before it is
+    written. It exists for ARM 9, which must MODIFY a payload to measure it, and
+    it defaults to a no-op so every existing caller compiles the real thing.
+    S172: this is the only place a payload is staged, so a second staging path
+    for ARM 9 would be a second thing to keep correct (rules 83/84)."""
     d = keep or tempfile.mkdtemp(prefix="ba_")
     if os.path.isdir(d) and keep is None:
         shutil.rmtree(d, ignore_errors=True)
@@ -147,6 +156,8 @@ def compile_kind(lesson, kind, P, incs, keep=None):
         # test that L01 c01's own <EEPROM.h> tripped. Do what the Maker does.
         if fn == "main.cpp":
             body = incs + body          # single-file payload: mainCpp's wrapper
+        if transform is not None:
+            body = transform(fn, body)
         open(os.path.join(d, fn), "w", encoding="utf-8").write(body)
     r = subprocess.run(["bash", os.path.join(HARNESS, "pio_harness.sh"), d],
                        capture_output=True, text=True)
@@ -1391,6 +1402,69 @@ def selftest():
     chk("a table with NO warning data anywhere does not pass", arm8(t) is False)
     chk("and the un-blinded arm is SILENT again", arm8(tbl_h) is True)
 
+    # ---- CONTROL L (ARM 9: an ignored StopReason is one somebody adjudicated) ----
+    # ARM 9 recompiles 105 payloads and costs minutes, so its controls run on ONE
+    # payload and on synthetic baselines. The alternative - a control that made
+    # --selftest take four minutes - is a control somebody eventually skips
+    # (S170's reason for keeping CONTROL K synthetic).
+    print("\nCONTROL L (ARM 9: DISCARDED StopReason values)")
+
+    # ANCHOR FIRST, as an ASSERTION. The transform must actually mark the header,
+    # and it must leave every other file alone. If the marking silently failed,
+    # every control below would pass on a payload that was never modified - the
+    # exact way S169's guard-as-condition read like success (rule 59).
+    _P = payloads()
+    _h = ep.materialize(_P, "13", "after_step_5")["RobotMotion.h"]
+    _marked = _discard_mark("RobotMotion.h", _h)
+    chk("anchor: the transform marks all seven declarations",
+        _marked.count("warn_unused_result") == 7 and _h.count("warn_unused_result") == 0)
+    chk("anchor: the transform leaves main.cpp untouched",
+        _discard_mark("main.cpp", "StopReason x();\n") == "StopReason x();\n")
+
+    # Full-population runs belong to --discards. These use --lesson 13, which
+    # stages 19 payloads rather than 105 and still exercises the real compile.
+
+    chk("an EMPTY baseline makes every discard UNADJUDICATED",
+        arm9(_P, head_includes(), only=13, baseline={}, quiet=True) is False)
+    chk("the real baseline is SILENT on the same lesson",
+        arm9(_P, head_includes(), only=13,
+             baseline={k: v for k, v in DISCARD_BASELINE.items()
+                       if k.startswith("13/")}, quiet=True) is True)
+    # THE STANDING ASSERTION HAD NEVER BEEN EXERCISED. S172's double check found
+    # it: arm9 refuses a discard in a `finished` build no matter what the baseline
+    # says, and until this control that branch had never once run. An unexercised
+    # branch is not a check - it is code that has never been asked a question.
+    # The plant is a REAL one: the guard is stripped from one interruptible move
+    # in 13/finished and the payload is really compiled, so this exercises the
+    # compiler too, not just the bookkeeping.
+    _real_mat = ep.materialize
+
+    def _plant_finished(_P, _L, _k):
+        f = dict(_real_mat(_P, _L, _k))
+        if (_L, _k) == ("13", "finished") and isinstance(f.get("main.cpp"), str):
+            f["main.cpp"] = f["main.cpp"].replace(
+                "if (turnDegreesGyro(90.0 * sweepDir) == STOP_KILL) break;",
+                "turnDegreesGyro(90.0 * sweepDir);", 1)
+        return f
+
+    _b13 = {k: v for k, v in DISCARD_BASELINE.items() if k.startswith("13/")}
+    ep.materialize = _plant_finished
+    try:
+        chk("a discard in a FINISHED build is LOUD even when the baseline blesses it",
+            arm9(_P, head_includes(), only=13,
+                 baseline=dict(_b13, **{"13/finished": 1}), quiet=True) is False)
+    finally:
+        ep.materialize = _real_mat
+    chk("and with the plant removed the same lesson is SILENT again",
+        arm9(_P, head_includes(), only=13, baseline=_b13, quiet=True) is True)
+
+    chk("a baseline expecting a discard that is NOT there is LOUD "
+        "(a stale baseline is a defect the same way a stale figure is)",
+        arm9(_P, head_includes(), only=13,
+             baseline=dict({"13/finished": 2},
+                           **{k: v for k, v in DISCARD_BASELINE.items()
+                              if k.startswith("13/")}), quiet=True) is False)
+
     print()
     if fails:
         print("SELFTEST FAILED: " + ", ".join(fails))
@@ -1412,6 +1486,137 @@ def arm2_probe(tbl, L):
 
 
 # ---------------------------------------------------------------- main
+
+
+# ============================ ARM 9 =========================================
+# DISCARDS: a StopReason that nobody reads is a kill switch nobody hears.
+#
+# S167 named this debt and handed it forward three times as "mark the
+# declarations warn_unused_result". S172 measured it and RULED AGAINST SHIPPING
+# THAT (Bible SS16.43): the flag would put warnings into four student-facing
+# downloads whose lessons consider that code correct, and it would preempt L13
+# Step 6b, which is built as DISCOVERY - run it, press B, watch the robot ignore
+# you. A build-log line is a weaker teacher than a robot that will not stop, and
+# this book has already measured that students read past build-log text.
+#
+# The debt was never "the attribute is not in the header". It was "nobody knows
+# whether return values are being discarded". An ARM answers that permanently
+# and the header stays clean.
+
+DISCARD_DECL = re.compile(r'^(StopReason\s+\w+\([^;]*\));', re.M)
+DISCARD_SIG = re.compile(r"ignoring return value of \u2018(\w+ \w+)")
+
+# ADJUDICATED, and every line of this is a reading, not a tolerance. S172.
+DISCARD_BASELINE = {
+    # L13 Step 6b EXISTS to fix these two. They are the blind corner itself -
+    # the builds a student runs to feel the kill switch do nothing. A discard
+    # here is the lesson working.
+    "13/after_step_5": 3,
+    "13/after_step_6": 3,
+    # A ladder rung: one gyro turn, no state machine, no kill machinery to hand
+    # a reason back to.
+    "13/ladder_7c_leg_and_turn": 1,
+    # L12's encoder-vs-gyro comparison rungs. Bare fixed maneuvers, measured
+    # against each other; there is no caller to report to.
+    "12/cal_7d": 1,
+    "12/cal_7e": 4,
+    # L11 has NOT TAUGHT THE GUARD CONTRACT YET. These are correct for where the
+    # STUDENT is, and they resolve on their own at L13. Guarding them would
+    # import a rule from a lesson not yet read (SS24.19).
+    "11/c1_backup": 1,
+    "11/c2_hunt": 2,
+}
+
+
+def _discard_mark(fn, body):
+    """Stage-time transform: mark the StopReason declarations, nothing else."""
+    if fn == "RobotMotion.h":
+        return DISCARD_DECL.sub(r"\1 __attribute__((warn_unused_result));", body)
+    return body
+
+
+def arm9(P, incs, only=None, baseline=None, quiet=False):
+    """ARM 9 - DISCARDS: every ignored StopReason is one somebody adjudicated.
+
+    -> True/False. The attribute is injected AT STAGE TIME and never lands in
+    the repo, so what students download is unchanged. This is the arm's whole
+    design: the instrument reads the book, the book does not wear the tool.
+
+    THREE STATED SCOPE LIMITS (rule 78):
+      1. IT COUNTS DISCARDS, NOT SITES THAT SHOULD GUARD. A move that is not
+         called at all cannot discard, so deleting a maneuver LOWERS this count.
+         Read it beside ARM 1, never alone.
+      2. IT IS BLIND TO A DISCARD THE COMPILER CANNOT SEE - a return value
+         assigned to a variable that is then never read is not -Wunused-result.
+      3. IT RECOMPILES 105 PAYLOADS AND COSTS MINUTES, so it is NOT in --check's
+         default path. An arm that made the routine run slower is an arm someone
+         eventually skips (S170's reason for keeping CONTROL K synthetic).
+    """
+    base = DISCARD_BASELINE if baseline is None else baseline
+    print("ARM 9 - DISCARDS: every ignored StopReason is one somebody adjudicated")
+    ks = kinds(P)
+    if only:
+        ks = [x for x in ks if x[0] == only]
+    got, staged = {}, 0
+    for n, (L, k) in enumerate(ks, 1):
+        d = tempfile.mkdtemp(prefix="ba9_")
+        try:
+            files = ep.materialize(P, str(L), k)
+            if not isinstance(files.get("RobotMotion.h"), str):
+                continue
+            if "StopReason " not in files["RobotMotion.h"]:
+                continue
+            staged += 1
+            for fn, body in files.items():
+                body = body if body.endswith("\n") else body + "\n"
+                if fn == "main.cpp":
+                    body = incs + body
+                body = _discard_mark(fn, body)
+                open(os.path.join(d, fn), "w", encoding="utf-8").write(body)
+            subprocess.run(["bash", os.path.join(HARNESS, "pio_harness.sh"), d],
+                           capture_output=True, text=True)
+            ep_err = os.path.join(d, "pbuild", "err.txt")
+            txt = (open(ep_err, encoding="utf-8", errors="replace").read()
+                   if os.path.exists(ep_err) else "")
+            c = txt.count("unused-result")
+            if c:
+                got["%d/%s" % (L, k)] = c
+        finally:
+            shutil.rmtree(d, ignore_errors=True)
+        if not quiet and n % 40 == 0:
+            print("   ... %d payload(s) staged" % n, flush=True)
+
+    if staged == 0:
+        print("   NO payload carried the declarations - nothing was measured, "
+              "and that is NOT a pass")
+        return False
+
+    tot = sum(got.values())
+    print("   population: %d discard(s) over %d of %d payload(s) carrying the "
+          "declarations" % (tot, len(got), staged))
+    bad = False
+    for k in sorted(set(got) | set(base), key=lambda x: (int(x.split("/")[0]), x)):
+        want, have = base.get(k, 0), got.get(k, 0)
+        if want == have:
+            continue
+        bad = True
+        if want == 0:
+            print("   %-34s %d discard(s), ADJUDICATED BY NOBODY" % (k, have))
+        elif have == 0:
+            print("   %-34s baseline expects %d and there are NONE - a stale "
+                  "baseline is a defect the same way a stale figure is" % (k, want))
+        else:
+            print("   %-34s baseline %d, measured %d" % (k, want, have))
+    # A finished build is the terminal, student-facing program. One discard
+    # there is never explained by "something later fixes it".
+    for k, v in got.items():
+        if k.endswith("/finished"):
+            print("   %-34s a FINISHED build discards - nothing comes later "
+                  "to read it" % k)
+            bad = True
+    print("   %d adjudicated, %d unexplained" % (len(base), 0 if not bad else 1))
+    return not bad
+
 
 def main():
     a = sys.argv[1:]
@@ -1440,6 +1645,12 @@ def main():
         print("\n  size table -> %s\n" % CACHE)
         if a[0] == "--sizes":
             return 0
+
+    if a[0] == "--discards":
+        P = payloads()
+        ok9 = arm9(P, head_includes(), only)
+        print("byte_audit: " + ("PASS" if ok9 else "FAIL"))
+        return 0 if ok9 else 1
 
     tbl = load_sizes()
     if a[0] == "--convention":
