@@ -2,7 +2,16 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.7'
+VERSION = 'v1.72.8'
+# v1.72.8 (S177): §27.11 digest moved for the L01 GPT-worklist edit pass. RANK-ONLY, and
+#                 controlled BEFORE the tree was touched: a scratch-copy regeneration was
+#                 diffed name-by-name against the live stylesheet — 574 rules both ends,
+#                 2,033 declarations, ZERO names added, dropped, or repointed. Only
+#                 .p-m-12px06px (11->12) and .p-m-8px00 (9->10) changed frequency and so
+#                 moved position. Because no name changed MEANING, §27.8b's
+#                 restore->regenerate->apply cycle was NOT owed and was not run — which
+#                 also kept the S168 held-LESSON-STRIP hazard out of the session. NO gate
+#                 logic changed.
 # v1.72.3 (S168): §27.11 digest final for the session, after the L15 enum edit and the L13
 #                 7E/B3 code blocks. Rank-only again: 574 rules, 2,033 declarations,
 #                 coverage 22,464 -> 22,512 attributes, no declaration block moved.
@@ -2512,7 +2521,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '3eea96fb60a4bf98'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'f7e0e5f20c00f603'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
