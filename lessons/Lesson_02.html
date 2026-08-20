@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.21.5 -->
+<!-- Lesson version: v03.22.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -111,7 +111,7 @@
 <h1 class="h1">Mastering the Code</h1>
 <div class="div-fs-11em">Reading Code You Didn't Write</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.21 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.22 — August 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -355,7 +355,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </div>
 
-<p>Professional programmers solved this problem a long time ago. They use <strong>COMMENTS</strong> — notes in the code that explain what things do and why.</p>
+<p>Professional programmers solved this problem a long time ago, and not with one tool. They use <strong>comments</strong> that explain <em>why</em>, names that say what a thing is, a standard order for the parts of a file, named constants instead of loose numbers, and helper functions that let a reader skip the details. This lesson teaches all of them. Comments come first because they are the cheapest — they cost nothing to add and nothing to run.</p>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.5">
 
@@ -493,7 +493,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <h3 id="section-3-1" class="h3-c-2e86ab">3.1 The Seven Sections</h3>
 
-<p>Keep this diagram visible while you code. Every program has these sections <strong>in this order</strong>:</p>
+<p>Keep this diagram visible while you code. This order is not a rule of the C++ language — the compiler would accept almost any arrangement. It is the <strong>RoboLore standard</strong>: every program in this book is organized this way, and so is every project the Maker builds for you. A section may be empty in a given program, but it always has a home:</p>
 
 <div class="div-m-20px0"><img src="../images/L02_GRAPHIC_2-05_sketch_anatomy.svg" alt="The Sketch Anatomy: seven numbered code sections with the unnumbered Function Prototypes row between Constants and setup()" class="img-h-auto"><div class="div-c-666"><strong>[GRAPHIC 2.5]</strong> The Sketch Anatomy — the seven numbered sections plus the unnumbered Function Prototypes row (File: L02_GRAPHIC_2-05_sketch_anatomy.svg)</div></div>
 
@@ -602,12 +602,12 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <p><strong>Build 2 — this one is different, and it is the trap.</strong> The prototype is there, so the <em>compiler</em> is satisfied and reports nothing. The error arrives later and from a different program: <em>undefined reference to 'beep()'</em>. That is the <strong>linker</strong> talking. You promised a function existed and never wrote it. A prototype is a promise, not a definition — and something eventually checks.</p>
 
-<p class="p-mb-0"><strong>Build 3 — the prototype and the function disagree.</strong> The prototype promises <code>showCount()</code> takes nothing; the definition takes an <code>int</code>. C++ treats those as two <em>different</em> functions, so the call matches the definition but the promise never gets kept: another <em>undefined reference</em>. <strong>Fix:</strong> the prototype must match the definition exactly — <code>void showCount(int n);</code>. Copy the first line of the function and add a semicolon; do not retype it from memory.</p>
+<p class="p-mb-0"><strong>Build 3 — the prototype and the function disagree.</strong> The prototype promises <code>showCount()</code> takes nothing; the definition takes an <code>int</code>. C++ treats those as two <em>different</em> functions — and when the compiler reaches <code>showCount(5);</code>, the only one it has met is the argument-less promise. The definition sits below <code>loop()</code>, still invisible. So this build never gets as far as the linker: <em>too many arguments to function ‘void showCount()’</em>, and the error points back at the prototype it is measuring you against. <strong>Fix:</strong> the prototype must match the definition exactly — <code>void showCount(int n);</code>. Copy the first line of the function and add a semicolon; do not retype it from memory.</p>
 
 </div>
 </details>
 
-<p class="p-mb-0-3"><em>The lesson underneath all three: “not declared in this scope” and “undefined reference” are thrown by two different programs at two different times. Knowing which one is complaining tells you whether you forgot to <strong>announce</strong> a function or forgot to <strong>write</strong> it.</em></p>
+<p class="p-mb-0-3"><em>The lesson underneath all three: “not declared in this scope” and “too many arguments” come from the <strong>compiler</strong>, while “undefined reference” comes from the <strong>linker</strong> — a different program, running later. Knowing which one is complaining tells you whether you forgot to <strong>announce</strong> a function (Build 1), announced it <strong>wrongly</strong> (Build 3), or announced it and never <strong>wrote</strong> it (Build 2).</em></p>
 
 </div>
 
@@ -1081,7 +1081,7 @@ ledYellow(<span class="tok-b5cea8">1</span>);       <span class="tok-6a9955">// 
 
 <h4 class="h4-c-6f7582">Meet Your Buttons — The Parts Today's Code Touches</h4>
 
-<p><strong>Nothing gets added to the robot this lesson.</strong> It is the same machine you met in Lesson 1, unchanged. What grows is how much of it your code reaches: Lesson 1 used one button, one light, and the screen. Today's program uses <em>all three</em> buttons — and that is the whole hardware story.</p>
+<p><strong>Nothing gets added to the robot this lesson.</strong> It is the same machine you met in Lesson 1, unchanged. What grows is <em>which</em> parts your code reaches. Lesson 1 touched five: Button A, the display, the yellow LED, the buzzer and the motors. Today’s program hands the buzzer and the motors back and picks up the other two buttons — so it reaches all three buttons, the display and the yellow LED, and that is the whole hardware story.</p>
 
 <table class="table-bc-collapse-8">
 <tr>
@@ -1096,7 +1096,7 @@ ledYellow(<span class="tok-b5cea8">1</span>);       <span class="tok-6a9955">// 
 <tr><td class="td-ddd">The yellow LED</td><td class="td-ddd">Switched on and off to confirm a press without looking at the screen.</td><td class="td-ddd">Top board, beside the display.</td></tr>
 </table>
 
-<p>Everything else on the board — the motors, the encoders, the line sensors, the proximity sensors, the gyro — is still powered and still idle, exactly as it was in Lesson 1. You have not been introduced yet.</p>
+<p>Everything else on the board — the encoders, the line sensors, the proximity sensors, the gyro — is powered and idle: today’s program never touches it. The motors and the buzzer are the exception, and only in the warm-ups and the Extra Practice challenges, where you drive and beep the robot on purpose. The program you build in Section 6 leaves both alone. You have not been introduced yet.</p>
 
 <div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="2.30">
 <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
@@ -1873,7 +1873,7 @@ loop()   →  1. change the comment so it describes the NEW job:
 <iframe src="../timer.html?v=4&amp;min=1&amp;label=Step+3" title="1-minute countdown timer for Step 3" loading="lazy" class="iframe"></iframe>
 
 <strong class="strong-c-352405" data-challenge="2.t3" data-kind="tryit">🎯 TRY IT — Step 3: Button C (1 minute)</strong>
-<p class="p-mb-0">Make the robot answer button <strong>C</strong> instead of button A. You will change one letter in two places — and if you change only one of them, the build tells you exactly which one you missed.</p>
+<p class="p-mb-0">Make the robot answer button <strong>C</strong> instead of button A. One letter changes — but not every way of getting it half-right turns the build red. Miss the name and the compiler stops you. Change only the <em>type</em> and leave the name alone and it builds clean, works correctly, and lies to whoever reads it next: <code>Zumo32U4ButtonC buttonA;</code> is legal C++. <strong>A green build is evidence, not proof.</strong></p>
 </div>
 
 <!-- STEP 4 -->
@@ -2255,7 +2255,7 @@ blinkLED(); <span class="tok-6a9955">// Call our helper function</span>
 
 </div>
 
-<p>Do the same for Button B and Button C — replace any LED code with <code>blinkLED();</code></p>
+<p>Do the same for Button B and Button C. Only Button A ever got LED lines — Step 5 added them there and nowhere else — so B and C have nothing to replace. They simply get <code>blinkLED();</code> added inside their press blocks.</p>
 
 <div class="callout-3a7d5c-bg-e8f3ec" data-family="TRY THIS" data-callout="2.79">
 
@@ -2943,12 +2943,11 @@ DATE: [Today's Date]
 
 <p>Here is the <code>blinkLED()</code> function you read earlier, broken into its four parts:</p>
 
-<pre><span class="tok-569cd6">void</span> blinkLED() <span class="tok-6a9955">// 1. return type + 2. name + 3. parameters ()</span>
-{                            <span class="tok-6a9955">// 4. body starts</span>
-    ledRed(<span class="tok-b5cea8">1</span>);              <span class="tok-6a9955">//    turn LED on</span>
-    delay(<span class="tok-b5cea8">100</span>);             <span class="tok-6a9955">//    wait</span>
-    ledRed(<span class="tok-b5cea8">0</span>);              <span class="tok-6a9955">//    turn LED off</span>
-}                            <span class="tok-6a9955">//    body ends</span></pre>
+<pre><span class="tok-569cd6">void</span> blinkLED() {   <span class="tok-6a9955">// 1. return type + 2. name + 3. parameters () + 4. body starts</span>
+  ledYellow(<span class="tok-b5cea8">1</span>);    <span class="tok-6a9955">//    turn the yellow LED on</span>
+  delay(<span class="tok-b5cea8">100</span>);       <span class="tok-6a9955">//    wait</span>
+  ledYellow(<span class="tok-b5cea8">0</span>);    <span class="tok-6a9955">//    turn it off</span>
+}                   <span class="tok-6a9955">//    body ends</span></pre>
 
 <h4 class="h4-c-433014-2">Return type</h4>
 <p><code>void</code> means "this function does a job but doesn't hand anything back." Later you'll write functions that return a value (like a sensor reading) — those name the type they return instead, such as <code>int</code> or <code>bool</code>.</p>
@@ -2966,15 +2965,13 @@ DATE: [Today's Date]
 
 <p>A function with no parameters does the exact same thing every time. A <strong>parameter</strong> lets the caller pass in a value to customize the behavior. Watch how one small change makes <code>blinkLED()</code> far more useful:</p>
 
-<pre><span class="tok-569cd6">void</span> blinkLED(<span class="tok-569cd6">int</span> times)   <span class="tok-6a9955">// parameter: how many blinks</span>
-{
-    <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; times; i++)
-    {
-        ledRed(<span class="tok-b5cea8">1</span>);
-        delay(<span class="tok-b5cea8">100</span>);
-        ledRed(<span class="tok-b5cea8">0</span>);
-        delay(<span class="tok-b5cea8">100</span>);
-    }
+<pre><span class="tok-569cd6">void</span> blinkLED(<span class="tok-569cd6">int</span> times) {   <span class="tok-6a9955">// parameter: how many blinks</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; times; i++) {
+    ledYellow(<span class="tok-b5cea8">1</span>);
+    delay(<span class="tok-b5cea8">100</span>);
+    ledYellow(<span class="tok-b5cea8">0</span>);
+    delay(<span class="tok-b5cea8">100</span>);
+  }
 }</pre>
 
 <p>Now the same function can do different things depending on what the caller asks for:</p>

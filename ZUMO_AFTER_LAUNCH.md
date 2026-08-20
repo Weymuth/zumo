@@ -78,6 +78,36 @@ GitHub Desktop — DJ's hands, and §24.17's recoverability carve-out.**
 **Nothing a student sees is wrong** — the filename appears only in the `src` attribute and inside the
 `(File: …)` clause. That is why it waits.
 
+## 4. Lesson 2's `GLOBAL VARIABLES` section — one coupled Maker + SVG pass (S178)
+
+**The defect, measured before it was parked (rule 34).** `GLOBAL VARIABLES` appears **0 times in
+`Lesson_02.html` and 0 times in any L02 payload** — lesson and payload agree with each other — while
+§3.1 is titled *The Seven Sections*, the color key lists seven numbered bands plus the unnumbered
+prototypes row, and **Challenge 3 asks the student to *declare three counters up top*, which is the
+only address the lesson ever gives a global.** §5 walks the seven sections one at a time and none of
+them is where a global lives. This is the prose face of the defect S51 fixed on the payload side,
+root-caused then to Bible §18.3 naming four of five sections.
+
+**Why it is not a prose fix.** The fix is not finished until
+`images/L02_GRAPHIC_2-05_sketch_anatomy.svg` gains an eighth band. That drawing goes through the
+graphics chat and `GPT_WORKLIST.md`, and **a half-applied fix leaves the prose saying eight while
+the picture the lesson prints says seven** — S171's stale-wall shape, where the caption and the
+picture disagreed for three sessions because nothing in this repo reads inside an SVG. It also
+moves the §3.1 heading, the color key, §5's walkthrough and probably Bible §18.3, and it puts the
+`QUIZ_L02` items keyed to the section count (`L02_B01`, `L02_B02`) into a pin arc.
+
+**Why leaving it is cheap.** Challenge 3's TEMPLATE prints the three declarations in position at
+the top of the file, so *up top* is imprecise rather than wrong, and the payload already carries
+the banner. Nothing a student downloads is missing.
+
+**`L02-09` rides with it.** §6 Step 2's comment teaches the generic baud rule
+(`// 115200 = the speed; the Serial Monitor must match it`) while the lesson correctly explains a
+few paragraphs later that native USB ignores it. **That string appears 4× inside L02's own
+payload**, so a lesson-only fix breaks `gate_payload_match`; it is a Maker edit and belongs in the
+same pass. It also touches the carried *1200-baud reset has no home* and *baud bench test* items.
+
+**Ruled S178 under §24.17** — expensive to undo, and September 8 is the constraint.
+
 ## 3. Migrate the pre-S162 deferred items into this file
 
 The queue that lived in the S41 and S52 handoffs (challenge solution-disclosure · monetization and
@@ -90,7 +120,7 @@ history, pull each deferred item with its provenance, and record here only what 
 pointed at. **Do not seed this file from a summary.**
 
 ---
-*Opened S162 · pointed at from the CURRENT session handoff (`ZUMO_S173_HANDOFF.md`) and
+*Opened S162 · pointed at from the CURRENT session handoff (`ZUMO_S179_HANDOFF.md`) and
 `LIVE_ZUMO_TEXTBOOK.md` · the pointer names a file that is deleted and rewritten every session, so it
 is re-aimed at each close (S164: it still named `ZUMO_S163_HANDOFF.md`; S166: it still named `ZUMO_S165_HANDOFF.md` — both deleted at their own push, which is why this line is re-aimed rather than trusted. S167 re-aimed it at close, deliberately, as the convention now requires; S168 through S172 did the same, and this line is the only home of that convention) · not versioned,
 by the same convention as `ZUMO_PARKED_EXIT_ITEMS.md` and `ZUMO_SHELVED_CARDS.md`*

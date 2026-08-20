@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 02
 # Mastering the Code · Reading Code You Didn't Write
 #
-# Bank version: v1.0.6
+# Bank version: v1.0.8
 # Verified against: S167 — the US-spelling ruling (DJ, S167). This bank carried no British
 #   form of its own; its `source:` pins moved because the lessons they name were swept, and the
 #   lesson diffs were ASSERTED to contain nothing but those substitutions (rule 37).
@@ -47,10 +47,17 @@
 
 lesson: "L02"
 title: "Mastering the Code — Reading Code You Didn't Write"
-bank_version: "1.0.6"
+# Verified against: lessons/Lesson_02.html v03.22.0 - S178. Lesson_02's GPT-review arc moved
+# nine claims. B05 was the only casualty: its keyed option and one distractor rationale both
+# said the prototype/definition mismatch fails at the LINKER. Measured with avr-g++ - it fails
+# at the COMPILER, "too many arguments to function 'void showCount()'", because the definition
+# sits below loop() and is invisible at the call. B01-B04 re-read and untouched; B02's "seven
+# numbered sections and one unnumbered row" still holds, since §3.1's reframe changed why the
+# order exists, not what is in it.
+bank_version: "1.0.8"
 source:
-  lesson_02: "v03.21.5"
-  lesson_01: "v03.31.1"
+  lesson_02: "v03.22.0"
+  lesson_01: "v03.31.2"
 
 sets:
 
@@ -145,13 +152,13 @@ sets:
         options:
           - text: "Nothing — the compiler matches them by name"
             correct: false
-          - text: "C++ treats them as two different functions, and the promised one is never written"
+          - text: "C++ treats them as two different functions, and at the call the compiler has only met the argument-less one"
             correct: true
           - text: "The prototype automatically updates to match"
             correct: false
           - text: "The build fails immediately at the prototype line"
             correct: false
-            why: "The prototype is legal on its own; the failure arrives later, from the linker."
+            why: "The prototype is legal on its own. The compiler stops at the CALL - showCount(5) against a promise that takes nothing - which is why this one never reaches the linker."
 
       # ---------- Braces ----------
       - id: L02_B06

@@ -2,8 +2,8 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.8'
-# v1.72.8 (S177): §27.11 digest moved for the L01 GPT-worklist edit pass. RANK-ONLY, and
+VERSION = 'v1.72.9'
+# v1.72.9 (S177): §27.11 digest moved for the L01 GPT-worklist edit pass. RANK-ONLY, and
 #                 controlled BEFORE the tree was touched: a scratch-copy regeneration was
 #                 diffed name-by-name against the live stylesheet — 574 rules both ends,
 #                 2,033 declarations, ZERO names added, dropped, or repointed. Only
@@ -2521,7 +2521,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'f7e0e5f20c00f603'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '2831d0551bc5e5de'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
@@ -4727,10 +4727,30 @@ if _want[0] <= 0 or _want[1] <= 0:
     bad.append('DISCARD_BASELINE is empty - the gate has no truth to assert against '
                '(\u00a716.44)')
 
-_FIG78 = re.compile(r'(\d+) discards? over (\d+)(?: of (\d+))? payloads?')
+_FIG78 = re.compile(r'(\d+)\s+discards?\s+over\s+(\d+)(?:\s+of\s+(\d+))?\s+payloads?')
 # Inline code marks a QUOTED SPELLING, not a claim. Blanked at equal length so the
 # offsets a failure message would report stay true to the source.
+# S178: BLANKING AT EQUAL LENGTH IS NOT ENOUGH ON ITS OWN, AND THE CONTROL IS WHAT SAID SO.
+# Equal-length blanking keeps offsets true but WIDENS THE GAP - `**12** discards` becomes
+# `  12   discards`, three spaces where the predicate demanded one - so the bold plant stayed
+# SILENT on the first build of this fix. The whitespace in the claim form is now \s+, which
+# also reaches a figure broken across a line wrap, a form the arm never saw either.
 _CODE78 = re.compile(r'`[^`\n]*`')
+# S178: THE ADJACENCY REQUIREMENT SURVIVED S175's WIDENING, AND THAT IS THE FINDING.
+# The predicate needs the digits ADJACENT to the words, so this project's ordinary house
+# style - `**12** discards over **7**` - slipped straight past a green gate. S175 widened
+# this same arm once (off **-before-the-digit, onto digits-outside-code) and the widening
+# closed the CASE it was aimed at, not the PROPERTY. Second under-reach in one arm.
+# Bold markers are blanked at EQUAL LENGTH, the same move _CODE78 makes on backticks four
+# lines above, so reported offsets stay true to the source.
+# THE ORDER IS NOT LOAD-BEARING, AND A CONTROL SAID SO. The design priced at S177 warned
+# that blanking asterisks before backticks would stop excluding a bolded figure inside
+# inline code. Measured on six shapes, both orders behave IDENTICALLY: ** and ` are disjoint
+# characters and equal-length blanking preserves the other marker's positions either way, so
+# neither substitution can destroy the other's delimiters. Backticks stay first because that
+# is what was recorded and it costs nothing - but the hazard named in the design was not the
+# real one. The real one was whitespace, which the design's own equal-length rule CAUSED.
+_BOLD78 = re.compile(r'\*\*')
 _scopes78, _claims78 = [], 0
 
 _LIVE78 = 'LIVE_ZUMO_TEXTBOOK.md'
@@ -4762,6 +4782,7 @@ else:
 
 for _nm, _sc in _scopes78:
     _sc = _CODE78.sub(lambda m: ' ' * len(m.group(0)), _sc)
+    _sc = _BOLD78.sub('  ', _sc)
     for _m in _FIG78.finditer(_sc):
         _claims78 += 1
         _got = (int(_m.group(1)), int(_m.group(2)))
