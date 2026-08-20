@@ -1,12 +1,22 @@
 # SHOT BRIEF — the week-one figures
 
+**Shot brief version: v1.2** — increment on every substantive edit. The version lives ONLY in
+this line. (v1.0 was the S110 original; v1.1 the S179 six-feet amendment below; v1.2 corrects the
+filename claim, which was stricter than the matcher.)
+
 **Six shots. Two need nothing but a laptop; three need one floor rig; one needs both.**
 Everything a student sees in periods 2–4 depends on these. Written S110 against
 `IMAGE_WORKLIST.md` and the live lesson prose, not from memory.
 
-**Filenames are not optional.** `image_audit.py` matches
-`^L{NN}_{KIND}_{N}-0*{n}_` — a figure saved under any other name reads as *no asset* no
-matter how good the photo is. Save exactly as written below.
+**Filenames are not optional — but only the PREFIX is load-bearing.** `image_audit.py` matches
+`^L{NN}_{KIND}_{N}-0*{n}_`, so everything after that trailing underscore is a free slug.
+**Tested against the matcher itself at S179**, not read: `L03_IMAGE_3-02_testing_setup_floor`
+and `L03_IMAGE_3-02_recommended_motor_testing_setup_sh` BOTH match, which is why this brief
+and `IMAGE_SHOT_LIST.md` can name different slugs for one shot without either being wrong.
+What the matcher genuinely rejects: an unpadded lesson number (`L3_`), the wrong kind
+(`GRAPHIC` for an `IMAGE` tag), and a name with **no slug at all** (`L03_IMAGE_3-02.jpg`),
+because the trailing underscore is required. Save as written below and you cannot go wrong;
+the older *any other name reads as no asset* overstated it.
 
 All six names were run against the matcher itself, with four deliberately wrong names as a
 control: an unpadded lesson number, the wrong kind, and a name with no slug were all
@@ -62,8 +72,14 @@ has to be legible in the frame — that is the whole job of the picture.
 
 ## GROUP 2 — one floor rig clears all three
 
-**Rig once:** smooth floor, 6+ feet clear in the driving direction, no table legs, tape
+**Rig once:** smooth floor, a clear stretch in the driving direction, no table legs, tape
 starting line down, Post-its for landing marks, robot on fresh batteries, USB to the laptop.
+
+**AMENDED S179 — DO NOT STAGE SIX FEET.** DJ ruled that students do not need 6+ feet of clear
+floor, and the figure was DELETED from L03 in four places rather than corrected (Bible rule 50).
+The motor test is `TEST_DURATION` **2000 ms at `BASE_SPEED` 200** — a two-second run at half
+speed. **A photo staged to the old brief would put the deleted figure back into the book as a
+picture, and nothing in this repo reads inside an image.** Stage what the run actually needs.
 
 **The surface is not a preference.** The WARNING sitting directly above `[IMAGE 3.5]` tells
 students to test on tile, hardwood or linoleum and warns that carpet skews TRIM. A photo of
@@ -74,8 +90,14 @@ a robot on carpet would contradict the warning printed on the same screen.
 clear floor space with a tape starting line.
 
 This one is **the space, not the run.** Robot not yet placed, or set aside at the edge. It
-answers *"how much floor do I need to clear?"* Show the full 6 feet — shoot from behind and
-low enough that the depth reads. Include the Post-it landing markers the NOTE describes.
+answers *"what does a clear test lane look like?"* — **not** *"how many feet do I need?"*, which
+is the question the deleted figure used to answer. Shoot from behind and low enough that the
+depth reads, and frame a lane that is plainly clear rather than plainly long. Include the
+Post-it landing markers the NOTE describes.
+
+**The caption this must match is L03 §4.4's live text:** *Some clear space to drive in — the
+test run is short.* If the photograph reads as a corridor, it disagrees with the prose it sits
+beside.
 
 ### `[IMAGE 3.5]` → `L03_IMAGE_3-05_robot_at_start_line.jpg`
 **Where:** L03 §7, Test It. **Promised:** robot on the floor, tape starting line, clear path

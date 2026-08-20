@@ -1,7 +1,7 @@
 # ZUMO — BENCH TEST TRACKER
 ### Everything in this book that only a robot and a floor can settle · one file, by lesson
 
-**Bench tracker version: v1.0.0** — increment on every substantive edit
+**Bench tracker version: v1.1** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** No instrument in this repo can see a floor. `book_gates` reads
@@ -42,15 +42,15 @@ of it.** Ten findings closed, none of them bench-verified.
 
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
-| L01-B1 | **Unplug the cable, then click Upload. Does it fail, and what EXACTLY does the error say?** Unplug FIRST — this is an upload with no port, not an interrupted transfer. Write the error text down verbatim. | §6 *Break It On Purpose* | OPEN | |
-| L01-B2 | **The counter-check: leave the cable IN, switch robot power OFF, upload.** The book now claims this SUCCEEDS. If it does not, the new §6 paragraph is wrong and must come out. | §6 | OPEN | |
-| L01-B3 | **Challenge 4 on the floor.** Change the FIRST `delay(350)` to 700 only. Does the robot finish roughly one nudge **ahead** of where it started? | §9 C4 | OPEN | |
-| L01-B4 | **Challenge 11's solution as printed** — `setLayout21x8()`, then voltage, 1.5 s, then the `< 4500` branch. Does the number read on the OLED before §6's setup reprints *Press A*? | §9 C11 | OPEN | |
+| L01-B1 | **Unplug the cable, then click Upload. Write the error text down verbatim.** Unplug FIRST — this is an upload with no port, not an interrupted transfer. | §6 *Break It On Purpose* | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F1 (S179, DJ will run)** | |
+| L01-B2 | **The counter-check: cable IN, robot power OFF, upload.** | §6 | **CLOSED — DJ ruled S179** | **It succeeds. The cable powers the chip and the display; the power switch feeds the motors.** Seated as canon in Bible §16.48 so it stops being re-asked. |
+| L01-B3 | **Challenge 4 on the floor.** Change the FIRST `delay(350)` to 700 only. Does the robot finish roughly one nudge **ahead** of where it started? | §9 C4 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F2 (S179, DJ will run)** | |
+| L01-B4 | **Challenge 11's solution as printed** — `setLayout21x8()`, then voltage, 1.5 s, then the `< 4500` branch. Does the number read on the OLED before §6's setup reprints *Press A*? | §9 C11 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F3 (S179, DJ will run)** | |
 | L01-B5 | **Challenge 9 propped up.** Delete the three-line wait. Does the show start the instant power comes on, with no button? | §9 C9 | OPEN | |
 | L01-B6 | **Battery bands.** Read `readBatteryMillivolts()` on a fresh pack and a tired one. Book says ~5,400 fresh / ~4,800 working / ~4,200 low. | §9 C11 hint | OPEN | |
 | L01-B7 | **Does USB alone really read low and strange?** The hint says so. Read the pack with the switch OFF and the cable in. | §9 C11 hint | OPEN | |
 | L01-B8 | **First-connection behaviour on a Mac AND on Windows.** Book now says a chime, a dialog, or nothing are all normal. Confirm both machines. | §6 Step 4 | OPEN | |
-| L01-B9 | **Git on a fresh Mac.** Does `git --version` trigger the *Install Command Line Developer Tools* dialog, and does PlatformIO build afterwards? **This is the one L01 claim with no repo evidence at all.** | §4.2 | OPEN | |
+| L01-B9 | **Git on a fresh Mac.** | §4.2 | **CLOSED — DJ ruled S179** | **Git is required on a Mac because asking for it triggers Apple's Command Line Tools installer, which is where the compiler lives.** NOT because PlatformIO fetches the Zumo library over git — it does not. Seated as canon in Bible §16.48; closes worklist row `L01-03`, open since S137. |
 | L01-B10 | **Bootloader port change.** Does the robot really show one port running and a different one with the bootloader awake? | §8 | OPEN | |
 
 ---
@@ -68,7 +68,8 @@ of it.** Ten findings closed, none of them bench-verified.
 
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
-| L03-B1 | **Six feet of floor while tethered.** Part 2 asks for *connected via USB* AND *6+ feet of clear floor*. You cannot drive six feet on a cable. Run it and decide whether L03 should adopt L01's floor-test ritual. | Part 2 prerequisites | OPEN | |
+| L03-B1 | **How far does one TRIM test run actually go?** `TEST_DURATION` is 2000 ms at `BASE_SPEED` 200. Tape a start line, press B, measure. **The *6+ feet* figure is DELETED, not corrected** — DJ ruled S179 that students do not need that space, and rule 50 gives an underived number two fates. This row exists so the book can one day state a MEASURED distance instead of describing the run as *short*. | §4.4, §7 | OPEN | |
+| L03-B3 | **Bonus Challenge 4 (Braking vs. Coasting) asks for *about 3 meters of clear floor and a catcher*.** That figure has no pedigree either, and unlike the TRIM run this one really is full speed (400) for 1.5 s each way. Measure it before ruling. The card already offers `delay(800)` as the short-floor escape, so nothing is blocked. | §9 Bonus 4 | OPEN (raised S179) | |
 | L03-B2 | **What TRIM value does a real robot need?** Record yours, and the spread across the fleet. Feeds the TDP's *your TRIM number and why it exists*. | §5 | OPEN | |
 
 ---

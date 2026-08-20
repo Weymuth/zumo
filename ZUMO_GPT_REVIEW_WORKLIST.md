@@ -1,7 +1,9 @@
-# ZUMO — GPT REVIEW WORKLIST (v1.2)
+# ZUMO — GPT REVIEW WORKLIST (v1.3)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **STATUS: 7 findings MEASURED (Part 5b), 238 UNVERIFIED.**
+> **STATUS: 36 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+> **Read PART 0 FIRST.** Rows below are kept verbatim as GPT wrote them even after they are fixed,
+> so a row's presence here means nothing on its own — Part 0 is what says whether it is still live.
 > These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
 > been checked against the live tree.** A text match locates; it never answers (rule 38). GPT
 > cannot see a ruling (rule 39). Verification is a separate pass that happens *after* DJ rules on
@@ -27,6 +29,69 @@ Every finding has an ID (`L08-04`). Say the ID to discuss, accept, or reject it.
 
 **Canon tags** — `C1`–`C6` mark findings that are instances of a book-wide canon problem.
 Ruling the canon statement collapses every finding carrying its tag.
+
+---
+
+# PART 0 — CLOSED ROWS
+
+**A row here is DONE. It is kept, never deleted, because the rows below stay verbatim as GPT
+wrote them and a reader who meets one again needs to know it was already answered.**
+
+This ledger exists because two rows died without anyone noticing. `L02-04` and `L02-05` were
+fixed in some earlier session, stayed on the list, and were re-investigated at S178 — a whole
+read spent on work already done. **A closed row with no record of being closed is an open row.**
+
+**Do not trust a memory or a handoff to tell you a row is closed. This table is the record, and
+the tree is still the arbiter (rule 32).**
+
+| Row | Status | Closed | How |
+|---|---|---|---|
+| `L01-01` | ✅ SHIPPED | S177 | *Break It On Purpose* now unplugs the USB cable; the callout closes by naming what does NOT break an upload. Bible §16.46. |
+| `L01-02` | ✅ SHIPPED | S162 | The three-term fix: `Zumo 32U4 Main Board` / `ATmega32U4` / `a-star32U4` build target. Bible §16.25, held by gate 76. |
+| `L01-03` | ✅ RULED | S179 | **DJ: Git is required on a Mac because it installs Apple's Xcode Command Line Tools — the software most students are missing.** NOT because PlatformIO fetches the library over git. Bible §16.48. Open since S137. |
+| `L01-04` | ✅ SHIPPED | S177 | The floor-test ritual is written into L01 Challenge 4 and is now a reusable convention the other lessons cite. |
+| `L01-05` | ✅ SHIPPED | S177 | Challenge 4's reveal corrected to *twice as far out as it comes back*. **Bench check `F2` confirms it on the floor.** |
+| `L01-06` | ✅ SHIPPED | S177 | Challenge 11's 4200/4500 split explained rather than silently inconsistent. **Bench check `F3` confirms the OLED read.** |
+| `L01-07` | ✅ SHIPPED | S177 | §4 reworded: *today your program touches five of them*. Twin of `L02-08` and `L03-04`. |
+| `L01-08` | ✅ SHIPPED | S177 | Caption → *popularized*; the `printf` claim corrected. `L01_B02` rekeyed. |
+| `L01-09` | ✅ SHIPPED | S177 | The *very first programmers in history* claim is gone. |
+| `L01-10` | ✅ SHIPPED | S162 | Absorbed into `L01-02`'s three-term fix. |
+| `L01-11` | ✅ SHIPPED | S177 | §3 now credits thermostats with closing a loop and distinguishes on *how much it does with the measurement*. |
+| `L01-12` | ✅ SHIPPED | S177 | Windows chime / Mac dialog / nothing are all named as normal. |
+| `L01-13` | ✅ SHIPPED | S178 | Three sites disagreed about where a project lives; all now say `Documents/PlatformIO/Projects`. **Ruled book-wide at S179 — see `PATH` below.** |
+| `L01-14` | ✅ SHIPPED | S154 | Figure index regenerated. **Gate 73** asserts it for all 16 lessons and passes. |
+| `L01-15` | ✅ SHIPPED | — | **Gate 71** asserts the strip's catalog name for all 16 and passes. |
+| `L02-01` | ✅ SHIPPED | S178 | Build 3 is a COMPILE error, not a linker one — measured with `avr-g++`. The section teaches three cases. Bible §16.47. |
+| `L02-02` | ✅ SHIPPED | S178 | §8A's two blocks converted to `ledYellow`. |
+| `L02-03` | ✅ SHIPPED | S178 | Same two blocks converted to K&R braces and 2-space indent. |
+| `L02-04` | ✅ ALREADY DEAD | found S178 | Fixed in an earlier session and carried on the list regardless. **This row is why Part 0 exists.** |
+| `L02-05` | ✅ ALREADY DEAD | found S178 | Same. §3.3 already named Warm-Up 2. |
+| `L02-08` | ✅ SHIPPED | S178 | §4 continuity now matches `L01-07`'s wording. |
+| `L02-10` | ✅ SHIPPED | S178 | Step 3: *a green build is evidence, not proof*. |
+| `L02-11` | ✅ SHIPPED | S178 | Closed by one sentence, jointly with `L02-18`. |
+| `L02-14` | ✅ SHIPPED | S178 | Step 7: only Button A ever had LED code. |
+| `L02-16` | ✅ SHIPPED | S178 | *The Seven Sections* reframed as the RoboLore standard, not a C++ rule. |
+| `L02-18` | ✅ SHIPPED | S178 | See `L02-11`. |
+| `L03-01` | ✅ SHIPPED | S179 | Step 4's checkpoint denied the `setup()`/`loop()` Step 2 told them to keep — one callout above a green build. **First reported DEAD in error: the grep missed `no <code>setup()</code>/<code>loop()</code> exists`.** |
+| `L03-02` | ✅ SHIPPED | S179 | Step 3 told the student to paste a SECOND header into a file the Maker had already headed, and to replace placeholders the Maker fills with real values. Coupled with `L03-01`. |
+| `L03-03` | ✅ SHIPPED | S179 | The Part 2 prerequisite no longer says to copy the Lesson 2 project folder. |
+| `L03-04` | ✅ SHIPPED | S179 | §4.1 credits L01's driving and L02's Warm-Up 4 spin. Third twin of `L01-07`/`L02-08`. |
+| `L03-05` | ✅ ALREADY DEAD | S162 | The retired C1 wording is gone book-wide, and **gate §16.31 asserts it and passes** — an instrument says so, not a grep. |
+| `L03-06` | ✅ SHIPPED | S179 | §4.5's drift test is a hypothesis §7 settles, not a verdict about motor strength. |
+| `L03-08` | ✅ SHIPPED | S179 | The unsourced 30-second cooldown rule replaced by the current-under-load mechanism. |
+| `L03-09` | ✅ SHIPPED | S179 | The unsourced ±10% battery figure removed. **`L03_B35` was falsified by this correct edit and was rekeyed.** |
+| `L06-01` | ✅ MEASURED | S154 | Confirmed in Part 5b. |
+| `L08-13` | ✅ MEASURED | S154 | Confirmed in Part 5b. |
+| `L02-07` | ❌ REFUTED | S154 | GPT wrong. The payload is 95 / 86 / 75; the lesson's 85–95 is correct. Part 5b. |
+| `PATH` (untagged) | ✅ RULED + SHIPPED | S179 | **DJ: `Documents/PlatformIO/Projects/<FolderName>` is the correct default location.** Bible §16.49. Fourteen sites moved: ten lesson prose, the Maker hint, two §11 canon lines, one SVG label. |
+| `L03-B1` (untagged) | ✅ HALF-CLOSED | S179 | Part 2 asked for the robot tethered AND 6+ feet of floor at once; now L01's floor test, in order. The *6+ feet* figure itself is still a bench item. |
+
+## Parked with a reason — NOT closed, and not to be re-investigated
+
+| Row | Why it is parked |
+|---|---|
+| `L02-06` | **Real and expensive.** `GLOBAL VARIABLES` appears 0× in the lesson and 0× in its payloads, against a Challenge 3 that says *declare three counters up top*. The fix moves `L02_GRAPHIC_2-05_sketch_anatomy.svg` (an eighth BAND must be drawn — a graphics-chat pass, unlike §16.49's one-string label), the §3.1 color key, *The Seven Sections*, §5's walkthrough and probably Bible §18.3. **DJ ruled S178: parked until after September 8**, filed in `ZUMO_AFTER_LAUNCH.md`. Student-facing cost measured and low. |
+| `L02-09` | The baud comment appears **4× inside L02's own payload**, so a lesson-only fix breaks `gate_payload_match`. It is a Maker edit and rides with `L02-06`'s pass. |
 
 ---
 

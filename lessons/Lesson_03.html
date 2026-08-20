@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.43.2 -->
+<!-- Lesson version: v03.44.3 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,7 +101,7 @@
 <h1 class="h1">Motor TRIM</h1>
 <div class="div-fs-11em">No Two Motors Are the Same</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.43 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.44 — August 2026</div>
 </div>
 
 <div class="callout-ffc107-bg-fff8e1" id="what-you-need-l03-p1" data-family="WHAT YOU NEED" data-callout="3.1">
@@ -116,7 +116,7 @@
 
 <li>USB cable connected to computer</li>
 
-<li>Clear floor space (6+ feet) for testing later</li>
+<li>Find some clear space on the floor to test on later</li>
 
 <li>A piece of tape for marking a starting line</li>
 
@@ -1080,11 +1080,11 @@ This means one motor is about 7.5% weaker than the other—totally normal!
 
 <li>Completed Part 1 (understand <a href="#term-trim" class="link-c-1f2a3d">TRIM</a> concept)</li>
 
-<li>Your Zumo_Lesson_2 project folder (we'll copy it)</li>
+<li>The ZUMO Project Maker — Section 5.1 starts a fresh Lesson 3 project; nothing is copied from Lesson 2</li>
 
-<li>Robot connected via USB with power ON</li>
+<li>USB cable to upload with — then Lesson 1's floor test: unplug it, switch the robot's power ON, and set it down before it drives</li>
 
-<li>Clear floor space (6+ feet) ready for testing</li>
+<li>Find some clear space on the floor to test on</li>
 
 <li>A Post-it note to mark your starting line (and more for the travel spots)</li>
 
@@ -1106,7 +1106,7 @@ This means one motor is about 7.5% weaker than the other—totally normal!
 
 <h3 class="h3-c-433014">4.1 What We're Using Today</h3>
 
-<p>This lesson introduces motor control—the ability to make your robot actually MOVE.</p>
+<p>You have driven this robot already — Lesson 1's program moved it, and Lesson 2's Warm-Up 4 spun it in place. What changes today is that motor control stops being a side effect of some other lesson and becomes the main subject: how fast, how far, and how straight.</p>
 
 <h3 class="h3-c-433014">4.2 The Motor Hardware</h3>
 
@@ -1190,7 +1190,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 <div class="callout-ffc107-bg-fff8e1" data-family="WARNING" data-callout="3.39">
 
 <div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
-<div class="div-fs-105em">Motor Heat Warning:</div> Motors can get HOT during extended use! Avoid running at full speed (400) for more than 30 seconds without a cooldown break. If motors feel warm to the touch, let them rest for a minute. This is especially important during repeated TRIM testing.
+<div class="div-fs-105em">Motor Heat Warning:</div> Motors heat up from <strong>current</strong>, and current comes from <strong>load</strong> — not from the number in your code. A motor spinning freely at 400 draws very little. A motor at 150 with a track jammed or a wheel held draws close to its stall current and can cook its own windings in seconds, which is why the rule above is to cut power the moment a robot strains without moving. So the thing to avoid is a loaded motor, not a stopwatch reading. If the motors feel warm to the touch, let them rest before the next run.
 
 </div>
 
@@ -1204,7 +1204,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <div class="callout-17a2b8-bg-d1ecf1" data-family="TIP" data-callout="3.40">
 
-<div class="div-fs-105em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">Accuracy Note:</div> The <code>readBatteryMillivolts()</code> function is approximate—expect accuracy of about <strong>±10%</strong>. If it reads 5000 mV, actual voltage is somewhere between 4500-5500 mV. This is fine for our purposes (detecting "fresh" vs "low"), but don't rely on it for precision measurements.
+<div class="div-fs-105em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">Accuracy Note:</div> <code>readBatteryMillivolts()</code> is an estimate, not a laboratory measurement. It comes from the board's analog-to-digital converter, so it carries that converter's tolerance — and the reading <strong>sags while the motors are pulling current</strong>, then recovers a few seconds after they stop. Read it with the motors OFF. It is good at telling "fresh" from "low," which is all this lesson asks of it; it is not a precision voltmeter.
 
 </div>
 
@@ -1218,7 +1218,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <li>Smooth, flat surface (tile, wood, or low-pile carpet)</li>
 
-<li>At least 6 feet of clear space in driving direction</li>
+<li>Some clear space to drive in — the test run is short</li>
 
 <li>No obstacles, table legs, or pets in the way</li>
 
@@ -1250,7 +1250,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="3.42">
 
-<div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div> Put a <strong>Post-it note</strong> on the floor as a starting line, and use more Post-its to mark where the robot ends up on each run (they lift cleanly and won't leave residue on the floor). This helps you see exactly how far your robot drifts from a straight path. A 6-foot test run makes drift very obvious.
+<div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div> Put a <strong>Post-it note</strong> on the floor as a starting line, and use more Post-its to mark where the robot ends up on each run (they lift cleanly and won't leave residue on the floor). This helps you see exactly how far your robot drifts from a straight path. The run itself is short — what makes the drift obvious is the pair of Post-its, not the distance.
 
 </div>
 
@@ -1268,7 +1268,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <li>Watch if it naturally curves left or right</li>
 
-<li>This often predicts which motor is stronger</li>
+<li>Write down which way it curved — but do not call it a verdict. An unpowered push measures <strong>rolling resistance</strong>: tread drag, wheel tightness, how freely the bearings turn. Under power a stronger motor can easily outrun a stiffer track, so this is a hypothesis. Section 7 is what settles it.</li>
 
 </ul>
 
@@ -1305,7 +1305,7 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 <li>Open the <a href="../newproject.html?lesson=3&amp;kind=main" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> → confirm <strong>Lesson 03 — Main lesson build</strong>, click Download.</li>
 
-<li>Unzip and drag the <strong>LastName_L03</strong> folder into <strong>Documents/PlatformIO</strong>.</li>
+<li>Unzip and drag the <strong>LastName_L03</strong> folder into <strong>Documents/PlatformIO/Projects</strong>.</li>
 
 <li>VS Code: <strong>File → Open Folder</strong> → your new folder (close Lesson 2’s folder first).</li>
 
@@ -1583,7 +1583,7 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">-
 
 <h3 class="h3-c-433014">Step 1: Make Your Lesson 3 Project</h3>
 
-<p>You already did this in Section 5.1 — if you skipped it, do it now: <a href="../newproject.html?lesson=3&amp;kind=main" target="_blank" class="link-c-2e86ab">Project Maker</a> → <strong>Lesson 03 — Main lesson build</strong> → download → unzip into <strong>Documents/PlatformIO</strong>.</p>
+<p>You already did this in Section 5.1 — if you skipped it, do it now: <a href="../newproject.html?lesson=3&amp;kind=main" target="_blank" class="link-c-2e86ab">Project Maker</a> → <strong>Lesson 03 — Main lesson build</strong> → download → unzip into <strong>Documents/PlatformIO/Projects</strong>.</p>
 
 <h3 class="h3-c-433014">Step 2: Open the Folder and Check Your Header</h3>
 
@@ -1591,12 +1591,14 @@ motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">-
 
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="3.53">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p>Your file contains the header comment plus empty <code>setup()</code>/<code>loop()</code> — nothing else. Click <strong>Build</strong> (✓): it should already say SUCCESS. A program that does nothing, but compiles — that green build is the baseline you will protect through every step below.</p>
+    <p>Your file now contains the header comment, <code>#include &lt;Zumo32U4.h&gt;</code>, the MY PLAN block and empty <code>setup()</code>/<code>loop()</code> — the section banners are gone and no other code is in it yet. Click <strong>Build</strong> (✓): it should already say SUCCESS. A program that does nothing, but compiles — that green build is the baseline you will protect through every step below.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 3: Program Header</h3>
 
 <p>Every program starts with a comment block explaining what it does. This isn't just good practice — it's how you (and your instructor) can quickly understand what a program does months later.</p>
+
+<p>You already have one: the Maker wrote it at the top of your file, with your name and today's date filled in and a <code>WHAT THIS PROGRAM DOES:</code> line left deliberately blank. <strong>Do not paste a second header.</strong> The block below is what yours should grow into — a header that tells a reader what to press and what will happen.</p>
 
 <pre class="pre-m-0">/*
 =====================================================
@@ -1628,11 +1630,11 @@ DATE: [Today's Date]
 
 <ol>
 
-<li>Copy the code above and paste it into your empty main.cpp</li>
+<li>Open the header the Maker already wrote at the top of <code>src/main.cpp</code>.</li>
 
-<li>Change <code>[Your Name]</code> to YOUR actual name</li>
+<li>Replace its <code>(update this as you build!)</code> line with a real PURPOSE, then add the BUTTONS, PROCEDURE and HARDWARE sections shown above — type them, don't paste them; writing the procedure out is how you find the step you haven't thought through yet.</li>
 
-<li>Change <code>[Today's Date]</code> to today's date</li>
+<li>Check AUTHOR and DATE. The Maker filled both from what you typed into it — fix either one if it is wrong.</li>
 
 </ol>
 
@@ -1647,6 +1649,8 @@ DATE: [Today's Date]
 <li>☐ Your file starts with <code>/*</code> on line 1</li>
 
 <li>☐ Your name and date are filled in</li>
+
+<li>☐ There is exactly <strong>one</strong> header block in the file — not two</li>
 
 </ul>
 
@@ -1687,7 +1691,7 @@ DATE: [Today's Date]
 
 <div class="callout-4caf50-bg-e8f5e9" data-family="CHECKPOINT" data-callout="3.56">
     <div class="div-c-2e7d32"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p>Count your hardware objects: <strong>five lines, five semicolons</strong> — <code>buttonA</code>, <code>buttonB</code>, <code>buttonC</code>, <code>display</code>, <code>motors</code>. The compiler can’t check your work yet (no <code>setup()</code>/<code>loop()</code> exists), so you’re the checker: every line ends in a semicolon, every type starts with <code>Zumo32U4</code>.</p>
+    <p>Count your hardware objects: <strong>five lines, five semicolons</strong> — <code>buttonA</code>, <code>buttonB</code>, <code>buttonC</code>, <code>display</code>, <code>motors</code>. The compiler will catch a missing semicolon or a misspelled type — your empty <code>setup()</code>/<code>loop()</code> from Step 2 are what let it build at all. What it cannot catch is declaring the wrong five parts, so you are the checker there: every line ends in a semicolon, every type starts with <code>Zumo32U4</code>, and the cast matches the pseudo-code above.</p>
 </div>
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="3.57">
