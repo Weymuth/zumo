@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.22.1 -->
+<!-- Lesson version: v03.24.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -111,7 +111,7 @@
 <h1 class="h1">Mastering the Code</h1>
 <div class="div-fs-11em">Reading Code You Didn't Write</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.22 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.24 — August 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -1203,7 +1203,7 @@ DATE: December 10, 2024
 
 <p>An object is a named bundle: a little block of memory that tracks one piece of hardware, plus every command that works on it. <code>Zumo32U4Motors motors;</code> says: <em>"build me a controller for the motor hardware, and let me call it motors."</em> From then on, everything you say to the motors follows one pattern — <strong>name-dot-command</strong>: <code>motors.setSpeeds(100, 100);</code> means "hey, motor controller — do your thing."</p>
 
-<p>Why declare them at the top, outside every function? Two reasons. First, <strong>every</strong> function in your file needs to reach the same hardware — <code>setup()</code>, <code>loop()</code>, and your helpers all talk to the same one display. Global scope makes that possible. Second, hardware never stops existing while the robot is on — so its object shouldn’t either (that is the SRAM lesson from the Constants section, one screen down). Declare each object <strong>once</strong>: two objects for the same motor would fight over it.</p>
+<p>Why declare them at the top, outside every function? Two reasons. First, <strong>every</strong> function in your file needs to reach the same hardware — <code>setup()</code>, <code>loop()</code>, and your helpers all talk to the same one display. Global scope makes that possible. Second, hardware never stops existing while the robot is on — so its object shouldn’t either (that is the SRAM lesson from the Constants section, one screen down). Declare each object <strong>once</strong>. A second one buys you nothing, costs SRAM, and gives one piece of hardware two names — which is how you end up staring at a line that is working perfectly while the one that is wrong sits somewhere else.</p>
 
 <p>Only declare what you use — but here is the complete toolbox, so you never have to hunt for a name:</p>
 
@@ -1571,6 +1571,29 @@ ledYellow(<span class="tok-b5cea8">0</span>); <span class="tok-6a9955">// Turn O
 <p class="p-m-20px06px"><a href="../newproject.html" target="_blank" class="link-bg-433014-2">🚀 Open the ZUMO Project Maker</a></p>
 
 <p class="p-c-666-7">No internet, or prefer manual? Copy your <strong>ZUMO_Template</strong> (built in Lesson 1) and rename it <code>LastName_L02</code> by hand — same result.</p>
+
+<h3 class="h3-c-433014">The block you did not ask for: MY PLAN</h3>
+
+<p>Scroll to the top of the file the Maker just made you. Under the header comment, above everything else, there is a block that was not in your Lesson 1 project:</p>
+
+<pre class="pre-m-0"><span class="tok-6a9955">// ==================== MY PLAN ====================
+// Pseudo-code first, real code second.
+// In plain English: what should this program do,
+// step by step?
+//
+//   1.
+//   2.
+//   3.
+//   4.
+//
+// Update the plan when your plan changes.
+// =================================================</span></pre>
+
+<p>It is empty, and it is empty on purpose. <strong>Every build step below hands you a plan</strong> — those are the <em>pseudo-code</em> boxes, plain English, numbered, one step at a time. That plan is not decoration and it is not a hint. It is the thing a professional writes <em>before</em> the code, and this lesson is where you learn to read one.</p>
+
+<p><strong>So do this, every step:</strong> before you type a line of C++, copy that step's pseudo-code into the MY PLAN block in your own words. Then translate it, line by line, into code. When a build fails, the plan is the first place you look — not to find the typo, but to find out whether you were building the right thing at all.</p>
+
+<p><strong>Where this is going.</strong> Today the plan is <em>given</em> to you and you translate it. Lesson 3 gives you shorter plans. By <strong>Lesson 7</strong> the pseudo-code boxes stop appearing: you get a goal, and you write the plan yourself before you are allowed to build — and that block becomes part of your grade. The habit you are practising on someone else's plan is the one you will need when there is nobody's plan but your own.</p>
 
 <p class="div-m-20px0"><a href="https://raw.githubusercontent.com/Weymuth/zumo/main/ZUMO_Template.zip" class="link-bg-1f2a3d-2">⬇ Download ZUMO_Template (zip)</a><br><span class="p-c-666-4">Unzip it into Documents/PlatformIO/Projects once. If yours ever breaks, just download it again.</span></p>
 
@@ -3142,6 +3165,9 @@ in loop(), at the top:
 <span class="tok-6a9955">// in loop(), at the top:</span>
 <span class="tok-569cd6">if</span> (buttonA.isPressed() &amp;&amp; ____) {   <span class="tok-6a9955">// both buttons</span>
   showBatteryScreen();
+  <span class="tok-569cd6">while</span> (buttonA.isPressed() || buttonB.isPressed()) {
+    <span class="tok-6a9955">// hold here until you let go</span>
+  }
   delay(<span class="tok-b5cea8">200</span>);
 }</pre>
 </div>
@@ -3168,8 +3194,17 @@ in loop(), at the top:
 
 <pre class="pre-m-0"><span class="tok-569cd6">if</span> (buttonA.isPressed() && buttonB.isPressed()) {
 showBatteryScreen();
+<span class="tok-569cd6">while</span> (buttonA.isPressed() || buttonB.isPressed()) {
+  <span class="tok-6a9955">// hold here until you let go</span>
+}
 delay(<span class="tok-b5cea8">200</span>); <span class="tok-6a9955">// Prevent rapid refresh</span>
 }</pre>
+
+<p><strong>Why the empty <code>while</code> is not a mistake.</strong> <code>isPressed()</code> asks <em>is it down right now</em>. <code>getSingleDebouncedPress()</code> asks <em>did it just go down</em> — and pressing two buttons together answers <strong>both</strong> questions. Without the <code>while</code>, hold A and B and the screen does something strange: your battery screen appears, then on the very next trip through <code>loop()</code> About and Controls flash over it, then the battery screen comes back and stays. One press, three screens, in that order.</p>
+
+<p><strong>Why it takes two trips and not one.</strong> A debounced press is not reported the instant the button goes down — the library has to see it held steady for about 15 milliseconds first, and it only looks <em>when you call it</em>. Pass one starts the clock. Pass two is when the time has passed, so that is when both singles fire. <strong>And that is exactly why the <code>while</code> works:</strong> while the program is parked in it, nothing is calling <code>getSingleDebouncedPress()</code> at all. A press that begins and ends between two calls is a press the library never sees.</p>
+
+<p>Keep this shape. From Lesson 4 on, every program you build ships a <code>checkBattery()</code> helper with exactly this loop in it — you are writing the standard version two lessons early.</p>
 
 </div>
 

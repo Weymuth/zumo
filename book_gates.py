@@ -2,7 +2,32 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.9'
+VERSION = 'v1.72.15'
+# v1.72.15 (S180): CSS digest re-moved after 12.5 gained the StopReason guard ARM 9 demanded.
+#                  Order-only; maps identical, 574/2033 both ends.
+# v1.72.14 (S180): CSS digest re-moved after the six Maker links and five COMPILE CHECK
+#                  boxes. Order-only again: maps identical, 574/2033 both ends.
+# v1.72.13 (S180): callout baseline 1127 -> 1132 for the five COMPILE CHECK boxes on the
+#                  new challenges. Ids unique, families in canon, gate 5.1 silent.
+# v1.72.12 (S180): §27.11 digest re-moved after 13.4 gained two paragraphs wiring it to Step 6's
+#                  own assumption list. Same proof re-run: name->declaration maps IDENTICAL.
+# v1.72.11 (S180): §27.11 digest moved for the six new L12/L13 challenge cards. ORDER-ONLY,
+#                  and proved before the baseline was touched: 574 rules and 2,033 declarations
+#                  both ends, zero names added/dropped/repointed, ZERO declaration blocks
+#                  differing, and the name->declaration MAPS ARE IDENTICAL. The 152-line diff
+#                  is 53 rules changing POSITION - the sheet is ordered by usage frequency and
+#                  three new cards per lesson moved the ranks. Rule 24: the resolved styling is
+#                  what the gate defends, not the byte order of the file. §27.8b's cycle was not
+#                  owed; §27.13 regenerates byte-identically and says so.
+# v1.72.10 (S180): §27.11 digest moved for L02's MY PLAN section (L02-17). COUNT-ONLY, and
+#                  proved before the baseline was touched: 574 rules and 2,033 declarations
+#                  BOTH ENDS, zero names added, dropped or repointed, and ZERO declaration
+#                  blocks differing. The entire ten-line diff is five usage-count comments —
+#                  a new <h3>, a new <pre> and three new <p> raise the tallies for
+#                  .h3-c-433014, .pre-m-0 and two span classes. §27.8b's cycle was NOT owed;
+#                  the scratch-copy control established that first (§27.8b, S177's method).
+#                  Blinding-controlled after the move: a hand-corrupted declaration still
+#                  fires §27.11, §27.13 and §27.15, and the restore is md5-exact.
 # v1.72.9 (S177): §27.11 digest moved for the L01 GPT-worklist edit pass. RANK-ONLY, and
 #                 controlled BEFORE the tree was touched: a scratch-copy regeneration was
 #                 diffed name-by-name against the live stylesheet — 574 rules both ends,
@@ -2521,7 +2546,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '2831d0551bc5e5de'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '01a3047ee3781835'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
@@ -3494,13 +3519,19 @@ try:
         bad.append('... and %d more disagreeing callout(s)' % (_fam_bad - 6))
     if _n == 0:
         bad.append('gate 59 scanned ZERO callouts - a gate that scans nothing passes')
+    # 1127 -> 1132 at S180: FIVE COMPILE CHECK callouts, one per new challenge that
+    # ships a Maker build - L12 12.78/12.79/12.80 and L13 13.34/13.35. Every existing
+    # challenge with a payload carries one; these five close the gap rather than open
+    # a new shape. Family STILL GREEN, geometry callout-3a7d5c-bg-e8f5e9 - both already
+    # in canon, which is why gate 5.1 stayed silent. 13.6 gets NO callout: it has no
+    # build of its own and points at the existing 7A rung.
     # 1125 -> 1127 at S168: L13 Step 6b lands THE GOAL and its STILL GREEN checkpoint.
     # The step's third box was demoted to prose rather than seat a NEW off-canon
     # geometry in L13 - gate 5.1's frozen debt is frozen, not a budget.
     # 1120 -> 1125 at S157: INSIGHT 10.113 plus Step 6b's four (card header, WARNING,
     # NOTE, CHECKPOINT). build_family_map assigns all five, UNASSIGNED 0.
-    elif _n != 1127:
-        bad.append('gate 59 saw %d callouts, expected the 1127 gate 47 holds' % _n)
+    elif _n != 1132:
+        bad.append('gate 59 saw %d callouts, expected the 1132 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)

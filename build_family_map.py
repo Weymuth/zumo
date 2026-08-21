@@ -12,6 +12,8 @@ VERSION = 'v1.6.6.1'
 #   was false (two writes survived, so deleting the declaration broke the build). Repointed,
 #   no tier logic changed. The tier is literal by design (last resort, per-block), so a
 #   prose fix in a lesson owes this file an edit - that coupling is the cost of the tier.
+# v1.6.6.2 (S180): DENOMINATOR 1127 -> 1132. Five COMPILE CHECK callouts on the new
+#                  L12/L13 challenges that ship a Maker build.
 # v1.6.6.1 (S168): DENOMINATOR 1125 -> 1127. L13 Step 6b is new: THE GOAL and its
 #                 STILL GREEN checkpoint. UNASSIGNED stays 0.
 # v1.6.5 (S157): DENOMINATOR 1120 -> 1125. L10 Step 6b is new: INSIGHT 10.113 moved out
@@ -352,7 +354,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1127   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1132   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))

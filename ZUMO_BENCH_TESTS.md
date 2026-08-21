@@ -1,7 +1,7 @@
 # ZUMO — BENCH TEST TRACKER
 ### Everything in this book that only a robot and a floor can settle · one file, by lesson
 
-**Bench tracker version: v1.1** — increment on every substantive edit
+**Bench tracker version: v1.2** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** No instrument in this repo can see a floor. `book_gates` reads
@@ -60,7 +60,7 @@ of it.** Ten findings closed, none of them bench-verified.
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
 | L02-B1 | **The green LED bench check.** Carried since S41. | §5 | OPEN | |
-| L02-B2 | **Challenge 2 screen overwrite.** A+B shows the battery screen, then the individual A and B checks immediately overwrite it. Does it flash past unreadably? (GPT `L02-15`.) | §9 C2 | OPEN | |
+| L02-B2 | **Challenge 2 screen overwrite — now a FALSIFIABLE PREDICTION, not a question.** S180 shipped a release-wait (`while (buttonA.isPressed() || buttonB.isPressed()) { }`) and derived the old behaviour from Pololu's own `PushbuttonStateMachine`, transcribed and run: **with the wait REMOVED, hold A and B and pass 1 draws BATTERY, pass 2 flashes ABOUT then CONTROLS, pass 3 onward is BATTERY again — so you should see ONE flash of the Controls screen and then the battery screen settle.** With the wait IN, no flash at all. **Run it both ways.** If the flash does not appear with the wait removed, the reasoning in §9 C2's *Why it takes two trips and not one* is wrong and the paragraph comes out. | §9 C2 | OPEN | |
 
 ---
 

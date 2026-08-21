@@ -1,4 +1,4 @@
-<!-- Lesson version: v01.33.1 -->
+<!-- Lesson version: v01.35.2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Wheels Lie</h1>
 <div class="div-fs-11em">The Gyro — Measuring the Robot, Not the Wheels</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 01.33 — August 2026</div>
+<div class="div-fs-09em-2">Version 01.35 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1055,9 +1055,11 @@ minute one, while the gyro has quietly invented a hundred degrees of rotation th
 <div class="div-bg-7a5905-3"><div id="section-9"><span class="span-d-block-2">Section 9</span><span class="span-d-block">Challenges</span></div></div>
 <div class="div-7a5905">
 
-<p>Three challenges. Each one ships a <strong>blank</strong> — a constant set to <code>0</code>
+<p><strong>Six challenges, in two halves.</strong> The first three each ship a <strong>blank</strong> — a constant set to <code>0</code>
 with a starting guess in the comment. <strong>The robot will not work until you fill it in.</strong>
 That is deliberate: you are going to find these numbers by testing, not by being told.</p>
+
+<p>Challenges 4 to 6 have no blank to fill, because they are not about tuning a number. They are about the three things this lesson has claimed and not yet made you prove: that an angle is a circle, that measuring from a fixed zero defeats accumulated error, and that a gyro left alone invents rotation that never happened.</p>
 <div id="challenge-1" class="div-7d5283" data-challenge="12.1" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 1: Turn to a Heading</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
@@ -1290,6 +1292,230 @@ bool turnDegreesGyroSafe(float degrees) {
 <div class="div-607d8b" data-family="NOTE" data-callout="12.55"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Choosing TURN_TIMEOUT_MS.</div>Too short and a legitimately slow turn on the delrin gets killed as a false alarm. Too long and a genuinely stuck robot sits there grinding its motors.<br><br>Time your slowest <em>real</em> turn on the slipperiest surface you have. Then add margin. Start at 3000.</div>
 <p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c3_stuckguard" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
+</div>
+
+<div id="challenge-4" class="div-7d5283" data-challenge="12.4" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
+<div class="div-bg-7a5905"><strong>Challenge 4: The Short Way Round</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
+<div class="div-bg-fffbe6">
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — the <code>turnToHeading()</code> you wrote in Challenge 1.</p>
+</div>
+<div class="div-bg-f8f9fa">
+<h4 class="h4-mt-0">🎯 THE GOAL</h4>
+<p class="pre-m-0">Your <code>turnToHeading()</code> works. Now break it on purpose: ask it for heading <strong>350</strong>, let it settle, then ask for heading <strong>10</strong>. The robot is twenty degrees away from where you want it — and it spins almost all the way around the other way to get there. Find out why, then make it always take the short way.</p>
+</div>
+<div class="div-bg-f3e5f5">
+<h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
+<pre class="pre-m-0">The robot is at 350. You ask for 10.
+  error = target - current = 10 - 350 = -340
+
+-340 is a real number and the code believes it.
+So it spins 340 degrees the long way instead of 20 the short way.
+
+The fix, before you use the error for anything:
+  while error is greater than 180:   subtract 360
+  while error is less than -180:     add 360
+
+Now -340 becomes +20, and +20 means "twenty degrees, that way."</pre>
+</div>
+<div class="div-bg-e8f5e9">
+<h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
+<p class="p-m-008px">One helper, two blanks. Then call it everywhere you compute an error.</p>
+<pre class="pre-m-0"><span class="tok-6a9955">// Fold any angle into the range -180..180 - the SHORT way round.</span>
+<span class="tok-569cd6">int</span> shortestError(<span class="tok-569cd6">int</span> target, <span class="tok-569cd6">int</span> current) {
+  <span class="tok-569cd6">int</span> error = target - current;
+  <span class="tok-569cd6">while</span> (error &gt; <span class="tok-b5cea8">180</span>)  error -= ____;   <span class="tok-6a9955">// too far one way</span>
+  <span class="tok-569cd6">while</span> (error &lt; -<span class="tok-b5cea8">180</span>) error += ____;   <span class="tok-6a9955">// too far the other</span>
+  <span class="tok-569cd6">return</span> error;
+}
+
+<span class="tok-6a9955">// then inside turnToHeading(), replace BOTH places you used</span>
+<span class="tok-6a9955">// (targetHeading - getTurnAngle()) with shortestError(...).</span></pre>
+</div>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
+
+<pre>// CHALLENGE 4: an angle is a circle, but subtraction does not know that.
+// Fold the error into -180..180 and the turn always takes the short way.
+int shortestError(int target, int current) {
+  int error = target - current;
+  while (error &gt; 180)  error -= 360;
+  while (error &lt; -180) error += 360;
+  return error;
+}
+
+void turnToHeading(int targetHeading) {
+  gyroUpdate();
+  while (abs(shortestError(targetHeading, getTurnAngle())) &gt; HEADING_TOLERANCE) {
+    int error = shortestError(targetHeading, getTurnAngle());
+    int speed = (error &gt; 0) ? TURN_SPEED : -TURN_SPEED;
+    motors.setSpeeds(speed, -speed);
+    gyroUpdate();
+  }
+  motors.setSpeeds(0, 0);
+}</pre>
+<p class="p-m-008px"><strong>Section 8A.3 said the unit makes this bug impossible. It was telling the truth — about the unit.</strong> Inside the library, the angle lives in a <code>uint32_t</code> where 2^32 units <em>is</em> 360 degrees, so wrapping is free and exact. Nobody wrote code for it.</p>
+<p class="p-m-008px">The moment <code>getTurnAngle()</code> hands you a plain <code>int</code> in degrees, you have left that unit — and the bug it made impossible becomes possible again. <strong>The protection lived in the representation, not in the number.</strong></p>
+<p class="p-m-008px">That is worth remembering the next time you convert something into "friendlier" units.</p>
+<p class="p-m-008px"><strong>Where else does this bite?</strong> Anywhere you subtract two angles. A line-following error, a heading correction, a "how far off am I" check.</p>
+<p class="p-m-008px"><strong>Every robot that has ever spun the wrong way round has this bug in it somewhere.</strong> You now know its name and its two-line cure.</p>
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="12.78">
+<div class="div-fs-105em">🔩 COMPILE CHECK</div>
+<p class="p-m-8px000"><strong>20,968 bytes</strong> — <strong>22 more</strong> than the Challenge 1 build you started from. Two <code>while</code> loops and a subtraction: that is what it costs to make every turn in this robot take the short way round, forever.</p>
+</div>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c4_shortway" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p>
+</details>
+</div>
+
+<div id="challenge-5" class="div-7d5283" data-challenge="12.5" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
+<div class="div-bg-7a5905"><strong>Challenge 5: The Square That Closes</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
+<div class="div-bg-fffbe6">
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — needs <code>turnToHeading()</code> from Challenge 1 and <code>shortestError()</code> from Challenge 4.</p>
+<p class="p-m-008px">🔁 <strong>Builds on:</strong> the square from <strong>Lesson 6</strong> — same four sides, same four corners, and this time the corners are addresses instead of instructions.</p>
+</div>
+<div class="div-bg-f8f9fa">
+<h4 class="h4-mt-0">🎯 THE GOAL</h4>
+<p class="pre-m-0">Section 7E drove the Lesson 6 square twice — encoder corners against gyro corners — and the gyro square closed better. Better, not perfectly: four <em>relative</em> turns still stack four errors. Drive it a third way, with <strong>absolute headings</strong>: 0, 90, 180, 270. Then answer the question that matters — <em>why can this version not accumulate error at all?</em></p>
+</div>
+<div class="div-bg-f3e5f5">
+<h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
+<pre class="pre-m-0">reset the gyro ONCE, before the first side. Not before each corner.
+for each of the four sides:
+    drive one side with driveDistance()
+    turn TO the next heading: 90, then 180, then 270, then 0
+
+The difference is the word TO.
+turnDegreesGyro(90) means "ninety more than wherever you are now" -
+so it inherits every mistake already made.
+turnToHeading(180) means "one eighty, measured from the start" -
+it does not care what the last three corners did.</pre>
+</div>
+<div class="div-bg-e8f5e9">
+<h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
+<p class="p-m-008px">Two blanks: the one reset that must NOT be inside the loop, and the heading for side <code>i</code>.</p>
+<pre class="pre-m-0"><span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> SIDE_CM = <span class="tok-b5cea8">30.0</span>;
+
+<span class="tok-569cd6">void</span> squareByHeading() {
+  ____;                                <span class="tok-6a9955">// zero the gyro. ONCE. Where does this go?</span>
+  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
+    <span class="tok-569cd6">if</span> (driveDistance(SIDE_CM) == STOP_KILL) <span class="tok-569cd6">return</span>;
+    turnToHeading(____);               <span class="tok-6a9955">// the heading for corner i</span>
+  }
+  motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
+}</pre>
+</div>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
+
+<pre>const float SIDE_CM = 30.0;
+
+// CHALLENGE 5: four ADDRESSES, not four instructions. gyroReset() runs
+// once, outside the loop - it is what makes 0/90/180/270 mean anything.
+void squareByHeading() {
+  gyroReset();                       // ONCE. This is the whole trick.
+  for (int i = 0; i &lt; 4; i++) {
+    if (driveDistance(SIDE_CM) == STOP_KILL) return;
+    turnToHeading(90 * (i + 1));     // 90, 180, 270, 360
+  }
+  motors.setSpeeds(0, 0);
+}</pre>
+<p class="p-m-008px"><strong>Why the <code>driveDistance</code> call is guarded and the <code>turnToHeading</code> call is not.</strong> <code>driveDistance()</code> returns a <code>StopReason</code>, and one of its two values is <code>STOP_KILL</code> — B was pressed. Throw that away and the robot drives four full sides with the kill switch dead. <code>turnToHeading()</code> returns nothing, so there is nothing to throw away — which also means <strong>B cannot stop a corner</strong>. That is a gap in the function you wrote, and it is yours to close if you want it closed.</p>
+<p class="p-m-008px">This is a habit worth forming now: <strong>if a function bothered to tell you why it stopped, read the answer.</strong> The next lesson spends a whole step on what goes wrong when you do not.</p>
+<p class="p-m-008px">And <code>loop()</code> has to actually call it — a function nobody calls is a function the linker throws away:</p>
+<pre>void loop() {
+  if (!buttonB.getSingleDebouncedPress()) return;
+
+  // CHALLENGE 5: the Lesson 6 square, driven on ADDRESSES. Put the robot
+  // on the floor with room for a 30 cm box before you press B.
+  squareByHeading();
+
+  display.clear();
+  display.gotoXY(0, 0);
+  display.print(F("Square done"));
+  display.gotoXY(0, 2);
+  display.print(F("Heading: "));
+  display.print(getTurnAngle());
+  delay(3000);
+}</pre>
+<p class="p-m-008px"><strong>Read the heading it prints when it stops.</strong> If the square closed, the robot is back on the heading it started from and the screen says something near 0 or 360. That number is the whole result — it is the square telling you whether it closed, without you having to eyeball the floor.</p>
+<p class="p-m-008px"><strong>The fourth corner asks for 360, and Challenge 4 is why that works.</strong> <code>shortestError(360, 270)</code> is 90 — the same as asking for 0. Without the fold, <code>360</code> and <code>0</code> are different numbers and the last corner misbehaves.</p>
+<p class="p-m-008px">You could write <code>90 * (i + 1) % 360</code> instead. Both are right. <strong>Notice that one of them needed you to remember, and the other one just worked.</strong></p>
+<p class="p-m-008px"><strong>Answer the question before you move on.</strong> Section 8A.1 says dead-reckoning errors <em>accumulate and never cancel</em>. Four corners, each 5° short, is 20° of drift by the fourth side.</p>
+<p class="p-m-008px">This square does not do that — and not because the gyro is accurate. <strong>It is because every corner is measured from the same zero.</strong> Corner three being 5° short does not move where corner four is; 270 is still 270.</p>
+<p class="p-m-008px">The error stops accumulating the moment you stop measuring from the last mistake. That idea has a name and Lesson 13 gives it one: a <strong>landmark</strong>. Here, the landmark is the heading you started at.</p>
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="12.79">
+<div class="div-fs-105em">🔩 COMPILE CHECK</div>
+<p class="p-m-8px000"><strong>21,742 bytes</strong> — <strong>774 more</strong> than Challenge 4. Compare that against Challenge 4’s 22. Correctness is cheap; a new <em>capability</em> is not, and the difference is worth knowing before you promise a feature.</p>
+</div>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c5_square" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p>
+</details>
+</div>
+
+<div id="challenge-6" class="div-7d5283" data-challenge="12.6" data-kind="challenge" data-difficulty="easy" data-grasp="deep">
+<div class="div-bg-7a5905"><strong>Challenge 6: How Long Is Your Gyro Good For?</strong> <span class="span-ai-stretch"><span class="span-bg-4a6b22">Easy</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
+<div class="div-bg-fffbe6">
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L12</strong> build — a throwaway <code>loop()</code>, like Section 7A. The motors never run.</p>
+</div>
+<div class="div-bg-f8f9fa">
+<h4 class="h4-mt-0">🎯 THE GOAL</h4>
+<p class="pre-m-0">Section 8A.4 puts the gyro and the encoder side by side in four rows. You have watched two of those rows happen — the gyro winning on rotation in 7D, and the calibration mattering in 7B. One row you can reason about without a robot: a gyro measures rotation, so of course it cannot measure distance. <strong>And one row you have never once watched:</strong> <em>drifts when idle — constantly.</em> Calibrate, put the robot down, <strong>do not touch it</strong>, and watch the angle wander. Then turn what you see into a number: <strong>how many degrees per minute does your robot invent?</strong> And from that: <strong>how long can you trust it before it is 5° wrong?</strong></p>
+</div>
+<div class="div-bg-f3e5f5">
+<h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
+<pre class="pre-m-0">setup(): calibrate the gyro as normal, then reset it to zero
+loop():
+    keep the gyro updated
+    show the angle, and how many seconds have passed
+
+Then you do the arithmetic, not the robot:
+    drift rate = (angle after N seconds) / N        degrees per second
+    time to 5 degrees = 5 / drift rate              seconds</pre>
+</div>
+<div class="div-bg-e8f5e9">
+<h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
+<p class="p-m-008px">Two blanks. The second one is the point of the whole challenge.</p>
+<pre class="pre-m-0"><span class="tok-569cd6">void</span> loop() {
+  <span class="tok-6a9955">// The motors NEVER run in this test. Put the robot down and leave it.</span>
+  ____;                                  <span class="tok-6a9955">// which gyro function belongs here?</span>
+
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
+  display.print(F(<span class="tok-ce9178">"Drift: "</span>));
+  display.print(getTurnAngle());
+  display.print(F(<span class="tok-ce9178">"   "</span>));
+
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
+  display.print(F(<span class="tok-ce9178">"Secs:  "</span>));
+  display.print(____);                   <span class="tok-6a9955">// seconds since power-on</span>
+  display.print(F(<span class="tok-ce9178">"   "</span>));
+}</pre>
+</div>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
+
+<pre>void loop() {
+  // CHALLENGE 6: the robot is STILL. Every degree on this screen is fiction.
+  gyroUpdate();                    // the accumulator has to keep running
+
+  display.gotoXY(0, 0);
+  display.print(F("Drift: "));
+  display.print(getTurnAngle());
+  display.print(F("   "));
+
+  display.gotoXY(0, 2);
+  display.print(F("Secs:  "));
+  display.print(millis() / 1000);  // seconds since power-on
+  display.print(F("   "));
+}</pre>
+<p class="p-m-008px"><strong>Write the two numbers down. You will spend them in Lesson 13.</strong> Put them in your engineer’s log:</p>
+<p class="p-m-008px"><strong>My gyro drifts ____ degrees per minute.</strong><br><strong>It is 5° wrong after ____ seconds.</strong></p>
+<p class="p-m-008px">In Lesson 13 the robot navigates an open floor on the gyro alone for a whole sweep, and a sweep takes minutes. Whether that is safe depends entirely on the second number — <em>your</em> second number, not a number from this page.</p>
+<p class="p-m-008px"><strong>Two runs, not one.</strong> Run it once straight after <code>gyroSetup()</code>. Then run it again after the robot has been powered on for ten minutes and warmed up.</p>
+<p class="p-m-008px">If the two drift rates differ, you have just discovered why real systems recalibrate — and why Section 3.5 said the zero is a lie <em>and you must measure it</em>, rather than <em>measure it once</em>.</p>
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="12.80">
+<div class="div-fs-105em">🔩 COMPILE CHECK</div>
+<p class="p-m-8px000"><strong>20,728 bytes</strong> — smaller than your finished build, because this one throws the state machine away and does one job. A measuring instrument should be the simplest program you own.</p>
+</div>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=12&amp;kind=c6_driftmeter" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p>
+</details>
 </div>
 
 

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.35.0 -->
+<!-- Lesson version: v02.38.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.35 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.38 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -838,7 +838,7 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 }
 </pre>
 <p>Notice what is <em>missing</em> from <code>setup()</code>: the calibration spin. The raw channel needs no calibration — that is the entire point of Section 3, sitting right there in the code’s silence.</p>
-<p>Fill in every cell. The blanks in <code>RobotConfig.h</code> come from this table and nowhere else:</p>
+<p>Fill in every cell. Two of the four blanks in <code>RobotConfig.h</code> come straight out of this table. A third, <code>ROW_STEP_CM</code>, needs a measurement this table does not take — Challenge 6 takes it. The fourth, <code>VICTIM_SHORT_CM</code>, is a margin you tune on the floor.</p>
 <table class="table-bc-collapse">
 <tr class="tr-bg-00474b">
 <th class="th-p-10px15px">Surface / target</th>
@@ -1061,7 +1061,9 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <div class="div-bg-7a5905-4"><div id="section-9"><span class="span-d-block-2">Section 9</span><span class="span-d-block">Challenges</span></div></div>
 <div class="div-7a5905">
 
-<p>Three challenges, in rising order of nerve. Each has a worked solution behind the reveal — and every solution is a compiled, verified build in the Project Maker under <em>Lesson 13 → CHALLENGES</em>. Wrestle first, peek second.</p>
+<p><strong>Six challenges.</strong> The first three change how the robot behaves, and each has a worked solution behind the reveal — every one a compiled, verified build in the Project Maker under <em>Lesson 13 → CHALLENGES</em>. Wrestle first, peek second.</p>
+
+<p>Challenges 4 to 6 are different in kind. One repairs a line this lesson wrote and never questioned; two put an instrument on claims Section 8A makes on paper. <strong>Challenge 6 has no code answer at all</strong> — it ends with a number that is yours and a sentence defending it, which is exactly the shape of the questions judges ask.</p>
 <div id="challenge-1" class="div-7d5283" data-challenge="13.1" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
 <div class="div-bg-7a5905"><strong>Challenge 1: Keep Sweeping</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
 <div class="div-bg-fffbe6">
@@ -1235,6 +1237,198 @@ the flag makes this happen ONCE — without it, a truly close wall retries forev
 <p>Without the flag, a genuinely close wall triggers the retry forever — sidestep, remeasure, sidestep, remeasure — a robot pacing the zone edge for eternity. One retry converts “possibly wrong once” into “confirmed twice,” and that is all the confidence a measurement can buy.</p><p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c3_rowzero" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p></details>
 </div>
 
+<div id="challenge-4" class="div-7d5283" data-challenge="13.4" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
+<div class="div-bg-7a5905"><strong>Challenge 4: The Landmark That Was Not There</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
+<div class="div-bg-fffbe6">
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — one line in <code>SWEEPING_ZONE</code>, and a decision about what to do instead.</p>
+<p class="p-m-008px">🔁 <strong>Builds on:</strong> the witness from <strong>Step 6</strong> — every move reports why it ended, and this is a line that has never once asked.</p>
+</div>
+<div class="div-bg-f8f9fa">
+<h4 class="h4-mt-0">🎯 THE GOAL</h4>
+<p class="pre-m-0">Section 8A.4 says the wall is a <strong>landmark</strong>: something in the world whose position does not drift, checked against regularly. <code>lastRowCm</code> is where the robot writes that landmark down. Here is the line that writes it, exactly as you have it:</p>
+<pre class="pre-m-0">lastRowCm = lastLegCm;</pre>
+<p class="p-m-008px">It runs after <em>every</em> row. But a row does not always end on the wall — read the comment sitting three lines above it. <strong>Find the case where that line records something that is not a landmark, work out what breaks two rows later, then fix it.</strong></p>
+
+<p class="p-m-008px"><strong>You have already been told this one.</strong> Step 6 lists three things that must be true about the room before the odometer’s victim test means anything, and the third is <em>the previous row actually reached a wall</em> — <em>if the prox missed and <code>MAX_ROW_CM</code> ended that row instead, <code>lastRowCm</code> is not a wall distance at all, and every comparison built on it is measuring nothing.</em></p>
+
+<p class="p-m-008px">Step 6 called it an assumption and moved on, which was the right call at the time — you had a sweep to finish. It is not an assumption any more. It is a condition you can now <em>check</em>, because Step 6 also gave every move a <code>StopReason</code>. <strong>An assumption you can test is a bug you have chosen to keep.</strong></p>
+</div>
+<div class="div-bg-f3e5f5">
+<h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
+<pre class="pre-m-0">A row can end three ways, and driveUntil() names which:
+    STOP_PROX      something is there. On a normal row, the wall.
+    STOP_DISTANCE  MAX_ROW_CM ran out. The prox never fired.
+    STOP_KILL      a human pressed B.
+
+Only ONE of those means "I touched the wall."
+The other two mean "I stopped, and the wall is somewhere past me."
+
+So: only update the landmark when the landmark is what stopped you.
+    if the row ended on the prox:
+        lastRowCm = lastLegCm      (truth: this is where the wall is)
+    otherwise:
+        leave lastRowCm alone      (the last true measurement is still
+                                    the best one you own)</pre>
+</div>
+<div class="div-bg-e8f5e9">
+<h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
+<p class="p-m-008px">One blank. <code>reason</code> is already in scope — Step 6 put it there.</p>
+<pre class="pre-m-0"><span class="tok-6a9955">// The wall, or the budget running out? Only one of them is a landmark.</span>
+<span class="tok-569cd6">if</span> (reason == ____) {
+  lastRowCm = lastLegCm;
+}
+rowCount++;                          <span class="tok-6a9955">// the row happened either way</span></pre>
+</div>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
+
+<pre>// CHALLENGE 4: lastRowCm is the WALL's address. A row that ran out of
+// budget never reached the wall, so it has no address to report - and
+// writing MAX_ROW_CM there tells the next row the wall is further away
+// than it is.
+if (reason == STOP_PROX) {
+  lastRowCm = lastLegCm;
+}
+rowCount++;</pre>
+<p class="p-m-008px"><strong>What breaks, two rows later.</strong> Say the true wall is at 60 cm and <code>MAX_ROW_CM</code> is 90. A row where the prox misses runs the full 90 and writes <code>lastRowCm = 90</code>.</p>
+<p class="p-m-008px">The next row behaves perfectly: it stops on the wall at 60 cm. Now the victim test asks whether <code>60 &lt; 90 - VICTIM_SHORT_CM</code>. With <code>VICTIM_SHORT_CM</code> at 15, that is <code>60 &lt; 75</code> — <strong>true.</strong> The robot announces a victim at a bare wall, and there is nothing there.</p>
+<p class="p-m-008px">Go and look at Section 8's troubleshooting table. <em>Victims announced where there are none</em> is listed, and the causes given are both about numbers being wrong. <strong>This one is not a number being wrong. It is a good number written in the wrong place.</strong></p>
+<p class="p-m-008px"><strong>Why the fix is not "just stop when the budget runs out."</strong> A row that ends on <code>MAX_ROW_CM</code> is not a failure — the zone might genuinely be longer than you guessed, or the prox might have missed a dark wall. The robot should keep sweeping. It just should not pretend it learned something it did not.</p>
+<p class="p-m-008px"><strong>And notice what stays outside the guard.</strong> <code>rowCount++</code> still runs every row, because a row really did happen. Only the <em>measurement</em> is in doubt, not the <em>event</em>. Getting that split right is most of what careful bookkeeping is.</p>
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.34">
+<div class="div-fs-105em">🔩 COMPILE CHECK</div>
+<p class="p-m-8px000"><strong>25,248 bytes</strong> — <strong>byte-identical</strong> to your finished build. The guard that stops the robot announcing victims at bare walls is <em>free</em>: the compiler folds it into a branch that was already there. Correctness did not cost you anything.</p>
+</div>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c4_landmark" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p>
+</details>
+</div>
+
+<div id="challenge-5" class="div-7d5283" data-challenge="13.5" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
+<div class="div-bg-7a5905"><strong>Challenge 5: Log the Strip Going Under</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
+<div class="div-bg-fffbe6">
+<p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L13</strong> build — two lines added to <code>FOLLOWING_LINE</code>, and the Serial Monitor open while you drive.</p>
+<p class="p-m-008px">🔁 <strong>Builds on:</strong> the Serial Monitor from <strong>Lesson 2</strong> — you have used it to print status. This is the first time you use it because the OLED <em>cannot</em> do the job.</p>
+</div>
+<div class="div-bg-f8f9fa">
+<h4 class="h4-mt-0">🎯 THE GOAL</h4>
+<p class="pre-m-0">Section 8A.1 works the clamp out on paper: silver computes to −75, the clamp turns it into 0, and white floor is 0 too — so the calibrated channel cannot tell them apart. <strong>Paper is not proof, and neither is holding the robot still.</strong></p>
+<p class="p-m-008px">Catch it in the act. Drive the line at full speed toward the strip, logging <strong>both channels</strong> every pass through <code>loop()</code>, and read the log afterwards. The strip is under the sensors for a fraction of a second — no screen you can read will hold that, which is exactly why this needs a log and not a display.</p>
+</div>
+<div class="div-bg-f3e5f5">
+<h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
+<pre class="pre-m-0">in FOLLOWING_LINE, every pass, while the robot is driving:
+    read the RAW array
+    read the CALIBRATED array
+    print sensor 2 from each to Serial, one line per pass
+
+Then: open the Serial Monitor, drive the line over the strip, stop,
+and scroll back through what the robot saw.
+
+    RAW  dives as the strip goes under - a big, obvious dip
+    CAL  does not move. Floor, white, silver: the same number.</pre>
+</div>
+<div class="div-bg-e8f5e9">
+<h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
+<p class="p-m-008px">Two blanks — the two calls, two different functions on the same sensor. Put this at the top of <code>FOLLOWING_LINE</code>, after the kill-switch check.</p>
+<pre class="pre-m-0"><span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> raw[<span class="tok-b5cea8">5</span>];
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> cal[<span class="tok-b5cea8">5</span>];
+lineSensors.____(raw);             <span class="tok-6a9955">// the channel Section 3 explains</span>
+lineSensors.____(cal);             <span class="tok-6a9955">// the channel Lesson 8 taught you</span>
+Serial.print(raw[<span class="tok-b5cea8">2</span>]);
+Serial.print(F(<span class="tok-ce9178">","</span>));
+Serial.println(cal[<span class="tok-b5cea8">2</span>]);</pre>
+</div>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
+
+<pre>case FOLLOWING_LINE: {
+  if (killSwitchPressed()) break;
+
+  // CHALLENGE 5: log BOTH channels while driving. The strip is under the
+  // sensors for a fraction of a second - too fast for the OLED, which is
+  // the whole reason this goes to Serial instead.
+  unsigned int raw[5];
+  unsigned int cal[5];
+  lineSensors.read(raw);             // raw - no calibration applied
+  lineSensors.readCalibrated(cal);   // calibrated - and clamped
+  Serial.print(raw[2]);
+  Serial.print(F(","));
+  Serial.println(cal[2]);
+
+  // ... the rest of FOLLOWING_LINE, unchanged</pre>
+<p class="p-m-008px"><strong>What the log shows.</strong> Somewhere in the middle of the run, the RAW column drops hard and climbs back — that is the strip passing under sensor 2, and it is unmistakable. The CAL column beside it does not move at all. Floor, white tape, silver tape: the same number, all the way through.</p>
+<p class="p-m-008px">Two commas per line is not an accident. <strong>Paste the log into a spreadsheet and chart both columns</strong> — the RAW dip and the CAL flatline on one graph is the most convincing single picture you will produce in this course, and it belongs in your engineer’s log.</p>
+<p class="p-m-008px"><strong>Then answer this before you move on:</strong> the clamp is not a bug. Somebody wrote <code>if (x &lt; 0) x = 0;</code> on purpose, and for line following it is exactly right — a negative position would be meaningless and every reading brighter than white is noise you do not want. <em>What changed?</em></p>
+<p class="p-m-008px">Nothing changed about the clamp. What changed is that a surface arrived which is genuinely brighter than the brightest thing you calibrated against, and it carries information. The clamp cannot know that. <strong>A tool that discards data you do not need becomes a tool that discards data you do need, the moment the world gets bigger than your calibration.</strong></p>
+<p class="p-m-008px"><strong>And keep this log.</strong> Section 7B told you to remember the failure where the door goes invisible, because <em>Bonus B4 plants it a sneakier way</em>. A student who has watched the CAL column sit flat through the strip recognises B4 on sight instead of hunting for it.</p>
+<div class="callout-3a7d5c-bg-e8f5e9" data-family="STILL GREEN" data-callout="13.35">
+<div class="div-fs-105em">🔩 COMPILE CHECK</div>
+<p class="p-m-8px000"><strong>25,366 bytes</strong> — 118 more. Two sensor arrays and three Serial calls, and you can afford them because the log only runs while you are debugging. Take it out before a scoring run.</p>
+</div>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=c5_striplog" class="link-c-2e86ab">Open this solution as a project in Project Maker</a></p>
+</details>
+</div>
+
+<div id="challenge-6" class="div-7d5283" data-challenge="13.6" data-kind="challenge" data-difficulty="medium" data-grasp="deep">
+<div class="div-bg-7a5905"><strong>Challenge 6: How Wide Does It Actually See?</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span></div>
+<div class="div-bg-fffbe6">
+<p class="pre-m-0">📁 <strong>Work in:</strong> the <strong>7A Surface Meter</strong> build — it already prints the prox count and the motors never run. No new code required for the measuring; the work is the measurement and the arithmetic.</p>
+<p class="p-m-008px">🔁 <strong>Builds on:</strong> the proximity sensors from <strong>Lesson 5</strong> — you have used them to answer <em>how far</em>. This asks <em>how wide</em>, and you have never measured that.</p>
+</div>
+<div class="div-bg-f8f9fa">
+<h4 class="h4-mt-0">🎯 THE GOAL</h4>
+<p class="pre-m-0"><code>ROW_STEP_CM</code> is the one blank in <code>RobotConfig.h</code> you were told to guess. Its comment says <em>Try 15 and work from there</em>, and Bonus B3 shows what happens when it is too big: a blind stripe between every pair of rows, and a ball that is found some runs and missed others.</p>
+<p class="p-m-008px"><strong>Stop guessing it. Measure the one thing that decides it: how wide a band of floor the prox actually inspects as the robot drives past.</strong></p>
+</div>
+<div class="div-bg-f3e5f5">
+<h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
+<pre class="pre-m-0">Park the robot. Put the silver ball directly in front of it, at the
+distance where a row would normally detect a victim - the same distance
+you used for WALL_STOP_COUNT in the 7A table.
+
+Now slide the ball SIDEWAYS, a centimeter at a time, and watch the count:
+    ball dead ahead             count is highest
+    ball a few cm to the left   count drops
+    ball far enough left        count reaches 0 - it is invisible
+
+Measure that last distance. Do the same to the right.
+    left edge  = ____ cm      right edge = ____ cm
+    SEEN WIDTH = left + right
+
+Two neighbouring rows must not leave a gap between their seen widths.
+So the sidestep can be at most the seen width - and less than that if
+you want the bands to overlap rather than merely touch.</pre>
+</div>
+<div class="div-bg-e8f5e9">
+<h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
+<p class="p-m-008px">There is no code to fill in. The blanks are in your notebook, and this table is the deliverable.</p>
+<pre class="pre-m-0">Ball offset from centre     Prox count (0-6)
+  0 cm (dead ahead)           ____
+  2 cm left                   ____
+  4 cm left                   ____
+  6 cm left                   ____
+  8 cm left                   ____
+  (keep going until 0)
+  ... and the same to the right
+
+  Left edge  (last non-zero)  ____ cm
+  Right edge (last non-zero)  ____ cm
+  SEEN WIDTH = left + right   ____ cm
+
+  My ROW_STEP_CM  =  ____     and I chose it because ____</pre>
+</div>
+<details data-reveal="solution">
+<summary>🔓 Click to reveal solution</summary>
+
+<p class="p-m-008px">There is no code answer here, and the number is <strong>yours</strong> — it depends on your robot, your ball, and the distance you picked. What is checkable is the reasoning, so check that.</p>
+<p class="p-m-008px"><strong>Your <code>ROW_STEP_CM</code> must be smaller than your seen width.</strong> If it is equal, two rows' bands only just touch and any drift at all opens a gap. If it is larger, you have built B3's blind stripe on purpose. Most people land somewhere near three quarters of the seen width — but do not take that number, take yours, and be able to say what it buys.</p>
+<p class="p-m-008px"><strong>Now go back and re-read Bonus B3.</strong> Its reveal says doubling the step opens a blind stripe <em>exactly one step wide</em>. With a measured seen width in front of you, you can check whether that is true of <em>your</em> robot — and if your step was already well under half the seen width, doubling it might not open a stripe at all. <em>The saboteur's damage depends on the number the student chose.</em></p>
+<p class="p-m-008px"><strong>What this measurement is really teaching.</strong> Every other blank in this lesson came from the 7A table, and the table has a row for it. This one had no row, so the book told you to try 15 — and a number you were told to try is a number nobody has checked. You just built the missing row.</p>
+<p class="p-m-008px">That is the difference between a value and a measurement, and judges ask about it. A number you can defend in both directions — <em>too big does this, too small does that, mine is here and here is why</em> — is a design. The same number with no measurement behind it is a lucky guess that has not been caught yet.</p>
+<p class="p-mt-10px"><a href="../newproject.html?lesson=13&amp;kind=cal_7a" class="link-c-2e86ab">Open the 7A Surface Meter in Project Maker</a> — this challenge needs no new build; the measuring rig already exists.</p>
+</details>
+</div>
+
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
@@ -1367,7 +1561,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 </pre>
 <details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
-<p><code>ROW_STEP_CM</code> was sized in 7A so that adjacent rows’ prox coverage <em>overlaps</em> — no floor goes uninspected. Doubling the step opens a blind stripe between every pair of rows, exactly one step wide. The ball is found when it sits in a covered band and missed when it sits in a stripe — which is why the failure is <em>intermittent</em>, the cruelest kind. Speed was bought with coverage, and nobody was told the price. Halve the blind area or halve the runtime is a real engineering trade; making it <em>silently</em> is the sabotage.</p></div></details>
+<p><code>ROW_STEP_CM</code> has to be small enough that adjacent rows’ prox coverage <em>overlaps</em> — no floor goes uninspected. Challenge 6 is where you measure how wide that coverage actually is; until you have, the value in your config is the starting guess the comment offered you. Doubling the step opens a blind stripe between every pair of rows, exactly one step wide. The ball is found when it sits in a covered band and missed when it sits in a stripe — which is why the failure is <em>intermittent</em>, the cruelest kind. Speed was bought with coverage, and nobody was told the price. Halve the blind area or halve the runtime is a real engineering trade; making it <em>silently</em> is the sabotage.</p></div></details>
 <p class="p-mb-0"><a href="../newproject.html?lesson=13&amp;kind=b3_stripes" class="link-c-2e86ab">Open B3 in the Project Maker</a></p>
 <h4 data-challenge="13.m4" data-kind="bonus-sabotage" class="h4-c-6f7582-3">Mystery B4 — The Invisible Door</h4>
 <p>The subtlest of the four. A well-meaning classmate “fixed” <code>silverDetected()</code> to follow the book’s oldest rule: <em>always use the calibrated read.</em> The planted line:</p><pre>
@@ -1407,7 +1601,7 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 </tr>
 <tr><td class="td-bb-1pxsolid-2"><code>silverDetected()</code></td><td class="td-bb-1pxsolid-2">RobotSensors.cpp</td><td class="td-bb-1pxsolid-2">All five raw readings brighter than the fence → the strip</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-bb-1pxsolid-2"><code>driveUntil(maxCm)</code></td><td class="td-bb-1pxsolid-2">RobotMotion.cpp</td><td class="td-bb-1pxsolid-2">Watchful straight leg; returns a <code>StopReason</code>, reports <code>lastLegCm</code></td></tr>
-<tr><td class="td-bb-1pxsolid-2"><code>SILVER_RAW_MAX</code> · <code>WALL_STOP_COUNT</code> · <code>ROW_STEP_CM</code> · <code>VICTIM_SHORT_CM</code></td><td class="td-bb-1pxsolid-2">RobotConfig.h</td><td class="td-bb-1pxsolid-2">Four blanks; all four filled from the 7A table</td></tr>
+<tr><td class="td-bb-1pxsolid-2"><code>SILVER_RAW_MAX</code> · <code>WALL_STOP_COUNT</code> · <code>ROW_STEP_CM</code> · <code>VICTIM_SHORT_CM</code></td><td class="td-bb-1pxsolid-2">RobotConfig.h</td><td class="td-bb-1pxsolid-2">Four blanks; two from the 7A table, ROW_STEP_CM from Challenge 6, VICTIM_SHORT_CM tuned on the floor</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-bb-1pxsolid-2"><code>ENTERING_ZONE</code> · <code>SWEEPING_ZONE</code> · <code>VICTIM_FOUND</code></td><td class="td-bb-1pxsolid-2">RobotConfig.h / main.cpp</td><td class="td-bb-1pxsolid-2">Three states; one whole row per <code>SWEEPING_ZONE</code> pass</td></tr>
 </table>
 <h3 class="h3-c-2e86ab">The doorman, verbatim</h3>

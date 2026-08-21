@@ -1,7 +1,27 @@
 # ZUMO READING QUIZ BANK — LESSON 16
 # Nothing Left to Take Away · The Capstone Write-Up
 #
-# Bank version: v1.0.17
+# Bank version: v1.0.19
+#   S180 follow-up: v03.24.0 -> v03.24.1. The mechanism sentence shipped in v03.24.0 was WRONG
+#   and a compile-and-simulate arm caught it in the same session. It claimed all three screens
+#   draw *in a single trip through loop()*. Transcribed from pushbutton-arduino's own
+#   PushbuttonStateMachine, they do not: pass 1 draws BATTERY and starts the 15 ms debounce
+#   clock, pass 2 is when BOTH singles fire (ABOUT then CONTROLS), pass 3 onward is BATTERY
+#   again. The corrected prose says two trips, and states the real reason the while works -
+#   the state machine only advances WHEN POLLED, so a press that begins and ends between two
+#   calls is never seen. No question asserts any of it.
+# Verified against: lessons/Lesson_02.html v03.24.0 - S180. Lesson_02 moved three sites:
+#   Challenge 2 gained the release-wait `while (buttonA.isPressed() || buttonB.isPressed())`
+#   in BOTH template and reveal, plus prose naming why (L02-15); 4's *two objects for the
+#   same motor would fight over it* was replaced by the real cost - SRAM and two names for one
+#   piece of hardware (L02-13, a rule with a fabled mechanism); and 6 gained a prose section
+#   teaching the MY PLAN block the Maker has always stamped and the lesson never named
+#   (L02-17), pointing forward to Lesson 7 where the plan becomes the student's own.
+#   PIN ONLY, no question changed, and the two questions that sit NEAREST were read in full:
+#   L02_B52 keys *isPressed() -> true while the button is held down*, which the new prose
+#   states in the same words; and L03_A06/A07 solve the SAME two-button collision by else-if
+#   ORDERING rather than by a release-wait, so L02's new material is a spiral SEED for them
+#   rather than a duplicate - different mechanism, same hazard. Pin EARNED (rule 37).
 # Verified against: S179 - the project-path propagation. DJ ruled
 #   Documents/PlatformIO/Projects/<FolderName> the correct default location (Bible 16.49); ten lesson
 #   prose sites, the Maker hint, two Bible 11 lines and one SVG label moved with it. PIN ONLY, no
@@ -155,12 +175,12 @@ title: "Nothing Left to Take Away — The Capstone Write-Up"
 # Verified against: lessons/Lesson_02.html v03.22.0 - S178. One L02-asserting line: B46's
 # distractor rationale, "the Serial trade cuts code the book installed in Lesson 2."
 # S178 touched no Serial material in L02. Pin earned.
-bank_version: "1.0.17"
+bank_version: "1.0.19"
 source:
   lesson_16: "v02.28.0"
   lesson_15: "v02.32.0"
   lesson_14: "v02.36.0"
-  lesson_02: "v03.22.1"
+  lesson_02: "v03.24.1"
   lesson_01: "v03.31.3"
 
 sets:
