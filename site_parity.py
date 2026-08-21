@@ -36,7 +36,13 @@ exit 0 = the site matches the repo. exit 1 = a mismatch or a 404.
 """
 import re, os, sys, glob, hashlib, urllib.request, urllib.error
 
-VERSION = 'v1.2'   # the only version home in this file (S100; v1.1 S104; v1.2 S172)
+VERSION = 'v1.2.1' # the only version home in this file (S100; v1.1 S104; v1.2 S172; v1.2.1 S181)
+# S181 STATED SCOPE LIMIT (rule 78): this arm compares REFERENCED ASSETS only. Measured -
+# with five lessons and the Maker rewritten and unpushed, it printed PARITY while
+# Lesson_13.html differed from the live site by 3,613 bytes. The predicate was always
+# assets (see the docstring); the VERDICT LINE was what overclaimed, and the session-open
+# ritual reads the verdict. To confirm a push landed, md5 the changed PAGES against a
+# cache-busted fetch, or widen this arm - which is a design change owing its own controls.
 
 SITE = 'https://weymuth.github.io/zumo/'
 BASE = SITE + 'images/'          # kept: v1.0's name, still used by the fetch controls
@@ -179,7 +185,7 @@ def check(deep=False):
         print(f'  note: {unreachable} file(s) unreachable - network, not a finding')
     for b in bad:
         print(f'  MISMATCH  {b}')
-    print(f'\n  {"PARITY - the site serves what the repo contains" if not bad else str(len(bad)) + " MISMATCH(ES)"}')
+    print(f'\n  {"PARITY - every REFERENCED ASSET matches; this arm does NOT compare the pages themselves (S181)" if not bad else str(len(bad)) + " MISMATCH(ES)"}')
     return 1 if bad else 0
 
 

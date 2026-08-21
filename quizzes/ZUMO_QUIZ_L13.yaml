@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 13
 # Rescue Zone · Flying on Instruments — Navigating Where the Line Cannot Go
 #
-# Bank version: v1.0.18
+# Bank version: v1.0.19
 #   S180 continued: L12 -> v01.35.0, L13 -> v02.38.0 (this closes TWO arcs at once - the 13.5
 #   rewrite to a motors-ON Serial logging challenge, and the Maker links). The six new
 #   challenges now ship MAKER BUILDS (Maker v2.64: c4_shortway, c5_square, c6_driftmeter,
@@ -171,11 +171,11 @@
 #
 lesson: L13
 title: Rescue Zone — Flying on Instruments, Navigating Where the Line Cannot Go
-bank_version: "1.0.18"
+bank_version: "1.0.19"
 source:
-  lesson_13: v02.38.0
-  lesson_03: v03.44.3
-  lesson_06: v04.32.5
+  lesson_13: "v02.39.0"
+  lesson_03: "v03.45.0"
+  lesson_06: "v04.33.0"
   lesson_10: v02.30.3
   lesson_11: v02.31.1
   lesson_12: v01.35.2
@@ -891,7 +891,8 @@ sets:
           raised.
       - text: It needs a driver channel the Zumo does not have
         correct: false
-        why: That objection belongs to the gripper, not the whisker.
+        why: A whisker is a switch — it needs a pin, not a driver channel. Nothing in §8A.3 is
+          blocked by a shortage of motor-driver channels.
       - text: It only works on a smooth floor
         correct: false
         why: No such limitation is claimed.
@@ -901,18 +902,22 @@ sets:
       points: 1
       stem: Why can this Zumo not simply add a gripper to carry the victim out?
       options:
-      - text: Both DRV8838 drivers are already spoken for, one per tread — there is no driver channel
-          to spare
+      - text: There is no arm — a gripper is a mechanical build, and code is the last part of
+          that problem rather than the first
         correct: true
-      - text: The chassis cannot carry the extra weight
+      - text: Both DRV8838 drivers are spoken for, one per tread, so there is no driver channel
+          to spare for the servo
         correct: false
-        why: Weight is not the constraint §8A.3 names.
+        why: This sounds right and is not. A hobby servo takes power, ground and one signal wire
+          carrying a timed pulse — it brings its own driver inside its case and never asks an
+          H-bridge for a channel. The DRV8838s drive the treads; a gripper would not be competing
+          with them at all.
       - text: There is no flash left for the servo code
         correct: false
-        why: Flash is Lesson 16's constraint; §8A.3's is electrical.
+        why: Flash is Lesson 16's constraint, and §8A.3's objection is not electrical either.
       - text: The competition rules forbid manipulators
         correct: false
-        why: No such rule is cited.
+        why: No such rule is cited — the rules assume a manipulator, which is the point.
     - id: L13_B44
       type: multiple_choice
       cite: §8A.4

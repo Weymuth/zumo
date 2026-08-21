@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.38.0 -->
+<!-- Lesson version: v02.39.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Rescue Zone</h1>
 <div class="div-fs-11em">Flying on Instruments — Navigating Where the Line Cannot Go</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 02.38 — August 2026</div>
+<div class="div-fs-09em-2">Version 02.39 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -122,7 +122,7 @@
 <div class="div-1f2a3d">
 
 <p>The rescue zone's doorway is a strip of silver tape laid across the line. Silver is <em>more</em> reflective than white paper — shinier than anything your robot has ever driven over. You would think the brightest thing on the course would be the easiest thing to see.</p>
-<p>And if it really is brighter than the brightest surface your calibration spin saw — Section 5 is where you measure that, not assume it — then it is the one thing on the course your calibrated sensors <strong>cannot</strong> see. Here is why, and this is not a metaphor — it is the arithmetic from the Pololu library source itself, the actual code that runs inside <code>readCalibrated()</code>:</p>
+<p>And if it really is brighter than the brightest surface your calibration spin saw — Section 7A is where you measure that, not assume it — then it is the one thing on the course your calibrated sensors <strong>cannot</strong> see. Here is why, and this is not a metaphor — it is the arithmetic from the Pololu library source itself, the actual code that runs inside <code>readCalibrated()</code>:</p>
 <pre>
 signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">if</span>(denominator != <span class="tok-b5cea8">0</span>)
@@ -326,9 +326,11 @@ signed <span class="tok-569cd6">int</span> x = <span class="tok-b5cea8">0</span>
 <span class="tok-7cbf6e">// the wall. Something is standing in front of it.</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> VICTIM_SHORT_CM = <span class="tok-b5cea8">0.0</span>; <span class="tok-7cbf6e">// &lt;-- YOUR NUMBER. Try 15 and work from there.</span>
 
-<span class="tok-7cbf6e">// Longest possible row. NOT a blank - a safety cap. If the prox somehow</span>
-<span class="tok-7cbf6e">// misses the wall, this ends the row before the robot grinds against it.</span>
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MAX_ROW_CM = <span class="tok-b5cea8">300.0</span>;
+<span class="tok-7cbf6e">// Longest row this program will drive before giving up on the wall.</span>
+<span class="tok-7cbf6e">// NOT a blank, and NOT a wall detector - the prox finds the wall. This is</span>
+<span class="tok-7cbf6e">// the runaway stop: set it above the longest row you expect, so a missed</span>
+<span class="tok-7cbf6e">// wall ends the row instead of grinding. Rows ending on BUDGET? Raise it.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> MAX_ROW_CM = <span class="tok-b5cea8">150.0</span>;
 
 <span class="tok-7cbf6e">// ===== WHY A MOVE ENDED (NEW for Lesson 10) =====</span>
 <span class="tok-7cbf6e">// A move that can be interrupted has to say WHICH thing ended it.</span>
@@ -1043,11 +1045,13 @@ StopReason driveUntil(<span class="tok-569cd6">float</span> maxCm) {
 <li><strong>A time-of-flight sensor</strong> times a laser pulse instead of counting reflected intensity — less fooled by color, though dark targets still shorten its range.</li>
 <li><strong>A whisker or bumper</strong> feels the ball by touch. Honest, cheap, and it finds the victim by running it over — which rather misses the spirit of a rescue.</li>
 </ul>
-<p>And once found — carrying anyone out needs a gripper, a servo to drive it, and a driver channel to spare. Your Zumo’s two DRV8838 drivers are both spoken for, one per tread. The day a robot must carry the victim is the day it needs an arm <em>and</em> the electronics to run one. That is Lesson 16 territory:</p>
+<p>And once found — carrying anyone out needs a gripper and something to drive it. That something is usually a <strong>hobby servo</strong>, and a servo is not wired like a motor: it takes power, ground, and one signal wire carrying a timed pulse that tells it what <em>angle</em> to hold. It brings its own driver and its own position sensor inside its case. So it does not compete with your two DRV8838 chips at all — those drive the treads, and a gripper would not be asking them for anything.</p>
+<p>What stops this robot is simpler and harder: <strong>there is no arm.</strong> A gripper is a mechanical build — something to grip with, somewhere to mount it, and a chassis that can still drive with a ball held out front. Code is the last part of that problem, not the first. The day a robot must carry the victim is the day it needs an arm <em>and</em> the electronics to run one. That is Lesson 16 territory:</p>
 <div class="div-999"><strong>[IMAGE 13.2]</strong><br>Preview: servo gripper, modified blade, custom competition robots with arms — what the carry-them-out upgrade looks like. (Photo queue; was slotted under the old lesson numbering.)</div>
 <h3 class="h3-c-2e86ab">8A.4 Landmarks — How the Pros Fly</h3>
 <p>Pure dead reckoning has a law you have now met three times: <strong>error accumulates.</strong> Lesson 6’s square would not close; Lesson 12’s triangle came home crooked on encoder corners; 7E’s fan is the same law with more rows. No instrument fixes it — better instruments only slow the leak.</p>
-<p>What fixes it is <em>outside</em> the robot: a landmark. Something in the world whose position does not drift, checked against regularly. In this lesson the landmark is the wall, and the check is free — every row ends on it, so every row starts from truth. Full-scale robots do the same thing with more vocabulary: they build maps of landmarks and correct their dead reckoning against them continuously. The technique has a name — SLAM, simultaneous localization and mapping — and when you meet it someday, remember that you have already flown it: instruments to move, landmarks to stay honest.</p>
+<p>What fixes it is <em>outside</em> the robot: a landmark. Something in the world whose position does not drift, checked against regularly. In this lesson the landmark is the wall, and the check is free — every row ends on it, so the error one row builds up does not carry into the next. Notice what that does and does not buy you. The prox stops you at whatever distance the wall’s color and your approach angle happen to produce, so you do not come away knowing exactly where you are. You come away knowing your error is <em>bounded</em> — it can be wrong, but it cannot keep growing. Against a law that says error accumulates forever, a bound is the whole prize.</p>
+<p>Full-scale robots do the same thing with more vocabulary: they build maps of landmarks and correct their dead reckoning against them continuously. The technique has a name — SLAM, simultaneous localization and mapping. You have not flown it: SLAM builds its map as it goes and tracks where the robot sits inside that map, and your sweep does neither. What you <em>have</em> done is use the idea SLAM is built on — instruments to move, landmarks to stay honest. When you meet the acronym someday, you will already know why it works.</p>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 </div>
 
@@ -1290,8 +1294,8 @@ if (reason == STOP_PROX) {
   lastRowCm = lastLegCm;
 }
 rowCount++;</pre>
-<p class="p-m-008px"><strong>What breaks, two rows later.</strong> Say the true wall is at 60 cm and <code>MAX_ROW_CM</code> is 90. A row where the prox misses runs the full 90 and writes <code>lastRowCm = 90</code>.</p>
-<p class="p-m-008px">The next row behaves perfectly: it stops on the wall at 60 cm. Now the victim test asks whether <code>60 &lt; 90 - VICTIM_SHORT_CM</code>. With <code>VICTIM_SHORT_CM</code> at 15, that is <code>60 &lt; 75</code> — <strong>true.</strong> The robot announces a victim at a bare wall, and there is nothing there.</p>
+<p class="p-m-008px"><strong>What breaks, two rows later.</strong> Say the true wall is at 60 cm and <code>MAX_ROW_CM</code> is 150. A row where the prox misses runs the full 150 and writes <code>lastRowCm = 150</code>.</p>
+<p class="p-m-008px">The next row behaves perfectly: it stops on the wall at 60 cm. Now the victim test asks whether <code>60 &lt; 150 - VICTIM_SHORT_CM</code>. With <code>VICTIM_SHORT_CM</code> at 15, that is <code>60 &lt; 135</code> — <strong>true.</strong> The robot announces a victim at a bare wall, and there is nothing there.</p>
 <p class="p-m-008px">Go and look at Section 8's troubleshooting table. <em>Victims announced where there are none</em> is listed, and the causes given are both about numbers being wrong. <strong>This one is not a number being wrong. It is a good number written in the wrong place.</strong></p>
 <p class="p-m-008px"><strong>Why the fix is not "just stop when the budget runs out."</strong> A row that ends on <code>MAX_ROW_CM</code> is not a failure — the zone might genuinely be longer than you guessed, or the prox might have missed a dark wall. The robot should keep sweeping. It just should not pretend it learned something it did not.</p>
 <p class="p-m-008px"><strong>And notice what stays outside the guard.</strong> <code>rowCount++</code> still runs every row, because a row really did happen. Only the <em>measurement</em> is in doubt, not the <em>event</em>. Getting that split right is most of what careful bookkeeping is.</p>
@@ -1489,7 +1493,7 @@ you want the bands to overlap rather than merely touch.</pre>
 
 <details data-reveal="quiz"><summary>5. A judge watches your robot drive past a black victim ball and asks whether that is a bug. <strong>Answer it — and name a sensor that would see the ball, and what it measures instead.</strong> (§4.3, §8A.3)</summary>
 
-<div class="div-mt-12px"><p>It is not a bug; it is a stated limitation of the sensor the robot carries. The prox measures <strong>reflected infrared</strong>, and the black ball’s job is to absorb exactly that — so the signal is not there to threshold, and a detector that “mostly” finds black balls would be worse than none, because a rescuer would trust it. What would see it: a <strong>camera</strong>, which reads ambient light rather than its own echo, so a black ball on a light floor is a high-contrast target — and that is precisely why real rescue robots carry cameras. A <strong>time-of-flight sensor</strong> times a laser pulse instead of counting reflected intensity, so it is far less fooled by color, though dark targets still shorten its range. A <strong>whisker or bumper</strong> finds the ball by touch, which is honest and cheap and locates the victim by running it over.</p></div>
+<div class="div-mt-12px"><p>It is not a bug; it is a stated limitation of the sensor the robot carries. The prox measures <strong>reflected infrared</strong>, and this kit’s black ball — as you measured in 7A — returns almost none of it, so the signal is not there to threshold, and a detector that “mostly” finds black balls would be worse than none, because a rescuer would trust it. What would see it: a <strong>camera</strong>, which reads ambient light rather than its own echo, so a black ball on a light floor is a high-contrast target — and that is precisely why real rescue robots carry cameras. A <strong>time-of-flight sensor</strong> times a laser pulse instead of counting reflected intensity, so it is far less fooled by color, though dark targets still shorten its range. A <strong>whisker or bumper</strong> finds the ball by touch, which is honest and cheap and locates the victim by running it over.</p></div>
 
 </details>
 
@@ -1567,9 +1571,14 @@ motors.setSpeeds(DRIVE_SPEED, DRIVE_SPEED);   <span class="tok-7cbf6e">// as pla
 <p>The subtlest of the four. A well-meaning classmate “fixed” <code>silverDetected()</code> to follow the book’s oldest rule: <em>always use the calibrated read.</em> The planted line:</p><pre>
   lineSensors.readCalibrated(raw);   <span class="tok-7cbf6e">// as planted: "calibrated is always better"</span>
 </pre>
-<p>The symptom: the robot follows the line beautifully, reaches the silver strip… and reports a <strong>gap</strong>. It drives blind across the doorway, <code>GAP_MAX_CM</code> runs out on the open zone floor, and it parks in <code>LINE_LOST</code>, defeated, three centimeters inside a room it never knew it entered. Explain every beat of that story.</p><details data-reveal="solution"><summary>Reveal the mechanism</summary>
+<p>The symptom: the robot follows the line beautifully — and then, at the first <strong>gap</strong> in the line, stops dead and announces the rescue zone. It begins sweeping for victims in the middle of the course, nowhere near the doorway. Run it again with the gap taped over and it behaves perfectly, all the way into the real zone, which is the detail that sends most people hunting in the wrong file.</p>
+<p>Explain every beat of that story — including the last one. <em>Why does the real doorway still work?</em></p><details data-reveal="solution"><summary>Reveal the mechanism</summary>
 <div class="div-mt-12px">
-<p>Section 3, executed. On the calibrated channel, silver clamps to 0 on all five sensors — but the check asks for readings <em>below</em> <code>SILVER_RAW_MAX</code>, and calibrated values sit at 0 while the threshold was tuned for raw values in the hundreds; the comparison logic collapses and the door never triggers. Meanwhile all-zeros makes <code>isLineVisible()</code> report no line — so <code>handleGap()</code> takes over, exactly as it should for a real gap. The robot crosses its distance budget on open floor and gives up. <strong>One word — <code>Calibrated</code> — blinded the doorman</strong>, and note who else it blinded: the black ball has been invisible on the same physics all along. Bright-outside-the-contract and dark-absorbing-the-signal are the two edges of the same lesson: a sensor only answers the question its channel can carry.</p></div></details>
+<p>Section 3, executed — and the answer is the opposite of the one most people guess. Calibration maps the world you spun over onto 0..1000: white floor near <strong>0</strong>, black line near <strong>1000</strong>. Silver is brighter than white, so it clamps to 0 as well — the same 0 as plain white. Now read the test: <code>silverDetected()</code> returns false the moment any sensor reads <code>&gt;= SILVER_RAW_MAX</code>, a number you tuned in the <em>hundreds</em> for raw microsecond values. On the calibrated channel, ordinary white floor is already 0. Zero is not <code>&gt;=</code> three hundred. No sensor ever trips the guard, so the function returns <strong>true</strong>.</p>
+<p><strong>The door does not stop working. It stops being a door.</strong> While the robot is on the line, one sensor or another sits over black at ~1000, the guard trips, and the answer is a correct false. The instant all five see plain floor — the first gap, the first line loss, the first bare patch — all five read 0 and the robot announces the rescue zone. And look at §6 again: the silver check runs <em>before</em> <code>isLineVisible()</code>, deliberately. So <code>handleGap()</code> never gets its turn. The robot does not park in <code>LINE_LOST</code>; it walks into <code>ENTERING_ZONE</code> in the middle of the course, confident and wrong.</p>
+<p><strong>One word — <code>Calibrated</code> — and the number stopped meaning what it meant.</strong> Both channels hand you an <code>unsigned int</code>, so C++ has no complaint to make: same type, different unit, different scale. Microseconds became a 0..1000 index and the threshold did not come along. That is the whole mystery, and it is a bug you will meet again in every language you ever use.</p>
+<p><strong>And the last beat: the real doorway still works.</strong> Silver clamps to 0 just like plain floor does, so at the actual strip the sabotaged function returns true and the robot enters the zone exactly as it should. <em>The broken code passes the test you would have written.</em> It gets the right answer at the one place you were watching and the wrong answer everywhere else — which is why a green run proves less than it feels like it proves, the same warning Lesson 2 gave you about a build that compiles.</p>
+<p><em>Not the same as the black ball.</em> It is tempting to file these together, and they are not the same failure. The doorway is <strong>this</strong> sensor clamping a real, strong signal to the edge of a scale that has no room for it. The black ball is a <strong>different</strong> sensor — the front proximity — getting almost no signal back at all. One is a scale that cannot hold the answer; the other is an answer that never arrives. What they share is only the moral: a sensor answers the question its channel can carry, and no other.</p></div></details>
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
 
 </div>

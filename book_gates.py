@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.15'
+VERSION = 'v1.72.16'
 # v1.72.15 (S180): CSS digest re-moved after 12.5 gained the StopReason guard ARM 9 demanded.
 #                  Order-only; maps identical, 574/2033 both ends.
 # v1.72.14 (S180): CSS digest re-moved after the six Maker links and five COMPILE CHECK
@@ -2546,7 +2546,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '01a3047ee3781835'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '4a044d6878f8ceaa'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
@@ -4290,7 +4290,7 @@ try:
         return hits[0].strip()
 
     _sub70 = {_line70('motors.setSpeeds(speed, speed);'):
-              _line70('motors.setSpeeds(speed + TRIM, speed);'),
+              _line70('motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);'),
               _line70('while (abs(encoders.getCountsLeft()) < targetCounts) {'):
               _line70('while (averageCounts() < targetCounts) {')}
 

@@ -1,7 +1,7 @@
 # ZUMO — BENCH TEST TRACKER
 ### Everything in this book that only a robot and a floor can settle · one file, by lesson
 
-**Bench tracker version: v1.2** — increment on every substantive edit
+**Bench tracker version: v1.3** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** No instrument in this repo can see a floor. `book_gates` reads
@@ -70,6 +70,7 @@ of it.** Ten findings closed, none of them bench-verified.
 |---|---|---|---|---|
 | L03-B1 | **How far does one TRIM test run actually go?** `TEST_DURATION` is 2000 ms at `BASE_SPEED` 200. Tape a start line, press B, measure. **The *6+ feet* figure is DELETED, not corrected** — DJ ruled S179 that students do not need that space, and rule 50 gives an underived number two fates. This row exists so the book can one day state a MEASURED distance instead of describing the run as *short*. | §4.4, §7 | OPEN | |
 | L03-B3 | **Bonus Challenge 4 (Braking vs. Coasting) asks for *about 3 meters of clear floor and a catcher*.** That figure has no pedigree either, and unlike the TRIM run this one really is full speed (400) for 1.5 s each way. Measure it before ruling. The card already offers `delay(800)` as the short-floor escape, so nothing is blocked. | §9 Bonus 4 | OPEN (raised S179) | |
+| L03-B3b | **Is the motor mismatch direction-symmetric?** S181 fixed `driveDistance` so the TRIM correction follows the direction, and re-premised Bonus 2's reveal on that. **The claim now in the book is: fix the sign and the big reverse curve goes away, leaving only a small mechanical residual.** MEASURED SO FAR: the electrical path is provably symmetric — `Zumo32U4Motors::setLeftSpeed` writes `|speed|` to `OCR1B` and puts the sign on a GPIO pin, so `-185` vs `-200` is a real duty difference, and *trim* appears **zero** times in Pololu's entire library. NOT MEASURED: the mechanical residual, which needs the robot. **Tune TRIM straight forward, then drive the same robot backward with the fixed code. If the residual reverse curve is as large as the original error, the symmetry premise is wrong and Bonus 2's reveal must put gearbox asymmetry back as the headline.** | L03 §9 Bonus 2, L06 Step 13 | OPEN (raised S181) | |
 | L03-B2 | **What TRIM value does a real robot need?** Record yours, and the spread across the fleet. Feeds the TDP's *your TRIM number and why it exists*. | §5 | OPEN | |
 
 ---

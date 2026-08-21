@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.31.6 -->
+<!-- Lesson version: v04.31.7 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -1597,7 +1597,7 @@ Zumo32U4ButtonC buttonC;
   <span class="tok-569cd6">int</span> speed = (centimeters &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
   <span class="tok-6a9955">// TRIM keeps it STRAIGHT (Lesson 3). Encoders count rotation -</span>
   <span class="tok-6a9955">// they cannot tell you the robot curved. Without TRIM: an ARC.</span>
-  motors.setSpeeds(speed + TRIM, speed);
+  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
   <span class="tok-6a9955">// Keep driving until we reach the target - AVERAGE both wheels</span>
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10); <span class="tok-6a9955">// Small delay to prevent hogging the CPU</span>
@@ -3035,7 +3035,7 @@ Same as driveDistance but use FAST_SPEED</pre>
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? __________ : -__________;
   <span class="tok-6a9955">// Still an OPEN loop - still needs TRIM (Lesson 3).</span>
-  motors.setSpeeds(speed + TRIM, speed);
+  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10);
   }
@@ -3064,7 +3064,7 @@ Same as driveDistance but use FAST_SPEED</pre>
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? SLOW_SPEED : -SLOW_SPEED;
   <span class="tok-6a9955">// Still an OPEN loop - still needs TRIM (Lesson 3).</span>
-  motors.setSpeeds(speed + TRIM, speed);
+  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10);
   }

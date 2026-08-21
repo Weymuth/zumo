@@ -1,4 +1,4 @@
-# ZUMO — GPT REVIEW WORKLIST (v1.3)
+# ZUMO — GPT REVIEW WORKLIST (v1.4)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
 > **STATUS: 36 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
@@ -44,6 +44,23 @@ read spent on work already done. **A closed row with no record of being closed i
 **Do not trust a memory or a handoff to tell you a row is closed. This table is the record, and
 the tree is still the arbiter (rule 32).**
 
+## THE EXACTLY-ONCE RULE (S181)
+
+**Every one of the 245 rows in Part 2 resolves to exactly one of CLOSED, PARKED, or OPEN.
+There is no fourth state and there is no silence.** A row that is not named in the CLOSED
+table or the PARKED table below **is OPEN**, whatever any handoff says about its lesson
+having "had a pass."
+
+**S181 found this rule was needed twice over.** S180 shipped five L02 rows and recorded none
+of them. And the four L13 rows ruled at S167/S168 were written into **Bible §16.33 and §16.34**
+and never into this file — so Lesson 13 read as untouched while four of its rows were done, and
+as *passed* while seventeen were not. **A disposition recorded in another file is not recorded
+here, and here is where the next reader looks.**
+
+**PART 4 IS NOT A DISPOSITION SECTION.** D-3, D-4 and D-5 say *hold until priced*, *price it
+first*, and *unverified, must be checked*. Rows named there are OPEN with a note, not closed.
+Only D-6 resolved a row (`L01-14`), and that row is in the table below.
+
 | Row | Status | Closed | How |
 |---|---|---|---|
 | `L01-01` | ✅ SHIPPED | S177 | *Break It On Purpose* now unplugs the USB cable; the callout closes by naming what does NOT break an upload. Bible §16.46. |
@@ -72,6 +89,11 @@ the tree is still the arbiter (rule 32).**
 | `L02-14` | ✅ SHIPPED | S178 | Step 7: only Button A ever had LED code. |
 | `L02-16` | ✅ SHIPPED | S178 | *The Seven Sections* reframed as the RoboLore standard, not a C++ rule. |
 | `L02-18` | ✅ SHIPPED | S178 | See `L02-11`. |
+| `L02-13` | ✅ SHIPPED | S180 | *Two objects would fight over it* was a **fabled mechanism**. Replaced by the real cost: SRAM, and two names for one piece of hardware. Verified S181 — *fight over* is 0× in the tree. |
+| `L02-15` | ✅ SHIPPED | S180 | Challenge 2's release-wait, in both scaffold and reveal. The *single trip through `loop()`* claim was FALSE and lived about an hour — `PushbuttonStateMachine` was cloned, transcribed and run: **two passes, not one**. §9 C2 corrected. **`L02-B2` is the falsifiable bench prediction.** |
+| `L02-17` | ✅ SHIPPED | S180 | *The block you did not ask for: MY PLAN* — now a prose section in §6, pointing at L07 where the plan becomes the student's own. |
+| `L02-12` | ❌ STRUCK | S180 | The stack model is the right simplification. GPT's technically-correct alternative teaches a Lesson 2 student nothing. |
+| `L02-19` | ❌ STRUCK | S180 | **L02 §9 says spiral markers start in the NEXT lesson, deliberately**, and Warm-Up 4 is a warm-up, not a challenge card. GPT could not see that ruling. |
 | `L03-01` | ✅ SHIPPED | S179 | Step 4's checkpoint denied the `setup()`/`loop()` Step 2 told them to keep — one callout above a green build. **First reported DEAD in error: the grep missed `no <code>setup()</code>/<code>loop()</code> exists`.** |
 | `L03-02` | ✅ SHIPPED | S179 | Step 3 told the student to paste a SECOND header into a file the Maker had already headed, and to replace placeholders the Maker fills with real values. Coupled with `L03-01`. |
 | `L03-03` | ✅ SHIPPED | S179 | The Part 2 prerequisite no longer says to copy the Lesson 2 project folder. |
@@ -80,8 +102,23 @@ the tree is still the arbiter (rule 32).**
 | `L03-06` | ✅ SHIPPED | S179 | §4.5's drift test is a hypothesis §7 settles, not a verdict about motor strength. |
 | `L03-08` | ✅ SHIPPED | S179 | The unsourced 30-second cooldown rule replaced by the current-under-load mechanism. |
 | `L03-09` | ✅ SHIPPED | S179 | The unsourced ±10% battery figure removed. **`L03_B35` was falsified by this correct edit and was rekeyed.** |
-| `L06-01` | ✅ MEASURED | S154 | Confirmed in Part 5b. |
 | `L08-13` | ✅ MEASURED | S154 | Confirmed in Part 5b. |
+| `L13-03` | ✅ RULED + SHIPPED | S167/S168 | DJ ruled candidate **D** — *watch the sidestep*, `driveDistance(ROW_STEP_CM)` → `driveUntil(ROW_STEP_CM)`, with `SWEEP_DONE` as a NEW state rather than reusing `STOPPED`. Four candidates COMPILED before the ruling. **Bible §16.34. Backfilled here S181 — it was recorded only in the Bible.** |
+| `L13-01` | ✅ SHIPPED | S167/S168 | Folded into `L13-03`'s card: D as sketched branched on `STOP_PROX` alone and killed the kill switch during the sidestep, so one contract fixed both. **Bible §16.34. Backfilled S181.** |
+| `L13-05` | ✅ PARTLY REFUTED | S167 | The lesson already names both failure modes; what was owed was the **assumption** rather than the risk. **Bible §16.34. Backfilled S181.** |
+| `L13-11` | ✅ VERIFIED | S167 | The `readCalibrated()` quote **is faithful** to the QTR bundled in `pololu/Zumo32U4@2.0.1`. The defect was the sentence introducing it. **Bible §16.33. Backfilled S181.** |
+| `L13-13` | ✅ SHIPPED | S181 | The servo claim. A hobby servo takes power, ground and a timed signal pulse and brings its own driver inside the case — it never asks a DRV8838 for a channel. §8A.3 now explains what a servo is, says plainly it does not compete with the tread drivers, and gives the real barrier: **there is no arm.** **L14 inherited the same claim and was fixed in the same pass.** `spoken for` is 0× book-wide. |
+| `L13-02` | ✅ SHIPPED | S181 | `MAX_ROW_CM = 300.0` was called *a safety cap* that ends the row *before the robot grinds against* the wall. Three metres never fires before any wall, so the stated purpose was false. **DJ released the room-fact carve-out — the classroom field is not RCJ-spec — so the number is chosen: 150.0.** Comment rewritten as what it is (a runaway stop, sized above the longest row you expect) plus how to tune it. **59 Maker payload sites moved with the lesson**; the constant is inherited by L13–L16. Census updated, all 8 standing byte controls reproduce. |
+| `L13-04` | ✅ SHIPPED | S181 | *every row starts from truth* — the prox stops at a distance set by the wall's color and approach angle, so a row-end is a **bound on error, not a pose**. §8A.4 now says so. **First probed as DEAD in error:** the finding is real, the phrase GPT quoted is not what the tree says. |
+| `L13-14` | ✅ SHIPPED | S181 | *you have already flown it* — struck. §8A.4 now says plainly that SLAM builds a map and tracks the robot inside it and the sweep does neither, then keeps the honest half: you have used the idea SLAM is built on. |
+| `L13-08` | ✅ SHIPPED | S181 | **Two of three sites were ALREADY CORRECT and unrecorded** — *visible black does not guarantee a weak infrared return; color and IR reflectance are different measurements*, with the claim conditioned on 7A's measurement. The §4.3 answer block was the one site still asserting it from the ball's *job*; now conditioned on 7A too. **The handoff's still-verbatim shortlist was wrong about this row.** |
+| `L06-01` | ✅ SHIPPED | S181 | **REVERSE TRIM. Was miscategorised as closed** — Part 5b's ✅ meant *the bug was confirmed present*, and the row's own verdict reads *the most important code finding in the review, AGREE-EXPENSIVE*. `speed` carries the sign of travel, so `speed + TRIM` hands the weak motor LESS duty in reverse. **Measured at the register:** `setLeftSpeed` writes `|speed|` to `OCR1B` and puts the sign on a GPIO pin, so `setSpeeds(-135,-150)` is a real 2× swing (Bible v8.13 hardware-direction verification, satisfied against Pololu's own source). Fixed to `speed + (speed > 0 ? TRIM : -TRIM)` in `driveDistance` **and** `driveDistanceSmooth`: **153 Maker sites, L06 ×6, L07 ×3**, gate §15's anchor moved with it. **L12's planted `leftSpeed + TRIM` sabotage explicitly excluded and asserted untouched.** Priced at **+10 bytes** where a negative literal survives, **0 as shipped** (TRIM = 0 folds the ternary), **no ceiling risk** — `16/after_step_2` measured at 28,648 unchanged. |
+| `L13-20` | ✅ SHIPPED | S181 | Challenge 1's `driveDistance(-10.0)` was sound only after `L06-01` propagated. It has. Closed by dependency, no L13 edit needed. |
+| `L13-06` | ✅ SHIPPED | S181 | **Sabotage B4's mechanism was backwards, and GPT understated it.** Traced against the shipped payload: `silverDetected()` returns false only when some sensor reads `>= SILVER_RAW_MAX` (tuned in the hundreds, raw microseconds). On the calibrated channel plain white floor is already 0, so **the guard never trips and the function returns TRUE** — not *the door never triggers*. **And §6 checks silver BEFORE `isLineVisible()`, deliberately**, so `handleGap()` never runs and the robot cannot park in `LINE_LOST` — **the old reveal contradicted a code comment two screens away.** Symptom corrected too: it fires at the first gap and sweeps mid-course. New closing beat: **the real doorway still works**, because silver clamps to 0 as well — the broken code passes the one test you would have written. |
+| `L13-07` | ✅ SHIPPED | S181 | B4's close claimed the black ball *has been invisible on the same physics all along*. Two different sensors, two different failures: the doorway is the line array **clamping a strong signal** to the edge of a scale with no room for it; the ball is the **prox** getting almost no signal back. Now stated as *a scale that cannot hold the answer* versus *an answer that never arrives*, sharing only the moral. |
+| `L13-09` | ✅ ALREADY DEAD | found S181 | *Nearly invisible to every sensor this robot carries* **is not in the tree.** Every black-ball claim is correctly scoped to the prox — *the one sensor aboard that could look for it*. Fixed in some earlier session and carried on the list regardless, like `L02-04`. |
+| `L13-10` | ✅ SHIPPED | S181 | **The hedge was already there and unrecorded** — §3 reads *if it really is brighter than the brightest surface your calibration spin saw — Section 5 is where you measure that, not assume it*. Checking it found a **broken cross-reference**: §5 is the Code Walkthrough; the measurement is **§7A**, which 18 other references in the lesson name correctly. Pointer corrected. *The subtraction knew; the clamp forgot* kept, per the verdict. |
+| `L13-17` | ❌ REFUTED | S181 | **`SILVER_RAW_MAX` is named correctly.** On the raw channel brighter = LOWER, so silver readings sit *below* the constant and it is a genuine upper bound — `raw[i] >= SILVER_RAW_MAX` rejecting the value is what an exclusive max does. **GPT's instinct has a real point** — the name invites *set it to the highest silver reading I measured*, which the `>=` would then reject — **but the adjacent comment says *set this BETWEEN them* and §7B makes the student test all three settings.** A rename is 38 Maker sites, 13 lesson sites, the L13 quiz bank, a census update and a full recompile, three weeks from launch, for a name that is already right. **No action.** |
 | `L02-07` | ❌ REFUTED | S154 | GPT wrong. The payload is 95 / 86 / 75; the lesson's 85–95 is correct. Part 5b. |
 | `PATH` (untagged) | ✅ RULED + SHIPPED | S179 | **DJ: `Documents/PlatformIO/Projects/<FolderName>` is the correct default location.** Bible §16.49. Fourteen sites moved: ten lesson prose, the Maker hint, two §11 canon lines, one SVG label. |
 | `L03-B1` (untagged) | ✅ HALF-CLOSED | S179 | Part 2 asked for the robot tethered AND 6+ feet of floor at once; now L01's floor test, in order. The *6+ feet* figure itself is still a bench item. |
@@ -92,6 +129,68 @@ the tree is still the arbiter (rule 32).**
 |---|---|
 | `L02-06` | **Real and expensive.** `GLOBAL VARIABLES` appears 0× in the lesson and 0× in its payloads, against a Challenge 3 that says *declare three counters up top*. The fix moves `L02_GRAPHIC_2-05_sketch_anatomy.svg` (an eighth BAND must be drawn — a graphics-chat pass, unlike §16.49's one-string label), the §3.1 color key, *The Seven Sections*, §5's walkthrough and probably Bible §18.3. **DJ ruled S178: parked until after September 8**, filed in `ZUMO_AFTER_LAUNCH.md`. Student-facing cost measured and low. |
 | `L02-09` | The baud comment appears **4× inside L02's own payload**, so a lesson-only fix breaks `gate_payload_match`. It is a Maker edit and rides with `L02-06`'s pass. |
+
+---
+
+# PART 0b — OPEN (everything not named above)
+
+**186 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
+the CLOSED and PARKED tables above ARE the list, by subtraction. What this section does is make
+the arithmetic checkable, so a reader can tell at a glance whether a lesson has been worked.
+
+| Lesson | findings | closed | parked | **OPEN** |
+|---|---|---|---|---|
+| L01 | 15 | 15 | 0 | **0** |
+| L02 | 19 | 17 | 2 | **0** |
+| L03 | 10 | 8 | 0 | **2** |
+| L04 | 5 | 0 | 0 | **5** |
+| L05 | 2 | 0 | 0 | **2** |
+| L06 | 8 | 1 | 0 | **7** |
+| L07 | 10 | 0 | 0 | **10** |
+| L08 | 15 | 1 | 0 | **14** |
+| L09 | 13 | 0 | 0 | **13** |
+| L10 | 16 | 0 | 0 | **16** |
+| L11 | 15 | 0 | 0 | **15** |
+| L12 | 18 | 0 | 0 | **18** |
+| L13 | 21 | 15 | 0 | **6** |
+| L14 | 20 | 0 | 0 | **20** |
+| L15 | 28 | 0 | 0 | **28** |
+| L16 | 30 | 0 | 0 | **30** |
+| **TOTAL** | **245** | **57** | **2** | **186** |
+
+**ONLY L01 AND L02 ARE DONE.** L03 is two rows short of done. Everything else is open, including
+both lessons a handoff described as having *had a pass*.
+
+## Named somewhere, still OPEN — do not read a mention as a ruling
+
+| Row | Where it was named | Why it is still open |
+|---|---|---|
+| `L12-18` | a prior handoff | Named explicitly as **UNRULED**. B4's premise is unsound; nobody has decided what replaces it. |
+| `L06-07` `L08-02` | Part 4 D-3, D-4 | *Price it first.* `L08-02` may be the single most expensive item in the review. |
+| `L14-01` `L14-04` `L14-13` `L14-14` `L16-11` `L16-12` `L16-13` | Part 4 D-5 | Unverified rulebook claims. `RCJRescueLine2026-final.pdf` is in the repo root and these are checkable in one pass. |
+
+## S181 spot-check: the open rows are live, not stale
+
+Probed at S181 against the tree, in the two lessons a handoff called *passed*:
+
+- **`L12-13`** — §7A: *"Spin it all the way around and it reaches 360."* §8A.3 teaches that
+  `getTurnAngle()` wraps through ±180°. **The lesson contradicts itself** and the student who
+  follows §7A will not see 360.
+- **`L12-07`** — *thousands of times* ×9, including *"measuring the turn thousands of times a
+  second"*. Unmeasured, C4.
+- **`L12-08`** — *"The IMU costs zero pins"*, twice, once in the **glossary**. It occupies
+  SDA/D2 and SCL/D3.
+- **`L12-10`** — *"integer math keeps every call cheap and exact."*
+- **`L13-13`** — §9 still says carrying a victim needs *"a servo to drive it, and a driver
+  channel to spare. Your Zumo's two DRV8838 drivers are both spoken for."* **A hobby servo takes
+  power, ground and a signal pin — it does not consume an H-bridge channel.** The conclusion
+  survives; the reason is wrong.
+- **`L03-10`** — the 4,200 mV damage boundary is asserted at **four distinct sites**: the §3.6
+  battery table, the chemistry paragraph, §8 troubleshooting, and Challenge 2's stated goal.
+
+**A probe locates candidates; it never answers.** Each of these was read in context. The needles
+that returned zero (`L12-01`, `L12-02`, `L12-06`, `L13-04`, `L13-09`, `L13-12`) are **NOT** recorded
+as dead — S179's `L03-01` and S181's own first `L03-07` probe both reported DEAD in error.
 
 ---
 

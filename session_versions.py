@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.30.0'
+VERSION = 'v1.30.1'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -1082,6 +1082,16 @@ CURRENCY_HOMES = [
      r'\*\*Bible version: (v[\d.]+)\*\*', 'Bible'),
     (lambda r: r.startswith('quizzes/ZUMO_QUIZ_') and r.endswith('.yaml'),
      r'^# Bank version: (v[\d.]+)', 'Bank'),
+    # S181: two files carry a real version home that this table could not see, so
+    # --currency reported them as 'no version home' and asserted nothing. Both were
+    # edited in S181 and both would have shipped unbumped. Keyed by PATH, above the
+    # generic .py rule, because gate_payload_match.py has no VERSION constant.
+    (lambda r: r == 'gate_payload_match.py',
+     r'PAYLOAD BYTE-MATCH GATE .*?\u2014 (v[\d.]+)', 'Gate'),
+    (lambda r: r == 'ZUMO_BENCH_TESTS.md',
+     r'\*\*Bench tracker version: (v[\d.]+)\*\*', 'Bench'),
+    (lambda r: r == 'ZUMO_GPT_REVIEW_WORKLIST.md',
+     r'^# ZUMO \u2014 GPT REVIEW WORKLIST \((v[\d.]+)\)', 'Worklist'),
     (lambda r: r.endswith('.py') or r.endswith('.sh'),
      r'^VERSION\s*=\s*[\'"]([^\'"]+)', 'VERSION'),
 ]

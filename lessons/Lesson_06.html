@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.32.5 -->
+<!-- Lesson version: v04.33.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Encoders</h1>
 <div class="div-fs-11em">Teaching Your Robot to Measure</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.32 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.33 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1370,7 +1370,11 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <p>Then spend it — in <code>driveDistance()</code>, on the <strong>left</strong> motor:</p>
 
-<pre>motors.setSpeeds(speed + TRIM, speed);</pre>
+<pre>motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);</pre>
+
+<p>That ternary is doing real work, and it is worth ten seconds. <code>speed</code> already carries the direction — it is <code>-DRIVE_SPEED</code> when <code>distanceCm</code> is negative. <strong>The correction has to point the same way the robot is driving.</strong> Add a plain <code>+ TRIM</code> to a negative speed and you get <code>setSpeeds(-135, -150)</code>: the library sends the <em>size</em> of each number to the motors, so the weak left motor is now getting <em>less</em> than the right instead of more. Your correction is applied backwards, and the robot curves about twice as hard in reverse as it did without any TRIM at all.</p>
+
+<p>This matters here and not in Lesson 3 because Lesson 3 only ever drove forward. <code>driveDistance(-20)</code> is the first time one number has had to serve both directions.</p>
 
 <h4 class="h4-c-433014">Bug 2 — You have two encoders and you have been reading one</h4>
 
@@ -1424,7 +1428,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
   <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
   <span class="tok-6a9955">// TRIM keeps it STRAIGHT. The encoders only count rotation - they</span>
   <span class="tok-6a9955">// cannot tell you the robot curved. Without TRIM, this drives an ARC.</span>
-  motors.setSpeeds(speed + TRIM, speed);
+  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
   <span class="tok-6a9955">// Wait until we've traveled far enough - AVERAGE both wheels</span>
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10);
@@ -1534,7 +1538,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <tr><td class="td-ccc-3">Turns too small (under 90°)</td><td class="td-ccc-3"><code>WHEEL_BASE_MM</code> is too <strong>small</strong> — too few counts are being commanded</td><td class="td-ccc-3"><strong>INCREASE</strong> <code>WHEEL_BASE_MM</code> (try 95, 100, 110…)</td></tr>
 
-<tr><td class="td-ccc-3">Straight lines curve — the square won’t close</td><td class="td-ccc-3">No <code>TRIM</code>. Encoders count <em>rotation</em>, not travel — a curving robot still reports success</td><td class="td-ccc-3">Spend your Lesson 3 TRIM on the LEFT motor: <code>setSpeeds(speed + TRIM, speed)</code>. Curves LEFT → raise TRIM. Curves RIGHT → lower it. <strong>(Step 13, Bug 1)</strong></td></tr>
+<tr><td class="td-ccc-3">Straight lines curve — the square won’t close</td><td class="td-ccc-3">No <code>TRIM</code>. Encoders count <em>rotation</em>, not travel — a curving robot still reports success</td><td class="td-ccc-3">Spend your Lesson 3 TRIM on the LEFT motor: <code>setSpeeds(speed + (speed &gt; 0 ? TRIM : -TRIM), speed)</code>. Curves LEFT → raise TRIM. Curves RIGHT → lower it. The correction has to point the same way the robot is driving — see the note under Step 13. <strong>(Step 13, Bug 1)</strong></td></tr>
 
 <tr><td class="td-ccc-3">One stiff or slipping track wrecks the move</td><td class="td-ccc-3">The gate watches <strong>one</strong> encoder. The other wheel is never asked</td><td class="td-ccc-3">Gate on <code>averageCounts()</code> — it <code>abs()</code>-es and averages BOTH encoders. <strong>(Step 13, Bug 2)</strong></td></tr>
 
@@ -2166,12 +2170,12 @@ Stop motors</pre>
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
-  motors.setSpeeds(speed + TRIM, speed);
+  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     <span class="tok-569cd6">long</span> currentCounts = averageCounts();
     <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * ____) {
       <span class="tok-569cd6">int</span> slowSpeed = speed / ____;
-      motors.setSpeeds(slowSpeed + TRIM, slowSpeed);
+      motors.setSpeeds(slowSpeed + (slowSpeed > 0 ? TRIM : -TRIM), slowSpeed);
     }
     delay(10);
   }
@@ -2208,12 +2212,12 @@ Stop motors</pre>
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? DRIVE_SPEED : -DRIVE_SPEED;
-  motors.setSpeeds(speed + TRIM, speed);
+  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     <span class="tok-569cd6">long</span> currentCounts = averageCounts();
     <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * 0.75) {
       <span class="tok-569cd6">int</span> slowSpeed = speed / 2;
-      motors.setSpeeds(slowSpeed + TRIM, slowSpeed);
+      motors.setSpeeds(slowSpeed + (slowSpeed > 0 ? TRIM : -TRIM), slowSpeed);
     }
     delay(10);
   }

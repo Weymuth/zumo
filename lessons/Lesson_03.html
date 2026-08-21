@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.44.3 -->
+<!-- Lesson version: v03.45.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,7 +101,7 @@
 <h1 class="h1">Motor TRIM</h1>
 <div class="div-fs-11em">No Two Motors Are the Same</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.44 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.45 — August 2026</div>
 </div>
 
 <div class="callout-ffc107-bg-fff8e1" id="what-you-need-l03-p1" data-family="WHAT YOU NEED" data-callout="3.1">
@@ -2721,7 +2721,7 @@ Displays countdown on OLED and logs to Serial.
 
 <li><strong>TRIM not being applied</strong> → Check <code>leftSpeed = BASE_SPEED + trimValue</code> in runMotorTest()</li>
 
-<li><strong>TRIM sign is backwards</strong> → TRIM always adjusts the <strong>LEFT</strong> motor (<code>leftSpeed = BASE_SPEED + trimValue</code>) — that never changes, in this lesson or any lesson after it. Check which way it curved from the <strong>robot’s</strong> point of view before you touch the sign — half of all “TRIM is backwards” reports are a robot driving away from the student. If your correction really does make the curve <em>worse</em>, flip the <strong>sign</strong>, not the motor: curves LEFT → POSITIVE TRIM; curves RIGHT → NEGATIVE TRIM (Section 3.7).</li>
+<li><strong>TRIM sign is backwards</strong> → TRIM always adjusts the <strong>LEFT</strong> motor (<code>leftSpeed = BASE_SPEED + trimValue</code>) — that never changes, in this lesson or any lesson after it. <em>Which</em> motor is fixed; the <em>sign</em> of the correction is not. From Lesson 6 on, when the robot drives in reverse the correction has to reverse with it, or it makes the weak motor weaker still. Check which way it curved from the <strong>robot’s</strong> point of view before you touch the sign — half of all “TRIM is backwards” reports are a robot driving away from the student. If your correction really does make the curve <em>worse</em>, flip the <strong>sign</strong>, not the motor: curves LEFT → POSITIVE TRIM; curves RIGHT → NEGATIVE TRIM (Section 3.7).</li>
 
 <li><strong>Surface issue</strong> → Some floors grip one wheel more. Try a different surface.</li>
 
@@ -3793,7 +3793,11 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <details data-reveal="hint"><summary>🔓 Hint + what’s going on</summary>
 
-<div class="div-mt-12px"><p>Change the two <code>setSpeeds</code> lines inside the test to use negative values (keep the TRIM math!). Most robots need a <em>different</em> TRIM backward — gearboxes and motors aren’t symmetric in the two directions. Real rovers store separate calibrations per direction.</p></div>
+<div class="div-mt-12px"><p>Change the two <code>setSpeeds</code> lines inside the test to use negative values, and leave the TRIM math exactly as it is. Then watch carefully: most robots curve <strong>worse</strong> backward than they did with no TRIM at all.</p>
+
+<p><strong>That is not the gearbox. That is your correction pointing the wrong way.</strong> With <code>BASE_SPEED = 200</code> and <code>TRIM = 15</code>, forward you are sending <code>setSpeeds(215, 200)</code> — the weak left motor gets more. Negate both and you are sending <code>setSpeeds(-185, -200)</code>. The library takes the <em>size</em> of each number and puts the minus sign on a direction pin, so the left motor is now getting <strong>185 against 200</strong> — less than the right, when it needed more. You have not removed the correction; you have aimed it backwards, which is roughly twice as bad as having none.</p>
+
+<p>Fix that and the big curve goes away. A <em>small</em> one may remain, and that part really is mechanical — gearboxes and treads are not perfectly symmetric in the two directions, which is why real rovers sometimes store a separate calibration per direction. But that is the fine print, not the headline. <strong>Lesson 6 is where the code has to start caring:</strong> <code>driveDistance()</code> takes a distance that can be negative, so it is the first function that has to make one TRIM number serve both directions.</p></div>
 
 </details>
 
