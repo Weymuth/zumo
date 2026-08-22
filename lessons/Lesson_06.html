@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.33.0 -->
+<!-- Lesson version: v04.34.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Encoders</h1>
 <div class="div-fs-11em">Teaching Your Robot to Measure</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.33 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.34 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -971,7 +971,7 @@ every loop:
 <p>Four constants turn raw counts into centimeters. Three are measurements; the fourth is math built from the other three — write the formula, not the answer, and the compiler does the arithmetic.</p>
 
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
-<pre class="pre-b8c4cc">constants (CONFIGURATION section):
+<pre class="pre-b8c4cc">constants (CONSTANTS section):
 counts per wheel rotation  = 909.7      ← from the gearbox
 wheel diameter             = 39.0 mm    ← measured OVER the track
 wheel circumference        = π × diameter
@@ -982,7 +982,7 @@ counts per cm              = counts-per-rotation ÷ (circumference in cm)</pre>
 <details data-reveal="check">
 <summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
-<pre><span class="tok-7cbf6e">// ===== CONFIGURATION =====</span>
+<pre><span class="tok-7cbf6e">// ===== CONSTANTS =====</span>
 <span class="tok-7cbf6e">// ----- Distance Measurement -----</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_ROTATION = <span class="tok-b5cea8">909.7</span>;
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_DIAMETER_MM = <span class="tok-b5cea8">39.0</span>;
@@ -1343,7 +1343,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
     <p class="p-mb-0">Actually run it. Tape the start position to the floor and look at the gap. You are about to fix two bugs, and the fix lands harder if you have seen what it fixes.</p>
 </div>
 
-<h4 class="h4-c-433014">Bug 1 — Your robot has been driving arcs this whole time</h4>
+<h4 class="h4-c-433014-2">Bug 1 — Your robot has been driving arcs this whole time</h4>
 
 <p>Look at what <code>driveDistance()</code> actually commands:</p>
 
@@ -1359,7 +1359,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
     <p class="p-mb-0">Encoders count <strong>rotation</strong>, not <strong>travel</strong>. A robot that curves 20° to the left still spins exactly 30&#8239;cm worth of counts, reports success, and stops. <em>The dashboard says you drove straight. The floor says otherwise.</em> One arc is barely visible. Four arcs, one per side, and the square blows open.</p>
 </div>
 
-<p>Add TRIM to your <strong>CONFIGURATION</strong> section:</p>
+<p>Add TRIM to your <strong>CONSTANTS</strong> section:</p>
 
 <pre><span class="tok-6a9955">// ----- TRIM: your robot's straight-line correction -----</span>
 <span class="tok-6a9955">// From Lesson 3. No two motors are identical, so "both wheels, same</span>
@@ -1376,7 +1376,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <p>This matters here and not in Lesson 3 because Lesson 3 only ever drove forward. <code>driveDistance(-20)</code> is the first time one number has had to serve both directions.</p>
 
-<h4 class="h4-c-433014">Bug 2 — You have two encoders and you have been reading one</h4>
+<h4 class="h4-c-433014-2">Bug 2 — You have two encoders and you have been reading one</h4>
 
 <p>Now look at the loop that decides when to stop:</p>
 
@@ -1408,6 +1408,18 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
   <span class="tok-569cd6">return</span> (left + right) / 2;
 }</pre>
 
+<p>It lives at the bottom of the file with your other helpers, so it needs its promise up top — and the <code>static</code> travels with the promise, because the two lines have to agree:</p>
+
+<pre><span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-569cd6">static</span> <span class="tok-569cd6">long</span> averageCounts();</pre>
+
+<p>Your GLOBAL VARIABLES section stays empty this lesson — every number here is either a <code>const</code> up in CONSTANTS or a local inside a function — so it carries the marker and nothing else:</p>
+
+<pre><span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
+
+<p>An empty section is not a mistake. The nine sections are always all there, in the same order, so your eye learns one shape and you always know where a new line belongs.</p>
+
 <p>Then use it as the gate in <strong>both</strong> <code>driveDistance()</code> <strong>and</strong> <code>turnDegrees()</code>:</p>
 
 <pre><span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {</pre>
@@ -1419,7 +1431,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
     But the <strong>averaging</strong> fix applies everywhere. A stiff wheel ruins a turn exactly as thoroughly as it ruins a straight line. <strong>TRIM is for straightness. Averaging is for honesty.</strong> They are different bugs and they need different fixes.</p>
 </div>
 
-<h4 class="h4-c-433014">The finished functions</h4>
+<h4 class="h4-c-433014-2">The finished functions</h4>
 
 <pre><span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
@@ -2045,7 +2057,7 @@ Display total distance</pre>
 
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
 
-<p><strong>Step 1:</strong> Add these global variables at the top of your file, in the CONFIGURATION section (AFTER the constants):</p>
+<p><strong>Step 1:</strong> Add these global variables to your <strong>GLOBAL VARIABLES</strong> section — they change while the robot runs, so they do not belong up in CONSTANTS:</p>
 
 <pre><span class="tok-7cbf6e">// ----- Odometer Tracking -----</span>
 <span class="tok-569cd6">float</span> totalDistance = <span class="tok-b5cea8">0</span>;
@@ -2086,7 +2098,7 @@ delay(<span class="tok-b5cea8">50</span>); <span class="tok-7cbf6e">// Small del
 
 <summary>🔓 Click to reveal solution</summary>
 
-<pre><span class="tok-7cbf6e">// In CONFIGURATION section:</span>
+<pre><span class="tok-7cbf6e">// In GLOBAL VARIABLES section:</span>
 <span class="tok-569cd6">float</span> totalDistance = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">int</span> prevLeft = <span class="tok-b5cea8">0</span>;
 <span class="tok-569cd6">int</span> prevRight = <span class="tok-b5cea8">0</span>;

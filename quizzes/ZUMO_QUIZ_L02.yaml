@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 02
 # Mastering the Code · Reading Code You Didn't Write
 #
-# Bank version: v1.0.12
+# Bank version: v1.0.14
 #   S180 follow-up: v03.24.0 -> v03.24.1. The mechanism sentence shipped in v03.24.0 was WRONG
 #   and a compile-and-simulate arm caught it in the same session. It claimed all three screens
 #   draw *in a single trip through loop()*. Transcribed from pushbutton-arduino's own
@@ -91,10 +91,19 @@ title: "Mastering the Code — Reading Code You Didn't Write"
 # sits below loop() and is invisible at the call. B01-B04 re-read and untouched; B02's "seven
 # numbered sections and one unnumbered row" still holds, since §3.1's reframe changed why the
 # order exists, not what is in it.
-bank_version: "1.0.12"
+# S182: THAT RULING IS OVERTURNED, and the note above is left standing as the record of it.
+# DJ ruled the nine-section canon (Bible §18.3a): INCLUDES, SETUP and MAIN LOOP became real
+# banners and FUNCTION PROTOTYPES is now section 6, so nothing is unnumbered any more.
+# B01 was re-keyed - GLOBAL VARIABLES now sits between Constants and Prototypes, so its old
+# correct answer is false. B02 was REPLACED rather than edited: the question it asked (which
+# row is unnumbered) no longer has an answer. The retired claim survives as B02's strongest
+# distractor, which is where a loose reader now loses a point instead of gaining one.
+# The lesson: a previous session CHECKED B02, ruled it safe, and wrote that down - and the
+# note is what made it survive. §16.30 again: a claim outlives the check that blessed it.
+bank_version: "1.0.14"
 source:
-  lesson_02: "v03.24.1"
-  lesson_01: "v03.31.3"
+  lesson_02: "v03.25.0"
+  lesson_01: "v03.31.4"
 
 sets:
 
@@ -110,38 +119,42 @@ sets:
     suggested_draw: 10
     questions:
 
-      # ---------- The seven sections ----------
+      # ---------- The nine sections ----------
       - id: L02_B01
         type: multiple_choice
         cite: "§3.1"
         points: 1
         stem: "In the Sketch Anatomy, which section comes immediately AFTER Constants?"
         options:
+          - text: "Global Variables"
+            correct: true
+          - text: "Function Prototypes"
+            correct: false
+            why: "Prototypes come next, but Global Variables sit between them and Constants — both hold data, so they are neighbours."
           - text: "setup()"
             correct: false
-            why: "setup() comes after the prototypes row, not immediately after Constants."
-          - text: "Function Prototypes"
-            correct: true
+            why: "setup() is section 7. Three sections sit between it and Constants."
           - text: "Hardware Objects"
             correct: false
-            why: "Hardware Objects come before Constants."
-          - text: "Helper Functions"
-            correct: false
+            why: "Hardware Objects come BEFORE Constants, not after."
 
       - id: L02_B02
         type: multiple_choice
         cite: "§3.1"
         points: 1
-        stem: "The Sketch Anatomy diagram has seven NUMBERED sections and one UNNUMBERED row. Which is the unnumbered one?"
+        stem: "Function Prototypes is section 6, in the middle of the nine. What does it divide?"
         options:
-          - text: "The header comment"
-            correct: false
-          - text: "Function Prototypes"
+          - text: "Everything above it STORES something; everything from it down RUNS."
             correct: true
-          - text: "The #include line"
+          - text: "It is the unnumbered row — it divides nothing, it just sits between Constants and setup()."
             correct: false
-          - text: "Helper Functions"
+            why: "All nine sections are numbered. Prototypes is section 6, not an extra row squeezed in."
+          - text: "Code you wrote above; code the Zumo library wrote below."
             correct: false
+            why: "Every section below the prototypes is code YOU write — setup(), loop() and your own helpers."
+          - text: "Sections that are required above; sections that are optional below."
+            correct: false
+            why: "All nine always appear. An unused one carries // (none needed for this challenge) rather than disappearing."
 
       - id: L02_B03
         type: multiple_choice

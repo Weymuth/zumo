@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.24.1 -->
+<!-- Lesson version: v03.25.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -111,7 +111,7 @@
 <h1 class="h1">Mastering the Code</h1>
 <div class="div-fs-11em">Reading Code You Didn't Write</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.24 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.25 — August 2026</div>
 </div>
 
 <!-- ============================================ -->
@@ -420,7 +420,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <!-- ============================================ -->
 </div>
 <!-- ===================== SECTION 3: THEORY ===================== -->
-<div class="div-bg-1f2a3d"><div id="section-3"><span class="span-d-block-2">Section 3 · Theory</span><span class="span-d-block">The Seven Sections of a Program</span></div></div>
+<div class="div-bg-1f2a3d"><div id="section-3"><span class="span-d-block-2">Section 3 · Theory</span><span class="span-d-block">The Nine Sections of a Program</span></div></div>
 <div class="div-1f2a3d">
 
 <p>Every Arduino program you write will have the same basic structure. Think of it like a recipe — ingredients at the top, instructions in the middle, and techniques at the end.</p>
@@ -491,29 +491,31 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </div>
 
-<h3 id="section-3-1" class="h3-c-2e86ab">3.1 The Seven Sections</h3>
+<h3 id="section-3-1" class="h3-c-2e86ab">3.1 The Nine Sections</h3>
 
 <p>Keep this diagram visible while you code. This order is not a rule of the C++ language — the compiler would accept almost any arrangement. It is the <strong>RoboLore standard</strong>: every program in this book is organized this way, and so is every project the Maker builds for you. A section may be empty in a given program, but it always has a home:</p>
 
-<div class="div-m-20px0"><img src="../images/L02_GRAPHIC_2-05_sketch_anatomy.svg" alt="The Sketch Anatomy: seven numbered code sections with the unnumbered Function Prototypes row between Constants and setup()" class="img-h-auto"><div class="div-c-666"><strong>[GRAPHIC 2.5]</strong> The Sketch Anatomy — the seven numbered sections plus the unnumbered Function Prototypes row (File: L02_GRAPHIC_2-05_sketch_anatomy.svg)</div></div>
+<div class="div-m-20px0"><img src="../images/L02_GRAPHIC_2-05_sketch_anatomy.svg" alt="The Sketch Anatomy: nine numbered code sections, from the header comment down to the helper functions" class="img-h-auto"><div class="div-c-666"><strong>[GRAPHIC 2.5]</strong> The Sketch Anatomy — the nine numbered sections, in the order every program in this book uses them (File: L02_GRAPHIC_2-05_sketch_anatomy.svg)</div></div>
 
 <p><strong>Color Key:</strong> 
 
-<span class="tok-ce9178">■</span> Header | 
+<span class="tok-ce9178">■</span> 1 Header | 
 
-<span class="tok-c586c0">■</span> Include | 
+<span class="tok-c586c0">■</span> 2 Includes | 
 
-<span class="tok-dcdcaa">■</span> Objects | 
+<span class="tok-dcdcaa">■</span> 3 Objects | 
 
-<span class="tok-4fc1ff">■</span> Constants | 
+<span class="tok-4fc1ff">■</span> 4 Constants | 
 
-<span class="tok-9cdcfe">□</span> Prototypes (unnumbered) | 
+<span class="tok-b5cea8">■</span> 5 Global Variables | 
 
-<span class="tok-4ec9b0">■</span> setup() | 
+<span class="tok-9cdcfe">■</span> 6 Prototypes | 
 
-<span class="tok-569cd6">■</span> loop() | 
+<span class="tok-4ec9b0">■</span> 7 setup() | 
 
-<span class="tok-9cdcfe">■</span> Helpers</p>
+<span class="tok-569cd6">■</span> 8 loop() | 
+
+<span class="tok-c586c0">■</span> 9 Helpers</p>
 
 <div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP" data-callout="2.10">
 
@@ -533,7 +535,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 </div>
 
 <div class="callout-2da99d-bg-e9f7f5" data-family="INSIGHT" data-callout="2.12">
-<div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT — That Unnumbered Row, in 10 Seconds</div>
+<div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT — Why Section 6 Exists, in 10 Seconds</div>
 <p>The gray <strong>Function Prototypes</strong> row earns its place with one line. Call a helper that is defined <em>below</em> <code>loop()</code>, and the build fails:</p>
 <pre class="pre-m-0"><span class="tok-569cd6">void</span> loop() {
   sayHello(); <span class="tok-6a9955">// ERROR: 'sayHello' was not declared in this scope</span>
@@ -543,7 +545,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <span class="tok-569cd6">void</span> sayHello() {
   <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Hello!"</span>));
 }</pre>
-<p>The fix is a <strong>prototype</strong> — a one-line promise, up in that unnumbered row, that the full definition exists further down:</p>
+<p>The fix is a <strong>prototype</strong> — a one-line promise, up in the FUNCTION PROTOTYPES section, that the full definition exists further down:</p>
 <pre class="pre-m-0"><span class="tok-569cd6">void</span> sayHello(); <span class="tok-6a9955">// The prototype - a one-line promise, up top</span>
 
 <span class="tok-569cd6">void</span> loop() {
@@ -598,7 +600,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 <summary>🔓 Answers — click after you have written all three down</summary>
 <div class="div-mt-12px">
 
-<p><strong>Build 1 — the one you already know.</strong> Stops at <code>flashTwice();</code> inside <code>loop()</code>: <em>'flashTwice' was not declared in this scope</em>. The definition is below <code>loop()</code> and the compiler has not met it yet. <strong>Fix:</strong> a prototype up in the unnumbered row.</p>
+<p><strong>Build 1 — the one you already know.</strong> Stops at <code>flashTwice();</code> inside <code>loop()</code>: <em>'flashTwice' was not declared in this scope</em>. The definition is below <code>loop()</code> and the compiler has not met it yet. <strong>Fix:</strong> a prototype up in the FUNCTION PROTOTYPES section.</p>
 
 <p><strong>Build 2 — this one is different, and it is the trap.</strong> The prototype is there, so the <em>compiler</em> is satisfied and reports nothing. The error arrives later and from a different program: <em>undefined reference to 'beep()'</em>. That is the <strong>linker</strong> talking. You promised a function existed and never wrote it. A prototype is a promise, not a definition — and something eventually checks.</p>
 
@@ -684,13 +686,13 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <p>You will write almost everything in this lesson with <code>int</code>, and you will use <code>bool</code> too, so those two are worth a closer look now. The other three you will meet where they matter: <code>long</code> shows up in <strong>Lesson 5</strong> for timing, <code>float</code> appears once you start doing math with decimals, and <code>char</code> is here for completeness — this book rarely needs it.</p>
 
-<h4 class="h4-c-433014-2">int — the workhorse</h4>
+<h4 class="h4-c-433014">int — the workhorse</h4>
 
 <p>An <code>int</code> holds a whole number: <code>150</code>, <code>0</code>, <code>-42</code>. No fractions. This is the type you reach for by default — motor speeds, counts, pin numbers, loop counters are all whole numbers, so they are all <code>int</code>s.</p>
 
 <p>The catch is the one you already saw in the warning above: an <code>int</code> cannot hold a decimal. If you try to put <code>2.5</code> into an <code>int</code>, the robot does not round — it <strong>chops off</strong> everything after the decimal point and keeps <code>2</code>. That is not an error, so nothing warns you; you just get the wrong number. When you need the fraction, that is what <code>float</code> is for — you will need one in Lesson 6, the first time you divide.</p>
 
-<h4 class="h4-c-433014-2">bool — the yes/no switch</h4>
+<h4 class="h4-c-433014">bool — the yes/no switch</h4>
 
 <p>A <code>bool</code> (short for <em>Boolean</em>, named after mathematician George Boole) holds exactly one of two values: <code>true</code> or <code>false</code>. Nothing else. Think of it as a light switch — on or off, with no in-between.</p>
 
@@ -844,7 +846,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 </div>
 
-<h4 class="h4-c-433014-2">Bad Comments vs. Good Comments</h4>
+<h4 class="h4-c-433014">Bad Comments vs. Good Comments</h4>
 
 <table class="table-bc-collapse">
 
@@ -1114,10 +1116,10 @@ ledYellow(<span class="tok-b5cea8">1</span>);       <span class="tok-6a9955">// 
 <div class="div-bg-433014"><div id="section-5"><span class="span-d-block-2">Section 5 · Code Walkthrough</span><span class="span-d-block">Reading a Program Top to Bottom</span></div></div>
 <div class="div-433014">
 
-<p>You have seen the shape of a program in Section 3. This section walks the seven sections one at a time, in the order they appear in the file, and says what each one is actually for.</p>
+<p>You have seen the shape of a program in Section 3. This section walks the nine sections one at a time, in the order they appear in the file, and says what each one is actually for.</p>
 
 
-<h4 class="h4-c-433014-2">Header Comment</h4>
+<h4 class="h4-c-433014">Header Comment</h4>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.31">
 
@@ -1168,7 +1170,7 @@ DATE: December 10, 2024
 
 </div>
 
-<h4 class="h4-c-433014-2">Include Statement</h4>
+<h4 class="h4-c-433014">Include Statement</h4>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.34">
 
@@ -1180,7 +1182,7 @@ DATE: December 10, 2024
 
 <p>Without this line, the computer won't know what <code>Zumo32U4ButtonA</code> or <code>Zumo32U4Motors</code> means.</p>
 
-<h4 class="h4-c-433014-2">Hardware Objects</h4>
+<h4 class="h4-c-433014">Hardware Objects</h4>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.35">
 
@@ -1329,7 +1331,7 @@ DATE: December 10, 2024
 
 </div>
 
-<h4 class="h4-c-433014-2">Constants</h4>
+<h4 class="h4-c-433014">Constants</h4>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.37">
 
@@ -1373,7 +1375,35 @@ DATE: December 10, 2024
 
 </div>
 
-<h4 class="h4-c-433014-2">setup() Function</h4>
+<h4 class="h4-c-433014">Global Variables</h4>
+
+<p>Constants hold values that never change. This section holds the opposite: values that <strong>do</strong> change while the robot runs, and that have to survive from one pass of <code>loop()</code> to the next.</p>
+
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-569cd6">int</span> pressCount = <span class="tok-b5cea8">0</span>; <span class="tok-6a9955">// How many times button A has been pressed</span></pre>
+
+<p>Declare <code>pressCount</code> inside <code>loop()</code> and it is born as 0 and dies again on every pass — it can never count anything. Declared here, outside every function, it is created once when the robot powers on and keeps its value until the power goes off.</p>
+
+<div class="callout-2196f3-bg-e3f2fd-2" data-family="LEARN" data-callout="2.123">
+
+<div class="div-c-0d47a1"><img src="../images/marks/book.svg" alt="" data-mark="book">LEARN — Careful: the Constants Above Are Global Too</div>
+
+<p>The name of this section is a little unfair. <code>MOTOR_SPEED</code> up in CONSTANTS is declared outside every function as well, so it has global <em>scope</em> too — the Hardware Objects section said exactly that a few screens back.</p>
+
+<p>Scope is not what separates these two sections. <strong>Change is.</strong> Everything in CONSTANTS is fixed with <code>const</code> and the compiler will refuse to let you alter it. Everything here is expected to change while the program runs. When you are deciding which section a new line belongs in, ask one question: <em>does this value change while the robot is running?</em></p>
+
+</div>
+
+<h4 class="h4-c-433014">Function Prototypes</h4>
+
+<p>A one-line promise for each helper function you write, so the compiler knows the name before it meets a call to it:</p>
+
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-569cd6">void</span> blinkLED();</pre>
+
+<p>The body is not here — it is down in HELPER FUNCTIONS, below <code>loop()</code>. This section is the dividing line of the whole file: everything above it <em>stores</em> something, everything from here down <em>runs</em>. §3.1 shows why leaving a promise out breaks the build, and where the error actually appears.</p>
+
+<h4 class="h4-c-433014">setup() Function</h4>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.40">
 
@@ -1387,7 +1417,7 @@ display.clear(); <span class="tok-6a9955">// Clear the screen</span>
 display.print(F(<span class="tok-ce9178">"Ready!"</span>)); <span class="tok-6a9955">// Show startup message</span>
 }</pre>
 
-<h4 class="h4-c-433014-2">loop() Function</h4>
+<h4 class="h4-c-433014">loop() Function</h4>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.41">
 
@@ -1434,7 +1464,7 @@ display.print(F(<span class="tok-ce9178">"Ready!"</span>)); <span class="tok-6a9
 
 </div>
 
-<h4 class="h4-c-433014-2">Helper Functions</h4>
+<h4 class="h4-c-433014">Helper Functions</h4>
 
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="2.44">
 
@@ -1483,10 +1513,10 @@ ledYellow(<span class="tok-b5cea8">0</span>); <span class="tok-6a9955">// Turn O
 
 <p>That is the reading done. Before you build a single line, answer these five <em>from your head</em> — no scrolling back, no robot, no help. Then click to compare. If your answer and the reveal disagree, the section number tells you where to re-read.</p>
 
-<!-- QUIZVARIANT 2.1: In your own words, how would you explain the Code Anatomy to a friend? Name its sections in order. (answer: Header, Include, Objects, Constants, setup(), loop(), Helpers) -->
-<details data-reveal="quiz"><summary>1. Name the seven numbered sections of an Arduino sketch, in the order they appear in the file — and the one unnumbered row that sits among them. (§3.1)</summary>
+<!-- QUIZVARIANT 2.1: In your own words, how would you explain the Code Anatomy to a friend? Name its sections in order. (answer: Header, Includes, Objects, Constants, Global Variables, Prototypes, setup(), loop(), Helpers) -->
+<details data-reveal="quiz"><summary>1. Name the nine numbered sections of an Arduino sketch, in the order they appear in the file. (§3.1)</summary>
 
-<div class="div-mt-12px"><p><strong>Header Comment → Include → Hardware Objects → Constants → setup() → loop() → Helper Functions.</strong> The unnumbered row is <strong>Function Prototypes</strong>, which sits between Constants and setup().</p></div>
+<div class="div-mt-12px"><p><strong>Header Comment → Includes → Hardware Objects → Constants → Global Variables → Function Prototypes → setup() → loop() → Helper Functions.</strong> Function Prototypes is the dividing line: everything above it is <em>data</em>, everything from it down is <em>functions</em>.</p></div>
 
 </details>
 
@@ -2972,16 +3002,16 @@ DATE: [Today's Date]
   ledYellow(<span class="tok-b5cea8">0</span>);    <span class="tok-6a9955">//    turn it off</span>
 }                   <span class="tok-6a9955">//    body ends</span></pre>
 
-<h4 class="h4-c-433014-2">Return type</h4>
+<h4 class="h4-c-433014">Return type</h4>
 <p><code>void</code> means "this function does a job but doesn't hand anything back." Later you'll write functions that return a value (like a sensor reading) — those name the type they return instead, such as <code>int</code> or <code>bool</code>.</p>
 
-<h4 class="h4-c-433014-2">Name</h4>
+<h4 class="h4-c-433014">Name</h4>
 <p><code>blinkLED</code> — a clear, camelCase verb phrase describing what it does. Good names make calls read like plain English.</p>
 
-<h4 class="h4-c-433014-2">Parameters</h4>
+<h4 class="h4-c-433014">Parameters</h4>
 <p>The empty <code>()</code> means this version takes no input. The caller can't customize it — it always blinks exactly once for 100ms. We'll fix that next.</p>
 
-<h4 class="h4-c-433014-2">Body</h4>
+<h4 class="h4-c-433014">Body</h4>
 <p>Everything between <code>{</code> and <code>}</code> — the actual saved steps that run when the function is called.</p>
 
 <h3 class="h3-c-00474b">8A.3 Parameters: Making a Function Flexible</h3>
@@ -3672,9 +3702,26 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
 
 <p><strong>Time Limit:</strong> 3 minutes</p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
 }
+
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">3</span>; i++) {
     ledYellow(<span class="tok-b5cea8">1</span>);
@@ -3683,7 +3730,10 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
     delay(<span class="tok-b5cea8">200</span>);
   }
   delay(<span class="tok-b5cea8">2000</span>);
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="hint">
 
@@ -3707,17 +3757,36 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
 
 <p><strong>Time Limit:</strong> 3 minutes</p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
+
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
 }
+
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonA.isPressed()) {
     ledYellow(<span class="tok-b5cea8">0</span>);
   } <span class="tok-569cd6">else</span> {
     ledYellow(<span class="tok-b5cea8">1</span>);
   }
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="hint">
 
@@ -3741,16 +3810,35 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
 
 <p><strong>Time Limit:</strong> 3 minutes</p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
 <span class="tok-4ec9b6">Zumo32U4Buzzer</span> buzzer;
+
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
 }
+
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     buzzer.playFrequency(<span class="tok-b5cea8">440</span>, <span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">12</span>);
   }
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="hint">
 
@@ -3774,8 +3862,22 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
 
 <p><strong>Time Limit:</strong> 3 minutes</p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4OLED</span> display;
+
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
   display.clear();
   display.setLayout21x8();
@@ -3784,8 +3886,13 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">2</span>);
   display.print(F(<span class="tok-ce9178">"ZUMO"</span>));
 }
+
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="hint">
 
@@ -3809,14 +3916,33 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
 
 <p><strong>Time Limit:</strong> 3 minutes</p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4Buzzer</span> buzzer;
+
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
 }
+
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   buzzer.playFrequency(<span class="tok-b5cea8">880</span>, <span class="tok-b5cea8">100</span>, <span class="tok-b5cea8">10</span>);
   delay(<span class="tok-b5cea8">150</span>);
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="hint">
 
@@ -3849,18 +3975,37 @@ delay(<span class="tok-b5cea8">300</span>);   <span class="tok-6a9955">// So one
 
 </div>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
+
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
 }
+
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonB.isPressed()) {
     motors.setSpeeds(<span class="tok-b5cea8">400</span>, <span class="tok-b5cea8">400</span>);
   } <span class="tok-569cd6">else</span> {
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   }
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="hint">
 
@@ -3937,9 +4082,6 @@ AUTHOR: Mr. Weymuth
 DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span class="tok-b5cea8">2026</span>
 =====================================================
 */
-
-<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
-
 <span class="tok-6a9955">// ==================== MY PLAN ====================</span>
 <span class="tok-6a9955">// Pseudo-code first, real code second.</span>
 <span class="tok-6a9955">// In plain English: what should this program do,</span>
@@ -3953,6 +4095,9 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 <span class="tok-6a9955">// Update the plan when your plan changes.</span>
 <span class="tok-6a9955">// =================================================</span>
 
+<span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+
 <span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA; <span class="tok-6a9955">// Left button</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB; <span class="tok-6a9955">// Center button</span>
@@ -3960,6 +4105,10 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 <span class="tok-4ec9b6">Zumo32U4OLED</span> display; <span class="tok-6a9955">// OLED screen</span>
 
 <span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
 
 <span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
 <span class="tok-569cd6">void</span> blinkLED();   <span class="tok-6a9955">// Full definition is below loop()</span>
@@ -3967,6 +4116,7 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 <span class="tok-569cd6">void</span> showControlsScreen();
 <span class="tok-569cd6">void</span> showStatusScreen();
 
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
   <span class="tok-6a9955">// Start communication with computer</span>
   <span class="tok-4ec9b6">Serial</span>.begin(<span class="tok-b5cea8">115200</span>);
@@ -3980,6 +4130,7 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
   display.print(F(<span class="tok-ce9178">"Press A, B, or C"</span>));
 }
 
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) {
     <span class="tok-4ec9b6">Serial</span>.println(F(<span class="tok-ce9178">"Button A pressed!"</span>));
@@ -4005,7 +4156,6 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
   delay(<span class="tok-b5cea8">100</span>); <span class="tok-6a9955">// Wait</span>
   ledYellow(<span class="tok-b5cea8">0</span>); <span class="tok-6a9955">// Turn OFF</span>
 }
-
 <span class="tok-6a9955">// Show the About screen</span>
 <span class="tok-569cd6">void</span> showAboutScreen() {
   display.clear(); <span class="tok-6a9955">// Erase whatever was on screen</span>
@@ -4019,7 +4169,6 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">6</span>);
   display.print(F(<span class="tok-ce9178">"By: YOUR NAME"</span>));
 }
-
 <span class="tok-6a9955">// Show the Controls screen</span>
 <span class="tok-569cd6">void</span> showControlsScreen() {
   display.clear(); <span class="tok-6a9955">// Erase whatever was on screen</span>
@@ -4033,7 +4182,6 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4</span>);
   display.print(F(<span class="tok-ce9178">"C: Status"</span>));
 }
-
 <span class="tok-6a9955">// Show the Status screen</span>
 <span class="tok-569cd6">void</span> showStatusScreen() {
   display.clear(); <span class="tok-6a9955">// Erase whatever was on screen</span>
@@ -4060,6 +4208,10 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 
 <li>Constants</li>
 
+<li>Global variables</li>
+
+<li>Function prototypes</li>
+
 <li><code>setup()</code> — runs once</li>
 
 <li><code>loop()</code> — runs forever</li>
@@ -4068,7 +4220,7 @@ DATE: <span class="tok-b5cea8">8</span>/<span class="tok-b5cea8">3</span>/<span 
 
 </ol>
 
-<p>Plus the <strong>unnumbered</strong> row that is not one of the seven: <strong>Function Prototypes</strong>, which sits between Constants and <code>setup()</code> — see the template above.</p>
+<p><strong>Function Prototypes</strong> is section 6 — the line between data and functions. Everything above it stores something; everything from it down runs. See the template above.</p>
 
 <h3 class="h3-c-6f7582-3">Program Execution Flow</h3>
 
@@ -4415,7 +4567,7 @@ display.print(count);              <span class="tok-6a9955">// a variable → no
 </tr>
 <tr>
 <td class="td-ddd-2"><strong>[GRAPHIC 2.5]</strong></td>
-<td class="td-ddd-2">The Sketch Anatomy — the seven numbered sections plus the unnumbered Function Prototypes row</td>
+<td class="td-ddd-2">The Sketch Anatomy — the nine numbered sections, in the order every program in this book uses them</td>
 <td class="td-ddd-2">Diagram (SVG)</td>
 <td class="td-ddd-2">✅ in the lesson</td>
 </tr>

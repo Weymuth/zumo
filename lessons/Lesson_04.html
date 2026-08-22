@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.29.3 -->
+<!-- Lesson version: v04.29.5 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -319,7 +319,7 @@
 
 <p>Theory time is over — pick up your robot. In this section you will physically locate everything Section 3 talked about: the five sensor windows, the two jumpers that decide which sensors are awake, and then you will build the test surface and the software project the rest of the lesson runs on. Do these four steps in order; each one takes just a few minutes.</p>
 
-<h3 class="h4-c-433014">4.1 Find the Five Windows</h3>
+<h3 class="h4-c-433014-2">4.1 Find the Five Windows</h3>
 
 <div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW" data-callout="4.9">
 <div class="div-fs-105em"><img src="../images/marks/play-circle.svg" alt="" data-mark="play-circle">DO THIS NOW</div>
@@ -338,7 +338,7 @@
 <p class="p-mb-0">Don't just trust the pose — in Section 6 you will <em>verify</em> your numbering with software: slide the tape under one end of the row and watch which reading jumps. If the "wrong" end reacts, you numbered the sensors backward. Thirty seconds of checking beats a whole afternoon of debugging a robot that steers the wrong way.</p>
 </div>
 
-<h3 class="h4-c-433014">4.2 Find the Two Jumpers</h3>
+<h3 class="h4-c-433014-2">4.2 Find the Two Jumpers</h3>
 
 <p>Stay in the same pose and look at the front sensor board — the separate small circuit board that carries the sensor windows. Somewhere on it sit <strong>two tiny plastic jumper blocks</strong>, each straddling two of three metal pins. These are the railroad switches from the Section 3.2 table. Each jumper has two possible positions, and the positions are labeled on the board: one jumper chooses between <strong>DN2</strong> (line sensor 2) and <strong>LFT</strong> (left proximity receiver); the other chooses between <strong>DN4</strong> (line sensor 4) and <strong>RGT</strong> (right proximity receiver).</p>
 
@@ -352,7 +352,7 @@
 <p class="p-mb-0">You will move these jumpers in Act Two (Section 6) — not now. When the time comes, three rules apply: <strong>power OFF</strong> before touching them; work <strong>over a table</strong>, because a dropped jumper is a lost jumper; and use <strong>tweezers or a careful fingernail</strong> — the blocks are small and the pins bend if you fight them. A jumper only ever slides straight up off its pins and straight back down onto two pins. No twisting.</p>
 </div>
 
-<h3 class="h4-c-433014">4.3 Build Your Test Surface</h3>
+<h3 class="h4-c-433014-2">4.3 Build Your Test Surface</h3>
 
 <p>Every measurement in this lesson happens on a surface you build in the next five minutes, and the quality of your data depends on it. You need three things: strong contrast, a flat surface, and no direct sunlight.</p>
 
@@ -366,7 +366,7 @@
 
 <p>Position the whole thing <strong>away from windows</strong>. You learned why in Section 3.1: sunlight is loaded with infrared, and a sunbeam across your test surface will quietly poison every reading you take today. Classroom lighting is fine; the sensors bring their own light.</p>
 
-<h3 class="h4-c-433014">4.4 Set Up Your Project</h3>
+<h3 class="h4-c-433014-2">4.4 Set Up Your Project</h3>
 
 <div class="callout-ff8c00-bg-ffe4cc" data-family="DO THIS NOW" data-callout="4.12">
 <div class="div-fs-105em"><img src="../images/marks/play-circle.svg" alt="" data-mark="play-circle">DO THIS NOW — Start a New Lesson (same ritual as always)</div>
@@ -405,15 +405,15 @@
 </div>
 <div class="div-433014">
 
-<p>This section walks through every piece of today's program so you understand what each part does and why it exists. Think of it as the blueprint; Section 6 is the construction. Read it with your project open — everything here goes into <strong>one</strong> <code>main.cpp</code>, organized in the seven-section layout you have used since Lesson 2.</p>
+<p>This section walks through every piece of today's program so you understand what each part does and why it exists. Think of it as the blueprint; Section 6 is the construction. Read it with your project open — everything here goes into <strong>one</strong> <code>main.cpp</code>, organized in the nine-section layout you have used since Lesson 2.</p>
 
-<h3 class="h4-c-433014">5.1 The Shape of Today's Program</h3>
+<h3 class="h4-c-433014-2">5.1 The Shape of Today's Program</h3>
 
 <p>Both acts of this lesson run <em>the same program</em> in two costumes. In Act One it wakes three sensors and shows their calibrated readings. In Act Two you change two lines and a display function, and it wakes five sensors and adds a line-position readout. Nothing in it drives the motors — today's program only <strong>senses and shows</strong>. (The driving starts in Section 9, once you can trust what the robot sees.)</p>
 
 <p>The program has five jobs, and each one maps to a helper or a section of <code>main.cpp</code>: declare the hardware, wake the right sensor set, calibrate, read into an array, and display. Let's take them in order.</p>
 
-<h3 class="h4-c-433014">5.2 The Hardware Objects</h3>
+<h3 class="h4-c-433014-2">5.2 The Hardware Objects</h3>
 
 <pre class="div-m-16px0"><span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
@@ -428,7 +428,7 @@
 
 <p>Four objects this time. The display and the two buttons you know; <code>buttonB</code> earns its seat because the STANDARD HELPERS use the A+B combination for the battery check (Section 5.6). The new face is <strong><code>Zumo32U4LineSensors lineSensors;</code></strong> — your handle on the entire reflectance array. Every sensor operation in this lesson goes through this one object: waking sensors, calibrating them, reading them raw or calibrated, and computing the line position.</p>
 
-<h3 class="h4-c-433014">5.3 The Constants</h3>
+<h3 class="h4-c-433014-2">5.3 The Constants</h3>
 
 <table class="table-bc-collapse">
 <tr class="tr-bg-352405">
@@ -443,7 +443,7 @@
 
 <p>Same discipline as Lesson 2: values that tune behavior live at the top, in ALL_CAPS, defined once. When Act Two arrives, changing <code>NUM_SENSORS</code> in <em>one place</em> resizes the array and retunes every loop automatically. That is the payoff for killing magic numbers.</p>
 
-<h3 class="h4-c-433014">5.4 Waking the Sensors: The Software Half of the Jumper Story</h3>
+<h3 class="h4-c-433014-2">5.4 Waking the Sensors: The Software Half of the Jumper Story</h3>
 
 <p>The jumpers are the hardware half of the three-vs-five choice. The software half is a single line in <code>setup()</code>:</p>
 
@@ -459,7 +459,7 @@
 
 <p>Notice the asymmetry, because it matters twice today. <code>initThreeSensors()</code> is safe everywhere — its three sensors are hardwired. <code>initFiveSensors()</code> makes a <em>promise about the hardware</em> — that pins 20 and 4 actually lead to line sensors. The code compiles either way; the compiler cannot see your jumpers. If the promise is false, nothing crashes and nothing warns you — sensors 2 and 4 simply report garbage. You will see this with your own eyes in Section 6, on purpose, because it is one of the most important lessons in robotics: <strong>hardware and software each keep promises the other can't check.</strong></p>
 
-<h3 class="h4-c-433014">5.5 Reading Into an Array — Three Values, One Variable</h3>
+<h3 class="h4-c-433014-2">5.5 Reading Into an Array — Three Values, One Variable</h3>
 
 <p>Lesson 3 promised that the line sensors would hand you data "as an array," and its §8A.5 gave you the tool — a row of numbered boxes under one name. Here is that moment: the same idea, now holding real sensor readings. One reading produces three numbers at once (five in Act Two) — one per sensor. Rather than juggling three separate variables, the program declares a single <strong>array</strong>:</p>
 
@@ -494,7 +494,7 @@
 <p class="p-mb-0">A numbered row of same-type values stored under one name. Declared with a size (<code>unsigned int values[3];</code>), accessed by index in square brackets, and — always — indexed from zero. Arrays let one function call hand you many results at once, and let one loop process them all.</p>
 </div>
 
-<h3 class="h4-c-433014">5.6 The STANDARD HELPERS — Two Habits That Start Today</h3>
+<h3 class="h4-c-433014-2">5.6 The STANDARD HELPERS — Two Habits That Start Today</h3>
 
 <p>Open your Maker-made project and scroll to the bottom. Below your usual helper area sits a block you did not write, labeled <strong>STANDARD HELPERS (added after Lesson 3)</strong>, with two matching lines up in FUNCTION PROTOTYPES. Starting this lesson, <em>every</em> project you make ships with it. Here is the block in full — this is also the copy source if you ever build a project by hand from the plain template:</p>
 
@@ -550,7 +550,7 @@ Call it at the TOP of loop().
 <p class="p-mb-0">Today's program doesn't drive any motors — so why bother with a safety gate? Because habits only protect you if they're unconditional. The gate costs one button press; forming the habit now means it's already second nature in Section 9, when the motors come back.</p>
 </div>
 
-<h3 class="h4-c-433014">5.7 The Calibration Sweep</h3>
+<h3 class="h4-c-433014-2">5.7 The Calibration Sweep</h3>
 
 <pre class="div-m-16px0"><span class="tok-6a9955">/*
 calibrateSensors()
@@ -579,7 +579,7 @@ countdown ends. Every window must cross the tape.
 
 <p>The record books are the whole product of calibration. They live in RAM, they vanish at power-off, and every future <code>readCalibrated()</code> uses them to re-grade raw readings onto the honest 0–1000 scale.</p>
 
-<h3 class="h4-c-433014">5.8 Displaying What the Robot Sees</h3>
+<h3 class="h4-c-433014-2">5.8 Displaying What the Robot Sees</h3>
 
 <pre class="div-m-16px0"><span class="tok-6a9955">/*
 showReadings()
@@ -681,13 +681,13 @@ Serial Monitor: the full 0-1000 values, tab-separated.
     <p class="p-m-8px000">The <a href="../newproject.html?lesson=4" target="_blank" class="link-c-2e86ab">ZUMO Project Maker</a> has a <strong>DISCOVERIES</strong> menu for this lesson: pick the entry named for the step you're about to build, and it opens a project already caught up to that exact point. Missed a day? Broke your file beyond repair? Grab the right entry and keep moving — no shame, no retyping.</p>
 </div>
 
-<h3 class="h4-c-433014">ACT ONE — Three Sensors</h3>
+<h3 class="h4-c-433014-2">ACT ONE — Three Sensors</h3>
 
-<h4 class="h4-c-433014">Step 1 — Open your project and confirm the baseline</h4>
+<h4 class="h4-c-433014-2">Step 1 — Open your project and confirm the baseline</h4>
 
 <p>Open <strong>LastName_L04</strong> in VS Code (you made it in Section 4.4). Confirm the STANDARD HELPERS block sits at the bottom and its two prototypes sit in FUNCTION PROTOTYPES. Build (✓). Green before you touch anything — that's the baseline that proves later errors are yours, not the template's.</p>
 
-<h4 class="h4-c-433014">Step 2 — Hardware objects, constants, and the array</h4>
+<h4 class="h4-c-433014-2">Step 2 — Hardware objects, constants, and the array</h4>
 
 <p>Three things enter the file today: the cast, the settings, and one scratch-pad array.</p>
 
@@ -716,10 +716,10 @@ scratch pad →  one global array, a slot per active sensor —
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> CAL_TIME_MS = <span class="tok-b5cea8">5000</span>;        <span class="tok-6a9955">// calibration sweep window</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> DISPLAY_INTERVAL_MS = <span class="tok-b5cea8">100</span>; <span class="tok-6a9955">// refresh rate for readings</span>
 
-<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>   <span class="tok-6a9955">// already in your file - leave it where it is</span>
-
 <span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
-<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span></pre>
+<span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> lineSensorValues[NUM_SENSORS];   <span class="tok-6a9955">// one slot per active sensor</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>   <span class="tok-6a9955">// already in your file - leave it where it is</span></pre>
 </div>
 </details>
 
@@ -731,7 +731,7 @@ scratch pad →  one global array, a slot per active sensor —
 </ul>
 </div>
 
-<h4 class="h4-c-433014">Step 3 — setup(): wake the sensors</h4>
+<h4 class="h4-c-433014-2">Step 3 — setup(): wake the sensors</h4>
 
 <p>Three lines, three jobs — and one rule about where the last one sits.</p>
 
@@ -763,7 +763,7 @@ scratch pad →  one global array, a slot per active sensor —
 </ul>
 </div>
 
-<h4 class="h4-c-433014">Step 4 — loop(): raw readings to the Serial Monitor</h4>
+<h4 class="h4-c-433014-2">Step 4 — loop(): raw readings to the Serial Monitor</h4>
 
 <p>Now make the robot report what it sees, over and over, one line of numbers per pass.</p>
 
@@ -817,7 +817,7 @@ scratch pad →  one global array, a slot per active sensor —
 </table>
 </div>
 
-<h4 class="h4-c-433014">Step 5 — Add calibration (and meet a familiar red build)</h4>
+<h4 class="h4-c-433014-2">Step 5 — Add calibration (and meet a familiar red build)</h4>
 
 <p>Now make the readings honest. First, add one call in <code>setup()</code>, between the sensor init and the safety gate:</p>
 
@@ -894,7 +894,7 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 
 <p>Build — green again. The red build wasn't a detour; it was a rep. Every time that error message costs you ten seconds instead of ten minutes, Lesson 2 is paying rent.</p>
 
-<h4 class="h4-c-433014">Step 6 — Run Act One for real</h4>
+<h4 class="h4-c-433014-2">Step 6 — Run Act One for real</h4>
 
 <p>Upload. The robot now boots straight into <strong>"Sweep!"</strong> with a countdown — that's your five-second calibration window. Set it on the test surface and slide it side to side so <em>every window crosses the tape at least twice</em>. "Cal done," then the gate: press A.</p>
 
@@ -924,9 +924,9 @@ Serial Monitor: the full 0-1000 values, tab-separated.
 <strong class="strong-c-2e7d32">🏁 END OF ACT ONE — Three sensors mastered. Now let's wake the other two.</strong>
 </div>
 
-<h3 class="h4-c-433014">ACT TWO — Five Sensors</h3>
+<h3 class="h4-c-433014-2">ACT TWO — Five Sensors</h3>
 
-<h4 class="h4-c-433014">Step 7 — Change the software FIRST (yes, first — on purpose)</h4>
+<h4 class="h4-c-433014-2">Step 7 — Change the software FIRST (yes, first — on purpose)</h4>
 
 <p>We are deliberately doing this in the "wrong" order — code first, jumpers second — because the gap between those two steps teaches something no lecture can.</p>
 
@@ -1000,7 +1000,7 @@ Serial Monitor: full values plus the position.
 <p class="p-mb-0">Digits 1, 3, and 5 behave: slide tape under those sensors and they answer. Digits 2 and 4 do <strong>not</strong> respond to the tape — no matter what the line does under windows 2 and 4, those digits won't track it. The code asked pins 20 and 4 for line readings, but your jumpers still route those pins elsewhere. Nothing crashed. Nothing warned. The program simply reports numbers that mean nothing — <strong>the most dangerous kind of wrong.</strong> This is what a hardware/software mismatch looks like from the inside, and now you'll recognize it forever.</p>
 </div>
 
-<h4 class="h4-c-433014">Step 8 — Now move the jumpers</h4>
+<h4 class="h4-c-433014-2">Step 8 — Now move the jumpers</h4>
 
 <div class="div-999-2">[VIDEO 4.1] Moving the two configuration jumpers from the proximity position to DN2 / DN4 — full close-up procedure</div>
 

@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 03
 # Motor TRIM · No Two Motors Are the Same
 #
-# Bank version: v1.0.13
+# Bank version: v1.0.16
 #   S180 follow-up: v03.24.0 -> v03.24.1. The mechanism sentence shipped in v03.24.0 was WRONG
 #   and a compile-and-simulate arm caught it in the same session. It claimed all three screens
 #   draw *in a single trip through loop()*. Transcribed from pushbutton-arduino's own
@@ -123,10 +123,10 @@ title: "Motor TRIM — No Two Motors Are the Same"
 # B36 (L02 needed a FUNCTION PROTOTYPES section) and the TRIM Finder hardware-count item
 # ("all three buttons and the display are the same cast as Lesson 2"). Neither sits in a
 # changed region; the §4 rewrite makes the second MORE accurate, not less. Pin earned.
-bank_version: "1.0.13"
+bank_version: "1.0.16"
 source:
-  lesson_03: "v03.45.0"
-  lesson_02: "v03.24.1"
+  lesson_03: "v03.46.1"
+  lesson_02: "v03.25.0"
 
 sets:
 
@@ -710,16 +710,18 @@ sets:
       # ---------- §5 Code walkthrough ----------
       - id: L03_B36
         type: multiple_choice
-        cite: "§5.1"
+        cite: "§5.1, §5.4"
         points: 1
-        stem: "Lesson 2's program needed a FUNCTION PROTOTYPES section. Why does this lesson's program not need one?"
+        stem: "This lesson's program has a FUNCTION PROTOTYPES section with five lines in it. Why does it need them?"
         options:
-          - text: "This program defines its helper functions above setup(), so the compiler has already seen them before anything calls them"
+          - text: "The five helpers are defined at the BOTTOM of the file, below loop(), so the compiler meets the calls before it meets the definitions"
             correct: true
-          - text: "Prototypes were only ever needed in Lesson 2's template"
+          - text: "The helpers are defined above setup(), so the compiler has already seen them before anything calls them"
             correct: false
-          - text: "The Zumo32U4 library declares them for you"
+            why: "That layout is real and you will meet it in other people's code, but it is not what this book does — §5.1 puts helpers last so the promise up top always earns its place."
+          - text: "The Zumo32U4 library requires a prototype for every function you write"
             correct: false
+            why: "The library declares its OWN functions. Yours are yours to announce."
           - text: "Prototypes are optional in C++ and never actually required"
             correct: false
             why: "They are required whenever a function is used before the compiler has seen it — which is exactly the error Step 12 has you produce on purpose."

@@ -2,7 +2,18 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.16'
+VERSION = 'v1.72.19'
+# v1.72.19 (S182): callout baseline 1132 -> 1133 for L02's new LEARN 2.123; §27.11 digest
+#                  re-moved for the nine-section SVG and the §5 walkthrough entries.
+# v1.72.18 (S182): §27.11 digest re-moved after the nine-section SVG landed in L02 3.1 and
+#                  ten prose corrections. ORDER-ONLY again, proved before the baseline moved:
+#                  574/2,033 both ends, zero names added/dropped/repointed, maps IDENTICAL.
+# v1.72.17 (S182): §27.11 digest moved for the nine-section pass (Bible §18.3a). ORDER-ONLY,
+#                  and PROVED before the baseline was touched: 574 rules and 2,033 declarations
+#                  both ends, ZERO names added, dropped or repointed, name->declaration MAPS
+#                  IDENTICAL. The whole change is banner comment lines, which wear tok-6a9955 -
+#                  a class already second-most-used in the book, so not one rule even changed
+#                  RANK. §27.8b's cycle was not owed.
 # v1.72.15 (S180): CSS digest re-moved after 12.5 gained the StopReason guard ARM 9 demanded.
 #                  Order-only; maps identical, 574/2033 both ends.
 # v1.72.14 (S180): CSS digest re-moved after the six Maker links and five COMPILE CHECK
@@ -2114,7 +2125,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1208:                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
+if _seen != 1209:   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
                                       # lands one bullseye mark.
                                       # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
@@ -2150,7 +2161,7 @@ if _seen != 1208:                     # 1207 -> 1208 at S168: L13 Step 6b's THE 
                                       # L10. stars.svg in INSIGHT 10.113 (the StopReason
                                       # teaching block) plus exclamation-triangle, sticky
                                       # and check-circle in Step 6b's three new callouts.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,208 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,209 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2546,7 +2557,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '4a044d6878f8ceaa'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '4d9ce351660e1ddc'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
@@ -3530,8 +3541,13 @@ try:
     # geometry in L13 - gate 5.1's frozen debt is frozen, not a budget.
     # 1120 -> 1125 at S157: INSIGHT 10.113 plus Step 6b's four (card header, WARNING,
     # NOTE, CHECKPOINT). build_family_map assigns all five, UNASSIGNED 0.
-    elif _n != 1132:
-        bad.append('gate 59 saw %d callouts, expected the 1132 gate 47 holds' % _n)
+    # 1132 -> 1133 at S182: ONE new LEARN callout, L02 2.123 - the constants-are-global-too
+    # note that Bible 18.3a requires L02 to state exactly once. Family LEARN and geometry
+    # callout-2196f3-bg-e3f2fd-2 are both already in canon, so gate 5.1 stays silent, and
+    # build_family_map assigns it (1133/1133, UNASSIGNED 0). The id was DERIVED as max+1
+    # rather than typed - my first attempt used 2.60, which callout_id caught as a COLLISION.
+    elif _n != 1133:
+        bad.append('gate 59 saw %d callouts, expected the 1133 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)

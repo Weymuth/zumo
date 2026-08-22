@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.45.0 -->
+<!-- Lesson version: v03.46.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,7 +101,7 @@
 <h1 class="h1">Motor TRIM</h1>
 <div class="div-fs-11em">No Two Motors Are the Same</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.45 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.46 — August 2026</div>
 </div>
 
 <div class="callout-ffc107-bg-fff8e1" id="what-you-need-l03-p1" data-family="WHAT YOU NEED" data-callout="3.1">
@@ -377,7 +377,7 @@ After this lesson, your robot will finally drive straight—but it's still <em>b
 
 <!-- Direction vs Speed Separation -->
 
-<h4 class="h4-c-433014-2">Understanding Motor Commands: Speed vs. Direction</h4>
+<h4 class="h4-c-433014">Understanding Motor Commands: Speed vs. Direction</h4>
 
 <p>Here's something important that trips up many beginners: <strong>every motor value actually contains TWO pieces of information</strong>:</p>
 
@@ -1319,7 +1319,9 @@ Most classroom robots have the <strong>blue (75:1)</strong> sticker. If two robo
 
 </div>
 
-<p>The file structure is the <strong>seven-section</strong> <code>main.cpp</code> you know from Lesson 2 — with one twist: this program defines its helper functions <strong>above</strong> <code>setup()</code>, so it needs no FUNCTION PROTOTYPES section. Prototypes are only required when a function is <em>used before the compiler has seen it</em> (Lesson 2, Step 7). Both layouts are common in real code — you’ll write the above-setup style today and should recognize either one on sight.</p>
+<p>The file structure is the <strong>nine-section</strong> <code>main.cpp</code> you know from Lesson 2. Your helper functions live at the bottom, below <code>loop()</code> — which is exactly why each one needs a line in <strong>FUNCTION PROTOTYPES</strong> up top. That is the promise you met in Lesson 2: a function used before the compiler has seen it must be announced first.</p>
+
+<p>Defining helpers <em>above</em> <code>setup()</code> also works, and you will meet code written that way — recognize either layout on sight. This book puts helpers last for two reasons: you read what the program <em>does</em> before you read the plumbing, and it is the shape Lesson 7 splits into eight files, where the promises move to a header and the bodies stay behind.</p>
 
 <h3 class="h3-c-433014">5.2 What's New in This Lesson</h3>
 
@@ -1392,6 +1394,17 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 </table>
 
 <p><code>setup()</code> initializes the hardware and shows a start screen. <code>loop()</code> is the controller: it watches buttons A/B/C (decrease TRIM / run test / increase TRIM), calls the right function, and refreshes the display.</p>
+
+<p>All five live at the <strong>bottom</strong> of the file, below <code>loop()</code> — so all five must be announced at the top. This is the FUNCTION PROTOTYPES section of your <code>main.cpp</code>, and it is the whole of it:</p>
+
+<pre><span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-569cd6">void</span> runMotorTest();
+<span class="tok-569cd6">void</span> updateDisplay();
+<span class="tok-569cd6">void</span> blinkConfirm();
+<span class="tok-569cd6">void</span> printTrimAdvice();
+<span class="tok-569cd6">void</span> printInstructions();</pre>
+
+<p>Each line is a promise with no body: a name, what it hands back (<code>void</code> — nothing), and what it expects in the brackets (nothing). Delete any one of them and the build fails on the line that <em>calls</em> that function, not on the function itself — which is the compiler telling you it was never told the name.</p>
 
 <div class="callout-2da99d-bg-e9f7f5-3" data-family="INSIGHT" data-callout="3.45">
     <div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars"><strong>Why four small functions instead of one big <code>loop()</code>?</strong></div> Each function names a single idea, so <code>loop()</code> reads like a summary: "if button A, lower trim; if button B, run test." Short, named functions are easier to debug and reuse — the same habit you started in Lesson 2's 8A.
@@ -1723,7 +1736,7 @@ DATE: [Today's Date]
               test duration            2 seconds (in ms)
               TRIM adjustment step     5</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Three <code>const int</code> lines under a <code>// ===== CONFIGURATION =====</code> banner. ALL_CAPS names (Section 3.2 named all three), a short comment on each. If a value never changes while the program runs, <code>const</code> makes the compiler enforce it.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Three <code>const int</code> lines under a <code>// ===== CONSTANTS =====</code> banner. ALL_CAPS names (Section 3.2 named all three), a short comment on each. If a value never changes while the program runs, <code>const</code> makes the compiler enforce it.</p>
 
 <details data-reveal="check">
 
@@ -1731,7 +1744,7 @@ DATE: [Today's Date]
 
 <div class="div-mt-15px">
 
-<pre class="pre-m-0"><span class="tok-6a9955">// ===== CONFIGURATION =====</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== CONSTANTS =====</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> BASE_SPEED = <span class="tok-b5cea8">200</span>; <span class="tok-6a9955">// Base motor speed for testing</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TEST_DURATION = <span class="tok-b5cea8">2000</span>; <span class="tok-6a9955">// How long to run motors (ms)</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> TRIM_STEP = <span class="tok-b5cea8">5</span>; <span class="tok-6a9955">// How much TRIM changes per press</span></pre>
@@ -1769,7 +1782,7 @@ DATE: [Today's Date]
               how many tests run so far    starts at 0
               banner printed yet?          starts false</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Two <code>int</code>s and one <code>bool</code> under <code>// ===== STATE VARIABLES =====</code>. No <code>const</code> this time — these are the values the buttons will change. The names are in the step’s reveal if yours differ; matching names matter, because every later step calls these variables by name.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> Two <code>int</code>s and one <code>bool</code> under <code>// ===== GLOBAL VARIABLES =====</code>. No <code>const</code> this time — these are the values the buttons will change. The names are in the step’s reveal if yours differ; matching names matter, because every later step calls these variables by name.</p>
 
 <details data-reveal="check">
 
@@ -1777,7 +1790,7 @@ DATE: [Today's Date]
 
 <div class="div-mt-15px">
 
-<pre class="pre-m-0"><span class="tok-6a9955">// ===== STATE VARIABLES =====</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
 <span class="tok-569cd6">int</span> trimValue = <span class="tok-b5cea8">0</span>; <span class="tok-6a9955">// Current TRIM (-50 to +50 typical)</span>
 <span class="tok-569cd6">int</span> testCount = <span class="tok-b5cea8">0</span>; <span class="tok-6a9955">// How many tests we've run</span>
 <span class="tok-569cd6">bool</span> instructionsPrinted = <span class="tok-569cd6">false</span>; <span class="tok-6a9955">// Set true after the banner prints</span></pre>
@@ -1818,7 +1831,7 @@ DATE: [Today's Date]
               row 5:  "Tests run: " + the test counter
               row 7:  "A:- B:TEST C:+"</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> One <code>void</code> function opening the <code>// ===== HELPER FUNCTIONS =====</code> banner, placed <strong>above</strong> <code>setup()</code>. Every display call you need is in the <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a> table, and the volts math (<code>mv / 1000</code> and <code>(mv % 1000) / 100</code>) is in the <a href="#qr-battery" class="link-c-2e86ab">Battery</a> table. Comment block above the function — name, one dashed line, what it does.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> One <code>void</code> function in the <code>// ===== HELPER FUNCTIONS =====</code> section at the <strong>bottom</strong> of the file, with its promise already waiting up in FUNCTION PROTOTYPES. Every display call you need is in the <a href="#qr-display" class="link-c-2e86ab">⚡ Quick Reference → Display</a> table, and the volts math (<code>mv / 1000</code> and <code>(mv % 1000) / 100</code>) is in the <a href="#qr-battery" class="link-c-2e86ab">Battery</a> table. Comment block above the function — name, one dashed line, what it does.</p>
 
 <details data-reveal="check">
 
@@ -2001,7 +2014,7 @@ connects. (Why not setup()? See Step 11.)
               count the test, prompt "Done! L/R curve?"
               back to the main screen (updateDisplay)</pre>
 
-<p class="p-m-8px0"><strong>Now translate it yourself.</strong> The heart of the program — and every piece is findable: the speed math is the <a href="#qr-trim-pattern" class="link-c-2e86ab">⚡ Quick Reference → TRIM Pattern</a>, the range clamp is in <a href="#qr-constrain" class="link-c-2e86ab">Constrain</a>, the run/stop shape is the <a href="#qr-safe-run" class="link-c-2e86ab">Safe Motor Run Pattern</a>, and the screen calls are in <a href="#qr-display" class="link-c-2e86ab">Display</a>. Place it above <code>setup()</code>, after your other helpers. Work from the plan line by line; open the reveal only when you’ve got a version you believe in.</p>
+<p class="p-m-8px0"><strong>Now translate it yourself.</strong> The heart of the program — and every piece is findable: the speed math is the <a href="#qr-trim-pattern" class="link-c-2e86ab">⚡ Quick Reference → TRIM Pattern</a>, the range clamp is in <a href="#qr-constrain" class="link-c-2e86ab">Constrain</a>, the run/stop shape is the <a href="#qr-safe-run" class="link-c-2e86ab">Safe Motor Run Pattern</a>, and the screen calls are in <a href="#qr-display" class="link-c-2e86ab">Display</a>. Place it in HELPER FUNCTIONS at the bottom, after your other helpers — its prototype is already up top. Work from the plan line by line; open the reveal only when you’ve got a version you believe in.</p>
 
 <details data-reveal="check">
 
@@ -2161,7 +2174,7 @@ Displays countdown on OLED and logs to Serial.
 
 <div class="div-mt-15px">
 
-<pre class="pre-m-0"><span class="tok-6a9955">// ===== LOOP =====</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-6a9955">// The instant the Serial Monitor connects, print the banner (once)</span>
   <span class="tok-569cd6">if</span> (!instructionsPrinted && <span class="tok-4ec9b6">Serial</span>) {
@@ -2301,15 +2314,15 @@ Displays countdown on OLED and logs to Serial.
 
 <ol>
 
-<li>Select the <strong>entire</strong> <code>runMotorTest()</code> function (comment block through closing brace). Cut it.</li>
+<li>Go up to <code>// ===== FUNCTION PROTOTYPES =====</code> and delete one line: <code>void runMotorTest();</code></li>
 
-<li>Paste it at the very <strong>bottom</strong> of the file, below <code>loop()</code>. Build.</li>
+<li>Change nothing else. Build.</li>
 
 <li>Read the error — you’ll get exactly: <strong class="span-ff-uimonosp">error: ‘runMotorTest’ was not declared in this scope</strong></li>
 
 </ol>
 
-<p>The compiler reads top to bottom: when <code>loop()</code> calls <code>runMotorTest()</code>, it hasn’t seen the function yet. Lesson 2, Step 7 — same beast. <strong>Two fixes, both real:</strong> move the function back above <code>setup()</code>, or leave it at the bottom and add one line to the top of the file: <code>void runMotorTest();</code> — a function prototype. Try the prototype fix, build, and watch it go green. Then pick whichever layout you prefer; both compile, and now you can read this error anywhere it bites you.</p>
+<p>The compiler reads top to bottom: when <code>loop()</code> calls <code>runMotorTest()</code>, it hasn’t seen the function yet. Lesson 2, Step 7 — same beast. <strong>Put the line back, build, and watch it go green.</strong> You have just proved the prototype is load-bearing rather than decoration: one deleted line, one dead build. (The other fix works too — move the whole function above <code>setup()</code> so the definition comes first. It compiles, you will meet code written that way, and this book does not do it: helpers last, promises up top, the same shape Lesson 7 splits into eight files.) Now you can read this error anywhere it bites you.</p>
 
 </div>
 
@@ -2990,7 +3003,7 @@ write runSpinTest():
 <div class="div-bb-1pxsolid">
 <p><strong>Hint:</strong> Spinning means one motor forward, one backward: <code>motors.setSpeeds(150, -150);</code></p>
 
-<div class="callout-2196f3-bg-e3f2fd-3" data-family="YOU MIGHT WONDER" data-callout="3.94"><div class="div-fs-105em">🧩 About PROTOTYPE:</div> if you define your spin function <em>below</em> <code>setup()</code> and call it from above, the compiler complains it "was not declared in this scope" — it reads top to bottom and hasn't met the function yet. Two fixes (same as Step 12): move the function above <code>setup()</code>, or leave it at the bottom and add its <strong>prototype</strong> — one line at the top, the function's signature followed by a semicolon.</div>
+<div class="callout-2196f3-bg-e3f2fd-3" data-family="YOU MIGHT WONDER" data-callout="3.94"><div class="div-fs-105em">🧩 About PROTOTYPE:</div> if you define your spin function <em>below</em> <code>setup()</code> and call it from above, the compiler complains it "was not declared in this scope" — it reads top to bottom and hasn't met the function yet. The fix (same as Step 12): add its <strong>prototype</strong> — one line up in FUNCTION PROTOTYPES, the function's signature followed by a semicolon.</div>
 
 <p><strong>Success:</strong> Robot spins in place for 1 second, then stops.</p>
 </div>
@@ -3477,7 +3490,7 @@ tune TURN_TIME until the fourth corner lands you back on the tape</pre>
 
 <summary>🔓 Click to reveal solution</summary>
 
-<p>📌 <strong>Where it goes:</strong> paste this right after <code>runMotorTest()</code> — <strong>above</strong> <code>setup()</code>. This program defines helpers above setup, so no prototype is needed. (Paste it below <code>loop()</code> instead and you’ll get <em>‘was not declared’</em> — that’s Lesson 2, Step 7 territory.)</p>
+<p>📌 <strong>Where it goes:</strong> in HELPER FUNCTIONS at the bottom, right after <code>runMotorTest()</code> — plus one line up in FUNCTION PROTOTYPES to announce it. Skip the prototype and you’ll get <em>‘was not declared’</em>; that’s Step 12 territory.</p>
 
 <div class="div-mt-15px">
 
@@ -3508,7 +3521,7 @@ This is CLOSED-LOOP control - we'll implement it in Lesson 6!
 <h3 class="h3-c-7a5905-2">Extension Challenges — Explore TRIM Behavior</h3>
 <p>Working TRIM system? Pick <strong>ONE</strong> of these to deepen your understanding of how TRIM behaves under different conditions:</p>
 
-<h4 class="h4-c-433014-2">Extension A: Multi-Speed TRIM Testing</h4>
+<h4 class="h4-c-433014">Extension A: Multi-Speed TRIM Testing</h4>
 <p><strong>Concept:</strong> TRIM is speed-dependent. Test whether your TRIM holds across different speeds.</p>
 <p><strong>Steps:</strong></p>
 <ol>
@@ -3521,7 +3534,7 @@ This is CLOSED-LOOP control - we'll implement it in Lesson 6!
 <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle"><strong>Checkpoint:</strong></div> You can explain why TRIM might be different at different speeds.
 </div>
 
-<h4 class="h4-c-433014-2">Extension B: Battery Voltage Monitoring</h4>
+<h4 class="h4-c-433014">Extension B: Battery Voltage Monitoring</h4>
 <p><strong>Concept:</strong> Add battery voltage logging to see how battery state affects motor balance.</p>
 <p><strong>Steps:</strong></p>
 <ol>
@@ -3533,7 +3546,7 @@ This is CLOSED-LOOP control - we'll implement it in Lesson 6!
 <div class="div-fs-105em"><img src="../images/marks/book.svg" alt="" data-mark="book"><strong>Learn/Insight:</strong></div> This is why professional robots use voltage regulators.
 </div>
 
-<h4 class="h4-c-433014-2">Extension C: Distance-Based Straight-Line Test</h4>
+<h4 class="h4-c-433014">Extension C: Distance-Based Straight-Line Test</h4>
 <p><strong>Concept:</strong> Measure how much your robot deviates over a known distance.</p>
 <p><strong>Steps:</strong></p>
 <ol>
@@ -3745,28 +3758,31 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Creep_Mode</code> <a href="../newproject.html?lesson=3&amp;kind=creep_mode" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
 <span class="tok-4ec9b6">Zumo32U4ButtonC</span> buttonC;
 <span class="tok-4ec9b6">Zumo32U4OLED</span> display;
 
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
 <span class="tok-569cd6">int</span> testSpeed = <span class="tok-b5cea8">100</span>;
 
-<span class="tok-569cd6">void</span> showSpeed() {
-  display.clear();
-  display.print(F(<span class="tok-ce9178">"Spd "</span>));
-  display.print(testSpeed);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(F(<span class="tok-ce9178">"B=run"</span>));
-}
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+void showSpeed();
 
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
   showSpeed();
 }
 
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) { testSpeed -= <span class="tok-b5cea8">5</span>; showSpeed(); }
   <span class="tok-569cd6">if</span> (buttonC.getSingleDebouncedPress()) { testSpeed += <span class="tok-b5cea8">5</span>; showSpeed(); }
@@ -3775,6 +3791,15 @@ Right now your robot is like a person walking with their eyes closed. It can wal
     delay(<span class="tok-b5cea8">1000</span>);
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   }
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-569cd6">void</span> showSpeed() {
+  display.clear();
+  display.print(F(<span class="tok-ce9178">"Spd "</span>));
+  display.print(testSpeed);
+  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
+  display.print(F(<span class="tok-ce9178">"B=run"</span>));
 }</pre>
 
 <details data-reveal="hint"><summary>🔓 Hint: what you’ll observe</summary>
@@ -3811,25 +3836,39 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Backwards_Robot</code> <a href="../newproject.html?lesson=3&amp;kind=backwards_robot" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
 
-<span class="tok-569cd6">void</span> driveForward() {
-  motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">200</span>);
-  delay(<span class="tok-b5cea8">1500</span>);
-  motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-}
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
 
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+void driveForward();
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
   <span class="tok-6a9955">// YOUR FIX GOES HERE (two lines)</span>
 }
 
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     driveForward();
   }
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-569cd6">void</span> driveForward() {
+  motors.setSpeeds(<span class="tok-b5cea8">200</span>, <span class="tok-b5cea8">200</span>);
+  delay(<span class="tok-b5cea8">1500</span>);
+  motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
 }</pre>
 
 <details data-reveal="hint"><summary>🔓 Hint: hidden library features</summary>
@@ -3849,15 +3888,28 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Braking_Test</code> <a href="../newproject.html?lesson=3&amp;kind=braking_test" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
 <span class="tok-4ec9b6">Zumo32U4ButtonC</span> buttonC;
 
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
 }
 
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) {   <span class="tok-6a9955">// A = slam stop</span>
     motors.setSpeeds(<span class="tok-b5cea8">400</span>, <span class="tok-b5cea8">400</span>);
@@ -3872,7 +3924,10 @@ Right now your robot is like a person walking with their eyes closed. It can wal
       delay(<span class="tok-b5cea8">50</span>);
     }
   }
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="mechanism"><summary>🔓 What you’re measuring</summary>
 
@@ -3888,14 +3943,27 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Figure_Eight</code> <a href="../newproject.html?lesson=3&amp;kind=figure_eight" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonB</span> buttonB;
 
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
 <span class="tok-569cd6">void</span> setup() {
 }
 
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
 <span class="tok-569cd6">void</span> loop() {
   <span class="tok-569cd6">if</span> (buttonB.getSingleDebouncedPress()) {
     motors.setSpeeds(<span class="tok-b5cea8">250</span>, <span class="tok-b5cea8">120</span>);   <span class="tok-6a9955">// right-hand circle</span>
@@ -3904,7 +3972,10 @@ Right now your robot is like a person walking with their eyes closed. It can wal
     delay(<span class="tok-b5cea8">2600</span>);
     motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
   }
-}</pre>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span></pre>
 
 <details data-reveal="mechanism"><summary>🔓 Why mirrored numbers don’t make mirrored circles</summary>
 
@@ -3920,24 +3991,38 @@ Right now your robot is like a person walking with their eyes closed. It can wal
 
 <p>📁 <strong>Work in:</strong> a fresh template copy named <code>LastName_L03_Speedometer</code> <a href="../newproject.html?lesson=3&amp;kind=speedometer" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
 
-<pre class="pre-m-0"><span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
+<pre class="pre-m-0"><span class="tok-6a9955">// ===== INCLUDES =====</span>
+<span class="tok-c586c0">#include</span> <span class="tok-ce9178">&lt;Zumo32U4.h&gt;</span>
 
+<span class="tok-6a9955">// ===== HARDWARE OBJECTS =====</span>
 <span class="tok-4ec9b6">Zumo32U4Motors</span> motors;
 <span class="tok-4ec9b6">Zumo32U4ButtonA</span> buttonA;
 <span class="tok-4ec9b6">Zumo32U4ButtonC</span> buttonC;
 
+<span class="tok-6a9955">// ===== CONSTANTS =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== GLOBAL VARIABLES =====</span>
+<span class="tok-6a9955">// (none needed for this challenge)</span>
+
+<span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
+void runAt(int spd);
+
+<span class="tok-6a9955">// ===== SETUP =====</span>
+<span class="tok-569cd6">void</span> setup() {
+}
+
+<span class="tok-6a9955">// ===== MAIN LOOP =====</span>
+<span class="tok-569cd6">void</span> loop() {
+  <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">100</span>);   <span class="tok-6a9955">// A = speed 100</span>
+  <span class="tok-569cd6">if</span> (buttonC.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">200</span>);   <span class="tok-6a9955">// C = speed 200</span>
+}
+
+<span class="tok-6a9955">// ===== HELPER FUNCTIONS =====</span>
 <span class="tok-569cd6">void</span> runAt(<span class="tok-569cd6">int</span> spd) {
   motors.setSpeeds(spd, spd);
   delay(<span class="tok-b5cea8">2000</span>);
   motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</span>);
-}
-
-<span class="tok-569cd6">void</span> setup() {
-}
-
-<span class="tok-569cd6">void</span> loop() {
-  <span class="tok-569cd6">if</span> (buttonA.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">100</span>);   <span class="tok-6a9955">// A = speed 100</span>
-  <span class="tok-569cd6">if</span> (buttonC.getSingleDebouncedPress()) runAt(<span class="tok-b5cea8">200</span>);   <span class="tok-6a9955">// C = speed 200</span>
 }</pre>
 
 <details data-reveal="mechanism"><summary>🔓 What the ratio tells you</summary>

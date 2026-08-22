@@ -1,6 +1,6 @@
 # GPT graphics work list (generated)
 
-Work list session: S181 · `build_worklist.py v1.2` · `svg_layout_audit v1.20`
+Work list session: S182 · `build_worklist.py v1.2` · `svg_layout_audit v1.20`
 
 **38 files** needing a human, from an audit of all SVGs in `images/`.
 Worst-first by how far text runs outside its panel.
@@ -133,7 +133,7 @@ moving on.
 
 ## L02_GRAPHIC_2-05_sketch_anatomy.svg
 
-- 7 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
+- 9 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
 
 ## L02_GRAPHIC_2-07_ir_sensors.svg
 

@@ -2,7 +2,7 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.6.6.1'
+VERSION = 'v1.6.6.3'
 # v1.6.3 (S144): the L11 8A.4 INSIGHT tier pinned 'This is what arithmetic is FOR' - and
 #   S144 REPLACED that arithmetic, because §3.5's cliff premise was wrong. Repointed to the
 #   new headline. No tier logic changed. Second time this session that a literal content
@@ -12,6 +12,8 @@ VERSION = 'v1.6.6.1'
 #   was false (two writes survived, so deleting the declaration broke the build). Repointed,
 #   no tier logic changed. The tier is literal by design (last resort, per-block), so a
 #   prose fix in a lesson owes this file an edit - that coupling is the cost of the tier.
+# v1.6.6.3 (S182): DENOMINATOR 1132 -> 1133. One new LEARN callout, L02 2.123 - the
+#                   constants-are-global-too note Bible 18.3a requires L02 to state once.
 # v1.6.6.2 (S180): DENOMINATOR 1127 -> 1132. Five COMPILE CHECK callouts on the new
 #                  L12/L13 challenges that ship a Maker build.
 # v1.6.6.1 (S168): DENOMINATOR 1125 -> 1127. L13 Step 6b is new: THE GOAL and its
@@ -354,7 +356,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1132   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1133   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))

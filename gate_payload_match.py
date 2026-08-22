@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.9.1, S56 (S110: runs on stable filenames)
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.9.2, S56 (S110: runs on stable filenames)
+v1.9.2 (S182): PAYLOAD_CENSUS re-pinned for the nine-section pass. 221 entries before AND
+  after - a re-pin must not change the POPULATION, and that was asserted, not assumed. Every
+  moved row is accounted for: L1/c01-c11 CHANGED at the same line count (eleven EEPROM includes
+  hoisted out of CONSTANTS), L3 x8 and L6/finished GREW by their new prototypes, L4 x5 CHANGED
+  at the same count (globals above prototypes). L6/finished and L7/after_step_1 show the SAME
+  hash on both sides - the S51 byte-identity coupling holding, confirmed by the census rather
+  than trusted.
 v1.9.0 (S176) THE GATE WAS ONE-DIRECTIONAL AND A DELETION PASSED SILENTLY. v1.8.0
 closed one side of the line test; this closes the other. The derivation predicate is a
 SUBSET test — every payload line must come from the lesson — so a payload that has LOST
@@ -247,17 +254,17 @@ BOXED_FP = {
 # Regenerate deliberately with --update-census.
 PAYLOAD_CENSUS = {
     "1": {
-        "c01": [52, "d1f8074c7a53b044a496bb1728c405f8"],
-        "c02": [54, "950b4c5a40e00b6edbf14dc2876ba445"],
-        "c03": [52, "ac714fe66f7c81878291e9eea2353c1f"],
-        "c04": [54, "6260a4694076e1b5801498d82fb1c27b"],
-        "c05": [55, "0a6aaec72e9a3b8f90b65708a3488075"],
-        "c06": [55, "0a6aaec72e9a3b8f90b65708a3488075"],
-        "c07": [55, "0a6aaec72e9a3b8f90b65708a3488075"],
-        "c08": [54, "c14916a98950922e9ca058761ed24f63"],
-        "c09": [55, "0a6aaec72e9a3b8f90b65708a3488075"],
-        "c10": [55, "0a6aaec72e9a3b8f90b65708a3488075"],
-        "c11": [55, "0a6aaec72e9a3b8f90b65708a3488075"],
+        "c01": [52, "f00d73503529752562b06390806307c6"],
+        "c02": [54, "d6d550048b197f847db778955783c495"],
+        "c03": [52, "b06a7b176a3b7d924354a2c947c450d8"],
+        "c04": [54, "58119c2030369e9e50abc3b6e4df691f"],
+        "c05": [55, "8dfad90de74829665d67f523e28855d3"],
+        "c06": [55, "8dfad90de74829665d67f523e28855d3"],
+        "c07": [55, "8dfad90de74829665d67f523e28855d3"],
+        "c08": [54, "645d32931f132c3a50e95968e3e61b38"],
+        "c09": [55, "8dfad90de74829665d67f523e28855d3"],
+        "c10": [55, "8dfad90de74829665d67f523e28855d3"],
+        "c11": [55, "8dfad90de74829665d67f523e28855d3"],
     },
     "2": {
         "backwards_led": [10, "f93b4f5c5dc0e324f73f1c4852b33afe"],
@@ -278,28 +285,28 @@ PAYLOAD_CENSUS = {
         "speed_limit": [11, "ba2020aaba96c349dc7337e31de236a8"],
     },
     "3": {
-        "backwards_robot": [14, "b0dee65e46f11ec3eedd8655e43b5e5a"],
+        "backwards_robot": [15, "739e80aeb51e722cda8de0bb7f0783b0"],
         "braking_test": [20, "cf232e7b8e2bc7ec832c3c1e8fa1bf1f"],
         "constrain": [12, "4713166f7d702e70f9a1087adf84213c"],
-        "creep_mode": [25, "7480ad4d1c4e775f5fe0e26d0bd374a2"],
+        "creep_mode": [26, "18eef2062159216f6c839ab7acb65b51"],
         "discovery_3_2": [9, "e28349c4a042fb5d1109c8b051b2c421"],
         "discovery_3_3": [12, "46e2f4e650aea20b31e64ccfc621e37e"],
         "discovery_3_4": [15, "306d5a41cc8143e229f7389f4831d29f"],
-        "discovery_3_5": [37, "e30fee48b87e29ffe26795c55f356187"],
-        "discovery_3_6": [82, "8c2b34ae50016427db74f53bf75744db"],
-        "discovery_3_7": [120, "9d3b9c70de20a235d444daea8800bf71"],
-        "discovery_3_8": [122, "14a8f78b2e1f8a199c7fc51816038aa6"],
+        "discovery_3_5": [38, "76b001599a11f58cc767ccbe6d6c55a5"],
+        "discovery_3_6": [86, "f3a7e246708b5e73ddd4a09c634bcbc1"],
+        "discovery_3_7": [125, "c00a08863d63942f9df816fdcb22e25c"],
+        "discovery_3_8": [127, "2be0b9c001087926af8e36e0ae9ba314"],
         "figure_eight": [13, "5b95d114e69df4829dfa130c0b7fb033"],
-        "finished": [160, "9ad25b99f1c2884c75b0d42536835244"],
+        "finished": [165, "85064b2f619d3e674bebb4462503258f"],
         "ramp": [10, "34305beb163740e986a76d8b56384830"],
-        "speedometer": [14, "cb401300390de73d259d129cf00c760f"],
+        "speedometer": [15, "131a548475d0ed30cde8a887f799d400"],
     },
     "4": {
-        "act_one": [77, "e5054848499d6ca9a26d8ff76def1225"],
-        "act_two": [78, "977f80df98308867ef8ea89f4a452007"],
-        "after_step_2": [39, "10a9ff8a40ce70822b98aaae2d066f63"],
-        "after_step_3": [41, "4c758c1adf5be93e5069cb86e931c9ba"],
-        "after_step_4": [48, "a2bd4fcd6ebcaaf4fe8125c4843b1cc7"],
+        "act_one": [77, "ef3d3cdcb63822505e44ce26f98bee2c"],
+        "act_two": [78, "bb8e62fe3596aa3cd30786e96c11151f"],
+        "after_step_2": [39, "bf7207f4c65ff68b026ed9dcd2de6d45"],
+        "after_step_3": [41, "f8b93d2f03ed23d7fbb64c446b34fb66"],
+        "after_step_4": [48, "9523537c1ff8fbd93dbb03fbf53020d9"],
     },
     "5": {
         "finished": [247, "d5a59f992f6c71405656357f45ca162c"],
@@ -320,10 +327,10 @@ PAYLOAD_CENSUS = {
         "after_step_7": [74, "3a111ac8b53d4d506ccb1d86d793c67b"],
         "after_step_8": [87, "c7af09c7b7acb9d1234e99c57d74ffea"],
         "after_step_9": [91, "8188f51f422e5fc9577ab83535c3ed75"],
-        "finished": [131, "814ddc42b5f26d48978bb43d5903b844"],
+        "finished": [132, "ca30b84a178802eb7e7f0b4cb681808c"],
     },
     "7": {
-        "after_step_1": [131, "814ddc42b5f26d48978bb43d5903b844"],
+        "after_step_1": [132, "ca30b84a178802eb7e7f0b4cb681808c"],
         "after_step_2": [49, "6de613a8be294238a38feb1dd23aaf72"],
         "after_step_3": [59, "3e0576ff418d79b85b29d07bc1489472"],
         "after_step_4": [65, "8b0bda7ec7f104cadf11b407298174ed"],

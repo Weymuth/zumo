@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.30.1'
+VERSION = 'v1.30.2'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -1144,8 +1144,13 @@ def currency():
             now = open(cur, encoding='utf-8', errors='replace').read()
         except Exception:
             continue
+        # S182: read HEAD as BYTES and decode leniently. text=True decodes as utf-8 and
+        # a changed BINARY file (a regenerated .png) raised UnicodeDecodeError, which
+        # killed the WHOLE arm - so one binary change silenced every other file's check.
+        # An instrument that dies is worse than one that is silent: it takes the others
+        # with it. A file with no version home is already 'reported, not asserted'.
         was = subprocess.run(['git', 'show', f'HEAD:{rel}'],
-                             capture_output=True, text=True, cwd=ROOT).stdout
+                             capture_output=True, cwd=ROOT).stdout.decode('utf-8', 'replace')
         pat, label = _currency_home(rel)
         home = None
         if pat:
