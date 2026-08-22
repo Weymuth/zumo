@@ -104,11 +104,12 @@ banner sequences vs canon · placement claims · retired names · section-count 
 legitimate one and confirm it is SILENT (§16.50).
 
 **THE RESIDUE PIN TABLE IS NOW PARTLY DERIVED.** S183's enumeration classified the 20 unclassified
-banner names: eighteen are legitimate in two classes — the L07+ multi-file split
-(`EXTERN HARDWARE DECLARATIONS`, `HARDWARE OBJECT DEFINITIONS`, `FUNCTION IMPLEMENTATIONS`,
-`RobotConfig.h`'s sub-banners) and sub-banners INSIDE `setup()` (`BATTERY REPORT`,
-`LINE SENSOR SETUP`, `SAFETY GATE`, `CALIBRATION`). `MY PLAN` and `YOUR CAPSTONE GOES HERE` are the
-other two. **Note `MY PLAN` still matches a name-requiring banner regex** — S182's tightening does
+banner names: 2 were the defect and 18 are legitimate. **FIFTEEN sit in two classes** — the L07+
+multi-file split (`EXTERN HARDWARE DECLARATIONS`, `HARDWARE OBJECT DEFINITIONS`,
+`FUNCTION IMPLEMENTATIONS`, `RobotConfig.h`'s sub-banners: 11 names) and sub-banners INSIDE
+`setup()` (`BATTERY REPORT`, `LINE SENSOR SETUP`, `SAFETY GATE`, `CALIBRATION`: 4 names).
+**THE OTHER THREE BELONG TO NEITHER:** `MAIN LOOP - TUNING MODE`, `MY PLAN` and
+`YOUR CAPSTONE GOES HERE` — each needs its own pin line with its own reason. **Note `MY PLAN` still matches a name-requiring banner regex** — S182's tightening does
 not exclude it, so it needs an explicit pin rather than a reliance on that tightening.
 
 **THE GAP IT CLOSES IS UNCHANGED: ALL 78 GATES RUN PAYLOAD → LESSON.** `gate_payload_match` is a
