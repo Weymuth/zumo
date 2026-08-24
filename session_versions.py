@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.30.2'
+VERSION = 'v1.31.1'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -221,6 +221,7 @@ ARTEFACTS = [
     ('image_audit',           'image_audit.py',           r"VERSION = '(v[\d.]+)'"),
     ('strip_inline',          'strip_inline.py',          r"VERSION = '(v[\d.]+)'"),
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
+    ('prose_canon',           'prose_canon.py',              r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
     ('byte_audit',            'byte_audit.py',            r"VERSION = '(v[\d.]+)'"),
@@ -324,6 +325,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"image_audit {vals['image_audit']} · "
             f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
+            f"prose_canon {vals['prose_canon']} · "
             f"regex_audit {vals['regex_audit']} · "
             f"byte_audit {vals['byte_audit']} · "
             f"build_palette {vals['build_palette']} · "
@@ -364,6 +366,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`image_audit` **{vals['image_audit']}** ·\n"
             f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
+            f"`prose_canon` **{vals['prose_canon']}** ·\n"
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
             f"`byte_audit` **{vals['byte_audit']}** ·\n"
             f"`build_palette` **{vals['build_palette']}** ·\n"
@@ -1092,6 +1095,11 @@ CURRENCY_HOMES = [
      r'\*\*Bench tracker version: (v[\d.]+)\*\*', 'Bench'),
     (lambda r: r == 'ZUMO_GPT_REVIEW_WORKLIST.md',
      r'^# ZUMO \u2014 GPT REVIEW WORKLIST \((v[\d.]+)\)', 'Worklist'),
+    # S184: the fix tracker carries a real version home. Registered in the same change
+    # that created it, because S181's finding was exactly two files whose versions this
+    # table could not see and which would therefore have shipped unbumped.
+    (lambda r: r == 'ZUMO_FIX_TRACKER.md',
+     r'^\*\*Version:\*\* (v[\d.]+)', 'Tracker'),
     (lambda r: r.endswith('.py') or r.endswith('.sh'),
      r'^VERSION\s*=\s*[\'"]([^\'"]+)', 'VERSION'),
 ]

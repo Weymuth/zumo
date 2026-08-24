@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.72.19'
+VERSION = 'v1.73.0'
 # v1.72.19 (S182): callout baseline 1132 -> 1133 for L02's new LEARN 2.123; §27.11 digest
 #                  re-moved for the nine-section SVG and the §5 walkthrough entries.
 # v1.72.18 (S182): §27.11 digest re-moved after the nine-section SVG landed in L02 3.1 and
@@ -4845,6 +4845,46 @@ if len(_scopes78) != 2:
                'a gate that reads a shrunken population passes for the wrong reason '
                '(\u00a716.44)' % len(_scopes78))
 gate('\u00a716.44 a stated discard figure is the one ARM 9 measures', bad)
+
+
+# ---------------------------------------------------------------------------------
+# GATE 79 - 18.3b: A RETIRED SECTION NAME APPEARS NOWHERE, IN ANY REGISTER.
+#
+# WHY IT EXISTS. 18.3a is a LOCKED ruling with no instrument, and it has regrown TWICE
+# for that reason: S183 found 140 sites in a synonym register, S184 found 11 more in
+# title case. 16.25 has a gate. 16.31 has a gate. The ruling that moved 151 sites had
+# none, and all three findings were made by hand.
+#
+# THE PREDICATE IS IMPORTED, NEVER RE-IMPLEMENTED (rules 83/84). A third regex here
+# would be a third thing to keep in step with the exemptions, which is exactly how the
+# retirement failed the first two times.
+#
+# IT ASSERTS NEW DRIFT AND ORPHAN PINS, NOT THE PINNED RESIDUE. S162's UNREAD_PINS
+# shape: seven L05/L06 sites are known, real, and deliberately out of the L01-L03 pass,
+# and a permanently red gate trains its readers to ignore red (v8.130). The list can
+# only shrink - a pinned site that gets fixed becomes an ORPHAN and fires.
+# ---------------------------------------------------------------------------------
+bad = []
+try:
+    import prose_canon as _pc79
+    _new79, _pin79, _orph79 = _pc79.partition()
+    for _w, _n, _e in _new79:
+        bad.append('%s: `%s` is retired (-> %s) and is not in prose_canon.RESIDUE - '
+                   '%s (\u00a718.3b)' % (_w, _n, _pc79.RETIRED[_n], _e[:110]))
+    for _k in _orph79:
+        bad.append('%s: pinned in prose_canon.RESIDUE but no longer found - remove the '
+                   'pin, a pin that certifies nothing is worse than none (\u00a718.3b)'
+                   % _k[0])
+    # COVERAGE ARM (rule 27): a scan of zero files passes. The denominator is THIS
+    # suite's own lesson list, never the instrument's glob (rule 29).
+    _nl79, _nb79, _mk79 = _pc79.coverage()
+    if _nl79 != len(files) or not _mk79:
+        bad.append('prose_canon scanned %d lesson(s) and Maker-present=%s against this '
+                   'suite\'s %d lesson(s) - a gate reading a shrunken population passes '
+                   'for the wrong reason (\u00a718.3b)' % (_nl79, _mk79, len(files)))
+except Exception as _ex79:
+    bad.append('prose_canon could not be read: %r' % (_ex79,))
+gate('\u00a718.3b a retired section name appears nowhere, in any register', bad)
 
 
 print('=' * 52)
