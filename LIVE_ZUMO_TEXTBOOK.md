@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 25, 2026 (Session 186 — **A RETIRED CLAIM HAD NO COMPARATOR, AND L04's FIVE GPT ROWS CLOSED WITH TWO OF THEM REVERSING GPT.**)
-**Status:** ✅ **S186 — GATE 80 AND `retired_claims.py` SHIP; `L04-01`/`L04-03` REFUTED, `L04-02`/`L04-04`/`L04-05` SHIPPED. L01–L04 NOW HAVE ZERO OPEN ROWS.** **80/80 gates**, `gate_payload_match` **PASS** with the advisory unmoved at **635**, `retired_claims` **CLEAN** with **12 controls**, `prose_canon` **0 new / 7 pinned / 0 orphan**, `quiz_bank --check` **16 banks valid**, `session_versions --currency` **0 unbumped**, `callout_id` **1133/0**, `strip_inline --verify` **0 dead**, `build_css` current at **574 rules**, `build_worklist --check` current. Census unchanged at **41,746**. **`byte_audit` IS OWED NOTHING** — no payload changed and no executable line moved. **`site_parity` NOT BANKED: both readings today fell inside the 10m57s build floor and were discarded — re-run past the floor after the push.**
+**Date:** August 25, 2026 (Session 187 — **A WRITER SPLIT ON A DELIMITER ITS OWN DATA CONTAINED, AND THE TWO ROWS IT DESTROYED WERE THE TWO THIS SESSION CALLED LOAD-BEARING**)
+**Status:** ✅ **S187 — THE L01–L04 BENCH SHEET SHIPS AT 18 ROWS; §24.23 SEATED; THE SEATING DEBT IS 26, NOT FIFTEEN**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.29.3 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,746** · Bible **v8.181.1** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.74.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `2e3e104`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.29.3 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,746** · Bible **v8.182** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.74.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4bf3569`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -12,6 +12,68 @@
 
 ---
 ---
+## WHAT SHIPPED IN S187
+
+**THE BENCH SHEET.** `ZUMO_FLAGGED_CHECKS.md` **v1.0.0 → v1.1** goes from three L01 rows to
+**every open L01–L04 row — eighteen**, grouped into four setup stations (desk 7 · battery 2 ·
+floor 5 · tape 4) so one lab evening can close them. **The scope was derived twice and the first
+count was short**: sixteen from a truncated read, **eighteen** from a structural parse (L01 ×8,
+L02 ×2, L03 ×4, **L04 ×4**), reproduced member-for-member by an independent raw-text predicate
+over a pristine clone at 53 rows / 51 open / 18 in L01–L04. **F1, F2 and F3 keep their numbers** —
+cited since S179 in two files, so the stations reorder the RUN and never the IDs. **F10 and F14
+are the two rows that can falsify printed prose.** `ZUMO_BENCH_TESTS.md` **v1.3.1** routes all
+eighteen back by F number.
+
+**§24.23 NEW AND SEATED WITH A NUMBERED BODY.** The router used `line.split('|')` and `cells[4]`
+on markdown table rows; two rows carry an **unescaped `|` inside a code span**, so the indices
+shifted and **the write landed mid-sentence and truncated the description.** The two rows it
+destroyed were **F10 and F14 — the only two carrying a falsifiable prediction**, and the
+prediction is what was deleted. **80 gates green, `--currency` green, and the session's own
+cross-file arm PASSED**, because an IDENTITY check is blind to CONTENT LOST BESIDE IT. Found by a
+table-integrity arm counting cells. **The render defect and the write defect are the same two
+rows** — both had already rendered as split cells on GitHub, since GFM needs `\|` even inside a
+code span. Repaired by **rebuilding from the pristine clone**, escaping first, then re-applying
+with an escape-aware splitter that asserts seven cells before writing: **18 of 18 rows identical
+once the Status cell is blanked and escapes normalised, 0 content losses.**
+
+**AN INSTRUMENT WAS BROKEN RATHER THAN THE TREE.** The cross-file inverse arm first reported all
+eighteen routings unresolved — its predicate wanted whitespace after `ZUMO_FLAGGED_CHECKS.md` and
+**a backtick sits there**. Re-predicated and controlled with a planted wrong F number; inverses
+then agree 18 ↔ 18 with no duplicates.
+
+**A VERSION HOME NOTHING COULD SEE.** `ZUMO_FLAGGED_CHECKS.md` carries a real version line and was
+absent from `CURRENCY_HOMES`, so `--currency` called it *no version home* and **asserted nothing**
+— S181's finding verbatim. Registered in the same change that edited it; measured, not argued
+(without the entry the lookup returns `(None, None)`); controlled both directions, restore
+md5-exact. **`session_versions` v1.32.1.**
+
+**THE SEATING DEBT IS 26, NOT FIFTEEN.** Measured two ways against the file. Beyond §16.32–§16.44,
+§16.46 and §16.51: **§16.14 · §16.18 · §16.19 · §16.20 · §16.21 · §16.23 · §16.24 · §16.26–§16.29**
+have no numbered bodies either. **§16.14 was recorded as this exact debt at S145.** Third session
+running the handoff has been wrong about seating, and each correction is larger — because each
+session widened the WINDOW rather than the FAMILY (§24.6c on a scope).
+
+**L01–L04 READINESS WAS MEASURED AND IT IS NOT THE SAME AS ZERO OPEN GPT ROWS.** Seven figures in
+L03/L04 are unshot and print as visible placeholders; L02 ships with two rows parked until
+Sept 8; five graphics have student-visible problems. **DJ ruled: keep the placeholders, hold off
+on graphics.** The A-Star *"brain of your Zumo robot"* claim carried as open is **dead at 0**.
+
+**THE BIBLE SESSION BUMP FIRED ITS REGENERATION OBLIGATION AND IT WAS MEASURED, NOT ASSUMED
+(S175):** `current_session()` moved 186 → 187 and `GPT_WORKLIST.md`'s **entire diff is the stamp
+line**, 38 files needing a human and 9 local-fix findings unchanged.
+
+**NOT DONE, RECORDED SO S188 DOES NOT INFER IT: `L05-01` AND `L05-02` ARE UNTOUCHED.** The GPT
+list is still the assignment.
+
+Applied S187: `ZUMO_SUPER_BIBLE.md` **v8.182** · `ZUMO_FLAGGED_CHECKS.md` **v1.1** ·
+`ZUMO_BENCH_TESTS.md` **v1.3.1** · `session_versions` **v1.32.1** · `GPT_WORKLIST.md` regenerated
+(stamp line only). **No lesson changed, no bank changed, no payload changed, no Maker change,
+census unchanged at 41,746, so `byte_audit` is owed nothing.** 80/80 gates,
+`gate_payload_match` PASS with the advisory unmoved at 635, `retired_claims` CLEAN with 12
+controls, `prose_canon` 0 new / 7 pinned / 0 orphan, 16 banks valid, `callout_id` 1133/0,
+`strip_inline` 0 dead, `build_css` current at 574 rules, `session_versions --currency` 0 unbumped.
+
+
 ## WHAT SHIPPED IN S186
 
 **§16.52 NEW, SEATED WITH A NUMBERED BODY: A RETIRED CLAIM STAYS RETIRED.** Closing a GPT row

@@ -1,7 +1,7 @@
 # ZUMO — BENCH TEST TRACKER
 ### Everything in this book that only a robot and a floor can settle · one file, by lesson
 
-**Bench tracker version: v1.3** — increment on every substantive edit
+**Bench tracker version: v1.3.1** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** No instrument in this repo can see a floor. `book_gates` reads
@@ -42,16 +42,16 @@ of it.** Ten findings closed, none of them bench-verified.
 
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
-| L01-B1 | **Unplug the cable, then click Upload. Write the error text down verbatim.** Unplug FIRST — this is an upload with no port, not an interrupted transfer. | §6 *Break It On Purpose* | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F1 (S179, DJ will run)** | |
+| L01-B1 | **Unplug the cable, then click Upload. Write the error text down verbatim.** Unplug FIRST — this is an upload with no port, not an interrupted transfer. | §6 *Break It On Purpose* | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F1 (S187)** | |
 | L01-B2 | **The counter-check: cable IN, robot power OFF, upload.** | §6 | **CLOSED — DJ ruled S179** | **It succeeds. The cable powers the chip and the display; the power switch feeds the motors.** Seated as canon in Bible §16.48 so it stops being re-asked. |
-| L01-B3 | **Challenge 4 on the floor.** Change the FIRST `delay(350)` to 700 only. Does the robot finish roughly one nudge **ahead** of where it started? | §9 C4 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F2 (S179, DJ will run)** | |
-| L01-B4 | **Challenge 11's solution as printed** — `setLayout21x8()`, then voltage, 1.5 s, then the `< 4500` branch. Does the number read on the OLED before §6's setup reprints *Press A*? | §9 C11 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F3 (S179, DJ will run)** | |
-| L01-B5 | **Challenge 9 propped up.** Delete the three-line wait. Does the show start the instant power comes on, with no button? | §9 C9 | OPEN | |
-| L01-B6 | **Battery bands.** Read `readBatteryMillivolts()` on a fresh pack and a tired one. Book says ~5,400 fresh / ~4,800 working / ~4,200 low. | §9 C11 hint | OPEN | |
-| L01-B7 | **Does USB alone really read low and strange?** The hint says so. Read the pack with the switch OFF and the cable in. | §9 C11 hint | OPEN | |
-| L01-B8 | **First-connection behaviour on a Mac AND on Windows.** Book now says a chime, a dialog, or nothing are all normal. Confirm both machines. | §6 Step 4 | OPEN | |
+| L01-B3 | **Challenge 4 on the floor.** Change the FIRST `delay(350)` to 700 only. Does the robot finish roughly one nudge **ahead** of where it started? | §9 C4 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F2 (S187)** | |
+| L01-B4 | **Challenge 11's solution as printed** — `setLayout21x8()`, then voltage, 1.5 s, then the `< 4500` branch. Does the number read on the OLED before §6's setup reprints *Press A*? | §9 C11 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F3 (S187)** | |
+| L01-B5 | **Challenge 9 propped up.** Delete the three-line wait. Does the show start the instant power comes on, with no button? | §9 C9 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F4 (S187)** | |
+| L01-B6 | **Battery bands.** Read `readBatteryMillivolts()` on a fresh pack and a tired one. Book says ~5,400 fresh / ~4,800 working / ~4,200 low. | §9 C11 hint | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F5 (S187)** | |
+| L01-B7 | **Does USB alone really read low and strange?** The hint says so. Read the pack with the switch OFF and the cable in. | §9 C11 hint | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F6 (S187)** | |
+| L01-B8 | **First-connection behaviour on a Mac AND on Windows.** Book now says a chime, a dialog, or nothing are all normal. Confirm both machines. | §6 Step 4 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F7 (S187)** | |
 | L01-B9 | **Git on a fresh Mac.** | §4.2 | **CLOSED — DJ ruled S179** | **Git is required on a Mac because asking for it triggers Apple's Command Line Tools installer, which is where the compiler lives.** NOT because PlatformIO fetches the Zumo library over git — it does not. Seated as canon in Bible §16.48; closes worklist row `L01-03`, open since S137. |
-| L01-B10 | **Bootloader port change.** Does the robot really show one port running and a different one with the bootloader awake? | §8 | OPEN | |
+| L01-B10 | **Bootloader port change.** Does the robot really show one port running and a different one with the bootloader awake? | §8 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F8 (S187)** | |
 
 ---
 
@@ -59,8 +59,8 @@ of it.** Ten findings closed, none of them bench-verified.
 
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
-| L02-B1 | **The green LED bench check.** Carried since S41. | §5 | OPEN | |
-| L02-B2 | **Challenge 2 screen overwrite — now a FALSIFIABLE PREDICTION, not a question.** S180 shipped a release-wait (`while (buttonA.isPressed() || buttonB.isPressed()) { }`) and derived the old behaviour from Pololu's own `PushbuttonStateMachine`, transcribed and run: **with the wait REMOVED, hold A and B and pass 1 draws BATTERY, pass 2 flashes ABOUT then CONTROLS, pass 3 onward is BATTERY again — so you should see ONE flash of the Controls screen and then the battery screen settle.** With the wait IN, no flash at all. **Run it both ways.** If the flash does not appear with the wait removed, the reasoning in §9 C2's *Why it takes two trips and not one* is wrong and the paragraph comes out. | §9 C2 | OPEN | |
+| L02-B1 | **The green LED bench check.** Carried since S41. | §5 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F9 (S187)** | |
+| L02-B2 | **Challenge 2 screen overwrite — now a FALSIFIABLE PREDICTION, not a question.** S180 shipped a release-wait (`while (buttonA.isPressed() \|\| buttonB.isPressed()) { }`) and derived the old behaviour from Pololu's own `PushbuttonStateMachine`, transcribed and run: **with the wait REMOVED, hold A and B and pass 1 draws BATTERY, pass 2 flashes ABOUT then CONTROLS, pass 3 onward is BATTERY again — so you should see ONE flash of the Controls screen and then the battery screen settle.** With the wait IN, no flash at all. **Run it both ways.** If the flash does not appear with the wait removed, the reasoning in §9 C2's *Why it takes two trips and not one* is wrong and the paragraph comes out. | §9 C2 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F10 (S187)** | |
 
 ---
 
@@ -68,10 +68,10 @@ of it.** Ten findings closed, none of them bench-verified.
 
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
-| L03-B1 | **How far does one TRIM test run actually go?** `TEST_DURATION` is 2000 ms at `BASE_SPEED` 200. Tape a start line, press B, measure. **The *6+ feet* figure is DELETED, not corrected** — DJ ruled S179 that students do not need that space, and rule 50 gives an underived number two fates. This row exists so the book can one day state a MEASURED distance instead of describing the run as *short*. | §4.4, §7 | OPEN | |
-| L03-B3 | **Bonus Challenge 4 (Braking vs. Coasting) asks for *about 3 meters of clear floor and a catcher*.** That figure has no pedigree either, and unlike the TRIM run this one really is full speed (400) for 1.5 s each way. Measure it before ruling. The card already offers `delay(800)` as the short-floor escape, so nothing is blocked. | §9 Bonus 4 | OPEN (raised S179) | |
-| L03-B3b | **Is the motor mismatch direction-symmetric?** S181 fixed `driveDistance` so the TRIM correction follows the direction, and re-premised Bonus 2's reveal on that. **The claim now in the book is: fix the sign and the big reverse curve goes away, leaving only a small mechanical residual.** MEASURED SO FAR: the electrical path is provably symmetric — `Zumo32U4Motors::setLeftSpeed` writes `|speed|` to `OCR1B` and puts the sign on a GPIO pin, so `-185` vs `-200` is a real duty difference, and *trim* appears **zero** times in Pololu's entire library. NOT MEASURED: the mechanical residual, which needs the robot. **Tune TRIM straight forward, then drive the same robot backward with the fixed code. If the residual reverse curve is as large as the original error, the symmetry premise is wrong and Bonus 2's reveal must put gearbox asymmetry back as the headline.** | L03 §9 Bonus 2, L06 Step 13 | OPEN (raised S181) | |
-| L03-B2 | **What TRIM value does a real robot need?** Record yours, and the spread across the fleet. Feeds the TDP's *your TRIM number and why it exists*. | §5 | OPEN | |
+| L03-B1 | **How far does one TRIM test run actually go?** `TEST_DURATION` is 2000 ms at `BASE_SPEED` 200. Tape a start line, press B, measure. **The *6+ feet* figure is DELETED, not corrected** — DJ ruled S179 that students do not need that space, and rule 50 gives an underived number two fates. This row exists so the book can one day state a MEASURED distance instead of describing the run as *short*. | §4.4, §7 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F11 (S187)** | |
+| L03-B3 | **Bonus Challenge 4 (Braking vs. Coasting) asks for *about 3 meters of clear floor and a catcher*.** That figure has no pedigree either, and unlike the TRIM run this one really is full speed (400) for 1.5 s each way. Measure it before ruling. The card already offers `delay(800)` as the short-floor escape, so nothing is blocked. | §9 Bonus 4 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F13 (S187)** | |
+| L03-B3b | **Is the motor mismatch direction-symmetric?** S181 fixed `driveDistance` so the TRIM correction follows the direction, and re-premised Bonus 2's reveal on that. **The claim now in the book is: fix the sign and the big reverse curve goes away, leaving only a small mechanical residual.** MEASURED SO FAR: the electrical path is provably symmetric — `Zumo32U4Motors::setLeftSpeed` writes `\|speed\|` to `OCR1B` and puts the sign on a GPIO pin, so `-185` vs `-200` is a real duty difference, and *trim* appears **zero** times in Pololu's entire library. NOT MEASURED: the mechanical residual, which needs the robot. **Tune TRIM straight forward, then drive the same robot backward with the fixed code. If the residual reverse curve is as large as the original error, the symmetry premise is wrong and Bonus 2's reveal must put gearbox asymmetry back as the headline.** | L03 §9 Bonus 2, L06 Step 13 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F14 (S187)** | |
+| L03-B2 | **What TRIM value does a real robot need?** Record yours, and the spread across the fleet. Feeds the TDP's *your TRIM number and why it exists*. | §5 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F12 (S187)** | |
 
 ---
 
@@ -79,10 +79,10 @@ of it.** Ten findings closed, none of them bench-verified.
 
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
-| L04-B1 | **Calibration min/max on the classroom floor.** Record the numbers and the room's lighting. Feeds TDP table A4. | §5 | OPEN | |
-| L04-B2 | **The 600 threshold.** Book-wide canon is 600, with 500 taught as the midpoint. Does 600 separate your tape from your floor? | §8A | OPEN | |
-| L04-B3 | **Learner-mode L04 build is BLOCKED on materials** — needs a white surface and **matte black electrical tape** (IR-absorbing; marker or print is unreliable). Carried since S51. | learner mode | OPEN | |
-| L04-B4 | **The wave-test direction** and **Act Two's row-1 overflow** — both deliberately unasked in the quiz bank because they are open bench findings. | §7 | OPEN | |
+| L04-B1 | **Calibration min/max on the classroom floor.** Record the numbers and the room's lighting. Feeds TDP table A4. | §5 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F15 (S187)** | |
+| L04-B2 | **The 600 threshold.** Book-wide canon is 600, with 500 taught as the midpoint. Does 600 separate your tape from your floor? | §8A | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F16 (S187)** | |
+| L04-B3 | **Learner-mode L04 build is BLOCKED on materials** — needs a white surface and **matte black electrical tape** (IR-absorbing; marker or print is unreliable). Carried since S51. | learner mode | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F17 (S187)** | |
+| L04-B4 | **The wave-test direction** and **Act Two's row-1 overflow** — both deliberately unasked in the quiz bank because they are open bench findings. | §7 | **OPEN — ROUTED to `ZUMO_FLAGGED_CHECKS.md` F18 (S187)** | |
 
 ---
 

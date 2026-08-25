@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.32.0'
+VERSION = 'v1.32.1'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -1096,6 +1096,11 @@ CURRENCY_HOMES = [
      r'PAYLOAD BYTE-MATCH GATE .*?\u2014 (v[\d.]+)', 'Gate'),
     (lambda r: r == 'ZUMO_BENCH_TESTS.md',
      r'\*\*Bench tracker version: (v[\d.]+)\*\*', 'Bench'),
+    # S187: the flagged-checks sheet carries a real version home this table could not see,
+    # so --currency reported it as 'no version home' and asserted nothing. Registered in the
+    # same change that edits it, which is the discipline the two entries above record.
+    (lambda r: r == 'ZUMO_FLAGGED_CHECKS.md',
+     r'\*\*Flagged checks version: (v[\d.]+)\*\*', 'Flagged'),
     (lambda r: r == 'ZUMO_GPT_REVIEW_WORKLIST.md',
      r'^# ZUMO \u2014 GPT REVIEW WORKLIST \((v[\d.]+)\)', 'Worklist'),
     # S184: the fix tracker carries a real version home. Registered in the same change
