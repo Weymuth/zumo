@@ -1,7 +1,7 @@
-# ZUMO — GPT REVIEW WORKLIST (v1.4)
+# ZUMO — GPT REVIEW WORKLIST (v1.5)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **STATUS: 36 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+> **STATUS: 59 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
 > **Read PART 0 FIRST.** Rows below are kept verbatim as GPT wrote them even after they are fixed,
 > so a row's presence here means nothing on its own — Part 0 is what says whether it is still live.
 > These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
@@ -100,6 +100,8 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 | `L03-04` | ✅ SHIPPED | S179 | §4.1 credits L01's driving and L02's Warm-Up 4 spin. Third twin of `L01-07`/`L02-08`. |
 | `L03-05` | ✅ ALREADY DEAD | S162 | The retired C1 wording is gone book-wide, and **gate §16.31 asserts it and passes** — an instrument says so, not a grep. |
 | `L03-06` | ✅ SHIPPED | S179 | §4.5's drift test is a hypothesis §7 settles, not a verdict about motor strength. |
+| `L03-07` | ✅ SHIPPED | S185 | §3.25 repeated L01 Challenge 6's three-run scatter from scratch, in a book where **C6 says *Keep these numbers… you will want it in Lesson 3***. Now retrieval: read your own three numbers, then change ONE condition. **No comparative magnitude asserted** — scatter vs condition-shift is unmeasured (rule 50). |
+| `L03-10` | ✅ SHIPPED | S185 | **The row named four L03 sites; the claim class is NINE across four artefacts** — L03 ×4, **L01 ×2**, **Maker ×2** (c11's boxed header), and **`QUIZ_L03` B18 where it was the KEYED CORRECT ANSWER**. Verified false before editing: 4,200 ÷ 4 = 1.05 V/cell against a ~1.0 V/cell cutoff, and the real mechanism is **cell reversal in a series pack**. Retired claim reused as B18's distractor. **L01 C11's 4,500 split untouched** — see `ZUMO_FIX_TRACKER.md` §5/§6. |
 | `L03-08` | ✅ SHIPPED | S179 | The unsourced 30-second cooldown rule replaced by the current-under-load mechanism. |
 | `L03-09` | ✅ SHIPPED | S179 | The unsourced ±10% battery figure removed. **`L03_B35` was falsified by this correct edit and was rekeyed.** |
 | `L08-13` | ✅ MEASURED | S154 | Confirmed in Part 5b. |
@@ -142,7 +144,7 @@ the arithmetic checkable, so a reader can tell at a glance whether a lesson has 
 |---|---|---|---|---|
 | L01 | 15 | 15 | 0 | **0** |
 | L02 | 19 | 17 | 2 | **0** |
-| L03 | 10 | 8 | 0 | **2** |
+| L03 | 10 | 10 | 0 | **0** |
 | L04 | 5 | 0 | 0 | **5** |
 | L05 | 2 | 0 | 0 | **2** |
 | L06 | 8 | 1 | 0 | **7** |
@@ -156,9 +158,15 @@ the arithmetic checkable, so a reader can tell at a glance whether a lesson has 
 | L14 | 20 | 0 | 0 | **20** |
 | L15 | 28 | 0 | 0 | **28** |
 | L16 | 30 | 0 | 0 | **30** |
-| **TOTAL** | **245** | **57** | **2** | **186** |
+| **TOTAL** | **245** | **59** | **2** | **184** |
 
-**ONLY L01 AND L02 ARE DONE.** L03 is two rows short of done. Everything else is open, including
+**L01, L02 AND L03 ARE DONE.**
+
+> **A ROW IS FILED AGAINST ONE LESSON; THE CLAIM CAN LIVE IN FOUR FILES (S185, §16.51).** This table
+> counts ROWS, not claim sites. `L03-10` was filed under L03 and had two live sites in **L01**, two in
+> the **Maker**, and one as a **keyed correct answer** in `QUIZ_L03` — while this table read L01 and L02
+> at 0 OPEN. **A lesson at 0 OPEN is a lesson with no rows of its own left, not a lesson with no defects.**
+> When closing a row, enumerate the claim across the whole tree before believing the lesson column. Everything else is open, including
 both lessons a handoff described as having *had a pass*.
 
 ## Named somewhere, still OPEN — do not read a mention as a ruling

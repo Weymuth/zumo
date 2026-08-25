@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.9.2, S56 (S110: runs on stable filenames)
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.9.3, S56 (S110: runs on stable filenames)
 v1.9.2 (S182): PAYLOAD_CENSUS re-pinned for the nine-section pass. 221 entries before AND
   after - a re-pin must not change the POPULATION, and that was asserted, not assumed. Every
   moved row is accounted for: L1/c01-c11 CHANGED at the same line count (eleven EEPROM includes
@@ -224,7 +224,7 @@ BOXED_FP = {
         "c08": [76, "9552ea0166fdcf891238ea9811418188"],
         "c09": [48, "fdff4a941ccde2251078b9a28d0d1dfe"],
         "c10": [60, "5526d7ddde7a0245e4cce25d5ff424d6"],
-        "c11": [103, "a3f567f251f20d0d9acddf2d7088ba4b"],
+        "c11": [103, "0c152aaa62c48f4b5d5f75b4acd58cce"],
     },
 }
 

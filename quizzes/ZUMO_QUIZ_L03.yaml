@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 03
 # Motor TRIM · No Two Motors Are the Same
 #
-# Bank version: v1.0.20
+# Bank version: v1.0.21
 #   S180 follow-up: v03.24.0 -> v03.24.1. The mechanism sentence shipped in v03.24.0 was WRONG
 #   and a compile-and-simulate arm caught it in the same session. It claimed all three screens
 #   draw *in a single trip through loop()*. Transcribed from pushbutton-arduino's own
@@ -123,9 +123,9 @@ title: "Motor TRIM — No Two Motors Are the Same"
 # B36 (L02 needed a FUNCTION PROTOTYPES section) and the TRIM Finder hardware-count item
 # ("all three buttons and the display are the same cast as Lesson 2"). Neither sits in a
 # changed region; the §4 rewrite makes the second MORE accurate, not less. Pin earned.
-bank_version: "1.0.20"
+bank_version: "1.0.21"
 source:
-  lesson_03: "v03.46.2"
+  lesson_03: "v03.47.0"
   lesson_02: "v03.26.1"
 
 sets:
@@ -424,15 +424,16 @@ sets:
         points: 1
         stem: "Your OLED reads a battery voltage of 4200 mV. What does the lesson tell you to do?"
         options:
-          - text: "Recharge — the cells are nearly empty, and draining NiMH below this damages them"
+          - text: "Recharge — the cells are empty, and running a pack past empty is what damages it"
             correct: true
           - text: "Keep running; this is the normal working plateau"
             correct: false
             why: "The plateau is about 4800 mV. 4200 is the floor."
           - text: "Nothing — 4200 mV is a fresh reading"
             correct: false
-          - text: "Swap in alkalines, which read lower"
+          - text: "Nothing yet — 4200 mV is the exact voltage at which the cells are damaged, so you are still safe above it"
             correct: false
+            why: "4200 mV is 1.05 V per cell, and a NiMH cell's own limit is about 1.0 V — so 4200 is a stop line set with margin, not a damage line. §3.6 explains what the damage actually is: running a pack past empty until the weakest cell reverses."
 
       - id: L03_B19
         type: multiple_choice

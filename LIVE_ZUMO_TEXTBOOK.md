@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 22, 2026 (Session 184 — **L01–L03 ARE CLEAN ACROSS FOUR CLAIM CLASSES, THE TWO "CONFIRMED LIVE ERRORS" WERE BOTH FALSE, AND §18.3a FINALLY HAS AN INSTRUMENT.**)
-**Status:** ✅ **S184 — GATE 79 EXISTS: `prose_canon.py` ARM 3 CLOSES THE RETIRED-NAME CLASS THAT REGREW TWICE FOR WANT OF AN INSTRUMENT.** **79/79 gates**, `gate_payload_match` **PASS** with the advisory unmoved at 635, `quiz_bank --check` **16 banks valid** and `--selftest` ALL CONTROLS, `prose_canon --selftest` **ALL 15 CONTROLS**, `session_versions --currency` **0 unbumped**, `callout_id` **1133**, `build_css --check` current at 574 rules, `image_audit`/`build_worklist --check` current, `strip_inline --verify` 0 dead. **`byte_audit` IS OWED NOTHING** — no payload changed and no executable line moved all session. **FIFTEEN DEFECTS CLOSED IN L01–L03**, and the session opened by disproving both of its own assigned "confirmed errors": the A-Star inventory was S154’s PRE-FIX list carried forward, and all 34 battery figures already agreed. **A GPT WORKLIST ROW IS A CLAIM, NOT A VERDICT.** **`ZUMO_FIX_TRACKER.md` IS NEW** — its contract is the INVERSE of `ZUMO_AFTER_LAUNCH.md`: every row in it IS a defect a student can meet. **Gate 79 ships GREEN over a PINNED residue of 7 L05/L06 sites** (S162’s `UNREAD_PINS` shape) so the list can only shrink; four of its fifteen controls guard the pin table itself. **ARMS 1, 2 AND 4 REMAIN UNBUILT AND S184 HIT TWO OF THEM.**
+**Date:** August 24, 2026 (Session 185 — **L03's TWO OPEN GPT ROWS ARE CLOSED, AND ONE OF THEM HAD FIVE HOMES OUTSIDE THE LESSON IT WAS FILED UNDER — INCLUDING A KEYED CORRECT ANSWER.**)
+**Status:** ✅ **S185 — `L03-07` AND `L03-10` SHIPPED, PLUS AN `L03-09` RESIDUE THAT SURVIVED ITS OWN CLOSURE. L01, L02 AND L03 NOW HAVE ZERO OPEN ROWS.** **79/79 gates**, `gate_payload_match` **PASS** with the advisory unmoved at **635**, `prose_canon` **0 new / 7 pinned / 0 orphan** and `--selftest` **ALL 15 CONTROLS**, `quiz_bank --check` **16 banks valid** and `--selftest` ALL CONTROLS, `session_versions --currency` **0 unbumped**, `callout_id` **1133/0**, `strip_inline --verify` **0 dead**, `build_css` current at **574 rules**, `build_worklist --check` current. Census **41,743 → 41,746**. **`byte_audit` IS OWED NOTHING** — the Maker edit is comment-only, no payload changed and no executable line moved.
 
-**Versions:** L01 v03.32.0 · L02 v03.26.1 · L03 v03.46.2 · L04 v04.29.5 · L05 v04.29.3 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,743** · Bible **v8.179** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.1 · **book_gates v1.73.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.2 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.31.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `a951a83`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.5 · L05 v04.29.3 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,746** · Bible **v8.180** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.73.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.31.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `ef2bb39`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -12,6 +12,46 @@
 
 ---
 ---
+## WHAT SHIPPED IN S185
+
+**THE ROW SAID FOUR SITES IN L03. THE CLAIM CLASS WAS NINE ACROSS FOUR ARTEFACTS.**
+`L03-10` — *below 4200 damages the cells* — was filed under L03 with four sites. It also lived in **L01
+twice** (the §6 battery bullet and Challenge 11's reveal), in the **Maker twice** (L01 c11's boxed header,
+*between "healthy" (4,800) and "damaged" (4,200)*), and as **`QUIZ_L03` B18's KEYED CORRECT ANSWER** — so a
+student answering from the corrected lesson was marked wrong. **Part 0b read L01 and L02 at 0 OPEN the whole
+time, because it counts ROWS and not claim sites** (§16.51; the caveat is now in the worklist header).
+
+**THE CLAIM IS FALSE AND WAS CHECKED BEFORE ANYTHING WAS EDITED.** 4,200 ÷ 4 = **1.05 V per cell** against
+an accepted NiMH cutoff of **~1.0 V per cell**, so the threshold sits ABOVE the limit with margin. The real
+mechanism is **cell reversal in a series pack** — a single cell taken to zero is unharmed; the harm is the
+weakest of four emptying first while the other three push current backwards through it. **The policy was
+right and the reason was wrong** (`L02-13`'s fabled-mechanism shape), so §3.6 teaches the mechanism rather
+than losing a sentence, and the retired claim became **B18's strongest distractor**.
+
+**L01 CHALLENGE 11's 4,500 SPLIT IS UNTOUCHED.** Only *damage* left the reveal; the argument is stronger for
+it. `ZUMO_FIX_TRACKER.md` §5 and §6 both say so, because that wording is the one somebody will restore.
+
+**THE MAKER'S PIN FIRED AS DESIGNED AND WAS CONTROLLED IN REVERSE.** `BOXED_FP` named `L1/c11`, 103 lines
+both sides, hash only. Re-derived with `--update-fp`, then the **OLD box under the NEW pin FIRES**, restore
+md5-exact at `2c5cb8b`. Box widths were asserted equal before writing — a boxed comment that loses its right
+rail is a defect no gate can see.
+
+**`L03-07` IS NOW RETRIEVAL, NOT REPETITION.** §3.25 re-ran L01 Challenge 6's three-run scatter from scratch,
+in a book where **C6 says *Keep these numbers… you will want it in Lesson 3***. It now opens the notebook
+first, then runs the one thing L01 did not. **No comparative magnitude is asserted** — scatter against
+condition-shift is unmeasured (rule 50).
+
+**AND A CLOSED ROW WAS NOT CLOSED, FOUND BY READING THE BANK.** `L03-09` is recorded SHIPPED at S179 — *the
+unsourced ±10% figure removed* — and it survived in L03's **Quick Reference**, contradicting `L03_B35`'s
+keyed answer for six sessions. Now **0 occurrences book-wide**. Same shape as the main find: **the fix landed
+where the reader was looking.**
+
+**SEVEN BANK PINS, ALL EARNED (rule 37).** `L03_B17/B19/B35/B49/A11` and `L01_A07/A08/A14/B39` were read in
+full; none was falsified. **A BIBLE SESSION BUMP IS A REGENERATION OBLIGATION (S175) — IT FIRED AGAIN** and
+`GPT_WORKLIST.md`'s whole diff is the stamp line.
+
+---
+
 ## WHAT SHIPPED IN S184
 
 **THE SESSION OPENED BY DISPROVING ITS OWN ASSIGNMENT.** Both "confirmed live errors" in L01–L03 were false. The A-Star figure (13 hits in L01, 8 in L03) was the **S154 PRE-FIX inventory** carried forward as if current — all 18 mentions read correctly today and gate §16.25 passes. All **34 battery figures** across L01–L03 already agreed at 5,400 / 4,800 / 4,200; L01 Challenge 11's 4,500 is a deliberate teaching point about why a warning must not fire at the moment of damage. **A GPT WORKLIST ROW IS A CLAIM, NOT A VERDICT** — that file's own header says rows stay verbatim after being fixed. Both are recorded in `ZUMO_FIX_TRACKER.md` §5 so they are not re-reported a fourth time.

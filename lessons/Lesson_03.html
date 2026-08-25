@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.46.2 -->
+<!-- Lesson version: v03.47.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,7 +101,7 @@
 <h1 class="h1">Motor TRIM</h1>
 <div class="div-fs-11em">No Two Motors Are the Same</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 03.46 — August 2026</div>
+<div class="div-fs-09em-2">Version 03.47 — August 2026</div>
 </div>
 
 <div class="callout-ffc107-bg-fff8e1" id="what-you-need-l03-p1" data-family="WHAT YOU NEED" data-callout="3.1">
@@ -736,7 +736,7 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 <tbody>
 <tr><td class="td-ddd"><strong>5,400 mV</strong></td><td class="td-ddd">Fresh off the charger (~1.35 V per cell)</td><td class="td-ddd">Go. Best runs of the day.</td></tr>
 <tr><td class="td-ddd"><strong>4,800 mV</strong></td><td class="td-ddd">The plateau — 1.2 V per cell, where NiMH spends most of its life</td><td class="td-ddd">Normal working range. Your tuning holds here.</td></tr>
-<tr><td class="td-ddd"><strong>4,200 mV</strong></td><td class="td-ddd">1.05 V per cell — nearly empty</td><td class="td-ddd"><strong>Recharge.</strong> Draining NiMH below this damages the cells.</td></tr>
+<tr><td class="td-ddd"><strong>4,200 mV</strong></td><td class="td-ddd">1.05 V per cell — nearly empty</td><td class="td-ddd"><strong>Recharge.</strong> Stop here — don't ask an empty pack for one more run.</td></tr>
 <tr><td class="td-ddd"><strong>6,300 mV</strong></td><td class="td-ddd">Not NiMH at all — somebody put alkalines in</td><td class="td-ddd">Works, but read the box below before you tune anything.</td></tr>
 </tbody>
 </table>
@@ -745,7 +745,8 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">Which cells — and why the code says 4800 and 4200</div>
 <p>Our robots run <strong>rechargeable NiMH cells</strong> (Panasonic eneloop): 1.2 V each, <strong>4.8 V</strong> for four. Alkalines give 1.5 V each — <strong>6.0 V</strong> — which is actually the voltage the Zumo’s motors are <em>rated</em> for, so a robot on fresh alkalines is a little faster. So why do we use NiMH?</p>
 <p><strong>Because of the shape of the discharge, not the height of it.</strong> Panasonic’s own measurements say it plainly: a NiMH cell holds a steady 1.2 V for nearly the whole charge and then drops off; an alkaline starts at 1.5 V and <em>slides downhill the entire time it is used</em>. A robot on alkalines is a moving target — the one you tuned in first period is not the one you get in seventh. A robot on NiMH is the same robot all day, and then tells you plainly when it is done.</p>
-<p>That is where the numbers in your code come from. <code>4800</code> is four cells sitting on their plateau. <code>4200</code> is 1.05 V per cell — empty, and the floor below which the cells take damage. <strong>They are not arbitrary. They are the chemistry.</strong></p>
+<p>That is where the numbers in your code come from. <code>4800</code> is four cells sitting on their plateau. <code>4200</code> is 1.05 V per cell — empty. A NiMH cell's own limit is about 1.0 V, so 4,200 sits just above it on purpose: a stop line with a little margin, not a cliff the cells fall off at. <strong>They are not arbitrary. They are the chemistry.</strong></p>
+<p>So what does the damage? Running a pack <em>past</em> empty. Your four cells are never perfectly matched, so the weakest one empties first — and the other three keep pushing current backwards through it. That is <strong>cell reversal</strong>, and it is what permanently weakens a cell. <strong>Recharging at 4,200 is not about the number. It is about never asking an empty pack for one more run.</strong></p>
 <p><em>Alkalines get exactly one honest use: a competition run where you want the motors at their rated 6 V — knowing you tuned on a target that was moving the whole time.</em></p>
 </div>
 
@@ -759,19 +760,21 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 
 <div class="div-c-7d6608">🧪 TRY THIS: Catch dead reckoning failing (2 minutes, once your robot runs)</div>
 
-<p><strong>Predict first:</strong> your program drives for exactly <code>TEST_DURATION = 2000</code> milliseconds every single test. Same code, same time — should the robot stop in the same place every time? Write down your answer <strong>in your notebook</strong>.</p>
+<p><strong>You already have half of this experiment.</strong> Open your engineering notebook to <strong>Lesson 1, Challenge 6</strong> — the out-and-back run you did three times and were told to keep the numbers from. This is what you kept them for.</p>
+
+<p><strong>Read your own three numbers before you go any further.</strong> Were the three gaps identical? Which way did each one miss? Same code, same delays, three different answers — and that was one surface, one battery, one afternoon.</p>
 
 <ol>
 
 <li>Put a <strong>Post-it note</strong> on the floor as a start line. Press B, and mark where the robot stops with another Post-it.</li>
 
-<li>Repeat twice more from the same start line. Are the three marks on top of each other?</li>
+<li>Now change ONE condition — test on carpet instead of tile, or swap in tired batteries — and run it again from the same start line.</li>
 
-<li>Now change ONE condition — test on carpet instead of tile, or swap in tired batteries — and run it again.</li>
+<li>Write the shift down next to your Lesson 1 numbers, in the same notebook.</li>
 
 </ol>
 
-<p><strong>What you’ll see:</strong> the marks scatter, and the changed condition moves them a lot. Time-based driving can’t notice any of it — that’s dead reckoning’s blindness, and it’s exactly why Lesson 6 bolts <em>encoders</em> onto the wheels: sensors that count actual wheel turns instead of trusting the clock.</p>
+<p><strong>What you’ll see:</strong> the changed condition moves the mark — on top of the run-to-run scatter you had already recorded in Lesson 1, before this robot could drive straight at all. Time-based driving can’t notice either of them — that’s dead reckoning’s blindness, and it’s exactly why Lesson 6 bolts <em>encoders</em> onto the wheels: sensors that count actual wheel turns instead of trusting the clock.</p>
 
 </div>
 
@@ -2633,7 +2636,7 @@ Displays countdown on OLED and logs to Serial.
 
 <li><strong>Power switch is OFF</strong> → Turn it ON (obvious but easy to forget!)</li>
 
-<li><strong>Flat batteries</strong> → Check the voltage on the OLED. Below <strong>4200 mV</strong> the NiMH cells are empty — <strong>recharge</strong> them, don't push on (draining below 4200 mV damages the cells). See Section 3.6.</li>
+<li><strong>Flat batteries</strong> → Check the voltage on the OLED. Below <strong>4200 mV</strong> the NiMH cells are empty — <strong>recharge</strong> them, don't push on (running a pack past empty is what damages it). See Section 3.6.</li>
 
 <li><strong>Code not uploaded</strong> → Did you click Upload (→), not just Build (✓)?</li>
 
@@ -3037,7 +3040,7 @@ write runSpinTest():
 <div class="div-p-0">
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
-<p class="pre-m-0">Make the OLED display "LOW BATTERY!" if voltage drops below <strong>4200 mV</strong> — the point where our NiMH cells are nearly empty and further draining damages them.</p>
+<p class="pre-m-0">Make the OLED display "LOW BATTERY!" if voltage drops below <strong>4200 mV</strong> — the point where our NiMH cells are empty and it is time to stop and recharge.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-mt-0">🧠 THE LOGIC (Pseudocode)</h4>
@@ -4097,7 +4100,7 @@ motors.setSpeeds(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">0</
 
 <h3 id="qr-battery" class="h4-c-6f7582-2">Battery</h3>
 
-<pre class="pre-m-0"><span class="tok-569cd6">int</span> mv = readBatteryMillivolts(); <span class="tok-6a9955">// Returns millivolts (±10% accuracy)</span>
+<pre class="pre-m-0"><span class="tok-569cd6">int</span> mv = readBatteryMillivolts(); <span class="tok-6a9955">// Returns millivolts (an estimate -- read it motors OFF)</span>
 <span class="tok-6a9955">// Convert: Volts = mv / 1000</span>
 <span class="tok-6a9955">// NiMH, 4 cells (what our robots run):</span>
 <span class="tok-6a9955">//   Fresh:  ~5400 mV   Plateau: ~4800 mV</span>

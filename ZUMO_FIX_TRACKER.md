@@ -1,6 +1,6 @@
 # ZUMO — Fix Tracker
 
-**Version:** v1.1 · **Opened:** S184, Aug 22 2026, per DJ ruling — *"Can you create a Fix Tracking
+**Version:** v1.2 · **Opened:** S184, Aug 22 2026, per DJ ruling — *"Can you create a Fix Tracking
 .md that we can put the things we are deferring that we know need to be fixed, but are skipping for
 now while we are focusing on other lesson fixes."*
 
@@ -134,6 +134,34 @@ re-read. Do not reopen without an artefact.
 ---
 
 # 6. SETTLED — FIXED, AND THE FIX IS NON-OBVIOUS. DO NOT REVERT.
+
+**THE 4,200 mV BATTERY THRESHOLD IS A STOP LINE, NOT A DAMAGE LINE (S185).**
+The book no longer says anywhere that crossing 4,200 mV damages the cells. **That wording is the
+intuitive one and somebody will restore it**, so: 4,200 ÷ 4 = **1.05 V per cell**, and a NiMH cell's
+accepted discharge cutoff is **~1.0 V per cell** — the threshold sits ABOVE the limit deliberately, with
+margin, which is why consumer devices commonly stop near 1.05 V/cell too. **The damage mechanism is CELL
+REVERSAL in a series pack:** a single cell taken to zero is not harmed; the harm is the weakest of four
+emptying first and the other three pushing current backwards through it. §3.6 now teaches that. **Nine
+sites moved together** — L03 ×4, L01 ×2, Maker c11 ×2, `QUIZ_L03` B18 — and B18's *correct* answer was
+one of them. **If you change one, change all nine or the bank grades a claim the lesson denies.**
+
+**L01 CHALLENGE 11's 4,500 SPLIT IS NOT PART OF THAT FIX AND MUST NOT BE TOUCHED.**
+§5 records it as a deliberate teaching point. S185 removed only the word *damage* from the reveal; the
+4,500-vs-4,200 argument stands and reads *a warning that fires at the moment you must STOP arrived too
+late*. **Do not "finish the job" by re-baselining 4,500.**
+
+**L03's QUICK REFERENCE NO LONGER STATES A PRECISION FIGURE (S185).**
+`L03-09` removed the unsourced ±10% from §4.3 at S179 and **missed the Quick Reference**, which
+contradicted `L03_B35`'s keyed answer for six sessions. The line now reads *(an estimate -- read it motors
+OFF)*, which is what §4.3 and B35 both say. **A figure here needs a fleet measurement, not a datasheet
+guess (rule 50).**
+
+**L03 §3.25 IS RETRIEVAL FROM L01, NOT ITS OWN EXPERIMENT (S185).**
+It deliberately does NOT re-run the three-run scatter; L01 Challenge 6 already did that and tells the
+student to keep the numbers *for Lesson 3*. **If C6 ever stops saying that, §3.25 loses its premise.**
+The section also states no comparison between run-to-run scatter and the condition shift, because that
+relative size is unmeasured.
+
 
 **Section 5 holds claims that were never defects. THIS section holds the opposite: real defects,
 now fixed, whose fix a well-meaning reader could mistake for the error.** A row lives here only if
