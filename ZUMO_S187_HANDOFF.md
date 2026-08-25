@@ -14,6 +14,13 @@ not, and neither is §16.46** — both live only inside the giant `Bible version
 is §16.32–§16.44 plus §16.46 plus §16.51 — fifteen rules, not thirteen.** Run the open ritual
 against the FILES.
 
+**PARSE THE STRUCTURE. DO NOT MATCH THE TEXT (§24.22a, DJ ruling S186).**
+Use `quiz_bank.load()` for banks, `ast` for Python, a heading/DOM walk for lessons, the real
+object in `node` for the Maker. **A text match may LOCATE and may never ANSWER** — read every hit
+and name the members. **Never report a number as a verdict.** S186 ran three structural parses
+and three raw regexes: **all three parses correct, all three regexes wrong.** DJ has now ruled
+this twice, at S182 and S186.
+
 **80/80 gates** · `gate_payload_match` **PASS**, advisory unmoved at **635** ·
 `retired_claims` **CLEAN**, `--selftest` **12 CONTROLS** · `prose_canon` **0 new / 7 pinned /
 0 orphan** · `quiz_bank --check` **16 banks valid** · `callout_id` **1133/0** ·
@@ -106,7 +113,7 @@ RoboLore brand and course scope. **§24.19 is the tiebreaker** — what is best 
 ---
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
 Fresh-clone verified at **`2e3e104`**. Census **41,746**.
-Bible **v8.181** · `BookComponentStandard` **v01.13.0** · Maker **v2.67.2** ·
+Bible **v8.181.1** · `BookComponentStandard` **v01.13.0** · Maker **v2.67.2** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.3**.
 
