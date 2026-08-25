@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.29.5 -->
+<!-- Lesson version: v04.29.6 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -577,7 +577,7 @@ countdown ends. Every window must cross the tape.
 
 <p>This helper is Section 3.4 turned into code. For five seconds (that's <code>CAL_TIME_MS</code>), it calls <code>lineSensors.calibrate()</code> as fast as it can, while you slide the robot side to side across the tape. Each call takes a fresh reading on every sensor and quietly updates that sensor's personal record book — <em>brightest ever seen, darkest ever seen</em>. The <code>while (millis() - startTime &lt; CAL_TIME_MS)</code> pattern is the non-blocking clock trick from Lesson 3's boot-banner fix, reused: check the elapsed time each pass instead of freezing in one long delay, which is what lets the countdown on row 1 stay live.</p>
 
-<p>The record books are the whole product of calibration. They live in RAM, they vanish at power-off, and every future <code>readCalibrated()</code> uses them to re-grade raw readings onto the honest 0–1000 scale.</p>
+<p>The record books are the whole product of this function. Nothing on the display shows them and no variable you wrote holds them — the only evidence the sweep worked is that your readings start agreeing with each other in Step 6.</p>
 
 <h3 class="h4-c-433014-2">5.8 Displaying What the Robot Sees</h3>
 
@@ -1158,7 +1158,7 @@ Serial Monitor: full values plus the position.
 
 <img src="../images/L04_GRAPHIC_4-01_if_anatomy.svg" alt="Anatomy of an if statement: the condition in parentheses is a yes/no question; the opening brace starts the conditional block; the action lines run only when the condition is true; the closing brace ends the block" class="img-d-block-3">
 
-<p>Three parts, always the same three parts. <strong>The condition</strong>, in parentheses — a question with a yes/no answer, usually built from a comparison: <code>&gt;</code> greater than, <code>&lt;</code> less than, <code>==</code> equal to (two equals signs — one is assignment, and that typo is a classic). <strong>The braces</strong>, which fence off the conditional block. <strong>The action</strong> — everything inside the fence, which runs only on "yes."</p>
+<p>Three parts, always the same three parts. <strong>The condition</strong>, in parentheses — a question with a yes/no answer, usually built from a comparison: <code>&gt;</code> greater than, <code>&lt;</code> less than, <code>==</code> equal to — the two-equals-signs trap Lesson 3 §5.5 took apart, and it bites harder here, because a condition that is always true is invisible when the number underneath it is moving anyway. <strong>The braces</strong>, which fence off the conditional block. <strong>The action</strong> — everything inside the fence, which runs only on "yes."</p>
 
 <p>Reading it out loud helps more than you'd expect. <code>if (sensorValue &gt; 600) { ledYellow(1); }</code> reads: <em>"If the sensor value is greater than 600, turn the yellow LED on."</em> If the value is 600 or below, the whole block is skipped as if it weren't there, and the program carries on underneath.</p>
 
@@ -1414,21 +1414,21 @@ else:
 </div>
 <div class="div-bg-e8f5e9">
 <h4 class="h4-mt-0">🧩 THE TEMPLATE</h4>
-<p class="p-m-008px">Fill the center-sensor index and the tape threshold.</p>
+<p class="p-m-008px">The <code>if</code> line is the Dark Detector from §8A.3, already filled in for you. Fill what the <code>else</code> branch still has to do.</p>
 <pre class="pre-m-0">lineSensors.readCalibrated(lineSensorValues);
-<span class="tok-569cd6">if</span> (lineSensorValues[____] &gt; ____) {   <span class="tok-6a9955">// center sensor over tape?</span>
+<span class="tok-569cd6">if</span> (lineSensorValues[<span class="tok-b5cea8">1</span>] &gt; <span class="tok-b5cea8">600</span>) {   <span class="tok-6a9955">// center sensor over tape — from §8A.3</span>
   ledYellow(<span class="tok-b5cea8">1</span>);
   display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
   display.print(F(<span class="tok-ce9178">"LINE!"</span>));
 } <span class="tok-569cd6">else</span> {
   ledYellow(<span class="tok-b5cea8">0</span>);
-  display.gotoXY(<span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">1</span>);
-  display.print(F(<span class="tok-ce9178">"     "</span>));
+  ____
+  ____
 }</pre>
 </div>
 <div class="div-bb-1pxsolid">
 <iframe src="../timer.html?v=4&amp;min=3&amp;label=Challenge+1" title="3-minute countdown timer for Challenge 1" loading="lazy" class="iframe">Click-to-start timer (available in the online version).</iframe>
-<p><strong>Hints:</strong> center sensor = <code>lineSensorValues[1]</code> · clear the message by printing spaces · the display work goes in <em>both</em> branches.</p>
+<p><strong>Hints:</strong> the LED line in the <code>else</code> branch is done for you — what <em>else</em> did the <code>if</code> branch touch? · the display does not blank itself · you cannot erase a word by printing nothing.</p>
 <p class="p-mt-8px">🔧 <strong>Functions you'll need:</strong> <code>lineSensors.readCalibrated(lineSensorValues)</code> <span class="tok-666">read all</span> · <code>lineSensorValues[1]</code> <span class="tok-666">center sensor</span> · <code>ledYellow(1)/ledYellow(0)</code> <span class="tok-666">LED on/off</span> · <code>display.gotoXY(0,1)</code> <span class="tok-666">move cursor</span> · <code>display.print(F("LINE!"))</code> <span class="tok-666">print / F("     ") to erase</span></p>
 </div>
 <details data-reveal="solution"><summary>🔓 Click to reveal solution</summary>

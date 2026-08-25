@@ -1,6 +1,6 @@
 # GPT graphics work list (generated)
 
-Work list session: S185 · `build_worklist.py v1.2` · `svg_layout_audit v1.20`
+Work list session: S186 · `build_worklist.py v1.2` · `svg_layout_audit v1.20`
 
 **38 files** needing a human, from an audit of all SVGs in `images/`.
 Worst-first by how far text runs outside its panel.

@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.31.1'
+VERSION = 'v1.32.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -222,6 +222,7 @@ ARTEFACTS = [
     ('strip_inline',          'strip_inline.py',          r"VERSION = '(v[\d.]+)'"),
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
     ('prose_canon',           'prose_canon.py',              r"VERSION = '(v[\d.]+)'"),
+    ('retired_claims',        'retired_claims.py',           r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
     ('regex_audit',           'regex_audit.py',           r"VERSION = '(v[\d.]+)'"),
     ('byte_audit',            'byte_audit.py',            r"VERSION = '(v[\d.]+)'"),
@@ -326,6 +327,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
             f"prose_canon {vals['prose_canon']} · "
+            f"retired_claims {vals['retired_claims']} · "
             f"regex_audit {vals['regex_audit']} · "
             f"byte_audit {vals['byte_audit']} · "
             f"build_palette {vals['build_palette']} · "
@@ -367,6 +369,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
             f"`prose_canon` **{vals['prose_canon']}** ·\n"
+            f"`retired_claims` **{vals['retired_claims']}** ·\n"
             f"`regex_audit` **{vals['regex_audit']}** ·\n"
             f"`byte_audit` **{vals['byte_audit']}** ·\n"
             f"`build_palette` **{vals['build_palette']}** ·\n"

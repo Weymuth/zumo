@@ -1,6 +1,6 @@
 # ZUMO — Fix Tracker
 
-**Version:** v1.2 · **Opened:** S184, Aug 22 2026, per DJ ruling — *"Can you create a Fix Tracking
+**Version:** v1.3 · **Opened:** S184, Aug 22 2026, per DJ ruling — *"Can you create a Fix Tracking
 .md that we can put the things we are deferring that we know need to be fixed, but are skipping for
 now while we are focusing on other lesson fixes."*
 
@@ -130,6 +130,25 @@ re-read. Do not reopen without an artefact.
   Board*. §16.25 is LOCKED — see it before raising this a fourth time.
 - **L03 battery threshold.** All 34 figures across L01–L03 agree at 5,400 / 4,800 / 4,200. L01
   Challenge 11's 4,500 is a deliberate teaching point that explains why the warning is not at 4,200.
+
+- **L03 §8A.5 and §8A.6 are LOAD-BEARING — do not demote them to an optional preview (S186).**
+  `L04-01` proposed exactly that, on the ground that arrays are taught twice. **REFUTED, and the
+  premise is wrong before the cost is:** L03 §8A.5 teaches array-as-a-row-of-constants-YOU-wrote
+  (index as a variable, out-of-bounds hazard) and exists to motivate §8A.6's modulo wrap; L04 §5.5
+  teaches array-as-a-buffer-a-FUNCTION-fills plus the index↔sensor-number mismatch table the lesson
+  calls its number-one bug source. The only shared sentence is *counting starts at zero*, restated
+  in L04 for a different reason — and **L04 §5.5 already opens as retrieval** (*Lesson 3 promised…
+  its §8A.5 gave you the tool*), which is `L03-07`'s shape rather than duplication.
+  **Six graded questions depend on the two sections** — `L03_B44/B45/B46/B55` (four by explicit
+  cite), `L03_A13`, and `L03_A22`'s matching pair — plus **L03 Challenge 5, whose two blanks ARE
+  §8A.5 and §8A.6** (*the index you read*, *the wrap divisor*). Challenge 5 declares its own array,
+  so it is syntactically self-contained; strip the sections and it stops being teachable and becomes
+  fillable by pattern-match.
+  **The cost argument was overstated in S186's first pass and is WITHDRAWN, which is why this row
+  says so:** the anchor sweep found **no `id` anchors and only 2 prose cross-refs book-wide**, and
+  the Maker carries **0** sites for `TEST_SPEEDS` / `NUM_SPEEDS` / `speedIndex` — no census, no
+  recompile, no byte cost. **Refuted on the pedagogy, not on the price.** A future reader who
+  re-prices this and finds it cheap has found what S186 found; the reason it stays is above.
 
 ---
 

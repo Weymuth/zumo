@@ -1,7 +1,9 @@
-# ZUMO — GPT REVIEW WORKLIST (v1.5)
+# ZUMO — GPT REVIEW WORKLIST (v1.6)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **STATUS: 59 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+> **STATUS: 64 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+>
+> **L01, L02, L03 AND L04 ARE DONE.** 179 rows remain OPEN.
 > **Read PART 0 FIRST.** Rows below are kept verbatim as GPT wrote them even after they are fixed,
 > so a row's presence here means nothing on its own — Part 0 is what says whether it is still live.
 > These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
@@ -122,6 +124,11 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 | `L13-10` | ✅ SHIPPED | S181 | **The hedge was already there and unrecorded** — §3 reads *if it really is brighter than the brightest surface your calibration spin saw — Section 5 is where you measure that, not assume it*. Checking it found a **broken cross-reference**: §5 is the Code Walkthrough; the measurement is **§7A**, which 18 other references in the lesson name correctly. Pointer corrected. *The subtraction knew; the clamp forgot* kept, per the verdict. |
 | `L13-17` | ❌ REFUTED | S181 | **`SILVER_RAW_MAX` is named correctly.** On the raw channel brighter = LOWER, so silver readings sit *below* the constant and it is a genuine upper bound — `raw[i] >= SILVER_RAW_MAX` rejecting the value is what an exclusive max does. **GPT's instinct has a real point** — the name invites *set it to the highest silver reading I measured*, which the `>=` would then reject — **but the adjacent comment says *set this BETWEEN them* and §7B makes the student test all three settings.** A rename is 38 Maker sites, 13 lesson sites, the L13 quiz bank, a census update and a full recompile, three weeks from launch, for a name that is already right. **No action.** |
 | `L02-07` | ❌ REFUTED | S154 | GPT wrong. The payload is 95 / 86 / 75; the lesson's 85–95 is correct. Part 5b. |
+| `L04-01` | ❌ REFUTED | S186 | **The premise is wrong and the fix would cost a graded challenge.** L03 §8A.5 teaches array-as-a-row-of-constants-YOU-wrote (index as a variable, out-of-bounds hazard) and exists to motivate §8A.6's wrap; L04 §5.5 teaches array-as-a-buffer-a-FUNCTION-fills, plus the index↔sensor-number mismatch table the lesson calls its number-one bug source. The only shared sentence is *counting starts at zero*, restated in L04 for a different reason. **L04 §5.5 already opens as retrieval** — *Lesson 3 promised… its §8A.5 gave you the tool* — which is `L03-07`'s shape, not duplication. **Triple-checked three ways (§24.13).** Structural bank parse: **six** L03 questions depend on the two sections — `B44`, `B45`, `B46`, `B55` (four by explicit cite), `A13`, and `A22`'s matching pair. Challenge 5 declares its own array, so it is syntactically self-contained, **but its two blanks ARE §8A.5 and §8A.6** (*the index you read*, *the wrap divisor*) — demote them and the challenge stops being teachable and becomes fillable by pattern-match. **The cost argument was overstated in the first pass and is withdrawn:** the anchor sweep found **no `id` anchors and only 2 prose cross-refs**, and the Maker carries **0** sites for `TEST_SPEEDS`/`NUM_SPEEDS`/`speedIndex` — no census, no recompile, no byte cost. **Refuted on the pedagogy, not on the price.** |
+| `L04-03` | ❌ REFUTED | S186 | Moot by dependency. The row flags a continuity line that breaks **only if `L04-01` demotes**. It does not. No L04 edit owed. |
+| `L04-02` | ✅ SHIPPED | S186 | **The row was right about the redundancy and its proposed fix would have broken a figure.** GPT said cut §8A's basic syntax review — but `L04_GRAPHIC_4-01_if_anatomy.svg` sits **between** those paragraphs and the *three parts* prose is what reads it. Narrowed to the one genuinely duplicated span: the compressed `==` aside, which restated L03 §5.5's full WARNING at lower resolution. Replaced with a pointer to §5.5 that says why the trap bites harder here — a condition that is always true is invisible when the number underneath it is moving anyway. **§8A.2 kept: it carries the Threshold KEY TERM, graded by `L04_B26` and `L04_B50`.** Bank sweep confirms the six-operator table's graded home is **`L03_B60`, cited to Lesson 3 §5.5** — nothing in L04 is falsified. Zero questions cite §8A.1. |
+| `L04-04` | ✅ SHIPPED | S186 | §5.7's closing paragraph was the **third** statement of RAM/power-off/0–1000, after §3.4's body and §3.4's KEY TERM. Replaced with what only §5.7 can say: the record books are this function's product, nothing on the display shows them, and the only evidence the sweep worked is readings agreeing in Step 6. **§3.4 untouched — 4 questions cite it. Zero cite §5.7.** **Step 6 vs §7.1 is NOT a defect** and the row is wrong about it: Step 6 says outright *You'll measure it properly in Section 7*. Discovery then measurement, signposted. |
+| `L04-05` | ✅ SHIPPED | S186 | Challenge 1 blanked `lineSensorValues[____] > ____` — the exact two values §8A.3 prints six sections earlier — and then the hint handed back *center sensor = `lineSensorValues[1]`*. The student copied; nothing was retrieved. **GPT's fix (drop the template) was declined:** the Goal→Logic→Template card is canon and breaking one card is the opposite of consistency. **Blanks MOVED instead** — index and threshold seeded and attributed to §8A.3, blanks relocated onto the `else`-branch display work, which is the genuinely new idea. **`L04_A16` already grades exactly that** (*why must the display work appear in BOTH branches*), so the bank was pointed at the right concept and the card was undercutting it — no bank edit owed. Two blanks before, two after. **Verified not payload-coupled: 0 Maker sites.** |
 | `PATH` (untagged) | ✅ RULED + SHIPPED | S179 | **DJ: `Documents/PlatformIO/Projects/<FolderName>` is the correct default location.** Bible §16.49. Fourteen sites moved: ten lesson prose, the Maker hint, two §11 canon lines, one SVG label. |
 | `L03-B1` (untagged) | ✅ HALF-CLOSED | S179 | Part 2 asked for the robot tethered AND 6+ feet of floor at once; now L01's floor test, in order. The *6+ feet* figure itself is still a bench item. |
 
@@ -145,7 +152,7 @@ the arithmetic checkable, so a reader can tell at a glance whether a lesson has 
 | L01 | 15 | 15 | 0 | **0** |
 | L02 | 19 | 17 | 2 | **0** |
 | L03 | 10 | 10 | 0 | **0** |
-| L04 | 5 | 0 | 0 | **5** |
+| L04 | 5 | 5 | 0 | **0** |
 | L05 | 2 | 0 | 0 | **2** |
 | L06 | 8 | 1 | 0 | **7** |
 | L07 | 10 | 0 | 0 | **10** |
@@ -158,9 +165,9 @@ the arithmetic checkable, so a reader can tell at a glance whether a lesson has 
 | L14 | 20 | 0 | 0 | **20** |
 | L15 | 28 | 0 | 0 | **28** |
 | L16 | 30 | 0 | 0 | **30** |
-| **TOTAL** | **245** | **59** | **2** | **184** |
+| **TOTAL** | **245** | **64** | **2** | **179** |
 
-**L01, L02 AND L03 ARE DONE.**
+**L01, L02, L03 AND L04 ARE DONE.**
 
 > **A ROW IS FILED AGAINST ONE LESSON; THE CLAIM CAN LIVE IN FOUR FILES (S185, §16.51).** This table
 > counts ROWS, not claim sites. `L03-10` was filed under L03 and had two live sites in **L01**, two in

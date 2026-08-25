@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 24, 2026 (Session 185 — **L03's TWO OPEN GPT ROWS ARE CLOSED, AND ONE OF THEM HAD FIVE HOMES OUTSIDE THE LESSON IT WAS FILED UNDER — INCLUDING A KEYED CORRECT ANSWER.**)
-**Status:** ✅ **S185 — `L03-07` AND `L03-10` SHIPPED, PLUS AN `L03-09` RESIDUE THAT SURVIVED ITS OWN CLOSURE. L01, L02 AND L03 NOW HAVE ZERO OPEN ROWS.** **79/79 gates**, `gate_payload_match` **PASS** with the advisory unmoved at **635**, `prose_canon` **0 new / 7 pinned / 0 orphan** and `--selftest` **ALL 15 CONTROLS**, `quiz_bank --check` **16 banks valid** and `--selftest` ALL CONTROLS, `session_versions --currency` **0 unbumped**, `callout_id` **1133/0**, `strip_inline --verify` **0 dead**, `build_css` current at **574 rules**, `build_worklist --check` current. Census **41,743 → 41,746**. **`byte_audit` IS OWED NOTHING** — the Maker edit is comment-only, no payload changed and no executable line moved.
+**Date:** August 25, 2026 (Session 186 — **A RETIRED CLAIM HAD NO COMPARATOR, AND L04's FIVE GPT ROWS CLOSED WITH TWO OF THEM REVERSING GPT.**)
+**Status:** ✅ **S186 — GATE 80 AND `retired_claims.py` SHIP; `L04-01`/`L04-03` REFUTED, `L04-02`/`L04-04`/`L04-05` SHIPPED. L01–L04 NOW HAVE ZERO OPEN ROWS.** **80/80 gates**, `gate_payload_match` **PASS** with the advisory unmoved at **635**, `retired_claims` **CLEAN** with **12 controls**, `prose_canon` **0 new / 7 pinned / 0 orphan**, `quiz_bank --check` **16 banks valid**, `session_versions --currency` **0 unbumped**, `callout_id` **1133/0**, `strip_inline --verify` **0 dead**, `build_css` current at **574 rules**, `build_worklist --check` current. Census unchanged at **41,746**. **`byte_audit` IS OWED NOTHING** — no payload changed and no executable line moved. **`site_parity` NOT BANKED: both readings today fell inside the 10m57s build floor and were discarded — re-run past the floor after the push.**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.5 · L05 v04.29.3 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,746** · Bible **v8.180** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.73.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.31.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `ef2bb39`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.29.3 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,746** · Bible **v8.181** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.74.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `2e3e104`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -12,6 +12,58 @@
 
 ---
 ---
+## WHAT SHIPPED IN S186
+
+**§16.52 NEW, SEATED WITH A NUMBERED BODY: A RETIRED CLAIM STAYS RETIRED.** Closing a GPT row
+often RETIRES a claim; the closing session verifies it at zero, records the zero in Part 0, and
+**nothing asserts it again.** `L03-09` is the proof — recorded SHIPPED at S179, the ±10% figure
+survived in L03's Quick Reference for **six sessions** against `L03_B35`'s keyed answer, and S185
+found it by accident. **Gate 80 would have named it at S180.** `retired_claims.py` **v1.0**, ten
+registered retirements, each measured at zero before it was added. Gates 74, 76 and 79 are three
+hand-built instances of this shape.
+
+**THE BANK EXEMPTION IS STRUCTURAL AND LOAD-BEARING.** The raw-text probe returned hits in FOUR
+BANKS for every entry **and for a nonsense CONTROL pattern** — every one a `#` provenance comment.
+Without the exemption the measurement means nothing.
+
+**THE INSTRUMENT FAILED SILENTLY WITH TWELVE CONTROLS GREEN.** `live_inputs()` imported
+`book_gates` to reuse `notags` — a PROGRAM that runs the suite and calls `sys.exit()`. On a clean
+tree it falls off the end without exiting, so every control passed; the moment a real defect was
+planted the instrument died printing nothing. **Caught by the PLANT, not the controls.** `notags`
+is now lifted by AST and exec'd alone; the failure is CONTROL H.
+
+**AND SEATING §16.52 FOUND THE HANDOFF WRONG: §16.51 WAS NEVER SEATED, AND NEITHER WAS §16.46.**
+The S186 handoff states §16.51 was seated at S185; `grep "^### "` says otherwise. **Fifteen rules
+without numbered bodies, not thirteen.**
+
+**L04's FIVE ROWS CLOSED, TWO REVERSING GPT.** `L04-01` **REFUTED** — L03 §8A.5 teaches
+array-as-constants-you-wrote, L04 §5.5 array-as-buffer-a-function-fills, and demoting L03's would
+orphan Challenge 5 plus **six** graded questions. **Triple-checked three ways, and method 3
+WITHDREW the cost argument** (no anchors, 2 prose refs, **0 Maker sites**) — refuted on the
+pedagogy, not the price. `L04-03` moot by dependency. `L04-02` **NARROWED**: GPT said cut §8A's
+syntax review, but `L04_GRAPHIC_4-01_if_anatomy.svg` sits BETWEEN those paragraphs and the *three
+parts* prose is what READS it. `L04-04`: §5.7's closing paragraph was the THIRD statement of
+RAM/power-off; **Step 6 vs §7.1 is NOT a defect.** `L04-05`: blanks MOVED onto the else-branch
+display work, which **`L04_A16` already grades** — card shape intact.
+
+**§24.18 REFUSED A BUMP WITHOUT A READ.** Four banks pin `lesson_04`; all four read against the
+three edited sites — **7 questions touch one, all in L04, all still true.**
+
+**§27.8b's CYCLE WAS NOT OWED, PROVED ON A SCRATCH COPY BEFORE THE TREE WAS TOUCHED:** 574 rules
+and 2,033 declarations both ends, **zero names added, dropped or repointed** — the whole diff is
+the usage census. Digest baseline moved, then blinding-controlled: a deleted declaration still
+fires §27.11 AND §27.13, restore md5-exact.
+
+**A BIBLE SESSION BUMP IS A REGENERATION OBLIGATION (S175), AND IT FIRED.** `GPT_WORKLIST.md`
+regenerated; **the whole diff is the stamp line**, 38 files and 9 findings unchanged.
+
+Applied S186: Bible **v8.181** · L04 **v04.29.6** · `book_gates` **v1.74.0** (80 gates) ·
+`retired_claims` **v1.0 NEW** · `session_versions` **v1.32.0** · `ZUMO_FIX_TRACKER.md` **v1.3** ·
+`ZUMO_GPT_REVIEW_WORKLIST.md` **v1.6** (Part 0b DERIVED: 245 findings, **64 closed / 2 parked /
+179 open**) · banks `QUIZ_L04` **1.1.24**, `QUIZ_L05` **1.0.7**, `QUIZ_L11` **1.0.21**, `QUIZ_L12`
+**1.0.17** · `css/book.css` and `GPT_WORKLIST.md` regenerated.
+
+
 ## WHAT SHIPPED IN S185
 
 **THE ROW SAID FOUR SITES IN L03. THE CLAIM CLASS WAS NINE ACROSS FOUR ARTEFACTS.**

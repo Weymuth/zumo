@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.73.0'
+VERSION = 'v1.74.0'
 # v1.72.19 (S182): callout baseline 1132 -> 1133 for L02's new LEARN 2.123; §27.11 digest
 #                  re-moved for the nine-section SVG and the §5 walkthrough entries.
 # v1.72.18 (S182): §27.11 digest re-moved after the nine-section SVG landed in L02 3.1 and
@@ -2557,7 +2557,7 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '4d9ce351660e1ddc'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'ff1a8f9cb408a7bd'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
@@ -4885,6 +4885,39 @@ try:
 except Exception as _ex79:
     bad.append('prose_canon could not be read: %r' % (_ex79,))
 gate('\u00a718.3b a retired section name appears nowhere, in any register', bad)
+
+# ---------------------------------------------------------------------------
+# GATE 80 (S186, 16.52): A RETIRED CLAIM STAYS RETIRED.
+# Closing a GPT row often retires a claim; the closing session verifies it is at
+# zero and then NOTHING ASSERTS IT AGAIN. L03-09 is the proof that does not
+# hold - recorded SHIPPED at S179, the +/-10% figure survived in L03's Quick
+# Reference for SIX SESSIONS against L03_B35's keyed answer, and S185 found it
+# by reading the bank. This gate would have named it at S180.
+# Gates 74, 76 and 79 are three hand-built instances of this shape; the registry
+# is the table they should have been, and appending to it is one line.
+# The BANK EXEMPTION IS STRUCTURAL (rule 20) and lives in retired_claims.py as
+# ONE definition with TWO readers (rules 83/84).
+# COVERAGE ARM, because a scan of zero files passes (rule 27).
+bad = []
+try:
+    import retired_claims as _rc80
+    _pages80, _banks80, _err80 = _rc80.live_inputs()
+    if _err80:
+        bad.append('retired_claims could not read the tree: %s' % _err80)
+    else:
+        bad.extend(_rc80.sweep(_pages80, _banks80))
+        if len(_pages80) != len(files) + 1 or len(_banks80) != len(files):
+            bad.append('retired_claims scanned %d page(s) and %d bank(s) against this '
+                       "suite's %d lesson(s) + Maker - a gate reading a shrunken "
+                       'population passes for the wrong reason'
+                       % (len(_pages80), len(_banks80), len(files)))
+        if not _rc80.REGISTRY:
+            bad.append('the retired-claim REGISTRY is EMPTY - a gate asserting nothing '
+                       'is not a gate (rule 27)')
+except Exception as _ex80:
+    bad.append('retired_claims could not be read: %r' % (_ex80,))
+gate('\u00a716.52 a retired claim stays retired', bad)
+
 
 
 print('=' * 52)
