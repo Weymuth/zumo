@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.32.2 -->
+<!-- Lesson version: v04.33.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -86,7 +86,7 @@
 <h1 class="h1">Line Following</h1>
 <div class="div-fs-11em">Proportional Control, and Why Bang-Bang Fails</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.32 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.33 — August 2026</div>
 </div>
 
 <!-- New Teaching Approach Notice -->
@@ -774,14 +774,15 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / <span class="tok-b5cea8">10.0</span>);
 
 <span class="tok-7cbf6e">// ===== TURNING PROPERTIES =====</span>
-<span class="tok-7cbf6e">// Distance between wheel centers - this is a CALIBRATION value!</span>
-<span class="tok-7cbf6e">// Start at 85.0 (physical measurement), then tune up until 90 degree</span>
-<span class="tok-7cbf6e">// turns are accurate. Typical tuned values: 98-115 depending on</span>
-<span class="tok-7cbf6e">// surface and wheel wear.</span>
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_BASE_MM = <span class="tok-b5cea8">85.0</span>;
+<span class="tok-7cbf6e">// Track width - the side-to-side distance the robot pivots about.</span>
+<span class="tok-7cbf6e">// This is a CALIBRATION value, not a ruler measurement!</span>
+<span class="tok-7cbf6e">// 98.0 is the Zumo chassis width from Pololu and is the default.</span>
+<span class="tok-7cbf6e">// If 90 degree turns come up short, tune UP. Typical: 98-115</span>
+<span class="tok-7cbf6e">// depending on surface and track wear.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TRACK_WIDTH_MM = <span class="tok-b5cea8">98.0</span>;
 
 <span class="tok-7cbf6e">// Circumference of the turn circle</span>
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_BASE_MM;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * TRACK_WIDTH_MM;
 
 <span class="tok-7cbf6e">// Encoder counts per degree of rotation</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / <span class="tok-b5cea8">360.0</span>) *

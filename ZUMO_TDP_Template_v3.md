@@ -68,14 +68,14 @@
 | Commanded 30 cm → measured | |
 | Agree? (Y/N + gap) | |
 
-**Wheel-base verify (L06 / L07)** — *the book gives you 85 mm; test it.* Command four 90° turns and check whether the robot faces home. If it does not, use the heading error to calculate your wheel-base.
+**Track-width tuning (L06 / L07)** — *the book ships 98 mm; tune it.* This is not a dimension you measure. A tracked robot skids when it pivots, so no ruler reading predicts the turn. Command four 90° turns, see whether the robot faces home, and nudge the constant until it does.
 
 | | Value |
 |---|---|
-| Book value (WHEEL_BASE_MM) | 85.0 |
+| Shipped default (TRACK_WIDTH_MM) | 98.0 |
 | Four-turn heading error (°) | |
-| My calculated wheel-base (mm) | |
-| Why 85 was close but not exact | |
+| My tuned TRACK_WIDTH_MM | |
+| Surface I tuned on | |
 
 **P-control gain search (L08)**
 
@@ -185,9 +185,9 @@
 > Show wheel diameter → circumference → counts/rev → counts/cm. Then compare the commanded 30 cm with the measured result from A4.
 > _[L06 entry]_
 
-**Wheel-base — check the book's number (L06/L07):**
-> Use the four-turn test in A4 to check the book's 85 mm value. Report your calculated value and explain the difference. *A number you tested is evidence; a number you copied is not.*
-> _[your verification]_
+**Track width — tune, don't measure (L06/L07):**
+> Report your tuned `TRACK_WIDTH_MM` from A4 and the surface you tuned it on. Explain why it sits above the 98 mm the book ships. *A constant you tuned against the robot's behavior is evidence; a dimension you read off a ruler predicts nothing on tracks.*
+> _[your tuning record]_
 
 ---
 
@@ -284,4 +284,4 @@
 - [ ] **Poster** distilled from this paper — the graded deliverable rides with the TDP
 
 ---
-*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.2.0 — poster added as a graded deliverable and the official-template rule stated, S159.*
+*Mercersburg Academy Robotics · Zumo 32U4 curriculum · TDP template derived from the 16 Engineer's Log prompts. v3.3.0 — A4's wheel-base VERIFICATION replaced by a TRACK_WIDTH_MM tuning record: students no longer measure this constant, because a tracked robot skids when it pivots and no ruler reading predicts the turn (DJ ruling, S189).*

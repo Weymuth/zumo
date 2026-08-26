@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 06
 # Encoders · Measuring the World
 #
-# Bank version: v1.0.9
+# Bank version: v1.0.11
 # Verified against: S179 - the project-path propagation. DJ ruled
 #   Documents/PlatformIO/Projects/<FolderName> the correct default location (Bible 16.49); ten lesson
 #   prose sites, the Maker hint, two Bible 11 lines and one SVG label moved with it. PIN ONLY, no
@@ -75,7 +75,7 @@
 #     convention is not, and Pololu's own sprocket colors (black, red, white) are
 #     cosmetic options rather than a ratio code, so the two could be confused.
 #     B08 asks what to do when robots disagree, not what color to expect.
-#   - ANY SPECIFIC TUNED VALUE for WHEEL_DIAMETER_MM or WHEEL_BASE_MM. §8 tells the
+#   - ANY SPECIFIC TUNED VALUE for WHEEL_DIAMETER_MM or TRACK_WIDTH_MM. §8 tells the
 #     student to change one number, re-measure and repeat. Keying a target would
 #     punish a student who calibrated honestly. B43 (wheel diameter) and B44 (wheel
 #     base) ask the DIRECTION each constant moves, which is what §8 actually
@@ -97,9 +97,9 @@
 
 lesson: "L06"
 title: "Encoders — Measuring the World"
-bank_version: "1.0.9"
+bank_version: "1.0.11"
 source:
-  lesson_06: "v04.34.0"
+  lesson_06: "v04.36.0"
 
 sets:
 
@@ -310,7 +310,7 @@ sets:
             correct: true
           - text: "122.5 mm — the distance between the two wheel centers"
             correct: false
-            why: "That is the wheel base, 85 mm, and it is used for turns rather than straight lines."
+            why: "That is the track width, 98 mm, and it is used for turns rather than straight lines."
           - text: "39π cm — the distance covered per encoder count"
             correct: false
           - text: "12.25 mm — one tenth of a rotation"
@@ -377,9 +377,9 @@ sets:
         type: multiple_choice
         cite: "§3.5"
         points: 1
-        stem: "What is the \"wheel base,\" and what is it used to calculate?"
+        stem: "What is the \"track width,\" and what is it used to calculate?"
         options:
-          - text: "The distance between the wheel centers, 85 mm — it sets how far each wheel must travel to turn the robot a given angle"
+          - text: "The side-to-side distance the robot pivots about, 98 mm — it sets how far each wheel must travel to turn the robot a given angle"
             correct: true
           - text: "The width of one track's contact patch, used to estimate grip"
             correct: false
@@ -394,11 +394,11 @@ sets:
         points: 1
         stem: "When the robot turns in place, what circle does each wheel trace?"
         options:
-          - text: "A circle whose diameter is the wheel base — about 267 mm around for a full 360°"
+          - text: "A circle whose diameter is the track width — about 308 mm around for a full 360°"
             correct: true
           - text: "A circle whose diameter is the wheel diameter, 39 mm"
             correct: false
-          - text: "A circle whose radius is the wheel base, so about 534 mm around"
+          - text: "A circle whose radius is the track width, so about 616 mm around"
             correct: false
           - text: "No circle — the wheels turn in place without traveling"
             correct: false
@@ -410,30 +410,14 @@ sets:
         points: 1
         stem: "About how many encoder counts does one degree of turn take?"
         options:
-          - text: "About 5.5"
+          - text: "About 6.35"
             correct: true
           - text: "About 74.3"
             correct: false
             why: "That is counts per centimetre of straight travel."
-          - text: "About 267"
+          - text: "About 308"
             correct: false
           - text: "About 909.7"
-            correct: false
-
-      - id: L06_B20
-        type: multiple_choice
-        cite: "§3.5"
-        points: 1
-        stem: "The lesson says the 85 mm wheel base is approximate and tells you to measure yours. Why does that matter?"
-        options:
-          - text: "Turn accuracy depends on it, and even small differences show up as angle error"
-            correct: true
-          - text: "It changes how far the robot travels in a straight line"
-            correct: false
-            why: "Straight-line distance comes from wheel diameter. Wheel base is the turning number."
-          - text: "It determines how many counts the encoder produces per rotation"
-            correct: false
-          - text: "It affects the battery drain during turns"
             correct: false
 
       # ---------- §3.6 Open vs closed loop ----------
@@ -478,7 +462,7 @@ sets:
             correct: true
           - text: "Encoder resolution and gear ratio"
             correct: false
-          - text: "Wheel base and wheel diameter"
+          - text: "Track width and wheel diameter"
             correct: false
           - text: "Nothing — that is what makes it repeatable"
             correct: false
@@ -506,7 +490,7 @@ sets:
         points: 1
         stem: "How do encoders differ from the line sensors and proximity sensors you have already met?"
         options:
-          - text: "They need no initialization — they start counting automatically at power-on"
+          - text: "They need no initialization call from you — the library sets itself up the first time you ask for a reading"
             correct: true
           - text: "They must be calibrated at the start of every run"
             correct: false
@@ -791,7 +775,7 @@ sets:
           - text: "Leave it and lower COUNTS_PER_CM directly instead"
             correct: false
             why: "COUNTS_PER_CM is built FROM the diameter, so the diameter is the number you change."
-          - text: "Increase WHEEL_BASE_MM instead"
+          - text: "Increase TRACK_WIDTH_MM instead"
             correct: false
             why: "That is the turning constant. It has no effect on straight-line distance."
 
@@ -801,9 +785,9 @@ sets:
         points: 1
         stem: "Your 90° turns are coming out short — the robot turns less than it should. What does §8 say to do?"
         options:
-          - text: "Increase WHEEL_BASE_MM, so more counts are commanded per degree"
+          - text: "Increase TRACK_WIDTH_MM, so more counts are commanded per degree"
             correct: true
-          - text: "Decrease WHEEL_BASE_MM"
+          - text: "Decrease TRACK_WIDTH_MM"
             correct: false
           - text: "Increase WHEEL_DIAMETER_MM"
             correct: false
@@ -909,10 +893,10 @@ sets:
           - left: "Counts per cm"
             right: "~74.3"
           - left: "Counts per degree of turn"
-            right: "~5.5"
+            right: "~6.35"
         extra_answers:
           - "~600"
-          - "~267"
+          - "~308"
 
       - id: L06_B52
         type: matching
@@ -924,10 +908,10 @@ sets:
             right: "39 mm"
           - left: "Wheel circumference"
             right: "122.5 mm"
-          - left: "Wheel base"
-            right: "85 mm"
+          - left: "Track width"
+            right: "98 mm"
         extra_answers:
-          - "267 mm"
+          - "308 mm"
           - "75.81 mm"
 
       - id: L06_B53
@@ -1017,7 +1001,7 @@ sets:
             correct: true
           - text: "The encoders drift over long distances"
             correct: false
-          - text: "The wheel base constant is wrong"
+          - text: "The track width constant is wrong"
             correct: false
           - text: "The delay(10) lets the robot coast between checks"
             correct: false
@@ -1048,7 +1032,7 @@ sets:
             correct: true
           - text: "It is measured fresh in Lesson 6, and added to the right motor"
             correct: false
-          - text: "It is calculated from the wheel base and applied to both motors"
+          - text: "It is calculated from the track width and applied to both motors"
             correct: false
           - text: "It is a Zumo library constant you do not set yourself"
             correct: false
@@ -1256,7 +1240,7 @@ sets:
           - left: "One stiff or slipping track wrecks the move"
             right: "Gate on averageCounts() instead of one encoder"
         extra_answers:
-          - "Increase WHEEL_BASE_MM until the turns come out square"
+          - "Increase TRACK_WIDTH_MM until the turns come out square"
           - "Reset the encoders at the end of each movement instead of the start"
 
       - id: L06_A19

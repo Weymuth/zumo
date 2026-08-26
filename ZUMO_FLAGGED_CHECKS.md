@@ -1,7 +1,7 @@
 # ZUMO — FLAGGED CHECKS FOR DJ
 ### The bench sheet. Every open L01–L04 row, grouped by what you have to set up.
 
-**Flagged checks version: v1.1** — increment on every substantive edit
+**Flagged checks version: v1.2** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** `ZUMO_BENCH_TESTS.md` is the complete tracker — 53 rows across 15
@@ -18,9 +18,15 @@
 > file and in `ZUMO_BENCH_TESTS.md`. Renumbering them to fit the station order would silently
 > change what an existing citation points at, so the stations reorder the RUN and never the IDs.
 >
-> **TWO ROWS CAN FALSIFY PRINTED PROSE** — **F10** and **F14**. Both carry a stated prediction.
-> If the prediction fails, a paragraph in the live book is wrong and comes out. Run those two
-> even if you run nothing else.
+> **TWO ROWS ON THIS SHEET CAN FALSIFY PRINTED PROSE** — **F10** and **F14**. Both carry a stated
+> prediction. If the prediction fails, a paragraph in the live book is wrong and comes out. Run
+> those two even if you run nothing else.
+>
+> **THAT COUNT IS SCOPED TO THIS SHEET, WHICH IS L01–L04 ONLY. BOOK-WIDE THERE ARE SEVEN**, and
+> the most consequential of them is not here — it is `L10-B1`, §16.12's perpendicular arrival.
+> **The full ranked list lives at the top of `ZUMO_BENCH_TESTS.md` (v1.5).** This scope clause was
+> added at S189 because the two-row figure was read off this sheet and generalised to the whole
+> book, which is wrong: the footer of this very file already named `L10-B1` as a third.
 
 ---
 

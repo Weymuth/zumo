@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 25, 2026 (Session 188 — **A VERSION WITH TWO HOMES IS BUMPED IN BOTH, AND THE HOME THE TOOL READS IS THE ONE THAT IS NOT OBVIOUS. `L05-01` AND `L05-02` CLOSED: THE h4 THAT LOOKED LIKE THE DEFECT HELD THE BOOK'S ONLY DEFINITION OF *FOR LOOP*, AND THE DOUBLE CHECK FOUND THREE DEFECTS PAST 80 GREEN GATES.**)
-**Status:** ✅ **S187 — THE L01–L04 BENCH SHEET SHIPS AT 18 ROWS; §24.23 SEATED; THE SEATING DEBT IS 26, NOT FIFTEEN**
+**Date:** August 26, 2026 (Session 189 — **THE NAME AND THE VALUE DESCRIBED THE SAME WRONG AXIS, WHICH IS WHY THEY NEVER LOOKED INCONSISTENT WITH EACH OTHER**)
+**Status:** ✅ **S189 — `WHEEL_BASE_MM = 85.0` → `TRACK_WIDTH_MM = 98.0` ACROSS 372 SITES; STUDENTS NO LONGER MEASURE IT; THE REVALUE IS BYTE-NEUTRAL, MEASURED**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,708** · Bible **v8.183** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.74.1** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.1 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `7b9c0aa`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.36.0 · L07 v04.32.0 · L08 v04.33.0 · L09 v05.27.6 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.3 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,712** · Bible **v8.185** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.68 · **book_gates v1.74.2** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.4 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.1 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `95349b5`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -11,6 +11,135 @@
 ---
 
 ---
+---
+## WHAT SHIPPED IN S189
+
+**`L06-07` CLOSED, AND THE ROW WAS BIGGER THAN THE TERMINOLOGY OBJECTION GPT FILED.**
+GPT said `WHEEL_BASE_MM` is the wrong term. Measured, **the VALUE was wrong on the same axis as
+the name.** Pololu's 85 mm is the **DRIVE-to-IDLER sprocket spacing, FORE-AFT along ONE side**;
+a differential-drive turn needs the **SIDE-TO-SIDE** separation. DJ named it directly: *"96 is the
+width. I was saying 85 or 86 for the distance between front of track and back of track."*
+**Bible §16.10's own table is where it was canonised**, sourced to *"Pololu product pages"* and
+called *"the true sprocket spacing"* — which it is, and then used as the pivot width, which it is
+not. **A wrong name over a wrong value is internally consistent, so nothing ever read as odd.**
+
+**THE RULING COULD NOT BE EXECUTED AS FIRST STATED.** There is no official Pololu figure for this
+quantity: their `zumo-32u4-arduino-library` carries **ZERO dimension constants of any kind** and
+both turning examples steer by **GYRO**; the user's guide publishes the chassis only as pictures,
+the sole text figures being the 98 × 86 × 39 mm envelope. **98 is ruled a CALIBRATION DEFAULT, not
+a geometry claim** — defensible because it is Pololu-published AND the floor of the book's own
+tuned range 98–115. **DO NOT RESTORE 85 TO A TURNING FORMULA.**
+
+**STUDENTS NO LONGER MEASURE IT (DJ ruling).** The TDP's A4 wheel-base VERIFICATION becomes a
+`TRACK_WIDTH_MM` tuning record. The four-turn square survives as a CHECK rather than a derivation,
+so M3a's demo is untouched.
+
+**372 SITES:** Maker 328 (161 declarations, 156 comment blocks, 167 identifier renames) · L06 ×13 ·
+L07 ×15 · L08 ×4 · L09 ×5 · banks · TDP · Bible.
+
+**THE ARITHMETIC CASCADE WAS DERIVED, NOT CARRIED — π CANCELS, SO IT IS CLOSED-FORM:** turn
+circumference 267.0 → **307.9 mm**, counts/degree 5.50744 → **6.34976**, L12's 90° turn
+496 → **571 counts**.
+
+**THREE TIMES A PREDICATE WAS SCOPED TO THE SYMPTOM'S VOCABULARY RATHER THAN THE PHENOMENON
+(§24.6c).** Keying on `WHEEL_BASE_MM` missed five L06 prose sites written *wheel base* / *85mm*,
+including the measurement instruction and the 267 mm arithmetic. The concept sweep that caught
+those still missed `5.5 counts/degree` and the worked formula `(85 × π × 909.7)`, because neither
+carries *mm* or *wheel base*. **Only a DERIVED-ARITHMETIC sweep closed it** — and that is what
+found `L06_B19`, a keyed correct answer of *About 5.5* no keyword predicate could reach.
+
+**`L06_B20` DROPPED, NOT RE-KEYED.** Its stem asserts *the lesson tells you to measure yours*, a
+premise this ruling deletes; the concept is graded 4× elsewhere. Bank 78 → **77**, still the
+largest in the book. **`L07_B47` RE-STEMMED because the fix turned it into a trap**: it keyed FALSE
+on *98–115 is the correct value to type in*, and once 98 IS the default a student answering TRUE is
+reading correctly and is marked wrong — **v8.130's rule from a new direction, a correct edit
+falsifying a fair question.**
+
+**THE REVALUE IS BYTE-NEUTRAL, MEASURED RATHER THAN PREDICTED.** A payload VALUE changed, which is
+executable, so `byte_audit` was owed and was RUN on a harness built from scratch (`objects: 41`).
+**All eight standing controls EXACT, control first:** `11/after_step_1` **20,592** · 20,778 ·
+24,790 · 21,334 · 25,248 · 26,002 · 28,406 · 28,626. 221 payloads compiled, `--check` PASS,
+`--selftest` ALL CONTROLS PASS, `--discards` 15 over 7, 7 adjudicated, 0 unexplained.
+
+**THE RED GATE AT CLOSE WAS §24.18, AND MY HYPOTHESIS THAT IT WAS §27.11 WAS WRONG.** Five lesson
+bumps put **22 `source:` pins stale across 10 banks**. **The read was MACHINE-CLOSED (rule 37):**
+a tight predicate over all 16 banks returned 63 hits and **45 are `§5.5` — a SECTION NUMBER, not
+the figure** (§16.15); bare numeric `5.5` is **zero**. Claim-class assertions live only in the four
+banks already corrected, so **twelve banks assert nothing and their pins were EARNED**.
+
+**THE STALE-COUNT DEBT FOUND AT SESSION OPEN IS CLOSED IN THE SAME PASS (rule 72).**
+`ZUMO_GPT_REVIEW_WORKLIST.md` carried the row count in **THREE homes reading three different
+numbers** — header 66/177, a Part 0b prose line at **186 (stale since S182)**, and the tally table
+at 64/179 (stale since S188). **§24.24 on the worklist itself, one session after seating it.**
+Truth DERIVED: 245 unique finding ids, 68 Part 0 rows less two untagged = 66 closed. All three
+homes now agree at **67 closed / 2 parked / 176 open**, TOTAL re-derived from its own rows.
+
+**Applied S189:** L06 **v04.34.1** · L07 **v04.32.0** · L08 **v04.33.0** · L09 **v05.27.6** ·
+L12 **v01.35.3** · Maker **v2.68** (both homes incl. the on-screen BADGE) · `book_gates` **v1.74.2** ·
+`gate_payload_match` **v1.9.4** (census 161 entries re-derived, 0 dropped, 0 added) · ten banks,
+both homes each · `ZUMO_TDP_Template_v3.md` **v3.3.0** · `ZUMO_GPT_REVIEW_WORKLIST.md` **v1.8** ·
+Bible **v8.184**. §27.11's digest moved, **PROVED RANK-ONLY**: 574 rules / 2,033 declarations both
+ends, zero names added/dropped/repointed, zero declaration blocks changed.
+
+**80/80 gates** · `gate_payload_match` PASS, advisory unmoved at **635** · 16 banks valid ·
+`retired_claims` CLEAN · `prose_canon` 0 new / 7 pinned / 0 orphan · `build_worklist --check`
+current · `session_versions --currency` **0 unbumped**.
+
+---
+
+### S189 — SECOND HALF: FIVE MORE L06 ROWS, THE BENCH SHEET, AND A SWEEP THAT FAILED ITS CONTROLS
+
+**`L06-04` VERIFIED BY COMPILER, NOT GREP.** The row carried a *VERIFY-then-AGREE* obligation.
+`static_assert` under `avr-g++` against pinned `pololu/Zumo32U4@2.0.1`: `getCountsLeft()` is
+**2 bytes**, `int` 2, `long` 4 — **blinding control (`==4`) fired correctly.** Accumulators are
+`static volatile uint16_t`, deliberately unsigned. So the hint's *"Big numbers need bigger boxes —
+that's what `long` is for"* **taught a fix that does not work**: widening the target cannot help
+when the reading wraps at the same place. The 440 figure is right (32767 ÷ 74.25 = **441.3 cm**);
+the CAUSE was incomplete. Both sites now teach read-and-reset into a running `long`.
+
+**`L06-02` IS ALREADY DEAD — FIXED AT S161, ROW LEFT OPEN 28 SESSIONS.** `regardless of
+conditions` is at **0 occurrences**; §3.6's KEY TERM already carries DJ's ruling verbatim
+(commit `4a9e1d1`). **No edit made** — writing the drafted replacement would have swapped one
+correct fix for another and spent a version bump on nothing.
+
+**`L06-03`'s LIVE CLAIM WAS NOT WHERE GPT QUOTED IT** — the absolute sat in Experiment 5's reveal,
+not the §7 WARNING. Both sites revised; *"the dashboard says you drove straight"* KEPT per ruling.
+**Spiral star to L05 placed after measuring the convention: 26 backward / 0 forward book-wide, 27/0
+after this one.** The L12 pointer stays bare prose — a forward reference has never carried a star.
+
+**`L06-05` / `L06-06` SHIPPED, AND THE TRIPLE CHECK CAUGHT A NUMBER I PLANTED MYSELF** — the first
+draft ended *"12 counts, not 2"*; 12 ÷ 4 = 3, so the naive model gives 3. Unsourced figure removed
+(rule 50). **`L06_B25`'s KEYED CORRECT ANSWER was the retired claim verbatim** (the S185 pattern).
+
+**THE ALREADY-DEAD SWEEP DOES NOT WORK AND WAS NOT SHIPPED (§16.50).** Phrase-absence returned
+**77 of 178** rows, and the control killed it: `L06-08` (sandwich ×2) and `L11-04` (table-edge ×8)
+are provably live and both appeared. Tightening to require distinctive tokens flipped the failure —
+known-dead `L06-05`/`L06-06` still showed 2/4 and 4/5 surviving tokens. **Both directions fail their
+control, so no arm ships.** `L06-02` was found by READING while drafting a fix; already-dead rows
+surface as a free byproduct of working a lesson, not from a separate pass.
+
+**THE 178-vs-171 GAP I FLAGGED IS WITHDRAWN.** Run against HEAD, the sweep's regex found a
+closed-set of 67 where the bounded count is 68 and never subtracted parked rows. **245 unique
+finding ids, zero duplicates.** The worklist was internally consistent throughout; the instrument
+was wrong, not the file.
+
+**BENCH SHEET v1.5 — `ZUMO_BENCH_TESTS.md` NOW RANKS ITSELF.** DJ asked for the exact track
+centreline value: **new row `L06-B6`**, recording that 98.0 is Pololu's overall chassis WIDTH, that
+a true centreline measurement should come out BELOW 98, and that **if it lands near 85 then 85 was
+right under the wrong name** — the book stays honest either way because it no longer calls 98 a
+measurement. **`L06-B3` was falsified by S189's own work** (*"Book gives 85 mm and asks the student
+to check it"*) and re-premised; closing a claim in the lessons does not close it in the trackers.
+**A ranked SEVEN-row block now opens the file** — rows whose failure deletes or rewrites live prose:
+**1 `L10-B1` (THE BIG ONE, §16.12, unruled since S143) · 2 `L02-B2` · 3 `L03-B3b` · 4 `L15-B3` ·
+5 `L11-B1` · 6 `L11-B4` · 7 `L10-B2`.** **A two-row figure carried in the S189 handoff was scoped to
+the L01–L04 working sheet and had been wrongly generalised to the whole book** — measured three ways
+(semantic read of all 49 open rows · independent linguistic predicate with a clean blinding control ·
+cross-check of `ZUMO_FLAGGED_CHECKS.md`, whose own footer already named `L10-B1` eleven lines below
+the sentence quoted). `ZUMO_FLAGGED_CHECKS.md` **v1.2** gains the scope clause.
+
+**Part 0 now reads 72 closed / 2 parked / 171 open**, derived from its own rows. L06 has ONE row
+left, `L06-08`, and it is DJ'S CALL, not an AGREE.
+
 ---
 ## WHAT SHIPPED IN S188
 

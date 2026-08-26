@@ -1,9 +1,9 @@
-# ZUMO — GPT REVIEW WORKLIST (v1.7)
+# ZUMO — GPT REVIEW WORKLIST (v1.9)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **STATUS: 66 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+> **STATUS: 72 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
 >
-> **L01, L02, L03 AND L04 ARE DONE.** 177 rows remain OPEN.
+> **L01, L02, L03 AND L04 ARE DONE.** 171 rows remain OPEN.
 > **Read PART 0 FIRST.** Rows below are kept verbatim as GPT wrote them even after they are fixed,
 > so a row's presence here means nothing on its own — Part 0 is what says whether it is still live.
 > These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
@@ -132,6 +132,12 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 | `L05-01` | ✅ SHIPPED | S188 | **DJ ruled: move, do not delete.** GPT called it a full anatomy re-teach; measured, it is narrower. Cut: the push-up-coach refresher (which also asserted *starts counting at 1*, against the zero-counting rule L04 §8A.6 teaches), `L05_GRAPHIC_5-04_for_anatomy.svg` (a second drawing of L04's `4-06`), and the Quick Practice tracing `i < 4` (L04 §8A.6 already runs that lap table on `i < 3`). **KEPT: the `For Loop` KEY TERM** — `id="term-for-loop"` is the book's ONLY definition of the term and lives in no other lesson; deleting the h4 block would have deleted it. Also kept: `drawBar()` trace, `i--` countdown, Worked Example #2, the for/while NOTE, the CHECKPOINT. **GRAPHIC 5.4 is RULED OUT, not deleted** — `PLANNED_EXPECTED` 146→145 and the §21 coverage baseline 1,209→1,208, both with stated reasons, so outstanding stayed 15 and did not fall like progress (S135). The .svg stays on disk, unreferenced. Figure-index row removed and the tbody restriped. |
 | `L05-02` | ✅ SHIPPED | S188 | **DJ ruled: omit only `readAllSensors();`.** Step 4 handed over all six prototypes on the third staging of `'readAllSensors' was not declared` (L02 Step 7, L04 Step 5, here). Now five are pasted and the sixth is the student's — the build stays red, the compiler names the missing function, and §5.5 still carries the full list for checking after, not before. The GPT spiral *first: explain / second: remind / third: expect* is what this implements. **Bank edit was owed and made:** `L05_A02`'s correct option and one distractor `why` both asserted the six arrive in one trip. Read all 8 §5.15 items against the live section — every one maps to retained content. |
 | `PATH` (untagged) | ✅ RULED + SHIPPED | S179 | **DJ: `Documents/PlatformIO/Projects/<FolderName>` is the correct default location.** Bible §16.49. Fourteen sites moved: ten lesson prose, the Maker hint, two §11 canon lines, one SVG label. |
+| `L06-02` | ✅ ALREADY DEAD | S189 | **Fixed at S161 and the row was never closed — open for 28 sessions after the fix.** GPT's quoted phrase *"self-correcting regardless of conditions"* is at **0 occurrences**. §3.6's KEY TERM already reads *"Closed on WHAT, though? … `driveDistance()` is closed-loop on distance … still open-loop on heading,"* and the table row already says *"Repeatable — as far as the wheels are concerned."* That IS DJ's ruling, verbatim, landed at commit `4a9e1d1`. **No edit made: writing the drafted replacement would have swapped one correct fix for another and spent a version bump on nothing.** |
+| `L06-03` | ✅ SHIPPED | S189 | **The live claim was NOT where GPT quoted it.** The §7 WARNING was fine; the absolute sat in Experiment 5's reveal — *"no encoder anywhere on this robot can see a curve."* Both sites revised. DJ's ruling honoured: *"the dashboard says you drove straight; the floor says otherwise"* is **kept**, the explanation above it rewritten to say the arithmetic is not what is missing — two encoders differing is exactly how a robot infers heading; what they cannot show is whether rotation became the robot's motion. **Spiral star to L05 placed** (combine for presence / difference for direction). **Star direction measured before placing: 26 backward, 0 forward book-wide — 27/0 after this one, which is the expected consequence, not drift**, so the L12 pointer stays bare prose. §21 coverage 1,208 → **1,209** with a stated reason. |
+| `L06-04` | ✅ VERIFIED + SHIPPED | S189 | **VERIFY-then-AGREE discharged by COMPILER, not grep.** `static_assert` under `avr-g++` against pinned `pololu/Zumo32U4@2.0.1`: `getCountsLeft()` is **2 bytes**, `int` 2, `long` 4 — **blinding control (`==4`) fired correctly**. Source confirms `static volatile uint16_t` accumulators, deliberately unsigned. So the hint's *"Big numbers need bigger boxes — that's what `long` is for"* **taught a fix that does not work**: widening the target cannot help when the reading wraps at the same place. The 440 figure itself is right (32767 ÷ 74.25 = **441.3 cm**) — the CAUSE was incomplete, exactly as GPT said. Both sites now teach read-and-reset into a running `long`. |
+| `L06-05` | ✅ SHIPPED | S189 | §3.1's *"As poles pass: North → South → one count"* → both edges of both channels, **four counts per quadrature cycle, 12 per motor-shaft turn**. Agrees with Bible §16.10's `12 CPR`. **A triple check caught a number I had planted myself:** the first draft ended *"12 counts, not 2"* — 12 ÷ 4 = 3 cycles, so the naive model gives 3, not 2. Unsourced figure removed (rule 50). |
+| `L06-06` | ✅ SHIPPED | S189 | §4.1's *"start counting automatically when the robot powers on"* → no `init()` call **from you**; the library sets itself up on first read. **`L06_B25`'s KEYED CORRECT ANSWER was the retired claim verbatim** — the S185 pattern, a lesson fix leaving the bank grading the dead version. Re-keyed. |
+| `L06-07` | ✅ RULED + SHIPPED | S189 | **DJ ruled `TRACK_WIDTH_MM = 98.0`, and the VALUE was wrong as well as the name.** Pololu's 85 mm is the DRIVE-to-IDLER sprocket spacing measured FORE-AFT along one side (DJ: *"85 or 86 for the distance between front of track and back of track"*); a differential-drive turn needs the SIDE-TO-SIDE separation, so name and value described the same wrong axis and never looked inconsistent with each other. Bible §16.10 is where it was canonised, sourced to *"Pololu product pages"*. **98 = Pololu's published chassis width AND the floor of the book's own tuned range (98–115)** — a calibration default, not a geometry claim; Pololu publishes no centreline separation and their library carries ZERO dimension constants, turning by gyro. **372 sites: Maker 328 · L06 ×13 · L07 ×15 · L08 ×4 · L09 ×5 · banks L06/L07/L09/L10/L12 · TDP · Bible.** Arithmetic cascade re-derived, not carried: turn circumference 267→**308 mm**, counts/degree 5.507→**6.34976**, L12's 90° 496→**571 counts**. **Student measurement removed (DJ ruling); the four-turn test survives as a tuning check.** `L06_B20` DROPPED (dead premise, concept graded 4× elsewhere); `L07_B47` re-stemmed because 98-as-default turned it into a trap that punishes a correct reading (v8.130 shape). |
 | `L03-B1` (untagged) | ✅ HALF-CLOSED | S179 | Part 2 asked for the robot tethered AND 6+ feet of floor at once; now L01's floor test, in order. The *6+ feet* figure itself is still a bench item. |
 
 ## Parked with a reason — NOT closed, and not to be re-investigated
@@ -145,7 +151,7 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 
 # PART 0b — OPEN (everything not named above)
 
-**186 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
+**171 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
 the CLOSED and PARKED tables above ARE the list, by subtraction. What this section does is make
 the arithmetic checkable, so a reader can tell at a glance whether a lesson has been worked.
 
@@ -155,8 +161,8 @@ the arithmetic checkable, so a reader can tell at a glance whether a lesson has 
 | L02 | 19 | 17 | 2 | **0** |
 | L03 | 10 | 10 | 0 | **0** |
 | L04 | 5 | 5 | 0 | **0** |
-| L05 | 2 | 0 | 0 | **2** |
-| L06 | 8 | 1 | 0 | **7** |
+| L05 | 2 | 2 | 0 | **0** |
+| L06 | 8 | 7 | 0 | **1** |
 | L07 | 10 | 0 | 0 | **10** |
 | L08 | 15 | 1 | 0 | **14** |
 | L09 | 13 | 0 | 0 | **13** |
@@ -167,7 +173,7 @@ the arithmetic checkable, so a reader can tell at a glance whether a lesson has 
 | L14 | 20 | 0 | 0 | **20** |
 | L15 | 28 | 0 | 0 | **28** |
 | L16 | 30 | 0 | 0 | **30** |
-| **TOTAL** | **245** | **64** | **2** | **179** |
+| **TOTAL** | **245** | **72** | **2** | **171** |
 
 **L01, L02, L03 AND L04 ARE DONE.**
 

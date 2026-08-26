@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.34.0 -->
+<!-- Lesson version: v04.36.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Encoders</h1>
 <div class="div-fs-11em">Teaching Your Robot to Measure</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.34 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.36 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -181,7 +181,7 @@
 
 <li><strong>SENSE:</strong> Hall effect sensors detect the changing magnetic field</li>
 
-<li><strong>COUNT:</strong> As poles pass: North → South → one "count"</li>
+<li><strong>COUNT:</strong> Every time <em>either</em> channel flips — both edges of both channels — the library adds a count. That is <strong>four counts per quadrature cycle</strong>, and <strong>12</strong> per turn of the motor shaft.</li>
 
 </ol>
 
@@ -363,30 +363,30 @@
 
 <h3 class="h3-c-1f2a3d">3.5 Calculating Turns</h3>
 
-<p>For turns, we use the <strong>wheel base</strong> (distance between wheel centers) = <strong>85mm</strong></p>
+<p>For turns, we use the <strong>track width</strong> (the side-to-side distance the robot pivots about) = <strong>98mm</strong></p>
 
 <div class="callout-6b8e6b-bg-f0f7f0" data-family="TIP" data-callout="6.11">
 
 <div class="div-fs-09em"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
 <div class="div-fs-105em">Measure Your Robot</div>
 
-<p>The 85mm wheel base is approximate. For best accuracy, <strong>measure the distance between your robot's wheel centers</strong> and adjust the constant in your code. Even small differences affect turn accuracy!</p>
+<p>98mm is Pololu’s published chassis width, and the book ships it as your starting value. You do <strong>not</strong> measure this one — a tracked robot skids when it pivots, so no ruler reading predicts the turn. If your 90° turns come up short, nudge the constant up until they land.</p>
 
 </div>
 
-<p>When turning in place, each wheel traces a circle with the wheel base as diameter:</p>
+<p>When turning in place, each track traces a circle with the track width as diameter:</p>
 
-<p><strong>Turn circumference</strong> = π × 85mm = <strong>267mm</strong> for a full 360°</p>
+<p><strong>Turn circumference</strong> = π × 98mm = <strong>308mm</strong> for a full 360°</p>
 
-<p><strong>Counts per degree</strong> ≈ <strong>5.5 counts</strong></p>
+<p><strong>Counts per degree</strong> ≈ <strong>6.35 counts</strong></p>
 
 <div class="callout-9c27b0-bg-f3e5f5-3" data-family="KEY TERM" data-callout="6.12">
 
 <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>The Formula</strong></div><br>
 
-<strong>Counts per degree</strong> = (wheel_base × π × counts_per_rotation) ÷ (360 × wheel_circumference)<br>
+<strong>Counts per degree</strong> = (track_width × π × counts_per_rotation) ÷ (360 × wheel_circumference)<br>
 
-= (85 × π × 909.7) ÷ (360 × 122.5) ≈ <strong>5.5 counts/degree</strong>
+= (98 × π × 909.7) ÷ (360 × 122.5) ≈ <strong>6.35 counts/degree</strong>
 
 </div>
 
@@ -483,11 +483,11 @@
 
 <tr><td class="td-ccc-2">Wheel circumference</td><td class="td-ccc-2">122.5mm</td></tr>
 
-<tr class="tr-bg-f9f9f9"><td class="td-ccc-2">Wheel base</td><td class="td-ccc-2">85mm</td></tr>
+<tr class="tr-bg-f9f9f9"><td class="td-ccc-2">Track width</td><td class="td-ccc-2">98mm</td></tr>
 
 <tr><td class="td-ccc-2">Counts per cm</td><td class="td-ccc-2">~74.3</td></tr>
 
-<tr class="tr-bg-f9f9f9"><td class="td-ccc-2">Counts per degree (turning)</td><td class="td-ccc-2">~5.5</td></tr>
+<tr class="tr-bg-f9f9f9"><td class="td-ccc-2">Counts per degree (turning)</td><td class="td-ccc-2">~6.35</td></tr>
 
 </table>
 
@@ -496,7 +496,7 @@
 <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Important Difference from Other Sensors</div>
 
-<p>Unlike line sensors or proximity sensors, encoders do NOT require initialization! They start counting automatically when the robot powers on.</p>
+<p>Unlike line sensors or proximity sensors, encoders do NOT require an initialization call from you! The first time you ask for a reading, the library quietly sets itself up — so there is no <code>init()</code> line to remember and no way to forget it.</p>
 
 </div>
 
@@ -1062,7 +1062,7 @@ driveDistance(distanceCm):
 <div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="6.38">
 <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">the 440 cm ceiling</div>
-<p class="p-mb-0">The target lives in an <code>int</code>, and on this chip an int tops out at 32,767. At ~74.3 counts per cm, that's about <strong>440 cm</strong>. Ask for more and the math silently wraps — the robot barely moves, or never stops. Keep single moves under 4 meters. (Observation experiment #4 turns this into a puzzle.)</p>
+<p class="p-mb-0">The target lives in an <code>int</code>, and on this chip an int tops out at 32,767. At ~74.3 counts per cm, that's about <strong>440 cm</strong>. Ask for more and the math silently wraps — the robot barely moves, or never stops. Keep single moves under 4 meters. <strong>And the target is not the only 16-bit box:</strong> <code>getCountsLeft()</code> hands back a 16-bit number too, so the <em>reading</em> wraps at the same place. Widening one box without the other buys you nothing. (Observation experiment #4 turns this into a puzzle.)</p>
 </div>
 
 <details data-reveal="check">
@@ -1146,12 +1146,12 @@ driveDistance(distanceCm):
 
 <h3 class="h3-c-433014">Step 9 — Turn Configuration <span class="span-c-6f7582">(Discovery 6.7)</span></h3>
 
-<p>Turning is driving in disguise: when the robot pivots, each wheel traces a circle whose diameter is the <strong>wheel base</strong> — the distance between the tracks. Three more constants.</p>
+<p>Turning is driving in disguise: when the robot pivots, each track traces a circle whose diameter is the <strong>track width</strong> — the side-to-side distance the robot pivots about. Three more constants.</p>
 
 <p class="p-m-10px06px"><strong>The plan, in pseudo-code:</strong></p>
 <pre class="pre-b8c4cc">constants (add below the motor section):
-wheel base           = 85.0 mm          ← measure yours!
-turn circumference   = π × wheel base
+track width          = 98.0 mm          ← Pololu chassis width
+turn circumference   = π × track width
 counts per degree    = (turn circumference ÷ 360)
                        × (counts per rotation ÷ wheel circumference)</pre>
 
@@ -1161,8 +1161,8 @@ counts per degree    = (turn circumference ÷ 360)
 <summary>🔓 Check your work — open after you've tried</summary>
 <div class="div-mt-15px">
 <pre><span class="tok-7cbf6e">// ----- Turning -----</span>
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_BASE_MM = <span class="tok-b5cea8">85.0</span>;
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * WHEEL_BASE_MM;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TRACK_WIDTH_MM = <span class="tok-b5cea8">98.0</span>;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = <span class="tok-b5cea8">3.14159</span> * TRACK_WIDTH_MM;
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / <span class="tok-b5cea8">360.0</span>) *
                                 (COUNTS_PER_ROTATION / WHEEL_CIRCUMFERENCE_MM);</pre>
 </div>
@@ -1170,7 +1170,7 @@ counts per degree    = (turn circumference ÷ 360)
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="6.42">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Build (✓). If your squares in Section 9 come out crooked later, this wheel-base number is the first suspect — measure your own robot.</p>
+    <p class="p-mb-0">Build (✓). If your squares in Section 9 come out crooked later, this track-width number is the first suspect — nudge it, don't re-measure the robot.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 10 — BLUEPRINT BUILD: Write turnDegrees() Yourself</h3>
@@ -1270,7 +1270,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="6.45">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Upload and run it <strong>four times in a row without moving the robot between runs</strong>: an L, four times, should bring it back to its start facing the way it began. Drift of a few degrees per turn is normal — tune WHEEL_BASE_MM.</p>
+    <p class="p-mb-0">Upload and run it <strong>four times in a row without moving the robot between runs</strong>: an L, four times, should bring it back to its start facing the way it began. Drift of a few degrees per turn is normal — tune TRACK_WIDTH_MM.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 12 — The Final Demo <span class="span-c-6f7582">(copy step)</span></h3>
@@ -1355,8 +1355,9 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <div class="callout-ffc107-bg-fff8e1" data-family="WARNING" data-callout="6.48">
     <div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
-    <div class="div-fs-105em">The encoders cannot see it</div>
-    <p class="p-mb-0">Encoders count <strong>rotation</strong>, not <strong>travel</strong>. A robot that curves 20° to the left still spins exactly 30&#8239;cm worth of counts, reports success, and stops. <em>The dashboard says you drove straight. The floor says otherwise.</em> One arc is barely visible. Four arcs, one per side, and the square blows open.</p>
+    <div class="div-fs-105em">What the encoders cannot see</div>
+    <p class="p-mb-0">Be precise about what is missing, because it is not the arithmetic. Two encoders reading differently is exactly how a robot infers a turn — you did this in Lesson 5, combining a sensor pair two ways: together for presence, the <strong>difference</strong> for direction <img src="../images/spiral_star_05.svg" alt="Spiral review from Lesson 05" class="img-h-11em">. The counts can describe a curve.</p>
+    <p class="p-mb-0">What they cannot tell you is whether the wheels' rotation became the <strong>robot's</strong> motion. An encoder reports one thing: <em>this shaft turned this far.</em> It cannot see a wheel spinning on a slick patch, a track slipping under load, or the whole robot dragged sideways. In every one of those the counts are honest and the conclusion drawn from them is wrong. A robot that curves 20° to the left still spins exactly 30&#8239;cm worth of counts, reports success, and stops. <em>The dashboard says you drove straight. The floor says otherwise.</em> One arc is barely visible. Four arcs, one per side, and the square blows open.</p>
 </div>
 
 <p>Add TRIM to your <strong>CONSTANTS</strong> section:</p>
@@ -1548,7 +1549,7 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <tr><td class="td-ccc-3">Drives the wrong distance — you commanded 30&#8239;cm and the ruler says 33</td><td class="td-ccc-3"><code>COUNTS_PER_CM</code> is built from <code>WHEEL_DIAMETER_MM</code>, and 39.0 is the <em>nominal</em> figure — your tracks, your floor and your robot are not nominal</td><td class="td-ccc-3"><strong>Overshooting? INCREASE</strong> <code>WHEEL_DIAMETER_MM</code> (try 40, 41…). A bigger diameter means fewer counts per cm, so the robot stops sooner. <strong>Stopping short? Lower it.</strong> Change one number, re-measure, repeat — this is calibration, not a bug. <strong>(§3.4 has the formula)</strong></td></tr>
 
-<tr><td class="td-ccc-3">Turns too small (under 90°)</td><td class="td-ccc-3"><code>WHEEL_BASE_MM</code> is too <strong>small</strong> — too few counts are being commanded</td><td class="td-ccc-3"><strong>INCREASE</strong> <code>WHEEL_BASE_MM</code> (try 95, 100, 110…)</td></tr>
+<tr><td class="td-ccc-3">Turns too small (under 90°)</td><td class="td-ccc-3"><code>TRACK_WIDTH_MM</code> is too <strong>small</strong> — too few counts are being commanded</td><td class="td-ccc-3"><strong>INCREASE</strong> <code>TRACK_WIDTH_MM</code> (try 102, 106, 110…)</td></tr>
 
 <tr><td class="td-ccc-3">Straight lines curve — the square won’t close</td><td class="td-ccc-3">No <code>TRIM</code>. Encoders count <em>rotation</em>, not travel — a curving robot still reports success</td><td class="td-ccc-3">Spend your Lesson 3 TRIM on the LEFT motor: <code>setSpeeds(speed + (speed &gt; 0 ? TRIM : -TRIM), speed)</code>. Curves LEFT → raise TRIM. Curves RIGHT → lower it. The correction has to point the same way the robot is driving — see the note under Step 13. <strong>(Step 13, Bug 1)</strong></td></tr>
 
@@ -2497,13 +2498,14 @@ Stop motors</pre>
 <p>Run <code>driveDistance(50)</code> three times. First clean — mark where it lands <strong>and which way it points</strong>. Then run it again holding a finger <em>lightly</em> against the <strong>left</strong> track. Then a third time, same finger, the <strong>right</strong> track instead. Same drag, same 50&#8239;cm requested. Predict before each run: <em>where does it stop, and where is it pointing when it gets there?</em></p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>Both drags leave you <strong>short</strong> of the mark, and that is the least interesting part. Drag the <strong>left</strong> and the error is in the number: that track slips, the left encoder counts rotation the robot never turned into travel, and the gate quits early. Drag the <strong>right</strong> and the left encoder is telling the truth — the left wheel really did roll 50&#8239;cm — but it rolled it around a <strong>curve</strong>, because the right side was held back. The robot is short <em>and</em> it is aimed somewhere new, and the screen says done at the counts it was asked for, either way. <code>averageCounts()</code> halves the first error, because two encoders disagreeing is something the code can notice. It cannot touch the second one: <strong>no encoder anywhere on this robot can see a curve.</strong> That is what TRIM is for in Step 13 — and why Lesson 12 is called <em>Wheels Lie</em>.</p>
+    <p>Both drags leave you <strong>short</strong> of the mark, and that is the least interesting part. Drag the <strong>left</strong> and the error is in the number: that track slips, the left encoder counts rotation the robot never turned into travel, and the gate quits early. Drag the <strong>right</strong> and the left encoder is telling the truth — the left wheel really did roll 50&#8239;cm — but it rolled it around a <strong>curve</strong>, because the right side was held back. The robot is short <em>and</em> it is aimed somewhere new, and the screen says done at the counts it was asked for, either way. <code>averageCounts()</code> halves the first error, because two encoders disagreeing is something the code can notice. It cannot touch the second one — and be precise about why. <strong>Not because a curve is invisible to encoders in principle:</strong> the difference between two wheels is exactly how a robot infers heading. Here the counts are <em>correct</em> and still describe the wrong thing. The left wheel really did roll 50&#8239;cm, just around an arc nobody asked for, and no amount of reading the encoders harder recovers a heading they were never measuring. That is what TRIM is for in Step 13 — and why Lesson 12 is called <em>Wheels Lie</em>.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-4" data-challenge="6.m4" data-kind="bonus-observation">Experiment 4: The 440 Ruler</h4>
 <p>Without running it, read <code>driveDistance</code> and predict what happens if you call it with 500&#8239;cm. Now check the Note in Step 7. What is special about the number 32,767 — and what would the robot actually do?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
-    <p>The target lives in an <code>int</code>, which tops out at 32,767 on this chip. 500&#8239;cm × ~74.3 counts/cm ≈ 37,000 — past the ceiling, the math silently wraps to a wrong (possibly tiny or negative) number. The robot barely moves, or the while-loop's finish line lands somewhere you never intended. Big numbers need bigger boxes — that's what <code>long</code> is for, in a later lesson.</p>
+    <p>The target lives in an <code>int</code>, which tops out at 32,767 on this chip. 500&#8239;cm × ~74.3 counts/cm ≈ 37,000 — past the ceiling, the math silently wraps to a wrong (possibly tiny or negative) number. The robot barely moves, or the while-loop's finish line lands somewhere you never intended.</p>
+    <p>The tempting fix is a bigger box for the target. <strong>It doesn't work.</strong> <code>getCountsLeft()</code> returns a 16-bit number as well, so the reading wraps at 32,767 no matter how wide you make the target. The real fix is to stop letting the counter get that big: read it and <em>reset</em> it as you go, adding each chunk into a running <code>long</code>. <strong>Empty the bucket before it overflows, rather than shopping for a bigger bucket.</strong></p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-5" data-challenge="6.m5" data-kind="bonus-observation">Experiment 5: The Backwards Counter</h4>
 <p>Run the dashboard and pull the robot <em>backwards</em> along the ruler. Predict first: do the counts go up, or something else? Then explain why the lesson's functions wrap every count in <code>abs()</code>.</p>
@@ -2532,7 +2534,7 @@ Stop motors</pre>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.66"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-dead-reckoning-gloss">Dead Reckoning</strong></div>Tracking a robot's position by accumulating distance and angle measurements from a known starting point.</div>
 
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.67"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-wheel-base-gloss">Wheel Base</strong></div>The distance between the centers of the left and right wheels (Zumo ≈ 85mm, measure yours for accuracy).</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.67"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-track-width-gloss">Track Width</strong></div>The side-to-side distance the robot pivots about, used for turns. The book ships 98 mm — Pololu’s chassis width — as a calibration starting value, not a dimension you measure.</div>
 
 <!-- Quick Reference -->
 
@@ -2556,11 +2558,11 @@ Stop motors</pre>
 
 <tr class="tr-b-white"><td class="td-ccc">Counts per cm</td><td class="td-ccc">~74.3</td></tr>
 
-<tr><td class="td-ccc">Counts per degree (turn)</td><td class="td-ccc">~5.5</td></tr>
+<tr><td class="td-ccc">Counts per degree (turn)</td><td class="td-ccc">~6.35</td></tr>
 
 <tr class="tr-b-white"><td class="td-ccc">Wheel diameter (over the track)</td><td class="td-ccc">39mm (sprocket alone: 35mm)</td></tr>
 
-<tr><td class="td-ccc">Wheel base (measure yours!)</td><td class="td-ccc">~85mm</td></tr>
+<tr><td class="td-ccc">Track width (ships at 98)</td><td class="td-ccc">98mm</td></tr>
 
 <tr class="tr-b-white"><td class="td-ccc">Gear ratio</td><td class="td-ccc">75.81:1</td></tr>
 

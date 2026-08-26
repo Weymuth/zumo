@@ -1,7 +1,7 @@
 # ZUMO — BENCH TEST TRACKER
 ### Everything in this book that only a robot and a floor can settle · one file, by lesson
 
-**Bench tracker version: v1.3.1** — increment on every substantive edit
+**Bench tracker version: v1.5** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** No instrument in this repo can see a floor. `book_gates` reads
@@ -32,6 +32,39 @@ robot moving under its own power uses it.
 
 **You lose the Serial Monitor the moment you unplug.** Anything that needs Serial has to be run
 tethered and propped, and cannot be a floor test. That trade is real from Lesson 11 onward.
+
+---
+---
+
+## RUN THESE FIRST — the seven rows whose failure DELETES OR REWRITES LIVE PROSE
+
+**Every other row on this sheet records a number. These seven test a CLAIM the book already
+makes in print.** If one fails, the book is wrong on the page and a paragraph changes — so a
+bench session that runs only these seven is worth more than one that fills in twenty numbers.
+
+**MEASURED S189, three ways, after a wrong claim was caught:** a semantic read of all 49 open
+rows, an independent linguistic predicate (blinding control clean — it does not fire on any
+record-a-number row), and a cross-check against `ZUMO_FLAGGED_CHECKS.md`. **The two-row figure
+that circulated in the S189 handoff is scoped to the L01–L04 working sheet and was wrongly
+generalised to the whole book.** Book-wide the number is **seven**.
+
+| Run order | Row | Lesson | What comes out if it fails |
+|---|---|---|---|
+| **1** | `L10-B1` | L10 | **THE BIG ONE — §16.12, unruled since S143.** The book predicts the robot crosses the line and drives off the far side, because the rebuilt seven-phase box arrives perpendicular with no realigning turn anywhere in the tree. **If the prediction holds, a shipped behaviour is broken, not just a paragraph.** |
+| **2** | `L02-B2` | L02 | §9 C2's *Why it takes two trips and not one* — **the paragraph comes out.** |
+| **3** | `L03-B3b` | L03 | Bonus 2's reveal must put gearbox asymmetry back as the headline. |
+| **4** | `L15-B3` | L15 | Prose says the doorway makes re-entry flinch impossible; the code does not guarantee it. If it flinches, the prose is wrong. |
+| **5** | `L11-B1` | L11 | §16.14's one-minute experiment, which REPLACED the old arithmetic at S144. Rows two and three should agree at ~1000. |
+| **6** | `L11-B4` | L11 | The book predicts a symmetric result from doubling TRIM; GPT (`L11-13`) says plausible, not guaranteed. |
+| **7** | `L10-B2` | L10 | Decides row 1's ruling: if the 30° wedge works and the box does not, **that is the ruling.** |
+
+> **RUN 1, 2 AND 7 IN ONE SITTING.** `L10-B1` and `L10-B2` are the same question asked two ways,
+> and `L10-B2` is what turns a failure into a decision rather than a mystery.
+>
+> **TWO MORE ARE BORDERLINE AND ARE DELIBERATELY NOT LISTED ABOVE:** `L13-B3` (does the S168
+> sweep END rather than walk into the wall?) and `L15-B4` (does the ±50% hill climb converge?).
+> Both would expose a CODE defect rather than a false sentence, which is why the linguistic arm
+> did not fire on them. Run them if there is time; they do not outrank the seven.
 
 ---
 
@@ -101,7 +134,8 @@ of it.** Ten findings closed, none of them bench-verified.
 |---|---|---|---|---|
 | L06-B1 | **Q044 — the calibration spin, with a stopwatch.** Carried since S41. | | OPEN | |
 | L06-B2 | **COUNTS_PER_CM derived vs. measured.** Command 30 cm; measure what you get. Feeds TDP table A4. | §5 | OPEN | |
-| L06-B3 | **The wheel-base four-turn test.** Book gives 85 mm and asks the student to check it. **Nobody has ever run this on this fleet.** Back-calculate from the heading error. | §7D, TDP A4 | OPEN | |
+| L06-B3 | **The four-turn tuning check.** **RE-PREMISED S189** — the book no longer asks the student to back-calculate anything. It ships `TRACK_WIDTH_MM = 98.0` and the four-turn square is now a CHECK: command four 90° turns, see whether the robot faces home, nudge the constant until it does. **Nobody has ever run this on this fleet.** Record the tuned value and the surface. | §7D, TDP A4 | OPEN | |
+| L06-B6 | **THE EXACT TRACK CENTRELINE SEPARATION — the number nobody has (DJ, S189).** `TRACK_WIDTH_MM = 98.0` is Pololu's published overall CHASSIS WIDTH, chosen because it is citable AND happens to be the floor of the book's tuned range 98–115. **It is NOT the measured left-right distance between the track centrelines, and the book deliberately does not claim it is** — §16.10 rules it a calibration default, not a geometry claim. Pololu publishes no such figure: their library carries ZERO dimension constants and turns by gyro, and the guide gives only the 98 × 86 × 39 mm envelope. **Measure it: centre of the left track tread to centre of the right, across the robot.** Expect something BELOW 98, since 98 includes both tracks' outer edges. **If it lands near 85, then 85 was the right number under the wrong name all along** and only the justification was wrong — the book stays honest either way, because it no longer calls 98 a measurement. Feeds §16.10 and the L06 KEY TERM *Track Width*. | §7D, Bible §16.10 | OPEN | |
 | L06-B4 | **The 39 mm question (§16.10).** Is travel governed by the outer track surface or the track's pitch line? Both land inside §7's ±2 cm tolerance, so this is curiosity, not a defect. | §16.10 | OPEN | |
 | L06-B5 | **Experiment 3's two drags.** Drag the LEFT track: the number moves. Drag the RIGHT: the heading bends and no encoder can see it. Rewritten at S141 — never run. | Exp 3 | OPEN | |
 

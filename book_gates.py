@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.74.1'
+VERSION = 'v1.74.2'
 # v1.72.19 (S182): callout baseline 1132 -> 1133 for L02's new LEARN 2.123; §27.11 digest
 #                  re-moved for the nine-section SVG and the §5 walkthrough entries.
 # v1.72.18 (S182): §27.11 digest re-moved after the nine-section SVG landed in L02 3.1 and
@@ -2125,7 +2125,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1208:   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
+if _seen != 1209:   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
                                       # lands one bullseye mark.
                                       # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
@@ -2161,7 +2161,7 @@ if _seen != 1208:   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed 
                                       # L10. stars.svg in INSIGHT 10.113 (the StopReason
                                       # teaching block) plus exclamation-triangle, sticky
                                       # and check-circle in Step 6b's three new callouts.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,208 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,209 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2557,12 +2557,22 @@ gate('\u00a727.10 no page names its own domain (relative refs only)', bad)
 # It moves DELIBERATELY, the way §21's did (218 -> 223) -- §26's repaint will move it, and
 # that is the point. A baseline that never moves is a baseline nobody is checking.
 import hashlib as _hl
+# S189b: baseline moved 37f18314 -> a3482448 for L06-03. PROVED RANK-ONLY against the pre-session
+#        stylesheet: 574 rules and 2,033 declarations both ends, ZERO rules added/dropped/repointed,
+#        ZERO declaration blocks changed. Whole diff is four usage counters and the coverage header:
+#        .img-h-11em x26 -> x27 (the spiral_star_05 mark), .p-mb-0 x354 -> x355 (one new paragraph),
+#        .tok-6a9955 x1043 -> x1044 and .tok-7cbf6e x1516 -> x1517 (S189's L07/L08 comment lines).
+# S189: baseline moved 1bf00645 -> 37f18314. PROVED rank-only before touching it: 574 rules and
+#       2,033 declarations both ends, ZERO rules added/dropped/repointed, ZERO declaration blocks
+#       changed. The whole diff is the header coverage count 22,947 -> 22,949 and two usage-count
+#       comments: .tok-6a9955 x1043 -> x1044 and .tok-7cbf6e x1516 -> x1517 -- one new comment line
+#       each in L07 and L08, from the TRACK_WIDTH_MM block rewrite. +2 attributes, +2 spans, exact.
 # S188: baseline moved ff1a8f9c -> 1bf00645. PROVED rank-only before touching it: 574 rules and
 #       2,033 declarations both ends, zero names added/dropped/repointed, every declaration block
 #       byte-identical. Only usage-count comments and rule ORDER moved, because L05 lost 2 h4s
 #       (.h4-c-6f7582-2 34->31, after the orphaned 'For Loop Anatomy' heading went too) and 1 img
 #       (.img-d-block-4 3->2) under L05-01.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '1bf00645c3aa33f2'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'a348244847c1a816'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,

@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.31.8 -->
+<!-- Lesson version: v04.32.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Code Organization</h1>
 <div class="div-fs-11em">Cleaning Up Your Robot's Brain</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.31 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.32 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -349,7 +349,7 @@
   <span class="tok-7cbf6e">// Turn right 90 degrees</span>
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
-  <span class="tok-569cd6">int</span> turnTarget = <span class="tok-b5cea8">90</span> * <span class="tok-b5cea8">5</span>.<span class="tok-b5cea8">5</span>;
+  <span class="tok-569cd6">int</span> turnTarget = <span class="tok-b5cea8">90</span> * <span class="tok-b5cea8">6</span>.<span class="tok-b5cea8">35</span>;
   motors.setSpeeds(<span class="tok-b5cea8">150</span>, -<span class="tok-b5cea8">150</span>);
   <span class="tok-569cd6">while</span> (abs(encoders.getCountsLeft()) < turnTarget) {
     delay(<span class="tok-b5cea8">10</span>);
@@ -1238,14 +1238,15 @@ This eight-file layout isn't just for this lesson — it's the architecture you'
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_CM = COUNTS_PER_ROTATION / (WHEEL_CIRCUMFERENCE_MM / 10.0);
 
 <span class="tok-6a9955">// ===== TURNING PROPERTIES =====</span>
-<span class="tok-6a9955">// Distance between wheel centers - this is a CALIBRATION value!</span>
-<span class="tok-6a9955">// Start at 85.0 (physical measurement), then tune up until 90 degree</span>
-<span class="tok-6a9955">// turns are accurate. Typical tuned values: 98-115 depending on</span>
-<span class="tok-6a9955">// surface and wheel wear.</span>
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> WHEEL_BASE_MM = 85.0;
+<span class="tok-6a9955">// Track width - the side-to-side distance the robot pivots about.</span>
+<span class="tok-6a9955">// This is a CALIBRATION value, not a ruler measurement!</span>
+<span class="tok-6a9955">// 98.0 is the Zumo chassis width from Pololu and is the default.</span>
+<span class="tok-6a9955">// If 90 degree turns come up short, tune UP. Typical: 98-115</span>
+<span class="tok-6a9955">// depending on surface and track wear.</span>
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TRACK_WIDTH_MM = 98.0;
 
 <span class="tok-6a9955">// Circumference of the turn circle</span>
-<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = 3.14159 * WHEEL_BASE_MM;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> TURN_CIRCUMFERENCE_MM = 3.14159 * TRACK_WIDTH_MM;
 
 <span class="tok-6a9955">// Encoder counts per degree of rotation</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">float</span> COUNTS_PER_DEGREE = (TURN_CIRCUMFERENCE_MM / 360.0) *
@@ -1702,7 +1703,7 @@ Zumo32U4ButtonC buttonC;
 
 <span class="tok-7cbf6e">// ===== MAIN LOOP - TUNING MODE =====</span>
 <span class="tok-7cbf6e">// A = test forward 10cm  (tune WHEEL_DIAMETER_MM)</span>
-<span class="tok-7cbf6e">// B = test turn 90 deg   (tune WHEEL_BASE_MM)</span>
+<span class="tok-7cbf6e">// B = test turn 90 deg   (tune TRACK_WIDTH_MM)</span>
 <span class="tok-7cbf6e">// C = full square with countdown (verify both)</span>
 <span class="tok-569cd6">void</span> loop() {
   display.clear();
@@ -1773,7 +1774,7 @@ Zumo32U4ButtonC buttonC;
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="7.56">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Upload. Boot shows the battery report and your calibration numbers, then the gate. A drives 10&#8239;cm — measure it. B turns 90° — eyeball against a floor tile corner. C squares. Then the payoff run: open <code>RobotConfig.h</code>, nudge <code>WHEEL_BASE_MM</code> up 2–3, rebuild, B again. <strong>One number, one file, every turn in the project changes.</strong> That's why this architecture exists — Section 7 turns this into a full tuning workflow.</p>
+    <p class="p-mb-0">Upload. Boot shows the battery report and your calibration numbers, then the gate. A drives 10&#8239;cm — measure it. B turns 90° — eyeball against a floor tile corner. C squares. Then the payoff run: open <code>RobotConfig.h</code>, nudge <code>TRACK_WIDTH_MM</code> up 2–3, rebuild, B again. <strong>One number, one file, every turn in the project changes.</strong> That's why this architecture exists — Section 7 turns this into a full tuning workflow.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1881,9 +1882,9 @@ Zumo32U4ButtonC buttonC;
 
 <li>Compare the angle to a right angle (corner of a book works!)</li>
 
-<li>If it <strong>undershoots</strong> (less than 90°): increase <code>WHEEL_BASE_MM</code> (try 95, 100, 110...)</li>
+<li>If it <strong>undershoots</strong> (less than 90°): increase <code>TRACK_WIDTH_MM</code> (try 102, 106, 110...)</li>
 
-<li>If it <strong>overshoots</strong> (more than 90°): decrease <code>WHEEL_BASE_MM</code></li>
+<li>If it <strong>overshoots</strong> (more than 90°): decrease <code>TRACK_WIDTH_MM</code></li>
 
 <li>Rebuild and press B again. Repeat until 90° is accurate.</li>
 
@@ -1893,9 +1894,9 @@ Zumo32U4ButtonC buttonC;
 
 <div class="callout-2da99d-bg-e9f7f5-2" data-family="INSIGHT" data-callout="7.61">
 
-<div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT: WHEEL_BASE_MM is a Calibration Value, Not a Ruler Measurement</div>
+<div class="div-fs-105em"><img src="../images/marks/stars.svg" alt="" data-mark="stars">INSIGHT: TRACK_WIDTH_MM is a Calibration Value, Not a Ruler Measurement</div>
 
-<p>You might measure 85mm between your wheels with a ruler, but the tuned value might be 110mm. That's normal! Wheel slip, friction, and surface texture all affect how the robot actually turns. The "correct" value is whatever makes 90° turns accurate on your surface. Typical tuned values range from 98–115mm.</p>
+<p>Don't reach for a ruler. The book ships 98mm — Pololu's published chassis width — and the tuned value might land at 110mm. That's normal! A tracked robot <em>skids</em> when it pivots, so no measurement of the robot predicts the turn; friction and surface texture set it. The "correct" value is whatever makes 90° turns accurate on your surface. Typical tuned values range from 98–115mm.</p>
 
 </div>
 
@@ -2435,9 +2436,9 @@ display.gotoXY(0, 0);</pre>
 
 <tr>
 
-<td class="td-bb-1pxsolid"><code>WHEEL_BASE_MM</code></td>
+<td class="td-bb-1pxsolid"><code>TRACK_WIDTH_MM</code></td>
 
-<td class="td-bb-1pxsolid">85.0</td>
+<td class="td-bb-1pxsolid">98.0</td>
 
 <td class="td-bb-1pxsolid">Distance between wheels (for turns)</td>
 
@@ -3705,7 +3706,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
     <p><em>Undefined reference to 'driveDistance(float)'</em> — a <strong>linker</strong> error (Error 4). PlatformIO only compiles <code>.cpp</code> files, so the .txt was silently skipped; every file still <em>compiled</em> fine on the header's promise. The linker was the one left holding an empty bag.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-5" data-challenge="7.m5" data-kind="bonus-observation">Experiment 5: The One-Number Tune-Up</h4>
-<p>Robot time. Run B (turn 90°) four times and note the total drift. Now change <strong>only</strong> <code>WHEEL_BASE_MM</code> in <code>RobotConfig.h</code> — up 3 if it undershoots, down 3 if it overshoots — rebuild, repeat. Count: how many <em>files</em> did you touch? How many <em>behaviors</em> changed?</p>
+<p>Robot time. Run B (turn 90°) four times and note the total drift. Now change <strong>only</strong> <code>TRACK_WIDTH_MM</code> in <code>RobotConfig.h</code> — up 3 if it undershoots, down 3 if it overshoots — rebuild, repeat. Count: how many <em>files</em> did you touch? How many <em>behaviors</em> changed?</p>
 <details data-reveal="hint">
     <summary>💡 Hint</summary>
     <p>One file, one number — and every turn in every function, present and future, changed together. Before this lesson that tune-up meant hunting numbers through main.cpp. This is the whole payoff of RobotConfig.h, and it's how you'll calibrate robots for the rest of the course.</p>
@@ -3795,11 +3796,11 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <p>• <strong>Button A</strong> = Forward 10cm (tune <code>WHEEL_DIAMETER_MM</code>)<br>
 
-• <strong>Button B</strong> = Turn 90° (tune <code>WHEEL_BASE_MM</code>)<br>
+• <strong>Button B</strong> = Turn 90° (tune <code>TRACK_WIDTH_MM</code>)<br>
 
 • <strong>Button C</strong> = Full square with 3-2-1 countdown (verify both)</p>
 
-<p><strong>Tuning tips:</strong> Too far? Increase diameter. Undershoot turn? Increase wheel base. Typical tuned <code>WHEEL_BASE_MM</code>: 98–115.</p>
+<p><strong>Tuning tips:</strong> Too far? Increase diameter. Undershoot turn? Increase track width. Typical tuned <code>TRACK_WIDTH_MM</code>: 98–115.</p>
 
 
 

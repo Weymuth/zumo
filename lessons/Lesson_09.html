@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.27.5 -->
+<!-- Lesson version: v05.27.6 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -309,7 +309,7 @@ enum IntersectionType {
 </table>
 
 <div class="callout-9c27b0-bg-f3e5f5" data-family="KEY TERM" data-callout="9.17">
-    <div class="div-c-6a1b9a"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Tank Turn</strong></div>A turning method where opposite wheels spin in opposite directions, rotating in place. Momentum can cause a little overshoot — encoder turns absorb most of it, and consistent error tunes out via WHEEL_BASE_MM (Lesson 7’s one-number tune-up).
+    <div class="div-c-6a1b9a"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Tank Turn</strong></div>A turning method where opposite wheels spin in opposite directions, rotating in place. Momentum can cause a little overshoot — encoder turns absorb most of it, and consistent error tunes out via TRACK_WIDTH_MM (Lesson 7’s one-number tune-up).
 </div>
 
 <div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="9.18">
@@ -1237,7 +1237,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="9.58">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Robot completes the Section 4 course: every marker announced correctly, every turn clean, dead end U-turned, and your surveyed green band recorded in Section 10. Turns off by a few degrees? That's <code>WHEEL_BASE_MM</code> — Lesson 7's one-number tune-up, not a Lesson 9 problem.</p>
+    <p class="p-mb-0">Robot completes the Section 4 course: every marker announced correctly, every turn clean, dead end U-turned, and your surveyed green band recorded in Section 10. Turns off by a few degrees? That's <code>TRACK_WIDTH_MM</code> — Lesson 7's one-number tune-up, not a Lesson 9 problem.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1284,7 +1284,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 <div class="callout-607d8b-bg-eceff1-2" data-family="NOTE" data-callout="9.59">
     <div class="div-c-3a5a3a-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
     <div class="div-c-3a5a3a">Turn Physics: Momentum & Overshoot</div>
-    <p>A tank turn is meant to rotate the robot in place — nominally a zero-radius path for the robot’s center, though tracks skid rather than pivot cleanly — and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug — it’s <code>WHEEL_BASE_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
+    <p>A tank turn is meant to rotate the robot in place — nominally a zero-radius path for the robot’s center, though tracks skid rather than pivot cleanly — and encoder turns absorb most momentum error. If every turn is consistently off by the same few degrees, that’s not this lesson’s bug — it’s <code>TRACK_WIDTH_MM</code> asking for its one-number tune-up (Lesson 7). Chronic overshoot on slick floors? Lower <code>TURN_SPEED</code> in RobotConfig.h.</p>
 </div>
 
 <p class="p-ta-right"><a href="#top" class="link-c-2e86ab-2">↑ Back to top</a></p>
@@ -1299,7 +1299,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
     <tr><th class="th-bg-00393d">Problem</th><th class="th-bg-00393d">Likely Cause</th><th class="th-bg-00393d">Solution</th></tr>
     <tr><td class="td-b-white">Robot doesn't detect green</td><td class="td-b-white">Threshold values wrong</td><td class="td-b-white">Run calibration test, adjust thresholds</td></tr>
     <tr><td class="td-b-white">Robot stops on white areas</td><td class="td-b-white">GREEN_LOW too low</td><td class="td-b-white">Increase to 350+</td></tr>
-    <tr><td class="td-b-white">Every turn off by the same amount</td><td class="td-b-white"><code>WHEEL_BASE_MM</code> needs tuning</td><td class="td-b-white">Lesson 7’s tune-up: nudge it up if turns fall short, down if they overshoot</td></tr>
+    <tr><td class="td-b-white">Every turn off by the same amount</td><td class="td-b-white"><code>TRACK_WIDTH_MM</code> needs tuning</td><td class="td-b-white">Lesson 7’s tune-up: nudge it up if turns fall short, down if they overshoot</td></tr>
     <tr><td class="td-b-white">False turns on curves</td><td class="td-b-white">An outer sensor crossed the line edge; the in-between reading landed in the green band</td><td class="td-b-white">Real courses need debouncing — that’s <a href="#challenge-5" class="link-c-2e86ab">Challenge 5</a></td></tr>
     <tr><td class="td-b-white">Same marker detected twice</td><td class="td-b-white">After the turn, an outer sensor is still over the marker</td><td class="td-b-white">Advance past the marker before turning — <a href="#challenge-4" class="link-c-2e86ab">Challenge 4</a></td></tr>
     <tr><td class="td-b-white">Can't find line after turn</td><td class="td-b-white">Turn ended before reaching line</td><td class="td-b-white">Add line-seeking turns — <a href="#challenge-3" class="link-c-2e86ab">Challenge 3</a></td></tr>
@@ -1884,7 +1884,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
     <tr><td class="td-b-white">Black reading — left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">near 1000</td></tr>
     <tr><td class="td-b-white"><code>GREEN_LOW_THRESHOLD</code> (your tuned value)</td><td class="td-999"></td><td class="td-b-white">300 default</td></tr>
     <tr><td class="td-b-white"><code>GREEN_HIGH_THRESHOLD</code> (your tuned value)</td><td class="td-999"></td><td class="td-b-white">700 default</td></tr>
-    <tr><td class="td-b-white"><code>WHEEL_BASE_MM</code> (carried from Lesson 7)</td><td class="td-999"></td><td class="td-b-white">85.0 start</td></tr>
+    <tr><td class="td-b-white"><code>TRACK_WIDTH_MM</code> (carried from Lesson 7)</td><td class="td-999"></td><td class="td-b-white">98.0 start</td></tr>
 </table>
 
 <div class="callout-d4a574-bg-e8d4c4" data-family="WHERE THIS GOES" data-callout="9.68">
