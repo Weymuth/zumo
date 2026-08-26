@@ -1,8 +1,8 @@
 # GPT graphics work list (generated)
 
-Work list session: S187 · `build_worklist.py v1.2` · `svg_layout_audit v1.20`
+Work list session: S188 · `build_worklist.py v1.2` · `svg_layout_audit v1.21.2`
 
-**38 files** needing a human, from an audit of all SVGs in `images/`.
+**37 files** needing a human, from an audit of all SVGs in `images/`.
 Worst-first by how far text runs outside its panel.
 
 **Do not hand-edit — regenerate.** Any list built against an audit below v1.18 was
@@ -15,12 +15,14 @@ and `fit_raster_svg`. They are listed at the end so the backlog stays visible.
 Send one file at a time. Attach the SVG, paste its block, bring the result back before
 moving on.
 
-13 of these 38 have text outside a panel; the rest are structural.
+13 of these 37 have text outside a panel; the rest are structural.
 
 ## L07_GRAPHIC_7-15_platformio_file_tree.svg
 *worst overflow: 128 units*
 
-- text overflows its panel by 3 units: "RobotSensors.h" spans 220..375 inside 18..378
+- text overflows its panel by 8 units: "RobotConfig.h" spans 220..380 inside 18..378
+- text overflows its panel by 20 units: "RobotSensors.h" spans 220..392 inside 18..378
+- text overflows its panel by 8 units: "RobotMotion.h" spans 220..380 inside 18..378
 - text overflows its panel by 107 units: "Put your header files (.h) here" spans 560..880 inside 1..779
 - text overflows its panel by 128 units: "Put your source files (.cpp) here" spans 560..901 inside 1..779
 
@@ -100,18 +102,6 @@ moving on.
 - highlight box of callout-1 overlaps that of callout-3
 - highlight box of callout-1 overlaps that of callout-3
 
-## L03_GRAPHIC_3-11_command_anatomy.svg
-
-- text overlaps text at y=160: "motors" ends 322, "." starts 315
-- text overlaps text at y=160: "." ends 330, "setSpeeds" starts 328
-- text overlaps text at y=160: "setSpeeds" ends 458, "(leftSpeed, rightSpeed);" starts 447
-- 8 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
-
-## L01_GRAPHIC_1-19_playfrequency_anatomy.svg
-
-- text overlaps text at y=163: "buzzer" ends 228, "." starts 222
-- text overlaps text at y=163: "playFrequency" ends 474, "(" starts 470
-
 ## L05_GRAPHIC_5-03_two_led_system.svg
 
 - text overlaps text at y=211: "(one of the LEFT pair)" ends 463, "the only ear — there is ju" starts 457
@@ -146,6 +136,10 @@ moving on.
 ## L02_IMAGE_2-07_ir_sensors_r13.svg
 
 - photograph is 1750x190 but its box renders about 964 CSS px wide (box 1752 of a 2000 viewBox at a 1100 px column) = 1.82x - under the 2x floor. Needs a source at least 1927 px wide.
+
+## L03_GRAPHIC_3-11_command_anatomy.svg
+
+- 8 numbered markers but no callout-* groups - they are grouped by object type, so moving one marker means hunting its parts across the layer
 
 ## L04_GRAPHIC_4-06_for_anatomy.svg
 

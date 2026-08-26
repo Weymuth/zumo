@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.29.3 -->
+<!-- Lesson version: v04.30.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +76,7 @@
 <h1 class="h1">Proximity Sensors</h1>
 <div class="div-fs-11em">Teaching Your Robot to Sense</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.29 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.30 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -776,29 +776,6 @@ Call it at the TOP of loop().
 
 <p>You already own this tool. In Lesson 4 you used a <code>for</code> loop to walk the sensor array, and Section 8A there pulled it apart into its three parts — START, CONTINUE IF, UPDATE. Nothing below replaces that. This is the <strong>second look</strong>, and it exists because this lesson asks the loop to do two things Lesson 4 never did: <strong>count downward</strong>, and <strong>draw</strong> — a loop whose body decides, character by character, what to put on the screen.</p>
 
-<p>Start with a refresher, then go straight to the new work.</p>
-
-<h4 class="h4-c-6f7582-2">Refresher: the Analogy</h4>
-
-<p>Imagine a coach saying:</p>
-
-<p>🏃 <strong>"Do 10 pushups!"</strong></p>
-
-<p>Your brain automatically:</p>
-<ul>
-<li>Starts counting at 1</li>
-<li>Does one pushup</li>
-<li>Checks: "Have I done 10 yet?"</li>
-<li>If no, adds 1 to count and repeats</li>
-<li>If yes, stops</li>
-</ul>
-
-<p>A <strong>for loop</strong> is exactly this process in code!</p>
-
-<h4 class="h4-c-6f7582-2">For Loop Anatomy</h4>
-
-<img src="../images/L05_GRAPHIC_5-04_for_anatomy.svg" alt="Anatomy of a for loop: for (int i = 0; i &lt; 6; i++) with three labeled parts — START runs once before anything else (int i = 0), CONTINUE IF is checked before every pass (i &lt; 6), and UPDATE runs after each pass (i++)" class="img-d-block-4">
-
 <div class="callout-9b59b6-bg-e7d4ff-2" data-family="KEY TERM" data-callout="5.14">
     <div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong id="term-for-loop">For Loop</strong></div>A control structure that repeats code a specific number of times, using a counter variable to track progress.
 </div>
@@ -885,21 +862,6 @@ Call it at the TOP of loop().
     }
 }
 <span class="tok-7cbf6e">// detectionCount now holds 0, 1, 2, or 3</span></pre>
-
-<h4 class="h4-c-6f7582-2">Quick Practice</h4>
-
-<p>What does this code print?</p>
-
-<pre><span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">4</span>; i++) {
-    Serial.print(i);
-    Serial.print(F(<span class="tok-ce9178">" "</span>));
-}</pre>
-
-<details data-reveal="solution">
-    <summary>🔓 Click to reveal answer</summary>
-    <p><strong>Output:</strong> <code>0 1 2 3</code></p>
-    <p>The loop runs 4 times with <code>i = 0, 1, 2, 3</code>. When <code>i</code> reaches 4, the condition <code>i &lt; 4</code> is false, so the loop stops.</p>
-</details>
 
 <div class="callout-607d8b-bg-eceff1" data-family="NOTE" data-callout="5.17">
     <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
@@ -1122,15 +1084,16 @@ Zumo32U4Buzzer buzzer;</pre>
 
 <p>Now build. <strong>It fails.</strong> Red squiggle, and the terminal says something like <code>'readAllSensors' was not declared in this scope</code>. You have seen this exact error twice before, both times on purpose: Lesson 2 Step 7, Lesson 4 Step 5. The compiler reads top to bottom, hit a name inside <code>loop()</code> that it had never heard of — the function lives further down the file — and quit.</p>
 
-<p>The fix is the standing one: prototypes. Add all six of today's, one trip, to the FUNCTION PROTOTYPES section (right below the Maker's two pre-installed lines):</p>
+<p>The fix is the standing one: prototypes. Here are <strong>five</strong> of the six — add them, one trip, to the FUNCTION PROTOTYPES section (right below the Maker's two pre-installed lines):</p>
 
 <pre><span class="tok-7cbf6e">// ===== FUNCTION PROTOTYPES =====</span>
-<span class="tok-569cd6">void</span> readAllSensors();
 <span class="tok-569cd6">void</span> drawBar(<span class="tok-569cd6">int</span> row, <span class="tok-569cd6">int</span> value);
 <span class="tok-569cd6">void</span> showNumericMode();
 <span class="tok-569cd6">void</span> showBarGraphMode();
 <span class="tok-569cd6">void</span> showAlertMode();
 <span class="tok-569cd6">void</span> updateIndicators();</pre>
+
+<p>Build again. <strong>Still red, and still the same name.</strong> That is the third time this error has come for you, and this time nobody hands you the line. Read what the compiler is telling you: it names the one function it has still never heard of. Write that prototype yourself — Section 5.5 has the full list if you want to check your work afterward, not before.</p>
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="5.27">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
@@ -2275,17 +2238,16 @@ proxSensors.countsXxxWithYyyLeds();  <span class="tok-7cbf6e">// Get 0-6 value</
 <tr><td class="td-ddd-2"><strong>[GRAPHIC 5.1]</strong></td><td class="td-ddd-2">Three detectors, three directions: FRONT ahead reads 6, the side-facing LEFT reads 2 off a wall, RIGHT reads 0</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.2]</strong></td><td class="td-ddd-2">EMIT → REFLECT → DETECT → COUNT, and the 38 kHz trick that ignores sunlight</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr><td class="td-ddd-2"><strong>[GRAPHIC 5.3]</strong></td><td class="td-ddd-2">The two-LED system, front view: one ear, two flashlights, two different answers</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.4]</strong></td><td class="td-ddd-2">Anatomy of a for loop — START, CONTINUE IF, and UPDATE parts labeled</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.5]</strong></td><td class="td-ddd-2">Proximity system layout, top view — four emitters in two teams, three detectors</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.6]</strong></td><td class="td-ddd-2">The last jumper move: straight up, straight down, never twist — then verify in software</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.5a]</strong></td><td class="td-ddd-2">Front sensor array, factory jumpers: three of five reflectance sensors live (1, 3, 5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.5b]</strong></td><td class="td-ddd-2">Front sensor array, five-down jumpers: all five reflectance sensors live (1–5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.6]</strong></td><td class="td-ddd-2">The three proximity receivers and the direction each faces — FRONT ahead, the outer two out the sides</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.7]</strong></td><td class="td-ddd-2">The dead spot: two blind wedges ~19°–72° off each flank, and the see-it/turn/lose-it sequence</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.7]</strong></td><td class="td-ddd-2">The two forward IR emitters in their holder on the blade</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.8]</strong></td><td class="td-ddd-2">The two middle IR emitters on the bare main board, hidden by the tracks on an assembled robot</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr><td class="td-ddd-2"><strong>[IMAGE 5.4a]</strong></td><td class="td-ddd-2">The two jumpers in the factory position (LFT / RGT) — 3 line sensors, 3 proximity receivers</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.4b]</strong></td><td class="td-ddd-2">The two jumpers moved to DN2 / DN4 — 5 line sensors, 1 proximity sensor. Permanent.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 5.5]</strong></td><td class="td-ddd-2">Proximity system layout, top view — four emitters in two teams, three detectors</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.6]</strong></td><td class="td-ddd-2">The last jumper move: straight up, straight down, never twist — then verify in software</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.5a]</strong></td><td class="td-ddd-2">Front sensor array, factory jumpers: three of five reflectance sensors live (1, 3, 5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[IMAGE 5.5b]</strong></td><td class="td-ddd-2">Front sensor array, five-down jumpers: all five reflectance sensors live (1–5)</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.6]</strong></td><td class="td-ddd-2">The three proximity receivers and the direction each faces — FRONT ahead, the outer two out the sides</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[GRAPHIC 5.7]</strong></td><td class="td-ddd-2">The dead spot: two blind wedges ~19°–72° off each flank, and the see-it/turn/lose-it sequence</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.7]</strong></td><td class="td-ddd-2">The two forward IR emitters in their holder on the blade</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[IMAGE 5.8]</strong></td><td class="td-ddd-2">The two middle IR emitters on the bare main board, hidden by the tracks on an assembled robot</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[IMAGE 5.4a]</strong></td><td class="td-ddd-2">The two jumpers in the factory position (LFT / RGT) — 3 line sensors, 3 proximity receivers</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr><td class="td-ddd-2"><strong>[IMAGE 5.4b]</strong></td><td class="td-ddd-2">The two jumpers moved to DN2 / DN4 — 5 line sensors, 1 proximity sensor. Permanent.</td><td class="td-ddd-2">Photo</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 </tbody>
 </table>
 

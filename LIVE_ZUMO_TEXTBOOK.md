@@ -1,14 +1,79 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 25, 2026 (Session 187 — **A WRITER SPLIT ON A DELIMITER ITS OWN DATA CONTAINED, AND THE TWO ROWS IT DESTROYED WERE THE TWO THIS SESSION CALLED LOAD-BEARING**)
+**Date:** August 25, 2026 (Session 188 — **A VERSION WITH TWO HOMES IS BUMPED IN BOTH, AND THE HOME THE TOOL READS IS THE ONE THAT IS NOT OBVIOUS. `L05-01` AND `L05-02` CLOSED: THE h4 THAT LOOKED LIKE THE DEFECT HELD THE BOOK'S ONLY DEFINITION OF *FOR LOOP*, AND THE DOUBLE CHECK FOUND THREE DEFECTS PAST 80 GREEN GATES.**)
 **Status:** ✅ **S187 — THE L01–L04 BENCH SHEET SHIPS AT 18 ROWS; §24.23 SEATED; THE SEATING DEBT IS 26, NOT FIFTEEN**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.29.3 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,746** · Bible **v8.182** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.74.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.20 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4bf3569`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.34.0 · L07 v04.31.8 · L08 v04.32.2 · L09 v05.27.5 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.2 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,708** · Bible **v8.183** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.67.2 · **book_gates v1.74.1** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.3 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.1 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `7b9c0aa`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
 ---
 ---
+
+---
+---
+## WHAT SHIPPED IN S188
+
+**`L05-01` AND `L05-02` CLOSED — the first GPT rows to close since L04.** `L05-01`: DJ ruled
+**move, do not delete**, and the row is narrower than GPT described. Cut from §5.15: the
+push-up-coach refresher (which also asserted *starts counting at 1*, against the zero-counting
+rule L04 §8A.6 teaches), `L05_GRAPHIC_5-04_for_anatomy.svg` (a second drawing of L04's `4-06`),
+and the Quick Practice tracing `i < 4` where L04 §8A.6 already runs that lap table on `i < 3`.
+**The h4 that looked like the defect held the book's only definition of the term** —
+`id="term-for-loop"` lives in `Lesson_05.html` and in no other lesson, so deleting the block as
+GPT proposed would have deleted *For Loop* from the book. Kept, with the `drawBar()` trace, the
+`i--` countdown, Worked Example #2, the for/while NOTE and the CHECKPOINT. **GRAPHIC 5.4 is
+RULED OUT, not deleted:** `PLANNED_EXPECTED` 146 → **145** and the §21 coverage baseline
+1,209 → **1,208**, both with stated reasons, so **outstanding held at 15 and did not fall like
+progress (S135)**; the `.svg` stays on disk unreferenced and the figure-index row came out with
+the tbody restriped. `L05-02`: DJ ruled **omit only `readAllSensors();`**. Step 4 handed over all
+six prototypes on the THIRD staging of `'readAllSensors' was not declared` (L02 Step 7, L04
+Step 5, here); five are now pasted and the sixth is the student's, and §5.5 still carries the
+full list for checking after rather than before.
+
+**THE DOUBLE CHECK FOUND THREE DEFECTS PAST 80 GREEN GATES.** (1) Cutting the graphic left
+`<h4>For Loop Anatomy</h4>` standing over nothing but the KEY TERM — a heading promising anatomy
+and delivering a definition. (2) The bank fix introduced the **longest-option tell**: the
+rewritten `L05_A02` correct answer ran 82 characters against distractors of 39, 32 and 43.
+Reverted to the original wording, with the nuance moved into the wrong option's `why`, which is
+structurally exempt from `retired_claims`' assertive register. (3) The CSS baseline note written
+in the same pass recorded `.h4-c-6f7582-2` at 34 → 32 when removing the orphaned heading made it
+34 → **31**. All three were found by reading the artefact, not by an instrument.
+
+**§24.24 NEW AND SEATED WITH A NUMBERED BODY.** Four bank bumps went into `# Bank version:`,
+`--currency` reported 0 unbumped, and **§24.2 then failed on `ZUMO_QUIZ_L12.yaml`** naming the
+YAML `bank_version:` field still at its old value. The comment is the home a person edits and
+`--currency` reports against; the **field** is what `--status` reads. A bank bump is two edits
+and reads like one, and a single find-and-replace cannot close it because the comment carries
+the `v` prefix and the field is bare (S153). **The Bible itself has two changelog homes**, and
+filing v8.183 in the header alone left `current_session()` returning 187 with
+`build_worklist --check` green because nothing had moved — §24.24's own shape one layer up,
+found while writing §24.24.
+
+**ONE GRAPHIC FIXED AND ONE INSTRUMENT FALSE POSITIVE MEASURED.**
+`L01_GRAPHIC_1-19_playfrequency_anatomy.svg` had two real text-on-text collisions at y=163;
+five `x` values were relaid onto the 18 px Courier grid (`.` `playFrequency` `(` `440` `,`),
+`800` / `,` / `15` / `);` left untouched, **no polygon touched**, and both connectors still land
+inside their tokens. `svg_layout_audit` now reports it clean and the worklist falls 38 → **37**.
+**`L03_GRAPHIC_3-11_command_anatomy.svg` needs no edit: its three reported overlaps are false.**
+That file declares `textLength` on every span of the code row and the audit never reads the
+attribute, so it measured its own font estimate rather than the artefact — honouring
+`textLength`, the four spans abut at exactly 0.0 px gap. **Twelve drawn SVGs use `textLength`
+and this is the only one currently carrying overlap findings.**
+
+**Applied S188:** L05 **v04.30.0** · Bible **v8.183** · `book_gates` **v1.74.1** ·
+`retired_claims` **v1.0.1** (12 registered, both new entries measured at zero first) ·
+`ZUMO_GPT_REVIEW_WORKLIST.md` **v1.7** (Part 0 **64 → 66 closed**, **179 → 177 open**) ·
+banks `QUIZ_L05` **1.0.8**, `QUIZ_L08` **1.0.11**, `QUIZ_L10` **1.0.12**, `QUIZ_L12` **1.0.18**,
+both version homes each, all four pins bumped after reading ·
+`L01_GRAPHIC_1-19_playfrequency_anatomy.svg` corrected ·
+`GPT_WORKLIST.md` / `IMAGE_WORKLIST.md` / `css/book.css` regenerated.
+**No payload changed and no executable line moved, so `byte_audit` is owed nothing.**
+80/80 gates, `gate_payload_match` PASS with the advisory unmoved at 635, `retired_claims` CLEAN,
+`prose_canon` 0 new / 7 pinned / 0 orphan, 16 banks valid, `callout_id` 1133/0, `strip_inline`
+0 dead, `build_css` / `image_audit` / `build_worklist` current, `--currency` 0 unbumped,
+`site_parity` PARITY twice past the 10m57s floor at session open and **owed again after this
+push**.
 
 ---
 ---

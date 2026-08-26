@@ -37,7 +37,7 @@ import os
 import re
 import sys
 
-VERSION = 'v1.0'
+VERSION = 'v1.0.1'
 
 # ---------------------------------------------------------------------------
 # THE REGISTRY.
@@ -77,6 +77,11 @@ REGISTRY = [
      'the door never triggers (silverDetected() returns TRUE, it does not fail shut)', 'S181'),
     ('L13-09', r'invisible to every sensor',
      'nearly invisible to every sensor this robot carries', 'S181'),
+    ('L05-01', r'10\s*pushups|push-?up',
+     'the push-up-coach analogy re-teaching for-loop anatomy in L05 '
+     '(it counted from 1, against the zero-counting rule L04 8A.6 teaches)', 'S188'),
+    ('L05-02', r'all six of today|add all six|all six in one trip',
+     'Step 4 hands you all six prototypes in one trip (five are pasted; the sixth is the student\'s)', 'S188'),
 ]
 
 

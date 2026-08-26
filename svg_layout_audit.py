@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.20'
+VERSION = 'v1.21.2'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -519,7 +519,8 @@ def _lines(t):
         cy = by
         lead = ' '.join((t.text or '').split())
         if lead:
-            rows.append((lead, bx, cy))
+            rows.append((lead, bx, cy, None))   # the lead run is not what a text-level
+                                                # textLength governs; measure it
         for sp in spans:
             # ABSOLUTE y wins over relative dy - a wrapped label written as
             # <tspan x=".." y="468"> is the normal hand-authored form, and v1.16 read only dy,
@@ -531,24 +532,35 @@ def _lines(t):
             else:
                 cy += (_f(sp.get('dy')) or 0.0) * tsy
             rows.append((' '.join((sp.text or '').split()),
-                         (_f(sp.get('x')) * tsx + tdx) if sp.get('x') is not None else bx, cy))
+                         (_f(sp.get('x')) * tsx + tdx) if sp.get('x') is not None else bx, cy,
+                         _f(sp.get('textLength'))))
     else:
-        rows.append((' '.join(''.join(t.itertext()).split()), bx, by))
+        # ONE rendered row, so a text-level textLength governs exactly this row
+        rows.append((' '.join(''.join(t.itertext()).split()), bx, by, _f(t.get('textLength'))))
 
     out = []
-    for txt, x, y in rows:
+    for txt, x, y, tlen in rows:
         if not txt:
             continue
-        w = _text_width(txt, size, bold, italic, family, lsp * tsx)
+        if tlen is not None:
+            # v1.21: textLength is a DECLARED advance. The renderer stretches or squeezes the
+            # run to hit it exactly, so the font estimate is not what lands on the page.
+            # Reading the estimate instead reported three overlaps in
+            # L03_GRAPHIC_3-11_command_anatomy.svg whose spans abut at 0.0px (S188). Both
+            # lengthAdjust values ('spacing', the default, and 'spacingAndGlyphs') produce the
+            # same total advance, so the attribute alone settles the width.
+            w = tlen * tsx
+        else:
+            w = _text_width(txt, size, bold, italic, family, lsp * tsx)
         x0 = x - w / 2 if anchor == 'middle' else (x - w if anchor == 'end' else x)
-        out.append((txt, x0, x0 + w, y, size))
+        out.append((txt, x0, x0 + w, y, size, tlen is not None))
     return out
 
 
 def _extent(t):
     ls = _lines(t)
     if not ls:
-        return '', 0.0, 0.0, float(t.get('y') or 0), float(_inh(t, 'font-size') or 16)
+        return '', 0.0, 0.0, float(t.get('y') or 0), float(_inh(t, 'font-size') or 16), False
     return ls[0]
 
 
@@ -745,7 +757,7 @@ def audit(path):
         tx, ty = float(t.get('x') or 0), float(t.get('y') or 0)
         if any((tx - cx) ** 2 + (ty - cy) ** 2 <= (rr * 1.2) ** 2 for cx, cy, rr in badges_xy):
             continue
-        for s, x0, x1, y, size in _lines(t):
+        for s, x0, x1, y, size, _declared in _lines(t):
             ax = float(t.get('x') or 0)
             for px0, py0, px1, py1 in panels:
                 if px0 <= ax <= px1 and py0 <= y <= py1:
@@ -756,7 +768,22 @@ def audit(path):
                         # the floor scales with the string: measured relative error against
                         # rendered ink runs to ~1.3%, so on a 900-unit line a 10-unit "overflow"
                         # is inside the instrument, not a defect in the file
-                        if over < max(MIN_OVERFLOW, OVERFLOW_REL * (x1 - x0)):
+                        #
+                        # v1.21.2: that relative term is an ERROR model, and a row whose width
+                        # is DECLARED by textLength has no measurement error - the renderer
+                        # hits the declared advance exactly. Applying an error allowance to a
+                        # number that carries no error is simply wrong, so declared rows get
+                        # the absolute floor only. MIN_OVERFLOW stays for them as a VISIBILITY
+                        # floor, not an error one: a sub-2-unit sliver is arithmetically real
+                        # and visually nothing, and an instrument that reports it teaches
+                        # people to skim past it.
+                        # MEASURED AT S188: this changes ZERO findings on the current corpus -
+                        # no declared row anywhere in images/ falls between the two floors.
+                        # It is a correctness fix with no present effect. Do not credit it
+                        # with the L07 file-tree findings, which clear either floor.
+                        floor = (MIN_OVERFLOW if _declared
+                                 else max(MIN_OVERFLOW, OVERFLOW_REL * (x1 - x0)))
+                        if over < floor:
                             break
                         out.append(f'text overflows its panel by {over:.0f} units: '
                                    f'"{s[:44]}" spans {x0:.0f}..{x1:.0f} '
@@ -770,7 +797,7 @@ def audit(path):
     ran.add('collide_text')
     rows = {}
     for t in root.findall(f'.//{NS}text'):
-        for s, x0, x1, y, size in _lines(t):
+        for s, x0, x1, y, size, _d in _lines(t):
             rows.setdefault(round(y, 1), []).append((x0, x1, s))
     for y, items in rows.items():
         items.sort()
@@ -820,7 +847,7 @@ def audit(path):
         ls = _lines(t)
         if not ls:
             continue
-        _s0, _x0, _x1, ty, _sz = ls[0]
+        _s0, _x0, _x1, ty, _sz, _d = ls[0]
         tx = (_x0 + _x1) / 2 if (_inh(t, 'text-anchor') == 'middle') else _x0
         cdx, cdy, _csx, _csy = _ctm(circs[0])
         circs = [e for e in circs if _f(e.get('cx')) is not None and _f(e.get('cy')) is not None]
@@ -917,14 +944,30 @@ def _selftest():
     if not src or not os.path.exists(src):
         print('selftest needs a known-clean reference file:  --selftest FILE.svg')
         return False
+    skipped = []
     print(f'CONTROL A (false-positive): clean reference must be SILENT  [{os.path.basename(src)}]')
     base = audit(src)
     print(f'   {"clean" if not base else "NOT CLEAN: " + str(base)}')
     ok &= not base
 
     def seeded(name, mutate, needle):
+        # v1.21.2: a seed can only run where the reference HAS the structure it mutates. That
+        # is not a pass and it is not a failure - it is a control that did not run, and the
+        # verdict must say so out loud. Aborting the whole selftest instead (v1.21.1) meant
+        # one absent badge stopped the other eight seeds from running at all.
         tree = etree.parse(src)
-        mutate(tree.getroot())
+        try:
+            mutate(tree.getroot())
+        except AttributeError:
+            # A photo seed on a photo-free reference: the structure is absent, same as a
+            # RuntimeError refusal. Report it as NOT RUN rather than killing the sweep.
+            skipped.append((name, 'this reference has no <image> to seed'))
+            print(f'   SKIP {name}  (structure absent in this reference)')
+            return True
+        except RuntimeError as exc:
+            skipped.append((name, str(exc).split(' - ')[0]))
+            print(f'   SKIP {name}  (structure absent in this reference)')
+            return True
         fd, tmp = tempfile.mkstemp(suffix='.svg')
         os.close(fd)
         tree.write(tmp, encoding='utf-8', xml_declaration=True)
@@ -938,17 +981,95 @@ def _selftest():
 
     print('CONTROL B (false-negative): each seeded defect must be REPORTED')
     def kill_anchor(r):
-        g = r.find(f".//{NS}g[@id='callout-6']")
-        [e for e in g if e.tag == NS + 'text'][0].set('text-anchor', 'start')
+        # v1.21.1: this control used to hardcode callout-6. Only two clean files in images/
+        # carry that id, so every other reference file crashed the whole selftest with a
+        # TypeError on None before CONTROL B had run a single seed. Find ANY callout group
+        # that actually holds a centred label - that is the structure this control mutates -
+        # and refuse loudly if the reference has none, because a control that quietly finds
+        # nothing to seed is a control that passes for the wrong reason.
+        # Seed EXACTLY what the arm measures. Picking any centred text is not enough: on
+        # 11-02 the first centred text in callout-1 is the LABEL "SENSOR / READS DARK", and
+        # unanchoring a label produces panel-overflow findings, not an off-centre badge - the
+        # control would then fail while reporting nothing about the thing it names. The badge
+        # arm's own test is a SHORT alphanumeric label sitting inside a sibling circle, so use
+        # that test here and nothing looser.
+        for g in r.findall(f'.//{NS}g'):
+            if not (g.get('id') or '').startswith('callout-'):
+                continue
+            circs = [e for e in g if e.tag == NS + 'circle'
+                     and _f(e.get('cx')) is not None and _f(e.get('cy')) is not None]
+            if not circs:
+                continue
+            for e in g:
+                if e.tag != NS + 'text' or (e.get('text-anchor') or '') != 'middle':
+                    continue
+                lab = ''.join(e.itertext()).strip()
+                if not lab or len(lab) > 3 or not lab[:1].isalnum():
+                    continue
+                ls = _lines(e)
+                if not ls:
+                    continue
+                _s0, _x0, _x1, ty, _sz, _d = ls[0]
+                tx = (_x0 + _x1) / 2
+                c = min(circs, key=lambda q: (_f(q.get('cx')) + _ctm(q)[0] - tx) ** 2
+                                             + (_f(q.get('cy')) + _ctm(q)[1] - ty) ** 2)
+                ccx, ccy, _a, _b = _ctm(c)
+                rr = _f(c.get('r')) or 0.0
+                if abs(tx - (_f(c.get('cx')) + ccx)) > rr:
+                    continue                      # a dot with a caption, not a badge
+                e.set('text-anchor', 'start')
+                return
+        raise RuntimeError(
+            'selftest reference has no callout-* group holding a NUMBERED BADGE (a short '
+            'label centred inside its own circle), so the badge-anchor control has nothing to '
+            'seed. Pick a reference file that has one - it cannot be skipped silently.')
     # The signal changed in v1.15: removing the anchor from a file that relies on it shifts the
     # glyph, and the tool now reports the SHIFT rather than the missing attribute. Same defect,
     # measured by its effect. Control the effect, not the implementation.
     ok &= seeded('badge anchor removed', kill_anchor, 'off-centre horizontally')
 
     def widen(r):
+        # v1.21.2: this used to grep the literal string 'Lights whenever', which exists in one
+        # reference file. Seed by STRUCTURE instead: find a label the overflow arm can actually
+        # bound - one that sits inside a PANEL-sized rect and is not itself held by a small
+        # pill or badge - and lengthen it until it must run past that panel's edge.
+        panels = []
+        for rc in r.findall(f'.//{NS}rect'):
+            w, h = _f(rc.get('width')) or 0.0, _f(rc.get('height')) or 0.0
+            if w >= PANEL_MIN_W and h >= PANEL_MIN_H:
+                x, y = _f(rc.get('x')) or 0.0, _f(rc.get('y')) or 0.0
+                panels.append((x, y, x + w, y + h))
+        # A candidate must be ALONE on its baseline. Lengthening a label that has a neighbour
+        # on the same row makes it collide before it overflows, and the run then reports
+        # 'overlaps text' - a real finding, but not the one this control is proving.
+        occupied = {}
         for t in r.findall(f'.//{NS}text'):
-            if 'Lights whenever' in ''.join(t.itertext()):
-                t.text = ''.join(t.itertext()) + ' and stays lit for a very long time indeed'
+            for _s, _x0, _x1, _y, _sz, _d in _lines(t):
+                occupied[round(_y, 1)] = occupied.get(round(_y, 1), 0) + 1
+        for t in r.findall(f'.//{NS}text'):
+            if _rotated(t) or t.get('textLength') is not None or t.findall(f'{NS}tspan'):
+                continue                       # keep the seed on the simple, unambiguous form
+            body = ''.join(t.itertext()).strip()
+            if not body:
+                continue
+            ls = _lines(t)
+            if not ls:
+                continue
+            _s0, x0, x1, y, _sz, _d = ls[0]
+            ax = _f(t.get('x'))
+            if ax is None:
+                continue
+            for px0, py0, px1, py1 in panels:
+                if px0 <= ax <= px1 and py0 <= y <= py1 and x1 <= px1 - PANEL_PAD \
+                        and occupied.get(round(y, 1), 0) == 1:
+                    t.text = body + ' ' + 'W' * 90   # 90 wide glyphs clears any panel
+                    for sp in list(t):
+                        t.remove(sp)
+                    return
+        raise RuntimeError(
+            'selftest reference has no plain label sitting inside a panel with room to grow, '
+            'so the panel-overflow control has nothing to seed. Pick a reference file that '
+            'has one - it cannot be skipped silently.')
     ok &= seeded('text pushed past its panel', widen, 'overflows its panel')
 
     def shrink(r):
@@ -980,11 +1101,22 @@ def _selftest():
     ok &= seeded('plain href instead of xlink:href', plainhref, 'plain href')
 
     def badfont(r):
-        for t in r.findall(f'.//{NS}text'):
+        # v1.21.2: a file with no <text> has no font stack to spoil. Setting font-family on an
+        # empty list mutates nothing, the seed produces no finding, and the control reported
+        # FAIL for a file that simply has no text - a decorative mark, not a defect.
+        texts = r.findall(f'.//{NS}text')
+        if not texts:
+            raise RuntimeError('this reference carries no <text>, so it has no font stack')
+        for t in texts:
             t.set('font-family', 'Inter, Arial, sans-serif')
     ok &= seeded('designer font first in the stack', badfont, 'cannot load through')
 
     def nocredit(r):
+        # v1.21.2: the credit arm only applies to a file that HAS a photograph. On a drawn
+        # graphic there is no credit to remove, so stripping text proves nothing and the
+        # control failed on 62 of 82 clean references for lack of an <image>, not a defect.
+        if r.find(f'.//{NS}image') is None:
+            raise RuntimeError('this reference has no <image>, so it owes no photo credit')
         d = r.find(f'{NS}desc')
         if d is not None:
             d.text = ''
@@ -994,9 +1126,27 @@ def _selftest():
     ok &= seeded('photo credit removed', nocredit, 'credit')
 
     def collide(r):
-        g = r.find(f".//{NS}g[@id='callout-7']")
-        rc = [e for e in g if e.tag == NS + 'rect'][0]
-        rc.set('x', '150'); rc.set('y', '262')
+        # v1.21.2: this named callout-7 and wrote the fixed coordinates x=150, y=262, which
+        # only collide with something in one particular file. Seed by STRUCTURE: the arm
+        # compares the rects of two DIFFERENT callout groups, so take the first two such rects
+        # and move the second onto the first. That overlaps by construction, in any file.
+        found = []
+        for g in r.findall(f'.//{NS}g'):
+            if not (g.get('id') or '').startswith('callout-'):
+                continue
+            for e in g:
+                if e.tag == NS + 'rect' and _f(e.get('x')) is not None \
+                        and _f(e.get('y')) is not None:
+                    found.append((g.get('id'), e))
+                    break
+            if len({gid for gid, _ in found}) == 2:
+                (_gid1, r1), (_gid2, r2) = found[0], found[-1]
+                r2.set('x', r1.get('x')); r2.set('y', r1.get('y'))
+                return
+        raise RuntimeError(
+            'selftest reference has fewer than two callout-* groups holding a positioned '
+            '<rect>, so the box-collision control has nothing to seed. Pick a reference file '
+            'that has two - it cannot be skipped silently.')
     ok &= seeded('two highlight boxes overlapped', collide, 'overlaps')
 
     # ---- v1.19 controls: the two blind spots, tested in BOTH directions ---------------------
@@ -1033,6 +1183,70 @@ def _selftest():
         ok = False
     else:
         print('   OK    CONTROL: a label outside every box is still reported')
+
+    # ---- v1.21 controls: textLength, tested in BOTH directions -----------------------------
+    # (e) a DECLARED textLength that squeezes the run must be SILENT - the v1.21 fix.
+    # 'WIDEWIDEWIDE' estimates ~150 units at font-size 20; declaring 60 makes it end at 160,
+    # so the neighbour at x=170 does NOT collide. v1.20 measured the estimate and fired.
+    tl_ok = synth('textlength_ok.svg',
+                  '<text x="100" y="200" font-size="20" textLength="60">WIDEWIDEWIDE</text>'
+                  '<text x="170" y="200" font-size="20" textLength="60">SECONDSECOND</text>')
+    if any('overlaps text' in f for f in audit(tl_ok)):
+        print('   FAIL  CONTROL: a declared textLength was ignored and read as a collision')
+        ok = False
+    else:
+        print('   OK    CONTROL: a run squeezed by textLength is measured at its DECLARED width')
+
+    # (e-inverse) a real overlap must still be LOUD, whether textLength is declared or not.
+    # Declared 120 wide from x=100 ends at 220; the neighbour starts at 150. That IS a collision
+    # and honouring the attribute must not silence it.
+    tl_bad = synth('textlength_bad.svg',
+                   '<text x="100" y="200" font-size="20" textLength="120">WIDEWIDEWIDE</text>'
+                   '<text x="150" y="200" font-size="20" textLength="120">SECONDSECOND</text>')
+    if not any('overlaps text' in f for f in audit(tl_bad)):
+        print('   FAIL  CONTROL: a genuine overlap went silent - textLength is being trusted '
+              'to mean "no collision" rather than to mean "this wide"')
+        ok = False
+    else:
+        print('   OK    CONTROL: a genuine overlap still fires when textLength is declared')
+
+    # (e-control) the same two runs with NO textLength must behave as v1.20 did - the new path
+    # is additive, and a file that declares nothing is measured exactly as before.
+    tl_none = synth('textlength_none.svg',
+                    '<text x="100" y="200" font-size="20">WIDEWIDEWIDE</text>'
+                    '<text x="170" y="200" font-size="20">SECONDSECOND</text>')
+    if not any('overlaps text' in f for f in audit(tl_none)):
+        print('   FAIL  CONTROL: the undeclared path changed - v1.21 is not additive'); ok = False
+    else:
+        print('   OK    CONTROL: with no textLength the font estimate still governs')
+
+    # ---- v1.21.2 controls: the DECLARED-width floor, tested in BOTH directions -------------
+    # A declared row that pokes 3 units past its panel must be LOUD. Under the old rule the
+    # floor would have been 0.015 * 300 = 4.5 and this would have gone silent.
+    fl_loud = synth('floor_declared_loud.svg',
+                    '<rect x="40" y="40" width="400" height="300" fill="#FFFFFF" '
+                    'stroke="#333333"/>'
+                    '<text x="60" y="200" font-size="20" textLength="389">DECLARED WIDE RUN'
+                    '</text>')
+    if not any('overflows' in f for f in audit(fl_loud)):
+        print('   FAIL  CONTROL: a declared row 3 units past its panel went silent - the '
+              'relative floor is still being applied to a number that has no error')
+        ok = False
+    else:
+        print('   OK    CONTROL: a declared row past its panel is reported, however long it is')
+
+    # (inverse) a declared row inside its panel must stay SILENT - the absolute floor still
+    # holds, so the fix did not turn every declared row into a finding.
+    fl_quiet = synth('floor_declared_quiet.svg',
+                     '<rect x="40" y="40" width="400" height="300" fill="#FFFFFF" '
+                     'stroke="#333333"/>'
+                     '<text x="60" y="200" font-size="20" textLength="300">DECLARED SAFE RUN'
+                     '</text>')
+    if any('overflows' in f for f in audit(fl_quiet)):
+        print('   FAIL  CONTROL: a declared row well inside its panel was called an overflow')
+        ok = False
+    else:
+        print('   OK    CONTROL: a declared row inside its panel stays silent')
 
     # (b) an anchor DOT plus a long label must be SILENT - not a badge
     dot = synth('dot.svg',
@@ -1091,8 +1305,19 @@ def _selftest():
     else:
         print('   OK    CONTROL: an unrotated image is untouched by the new path')
 
-    print('\n' + ('ALL CONTROLS PASS - silent when clean, loud when broken.'
-                  if ok else '*** SELFTEST FAILED ***'))
+    if not ok:
+        print('\n*** SELFTEST FAILED ***')
+    elif skipped:
+        # Never report a clean sweep over a shrunken population: a gate that reads a shrunken
+        # population passes for the wrong reason (16.44), and that applies to a selftest too.
+        print(f'\nCONTROLS PASS, BUT {len(skipped)} DID NOT RUN - this reference lacks the '
+              f'structure they seed:')
+        for nm, why in skipped:
+            print(f'   NOT RUN  {nm}  -  {why}')
+        print('   Run --selftest again against a reference that HAS those structures before '
+              'treating the tool as fully controlled.')
+    else:
+        print('\nALL CONTROLS PASS - silent when clean, loud when broken.')
     return ok
 
 
