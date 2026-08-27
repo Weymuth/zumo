@@ -37,7 +37,7 @@ import os
 import re
 import sys
 
-VERSION = 'v1.0.1'
+VERSION = 'v1.0.2'
 
 # ---------------------------------------------------------------------------
 # THE REGISTRY.
@@ -82,6 +82,19 @@ REGISTRY = [
      '(it counted from 1, against the zero-counting rule L04 8A.6 teaches)', 'S188'),
     ('L05-02', r'all six of today|add all six|all six in one trip',
      'Step 4 hands you all six prototypes in one trip (five are pasted; the sixth is the student\'s)', 'S188'),
+    # --- S190, the L07 C++-correctness block. Every one was COMPILER-VERIFIED false
+    # --- before it was retired, each with a blinding control (see LIVE.md S190).
+    ('L07-04', r'extern[^.]{0,40}\.cpp[^.]{0,40}linker error|extern in the \.cpp[^.]{0,30}error',
+     'extern in a .cpp is a linker error (it is legal; the error is that nothing DEFINES the object)', 'S190'),
+    ('L07-04', r'only goes in the \.h',
+     'extern only goes in the .h file (a house rule stated as a language restriction)', 'S190'),
+    ('L07-05', r"expected ';' before '\{'",
+     "a function body in a header produces expected ';' before '{' (bodies in headers are legal; "
+     "the real failure is multiple definition across two translation units)", 'S190'),
+    ('L07-02', r'modern standard',
+     '#pragma once is the modern standard (it is a compiler extension; include guards are the standard)', 'S190'),
+    ('L07-03', r'prevents this automatically',
+     '#pragma once prevents circular includes automatically (it stops the preprocessor loop, not the design problem)', 'S190'),
 ]
 
 

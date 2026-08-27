@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.36.0 -->
+<!-- Lesson version: v04.37.1 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Encoders</h1>
 <div class="div-fs-11em">Teaching Your Robot to Measure</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.36 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.37 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1564,29 +1564,31 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 <div class="div-00474b">
 
 
-<p>In this lesson, you created <code>driveDistance()</code> and <code>turnDegrees()</code>. But what exactly IS a function?</p>
+<p>You have been writing and calling functions since Lesson 2, and in this lesson you wrote two of your own: <code>driveDistance()</code> and <code>turnDegrees()</code>. So this section is not about what a function is. It is about the part you just used for the first time — <strong>the value in the parentheses.</strong></p>
 
-<h3 class="h3-c-00474b">Real-World Analogy</h3>
+<p>Look at what that value bought you. <code>driveDistance(30)</code> and <code>driveDistance(75)</code> run the <em>same</em> code. Same encoder reset, same arithmetic, same TRIM correction, same stop. One function, two jobs, because the number that differs walks in the door instead of being baked into the body.</p>
 
-<p>Think of a function like a <strong>recipe</strong>:</p>
+<h3 class="h3-c-00474b">Why This Matters More Than It Looks</h3>
 
 <div class="callout-2196f3-bg-e3f2fd-2" data-family="NOTE" data-callout="6.53">
 
-<div class="div-fs-11em-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">Recipe: Make a Sandwich</div>
+<div class="div-fs-11em-2"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">The version without parameters</div>
 
-<p><strong>Ingredients needed (parameters):</strong> bread type, filling</p>
+<p>Imagine you had written it the other way — the distance hard-coded in the body:</p>
 
-<p><strong>Steps (function body):</strong> Get bread → Add filling → Assemble</p>
+<pre><span class="tok-569cd6">void</span> driveThirty()          <span class="tok-7cbf6e">// no parentheses to fill in</span>
+<span class="tok-569cd6">void</span> driveSeventyFive()
+<span class="tok-569cd6">void</span> driveTwelvePointFive()</pre>
 
-<p><strong>Result (return value):</strong> A sandwich!</p>
+<p>Three copies of the same algorithm. Find one bug and you have fixed a third of it. Want 43 cm? Write a fourth.</p>
 
-<p>Once you have the recipe, you can make ANY sandwich just by saying "make a sandwich with wheat bread and turkey"!</p>
+<p>The parameter collapses all of them into one function that is written once, tested once, and fixed once. That is not a convenience — by Lesson 7 it is the difference between a project you can still change and one you cannot.</p>
 
 </div>
 
 <div class="callout-9c27b0-bg-f3e5f5-3" data-family="KEY TERM" data-callout="6.54">
 
-<div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Function</strong></div>A reusable block of code that performs a specific task. Write once, call whenever needed.
+<div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key">KEY TERM: <strong>Parameter</strong></div>A named slot in a function’s parentheses that receives a value when the function is called. The <em>parameter</em> is the slot in the definition (<code>float centimeters</code>); the <em>argument</em> is the actual value you pass at the call (<code>30</code>). Parameters are what let one function do many jobs.
 
 </div>
 
@@ -1594,21 +1596,21 @@ You met the BLUEPRINT in Lesson 5: comments describe the moves, <em>you</em> wri
 
 <img src="../images/L06_GRAPHIC_6-10_function_anatomy.svg" alt="Anatomy of a function: return type, name, parameter list in parentheses, and the body in braces, each part labeled." class="img-d-block">
 
-<h3 class="h3-c-00474b">Worked Example: Function with Parameter</h3>
+<h3 class="h3-c-00474b">Worked Example: Two Parameters, Built From Your Own Functions</h3>
 
-<pre><span class="tok-7cbf6e">// DEFINITION - takes a parameter</span>
-<span class="tok-569cd6">void</span> blinkLED(<span class="tok-569cd6">int</span> times) {
-  <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i < times; i++) {
-    ledYellow(<span class="tok-b5cea8">1</span>);
-    delay(<span class="tok-b5cea8">200</span>);
-    ledYellow(<span class="tok-b5cea8">0</span>);
-    delay(<span class="tok-b5cea8">200</span>);
+<p>A function can take more than one value, and the values it takes can be handed straight to functions you already wrote:</p>
+
+<pre><span class="tok-7cbf6e">// DEFINITION - two parameters, separated by a comma</span>
+<span class="tok-569cd6">void</span> backUpAndTurn(<span class="tok-569cd6">float</span> centimeters, <span class="tok-569cd6">float</span> degrees) {
+  driveDistance(-centimeters);  <span class="tok-7cbf6e">// negative = reverse (you built that)</span>
+  turnDegrees(degrees);
 }
-}
-<span class="tok-7cbf6e">// CALLING IT - pass different values!</span>
-blinkLED(<span class="tok-b5cea8">3</span>); <span class="tok-7cbf6e">// Blinks 3 times</span>
-blinkLED(<span class="tok-b5cea8">5</span>); <span class="tok-7cbf6e">// Blinks 5 times</span>
-blinkLED(<span class="tok-b5cea8">10</span>); <span class="tok-7cbf6e">// Blinks 10 times</span></pre>
+
+<span class="tok-7cbf6e">// CALLING IT - the arguments fill the slots in order</span>
+backUpAndTurn(<span class="tok-b5cea8">10</span>, <span class="tok-b5cea8">180</span>);  <span class="tok-7cbf6e">// back off 10 cm, spin around</span>
+backUpAndTurn(<span class="tok-b5cea8">5</span>, <span class="tok-b5cea8">-90</span>);   <span class="tok-7cbf6e">// back off 5 cm, turn left</span></pre>
+
+<p><strong>In order</strong> is the whole contract. <code>backUpAndTurn(10, 180)</code> and <code>backUpAndTurn(180, 10)</code> are both legal C++ and only one of them is what you meant — the compiler cannot tell them apart, because both arguments are <code>float</code>. Position is the only thing carrying your intent.</p>
 
 <h3 class="h3-c-00474b">Quick Practice</h3>
 
@@ -2299,12 +2301,12 @@ Stop motors</pre>
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
   <span class="tok-569cd6">int</span> currentSpeed = DRIVE_SPEED / ____;
-  motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
+  motors.setSpeeds(currentSpeed * direction + (direction &gt; 0 ? TRIM : -TRIM), currentSpeed * direction);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     <span class="tok-569cd6">long</span> currentCounts = averageCounts();
     <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * ____) {
       currentSpeed = ____________;
-      motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
+      motors.setSpeeds(currentSpeed * direction + (direction &gt; 0 ? TRIM : -TRIM), currentSpeed * direction);
     }
     delay(10);
   }
@@ -2341,12 +2343,12 @@ Stop motors</pre>
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
   <span class="tok-569cd6">int</span> currentSpeed = DRIVE_SPEED / 2;
-  motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
+  motors.setSpeeds(currentSpeed * direction + (direction &gt; 0 ? TRIM : -TRIM), currentSpeed * direction);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     <span class="tok-569cd6">long</span> currentCounts = averageCounts();
     <span class="tok-569cd6">if</span> (currentCounts &gt; targetCounts * 0.25) {
       currentSpeed = DRIVE_SPEED;
-      motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
+      motors.setSpeeds(currentSpeed * direction + (direction &gt; 0 ? TRIM : -TRIM), currentSpeed * direction);
     }
     delay(10);
   }
@@ -2522,6 +2524,8 @@ Stop motors</pre>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.60"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-closed-loop-control-gloss">Closed-Loop Control</strong></div>A control system that uses sensor feedback to determine when to stop.</div>
 
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.66"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-dead-reckoning-gloss">Dead Reckoning</strong></div>Tracking a robot's position by accumulating distance and angle measurements from a known starting point.</div>
+
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.61"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-encoder-gloss">Encoder</strong></div>A sensor that converts rotational motion into electrical pulses that can be counted.</div>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.62"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-function-gloss">Function</strong></div>A reusable block of code with a name, optional parameters, and a body.</div>
@@ -2530,9 +2534,9 @@ Stop motors</pre>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.64"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-interrupt-gloss">Interrupt</strong></div>A hardware signal that pauses normal code execution to handle time-critical events (like counting encoder pulses).</div>
 
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.65"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-quadrature-encoding-gloss">Quadrature Encoding</strong></div>A method using two offset sensors to detect both rotation amount AND direction.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.69"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-parameter-gloss">Parameter</strong></div>A named slot in a function’s parentheses that receives a value when the function is called. The parameter is the slot in the definition (<code>float centimeters</code>); the argument is the value passed at the call (<code>30</code>).</div>
 
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.66"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-dead-reckoning-gloss">Dead Reckoning</strong></div>Tracking a robot's position by accumulating distance and angle measurements from a known starting point.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.65"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-quadrature-encoding-gloss">Quadrature Encoding</strong></div>A method using two offset sensors to detect both rotation amount AND direction.</div>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="6.67"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-track-width-gloss">Track Width</strong></div>The side-to-side distance the robot pivots about, used for turns. The book ships 98 mm — Pololu’s chassis width — as a calibration starting value, not a dimension you measure.</div>
 

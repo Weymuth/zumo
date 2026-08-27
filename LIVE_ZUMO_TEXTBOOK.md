@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 26, 2026 (Session 189 — **THE NAME AND THE VALUE DESCRIBED THE SAME WRONG AXIS, WHICH IS WHY THEY NEVER LOOKED INCONSISTENT WITH EACH OTHER**)
-**Status:** ✅ **S189 — `WHEEL_BASE_MM = 85.0` → `TRACK_WIDTH_MM = 98.0` ACROSS 372 SITES; STUDENTS NO LONGER MEASURE IT; THE REVALUE IS BYTE-NEUTRAL, MEASURED**
+**Date:** August 26, 2026 (Session 190 — **A CLAIM CLOSED WHERE IT WAS QUOTED IS NOT CLOSED WHERE IT WAS REPEATED**)
+**Status:** ✅ **S190 CLOSED — 22 GPT ROWS SHIPPED (L06 ×1 · L07 ×10 · L08 ×11) PLUS AN EIGHT-SITE REVERSE-TRIM DEFECT NOBODY FILED, AND `census.py` v1.0.1 — THE FOURTEENTH GREP RECURRENCE FINALLY GOT AN INSTRUMENT. `L08-02` AND `L08-06` PRICED AND LEFT FOR A RULING. 80/80 GATES.**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.36.0 · L07 v04.32.0 · L08 v04.33.0 · L09 v05.27.6 · L10 v02.30.4 · L11 v02.31.1 · L12 v01.35.3 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,712** · Bible **v8.185** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.68 · **book_gates v1.74.2** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.4 · build_family_map v1.6.6.3 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.1 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.1 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `95349b5`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.1 · L07 v04.33.0 · L08 v04.34.0 · L09 v05.27.6 · L10 v02.30.5 · L11 v02.31.3 · L12 v01.35.3 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,801** · Bible **v8.186** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.69 · **book_gates v1.74.6** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.4 · build_family_map v1.6.6.5 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.2 · census v1.0.1 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `b3f0169`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -11,6 +11,210 @@
 ---
 
 ---
+---
+
+### `census.py` v1.0.1 NEW — THE FOURTEENTH RECURRENCE FINALLY GOT AN INSTRUMENT
+DJ, at close: **"WHY ARE WE STILL USING GREP"**. A structural parse of the Bible changelog returns
+**THIRTEEN prior entries recording the same defect** — v8.78/S91, v8.111, v8.116, v8.130.1,
+v8.145.1, v8.149, v8.163, v8.165, v8.172, v8.177, v8.178, v8.179, v8.184/S189 — and S190's
+*42 bank questions* is the **fourteenth**. §24.22 ruled it at S182 and §24.22a at S186 in DJ's own
+words, and neither stopped it.
+
+**v8.139 ALREADY WROTE THE DIAGNOSIS:** *"Writing the rule down did not prevent committing it in the
+session that quoted it. The detector did."* Every rule here that stuck got a comparator — §16.31 got
+gate 74, §16.25 gate 76, §16.44 gate 78, retirements got `retired_claims`. **§24.22a got a paragraph,
+and it decays at roughly one recurrence every four sessions, measured.**
+
+**THE DEFINING PROPERTY IS THAT NOTHING IN IT RETURNS A BARE INTEGER.** Every function returns a
+`Population` carrying its members; `len()` works, **`int()` raises**, `report()` names them.
+`lines()` and `occurrences()` are SEPARATE calls, so obtaining one while meaning the other is not
+forbidden — it is **unavailable**. That is §25.2a expressed as a type rather than as advice.
+`questions()` returns question IDS, `payloads()` returns payload ENTRIES, `callouts()` goes through
+`lesson_inventory`, `rendered()` sees a phrase split across an inline element that a raw match cannot
+(S162's `<em>`-split claim), and `agree()` is rules 83/84 for counting — two structurally different
+routes, **disagreement is the finding, never the average**.
+
+**ELEVEN CONTROLS, AND TWO ARE THE LIVE DEFECTS.** Control I asserts `extern` in the banks is
+**42 occurrences and 27 QUESTIONS** — if those ever agree, one of them is broken. Control J asserts
+**135 payload ENTRIES against 326 raw tokens** for `followLine`, the pair that prices `L08-02`. Plus
+the blinding control (an absent pattern returns an EMPTY population, not an error) and the two proving
+`int()` and `__index__` both refuse. **AND THE RE-VERIFICATION CAUGHT ONE OF ITS OWN CONTROLS:** control C
+asserted a SIDE EFFECT (`['x'][pop]` raising TypeError) rather than the property, so planting a
+working `__index__` raised IndexError instead, **crashed the selftest, and read as SILENCE to a
+caller checking stdout**. Now asks `operator.index()` directly and treats any other exception as a
+failure. **Rule 59 inside the instrument written to enforce rule 59** — and the harness that found it
+was itself wrong first, checking a STRING where it should have checked an EXIT CODE. `census` **v1.0.1**.
+
+**STATED SCOPE LIMIT (rule 78): it cannot see a terminal.** Nothing stops anyone running `grep -c` at
+a shell and pasting the answer — §24.16 records the identical hole for checksums. **It closes the
+path, not the class.**
+
+**AND THE ROSTER ARM CAUGHT THE FILE BEFORE IT WAS REGISTERED**, reporting *census.py is in the repo
+and in no version roster* — S123's `timer.html` hole working, on the session that created it.
+
+### THE L08 BLOCK — ELEVEN OF FOURTEEN, AND THE BANK HEADER KNEW ABOUT TWO OF THEM
+`L08-01` · `03` · `04` · `05` · `07` · `09` · `10` · `11` · `12` · `13` · `14` shipped.
+**`L08-04` AND `L08-05` WERE SETTLED FROM LIBRARY SOURCE, NOT FROM READING.** `QTRSensors::readLine`
+in pinned `Zumo32U4@2.0.1` returns **0 or 4000 — the last-seen side's extreme — never an average** when
+no sensor exceeds 200, and it calls `readCalibrated()` itself, so *one reading, two questions* was
+performing two. **`L15_B12` and `L15_B28` ALREADY TAUGHT THE CORRECT BEHAVIOUR**, so L08 and L15 have
+contradicted each other for a long time; the fix makes them agree.
+
+**`ZUMO_QUIZ_L08`'s OWN HEADER HAD ALREADY IDENTIFIED `L08-10` AND `L08-12` AND FILED NEITHER.** Under
+*FOUR ANSWERS DELIBERATELY NOT ASKED* it records that the loop rate *appears in L06, L08, L10 and L11
+and the book agrees with itself, but no timing run backs it*, and that the cm/s figure *has never been
+measured on a real robot*. **Someone routed the questions around two live defects instead of filing them.**
+The loop rate is now gone **book-wide, 12 sites** — and I fixed L08 first and moved on, which is **§24.6c
+a fifth time in one session**.
+
+### PRICED AND LEFT FOR A RULING (rule 70)
+- **`L08-02`** move `followLine()` into `RobotMotion.cpp` — **135 Maker `main.cpp` payloads**, 461 Maker
+  sites, 8 lessons. `L08-14`'s clean fix depends on it, and **the lesson now says so** rather than
+  pretending a refactor that was not done.
+- **`L08-06`** delete dead `lastPosition` — **145 Maker `RobotSensors.cpp` payloads**, 434 sites, and it
+  is the subject of two bank questions about `static`.
+Both move bytes and need the `byte_audit` harness. Neither belongs in a close.
+
+### THE WORKLIST COUNTS ARE DELIBERATELY NOT UPDATED
+A derivation over Part 0's own ✅ rows returns **87 closed / 2 parked / 156 open of 245**, and it
+disagrees with the standing table on L02, L04 and L13. **§24.24 says a count has three homes; it does not
+say to fill them with a figure that has not been reconciled (rule 50).** The rows are seated, the
+discrepancy is recorded in the file, and the next session files ONE derived answer in all three homes.
+
+---
+## WHAT SHIPPED IN S190
+
+### THE SESSION-OPEN CORRECTION
+The S190 handoff said the in-scope remainder was **L06 ×6 · L07 ×10 · L08 ×14** at **67 closed /
+176 open**. It was written before the worklist regeneration that shipped in the SECOND S189 commit.
+**S189 landed in two commits** — `95349b5` carried the new files, `b3f0169` the modified ones, the
+same split that produced the stale S184 handoff. Measured from the rows themselves: **72 closed /
+2 parked / 171 open**, and **L06 had ONE open row, not six.** Derived by enumerating the `L06-*` ids
+present in Part 0, not by trusting either count line.
+
+### THE DEFECT NOBODY FILED — EIGHT SURVIVING REVERSE-TRIM SITES
+`L06-01` was CLOSED at S181, and its defect was **still live in two lessons for nine sessions.**
+S181 keyed on `speed + TRIM`, where `speed` carried the sign. These eight write the same bug the
+other way round — magnitude × direction, then a bare TRIM:
+
+    motors.setSpeeds(currentSpeed * direction + TRIM, currentSpeed * direction);
+
+**L06 ×4** (Smooth Acceleration / Smooth Stopping, template and solution) and **L07 ×4**
+(Challenge 7, template and solution). **Maker ×0** — lesson prose only, so no payload moved and
+`byte_audit` is owed nothing. Fixed to `+ (direction > 0 ? TRIM : -TRIM)`; residue book-wide **0**.
+**§24.6c a fourth time:** sweep the arithmetic a correction PRODUCES, not the identifier's spelling.
+
+### THE C++ CLAIMS WERE SETTLED BY COMPILER, NOT BY READING
+Every L07 language claim was executed with a blinding control before a word was edited.
+
+- **`L07-01`** — a header included twice carrying only declarations compiles **clean** under
+  `-Wall -Wextra -pedantic`. Control: the same header holding a `struct` fires
+  `redefinition of 'Foo'`. The book's quoted diagnostic *"You already declared driveDistance!"*
+  **does not exist.** Rewritten to name the real hazard: contents that cannot repeat in one file.
+- **`L07-02`** — the book had it **backwards**. Include guards are standard C++; `#pragma once`
+  is a compiler extension every real compiler chose to provide.
+- **`L07-03`** — `#pragma once` stops the preprocessor loop, not the design problem. The lesson
+  now teaches the half-read-header symptom and points at `RobotConfig.h` as the fix.
+- **`L07-04`** — `extern` in a .cpp **links clean** when a definition exists. Control: remove the
+  definition, `undefined reference to 'motors'` fires. **THE HOUSE RULE IS UNCHANGED AND `extern`
+  IS UNCHANGED** — 2,015 Maker sites, 149 lesson sites, 27 bank questions (42 occurrences), all untouched. Only the
+  false claim that the language forbids it was retired.
+- **`L07-05`** — a function body in a header compiles clean in one translation unit and gives
+  `multiple definition` in two. **The quoted diagnostic could not be reproduced from any plausible
+  header mistake.** Error 6 re-pointed to `expected unqualified-id before '{'`, which WAS
+  reproduced, plus a footnote that library headers legitimately carry bodies.
+- **`L07-06`** — prose said three includes, the reveal has four. Number removed; the plan question
+  now asks the student to derive and count it.
+- **`L07-07`** — discharged by the eight-site sweep.
+- **`L07-08`** — Challenge 4 rebuilt on `driveDistanceAtSpeed(float, int)` with one-line wrappers,
+  retitled *Speed Modes Without Copy-Paste*. It had literally instructed *"copy driveDistance and
+  modify the speed"* inside the lesson about not duplicating code.
+- **`L07-09`** — Challenge 7 → *Three-Stage Motion Profile*, function renamed across 9 sites.
+  **A defect GPT missed:** GRAPHIC 6.11 draws a true trapezoid with ramps while the code makes
+  three plateaus. Figure KEPT and reframed as the continuous version the build approximates, so
+  §21 coverage does not move. Maker `kind=trapezoidal` ID kept (the lesson href points at it);
+  labels and folder string changed. Payload rides `finished` — zero byte movement.
+- **`L07-10`** and **`L06-08`** — both §8A rows, ruled by DJ. L07's §8A now opens with four
+  diagnosis questions before the reference tables, answers seated after §8A.3. L06's §8A had
+  **already been renamed at S108** (the `L06-02` pattern — a row partly discharged and never
+  closed); what was live was the sandwich analogy, its *"Result: a sandwich!"* line teaching a
+  return value for a `void` function, and a redundant **Function** KEY TERM that L02 already owns.
+
+### THE PARAMETER KEY TERM — AND A COST I ASSERTED WITHOUT MEASURING
+§8A's body KEY TERM was repointed **Function → Parameter**. The book **defined `Parameter`
+nowhere**, in a section named *Passing Values Into Functions*.
+
+**I then told DJ a glossary twin was too expensive because inserting one renumbers every
+downstream `data-callout` in L06. THAT WAS FALSE, and `callout_id.py`'s own docstring says so in
+plain words:** *"Inserting a callout takes the next free number in that lesson; nothing below it
+renumbers."* The authored-identity design exists precisely so insertion is free. **I invoked the
+authored-identity rule as the reason NOT to insert, when it is the reason insertion is cheap.**
+DJ asked why not, which is the only reason it was caught.
+
+Twin added: **L06 6.69 `term-parameter-gloss`**, alphabetical between *Interrupt* and *Quadrature
+Encoding*, id next-free, **nothing renumbered**. Named by the §24.14b structure tier — no content
+rule added.
+
+**ONE INSERTION MOVED THREE COUNT BASELINES, AND THEY ARE ONE EVENT** (§24.24): callout census
+1133 → **1134** (gates 47 and 59, one definition read twice, rules 83/84), glossary KEY TERM scope
+151 → **152**, image references 1,209 → **1,210** (every KEY TERM carries one `key.svg`).
+**BLINDING CONTROL RUN:** deleting the entry drops all three to the old figures and fails the
+suite; restore is byte-exact by md5. A baseline that does not fail when its object is removed is
+not a baseline.
+
+**The glossary is not alphabetical below this point** — *Dead Reckoning* and *Track Width* sit
+after *Quadrature Encoding*, appended rather than filed. Not touched; recorded for a ruling.
+
+### THE TRIPLE CHECK FOUND FOUR DEFECTS, THREE OF THEM MINE
+Three arms sharing no predicate (rule 83/84), each with a control that fired.
+**Arm 1** compiled and RAN the shipped code; control: the pre-S190 code gives `L=-60 R=-75` in
+reverse where the fix gives `-90 / -75`. **Arm 2** used a different property — odd symmetry,
+`command(-d) == -command(+d)` — clean 9/9, control failed 3/3, and a second control at `TRIM = 0`
+passed for BOTH, proving the instrument reads the correction and not the shape of the code.
+**Arm 3** swept 333 files and re-parsed the edited HTML.
+
+1. **`L11` line 958 carried a live `BUILDS ON` pointer** to *"the deceleration leg of Lesson 7's
+   trapezoidal profile"* with a spiral star to L07. My own rename orphaned it. A cross-lesson
+   spiral marker is the worst place to leave a stale name — it IS the wayfinding.
+2. **`L07-02`'s retired claim survived in the GLOSSARY.** KEY TERM `#pragma once` still read
+   *"The modern standard, supported by all major compilers"* — the exact retired sentence, sitting
+   in the reference students consult. **Third instance this session** of a claim closed in prose
+   and alive elsewhere, after §8A.2's `extern` line and `L07-04` itself.
+3. **`L07_B15` was falsified by my own correction** (the S189 `L07_B47` shape). It keyed *"two
+   copies of everything, compiler reports a redefinition"*; once §3.6 correctly teaches that
+   repeated declarations are legal, a student answering *"nothing"* reads correctly and is marked
+   wrong. Re-stemmed to name a struct. **`L07_B14`** and **`L07_B41`**'s matching pair re-keyed
+   off *"modern replacement"* / *"older"*.
+4. **A CLAIM I MADE TO DJ WAS WRONG, recorded because it is the reusable part.** I reported the
+   CSS change as **COUNT-ONLY**. It is **COUNT AND RANK**: the name SET is identical and 574/2,033
+   hold at both ends, but `.div-dee2e6` rose 12 → 14 uses and MOVED in the frequency-ordered
+   block. **A set comparison says count-only; only an ORDERED list diff shows the move.** I had
+   checked the set. `book_gates` v1.74.3 carries the honest version.
+
+### FIVE RETIREMENTS REGISTERED, EACH WITH A PLANT TEST
+`retired_claims` **v1.0.2, 17 entries.** All five measured at zero in the assertive register first
+(rule 34), then **each was PLANTED into the live L07 and confirmed to fire** — 5/5, with a
+byte-exact restore verified by md5. Registered: extern-in-a-.cpp-is-a-linker-error ·
+extern-only-goes-in-the-.h · the `expected ';' before '{'` diagnostic · pragma-once-is-the-modern-
+standard · pragma-once-prevents-circular-includes-automatically.
+
+### FIFTEEN SOURCE PINS, MACHINE-CLOSED
+§24.18 fired on 15 pins across 11 banks. **The first predicate was too loose** — keying on `8A`
+matched every bank's OWN §8A, not L06's (§16.15, §24.6c again). Re-scoped to the content actually
+changed: **L06/L07/L08 required a read (18 questions, all read); the other ten pins assert nothing
+this session touched and were EARNED, not bumped blind** (rule 37).
+
+### OPEN AT THIS WRITING
+- **L08 ×14 untouched.** In-scope remainder is now **L08 ×14** alone for L01–L08.
+- `ZUMO_FIX_TRACKER.md` and `ZUMO_GPT_REVIEW_WORKLIST.md` Part 0 **not yet updated** for the
+  eleven closed rows. Worklist counts will move 72 → 83 closed / 171 → 160 open when they are.
+- **S191 handoff unwritten.** `ZUMO_S190_HANDOFF.md` still in the repo root.
+- `site_parity` was discharged at S190 OPEN (twice, 19 and 21 min past the 10m57s floor, PARITY
+  both, plus a direct fetch of four published pages). **It is OWED AGAIN after the next push.**
+- **`byte_audit` is owed NOTHING** — every code edit was lesson prose; Maker payloads did not move.
+- `prose_canon` arms 1, 2 and 4 still unbuilt; the 7 pinned residue sites untouched a third session.
+- §16 debt still 26 rules, untouched a fourth session.
+
 ---
 ## WHAT SHIPPED IN S189
 

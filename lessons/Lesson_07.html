@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.32.0 -->
+<!-- Lesson version: v04.33.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -85,7 +85,7 @@
 <h1 class="h1">Code Organization</h1>
 <div class="div-fs-11em">Cleaning Up Your Robot's Brain</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.32 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.33 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -635,7 +635,9 @@
 
 <p>Imagine a waiter reading the same menu page twice to a customer. "We have burgers, fries, milkshakes. We have burgers, fries, milkshakes." The customer would be confused: "Wait, do you have TWO types of burgers? Are they different?"</p>
 
-<p>The compiler has the same problem. If it sees the same declarations twice, it gets confused and throws an error: <em>"You already declared driveDistance! Why are you declaring it again?"</em></p>
+<p>The compiler mostly copes. Seeing <code>void driveDistance(float);</code> twice is legal C++ — a promise repeated word for word is still the same promise, and the compiler accepts it without complaint. The trouble starts with the things a header can hold that <em>cannot</em> be said twice in one file: a <code>struct</code> or <code>class</code> definition, an <code>enum</code>, a variable definition. Those get <em>"redefinition of 'Foo'"</em> and the build stops.</p>
+
+<p>So the risk is real, it is just narrower than "declared twice." And you cannot inspect every header you will ever include to decide which kind it is — the library headers you pull in include other headers you never see. You protect every header the same way and stop thinking about it.</p>
 
 <p>The fix is simple — add one line at the very top of every header file:</p>
 
@@ -663,7 +665,7 @@
 <span class="tok-7cbf6e">// ... declarations ...</span>
 <span class="tok-569cd6">#endif</span></pre>
 
-<p>This works fine but is more verbose and error-prone (typos in the guard name cause hard-to-find bugs). <code>#pragma once</code> is the modern standard — supported by every compiler you'll encounter (GCC, Clang, MSVC). If you see include guards in someone else's code, now you know what they do.</p>
+<p>This works fine but is more verbose and error-prone (typos in the guard name cause hard-to-find bugs). Here is the honest version: include guards are the <strong>official</strong> C++ way — they are plain preprocessor directives, so every compiler that exists must support them. <code>#pragma once</code> is <strong>not</strong> in the C++ standard at all; it is an extension that every compiler you will actually meet (GCC, Clang, MSVC) chose to provide anyway. We use it because it is one line instead of three and cannot be mistyped. Now you know what both do — and that the shorter one is a convenience, not a rule.</p>
 
 </div>
 
@@ -833,7 +835,7 @@
 
 <li><strong>Missing <code>#include</code>:</strong> New <code>.h</code> file? You must <code>#include "filename.h"</code> in any file that uses it.</li>
 
-<li><strong>Circular includes:</strong> File A includes File B, which includes File A = infinite loop. <code>#pragma once</code> prevents this automatically.</li>
+<li><strong>Circular includes:</strong> File A includes File B, which includes File A. <code>#pragma once</code> stops the preprocessor looping forever — but it does not fix the problem, it just changes the symptom. Whichever file gets read second sees only <em>half</em> of the other one, and you get a mystery "was not declared" error pointing at a name that is plainly right there. If two headers need each other, that is a design smell: move the shared thing into a third header (that is what <code>RobotConfig.h</code> is for).</li>
 
 </ol>
 
@@ -1547,15 +1549,15 @@ Zumo32U4ButtonC buttonC;
 
 <div class="callout-5a6872-bg-f8f9fa-2" data-family="THE GOAL" data-callout="7.52">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
-    <p class="p-mb-0">Three includes (which three? — that's a plan question), then both function bodies from Lesson 6 — including <code>averageCounts()</code> and the <code>TRIM</code> you spent in Step 13. They come across unchanged. The upgrade: turning uses the new <code>TURN_SPEED</code> constant instead of <code>DRIVE_SPEED</code>, so drive pace and turn pace tune independently from RobotConfig.h.</p>
+    <p class="p-mb-0">The includes are yours to work out — that's a plan question — then both function bodies from Lesson 6 — including <code>averageCounts()</code> and the <code>TRIM</code> you spent in Step 13. They come across unchanged. The upgrade: turning uses the new <code>TURN_SPEED</code> constant instead of <code>DRIVE_SPEED</code>, so drive pace and turn pace tune independently from RobotConfig.h.</p>
 </div>
 
 <div class="callout-9b6a9e-bg-f3e5f5-2" data-family="MY PLAN" data-callout="7.53">
     <div class="div-fs-105em"><img src="../images/marks/pencil-square.svg" alt="" data-mark="pencil-square">MY PLAN — yours, before any code</div>
-    <p class="p-mb-0">Answer in the plan block before typing: this file calls encoder functions, reads COUNTS_PER_CM, and must match its own declarations — name the include that satisfies each of those three needs.</p>
+    <p class="p-mb-0">Answer in the plan block before typing. Work the way the compiler does: read this file line by line and ask <em>where was this name promised to me?</em> It calls encoder functions, it reads COUNTS_PER_CM, it has to match its own declarations — and it uses the Pololu library itself. Name the header that answers each need, then count them. The number is part of the answer, not a hint you get for free.</p>
 </div>
 
-<p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> stuck on the three? <a href="#qr-includes" class="link-c-2e86ab">⚡ Quick Reference → Includes & Guards</a> has the map. The bodies are your Lesson 6 code — copying your own verified work between projects is engineering, not cheating.</p>
+<p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> stuck? <a href="#qr-includes" class="link-c-2e86ab">⚡ Quick Reference → Includes & Guards</a> has the map. The bodies are your Lesson 6 code — copying your own verified work between projects is engineering, not cheating.</p>
 
 <details data-reveal="solution">
 <summary>🔓 Compare with a worked RobotMotion.cpp</summary>
@@ -2178,7 +2180,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <th class="th-bg-00393d">What it means</th>
 
-<td class="td-bb-1pxsolid">You accidentally wrote <code>extern Zumo32U4Motors motors;</code> in <strong>RobotSensors.cpp</strong></td>
+<td class="td-bb-1pxsolid">Every file <em>promised</em> that <code>motors</code> exists somewhere, and no file ever <strong>made</strong> it. The linker went looking and found nothing.</td>
 
 </tr>
 
@@ -2186,7 +2188,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <th class="th-bg-00393d">Why it happens</th>
 
-<td class="td-bb-1pxsolid"><code>extern</code> means "this exists somewhere else." In the .cpp file, you need to <strong>create</strong> the object (no extern). <code>extern</code> only goes in the .h file.</td>
+<td class="td-bb-1pxsolid"><code>extern</code> means "this exists somewhere else" — it is a <em>promise</em>, never the thing itself. Usually you wrote <code>extern Zumo32U4Motors motors;</code> in RobotSensors.cpp <strong>instead of</strong> the real line. Writing <code>extern</code> in a .cpp is not itself illegal — the compiler accepts it — but if it is the <em>only</em> mention, nobody ever built the object. A promise with nothing behind it is exactly what "undefined reference" means.</td>
 
 </tr>
 
@@ -2194,15 +2196,15 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <th class="th-bg-00393d">The fix</th>
 
-<td class="td-bb-1pxsolid">In RobotSensors.cpp: <code>Zumo32U4Motors motors;</code> (no extern!)<br>In RobotSensors.h: <code>extern Zumo32U4Motors motors;</code> (extern here!)</td>
+<td class="td-bb-1pxsolid">In RobotSensors.cpp: <code>Zumo32U4Motors motors;</code> — no <code>extern</code>. That line is the object.<br>In RobotSensors.h: <code>extern Zumo32U4Motors motors;</code> — the promise.<br><strong>House rule:</strong> definitions in the .cpp, <code>extern</code> in the .h, every time. Not because the other arrangement is illegal, but because one home per object is the only way eight files stay straight.</td>
 
 </tr>
 
 </table>
 
-<h3 class="h3-c-00474b">Error 6: "expected ';' before '{'"</h3>
+<h3 class="h3-c-00474b">Error 6: "expected unqualified-id before '{'"</h3>
 
-<pre><span class="tok-f14c4c">error: expected ';' before '{' token</span></pre>
+<pre><span class="tok-f14c4c">error: expected unqualified-id before '{' token</span></pre>
 
 <table class="table-bc-collapse-2">
 
@@ -2210,7 +2212,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <th class="th-bg-00393d">What it means</th>
 
-<td class="td-bb-1pxsolid">You put function code (with braces) in the .h file instead of just the declaration</td>
+<td class="td-bb-1pxsolid">You pasted a whole function into the .h file on top of the declaration that was already there — and left the declaration's semicolon in place. The compiler read <code>void warmUp();</code>, called that finished, and then hit a <code>{</code> with nothing in front of it.</td>
 
 </tr>
 
@@ -2218,7 +2220,7 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <th class="th-bg-00393d">The fix</th>
 
-<td class="td-bb-1pxsolid">Header files only get declarations ending in semicolons. Move the <code>{ code }</code> to the .cpp file.</td>
+<td class="td-bb-1pxsolid">Delete one or the other. Header files get declarations ending in semicolons; the <code>{ code }</code> belongs in the .cpp.<br><br><strong>An honest footnote,</strong> because you will see it the first time you open a real library header: a function body in a header is <em>legal</em> C++, and library authors do it on purpose. What goes wrong is quieter than a syntax error — if two .cpp files include that header, each one gets its own copy of the body and the linker reports <code>multiple definition of 'warmUp()'</code> (Error 2). Our rule is not "the compiler forbids it." It is "one home per function, so you always know where to look."</td>
 
 </tr>
 
@@ -2280,9 +2282,9 @@ Zumo32U4Encoders encoders; // ← DELETE from RobotMotion.cpp</pre>
 
 <tr>
 
-<td class="td-bb-1pxsolid"><code>"expected ';' before '{'"</code></td>
+<td class="td-bb-1pxsolid"><code>"expected unqualified-id before '{'"</code></td>
 
-<td class="td-bb-1pxsolid">Function body in .h file (should be in .cpp)</td>
+<td class="td-bb-1pxsolid">Declaration and body both in the .h, semicolon left between them</td>
 
 </tr>
 
@@ -2504,7 +2506,22 @@ display.gotoXY(0, 0);</pre>
 <div class="div-00474b">
 
 
-<p>Before moving to the next lesson, let's solidify three critical concepts that make multi-file organization possible: <strong>declarations vs. definitions, the extern keyword, and scope.</strong> These patterns will repeat in every lesson from here forward.</p>
+<p>You just built the whole thing. Eight files, and it compiles. So this section does <strong>not</strong> re-teach declarations, <code>extern</code> and scope — you used all three today, and §3.2–§3.7 explained them before you did.</p>
+
+<p>What this section is for is different: <strong>reading the evidence when it breaks.</strong> Below each idea is a reference table you can come back to all term, and then a question that only someone who understands the idea can answer. Try the questions before you read the tables. If you can answer them cold, you own the contract and you can skip straight to the challenges.</p>
+
+<h3 class="h3-c-00474b">Diagnose These Four Before You Read On</h3>
+
+<div class="div-dee2e6">
+    <p><strong>1.</strong> Which of these four lines are declarations, and which are definitions?</p>
+    <pre><span class="tok-569cd6">void</span> driveDistance(<span class="tok-569cd6">float</span> cm);
+<span class="tok-569cd6">extern</span> Zumo32U4Motors motors;
+Zumo32U4Motors motors;
+<span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> DRIVE_SPEED = 150;</pre>
+    <p><strong>2.</strong> The compiler finished with no errors and the <em>linker</em> then failed. What does that pair of facts tell you about where the problem is — and what does it rule out?</p>
+    <p><strong>3.</strong> You moved a function into <code>RobotMotion.cpp</code> and now get <em>“was not declared in this scope”</em> at the call site in <code>main.cpp</code>. Name the two different mistakes that both produce exactly that message.</p>
+    <p><strong>4.</strong> Your header says <code>extern Zumo32U4Motors motors;</code> and so does your .cpp. It builds and runs. Is anything wrong? Answer before §8A.2.</p>
+</div>
 
 <h3 class="h3-c-00474b">8A.1: Declarations vs. Definitions</h3>
 
@@ -2599,10 +2616,12 @@ Zumo32U4Encoders encoders;</pre>
 <div class="callout-ffc107-bg-fff8e1" data-family="WARNING" data-callout="7.77">
     <div class="div-fs-09em"><img src="../images/marks/exclamation-triangle.svg" alt="" data-mark="exclamation-triangle">WARNING</div>
     <div class="div-fs-105em">COMMON MISTAKE</div>
-    <p>Writing <code>extern</code> in the .cpp file is a linker error:</p>
+    <p>Writing <code>extern</code> in the .cpp <em>instead of</em> the real line leaves the object never built:</p>
     <pre><span class="tok-7cbf6e">// RobotSensors.cpp — WRONG!</span>
-<span class="tok-569cd6">extern</span> Zumo32U4Motors motors;  <span class="tok-7cbf6e">// ← Extern in .cpp? ERROR!</span></pre>
-    <p><strong>Fix:</strong> In .cpp, create the object without <code>extern</code>. The <code>extern</code> keyword only goes in the .h file.</p>
+<span class="tok-569cd6">extern</span> Zumo32U4Motors motors;  <span class="tok-7cbf6e">// ← a promise, not an object</span></pre>
+    <p>Every file now believes <code>motors</code> exists somewhere and no file ever made it. The compiler is happy — each file was told the object is elsewhere, which is a legal thing to be told. The <strong>linker</strong> is the one that goes looking, and it reports <code>undefined reference to 'motors'</code>.</p>
+    <p><strong>Answer to question 4:</strong> an <code>extern</code> line in a .cpp is not illegal. If the real definition is also there, it builds and runs and nothing is broken — it is just a redundant line saying “something I am about to make exists.” The reason our house rule bans it anyway is that the moment you have <code>extern</code> in two places, you can no longer tell by looking which file owns the object.</p>
+    <p><strong>Fix:</strong> In the .cpp, create the object with no <code>extern</code>. That line <em>is</em> the object. Keep <code>extern</code> in the .h only — one promise, one home.</p>
 </div>
 
 <h3 class="h3-c-00474b">8A.3: Scope — Where Can Your Variables Live?</h3>
@@ -2667,6 +2686,14 @@ Zumo32U4Encoders encoders;</pre>
         <li>If not, make it global OR pass it as a function parameter</li>
         <li>If it's hardware (motors, encoders), use #include "RobotSensors.h" to access it via extern</li>
     </ol>
+</div>
+
+<h3 class="h3-c-00474b">Answers to the Diagnosis Questions</h3>
+
+<div class="div-dee2e6">
+    <p><strong>1.</strong> Two declarations and two definitions. <code>void driveDistance(float cm);</code> is a declaration — a promise, no body. <code>extern Zumo32U4Motors motors;</code> is a declaration too, for the same reason: <code>extern</code> is the word that makes it one. <code>Zumo32U4Motors motors;</code> is a definition — that line is where the object gets made. <code>const int DRIVE_SPEED = 150;</code> is also a definition: it has a value, so something exists.</p>
+    <p><strong>2.</strong> The compiler checks one file at a time and only asks <em>does this name have a declaration?</em> Passing it means every name you used was promised somewhere. The linker’s job is to go find the thing behind each promise. So a clean compile plus a linker failure means the <em>spelling and the types are right</em> and the <em>definition is missing</em> — which rules out typos, missing includes and wrong argument types, and points you at exactly one question: which file was supposed to define this, and does it?</p>
+    <p><strong>3.</strong> Either the header never got the declaration (you wrote the body in the .cpp and forgot the promise in the .h), or the header has it and <code>main.cpp</code> never included that header. Same message, two causes — and you tell them apart by opening the .h. If the line is there, the problem is the <code>#include</code>. If it is not, the problem is the header.</p>
 </div>
 
 <h3 class="h3-c-00474b">8A.4: Multi-File Checklist</h3>
@@ -2979,20 +3006,20 @@ showMessage("Step 1", "Forward...");</pre>
 </div>
 </div>
 
-<!-- Challenge 4: Add Speed Modes to Config -->
+<!-- Challenge 4: Speed Modes Without Copy-Paste -->
 
 <div id="challenge-4" class="div-7d5283" data-challenge="7.4" data-kind="challenge" data-difficulty="medium" data-grasp="moderate">
-<div class="div-bg-7a5905"><strong>Challenge 4: Add Speed Modes to Config</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
+<div class="div-bg-7a5905"><strong>Challenge 4: Speed Modes Without Copy-Paste</strong> <span class="span-ai-stretch"><span class="span-bg-9a6b10">Medium</span><span class="span-bg-ffffff"></span><span class="span-bg-185fa5">Moderate</span></span></div>
 <div class="div-bg-fffbe6">
 <p class="p-m-008px">📁 <strong>Work in:</strong> your main <strong>LastName_L07</strong> build — or a fresh copy preloaded with the <strong>finished lesson program</strong> — all eight files, ready to modify: <a href="../newproject.html?lesson=7&amp;kind=speed_modes" target="_blank" class="link-c-2e86ab">→ make this folder for me</a></p>
-<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> — three constants in RobotConfig.h, one new function in the RobotMotion pair.</p>
+<p class="pre-m-0">🔍 <strong>Where to look:</strong> Quick Reference → <a href="#qr-files" class="link-c-2e86ab">What Goes Where</a> — three constants in RobotConfig.h, three new functions in the RobotMotion pair: one that does the work, two that only name a speed.</p>
 </div>
 <div class="div-b-white">
 <div class="div-fs-italic">
 
 <h4 class="h4-c-7a5905">🎯 THE GOAL</h4>
 
-<p>Add SLOW_SPEED, MEDIUM_SPEED, and FAST_SPEED constants to RobotConfig.h, then create <code>driveDistanceSlow()</code> and <code>driveDistanceFast()</code> functions.</p>
+<p>Add SLOW_SPEED, MEDIUM_SPEED, and FAST_SPEED constants to RobotConfig.h, then give the robot three driving speeds — <em>without writing the driving algorithm three times.</em> One new function does the work and takes the speed as a parameter; <code>driveDistanceSlow()</code> and <code>driveDistanceFast()</code> become one line each.</p>
 
 </div>
 
@@ -3004,12 +3031,19 @@ showMessage("Step 1", "Forward...");</pre>
 Define SLOW_SPEED = 100
 Define MEDIUM_SPEED = 150
 Define FAST_SPEED = 250
-driveDistanceSlow(centimeters):
-Same as driveDistance but use SLOW_SPEED
-driveDistanceFast(centimeters):
-Same as driveDistance but use FAST_SPEED</pre>
 
-<p><strong>Why centralize constants?</strong> Change one number in RobotConfig.h to adjust ALL speeds!</p>
+driveDistanceAtSpeed(centimeters, speed):
+&lt;- the whole algorithm, exactly once
+&lt;- "speed" arrives as a parameter instead of being hard-coded
+
+driveDistanceSlow(centimeters):
+call driveDistanceAtSpeed(centimeters, SLOW_SPEED)
+driveDistanceFast(centimeters):
+call driveDistanceAtSpeed(centimeters, FAST_SPEED)</pre>
+
+<p><strong>Why centralize constants?</strong> Change one number in RobotConfig.h to adjust ALL speeds.</p>
+
+<p><strong>And why not just copy <code>driveDistance()</code> twice and edit the speed?</strong> Because then the encoder reset, the counts arithmetic and the TRIM correction exist in three places. Find a bug in one and you have fixed one third of it. This is Lesson 6’s parameter idea doing real work: <em>parameterise the thing that differs; never duplicate the thing that doesn’t.</em></p>
 
 </div>
 
@@ -3023,27 +3057,39 @@ Same as driveDistance but use FAST_SPEED</pre>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MEDIUM_SPEED = <span class="tok-b5cea8">150</span>; <span class="tok-7cbf6e">// Same as existing DRIVE_SPEED</span>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAST_SPEED = ____;</pre>
 
-<p><strong>Step 2:</strong> Add declarations to <code>RobotMotion.h</code>:</p>
+<p><strong>Step 2:</strong> Add three declarations to <code>RobotMotion.h</code> — the worker and its two wrappers:</p>
 
-<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> centimeters);
+<pre><span class="tok-569cd6">void</span> driveDistanceAtSpeed(<span class="tok-569cd6">float</span> centimeters, <span class="tok-569cd6">int</span> speed);
+<span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> centimeters);
 <span class="tok-569cd6">void</span> driveDistanceFast(<span class="tok-569cd6">float</span> centimeters);</pre>
 
-<p><strong>Step 3:</strong> Add implementations to <code>RobotMotion.cpp</code> (copy driveDistance and modify the speed):</p>
+<p><strong>Step 3:</strong> In <code>RobotMotion.cpp</code>, write the algorithm <em>once</em>. It is <code>driveDistance()</code> with one change: <code>speed</code> is no longer decided inside the function, it walks in the door as a parameter.</p>
 
-<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
+<pre><span class="tok-569cd6">void</span> driveDistanceAtSpeed(<span class="tok-569cd6">float</span> distanceCm, <span class="tok-569cd6">int</span> speed) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? __________ : -__________;
+  <span class="tok-6a9955">// "speed" arrived as a magnitude. Give it the direction of travel.</span>
+  <span class="tok-569cd6">int</span> drive = (distanceCm &gt; 0) ? ________ : -________;
   <span class="tok-6a9955">// Still an OPEN loop - still needs TRIM (Lesson 3).</span>
-  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
+  motors.setSpeeds(drive + (drive > 0 ? TRIM : -TRIM), drive);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10);
   }
   motors.setSpeeds(0, 0);
 }</pre>
 
-<p><strong>Step 4:</strong> Test all three speeds in <code>main.cpp</code>!</p>
+<p><strong>Step 4:</strong> Now the two wrappers. Each is a single line — no algorithm, no encoders, no TRIM. They only choose a speed and hand the job over:</p>
+
+<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
+  driveDistanceAtSpeed(distanceCm, ____________);
+}
+
+<span class="tok-569cd6">void</span> driveDistanceFast(<span class="tok-569cd6">float</span> distanceCm) {
+  driveDistanceAtSpeed(distanceCm, ____________);
+}</pre>
+
+<p><strong>Step 5:</strong> Test all three speeds from <code>main.cpp</code>. Then count: how many places would you have to edit to change how <em>every</em> measured drive handles TRIM?</p>
 
 </div>
 
@@ -3057,22 +3103,32 @@ Same as driveDistance but use FAST_SPEED</pre>
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> MEDIUM_SPEED = <span class="tok-b5cea8">150</span>;
 <span class="tok-569cd6">const</span> <span class="tok-569cd6">int</span> FAST_SPEED = <span class="tok-b5cea8">250</span>;</pre>
 
-<p><strong>RobotMotion.cpp (driveDistanceSlow):</strong></p>
+<p><strong>RobotMotion.cpp (the worker, written once):</strong></p>
 
-<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
+<pre><span class="tok-569cd6">void</span> driveDistanceAtSpeed(<span class="tok-569cd6">float</span> distanceCm, <span class="tok-569cd6">int</span> speed) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
-  <span class="tok-569cd6">int</span> speed = (distanceCm &gt; 0) ? SLOW_SPEED : -SLOW_SPEED;
+  <span class="tok-569cd6">int</span> drive = (distanceCm &gt; 0) ? speed : -speed;
   <span class="tok-6a9955">// Still an OPEN loop - still needs TRIM (Lesson 3).</span>
-  motors.setSpeeds(speed + (speed > 0 ? TRIM : -TRIM), speed);
+  motors.setSpeeds(drive + (drive > 0 ? TRIM : -TRIM), drive);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     delay(10);
   }
   motors.setSpeeds(0, 0);
 }</pre>
 
-<p><strong>Key concept:</strong> Centralizing constants in RobotConfig.h means you only edit one file to change all speeds across your entire project!</p>
+<p><strong>RobotMotion.cpp (the two wrappers):</strong></p>
+
+<pre><span class="tok-569cd6">void</span> driveDistanceSlow(<span class="tok-569cd6">float</span> distanceCm) {
+  driveDistanceAtSpeed(distanceCm, SLOW_SPEED);
+}
+
+<span class="tok-569cd6">void</span> driveDistanceFast(<span class="tok-569cd6">float</span> distanceCm) {
+  driveDistanceAtSpeed(distanceCm, FAST_SPEED);
+}</pre>
+
+<p><strong>Key concept:</strong> two ideas, and they are different. Centralising the <em>constants</em> in RobotConfig.h means one edit changes a number everywhere. Centralising the <em>algorithm</em> in one parameterised function means one edit changes a <em>behaviour</em> everywhere — fix TRIM here and slow, medium and fast are all fixed at once. Copy-paste would have given you three places to forget.</p>
 
 </details>
 </div>
@@ -3286,13 +3342,13 @@ Show <span class="tok-ce9178">"Complete!"</span> message</pre>
 </div>
 </div>
 
-<!-- Challenge 7: Trapezoidal Motion Profile (moved from Lesson 6, S67) -->
+<!-- Challenge 7: Three-Stage Motion Profile (moved from Lesson 6, S67; renamed S190, L07-09) -->
 
 <div id="challenge-7" class="div-7d5283" data-challenge="7.7" data-kind="challenge" data-difficulty="advanced" data-grasp="deep">
 
 <div class="div-bg-7a5905">
 
-<strong>Challenge 7: Trapezoidal Motion Profile</strong> <span class="span-ai-stretch"><span class="span-bg-6b2545">Advanced</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span>
+<strong>Challenge 7: Three-Stage Motion Profile</strong> <span class="span-ai-stretch"><span class="span-bg-6b2545">Advanced</span><span class="span-bg-ffffff"></span><span class="span-bg-0c3f6c">Deep</span></span>
 
 </div>
 <div class="div-bg-fffbe6">
@@ -3306,7 +3362,7 @@ Show <span class="tok-ce9178">"Complete!"</span> message</pre>
 
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
 
-<p>Combine smooth acceleration AND smooth deceleration into one professional-grade motion function. Start slow, ramp to full speed, then slow down before stopping. This is called a <strong>trapezoidal motion profile</strong> because the speed graph looks like a trapezoid!</p>
+<p>Combine smooth acceleration AND smooth deceleration into one motion function. Start slow, step up to full speed for the middle, step back down before stopping — <strong>three stages</strong>, and the robot picks which one it is in from how far it has travelled.</p>
 <p class="p-mb-0">In Lesson 6 this would have been one more helper function in one big file. Here it is a three-file decision: the <strong>declaration</strong> goes in <code>RobotMotion.h</code> (the promise), the <strong>implementation</strong> goes in <code>RobotMotion.cpp</code> (the kitchen), and <code>main.cpp</code> only ever sees the menu.</p>
 
 </div>
@@ -3331,7 +3387,7 @@ Stop motors</pre>
 
 <img src="../images/L06_GRAPHIC_6-11_trapezoid_motion_profile.svg" alt="A trapezoidal motion profile: speed ramps up, holds at cruise, then ramps down to zero, so the distance traveled is the area under the trapezoid." class="img-d-block">
 
-<p><strong>Real-world use:</strong> Industrial robots, CNC machines, and RoboCup champions all use trapezoidal (or S-curve) motion profiles!</p>
+<p><strong>What you are building, and what you are not.</strong> Industrial robots and CNC machines use a <strong>trapezoidal</strong> profile: speed <em>ramps</em> smoothly up, holds, then ramps smoothly down, and the speed graph really is a trapezoid — that is the figure above. Yours does something simpler: three flat speeds with two sudden jumps between them. A staircase, not a ramp. It gets most of the benefit for a fraction of the code, and it is honest to call it what it is. The real ramp needs the speed to be a continuous function of progress; you will have the tools for that after Lesson 15.</p>
 
 </div>
 
@@ -3341,27 +3397,27 @@ Stop motors</pre>
 
 <p><strong>Step 1:</strong> Declare the new function in <code>RobotMotion.h</code>, next to <code>driveDistance()</code> — the header is the promise:</p>
 <pre><span class="tok-6a9955">/*
-driveDistanceTrapezoidal()
+driveDistanceThreeStage()
 --------------------------
 Slow start -&gt; fast cruise -&gt; slow finish.
 Same distance contract as driveDistance().
 */</span>
-<span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm);</pre>
+<span class="tok-569cd6">void</span> driveDistanceThreeStage(<span class="tok-569cd6">float</span> distanceCm);</pre>
 <p><strong>Step 2:</strong> Implement it in <code>RobotMotion.cpp</code>, AFTER <code>driveDistance()</code>. It may call <code>averageCounts()</code> freely — that function is <code>static</code> to this very file, so you are on the right side of its door:</p>
 
 <pre><span class="tok-6a9955">/*</span>
-<span class="tok-6a9955">driveDistanceTrapezoidal(distanceCm)</span>
+<span class="tok-6a9955">driveDistanceThreeStage(distanceCm)</span>
 <span class="tok-6a9955">------------------------------------</span>
 <span class="tok-6a9955">Slow start -&gt; fast cruise -&gt; slow finish.</span>
 <span class="tok-6a9955">*/</span>
-<span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm) {
+<span class="tok-569cd6">void</span> driveDistanceThreeStage(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
   <span class="tok-569cd6">int</span> halfSpeed = DRIVE_SPEED / 2;
   <span class="tok-569cd6">int</span> fullSpeed = DRIVE_SPEED;
-  motors.setSpeeds(halfSpeed * direction + TRIM, halfSpeed * direction);
+  motors.setSpeeds(halfSpeed * direction + (direction &gt; 0 ? TRIM : -TRIM), halfSpeed * direction);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     <span class="tok-569cd6">long</span> currentCounts = averageCounts();
     <span class="tok-569cd6">float</span> progress = (<span class="tok-569cd6">float</span>)currentCounts / targetCounts;
@@ -3373,7 +3429,7 @@ Same distance contract as driveDistance().
     } <span class="tok-569cd6">else</span> {
       speed = _________; <span class="tok-6a9955">// Decelerating</span>
     }
-    motors.setSpeeds(speed * direction + TRIM, speed * direction);
+    motors.setSpeeds(speed * direction + (direction &gt; 0 ? TRIM : -TRIM), speed * direction);
     delay(10);
   }
   motors.setSpeeds(0, 0);
@@ -3383,8 +3439,8 @@ Same distance contract as driveDistance().
 
 <pre><span class="tok-569cd6">void</span> loop() {
   display.clear();
-  display.print(F(<span class="tok-ce9178">"Trapezoid 60cm"</span>));
-  driveDistanceTrapezoidal(<span class="tok-b5cea8">60</span>); <span class="tok-7cbf6e">// Use your pro-level version!</span>
+  display.print(F(<span class="tok-ce9178">"3-Stage 60cm"</span>));
+  driveDistanceThreeStage(<span class="tok-b5cea8">60</span>); <span class="tok-7cbf6e">// Use your pro-level version!</span>
   display.clear();
   display.print(F(<span class="tok-ce9178">"Done!"</span>));
   <span class="tok-569cd6">while</span>(<span class="tok-569cd6">true</span>) { }
@@ -3405,7 +3461,7 @@ Same distance contract as driveDistance().
 
 <li><strong>Wrong comparison order:</strong> Check for &lt;0.25 FIRST, then &lt;0.75. If you check 0.75 first, the 0.25 condition will never trigger!</li>
 
-<li><strong>Implemented it but never declared it:</strong> if <code>main.cpp</code> says <code>'driveDistanceTrapezoidal' was not declared</code>, the .cpp has the kitchen but the header never printed the menu. Step 1 first.</li>
+<li><strong>Implemented it but never declared it:</strong> if <code>main.cpp</code> says <code>'driveDistanceThreeStage' was not declared</code>, the .cpp has the kitchen but the header never printed the menu. Step 1 first.</li>
 
 <li><strong>Forgot to multiply by direction:</strong> Without <code>* direction</code>, negative distances won't work.</li>
 
@@ -3418,22 +3474,22 @@ Same distance contract as driveDistance().
 <summary>🔓 Click to reveal solution</summary>
 
 <p><strong>RobotMotion.h</strong> gets the declaration:</p>
-<pre><span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm);</pre>
+<pre><span class="tok-569cd6">void</span> driveDistanceThreeStage(<span class="tok-569cd6">float</span> distanceCm);</pre>
 <p><strong>RobotMotion.cpp</strong> gets the implementation, after <code>driveDistance()</code>:</p>
 
 <pre><span class="tok-6a9955">/*</span>
-<span class="tok-6a9955">driveDistanceTrapezoidal(distanceCm)</span>
+<span class="tok-6a9955">driveDistanceThreeStage(distanceCm)</span>
 <span class="tok-6a9955">------------------------------------</span>
 <span class="tok-6a9955">Slow start -&gt; fast cruise -&gt; slow finish.</span>
 <span class="tok-6a9955">*/</span>
-<span class="tok-569cd6">void</span> driveDistanceTrapezoidal(<span class="tok-569cd6">float</span> distanceCm) {
+<span class="tok-569cd6">void</span> driveDistanceThreeStage(<span class="tok-569cd6">float</span> distanceCm) {
   encoders.getCountsAndResetLeft();
   encoders.getCountsAndResetRight();
   <span class="tok-569cd6">int</span> targetCounts = abs(distanceCm) * COUNTS_PER_CM;
   <span class="tok-569cd6">int</span> direction = (distanceCm &gt; 0) ? 1 : -1;
   <span class="tok-569cd6">int</span> halfSpeed = DRIVE_SPEED / 2;
   <span class="tok-569cd6">int</span> fullSpeed = DRIVE_SPEED;
-  motors.setSpeeds(halfSpeed * direction + TRIM, halfSpeed * direction);
+  motors.setSpeeds(halfSpeed * direction + (direction &gt; 0 ? TRIM : -TRIM), halfSpeed * direction);
   <span class="tok-569cd6">while</span> (averageCounts() &lt; targetCounts) {
     <span class="tok-569cd6">long</span> currentCounts = averageCounts();
     <span class="tok-569cd6">float</span> progress = (<span class="tok-569cd6">float</span>)currentCounts / targetCounts;
@@ -3445,13 +3501,13 @@ Same distance contract as driveDistance().
     } <span class="tok-569cd6">else</span> {
       speed = halfSpeed;      <span class="tok-6a9955">// Decelerating phase</span>
     }
-    motors.setSpeeds(speed * direction + TRIM, speed * direction);
+    motors.setSpeeds(speed * direction + (direction &gt; 0 ? TRIM : -TRIM), speed * direction);
     delay(10);
   }
   motors.setSpeeds(0, 0);
 }</pre>
 
-<p><strong>Key concept:</strong> The trapezoidal profile balances speed with precision:</p>
+<p><strong>Key concept:</strong> The three-stage profile balances speed with precision:</p>
 
 <ul>
 
@@ -3465,7 +3521,7 @@ Same distance contract as driveDistance().
 
 <p><strong>Competition tip:</strong> Adjust the percentages based on your surface. Slippery floors might need 0-35% acceleration and 65-100% deceleration!</p>
 
-<p><strong>Notice what just happened:</strong> nothing in <code>main.cpp</code> knows there is a motion profile. It ordered off the menu, and the kitchen handled the phases. That separation — not the trapezoid — is what this lesson taught you.</p>
+<p><strong>Notice what just happened:</strong> nothing in <code>main.cpp</code> knows there is a motion profile. It ordered off the menu, and the kitchen handled the phases. That separation — not the profile — is what this lesson taught you. Swap the three stages for a true ramp later and <code>main.cpp</code> does not change by one character.</p>
 
 </details>
 
@@ -3726,9 +3782,9 @@ Source files (.cpp) → <code>src/</code> folder</p>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="7.96"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-implementation-file-cpp-gloss">Implementation File (.cpp)</strong></div>A file that contains the actual code for functions declared in a header.</div>
 
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="7.97"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-include-guard-gloss">Include Guard</strong></div>An older technique (#ifndef/#define/#endif) that prevents a header from being included twice. Modern code uses <code>#pragma once</code> instead.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="7.97"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-include-guard-gloss">Include Guard</strong></div>The standard three-line technique (#ifndef/#define/#endif) that prevents a header from being included twice. Portable to every compiler because it uses only plain preprocessor directives. Most modern code prefers <code>#pragma once</code> for brevity.</div>
 
-<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="7.98"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-pragma-once-gloss">#pragma once</strong></div>A compiler directive placed at the top of every header file that prevents it from being included twice. The modern standard, supported by all major compilers.</div>
+<div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="7.98"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-pragma-once-gloss">#pragma once</strong></div>A compiler directive placed at the top of every header file that prevents it from being included twice. Not part of the C++ standard — it is an extension — but supported by every major compiler, and one line instead of three.</div>
 
 <div class="callout-9b59b6-bg-e7d4ff" data-family="KEY TERM" data-callout="7.99"><div class="div-fs-105em"><img src="../images/marks/key.svg" alt="" data-mark="key"><strong id="term-include-directive-gloss">#include Directive</strong></div>A command that copies the contents of another file into your code at that location.</div>
 
@@ -3892,7 +3948,7 @@ Source files (.cpp) → <code>src/</code> folder</p>
 <tr><td class="td-ddd-2"><strong>[GRAPHIC 7.14]</strong></td><td class="td-ddd-2">The build process: compile each .cpp, then link them into one program</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 7.15]</strong></td><td class="td-ddd-2">The PlatformIO project tree — what belongs in include/ and what belongs in src/</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 <tr><td class="td-ddd-2"><strong>[GRAPHIC 7.16]</strong></td><td class="td-ddd-2">The eight-file architecture, and which file includes which</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
-<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 6.11]</strong></td><td class="td-ddd-2">The trapezoidal motion profile: slow start, fast cruise, slow finish (travels with Challenge 7, moved here from Lesson 6)</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
+<tr class="tr-bg-f8f9fa"><td class="td-ddd-2"><strong>[GRAPHIC 6.11]</strong></td><td class="td-ddd-2">A true trapezoidal motion profile — ramp up, cruise, ramp down. Shown in Challenge 7 as the continuous version the three-stage build approximates (moved here from Lesson 6)</td><td class="td-ddd-2">Diagram (SVG)</td><td class="td-ddd-2">✅ in the lesson</td></tr>
 </tbody>
 </table>
 

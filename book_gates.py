@@ -2,7 +2,30 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.74.2'
+VERSION = 'v1.74.6'
+# v1.74.6 (S190): §27.11 digest moved for the L08 row block. COUNT AND RANK, measured
+#   ORDERED: 574/2,033 hold, name set identical (0 added, 0 dropped), `.div-dee2e6` rose
+#   again on the new §8 diagnosis and Spiral Check blocks and climbed 213 -> 185, shifting
+#   28 neighbours by one. Third digest move this session, same measurement each time.
+# v1.74.5 (S190): §27.11 digest re-moved after the Parameter glossary insertion. COUNT AND
+#   RANK again, and measured the same way that caught the mislabel earlier this session:
+#   574/2,033 hold, name SET identical (zero added, zero dropped), `.div-dee2e6` rose again
+#   and climbed rank 213 -> 199, displacing 14 neighbours by one. ORDERED list diff, not a
+#   set comparison - the set says nothing moved and it is wrong.
+# v1.74.4 (S190): THREE COUNT BASELINES MOVE FOR ONE INSERTION, and they are one event.
+#   L06 gained KEY TERM 6.69 'Parameter' (DJ ruling - §8A is named for the term and the book
+#   defined it NOWHERE; measured, `term-parameter` was at zero book-wide). Callout census
+#   1133 -> 1134 (gate 47 + gate 59, ONE definition read twice), glossary KEY TERM scope
+#   151 -> 152, image references 1,209 -> 1,210 (every KEY TERM carries one key.svg mark).
+#   ALL THREE ARE THE SAME +1. A baseline moved without naming the single event that moved
+#   it is how three counts drift apart (§24.24).
+# v1.74.3 (S190): §27.11 digest moved for the L06-08 / L07-01..10 edit pass. COUNT **AND
+#   RANK** - and the distinction is the point, because I first reported this to DJ as
+#   COUNT-ONLY and that was wrong. Rule-name SET is identical (zero added, zero dropped)
+#   and 574/2,033 hold at both ends, but `.div-dee2e6` rose 12 -> 14 uses and therefore
+#   MOVED in the frequency-ordered generated block. A set comparison alone would have
+#   called that count-only; only an ORDERED comparison of the two name lists showed the
+#   move. PROVED BEFORE THE BASELINE WAS TOUCHED, ordered list diffed against HEAD.
 # v1.72.19 (S182): callout baseline 1132 -> 1133 for L02's new LEARN 2.123; §27.11 digest
 #                  re-moved for the nine-section SVG and the §5 walkthrough entries.
 # v1.72.18 (S182): §27.11 digest re-moved after the nine-section SVG landed in L02 3.1 and
@@ -2125,7 +2148,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1209:   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
+if _seen != 1210:   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
                                       # lands one bullseye mark.
                                       # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
@@ -2161,7 +2184,7 @@ if _seen != 1209:   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a s
                                       # L10. stars.svg in INSIGHT 10.113 (the StopReason
                                       # teaching block) plus exclamation-triangle, sticky
                                       # and check-circle in Step 6b's three new callouts.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,209 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,210 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2572,7 +2595,7 @@ import hashlib as _hl
 #       byte-identical. Only usage-count comments and rule ORDER moved, because L05 lost 2 h4s
 #       (.h4-c-6f7582-2 34->31, after the orphaned 'For Loop Anatomy' heading went too) and 1 img
 #       (.img-d-block-4 3->2) under L05-01.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'a348244847c1a816'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '1b99df8b712b63dc'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
@@ -3561,8 +3584,8 @@ try:
     # callout-2196f3-bg-e3f2fd-2 are both already in canon, so gate 5.1 stays silent, and
     # build_family_map assigns it (1133/1133, UNASSIGNED 0). The id was DERIVED as max+1
     # rather than typed - my first attempt used 2.60, which callout_id caught as a COLLISION.
-    elif _n != 1133:
-        bad.append('gate 59 saw %d callouts, expected the 1133 gate 47 holds' % _n)
+    elif _n != 1134:
+        bad.append('gate 59 saw %d callouts, expected the 1134 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -4179,8 +4202,8 @@ try:
     if _bodyseen != 87:
         bad.append('scanned %d body KEY TERM blocks, expected 87 - the scope is broken'
                    % _bodyseen)
-    if _glosseen != 151:
-        bad.append('scanned %d glossary KEY TERM entries, expected 151 - the scope is broken'
+    if _glosseen != 152:
+        bad.append('scanned %d glossary KEY TERM entries, expected 152 - the scope is broken'
                    % _glosseen)
     # HOLD ARM, AND IT IS HERE BECAUSE THE FIRST DRAFT OF THIS GATE FAILED ITS OWN CONTROL.
     # Adding a fifth id to HELD excepted a real, conformant block and every arm above stayed

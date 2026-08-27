@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 08
 # Line Following · Proportional Control, and Why Bang-Bang Fails
 #
-# Bank version: v1.0.12
+# Bank version: v1.0.13
 # Verified against: S179 - the project-path propagation. DJ ruled
 #   Documents/PlatformIO/Projects/<FolderName> the correct default location (Bible 16.49); ten lesson
 #   prose sites, the Maker hint, two Bible 11 lines and one SVG label moved with it. PIN ONLY, no
@@ -78,9 +78,10 @@
 #     never been measured on a real robot — it is an open bench item. Every gap question
 #     here asks about the LOGIC (the stamp, the reset, the timeout) and never about a
 #     distance in centimetres.
-#   - THE EXACT LOOP RATE. "fifty times a second" appears in L06, L08, L10 and L11 and
-#     the book agrees with itself, but no timing run backs it. B39 asks WHY followLine()
-#     is a closed loop, not how fast it runs.
+#   - THE EXACT LOOP RATE. "fifty times a second" USED TO appear in L08, L10 and L11 and
+#     the book agreed with itself, but no timing run ever backed it. S190 REMOVED THE FIGURE
+#     book-wide (L08-10) rather than keep routing around it - this note is why the questions
+#     were safe in the meantime. B39 asks WHY followLine() is a closed loop, not how fast.
 #   - WHETHER MAX_GAP_TIME = 500 IS THE RIGHT NUMBER. Challenge 3's whole task is to
 #     change it, so keying the default as "correct" would mark a student wrong for doing
 #     the challenge.
@@ -90,10 +91,10 @@
 
 lesson: "L08"
 title: "Line Following — Proportional Control, and Why Bang-Bang Fails"
-bank_version: "1.0.12"
+bank_version: "1.0.13"
 source:
-  lesson_08: "v04.33.0"
-  lesson_07: "v04.32.0"
+  lesson_08: "v04.34.0"
+  lesson_07: "v04.33.0"
   lesson_05: "v04.30.0"
 
 sets:
@@ -387,7 +388,7 @@ sets:
             correct: false
           - text: "Encoders are less accurate than line sensors, so driveDistance() needs a correction and followLine() does not"
             correct: false
-          - text: "followLine() runs fifty times a second and driveDistance() runs once, so there is no time for TRIM to act"
+          - text: "followLine() runs continuously and driveDistance() runs once, so there is no time for TRIM to act"
             correct: false
 
       - id: L08_B22
@@ -463,7 +464,7 @@ sets:
           - left: "lineSensors.readCalibrated(vals)"
             right: "Rescales each sensor to 0-1000: 0 is your white, 1000 is your black"
           - left: "lineSensors.readLine(vals)"
-            right: "Calibrated read plus a weighted average — the position, 0-4000, in one call"
+            right: "Calibrated read plus a weighted average — the position, 0-4000, in one call; with no line it returns 0 or 4000, not an average"
         extra_answers:
           - "Sets up the five-sensor array for the first time"
           - "Spins the robot while sampling the surface" 
@@ -1102,7 +1103,7 @@ sets:
             right: "currentKp is initialized to 0.0"
           - left: "Screen says Calibrating but the robot never spins"
             right: "The calibrateLineSensors() call was deleted from setup()"
-          - left: "Coasts through a gap and never stops"
+          - left: "Drives straight through a gap and never stops"
             right: "MAX_GAP_TIME is 500000 instead of 500"
         extra_answers:
           - "LINE_LOST_THRESHOLD is above the highest possible sum"

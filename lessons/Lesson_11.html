@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.31.1 -->
+<!-- Lesson version: v02.31.3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -955,7 +955,7 @@ undo the sweep on failure - otherwise the next run starts crooked</pre>
 <div class="div-bg-fffbe6">
 <p class="pre-m-0">📁 <strong>Work in:</strong> your <strong>LastName_L11</strong> build — slow down as the gap budget burns.</p>
 </div>
-<div class="callout-2e86ab-bg-e7f0fa" data-family="BUILDS ON" data-callout="11.24"><div class="div-fs-105em"><img src="../images/marks/arrow-repeat.svg" alt="" data-mark="arrow-repeat">Builds on:</div> the deceleration leg of Lesson 7’s trapezoidal profile <img src="../images/spiral_star_07.svg" alt="Spiral review from Lesson 07" class="img-h-11em"> — speed as a function of progress, applied to a budget instead of a distance.</div>
+<div class="callout-2e86ab-bg-e7f0fa" data-family="BUILDS ON" data-callout="11.24"><div class="div-fs-105em"><img src="../images/marks/arrow-repeat.svg" alt="" data-mark="arrow-repeat">Builds on:</div> the slow-down stage of Lesson 7’s three-stage profile <img src="../images/spiral_star_07.svg" alt="Spiral review from Lesson 07" class="img-h-11em"> — speed as a function of progress, applied to a budget instead of a distance.</div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-mt-0">🎯 THE GOAL</h4>
 <p class="pre-m-0">The robot charges across a gap at full <code>BASE_SPEED</code> and then stops dead when the budget runs out — a lurch. Make it slow down as the budget burns: full speed at 0% spent, half speed at 100%. The give-up should be a glide, not a slam.</p>
@@ -1005,7 +1005,7 @@ Run 3:  const int TRIM = ___;   // DOUBLE your number</pre>
 <details data-reveal="solution">
 <summary>🔓 Click to reveal solution</summary>
 <p><strong>The pattern you should see.</strong> Run 1 tracks straight, within a centimeter or two. Run 2 drifts toward your robot's <em>natural</em> curve — the direction from your Lesson 3 notebook — because with the correction gone, the motor imbalance is back in charge. Run 3 drifts the <em>opposite</em> way by roughly the same amount: doubling the correction overshoots by about the margin that zero undershoots.</p>
-<p><strong>Why the gap is where this shows.</strong> Open loop. There is no line, so there is no feedback, so the error compounds with every blind centimeter — drift grows with gap width. On the line, P-control corrects the same imbalance fifty times a second and you never see it.</p>
+<p><strong>Why the gap is where this shows.</strong> Open loop. There is no line, so there is no feedback, so the error compounds with every blind centimeter — drift grows with gap width. On the line, P-control corrects the same imbalance every pass of the loop and you never see it.</p>
 <p class="p-mb-0"><strong>The diagnostic.</strong> If Run 3 drifts the <em>same</em> direction as Run 2, your TRIM sign is wrong — you have been boosting the wrong wheel, and closed-loop control has been quietly covering for it everywhere except in gaps.</p>
 </details>
 </div>
@@ -1142,7 +1142,7 @@ same track, it quits halfway. <strong>Name the instrument that caused this, and 
 <details data-reveal="quiz"><summary><code>followLine()</code> does <em>not</em> use TRIM. <code>handleGap()</code> <em>does</em>.
 Both drive the robot forward. <strong>Why the difference?</strong> (§8A.1)</summary>
 
-<div class="div-mt-12px"><p>An open <strong>heading</strong> loop needs TRIM; a closed one does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors — the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code>followLine()</code> is a P&#8209;controller reading line position fifty times a second and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every straight line in this book whose heading nothing watches carries TRIM — <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive — and the one loop that watches where it is going deliberately does not.</p></div>
+<div class="div-mt-12px"><p>An open <strong>heading</strong> loop needs TRIM; a closed one does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors — the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code>followLine()</code> is a P&#8209;controller reading line position on every pass of the loop and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every straight line in this book whose heading nothing watches carries TRIM — <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive — and the one loop that watches where it is going deliberately does not.</p></div>
 
 </details>
 

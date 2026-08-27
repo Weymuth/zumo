@@ -2,7 +2,18 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.6.6.3'
+VERSION = 'v1.6.6.5'
+# v1.6.6.5 (S190): DENOMINATOR 1133 -> 1134. One new KEY TERM glossary callout, L06 6.69
+#   'Parameter' - the term §8A is NAMED FOR and which the book defined nowhere. Named by the
+#   §24.14b structure tier (glossary region => KEY TERM), no content rule added. The id is
+#   next-free-in-lesson per callout_id's authored-identity rule, so NOTHING below it renumbered
+#   - which is the thing I wrongly told DJ this insertion would cost.
+# v1.6.6.4 (S190): the L06 8A NOTE tier pinned the title 'Recipe:' - and L06-08 deleted the
+#   sandwich analogy that title named, because 'Result: a sandwich!' taught a return value
+#   for a void function. Repointed to the replacement title. THE OLD CLAUSE WAS MEASURED
+#   DEAD FIRST: zero remaining callout titles begin 'Recipe:' book-wide. Same shape as
+#   v1.6.3 and v1.6.2 - a literal content tier owing an edit because the SPELLING it
+#   pinned was the thing being corrected. No tier logic changed.
 # v1.6.3 (S144): the L11 8A.4 INSIGHT tier pinned 'This is what arithmetic is FOR' - and
 #   S144 REPLACED that arithmetic, because §3.5's cliff premise was wrong. Repointed to the
 #   new headline. No tier logic changed. Second time this session that a literal content
@@ -171,7 +182,7 @@ RULE=[
  (lambda l,g,s: 'THE BUTTERFLY ERROR' in l.upper(),                     'COMMON PITFALLS'),
  (lambda l,g,s: re.match(r'THE ONE IDEA|THE TRADE YOU JUST MADE|THE KEY INSIGHT',l.upper()) or l.startswith('The rule, for the rest'),'INSIGHT'),
  (lambda l,g,s: 'NEW IN THIS LESSON' in l.upper(),                      'HOW THIS SECTION WORKS'),
- (lambda l,g,s: 'YOU ALREADY OWN THIS TOOL' in l.upper() or l.startswith('The desk and the bookshelf') or l.startswith('Reminder -') or l.startswith('INFO:') or l.startswith('The recipe, written out') or l.startswith('Recipe:'),'NOTE'),
+ (lambda l,g,s: 'YOU ALREADY OWN THIS TOOL' in l.upper() or l.startswith('The desk and the bookshelf') or l.startswith('Reminder -') or l.startswith('INFO:') or l.startswith('The recipe, written out') or l.startswith('The version without parameters'),'NOTE'),
  (lambda l,g,s: l.startswith('The rule that saves you') or l.startswith('The rule of thumb') or l.startswith('Clamp the memory'),'TIP'),
  # S133: was startswith('OBJECTIVES'), which the S133 rename to 'Learning Objectives'
  # walked straight past. A list of objectives is an OBJECTIVES block whatever adjective
@@ -356,7 +367,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1133   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1134   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))

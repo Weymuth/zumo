@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.33.0 -->
+<!-- Lesson version: v04.34.0 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -86,26 +86,20 @@
 <h1 class="h1">Line Following</h1>
 <div class="div-fs-11em">Proportional Control, and Why Bang-Bang Fails</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 04.33 — August 2026</div>
+<div class="div-fs-09em-2">Version 04.34 — August 2026</div>
 </div>
 
 <!-- New Teaching Approach Notice -->
 
 <div class="callout-17a2b8-bg-d1ecf1" data-family="HOW THIS SECTION WORKS" data-callout="8.1">
 
-<div class="div-fs-105em"><img src="../images/marks/pin-angle.svg" alt="" data-mark="pin-angle">NEW IN THIS LESSON: Hybrid Approach</div>
+<div class="div-fs-105em"><img src="../images/marks/pin-angle.svg" alt="" data-mark="pin-angle">NEW IN THIS LESSON: The Theory Is Given, The Code Is Yours</div>
 
-<p>Starting with Lesson 8, you'll write more code yourself! Instead of typing complete code from the book, you'll:</p>
+<p>Lesson 7 was the graduation point: you plan the file, then you build it, and the reveal is something to compare against afterwards rather than copy from. <strong>That does not change here</strong> — §6 works exactly the way it did last lesson.</p>
 
-<ol>
+<p>What is new is <em>where the difficulty sits</em>. Until now the hard part was the architecture: which file, which promise, which include. Today the architecture is settled and the hard part is an <strong>idea</strong> — proportional control. So §3 and §5 spend longer on the theory than any lesson so far, and give you the formula in full. What they do not give you is the function; <code>followLine()</code> is eight lines and you write all eight.</p>
 
-<li><strong>Read the pseudocode</strong> — Plain English logic for the algorithm</li>
-
-<li><strong>Fill in the skeleton</strong> — Code template with blanks to complete</li>
-
-<li><strong>Compare to solution</strong> — Check your work against the provided answer</li>
-
-</ol>
+<p><strong>Read §3 and §5 properly before §6.</strong> The plan you write in Step 7 is only as good as your grasp of what the error signal <em>is</em>.</p>
 
 <p>This is how professional programmers work: understand the logic first, then translate it to code!</p>
 
@@ -164,6 +158,8 @@ If the line is centered, go straight.</pre>
 
 <p>Bang-bang control isn't always bad! It works great for <strong>binary actuators</strong> like relays, solenoids, or on/off switches where you only have two states. But for <strong>continuous actuators</strong> like motors that can run at any speed, proportional control gives much smoother results.</p>
 
+<p><strong>Think about your own house.</strong> The furnace is either running or it is not — there is no “30% heat.” So the thermostat bangs: on below the setpoint, off above it, with a deliberate dead band so it does not chatter. That is bang-bang, chosen on purpose by engineers who could have used anything. Why is it the right answer there and the wrong answer for your motors?</p>
+
 </div>
 
 <p>Now watch a competition robot. It glides along the line like it's on rails—smooth, fast, confident. The difference? <strong>Proportional control</strong>.</p>
@@ -178,9 +174,9 @@ If the line is centered, go straight.</pre>
 
 <li><strong>Cruise control</strong> — Adjusts throttle based on how far from target speed</li>
 
-<li><strong>Thermostats</strong> — Heat more when temperature is way below target</li>
-
 <li><strong>Drone altitude</strong> — Thrust harder when drifting further from target height</li>
+
+<li><strong>Camera autofocus</strong> — Drive the lens faster the blurrier the image is</li>
 
 </ul>
 
@@ -601,7 +597,7 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
     </tr>
     <tr>
         <td class="td-bb-1pxsolid"><code>isLineVisible()</code></td>
-        <td class="td-bb-1pxsolid">Check if any sensor sees the line</td>
+        <td class="td-bb-1pxsolid">Check whether the five sensors TOGETHER see enough black to count as a line</td>
         <td class="td-bb-1pxsolid">bool true/false</td>
     </tr>
     <tr>
@@ -614,7 +610,7 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <td class="td-bb-1pxsolid"><code>handleGap()</code></td>
 
-<td class="td-bb-1pxsolid">Coast straight briefly when the line vanishes; stop after MAX_GAP_TIME</td>
+<td class="td-bb-1pxsolid">Keep driving straight under power when the line vanishes; stop after MAX_GAP_TIME</td>
 
 <td class="td-bb-1pxsolid">—</td>
 
@@ -734,7 +730,7 @@ motors.setSpeeds(<span class="tok-b5cea8">300</span>, <span class="tok-b5cea8">1
 
 <div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL" data-callout="8.22">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
-    <p class="p-mb-0">Add a <strong>LINE FOLLOWING CONSTANTS</strong> block to the end of <code>RobotConfig.h</code> covering: the setpoint (where "centered" is on the 0–4000 position scale), a cruise speed, the proportional gain, a speed ceiling, a lost-line threshold, and how long the robot may coast across a gap. Everything already in the file stays.</p>
+    <p class="p-mb-0">Add a <strong>LINE FOLLOWING CONSTANTS</strong> block to the end of <code>RobotConfig.h</code> covering: the setpoint (where "centered" is on the 0–4000 position scale), a cruise speed, the proportional gain, a speed ceiling, a lost-line threshold, and how long the robot may keep driving blind across a gap. Everything already in the file stays.</p>
 </div>
 
 <div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN" data-callout="8.23">
@@ -881,6 +877,18 @@ extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Les
     <p class="p-mb-0">Build (✓). Green — declarations are promises, and nothing has tried to collect on them yet. If your <code>extern</code> is wrong, this build <em>still passes</em>. The next one won't.</p>
 </div>
 
+<h3 class="h3-c-433014">Spiral Check — Before You Write initLineSensors()</h3>
+
+<div class="div-dee2e6">
+<p><code>initFiveSensors()</code> is about to ask for <strong>five</strong> line sensors. Your robot does not have five unless you put them there. Lesson 4 told you which two jumpers do it and what they cost you — <strong>do not look it up yet.</strong> Answer these first:</p>
+<ol>
+<li>Which two pins have to be bridged, and to what?</li>
+<li>What does the robot <em>lose</em> the moment you bridge them, and which lesson needed that thing?</li>
+<li>Your code compiles, uploads and runs, and every reading is nonsense. Is that a software bug?</li>
+</ol>
+<p>Now check the robot in your hands against your answers, then <a href="Lesson_04.html" class="link-c-2e86ab">Lesson 4</a> against both. <strong>Software cannot detect this.</strong> <code>initFiveSensors()</code> does not go looking for sensors and report back — it configures the pins it was told about and returns. A perfect program on a three-sensor robot builds green, runs, and steers on numbers that mean nothing.</p>
+</div>
+
 <h3 class="h3-c-433014">Step 4 — RobotSensors.cpp: Creating the Hardware — and Facing the Red Build Solo</h3>
 
 <p>The header promised; this file delivers. The real <code>lineSensors</code> object gets created here, two <code>static</code> module-private variables move in, and the first two functions — init and the calibration spin — get bodies.</p>
@@ -980,6 +988,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN" data-callout="8.34">
     <div class="div-fs-105em"><img src="../images/marks/pencil-square.svg" alt="" data-mark="pencil-square">MY PLAN — yours, before any code</div>
     <p class="p-mb-0">Plan <code>isLineVisible()</code> as pseudo-code, then answer in your plan: on a pure-white gap, roughly what will the calibrated sum be — and what would the <em>raw</em> sum be? Why does only one of those make the 200 threshold meaningful?</p>
+    <p class="p-mb-0"><strong>Then one more, because the name is a trap.</strong> <em>Visible</em> sounds like <em>any sensor sees it</em>. Your version sums all five and compares the total. Those are not the same test: five sensors reading 45 each sum to 225 and pass, while no single one of them is anywhere near 200. Is that a bug or a feature? Decide, and write down which — a faint wide smudge and a crisp thin line are different things, and you are choosing which one counts.</p>
 </div>
 
 <p class="p-m-10px0">🧭 <strong>Hints, not answers:</strong> all three read calls, with what they return: <a href="#qr-sensors" class="link-c-2e86ab">⚡ Quick Reference → Line Sensor Functions</a>.</p>
@@ -1314,7 +1323,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <div class="callout-17a2b8-bg-d1ecf1" data-family="NOTE" data-callout="8.46">
     <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">Why TRIM here — and NOT in followLine()</div>
     <p class="p-mb-0">In a gap the robot is <strong>blind</strong>. No line, nothing to read, nothing correcting it — it is driving on faith — blinder even than <code>driveDistance()</code> in Lesson 6, which at least counts its own wheels. Nothing here is watching the <strong>heading</strong>, and a straight line nobody is watching needs <code>TRIM</code> or it curves.<br><br>
-    <code>followLine()</code> is the opposite. It reads the line <strong>fifty times a second</strong> and steers on what it sees. It is a <strong>CLOSED loop</strong>, and correcting motor bias is <em>already its job</em>. Add TRIM there and the robot fights its own controller — the P-term would spend its day undoing a constant you put in deliberately. And it IS deliberate: we leave TRIM out of <code>followLine()</code> so that while you tune Kp the line error is the only thing steering.<br><br>
+    <code>followLine()</code> is the opposite. It reads the line <strong>every time <code>loop()</code> comes round</strong> — fast, and you have not measured how fast — and steers on what it sees. It is a <strong>CLOSED loop</strong>, and correcting motor bias is <em>already its job</em>. Add TRIM there and the robot fights its own controller — the P-term would spend its day undoing a constant you put in deliberately. And it IS deliberate: we leave TRIM out of <code>followLine()</code> so that while you tune Kp the line error is the only thing steering.<br><br>
     <strong>Is anything watching the heading? If not, it needs TRIM.</strong></p>
 </div>
 <pre><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
@@ -1378,7 +1387,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="callout-28a745-bg-d4edda" data-family="CHECKPOINT" data-callout="8.48">
     <div class="div-fs-105em"><img src="../images/marks/check-circle.svg" alt="" data-mark="check-circle">CHECKPOINT</div>
-    <p class="p-mb-0">Build green, upload. Cover part of the line with paper wider than ~8 cm: the robot coasts straight, then stops with LINE LOST — <strong>on purpose</strong>. Press A and C while stopped and watch Kp step by 0.02 on the status screen. Your whole tuning workflow is now three buttons, zero re-flashes.</p>
+    <p class="p-mb-0">Build green, upload. Cover part of the line with paper wider than ~8 cm: the robot drives straight on, then stops with LINE LOST — <strong>on purpose</strong>. Press A and C while stopped and watch Kp step by 0.02 on the status screen. Your whole tuning workflow is now three buttons, zero re-flashes.</p>
 </div>
 
 <h3 class="h3-c-433014">Step 9 — Drive Day: Upload, Calibrate, Tune</h3>
@@ -1895,13 +1904,21 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h3 class="h3-c-00474b">8A.2 Return Values: Getting Data Back</h3>
 
-<p><code>readLinePosition()</code> always returns a number between 0 and 4000 — even when there is no line under the robot. A weighted average of five sensors that all read zero still produces an answer; it just does not mean anything. Your build handles that by asking a <strong>second</strong> question, <code>isLineVisible()</code>, before it trusts the first one. There is another way: fold both answers into one return value.</p>
+<p><code>readLinePosition()</code> always returns a number between 0 and 4000 — even when there is no line under the robot. <strong>It is worth knowing exactly what you get in that case, because it is not what most people guess.</strong></p>
+
+<p>Open the library and read it. <code>readLine()</code> checks whether <em>any</em> sensor is above 200 on the calibrated scale. If one is, you get the weighted average. If none is, it does not average anything — it returns the extreme of whichever side it last saw the line on: <strong>0 or 4000</strong>, nothing in between. So a lost line does not give you a vague middling number. It gives you a hard "far left" or "far right" that looks exactly like a real, urgent reading, and your P-controller will act on it at full strength.</p>
+
+<p>That is worse than a meaningless number, and it is why your build asks a <strong>second</strong> question — <code>isLineVisible()</code> — before it trusts the first one. There is another way: fold both answers into one return value.</p>
+
+<p><strong>The habit this is really teaching:</strong> a function’s name tells you what it is <em>for</em>, never what it does at the edges. <code>readLine()</code> sounds like it reads the line. What it promises when there is no line is written down in exactly one place — its source — and you can read that any time you want.</p>
 
 <div class="div-bg-f5f5f5">
     <pre><span class="tok-569cd6">int</span> readLinePosition() {
-    <span class="tok-7cbf6e">// One reading, two questions. readCalibrated() - NOT read() -</span>
-    <span class="tok-7cbf6e">// because the 0-1000 scale is what makes the threshold mean something.</span>
-    lineSensors.readCalibrated(sensorValues);
+    <span class="tok-7cbf6e">// ONE reading, two questions. readLine() fills sensorValues for us</span>
+    <span class="tok-7cbf6e">// AND returns the position - so we read the floor exactly once.</span>
+    <span class="tok-7cbf6e">// It uses the calibrated 0-1000 scale, which is what makes</span>
+    <span class="tok-7cbf6e">// LINE_LOST_THRESHOLD mean the same thing in any room.</span>
+    <span class="tok-569cd6">int</span> position = lineSensors.readLine(sensorValues);
     <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sum = <span class="tok-b5cea8">0</span>;
     <span class="tok-569cd6">for</span> (<span class="tok-569cd6">int</span> i = <span class="tok-b5cea8">0</span>; i &lt; <span class="tok-b5cea8">5</span>; i++) {
         sum += sensorValues[i];
@@ -1910,7 +1927,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
     <span class="tok-569cd6">if</span> (sum &lt; LINE_LOST_THRESHOLD) {
         <span class="tok-569cd6">return</span> -<span class="tok-b5cea8">1</span>;
     }
-    <span class="tok-569cd6">return</span> lineSensors.readLine(sensorValues);
+    <span class="tok-569cd6">return</span> position;
 }</pre>
 </div>
 
@@ -2129,10 +2146,15 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre>1. Calculate: time = distance / speed
-2. At BASE_SPEED=150, robot travels ~15cm/sec
-3. For 20cm gap: need at least 20/15 = 1.33 seconds
-4. Set MAX_GAP_TIME accordingly (with safety margin)</pre>
+<pre>1. MEASURE first. Mark a 50 cm run on the floor.
+   Drive it at BASE_SPEED and time it with a stopwatch. Three runs.
+2. speed = 50 cm / your average time  -&gt; YOUR robot's cm per second
+3. PREDICT: for a 20 cm gap, time = 20 / speed
+4. TEST the prediction, then set MAX_GAP_TIME with a safety margin</pre>
+
+<p><strong>Why you have to measure it rather than look it up.</strong> <code>BASE_SPEED = 150</code> is not a speed. It is a number handed to the motor driver that sets how hard the motors are pushed — and how far that gets you depends on your battery charge, your floor, and your own robot’s gearing. Two Zumos running the same 150 do not travel the same distance in one second. There is no cm/s figure the book can give you that would be true of your robot.</p>
+
+<p><strong>And keep the number you measure</strong>, because Lesson 11 is going to come back and knock it down. A stopwatch prediction works beautifully on a fresh battery and drifts as the pack tires. That is not a flaw in your measurement; it is the reason Lesson 11 is called <em>Time Lies, Distance Doesn’t</em>.</p>
 
 </div>
 
@@ -2167,10 +2189,12 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <h4 class="h4-c-7a5905">🧠 THE LOGIC (Pseudocode)</h4>
 
-<pre>FUNCTION drawPositionBar:
+<pre>FUNCTION drawPositionBar(position):        &lt;- takes the position, does not fetch it
 MAP position (0-4000) to a screen column (0-20)
 DRAW a marker at that column
 CALL it right after followLine() while running</pre>
+
+<p><strong>Read that first line again.</strong> The obvious version of this function calls <code>readLinePosition()</code> itself — and then the robot has read the floor twice in one pass: once for the steering decision, once for the marker. Those are two different observations a few milliseconds apart, so <strong>the bar can show you a line the robot did not steer on.</strong> A display whose job is to explain the robot must show the robot’s own numbers. Take the position as a parameter (Lesson 6) and pass in the one <code>followLine()</code> already used.</p>
 
 </div>
 
@@ -2180,10 +2204,9 @@ CALL it right after followLine() while running</pre>
 
 <h4 class="h4-c-7a5905">🧩 THE TEMPLATE</h4>
 
-<p>Map the line position onto the 20-column display, then draw the bar at that column. Fill the range and the column.</p>
+<p><code>setLayout21x8()</code> gives you <strong>21 columns, numbered 0 to 20</strong>. Map the line position onto those columns, then draw the bar at that column. Fill the range and the column.</p>
 
-<pre><span class="tok-569cd6">void</span> drawPositionBar() {
-  <span class="tok-569cd6">int</span> pos = readLinePosition();
+<pre><span class="tok-569cd6">void</span> drawPositionBar(<span class="tok-569cd6">int</span> pos) {   <span class="tok-7cbf6e">// handed in, not fetched</span>
   <span class="tok-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, ____, <span class="tok-b5cea8">0</span>, ____);
   display.clear();
   display.gotoXY(____, <span class="tok-b5cea8">0</span>);
@@ -2196,13 +2219,19 @@ CALL it right after followLine() while running</pre>
 
 <summary>🔓 Check your work — open after you’ve tried</summary>
 
-<pre><span class="tok-569cd6">void</span> drawPositionBar() {
-  <span class="tok-569cd6">int</span> pos = readLinePosition();
+<pre><span class="tok-569cd6">void</span> drawPositionBar(<span class="tok-569cd6">int</span> pos) {
   <span class="tok-569cd6">int</span> col = map(pos, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">4000</span>, <span class="tok-b5cea8">0</span>, <span class="tok-b5cea8">20</span>);
   display.clear();
   display.gotoXY(col, <span class="tok-b5cea8">0</span>);
   display.print(F(<span class="tok-ce9178">"|"</span>));
-}</pre>
+}
+
+<span class="tok-7cbf6e">// In loop(), read once and hand it to the bar:</span>
+<span class="tok-569cd6">int</span> pos = readLinePosition();
+drawPositionBar(pos);
+followLine();</pre>
+
+<p><strong>One duplicate is left, and it is worth seeing.</strong> <code>followLine()</code> still fetches its own position, so the floor is read twice per pass even now — the bar just no longer adds a <em>third</em>. Closing it properly means letting <code>followLine()</code> accept the position as a parameter too, exactly as you did for <code>driveDistanceAtSpeed()</code> in Lesson 7. That is a change to the architecture rather than to this challenge, so it is left for you to argue for. <em>Whose measurement is this?</em> is a question you will keep asking for the rest of the book.</p>
 
 <p>Call it from the visible branch, right after <code>followLine();</code> — and expect slightly lazier steering with the bar on: every OLED redraw costs the loop a few milliseconds. That trade-off is real engineering, not a bug.</p>
 
@@ -2466,7 +2495,7 @@ ELSE: USE high Kp (aggressive)</pre>
 <p>The <code>calibrateLineSensors();</code> <em>call</em> was deleted from setup — the choreography around it survived, so the screen narrates a calibration that never happens. The library's own source says what happens next: <em>"if not calibrated, do nothing"</em> — <code>readCalibrated()</code> refuses to write, <code>sensorValues</code> stays all zeros, the sum never beats the threshold, and the robot is blind by protocol. Put the call back — and remember Step 5: calibration isn't ceremony, it's what makes the 0–1000 scale exist.</p>
 </details>
 <h4 class="h4-c-6f7582" id="mystery-4" data-challenge="8.m4" data-kind="bonus-sabotage">Mystery 4: The Eternal Gap</h4>
-<p><a href="../newproject.html?lesson=8&amp;kind=eternal_gap" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — <strong>floor only, spotter ready</strong> — this one does not stop on its own. It follows fine, but at the first gap it coasts straight… and keeps coasting. Forever. What gave up: the gap logic, or the number it was given?</p>
+<p><a href="../newproject.html?lesson=8&amp;kind=eternal_gap" target="_blank" class="link-c-2e86ab">→ load the sabotaged build</a> — <strong>floor only, spotter ready</strong> — this one does not stop on its own. It follows fine, but at the first gap it drives straight on under power… and keeps going. Forever. What gave up: the gap logic, or the number it was given?</p>
 <details data-reveal="solution">
     <summary>💡 Answer</summary>
 <p>The logic is perfect. The planted constant:</p>
@@ -2569,7 +2598,7 @@ Same root cause, two faces. What decides is what is in your files.</p>
 
 <summary>Show answer</summary>
 
-<p>The clock is stamped only on the first blind frame: <code>if (gapStartTime == 0) gapStartTime = millis();</code>. If the visible branch never clears it, the stamp from the first gap survives, so on the second gap <code>millis() - gapStartTime</code> is already far past <code>MAX_GAP_TIME</code>. The robot declares LINE LOST on the very first blind frame, before it has coasted anywhere — and the gap it could have crossed the first time now stops it.</p>
+<p>The clock is stamped only on the first blind frame: <code>if (gapStartTime == 0) gapStartTime = millis();</code>. If the visible branch never clears it, the stamp from the first gap survives, so on the second gap <code>millis() - gapStartTime</code> is already far past <code>MAX_GAP_TIME</code>. The robot declares LINE LOST on the very first blind frame, before it has driven anywhere — and the gap it could have crossed the first time now stops it.</p>
 
 </details>
 
@@ -2579,7 +2608,7 @@ Same root cause, two faces. What decides is what is in your files.</p>
 
 <summary>Show answer</summary>
 
-<p><em>Is anything watching the heading?</em> If not, it needs TRIM. <code>driveDistance()</code> closes its loop on <strong>distance</strong> and leaves the <strong>heading</strong> open — the encoders count rotation, so nothing can tell it the path curved, and TRIM is what keeps it straight. <code>followLine()</code> is a <strong>closed</strong> loop: it reads the line fifty times a second and correcting bias is already its job, so TRIM there just gives the P-term a constant to spend the day undoing. <code>handleGap()</code> gets TRIM because a blind robot is open loop again.</p>
+<p><em>Is anything watching the heading?</em> If not, it needs TRIM. <code>driveDistance()</code> closes its loop on <strong>distance</strong> and leaves the <strong>heading</strong> open — the encoders count rotation, so nothing can tell it the path curved, and TRIM is what keeps it straight. <code>followLine()</code> is a <strong>closed</strong> loop: it reads the line on every pass of the loop and correcting bias is already its job, so TRIM there just gives the P-term a constant to spend the day undoing. <code>handleGap()</code> gets TRIM because a blind robot is open loop again.</p>
 
 </details>
 

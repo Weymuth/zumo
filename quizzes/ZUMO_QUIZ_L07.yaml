@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 07
 # Code Organization · The Eight-File Architecture
 #
-# Bank version: v1.0.9
+# Bank version: v1.0.10
 # Verified against: S179 - the project-path propagation. DJ ruled
 #   Documents/PlatformIO/Projects/<FolderName> the correct default location (Bible 16.49); ten lesson
 #   prose sites, the Maker hint, two Bible 11 lines and one SVG label moved with it. PIN ONLY, no
@@ -99,10 +99,10 @@
 
 lesson: "L07"
 title: "Code Organization — The Eight-File Architecture"
-bank_version: "1.0.9"
+bank_version: "1.0.10"
 source:
-  lesson_07: "v04.32.0"
-  lesson_06: "v04.36.0"
+  lesson_07: "v04.33.0"
+  lesson_06: "v04.37.1"
 
 sets:
 
@@ -323,9 +323,11 @@ sets:
         points: 1
         stem: "What is an include guard, and how does it relate to #pragma once?"
         options:
-          - text: "It is the older #ifndef/#define/#endif technique for the same job — #pragma once is the modern replacement"
+          - text: "It is the three-line #ifndef/#define/#endif technique for the same job — and the one that is actually part of standard C++"
             correct: true
           - text: "It is a newer technique that replaces #pragma once"
+            correct: false
+            why: "Backwards — guards are the older form. They are also the standard one; #pragma once is the compiler extension."
             correct: false
           - text: "It guards against a header being edited by two people at once"
             correct: false
@@ -336,11 +338,13 @@ sets:
         type: multiple_choice
         cite: "§3.5"
         points: 1
-        stem: "You leave #pragma once out of a header that two different .cpp files include. What happens?"
+        stem: "You leave #pragma once out of a header that DEFINES A STRUCT, and one .cpp ends up including it twice. What happens?"
         options:
-          - text: "Any .cpp that pulls it in twice gets two copies of everything in it, and the compiler reports a redefinition"
+          - text: "That .cpp gets two copies of the struct definition, and the compiler reports a redefinition"
             correct: true
-          - text: "Nothing — the compiler skips files it has already read"
+          - text: "Nothing — a header can always be safely included twice"
+            correct: false
+            why: "True for plain declarations, which may repeat word for word. NOT true for a struct, class, enum or variable definition — those may appear only once per file."
             correct: false
           - text: "The linker reports multiple definition"
             correct: false
@@ -727,7 +731,7 @@ sets:
           - left: "Header File (.h)"
             right: "Declares what exists, without the implementation code"
           - left: "Include Guard"
-            right: "The older #ifndef/#define/#endif way of preventing a double include"
+            right: "The three-line #ifndef/#define/#endif way of preventing a double include"
         extra_answers:
           - "A command that copies another file's contents into your code"
           - "The step that checks whether every promise was kept"
