@@ -1,17 +1,31 @@
-# ZUMO — GPT REVIEW WORKLIST (v1.10)
+# ZUMO — GPT REVIEW WORKLIST (v1.12)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **⚠️ COUNTS ARE STALE AS OF S190 AND ARE NOT UPDATED HERE, DELIBERATELY (rule 50).**
-> S190 seated **22 newly closed rows** (L06-08 · L07-01..10 · L08-01/03/04/05/07/09/10/11/12/13/14).
-> A derivation over Part 0's own ✅ rows returns **87 closed / 2 parked / 156 open of 245** — but that
-> disagrees with the standing table on L02 (14 vs 17 closed), L04 (3 vs 5) and L13 (14 vs 0), so the
-> predicate is reaching rows in a shape the old count did not, or vice versa. **§24.24 says a count has
-> three homes; it does not say to fill them with a figure that has not been reconciled.** The next
-> session reconciles the two predicates and files ONE derived answer in all three homes.
-
-> **STATUS: 72 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+> **COUNTS ARE DERIVED AND CURRENT AS OF S191 — 95 CLOSED · 2 PARKED · 148 OPEN, of 245.**
+> Derived by enumerating Part 2's ID rows (245, agreeing with all sixteen section headings, no
+> duplicates) and Part 0's two tables, then asserting `closed + parked + open == 245`. Every Part 0 ID
+> exists in Part 2; `closed ∩ parked` is empty. **This is the one derived answer §24.24 asks for; the
+> other two homes are LIVE.md and the session handoff.**
 >
-> **L01, L02, L03 AND L04 ARE DONE.** 171 rows remain OPEN.
+> **S190's figures were wrong in two independent ways. Both are corrected here, and neither predicate
+> is discarded.**
+> 1. **A ✅-only predicate cannot count this section.** Six rows in Part 0 carry ❌ — `L02-12` and
+>    `L02-19` (STRUCK), `L02-07`, `L04-01`, `L04-03`, `L13-17` (REFUTED). A refuted row is resolved and
+>    is not open work, so it is CLOSED. Dropping those six is the entire L02 17-vs-14, L04 5-vs-3 and
+>    L13 15-vs-14 gap. (S190 recorded L13 as "14 vs 0"; the standing figure was 15, not 0.)
+> 2. **`L08-13` was seated twice** — MEASURED at S154 and SHIPPED at S190. Part 5b confirms both name
+>    the same finding. One finding, two rows: a live exactly-once violation, merged at S191.
+>    **S190 therefore closed 21 rows, not 22** — and the arithmetic says so: 72 + 21 = 93.
+>
+> **The split is kept visible so neither predicate can go missing again: of the 95 closed, 89 are
+> fixed / verified / ruled and 6 are refuted or struck.** A headline that shows only one of those two
+> numbers is how this discrepancy survived nine sessions.
+
+> **STATUS: 95 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+>
+> **L01 THROUGH L07 ARE DONE. L08 HAS TWO OPEN ROWS.** `L08-02` and `L08-06` shipped at S191.
+> **`L08-08` and `L08-15` remain open** — neither was ever named in a closed or parked table, or in any
+> other file in the repo; S190's "done except two" had missed them. **148 rows remain OPEN.**
 > **Read PART 0 FIRST.** Rows below are kept verbatim as GPT wrote them even after they are fixed,
 > so a row's presence here means nothing on its own — Part 0 is what says whether it is still live.
 > These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
@@ -114,7 +128,6 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 | `L03-10` | ✅ SHIPPED | S185 | **The row named four L03 sites; the claim class is NINE across four artefacts** — L03 ×4, **L01 ×2**, **Maker ×2** (c11's boxed header), and **`QUIZ_L03` B18 where it was the KEYED CORRECT ANSWER**. Verified false before editing: 4,200 ÷ 4 = 1.05 V/cell against a ~1.0 V/cell cutoff, and the real mechanism is **cell reversal in a series pack**. Retired claim reused as B18's distractor. **L01 C11's 4,500 split untouched** — see `ZUMO_FIX_TRACKER.md` §5/§6. |
 | `L03-08` | ✅ SHIPPED | S179 | The unsourced 30-second cooldown rule replaced by the current-under-load mechanism. |
 | `L03-09` | ✅ SHIPPED | S179 | The unsourced ±10% battery figure removed. **`L03_B35` was falsified by this correct edit and was rekeyed.** |
-| `L08-13` | ✅ MEASURED | S154 | Confirmed in Part 5b. |
 | `L13-03` | ✅ RULED + SHIPPED | S167/S168 | DJ ruled candidate **D** — *watch the sidestep*, `driveDistance(ROW_STEP_CM)` → `driveUntil(ROW_STEP_CM)`, with `SWEEP_DONE` as a NEW state rather than reusing `STOPPED`. Four candidates COMPILED before the ruling. **Bible §16.34. Backfilled here S181 — it was recorded only in the Bible.** |
 | `L13-01` | ✅ SHIPPED | S167/S168 | Folded into `L13-03`'s card: D as sketched branched on `STOP_PROX` alone and killed the kill switch during the sidestep, so one contract fixed both. **Bible §16.34. Backfilled S181.** |
 | `L13-05` | ✅ PARTLY REFUTED | S167 | The lesson already names both failure modes; what was owed was the **assumption** rather than the risk. **Bible §16.34. Backfilled S181.** |
@@ -166,7 +179,9 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 | `L08-10` | ✅ SHIPPED | S190 | The unmeasured loop rate removed **book-wide, 12 sites** (L08, L10 ×3, L11 ×2, four bank `why` fields, two options). **`ZUMO_QUIZ_L08`'s own header already recorded that no timing run backs it** and routed questions around it rather than filing the defect. |
 | `L08-11` | ✅ SHIPPED | S190 | The thermostat moved out of the proportional-control list — it is the textbook bang-bang example — and became a retrieval question seated in the *When Bang-Bang Works* NOTE where it belongs. |
 | `L08-12` | ✅ SHIPPED | S190 | The invented `~15cm/sec` replaced with measure → predict → test, plus why a motor command is not a velocity and a forward pointer to L11 overturning the stopwatch. **Also recorded in the bank header as never measured.** |
-| `L08-13` | ✅ SHIPPED | S190 | `setLayout21x8()` gives 21 columns, 0–20. Named in the template. |
+| `L08-06` | ✅ SHIPPED | S191 | `lastPosition` was assigned and returned and nothing read it; the library keeps its own `_lastValue`. Deleted from 145 Maker `RobotSensors.cpp` payloads, 7 lesson sites (L08 ×6, L10 ×1) and the two bank questions that used it as half of their file-scope-`static` example. **THE VARIABLE WAS NOT THE WHOLE EDIT:** `LINE_CENTER` had no other code use in that file, so the `#include "RobotConfig.h"` comment naming it (145 Maker + 2 lesson sites) and the §8 troubleshooting entry keyed on `'LINE_CENTER' was not declared` were both left pointing at a constant the file no longer reads — §16.30's shape, and the troubleshooting site was found by reading, not by any sweep. **Measured: zero flash movement across all 221 payloads** (before/after compile, blinding-controlled with a planted byte) — the compiler was already eliding it, which is the cleanest evidence it was dead. |
+| `L08-02` | ✅ RULED + SHIPPED | S191 | **GPT's fix was REFUTED BY MEASUREMENT; the contradiction it found was real and is fixed in prose.** Every symbol `followLine()` touches is `main.cpp`-private or a `RobotConfig.h` constant — no module reads any of it — and two are deliberately shared inside `main.cpp`: `lastError` feeds `runSample()` and `dtSec` feeds `updateSpeedLoop()` ("One clock, two loops"), while `currentKp`/`currentKd`/`currentBase` are the live knobs the OLED menu drives. Moving the function either `extern`s six mutable globals — three sections after L08 Step 4 teaches that module state is `static` and private, which `B24`/`A07` quiz — or puts the tuning UI behind accessors and grows the L15 signature to five parameters. **The defect is one sentence in L07's vocabulary NOTE**, which used `followLine()` as its example of a behavior filed into `RobotMotion`. L07 now draws the real line (self-contained behavior → module; behavior owning live settings → beside those settings) and L08 Step 7 states why. 0 payloads, 0 bytes, against 135 payloads and 8 lessons for a move that would make the book worse. **`L08-14` does NOT depend on this** — it is a `main.cpp`-local question about sharing one observation, either way. |
+| `L08-13` | ✅ MEASURED + SHIPPED | S154 / S190 | Measured in Part 5b at S154, fixed at S190: `setLayout21x8()` gives 21 columns, 0–20. Named in the template. **S154 and S190 each seated this row separately — one finding, two rows. Merged at S191; that duplicate is why S190's closure count read 22 instead of 21.** |
 | `L08-14` | ✅ SHIPPED | S190 | `drawPositionBar(pos)` now takes the position instead of re-reading the floor, so the marker shows the observation the robot steered on. **The clean fix depends on `L08-02`, which is unruled — the lesson says so rather than pretending a refactor that was not done.** |
 | `L03-B1` (untagged) | ✅ HALF-CLOSED | S179 | Part 2 asked for the robot tethered AND 6+ feet of floor at once; now L01's floor test, in order. The *6+ feet* figure itself is still a bench item. |
 
@@ -181,31 +196,36 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 
 # PART 0b — OPEN (everything not named above)
 
-**171 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
+**148 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
 the CLOSED and PARKED tables above ARE the list, by subtraction. What this section does is make
 the arithmetic checkable, so a reader can tell at a glance whether a lesson has been worked.
 
-| Lesson | findings | closed | parked | **OPEN** |
-|---|---|---|---|---|
-| L01 | 15 | 15 | 0 | **0** |
-| L02 | 19 | 17 | 2 | **0** |
-| L03 | 10 | 10 | 0 | **0** |
-| L04 | 5 | 5 | 0 | **0** |
-| L05 | 2 | 2 | 0 | **0** |
-| L06 | 8 | 7 | 0 | **1** |
-| L07 | 10 | 0 | 0 | **10** |
-| L08 | 15 | 1 | 0 | **14** |
-| L09 | 13 | 0 | 0 | **13** |
-| L10 | 16 | 0 | 0 | **16** |
-| L11 | 15 | 0 | 0 | **15** |
-| L12 | 18 | 0 | 0 | **18** |
-| L13 | 21 | 15 | 0 | **6** |
-| L14 | 20 | 0 | 0 | **20** |
-| L15 | 28 | 0 | 0 | **28** |
-| L16 | 30 | 0 | 0 | **30** |
-| **TOTAL** | **245** | **72** | **2** | **171** |
+**Derived at S191, not carried forward.** Every figure below comes from enumerating Part 2's ID rows
+and Part 0's tables and asserting the row sums; `closed` counts a REFUTED or STRUCK row, because such a
+row is resolved and is not open work. The `fixed` column splits that out, so the ✅-only reading of this
+section — the one that disagreed with the old table for nine sessions — is visible instead of implied.
 
-**L01, L02, L03 AND L04 ARE DONE.**
+| Lesson | findings | closed | *of which fixed* | parked | **OPEN** |
+|---|---|---|---|---|---|
+| L01 | 15 | 15 | 15 | 0 | **0** |
+| L02 | 19 | 17 | 14 | 2 | **0** |
+| L03 | 10 | 10 | 10 | 0 | **0** |
+| L04 | 5 | 5 | 3 | 0 | **0** |
+| L05 | 2 | 2 | 2 | 0 | **0** |
+| L06 | 8 | 8 | 8 | 0 | **0** |
+| L07 | 10 | 10 | 10 | 0 | **0** |
+| L08 | 15 | 13 | 13 | 0 | **2** |
+| L09 | 13 | 0 | 0 | 0 | **13** |
+| L10 | 16 | 0 | 0 | 0 | **16** |
+| L11 | 15 | 0 | 0 | 0 | **15** |
+| L12 | 18 | 0 | 0 | 0 | **18** |
+| L13 | 21 | 15 | 14 | 0 | **6** |
+| L14 | 20 | 0 | 0 | 0 | **20** |
+| L15 | 28 | 0 | 0 | 0 | **28** |
+| L16 | 30 | 0 | 0 | 0 | **30** |
+| **TOTAL** | **245** | **95** | **89** | **2** | **148** |
+
+**L01 THROUGH L07 ARE DONE.** L08's two open rows are `L08-08` and `L08-15`.
 
 > **A ROW IS FILED AGAINST ONE LESSON; THE CLAIM CAN LIVE IN FOUR FILES (S185, §16.51).** This table
 > counts ROWS, not claim sites. `L03-10` was filed under L03 and had two live sites in **L01**, two in
@@ -935,4 +955,4 @@ and they are the ones that settle a physical claim.
 - READ → FIX → QUIZ, and the read does not transfer between sessions (rule 37).
 
 ---
-*Worklist v1.2 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 0 fixed · L01-02's scope re-measured after the S154 figures proved to be line counts*
+*Worklist v1.2 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 95 closed as of S191 · L01-02's scope re-measured after the S154 figures proved to be line counts*

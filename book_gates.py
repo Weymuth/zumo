@@ -2,7 +2,9 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.74.6'
+VERSION = 'v1.74.7'
+# v1.74.7 (S191): §27.11 digest moved for L08-06's dead-state deletion. 582 selectors both
+#   ends, SET and ORDER both identical, zero rank movement - proved ordered, not as a set.
 # v1.74.6 (S190): §27.11 digest moved for the L08 row block. COUNT AND RANK, measured
 #   ORDERED: 574/2,033 hold, name set identical (0 added, 0 dropped), `.div-dee2e6` rose
 #   again on the new §8 diagnosis and Spiral Check blocks and climbed 213 -> 185, shifting
@@ -2595,7 +2597,13 @@ import hashlib as _hl
 #       byte-identical. Only usage-count comments and rule ORDER moved, because L05 lost 2 h4s
 #       (.h4-c-6f7582-2 34->31, after the orphaned 'For Loop Anatomy' heading went too) and 1 img
 #       (.img-d-block-4 3->2) under L05-01.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '1b99df8b712b63dc'
+# S191: baseline moved 1b99df8b -> 645f0007. PROVED count-and-RANK before touching it, not
+#       count alone -- S190's finding was that a SET comparison reports count-only and is wrong.
+#       582 selectors both ends, SET identical AND ORDERED identical, zero rank movement. The
+#       whole diff is the header coverage count 22,985 -> 22,976 and two usage-count comments:
+#       .tok-569cd6 x2765 -> x2759 and .tok-7cbf6e x1522 -> x1520, from the nine lastPosition
+#       spans deleted across L08 and L10 under L08-06.
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '645f0007c777c365'
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,

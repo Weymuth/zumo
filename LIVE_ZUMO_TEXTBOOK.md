@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 26, 2026 (Session 190 — **A CLAIM CLOSED WHERE IT WAS QUOTED IS NOT CLOSED WHERE IT WAS REPEATED**)
-**Status:** ✅ **S190 CLOSED — 22 GPT ROWS SHIPPED (L06 ×1 · L07 ×10 · L08 ×11) PLUS AN EIGHT-SITE REVERSE-TRIM DEFECT NOBODY FILED, AND `census.py` v1.0.1 — THE FOURTEENTH GREP RECURRENCE FINALLY GOT AN INSTRUMENT. `L08-02` AND `L08-06` PRICED AND LEFT FOR A RULING. 80/80 GATES.**
+**Date:** August 27, 2026 (Session 191 — **THE INSTRUMENT BUILT TO STOP A CONFIDENT WRONG NUMBER PRODUCED ONE**)
+**Status:** ✅ **S191 CLOSED — `L08-02` AND `L08-06` RULED AND SHIPPED, THE WORKLIST COUNT RECONCILED TO 95 CLOSED / 89 FIXED / 2 PARKED / 148 OPEN OF 245, AND `census.py` v1.1.0 AFTER IT RETURNED A CONFIDENT `0 MATCHES` ON A GLOB IT COULD NOT READ. L01–L07 DONE; L08 HAS TWO ROWS LEFT, NOT ZERO. 80/80 GATES.**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.1 · L07 v04.33.0 · L08 v04.34.0 · L09 v05.27.6 · L10 v02.30.5 · L11 v02.31.3 · L12 v01.35.3 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,801** · Bible **v8.186** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.69 · **book_gates v1.74.6** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.4 · build_family_map v1.6.6.5 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.2 · census v1.0.1 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `b3f0169`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.1 · L07 v04.33.1 · L08 v04.34.2 · L09 v05.27.6 · L10 v02.30.6 · L11 v02.31.3 · L12 v01.35.3 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,801** · Bible **v8.187** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.74.7** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.5 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.2 · census v1.1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `c8a7c42`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -80,6 +80,70 @@ A derivation over Part 0's own ✅ rows returns **87 closed / 2 parked / 156 ope
 disagrees with the standing table on L02, L04 and L13. **§24.24 says a count has three homes; it does not
 say to fill them with a figure that has not been reconciled (rule 50).** The rows are seated, the
 discrepancy is recorded in the file, and the next session files ONE derived answer in all three homes.
+
+---
+## WHAT SHIPPED IN S191
+
+### `census.py` v1.0.1 → v1.1.0 — THE INSTRUMENT BUILT TO STOP A CONFIDENT WRONG NUMBER PRODUCED ONE
+`census.occurrences('lastPosition', 'lessons/Lesson_*.html')` returned **`0 MATCHES`** and printed its
+population like an honest answer. **A string is iterable**, so `sorted(paths)` walked **24 single
+characters**, every `open()` raised, and `except: continue` swallowed all 24. The true figure is
+**6 lines in L08 and 1 in L10** — and the row being priced on that zero was `L08-06`. **This is worse
+than `grep -c`: grep would have said *No such file*, while census attached provenance to a zero.**
+Caught by rules 83/84 and by accident: grep and census disagreed on an UNRELATED pattern.
+A string argument is now a GLOB and an unreadable path RAISES — silence about a source you could not
+read is the whole failure class. **Blinding control: grafted onto the unfixed v1.0.1 body, K1/K2/K3
+all FAIL, K1 returning exactly the `0` that fooled me.** 14 controls, was 11.
+
+### `L08-06` SHIPPED, AND THE VARIABLE WAS NOT THE WHOLE EDIT
+145 Maker `RobotSensors.cpp` payloads, 7 lesson sites, 2 bank questions. **Zero flash movement,
+measured rather than reasoned:** the pre-edit Maker was restored and recompiled for a true baseline,
+then 221 payloads diffed — **0 flash changes, 0 status changes** — blinding-controlled with a planted
+byte, after the comparison's first form was silently reading a key that did not exist and reporting
+`None == None` as agreement. The compiler was already eliding the variable, which is the cleanest
+evidence it was dead. Stated scope limit (rule 78): the table is FLASH only, so the two bytes of SRAM
+are unmeasured. **Three consequences nobody priced, all §16.30's shape:** the `#include` comment
+naming `LINE_CENTER` (147 sites); **`L08_B25`'s CORRECT ANSWER**, found only because rule 37 forced a
+read of all ten questions touching `readLinePosition`/`LINE_CENTER` before eight pins could move; and
+§8's troubleshooting entry keyed on `'LINE_CENTER' was not declared`, **found by opening the file for
+an unrelated reason, because I swept for the IDENTIFIER and not the arithmetic the fix PRODUCES —
+§24.6c, in the session that quotes it.**
+
+### `L08-02` RULED — GPT'S FIX REFUTED BY MEASUREMENT, THE CONTRADICTION FIXED IN PROSE
+Every symbol `followLine()` touches is `main.cpp`-private or a `RobotConfig.h` constant, and two are
+deliberately shared inside `main.cpp`: `lastError` feeds `runSample()` and `dtSec` feeds
+`updateSpeedLoop()` (*One clock, two loops*), while `currentKp`/`currentKd`/`currentBase` are the live
+knobs the OLED tuning menu drives. **Moving the function either `extern`s six mutable globals — three
+sections after L08 Step 4 teaches that module state is `static` and private, which `B24`/`A07` exist
+to quiz — or puts the tuning UI behind accessors and grows the L15 signature to five parameters.**
+The defect is **one sentence in L07's vocabulary NOTE**. L07 now draws the real line (self-contained
+behavior → module; behavior owning live settings → beside those settings) and L08 Step 7 states why.
+**0 payloads and 0 bytes, against 135 payloads and 8 lessons for a move that would make the book
+worse.** `L08-14` does NOT depend on it.
+
+### THE WORKLIST COUNT IS RECONCILED — 95 CLOSED / 89 FIXED / 2 PARKED / 148 OPEN OF 245
+Both predicates were right about different things. S190's 87 dropped **six rows carrying ❌**
+(`L02-12`, `L02-19` STRUCK; `L02-07`, `L04-01`, `L04-03`, `L13-17` REFUTED) — the whole of the L02,
+L04 and L13 gap — and **`L08-13` was seated TWICE**, MEASURED at S154 and SHIPPED at S190: one
+finding, two rows, a live exactly-once violation, now merged. **S190 closed 21 rows, not 22, and the
+arithmetic says so: 72 + 21 = 93.** The `fixed` column now sits beside `closed` in Part 0b, **because
+a headline showing only one of the two numbers is how this survived nine sessions.** **L08 had FOUR
+open rows, not two:** `L08-08` and `L08-15` are named in no closed or parked table and in no other
+file in the repo.
+
+### THE STANDING CONTROL IS 20,592, NOT 20,516
+`byte_audit.STANDING_CONTROL`, CONTROL A and the live compile of `11/after_step_1` all agree. The
+S191 handoff carried 20,516; it is corrected here and in the S192 handoff.
+
+Applied S191: L07 **v04.33.1** · L08 **v04.34.2** · L10 **v02.30.6** · Maker **v2.70** · Bible
+**v8.187** · `census` **v1.1.0** · `book_gates` **v1.74.7** (§27.11 digest moved, **proved count AND
+RANK** — 582 selectors, SET identical and ORDERED identical, zero rank movement) ·
+`gate_payload_match` **v1.9.5** (`PAYLOAD_CENSUS` regenerated; all 145 rows shrank by exactly 1 or 2
+lines) · `ZUMO_GPT_REVIEW_WORKLIST.md` **v1.12** · thirteen bank bumps, every pin earned by a closed
+diff. 80/80 gates, `gate_payload_match` PASS with the advisory unmoved at 635, 16 banks valid,
+`callout_id` 1134/0, `retired_claims` CLEAN, `prose_canon` 0 new / 7 pinned / 0 orphan,
+`byte_audit --check` PASS, `--selftest` ALL CONTROLS PASS, `--discards` 15 discards over 7 of 110
+payloads, 7 adjudicated, 0 unexplained.
 
 ---
 ## WHAT SHIPPED IN S190

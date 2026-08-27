@@ -1,7 +1,18 @@
 #!/usr/bin/env python3
 # VERSION is the ONE home and sits ABOVE the changelog, so a plain grep of this file
 # returns the version and not a changelog line (S98).
-VERSION = 'v1.0.1'
+VERSION = 'v1.1.0'
+# v1.1.0 (S191): THE INSTRUMENT BUILT TO STOP A CONFIDENT WRONG NUMBER PRODUCED ONE.
+#   `occurrences('lastPosition', 'lessons/Lesson_*.html')` returned `0 MATCHES` and
+#   printed its population like any honest answer. A STRING is iterable, so
+#   `for p in sorted(paths)` walked 24 single CHARACTERS, every open() raised, the
+#   `except: continue` swallowed all 24, and the empty result was reported as a
+#   measurement. The true figure was 6 lines in L08 and 1 in L10, and the row being
+#   priced on that zero was L08-06. This is WORSE than `grep -c`: grep would have
+#   said "No such file". Two changes, and the second is the load-bearing one:
+#   a string argument is now a GLOB, and an UNREADABLE PATH RAISES. Silence about a
+#   source you could not read is the entire failure class this file exists to close.
+#   Caught by rules 83/84 - grep and census disagreed on an unrelated pattern.
 # v1.0.1 (S190): CONTROL C asserted a SIDE EFFECT rather than the property. It did
 #   `['x'][pop]` and caught TypeError; plant a working __index__ and that raises
 #   IndexError instead, which the harness did not catch, so the selftest CRASHED and
@@ -101,15 +112,47 @@ class Population:
 # TEXT: the two things `grep -c` conflates, as SEPARATE calls.
 # You cannot get one while meaning the other, because you have to name which.
 # ---------------------------------------------------------------------------
+def _paths(paths):
+    """Resolve `paths` to a concrete, READABLE file list, or RAISE.
+
+    Two failure modes, both of which returned a silent zero before v1.1.0:
+
+    A STRING IS A GLOB, NOT AN ITERABLE OF CHARACTERS. `sorted('a*.html')` is a
+    list of characters, every one of which fails to open. S191 read that as
+    `0 MATCHES` and nearly priced an edit on it.
+
+    A PATH THAT CANNOT BE READ IS NOT A ZERO. It is an unknown, and an unknown
+    reported as a measurement is the defect this whole file exists to prevent
+    (rule 59: a control that stays quiet for the wrong reason is not a control).
+    """
+    if isinstance(paths, str):
+        hits = sorted(glob.glob(paths))
+        if not hits:
+            raise ValueError(
+                'census: %r matched no files. A pattern with no source is not a '
+                'population of zero.' % paths)
+        return hits
+    hits = sorted(paths)
+    if not hits:
+        raise ValueError('census: empty path list - name the files you mean.')
+    return hits
+
+
+def _read(p):
+    """Read one path. Unreadable RAISES; it is never skipped."""
+    try:
+        return open(p, encoding='utf-8').read()
+    except (OSError, UnicodeDecodeError) as e:
+        raise ValueError('census: cannot read %r (%s). A source you could not '
+                         'read is not zero matches.' % (p, e.__class__.__name__))
+
+
 def lines(pattern, paths, flags=0):
     """Every LINE matching `pattern`. This is what `grep -c` returns."""
     rx = re.compile(pattern, flags)
     out = []
-    for p in sorted(paths):
-        try:
-            txt = open(p, encoding='utf-8').read()
-        except (OSError, UnicodeDecodeError):
-            continue
+    for p in _paths(paths):
+        txt = _read(p)
         for n, ln in enumerate(txt.split('\n'), 1):
             if rx.search(ln):
                 out.append('%s:%d' % (p, n))
@@ -120,11 +163,8 @@ def occurrences(pattern, paths, flags=0):
     """Every MATCH of `pattern`. A line holding three matches contributes three."""
     rx = re.compile(pattern, flags)
     out = []
-    for p in sorted(paths):
-        try:
-            txt = open(p, encoding='utf-8').read()
-        except (OSError, UnicodeDecodeError):
-            continue
+    for p in _paths(paths):
+        txt = _read(p)
         for m in rx.finditer(txt):
             out.append('%s@%d' % (p, txt[:m.start()].count('\n') + 1))
     return Population('MATCHES', out, 'pattern %r' % pattern)
@@ -137,11 +177,8 @@ def rendered(pattern, paths, flags=0):
     import html as _html
     rx = re.compile(pattern, flags)
     out = []
-    for p in sorted(paths):
-        try:
-            raw = open(p, encoding='utf-8').read()
-        except (OSError, UnicodeDecodeError):
-            continue
+    for p in _paths(paths):
+        raw = _read(p)
         txt = _html.unescape(re.sub(r'<[^>]+>', ' ', raw))
         out.extend('%s#%d' % (p, i) for i, _ in enumerate(rx.finditer(txt), 1))
     return Population('MATCHES in rendered text', out, 'pattern %r' % pattern)
@@ -311,6 +348,36 @@ def _selftest():
             len(pe) == 135 and len(raw) == 326, '(%d, %d)' % (len(pe), len(raw)))
     else:
         print('  J  payload check skipped (no newproject.html)')
+
+    # CONTROL K - THE v1.1.0 DEFECT, BOTH DIRECTIONS. A string is a GLOB. Before
+    # v1.1.0 `sorted('lessons/Lesson_*.html')` walked 24 CHARACTERS, every open()
+    # failed, `except: continue` ate all 24, and the call reported `0 MATCHES`.
+    # K1 is the positive direction: the glob must find what the explicit list finds.
+    open(os.path.join(d, 'b.txt'), 'w').write('extern\n')
+    g = occurrences('extern', os.path.join(d, '*.txt'))
+    e = occurrences('extern', [f, os.path.join(d, 'b.txt')])
+    chk('K1 a string path is a GLOB, agreeing with the explicit list',
+        len(g) == len(e) == 5, '(%d, %d)' % (len(g), len(e)))
+
+    # K2 - the NEGATIVE direction, and the load-bearing one. An unreadable path must
+    # RAISE. A source you could not read is an unknown; reporting it as zero is the
+    # whole failure class. This control FAILS against v1.0.1 by construction.
+    try:
+        r = occurrences('extern', [os.path.join(d, 'does_not_exist.txt')])
+        chk('K2 an unreadable path RAISES, it is not a silent zero', False,
+            '(returned %d)' % len(r))
+    except ValueError:
+        chk('K2 an unreadable path RAISES, it is not a silent zero', True)
+    except Exception as _e:
+        chk('K2 an unreadable path RAISES, it is not a silent zero', False,
+            '(raised %s, wanted ValueError)' % type(_e).__name__)
+
+    # K3 - a glob matching nothing is the same unknown wearing a different hat.
+    try:
+        r = lines('extern', os.path.join(d, 'no_such_*.zzz'))
+        chk('K3 a glob matching nothing RAISES', False, '(returned %d)' % len(r))
+    except ValueError:
+        chk('K3 a glob matching nothing RAISES', True)
 
     print()
     print('  %s' % ('ALL CONTROLS PASS' if not fails else 'FAILED: ' + ', '.join(fails)))

@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.34.0 -->
+<!-- Lesson version: v04.34.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -891,11 +891,11 @@ extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Les
 
 <h3 class="h3-c-433014">Step 4 — RobotSensors.cpp: Creating the Hardware — and Facing the Red Build Solo</h3>
 
-<p>The header promised; this file delivers. The real <code>lineSensors</code> object gets created here, two <code>static</code> module-private variables move in, and the first two functions — init and the calibration spin — get bodies.</p>
+<p>The header promised; this file delivers. The real <code>lineSensors</code> object gets created here, a <code>static</code> module-private array moves in, and the first two functions — init and the calibration spin — get bodies.</p>
 
 <div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL" data-callout="8.29">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
-    <p class="p-mb-0">Add <code>#include "RobotConfig.h"</code> near the top (the new code reads <code>LINE_CENTER</code>). Define <code>lineSensors</code> (no extern!), then <code>sensorValues[5]</code> and <code>lastPosition</code> — both <code>static</code>, the file-scope sense Lesson 7 gave <code>averageCounts()</code>: belongs to this file alone, invisible to the other seven. Then write <code>initLineSensors()</code> — one library call, <code>initFiveSensors()</code> — and <code>calibrateLineSensors()</code>: 100 calibration passes while spinning, first half leftward, second half rightward, motors off at the end.</p>
+    <p class="p-mb-0">Add <code>#include "RobotConfig.h"</code> near the top (the new code reads <code>LINE_LOST_THRESHOLD</code>). Define <code>lineSensors</code> (no extern!), then <code>sensorValues[5]</code> — <code>static</code>, the file-scope sense Lesson 7 gave <code>averageCounts()</code>: belongs to this file alone, invisible to the other seven. Then write <code>initLineSensors()</code> — one library call, <code>initFiveSensors()</code> — and <code>calibrateLineSensors()</code>: 100 calibration passes while spinning, first half leftward, second half rightward, motors off at the end.</p>
 </div>
 
 <div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN" data-callout="8.30">
@@ -920,7 +920,7 @@ extern Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NEW for Les
 <span class="tok-7cbf6e">*/</span>
 #include &lt;Zumo32U4.h&gt;
 #include <span class="tok-ce9178">"RobotSensors.h"</span>
-#include <span class="tok-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
+#include <span class="tok-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_LOST_THRESHOLD</span>
 
 <span class="tok-7cbf6e">// ===== HARDWARE OBJECT DEFINITIONS =====</span>
 <span class="tok-7cbf6e">// These are the REAL objects - created exactly ONCE</span>
@@ -935,7 +935,6 @@ Zumo32U4ButtonC buttonC;
 <span class="tok-7cbf6e">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
 Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this file CREATES it</span>
 <span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
-<span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors() {
@@ -982,7 +981,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL" data-callout="8.33">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
-    <p class="p-mb-0">Two functions finish the module. <code>readLinePosition()</code>: call <code>readLine(sensorValues)</code>, remember the result in <code>lastPosition</code>, return it. <code>isLineVisible()</code>: take a <em>calibrated</em> reading, sum all five sensors, and answer — is that sum above <code>LINE_LOST_THRESHOLD</code>?</p>
+    <p class="p-mb-0">Two functions finish the module. <code>readLinePosition()</code>: call <code>readLine(sensorValues)</code> and return what it hands back. <code>isLineVisible()</code>: take a <em>calibrated</em> reading, sum all five sensors, and answer — is that sum above <code>LINE_LOST_THRESHOLD</code>?</p>
 </div>
 
 <div class="callout-9b6a9e-bg-f3e5f5" data-family="MY PLAN" data-callout="8.34">
@@ -1008,7 +1007,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <span class="tok-7cbf6e">*/</span>
 #include &lt;Zumo32U4.h&gt;
 #include <span class="tok-ce9178">"RobotSensors.h"</span>
-#include <span class="tok-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_CENTER, LINE_LOST_THRESHOLD</span>
+#include <span class="tok-ce9178">"RobotConfig.h"</span>  <span class="tok-7cbf6e">// NEW - needed for LINE_LOST_THRESHOLD</span>
 
 <span class="tok-7cbf6e">// ===== HARDWARE OBJECT DEFINITIONS =====</span>
 <span class="tok-7cbf6e">// These are the REAL objects - created exactly ONCE</span>
@@ -1023,7 +1022,6 @@ Zumo32U4ButtonC buttonC;
 <span class="tok-7cbf6e">// ===== LINE SENSOR HARDWARE (NEW for Lesson 8) =====</span>
 Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this file CREATES it</span>
 <span class="tok-569cd6">static</span> <span class="tok-569cd6">unsigned</span> <span class="tok-569cd6">int</span> sensorValues[<span class="tok-b5cea8">5</span>];     <span class="tok-7cbf6e">// Array to store the five readings</span>
-<span class="tok-569cd6">static</span> <span class="tok-569cd6">int</span> lastPosition = LINE_CENTER;   <span class="tok-7cbf6e">// Last known line position</span>
 
 <span class="tok-7cbf6e">// ===== LINE SENSOR FUNCTIONS (NEW for Lesson 8) =====</span>
 <span class="tok-569cd6">void</span> initLineSensors() {
@@ -1043,8 +1041,7 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 }
 
 <span class="tok-569cd6">int</span> readLinePosition() {
-  lastPosition = lineSensors.readLine(sensorValues);
-  <span class="tok-569cd6">return</span> lastPosition;
+  <span class="tok-569cd6">return</span> lineSensors.readLine(sensorValues);
 }
 
 <span class="tok-569cd6">bool</span> isLineVisible() {
@@ -1206,6 +1203,8 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <h3 class="h3-c-433014">Step 7 — followLine(): The Whole Lesson in Eight Lines</h3>
 
 <p>Everything so far was plumbing. This is the algorithm — Section 5's formula becoming a function. When people say "proportional control," they mean these eight lines.</p>
+
+<p><strong>And it goes in <code>main.cpp</code>, not <code>RobotMotion.cpp</code> — on purpose.</strong> Lesson 7 filed <code>driveDistance()</code> and <code>turnDegrees()</code> into <code>RobotMotion</code> because they are complete on their own: hand one a number and it needs nothing else from you. <code>followLine()</code> is not complete on its own. It reads <code>currentKp</code>, the gain you are about to spend Section 7 adjusting one keypress at a time on the OLED — and in later lessons it also hands the rest of your loop the error and the elapsed time it just measured, so other code can use the same reading instead of taking its own. Move the function into a module and you have to drag the tuning knobs in with it. <strong>The rule is not "big things go in modules." It is: a behavior that owns settings you keep changing lives beside those settings.</strong></p>
 
 <div class="callout-5a6872-bg-f8f9fa" data-family="THE GOAL" data-callout="8.40">
     <div class="div-fs-105em"><img src="../images/marks/bullseye.svg" alt="" data-mark="bullseye">THE GOAL</div>
@@ -1773,9 +1772,9 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 
 <li><strong>'sensorValues' was not declared</strong> — You forgot to add the variable in .cpp</li>
 
-<li><strong>'LINE_CENTER' was not declared</strong> — You forgot <code>#include "RobotConfig.h"</code> in RobotSensors.cpp</li>
+<li><strong>'LINE_LOST_THRESHOLD' was not declared</strong> — You forgot <code>#include "RobotConfig.h"</code> in RobotSensors.cpp. <code>isLineVisible()</code> is the function in that file that reads it.</li>
 
-<li><strong>multiple definition of 'followLine()'</strong> — You put followLine() in RobotMotion.cpp AND main.cpp. Delete it from RobotMotion.cpp!</li>
+<li><strong>multiple definition of 'followLine()'</strong> — It is defined in <em>both</em> <code>RobotMotion.cpp</code> and <code>main.cpp</code>, and one function may be defined only once in the whole project. Delete the <code>RobotMotion.cpp</code> copy: this lesson keeps <code>followLine()</code> in <code>main.cpp</code>, beside the gain it reads (Step 7).</li>
 
 </ol>
 

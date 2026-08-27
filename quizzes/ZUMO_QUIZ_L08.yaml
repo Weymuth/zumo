@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 08
 # Line Following · Proportional Control, and Why Bang-Bang Fails
 #
-# Bank version: v1.0.13
+# Bank version: v1.0.15
 # Verified against: S179 - the project-path propagation. DJ ruled
 #   Documents/PlatformIO/Projects/<FolderName> the correct default location (Bible 16.49); ten lesson
 #   prose sites, the Maker hint, two Bible 11 lines and one SVG label moved with it. PIN ONLY, no
@@ -15,6 +15,20 @@
 #   was swept in the SAME pass as its lesson, and the lesson diff was ASSERTED to contain nothing
 #   but those substitutions and the version line — so this pin bump is earned by a closed diff
 #   rather than by a re-read (rule 37). No answer, stem or rationale changed meaning.
+# Verified against: S191 — L08-06, the dead `lastPosition`. B24 and A07 both used
+#   "sensorValues[5] and lastPosition" as their example of file-scope `static`; the second
+#   half of that example no longer exists. Both now name sensorValues alone. THE CONCEPT IS
+#   UNCHANGED and so is every correct answer — file-scope static means internal linkage, not
+#   lifetime — so this is an example shrinking, not a question moving. The sixth paragraph
+#   below is left as written: it records what S142 did, and a record is not rewritten because
+#   a later session changed the thing it describes.
+# Verified against: S191 — L08-02, PIN ONLY, no question changed. The row asked for
+#   followLine() to move into RobotMotion.cpp; measurement said no, and the fix is prose:
+#   L07's vocabulary NOTE stops using followLine() as its example of a behavior that gets
+#   filed into a module, and L08 Step 7 now states why the control law lives beside the gain
+#   it reads. NOTHING MOVED — L08_B47 already pinned followLine() to main.cpp ONLY and
+#   L07_B12/B42/A19 already named driveDistance()/turnDegrees() as RobotMotion's; the prose
+#   now justifies what the banks already asserted. Earned by a closed diff (rule 37).
 # Authored against: lessons/Lesson_08.html v04.31.0 (post-S142 content fixes)
 # Re-keyed against: lessons/Lesson_08.html v04.32.0 — S161, canon C1. §6 Step 8's one-question
 # test ("is anything watching?") became the two-question test ("is anything watching the
@@ -91,10 +105,10 @@
 
 lesson: "L08"
 title: "Line Following — Proportional Control, and Why Bang-Bang Fails"
-bank_version: "1.0.13"
+bank_version: "1.0.15"
 source:
-  lesson_08: "v04.34.0"
-  lesson_07: "v04.33.0"
+  lesson_08: "v04.34.2"
+  lesson_07: "v04.33.1"
   lesson_05: "v04.30.0"
 
 sets:
@@ -425,7 +439,7 @@ sets:
         type: multiple_choice
         cite: "§6 Step 4"
         points: 1
-        stem: "sensorValues[5] and lastPosition are declared static in RobotSensors.cpp. What does static mean on a variable at file scope?"
+        stem: "sensorValues[5] is declared static in RobotSensors.cpp. What does static mean on a variable at file scope?"
         options:
           - text: "It belongs to this file alone — the other seven files cannot see it"
             correct: true
@@ -444,7 +458,7 @@ sets:
         points: 1
         stem: "Why must RobotSensors.cpp gain #include \"RobotConfig.h\" in Step 4?"
         options:
-          - text: "Its new code reads constants that live there — LINE_CENTER, and later LINE_LOST_THRESHOLD"
+          - text: "Its new code reads a constant that lives there — LINE_LOST_THRESHOLD, the threshold isLineVisible() compares against"
             correct: true
           - text: "Because every .cpp file must include every header"
             correct: false
@@ -893,16 +907,16 @@ sets:
         type: multiple_choice
         cite: "§6 Step 4"
         points: 1
-        stem: "Why are sensorValues and lastPosition declared static in RobotSensors.cpp rather than left as plain globals?"
+        stem: "Why is sensorValues declared static in RobotSensors.cpp rather than left as a plain global?"
         options:
-          - text: "They are the sensor module's private working storage — no other file has any business reading them, and static is what enforces that"
+          - text: "It is the sensor module's private working storage — no other file has any business reading it, and static is what enforces that"
             correct: true
-          - text: "Because they are arrays, and arrays must be static in C++"
+          - text: "Because it is an array, and arrays must be static in C++"
             correct: false
-          - text: "So their values survive between calls, which a plain global would not do"
+          - text: "So its value survives between calls, which a plain global would not do"
             correct: false
             why: "A plain global also survives. At FILE scope static controls VISIBILITY, not lifetime."
-          - text: "Because RobotSensors.h declares them extern"
+          - text: "Because RobotSensors.h declares it extern"
             correct: false
 
       - id: L08_A08
