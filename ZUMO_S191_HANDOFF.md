@@ -2,12 +2,15 @@
 
 ## READ THIS FIRST
 
-**S190's work IS PUSHABLE and DJ verifies the push himself (standing ruling, S158).**
+**S190 IS PUSHED AND VERIFIED at `a24bd73`** — fresh clone byte-identical, 80/80 in the pushed
+clone, `site_parity` PARITY twice past the floor, live pages spot-checked. **THIS FILE WAS AMENDED
+AFTER THAT PUSH** (the assertion-gate section below) and is the only file in that amendment.
 `git rm ZUMO_S190_HANDOFF.md` is part of that push and **`ZUMO_S191_HANDOFF.md` IS A NEW FILE** —
 both are checkboxes in GitHub Desktop, which is where the deletion and the new file get missed.
 If `__pycache__/` exists, delete it LAST; it regenerates on every gate run.
 
-**`site_parity` IS OWED AFTER THIS PUSH.** Build floor is **10m57s**. Run it past the floor, **twice**,
+**`site_parity` WAS DISCHARGED FOR THE S190 PUSH** (02:21:34 and 02:23:19 UTC, PARITY both, past
+the 10m57s floor from a 02:10:23 push) **and is OWED AGAIN after the amendment push.** Build floor is **10m57s**. Run it past the floor, **twice**,
 and believe the repeat. It was discharged at S190 OPEN (PARITY twice, plus a direct fetch of four
 published pages) and that discharge does NOT cover this push.
 
@@ -67,6 +70,35 @@ python3 census.py --selftest              # 11 controls
 **`int(Population)` RAISES on purpose.** A number with no population is how a LINE count gets
 reported as a DEFECT count. `len()` works; `report()` names the members.
 **It cannot see a terminal (rule 78)** — same hole §24.16 records for checksums.
+
+## THE STRONGEST THING S190 LEARNED IS NOT YET BUILT — A CENSUS-BACKED ASSERTION GATE
+**This section was added AFTER the S190 push, because the idea arrived after the handoff was
+written. That is itself the finding: the best thing a session learns is worth nothing if it is not
+in the document the next session reads.**
+
+`census.py` closes the HAND — you cannot get a number out of it without naming its population.
+It does **not** close the RECORD. Nothing stops anyone running `grep -c` at a shell and typing the
+answer into LIVE.md, and **that is where the damage actually lives**: S190's wrong `42` sat in
+**four repo files** before it ever reached DJ, and the next session would have read and repeated it.
+
+**BUILD A GATE THAT ASSERTS POPULATION CLAIMS IN THE SESSION DOCUMENTS AGAINST `census`.**
+- **The precedent is gate 78 (§16.44)** and it already does exactly this shape for discard figures:
+  it parses a stated number out of LIVE.md and the handoff and asserts it against what `byte_audit`
+  measured. **MEASURED, NOT ASSUMED: 250 lines, 125 of them code** — and the hard part, locating the
+  current session's region inside LIVE.md, is **already written and importable**. This is an
+  afternoon on existing machinery, not a session.
+- **I told DJ it needed the claim form ruled first and would cost a session. That was an UNMEASURED
+  COST CLAIM and it was inflated** — the second one in S190, after the Parameter-glossary renumber
+  that `callout_id`'s own docstring contradicted. **An unmeasured cost used as a reason not to act is
+  the same defect as an unmeasured count (rule 50). Measure the cost before quoting it.**
+- Scope it deliberately: it can only reach numbers written into FILES. A chat-only figure stays
+  uncovered, the same hole §24.16 records for checksums. **Say so in the gate's own docstring
+  (rule 78) rather than letting the next reader assume it covers everything.**
+- **No arm without a control per direction.** A stated figure that matches must pass; a stated figure
+  edited by one must fail. Prove both before trusting it.
+
+**DJ HAS NOT RULED ON PRIORITY.** This competes with `L08-02` / `L08-06` below and Fall launch is
+September 8.
 
 ## RULINGS OWED — BOTH PRICED
 1. **`L08-02`** — move `followLine()` into `RobotMotion.cpp`. **135 Maker `main.cpp` payloads**, 461
