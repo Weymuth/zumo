@@ -1,4 +1,4 @@
-<!-- Lesson version: v04.34.2 -->
+<!-- Lesson version: v04.34.3 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -1322,7 +1322,8 @@ Zumo32U4LineSensors lineSensors;  <span class="tok-7cbf6e">// NO extern - this f
 <div class="callout-17a2b8-bg-d1ecf1" data-family="NOTE" data-callout="8.46">
     <div class="div-fs-105em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">Why TRIM here — and NOT in followLine()</div>
     <p class="p-mb-0">In a gap the robot is <strong>blind</strong>. No line, nothing to read, nothing correcting it — it is driving on faith — blinder even than <code>driveDistance()</code> in Lesson 6, which at least counts its own wheels. Nothing here is watching the <strong>heading</strong>, and a straight line nobody is watching needs <code>TRIM</code> or it curves.<br><br>
-    <code>followLine()</code> is the opposite. It reads the line <strong>every time <code>loop()</code> comes round</strong> — fast, and you have not measured how fast — and steers on what it sees. It is a <strong>CLOSED loop</strong>, and correcting motor bias is <em>already its job</em>. Add TRIM there and the robot fights its own controller — the P-term would spend its day undoing a constant you put in deliberately. And it IS deliberate: we leave TRIM out of <code>followLine()</code> so that while you tune Kp the line error is the only thing steering.<br><br>
+    <code>followLine()</code> is the opposite. It reads the line <strong>every time <code>loop()</code> comes round</strong> — fast, and you have not measured how fast — and steers on what it sees. It is a <strong>CLOSED heading loop</strong>. We leave TRIM out of <code>followLine()</code> <strong>deliberately</strong>, so that while you tune Kp the line error is the only thing steering — one correction at a time, so you can see what Kp alone does.<br><br>
+    That is a teaching decision, not a law of control. Keep a question for Lesson 15: your motors are still mismatched in here, and the P-term is the only thing answering for it. <em>Can a P-term alone ever finish that job?</em> §3.4 of Lesson 15 answers it.<br><br>
     <strong>Is anything watching the heading? If not, it needs TRIM.</strong></p>
 </div>
 <pre><span class="tok-7cbf6e">// ===== MAIN LOOP =====</span>
@@ -2607,7 +2608,7 @@ Same root cause, two faces. What decides is what is in your files.</p>
 
 <summary>Show answer</summary>
 
-<p><em>Is anything watching the heading?</em> If not, it needs TRIM. <code>driveDistance()</code> closes its loop on <strong>distance</strong> and leaves the <strong>heading</strong> open — the encoders count rotation, so nothing can tell it the path curved, and TRIM is what keeps it straight. <code>followLine()</code> is a <strong>closed</strong> loop: it reads the line on every pass of the loop and correcting bias is already its job, so TRIM there just gives the P-term a constant to spend the day undoing. <code>handleGap()</code> gets TRIM because a blind robot is open loop again.</p>
+<p><em>Is anything watching the heading?</em> If not, it needs TRIM. <code>driveDistance()</code> closes its loop on <strong>distance</strong> and leaves the <strong>heading</strong> open — the encoders count rotation, so nothing can tell it the path curved, and TRIM is what keeps it straight. <code>followLine()</code> closes its loop on <strong>heading</strong>: it reads the line on every pass and steers on what it sees. TRIM is left out of it deliberately, so that while you tune Kp the line error is the only thing steering. <code>handleGap()</code> gets TRIM because a blind robot is open loop again.</p>
 
 </details>
 

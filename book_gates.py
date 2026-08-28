@@ -2,7 +2,21 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.74.7'
+VERSION = 'v1.75.0'
+# v1.75.0 (S192): GATE 81 NEW - §24.24 A DERIVED TALLY IS THE SAME FIGURE IN EVERY HOME.
+#   The worklist count has three homes and all three were hand-maintained, which is how a
+#   wrong `closed`/`fixed` split survived NINE sessions (S191). Truth is now
+#   `census.worklist()`, IMPORTED like gate 78 imports DISCARD_BASELINE. THE PREDICATE IS
+#   THE RUN, NOT THE LONE NOUN, AND THAT WAS MEASURED: a digit-near-a-status-word form was
+#   built first and manufactured `TOTAL = 110` out of gate 78's discard sentence,
+#   `FIXED = 68,123` out of the intake line, and `CLOSED = 0` out of the heading
+#   `# PART 0 — CLOSED ROWS`. ELEVEN CONTROLS, and four of them found defects IN THIS GATE
+#   before it landed: the under-reach detector was built with the pricer's own blind spot
+#   and a planted lone assertion sailed through green; the session guard `(?<![A-Za-z])`
+#   was defeated by backtracking, matching `90` inside `S190`; four of six pins were
+#   ORPHANS killed by guards added later; and FORM C priced the DENOMINATOR of
+#   `148 of 245 rows are OPEN`, failing the gate on correct prose. It also carries the arm
+#   gate 78 lacked twice: an under-reach is PINNED with a reason, never silent.
 # v1.74.7 (S191): §27.11 digest moved for L08-06's dead-state deletion. 582 selectors both
 #   ends, SET and ORDER both identical, zero rank movement - proved ordered, not as a set.
 # v1.74.6 (S190): §27.11 digest moved for the L08 row block. COUNT AND RANK, measured
@@ -4965,6 +4979,284 @@ except Exception as _ex80:
     bad.append('retired_claims could not be read: %r' % (_ex80,))
 gate('\u00a716.52 a retired claim stays retired', bad)
 
+
+# ---------------------------------------------------------------------------------
+# GATE 81 (S192, §24.24) - A DERIVED TALLY IS THE SAME FIGURE IN EVERY HOME.
+#
+# WHY IT EXISTS. The GPT worklist's count has three homes - the worklist ledger,
+# LIVE.md's current region, and the session handoff - and until S192 all three were
+# maintained BY HAND. S191 found the split had been wrong for NINE SESSIONS: `closed`
+# and `fixed` are different populations (95 and 89), a headline showed one of them,
+# and the other went unexamined. Six rows carrying ❌ and one ID seated twice hid
+# inside that gap. Every rule in this project that stuck got a comparator; this one
+# had §24.24 and three careful readers, and it decayed anyway.
+#
+# ONE DEFINITION, ONE READER (gate 78's rule). The truth is `census.worklist()`,
+# IMPORTED and never re-implemented here, so a figure cannot go stale in this gate
+# without census going loud first. census owns the derivation; this gate only reads
+# the DOCUMENTS and compares. `agree()` on census's two independent readers of the
+# total - Part 2's ID rows and the sixteen section headings - is asserted too, because
+# a truth source with one reader is a truth source nobody checked (rules 83/84).
+#
+# THE PREDICATE IS THE RUN, NOT THE LONE NOUN, AND THAT WAS MEASURED. A digit-near-a-
+# status-word predicate was built first and priced against all three homes: it
+# manufactured `TOTAL = 110` out of gate 78's discard sentence, `TOTAL = 18` out of
+# "intake of 18 GPT feedback documents", `FIXED = 68,123` out of "68,123 words) ·
+# nothing fixed", and `CLOSED = 0` out of the heading `# PART 0 — CLOSED ROWS`. Every
+# one of those is correct prose, and a gate convicting them is unusable. The tally, in
+# all three homes, is always a RUN of two or more `<digits> <status>` pairs joined by
+# `/ · , —`. That shape has no false positive in this corpus, and a lone pair has
+# several.
+#
+# STATED SCOPE LIMIT (rule 78), AND IT IS THE HALF THAT MATTERS. This gate asserts the
+# TALLY and nothing else. It does not see callout, bank, mark, icon, payload or gate
+# counts - `session_versions --check` owns the emitted version block and gate 78 owns
+# the discard figure, but a population claim written in ordinary prose anywhere else
+# is unwatched. It also cannot see a defect in census itself: S191's confident `0
+# MATCHES` came from the INSTRUMENT, not the caller, and a gate reading census would
+# have repeated the zero with a straight face. That hole is closed by census's own
+# controls, not by this.
+#
+# THE UNDER-REACH IS PINNED RATHER THAN SILENT, WHICH IS WHAT GATE 78 LACKED TWICE.
+# Gate 78's predicate under-reached at S175 and again at S178, both times quietly,
+# because nothing told it what it was not reading. Here every digit sitting within one
+# word of a status noun that the run form did NOT price must appear in _ADJ81, each
+# with a reason. A new lone-pair assertion in any home is therefore an unpinned site
+# and goes loud, instead of being missed.
+import census as _CEN81
+bad = []
+try:
+    _W81 = _CEN81.worklist()
+except Exception as _ex81:
+    _W81 = None
+    bad.append('census.worklist() could not derive the tally: %r - a gate with no '
+               'truth to assert against is not a gate (\u00a724.24)' % (_ex81,))
+
+if _W81 is not None:
+    _ag81, _rep81 = _CEN81.agree(_W81['total'], _W81['headings'])
+    if not _ag81:
+        bad.append("census's two readers of the worklist total disagree - %s. "
+                   'Disagreement is the finding, never the average (\u00a724.24)' % _rep81)
+    if (len(_W81['closed']) + len(_W81['parked']) + len(_W81['open'])
+            != len(_W81['total'])):
+        bad.append('the derived tally does not close: %d closed + %d parked + %d open '
+                   '!= %d rows (\u00a724.24)'
+                   % (len(_W81['closed']), len(_W81['parked']), len(_W81['open']),
+                      len(_W81['total'])))
+    if len(_W81['fixed']) > len(_W81['closed']):
+        bad.append('fixed (%d) exceeds closed (%d) - fixed is a SUBSET of closed and '
+                   'collapsing them is the S191 defect (\u00a724.24)'
+                   % (len(_W81['fixed']), len(_W81['closed'])))
+
+_CODE81 = re.compile(r'`[^`\n]*`')
+_BOLD81 = re.compile(r'\*\*')
+# HOUSE-STYLE MARKERS THAT SIT INSIDE A CLAIM. Blanked at EQUAL LENGTH, the move
+# _CODE81 makes on backticks, so reported offsets stay true to the source.
+# BOTH OF THESE WERE FOUND BY THE UNDER-REACH ARM ON ITS FIRST RUN, WHICH IS THE
+# ARM'S WHOLE PURPOSE. The worklist states its tally inside a blockquote, so
+# `89 are > fixed` carries a `>` mid-claim and no run could span it; and it writes
+# `95 rows CLOSED (Part 0), 2 PARKED`, where a parenthetical sits between the pair
+# and its separator. Gate 78 under-reached twice in exactly this way and stayed
+# quiet both times.
+_QUOT81 = re.compile(r'^\s*>+', re.M)
+_PAREN81 = re.compile(r'\([^()\n]*\)')
+# A pair: digits, at most one connecting word, then the status noun.
+# TWO NEGATIVE GUARDS, both measured rather than assumed:
+#   `(?<![A-Za-z])` before the digits - `S190 closed 21 rows` and `S191 CLOSED` are
+#   SESSION tokens, and a session number read as a tally figure is a false conviction
+#   on correct prose.
+#   `(?<![A-Za-z-])(?![A-Za-z-])` around the noun - `closed-loop` and `open-loop` are
+#   among this book's most common words and they claim nothing.
+#   THE FIRST SPELLING OF THE SESSION GUARD WAS DEFEATED BY BACKTRACKING AND THE ARM
+#   SAID SO. `(?<![A-Za-z])` on `S190` simply matched `90` instead, because `9` is
+#   preceded by a DIGIT, not a letter. The lookbehind must exclude digits and dots too,
+#   or it excludes nothing at all - a guard that can be stepped around is not a guard.
+_PAIR81 = (r'(?<![A-Za-z0-9.])(\d[\d,]*)\s+(?:[A-Za-z]+\s+)?'
+           r'(?<![A-Za-z-])(closed|fixed|parked|open)(?![A-Za-z-])')
+# THE RUN: two or more pairs joined by a separator. Anchored on the separator rather
+# than on a fixed order, because the three homes state the same tally in three orders.
+_RUN81 = re.compile(r'%s(?:\s*[/\u00b7,\u2014]\s*(?:[a-z]+\s+)?%s)+'
+                    r'(?:\s*[,]?\s*of\s+(\d[\d,]*))?' % (_PAIR81, _PAIR81), re.I)
+_INRUN81 = re.compile(_PAIR81, re.I)
+# FORM B - the one real assertion that is NOT a run, registered explicitly rather than
+# reached by loosening the run form: `148 of 245 rows are OPEN`.
+_FORMB81 = re.compile(r'(\d[\d,]*)\s+of\s+(\d[\d,]*)\s+rows?\s+(?:are|remain)\s+'
+                      r'(?<![A-Za-z-])(closed|fixed|parked|open)(?![A-Za-z-])', re.I)
+# FORM C - `148 rows remain OPEN`. Found by the under-reach arm, and the first instinct
+# was to PIN it as a restatement of the run above it. That is wrong and worth naming: a
+# pin says "this asserts nothing", and this asserts the open figure outright. Pinning a
+# real claim as a non-claim is not a scope limit, it is the stale figure surviving with
+# the gate's blessing. So it is priced instead.
+_FORMC81 = re.compile(r'(?<![A-Za-z0-9.])(\d[\d,]*)\s+rows?\s+(?:are|remain)\s+'
+                      r'(?<![A-Za-z-])(closed|fixed|parked|open)(?![A-Za-z-])', re.I)
+# Any digit within one word of a status noun. Used ONLY by the under-reach arm.
+# THE DETECTOR MUST REACH FURTHER THAN THE PRICER, OR IT CANNOT SEE WHAT THE PRICER
+# MISSED. Built first as `re.compile(_PAIR81)` - identical to the claim form - and a
+# planted lone assertion, `Only 12 rows remain OPEN in L09.`, sailed through a green
+# gate: two connecting words, and the pricer allows one. A detector with the pricer's
+# own blind spot is not a detector, it is the pricer agreeing with itself. Three words.
+_NEAR81 = re.compile(r'(?<![A-Za-z0-9.])(\d[\d,]*)\s+(?:[A-Za-z]+\s+){0,3}'
+                     r'(?<![A-Za-z-])(closed|fixed|parked|open)(?![A-Za-z-])', re.I)
+
+# ADJUDICATED NON-CLAIMS. Each is a digit beside a status word that asserts nothing
+# about the tally. Pinned by TEXT, so the list cannot drift into a bare count, and
+# each carries the reason it is not a claim.
+# EVERY PIN HERE MATCHES SOMETHING TODAY, AND THE ORPHAN ARM BELOW KEEPS IT THAT WAY.
+# Four more were written from the first draft's residue - the two PART headings, `Error
+# 5b was fixed`, and the intake word count - and all four turned out to be reached by
+# the session guard, the parenthetical blanking and the blockquote blanking instead.
+# A pin standing over a site no other arm can produce is a pin nobody can evaluate.
+_ADJ81 = {
+    '0 OPEN': 'a per-LESSON figure in the PART 0b note (L01 and L02 at 0 OPEN), '
+              'which is a different population from the book tally',
+}
+
+_scopes81, _claims81, _unpinned81, _seen81 = [], 0, [], set()
+
+_WLP81 = 'ZUMO_GPT_REVIEW_WORKLIST.md'
+if os.path.exists(_WLP81):
+    _wt = open(_WLP81, encoding='utf-8').read()
+    # SCOPE BY PROPERTY, NOT BY LINE NUMBER (rule 20): the LEDGER parts are Part 0 and
+    # Part 0b, which is where this file states its own tally. Part 2 onward is GPT's
+    # verbatim prose, kept unedited by design, and reading it would convict the source
+    # material for describing open loops.
+    _m81 = re.search(r'\n# PART 1\b', _wt)
+    if _m81:
+        _scopes81.append((_WLP81, _wt[:_m81.start()]))
+    else:
+        bad.append('%s: could not find the end of the ledger (# PART 1) - an '
+                   'unresolved scope is not a clean scope (\u00a724.24)' % _WLP81)
+else:
+    bad.append('%s is missing - the gate cannot read what is not there (\u00a724.24)'
+               % _WLP81)
+
+# LIVE.md's CURRENT region and the one handoff, resolved exactly as gate 78 does.
+_L81 = 'LIVE_ZUMO_TEXTBOOK.md'
+if os.path.exists(_L81):
+    _lt81 = open(_L81, encoding='utf-8').read()
+    _ll81 = _lt81.split('\n')
+    _cs81 = re.search(r'Session (\d+)', _ll81[2]) if len(_ll81) > 2 else None
+    _hd81 = ('## WHAT SHIPPED IN S%s' % _cs81.group(1)) if _cs81 else None
+    if _cs81 and _hd81 and _hd81 in _lt81:
+        _i81 = _lt81.index(_hd81)
+        _nx81 = re.search(r'## WHAT SHIPPED IN S(?!%s\b)\d+' % _cs81.group(1),
+                          _lt81[_i81 + 10:])
+        _j81 = _i81 + 10 + _nx81.start() if _nx81 else len(_lt81)
+        _scopes81.append((_L81, '\n'.join(_ll81[2:6]) + '\n' + _lt81[_i81:_j81]))
+    else:
+        bad.append('%s: could not resolve the CURRENT session region (\u00a724.24)' % _L81)
+else:
+    bad.append('%s is missing (\u00a724.24)' % _L81)
+
+_HO81 = sorted(g for g in glob.glob('ZUMO_S*_HANDOFF.md')
+               if re.fullmatch(r'ZUMO_S\d+_HANDOFF\.md', g))
+if len(_HO81) == 1:
+    _scopes81.append((_HO81[0], open(_HO81[0], encoding='utf-8').read()))
+else:
+    bad.append('expected exactly one session handoff, found %d (\u00a724.24)' % len(_HO81))
+
+if _W81 is not None:
+    _want81 = {k: len(_W81[k]) for k in ('closed', 'fixed', 'parked', 'open')}
+    for _nm81, _sc81 in _scopes81:
+        # Inline code marks a QUOTED SPELLING and ** is house style; both are blanked
+        # at EQUAL LENGTH so reported offsets stay true to the source, and the
+        # whitespace class stays \s+ because S178 proved equal-length blanking WIDENS
+        # the gap a fixed-width predicate depends on.
+        _sc81 = _CODE81.sub(lambda m: ' ' * len(m.group(0)), _sc81)
+        _sc81 = _BOLD81.sub('  ', _sc81)
+        _sc81 = _QUOT81.sub(lambda m: ' ' * len(m.group(0)), _sc81)
+        _sc81 = _PAREN81.sub(lambda m: ' ' * len(m.group(0)), _sc81)
+        _spans81, _found81 = [], 0
+
+        def _assert81(_n, _fig, _where):
+            global _claims81
+            _claims81 += 1
+            _n = _n.lower()
+            if _n in _want81 and _fig != _want81[_n]:
+                bad.append('%s: states %d %s, but census derives %d from %s '
+                           '(\u00a724.24)'
+                           % (_where, _fig, _n.upper(), _want81[_n], _WLP81))
+
+        for _r81 in _RUN81.finditer(_sc81):
+            _found81 += 1
+            _spans81.append(_r81.span())
+            for _p81 in _INRUN81.finditer(_r81.group(0)):
+                _assert81(_p81.group(2), int(_p81.group(1).replace(',', '')), _nm81)
+            if _r81.lastindex and _r81.group(_r81.lastindex) and \
+                    _r81.group(0).lower().rsplit('of', 1)[-1].strip().rstrip('.') \
+                    .replace(',', '').isdigit():
+                _tot81 = int(_r81.group(0).lower().rsplit('of', 1)[-1]
+                             .strip().rstrip('.').replace(',', ''))
+                _claims81 += 1
+                if _tot81 != len(_W81['total']):
+                    bad.append('%s: states a tally out of %d rows, but census derives '
+                               '%d (\u00a724.24)'
+                               % (_nm81, _tot81, len(_W81['total'])))
+
+        for _b81 in _FORMB81.finditer(_sc81):
+            _found81 += 1
+            _spans81.append(_b81.span())
+            _assert81(_b81.group(3), int(_b81.group(1).replace(',', '')), _nm81)
+            _claims81 += 1
+            if int(_b81.group(2).replace(',', '')) != len(_W81['total']):
+                bad.append('%s: states %s rows in total, but census derives %d '
+                           '(\u00a724.24)'
+                           % (_nm81, _b81.group(2), len(_W81['total'])))
+
+        # FORM C RUNS AFTER FORM B AND DEFERS TO IT. `148 of 245 rows are OPEN` matches
+        # both, and FORM C's digit is the DENOMINATOR - it priced open=245 against a
+        # truth of 148 and failed the gate on correct prose. The two forms are nested,
+        # not alternatives, so the wider one is authoritative wherever they overlap.
+        for _c81 in _FORMC81.finditer(_sc81):
+            if any(s < _c81.end() and _c81.start() < e for s, e in _spans81):
+                continue
+            _found81 += 1
+            _spans81.append(_c81.span())
+            _assert81(_c81.group(2), int(_c81.group(1).replace(',', '')), _nm81)
+
+        # UNDER-REACH ARM. Anything digit-adjacent the forms did not price must be a
+        # PINNED non-claim. This is the arm gate 78 did not have.
+        for _u81 in _NEAR81.finditer(_sc81):
+            if any(s <= _u81.start() and _u81.end() <= e for s, e in _spans81):
+                continue
+            _txt81 = re.sub(r'\s+', ' ', _u81.group(0)).strip()
+            _hit81 = [k for k in _ADJ81 if _txt81.endswith(k) or k in _txt81]
+            _seen81.update(_hit81)
+            if not _hit81:
+                _unpinned81.append('%s: %r' % (_nm81, _txt81))
+
+        # A HOME THAT STOPPED STATING THE TALLY WENT STALE SILENTLY, WHICH IS THE
+        # FAILURE §24.24 NAMES. Absence is the defect here, so this arm - unlike gate
+        # 78's - does require a claim in every scope.
+        if not _found81:
+            bad.append('%s states no tally at all - §24.24 gives this figure three '
+                       'homes and a home that stopped carrying it cannot disagree '
+                       'with anything (\u00a724.24)' % _nm81)
+
+# ORPHAN ARM. A pin standing over a site nothing produces is a pin nobody can
+# evaluate, and it makes _ADJ81 look like coverage it does not have. prose_canon
+# reports orphan pins for the same reason; four of this gate's six first-draft pins
+# were orphans, killed by guards added later in the same session.
+_orph81 = [k for k in _ADJ81 if k not in _seen81]
+if _W81 is not None and _orph81:
+    bad.append('%d pinned non-claim(s) in _ADJ81 match nothing in any home - a pin '
+               'over a site that no longer exists is dead weight that reads as '
+               'coverage (\u00a724.24): %s' % (len(_orph81), ', '.join(sorted(_orph81))))
+
+if _unpinned81:
+    bad.append('%d digit-beside-a-status-word site(s) the run form did not price and '
+               '_ADJ81 does not pin - adjudicate each as a claim or a non-claim, '
+               'because an under-reach nobody listed is how gate 78 missed the same '
+               'shape twice (\u00a724.24): %s'
+               % (len(_unpinned81), '; '.join(sorted(set(_unpinned81))[:8])))
+
+# COVERAGE ARM (rule 27): all three scopes must have resolved. Unlike gate 78, zero
+# CLAIMS is NOT legitimate here and is caught per-scope above.
+if len(_scopes81) != 3:
+    bad.append('resolved %d of 3 homes (worklist ledger, LIVE.md current region, the '
+               'session handoff) - a gate reading a shrunken population passes for the '
+               'wrong reason (\u00a724.24)' % len(_scopes81))
+gate('\u00a724.24 a derived tally is the same figure in every home', bad)
 
 
 print('=' * 52)

@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.31.3 -->
+<!-- Lesson version: v02.31.4 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -797,7 +797,7 @@ If it drifts, it sees the drift and fixes it. Mismatched motors do not matter �
 so there is nothing to correct against. If the motors are mismatched, the robot curves —
 and <em>nothing notices.</em></p>
 <div class="div-607d8b" data-family="NOTE" data-callout="11.21"><div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
-<div class="div-fs-105em">This is why TRIM lives where it lives.</div>Every straight line in this book whose heading nothing watches carries TRIM: <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive.<br><br>And <code>followLine()</code> <strong>deliberately does not</strong> — because P-control is already correcting bias 50 times a second, and TRIM would just be fighting its own controller.<br><br><strong>An open <strong>heading</strong> loop needs TRIM. A closed one does not.</strong></div>
+<div class="div-fs-105em">This is why TRIM lives where it lives.</div>Every straight line in this book whose heading nothing watches carries TRIM: <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive.<br><br>And <code>followLine()</code> <strong>deliberately does not</strong> — while you tune Kp, the line error should be the only thing steering.<br><br><strong>An open <strong>heading</strong> loop needs TRIM. A closed one does not.</strong></div>
 <h3 class="h3-c-00474b">8A.2 Why Encoders Beat Timers</h3>
 <p>A timer measures the <em>independent</em> variable. An encoder measures the <em>dependent</em> one.</p>
 <p>You do not actually care how long the robot drove. You care how far it went. Time is only a
@@ -1142,7 +1142,7 @@ same track, it quits halfway. <strong>Name the instrument that caused this, and 
 <details data-reveal="quiz"><summary><code>followLine()</code> does <em>not</em> use TRIM. <code>handleGap()</code> <em>does</em>.
 Both drive the robot forward. <strong>Why the difference?</strong> (§8A.1)</summary>
 
-<div class="div-mt-12px"><p>An open <strong>heading</strong> loop needs TRIM; a closed one does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors — the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code>followLine()</code> is a P&#8209;controller reading line position on every pass of the loop and steering toward it: it already sees the drift and fixes it, so adding TRIM would make it fight its own controller. Every straight line in this book whose heading nothing watches carries TRIM — <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive — and the one loop that watches where it is going deliberately does not.</p></div>
+<div class="div-mt-12px"><p>An open <strong>heading</strong> loop needs TRIM; a closed one does not. Inside a gap there is no line to measure, so nothing corrects mismatched motors — the robot curves and <em>nothing notices</em>, which is why TRIM is the only thing holding it straight in there. <code>followLine()</code> is a P&#8209;controller reading line position on every pass of the loop and steering toward it, and TRIM is left out of it deliberately while Kp is being tuned. Every straight line in this book whose heading nothing watches carries TRIM — <code>driveDistance()</code>, <code>handleGap()</code>, the return-to-line drive — and the one loop that watches where it is going deliberately does not.</p></div>
 
 </details>
 

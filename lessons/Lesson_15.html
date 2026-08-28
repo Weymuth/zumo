@@ -1,4 +1,4 @@
-<!-- Lesson version: v02.32.0 -->
+<!-- Lesson version: v02.32.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -207,6 +207,15 @@ correction. P settles at the point where its correction exactly cancels the bias
 a <b>non-zero error</b>. P converges on being permanently, quietly wrong. This is
 <b>steady-state error</b>, and P structurally cannot remove it: with zero error, P produces zero
 output.</p>
+
+<p><b>You have met this before, from the other side.</b> Lesson 8 left <code>TRIM</code> out of
+<code>followLine()</code> so that while you tuned Kp the line error was the only thing steering, and
+it asked you to keep a question: <em>can a P-term alone ever finish the job of a mismatched pair of
+motors?</em> This paragraph is the answer — <b>no</b>. The offset you could never quite tune away was
+this. <code>TRIM</code> is a <b>feed-forward</b> correction: it removes a mismatch you already know
+about, before the loop ever sees it. I removes what is left. They are two halves of one job, not
+rivals — which is why §3.6 tells you to check <code>TRIM</code> first when a line-loop offset will
+not go away.</p>
 
 <p>I can. Every pass that you are even slightly off, a little more gets added to the total, so a
 small error that never dies grows into a large command. <b>I is the only term that can drive a
@@ -692,7 +701,7 @@ gone. <b>That is windup, and clamping the output does not prevent it.</b></div>
 
 <details data-reveal="quiz"><summary>3. A bias in your drivetrain makes the robot pull slightly right. P settles at a small, permanent error and stays there forever. Explain why P <b>structurally</b> cannot remove it — and name the term that can. (§3.4)</summary>
 
-<div class="div-mt-12px"><p>P’s output is proportional to the error, so as the error shrinks the correction shrinks with it. P comes to rest at exactly the point where its correction cancels the bias — and that point has a <b>non-zero error</b>, because with zero error P produces zero output and the bias wins again. This is <b>steady-state error</b>, and it is not a tuning failure: no value of K<sub>p</sub> removes it, because the arithmetic that leaves it there is the same arithmetic that makes P work. <b>I can.</b> Every pass the robot is even slightly off, a little more is added to a running total, so a small error that never dies grows into a large command. I is the only term that can drive a steady error to zero.</p></div>
+<div class="div-mt-12px"><p>P’s output is proportional to the error, so as the error shrinks the correction shrinks with it. P comes to rest at exactly the point where its correction cancels the bias — and that point has a <b>non-zero error</b>, because with zero error P produces zero output and the bias wins again. This is <b>steady-state error</b>, and it is not a tuning failure: no value of K<sub>p</sub> removes it, because the arithmetic that leaves it there is the same arithmetic that makes P work. <b>I can.</b> Every pass the robot is even slightly off, a little more is added to a running total, so a small error that never dies grows into a large command. Among the three feedback terms, I is the only one that can. It is <em>not</em> the only tool on the robot: <code>TRIM</code> is a <strong>feed-forward</strong> correction and removes a known motor mismatch <em>before</em> the loop ever sees it. Feed-forward cancels the disturbance you can predict; I cleans up what is left.</p></div>
 
 </details>
 

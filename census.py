@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 # VERSION is the ONE home and sits ABOVE the changelog, so a plain grep of this file
 # returns the version and not a changelog line (S98).
-VERSION = 'v1.1.0'
+VERSION = 'v1.2.0'
+# v1.2.0 (S192): THE WORKLIST TALLY GETS AN OWNER. Until now no instrument derived
+#   `closed / fixed / parked / open / total`; three documents each stated it and each
+#   was maintained by hand, which is how a wrong split survived NINE sessions (S191).
+#   `worklist()` parses the file structurally and returns five Populations plus the
+#   two independent readers of the total - Part 2's ID rows AND the sixteen section
+#   headings - so `agree()` is available on the figure that matters most. It RAISES on
+#   a structure it cannot resolve, because the v1.1.0 lesson is that an unresolved
+#   source reported as a number is the whole failure class. Controls L1-L5 added,
+#   19 total. Built for GATE 81, which asserts the DOCUMENTS against this.
 # v1.1.0 (S191): THE INSTRUMENT BUILT TO STOP A CONFIDENT WRONG NUMBER PRODUCED ONE.
 #   `occurrences('lastPosition', 'lessons/Lesson_*.html')` returned `0 MATCHES` and
 #   printed its population like any honest answer. A STRING is iterable, so
@@ -252,6 +261,118 @@ def callouts(lesson_glob='lessons/Lesson_*.html'):
     return Population('CALLOUT BLOCKS', out, 'via lesson_inventory')
 
 
+_WL_DEFAULT = 'ZUMO_GPT_REVIEW_WORKLIST.md'
+_WL_PART = re.compile(r'^# (PART \d[a-z]*)', re.M)
+# A row's ID is its FIRST CELL. Backticks are optional because Part 0 quotes IDs and
+# Part 2 does not, and `(untagged)` rides along on rows that were never GPT findings.
+_WL_ID = re.compile(r'^\|\s*`?(L\d{2}-[A-Za-z0-9]+)`?\s*(?:\(untagged\))?\s*\|')
+_WL_HEAD = re.compile(r'^## LESSON \d\d \u2014 (\d+) findings', re.M)
+_WL_NEG = '\u274c'          # a REFUTED or STRUCK row: closed, but not fixed
+
+
+def worklist(path=_WL_DEFAULT):
+    """The GPT review worklist's tally, DERIVED - five Populations, never integers.
+
+    Returns a dict: total, closed, fixed, parked, open, headings, out_of_scope.
+
+    WHY THIS IS HERE AND NOT IN THE GATE. Gate 78's rule is that a gate asserts
+    against a truth it IMPORTS and never re-implements. Nothing owned this tally, so
+    three documents each carried a hand-maintained copy and S191 found the split had
+    been wrong for nine sessions - `closed` and `fixed` are different populations and
+    a headline showing one of them hid the other. Ownership is the fix; the gate is
+    only the reader.
+
+    TWO INDEPENDENT READERS OF THE TOTAL (rules 83/84). `total` counts Part 2's ID
+    rows. `headings` sums the sixteen per-lesson section headings. They are different
+    structures in the same file and they must agree; `agree()` says so, and
+    disagreement is the finding rather than the average.
+
+    SCOPE IS A PROPERTY, NOT A NAME LIST (rule 20). Part 2 defines the population.
+    A Part 0 row whose ID is not in Part 2 is NOT dropped silently - it comes back in
+    `out_of_scope`, because a row you excluded without naming is a row you lost.
+
+    IT RAISES RATHER THAN RETURNING A SHRUNKEN ANSWER. An unreadable file, a missing
+    PART boundary, or a parked table with no heading are all UNKNOWNS. v1.1.0 exists
+    because an unknown was reported as a zero once already.
+    """
+    txt = _read(_paths([path])[0])
+    lines_ = txt.split('\n')
+
+    at = {}
+    for m in _WL_PART.finditer(txt):
+        at.setdefault(m.group(1), txt[:m.start()].count('\n'))
+    for need in ('PART 0', 'PART 0b', 'PART 2', 'PART 3'):
+        if need not in at:
+            raise ValueError(
+                'census.worklist: %r has no %r heading. A structure that did not '
+                'resolve is not a tally of zero.' % (path, need))
+
+    def ids(rows):
+        return [_WL_ID.match(r).group(1) for r in rows if _WL_ID.match(r)]
+
+    p2 = lines_[at['PART 2']:at['PART 3']]
+    total = ids(p2)
+    if len(total) != len(set(total)):
+        dup = sorted({i for i in total if total.count(i) > 1})
+        raise ValueError('census.worklist: PART 2 seats %s more than once - the '
+                         'exactly-once rule is violated and no tally derived from a '
+                         'duplicated population means anything.' % ', '.join(dup))
+
+    heads = [int(n) for n in _WL_HEAD.findall('\n'.join(p2))]
+    if not heads:
+        raise ValueError('census.worklist: PART 2 has no per-lesson headings - the '
+                         'second reader of the total is missing, so the first one is '
+                         'unchecked (rules 83/84).')
+
+    p0 = lines_[at['PART 0']:at['PART 0b']]
+    cut = [i for i, r in enumerate(p0) if r.startswith('## Parked with a reason')]
+    if len(cut) != 1:
+        raise ValueError('census.worklist: found %d parked-table headings in PART 0, '
+                         'wanted exactly 1 - closed and parked cannot be told apart.'
+                         % len(cut))
+    closed_rows = [r for r in p0[:cut[0]] if _WL_ID.match(r)]
+    parked_rows = [r for r in p0[cut[0]:] if _WL_ID.match(r)]
+
+    seat = set(total)
+    out = [_WL_ID.match(r).group(1) for r in closed_rows + parked_rows
+           if _WL_ID.match(r).group(1) not in seat]
+    closed = [_WL_ID.match(r).group(1) for r in closed_rows
+              if _WL_ID.match(r).group(1) in seat]
+    parked = [_WL_ID.match(r).group(1) for r in parked_rows
+              if _WL_ID.match(r).group(1) in seat]
+    # FIXED is a SUBSET of CLOSED, and the distinction is the S191 finding: a refuted
+    # or struck row is resolved (closed) but nothing was fixed for it.
+    fixed = [_WL_ID.match(r).group(1) for r in closed_rows
+             if _WL_ID.match(r).group(1) in seat and _WL_NEG not in r]
+
+    both = sorted(set(closed) & set(parked))
+    if both:
+        raise ValueError('census.worklist: %s sit in BOTH the closed and parked '
+                         'tables - the two are meant to be disjoint and the open '
+                         'figure is a subtraction.' % ', '.join(both))
+
+    open_ = [i for i in total if i not in set(closed) and i not in set(parked)]
+
+    P = lambda k, m, n: Population(k, m, n + ' (%s)' % path)
+    return {
+        'total':   P('WORKLIST ROWS', total, 'PART 2 ID rows'),
+        'closed':  P('CLOSED ROWS', closed, 'PART 0 closed table, in Part 2 scope'),
+        'fixed':   P('FIXED ROWS', fixed, 'closed and NOT carrying %s' % _WL_NEG),
+        'parked':  P('PARKED ROWS', parked, 'PART 0 parked table'),
+        'open':    P('OPEN ROWS', open_, 'total minus closed minus parked'),
+        # The second reader must count the SAME population, not the headings
+        # themselves - 16 headings is not a figure `total` can be compared against.
+        # Each heading is expanded to the rows it declares, so agree() is a real
+        # comparison of two structures and len() means the same thing on both.
+        'headings': P('WORKLIST ROWS', ['L%02d#%d' % (i + 1, k)
+                                        for i, n in enumerate(heads)
+                                        for k in range(1, n + 1)],
+                      'second reader: %d per-lesson section headings' % len(heads)),
+        'out_of_scope': P('PART 0 ROWS NOT SEATED IN PART 2', out,
+                          'excluded from the tally, named rather than dropped'),
+    }
+
+
 def agree(*pops):
     """Rules 83/84 for counting: two structurally different routes to one figure.
     Returns (bool, report). Disagreement is the finding, never the average."""
@@ -378,6 +499,89 @@ def _selftest():
         chk('K3 a glob matching nothing RAISES', False, '(returned %d)' % len(r))
     except ValueError:
         chk('K3 a glob matching nothing RAISES', True)
+
+    # ---- CONTROL L - THE WORKLIST TALLY (v1.2.0), FIVE ARMS, EACH WITH A DIRECTION.
+    # A parse that agrees with the published figures proves nothing on its own: a
+    # function returning five typed constants would agree too. L2, L4 and L5 are the
+    # ones that make L1 evidence, because each PLANTS a defect in a copy of the REAL
+    # file and requires the figure to MOVE or the call to RAISE.
+    if os.path.exists(_WL_DEFAULT):
+        src = open(_WL_DEFAULT, encoding='utf-8').read()
+        w = worklist()
+
+        # L1 - the live tally closes, and the total has two readers that agree.
+        _ok, _rep = agree(w['total'], w['headings'])
+        chk('L1 worklist: closed+parked+open==total, two readers agree',
+            _ok and len(w['closed']) + len(w['parked']) + len(w['open']) == len(w['total']),
+            '(%d+%d+%d vs %d; %s)' % (len(w['closed']), len(w['parked']),
+                                      len(w['open']), len(w['total']), _rep))
+
+        def variant(name, text):
+            p = os.path.join(d, name)
+            open(p, 'w', encoding='utf-8').write(text)
+            return p
+
+        # L2 - BLINDING: plant one more ID row in PART 2. total AND open must each
+        # move by exactly 1. A constant cannot do this.
+        _anchor = '\n## LESSON 16 \u2014 30 findings\n'
+        _p = variant('plant_row.md',
+                     src.replace(_anchor, _anchor + '\n| `L16-99` | planted |\n', 1)
+                        .replace('## LESSON 16 \u2014 30 findings',
+                                 '## LESSON 16 \u2014 31 findings', 1))
+        try:
+            w2 = worklist(_p)
+            chk('L2 BLINDING a planted PART 2 row moves total AND open by 1',
+                len(w2['total']) == len(w['total']) + 1 and
+                len(w2['open']) == len(w['open']) + 1 and
+                len(w2['headings']) == len(w['headings']) + 1,
+                '(%d/%d/%d)' % (len(w2['total']), len(w2['open']), len(w2['headings'])))
+        except Exception as _e:
+            chk('L2 BLINDING a planted PART 2 row moves total AND open by 1', False,
+                '(raised %s)' % type(_e).__name__)
+
+        # L3 - a structure that did not resolve must RAISE. Removing the PART 3
+        # boundary makes PART 2 unbounded; a shrunken or swollen tally returned
+        # quietly is the v1.1.0 failure class wearing a new hat.
+        try:
+            r = worklist(variant('no_part3.md',
+                                 src.replace('\n# PART 3 ', '\n#### PART 3 ', 1)))
+            chk('L3 a missing PART boundary RAISES, not a quiet tally', False,
+                '(returned total=%d)' % len(r['total']))
+        except ValueError:
+            chk('L3 a missing PART boundary RAISES, not a quiet tally', True)
+        except Exception as _e:
+            chk('L3 a missing PART boundary RAISES, not a quiet tally', False,
+                '(raised %s, wanted ValueError)' % type(_e).__name__)
+
+        # L4 - the exactly-once rule, which is a LIVE defect class here: `L08-13`
+        # was seated twice and the duplicate survived from S154 to S191.
+        try:
+            r = worklist(variant('dup.md',
+                                 src.replace(_anchor, _anchor + '\n| `L01-01` | dup |\n', 1)))
+            chk('L4 an ID seated twice RAISES (the L08-13 defect)', False,
+                '(returned total=%d)' % len(r['total']))
+        except ValueError:
+            chk('L4 an ID seated twice RAISES (the L08-13 defect)', True)
+
+        # L5 - THE DISTINCTION THAT HID FOR NINE SESSIONS. Marking one closed row
+        # REFUTED must move `fixed` down by one and leave `closed` untouched. If
+        # these two ever move together, the split has stopped being a split.
+        _one = None
+        for ln in src.split('\n'):
+            m = _WL_ID.match(ln)
+            if m and _WL_NEG not in ln and m.group(1) in set(w['fixed']):
+                _one = ln
+                break
+        if _one:
+            r = worklist(variant('refute.md', src.replace(_one, _one + _WL_NEG, 1)))
+            chk('L5 marking a closed row %s moves fixed, not closed' % _WL_NEG,
+                len(r['closed']) == len(w['closed']) and
+                len(r['fixed']) == len(w['fixed']) - 1,
+                '(closed %d, fixed %d)' % (len(r['closed']), len(r['fixed'])))
+        else:
+            print('  L5 skipped (no unmarked closed row to plant on)')
+    else:
+        print('  L  worklist checks skipped (no %s)' % _WL_DEFAULT)
 
     print()
     print('  %s' % ('ALL CONTROLS PASS' if not fails else 'FAILED: ' + ', '.join(fails)))

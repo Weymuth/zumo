@@ -37,7 +37,16 @@ import os
 import re
 import sys
 
-VERSION = 'v1.0.2'
+VERSION = 'v1.1.0'
+# v1.1.0 (S192): THE C1 RESIDUE REGISTERED - FOUR SPELLINGS FOR ONE CLAIM, ON PURPOSE.
+#   16.31 retired the TRIM SLOGAN at S161 and the MECHANISM under it survived in five
+#   lessons for 31 sessions, because that sweep was keyed on the phrasings table. The
+#   predicate hunting it widened THREE TIMES in one session - 6 sites, then 7 (the L12
+#   KEY TERM, 16.56), then 13 (all of L10) - so ONE pattern here would inherit whichever
+#   blind spot the last widening happened to leave. Four are registered instead, each
+#   measured at zero first and each blinding-controlled by planting it into L08 in turn.
+#   REGISTERED AFTER THE FIX, NOT BEFORE: register-first was ruled and this file's own
+#   header refuted it - an entry that is already firing is a backlog, not a gate. 21, was 17.
 
 # ---------------------------------------------------------------------------
 # THE REGISTRY.
@@ -95,6 +104,28 @@ REGISTRY = [
      '#pragma once is the modern standard (it is a compiler extension; include guards are the standard)', 'S190'),
     ('L07-03', r'prevents this automatically',
      '#pragma once prevents circular includes automatically (it stops the preprocessor loop, not the design problem)', 'S190'),
+    # --- S192, THE C1 RESIDUE. Five rows, five lessons, 12 prose sites and 5 bank
+    # --- questions. §16.31 retired the SLOGAN in S161 and the MECHANISM underneath it
+    # --- survived, because the sweep was keyed on the phrasings table. FOUR SPELLINGS
+    # --- ARE REGISTERED, NOT ONE: the predicate widened three times in one session
+    # --- (6 -> 7 -> 13 sites), and a single pattern would inherit whichever blind spot
+    # --- the last widening happened to leave. All four measured at ZERO first.
+    # --- The claim is BACKWARDS, not loose: TRIM is feed-forward and enters the same
+    # --- additive channel as the P-term, so it removes the disturbance the P-term is
+    # --- otherwise stuck holding a standing offset against. L15 §3.4 says so in the
+    # --- book's own words, and L15 §3.6 already prescribes "check TRIM" for a line-loop
+    # --- offset. Simulated: mismatch 12 with TRIM 0 settles at error 75, with TRIM 12
+    # --- at 0, and error x Kp is constant across a fourfold Kp sweep.
+    ('L08-08', r'fight[a-z]*\s+(its|it|a|the)\s*(own)?\s*(controller|correction)|fight[a-z]*\s+itself',
+     'adding TRIM would make the robot fight its own controller '
+     '(feed-forward and feedback sum; they are not rivals)', 'S192'),
+    ('L10-12', r'correcting\s+(motor\s+)?bias\s+is\s+(already|its entire)|already\s+(its|the)\s+job',
+     'correcting motor bias is already the loop\'s job '
+     '(a P-term settles at a STANDING offset against a constant bias - L15 3.4)', 'S192'),
+    ('L11-08', r'spend (its|the) day undoing|constant to spend',
+     'TRIM gives the P-term a constant to spend the day undoing', 'S192'),
+    ('L12-18', r'second correction that fight|controller that is already (right|correct)',
+     'TRIM is a second correction fighting a controller that is already right', 'S192'),
 ]
 
 

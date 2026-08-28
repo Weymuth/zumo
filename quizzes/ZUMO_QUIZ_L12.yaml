@@ -1,7 +1,7 @@
 # ZUMO READING QUIZ BANK — LESSON 12
 # Wheels Lie · The Gyro — Measuring the Robot, Not the Wheels
 #
-# Bank version: v1.0.20
+# Bank version: v1.0.21
 #   S180 final: L12 -> v01.35.2. ARM 9 caught c5_square DISCARDING driveDistance()'s
 #   StopReason - the square drove four sides with the kill switch dead. Guarded in the
 #   template, the reveal and the payload; 21,740 -> 21,742 and the COMPILE CHECK figure moved
@@ -120,12 +120,12 @@
 
 lesson: "L12"
 title: "Wheels Lie — The Gyro, Measuring the Robot Not the Wheels"
-bank_version: "1.0.20"
+bank_version: "1.0.21"
 source:
-  lesson_12: "v01.35.3"
-  lesson_11: "v02.31.3"
+  lesson_12: "v01.35.4"
+  lesson_11: "v02.31.4"
   lesson_09: "v05.27.6"
-  lesson_06: "v04.37.1"
+  lesson_06: "v04.37.2"
   lesson_05: "v04.30.0"
   lesson_04: "v04.29.6"
 
@@ -689,11 +689,11 @@ sets:
         points: 1
         stem: "turnDegreesGyro() contains no TRIM. Why is adding it not merely unnecessary but wrong?"
         options:
-          - text: "The turn is a closed loop already correcting its own error, so TRIM would fight a controller that is already right"
+          - text: "TRIM is a straight-line correction, and a turn has no straight line to protect"
             correct: true
-          - text: "TRIM only applies to forward motion, and this function turns in place"
+          - text: "The turn is a closed loop already correcting its own error, so TRIM would fight a controller that is already right"
             correct: false
-            why: "turnDegrees() also turns in place and also omits TRIM, but the Quick Reference gives a different reason for it — the wheels oppose on purpose and encoders govern the angle. For the gyro turn the reason is the closed loop."
+            why: "A feed-forward correction and a feedback loop are not rivals — they sum. The reason TRIM has no place here is that it corrects a straight heading, and this maneuver has no straight heading to correct. Lesson 15 §3.4 works through why the two coexist."
           - text: "TRIM would be added to both motors and cancel out"
             correct: false
             why: "Bonus B4 adds it to one motor only, and the result is a real bug — the gyro still stops the turn at the right angle, but the robot arcs instead of pivoting and walks out of position."

@@ -1,7 +1,9 @@
 # ZUMO — GPT REVIEW WORKLIST (v1.12)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **COUNTS ARE DERIVED AND CURRENT AS OF S191 — 95 CLOSED · 2 PARKED · 148 OPEN, of 245.**
+> **COUNTS ARE DERIVED AND CURRENT AS OF S192 — 100 CLOSED · 2 PARKED · 143 OPEN, of 245.**
+> **GATE 81 NOW ASSERTS THIS FIGURE IN ALL THREE HOMES against `census.worklist()` (§24.24a, S192).
+> It is no longer maintained by hand in any of them.**
 > Derived by enumerating Part 2's ID rows (245, agreeing with all sixteen section headings, no
 > duplicates) and Part 0's two tables, then asserting `closed + parked + open == 245`. Every Part 0 ID
 > exists in Part 2; `closed ∩ parked` is empty. **This is the one derived answer §24.24 asks for; the
@@ -17,15 +19,16 @@
 >    the same finding. One finding, two rows: a live exactly-once violation, merged at S191.
 >    **S190 therefore closed 21 rows, not 22** — and the arithmetic says so: 72 + 21 = 93.
 >
-> **The split is kept visible so neither predicate can go missing again: of the 95 closed, 89 are
+> **The split is kept visible so neither predicate can go missing again: of the 100 closed, 94 are
 > fixed / verified / ruled and 6 are refuted or struck.** A headline that shows only one of those two
 > numbers is how this discrepancy survived nine sessions.
 
-> **STATUS: 95 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+> **STATUS: 100 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
 >
-> **L01 THROUGH L07 ARE DONE. L08 HAS TWO OPEN ROWS.** `L08-02` and `L08-06` shipped at S191.
-> **`L08-08` and `L08-15` remain open** — neither was ever named in a closed or parked table, or in any
-> other file in the repo; S190's "done except two" had missed them. **148 rows remain OPEN.**
+> **L01 THROUGH L07 ARE DONE. L08 HAS ONE OPEN ROW: `L08-15`.** `L08-08` shipped at S192 as a
+> FIVE-ROW C1 residue pass — `L10-12`, `L11-08`, `L12-18` and `L15-08` closed with it, because they were
+> the same claim repeated and closing one would have left four rows describing work already done (the
+> `L06-02` shape). **143 rows remain OPEN.**
 > **Read PART 0 FIRST.** Rows below are kept verbatim as GPT wrote them even after they are fixed,
 > so a row's presence here means nothing on its own — Part 0 is what says whether it is still live.
 > These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
@@ -183,6 +186,11 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 | `L08-02` | ✅ RULED + SHIPPED | S191 | **GPT's fix was REFUTED BY MEASUREMENT; the contradiction it found was real and is fixed in prose.** Every symbol `followLine()` touches is `main.cpp`-private or a `RobotConfig.h` constant — no module reads any of it — and two are deliberately shared inside `main.cpp`: `lastError` feeds `runSample()` and `dtSec` feeds `updateSpeedLoop()` ("One clock, two loops"), while `currentKp`/`currentKd`/`currentBase` are the live knobs the OLED menu drives. Moving the function either `extern`s six mutable globals — three sections after L08 Step 4 teaches that module state is `static` and private, which `B24`/`A07` quiz — or puts the tuning UI behind accessors and grows the L15 signature to five parameters. **The defect is one sentence in L07's vocabulary NOTE**, which used `followLine()` as its example of a behavior filed into `RobotMotion`. L07 now draws the real line (self-contained behavior → module; behavior owning live settings → beside those settings) and L08 Step 7 states why. 0 payloads, 0 bytes, against 135 payloads and 8 lessons for a move that would make the book worse. **`L08-14` does NOT depend on this** — it is a `main.cpp`-local question about sharing one observation, either way. |
 | `L08-13` | ✅ MEASURED + SHIPPED | S154 / S190 | Measured in Part 5b at S154, fixed at S190: `setLayout21x8()` gives 21 columns, 0–20. Named in the template. **S154 and S190 each seated this row separately — one finding, two rows. Merged at S191; that duplicate is why S190's closure count read 22 instead of 21.** |
 | `L08-14` | ✅ SHIPPED | S190 | `drawPositionBar(pos)` now takes the position instead of re-reading the floor, so the marker shows the observation the robot steered on. **The clean fix depends on `L08-02`, which is unruled — the lesson says so rather than pretending a refactor that was not done.** |
+| `L08-08` | ✅ RULED + SHIPPED | S192 | **C1 residue, and it is not an L08 row.** Swept as the PHENOMENON (TRIM opposing a feedback loop) rather than the spelling, the claim is **12 prose sites across FIVE lessons** — L06 ×1, L08 ×2, **L10 ×4** (prose ×2, glossary, Quick Reference table row), L11 ×2, L12 ×3 (incl. KEY TERM) — plus **5 bank questions**. §16.31 retired the SLOGAN at S161 and the MECHANISM underneath survived, because that sweep was keyed on the phrasings table. **The claim is BACKWARDS, not loose:** TRIM is feed-forward and enters the same additive channel as the P-term, so it removes the disturbance the P-term is otherwise stuck holding a standing offset against. **Triple-checked; ARM 1 (the book's own `driveDistanceAccel` carrying TRIM inside a `while` loop) FAILED to refute — that loop closes on DISTANCE — and was discarded.** ARM 2: L15 §3.4 in the book's own words. ARM 3: L15 §3.6 already prescribes *check TRIM* for a line-loop offset. ARM 4: simulation — mismatch 12 / TRIM 0 → error 75, TRIM 12 → 0; blinding controls return −75 and 150; `error × Kp` constant at 6.000 across a 4× sweep. **0 Maker payloads, 0 bytes** (all 179 Maker hits are the benign `// wheels are fighting on purpose` turn comment). **`L01` is CLEAN — a hit is not a defect.** |
+| `L10-12` | ✅ SHIPPED | S192 | Same claim family, closed in the same pass. L10 carried **four** sites, two of them in the reference apparatus students actually consult — the glossary *Closed Loop* entry and the Quick Reference row whose TRIM column read *never*, with the reason given as the P-controller already correcting bias. **The literal status glyph is deliberately NOT quoted here: it is the structural marker `census.worklist()` reads as REFUTED, and quoting it inside a row silently moved `fixed` by one. Caught immediately because the tally is derived now.**. A fifth bank question, **`L10_B21`**, was found only by an assertive-register sweep after the first four were fixed. |
+| `L11-08` | ✅ SHIPPED | S192 | Same family. §8A.1 and §7C both rewritten to the deliberate-pedagogical reason. **`L11_B44` needed restructuring, not rewording** — its stem WAS the false claim with `correct: true`, the `L08_B25` shape from S191. |
+| `L12-18` | ✅ SHIPPED | S192 | Same family, and GPT was right that Bonus B4's premise was unsound. L12's prose already gave the correct reason (*the gyro is watching*) and then added the false mechanism. Corrected canon: **TRIM is a straight-line correction and a turn has no straight line to protect.** **`L12_B35`'s key had to FLIP** — its keyed-correct option was the false mechanism, and a distractor marked wrong was essentially right. |
+| `L15-08` | ✅ SHIPPED | S192 | **GPT wrote this at S154 and nobody read it: _"I is the only term that can remove steady-state error — true within the P/I/D feedback terms, but the robot already has feed-forward."_ Four independent arms re-derived a finding that was sitting in this file the whole time.** L15 §3.4 now says I is the only one *among the three feedback terms*, and names TRIM as the feed-forward half. It also carries the **back-pointer to L08** (DJ ruling S192), closing the spiral L08's forward question opens. |
 | `L03-B1` (untagged) | ✅ HALF-CLOSED | S179 | Part 2 asked for the robot tethered AND 6+ feet of floor at once; now L01's floor test, in order. The *6+ feet* figure itself is still a bench item. |
 
 ## Parked with a reason — NOT closed, and not to be re-investigated
@@ -196,7 +204,7 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 
 # PART 0b — OPEN (everything not named above)
 
-**148 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
+**143 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
 the CLOSED and PARKED tables above ARE the list, by subtraction. What this section does is make
 the arithmetic checkable, so a reader can tell at a glance whether a lesson has been worked.
 
@@ -955,4 +963,4 @@ and they are the ones that settle a physical claim.
 - READ → FIX → QUIZ, and the read does not transfer between sessions (rule 37).
 
 ---
-*Worklist v1.2 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 95 closed as of S191 · L01-02's scope re-measured after the S154 figures proved to be line counts*
+*Worklist v1.12 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 100 closed as of S192 · L01-02's scope re-measured after the S154 figures proved to be line counts*

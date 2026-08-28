@@ -1,9 +1,9 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 27, 2026 (Session 191 — **THE INSTRUMENT BUILT TO STOP A CONFIDENT WRONG NUMBER PRODUCED ONE**)
-**Status:** ✅ **S191 CLOSED — `L08-02` AND `L08-06` RULED AND SHIPPED, THE WORKLIST COUNT RECONCILED TO 95 CLOSED / 89 FIXED / 2 PARKED / 148 OPEN OF 245, AND `census.py` v1.1.0 AFTER IT RETURNED A CONFIDENT `0 MATCHES` ON A GLOB IT COULD NOT READ. L01–L07 DONE; L08 HAS TWO ROWS LEFT, NOT ZERO. 80/80 GATES.**
+**Date:** August 27, 2026 (Session 192 — **THE GATE BUILT THIS SESSION CAUGHT THIS SESSION'S OWN DOCUMENTS FOUR TIMES**)
+**Status:** ✅ **S192 CLOSED — GATE 81 AND `census.worklist()` BUILT (§24.24a), THEN USED: THE C1 RESIDUE PASS SHIPPED, CLOSING FIVE ROWS — `L08-08`, `L10-12`, `L11-08`, `L12-18`, `L15-08`. THE TALLY IS NOW 100 CLOSED / 94 FIXED / 2 PARKED / 143 OPEN OF 245, DERIVED AND GATED IN ALL THREE HOMES. 81/81 GATES. `L08-15` IS THE LAST IN-SCOPE ROW BEFORE L09.**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.1 · L07 v04.33.1 · L08 v04.34.2 · L09 v05.27.6 · L10 v02.30.6 · L11 v02.31.3 · L12 v01.35.3 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.0 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,801** · Bible **v8.187** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.74.7** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.5 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.0.2 · census v1.1.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `c8a7c42`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.3 · L09 v05.27.6 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.1 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,811** · Bible **v8.188** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.75.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.5 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.1.0 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `db04d7f`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 ---
@@ -82,6 +82,106 @@ say to fill them with a figure that has not been reconciled (rule 50).** The row
 discrepancy is recorded in the file, and the next session files ONE derived answer in all three homes.
 
 ---
+## WHAT SHIPPED IN S192
+### THE C1 RESIDUE PASS — THE CLAIM WAS BACKWARDS, AND IT WAS IN FIVE LESSONS
+§16.31 retired the SLOGAN at S161. **The MECHANISM underneath it survived, because that sweep was
+keyed on the phrasings table.** Swept as the PHENOMENON instead — TRIM opposing a feedback loop — the
+claim is **12 prose sites across five lessons** (L06 ×1, L08 ×2, **L10 ×4** including the glossary and a
+Quick Reference row, L11 ×2, L12 ×3 including a KEY TERM) plus **5 bank questions**. **L01 is clean;
+three L10 hits were the lesson TITLE.** A hit is not a defect.
+**TRIM is FEED-FORWARD and enters the same additive channel as the P-term**, so it removes the
+disturbance the P-term is otherwise stuck holding a standing offset against. They sum; they do not
+fight. **Triple-checked, and ARM 1 FAILED TO REFUTE and was discarded** — `driveDistanceAccel` does
+carry TRIM inside a `while` loop, but that loop closes on DISTANCE, which §16.31 already distinguishes.
+ARM 2: **L15 §3.4**, the book's own words — *P settles at a non-zero error and structurally cannot
+remove it.* ARM 3: **L15 §3.6 already prescribes “check TRIM” for a line-loop offset**, found by a
+control built to BREAK arm 2. ARM 4: simulation of the shipped arithmetic — mismatch 12 with TRIM 0
+settles at **75**, with TRIM 12 at **0**; blinding controls return **−75** and **150**, so the sim can
+call TRIM harmful; `error × Kp` is constant at **6.000** across a fourfold Kp sweep.
+**`L15-08` SAID THIS AT S154 AND NOBODY READ IT.** Four arms re-derived a finding sitting in the
+worklist the whole time. **Read the row before measuring.**
+
+### THE GATE CAUGHT THIS SESSION'S OWN DOCUMENTS FOUR TIMES, PLUS THREE MORE UNDER-REACHES
+Gate 81 refused the S193 handoff drafted with **no tally at all**; refused a **projected** post-fix
+tally written as digits (twice — projected figures now go in WORDS, and the handoff says so); and
+refused LIVE.md until this block was written. Separately: **`L10_B21`**, a fifth bank question, surfaced
+only from an assertive-register sweep run AFTER the first four were fixed; **gate 75** caught
+`ZUMO_QUIZ_L13.yaml` pinning three lessons UNQUOTED, which an exact-string predicate could not see (the
+PREDICATE was fixed, not the three instances); and **a ❌ quoted as prose inside a closure row moved
+`fixed` to 93**, because that glyph is the structural marker `census.worklist()` reads as REFUTED.
+**Every one was found by an instrument, not by re-reading.**
+
+### A PREDICATE AT ZERO IS NOT A SENTENCE THAT READS (S192 triple check)
+The prose residue sweep returned zero while two L11 sentences were still broken — the second half of
+each was replaced and the first half left saying the same thing twice: *deliberately does not — because
+we leave it out deliberately*. **Zero residue proves the old string is gone, never that what replaced it
+reads.** Caught by an arm that read all fourteen replacements RENDERED; its control is that the other
+twelve came back clean. Two independent further arms agreed the pass is complete: the diff shows a
+version bump on every edited lesson (control: reverting one bump fires `session_versions`), and an
+ADVERSARIAL paraphrase sweep — built from vocabulary the fix never uses, so it cannot confirm its own
+edits — returns only L09 and L12 already stating the CORRECTED canon.
+
+### RETIREMENTS REGISTERED AFTER ZERO, NOT BEFORE
+I ruled register-first and **`retired_claims.py` refuted it in its own header**: *an entry that is
+already firing is not a gate, it is a backlog.* Fixed to zero, then registered **four spellings, not
+one** — the predicate widened three times in one session (6 → 7 → 13 sites), and a single pattern would
+inherit whichever blind spot the last widening left. **21 registered, was 17. Blinding-controlled:**
+each spelling planted into L08 in turn, and each fires naming its own row.
+
+Applied S192: `census` **v1.2.0** · `book_gates` **v1.75.0** (81 gates) · `retired_claims` **v1.1.0** ·
+Bible **v8.188** · L06 **v04.37.2** · L08 **v04.34.3** · L10 **v02.30.7** · L11 **v02.31.4** ·
+L12 **v01.35.4** · L15 **v02.32.1** · eleven bank bumps, every pin earned. **0 Maker payloads, 0 bytes.**
+81/81 gates, `gate_payload_match` PASS with the advisory unmoved at 635, 16 banks valid,
+`callout_id` 1134, `retired_claims` CLEAN with 21 registered, `prose_canon` 0 new / 7 pinned / 0 orphan.
+
+
+
+### `census.py` v1.1.0 → v1.2.0 — THE WORKLIST TALLY FINALLY HAS AN OWNER
+Until now no instrument derived `closed / fixed / parked / open / total`. Three documents each
+stated it and each was maintained by hand, **which is how a wrong split survived nine sessions**.
+`worklist()` returns seven Populations and reproduces every published figure exactly —
+**245 / 95 / 2 / 148 / 89** — with the six ❌ rows it finds being the exact six S191 reconciled by
+hand. `out_of_scope` isolates **`L03-B1`** (in Part 0, never seated in Part 2) rather than dropping
+it. **Two independent readers of the total** — Part 2's ID rows and the sixteen section headings
+expanded to the rows they declare — so `agree()` compares like with like (rules 83/84). It
+**RAISES** on a missing PART boundary, an ID seated twice, or a closed/parked overlap: v1.1.0's
+lesson is that an unknown reported as a number is the whole failure class.
+**THE BLINDING CONTROLS ARE WHAT MAKE L1 EVIDENCE.** Against a `worklist()` returning five typed
+constants, **L1 still PASSES** while L2/L3/L4 fail. Against a `fixed`-collapsed-into-`closed`
+sabotage, only L5 fires — and it prints `(closed 95, fixed 95)`, **the nine-session defect
+reproduced**. 19 controls, was 11 at S190 and 14 at S191.
+
+### GATE 81 (§24.24) — A DERIVED TALLY IS THE SAME FIGURE IN EVERY HOME
+Truth is `census.worklist()`, **IMPORTED** the way gate 78 imports `DISCARD_BASELINE`, never
+re-implemented. Two arms gate 78 does not have: **absence fails** — a home that stopped stating the
+figure cannot disagree with anything — and **the under-reach is pinned with a reason rather than
+silent**, which is how gate 78 missed the same shape at S175 and again at S178.
+**ELEVEN CONTROLS. FOUR OF THEM FOUND DEFECTS IN THE GATE BEFORE IT LANDED:** the under-reach
+detector was built as the pricer's own predicate and a planted lone assertion sailed through green;
+the session guard `(?<![A-Za-z])` was **defeated by backtracking**, matching `90` inside `S190`;
+four of six pins were **orphans** killed by guards added later in the same session; and FORM C
+priced the **denominator** of `148 of 245 rows are OPEN`, failing the gate on correct prose.
+**A fifth defect was in the control harness itself** — `sys.path[0]` is the probe's own directory,
+which was also the snapshot directory, so a backup `census.py` **shadowed the repo's** and the
+census-sabotage control imported a clean copy and stayed quiet. Rule 59, in the harness.
+**THE PREDICATE IS THE RUN, NOT THE LONE NOUN, AND THAT WAS MEASURED.** A digit-near-a-status-word
+form manufactured `TOTAL = 110` out of gate 78's own discard sentence, `TOTAL = 18` out of *intake
+of 18 GPT feedback documents*, `FIXED = 68,123` out of the intake word count, and `CLOSED = 0` out
+of the heading `# PART 0 — CLOSED ROWS`. All four are correct prose.
+**AND IT CAUGHT THE S193 HANDOFF ON ITS FIRST REAL USE** — drafted with no tally in it at all.
+
+### BIBLE §24.24a SEATED, AND WHAT S192 DID *NOT* DO
+Both homes filed; `current_session()` returns **192**; `GPT_WORKLIST.md` regenerated on the bump.
+**No lesson, Maker, image, CSS or bank byte changed.** `L08-08` is priced at **one** lesson site,
+`Lesson_08.html:1325`, spelled **`CLOSED loop` — uppercase, unhyphenated**; `closed-loop`,
+`closed loop` and `Closed-Loop` each return **0** against that file. `L08-15` is unpriced.
+
+Applied S192: `census` **v1.2.0** · `book_gates` **v1.75.0** · Bible **v8.188**. 81/81 gates,
+`gate_payload_match` PASS with the advisory unmoved at 635, 16 banks valid, `callout_id` 1134,
+`retired_claims` CLEAN, `prose_canon` 0 new / 7 pinned / 0 orphan, `site_parity` PARITY twice at
+S192 open against `db04d7f`. `byte_audit` owes nothing — zero payloads moved, zero bytes.
+
+
 ## WHAT SHIPPED IN S191
 
 ### `census.py` v1.0.1 → v1.1.0 — THE INSTRUMENT BUILT TO STOP A CONFIDENT WRONG NUMBER PRODUCED ONE
