@@ -4,7 +4,7 @@
 
 **NOTHING FROM S193 IS PUSHED.** 19 paths differ from HEAD (`d90399d`) — 17 modified, one deletion,
 one new file. 0 unbumped.
-`git rm ZUMO_S193_HANDOFF.md` is part of this push and **`ZUMO_S194_HANDOFF.md` IS A NEW FILE** —
+**Deleting `ZUMO_S193_HANDOFF.md` is part of this push** and **`ZUMO_S194_HANDOFF.md` IS A NEW FILE** —
 both are checkboxes in GitHub Desktop, which is where the deletion and the new file get missed.
 **`newproject.html` was NOT touched this session** — no Maker upload, no rename-on-disk dance.
 If `__pycache__/` exists, delete it LAST; it regenerates on every gate run.
