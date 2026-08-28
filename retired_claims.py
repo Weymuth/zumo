@@ -37,7 +37,19 @@ import os
 import re
 import sys
 
-VERSION = 'v1.1.0'
+VERSION = 'v1.1.1'
+# v1.1.1 (S193): 21 -> 23. A FIFTH L10-12 SPELLING, AND L08-15.
+#   The four L10-12 spellings registered at S192 read CLEAN over a LIVE instance of the
+#   claim: not in prose, in the `why:` attached to a wrong ANSWER in L10_B21. That field
+#   asserts what the book says, so the structural exemption below never covered it - and
+#   all four predicates missed it because all four were keyed on the prose the sweep had
+#   just finished reading. FOUR SPELLINGS SHARED ONE BLIND SPOT: they were four readings
+#   of one corpus, not four readings of the claim (rules 83/84). The explanation attached
+#   to a distractor is prose too, and nothing was looking at it.
+#   L08-15 is the SAME FAMILY INVERTED: C1 called feed-forward a rival of the loop; this
+#   called a feed-forward rule a loop. Registered as the PROPORTIONAL spelling only,
+#   because L15 GRAPHIC 15.2's "two controllers" (P vs PD) is TRUE and stays - it is the
+#   standing negative control, and it is why this run still prints CLEAN.
 # v1.1.0 (S192): THE C1 RESIDUE REGISTERED - FOUR SPELLINGS FOR ONE CLAIM, ON PURPOSE.
 #   16.31 retired the TRIM SLOGAN at S161 and the MECHANISM under it survived in five
 #   lessons for 31 sessions, because that sweep was keyed on the phrasings table. The
@@ -126,6 +138,27 @@ REGISTRY = [
      'TRIM gives the P-term a constant to spend the day undoing', 'S192'),
     ('L12-18', r'second correction that fight|controller that is already (right|correct)',
      'TRIM is a second correction fighting a controller that is already right', 'S192'),
+    # --- S193. A FIFTH L10-12 SPELLING. The four above all reached zero at S192 and
+    # --- the registry still read CLEAN over a live instance: L10_B21's DISTRACTOR
+    # --- `why:` said "the stated mechanism is two controllers correcting the same
+    # --- thing at once" - an ASSERTION about the book, not a declared-wrong option,
+    # --- so the structural exemption never applied. Four spellings inherited one
+    # --- blind spot between them because all four were keyed on the PROSE the sweep
+    # --- had just read. The explanation attached to a wrong answer is prose too.
+    ('L10-12', r'two controllers correcting',
+     'the stated mechanism is two controllers correcting the same thing at once '
+     '(the line sensors read the LINE, not the motors)', 'S193'),
+    # --- S193, L08-15. A DIFFERENT CLAIM FROM THE C1 FAMILY ABOVE, AND THE OPPOSITE
+    # --- ERROR: C1 called feed-forward a RIVAL of the loop; this calls a feed-forward
+    # --- rule a LOOP. L08 C6 maps line error to a throttle command and NOTHING
+    # --- measures the robot's actual speed, so no loop closes on speed. Two spellings.
+    # --- NOT registered as a bare (two|second) + controller: L15 GRAPHIC 15.2 says
+    # --- "the same step, two controllers: P alone oscillates, PD glides" about P and
+    # --- PD, which ARE two controllers of one loop. A predicate that cannot tell those
+    # --- apart would retire a true sentence (rule 34).
+    ('L08-15', r'second proportional controller|[Tt]wo proportional controllers',
+     'the Racing Line throttle rule is a second proportional controller '
+     '(it is proportional, but nothing measures speed, so no loop closes on it)', 'S193'),
 ]
 
 

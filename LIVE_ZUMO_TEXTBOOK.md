@@ -1,11 +1,47 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 27, 2026 (Session 192 — **THE GATE BUILT THIS SESSION CAUGHT THIS SESSION'S OWN DOCUMENTS FOUR TIMES**)
-**Status:** ✅ **S192 CLOSED — GATE 81 AND `census.worklist()` BUILT (§24.24a), THEN USED: THE C1 RESIDUE PASS SHIPPED, CLOSING FIVE ROWS — `L08-08`, `L10-12`, `L11-08`, `L12-18`, `L15-08`. THE TALLY IS NOW 100 CLOSED / 94 FIXED / 2 PARKED / 143 OPEN OF 245, DERIVED AND GATED IN ALL THREE HOMES. 81/81 GATES. `L08-15` IS THE LAST IN-SCOPE ROW BEFORE L09.**
+**Date:** August 28, 2026 (Session 193 — **THE GATE BUILT LAST SESSION WAS BLIND TO A TABLE THE SAME SESSION LEFT FIVE CLOSURES STALE**)
+**Status:** ✅ **S193 CLOSED — `L08-15` SHIPPED AND L01 THROUGH L08 ARE DONE; L09 IS THE FRONTIER. GATE 82 (§24.24b) BUILT AND KEPT ON A MEASUREMENT: against the exact worklist file at HEAD, gate 81 PASSES and gate 82 FAILS naming all five rows S192 closed. The tally is 101 CLOSED / 95 FIXED / 2 PARKED / 142 OPEN of 245, derived and gated in FOUR homes. 82/82 GATES.**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.3 · L09 v05.27.6 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.1 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,811** · Bible **v8.188** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.75.0** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.5 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.1.0 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `db04d7f`.**
+**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.27.6 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,812** · Bible **v8.189** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.76.1** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.1.1 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `d90399d`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
+
+## WHAT SHIPPED IN S193
+
+**`L08-15`, THE C1 FAMILY INVERTED.** C1 called feed-forward a RIVAL of the loop; this called a
+feed-forward RULE a loop. L08 C6 said *two proportional controllers running on the same error*, but
+`speed = BASE_SPEED − KS×|error|` runs off the STEERING loop's error and **nothing measures the
+robot's actual speed**. 2 sites, **0 Maker payloads, 0 bytes**. `L08_A17` was RESTRUCTURED, not
+reworded — its stem asserted the defect while its correct option told the truth.
+**GPT's second half does not reproduce:** *Adaptive Kp is called PID* — measured, **ZERO** sites.
+
+**THREE ARMS AGREED AND WOULD HAVE SHIPPED A DEFECT ANYWAY.** A parse of the shipped solution (only
+`readLinePosition()`, zero encoder reads), the book's own Closed Loop definition applied mechanically,
+and a load-disturbance simulation (137.5 and never corrects, against a real speed loop's 200.0) — each
+with a control that fires. **The fourth arm is what mattered:** a sweep of all 132 `controller` /
+`closed loop` sites found **L15 §5.8 BUILDS THE REAL SPEED LOOP**, and my forward pointer *you already
+own the sensor* **pointed nowhere**. It now names Lesson 15 without answering it, and L15 §5.8 carries
+the back-pointer (DJ ruled both).
+
+**`L10-12` RESIDUE, AND FOUR SPELLINGS SHARED ONE BLIND SPOT.** `L10_B21`'s DISTRACTOR `why:` still
+asserted the retired mechanism. `retired_claims` read CLEAN over it — the structural exemption covers
+a declared-wrong OPTION, but a `why:` asserts what the BOOK says, and **all four S192 spellings were
+keyed on the PROSE that sweep had just read: four readings of one corpus, not four of the claim.**
+Fifth spelling registered; **no new row, the total stays 245.**
+
+**GATE 82 (§24.24b).** The session that BUILT gate 81 left the per-lesson table reading 95 / 89 / 148
+against a truth of 100 / 94 / 143, and **81/81 passed over it for a full session**. A table cell is a
+bare digit between pipes; its status word is in the header row. **Different population, different
+predicate** — widening 81 would price every number in every table (gate 78's mistake, third time).
+Six controls, all firing, including a row that still SUMS but disagrees with truth.
+
+Applied S193: L08 **v04.34.4** · L15 **v02.32.2** (both minor) · `book_gates` **v1.76.1** (82 gates) ·
+`build_family_map` **v1.6.6.6** · `retired_claims` **v1.1.1** (23 registered) · Bible **v8.189** ·
+eight bank bumps, every pin EARNED by a CLOSED DIFF (rule 37). `css/book.css` regenerated —
+**count AND RANK moved, proved before the digest baseline was touched; a SET comparison would have
+called it order-only and been wrong.** `GPT_WORKLIST.md` regenerated on the Bible bump (S175).
+**`byte_audit` is owed nothing — zero payloads, zero bytes.**
 ---
 ---
 ---
@@ -75,11 +111,16 @@ a fifth time in one session**.
   is the subject of two bank questions about `static`.
 Both move bytes and need the `byte_audit` harness. Neither belongs in a close.
 
-### THE WORKLIST COUNTS ARE DELIBERATELY NOT UPDATED
-A derivation over Part 0's own ✅ rows returns **87 closed / 2 parked / 156 open of 245**, and it
-disagrees with the standing table on L02, L04 and L13. **§24.24 says a count has three homes; it does not
-say to fill them with a figure that has not been reconciled (rule 50).** The rows are seated, the
-discrepancy is recorded in the file, and the next session files ONE derived answer in all three homes.
+### ~~THE WORKLIST COUNTS ARE DELIBERATELY NOT UPDATED~~ — STRUCK S193
+**This was written at S190 and was correct then. It is false now and it sat in the CURRENT region for
+three sessions.** S191 reconciled the L02/L04/L13 discrepancy by hand, S192 built `census.worklist()`
+so the tally is DERIVED rather than reconciled, and S193 seated gate 82 over the table as well — so
+the figures it named (87 closed, 156 open) disagree with every live home by fourteen.
+**GATE 81 IS WHAT FOUND IT**, on its first run against a LIVE.md whose current region finally
+resolved: the gate read this paragraph's digits, not the Status line's, and named them.
+**A note that survives the session that settles it is re-read as current by the next reader
+(rule 72), and the current region is the one place that costs the most.** Struck rather than
+deleted, so the next reader sees why.
 
 ---
 ## WHAT SHIPPED IN S192

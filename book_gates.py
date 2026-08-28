@@ -2,7 +2,25 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.75.0'
+VERSION = 'v1.76.1'
+# v1.76.1 (S193): three pins moved for L15 5.8's back-pointer callout (15.44), each with its
+#   reason: image references 1,210 -> 1,212 (an arrow-repeat mark and a spiral_star_08),
+#   the gate 47/59 callout census 1,134 -> 1,135 in BOTH its homes (the comparison AND the
+#   failure message - S157's lesson, editing the readable home is editing the wrong one),
+#   and the §27.11 digest, proved count AND rank first.
+# v1.76.0 (S193): GATE 82 NEW - §24.24b THE TALLY'S TABLE AGREES WITH THE TALLY.
+#   Gate 81 shipped at S192 and the SAME SESSION left the per-lesson table five closures
+#   stale - 95 / 89 / 148 against a truth of 100 / 94 / 143 - and 81/81 passed over it for
+#   a full session. MEASURED, NOT ARGUED: run against the exact file at HEAD, gate 81
+#   PASSES and gate 82 FAILS naming all five stale rows. 81 prices a digit BESIDE A STATUS
+#   WORD; a table cell is a bare digit between pipes whose status word lives in the header
+#   row, up to sixteen lines away. Different population, so a different predicate - widening
+#   81 to swallow bare digits would price every number in every table in the file, which is
+#   gate 78's mistake for the third time.
+#   Six controls, all firing: a wrong cell; a row that still SUMS but disagrees with truth;
+#   a TOTAL that disagrees with its own columns; a deleted lesson row; a deleted TOTAL row;
+#   a non-integer cell. The row-sum arm is INDEPENDENT of the truth arm on purpose, so a
+#   table can fail arithmetic even when every figure happens to match.
 # v1.75.0 (S192): GATE 81 NEW - §24.24 A DERIVED TALLY IS THE SAME FIGURE IN EVERY HOME.
 #   The worklist count has three homes and all three were hand-maintained, which is how a
 #   wrong `closed`/`fixed` split survived NINE sessions (S191). Truth is now
@@ -2164,7 +2182,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1210:   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
+if _seen != 1212:   # 1210 -> 1212 at S193: L15 5.8's BUILDS ON back-pointer to L08 C6 lands an arrow-repeat mark AND a spiral_star_08 (L08-15's forward pointer answered; DJ ruling S193)   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
                                       # lands one bullseye mark.
                                       # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
@@ -2200,7 +2218,7 @@ if _seen != 1210:   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a s
                                       # L10. stars.svg in INSIGHT 10.113 (the StopReason
                                       # teaching block) plus exclamation-triangle, sticky
                                       # and check-circle in Step 6b's three new callouts.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,210 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,212 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2617,7 +2635,17 @@ import hashlib as _hl
 #       whole diff is the header coverage count 22,985 -> 22,976 and two usage-count comments:
 #       .tok-569cd6 x2765 -> x2759 and .tok-7cbf6e x1522 -> x1520, from the nine lastPosition
 #       spans deleted across L08 and L10 under L08-06.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '645f0007c777c365'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '7b63f11da2481f34'
+# S193 digest move. PROVED COUNT AND RANK before the baseline was touched, per S180/S190:
+#   574 rules and 2,033 declarations at BOTH ends, ZERO names added, dropped or repointed,
+#   and every declaration block BYTE-IDENTICAL. The whole 38-line raw diff is the header
+#   census 22,976 -> 22,979 plus three usage counts, two of which MOVED in the frequency
+#   ordering: .img-h-11em x27 -> x28 and .callout-2e86ab-bg-e7f0fa-2 x7 -> x8 each displaced
+#   a neighbour, and .div-fs-105em x804 -> x805 did not. That is COUNT AND RANK, not
+#   count-only - a SET comparison would have called this order-only and been wrong (S190).
+#   Cause: L15 5.8's one BUILDS ON callout (15.44), which lands a div, an inner div and a
+#   spiral_star_08 img. §27.8b's cycle is NOT owed - its danger is a name that disappears
+#   or repoints, and zero names did either.
 #   S172 move. Digest ONLY, 574/2,033 both ends, class SET byte-identical. L13's two
 #   challenge templates and their two solutions gain the Step 6b kill guard, so eight
 #   printed lines each grow an `if`/`break` keyword pair: tok-569cd6 2,683 -> 2,715,
@@ -3606,8 +3634,8 @@ try:
     # callout-2196f3-bg-e3f2fd-2 are both already in canon, so gate 5.1 stays silent, and
     # build_family_map assigns it (1133/1133, UNASSIGNED 0). The id was DERIVED as max+1
     # rather than typed - my first attempt used 2.60, which callout_id caught as a COLLISION.
-    elif _n != 1134:
-        bad.append('gate 59 saw %d callouts, expected the 1134 gate 47 holds' % _n)
+    elif _n != 1135:   # 1134 -> 1135 at S193: L15 5.8 BUILDS ON callout 15.44 (L08-15 back-pointer)
+        bad.append('gate 59 saw %d callouts, expected the 1135 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -5257,6 +5285,99 @@ if len(_scopes81) != 3:
                'session handoff) - a gate reading a shrunken population passes for the '
                'wrong reason (\u00a724.24)' % len(_scopes81))
 gate('\u00a724.24 a derived tally is the same figure in every home', bad)
+
+
+# =====================================================================
+# GATE 82 (S193, §24.24b) - THE DERIVED TALLY'S TABLE AGREES WITH THE TALLY.
+#
+# WHY THIS IS A SEPARATE GATE AND NOT A WIDENING OF 81. Gate 81 prices a DIGIT
+# BESIDE A STATUS WORD. A table cell is a bare digit between pipes with no status
+# word anywhere near it - the status word is in the HEADER ROW, one to sixteen
+# lines away. S192 closed five rows, moved the figure in the prose that STATES it,
+# and left the per-lesson table that TABULATES it reading 95 / 89 / 148 against a
+# truth of 100 / 94 / 143. Every gate passed over that for a full session.
+#
+# THE POPULATION IS DIFFERENT, SO THE PREDICATE MUST BE. 81 reads sentences; 82
+# reads a grid, and gets its column meanings from the header rather than from
+# proximity. Widening 81 to swallow bare digits would price every number in every
+# table in the file - gate 78's mistake, third recurrence.
+# =====================================================================
+bad = []
+_W82 = None
+try:
+    import census as _c82
+    _W82 = _c82.worklist()
+except Exception as _ex82:
+    bad.append('census.worklist() raised (%s) - a table gate with no truth to '
+               'assert against is not a gate (\u00a724.24b)' % (_ex82,))
+
+if _W82 is not None:
+    try:
+        _src82 = open('ZUMO_GPT_REVIEW_WORKLIST.md', encoding='utf-8').read()
+    except OSError as _e82:
+        _src82 = ''
+        bad.append('cannot read the worklist (%s) (\u00a724.24b)' % _e82)
+
+    # Find the per-lesson grid MORPHOLOGICALLY: consecutive rows whose first cell is
+    # an L## label. No heading text is matched, so renaming the section cannot blind
+    # this. A table that vanishes resolves to zero rows and fails the coverage arm.
+    _rows82 = {}
+    _tot82 = None
+    for _ln82 in _src82.splitlines():
+        _cells = [c.strip().strip('*').strip() for c in _ln82.strip().strip('|').split('|')]
+        if len(_cells) != 6:
+            continue
+        _m82 = re.match(r'^(L\d{2})$', _cells[0])
+        if _m82:
+            try:
+                _rows82[_m82.group(1)] = [int(x) for x in _cells[1:]]
+            except ValueError:
+                bad.append('%s: a table cell is not an integer - an unparsed cell is '
+                           'an unknown, and an unknown reported as a number is the '
+                           'class (\u00a724.24b): %r' % (_m82.group(1), _cells))
+        elif _cells[0].upper() == 'TOTAL':
+            try:
+                _tot82 = [int(x) for x in _cells[1:]]
+            except ValueError:
+                pass
+
+    if len(_rows82) != 16:
+        bad.append('the per-lesson tally table resolved %d of 16 lesson rows - a gate '
+                   'reading a shrunken table passes for the wrong reason '
+                   '(\u00a724.24b)' % len(_rows82))
+
+    if _rows82:
+        # TRUTH, per lesson, derived - never carried forward.
+        _pop82 = {}
+        for _k82 in ('total', 'closed', 'fixed', 'parked', 'open'):
+            _pop82[_k82] = collections.Counter(
+                _i82.split('-')[0] for _i82 in _W82[_k82])
+        for _L82 in sorted(_rows82):
+            _have = _rows82[_L82]
+            _want = [_pop82['total'][_L82], _pop82['closed'][_L82],
+                     _pop82['fixed'][_L82], _pop82['parked'][_L82],
+                     _pop82['open'][_L82]]
+            if _have != _want:
+                bad.append('%s row reads %s but census derives %s '
+                           '(findings/closed/fixed/parked/open) (\u00a724.24b)'
+                           % (_L82, _have, _want))
+            # PER-ROW ARITHMETIC, independent of the truth above: a row that does not
+            # sum is broken even if every figure happens to match.
+            if _have[1] + _have[3] + _have[4] != _have[0]:
+                bad.append('%s row does not sum: closed+parked+open != findings %s '
+                           '(\u00a724.24b)' % (_L82, _have))
+
+    if _tot82 is not None and _rows82:
+        _colsum = [sum(_rows82[_L][_i] for _L in _rows82) for _i in range(5)]
+        if _tot82 != _colsum:
+            bad.append('the TOTAL row reads %s but its own columns sum to %s - a total '
+                       'that disagrees with the rows above it is the S192 defect in one '
+                       'line (\u00a724.24b)' % (_tot82, _colsum))
+    elif _rows82 and _tot82 is None:
+        bad.append('the per-lesson table has no TOTAL row - absence is a defect here, '
+                   'exactly as in gate 81 (\u00a724.24b)')
+
+gate('\u00a724.24b the per-lesson tally table agrees with the derived tally', bad)
 
 
 print('=' * 52)

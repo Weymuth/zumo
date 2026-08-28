@@ -1,7 +1,15 @@
 # ZUMO READING QUIZ BANK — LESSON 08
 # Line Following · Proportional Control, and Why Bang-Bang Fails
 #
-# Bank version: v1.0.16
+# Bank version: v1.0.17
+# Verified against: S193 - L08-15, the Racing Line throttle rule. A17's STEM asserted the
+#   defect ("adds a second proportional controller") while its correct option stated the truth,
+#   so rewording was not available - the question was RESTRUCTURED to ask why it is a rule and
+#   NOT a second closed loop (the L08_B25 / L11_B44 shape). Three distractors are the three ways
+#   students conflate the two: same function, signed vs. abs error, and "it becomes one once
+#   tuned". The lesson pin also moves: L08 C6's GOAL now names the asymmetry and poses the
+#   forward question (DJ ruled a forward pointer, S193). PIN EARNED BY A CLOSED DIFF (rule 37):
+#   Lesson_08's diff against HEAD is ONE hunk, that one sentence, plus the version line.
 # Verified against: S179 - the project-path propagation. DJ ruled
 #   Documents/PlatformIO/Projects/<FolderName> the correct default location (Bible 16.49); ten lesson
 #   prose sites, the Maker hint, two Bible 11 lines and one SVG label moved with it. PIN ONLY, no
@@ -105,9 +113,9 @@
 
 lesson: "L08"
 title: "Line Following — Proportional Control, and Why Bang-Bang Fails"
-bank_version: "1.0.16"
+bank_version: "1.0.17"
 source:
-  lesson_08: "v04.34.3"
+  lesson_08: "v04.34.4"
   lesson_07: "v04.33.1"
   lesson_05: "v04.30.0"
 
@@ -1049,16 +1057,19 @@ sets:
         type: multiple_choice
         cite: "§9 Challenge 6"
         points: 1
-        stem: "The Racing Line adds a second proportional controller. What does it control, and off what?"
+        stem: "The Racing Line adds a proportional throttle rule. Why is it a rule and not a second closed loop?"
         options:
-          - text: "The throttle — speed falls as the error grows, off the same error the steering already uses"
+          - text: "Nothing measures how fast the robot is actually going — the throttle is set from the steering's line error, and no speed is ever fed back"
             correct: true
-          - text: "The steering, using a second gain for the right motor"
+          - text: "It lives in the same function as the steering, so it cannot be a separate loop"
             correct: false
-          - text: "The gap timer, shortening it as speed rises"
+            why: "Where the code sits does not decide whether a loop closes. A loop closes when a sensor measures the thing being commanded."
+          - text: "It uses abs(error), and a closed loop needs a signed error"
             correct: false
-          - text: "The calibration, re-running it when error stays high"
+            why: "abs() is about braking having no direction (see the next question), not about feedback."
+          - text: "It is a rule only until you tune KS — once tuned, it is a closed loop"
             correct: false
+            why: "Tuning a gain adds no measurement. The robot still has no idea what its actual speed is."
 
       - id: L08_A18
         type: multiple_choice
