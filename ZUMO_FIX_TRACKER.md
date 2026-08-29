@@ -126,8 +126,14 @@ Both were carried as "confirmed live errors" into S184 and **both are false.** M
 re-read. Do not reopen without an artefact.
 
 - **A-Star hardware identity.** Closed at S162/S163, held by gate §16.25. All 18 mentions in
-  L01–L03 are correct; L03's two are a filename whose alt text and caption both say *Zumo 32U4 Main
-  Board*. §16.25 is LOCKED — see it before raising this a fourth time.
+  L01–L03 are correct. ~~L03's two are a filename whose alt text and caption both say *Zumo 32U4 Main
+  Board*.~~ **SUPERSEDED S194 — that sentence recorded the retired state as the target.** DJ ruled
+  *"Fix it everywhere."* The board is the **`Zumo 32U4 OLED Main Board`**, a different Pololu product
+  from the plain `Zumo 32U4 Main Board`; the asset is now
+  `L03_IMAGE_3-14_zumo_32U4_oled_main_board.jpg` and the filename hits are gone.
+  **This entry is why the tracker is read before the lessons: it would have told a future session to
+  restore the retired name.** §16.25 is LOCKED at Bible **v8.190**, and the retirement is registered
+  as `retired_claims` #24 — which does NOT read this file, so nothing but a human catches it here.
 - **L03 battery threshold.** All 34 figures across L01–L03 agree at 5,400 / 4,800 / 4,200. L01
   Challenge 11's 4,500 is a deliberate teaching point that explains why the warning is not at 4,200.
 

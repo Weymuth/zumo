@@ -59,7 +59,7 @@ board" in an Engineer's Log entry or a reading-quiz free response, the hoist is 
 the KEY TERM is doing its job and this item closes as declined. **That is a fact about the room and
 no instrument in this repo can see it — §24.17's first carve-out.**
 
-## 2. Rename `L03_IMAGE_3-14_astar_board.jpg`, or rule that it stays
+## 2. ~~Rename `L03_IMAGE_3-14_astar_board.jpg`, or rule that it stays~~ — CLOSED S194
 
 **Unruled since S155, still unruled at S162.** The file names a board the robot does not contain.
 
@@ -75,8 +75,18 @@ one creates an exception somebody must remember forever (rule 20). A rename is d
 `image_audit`, §21 image-reference coverage and `site_parity`, **and it needs a file deletion through
 GitHub Desktop — DJ's hands, and §24.17's recoverability carve-out.**
 
-**Nothing a student sees is wrong** — the filename appears only in the `src` attribute and inside the
-`(File: …)` clause. That is why it waits.
+~~**Nothing a student sees is wrong** — the filename appears only in the `src` attribute and inside the
+`(File: …)` clause. That is why it waits.~~
+
+**CLOSED S194 — DJ ruled *"Fix it everywhere,"* and the last line above was wrong.** The `(File: …)`
+clause IS student-visible, so the caption showed a student the correct name and the wrong one in the
+same sentence. Renamed to `L03_IMAGE_3-14_zumo_32U4_oled_main_board.jpg`.
+
+**And the rename was the smaller half.** The photograph's own silkscreen reads `Zumo 32U4 OLED` —
+the fleet's board is the **OLED Main Board**, a different Pololu product from the plain
+`Zumo 32U4 Main Board` §16.25 canonised in S162. All **14** lesson sites (L01 five, L03 nine) named
+the wrong variant; a morphological sweep of **394** `Zumo 32U4` mentions found the correct product
+name **zero** times. Bible canon corrected in three places; §16.25 recorded at v8.190.
 
 ## 4. Lesson 2's `GLOBAL VARIABLES` section — one coupled Maker + SVG pass (S178)
 

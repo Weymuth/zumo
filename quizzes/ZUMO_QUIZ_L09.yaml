@@ -103,7 +103,7 @@ lesson: "L09"
 title: "Intersections & Dead Ends — Teaching Your Robot to Decide"
 bank_version: "1.0.15"
 source:
-  lesson_09: "v05.27.6"
+  lesson_09: "v05.28.0"
   lesson_08: "v04.34.4"
   lesson_06: "v04.37.2"
 
@@ -1122,7 +1122,7 @@ sets:
         points: 1
         stem: "The Green Survey adds a temporary block to the STOPPED case. What does it show you?"
         options:
-          - text: "Live calibrated values from the two outer sensors, so you can slide white, green and black underneath and read all six numbers"
+          - text: "Live calibrated values from the two outer sensors, so you can slide white, green and black through underneath and watch the numbers move"
             correct: true
           - text: "The raw values from all five sensors"
             correct: false
@@ -1132,22 +1132,22 @@ sets:
             why: "That is Challenge 1's debug mode, which prints the verdict to the Serial Monitor."
           - text: "A running average of the last ten readings"
             correct: false
-            why: "No averaging. It shows what the sensors report right now."
+            why: "No averaging. It shows what the sensors report right now — which is the point: you sweep the tape through and record the lowest and highest you see."
 
       - id: L09_A13
         type: multiple_choice
         cite: "§6 Step 9, §7.1"
         points: 1
-        stem: "You have surveyed your green. How should you set GREEN_LOW_THRESHOLD and GREEN_HIGH_THRESHOLD?"
+        stem: "Your sweep gave a lowest and a highest for white, green and black. How should you set GREEN_LOW_THRESHOLD and GREEN_HIGH_THRESHOLD?"
         options:
-          - text: "Bracket both green readings with roughly 100 of margin on each side, staying clear of white and black"
+          - text: "Put each one in the middle of a gap: LOW halfway between your highest white and your lowest green, HIGH halfway between your highest green and your lowest black"
             correct: true
-          - text: "Set them to the exact green readings you measured"
+          - text: "Set them to the lowest and highest green you measured"
             correct: false
-            why: "With no margin, the smallest variation drops a real marker out of the band."
-          - text: "Leave them at 300 and 700 — the survey is only a sanity check"
+            why: "That leaves no room at all: the first reading slightly outside your sweep drops a real marker out of the band. A boundary belongs in the gap, not on the edge of the data."
+          - text: "Add and subtract a fixed 100 from your green readings"
             correct: false
-            why: "The survey exists to replace the guesses. Step 9's own instruction is to set them from what you measured."
+            why: "A fixed margin ignores the gap it is sitting in. On tape that reads close to black — the dark greens §4.1 warns about — adding 100 pushes GREEN_HIGH into the line's own range, and the robot starts calling the line a marker. A midpoint between two measured numbers cannot land outside them."
           - text: "Set LOW to your white reading and HIGH to your black reading"
             correct: false
             why: "That band covers the entire scale, so everything reads as green — which is close to what Sabotage Mystery 3 plants."

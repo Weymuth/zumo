@@ -1,7 +1,7 @@
 # ZUMO — GPT REVIEW WORKLIST (v1.12)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
-> **COUNTS ARE DERIVED AND CURRENT AS OF S193 — 101 CLOSED · 2 PARKED · 142 OPEN, of 245.**
+> **COUNTS ARE DERIVED AND CURRENT AS OF S194 — 103 CLOSED · 2 PARKED · 140 OPEN, of 245.**
 > **GATE 81 NOW ASSERTS THIS FIGURE IN ALL THREE HOMES against `census.worklist()` (§24.24a, S192).
 > It is no longer maintained by hand in any of them.**
 > Derived by enumerating Part 2's ID rows (245, agreeing with all sixteen section headings, no
@@ -19,17 +19,17 @@
 >    the same finding. One finding, two rows: a live exactly-once violation, merged at S191.
 >    **S190 therefore closed 21 rows, not 22** — and the arithmetic says so: 72 + 21 = 93.
 >
-> **The split is kept visible so neither predicate can go missing again: of the 101 closed, 95 are
+> **The split is kept visible so neither predicate can go missing again: of the 103 closed, 96 are
 > fixed / verified / ruled and 6 are refuted or struck.** A headline that shows only one of those two
 > numbers is how this discrepancy survived nine sessions.
 
-> **STATUS: 101 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
+> **STATUS: 103 rows CLOSED (Part 0), 2 PARKED with reasons, 7 MEASURED (Part 5b), the rest UNVERIFIED.**
 >
 > **L01 THROUGH L08 ARE DONE. `L09` IS THE FRONTIER.** `L08-08` shipped at S192 as a
 > FIVE-ROW C1 residue pass — `L10-12`, `L11-08`, `L12-18` and `L15-08` closed with it, because they were
 > the same claim repeated and closing one would have left four rows describing work already done (the
 > `L06-02` shape). `L08-15` shipped at S193 — the same family inverted, and the last L08 row.
-> **142 rows remain OPEN.**
+> **140 rows remain OPEN.**
 > **Read PART 0 FIRST.** Rows below are kept verbatim as GPT wrote them even after they are fixed,
 > so a row's presence here means nothing on its own — Part 0 is what says whether it is still live.
 > These are GPT's claims plus my assessment of them. **Apart from the seven in Part 5b, none has
@@ -137,6 +137,8 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 | `L13-05` | ✅ PARTLY REFUTED | S167 | The lesson already names both failure modes; what was owed was the **assumption** rather than the risk. **Bible §16.34. Backfilled S181.** |
 | `L13-11` | ✅ VERIFIED | S167 | The `readCalibrated()` quote **is faithful** to the QTR bundled in `pololu/Zumo32U4@2.0.1`. The defect was the sentence introducing it. **Bible §16.33. Backfilled S181.** |
 | `L13-13` | ✅ SHIPPED | S181 | The servo claim. A hobby servo takes power, ground and a timed signal pulse and brings its own driver inside the case — it never asks a DRV8838 for a channel. §8A.3 now explains what a servo is, says plainly it does not compete with the tread drivers, and gives the real barrier: **there is no arm.** **L14 inherited the same claim and was fixed in the same pass.** `spoken for` is 0× book-wide. |
+| `L09-01` | ❌ MEASURED CLEAN | S194 | **DOES NOT REPRODUCE.** Seven prose sites, every one hedged: §1 *a starting guess, not a property of the color green*, §4.1 *where to start shopping, not a rule*, §3 *the bands are the idea, the numbers are yours*. §1 states outright the sensors measure infrared and cannot see green, and the bank's correct option is *starting guesses you replace with your own surveyed numbers*. **Not closed on GPT's vocabulary (§24.6c):** a morphological arm tested every numeric range in L09 for a hedge on its line — 6 ranges, 5 hedged, the one bare site a §6 hint CROSS-REFERENCING the band inside an argument about raw vs calibrated, not asserting it. Three controls: a planted unhedged range fires, a planted hedged range is silent, blinding every hedge word makes all ranges read unhedged. **0 sites, 0 Maker payloads, 0 bytes.** |
+| `L09-02` | ✅ SHIPPED | S194 | **BUILT, AND NOT THE WAY THE ROW PROPOSED.** GPT's *5–10 readings per material* is a STATIC repetition: tape held still under a stationary sensor measures the SENSOR, whose noise is tiny, so a student gets five near-identical numbers and learns false confidence wearing the costume of rigor. **The variation lives in the TAPE** — which part passes under, at what angle, under what light. Step 9 now has the student SLIDE each surface through while watching the live display and record the LOWEST and HIGHEST seen. Same class time, one continuous action, no new code. **The ±100 rule is replaced by a MIDPOINT rule:** LOW halfway between highest white and lowest green, HIGH halfway between highest green and lowest black. **MEASURED, and my first hypothesis was WRONG:** ±100 does NOT contradict §7.1's red-flag limits — it is safe for green in (250, 750) and §1 states 300–700, so the safe window strictly contains the stated range. **The real defect is that the safety is a COINCIDENCE OF THE NUMBERS, not a property of the rule.** ±100 breaks for green ≥ 750, §1 calls 300–700 *a starting guess, not a property of the color green*, and **§4.1 warns that dark forest greens read close to black — so the tape §4.1 warns about is exactly the tape that breaks §7.1's own rule** (green 780 → GREEN_HIGH 880, and a black sweep bottoming anywhere in 850–880 still CLEARS §7.1's calibration red flag — so the band swallows the line while every check passes). A midpoint between two measured numbers cannot land outside them. **It also spirals L04**, which already teaches calibration as *measuring a sensor's actual minimum and maximum* and whose Engineer's Log and TDP A4 table both ask for min/max — L09 was collecting points five lessons after the book taught distributions. **9 sites: 3 in §6 Step 9 · 3 in §7.1 · the §10 record rebuilt with Lowest/Highest columns plus two explicit GAP rows · `L09_A12` and `L09_A13`** (A13's stem and all four options re-authored; the new distractor is the ±100 rule itself, with §4.1 as its refutation). Table-width arm: 9 rows, all 4 wide, control fires on a broken row. Completeness sweep for the retired procedure: **0 surviving sites.** 0 Maker payloads, 0 bytes. |
 | `L13-02` | ✅ SHIPPED | S181 | `MAX_ROW_CM = 300.0` was called *a safety cap* that ends the row *before the robot grinds against* the wall. Three metres never fires before any wall, so the stated purpose was false. **DJ released the room-fact carve-out — the classroom field is not RCJ-spec — so the number is chosen: 150.0.** Comment rewritten as what it is (a runaway stop, sized above the longest row you expect) plus how to tune it. **59 Maker payload sites moved with the lesson**; the constant is inherited by L13–L16. Census updated, all 8 standing byte controls reproduce. |
 | `L13-04` | ✅ SHIPPED | S181 | *every row starts from truth* — the prox stops at a distance set by the wall's color and approach angle, so a row-end is a **bound on error, not a pose**. §8A.4 now says so. **First probed as DEAD in error:** the finding is real, the phrase GPT quoted is not what the tree says. |
 | `L13-14` | ✅ SHIPPED | S181 | *you have already flown it* — struck. §8A.4 now says plainly that SLAM builds a map and tracks the robot inside it and the sweep does neither, then keeps the honest half: you have used the idea SLAM is built on. |
@@ -206,7 +208,7 @@ Only D-6 resolved a row (`L01-14`), and that row is in the table below.
 
 # PART 0b — OPEN (everything not named above)
 
-**142 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
+**140 of 245 rows are OPEN.** This section does not list them — the exactly-once rule means
 the CLOSED and PARKED tables above ARE the list, by subtraction. What this section does is make
 the arithmetic checkable, so a reader can tell at a glance whether a lesson has been worked.
 
@@ -225,7 +227,7 @@ section — the one that disagreed with the old table for nine sessions — is v
 | L06 | 8 | 8 | 8 | 0 | **0** |
 | L07 | 10 | 10 | 10 | 0 | **0** |
 | L08 | 15 | 15 | 15 | 0 | **0** |
-| L09 | 13 | 0 | 0 | 0 | **13** |
+| L09 | 13 | 2 | 1 | 0 | **11** |
 | L10 | 16 | 1 | 1 | 0 | **15** |
 | L11 | 15 | 1 | 1 | 0 | **14** |
 | L12 | 18 | 1 | 1 | 0 | **17** |
@@ -233,7 +235,7 @@ section — the one that disagreed with the old table for nine sessions — is v
 | L14 | 20 | 0 | 0 | 0 | **20** |
 | L15 | 28 | 1 | 1 | 0 | **27** |
 | L16 | 30 | 0 | 0 | 0 | **30** |
-| **TOTAL** | **245** | **101** | **95** | **2** | **142** |
+| **TOTAL** | **245** | **103** | **96** | **2** | **140** |
 
 **L01 THROUGH L08 ARE DONE — L08 CLOSED AT S193 AND L09 IS THE FRONTIER.**
 
@@ -972,4 +974,4 @@ and they are the ones that settle a physical claim.
 - READ → FIX → QUIZ, and the read does not transfer between sessions (rule 37).
 
 ---
-*Worklist v1.12 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 101 closed as of S193 · L01-02's scope re-measured after the S154 figures proved to be line counts*
+*Worklist v1.12 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 103 closed as of S194 · L01-02's scope re-measured after the S154 figures proved to be line counts*

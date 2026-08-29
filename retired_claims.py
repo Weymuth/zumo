@@ -1,4 +1,4 @@
-"""retired_claims.py v1.0 - THE RETIRED-CLAIM REGISTRY.
+"""retired_claims.py - THE RETIRED-CLAIM REGISTRY.
 
 WHY THIS EXISTS (S186). Closing a GPT row often RETIRES a claim: a sentence the
 book used to assert and no longer may. The closing session verifies the claim is
@@ -37,7 +37,25 @@ import os
 import re
 import sys
 
-VERSION = 'v1.1.1'
+VERSION = 'v1.1.2'
+# v1.1.2 note (S194): the DOCSTRING used to open 'retired_claims.py v1.0'. VERSION had
+#   moved four times and that line never did, so a naive version grep found v1.0 while
+#   the home said v1.1.x - the SS5b two-homes defect, in the one file whose whole job is
+#   noticing that a claim moved in one place and not another. `session_versions --selftest`
+#   CONTROL D (grep_trap) had been RED on the clean tree for an unknown number of sessions
+#   because that selftest is not in the session-open ritual. Every other instrument in the
+#   suite carries NO version in its docstring; this one is now consistent with them.
+# v1.1.2 (S194): 23 -> 24. THE VARIANT, NOT THE BOARD - AND 82/82 PASSED OVER IT.
+#   Gate 76 (SS16.25) watches for A-Star being called the brain. It says nothing about
+#   WHICH Zumo main board, so the whole suite read ALL GATES PASS with the wrong product
+#   named in fourteen sites. Proved by control: restoring the short name to L03 left
+#   82/82 green. The fleet carries the `Zumo 32U4 OLED Main Board`, a different Pololu
+#   product from the plain `Zumo 32U4 Main Board` SS16.25 canonised at S162 - which
+#   stopped one word short of the variant and then carried the short spelling in its own
+#   canon line. NEGATIVE LOOKAHEAD ON PURPOSE: the retired thing is the name WITHOUT
+#   OLED, so `Zumo 32U4 OLED Main Board` must not fire. If a future lesson teaches the
+#   difference between the two products it will need the bare phrase, and per the scope
+#   note above the answer then is a ruling, not a looser pattern.
 # v1.1.1 (S193): 21 -> 23. A FIFTH L10-12 SPELLING, AND L08-15.
 #   The four L10-12 spellings registered at S192 read CLEAN over a LIVE instance of the
 #   claim: not in prose, in the `why:` attached to a wrong ANSWER in L10_B21. That field
@@ -159,6 +177,15 @@ REGISTRY = [
     ('L08-15', r'second proportional controller|[Tt]wo proportional controllers',
      'the Racing Line throttle rule is a second proportional controller '
      '(it is proportional, but nothing measures speed, so no loop closes on it)', 'S193'),
+    # --- S194. NOT A WORKLIST ROW - a Bible canon correction (SS16.25, v8.190).
+    # --- DJ ruling S194: "Fix it everywhere." The photograph's own silkscreen reads
+    # --- `Zumo 32U4 OLED`, which is the evidence; the product page is corroboration.
+    # --- Measured morphologically before it was edited: every `Zumo 32U4` plus its next
+    # --- three words, 394 mentions across sixteen lessons, the correct product name
+    # --- appearing ZERO times and all 14 sites carrying the short one.
+    ('16.25', r'Zumo\s*32U4\s+(?!OLED)[Mm]ain\s*[Bb]oard',
+     'the board named as the plain Zumo 32U4 Main Board '
+     '(the fleet carries the OLED Main Board, a different Pololu product)', 'S194'),
 ]
 
 

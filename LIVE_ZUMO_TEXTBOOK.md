@@ -1,11 +1,225 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 28, 2026 (Session 193 — **THE GATE BUILT LAST SESSION WAS BLIND TO A TABLE THE SAME SESSION LEFT FIVE CLOSURES STALE**)
-**Status:** ✅ **S193 CLOSED — `L08-15` SHIPPED AND L01 THROUGH L08 ARE DONE; L09 IS THE FRONTIER. GATE 82 (§24.24b) BUILT AND KEPT ON A MEASUREMENT: against the exact worklist file at HEAD, gate 81 PASSES and gate 82 FAILS naming all five rows S192 closed. The tally is 101 CLOSED / 95 FIXED / 2 PARKED / 142 OPEN of 245, derived and gated in FOUR homes. 82/82 GATES.**
+**Date:** August 28, 2026 (Session 194 — **THE HARDWARE-IDENTITY FIX NAMED THE RIGHT BOARD AND THE WRONG VARIANT, AND 82/82 PASSED OVER IT FOR THIRTY-TWO SESSIONS**)
+**Status:** ✅ **S194 — DJ RULING: *"Fix it everywhere."* The fleet carries the `Zumo 32U4 OLED Main Board`, a DIFFERENT Pololu product from the plain `Zumo 32U4 Main Board` §16.25 canonised at S162. All 14 lesson sites corrected (L01 five, L03 nine — one an `alt` a rendered sweep cannot see), Bible canon corrected in three places at **v8.190**, `L03_IMAGE_3-14` renamed, `ZUMO_AFTER_LAUNCH`'s parked rename item CLOSED after seven sessions unruled, and the retirement registered as `retired_claims` #24 with fire/silent controls. Zero Maker payloads, zero bytes. 82/82 GATES. Tally unmoved: 103 CLOSED / 96 FIXED / 2 PARKED / 140 OPEN of 245.**
 
-**Versions:** L01 v03.32.1 · L02 v03.26.1 · L03 v03.47.0 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.27.6 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,812** · Bible **v8.189** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.76.1** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.32.2 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.1.1 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.3 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `d90399d`.**
+**Versions:** L01 v03.32.2 · L02 v03.26.1 · L03 v03.47.1 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.28.0 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,814** · Bible **v8.191** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.76.4** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.33.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.1.2 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.4 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `45a8f45`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
+
+## WHAT SHIPPED IN S194
+
+**THE VARIANT, NOT THE BOARD.** §16.25 retired A-Star at S162 and installed `Zumo 32U4 Main Board` as
+the hardware KEY TERM. That is the OTHER Pololu product. **The evidence was inside the photograph the
+whole time** — `L03_IMAGE_3-14`'s own silkscreen reads `Zumo 32U4 OLED` beside the Pololu logo, and
+S162 had already cited that same image's `alt` text as the thing that *"settles what the photograph
+shows without a reshoot."* It settled the board and not the variant. §16.25 then carried the short
+spelling in its own canon line while naming the OLED fleet two paragraphs above — the
+contradicts-its-own-file shape the section was written to record.
+
+**MEASURED MORPHOLOGICALLY BEFORE A WORD WAS CHANGED** (§24.6c): every `Zumo 32U4` plus its next
+three words, not a search for the phrase expected — **394** mentions across sixteen lessons, the
+correct product name appearing **ZERO** times, all **14** sites carrying the short one.
+**A RENDERED SWEEP IS NOT A CORPUS SWEEP** — the first pass counted 13 and missed an `alt`
+attribute, because attributes are not rendered text. L05 already carried `Zumo 32U4 OLED main board`
+in one `alt`, so the correct spelling existed in the book once and never reached the canon.
+
+**THE BANK REPEATED IT AND THE PROSE FIX WOULD NOT HAVE REACHED IT.** `L01_B56`'s stem read *"The
+Zumo 32U4 Main Board and the ATmega32U4 are two names for the same part."* Fixed. Seven bank source
+pins bumped (L01/L02/L16 on L01, L03/L04/L11/L13 on L03) after sweeping all sixteen banks for the
+delta. The two remaining short-name hits are S162 narration inside YAML comments, which
+`assert_true_text` does not read — verified, not assumed.
+
+**THE CONTROL IS THE FINDING: 82/82 IS BLIND TO THIS.** Restoring the short name to L03 left the
+whole suite green. Gate 76 (§16.25) watches for A-Star being called the brain; it says nothing about
+WHICH Zumo main board. Registered instead as `retired_claims` **#24** (v1.1.1 → **v1.1.2**) with a
+**negative lookahead**, so `Zumo 32U4 OLED Main Board` cannot fire. Four controls: the page arm
+FIRES on a planted short name and is SILENT when restored; the lookahead discriminates all four
+casings correctly.
+
+**AND A FIFTH CONTROL DID NOT FIRE, WHICH IS THE REAL FIND.** Planting the short name into
+`L01_B56`'s stem left `retired_claims` CLEAN. `assert_true_text` reads a `true_false` question's
+`stem` AND `why:` only when `correct is True`; **when `correct is False` it reads NEITHER.** The
+stem is correctly exempt — it is the declared-false trap — but **the `why:` on a false true/false is
+prose in the book's voice and asserts what IS true.** This is S193's `L10_B21` finding one level
+over: S193 opened the distractor `why:` for multiple choice and the `true_false` FALSE branch was
+left closed. **Measured, not argued:** patching the branch and re-running against all 24 retirements
+and 16 banks returns **CLEAN — zero findings.** The widening is free today. **NOT TAKEN, and the
+reason is that zero fires is half a control:** it shows the widened arm does not false-fire, and
+shows nothing about whether it catches a real instance. A session that changed the content should
+not also change what the instrument watching that content can see. **DJ's ruling, and the patch is
+one line.**
+
+**THE TRIPLE CHECK FOUND TWO LIVE DEFECTS AND BLINDED ITSELF TWICE.** Four arms, each with a
+control. **ARM 1** (byte-level, whitespace-tolerant, all 348 tracked text files rather than the
+lessons) found the retired product name in **two places the targeted fix never reached, and neither
+is in `retired_claims`' 17-page scope**: `book_gates.py`'s gate-76 FAILURE MESSAGE told a future
+session *the board is the Zumo 32U4 Main Board* — **a gate instructing its reader to write the
+retired name** — and `ZUMO_FIX_TRACKER.md`, whose whole job is preventing reversion, recorded the
+retired name as the locked target. Both corrected; `book_gates` **v1.76.1 → v1.76.2**.
+**ARM 2** resolved all **1,824** local `src`/`href` references against the filesystem: **0 dangling**,
+old asset gone, one reference to the new name. **ARM 4** swept the PHENOMENON — every board reference
+within 60 characters of Zumo/32U4/Pololu, not the phrase expected — **31 sites, 14 naming the
+product, all 14 now carrying OLED**; the single hold-out is L12's *your Zumo's main board*, a
+possessive anatomical reference and not a product name.
+
+**ARM 3 WAS BLIND AND ITS OWN CONTROL WAS NULL, WHICH IS THE SESSION'S SHARPEST LESSON.** The
+line-granularity version marked a line "explained" once any intended pattern matched it, so a planted
+`brushed`→`brushless` edit riding on the SAME line as the product name was invisible. Rebuilt
+byte-exact — reconstruct every new line from its old line and demand equality — **22 pairs, 0
+mismatches.** But the first control **never injected**: the target phrase contains a `</strong>` and
+the plant silently no-opped, so a null control read as a pass. **A CONTROL THAT DOES NOT INJECT IS
+NOT A CONTROL**, and the only thing that caught it was checking the substitution count. Re-run with
+verified injection, the rebuilt arm FIRES on the rider and on a change to an untouched line, and is
+silent restored. **A THIRD SELF-INFLICTED ERROR CAME OUT OF THE SAME REPAIR:** the restore assertion
+used the word `brushless`, which L03 legitimately teaches, so a clean file read as contaminated —
+**a control predicate that cannot tell the plant from the corpus.** L03 was reverted to HEAD and the
+nine edits re-applied under discriminating assertions.
+
+**`L09-01` AND `L09-02` CLOSED — L09 IS 2 OF 13.** `L09-01` **DOES NOT REPRODUCE**: seven prose
+sites, every one hedged, and the bank's correct option already says *starting guesses you replace
+with your own surveyed numbers*. Not closed on GPT's vocabulary — a morphological arm tested every
+numeric range in L09 for a hedge on its line (6 ranges, 5 hedged, the bare one a §6 hint
+CROSS-REFERENCING the band rather than asserting it), with three controls. Recorded ❌, not ✅:
+**nothing was fixed, and the glyph is the predicate `census` reads.**
+
+**`L09-02` BUILT, AND NOT THE WAY THE ROW PROPOSED.** GPT's *5–10 readings per material* is a STATIC
+repetition — tape held still measures the SENSOR, whose noise is tiny, so five near-identical numbers
+teach false confidence dressed as rigor. **The variation lives in the TAPE.** Step 9 now has the
+student SLIDE each surface through while watching the live display and record the LOWEST and HIGHEST
+seen: same class time, one action, no new code. **±100 is replaced by a MIDPOINT rule** — LOW halfway
+between highest white and lowest green, HIGH halfway between highest green and lowest black.
+
+**AND THE FIRST HYPOTHESIS WAS WRONG, WHICH IS WHY IT WAS COMPUTED BEFORE IT WAS WRITTEN.** ±100 does
+NOT contradict §7.1's red-flag limits: it is safe for green in (250, 750) and §1 states 300–700, so
+the safe window strictly CONTAINS the stated range. **The real defect is that the safety is a
+coincidence of the numbers, not a property of the rule.** ±100 breaks for green ≥ 750; §1 calls
+300–700 *a starting guess, not a property of the color green*; and **§4.1 warns that dark forest
+greens read close to black — so the tape §4.1 warns about is exactly the tape that breaks §7.1's own
+rule** (green 780 → GREEN_HIGH 880, and a black sweep bottoming anywhere in 850–880 still CLEARS §7.1's calibration red flag — so the band swallows the line while every check passes). A midpoint between two measured numbers
+cannot land outside them. **It also spirals L04**, which teaches calibration as *measuring a sensor's
+actual minimum and maximum* and whose Engineer's Log and TDP A4 table both ask for min/max — L09 was
+collecting points five lessons after the book taught distributions.
+**9 sites**: 3 in §6 Step 9 · 3 in §7.1 · the §10 record rebuilt with Lowest/Highest columns and two
+explicit GAP rows · `L09_A12` and `L09_A13` (A13 re-authored end to end; **the new distractor is the
+±100 rule itself, refuted by §4.1**). Table-width arm: 9 rows, all four wide, control fires on a
+broken row. Completeness sweep for the retired procedure: **0 surviving sites.** L09 **v05.28.0**,
+three `lesson_09` pins bumped after reading the delta. 0 Maker payloads, 0 bytes.
+**`css/book.css` moved and it is a RANK SHIFT, NOT A CONTENT CHANGE** — `.td-b-white` went 235 → 239
+uses from four new cells, reordering the frequency-sorted sheet. **574 rules and 2,033 declarations
+before and after**, no new rule names, so no `strip_inline --apply` is owed; only the §27.11 digest
+baseline moved. `book_gates` **v1.76.3**.
+
+**THE FALL CALENDAR IS PINNED, AND THE LAUNCH DATE IN EVERY PRIOR HANDOFF WAS WRONG.** DJ supplied
+the Fall 2026 block schedule; **Robotics is D block.** There is **no D block on September 8**. The
+first meeting is **Friday September 4, 2:05–2:30 — twenty-five minutes** — and the first full period
+is **Wednesday September 9**. **PARSED, THEN RECONCILED TWICE AGAINST THE DOCUMENT'S OWN FOOTER:**
+29 meetings and 1,865 minutes, decomposing as 26 × 65 + 25 + 30 + 120. Pages 1, 2 and 4 were also
+rasterized and read by eye against the parse — no disagreement. Term runs **Sep 4 → Fri Nov 13**
+(28 teaching periods) plus the **exam block Tue Nov 17, 1:30–3:30**. No class **Mon Oct 19** (Long
+Fall Weekend) or **Mon Nov 2** (Civics Conference); **Sep 25 is a 30-minute** Family & Alumni period;
+**Oct 9 is Fall Midterm**.
+
+**AND IT RE-PRICES THE WHOLE WORKLIST.** L01–L08 carry **zero** open rows and cover the first five
+weeks. **L09 is not taught until Wed Oct 21** — eight weeks out, not the five previously assumed.
+L14/L15/L16 are outside Fall scope entirely, which accounts for seventy-seven of the open rows,
+leaving **sixty-three in Fall scope** and none of them needed before late October.
+
+**SEVEN MILESTONES PINNED TO REAL D-BLOCK DATES.** M1 Sep 18 · M2 Sep 28 · M3a Oct 5 · M3b Oct 16 ·
+M4 Oct 26 · M5 Nov 6 · M6 Nov 13, with the exam block as the re-demo window. **Controlled:** all 28
+grid rows reconcile against the extracted schedule with zero disagreements, every milestone lands on
+the period it names, and every dated reference in the syllabus resolves to a real meeting — the
+checks fire on a planted wrong date and are silent on the clean file.
+
+**RULE 32 CAUGHT A 209-LINE REGRESSION BEFORE IT SHIPPED.** The syllabus was first rebuilt from the
+copy in the project files, which is **stale against the repo**: v1.3 had since added the TDP setup
+and submission section, the entire *If You Fall Behind* path, the poster grade line, the AI-use
+policy and the Day One checklist. **Overwriting would have deleted all of it.** The draft was
+discarded and the dates applied as a minimal edit to the tracked file instead. **The tree is the
+arbiter, and a project-file copy is not the tree.**
+
+**A CONFLICT THE DATES EXPOSED.** v1.3's *Day One — What You Leave With* checklist assumed a full
+first period: VS Code installed, test upload completed, TDP copy made. **Day One is twenty-five
+minutes.** Split into *Day One — hardware* (Sep 4) and *Assignment 1 — software and accounts*
+(due Wed Sep 9), with the TDP copy moved to Class 2 where a working robot is in front of them.
+
+**Shipped:** `ZUMO_Syllabus_WORKING.md` **v1.4** (dates pinned; the Maker link resolved to
+`weymuth.github.io/zumo/newproject.html`; three `[TBD]`s remain and all three are DJ's facts — the
+TDP Doc link, the late penalty, the BQ-CC17 charge time) · `ZUMO_Teacher_Daily_Grid_WORKING.md`
+**v2.0**, a major bump because the axis changed from relative periods to dates ·
+`ZUMO_DAY1_Sep4.md` **v1.0**, new. **DJ ruled the model: full flip** — reading, install and the
+first upload all before Class 2, which is challenges. Help windows read off the schedule and named
+in the Day 1 script: **Mon Sep 7 ~1:00–2:00** (the gap between Buffet Lunch and Convocation, the one
+hour promisable to the whole class) and **Tue Sep 8 Help block 12:50–1:10**.
+
+**THE SYLLABUS IS A PAGE ON THE SITE NOW, AND IT IS INLINE-STYLED ON PURPOSE.** DJ ruled it:
+*"for design to stick in canvas you have to do inline code."* **This does NOT reopen §27.** The
+lessons are LINKED from Canvas, so they carry classes and `css/book.css` and S123's ruling stands
+untouched; the SYLLABUS is PASTED into a Canvas page, and Canvas strips `<style>` blocks and
+`class=`. **Same document, two delivery paths, two answers.** `syllabus.html` links neither
+stylesheet, carries **457 inline `style=` attributes, zero `class=`, zero `<style>`**, and is
+therefore outside gate §27.12 by the §25.6a rule that already exempts `newproject.html` and
+`tutor/tutor.html`.
+
+**IT IS GENERATED, NOT HAND-WRITTEN.** `build_syllabus_html.py` **v1.0** emits it from
+`ZUMO_Syllabus_WORKING.md`, so the markdown stays the single source and the two cannot drift.
+Heritage Blue throughout. **Verified by simulating the strip:** removing every `style=` and `class=`
+the way Canvas would still leaves all seven milestone dates, the exam block and 3,405 words standing.
+Parity against the markdown holds — 15 `h2`, 3 `h3`, 4 tables, 26 checkboxes, each matching.
+
+**THE LAYOUT GATE CAUGHT THE NEW PAGE, WHICH IS THE POINT.** §12/§23 failed with *STRAY page* the
+moment `syllabus.html` appeared. It is now **declared canonical** with the reason recorded at the
+gate rather than in a handoff — *a new delivery path is a new unguarded path*, the same shape
+§27.12's own comments warn about, and §27.15c's lesson. Control re-run: the gate still fires on a
+planted stray. `book_gates` **v1.76.4**. The index links it as the first tool
+(§27.14: 1,289 links, all resolving).
+
+**A SELFTEST OUTSIDE THE RITUAL IS A CONTROL NOBODY RUNS.** Registering the new generator made
+`session_versions` complain — *in the repo and in no version roster* — which is its roster arm
+working. Adding it to all three homes and then running `--selftest` found **two controls RED on the
+clean tree, both predating S194, verified against HEAD rather than assumed.**
+**CONTROL D (grep_trap):** `retired_claims.py`'s docstring opened with a version that had not moved
+in four bumps, so a naive grep found one number and the home said another — **the §5b two-homes
+defect, in the one file whose entire job is noticing that a claim moved in one place and not
+another.** Measured against the suite: `census`, `build_css`, `build_worklist`, `prose_canon` and
+`callout_id` all carry no version in the docstring, so the convention was already unanimous and this
+file was the lone outlier. Removed rather than synced — a second home is a second thing to forget.
+**CONTROL F:** Bible line 17's mid-line `Current:` pin sat three bumps behind **and inlined that
+entry's whole text**. The S193 handoff had flagged that line as an anchoring hazard and it was never
+fixable, because nothing could see it was red. Duplicate deleted; the pin now points at the changelog
+instead of copying it. **RITUAL CHANGE: `session_versions --selftest` joins the session-open set.**
+Bible **v8.191** · `retired_claims` **v1.1.2** · `session_versions` **v1.33.0** · `book_gates`
+**v1.76.4**.
+
+**THREE L01 BENCH ROWS TAGGED LAUNCH-CRITICAL, AND THE REASON IS THE CALENDAR, NOT THE SEVERITY.**
+Assignment 1 sends every student into **L01 §1–§7 alone, at home**, with one twenty-minute Help block
+between them and Class 2. `L01-B8`, `L01-B10` and `L01-B1` all live inside those sections and each is
+a claim the book makes about what the student will SEE. **B8 is first:** §6 Step 4 says a chime, a
+dialog, **or nothing at all** are all normal on first connection, and that has never been confirmed on
+either platform — it is the exact moment a student stalls, and the only thing telling them it is fine
+is unverified. `B10` (§8's bootloader port change) is what a stuck student reads next; `B1` is an
+exercise inside the assigned reading whose expected error text was never confirmed. **The other five
+open L01 rows are §9 challenges — Class 2's material, not Assignment 1's**, and they stay where they
+were. Seated at the TOP of `ZUMO_BENCH_TESTS.md`'s ranking, ahead of the standing seven.
+
+**L01 ITSELF WAS READ AGAINST WHAT ASSIGNMENT 1 ACTUALLY ASKS, not against its row count.** Zero open
+GPT rows is not the same as ready-for-a-student-alone-on-day-three. Measured: Git is framed correctly
+(*a tool PlatformIO expects to find*, with `L01-B9` closed on the real reason — on a Mac it drags in
+Apple's Command Line Tools, where the compiler lives) · **exactly one teacher reference in §1–§7**, and
+it points at the course tutor · troubleshooting genuinely covers the solo failures — charge-only cable,
+double-tap into bootloader, `Errno 16` port busy, `butterfly_recv()` · and the syllabus's
+AI-autocomplete checklist item is backed by L01 with the exact Command Palette string.
+
+**THE L01 READING QUIZ EXISTS NOW.** It was the only Assignment 1 dependency with nothing behind it —
+`quiz_bank.py` validates banks and has no export arm, so the Canvas quiz had to be built. **Eight
+questions selected from the bank, never newly written**, spanning concept → setup → program →
+build/upload. **Two of them (`L01_B43`, `L01_B48`) cannot be answered by a student who read the lesson
+and never opened PlatformIO or plugged in** — deliberate, because Assignment 1 ends with a program
+running on the robot and the gate has to be able to tell. `quizzes/ZUMO_L01_Reading_Quiz.md` **v1.0**
+carries the keyed selection; a QTI 1.2 package was generated from the same eight and delivered to DJ
+but **deliberately NOT committed — a binary zip in the repo drifts silently from the bank.** Verified
+by reading the package back out of the zip: eight items, four options each, exactly one keyed answer
+per item, every key matching the bank. Control fires when a key is pointed at a non-existent option.
 
 ## WHAT SHIPPED IN S193
 

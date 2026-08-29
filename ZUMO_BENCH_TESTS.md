@@ -48,6 +48,26 @@ record-a-number row), and a cross-check against `ZUMO_FLAGGED_CHECKS.md`. **The 
 that circulated in the S189 handoff is scoped to the L01–L04 working sheet and was wrongly
 generalised to the whole book.** Book-wide the number is **seven**.
 
+
+## 🚩 LAUNCH-CRITICAL — RUN THESE FIRST, BEFORE FRIDAY SEPTEMBER 4 (S194)
+
+**These three rank ahead of the seven below, and the reason is the calendar, not the severity.**
+Assignment 1 sends every student into **L01 §1–§7 alone, at home, with no teacher in the room** and
+one twenty-minute Help block between them and Class 2. All three of these live inside the sections
+that assignment covers, and each one is a claim the book makes about what the student will see.
+**An unverified reassurance is worse than no reassurance when nobody is there to correct it.**
+
+| Order | Row | Section | Why it is launch-critical |
+|---|---|---|---|
+| **🚩 1** | `L01-B8` | §6 Step 4 | The book says a chime, a dialog, **or nothing at all** are all normal on first connection. **Never confirmed on either platform.** This is the exact moment a student stalls: they plug in, nothing happens, and the only thing telling them that is fine has never been checked. **Run it on a Mac AND on Windows** — the claim is about both. |
+| **🚩 2** | `L01-B10` | §8 | Does the robot really present one port when running and a different one with the bootloader awake? **A stuck student reads §8.** If the port claim is wrong, the troubleshooting sends them the wrong way at the worst moment. |
+| **🚩 3** | `L01-B1` | §6 *Break It On Purpose* | Unplug the cable, then Upload; the student is asked to write the error down verbatim. **The expected error text has never been confirmed**, and this is an exercise inside the assigned reading, not a challenge. |
+
+**The other five open L01 rows (B3, B4, B5, B6, B7) are §9 challenges — that is Class 2's material,
+not Assignment 1's. They stay in the list below.**
+
+---
+
 | Run order | Row | Lesson | What comes out if it fails |
 |---|---|---|---|
 | **1** | `L10-B1` | L10 | **THE BIG ONE — §16.12, unruled since S143.** The book predicts the robot crosses the line and drives off the far side, because the rebuilt seven-phase box arrives perpendicular with no realigning turn anywhere in the tree. **If the prediction holds, a shipped behaviour is broken, not just a paragraph.** |

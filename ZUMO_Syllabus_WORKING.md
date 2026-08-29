@@ -1,8 +1,14 @@
 # Robotics — Zumo Autonomous Robot
 ### How This Class Works · Fall Trimester · Mercersburg Academy · Mr. Weymuth
-<!-- ZUMO_Syllabus_WORKING.md v1.3 — S159, Aug 16 2026: poster folded into the TDP category (DJ ruling) -->
+<!-- ZUMO_Syllabus_WORKING.md v1.4 — S194, Aug 28 2026: dates pinned to the Fall 2026 block schedule (D block); Day One split across Sep 4 and Assignment 1 -->
 
-> **This is a working draft.** Sections marked _[TBD]_ aren't finalized yet. Everything else reflects decisions made as of this planning session. This document will grow into the student-facing syllabus.
+> **Fall Term 2026 · D Block.** We meet **28 times** between **Friday September 4** and **Friday
+> November 13**, plus a final block on **Tuesday November 17**. Times rotate:
+> **Monday 1:15–2:20 · Wednesday 9:50–10:55 · Friday 8:40–9:45.** Two periods are short —
+> **Sep 4 is 25 minutes** (opening week) and **Sep 25 is 30 minutes** (Family & Alumni Weekend).
+> No class **Mon Oct 19** (Long Fall Weekend) or **Mon Nov 2** (Civics Conference).
+>
+> A few items still marked _[TBD]_ are being finalized; everything else is settled.
 
 ---
 
@@ -62,7 +68,19 @@ Each milestone has two parts:
 | M5 | Handles the Course | avoid an obstacle and cross a gap | Week ~8.5 |
 | M6 | Finds the Zone | run the full course and stop at the rescue zone | Week ~9.5 |
 
-_[Exact dates TBD once the class schedule is finalized.]_
+**Demo dates:**
+
+| # | Milestone | Due |
+|---|---|---|
+| M1 | Foundations | **Fri Sep 18** |
+| M2 | Sensing the Floor | **Mon Sep 28** |
+| M3a | Measuring the World | **Mon Oct 5** |
+| M3b | Follows the Line | **Fri Oct 16** |
+| M4 | Makes Decisions | **Mon Oct 26** |
+| M5 | Handles the Course | **Fri Nov 6** |
+| M6 | Finds the Zone | **Fri Nov 13** |
+
+**Late demos and re-demos: Tuesday, November 17, 1:30–3:30.** That is the last chance in the term.
 
 > **Milestones build on each other.** A missed checkpoint makes the next one harder. Most milestones need some work outside of class — plan ahead, and use the open lab.
 
@@ -252,11 +270,15 @@ Autocomplete is a different problem from a chatbot: it **inserts code without be
 
 ---
 
-## Day One — What You Leave With
+## Day One and Assignment 1 — What You Need Before Class 2
 
-By the end of the first period you should have all of these. Check them off:
+**Day One is Friday September 4 and it is only 25 minutes long** — long enough to hand out hardware
+and give you the first assignment, and nothing else. Everything in the Software and Accounts lists
+below is **Assignment 1**, due before class on **Wednesday September 9**.
 
-**Hardware — your robot and your case**
+**Leave Day One with the hardware:**
+
+**Day One — hardware, Friday Sep 4**
 - ☐ Zumo 32U4 robot, numbered and assigned to you
 - ☐ Marked Zumo carrying case, assigned to you
 - ☐ One USB-C–to–Micro-USB cable (programming)
@@ -264,18 +286,18 @@ By the end of the first period you should have all of these. Check them off:
 - ☐ Four Eneloop Pro by Panasonic NiMH AA cells
 - ☐ Every issued item accounted for and stored in your own case
 
-**Software**
+**Assignment 1 — Software (do this before Wed Sep 9)**
 - ☐ VS Code installed
 - ☐ Git installed
 - ☐ PlatformIO extension installed
 - ☐ **AI autocomplete disabled for this workspace** (Command Palette → "Disable AI Features (Workspace)")
 - ☐ Test upload completed — a program compiled and sent to the robot
 
-**Accounts & documents**
+**Assignment 1 — Accounts & documents (before Wed Sep 9)**
 - ☐ Canvas course opened; you can find the readings and the quizzes
 - ☐ Textbook bookmarked: **weymuth.github.io/zumo**
 - ☐ Project Maker bookmarked
-- ☐ **Your own copy of the TDP notebook made** (File → Make a copy), named with your name, saved in your Drive
+- ☐ **Your own copy of the TDP notebook made** (File → Make a copy), named with your name, saved in your Drive — *we do this together in Class 2*
 - ☐ That copy shared with Mr. Weymuth
 
 **Preflight — the four things to check every time your robot misbehaves**
@@ -292,16 +314,15 @@ Do not start a build with a setup item missing and hope it sorts itself out. Fix
 
 - **Canvas** — readings, quizzes, milestone descriptions, submissions
 - **The Textbook** — weymuth.github.io/zumo
-- **The Project Maker** — starting code for each lesson _[link TBD]_
+- **The Project Maker** — starting code for each lesson: **weymuth.github.io/zumo/newproject.html**
 - **Mr. Weymuth** — in the lab or by email. Ask early, not the night before a milestone.
 
 ---
 
 ## Still To Add _[working notes — not student-facing yet]_
-- Exact milestone due dates (pin to real calendar — blocked until ~Aug 24)
 - Notebook template Google Doc link
 - Battery charge time on the BQ-CC17 (location resolved: students charge at home)
 - Late-milestone penalty amount
 
 ---
-*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Trimester · working draft v1.3*
+*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Term 2026 · D Block · Sep 4 – Nov 17 · v1.4*

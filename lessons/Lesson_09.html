@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.27.6 -->
+<!-- Lesson version: v05.28.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,7 +77,7 @@
 <h1 class="h1">Intersections &amp; Dead Ends</h1>
 <div class="div-fs-11em">Teaching Your Robot to Decide</div>
 <div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 05.27 — August 2026</div>
+<div class="div-fs-09em-2">Version 05.28 — August 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -1214,9 +1214,9 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
       display.print(v[<span class="tok-b5cea8">4</span>]);
       display.print(F(<span class="tok-ce9178">"   "</span>));</pre><ol start="2" class="p-mb-0">
 <li>Upload. A → <strong>B calibrate on your course</strong> (white floor + black line — calibration defines the scale the survey reads in).</li>
-<li>While STOPPED, the bottom row shows live calibrated values from the two outer sensors. Slide <strong>white</strong>, <strong>green</strong>, then <strong>black</strong> under them; record all six numbers in Section 10's Calibration Data Record.</li>
-<li>Expect white near 0 and black near 1000. Green lands somewhere between — <em>your</em> number is the only one that matters, and left and right may differ slightly.</li>
-<li>Set <code>GREEN_LOW_THRESHOLD</code> / <code>GREEN_HIGH_THRESHOLD</code> to bracket your green readings with ~100 of margin on each side, staying clear of both white and black.</li>
+<li>While STOPPED, the bottom row shows live calibrated values from the two outer sensors. Take each surface — <strong>white</strong>, <strong>green</strong>, then <strong>black</strong> — and <strong>slide it slowly through underneath while you watch the numbers move</strong>, sampling different spots along it and at a slight angle. Write down the <strong>lowest and the highest</strong> you see for each. That is a range, not a reading, and it goes in Section 10's Calibration Data Record.</li>
+<li>Expect white near 0 and black near 1000. Green lands somewhere between — <em>your</em> range is the only one that matters, and left and right may differ slightly. <strong>Why sweep instead of taking one reading?</strong> Holding the tape still measures the <em>sensor</em>, which barely moves. Sliding it measures the <em>tape</em> — which part passes under, at what angle, under your lighting — and that is what the robot actually meets at speed.</li>
+<li>Now put each threshold <strong>in the middle of a gap</strong>. <code>GREEN_LOW_THRESHOLD</code> = halfway between your <em>highest white</em> and your <em>lowest green</em>. <code>GREEN_HIGH_THRESHOLD</code> = halfway between your <em>highest green</em> and your <em>lowest black</em>. A midpoint between two numbers you measured cannot land outside them, so a threshold placed this way cannot stray into white or black.</li>
 <li><strong>Delete the temporary block</strong>, rebuild, re-upload. Survey done.</li>
 </ol>
 </div>
@@ -1256,16 +1256,16 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <h3 class="h3-c-00474b">7.1 The Green Survey — Verify Your Band</h3>
 
-<p>Section 6, Step 9 walked you through the <strong>Green Survey</strong>: calibrate on your course, read the outer sensors live on the display, and record white / green / black values for both sides. Before course testing, sanity-check what you measured:</p>
+<p>Section 6, Step 9 walked you through the <strong>Green Survey</strong>: calibrate on your course, then slide white, green and black through under the outer sensors and record the <strong>lowest and highest</strong> each one reaches, on both sides. Before course testing, sanity-check what you measured:</p>
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-00393d">Surface</th><th class="th-bg-00393d">Calibrated reading should be…</th><th class="th-bg-00393d">Red flag</th></tr>
-    <tr><td class="td-b-white"><strong>White</strong> (course floor)</td><td class="td-b-white">Near 0 — low double digits are normal</td><td class="td-b-white">Above ~150: recalibrate; the spin may have missed true white</td></tr>
-    <tr><td class="td-b-white"><strong>Black</strong> (the line)</td><td class="td-b-white">Near 1000</td><td class="td-b-white">Below ~850: recalibrate on the course you’ll actually run</td></tr>
-    <tr><td class="td-b-white"><strong>Green</strong> (the markers)</td><td class="td-b-white">Somewhere between — <em>your</em> number is the only one that matters, and left / right may differ slightly</td><td class="td-b-white">Hugging either end: your tape reads too much like floor or line — different green tape beats threshold heroics</td></tr>
+    <tr><td class="td-b-white"><strong>White</strong> (course floor)</td><td class="td-b-white">Near 0 — low double digits are normal across the whole sweep</td><td class="td-b-white">Your <em>highest</em> white above ~150: recalibrate; the spin may have missed true white</td></tr>
+    <tr><td class="td-b-white"><strong>Black</strong> (the line)</td><td class="td-b-white">Near 1000 across the whole sweep</td><td class="td-b-white">Your <em>lowest</em> black below ~850: recalibrate on the course you’ll actually run</td></tr>
+    <tr><td class="td-b-white"><strong>Green</strong> (the markers)</td><td class="td-b-white">A band somewhere between — <em>your</em> range is the only one that matters, and left / right may differ slightly</td><td class="td-b-white">Green's highest reaching black's lowest: there is no gap to put a threshold in, and no value of <code>GREEN_HIGH_THRESHOLD</code> will fix it — different green tape beats threshold heroics</td></tr>
 </table>
 
-<p>Then confirm your constants: <code>GREEN_LOW_THRESHOLD</code> and <code>GREEN_HIGH_THRESHOLD</code> should bracket <em>both</em> green readings with roughly 100 of margin per side, staying clear of white and black. Record everything in Section 10’s Calibration Data Record — competition-day you will thank homework-day you.</p>
+<p>Then confirm your constants sit in the gaps: <code>GREEN_LOW_THRESHOLD</code> halfway between your highest white and your lowest green, <code>GREEN_HIGH_THRESHOLD</code> halfway between your highest green and your lowest black. <strong>Measure the gaps before you trust them.</strong> Green's top to black's bottom of a few hundred is comfortable; a gap of twenty is a marker that will be read as line the first time the lighting changes. Record everything in Section 10’s Calibration Data Record — competition-day you will thank homework-day you.</p>
 
 <h3 class="h3-c-00474b">7.2 Intersection Test Sequence</h3>
 
@@ -1878,13 +1878,15 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <h3 class="h3-c-6f7582">Calibration Data Record</h3>
 
 <table class="table-bc-collapse-2">
-    <tr><th class="th-bg-4d535f">Measurement</th><th class="th-bg-4d535f">Your Value</th><th class="th-bg-4d535f">Expected / Default</th></tr>
-    <tr><td class="td-b-white">White reading — left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">near 0</td></tr>
-    <tr><td class="td-b-white">Green reading — left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">between — yours</td></tr>
-    <tr><td class="td-b-white">Black reading — left [0] / right [4]</td><td class="td-999"></td><td class="td-b-white">near 1000</td></tr>
-    <tr><td class="td-b-white"><code>GREEN_LOW_THRESHOLD</code> (your tuned value)</td><td class="td-999"></td><td class="td-b-white">300 default</td></tr>
-    <tr><td class="td-b-white"><code>GREEN_HIGH_THRESHOLD</code> (your tuned value)</td><td class="td-999"></td><td class="td-b-white">700 default</td></tr>
-    <tr><td class="td-b-white"><code>TRACK_WIDTH_MM</code> (carried from Lesson 7)</td><td class="td-999"></td><td class="td-b-white">98.0 start</td></tr>
+    <tr><th class="th-bg-4d535f">Measurement</th><th class="th-bg-4d535f">Lowest you saw</th><th class="th-bg-4d535f">Highest you saw</th><th class="th-bg-4d535f">Expected / Default</th></tr>
+    <tr><td class="td-b-white">White sweep — left [0] / right [4]</td><td class="td-999"></td><td class="td-999"></td><td class="td-b-white">near 0</td></tr>
+    <tr><td class="td-b-white">Green sweep — left [0] / right [4]</td><td class="td-999"></td><td class="td-999"></td><td class="td-b-white">a band between — yours</td></tr>
+    <tr><td class="td-b-white">Black sweep — left [0] / right [4]</td><td class="td-999"></td><td class="td-999"></td><td class="td-b-white">near 1000</td></tr>
+    <tr><td class="td-b-white"><strong>Gap:</strong> highest white → lowest green</td><td class="td-999" colspan="2"></td><td class="td-b-white">bigger is safer</td></tr>
+    <tr><td class="td-b-white"><strong>Gap:</strong> highest green → lowest black</td><td class="td-999" colspan="2"></td><td class="td-b-white">no gap = change the tape</td></tr>
+    <tr><td class="td-b-white"><code>GREEN_LOW_THRESHOLD</code> (midpoint of the first gap)</td><td class="td-999" colspan="2"></td><td class="td-b-white">300 default</td></tr>
+    <tr><td class="td-b-white"><code>GREEN_HIGH_THRESHOLD</code> (midpoint of the second gap)</td><td class="td-999" colspan="2"></td><td class="td-b-white">700 default</td></tr>
+    <tr><td class="td-b-white"><code>TRACK_WIDTH_MM</code> (carried from Lesson 7)</td><td class="td-999" colspan="2"></td><td class="td-b-white">98.0 start</td></tr>
 </table>
 
 <div class="callout-d4a574-bg-e8d4c4" data-family="WHERE THIS GOES" data-callout="9.68">

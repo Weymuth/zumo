@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.32.2'
+VERSION = 'v1.33.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -218,6 +218,7 @@ ARTEFACTS = [
     ('svg_layout_audit',      'svg_layout_audit.py',      r"VERSION = '(v[\d.]+)'"),
     ('site_parity',           'site_parity.py',           r"VERSION = '(v[\d.]+)'"),
     ('build_css',             'build_css.py',             r"VERSION = '(v[\d.]+)'"),
+    ('build_syllabus_html',   'build_syllabus_html.py',   r'v([\d.]+) - syllabus\.html is GENERATED'),
     ('image_audit',           'image_audit.py',           r"VERSION = '(v[\d.]+)'"),
     ('strip_inline',          'strip_inline.py',          r"VERSION = '(v[\d.]+)'"),
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
@@ -323,7 +324,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"fit_raster_svg {vals['fit_raster_svg']} · flatten_alpha {vals['flatten_alpha']} · "
             f"svg_layout_audit {vals['svg_layout_audit']} · "
             f"site_parity {vals['site_parity']} · "
-            f"build_css {vals['build_css']} · "
+            f"build_css {vals['build_css']} · build_syllabus_html {vals['build_syllabus_html']} · "
             f"image_audit {vals['image_audit']} · "
             f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
@@ -366,7 +367,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`flatten_alpha` **{vals['flatten_alpha']}** · "
             f"`svg_layout_audit` **{vals['svg_layout_audit']}** · "
             f"`site_parity` **{vals['site_parity']}** ·\n"
-            f"`build_css` **{vals['build_css']}** ·\n"
+            f"`build_css` **{vals['build_css']}** · `build_syllabus_html` **{vals['build_syllabus_html']}** ·\n"
             f"`image_audit` **{vals['image_audit']}** ·\n"
             f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
