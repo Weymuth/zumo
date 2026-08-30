@@ -1,8 +1,8 @@
 # GPT graphics work list (generated)
 
-Work list session: S195 · `build_worklist.py v1.2` · `svg_layout_audit v1.21.2`
+Work list session: S196 · `build_worklist.py v1.2` · `svg_layout_audit v1.23`
 
-**37 files** needing a human, from an audit of all SVGs in `images/`.
+**36 files** needing a human, from an audit of all SVGs in `images/`.
 Worst-first by how far text runs outside its panel.
 
 **Do not hand-edit — regenerate.** Any list built against an audit below v1.18 was
@@ -15,16 +15,7 @@ and `fit_raster_svg`. They are listed at the end so the backlog stays visible.
 Send one file at a time. Attach the SVG, paste its block, bring the result back before
 moving on.
 
-13 of these 37 have text outside a panel; the rest are structural.
-
-## L07_GRAPHIC_7-15_platformio_file_tree.svg
-*worst overflow: 128 units*
-
-- text overflows its panel by 8 units: "RobotConfig.h" spans 220..380 inside 18..378
-- text overflows its panel by 20 units: "RobotSensors.h" spans 220..392 inside 18..378
-- text overflows its panel by 8 units: "RobotMotion.h" spans 220..380 inside 18..378
-- text overflows its panel by 107 units: "Put your header files (.h) here" spans 560..880 inside 1..779
-- text overflows its panel by 128 units: "Put your source files (.cpp) here" spans 560..901 inside 1..779
+12 of these 36 have text outside a panel; the rest are structural.
 
 ## L07_GRAPHIC_7-04_how_files_connect.svg
 *worst overflow: 105 units*
