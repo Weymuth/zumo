@@ -7,12 +7,12 @@ any number of extra lines no payload has, so STALE PROSE IS INVISIBLE TO THE WHO
 CONSTRUCTION. That is the direction every S182 defect travelled, S183's rename defect travelled,
 and S184's eleven sites travelled.
 
-FOUR ARMS ARE OWED (S182, Bible 24.22). Only ARM 3 is built:
+FOUR ARMS ARE OWED (S182, Bible 24.22). Three are built:
 
-  ARM 1  printed banner SEQUENCES vs canon order   -- NOT BUILT
+  ARM 1  printed banner SEQUENCES vs canon order   -- BUILT (S195)
   ARM 2  placement claims ("above setup()")        -- NOT BUILT
-  ARM 3  RETIRED NAMES                             -- BUILT HERE
-  ARM 4  section-count claims ("seven sections")   -- NOT BUILT
+  ARM 3  RETIRED NAMES                             -- BUILT
+  ARM 4  section-count claims ("seven sections")   -- BUILT (S195)
 
 Shipping one arm and calling the instrument done is exactly the failure 16.50 records, so the
 three unbuilt arms are named in --check's own output rather than left for a reader to discover.
@@ -58,7 +58,7 @@ exit 0 = no finding. exit 1 = a finding, or a control failed.
 """
 import os, re, sys, glob, html
 
-VERSION = 'v1.1.0'
+VERSION = 'v1.3.0'
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -264,6 +264,358 @@ RESIDUE = {
 }
 
 
+# ---------------------------------------------------------------------------------
+# ARM 4 - SECTION-COUNT CLAIMS
+#
+# WHY THIS SAT UNBUILT SINCE S182. The obvious predicate - "compare the number in
+# the prose against the banner count of that lesson's payload" - CONVICTS L02 EIGHT
+# TIMES AND L06 ONCE, all on correct prose. Measured S195 before a line was written.
+#
+# THE TWO NUMBERS ARE BOTH RIGHT AND THEY RECONCILE EXACTLY:
+#
+#   L02 teaches NINE:  Header . Includes . Objects . Constants . Global Variables .
+#                      Prototypes . setup() . loop() . Helpers
+#   A payload body ships SEVEN banners, starting at HARDWARE OBJECTS. The Maker's
+#   mainCpp() wrapper AUTO-PREPENDS the header comment and the #include (S44), so
+#   7 stored + 2 wrapper-supplied = 9. The canon and the file agree.
+#
+# So the discriminator is not the number, it is WHAT THE SENTENCE IS COUNTING:
+#
+#   CANON claim  ("every program", "always", "in this book")  -> expect CANON_TOTAL
+#   FILE claim   ("your main.cpp", "against Section N")       -> expect banner count
+#
+# ANYTHING THIS CANNOT CLASSIFY IS REPORTED UNADJUDICATED, NOT CONVICTED (rule 78).
+# A count claim whose subject is ambiguous is a question for a human, and printing
+# it as a FINDING would be the same false conviction in a new costume.
+# ---------------------------------------------------------------------------------
+CANON_TOTAL = 9
+WRAPPER_SUPPLIED = 2          # header comment + #include, prepended by mainCpp()
+
+_CANON_CUE = re.compile(r'every program|any program|in this book|always|'
+                        r'well-organized|an Arduino (?:program|sketch)|'
+                        r'of an Arduino', re.I)
+_FILE_CUE = re.compile(r'your main\.cpp|your program|your file|against Section|'
+                       r'top to bottom|in this program', re.I)
+# PLURAL, LOWERCASE, AND NOT CASE-FOLDED - ON PURPOSE. The book writes a section
+# REFERENCE capitalised and singular ("Section 5", "the Version 2 section"), and a
+# section COUNT lowercase and plural ("nine sections"). That is a structural
+# separator, not a word list somebody has to maintain (16.15). Case-folding here
+# dragged in "Five Section 5 showed", "one Section 3" and four "Version 2 section"
+# hits, none of which counts anything.
+_COUNT = re.compile(r'\b(one|two|three|four|five|six|seven|eight|nine|ten|\d{1,2})'
+                    r'\s+(?:numbered\s+)?sections\b')
+_WORD = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
+         'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
+
+
+def _banner_count(payload_body):
+    return len(re.findall(r'// ===== ([A-Z][A-Z0-9 /_]*[A-Z]) =====',
+                          payload_body or ''))
+
+
+def arm4(lessons=None, payloads=None):
+    """-> (findings, unadjudicated). findings are (where, claimed, expected, kind, ev).
+
+    payloads: {lesson_no_str: banner_count}. Injectable so the controls can drive
+    the arm without the Maker, and so a control can move the count underneath it.
+    """
+    findings, unknown = [], []
+    lessons = lessons if lessons is not None else sorted(
+        glob.glob(os.path.join(ROOT, 'lessons', 'Lesson_*.html')))
+    if payloads is None:
+        payloads = _live_payload_counts()
+
+    for path in lessons:
+        n = _lesson_no(path)
+        text = _rendered(open(path, encoding='utf-8').read())
+        text = re.sub(r'\s+', ' ', text)
+        for m in _COUNT.finditer(text):
+            raw = m.group(1).lower()
+            claimed = _WORD.get(raw) or int(raw)
+            lo = max((text.rfind(c, 0, m.start()) for c in '.!?:'), default=-1)
+            hi = min((x for x in (text.find(c, m.end()) for c in '.!?')
+                      if x != -1), default=len(text))
+            ctx = text[lo + 1:hi + 1]
+            ev = re.sub(r'\s+', ' ', ctx).strip()
+            where = os.path.basename(path)
+            is_canon = bool(_CANON_CUE.search(ctx))
+            is_file = bool(_FILE_CUE.search(ctx))
+            if is_canon and not is_file:
+                if claimed != CANON_TOTAL:
+                    findings.append((where, claimed, CANON_TOTAL, 'canon', ev))
+            elif is_file and not is_canon:
+                exp = payloads.get(str(n))
+                if exp is None:
+                    unknown.append((where, claimed, None, 'no payload', ev))
+                elif claimed != exp:
+                    findings.append((where, claimed, exp, 'file', ev))
+            else:
+                unknown.append((where, claimed, None,
+                                'ambiguous subject', ev))
+    return findings, unknown
+
+
+def selftest_arm1():
+    """CONTROLS FOR ARM 1.
+
+    THE FIRST VERSION OF CONTROL A FAILED FOR THE WRONG REASON AND THAT IS THE
+    LESSON HERE. It planted an inversion into an L03 block holding ONE banner - a
+    block this arm correctly declines to judge - so the arm was silent and the
+    control read as a failure of the arm. A control must plant where the arm
+    LOOKS, and the plant must be asserted to have landed. Both are done below.
+    """
+    bad = []
+
+    def check(name, ok, detail=''):
+        print('   %-58s %s' % (name, 'PASS' if ok else 'FAIL ' + detail))
+        if not ok:
+            bad.append(name)
+
+    import tempfile
+    import shutil
+
+    def one(text):
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, 'Lesson_02.html')
+            open(p, 'w', encoding='utf-8').write(text)
+            return arm1([p])[0]
+
+    # A - a reversed PAIR fires; the same pair in canon order does not.
+    check('A1 a reversed pair FIRES',
+          len(one('<pre>// ===== MAIN LOOP =====\n'
+                  '// ===== SETUP =====</pre>')) == 1)
+    check('A2 the same pair in canon order is SILENT',
+          not one('<pre>// ===== SETUP =====\n'
+                  '// ===== MAIN LOOP =====</pre>'))
+
+    # B - SUBSEQUENCE, not equality. Omitted sections are legal (18.3).
+    check('B  a listing that omits sections is SILENT',
+          not one('<pre>// ===== HARDWARE OBJECTS =====\n'
+                  '// ===== SETUP =====\n// ===== MAIN LOOP =====</pre>'))
+
+    # C - THE THREE SPINES ARE DISTINCT. A RobotConfig.h order is legal on its own
+    #     spine and would be nonsense on main.cpp's - this is the control that
+    #     would have caught a flat single-canon predicate.
+    check('C1 a RobotConfig.h order is SILENT on its own spine',
+          not one('<pre>// ===== PHYSICAL PROPERTIES =====\n'
+                  '// ===== SPEED SETTINGS =====</pre>'))
+    check('C2 a RobotConfig.h order REVERSED still FIRES',
+          len(one('<pre>// ===== SPEED SETTINGS =====\n'
+                  '// ===== PHYSICAL PROPERTIES =====</pre>')) == 1)
+
+    # D - a banner repeated back-to-back is one section shown twice, not an order.
+    check('D  a doubled banner is not an order claim',
+          not one('<pre>// ===== SETUP =====\n// ===== SETUP =====</pre>'))
+
+    # E - PLANT INTO A REAL, JUDGEABLE BLOCK. Swap the first and last banner of a
+    #     block the arm actually examines, assert the substitution landed, and
+    #     demand a restore is silent.
+    live = sorted(glob.glob(os.path.join(ROOT, 'lessons', 'Lesson_*.html')))
+    target = None
+    for path in live:
+        raw = open(path, encoding='utf-8').read()
+        for m in _CODEBLOCK.finditer(raw):
+            body = html.unescape(m.group(1) or m.group(2) or '')
+            if len(set(_BANNER.findall(body))) >= 2:
+                target = (path, m.group(0))
+                break
+        if target:
+            break
+    if not target:
+        check('E  a judgeable block exists to plant into', False)
+    else:
+        path, block = target
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, os.path.basename(path))
+            shutil.copy(path, p)
+            raw = open(p, encoding='utf-8').read()
+            seq = _BANNER.findall(html.unescape(block))
+            a, z = seq[0], seq[-1]
+            nb = (block.replace('// ===== %s =====' % a, '// ===== ZZ =====', 1)
+                       .replace('// ===== %s =====' % z, '// ===== %s =====' % a, 1)
+                       .replace('// ===== ZZ =====', '// ===== %s =====' % z, 1))
+            check('E0 the plant actually landed', nb != block)
+            open(p, 'w', encoding='utf-8').write(raw.replace(block, nb, 1))
+            check('E1 a swap in a REAL judgeable block FIRES',
+                  len(arm1([p])[0]) == 1)
+            shutil.copy(path, p)
+            check('E2 the restored file is SILENT', not arm1([p])[0])
+
+    # F - the live tree, and its declared limit.
+    f, judged, blind = arm1()
+    check('F1 live tree has no arm-1 finding', not f, str(f[:1]))
+    check('F2 the arm judged something at all', judged >= 20, '%d' % judged)
+    check('F3 the blind lessons are REPORTED, not hidden',
+          blind == [6, 10, 11, 12, 13, 14, 15], str(blind))
+
+    print()
+    print('  %d CONTROL(S) FAILED' % len(bad) if bad
+          else '  ALL ARM-1 CONTROLS PASS - loud when broken, silent when clean.')
+    return 1 if bad else 0
+
+
+def selftest_arm4():
+    """CONTROLS FOR ARM 4. Each must FIRE on a planted defect and be SILENT on its
+    legitimate twin. Fixtures are synthetic - a control that leans on the corpus it
+    audits breaks the moment the corpus is fixed (the S166/S171 defect)."""
+    bad = []
+
+    def check(name, ok, detail=''):
+        print('   %-58s %s' % (name, 'PASS' if ok else 'FAIL ' + detail))
+        if not ok:
+            bad.append(name)
+
+    import tempfile
+
+    def run(prose, counts):
+        with tempfile.TemporaryDirectory() as td:
+            fp = os.path.join(td, 'Lesson_02.html')
+            open(fp, 'w', encoding='utf-8').write('<p>%s</p>' % prose)
+            return arm4([fp], counts)
+
+    # A - a CANON claim with the wrong number FIRES; the right number is SILENT.
+    f, _u = run('Every program in this book has eight sections.', {'2': 7})
+    check('A1 canon claim with a wrong count FIRES', len(f) == 1, str(f))
+    f, _u = run('Every program in this book has nine sections.', {'2': 7})
+    check('A2 canon claim with the right count is SILENT', not f, str(f))
+
+    # B - a FILE claim is judged against the PAYLOAD, not the canon. The number
+    #     nine is CORRECT for the canon and WRONG for a file, so this pair also
+    #     proves the two branches are actually distinct.
+    f, _u = run('Compare your main.cpp top to bottom - nine sections.', {'2': 7})
+    check('B1 file claim judged against the payload FIRES', len(f) == 1, str(f))
+    f, _u = run('Compare your main.cpp top to bottom - seven sections.', {'2': 7})
+    check('B2 file claim matching the payload is SILENT', not f, str(f))
+
+    # C - THE CONTROL THAT WOULD HAVE CAUGHT THE FIRST DRAFT. The count must be
+    #     read from the payload, not hardcoded: move the payload underneath the
+    #     same prose and the verdict must flip.
+    f7, _ = run('Compare your main.cpp top to bottom - seven sections.', {'2': 7})
+    f9, _ = run('Compare your main.cpp top to bottom - seven sections.', {'2': 9})
+    check('C  moving the payload count flips the verdict',
+          not f7 and len(f9) == 1, '%s / %s' % (f7, f9))
+
+    # D - AMBIGUOUS IS REPORTED, NEVER CONVICTED (rule 78).
+    f, u = run('This section walks the nine sections one at a time.', {'2': 7})
+    check('D1 an unclassifiable claim is not a finding', not f, str(f))
+    check('D2 an unclassifiable claim IS reported', len(u) == 1, str(u))
+
+    # E - a section REFERENCE is not a section COUNT. Capitalised and singular.
+    f, u = run('Section 5 showed the code. The Version 2 section closes it.',
+               {'2': 7})
+    check('E  a capitalised singular reference is not counted',
+          not f and not u, '%s / %s' % (f, u))
+
+    # F - the live tree, priced by the live parser, is CLEAN.
+    lf, lu = arm4()
+    check('F  live tree has no arm-4 finding', not lf, str(lf[:2]))
+    check('G  every lesson with a finished payload got a count',
+          len(_live_payload_counts()) >= 14,
+          '%d priced' % len(_live_payload_counts()))
+
+    print()
+    print('  %d CONTROL(S) FAILED' % len(bad) if bad
+          else '  ALL ARM-4 CONTROLS PASS - loud when broken, silent when clean.')
+    return 1 if bad else 0
+
+
+def _live_payload_counts():
+    """Banner count of each lesson's `finished` payload, via the SAME brace parser
+    gate_payload_match uses. A regex over newproject.html would find banners in
+    changelog prose too - the parser is the only thing that answers (24.22)."""
+    import importlib.util
+    p = os.path.join(ROOT, 'gate_payload_match.py')
+    sp = importlib.util.spec_from_file_location('_gpm', p)
+    g = importlib.util.module_from_spec(sp)
+    sp.loader.exec_module(g)
+    js = open(os.path.join(ROOT, 'newproject.html'), encoding='utf-8').read()
+    P, _ = g.brace_json(js, 'var PAYLOADS = ')
+    out = {}
+    for k, v in (P or {}).items():
+        b = (v or {}).get('finished')
+        if isinstance(b, dict):
+            # L07+ ship the eight-file architecture: `finished` is keyed by
+            # FILENAME, and a section-count claim is about main.cpp.
+            b = b.get('main.cpp') or b.get('main') or ''
+        if isinstance(b, str) and b:
+            out[k] = _banner_count(b)
+    return out
+
+
+# ---------------------------------------------------------------------------------
+# ARM 1 - PRINTED BANNER SEQUENCES vs CANON ORDER
+#
+# THERE IS NO SINGLE CANON ORDER, AND ASSUMING ONE IS THE TRAP. Derived S195 from
+# all 367 payload bodies carrying 2+ banners: EIGHT distinct orderings, resolving to
+# THREE spines. A flat canon would have convicted 292 of the 367.
+#
+#   main.cpp        INCLUDES > HARDWARE OBJECTS > CONSTANTS > GLOBAL VARIABLES >
+#                   FUNCTION PROTOTYPES > SETUP > MAIN LOOP > HELPER FUNCTIONS
+#   RobotConfig.h   PHYSICAL PROPERTIES > TURNING PROPERTIES > SPEED SETTINGS >
+#                   BATTERY THRESHOLDS
+#   setup-sub       GLOBAL VARIABLES > SETUP > BATTERY REPORT > LINE SENSOR SETUP >
+#                   CALIBRATION > MAIN LOOP        (sub-banners INSIDE setup())
+#
+# THE TEST IS SUBSEQUENCE, NOT EQUALITY. A listing legitimately omits sections it
+# does not need - 18.3's "an empty section is not a mistake" - so the observed order
+# must be a SUBSEQUENCE of some spine, never equal to one.
+#
+# BOUNDARIES ARE <pre>/<code> ELEMENTS, NOT BANNER NAMES. A first draft segmented on
+# banner names and reported 22 findings, every one an artefact of gluing two separate
+# listings together. Measured: 203 of 203 banner occurrences in the book sit inside a
+# <pre> or <code>, so the element boundary is total coverage of the phenomenon.
+#
+# STATED COVERAGE LIMIT (rule 78). A block needs 2+ DISTINCT banners to have an order
+# at all, so this arm judges 23 blocks and SEVEN LESSONS HAVE NONE (L06, L10-L15).
+# CLEAN HERE DOES NOT MEAN THOSE LESSONS WERE CHECKED. The count and the blind
+# lessons are printed by report() rather than left for a reader to infer.
+# ---------------------------------------------------------------------------------
+SPINES = {
+    'main.cpp': ['INCLUDES', 'HARDWARE OBJECTS', 'CONSTANTS', 'GLOBAL VARIABLES',
+                 'FUNCTION PROTOTYPES', 'SETUP', 'MAIN LOOP', 'HELPER FUNCTIONS'],
+    'RobotConfig.h': ['PHYSICAL PROPERTIES', 'TURNING PROPERTIES',
+                      'SPEED SETTINGS', 'BATTERY THRESHOLDS'],
+    'setup-sub': ['GLOBAL VARIABLES', 'SETUP', 'BATTERY REPORT',
+                  'LINE SENSOR SETUP', 'CALIBRATION', 'MAIN LOOP'],
+}
+_BANNER = re.compile(r'// ===== ([A-Z][A-Z0-9 /_]*[A-Z]) =====')
+_CODEBLOCK = re.compile(r'<pre[^>]*>(.*?)</pre>|<code[^>]*>(.*?)</code>', re.S)
+
+
+def _subsequence(observed, spine):
+    it = iter(spine)
+    return all(x in it for x in observed)
+
+
+def arm1(lessons=None):
+    """-> (findings, judged, blind).
+
+    findings: (where, observed_order, evidence)
+    judged:   how many blocks actually had an order to check
+    blind:    lesson numbers with NO judgeable block - the declared limit
+    """
+    findings, judged, seen = [], 0, set()
+    lessons = lessons if lessons is not None else sorted(
+        glob.glob(os.path.join(ROOT, 'lessons', 'Lesson_*.html')))
+    for path in lessons:
+        raw = open(path, encoding='utf-8').read()
+        for m in _CODEBLOCK.finditer(raw):
+            body = html.unescape(m.group(1) or m.group(2) or "")
+            seq = _BANNER.findall(body)
+            # a banner repeated back-to-back is one section shown twice, not an
+            # order claim; collapse before judging.
+            ded = [x for i, x in enumerate(seq) if i == 0 or x != seq[i - 1]]
+            if len(set(ded)) < 2:
+                continue
+            judged += 1
+            seen.add(_lesson_no(path))
+            if not any(_subsequence(ded, s) for s in SPINES.values()):
+                findings.append((os.path.basename(path), ded,
+                                 ' > '.join(ded)))
+    blind = [n for n in range(1, 17) if n not in seen]
+    return findings, judged, blind
+
+
 def partition(findings=None):
     """-> (new_drift, pinned_seen, orphan_pins).
 
@@ -306,9 +658,27 @@ def report(strict=False):
         print('  pinned residue (see ZUMO_FIX_TRACKER.md; --residue lists it):')
         for where, name, ev in pinned:
             print(f'      {where}: {ev[:88]}')
-    print('  NOT BUILT: arm 1 (printed banner sequences) . arm 2 (placement claims) '
-          '. arm 4 (section-count claims)')
-    return 1 if ((new or orphan) and strict) else 0
+    f1, judged1, blind1 = arm1()
+    print(f'  ARM 1 (printed banner sequences): {len(f1)} finding(s), '
+          f'{judged1} block(s) judged')
+    for where, _obs, ev in f1:
+        print(f'  FINDING  {where}: banner order is not a subsequence of any spine')
+        print(f'           {ev[:100]}')
+    if blind1:
+        print('      COVERAGE LIMIT: no judgeable block in lesson(s) '
+              + ', '.join(str(x) for x in blind1)
+              + ' - clean here does NOT mean they were checked')
+
+    f4, u4 = arm4()
+    print(f'  ARM 4 (section-count claims): {len(f4)} finding(s), '
+          f'{len(u4)} unadjudicated')
+    for where, claimed, exp, kind, ev in f4:
+        print(f'  FINDING  {where}: claims {claimed} sections, {kind} expects {exp}')
+        print(f'           {ev[:100]}')
+    for where, claimed, _e, kind, ev in u4:
+        print(f'      unadjudicated ({kind}) {where}: "{ev[:74]}"')
+    print('  NOT BUILT: arm 2 (placement claims)')
+    return 1 if ((new or orphan or f4 or f1) and strict) else 0
 
 
 # ---------------------------------------------------------------------------------

@@ -1,12 +1,86 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 28, 2026 (Session 194 — **THE HARDWARE-IDENTITY FIX NAMED THE RIGHT BOARD AND THE WRONG VARIANT, AND 82/82 PASSED OVER IT FOR THIRTY-TWO SESSIONS**)
-**Status:** ✅ **S194 — DJ RULING: *"Fix it everywhere."* The fleet carries the `Zumo 32U4 OLED Main Board`, a DIFFERENT Pololu product from the plain `Zumo 32U4 Main Board` §16.25 canonised at S162. All 14 lesson sites corrected (L01 five, L03 nine — one an `alt` a rendered sweep cannot see), Bible canon corrected in three places at **v8.190**, `L03_IMAGE_3-14` renamed, `ZUMO_AFTER_LAUNCH`'s parked rename item CLOSED after seven sessions unruled, and the retirement registered as `retired_claims` #24 with fire/silent controls. Zero Maker payloads, zero bytes. 82/82 GATES. Tally unmoved: 103 CLOSED / 96 FIXED / 2 PARKED / 140 OPEN of 245.**
+**Date:** August 29, 2026 (Session 195 — **THE QUIZ BANKS REACHED CANVAS, AND THE TWO DEFECTS THAT WOULD HAVE BROKEN THEM WERE BOTH INVISIBLE TO THE CONTROLS**)
+**Status:** ✅ **S195 — DJ ruling: L09 and forward are TABLED; the scope is L01–L08 accuracy. `quizzes/qti_export.py` v1.2 shipped and all sixteen banks are imported into Canvas as 63 question banks plus 16 practice quizzes. Syllabus v1.5 records three rulings: the gate quiz is graded and open book / open notes, the Post-Build Checks are ungraded practice, and matching items are out of the gate draw. Four content sweeps of L01–L08 — identifiers, section references, numeric claims, section-count claims — all clean, and one of them OVERTURNED a ruling I had made hours earlier. `retired_claims` v1.2.0 takes S194's open item and now reads a false true/false's `why:`. `prose_canon` v1.3.0 builds arms 1 and 4, leaving one owed instead of three. `build_syllabus_html` v1.1 stops rewriting its own output on any stray argument. Zero payloads, zero bytes, zero lesson edits. 81/82 gates — §10 is the S194 orphan image awaiting one deletion checkbox. Tally unmoved.**
 
-**Versions:** L01 v03.32.2 · L02 v03.26.1 · L03 v03.47.1 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.28.0 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,814** · Bible **v8.191** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.76.4** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.33.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.0 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · prose_canon v1.1.0 · retired_claims v1.1.2 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.4 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `45a8f45`.**
+**Versions:** L01 v03.32.2 · L02 v03.26.1 · L03 v03.47.1 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.28.0 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,814** · Bible **v8.192** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.76.4** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.33.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · prose_canon v1.3.0 · retired_claims v1.2.0 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.5 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `e57904c`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
+## WHAT SHIPPED IN S195
+
+**DJ RULING: L09 AND FORWARD ARE TABLED. THE SCOPE IS L01–L08 ACCURACY.** Every open worklist row is
+L09 or later — L01–L08 has none, derived from `census.worklist()` rather than read off a handoff.
+That is not a proof of correctness; it means GPT's review pass is exhausted there.
+
+**THE QUIZ BANKS REACHED CANVAS, AND THE TWO DEFECTS THAT WOULD HAVE BROKEN THEM WERE BOTH INVISIBLE
+TO THE EXPORTER'S OWN CONTROLS.** `quizzes/qti_export.py` **v1.2** converts the sixteen banks to
+Canvas QTI 1.2; all 1,245 questions are live as 63 question banks plus 16 practice quizzes.
+**`&nbsp;` IS NOT VALID XML** — five entities are predefined and that is not one, so the package did
+not parse and Canvas would have refused it, **and control C asserted that `&nbsp;` was produced.** A
+control that pins the defect is worse than no control. **`<code>` WAS A REAL XML CHILD OF
+`<mattext>`** — it parsed cleanly, which is why it was dangerous, because Canvas takes the node's
+TEXT and all 42 code spans would have vanished with no error anywhere. Both were found by a
+ROUND-TRIP arm reconstructing the answer key from the emitted XML alone. **THE ARM THAT PASSES IS
+NOT THE ARM THAT WATCHES.**
+
+**A RULING MADE THIS MORNING WAS OVERTURNED BY THE SWEEP THAT FOLLOWED IT.** `L01_A12` was judged
+unanswerable for asking a Lesson 4 function name in a Lesson 1 quiz. Lesson 1 states it outright —
+*by Lesson 4 it has a name, `waitForStart()`, and it is a safety rule, not a convenience* — and the
+keyed option gives the name and the status exactly as the stem asks. **A ruling made against a
+description of an artefact is a lead; the artefact is the answer.**
+
+**FOUR SWEEPS OF THE L01–L08 BANKS, 854 QUESTIONS, ALL CLEAN:** identifiers, section references,
+numeric claims and section-count claims, every hit a deliberate distractor.
+
+**`retired_claims` v1.2.0 TAKES S194'S OPEN ITEM.** `assert_true_text` now reads a `true_false`
+question's `why:` in both directions, where it previously read neither stem nor why when `correct is
+False` — leaving **134 `why:` fields across the sixteen banks** as prose in the book's voice that no
+instrument read, the fourth occurrence of the family after S193's `L10_B21`. The FALSE stem stays
+excluded by structure; it is the declared-wrong trap. A claim planted in `L01_B11`'s `why:` FIRES
+under v1.2.0 and is SILENT under v1.1.2 on the identical file, and **the first plant injected nothing
+and was caught by its own substitution assert.**
+
+**`prose_canon` v1.3.0 BUILDS ARMS 1 AND 4, LEAVING ONE OWED INSTEAD OF THREE.** Arm 4 was
+unbuildable because the obvious predicate convicts L02 and L06 on correct prose: **the two numbers
+reconcile exactly** — L02 teaches nine, a payload ships seven banners, and `mainCpp()` prepends the
+header and the `#include`. The discriminator is what the sentence COUNTS, and anything
+unclassifiable is reported UNADJUDICATED rather than convicted. Arm 1 found **there is no single
+canon banner order** — eight orderings across 367 payload bodies resolving to THREE SPINES, where a
+flat canon would have convicted 292 of them. **Its coverage limit is printed by the arm itself** —
+23 judgeable blocks, seven lessons with none — because clean over a lesson you cannot see is the
+gate-that-prints-PASS failure. **The control that taught this failed first for the wrong reason:**
+the plant went into a block the arm correctly declines to judge, so the arm's silence read as the
+arm's failure. **A control must plant where the arm LOOKS.**
+
+**`build_syllabus_html` v1.1 HAD NO ARGUMENT HANDLING AT ALL**, so the write branch was the
+fall-through and `--help` regenerated the file — the S174 defect `image_audit` was fixed for, in a
+script that never got the guard. **And it bit again during the triple check**, when running HEAD's
+copy to demonstrate the old behaviour rewrote `syllabus.html` with the stale header. **Demonstrating
+a write-defect executes it.**
+
+**Syllabus v1.5** records three rulings: the gate quiz is graded and **open book, open notes** (it is
+taken at home and unproctored, and silence traps the conscientious student), the Post-Build Checks
+are **ungraded practice**, and **matching is out of the gate draw** — the separate-random-group fix
+was refused on measurement, because the matching pools are tiny and a draw of one from one is not a
+draw.
+
+**`grep` LOCATED THREE CANDIDATES AND ANSWERED NONE** (§24.22) — the L05 seven-sections claim, the
+§8A.4 reference and the eight-versus-seven banner count were each resolved only by the parser, and
+each would have been filed as a defect on the grep alone.
+
+Applied S195: Bible **v8.192** · `retired_claims` **v1.2.0** · `prose_canon` **v1.3.0** ·
+`build_syllabus_html` **v1.1** · `syllabus.html` **v1.1** · `ZUMO_Syllabus_WORKING.md` **v1.5** ·
+`qti_export` **1.2** (new, registered in `ARTEFACTS` and in both emitted blocks — **Control G caught
+it missing from them**). Zero payloads, zero bytes, zero lesson edits, zero bank edits. Worklist
+**103 CLOSED / 96 FIXED / 2 PARKED / 140 OPEN of 245**, derived, unmoved. 81/82 gates — §10 is the
+S194 orphan image awaiting one deletion checkbox. `gate_payload_match` PASS with the advisory
+unmoved at 635, 16 banks valid, `callout_id` 1135, `retired_claims` CLEAN with 24 registered,
+`prose_canon` 0 new / 7 pinned / 0 orphan and both new arms at 0 findings, `census --selftest` and
+`session_versions --selftest` all controls. **`byte_audit` is owed nothing — zero payloads moved and
+zero bytes.**
+
+---
 ## WHAT SHIPPED IN S194
 
 **THE VARIANT, NOT THE BOARD.** §16.25 retired A-Star at S162 and installed `Zumo 32U4 Main Board` as

@@ -1,6 +1,6 @@
 # Robotics — Zumo Autonomous Robot
 ### How This Class Works · Fall Trimester · Mercersburg Academy · Mr. Weymuth
-<!-- ZUMO_Syllabus_WORKING.md v1.4 — S194, Aug 28 2026: dates pinned to the Fall 2026 block schedule (D block); Day One split across Sep 4 and Assignment 1 -->
+<!-- ZUMO_Syllabus_WORKING.md v1.5 — S195, Aug 29 2026: reading quiz declared open book / open notes and its per-quiz weight stated; Post-Build Check declared ungraded practice and given its own section -->
 
 > **Fall Term 2026 · D Block.** We meet **28 times** between **Friday September 4** and **Friday
 > November 13**, plus a final block on **Tuesday November 17**. Times rotate:
@@ -46,7 +46,15 @@ You read the section, retake the quiz, *then* you join the build. This isn't a p
 
 This is a **soft gate**: you're never locked out of the course, just asked to catch up on the reading first. The open lab (M–Th evenings) and your free periods are there for exactly this. Come prepared and this never comes up.
 
-*(Mechanically: the quiz opens before class and closes at the start of the period. One attempt, auto-graded in Canvas.)*
+**It's open book and open notes.** Keep the textbook page up. Keep your engineering notebook open. You are not being tested on whether you memorized the reading — you're being asked to show you did it. The questions ask *why*, not *what was on line four*, so having the page open helps you only if you already read it. A student who skipped the reading and tries to hunt for answers will burn the whole pre-class window and know it.
+
+*(Mechanically: the quiz opens before class and closes at the start of the period. One attempt, auto-graded in Canvas. Each one is worth about 1% of your final grade — no single quiz can make or break you, so answer honestly and let the bell-ringer fix what the class missed.)*
+
+### The Post-Build Check — practice, not a grade
+
+After you finish a lesson there's a second Canvas quiz, the **Post-Build Check**. It is **not graded** and it does not appear in your grade. Unlimited attempts, take it as many times as you like.
+
+It's there because a milestone is a bad place to discover a gap. Run the Post-Build Check before a checkpoint and you'll find out what you actually understood while there's still time to fix it.
 
 ---
 
@@ -124,7 +132,7 @@ You keep one document all term; you never submit a new file.
 |---|---|---|
 | **Milestones** | 35% | The 7 checkpoints — code (60%) + task performance (40%) |
 | **Engineering Notebook / TDP + Poster** | 25% | Your running notebook, filled in as you go — plus the poster you distill from it at the end |
-| **Reading Quizzes** | 20% | Short pre-class quizzes — read before class |
+| **Reading Quizzes** | 20% | Short pre-class quizzes — read before class. Open book, open notes. The Post-Build Checks are ungraded practice and are not in this number. |
 | **Exit Tickets / Checklists** | 10% | End-of-lesson "can you do this?" self-checks |
 | **Materials** | 5% | Come ready: robot, case, charged batteries, programming cable |
 | **Outside Work** | 5% | Logged lab/practice time outside of class |
@@ -325,4 +333,4 @@ Do not start a build with a setup item missing and hope it sorts itself out. Fix
 - Late-milestone penalty amount
 
 ---
-*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Term 2026 · D Block · Sep 4 – Nov 17 · v1.4*
+*Robotics · Zumo 32U4 · Mercersburg Academy · Fall Term 2026 · D Block · Sep 4 – Nov 17 · v1.5*

@@ -37,7 +37,16 @@ import os
 import re
 import sys
 
-VERSION = 'v1.1.2'
+VERSION = 'v1.2.0'
+# v1.2.0 (S195): assert_true_text now reads a true_false question's `why:` in BOTH
+# directions. It previously read stem AND why only when correct is True, and NEITHER
+# when correct is False - so 134 `why:` fields across the sixteen banks (64 of them in
+# L01-L08) were prose in the book's voice that no instrument read. FOURTH occurrence of
+# the family after S193's L10_B21 opened the multiple-choice distractor `why:`.
+# The STEM of a false true_false stays excluded BY STRUCTURE - it is the declared-wrong
+# trap. Controlled both ways: a retired claim planted in L01_B11's `why:` FIRES under
+# v1.2.0 and is SILENT under v1.1.2 on the identical file; the plant asserted its own
+# substitution count first, and the bank was restored byte-exact from a pristine copy.
 # v1.1.2 note (S194): the DOCSTRING used to open 'retired_claims.py v1.0'. VERSION had
 #   moved four times and that line never did, so a naive version grep found v1.0 while
 #   the home said v1.1.x - the SS5b two-homes defect, in the one file whose whole job is
@@ -205,9 +214,15 @@ def assert_true_text(q):
     out, typ = [], q.get('type')
     correct = q.get('correct')
     if typ == 'true_false':
+        # THE why: IS READ IN BOTH DIRECTIONS. The STEM of a false true/false
+        # asserts nothing - it is the declared-wrong trap and stays excluded by
+        # structure. But the why: is prose in the book's voice explaining what
+        # IS true, so a retired claim survives there exactly as it does in a
+        # multiple-choice distractor's why: (S193, L10_B21). Widened S195; the
+        # branch was measured CLEAN across 24 retirements and 16 banks first.
+        out.append(str(q.get('why', '')))
         if correct is True:
             out.append(str(q.get('stem', '')))
-            out.append(str(q.get('why', '')))
     else:
         out.append(str(q.get('stem', '')))
         if correct is True:
@@ -301,6 +316,30 @@ def _controls():
     f2 = sweep({}, {'Toy.yaml': [qf]}, TOY)
     check('CONTROL E (true_false TRUE fires, FALSE silent)',
           len(f1) == 1 and not f2, '%s / %s' % (f1, f2))
+
+    # E2: THE STEM AND THE why: PART COMPANY ON A FALSE true_false. The stem is
+    #     the declared-wrong trap and asserts nothing; the why: is prose in the
+    #     book's voice saying what IS true. Control E uses stem-only fixtures,
+    #     so it passes identically under v1.1.2 and v1.2.0 and CANNOT tell the
+    #     widened arm from the old one. This one can, and it is the arm that
+    #     was blind through four sessions of the same defect family.
+    qfw = {'id': 'T_A3', 'type': 'true_false', 'stem': 'harmless',
+           'correct': False, 'why': 'zzretiredzz'}
+    qtw = {'id': 'T_A4', 'type': 'true_false', 'stem': 'harmless',
+           'correct': True, 'why': 'zzretiredzz'}
+    f3 = sweep({}, {'Toy.yaml': [qfw]}, TOY)
+    f4 = sweep({}, {'Toy.yaml': [qtw]}, TOY)
+    check('CONTROL E2 (why: on a FALSE true_false FIRES)',
+          len(f3) == 1, str(f3))
+    check('CONTROL E3 (why: on a TRUE true_false still FIRES)',
+          len(f4) == 1, str(f4))
+    # and the trap must STAY excluded: a retired claim in a FALSE stem is the
+    # thing the student is asked to reject, and must remain silent.
+    qfs = {'id': 'T_A5', 'type': 'true_false', 'stem': 'zzretiredzz',
+           'correct': False, 'why': 'harmless'}
+    f5 = sweep({}, {'Toy.yaml': [qfs]}, TOY)
+    check('CONTROL E4 (a FALSE stem stays the trap and is SILENT)',
+          not f5, str(f5))
 
     # F: an EMPTY registry does not pass on no truth. A sweep with nothing to
     #    assert must be caught by the CALLER's coverage arm, so this control

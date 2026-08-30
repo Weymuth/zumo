@@ -1,4 +1,4 @@
-"""build_syllabus_html.py v1.0 - syllabus.html is GENERATED, never hand-edited.
+"""build_syllabus_html.py v1.1 - syllabus.html is GENERATED, never hand-edited.
 
 WHY INLINE STYLES, WHEN SS27 RETIRED THEM (DJ ruling S194).
 The lessons are LINKED from Canvas, so they carry classes and css/book.css - SS27, and
@@ -96,17 +96,43 @@ def convert(md):
                        f'margin:10px 0;">{inline(" ".join(para))}</p>')
     return "\n".join(out)
 
+# AN UNRECOGNIZED ARGUMENT IS REFUSED, NOT IGNORED (S174). This script had NO
+# argument handling at all, so the write branch was the fall-through: `--help`
+# and a typo of any flag both silently regenerated syllabus.html. Found S195 by
+# running --help and watching it write.
+import sys as _sys
+_args = _sys.argv[1:]
+for _a in _args:
+    if _a not in ('--check', '--help', '-h'):
+        print('build_syllabus_html.py: unrecognized argument %r' % _a)
+        raise SystemExit(2)
+if '--help' in _args or '-h' in _args:
+    print(__doc__.strip())
+    raise SystemExit(0)
+
 md=open("ZUMO_Syllabus_WORKING.md",encoding="utf-8").read()
 body=convert(md)
 page=(f'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
       f'<meta name="viewport" content="width=device-width, initial-scale=1">\n'
       f'<title>Syllabus — Robotics · Zumo 32U4 · Mercersburg Academy</title>\n'
-      f'<!-- syllabus.html v1.0 — S194. INLINE STYLES ONLY, ON PURPOSE: this page is meant to\n'
+      f'<!-- syllabus.html v1.1 — S195. INLINE STYLES ONLY, ON PURPOSE: this page is meant to\n'
       f'     survive being PASTED into Canvas, which strips <style> blocks and class attributes.\n'
       f'     It therefore links NEITHER css/book.css NOR css/semantic.css and is out of gate\n'
       f'     §27.12 by the same rule that exempts newproject.html and tutor.html (§25.6a).\n'
       f'     GENERATED from ZUMO_Syllabus_WORKING.md — edit the MARKDOWN, never this file. -->\n'
       f'</head>\n<body style="margin:0;padding:26px 20px;background:#ffffff;">\n'
       f'<div style="max-width:860px;margin:0 auto;">\n{body}\n</div>\n</body>\n</html>\n')
+if '--check' in _args:
+    try:
+        _have = open("syllabus.html", encoding="utf-8").read()
+    except FileNotFoundError:
+        print("syllabus.html is absent - re-run without --check")
+        raise SystemExit(1)
+    if _have != page:
+        print("syllabus.html DIFFERS - re-run without --check")
+        raise SystemExit(1)
+    print("syllabus.html is current")
+    raise SystemExit(0)
+
 open("syllabus.html","w",encoding="utf-8").write(page)
 print("wrote syllabus.html")

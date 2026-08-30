@@ -223,6 +223,7 @@ ARTEFACTS = [
     ('strip_inline',          'strip_inline.py',          r"VERSION = '(v[\d.]+)'"),
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
     ('prose_canon',           'prose_canon.py',              r"VERSION = '(v[\d.]+)'"),
+    ('qti_export',            'quizzes/qti_export.py',       r"VERSION = '([\d.]+)'"),
     ('retired_claims',        'retired_claims.py',           r"VERSION = '(v[\d.]+)'"),
     ('census',                'census.py',           r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
@@ -328,6 +329,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"image_audit {vals['image_audit']} · "
             f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
+            f"qti_export {vals['qti_export']} · "
             f"prose_canon {vals['prose_canon']} · "
             f"retired_claims {vals['retired_claims']} · "
             f"census {vals['census']} · "
@@ -371,6 +373,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`image_audit` **{vals['image_audit']}** ·\n"
             f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
+            f"`qti_export` **{vals['qti_export']}** ·\n"
             f"`prose_canon` **{vals['prose_canon']}** ·\n"
             f"`retired_claims` **{vals['retired_claims']}** ·\n"
             f"`census` **{vals['census']}** ·\n"
