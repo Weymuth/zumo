@@ -1,12 +1,51 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 29, 2026 (Session 195 — **THE QUIZ BANKS REACHED CANVAS, AND THE TWO DEFECTS THAT WOULD HAVE BROKEN THEM WERE BOTH INVISIBLE TO THE CONTROLS**)
-**Status:** ✅ **S195 — DJ ruling: L09 and forward are TABLED; the scope is L01–L08 accuracy. `quizzes/qti_export.py` v1.2 shipped and all sixteen banks are imported into Canvas as 63 question banks plus 16 practice quizzes. Syllabus v1.5 records three rulings: the gate quiz is graded and open book / open notes, the Post-Build Checks are ungraded practice, and matching items are out of the gate draw. Four content sweeps of L01–L08 — identifiers, section references, numeric claims, section-count claims — all clean, and one of them OVERTURNED a ruling I had made hours earlier. `retired_claims` v1.2.0 takes S194's open item and now reads a false true/false's `why:`. `prose_canon` v1.3.0 builds arms 1 and 4, leaving one owed instead of three. `build_syllabus_html` v1.1 stops rewriting its own output on any stray argument. Zero payloads, zero bytes, zero lesson edits. 81/82 gates — §10 is the S194 orphan image awaiting one deletion checkbox. Tally unmoved.**
+**Date:** August 30, 2026 (Session 196 — **THE FIRST BENCH SESSION TO DELETE PRINTED PROSE.** Two flagged rows failed against a real robot; a third passed and predicted a later measurement to 1%.)
+**Status (S196 close, Aug 30):** Bench session — first bench results to DELETE printed prose. F10 and F14 FAILED; F13 PASSED and validated F11 to 1%. F11/F12/F16-raw/F17/F18 closed, F5 half. prose_canon arm 2 BUILT (all four arms now built). Seven S184 residue pins CLOSED. svg_layout_audit CTM defect fixed. §24.22 tripwire installed. BD1/BD2 open in the Maker.
 
-**Versions:** L01 v03.32.2 · L02 v03.26.1 · L03 v03.47.1 · L04 v04.29.6 · L05 v04.30.0 · L06 v04.37.2 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.28.0 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,814** · Bible **v8.192** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.70 · **book_gates v1.76.4** · lesson_inventory v1.3.5 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.33.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.21.2 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · prose_canon v1.3.0 · retired_claims v1.2.0 · census v1.2.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.5 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `e57904c`.**
+**Versions:** L01 v03.32.2 · L02 v03.26.1 · L03 v03.47.1 · L04 v04.29.6 · L05 v04.30.1 · L06 v04.37.3 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.28.0 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,814** · Bible **v8.193** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.71 · **book_gates v1.76.4** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.33.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · prose_canon v1.4.0 · retired_claims v1.2.0 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.5 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `dbd606f`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
 
+## WHAT SHIPPED IN S196
+
+**THE FIRST BENCH SESSION TO DELETE PRINTED PROSE.** DJ ran the book's own code at the robot.
+**F10 FAILED** — L02 §9 C2's three-screen prediction did not occur in either build, and the
+wait-IN case contradicts the book outright: the battery screen VANISHED on release, the case the
+book calls stable. A flash too fast to see cannot make a screen disappear and stay gone, so that
+half stands alone. **§9 C2's "Why it takes two trips and not one" comes out.**
+**F14 FAILED** — §9 Bonus 2 predicts ~2x baseline; measured **0.37x** (baseline n=8 mean 2.75 cm,
+backward n=7 mean 1.01 cm, CIs nowhere near touching). The naively-aimed TRIM left the robot
+STRAIGHTER than no TRIM at all. **Bonus 2's reveal must be rewritten.**
+**F13 PASSED AND VALIDATED F11 IN THE SAME BREATH** — ramp minus slam **+29.35 cm** against
+**29.7 cm** predicted from F11's own rate. 1% agreement across two independent programs, which also
+demonstrates near-linear motor speed over 0–400, asserted in the book and never shown.
+**F11 59.4 cm · F12 TRIM +5 · F16-raw ~26x separation · F17 and F18 CLOSED** — F17 had blocked
+F15/F16/F18 and the L04 learner build **since S51, fifty-one sessions**.
+**F5 CONTRADICTS BATTERY CANON**: fresh **5199** against a canon ~5400, and a hard session ended at
+**5092**, still ~292 mV above canon "working". The three-band scheme does not describe the fleet and
+it appears in 34 figures across L01–L03. **Needs DJ — a fleet fact, not a text fix.**
+**BD1/BD2 OPEN IN THE MAKER**: `L3/braking_test` launches at speed 400 with no countdown and no
+wait. **The sweep that found the second one ran over the PAYLOADS structure, not lesson prose** — a
+prose search returns zero, because the code lives in the Maker. `L2/speed_limit` is identical and
+was never hit at the bench.
+**CROSS-ROW:** distance is repeatable to 1% while lateral drift spans 2.2x, yet **L03 asks students
+to judge TRIM from ONE run** — direction survives, magnitude does not. A settling trend appeared in
+THREE unrelated programs and is NOT claimed, because battery was not logged per run.
+
+**INSTRUMENTS.** `prose_canon` **v1.4.0** — arm 2 built, all four arms now exist; a triple check
+found the arm judged only the FIRST subject of a multi-subject claim, and the fix then regressed
+judged 4→1 because a sub-pattern was reused under different regex flags. `svg_layout_audit`
+**v1.23** — **L07_GRAPHIC_7-15 had no overflow at all**; all five findings and the carried "14.5
+units" were a coordinate-space mismatch, panels read raw while text went through the CTM.
+`census` **v1.3.0** and `lesson_inventory` **v1.4.1** — punctuation folding, after a straight-quoted
+search read ZERO across fifteen lessons whose true count is sixteen. **`tools/no_text_match.sh`** —
+§24.22 tripwire, deny-by-default, eleven controls; its first version was an allowlist and leaked
+two ways on the first adversarial pass. **The seven S184 residue pins are CLOSED**, ninth session.
+
+**Worklist tally, derived by `census.worklist()` and unmoved this session: 103 closed / 96 fixed / 2 parked / 140 open of 245.** S196 touched no worklist row — it was a bench session plus instrument work.
+
+---
 ## WHAT SHIPPED IN S195
 
 **DJ RULING: L09 AND FORWARD ARE TABLED. THE SCOPE IS L01–L08 ACCURACY.** Every open worklist row is

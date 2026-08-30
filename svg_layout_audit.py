@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = 'v1.21.2'
+VERSION = 'v1.23'
 # ---------------------------------------------------------------------------------------------
 # svg_layout_audit.py - pre-flight audit for an incoming graphic, run BEFORE a human opens it.
 #
@@ -717,12 +717,23 @@ def audit(path):
 
     # ---- 5. text overflowing its panel ------------------------------------------------------
     ran.add('overflow')
+    # v1.22 (S196): PANELS ARE MEASURED THROUGH THE CTM, LIKE EVERYTHING ELSE.
+    # _lines() has returned ABSOLUTE text extents since v1.13/v1.14, but this
+    # collector read raw x/y/width/height, so a panel under transform="translate()
+    # scale()" was compared in LOCAL units against text in ABSOLUTE units. The
+    # finding string said so out loud - "spans 90..690 inside 10..410" - and was
+    # read as an overflow for eight sessions. This is v1.14's own lesson recurring:
+    # a check that honours transforms and a neighbour that does not is half a fix.
+    # CONTROLLED: a synthetic panel under scale(2) holding text 180 units INSIDE
+    # was reported as a 286-unit overflow before this change and is clean after.
     panels = []
     for rc in root.findall(f'.//{NS}rect'):
         w, h = float(rc.get('width') or 0), float(rc.get('height') or 0)
         if w >= PANEL_MIN_W and h >= PANEL_MIN_H:
             x, y = float(rc.get('x') or 0), float(rc.get('y') or 0)
-            panels.append((x, y, x + w, y + h))
+            dx, dy, sx, sy = _ctm(rc)
+            panels.append((x * sx + dx, y * sy + dy,
+                           (x + w) * sx + dx, (y + h) * sy + dy))
     panels.sort(key=lambda p: (p[2] - p[0]) * (p[3] - p[1]))     # smallest enclosing wins
     # ...but a PANEL is not the only thing that can bound a label. A section tab, a coloured
     # pill, a legend chip - all are filled boxes far under PANEL_MIN_W, and a label sitting on
@@ -739,7 +750,9 @@ def audit(path):
         if w <= 0 or h <= 0 or (w >= PANEL_MIN_W and h >= PANEL_MIN_H):
             continue                       # panels are handled above; this is the small stuff
         x, y = float(rc.get('x') or 0), float(rc.get('y') or 0)
-        holders.append((x, y, x + w, y + h))
+        dx, dy, sx, sy = _ctm(rc)          # same coordinate space as panels and text
+        holders.append((x * sx + dx, y * sy + dy,
+                        (x + w) * sx + dx, (y + h) * sy + dy))
 
     def _held(x0, x1, ycent, size):
         """Is this line fully inside a small filled box? Then that box is its container."""
@@ -757,8 +770,16 @@ def audit(path):
         tx, ty = float(t.get('x') or 0), float(t.get('y') or 0)
         if any((tx - cx) ** 2 + (ty - cy) ** 2 <= (rr * 1.2) ** 2 for cx, cy, rr in badges_xy):
             continue
+        _tdx, _tdy, _tsx, _tsy = _ctm(t)
         for s, x0, x1, y, size, _declared in _lines(t):
-            ax = float(t.get('x') or 0)
+            # THE ANCHOR POINT, TRANSFORMED - not the span's left edge. The anchor is
+            # the label's semantic position: a text-anchor="middle" transition label
+            # drawn BETWEEN two state boxes anchors in the gap and correctly matches
+            # no panel. Selecting on x0 instead made such a label GRAZE the box on its
+            # left and produced 4 phantom findings across 11-04 and 9-6 - a new false
+            # positive introduced while fixing an old one. Only the SPACE was wrong
+            # here, never the choice of point.
+            ax = float(t.get('x') or 0) * _tsx + _tdx
             for px0, py0, px1, py1 in panels:
                 if px0 <= ax <= px1 and py0 <= y <= py1:
                     if x0 < px0 + PANEL_PAD or x1 > px1 - PANEL_PAD:
@@ -936,14 +957,58 @@ def audit(path):
     return out
 
 
+FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        'fixtures', 'svg_layout')
+
+# Committed control fixtures, with the verdict each MUST produce. These exist because
+# the transform defect v1.22 fixed survived EIGHT sessions, and it survived because
+# --selftest could not run without the caller supplying a reference graphic: this was
+# the one instrument the session-open ritual had to skip. A control nobody can run is
+# not a control. Expected counts are OVERFLOW findings only, so an unrelated structural
+# check on a fixture cannot flip a transform control.
+TRANSFORM_CONTROLS = [
+    ('ctrl_scaled_panel_inside.svg', 0,
+     'text 180 units INSIDE a scaled panel is not an overflow'),
+    ('ctrl_scaled_panel_overflow.svg', 1,
+     'text 220 units OUTSIDE the same scaled panel still fires'),
+    ('ctrl_gap_label.svg', 0,
+     'an anchored label in the GAP between two panels belongs to neither'),
+]
+
+
+def _transform_controls():
+    """Argument-free controls. Both directions, on committed fixtures."""
+    ok = True
+    print('TRANSFORM CONTROLS (committed fixtures, no argument needed)')
+    for name, expect, why in TRANSFORM_CONTROLS:
+        path = os.path.join(FIXTURES, name)
+        if not os.path.exists(path):
+            print(f'   FAIL  {name}: FIXTURE MISSING - the control cannot run')
+            ok = False
+            continue
+        got = len([f for f in audit(path) if 'overflows its panel' in f])
+        good = (got == expect)
+        print(f'   {"PASS" if good else "FAIL"}  {name}: '
+              f'{got} overflow finding(s), expected {expect} - {why}')
+        ok = ok and good
+    return ok
+
+
 def _selftest():
     """Controls both ways: silent on a clean file, loud on each seeded defect."""
     import copy, tempfile
     ok = True
+    ok = _transform_controls()
     src = sys.argv[2] if len(sys.argv) > 2 else None
     if not src or not os.path.exists(src):
-        print('selftest needs a known-clean reference file:  --selftest FILE.svg')
-        return False
+        # NOT A FAILURE, AND THE LIMIT IS PRINTED RATHER THAN LEFT TO BE INFERRED.
+        # The seeded-defect controls below mutate a real graphic and need one; the
+        # transform controls above do not. Saying "ALL CONTROLS PASS" here without
+        # naming what did not run would be the blindness this module keeps finding.
+        print('   NOTE: the seeded-defect controls did NOT run - they need a known-'
+              'clean reference:  --selftest FILE.svg')
+        print('  TRANSFORM CONTROLS PASS' if ok else '  CONTROL FAILURE')
+        return ok
     skipped = []
     print(f'CONTROL A (false-positive): clean reference must be SILENT  [{os.path.basename(src)}]')
     base = audit(src)
@@ -1410,7 +1475,7 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         sys.exit(f'svg_layout_audit {VERSION}\nusage: svg_layout_audit.py FILE.svg [FILE.svg ...]'
                  f'\n       svg_layout_audit.py FILE.svg --fixnote'
-                 f'\n       svg_layout_audit.py --selftest KNOWN_CLEAN.svg')
+                 f'\n       svg_layout_audit.py --selftest [KNOWN_CLEAN.svg]')
     if '--fixnote' in sys.argv:
         for _p in [a for a in sys.argv[1:] if not a.startswith('--')]:
             print(fixnote(_p))

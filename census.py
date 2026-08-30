@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # VERSION is the ONE home and sits ABOVE the changelog, so a plain grep of this file
 # returns the version and not a changelog line (S98).
-VERSION = 'v1.2.0'
+VERSION = 'v1.3.0'
 # v1.2.0 (S192): THE WORKLIST TALLY GETS AN OWNER. Until now no instrument derived
 #   `closed / fixed / parked / open / total`; three documents each stated it and each
 #   was maintained by hand, which is how a wrong split survived NINE sessions (S191).
@@ -179,18 +179,65 @@ def occurrences(pattern, paths, flags=0):
     return Population('MATCHES', out, 'pattern %r' % pattern)
 
 
-def rendered(pattern, paths, flags=0):
-    """Matches in RENDERED text: tags stripped, entities resolved. A phrase broken
-    across an inline element is invisible to a raw match - S162 lost a retired
-    claim that way, split across <em> tags."""
+# ---------------------------------------------------------------------------
+# TYPOGRAPHIC NORMALISATION - THE HOLE THAT SURVIVED THE INSTRUMENT.
+#
+# census was built at S186 so a count could not be a bare integer. It closed the
+# "how many" hole and left the "did it match at all" hole wide open: rendered()
+# resolved ENTITIES but not SMART PUNCTUATION, so a pattern typed with a straight
+# apostrophe still missed a book written with a curly one. S196 hit exactly that -
+# a search for "Engineer's Log" returned ZERO across fifteen lessons whose true
+# count is sixteen - and the fifth recurrence of the family DJ has now objected to
+# four times.
+#
+# THE PATTERN AND THE CORPUS ARE NORMALISED TOGETHER. Normalising only the corpus
+# would leave a correctly-typed curly pattern blind, which is the same defect
+# mirrored. None of these characters is a regex metacharacter, so rewriting them in
+# the pattern cannot change what the expression means.
+#
+# THE COST IS STATED: after this, rendered() CANNOT TELL ' FROM ’. That is right for
+# asking what the book says and wrong for auditing punctuation itself, so callers
+# that need the distinction pass literal_punct=True and get the old behaviour.
+_PUNCT = {
+    '\u2019': "'", '\u2018': "'", '\u02bc': "'",      # curly / modifier apostrophes
+    '\u201c': '"', '\u201d': '"',                     # curly double quotes
+    '\u2014': '-', '\u2013': '-', '\u2212': '-',      # em / en dash, minus
+    '\u00a0': ' ', '\u2009': ' ', '\u202f': ' ',      # nbsp, thin, narrow nbsp
+    '\u2026': '...',                                   # ellipsis
+}
+
+
+def normalise(s):
+    """Fold typographic punctuation to its ASCII spelling. ONE HOME (24.24) - both
+    census and lesson_inventory call this, so the mapping cannot drift into two."""
+    for a, b in _PUNCT.items():
+        s = s.replace(a, b)
+    return s
+
+
+def rendered(pattern, paths, flags=0, literal_punct=False):
+    """Matches in RENDERED text: tags stripped, entities resolved, TYPOGRAPHIC
+    PUNCTUATION FOLDED. A phrase broken across an inline element is invisible to a
+    raw match - S162 lost a retired claim that way, split across <em> tags - and a
+    phrase written with a curly apostrophe is invisible to a straight-quoted
+    pattern, which is how S196 read zero across fifteen lessons.
+
+    literal_punct=True restores the old byte-faithful behaviour for callers auditing
+    punctuation itself, where folding ' into ’ would destroy the subject.
+    """
     import html as _html
-    rx = re.compile(pattern, flags)
+    pat = pattern if literal_punct else normalise(pattern)
+    rx = re.compile(pat, flags)
     out = []
     for p in _paths(paths):
         raw = _read(p)
         txt = _html.unescape(re.sub(r'<[^>]+>', ' ', raw))
+        if not literal_punct:
+            txt = normalise(txt)
         out.extend('%s#%d' % (p, i) for i, _ in enumerate(rx.finditer(txt), 1))
-    return Population('MATCHES in rendered text', out, 'pattern %r' % pattern)
+    return Population('MATCHES in rendered text', out,
+                      'pattern %r%s' % (pattern,
+                                        '' if literal_punct else ' (punct folded)'))
 
 
 # ---------------------------------------------------------------------------
@@ -391,6 +438,26 @@ def _selftest():
         print('  %-58s %s' % (name, 'PASS' if cond else 'FAIL ' + detail))
         if not cond:
             fails.append(name)
+
+    # ---- PUNCTUATION FOLDING (S196) --------------------------------------
+    # THE HOLE THAT SURVIVED THIS INSTRUMENT. census stopped a count from being a
+    # bare integer at S186 and did nothing about whether the pattern MATCHED, so a
+    # straight-quoted search read zero across fifteen lessons of curly-quoted prose.
+    # Both directions, and the second control is what makes the first mean anything.
+    _les = 'lessons/Lesson_*.html'
+    _folded = len(rendered(r"Engineer's Log", _les))
+    _literal = len(rendered(r"Engineer's Log", _les, literal_punct=True))
+    chk('folded: a straight-quote pattern finds curly-quote prose',
+        _folded >= 16, 'got %d, expected at least one per lesson' % _folded)
+    chk('literal_punct=True is still byte-faithful (the control can fail)',
+        _literal < _folded,
+        'got literal=%d folded=%d - if equal, folding is not what found them'
+        % (_literal, _folded))
+    chk('a curly-quote pattern also finds it (mirror direction)',
+        len(rendered("Engineer\u2019s Log", _les)) == _folded,
+        'normalising only the corpus would leave a correct curly pattern blind')
+    chk('normalise() is idempotent',
+        normalise(normalise('a\u2019b\u2014c')) == normalise('a\u2019b\u2014c'))
 
     d = tempfile.mkdtemp()
     f = os.path.join(d, 'a.txt')

@@ -10,7 +10,7 @@ and S184's eleven sites travelled.
 FOUR ARMS ARE OWED (S182, Bible 24.22). Three are built:
 
   ARM 1  printed banner SEQUENCES vs canon order   -- BUILT (S195)
-  ARM 2  placement claims ("above setup()")        -- NOT BUILT
+  ARM 2  placement claims ("below loop()")          -- BUILT (S196)
   ARM 3  RETIRED NAMES                             -- BUILT
   ARM 4  section-count claims ("seven sections")   -- BUILT (S195)
 
@@ -58,7 +58,7 @@ exit 0 = no finding. exit 1 = a finding, or a control failed.
 """
 import os, re, sys, glob, html
 
-VERSION = 'v1.3.0'
+VERSION = 'v1.4.0'
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -240,27 +240,25 @@ def arm3(lessons=None, banks=None, maker=None):
 # (24.18), which is the defect this file exists to stop.
 # ---------------------------------------------------------------------------------
 RESIDUE = {
-    ('Lesson_05.html', 'CONFIGURATION',
-     'retired name in a HEADING: 5.3 Configuration Constants'):
-        'S184: real, out of the L01-L03 pass. Fix with the L04-L08 sweep.',
-    ('Lesson_06.html', 'CONFIGURATION',
-     'retired name in a HEADING: Step 5 \u2014 Distance Configuration (Discovery 6.4)'):
-        'S184: real, out of the L01-L03 pass. Couples to the Maker label below.',
-    ('Lesson_06.html', 'CONFIGURATION',
-     'retired name in a HEADING: Step 9 \u2014 Turn Configuration (Discovery 6.7)'):
-        'S184: real, out of the L01-L03 pass. Couples to the Maker label below.',
-    ('newproject.html', 'CONFIGURATION',
-     'retired name in a Maker label (discovery_6_4): Discovery 6.4 \u2014 Distance Configuration (Step 5)'):
-        'S184: moves with L06 Step 5 - a label and its step title are one fix.',
-    ('newproject.html', 'CONFIGURATION',
-     'retired name in a Maker comment title (discovery_6_4): Discovery 6.4: Distance Configuration'):
-        'S184: moves with L06 Step 5.',
-    ('newproject.html', 'CONFIGURATION',
-     'retired name in a Maker label (discovery_6_7): Discovery 6.7 \u2014 Turn Configuration (Step 9)'):
-        'S184: moves with L06 Step 9.',
-    ('newproject.html', 'CONFIGURATION',
-     'retired name in a Maker comment title (discovery_6_7): Discovery 6.7: Turn Configuration'):
-        'S184: moves with L06 Step 9.',
+    # EMPTY AT S196. All seven S184 pins were fixed together, because they were one
+    # phenomenon in three registers: L05 5.3 and L06 Steps 5 and 9 are the step
+    # TITLES, and the four Maker entries are the labels and comment titles that open
+    # those same steps - a title and the label that opens it are one fix, not two.
+    #
+    # THE NAMES CAME FROM THE FILES, NOT FROM TASTE. Every other L05 heading mirrors
+    # its banner (5.2 Hardware Objects, 5.4 Global Variables, 5.12 Setup Function),
+    # so 5.3 became Constants; L06's own prose reads "Four constants" at Step 5 and
+    # "Three more constants" at Step 9, so those became Distance Constants and Turn
+    # Constants.
+    #
+    # THREE OTHER HOMES OF THE STRING WERE SWEPT AND DELIBERATELY LEFT (rule 72 cuts
+    # both ways - a full sweep must also decline the sites that are correct):
+    #   Lesson_07.html  'Configuration Constants (RobotConfig.h)' - already ruled in
+    #                   scope-of-arm-3 CONTROL J; that heading really does carry the
+    #                   word legitimately.
+    #   newproject.html and ZUMO_SUPER_BIBLE.md - CHANGELOG prose recording what a
+    #                   retired label USED to read. Correct as history; rewriting it
+    #                   would falsify the record of the retirement.
 }
 
 
@@ -353,6 +351,257 @@ def arm4(lessons=None, payloads=None):
                 unknown.append((where, claimed, None,
                                 'ambiguous subject', ev))
     return findings, unknown
+
+
+# ---------------------------------------------------------------------------------
+# ARM 2 - PLACEMENT CLAIMS ("the body is down in HELPER FUNCTIONS, below loop()")
+#
+# THE BOUNDARY IS THE MIRROR OF ARM 1'S AND COPYING ARM 1 WOULD HAVE KILLED THE ARM.
+# Arm 1 reads LISTINGS, so a code ELEMENT is its subject. Arm 2 reads SENTENCES, and
+# this book writes `setup()`, `loop()` and section names inside INLINE <code> spans
+# that sit in the middle of the prose. Measured S196 before a line was written:
+# excluding code elements the way arm 1 does collapses the candidate population from
+# 140 to THREE. So arm 2 strips <pre> (block listings, arm 1's territory) and KEEPS
+# inline <code> (part of the sentence).
+#
+#   anchor              in <pre>   inline <code>   bare prose
+#   banner names          189           7             44      -> 51 in prose
+#   setup() / loop()      209         228             83      -> 311 in prose
+#
+# AND THE TWO ARMS DO NOT OVERLAP EVEN WHERE THEY NAME THE SAME WORDS. Arm 1's
+# population is the full banner FORM `// ===== X =====` (its stated 203); arm 2's
+# anchor is the bare section NAME in a sentence. Neither arm can stand in for the
+# other and a clean arm 1 says nothing about a placement claim.
+#
+# THE DISCRIMINATOR IS THAT THE RELATION WORD IS AMBIGUOUS BETWEEN FILE ORDER AND
+# TIME ORDER, and a predicate that does not classify convicts correct prose:
+#
+#   FILE  "the body is down in HELPER FUNCTIONS, below loop()"   -> the spine judges
+#   TIME  "loop() runs forever after setup() finishes"           -> the spine is mute
+#
+# Both use a relation word against the same two anchors. Two of the twelve live
+# candidates are the TIME sense, so an unclassified arm would have shipped a 2/12
+# false-conviction rate on day one - arm 4's defect in a new costume.
+#
+# TWO STATED BLIND SPOTS, BOTH MEASURED S196 BY A TRIPLE CHECK RATHER THAN INFERRED:
+#
+#   1. NON-ADJACENT CLAIMS. The adjacency window is six words each side. A wrong
+#      claim written with the relation further from its anchors is NOT SEEN. Proved,
+#      not assumed: a defect planted at L03 outside the window fires an independent
+#      superset arm and is SILENT here. Widening the window is not free - the
+#      unbound predicate it replaces convicted three of five judged.
+#   2. INTERIOR POSITIONS (below).
+#
+# The superset was enumerated and hand-adjudicated at S196: ELEVEN sentences carry a
+# direction word and two spine anchors at any distance, and ALL ELEVEN ARE CORRECT.
+# So this arm's zero is corroborated by adjudication of the whole population, not
+# only by its own predicate - which is the only reason a narrow arm is worth having.
+#
+# STATED COVERAGE LIMIT (rule 78). This arm judges a claim only when BOTH anchors
+# map to the main.cpp spine. A claim positioning something INSIDE a function -
+# L05's "waitForStart() at the end of setup()", L03's "right after runMotorTest()" -
+# names an interior offset no spine encodes, and is REPORTED UNADJUDICATED, never
+# convicted. Judging those needs the payload body and is arm 2's own next increment.
+# ---------------------------------------------------------------------------------
+def _place_spine():
+    """Built from SPINES at call time - SPINES is defined with arm 1, below this
+    block, and arm 2 must not carry a second copy of an order that already has a
+    home (24.24: a number with two homes drifts)."""
+    # NO 'CONFIGURATION' ALIAS. An earlier S196 draft mapped it to CONSTANTS on the
+    # strength of S51's note that L05/L06 used that vocabulary. MEASURED S196: the
+    # banner migration is COMPLETE - zero CONFIGURATION banners in any payload or
+    # lesson - so the alias only kept a RETIRED name (arm 3's own table) alive
+    # inside a live instrument. A retired name has one owner and it is arm 3.
+    return {n: i for i, n in enumerate(SPINES['main.cpp'])}
+
+_ANCHOR = re.compile(
+    r'\b(INCLUDES|HARDWARE OBJECTS|CONSTANTS|CONFIGURATION|GLOBAL VARIABLES|'
+    r'FUNCTION PROTOTYPES|HELPER FUNCTIONS|MAIN LOOP)\b'
+    r'|\b(setup|loop)\(\)')
+# ABOVE = earlier in the file, BELOW = later. "up in"/"down in" are this book's own
+# idiom for the same two directions and carry the direction unambiguously.
+_ABOVE = re.compile(r'above|up in|up top|earlier in the file', re.I)
+_BELOW = re.compile(r'below|down in|further down|beneath|underneath|'
+                    r'later in the file', re.I)
+# ONE home for the relation vocabulary: the adjacency matcher alternates over this,
+# and _ABOVE decides the direction of whatever it captured. Two lists would drift
+# (24.24), and a relation the matcher can find but the classifier cannot read would
+# be a silent skip rather than a reported one.
+_REL = re.compile('|'.join([_ABOVE.pattern, _BELOW.pattern]), re.I)
+_ANCHOR_I = re.compile(_ANCHOR.pattern, re.I)
+# A relation attached to a verb of EXECUTION is a claim about time, not position.
+_TIME_CUE = re.compile(r'\bruns?\b|\bran\b|\bexecutes?\b|\bfires?\b|\bfinish(?:es|ed)?\b|'
+                       r'\bcompletes?\b|\bhappens?\b|\bcalled\b|\bstarts?\b|'
+                       r'\bpowers? on\b|\bat boot\b|\bonce per\b', re.I)
+
+
+def _anchor_name(tok):
+    """setup()/loop() -> their spine section; a banner name is already one.
+
+    UPPERCASED ON THE WAY OUT. The book writes the same section both as a banner
+    ("HELPER FUNCTIONS") and as running prose ("helper functions live at the
+    bottom"), and BOTH are placement claims about the same slot. Case-folding the
+    LOOKUP is safe here in a way it was not for arm 4, because the adjacency
+    binding - anchor, relation, anchor, inside a six-word window - already carries
+    the discrimination that arm 4 had to get from case.
+    """
+    t = tok.strip().upper()
+    if t == 'SETUP()':
+        return 'SETUP'
+    if t == 'LOOP()':
+        return 'MAIN LOOP'
+    return t
+
+
+def arm2(lessons=None, gap=6):
+    """-> (findings, unadjudicated, judged).
+
+    findings:      (where, subject, relation, reference, evidence)
+    unadjudicated: (where, kind, evidence)
+    judged:        how many claims were actually decidable
+    """
+    spine = _place_spine()
+    pat = re.compile(
+        r'(%s)((?:\W+\w+){0,%d}?\W+)(%s)((?:\W+\w+){0,%d}?\W+)(%s)'
+        % (_ANCHOR.pattern, gap, _REL.pattern, gap, _ANCHOR.pattern), re.I)
+    findings, unknown, judged, seen = [], [], 0, set()
+    lessons = lessons if lessons is not None else sorted(
+        glob.glob(os.path.join(ROOT, 'lessons', 'Lesson_*.html')))
+    for path in lessons:
+        where = os.path.basename(path)
+        raw = _strip_scripts(open(path, encoding='utf-8').read())
+        # <pre> is arm 1's territory and is not prose; inline <code> IS prose.
+        raw = re.sub(r'<pre[^>]*>.*?</pre>', ' \u00b6 ', raw, flags=re.S)
+        prose = re.sub(r'\s+', ' ', _rendered(raw))
+        for seg in prose.split('\u00b6'):     # a claim never spans a listing
+            for m in pat.finditer(seg):
+                ev = re.sub(r'\s+', ' ', m.group(0)).strip()
+                # GROUP INDICES ARE NOT 1/2/3: _ANCHOR carries two capture groups
+                # of its own, so each embedded anchor consumes three. Read the
+                # OUTER groups - 1, 5, 7 - never the naive 1, 4, 6.
+                rel_tok = m.group(5).lower()
+                ref = _anchor_name(m.group(7))
+                # EVERY SUBJECT, NOT JUST THE FIRST. A sentence can place SEVERAL
+                # sections against one reference - L04's "hardware objects, three
+                # constants, one array - all above setup()" is two spine claims.
+                # An earlier draft judged m.group(1) alone and would have passed a
+                # sentence whose SECOND subject was wrong. Found S196 by an
+                # independent reimplementation, invisible to every fixture.
+                # CASE-INSENSITIVE RESCAN. _ANCHOR is case-sensitive by default and
+                # the outer matcher is compiled with re.I, so a bare _ANCHOR rescan
+                # of the head found NOTHING in the three lowercase sentences and
+                # silently dropped judged from 4 to 1. A sub-pattern reused under a
+                # different flag set is not the same pattern.
+                head = m.group(1) + m.group(4)
+                subjects = []
+                for am in _ANCHOR_I.finditer(head):
+                    nm = _anchor_name(am.group(0))
+                    if nm not in subjects:
+                        subjects.append(nm)
+                if _TIME_CUE.search(m.group(0)):
+                    unknown.append((where, 'execution order, not file position', ev))
+                    continue
+                if ref not in spine:
+                    unknown.append((where, 'anchor outside the spine', ev))
+                    continue
+                up = bool(_ABOVE.search(rel_tok))
+                for subj in subjects:
+                    if subj not in spine:
+                        unknown.append((where, 'anchor outside the spine', ev))
+                        continue
+                    if spine[subj] == spine[ref]:
+                        unknown.append((where,
+                                        'both anchors are the same section', ev))
+                        continue
+                    judged += 1
+                    seen.add(_lesson_no(path))
+                    si, ri = spine[subj], spine[ref]
+                    ok = (si < ri) if up else (si > ri)
+                    if not ok:
+                        findings.append((where, subj,
+                                         'above' if up else 'below', ref, ev))
+    blind = [n for n in range(1, 17) if n not in seen]
+    return findings, unknown, judged, blind
+
+
+def selftest_arm2():
+    """CONTROLS FOR ARM 2. Each must FIRE on a planted defect and be SILENT on its
+    legitimate twin, driven through the arm on injected fixtures so no control leans
+    on the live book (the borrowed-fixture defect, S166/S171).
+    """
+    import tempfile
+    ok = True
+    print('  ARM 2 CONTROLS (placement claims)')
+
+    def drive(tag, sentence, expect_fire, expect_kind=None):
+        nonlocal ok
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, 'Lesson_02.html')
+            open(p, 'w', encoding='utf-8').write('<p>' + sentence + '</p>')
+            f, u, _j, _b = arm2(lessons=[p])
+        fired = bool(f)
+        good = (fired == expect_fire)
+        if expect_kind is not None:
+            good = good and any(k == expect_kind for _w, k, _e in u)
+        print(f'    {"PASS" if good else "FAIL"}  {tag}: '
+              f'{"fired" if fired else "silent"}'
+              + (f', unadjudicated={[k for _w,k,_e in u]}' if u else ''))
+        ok = ok and good
+
+    # A/B: the same two anchors, the direction reversed. Only one can be right.
+    drive('A  legal: helpers below loop()',
+          'The body is down in <code>HELPER FUNCTIONS</code>, below <code>loop()</code>.',
+          False)
+    drive('B  DEFECT: helpers above loop()',
+          'The body is up in <code>HELPER FUNCTIONS</code>, above <code>loop()</code>.',
+          True)
+    # C/D: prototypes vs helpers, the other end of the spine.
+    drive('C  legal: prototypes up top, helpers at the bottom',
+          'Your <code>HELPER FUNCTIONS</code> live at the bottom, below '
+          '<code>FUNCTION PROTOTYPES</code>.', False)
+    drive('D  DEFECT: constants below global variables',
+          'Every number is a const down in <code>CONSTANTS</code>, below '
+          '<code>GLOBAL VARIABLES</code>.', True)
+    # E: THE CONTROL THAT WOULD HAVE CAUGHT AN UNCLASSIFIED ARM. Correct prose,
+    # relation word in the TIME sense, anchors in "wrong" spine order.
+    drive('E  legal: loop() runs after setup() finishes (TIME, not position)',
+          'The <code>loop()</code> function runs forever, further down the run, '
+          'after <code>setup()</code> finishes.',
+          False, expect_kind='execution order, not file position')
+    # F: THE DECLARED COVERAGE LIMIT, ASSERTED SO IT CANNOT DRIFT UNNOTICED.
+    # An interior claim names an offset inside a function that no spine encodes.
+    # It is OUT OF THE POPULATION, not unadjudicated within it - the adjacency
+    # binding needs an anchor on BOTH sides and `runMotorTest()` is not one. The
+    # requirement is that the arm never CONVICTS such a sentence.
+    drive('F  limit: interior position is never convicted (out of population)',
+          'Call <code>waitForStart()</code> at the end of <code>setup()</code>, '
+          'below <code>runMotorTest()</code>.', False)
+    # G: THE OPERAND-BINDING CONTROL. This is the sentence shape that broke the
+    # first predicate: the relation's real operand is a noun the spine cannot see,
+    # and the second anchor is an aside. Convicting it inverts a correct claim.
+    # Measured S196: the unbound predicate convicted THREE of five judged.
+    drive('G  legal: relation binds a noun, not the anchor beside it',
+          'A variable declared above <code>loop()</code> \u2014 in '
+          '<code>GLOBAL VARIABLES</code> \u2014 is created once.', False)
+    # H: direction words in the THRESHOLD sense, which flooded the first draft.
+    drive('H  legal: above/below as numeric comparison, not file position',
+          'Values above the threshold trigger one action; values below '
+          '<code>CONSTANTS</code> trigger another in <code>setup()</code>.', False)
+    # I: MULTI-SUBJECT. One reference, several subjects, and the SECOND one wrong.
+    # An earlier draft judged only the first anchor and passed this silently. Found
+    # by an independent reimplementation, invisible to every fixture above.
+    drive('I  DEFECT: second subject of a multi-subject claim is wrong',
+          'The <code>HARDWARE OBJECTS</code>, the <code>HELPER FUNCTIONS</code> '
+          'and one array all sit above <code>setup()</code>.', True)
+    drive('J  legal: both subjects of a multi-subject claim are right',
+          'The <code>INCLUDES</code>, the <code>HARDWARE OBJECTS</code> '
+          'and one array all sit above <code>setup()</code>.', False)
+    # EXIT-CODE CONVENTION, 0 = PASS. selftest_arm1 and selftest_arm4 both return
+    # `1 if bad else 0`, and an earlier draft of this function returned a BOOLEAN,
+    # so the aggregator below read a passing arm as a failure and a failing arm as
+    # a pass. TWO TRUTH CONVENTIONS IN ONE FILE IS A SILENT INVERSION (24.24 on a
+    # convention rather than a number). Found by the aggregator on its first run.
+    return 0 if ok else 1
 
 
 def selftest_arm1():
@@ -677,8 +926,20 @@ def report(strict=False):
         print(f'           {ev[:100]}')
     for where, claimed, _e, kind, ev in u4:
         print(f'      unadjudicated ({kind}) {where}: "{ev[:74]}"')
-    print('  NOT BUILT: arm 2 (placement claims)')
-    return 1 if ((new or orphan or f4 or f1) and strict) else 0
+    f2, u2, judged2, blind2 = arm2()
+    print(f'  ARM 2 (placement claims): {len(f2)} finding(s), '
+          f'{judged2} claim(s) judged, {len(u2)} unadjudicated')
+    for where, subj, rel, ref, ev in f2:
+        print(f'  FINDING  {where}: places {subj} {rel} {ref}, '
+              f'which the main.cpp spine contradicts')
+        print(f'           {ev[:100]}')
+    for where, kind, ev in u2:
+        print(f'      unadjudicated ({kind}) {where}: "{ev[:74]}"')
+    if blind2:
+        print('      COVERAGE LIMIT: no decidable placement claim in lesson(s) '
+              + ', '.join(str(x) for x in blind2)
+              + ' - clean here does NOT mean they were checked')
+    return 1 if ((new or orphan or f4 or f1 or f2) and strict) else 0
 
 
 # ---------------------------------------------------------------------------------
@@ -860,6 +1121,18 @@ def selftest():
         '<h3 class="h3-c-433014">Step 5: Constants</h3>',
         '<h3 class="h3-c-433014">Step 5: Configuration Constants</h3>',
         True, needle='HEADING')
+
+    # EVERY BUILT ARM'S CONTROLS RUN FROM ONE ENTRY POINT. Arm 2's were reachable
+    # only by importing the module before S196, so `--selftest` could report ALL
+    # CONTROLS PASS while an arm's controls had never executed - the shape of
+    # session_versions' CONTROL G, where registered was not the same as emitted.
+    for name in ('selftest_arm1', 'selftest_arm2', 'selftest_arm4'):
+        fn = globals().get(name)
+        if fn is None:
+            print(f'  {name}: MISSING - a built arm has no reachable controls')
+            ok = False
+            continue
+        ok = (fn() == 0) and ok
 
     print('  ALL CONTROLS PASS' if ok else '  CONTROL FAILURE')
     return 0 if ok else 1

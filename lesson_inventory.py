@@ -2,7 +2,7 @@
 # lesson_inventory.py — exhaustive structural ENUMERATION of the lesson files.
 # VERSION below is the ONE home: it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.3.5'
+VERSION = 'v1.4.1'
 #
 # v1.3.5 (S132): callout records gain 'region' — the id of the nearest preceding BANNER
 #   anchor. Additive: one new key, no existing key changed, no detector changed.
@@ -67,6 +67,8 @@ VERSION = 'v1.3.5'
 
 import sys, os, re, glob, json, hashlib
 import html as _html
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
 from html.parser import HTMLParser
 
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
@@ -94,6 +96,49 @@ def close_angle(src, i):
 def flat(s):
     """Tag-stripped, entity-preserved, whitespace-collapsed text."""
     return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', s)).strip()
+
+
+def prose(path):
+    """DECODED, entity-resolved, tag-stripped text of one lesson.
+
+    THE POINT OF THIS FUNCTION IS TO REMOVE THE EXCUSE FOR REACHING FOR grep.
+    `flat()` above preserves entities, which is right for structural work and
+    WRONG for asking what the page says: &rsquo; stays as the literal seven
+    characters, so a pattern written with an apostrophe misses every hit.
+    """
+    import html as _h
+    import importlib.util as _iu
+    _s = _iu.spec_from_file_location('_census', os.path.join(ROOT, 'census.py'))
+    _c = _iu.module_from_spec(_s); _s.loader.exec_module(_c)
+    return _c.normalise(re.sub(r'\s+', ' ',
+                               _h.unescape(re.sub(r'<[^>]+>', ' ',
+                                                  open(path, encoding='utf-8').read()))))
+
+
+def count_across(pattern, flags=re.I):
+    """Occurrences of a regex in every lesson's decoded prose -> {lesson_no: n}.
+
+    §24.22 IN ONE CALL. Three separate counts in S196 returned ZERO for fifteen
+    lessons because they were run through `grep`, and the book writes a CURLY
+    apostrophe - three UTF-8 bytes, so grep's `.` matches one of them and the
+    pattern fails silently. A shell text match had already been ruled against
+    (§24.22, and DJ has now said so twice). The counts were not close to right;
+    they were zero against a true answer of sixteen.
+
+    A zero from a text match is not evidence of absence. This returns the whole
+    POPULATION keyed by lesson, so a zero arrives next to the lessons that are
+    not zero and cannot be mistaken for an answer.
+    """
+    import glob as _g
+    out = {}
+    import importlib.util as _iu
+    _s = _iu.spec_from_file_location('_census', os.path.join(ROOT, 'census.py'))
+    _c = _iu.module_from_spec(_s); _s.loader.exec_module(_c)
+    rx = re.compile(_c.normalise(pattern), flags)   # ONE HOME for the mapping
+    for f in sorted(_g.glob(os.path.join(ROOT, 'lessons', 'Lesson_*.html'))):
+        n = int(re.search(r'Lesson_(\d+)', f).group(1))
+        out[n] = len(rx.findall(prose(f)))
+    return out
 
 
 class Tree(HTMLParser):
@@ -198,6 +243,71 @@ BANNER_RE = re.compile(r'<div id="([a-z0-9-]+)"><span class="span-d-block')
 CSS_PATH = 'css/book.css'
 _RULE_RE = re.compile(r'\.([A-Za-z0-9_-]+)\s*\{([^}]*)\}', re.S)
 _CLASS_RE = re.compile(r'\sclass="([^"]*)"')
+
+
+def _g_glob(p):
+    import glob as _g
+    return sorted(_g.glob(p))
+
+
+def _h_unescape(s):
+    import html as _h
+    return _h.unescape(s)
+
+
+def selftest_text():
+    """CONTROLS for prose()/count_across(). Both directions, on the live tree.
+
+    These exist because of a REPEAT offence: DJ has objected to shell text matching
+    twice now, and S196 did it three times in five minutes. A rule nobody can run is
+    a rule that gets broken, so the rule is now an instrument with a control.
+    """
+    ok = True
+
+    def check(tag, got, want, why):
+        nonlocal ok
+        good = got == want
+        print(f'   {"PASS" if good else "FAIL"}  {tag}: got {got}, expected {want} - {why}')
+        ok = ok and good
+
+    # A. THE CURLY APOSTROPHE. The exact string that returned zero under grep.
+    d = count_across(r"ENGINEER[’']S LOG")
+    check('A curly apostrophe is decoded',
+          sorted(k for k, v in d.items() if v == 0), [],
+          'no lesson may be zero - every lesson carries its Engineer\u2019s Log')
+
+    # B. ENTITY RESOLUTION. flat() preserves entities and prose() must not; if this
+    #    ever flips, a pattern written with real punctuation goes silently blind.
+    src = open(os.path.join(ROOT, 'lessons', 'Lesson_01.html'), encoding='utf-8').read()
+    check('entities are resolved, not preserved',
+          ('&rsquo;' in prose(os.path.join(ROOT, 'lessons', 'Lesson_01.html'))
+           or '&amp;' in prose(os.path.join(ROOT, 'lessons', 'Lesson_01.html'))),
+          False, 'prose() must leave no raw HTML entity for a pattern to miss')
+
+    # C. THE STRAIGHT-QUOTE PATTERN MUST NOW FIND THE CURLY-QUOTE TEXT. This control
+    #    was written the OTHER WAY UP an hour earlier - it asserted the straight
+    #    pattern stays blind - which locked in the defect as expected behaviour.
+    #    Normalisation is the fix, so the control has to change with it.
+    straight = count_across(r"ENGINEER'S LOG")
+    check('a straight-quote pattern finds curly-quote text',
+          sum(straight.values()), sum(d.values()),
+          'punctuation folding means the spelling of the apostrophe cannot matter')
+
+    # D. AND FOLDING MUST BE WHAT DOES IT. Without the fold the same pattern is
+    #    blind; if this ever matches C, the control proves nothing.
+    raw = {}
+    for f in sorted(_g_glob(os.path.join(ROOT, 'lessons', 'Lesson_*.html'))):
+        n = int(re.search(r'Lesson_(\d+)', f).group(1))
+        raw[n] = len(re.findall(r"ENGINEER'S LOG",
+                                _h_unescape(re.sub(r'<[^>]+>', ' ',
+                                                   open(f, encoding='utf-8').read())),
+                                re.I))
+    check('without folding the same pattern IS blind (C can fail)',
+          sum(raw.values()) < sum(straight.values()), True,
+          'the fold, not luck, is what closes the gap')
+
+    print('  TEXT CONTROLS PASS' if ok else '  CONTROL FAILURE')
+    return 0 if ok else 1
 
 
 def load_css(path=CSS_PATH):
@@ -851,4 +961,6 @@ def main():
 
 
 if __name__ == '__main__':
+    if '--selftest' in sys.argv:
+        sys.exit(selftest_text())
     main()
