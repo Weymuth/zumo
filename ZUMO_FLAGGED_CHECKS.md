@@ -1,101 +1,105 @@
 # ZUMO — FLAGGED CHECKS FOR DJ
-### The bench sheet. Every open L01–L04 row, grouped by what you have to set up.
+### The bench sheet. **Nine open rows in L01–L04**, in the order that lets one evening close them.
 
-**Flagged checks version: v1.5.2** — increment on every substantive edit
+**Flagged checks version: v1.6** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
-> **WHY THIS FILE EXISTS.** `ZUMO_BENCH_TESTS.md` is the complete tracker — 53 rows across 15
-> lesson blocks — and it is the right home for everything that needs the robot. But a 53-row
-> file is a file nobody works from at the bench. **This is the working sheet: the 18 open rows
-> in L01–L04, in the order that lets one evening close them.** A row leaves this file the
-> moment its Result is written; the full tracker keeps the record.
+> **THE COUNT CHANGED AT S198, AND THE OLD ONE WAS THE DEFECT.** This sheet said *18 open rows*
+> and kept saying it after the S196 bench answered six of them and half-answered three. The
+> results were appended in a new section at the bottom while **every Result cell in the station
+> tables stayed blank**, so anyone working from the tables would have re-run six rows already
+> measured. The file's own rule — *a row leaves this file the moment its Result is written* —
+> was written and then not followed, which is the failure it exists to prevent.
 >
-> **HOW TO USE IT.** Run it, write what happened in the **Result** column in your own words,
+> **THE ROWS WERE NOT DELETED, DELIBERATELY.** `ZUMO_BENCH_TESTS.md` was checked at S198 and
+> **does not carry a single one of the measured numbers** — not 59.4 cm, not the slam/ramp pair,
+> not the battery readings. The rule assumed the tracker keeps the record and the tracker does
+> not. **Measured data is the most expensive thing in this repo and it has exactly one home**, so
+> the results stay here in full until they are migrated, and the migration is its own job.
+>
+> **HOW TO USE IT.** Run a row, write what happened in the **Result** column in your own words,
 > and say so in the next session. A number measured here goes into the book; a number that has
 > not been measured here does not.
 >
-> **F1, F2 AND F3 KEEP THEIR NUMBERS.** They have been cited as F1/F2/F3 since S179, in this
-> file and in `ZUMO_BENCH_TESTS.md`. Renumbering them to fit the station order would silently
-> change what an existing citation points at, so the stations reorder the RUN and never the IDs.
+> **F1, F2 AND F3 KEEP THEIR NUMBERS.** They have been cited as F1/F2/F3 since S179, here and in
+> `ZUMO_BENCH_TESTS.md`. Renumbering them to fit the run order would silently change what an
+> existing citation points at, so the order changes and the IDs never do.
 >
-> **TWO ROWS ON THIS SHEET CAN FALSIFY PRINTED PROSE** — **F10** and **F14**. Both carry a stated
-> prediction. If the prediction fails, a paragraph in the live book is wrong and comes out. Run
-> those two even if you run nothing else.
+> **THIS COUNT IS SCOPED TO THIS SHEET, WHICH IS L01–L04 ONLY.** *Nine* is the number of open rows
+> **here**. It is not the book's number. This clause was added at S189 because the then-current
+> figure was read off this sheet and generalised to the whole book, and it was dropped by the S198
+> rewrite and restored the same session by the triple check — **which is the second time the same
+> sentence has had to be put back.** The book-wide ranked list lives at the top of
+> `ZUMO_BENCH_TESTS.md` (**v1.5**), and the most consequential row in it is not here: it is
+> **`L10-B1`, §16.12's perpendicular arrival, unruled since S143** and carrying a falsifiable
+> prediction of its own.
 >
-> **BOTH WERE REWRITTEN AT S196 BECAUSE NEITHER PROCEDURE COULD TEST THE CLAIM IT NAMED**, and both
-> were found the same way — by reading the lesson instead of the row. **F10** said *one flash of the
-> Controls screen*; §9 C2 prints a **three-screen sequence in a fixed order**, and a run watching for
-> one flash records an ambiguous result on a sequence that may not match. **F14** asked for two runs;
-> Bonus 2's claim is a **RATIO** — a wrongly-aimed TRIM is *roughly twice as bad as having none* —
-> and a ratio needs the no-TRIM baseline the two-run procedure never produces. **A row is a
-> description of an artefact; the artefact is the answer** (S195). Neither row was corrupt: both are
-> the original authored summaries, drifted from the prose they summarise.
->
-> **THAT COUNT IS SCOPED TO THIS SHEET, WHICH IS L01–L04 ONLY. BOOK-WIDE THERE ARE SEVEN**, and
-> the most consequential of them is not here — it is `L10-B1`, §16.12's perpendicular arrival.
-> **The full ranked list lives at the top of `ZUMO_BENCH_TESTS.md` (v1.5).** This scope clause was
-> added at S189 because the two-row figure was read off this sheet and generalised to the whole
-> book, which is wrong: the footer of this very file already named `L10-B1` as a third.
+> **NOTHING ON THIS LIST CAN NOW FALSIFY PRINTED PROSE.** The two rows that could — **F10** and
+> **F14** — were run at S196 and both **failed**, and both paragraphs came out at S197. That is
+> what this sheet is for. The remaining nine test claims the book states without evidence rather
+> than claims it states wrongly; the cost of leaving them is a student hitting something the book
+> did not warn about, not a student reading something false.
 
 ---
 
-## What to bring
+## RUN THESE — the nine open rows
+
+Ordered so one sitting closes as many as possible. **F1, F3, F4, F6, F7 and F8 need only a desk,
+the robot and a laptop** — six rows, one battery, no floor. F7 is the only row needing a second
+machine. F2 needs floor; F15 needs the tape, which is now in the room.
+
+| # | Row | What to do | Where | Why it matters | Result |
+|---|---|---|---|---|---|
+| **F7** | `L01-B8` | **First-connection behaviour on a Mac AND on Windows.** The book now says a chime, a dialog, or nothing at all are all normal. Confirm on both machines. | §6 Step 4 | Day-one support load, and it lands on every student at once in period 2. A student on the machine the book did not describe assumes their robot is broken. | |
+| **F1** | `L01-B1` | **Unplug the USB cable FIRST, then click Upload.** Not a cable pulled mid-transfer — an upload with no port at all. **Write the error text down verbatim**, exactly as PlatformIO prints it. | §6 *Break It On Purpose* | The exercise's whole payoff is the student recognizing the error when it happens for real on a build day. The book currently describes the failure without quoting it. | |
+| **F8** | `L01-B10` | **Bootloader port change.** Does the robot really show one port while running and a different one with the bootloader awake? | §8 | §8 troubleshooting tells students to look for exactly this. Nobody has confirmed the fleet does it. | |
+| **F3** | `L01-B4` | **Challenge 11's solution exactly as printed.** `setLayout21x8()`, then the voltage, 1.5 s, then the `< 4500` branch. **Can you read the number on the OLED** before §6's setup reprints *Press A* over it? | §9 Challenge 11 | If the number is overwritten before it is readable, the printed solution does not do what the challenge asks, and the student will think their code is broken. | |
+| **F4** | `L01-B5` | **Challenge 9, propped up.** Delete the three-line wait. Does the show start the instant power comes on, with no button press? | §9 Challenge 9 | The card claims the wait is what holds the show back. Deleting it is the only way to see whether that is the whole story. | |
+| **F6** | `L01-B7` | **Does USB alone really read low and strange?** The hint says so. Read the pack with the switch OFF and the cable in. | §9 C11 hint | Pairs with F5, same station, same pack — and F5's own reading is now known to disagree with the book, so this hint's *low and strange* has nothing behind it either. | |
+| **F9** | `L02-B1` | **The green LED bench check.** Carried since S41 — the oldest open row in L01–L04. | §5 | **This row has never had a Why column.** Fifty-seven sessions of being carried without anyone writing down what it would prove. Either state what it tests when you run it, or rule it out. | |
+| **F2** | `L01-B3` | **Challenge 4 on the floor.** Change the **FIRST** `delay(350)` to 700 and nothing else. Does the robot finish roughly one nudge **ahead** of where it started? | §9 Challenge 4 | S177 corrected the revealed solution from *twice as long in each direction* to *twice as far out as it comes back*. That correction is reasoned, not observed. If the robot ends up behind or level, the new reveal is wrong too. | |
+| **F15** | `L04-B1` | **Calibration min/max on the classroom floor.** Record the numbers and the room's lighting. | §5 | Feeds TDP table A4, and the room's lighting is the variable RCJ §3.11 warns about. Unblocked since S196 — the tape exists. | |
+
+---
+
+## OPEN, BUT NOT RUNNABLE ON DEMAND
+
+These three are not on the run list, and each for a different reason. **None of them is closed.**
+
+| # | State | Why it is not a run |
+|---|---|---|
+| **F5** | **RULED S198 — canon stands, contradiction recorded** | DJ's ruling: the three bands in L01–L03 stay as printed, to be adjusted later if they are found in error. **The contradiction is on the record and is not withdrawn** — measured fresh is ~201 mV BELOW canon *fresh*, and a hard session ends ~292 mV ABOVE canon *working*. The tired reading cannot be taken on demand anyway: twelve hard runs moved the pack about 2%, so the low band is not reachable at a bench. **What would settle it is a pack run flat in normal use, logged — not a bench sitting.** |
+| **F10** | **Wait-OUT half uncited** | The wait-IN half is observed and shipped. The wait-OUT half was an eyeball on a persistence claim and wants **serial timestamps** before it is cited. Not a rerun of the same procedure. |
+| **F16** | **Calibrated half waits by design** | The raw half is measured and §8A's premise is safe (~26× separation). The calibrated 0–1000 half stays open until DJ's own L04 build runs its calibration — handing him a calibration sketch would spoil the deliberate RED build at L04 Step 5. |
+
+---
+
+## CLOSED — DO NOT RE-RUN
+
+Full numbers are in **BENCH RESULTS** below; this table exists so nobody works from a blank cell.
+
+| # | Row | Verdict |
+|---|---|---|
+| **F11** | `L03-B1` | ✅ **59.4 cm** in 2000 ms at speed 200 → 29.7 cm/s. Landed in L03 §4.4 at S197. |
+| **F12** | `L03-B2` | ✅ TRIM **+5**, curves left untrimmed — polarity canon CONFIRMED. ~0.6 cm lateral per TRIM unit. |
+| **F13** | `L03-B3` | ✅ Slam 44.88 cm, ramp 74.23 cm (n=6 each). Predicted from F11 within 1%. |
+| **F14** | `L03-B3b` | ❌ **FAILED** — the `2x` prediction was wrong (observed 0.37×). Bonus 2's reveal rewritten S197. |
+| **F17** | `L04-B3` | ✅ Materials present. Had blocked F15/F16/F18 and the L04 learner build since **S51**. |
+| **F18** | `L04-B4` | ✅ Wave order matches physical left-to-right; row-1 overflow closed by arithmetic. |
+
+---
+
+## WHAT TO BRING
 
 | Station | What you need |
 |---|---|
 | **A — Desk** | Robot · USB cable · your Mac · **a Windows machine** (F7 needs both) |
-| **B — Battery** | A **freshly charged** pack and a **run-down** pack |
-| **C — Floor** | ~4 m of clear floor · painter's tape for a start line · tape measure · a catcher for F13 |
-| **D — Tape** | A white surface · **matte black electrical tape** (IR-absorbing — marker or print is unreliable) |
+| **B — Battery** | A charged pack (F6 reads it with the switch off) |
+| **C — Floor** | ~4 m of clear floor · painter's tape for a start line · tape measure |
+| **D — Tape** | A white surface · **matte black electrical tape** — already in the room since S196 |
 
-Station D's materials are the thing that has blocked the L04 learner-mode build since S51. Buying
-the tape closes F17 by itself and unblocks F15, F16 and F18 in the same sitting.
-
----
-
-## STATION A — desk, robot and laptop, no floor
-
-| # | Row | What to do | Where | Why it matters | Result |
-|---|---|---|---|---|---|
-| **F1** | `L01-B1` | **Unplug the USB cable FIRST, then click Upload.** Not a cable pulled mid-transfer — an upload with no port at all. **Write the error text down verbatim**, exactly as PlatformIO prints it. | §6 *Break It On Purpose* | The exercise's whole payoff is the student recognizing the error when it happens for real on a build day. The book currently describes the failure without quoting it. | |
-| **F3** | `L01-B4` | **Challenge 11's solution exactly as printed.** `setLayout21x8()`, then the voltage, 1.5 s, then the `< 4500` branch. **Can you read the number on the OLED** before §6's setup reprints *Press A* over it? | §9 Challenge 11 | If the number is overwritten before it is readable, the printed solution does not do what the challenge asks, and the student will think their code is broken. | |
-| **F4** | `L01-B5` | **Challenge 9, propped up.** Delete the three-line wait. Does the show start the instant power comes on, with no button press? | §9 Challenge 9 | The card claims the wait is what holds the show back. Deleting it is the only way to see whether that is the whole story. | |
-| **F7** | `L01-B8` | **First-connection behaviour on a Mac AND on Windows.** The book now says a chime, a dialog, or nothing at all are all normal. Confirm on both machines. | §6 Step 4 | Day-one support load. A student on the machine the book did not describe assumes their robot is broken. | |
-| **F8** | `L01-B10` | **Bootloader port change.** Does the robot really show one port while running and a different one with the bootloader awake? | §8 | §8 troubleshooting tells students to look for exactly this. Nobody has confirmed the fleet does it. | |
-| **F9** | `L02-B1` | **The green LED bench check.** Carried since S41 — the oldest open row in L01–L04. | §5 | | |
-| **F10** | `L02-B2` | **Challenge 2 screen overwrite — run it BOTH ways.** With the release-wait REMOVED, hold A and B: the lesson predicts **THREE screens in this exact order** — the battery screen appears, then About **and** Controls flash over it, then the battery screen returns and stays. With the wait IN, no flash at all. **Record the ORDER, not merely whether a flash happened** — the order is what tests the mechanism. | §9 Challenge 2 | **FALSIFIABLE.** The prediction was derived from Pololu's own `PushbuttonStateMachine`, transcribed and run — never observed. **If the sequence does not appear with the wait removed, the reasoning in §9 C2's *Why it takes two trips and not one* is wrong and the paragraph comes out.** | |
-
----
-
-## STATION B — battery, two packs
-
-| # | Row | What to do | Where | Why it matters | Result |
-|---|---|---|---|---|---|
-| **F5** | `L01-B6` | **Battery bands.** Read `readBatteryMillivolts()` on a fresh pack and on a tired one. The book says ~5,400 fresh / ~4,800 working / ~4,200 low. | §9 C11 hint | These three numbers are canon in **34 figures across L01–L03**. They are correct by agreement and have never been read off a real pack. | |
-| **F6** | `L01-B7` | **Does USB alone really read low and strange?** The hint says so. Read the pack with the switch OFF and the cable in. | §9 C11 hint | | |
-
----
-
-## STATION C — floor, start line and tape measure
-
-| # | Row | What to do | Where | Why it matters | Result |
-|---|---|---|---|---|---|
-| **F2** | `L01-B3` | **Challenge 4 on the floor.** Change the **FIRST** `delay(350)` to 700 and nothing else. Does the robot finish roughly one nudge **ahead** of where it started? | §9 Challenge 4 | S177 corrected the revealed solution from *twice as long in each direction* to *twice as far out as it comes back*. That correction is reasoned, not observed. If the robot ends up behind or level, the new reveal is wrong too. | |
-| **F11** | `L03-B1` | **How far does one TRIM test run actually go?** `TEST_DURATION` is 2000 ms at `BASE_SPEED` 200. Tape a start line, press B, measure. | §4.4, §7 | The *6+ feet* figure was DELETED rather than corrected (S179, rule 50). This row exists so the book can one day state a MEASURED distance instead of calling the run *short*. | |
-| **F12** | `L03-B2` | **What TRIM value does a real robot need?** Record yours, and the spread across the fleet. | §5 | Feeds the TDP's *your TRIM number and why it exists*. Data collection, not verification — nothing in the book is wrong if it goes unrun. | |
-| **F14** | `L03-B3b` | **Is the motor mismatch direction-symmetric? THREE runs, not two.** Same start line, same distance, same pack. **(1) BASELINE:** `TRIM = 0`, both speeds negated, backward. **(2) NAIVE:** your tuned TRIM, both speeds negated, TRIM math untouched. **(3) FIXED:** TRIM sign reversed for backward. Measure lateral drift at the finish each time. | §9 Bonus 2, L06 Step 13 | **FALSIFIABLE, AND IT CARRIES TWO SEPARATE PREDICTIONS.** The electrical half is proved (`setLeftSpeed` writes `\|speed\|` to `OCR1B` and puts the sign on a GPIO pin). **(a)** Bonus 2 prints that a wrongly-aimed TRIM is *roughly twice as bad as having none* — **run 2 ≈ 2 × run 1**, which is why run 1 exists: a two-run procedure cannot test a claim stated as a ratio. **(b)** Fix the sign and the big curve goes, leaving a small mechanical residual. **If run 3's residual is as large as run 1, the symmetry premise is wrong and Bonus 2's reveal must put gearbox asymmetry back as the headline.** | |
-| **F13** | `L03-B3` | **Bonus Challenge 4 (Braking vs. Coasting)** asks for *about 3 meters of clear floor and a catcher*. Measure what it really needs. | §9 Bonus 4 | That figure has no pedigree, and unlike the TRIM run this one is full speed (400) for 1.5 s each way. **The card already offers `delay(800)` as the short-floor escape, so nothing is blocked** — run it last, it needs the most room. | |
-
----
-
-## STATION D — white surface and matte black tape
-
-| # | Row | What to do | Where | Why it matters | Result |
-|---|---|---|---|---|---|
-| **F17** | `L04-B3` | **Bring the materials.** A white surface and **matte black electrical tape**. This row closes the moment they exist in the room. | learner mode | Carried since S51. It is the blocker under F15, F16 and F18, and under the L04 learner-mode build. | |
-| **F15** | `L04-B1` | **Calibration min/max on the classroom floor.** Record the numbers and the room's lighting. | §5 | Feeds TDP table A4, and the room's lighting is the variable RCJ §3.11 warns about. | |
-| **F16** | `L04-B2` | **The 600 threshold.** Book-wide canon is 600, with 500 taught as the midpoint. **Does 600 separate your tape from your floor?** | §8A | If it does not, every threshold argument downstream of L04 is tuned to a number this room does not support. | |
-| **F18** | `L04-B4` | **The wave-test direction** and **Act Two's row-1 overflow.** | §7 | Both are deliberately NOT asked in `QUIZ_L04`, because they are open bench findings. Closing this row is what lets them be graded. | |
+**Log the battery voltage with every run.** A downward settling trend showed up in three unrelated
+programs at S196 and its cause is still unknown, because battery was not logged per run.
 
 ---
 

@@ -2,7 +2,15 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.76.6'
+VERSION = 'v1.76.7'
+# v1.76.7 (S198): GATE 81's WORKLIST SCOPE GAINS THE TRAILING COLOPHON. The ledger
+#   boundary was drawn to keep GPT's verbatim Part 2 prose out and also excluded the
+#   file's own closing line, which stated the closed figure a FOURTH time with nothing
+#   asserting it. CONTROLLED BEFORE THE WIDENING: a wrong figure planted there passed
+#   every gate. The widened arm named the site on its first run; the figure was then
+#   DELETED rather than priced, because the three homes SS24.24 gives it are already
+#   asserted and a fourth is liability with no information (rule 50). Resolved from the
+#   LAST horizontal rule, and an unresolvable colophon is a finding, not a silent skip.
 # v1.76.6 (S197): gate 80's page floor becomes ONE-SIDED (>= lessons + Maker) because
 #   retired_claims v1.3.0 widened its corpus to referenced SVG text. An equality floor
 #   would have failed this gate on a CORRECT widening, and the next session would have
@@ -2154,7 +2162,7 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
 # Those are the only two of its four new callouts inside _SCHEME's three families -
 # the card header and the CHECKPOINT resolve to no scheme and are correctly out of
 # scope. DERIVED from _SCHEME, not read off the gate's own complaint (rule 29).
-if seen != 259:
+if seen != 260:   # 259 -> 260 at S198: L03 NOTE 3.121
     bad.append(f'COVERAGE: {seen} labels inspected, expected 259 '
                f'(scheme and data-family must agree; blocks with no title div are gate 34s)')
 if held_seen != _S51_HELD:
@@ -2202,7 +2210,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1213:   # 1212 -> 1213 at S197: L05 7.3 NOTE 5.47 lands a sticky mark   # 1210 -> 1212 at S193: L15 5.8's BUILDS ON back-pointer to L08 C6 lands an arrow-repeat mark AND a spiral_star_08 (L08-15's forward pointer answered; DJ ruling S193)   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
+if _seen != 1214:   # 1213 -> 1214 at S198: L03 NOTE 3.121 lands a sticky mark   # 1212 -> 1213 at S197: L05 7.3 NOTE 5.47 lands a sticky mark   # 1210 -> 1212 at S193: L15 5.8's BUILDS ON back-pointer to L08 C6 lands an arrow-repeat mark AND a spiral_star_08 (L08-15's forward pointer answered; DJ ruling S193)   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
                                       # lands one bullseye mark.
                                       # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
@@ -2238,7 +2246,7 @@ if _seen != 1213:   # 1212 -> 1213 at S197: L05 7.3 NOTE 5.47 lands a sticky mar
                                       # L10. stars.svg in INSIGHT 10.113 (the StopReason
                                       # teaching block) plus exclamation-triangle, sticky
                                       # and check-circle in Step 6b's three new callouts.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,213 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,214 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2655,7 +2663,12 @@ import hashlib as _hl
 #       whole diff is the header coverage count 22,985 -> 22,976 and two usage-count comments:
 #       .tok-569cd6 x2765 -> x2759 and .tok-7cbf6e x1522 -> x1520, from the nine lastPosition
 #       spans deleted across L08 and L10 under L08-06.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'cdb0a6295a6debea'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '9e2ed45ddad643dc'
+#   digest cdb0a629 -> 9e2ed45d at S198: L03 NOTE 3.121 adds one callout, so three usage
+#   COUNTS in the generated comments move (23,001 -> 23,004 inline attributes; div-fs-105em
+#   806 -> 807; div-fs-09em 156 -> 157). RULES AND DECLARATIONS ARE UNMOVED at 574/2,033 -
+#   no selector or property changed, which is the check that says this is a usage count and
+#   not a style edit. Verified by diffing the regenerated file: twelve lines, all comments.
 # S193 digest move. PROVED COUNT AND RANK before the baseline was touched, per S180/S190:
 #   574 rules and 2,033 declarations at BOTH ends, ZERO names added, dropped or repointed,
 #   and every declaration block BYTE-IDENTICAL. The whole 38-line raw diff is the header
@@ -3654,8 +3667,8 @@ try:
     # callout-2196f3-bg-e3f2fd-2 are both already in canon, so gate 5.1 stays silent, and
     # build_family_map assigns it (1133/1133, UNASSIGNED 0). The id was DERIVED as max+1
     # rather than typed - my first attempt used 2.60, which callout_id caught as a COLLISION.
-    elif _n != 1136:   # 1135 -> 1136 at S197: L05 7.3 NOTE callout 5.47 (jumper pad geometry)
-        bad.append('gate 59 saw %d callouts, expected the 1136 gate 47 holds' % _n)
+    elif _n != 1137:   # 1136 -> 1137 at S198: L03 5.x NOTE 3.121 (one run gives direction, not magnitude - F11/F12 bench)   # 1135 -> 1136 at S197: L05 7.3 NOTE callout 5.47 (jumper pad geometry)
+        bad.append('gate 59 saw %d callouts, expected the 1137 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -4314,7 +4327,15 @@ gate('\u00a724.14d the body KEY TERM names its family and the glossary entry doe
 # THE PIN IS THE PLANNED TOTAL, NOT THE OUTSTANDING COUNT. Outstanding is MEANT to fall as
 # art lands; pinning it would fire on every success. planned moves only when a figure is
 # ruled into or out of the book, which is DJ's call and not a side effect of an edit.
-PLANNED_EXPECTED = 145      # 146 -> 145 at S188: L05 GRAPHIC 5.4 ruled OUT (L05-01, DJ's call) - a RULING, not a deletion
+PLANNED_EXPECTED = 144      # 145 -> 144 at S198: L04's figures note TYPED A LIVE TAG to explain
+#   the two number spaces, so every instrument keying on tag syntax read the EXAMPLE as a PLAN
+#   and IMAGE 4.1 was reported outstanding in the one lesson whose shot brief records it RETIRED
+#   at S138. Fixed in the PROSE, not in an instrument: an exclusion would have to be taught to
+#   every reader of that syntax and remembered forever (rule 20), while dropping the brackets
+#   makes all of them agree at once. NOT A COVERAGE IMPROVEMENT - the denominator is CORRECTED,
+#   and the distinction matters because a shrinking denominator makes outstanding fall like
+#   progress (S135). Outstanding is UNMOVED at 14 across this change, which is how you tell.
+#   146 -> 145 at S188: L05 GRAPHIC 5.4 ruled OUT (L05-01, DJ's call) - a RULING, not a deletion
                             # stated, not inherited - moves only when a figure is ruled in or out
 bad = []
 try:
@@ -5175,9 +5196,22 @@ if os.path.exists(_WLP81):
     # Part 0b, which is where this file states its own tally. Part 2 onward is GPT's
     # verbatim prose, kept unedited by design, and reading it would convict the source
     # material for describing open loops.
+    # AND THE TRAILING COLOPHON, WHICH IS OURS AND WAS OUTSIDE THE SCOPE (S198).
+    # The ledger boundary was drawn to keep GPT's verbatim Part 2 prose out. It also
+    # excluded the file's own closing line, which stated the closed figure a fourth
+    # time with nothing asserting it - CONTROLLED: a wrong figure planted there passed
+    # every gate. The colophon is authored by this project, not by GPT, so it belongs
+    # in scope by the same property that puts the ledger in. Resolved from the LAST
+    # horizontal rule rather than by line number, and an unresolvable colophon is a
+    # finding rather than a silent skip (rule 20).
     _m81 = re.search(r'\n# PART 1\b', _wt)
-    if _m81:
-        _scopes81.append((_WLP81, _wt[:_m81.start()]))
+    _c81 = _wt.rfind('\n---\n')
+    if _m81 and _c81 > _m81.start():
+        _scopes81.append((_WLP81, _wt[:_m81.start()] + '\n' + _wt[_c81:]))
+    elif _m81:
+        bad.append('%s: could not resolve the trailing colophon - a fourth tally home '
+                   'with no comparator is how a stale figure survives (\u00a724.24)'
+                   % _WLP81)
     else:
         bad.append('%s: could not find the end of the ledger (# PART 1) - an '
                    'unresolved scope is not a clean scope (\u00a724.24)' % _WLP81)

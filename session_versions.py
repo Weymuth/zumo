@@ -51,13 +51,29 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.33.0'
+VERSION = 'v1.34.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
 # built by --handoff carried no marker and the claim was false about its own file.
 HANDOFF_MARKER = ('<!-- VERSION BLOCK: emitted by session_versions.py --handoff.'
                   ' Never hand-typed. -->')
+# v1.34.0 (S198): SECOND_HOMES + second_homes(), read by check(). S161's rule - A VERSION
+#   WITH TWO HOMES AND NO COMPARATOR IS TWO VERSIONS - had one uncovered instance left:
+#   ZUMO_GPT_REVIEW_WORKLIST.md states its version in the H1 and again in the closing
+#   colophon, and CURRENCY_HOMES reads only the H1. CONTROLLED BEFORE IT WAS BUILT: the
+#   colophon was rolled back several minor versions while the header stayed put, and every
+#   gate passed, --check said every version agreed, and --currency saw nothing because the
+#   home it reads had not moved. Three instruments green on a file stating two versions of
+#   itself. Eight consecutive handoffs flagged this as a DISAGREEMENT; read, the two homes
+#   AGREE - the artefact answers the instruction (S197), and what was missing was never a
+#   home but the comparator. This table never re-declares the FIRST home, it imports it
+#   from CURRENCY_HOMES, so the two cannot drift apart. It lives in check() rather than
+#   currency() because the disagreement exists whether or not the file changed. FOUR
+#   CONTROLS: second home rolled back is LOUD; first home moved with the second left behind
+#   is LOUD; the second home DELETED is LOUD as an orphan pin, because a pin standing over a
+#   site that no longer exists certifies nothing (S138); and the blinding control - a reword
+#   carrying no version - is SILENT. An unenumerable population reports a finding, not a pass.
 # v1.23.0 (S132): registers `glossary_convert.py`, emitted in BOTH blocks. A tool nothing
 #   tracks can only ever have its version hand-typed (§12.6); the ROSTER arm named it
 #   unprompted on its first run - Control G working as designed for the fourth
@@ -589,6 +605,13 @@ def check():
             print(f"  {hname} {k}: written={hw.get(k)} files={hg.get(k)}")
             bad += 1
 
+    # S198: a version with two homes and no comparator is two versions (S161's rule).
+    # Read here rather than in currency() because the disagreement exists whether or
+    # not the file changed this session.
+    for rel, label, first, second, why in second_homes():
+        print(f"  {rel or '(population)'}: {label or ''} {first} vs {second} - {why}")
+        bad += 1
+
     if bad:
         print(f"\n  {bad} disagreement(s). Regenerate with --live / --handoff.")
         return 1
@@ -1078,6 +1101,71 @@ def selftest():
     print("ALL EIGHT CONTROLS PASS - silent when clean, loud when broken, both directions.")
     return 0
 
+
+
+# --- SECOND VERSION HOMES -----------------------------------------------------
+# S161's rule, S198's instance: A VERSION WITH TWO HOMES AND NO COMPARATOR IS TWO
+# VERSIONS. CURRENCY_HOMES names the ONE home each file's version is read from, and
+# a file may state its version a second time somewhere nothing reads. That second
+# home is not redundant - it is a claim, and an unasserted claim rots.
+#
+# CONTROLLED BEFORE IT WAS BUILT (S198): the worklist's trailing colophon was rolled
+# back several minor versions while its header stayed put, and every gate passed,
+# --check reported that every version agreed, and --currency saw nothing because the
+# home it reads had not moved. Three instruments, all green, on a file stating two
+# different versions of itself.
+#
+# ENTRIES ARE (path predicate, second-home pattern, label). The FIRST home is always
+# CURRENCY_HOMES' - this table never re-declares it, so the two cannot drift apart.
+SECOND_HOMES = [
+    # The worklist states its version in the H1 and again in the closing colophon.
+    # Flagged in eight consecutive handoffs as a DISAGREEMENT; read, the two agree,
+    # and what was actually missing was the comparator (the S197 rule - a handoff
+    # instruction is a description of an artefact, and the artefact is the answer).
+    (lambda r: r == 'ZUMO_GPT_REVIEW_WORKLIST.md',
+     r'(?m)^\*Worklist (v[\d.]+)\s', 'Worklist colophon'),
+]
+
+
+def second_homes():
+    """Every file whose two version homes disagree. Empty list = they agree.
+
+    A file with no second home registered is not asserted, and a registered
+    second home that MATCHES NOTHING is a finding rather than a silent pass -
+    a pin standing over a site that no longer exists certifies nothing (S138).
+    """
+    # THE POPULATION IS WALKED FROM DISK, NOT ASKED OF GIT. The first build used
+    # `git ls-files` and went RED inside --selftest, whose fixture is a COPY of the
+    # tree in a tempdir and therefore not a repository: the arm reported that it could
+    # not name its population, and a control suite is exactly where that must not
+    # happen. An arm that only works inside a checkout is an arm with a hidden
+    # precondition (rule 59's neighbourhood).
+    tracked = []
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        dirnames[:] = [d for d in dirnames if d not in ('.git', 'node_modules')]
+        for fn in filenames:
+            tracked.append(os.path.relpath(os.path.join(dirpath, fn), ROOT))
+    out = []
+    for pred, pat, label in SECOND_HOMES:
+        for rel in sorted(x for x in tracked if pred(x)):
+            path = os.path.join(ROOT, rel)
+            if not os.path.exists(path):
+                continue
+            text = open(path, encoding='utf-8').read()
+            first_pat, first_label = _currency_home(rel)
+            fm = re.search(first_pat, text, re.M) if first_pat else None
+            sm = re.search(pat, text)
+            if fm is None:
+                out.append((rel, label, None, None,
+                            'the %s home matched nothing' % (first_label or 'first')))
+            elif sm is None:
+                out.append((rel, label, fm.group(1), None,
+                            'the second home matched nothing - an orphan pin '
+                            'certifies nothing'))
+            elif fm.group(1) != sm.group(1):
+                out.append((rel, label, fm.group(1), sm.group(1),
+                            'two homes, two versions'))
+    return out
 
 
 # --- CURRENCY -----------------------------------------------------------------

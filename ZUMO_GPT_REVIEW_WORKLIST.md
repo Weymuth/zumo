@@ -1,4 +1,4 @@
-# ZUMO — GPT REVIEW WORKLIST (v1.12)
+# ZUMO — GPT REVIEW WORKLIST (v1.12.1)
 ### Session 154 · intake of 18 GPT feedback documents (68,123 words) · nothing fixed, nothing ruled
 
 > **COUNTS ARE DERIVED AND CURRENT AS OF S194 — 103 CLOSED · 2 PARKED · 140 OPEN, of 245.**
@@ -974,4 +974,4 @@ and they are the ones that settle a physical claim.
 - READ → FIX → QUIZ, and the read does not transfer between sessions (rule 37).
 
 ---
-*Worklist v1.12 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · 103 closed as of S194 · L01-02's scope re-measured after the S154 figures proved to be line counts*
+*Worklist v1.12.1 · built S154, corrected S155 · 18 documents, 68,123 words · 245 findings indexed · 7 measured (6 confirmed, 1 refuted) · tallies are derived by `census.worklist()` and stated in Part 0b — never here · L01-02's scope re-measured after the S154 figures proved to be line counts*

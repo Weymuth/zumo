@@ -14,7 +14,7 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.195** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.195** — see the changelog below; this line no longer inlines the newest entry, because a duplicated entry is a second home nobody maintains (S194).
+**Bible version: v8.196** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.196** — see the changelog below; this line no longer inlines the newest entry, because a duplicated entry is a second home nobody maintains (S194).
 
 ### 27.13 The stylesheet must regenerate from the lessons, and that is the guard a repaint cannot spend (S106)
 
@@ -95,6 +95,7 @@ built the artefact cannot be the instrument that guards it.** Both halves were t
 (§27) and are true again here. Every future consolidation should be read this way before it
 ships, not after. Lesson bytes 2,582,947 → **2,569,059**. Census unchanged 39,994; visible text identical in all twenty pages. All 16 lessons minor-bumped.) Prior: **v8.93** (v8.93, S105, moderate — **§27.9 NEW: THE HOLD RELEASED. ZERO INLINE STYLES BOOK-WIDE.** The four byte-exact-across-lesson block types (§6.5a strip 320 · §25.6 hero 96 + footer 16 · §6.8 PART dividers 192) converted in one pass. The book now carries **25,036 classes and no `style=""` attribute at all**. Released by measurement: the 624 attributes carry only **16 distinct strings**, each appearing an exact multiple of 16 (proof of book-wide uniformity), and **all 16 round-trip byte-exact** through the stylesheet — only true because §27.8c fixed declaration order and §27.8d fixed colon spacing. `strip_inline` **v1.1** adds `--include-held`, gated on a `roundtrips()` precondition that REFUSES and names offenders; CONTROL I proves both directions. Lesson bytes 2,638,947 → **2,582,947**. Census unchanged 39,994. All 16 lessons minor-bumped.) Prior: **v8.92.1** (**v8.92.1, S105, minor — §27.8d: DJ ruled ONE colon spelling for the generated stylesheet; spaced, which is 98% of the source and the only one the gates accept (unspaced broke five). Lessons byte-unchanged. `build_css` v1.2.1.** Prior entry: v8.92, S105, moderate — **§27.8 NEW: THE MIGRATION COMPLETES ITS SWEEP.** All 16 lessons converted: **24,412** inline attributes to classes against a 664-rule `css/book.css`, **624 held** (39 per lesson, every lesson) — 24,412 + 624 = **25,036**, the §27 census exactly. Zero unmapped, zero dead classes, 41/41 gates. Render identity proved by construction AND independently: 25,036 styled elements compared in document order, declaration sets identical, visible text identical bar one `<link>` per lesson. Census 39,979 → **39,994**. Lesson bytes 3,534,934 → **2,638,947**, 25% smaller. **Three ways a widened build bites, all measured:** (a) widening `SOURCES` renamed 57 of L01's 167 classes and **46 kept their spelling while changing meaning** — invisible to gate 41, so every converted lesson must be re-stripped whenever `SOURCES` changes; (b) `expand_classes` reads the stylesheet from disk and leaves an unresolvable class in place, so regenerating before restoring strands 74 L01 elements permanently — the order **restore → regenerate → apply** is forced; (c) `canon()` sorts while §4.5/§6.8/§25.6 assert authored order, which broke a whole class of gates at once and revealed a **fifth** held block type the S104 hold list missed (the §4.5 bonus banner) — fixed in the generator via `build_css.preferred()`, not by holding blocks until the gates went green. **`strip_inline.py` v1.0 NEW**, eight controls, the tool S104 did not commit; `build_css` v1.2; `session_versions` v1.14.1 after its own CONTROL A was found seeding a literal version string that expired on a bump. All 16 lessons minor-bumped.) Prior: **v8.91** (v8.91, S104, moderate — **§27.7 NEW: THE MIGRATION BEGINS, AND ONE LESSON PRICED IT.** L01 converted end to end: 1,111 of 1,150 inline attributes became classes, 39 held because three constructs are compared byte-exact across lessons (§6.5a strip, §25.6 header/footer, §6.8 PART dividers). **One stylesheet, not sixteen** — 689 distinct declaration strings, 92.5% of instances shared across lessons. **`lesson_inventory.expand_classes()`** so six CSS-reading gates keep working whatever a file's conversion state; **gate 41** because a mistyped class makes an element INVISIBLE where a mistyped inline style only made it wrong — proved by dropping L01's callout census 83→82 with all 40 gates green. Render identity asserted by construction, not inspection. Also S104: **L15's three figures retyped IMAGE→GRAPHIC** (§10 separate number spaces — the tag contradicted its own filename), and a book-wide sweep proved L15 was the entire class. **`image_audit.py` v1.1 NEW** replaces the hand-maintained `IMAGE_SHOT_LIST.md`: 20 outstanding of 145 planned. Its two false findings are recorded in the tool — a cross-lesson tag keyed to the wrong lesson, and ten "type mismatches" that were legitimate separate-number-space figures, killed by reading. **Five L07 figures built** from GCC diagnostics reproduced in the sandbox, clearing L07. `book_gates` v1.35.1 (41 gates), `lesson_inventory` v1.2.0, `build_css` v1.1, `image_audit` v1.1, `session_versions` v1.14, `site_parity` v1.1. L01 **v03.15.2** · L07 **v04.16.0** · L15 **v02.11.2**.) Prior: **v8.90** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
 
+v8.196, S198, moderate — **THE §16 SEATING DEBT IS CLOSED, AND THE QUEUE WAS BIGGER THAN TWELVE HANDOFFS SAID.** 33 rules seated with numbered bodies, measured by a heading walk against every `§16.x` the file references; unseated is now **0**, and every `§16.x` named anywhere in the tree (22 files) resolves to a body. **THE HANDOFF'S 26 WAS RIGHT WHEN WRITTEN AND CARRIED WITHOUT RE-DERIVATION FOR ELEVEN SESSIONS** — the delta is exactly the seven rules born since S187 (§16.52a, §16.53–§16.58), so the queue grew while being described as static. Third time this list has been counted low, same cause each time: the window moved and the family did not. Bodies are written as durable PRESENT-TENSE rules; the changelog entries they derive from are untouched, because a provenance record is history (§16.37, itself one of the rules seated here). **The predicate was controlled both ways before its zero was believed** — demoting a seated heading reports that rule unseated, renumbering one reports the original unseated, and a reword carrying no heading is silent. **AND A SEATING PREDICATE PROVES A HEADING EXISTS, NEVER THAT WHAT SITS UNDER IT READS** (§24.13, S192), so the bodies were audited for substance separately: shortest is 106 words, none is a stub. Three matter outside process — **§16.53** seats `TRACK_WIDTH_MM = 98.0` as a ruled calibration default and forbids restoring the retired figure to a turning formula; **§16.29** seats RCJ §5.3.6 and the reason the first answer was wrong (two calibration routines, spelled differently); **§16.14** seats cliff polarity, where the line does not vanish but ARRIVES. · **GATE 81's WORKLIST SCOPE GAINS THE TRAILING COLOPHON.** The ledger boundary kept GPT's verbatim Part 2 out and also excluded the file's own closing line, which stated the closed figure a FOURTH time with nothing asserting it; a wrong figure planted there passed every gate. The figure was DELETED rather than priced (rule 50) — §24.24 gives it three homes and all three are asserted. `book_gates` **v1.76.7**. · **A VERSION WITH TWO HOMES AND NO COMPARATOR IS TWO VERSIONS** (S161), and the worklist was the last uncovered instance. **Eight consecutive handoffs called it a DISAGREEMENT; the two homes AGREE, and what was missing was the comparator** (S197 — the artefact answers the instruction). `session_versions` **v1.34.0** imports the first home from `CURRENCY_HOMES` rather than re-declaring it. Its first build asked `git ls-files` and went RED inside `--selftest`, whose fixture is a tempdir copy and not a repository: **an arm that only works inside a checkout has a hidden precondition**, so the population is walked from disk. · **A TAG NAMED AS AN EXAMPLE IS NOT A PLAN.** L04's figures note TYPED a live figure tag to explain the two number spaces, so every instrument keying on tag syntax read the example as a planned figure and IMAGE 4.1 was reported outstanding from S138 — the session whose shot brief records it RETIRED. **Fixed in the PROSE, not in an instrument**: the exclusion was built first and reverted, because it would have to be taught to every reader of that syntax and remembered forever (rule 20). Denominator 145 → 144, and the reason states the distinction: **a CORRECTED population, not improved coverage — outstanding is unmoved at 14, which is how you tell** (S135). · **ONE RUN GIVES THE DIRECTION, NOT THE SIZE** — L03 NOTE 3.121, from DJ's S196 bench: eight TRIM-0 runs curved left every time while the distance off-centre spread more than 2×, on runs repeatable to ~1%. The lesson's tuning loop asks only for direction and was already correct; §9 Bonus 2's two figures are now named as multi-run averages. Five pinned population counters moved with reasons, including the CSS baseline — **rules and declarations unmoved at 574/2,033**, which is the check that says a callout was added and no style was edited. · **F5 RULED BY DJ: the L01–L03 battery bands stand as printed, adjustable later.** The contradiction is recorded and NOT withdrawn, and the row is ruled, not closed.
 v8.195, S197, moderate — **§16.52a NEW: A FIGURE IS PROSE, AND THE RETIRED-CLAIM REGISTRY COULD NOT READ ONE.**
 `L13-13` was closed at S181 with the note **"`spoken for` is 0x book-wide."** It was zero in seventeen
 pages and sixteen banks and **NON-ZERO in `L14_GRAPHIC_14-03_how_a_run_is_scored.svg`**, which
@@ -2636,6 +2637,30 @@ life of the lesson, and no gate could see it, because 202 payload files copied i
   different PlatformIO resolution. **A DELTA is safe; an ABSOLUTE is worth confirming once on the
   teacher's own machine.**
 
+### 16.14 A CLIFF READS BLACK — EVERY THRESHOLD ARGUMENT BUILT ON *IT READS WHITE* IS RETIRED (v8.135.3 — LOCKED, S144, DJ ruling)
+
+**A reflectance sensor over a void gets nothing back, and nothing back is the DARK reading. A missing
+floor pins every line sensor at full black.**
+
+- **Source, not intuition.** Pololu's `QTRSensors` header states twice that larger values mean lower
+  reflectance and names the case outright — a black surface **or a void** — and `readCalibrated()`
+  clamps at the top of the scale, so an unsupported robot reads maximum dark on all five channels.
+- **THE BOOK ALREADY SAID SO IN THE OLDER LESSON.** L04's troubleshooting table has always explained
+  that a robot held in the air reads dark because nothing bounces back. Two lessons gave opposite
+  answers to one physics question and **the older one was right**, which is why *the older text is
+  usually wrong* is a heuristic and never a rule: the rule is read the citations.
+- **THE CONSEQUENCE IS DERIVED FROM THE BOOK'S OWN CODE AND IS WORSE THAN THE RETIRED ARGUMENT.**
+  Five sensors at full dark make `isLineVisible()` true, `readLine()` average to dead centre, and
+  `followLine()` compute an error of zero. **The gap handler is never called.** Every safeguard in
+  the lesson watches for a line that VANISHES, and at a cliff the line does not vanish — it arrives.
+- **THE FIX IS SENSOR TYPE, NOT SENSOR POSITION.** Reflectance answers *how much light came back?*
+  and tape and void answer it identically; a cliff needs an instrument answering *how far away is the
+  floor?* **Moving a reflectance sensor onto a boom changes nothing** — that payoff dies with the
+  premise it rested on.
+- **The near-miss rule beside it:** *is there a sensor that measures the thing I actually want?* is
+  true of distance TRAVELLED and false of distance TO THE FLOOR, and one word is the whole difference
+  between a lesson a student can finish and hardware nobody owns.
+
 ### 16.15 TRIM'S HOME IS LESSON 3, BOOK-WIDE (v8.135.4 — LOCKED, S145)
 
 **DJ ruling S145: one answer, everywhere. A student who asks *where do I learn TRIM?* gets
@@ -2772,6 +2797,67 @@ post"* — and supplied the official **RoboCupJunior Rescue Line Rules 2026** PD
 the file carries no `### 16.14` line. §16.12 and §16.13 are also seated below §17's heading, and
 this section is seated beside them rather than moving four sections in a pass nobody ruled.
 
+### 16.18 NO INSTRUMENT READS PROSE, AND NONE COMPILES EITHER (v8.139 — LOCKED, S148)
+
+**A lesson whose central build cannot be flashed is, to every instrument in this repo, perfectly
+well-formed. This is the standing limit the whole gate suite is measured against.**
+
+- **The gates assert STRUCTURE.** They check that markup, families, ids, versions, payload derivation
+  and generated artefacts agree with each other. **None of them evaluates a sentence, and none of
+  them invokes a compiler on a routine suite run.** Both a false claim and an over-ceiling build pass
+  green.
+- **Therefore a green suite is a statement about form and never about truth.** Reporting *all gates
+  pass* as evidence that a lesson is correct is a scope error, and it is the scope error this section
+  exists to stop.
+- **The two partial closures, and both are partial on purpose.** `byte_audit` compiles, but it is
+  minutes long and lives outside `--check`'s routine path for that reason; the retired-claim registry
+  reads text, but it asserts SPELLINGS and is blind to a claim restated in other words (§16.52).
+- **What actually finds these defects is a human reading in order**, and the evidence is that every
+  content defect in this book's history was found that way. **Instruments make a finding repeatable;
+  they do not make it.**
+
+### 16.19 A FIGURE IS NOT VERIFIED UNTIL IT IS RENDERED AND READ BACK (v8.139 — LOCKED, S148)
+
+**Recomputing a drawing's geometry proves the numbers. It does not prove the picture.**
+
+- **Derive the scale, recompute every element, then RENDER and read the result.** Label collisions,
+  clipped text and elements that leave their panel are invisible to the arithmetic that placed them
+  and obvious in one look at the output.
+- **This is why `svg_layout_audit` exists** and why its findings are geometric rather than semantic:
+  it is the repeatable half of an inspection whose other half is still a pair of eyes.
+- **A figure edited without a render is an unverified edit**, and §16.52a records what a figure
+  carrying an unverified claim costs.
+
+### 16.20 A DOUBLE CHECK IS A DIFFERENT METHOD, NOT A SECOND READING (v8.139 — LOCKED, S148)
+
+**§24.13 in the content register. Re-reading what you just wrote reproduces the assumptions you wrote
+it under; the only thing that catches those is an arm built on a different premise.**
+
+- **The check runs over the ARTEFACTS, never over the narration.** Sweep for superseded figures,
+  compile every figure a bank states, resolve every citation to the section it names — each arm
+  asserting a property the authoring pass did not use.
+- **EVERY ARM CARRIES A BLINDING CONTROL AND MUST BE ABLE TO FAIL** (§16.50). An arm that has not
+  been made to fire proves nothing when it is silent, and a control that fires for the wrong reason
+  is not a control.
+- **A HIT IS NOT A DEFECT** (§16.15). Arms return false positives at a real rate; every hit is READ
+  before it is acted on, and the count of hits is never reported as a count of defects.
+- **Writing a rule down does not prevent committing it in the session that quotes it. The detector
+  does.** That sentence is this section's whole justification.
+
+### 16.21 EDIT THE MAKER BY TARGETED SPLICE — NEVER BY RE-SERIALISATION (v8.139 — LOCKED, S148)
+
+**`newproject.html` is ~5.8 MB and holds every payload in the book. Parsing it, mutating an object
+and writing it back out produces thousands of changed lines for an edit that touches a handful.**
+
+- **A re-serialised file cannot be reviewed.** The diff no longer shows what changed, so nothing —
+  not a reader, not `gate_payload_match`, not a push checkbox — can distinguish the intended edit
+  from the formatter's opinion.
+- **The rule: locate the exact string and replace it in place**, then assert the replacement landed
+  by reading it back. **A printed match count records that a string was FOUND, never that it was
+  written** (§16.30's batch defect).
+- **The file is renamed on disk and pushed as a file.** It is never edited through the GitHub web UI
+  and never opened by a tool that reformats it.
+
 ### 16.22 THE CATCH-UP CONVENTION IS SPLIT ON PURPOSE (v8.140 — LOCKED, S149)
 
 **L07–L10 serve the file as it stands BEFORE step N. L11–L16 serve it AFTER step N. Both are
@@ -2808,6 +2894,37 @@ catch-up gives them the result and lets them rejoin. **Rule 32: not every split 
 L11–L16 uniformly IDENTITY, with the coincidental `step_1` rows excluded from both arms because
 they satisfy either. **A gate that counts all 67 rows against one convention is measuring a
 population that does not exist.**
+
+### 16.23 A DELIBERATELY UNBUILDABLE PAYLOAD DECLARES ITSELF (v8.140 — LOCKED, S149)
+
+**Some payloads in this book are supposed to fail to compile — a broken-code exercise, a step whose
+whole point is the error message the student reads. They carry `data-nobuild`.**
+
+- **The attribute is the difference between a teaching artefact and a defect.** Without it, a
+  compile arm reports a lesson working exactly as designed as a failure, and the honest response to a
+  noisy arm is to switch it off.
+- **`byte_audit` carries no flash figure for a `data-nobuild` payload**, and the gap between the
+  payload count and the compiled count reconciles to exactly those entries. **A reconciled gap is not
+  a discrepancy.**
+- **A payload that merely happens not to compile is a defect and does not get the attribute.** The
+  declaration asserts intent, and intent is a claim a human makes and can be wrong about.
+
+### 16.24 A LABEL CAN AGREE WITH ITSELF AND BE WRONG ABOUT THE WORLD (v8.143 — LOCKED, S152)
+
+**Internal consistency is not correctness, and it is the reason a defect survives for sessions:
+nothing ever reads as odd.**
+
+- **The shape.** A figure, a name and the prose around it are derived from one another, so they
+  agree perfectly and every check comparing them passes. The whole cluster is anchored to a claim
+  about the world that nobody re-checked. §16.53 is the sharpest instance — a wrong name over a
+  wrong value, describing the same wrong axis.
+- **Therefore a consistency check is not a truth check**, and a pass over a self-consistent cluster
+  earns no confidence at all about its subject.
+- **THE MISSING PAYLOAD IS OFTEN THE DEFECT THE FIGURE POINTS AT.** When a stated figure has no
+  build that produces it, the honest options are to author the artefact or to delete the number
+  (rule 50). Leaving a figure that names nothing is choosing neither.
+- **What breaks the loop is an external comparator** — a compile, a primary source, a robot, or a
+  reader who does not already know the answer.
 
 ### 16.25 THE FLEET IS ZUMO 32U4 WITH OLED — THERE IS NO A-STAR BOARD IN IT (v8.145 — LOCKED, S154)
 
@@ -2947,6 +3064,84 @@ typing a word into `platformio.ini` that the book never defines. Correct is:
 `Zumo 32U4 OLED Main Board` — the KEY TERM for the hardware, and the one that inherits the *brain*
 framing · `ATmega32U4` — the microcontroller chip ON that board · `a-star32U4` — retained, and
 redefined as a **build target**, never as hardware.
+
+### 16.26 A STEP THAT TEACHES A CONTRACT MUST PRINT THE CONTRACT (v8.146 — LOCKED, S157)
+
+**If a step's payload gains a type, a signature or a declaration, the step's own `<pre>` blocks print
+it. A student following the prose alone must end the step with what the payload has.**
+
+- **The catch-up door is not the teaching path.** When prose omits what the payload carries, the
+  door silently repairs a hole the prose created, and the only students who are whole are the ones
+  who skipped the lesson.
+- **DERIVE WHAT A STEP NAMES, DO NOT READ FOR IT.** Parse the step region and ask which files and
+  identifiers it mentions; a step can explain a concept at length while naming the files it changes
+  zero times.
+- **INHERITANCE IS NOT A SOURCE.** A declaration reaches a student only from a payload they download
+  or a block the lesson prints. If the previous lesson's finished build does not carry it, the step
+  owes it outright — **the gate is not complaining, it is naming content the book owes.**
+- **WHERE THE SEAM GOES IS RULED BY MEASUREMENT, NOT BY TASTE.** Absorbing new material into an
+  existing step moves that step's checkpoint delta, and a banked question keyed to the old delta
+  becomes a wrong answer. **An auto-graded gate that punishes the attentive is worse than no gate**,
+  so a new lettered step is often cheaper than a bigger one. **A composite checkpoint delta also
+  cannot tell a student which half broke.**
+
+### 16.27 A ROLLOUT CAN REACH THE LESSON THAT INVENTED THE THING BEING ROLLED OUT (v8.148 — LOCKED, S158)
+
+**Before converting a pattern book-wide, find where it was born. L13 shipped `StopReason` — the enum,
+the include, and a primitive that reported why a leg ended — long before the name existed elsewhere.**
+
+- **Ruled: LESSON 10 OWNS THE ENUM AND LESSON 13 ADDS ITS THIRD VALUE.** Converting the originating
+  lesson mechanically would declare the type twice and fail to compile; shipping all three values
+  from L10 would print a value L10 cannot explain, which is §16.26 inverted.
+- **A CENSUS COUNTS WHAT IT WAS BUILT TO COUNT.** The survey that opened the rollout counted kill
+  switches, not type declarations, and was structurally incapable of seeing the provenance question
+  (§24.22).
+- **A CORRECT ROLLOUT FALSIFIES PROSE ELSEWHERE.** A step explaining that a file needs an include
+  *it never needed before* becomes false the moment the include arrives earlier; sweep the sentences
+  a conversion makes untrue, not only the signatures it changes (§24.6c).
+- **CONVERSION IS SOMETIMES FORCED RATHER THAN CHOSEN.** When a caller has already been converted,
+  leaving a callee `void` does not compile — and the gate's inheritance rule makes a `void` signature
+  permanently red. **Recommending that a rung stay unconverted is a claim that must be compiled.**
+
+### 16.28 THE CAPSTONE IS THE BINDING CONSTRAINT, AND A TRADE IS RULED BEFORE IT IS TAKEN (v8.148 — LOCKED, S158)
+
+**Lesson 16 sits against the flash ceiling by design. Anything added anywhere below it lands on that
+build, so a byte spent in L11 is a byte the capstone does not have.**
+
+- **PRICE EVERY CANDIDATE BY DELETION BEFORE RULING** (rule 70): remove it, compile, record the
+  figure. **The largest saving is routinely the wrong answer** — the buzzer is the student's own
+  reserve, handed to them in §7.4 with their TDP sentence already written, and spending it in the
+  book leaves a lesson called *Nothing Left to Take Away* with nothing taken away.
+- **A CUT THAT COSTS SOMETHING YOU LIKE IS THE ONE THAT TEACHES.** An easy trade followed by a hard
+  one models the real decision; two easy trades model nothing.
+- **THE TIGHTEST BUILD IS NOT ALWAYS `finished`.** An intermediate step can be the closest to the
+  ceiling in the whole book, and a session that prices only finished builds has not priced the book.
+- **EVERY STATED HEADROOM FIGURE IS CEILING MINUS A SPECIFIC BUILD.** Restate it whenever the chain
+  moves, in every home — prose, compile checks, Maker labels and banks — because the arms that assert
+  these figures are label-scoped and a bare figure in prose belongs to nobody (§16.38's shape).
+
+### 16.29 CALIBRATION MAY NOT DRIVE THE MOTORS — RCJ §5.3.6 (v8.149 — LOCKED, S159)
+
+**RoboCupJunior Rescue Line 2026 §5.3.6: a team may calibrate in as many places on the field as it
+likes, and the robot may NOT move on its own while calibrating. The rule carried over from 2025
+unchanged, so it has been in force the whole time.**
+
+- **THIS BOOK HAS TWO CALIBRATION ROUTINES AND ONLY ONE IS AT RISK.** L04's is human-driven — the
+  student slides the robot while the sketch samples — and calls no motor at all. The competition
+  build's routine is a different function with a different name, born later, and it spins.
+- **A NAME IS NOT A BEHAVIOUR (§24.10).** A search for one routine's spelling cannot return the
+  routine spelled differently, and answering from the first match found is how a confidently wrong
+  answer reaches DJ. **A wrong answer is worse than a blank one.**
+- **THE SHIPPED FORM GUARDS THE MOTOR CALLS RATHER THAN ADDING A ROUTINE.** A competition-mode branch
+  with its own prompt pulls display formatting into that translation unit and costs more than the
+  capstone has; guarding two calls under a `const bool` folds the dead branch away and PAYS bytes
+  back in match mode. **The pricing was wrong until it was compiled.**
+- **A ZERO DELTA PROVES NOTHING BY ITSELF** (rule 85). Identity was established by comparing
+  address-stripped instruction streams, with a one-character blinding control proving the comparison
+  can move.
+- **THE TRAILING STOP STAYS, DELIBERATELY.** Commanding a halt is not moving, and a robot that
+  arrives at calibration with its wheels already turning should be stopped by something. Reporting
+  *the motor calls are gone* would have been a wrong claim.
 
 ### 16.30 A SENSOR ANSWERS ITS OWN QUESTION, NOT YOURS (v8.150 — LOCKED, S160)
 
@@ -3307,6 +3502,264 @@ not-a-defect**: `turnDegreesGyro()` genuinely closes on HEADING. Zero bytes, cen
 
 ---
 
+### 16.32 US SPELLING, BOOK-WIDE (v8.160.7 — LOCKED, S167, DJ ruling)
+
+**US spelling everywhere the book speaks in its own voice. The RCJ rulebook PDF is the sole
+exemption, and *center* takes the US form even where the rulebook does not — the author is American.**
+
+- **THE AXIS IS A SPELLING SYSTEM, NOT A WORD.** Scoping a sweep to the one word a lead names
+  measures only what you were already told (§24.6c); the honest predicate is the whole British set,
+  and it returns a population several times larger.
+- **THE SWEEP SPLITS INTO TWO ACTS OF DIFFERENT KINDS AND THEY CANNOT BE SEPARATED.** Prose and bank
+  strings are TEXT. A payload occurrence is usually an IDENTIFIER — a variable name and its comment —
+  and renaming it is a code change across every payload that carries it. They move together because
+  a lesson's prose names the variable its own code declares.
+- **A LOCAL NAME AND A COMMENT EMIT NOTHING, AND THAT IS PROVED BY COMPILING** (rule 85), not
+  asserted. Recompile the book and assert that no stored figure moved.
+- **HELD, WITH REASONS:** the component standard, because a generator pins one of its section anchors
+  as a literal (rule 56); the rulebook extract, which must match its source; and Bible changelog
+  narration, which is history and is not rewritten (§16.37).
+- **A PIN THAT ASSUMES ONE QUOTING STYLE IS ONE QUOTING STYLE'S PIN.** Bank source pins are written
+  both quoted and bare; a predicate matching one form silently moves nothing and reports success on
+  the files it never touched.
+
+### 16.33 THE QUOTED SOURCE WAS FAITHFUL — THE DEFECT WAS THE SENTENCE INTRODUCING IT (v8.160.7 — LOCKED, S167)
+
+**When a lesson prints library source, verify it against the pinned library at its pinned commit,
+token for token. Then verify the sentence that introduces it, because that is where the defect is.**
+
+- **The excerpt matched the pinned library exactly**, including its spacing. The lesson called it
+  *four lines* while the block on screen printed more — **four STATEMENTS, a reading no student can
+  check against what they are looking at**, in the one sentence staking its credibility on *this is
+  not a metaphor*.
+- **A COUNT OF LINES IS NOT DERIVABLE UNTIL SOMEBODY RULES WHAT A LINE IS**, and stripped indentation
+  and wrapped continuations make the printed form differ from the source form. Rule 50 gives such a
+  number two fates, and here the number was DELETED — the lesson already carried the count it wanted
+  a student to walk out with.
+- **Whitespace and wrapping differences between a lesson block and its source are NOT defects**;
+  they are declared and left alone.
+
+### 16.34 A CLASSIFIER OWES ITS ASSUMPTIONS, NOT ANOTHER WARNING ABOUT ITS RISK (v8.160.7 — LOCKED, S167)
+
+**A finding that a threshold is *presented as definitive* is usually already answered by the lesson.
+What is usually missing is the sentence naming what must be TRUE ABOUT THE ROOM for the comparison to
+mean anything.**
+
+- **A HIT IS NOT A DEFECT** (§16.15). Read before ruling: the lesson may already name both failure
+  directions in prose, in its troubleshooting table, and in an exercise that makes the student
+  manufacture the failure on purpose.
+- **THE RESIDUE IS THE PRECONDITIONS.** Geometry, parallelism, and what the previous measurement
+  actually terminated on are assumptions a comparison silently rests on, and none of them is a risk
+  warning.
+- **WHERE THE FIX GOES IS A PRICE, NOT A PREFERENCE** (rule 70). The sentence carrying an assumption
+  often lives in a code comment replicated across many payloads, which spends a Maker bump and moves
+  the payload gate at both ends for no truth gained; **the lesson-only prose beneath it says the same
+  thing for nothing.**
+- **NEW MATERIAL IS GRADED IN THE SAME SESSION IT SHIPS**, or it is material nobody has to read.
+
+### 16.35 A RULING MADE AGAINST A DESCRIPTION OF AN ARTEFACT IS A LEAD (v8.161 — LOCKED, S168)
+
+**§24.6c on a seating rather than on a count. A decision about where material goes is provisional
+until the artefact it names has been opened.**
+
+- **THE FAILURE SHAPE.** A discovery exercise is seated in a later section, and that section runs a
+  build in which the failure being discovered **cannot occur** — so a student reaching it already has
+  the fix and is told to watch for something they will never see.
+- **THE DISCOVERY GOES WHERE THE FAILURE IS STILL LIVE**, and the earlier payloads are left BLIND on
+  purpose. A payload that was byte-identical to another and therefore had no download door is exactly
+  the payload the fix makes distinct, so it gains one.
+- **A ZERO-BYTE EDIT IS NOT ZERO BYTES UNTIL IT IS RECOMPILED.** Adding an enumerator ahead of an
+  existing one renumbers it and moves every downstream build, silently invalidating figures derived
+  minutes earlier. **Seat a new value LAST so nothing existing moves** — and find this by compiling,
+  never by reasoning.
+- **A SABOTAGED BUILD HIDES ITS OWN VOCABULARY.** A planted bug may spell the very line a fix
+  predicate looks for; patch it in its sabotaged spelling, or the mystery becomes unsolvable by diff.
+
+### 16.36 THE TAG-STRIP IDIOM HAS ONE HOME, AND SCOPE IS RULED PER READER (v8.161 — LOCKED, S168)
+
+**A naive tag-strip runs from any `<` to the next `>`, so an HTML COMMENT containing either character
+is swallowed as though it were a tag. Text inside such a comment becomes invisible to any gate built
+on that idiom.**
+
+- **THE SCOPE DECISION IS THE CONTENT, AND IT POINTS TWO OPPOSITE WAYS.** Comments are IN scope for
+  any arm asserting *this claim appears nowhere*, because a retired claim in a comment is still in the
+  file. They are OUT of scope for every arm asking *what does a READER see*.
+- **MEASURE BOTH DIRECTIONS BEFORE TOUCHING ANYTHING** (rule 34): how much rendered prose the idiom
+  hides, and how many comments can actually diverge. **The safety of escaped body text is a
+  CONVENTION of this book, not a property of the regex.**
+- **A DIVERGENCE PREDICATE STATED FROM REASONING IS A LEAD.** An inner `>` diverges as surely as an
+  inner `<`; verify comment by comment rather than by argument.
+- **A no-op reroute is proved by byte-identical output before and after**, and counting an exposure
+  is a legitimate disposition when widening every reader is a change whose blast radius has not been
+  measured (rule 26).
+
+### 16.37 UNATTRIBUTED WORK IS NOT SHIPPABLE WORK, AND PROVENANCE IS HISTORY (v8.161 — LOCKED, S168)
+
+**Two rules, one principle: a record of what happened is never rewritten, and content nobody in this
+session authored is never adopted.**
+
+- **A PROVENANCE RECORD IS HISTORY.** Changelog entries, bank `#` headers and *verified against*
+  lines describe a measurement performed at a moment. They are corrected only when they contain a
+  PRESENT-TENSE claim about the artefact — something checkable today and wrong today. **An account of
+  a reading stays as written even when the reading is superseded.**
+- **PLAUSIBLE IS NOT AUTHORED.** When the working tree holds changes this session did not make, they
+  are quarantined outside the repo, whatever their quality. **Adopting another author's narration
+  asserts reads nobody can vouch for**, and such content routinely carries a false claim about the
+  file it is itself changing.
+- **THE SEPARATION THAT DECIDES IT:** derived FACTS the book owes may be re-derived by hand and kept;
+  SESSION DOCUMENTS — the live file, the handoff, the changelog — are reverted, because they are the
+  record of what a session did.
+- **A whole-tree md5 diff against a fresh clone is what makes this checkable**, and it is run before
+  every push: changed, new, deleted, and every one attributable.
+
+### 16.38 A HEADROOM CLAIM IS CHECKABLE BY ITS RELATION, NOT BY ITS SHAPE (v8.162 — LOCKED, S169)
+
+**A headroom figure is the flash ceiling minus a specific build. Small figures carry no comma and sit
+below the byte band, so every figure-SHAPED predicate in this repo is structurally blind to them.**
+
+- **DERIVE THE EXPECTATION, NEVER TYPE IT** (rule 19). The arm computes ceiling minus build and
+  compares; it does not look for numbers that look like bytes.
+- **STATED BLIND SPOT (rule 78): the arm asserts *matches SOME build*, never *matches THIS build*.**
+  A claim naming the wrong build is silent, and a real headroom figure from elsewhere in the lesson
+  will satisfy it. Heading- and label-scoped arms are what close that.
+- **THE CONDITIONAL EXCLUSION IS A PROPERTY, NOT A NAME LIST** (rule 20). The subjunctive separates
+  *what cutting this WOULD give* from an assertion — and **it tells you the robot never does this; it
+  does not tell you the number is free.** A hypothetical's figure is still derived from a compile and
+  still goes stale.
+- **A GUARD THAT SKIPS SILENTLY READS EXACTLY LIKE A CONTROL THAT PASSED.** Every guard is an
+  assertion on a uniquely-anchored string, and a failed anchor is loud.
+- **AN ARM REBUILT EACH SESSION AND THROWN AWAY IS NOT AN INSTRUMENT.** Its controls live in
+  `--selftest`, not in a transcript.
+
+### 16.39 THE COMPILER IS A WITNESS AND IT MUST NOT BE GAGGED (v8.163 — LOCKED, S170)
+
+**The harness compiles with warnings ON. Suppressing them hides the one instrument in this project
+that reads code for free.**
+
+- **MEASURE BEFORE MOVING THE FLAG** (rule 34): prove that quiet and loud builds are byte-identical,
+  and prove the vendor core is silent so the suppression was never shielding anyone from third-party
+  noise.
+- **COMPARE THE FLASH IMAGE, NOT THE `.elf`.** The `.elf` is not reproducible build-to-build. **A
+  hash of the wrong artefact is not a weaker control — it reports the opposite of the truth.**
+- **THE HARNESS REPORTS WARNINGS AND DOES NOT FAIL ON THEM**, because most of them are the build-up
+  model working: a value declared in the lesson that introduces it and handled a step or two later.
+  A harness that failed here would fail correct builds, and an arm that is too loud is one somebody
+  switches off.
+- **THE ARM ASSERTS ONLY WHERE THE BUILD-UP MODEL CANNOT EXPLAIN THE WARNING AWAY** — the terminal
+  builds, which have nothing coming later. Intermediate steps are counted, reported, and asserted by
+  nothing. **The model is an explanation, not a proof** (rule 78).
+- **AN ERROR FILE AT A FIXED GLOBAL PATH IS SHARED STATE.** Every build gets its own directory; one
+  hardcoded temp path hands back the isolation the rest of the harness pays for.
+- **A COUNT OF WARNING LINES AND A COUNT OF SIGNATURES DISAGREE AND BOTH ARE RIGHT** — one value can
+  be unhandled in two switches in one file. **The PAYLOAD count is the figure to quote.**
+
+### 16.40 A STATE WITH NO `case` IS A ROOM WITH NO DOOR (v8.164 — LOCKED, S171)
+
+**Every member of a state enum is reachable and leavable. A state the dispatch switch does not handle
+is one the program cannot exit except by the power switch.**
+
+- **NAME THE DEFECT NARROWLY.** The failure here was not *this ending yields no scorecard* — other
+  endings route the same way and are correct. It was that this member was **uniquely
+  UNRECOVERABLE**, in a lesson that spends a paragraph teaching that a dead button is temporary.
+  **A claim carried forward from a prior entry is a lead, not a finding** (§24.6c).
+- **THE FIX IS THE SHAPE THE SAME FILE ALREADY USES** — read the button, return to the resting state
+  — so it teaches nothing new and the argument for the state survives untouched. Rerouting it into
+  the scoring path was rejected: that changes what two later lessons TEACH (§24.19).
+- **THE BYTE COST IS NEVER THE COST.** Price the fix on a scratch tree first, ENUMERATE the churn
+  with the instruments rather than hunting it by hand, and check that no build newly overflows.
+- **THE CASE MUST BE PRINTED, NOT MERELY SHIPPED** (§16.26): the payload gate names every lesson that
+  gains code its prose does not carry.
+- **A CONTROL WHOSE FIXTURE IS BORROWED FROM THE POPULATION IT AUDITS FAILS WHEN YOU SUCCEED.**
+  Fixing the defect empties the baseline the control leaned on. Controls plant their own fixtures and
+  test the ARM, never the state of the book.
+
+### 16.41 THE DEFECT CAN BE IN THE TEMPLATE RATHER THAN THE SOLUTION (v8.165 — LOCKED, S172)
+
+**When a challenge hands the student pre-written code and says *fill the blanks*, everything in that
+scaffold is something the book INSTRUCTS them to accept. A defect there is not a student error.**
+
+- **THE SHAPE.** A template's pre-written moves discard the return values a nearby section has just
+  taught them to guard, so the kill switch is dead for the whole maneuver — and **a student who
+  noticed and guarded them would be departing from the printed template.** The book would be
+  punishing the only correct reading of its own lesson.
+- **AN UNLABELLED TRAP INSIDE A SOLUTION IS REJECTED** (§24.19). This book already has a home for
+  planted bugs, and they are marked; an unmarked one destroys the distinction that makes the marked
+  ones teach.
+- **FIX ALL FOUR PLACES** — both templates and both solutions — and leave the blanks and difficulty
+  pills alone, because the student's thinking belongs where the card put it and the guard is being
+  MODELLED in a new context, not taught again.
+- **READ THE HELPER BEFORE ASSUMING A BARE `break` IS WRONG.** If the poll routine sets the state and
+  paints the screen itself, the bare form is already correct — and the lesson's own bank may already
+  teach exactly that.
+
+### 16.42 A TRANSIENT HTTP STATUS IS NOT A FINDING (v8.166 — LOCKED, S173)
+
+**Only 404 and 410 mean the site does not serve a name. 408, 425, 429 and the 5xx family mean ask
+again.**
+
+- **A published site reported as broken because a CDN was busy accuses the repo of not publishing a
+  file it publishes.** `site_parity` classes those codes as unreachable and retries once.
+- **AN INSTRUMENT WHOSE NOISE LEAVES NO TRACE IS ONE NOBODY CAN EVER DIAGNOSE.** The asset and its
+  status are noted even when the retry succeeds; a finding that is printed and not kept cannot be
+  investigated afterwards.
+- **A FIX THAT ARRIVES WITH A STORY ABOUT A SYMPTOM IT DID NOT REPRODUCE IS HOW A WRONG CAUSE
+  BECOMES CANON.** Measure first (rule 34); if the flap does not reproduce, say so and repair what is
+  wrong on its own terms.
+- **A RETRY THAT NEVER HAPPENS LOOKS IDENTICAL TO ONE THAT SUCCEEDED**, so the control COUNTS CALLS.
+- **THE REPEAT-RUN CONVENTION NEEDS A TIME FLOOR, NOT A RUN COUNT.** Two readings ninety seconds
+  apart inside a nine-minute Pages build are ONE reading. Wait past the longest recent build before
+  believing a stale reading — and an occasional flap is not caught by running twice at all.
+
+### 16.43 MEASURE THE DISCARDS WITHOUT MAKING THE BOOK WEAR THE TOOL (v8.167 — LOCKED, S173)
+
+**The debt was never *the attribute is missing from the header*. It was *nobody knows whether return
+values are being discarded*, and that question is answerable without shipping the attribute.**
+
+- **THE ATTRIBUTE IS NOT SHIPPED, AND THE PRICE IS THE RULING.** Several discarding payloads have
+  download doors, so students compile them; the flag would emit warnings for code those lessons
+  consider correct and teach that **warnings are normal** — the exact habit this project objects to.
+- **IT ALSO CONTRADICTS THE RULING BESIDE IT.** Discards that are correct for where the STUDENT is
+  were deliberately left alone; **you cannot both leave those correct and ship a flag that flags
+  them**, and it is the pedagogy that must not give.
+- **`finished` IS NOT THE SAME AS STUDENT-FACING.** Ladder rungs and challenge solutions are things
+  students download. A rule scoped to terminal builds is not a rule about what students see.
+- **WHAT SHIPPED INSTEAD: THE ATTRIBUTE IS INJECTED AT STAGE TIME AND NEVER LANDS IN THE REPO**, with
+  ONE staging path shared with the rest of the harness (rules 83/84), and every discard adjudicated
+  by a READING rather than by a tolerance. Some are the lesson working — a blind corner a later step
+  exists to fix.
+- **IT LIVES BEHIND ITS OWN FLAG, DELIBERATELY OUTSIDE `--check`.** It recompiles the whole book and
+  costs minutes, and **an arm that makes the routine run slower is one somebody eventually skips.**
+- **THREE STATED SCOPE LIMITS (rule 78):** it counts discards rather than sites that ought to guard,
+  so **deleting a maneuver LOWERS the count**; it is blind to a value assigned and never read; and it
+  costs minutes.
+- **AN UNEXERCISED BRANCH IS NOT A CHECK.** A standing refusal that no population has ever triggered
+  must be forced to fire by a control that really compiles, with the waiver explicitly present, or
+  nobody knows whether it works.
+
+### 16.44 A STATED DISCARD FIGURE IS THE ONE THE COMPILE ARM MEASURES (v8.168.3 — LOCKED, S175)
+
+**Gate 78. Where a session document ASSERTS the discard pair, it must equal what the compile arm's
+baseline holds — and the truth is IMPORTED from that baseline, never typed.**
+
+- **THE PREDICATE IS A CLAIM FORM, NOT A SPELLING** (rule 19). It matches the ASSERTIVE register —
+  digits with the explicit noun, outside inline code — and is deliberately blind to the NARRATIVE
+  register, **because this project's documents quote their own defects on purpose and a gate
+  convicting that prose would be switched off inside a session.**
+- **TWO EXCLUSIONS, BOTH STRUCTURAL:** a figure spelled in WORDS is not a claim, and a figure inside
+  BACKTICKS is a quoted spelling rather than an assertion. Both are CONTROLLED, not asserted.
+- **SCOPE IS RULED BY PROPERTY, SO THERE IS NO LIST TO MAINTAIN** (rule 20). The Bible's changelog is
+  history (§16.37) and is not read; the live file is read only in its CURRENT session region; the
+  handoff is read whole because a handoff is current by definition. **A per-session block leaves
+  scope the moment a newer one is written.**
+- **THE GATE COSTS ZERO COMPILES**, which is why it can live in the routine suite where the compile
+  arm deliberately cannot — and the figure cannot rot here without going loud there first.
+- **THE COVERAGE ARM'S DENOMINATOR IS THE SCOPES, NEVER THE CLAIMS**, because a session with nothing
+  to say about discards owes nothing.
+- **STATED SCOPE LIMIT (rule 78): a session stating the figure in some OTHER form is not reached.**
+  When that first bites, the answer is a ruling on the claim form, not a looser predicate.
+- **A WIDENING IS EVIDENCE ABOUT THE CASE IT WAS AIMED AT AND NOT ABOUT THE CLASS** (§16.47): this
+  arm's adjacency requirement survived an earlier widening untouched and had to be widened again.
+
 ### 16.45 A SUBSET TEST CANNOT SEE A DELETION (v8.169 — LOCKED, S176)
 
 `gate_payload_match`'s derivation predicate asks whether every payload line comes FROM the
@@ -3335,6 +3788,31 @@ the debt v8.153 recorded and v8.145 logged before it. This section is seated rat
 extending that queue; a rule whose only home is a changelog entry holds only where somebody
 happens to look.
 
+
+### 16.46 A LESSON THAT CONTRADICTS ITSELF IS CONVICTED BY BEING READ IN ORDER (v8.170 — LOCKED, S177)
+
+**The USB cable powers the logic and the power switch feeds the motors, so an upload succeeds with
+the robot switched off (§16.48). A prove-it-yourself exercise once told students to prove the
+opposite.**
+
+- **THE PRIMARY SOURCE IS NOT WHAT SETTLES IT, AND THAT IS THE REUSABLE HALF.** The same section
+  already carried a warning stating the correct fact, and a challenge hint stated it a third time.
+  **A book that contradicts itself does not need an external citation to be convicted; it needs to be
+  read in order.**
+- **THE REPLACEMENT LEAVES NO PERSISTENT STATE.** Unplugging the cable is a genuine upload failure,
+  needs no file edit, and cannot be restored wrongly. **Having students edit a build file on day one
+  makes every bad restore a term-long support load** — and a change that fails at BUILD rather than
+  at upload stops the section being about its own subject.
+- **THE CORRECTED FACT BECOMES THE TEACHING POINT RATHER THAN A DELETION**: naming what does NOT
+  break an upload is why a robot with flat batteries can still be programmed, and why *it uploaded
+  fine but it will not move* is a switch problem and never an upload problem.
+- **A HANDOFF IS CURRENT BY DEFINITION AND IS STILL NOT AN ARTEFACT** (rule 32). Sites it names as
+  carrying the same defect are checked before they are edited; some are correct as written.
+- **WHEN A BANK AND ITS LESSON DISAGREE, NEITHER IS AUTOMATICALLY THE OUTLIER — THE PAYLOAD DECIDES**,
+  because both derive from it. A bank authored faithfully from the payload can be right while the
+  lesson's own revealed solution is wrong.
+- **A CORRECT EDIT CAN TURN A FAIR DISTRACTOR INTO AN UNFAIR ONE**, so the sweep owes the whole item
+  rather than the keyed option.
 
 ### 16.47 A WIDENING CLOSES THE CASE IT WAS AIMED AT, NOT THE PROPERTY (v8.171 — LOCKED, S178)
 
@@ -3575,6 +4053,27 @@ instead would have stranded 43 prose references and a graded requirement.**
 **SCOPE: single-file programs, L01–L06.** The multi-file lessons (L07+) keep their own architecture
 — that split is what L07 teaches — and their section vocabulary is not governed by this table.
 
+### 16.51 A ROW IS FILED AGAINST ONE LESSON AND THE CLAIM CAN LIVE IN FOUR FILES (v8.180 — LOCKED, S185)
+
+**A worklist row names the lesson where somebody noticed the claim. The claim's homes are lessons,
+the Maker, the quiz banks — and, at worst, a KEYED CORRECT ANSWER.**
+
+- **ENUMERATE THE CLAIM CLASS BEFORE EDITING ANYTHING** (§24.22). A row filed under one lesson
+  routinely has instances in another lesson's prose, in a challenge reveal, in a boxed Maker header,
+  and in a bank — **and a tally that counts ROWS will report the other lessons at zero open while
+  each carries a live instance.**
+- **A KEYED CORRECT ANSWER IS THE WORST HOME.** A student answering from the corrected lesson is
+  marked WRONG, which is this book's standing rule reached from a new direction: *an auto-graded gate
+  that punishes the attentive is worse than no gate.* The retired claim becomes the strongest
+  DISTRACTOR, with a `why` naming the reason — so a loose reading costs a student instead of
+  rewarding one.
+- **CHECK THE CLAIM BEFORE EDITING THE PROSE.** A policy can be right while its stated reason is
+  false; when that happens the true mechanism REPLACES the false one rather than the sentence merely
+  being deleted, because a rule with no reason is a rule students discard.
+- **A MAKER BOX IS ADVISORY BUT PINNED.** Re-derive its pin after editing, control in the REVERSE
+  direction — the OLD box under the NEW pin must fire — and assert the box's rails are still square,
+  because a boxed comment that loses its right edge is a defect no gate can see.
+
 ### 16.52 A RETIRED CLAIM STAYS RETIRED (v8.181 — S186)
 
 Closing a GPT row often **RETIRES a claim**: a sentence the book used to assert and no longer
@@ -3625,6 +4124,139 @@ either** — measured at S186 against the file, after the S186 handoff stated §
 S185. Fifteen rules, not the thirteen the handoff carries. §16.45's own closing paragraph
 refused to extend that queue and this section refuses too.
 
+
+### 16.52a A FIGURE IS PROSE, AND A REGISTRY THAT READS ONLY PAGES CANNOT SEE ONE (v8.195 — LOCKED, S197)
+
+**A retirement is registered against a CLAIM, and a claim can live anywhere a reader's eye lands.
+A referenced `.svg` is one of those places.**
+
+- **The scope of `retired_claims` is every lesson page, every quiz bank, AND the text of every
+  REFERENCED `.svg`.** A figure the book prints is part of the book. §10 already rules that a figure
+  is not a decoration; this extends the same principle to what a figure SAYS.
+- **A zero can be real and its population still be wrong.** A retirement measured at zero across
+  pages and banks is a true statement about pages and banks. It is not a statement about figures,
+  and reporting it as *0x book-wide* asserts a scope the measurement never had. **State the
+  population beside the zero or do not state the zero** (§24.22, rule 72).
+- **UNREFERENCED SVGs ARE OUT OF SCOPE ON PURPOSE.** Litter no student can reach is a reason to
+  DELETE the file, not to fail a gate; convicting it would make the instrument loud about pages that
+  do not exist for a reader. Deletion is DJ's ruling (§24.17 carve-out 2).
+- **STATED SCOPE LIMIT (rule 78): text flattened to outlines is invisible to this sweep**, and no
+  pattern can close that. A figure whose words are paths carries its claim past every instrument in
+  this repo; the only control is that such a figure is drawn from a source the book still owns.
+- **A COVERAGE CONTROL THAT MUST BE HAND-EDITED WHEN COVERAGE IMPROVES IS A TRAP.** Any check
+  asserting *the corpus is exactly N* fails on a CORRECT widening and teaches the next session to
+  edit the number instead of asking why it moved. Coverage floors are DERIVED from the population,
+  or they are one-sided (`>=`). Never an equality against a typed constant.
+
+### 16.53 THE NAME AND THE VALUE CAN DESCRIBE THE SAME WRONG AXIS — `TRACK_WIDTH_MM` IS 98.0 (v8.184 — LOCKED, S189, DJ ruling)
+
+**The constant a differential-drive turn formula needs is the SIDE-TO-SIDE separation of the two
+tracks. In this book it is spelled `TRACK_WIDTH_MM` and its value is 98.0.**
+
+- **The retired constant named the wrong axis and carried a value measured on that wrong axis, which
+  is why it never read as inconsistent with itself.** Pololu's 85 mm is the drive-to-idler sprocket
+  spacing measured FORE-AFT along ONE side. It is a true figure about a real distance and it is not
+  the pivot width. **A wrong name over a wrong value is internally consistent (§16.24's shape), so
+  nothing looks odd until the axis itself is questioned.** Do not restore 85 to a turning formula.
+- **98.0 IS RULED A CALIBRATION DEFAULT, NOT A GEOMETRY CLAIM.** There is no official Pololu figure
+  for track centreline separation: the Zumo library publishes no dimension constants at all and both
+  its turning examples steer by gyro; the user's guide gives only the 98 × 86 × 39 mm envelope. **An
+  envelope is not a centreline separation.** 98.0 is defensible on two converging grounds — it is
+  Pololu-published, and it is the floor of the book's own empirically tuned range — and the book
+  must never call it a measurement.
+- **STUDENTS DO NOT MEASURE IT WITH A RULER.** No ruler reading predicts a tracked robot's turn. The
+  four-turn square survives as a TUNING CHECK, never as a derivation, and the TDP records a tuning
+  history rather than a verification.
+- **THE ARITHMETIC IS CLOSED-FORM AND DERIVED, NEVER CARRIED.** π cancels, so every dependent figure
+  — turn circumference, counts per degree, and any lesson's stated turn in counts — is recomputed
+  from the constant. **A predicate scoped to the identifier's spelling will miss the prose sites, the
+  worked formula and the derived figures** (§24.6c): sweep the ARITHMETIC a correction produces, not
+  the name it changes.
+
+### 16.54 A ROW CLOSED IN THE LESSONS IS NOT CLOSED IN THE TRACKERS (v8.185 — LOCKED, S189)
+
+**Closing a finding retires a claim. The claim's homes include the working sheets, and those are the
+homes nobody re-reads.**
+
+- **A tracker row's PREMISE can be falsified by the very session that closes the lesson.** A bench
+  row asking a student to check a number the book no longer gives is not merely stale — it asks for
+  evidence about a claim that no longer exists. Sweep the trackers in the same pass as the lessons
+  (rule 72).
+- **A COUNT SCOPED TO ONE SHEET IS NOT A BOOK-WIDE COUNT.** A statement true of the L01–L04 working
+  sheet is a statement about that sheet. Generalising it to the book asserts a population that was
+  never enumerated (§16.15), and the correction is a scope clause in the sheet itself, not a
+  different number.
+- **READ TO THE END OF THE DOCUMENT BEFORE QUOTING A SENTENCE FROM IT.** The footer of a tracker
+  routinely names members the quoted sentence omits. The claim was read; the end of the file was not.
+
+### 16.55 THE ALREADY-DEAD SWEEP CANNOT BE AUTOMATED, AND THE CONTROLS ARE HOW WE KNOW (v8.185 — LOCKED, S189)
+
+**There is no predicate that reliably reports which open worklist rows describe defects the tree has
+already fixed. Both obvious forms were built, both failed their control, and neither ships (§16.50).**
+
+- **PHRASE-ABSENCE OVER-REPORTS.** Requiring the finding's quoted phrase to be absent marks a large
+  fraction of open rows as dead, including rows that are provably live.
+- **TOKEN-SURVIVAL UNDER-REPORTS.** Requiring the finding's distinctive tokens to be absent flips the
+  failure: known-dead rows still show most of their tokens, because ordinary vocabulary outlives the
+  sentence that used it.
+- **THE METHOD THAT WORKS IS READING, AND IT IS FREE.** An already-dead row is a byproduct of working
+  its lesson — you find it while drafting the replacement prose. **It is never a separate pass, and a
+  mechanical pass over a closed bucket manufactures FALSE DEADS, which are invisible because nobody
+  re-checks a retired row.**
+- **WHEN A SWEEP AND THE FILE DISAGREE, SUSPECT THE SWEEP (§24.8).** The gap that prompted this
+  investigation was the instrument's, not the tree's: the worklist held its ids uniquely and was
+  internally consistent throughout.
+
+### 16.56 A CLAIM CLOSED WHERE IT WAS QUOTED IS NOT CLOSED WHERE IT WAS REPEATED, AND THE GLOSSARY IS WHERE IT SURVIVES (v8.186 — LOCKED, S190)
+
+**§16.54 says a row closed in the lessons is not closed in the trackers. This is the same shape
+INSIDE one lesson, and it has been found three times in a single file.**
+
+- **A finding names ONE site. The claim usually has more, and the fix lands on the one that was
+  quoted.** The survivors are the registers a reader consults rather than reads: §8 troubleshooting
+  entries, §8A pattern sections, and above all the **KEY TERM GLOSSARY**.
+- **THE GLOSSARY IS THE HIGHEST-RISK REGISTER IN THE BOOK.** It is short, it is authored once, it is
+  the reference students actually open, and it is not where anybody looks when fixing prose. A
+  retired claim in a glossary entry outlives its own correction indefinitely.
+- **A TWIN ENTRY CARRIES THE TWIN CLAIM.** When two glossary terms are defined against each other,
+  correcting one and leaving the other restates the retired claim from the opposite side.
+- **The obligation: every closure sweeps the whole tree for every home of the phenomenon, not the
+  symptom's vocabulary** (rule 72, §24.6c).
+
+### 16.57 A COST ASSERTED WITHOUT MEASUREMENT IS A CLAIM (v8.186 — LOCKED, S190)
+
+**Rule 50 applies to an ESTIMATE. A price quoted to justify not doing work is a factual claim about
+the artefact and is checkable against it.**
+
+- **The failure mode is invoking a rule as the reason NOT to do a thing when the rule exists to make
+  that thing cheap.** Callout identity is AUTHORED, never derived, precisely so that inserting a
+  callout takes the next free number and nothing below it renumbers — the design exists so insertion
+  is free, and it was cited as the reason insertion was expensive.
+- **Price the artefact, not the category** (rule 70, §16.49's shape). *Coupled to an SVG*, *renumbers
+  everything downstream*, *touches N payloads* — each of these is a category, and each has instances
+  that cost one string.
+- **A refusal priced by memory is a refusal nobody controlled.** The correct response to *why not?* is
+  to open the file, and the instrument's own docstring is admissible evidence against its operator.
+
+### 16.58 A SILENTLY UNREADABLE SOURCE IS WORSE THAN A MISSING FILE (v8.187 — LOCKED, S191)
+
+**An instrument that attaches provenance to a zero it could not measure is worse than the `grep` it
+replaced, because `grep` at least says *No such file*.**
+
+- **THE DEFECT: A STRING IS ITERABLE.** A path argument passed where a sequence of paths was expected
+  is walked one CHARACTER at a time; every open fails, a bare `except: continue` swallows every
+  failure, and an empty result is printed like an honest measurement with its population beside it.
+- **THE RULE: AN UNREADABLE PATH RAISES.** Silence about a source you could not read is the whole
+  failure class. A glob matching nothing raises; a path that will not open raises. **No instrument in
+  this repo may report a count derived from files it did not read.**
+- **A ZERO IS THE MOST DANGEROUS RESULT AN INSTRUMENT CAN RETURN**, because it is the one nobody
+  investigates and the one that licenses an edit — *no lesson surface* is a conclusion acted on
+  immediately.
+- **DISAGREEMENT BETWEEN TWO READERS IS THE FINDING, NEVER THE AVERAGE** (rules 83/84). This defect
+  was caught only because two methods disagreed on an unrelated pattern; without that accident the
+  zero would have been filed.
+- **A BLINDING CONTROL IS WHAT MAKES A CONTROL EVIDENCE (§16.50).** Grafted onto the unfixed body,
+  every control here FAILS — including the one that returns exactly the zero that fooled its author.
 
 ### 18.3b A RETIRED-NAME LIST IS AN ALLOWLIST (v8.179 — S183, third register recorded S184)
 

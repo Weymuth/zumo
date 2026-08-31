@@ -2,7 +2,12 @@
 # VERSION is the ONE home, and it sits ABOVE the changelog so a plain grep of this file
 # lands on the live version, not on a changelog line (S98). The block below is prose,
 # not __doc__ — nothing in the repo reads __doc__ (checked).
-VERSION = 'v1.6.6.7'
+VERSION = 'v1.6.6.8'
+# v1.6.6.8 (S198): DENOMINATOR 1136 -> 1137. One new NOTE callout, L03 3.121 - one run gives
+#   the DIRECTION of the drift reliably and the SIZE of it only roughly, which is what DJ's
+#   S196 bench measured: eight TRIM-0 runs curved left every time, spread >2x in magnitude,
+#   on distances repeatable to ~1%. The lesson's own tuning loop already asks only for
+#   direction and was correct; the note seats the limit so the challenges downstream inherit it.
 # v1.6.6.7 (S197): DENOMINATOR 1135 -> 1136. One new NOTE callout, L05 5.47 - the jumper
 #   pad-geometry note in 7.3; the fact was in IMAGE 5.5a/5.5b's silkscreen and in 5.4a's
 #   ALT TEXT ONLY, so a sighted reader had no route to it. Found at the bench.
@@ -372,7 +377,7 @@ for inv in d:
         else: unk.append((inv['lesson'],c['line'],g,bg,bd,lab[:52]))
 print(f"{'FAMILY':26} BLK")
 for f,n in res.most_common(): print(f"{f:26} {n:4}")
-print(f"\nassigned {sum(res.values())} / 1136   families {len(res)}")
+print(f"\nassigned {sum(res.values())} / 1137   families {len(res)}")
 print(f"UNASSIGNED: {len(unk)}")
 for u in unk[:40]: print("   L%s %s %s [%s/%s] %s"%u)
 json.dump({'counts':res.most_common(),'unk':unk},open('/tmp/final.json','w'))

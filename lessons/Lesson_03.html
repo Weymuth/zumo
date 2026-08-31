@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.47.3 -->
+<!-- Lesson version: v03.47.4 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -831,6 +831,13 @@ To convert: <strong>Volts = Millivolts ÷ 1000</strong>
 
 <div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
 <div class="div-fs-105em">Why 5 or 10, not 1 or 2?</div> A change of 1 or 2 is usually too small to see over a short test run — the robot drifts about the same, and you waste a whole run learning nothing. Steps of 5–10 make a visible difference each time, so you close in on the right value in a few runs instead of a dozen. Once you are <em>close</em>, you can drop to steps of 2–3 to fine-tune.
+
+</div>
+
+<div class="callout-607d8b-bg-eceff1-5" data-family="NOTE" data-callout="3.121">
+
+<div class="div-fs-09em"><img src="../images/marks/sticky.svg" alt="" data-mark="sticky">NOTE</div>
+<div class="div-fs-105em">One run tells you the <em>direction</em>. It does not tell you the <em>size</em>.</div> On our bench robot, eight identical runs with TRIM at 0 curved <strong>left every single time</strong> — but how far it ended up off-centre varied by more than a factor of two from run to run, on runs that travelled the same distance to within about 1%. So the question Step 2 asks you — <em>which way did it go?</em> — is one a single run answers well. <em>How badly is it off?</em> is not. If you want a number for your notebook, run it three times and take the middle one, and expect your neighbour's robot to need a different TRIM than yours.
 
 </div>
 
@@ -3825,7 +3832,7 @@ void showSpeed();
 
 <p><strong>Whatever you measure, the correction is now pointing the wrong way.</strong> With <code>BASE_SPEED = 200</code> and <code>TRIM = 15</code>, forward you are sending <code>setSpeeds(215, 200)</code> — the weak left motor gets more. Negate both and you are sending <code>setSpeeds(-185, -200)</code>. The library takes the <em>size</em> of each number and puts the minus sign on a direction pin, so the left motor is now getting <strong>185 against 200</strong> — less than the right, when it needed more. You have not removed the correction; you have aimed it backwards.</p>
 
-<p><strong>How much that costs you depends on how big your TRIM is</strong>, and that is the part worth predicting before you run it. A mis-aimed TRIM of 15 is a 30-count error between the motors. A mis-aimed TRIM of 5 is a 10-count error — small enough that on a well-matched robot the backward run can come out <em>straighter</em> than a no-TRIM run, purely because there was not much to correct in the first place. Ours did exactly that: about 1 cm of drift over the test with the negated TRIM, against about 2.75 cm with no TRIM at all. <strong>If your result surprises you, that is the challenge working.</strong> The arithmetic above is certain; the size of the penalty on <em>your</em> robot is a measurement, not a prediction you can read off the page.</p>
+<p><strong>How much that costs you depends on how big your TRIM is</strong>, and that is the part worth predicting before you run it. A mis-aimed TRIM of 15 is a 30-count error between the motors. A mis-aimed TRIM of 5 is a 10-count error — small enough that on a well-matched robot the backward run can come out <em>straighter</em> than a no-TRIM run, purely because there was not much to correct in the first place. Ours did exactly that: about 1 cm of drift over the test with the negated TRIM, against about 2.75 cm with no TRIM at all — both of those are averages over seven or eight runs, and any single run of ours landed well either side of them. <strong>If your result surprises you, that is the challenge working.</strong> The arithmetic above is certain; the size of the penalty on <em>your</em> robot is a measurement, not a prediction you can read off the page.</p>
 
 <p>Aim the correction correctly and any TRIM-sized curve goes away. A <em>small</em> one may remain, and that part really is mechanical — gearboxes and treads are not perfectly symmetric in the two directions, which is why real rovers sometimes store a separate calibration per direction. <strong>Lesson 6 is where the code has to start caring:</strong> <code>driveDistance()</code> takes a distance that can be negative, so it is the first function that has to make one TRIM number serve both directions.</p></div>
 
