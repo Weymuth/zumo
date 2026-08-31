@@ -37,7 +37,38 @@ import os
 import re
 import sys
 
-VERSION = 'v1.2.0'
+VERSION = 'v1.3.1'
+# v1.3.1 (S197): THE SVG ARM'S OWN SCOPE LIMIT, STATED. Nine of the 105 referenced svg
+# carry NO <text> at all and are swept VACUOUSLY - all nine are spiral stars (~1 KB, two
+# paths: a polygon and one digit drawn as an outline). A digit cannot carry a claim, so
+# the zero there is correct. WHAT THIS ARM CANNOT SEE IS TEXT CONVERTED TO OUTLINES. A
+# graphic exported that way would read as textless and pass in silence, exactly as
+# L14_GRAPHIC_14-03 passed for sixteen sessions for a different reason. This is a real
+# limit and it is not closable by widening the pattern - it needs the export to keep
+# live <text>. Named here so the next session inherits the limit and not just the PASS.
+# v1.3.0 (S197): SCOPE WIDENED TO REFERENCED SVG TEXT, and it found a LIVE claim on the
+# first run. `L13-13` was closed at S181 with the note '`spoken for` is 0x book-wide'.
+# It was zero in seventeen pages and sixteen banks and NON-ZERO in
+# `L14_GRAPHIC_14-03_how_a_run_is_scored.svg`, which Lesson_14 references and the site
+# serves: 'both motor drivers are spoken for, one per tread' given as the REASON a
+# gripper is impossible - the exact reasoning S181 retired (a hobby servo brings its own
+# driver; the real barrier is THERE IS NO ARM). Sixteen sessions live, and no instrument
+# could see it, because the corpus stopped at pages and banks. THE ZERO WAS REAL AND THE
+# POPULATION WAS WRONG - which is rule 72 wearing a different coat: a claim fixed in the
+# register you swept is not fixed in the register you did not.
+# UNREFERENCED SVGs ARE DELIBERATELY EXCLUDED. `L05_GRAPHIC_5-04_for_anatomy.svg` carries
+# L05-01's retired push-up analogy and nothing points at it; convicting litter would make
+# this instrument loud about files no student can reach. It is a reason to DELETE, not to
+# fail a gate - and that deletion is DJ's ruling, not this file's.
+# v1.2.1 (S197): 24 -> 26. THE FIRST RETIREMENT EARNED BY A BENCH RUN, not by reading.
+#   L02 C2's three-screen sequence failed F10 on a real robot at S196 - the predicted order
+#   did not occur in EITHER build, and wait-IN contradicted the book outright. Registered as
+#   TWO spellings because the claim has two independently restatable halves: the observation
+#   (three screens, fixed order) and the mechanism invented for it (a second pass through
+#   loop() before a single fires). Controlled BOTH directions on the unfixed paragraph: the
+#   deleted text fires both entries, and the sentence that SURVIVED the edit fires neither.
+#   The 15 ms debounce interval is deliberately NOT retired - it is a real library property;
+#   what is retired is the claim that it forces a second pass.
 # v1.2.0 (S195): assert_true_text now reads a true_false question's `why:` in BOTH
 # directions. It previously read stem AND why only when correct is True, and NEITHER
 # when correct is False - so 134 `why:` fields across the sixteen banks (64 of them in
@@ -195,6 +226,25 @@ REGISTRY = [
     ('16.25', r'Zumo\s*32U4\s+(?!OLED)[Mm]ain\s*[Bb]oard',
      'the board named as the plain Zumo 32U4 Main Board '
      '(the fleet carries the OLED Main Board, a different Pololu product)', 'S194'),
+    # --- S197. NOT A WORKLIST ROW - the FIRST retirement earned by a BENCH RUN.
+    # --- ZUMO_FLAGGED_CHECKS F10, run on a real robot at S196: neither build produced
+    # --- the three-screen sequence L02 C2 predicted. Wait-IN, the battery screen was
+    # --- visible only while held and VANISHED on release - the case the book called
+    # --- stable - and a flash too fast to see cannot make a screen disappear and stay
+    # --- gone, so that half needs no further support. TWO SPELLINGS, because the claim
+    # --- has two halves that can be restated independently: the OBSERVATION (a fixed
+    # --- three-screen order from one press) and the MECHANISM invented to explain it
+    # --- (a debounce clock that needs a second pass through loop() to fire).
+    # --- The 15 ms debounce interval is NOT retired - it is a real library property.
+    # --- What is retired is the claim that it forces a SECOND PASS before a single
+    # --- fires. The surviving sentence - a press that begins and ends between two
+    # --- calls is never seen - does not depend on either half.
+    ('F10', r'[Oo]ne press,?\s*three screens|three screens,? in that order',
+     'one press produces three screens in a fixed order '
+     '(not observed in either build at the S196 bench)', 'S197'),
+    ('F10', r'two trips and not one|[Pp]ass two is when the time has passed',
+     'a debounced single-press needs two trips through loop() to fire '
+     '(the mechanism invented to explain a sequence that does not occur)', 'S197'),
 ]
 
 
@@ -357,9 +407,22 @@ def _controls():
         check('CONTROL G2 (live tree CLEAN under the live registry)', not f,
               '; '.join(f[:4]))
         check('CONTROL G3 (registry is non-empty)', len(REGISTRY) > 0)
-        check('CONTROL G4 (scope reached 17 pages / 16 banks)',
-              len(pages) == 17 and len(banks) == 16,
-              '%d pages, %d banks' % (len(pages), len(banks)))
+        # DERIVED, NOT PINNED. This used to assert `== 17`, and the day the corpus
+        # widened it failed on a CORRECT widening - a coverage control that has to be
+        # hand-edited every time coverage improves teaches the next session to edit it
+        # rather than to ask why it moved. The floor is now the population itself:
+        # 16 lessons + the Maker, plus every REFERENCED .svg, counted the same way
+        # live_inputs() builds them.
+        _want = len(glob.glob('lessons/Lesson_*.html')) + 1
+        _refsvg = set()
+        for _f in sorted(glob.glob('lessons/Lesson_*.html')) + ['newproject.html']:
+            _refsvg.update(os.path.basename(_m) for _m in re.findall(
+                r'(?:src|href)="([^"]+\.svg)"', open(_f, encoding='utf-8').read()))
+        _want += sum(1 for _g in glob.glob(os.path.join('images', '*.svg'))
+                     if os.path.basename(_g) in _refsvg)
+        check('CONTROL G4 (scope reached every lesson, the Maker and every referenced svg)',
+              len(pages) == _want and len(banks) == 16,
+              '%d pages (want %d), %d banks' % (len(pages), _want, len(banks)))
 
     # H: THE LIFTED notags MUST ACTUALLY STRIP. A lift that silently returned
     # the raw source, or the empty string, would make every arm above report
@@ -446,6 +509,30 @@ def live_inputs():
                 notags(open(f, encoding='utf-8').read(), comments='keep'))
         except Exception as e:                                  # noqa: BLE001
             return {}, {}, '%s could not be read (%s)' % (f, e)
+    # SVG TEXT IS PROSE THE READER READS, AND IT WAS OUTSIDE THIS SWEEP UNTIL S197.
+    # `L13-13`'s closure recorded `spoken for` as ZERO BOOK-WIDE at S181. It was zero
+    # in every page and every bank and NON-ZERO in a referenced graphic, where it stayed
+    # live for sixteen sessions. A figure is not a decoration; §10 already rules that.
+    # ONLY REFERENCED FILES ARE SWEPT: an unreferenced .svg is litter awaiting a delete
+    # ruling, and convicting litter would make this instrument loud about files no
+    # student can reach. `L05_GRAPHIC_5-04_for_anatomy.svg` is exactly that case - it
+    # carries the retired push-up analogy and NOTHING POINTS AT IT.
+    _refs = set()
+    for f in sorted(glob.glob('lessons/Lesson_*.html')) + ['newproject.html']:
+        _raw = open(f, encoding='utf-8').read()
+        _refs.update(os.path.basename(m) for m in
+                     re.findall(r'(?:src|href)="([^"]+\.svg)"', _raw))
+    for f in sorted(glob.glob(os.path.join('images', '*.svg'))):
+        if os.path.basename(f) not in _refs:
+            continue
+        try:
+            _sv = open(f, encoding='utf-8', errors='replace').read()
+            pages[os.path.basename(f)] = _html.unescape(' '.join(
+                re.sub(r'<[^>]+>', ' ', t)
+                for t in re.findall(r'<text[^>]*>(.*?)</text>', _sv, re.S)))
+        except Exception as e:                                  # noqa: BLE001
+            return {}, {}, '%s could not be read (%s)' % (f, e)
+
     banks = {}
     try:
         sys.path.insert(0, 'quizzes')

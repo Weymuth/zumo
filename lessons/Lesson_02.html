@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.26.1 -->
+<!-- Lesson version: v03.26.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -3230,9 +3230,9 @@ showBatteryScreen();
 delay(<span class="tok-b5cea8">200</span>); <span class="tok-6a9955">// Prevent rapid refresh</span>
 }</pre>
 
-<p><strong>Why the empty <code>while</code> is not a mistake.</strong> <code>isPressed()</code> asks <em>is it down right now</em>. <code>getSingleDebouncedPress()</code> asks <em>did it just go down</em> — and pressing two buttons together answers <strong>both</strong> questions. Without the <code>while</code>, hold A and B and the screen does something strange: your battery screen appears, then on the very next trip through <code>loop()</code> About and Controls flash over it, then the battery screen comes back and stays. One press, three screens, in that order.</p>
+<p><strong>Why the empty <code>while</code> is not a mistake.</strong> <code>isPressed()</code> asks <em>is it down right now</em>. <code>getSingleDebouncedPress()</code> asks <em>did it just go down</em> — and pressing two buttons together answers <strong>both</strong> questions. The <code>while</code> is what keeps those two questions from colliding: while the program is parked in it, nothing is calling <code>getSingleDebouncedPress()</code> at all. A press that begins and ends between two calls is a press the library never sees.</p>
 
-<p><strong>Why it takes two trips and not one.</strong> A debounced press is not reported the instant the button goes down — the library has to see it held steady for about 15 milliseconds first, and it only looks <em>when you call it</em>. Pass one starts the clock. Pass two is when the time has passed, so that is when both singles fire. <strong>And that is exactly why the <code>while</code> works:</strong> while the program is parked in it, nothing is calling <code>getSingleDebouncedPress()</code> at all. A press that begins and ends between two calls is a press the library never sees.</p>
+<p><strong>What you should see.</strong> Hold A and B together and the battery screen stays up for as long as you hold them. Let go and it goes away — the program leaves the <code>while</code>, and the next thing <code>loop()</code> draws replaces it. That is the behaviour to check for; if your screen flickers or never appears, the <code>while</code> is the first place to look.</p>
 
 <p>Keep this shape. From Lesson 4 on, every program you build ships a <code>checkBattery()</code> helper with exactly this loop in it — you are writing the standard version two lessons early.</p>
 

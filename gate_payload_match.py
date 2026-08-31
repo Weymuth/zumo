@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.9.5, S56 (S110: runs on stable filenames)
+PAYLOAD BYTE-MATCH GATE (Bible §11) — v1.9.6, S56 (S110: runs on stable filenames)
+v1.9.6 (S197): PAYLOAD_CENSUS re-pinned for L3/braking_test, 20 -> 31 lines (BD1, the
+missing safety countdown). ONE entry moved by hand rather than regenerating the table:
+--update-census PRINTS a replacement table and does not write one, and pasting 216 lines
+to move one pin would relicense every other drift in the same keystroke.
+NOTE FOR A FUTURE SESSION — THE CENSUS WATCHES THE PAYLOAD, NOT THE LESSON PRE. Editing
+Lesson_03's printed listing ALONE left this gate GREEN; only the payload edit fired it.
+Observed as a control this session, not theorised. The docstring below already rejects the
+symmetric predicate for good reason (lessons legitimately print code no payload carries),
+so this is a KNOWN limit and not a defect - but a lesson that gains lines its payload never
+gets will ship a listing the student cannot download.
 v1.9.2 (S182): PAYLOAD_CENSUS re-pinned for the nine-section pass. 221 entries before AND
   after - a re-pin must not change the POPULATION, and that was asserted, not assumed. Every
   moved row is accounted for: L1/c01-c11 CHANGED at the same line count (eleven EEPROM includes
@@ -286,7 +296,7 @@ PAYLOAD_CENSUS = {
     },
     "3": {
         "backwards_robot": [15, "739e80aeb51e722cda8de0bb7f0783b0"],
-        "braking_test": [20, "cf232e7b8e2bc7ec832c3c1e8fa1bf1f"],
+        "braking_test": [31, "75e32e5d815ffe23917af4fe6bc9c871"],
         "constrain": [12, "4713166f7d702e70f9a1087adf84213c"],
         "creep_mode": [26, "18eef2062159216f6c839ab7acb65b51"],
         "discovery_3_2": [9, "e28349c4a042fb5d1109c8b051b2c421"],

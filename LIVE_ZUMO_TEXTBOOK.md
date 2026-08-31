@@ -1,11 +1,133 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** August 30, 2026 (Session 196 — **THE FIRST BENCH SESSION TO DELETE PRINTED PROSE.** Two flagged rows failed against a real robot; a third passed and predicted a later measurement to 1%.)
-**Status (S196 close, Aug 30):** Bench session — first bench results to DELETE printed prose. F10 and F14 FAILED; F13 PASSED and validated F11 to 1%. F11/F12/F16-raw/F17/F18 closed, F5 half. prose_canon arm 2 BUILT (all four arms now built). Seven S184 residue pins CLOSED. svg_layout_audit CTM defect fixed. §24.22 tripwire installed. BD1/BD2 open in the Maker.
+**Date:** August 30, 2026 (Session 197 — **THE SESSION THAT SPENT THE BENCH.** S196 measured; S197 made the deletions those measurements earned, and closed BD1.)
+**Status (S197 close, Aug 30):** Bench prose spent — F10 deleted, F14 rewritten, F11's 59 cm landed twice, BD1 countdown shipped to lesson + Maker, BD2 ruled NOT the same defect. L05 jumper pad geometry wired into §7.3 (NOTE 5.47). **And a LIVE retired claim found in a referenced FIGURE after the session had closed** — `L13-13` in L14_GRAPHIC_14-03, sixteen sessions past a closure that measured it at zero across pages and banks only; `retired_claims` widened to referenced SVG text. Triple-checked, eight controls. NOT PUSHED.
 
-**Versions:** L01 v03.32.2 · L02 v03.26.1 · L03 v03.47.1 · L04 v04.29.6 · L05 v04.30.1 · L06 v04.37.3 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.28.0 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.2 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,814** · Bible **v8.193** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.71 · **book_gates v1.76.4** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.5 · build_family_map v1.6.6.6 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.33.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · prose_canon v1.4.0 · retired_claims v1.2.0 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.5 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `dbd606f`.**
+**Versions:** L01 v03.32.2 · L02 v03.26.2 · L03 v03.47.3 · L04 v04.29.6 · L05 v04.30.2 · L06 v04.37.3 · L07 v04.33.1 · L08 v04.34.4 · L09 v05.28.0 · L10 v02.30.7 · L11 v02.31.4 · L12 v01.35.4 · L13 v02.39.0 · L14 v02.36.3 · L15 v02.32.2 · L16 v02.28.1 · going_deeper v01.6.1 — census **41,841** · Bible **v8.195** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.72 · **book_gates v1.76.6** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.6 · build_family_map v1.6.6.7 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.33.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · prose_canon v1.4.0 · retired_claims v1.3.1 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.5 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `075e6ce`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
+
+## WHAT SHIPPED IN S197
+
+**Worklist tally, derived by `census.worklist()` and unmoved this session: 103 closed / 96 fixed / 2 parked / 140 open of 245.** S197 touched no worklist row — it spent the S196 bench and closed BD1.
+
+**S196 MEASURED; S197 SPENT THE MEASUREMENTS.** Three pieces of printed prose changed because a
+robot disagreed with them, and one payload changed because the bench found it unsafe to measure.
+
+**F10 — L02 §9 C2, PROSE DELETED.** The three-screen prediction and the "two trips" mechanism
+invented to explain it are OUT. What survived: the `isPressed()` / `getSingleDebouncedPress()`
+distinction (two bank questions key on it), the one mechanism sentence that holds regardless of the
+bench, and a new *What you should see* paragraph stating ONLY the wait-IN behaviour. **The wait-OUT
+half is still uncited and still wants serial timestamps.** Registered as retired claim `F10` under
+**TWO spellings** — the observation and the mechanism can be restated independently, so one pattern
+would inherit the other's blind spot. Controlled both directions: the deleted paragraph fires both
+entries, the surviving sentence fires neither. **The 15 ms debounce interval is deliberately NOT
+retired** — it is a real library property; what is retired is the claim that it forces a second pass.
+`retired_claims` **v1.2.1**, 24 → 26.
+
+**F14 — L03 §9 Bonus 2, REVEAL REWRITTEN.** The sign arithmetic stays verbatim; it is exact and
+independent of any bench. The `2x` claim is gone, replaced by the reason the bench got 0.37x: **a
+mis-aimed TRIM of 5 is a 10-count error, small enough that a well-matched robot runs straighter than
+with no TRIM at all.** Rule 72 found a second home — `L03_A19`'s `why:` said *the big reverse curve*,
+the same falsified magnitude in different words. Fixed in the same sweep.
+
+**F11 — 59 cm LANDED, TWICE.** L03 §4.4's floor requirement and the Post-it NOTE both give the number
+instead of calling the run *short*. **§5 Step 3's "too small to see over a short test run" was LEFT
+deliberately** — that sentence is about TRIM resolution, not floor space.
+
+**BD1 CLOSED / BD2 OVERRULED.** `L3/braking_test` now blinks the yellow LED five times before the
+motors start — a `countdown()` helper called from BOTH branches, LED rather than OLED so the challenge
+gains no hardware object and no vocabulary it has not met. Lesson listing and Maker payload edited
+together; census pin 20 → 31 lines; **Maker v2.72**. **BD2 `L2/speed_limit` is NOT the same defect**
+and was left alone: it takes no measurement (nothing for a press-nudge to corrupt), it is hold-to-run
+(a dead-man switch — a countdown would be a REGRESSION), and **the 400 is the defect the student is
+asked to fix**. "Should L02 run at 400 at all" is answered: yes, deliberately.
+
+**THE L05 ORPHANS WERE RULED UNUSABLE, AND THE GAP WAS SOMEWHERE ELSE.** The handoff said to wire in
+`L05_GRAPHIC_5-10_jumper_positions.svg`. Read: `5-08`/`5-09` embed the SAME photograph as the book's
+own `IMAGE 5.5a`/`5.5b` with a vendor wrapper bolted on, and the wrapper says sensors are *installed* /
+*populated* — the exact misconception §7.3 exists to kill. `5-10` says less than §7.3 already prints
+and never names DN2/DN4/LFT/RGT. **The real gap was that the three-pin geometry lived only in 5.4a's
+ALT TEXT**, invisible to a sighted reader, which is why DJ had to ask at the bench which pads to
+bridge. Fixed with prose plus **NOTE 5.47**: one group reads `DN4 · 4 · RGT`, the other `DN2 · 20 · LFT`,
+middle pad is the microcontroller pin, block bridges middle to one end — and *position, not label*
+stays the operative instruction, so `L05`'s bank question about unreadable silkscreen reads STRONGER,
+not weaker. **Four orphans remain published-but-unlinked and awaiting DJ's delete ruling.**
+
+**A GATE LIMIT, OBSERVED NOT THEORISED.** Editing `Lesson_03`'s printed listing ALONE left
+`gate_payload_match` **GREEN**; only the payload edit fired it. The census pin watches the payload,
+not the lesson `<pre>`. This is a KNOWN limit — the docstring rejects the symmetric predicate for good
+reason (lessons legitimately print code no payload carries) — but **a lesson that gains lines its
+payload never gets will ship a listing the student cannot download.** Recorded in the instrument.
+`gate_payload_match` **v1.9.6**.
+
+**ONE CALLOUT COST FIVE BASELINES.** Labels 258 → 259, image references 1,212 → 1,213, the family-map
+denominator 1,135 → 1,136 in BOTH homes, and the §27.11 digest twice. `book_gates` **v1.76.5**,
+`build_family_map` **v1.6.6.7**.
+
+**TEN BANKS TOUCHED, EVERY ONE READ BEFORE ITS PIN MOVED (rule 37).** L02/L04/L11/L13/L16 came back
+with nothing touching the changed claims; L03 and L10 had live vocabulary and were read line by line.
+Each carried a source pin AND both version homes.
+
+**AND THEN THE SESSION FOUND A LIVE ONE, AFTER IT HAD ALREADY CLOSED.** Inspecting the last
+uninspected L05 orphan turned up `L05_GRAPHIC_5-04_for_anatomy.svg` — a for-loop anatomy diagram in the
+book's own livery, carrying **`L05-01`'s retired push-up analogy**. Unreferenced, so it is litter. But
+the same probe run across every `.svg` hit a **REFERENCED** one:
+**`L14_GRAPHIC_14-03_how_a_run_is_scored.svg` carried `L13-13`, retired at S181**, whose closure note
+recorded **"`spoken for` is 0x book-wide."** It was zero in seventeen pages and sixteen banks and
+non-zero in a graphic `Lesson_14` references and the site serves. The figure gave *both motor drivers
+are spoken for, one per tread* as the reason a gripper is impossible — the exact reasoning S181
+retired. **L13 §8A.3 and the L14 BANK were both corrected in that pass and have said *there is no arm*
+ever since; the figure on the same lesson kept the old reason for sixteen sessions.** Corrected to
+mirror §8A.3. **THE ZERO WAS REAL AND THE POPULATION WAS WRONG** — rule 72 in a different coat.
+
+`retired_claims` **v1.3.0** now sweeps the text of every REFERENCED `.svg`; scope 17 → 122 pages.
+Controlled both directions on the same file: restoring the sentence makes v1.3.0 **FIRE** and leaves
+v1.2.1 **SILENT**. Unreferenced SVGs are excluded deliberately — litter no student can reach is a
+reason to DELETE, not to fail a gate. **Widening the corpus then broke two coverage checks that
+asserted EQUALITY with 17**, both of which would have failed on a correct widening; `CONTROL G4` now
+derives its floor and gate 80's is one-sided. `book_gates` **v1.76.6**, Bible **v8.195**, L14
+**v02.36.3**, three more bank pins.
+
+## THE S197 TRIPLE CHECK — SIX ARMS, THIRTEEN CONTROLS, ALL FIRE
+
+**ARM 1 — COMPILE.** The new payload is the only thing in this session no instrument could judge, so
+it was built on the pinned harness. **PASS flash=4,772 ram=182 warn=0**, 23,900 B spare. Controls: a
+seeded `ledYelow` typo **FAILS** (the arm can fail), and the PRE-FIX payload recovered from `HEAD`
+**PASSES at 4,714** — so the countdown costs a MEASURED **+58 bytes** and 0 RAM, not an assumed figure.
+
+**ARM 2 — LIVE-SITE RENDERED-TEXT DIFFERENTIAL.** An independent HTMLParser, using none of this
+suite's instruments, fetched all sixteen published lessons and diffed rendered text against the clone.
+**Thirteen untouched lessons diff to ZERO**; L02/L03/L05 show 4/34/7 lines and every one is an intended
+edit. That zero is also the blinding control's subject: a planted sentence in `Lesson_09` — a lesson
+the arm had just called IDENTICAL — **FIRES**, so IDENTICAL is a verdict and not an empty pipeline.
+
+**ARM 4 — SVG-TEXT DIFFERENTIAL, BUILT BECAUSE ARM 2 WAS BLIND TO EXACTLY THIS.** Arm 2 diffs PAGE
+text, which is the same blind spot that let `L13-13` live in a figure for sixteen sessions. Arm 4 diffs
+the text of every REFERENCED svg, live site vs clone: **105 compared, 104 identical**, the 105th being
+the fix. A planted text node in an svg it had just called identical **FIRES**.
+
+**ARM 5 — IS THE WIDENED CORPUS REAL, OR IS CLEAN FREE?** A sweep that reads empty strings reports
+CLEAN. An independent HTMLParser derives the reference set a second way (105, matching), and the arm
+asserts each entry actually carries text: **64,959 characters swept, 0 with unresolved entities.**
+**Nine entries ARE textless and all nine are spiral stars** — a polygon and one digit drawn as an
+outline, which cannot carry a claim. That set is now DECLARED BY NAME, so a newcomer fires. **The limit
+it names is real: text flattened to outlines is invisible to this sweep, and no wider pattern closes
+it.** Three controls — a dropped svg, a new textless file, unresolved entities — all FIRE.
+
+**ARM 6 — PACKAGING, AND IT CAUGHT A LIVE DEFECT.** DJ pushes the presented cards, not the repo, so a
+presented file that drifts from the tree is a silent wrong delivery. The arm found `retired_claims.py`
+presented at **v1.3.0** while the tree held **v1.3.1** — bumped after packaging. It also prices the
+handoff's own stated entry count against `git status`, because S197 stated a wrong one twice. Three
+controls, all FIRE; **control C had to be rebuilt twice** — first its own `.bak` files were the finding,
+then it fired on the byte-drift arm instead of the count arm. **A control that fires for the wrong
+reason is not a control (§16.50).**
+
+**ARM 3 — VERSION AND PIN CLOSURE BY RE-DERIVATION.** Independent of `session_versions`: 16 lessons
+with both homes agreeing, **57 source pins all matching live**, 16 banks with both version homes
+agreeing, 19 of 20 changed files carrying a moved version (`css/book.css` has no version home by
+design). Four seeded defects, one per sub-arm — desynced banner, stale pin, disagreeing bank homes,
+unbumped changed file — **all four FIRE**, and the tree verifies clean after restore.
 
 ## WHAT SHIPPED IN S196
 

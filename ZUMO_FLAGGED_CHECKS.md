@@ -1,7 +1,7 @@
 # ZUMO — FLAGGED CHECKS FOR DJ
 ### The bench sheet. Every open L01–L04 row, grouped by what you have to set up.
 
-**Flagged checks version: v1.5** — increment on every substantive edit
+**Flagged checks version: v1.5.2** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** `ZUMO_BENCH_TESTS.md` is the complete tracker — 53 rows across 15
@@ -146,11 +146,45 @@ Recorded as OBSERVED, not as interpreted. Where a claim failed, the prose it del
 | Row | Result | Numbers |
 |---|---|---|
 | **F5** | **HALF CLOSED — canon contradicted** | fresh idle **5199 mV**; under button load **5177**; after ~12 speed-400 runs plus tuning **5092**. Total sag across a hard session **107 mV (2.1%)**. Book canon is ~5400 / ~4800 / ~4200 — measured fresh is **201 mV BELOW** canon "fresh", and a hard session leaves it still **292 mV ABOVE** canon "working". **The three-band scheme does not map onto what a student will see**, and those figures appear in 34 figures across L01–L03. The genuinely tired reading remains OPEN: twelve hard runs moved the pack 2%, so the low band cannot be reached at a bench on demand. |
-| **F10** | **❌ FAILED — deletes prose** | Wait IN: battery screen visible only while held, gone on release. Wait OUT: battery screen appears and persists until next press. **Neither run showed the predicted three-screen sequence.** The wait-IN result contradicts the book outright and cannot be explained by a flash too fast to see — a fast flash cannot make a screen vanish and stay vanished. **§9 C2's "Why it takes two trips and not one" paragraph comes out.** Wait-OUT half wants a serial-timestamp confirmation rather than an eyeball before it is cited. |
-| **F11** | ✅ MEASURED | **59.4 cm** in 2000 ms at speed 200 → **29.7 cm/s**. The book only ever called this run "short"; 59.4 cm is most of a desk and the prose undersells the floor a student needs. |
+| **F10** | **❌ FAILED — PROSE DELETED S197** | Wait IN: battery screen visible only while held, gone on release. Wait OUT: battery screen appears and persists until next press. **Neither run showed the predicted three-screen sequence.** The wait-IN result contradicts the book outright and cannot be explained by a flash too fast to see — a fast flash cannot make a screen vanish and stay vanished. **§9 C2's "Why it takes two trips and not one" paragraph comes out.** Wait-OUT half wants a serial-timestamp confirmation rather than an eyeball before it is cited. |
+| **F11** | ✅ MEASURED — **LANDED S197** | **59.4 cm** in 2000 ms at speed 200 → **29.7 cm/s**. The book only ever called this run "short"; 59.4 cm is most of a desk and the prose undersells the floor a student needs. |
 | **F12** | ✅ MEASURED | TRIM **+5**, curves LEFT untrimmed, so positive TRIM is the correction — polarity canon CONFIRMED. Derived sensitivity ≈ **0.6 cm of lateral correction per TRIM unit** (from the −5 run: 7 cm at −5, 2.75 cm mean at 0). Motors are well matched; +5 is one TRIM_STEP and slightly overshoots straight. |
 | **F13** | ✅ **PASSED — and validated F11** | Slam **44.88 cm** (n=6, sd 0.17). Ramp **74.23 cm** (n=6, sd 0.73). Difference **+29.35 cm**, ranges nowhere near overlapping. Predicted from F11's own rate (20 steps × 50 ms = 1000 ms at mean speed 200 → 29.7 cm): **agreement within 1%**. Two independent tests on two programs agree, which also demonstrates motor speed is near-linear over 0–400 — asserted in the book, never shown. |
-| **F14** | **❌ FAILED — deletes prose** | Baseline forward TRIM 0, **n=8: mean 2.75 cm** left, 95% CI 2.13–3.37. Backward with TRIM +5 naively negated, **n=7: mean 1.01 cm**, 95% CI 0.49–1.53. Book predicts ~5.5 cm (2× baseline); observed **0.37×**. The wrongly-aimed TRIM did not double the error — **it left the robot straighter than having no TRIM at all**. No evidence of direction asymmetry on this robot. **§9 Bonus 2's reveal must be rewritten.** Sign-flip run (run 3) not taken: with run 1 at 1 cm it had nothing left to demonstrate. |
+| **F14** | **❌ FAILED — PROSE REWRITTEN S197** | Baseline forward TRIM 0, **n=8: mean 2.75 cm** left, 95% CI 2.13–3.37. Backward with TRIM +5 naively negated, **n=7: mean 1.01 cm**, 95% CI 0.49–1.53. Book predicts ~5.5 cm (2× baseline); observed **0.37×**. The wrongly-aimed TRIM did not double the error — **it left the robot straighter than having no TRIM at all**. No evidence of direction asymmetry on this robot. **§9 Bonus 2's reveal must be rewritten.** Sign-flip run (run 3) not taken: with run 1 at 1 cm it had nothing left to demonstrate. |
+
+> **S197 — WHAT THE BENCH ACTUALLY DELETED, AND WHAT SURVIVED.**
+> **F10.** L02 §9 C2's three-screen prediction and the two-trips mechanism invented to explain it
+> are OUT, registered as retired claim `F10` in `retired_claims.py` v1.2.1 under **two spellings** —
+> the observation and the mechanism can be restated independently. Controlled both directions: the
+> deleted paragraph fires both entries; the sentence that SURVIVED the edit fires neither. **The
+> 15 ms debounce interval is deliberately NOT retired** — it is a real library property. What is
+> retired is the claim that it forces a second pass through `loop()`. The replacement paragraph
+> states only the wait-IN behaviour, which is what was observed and needs no further support; **the
+> wait-OUT half is still uncited and still wants serial timestamps.**
+> **F14.** L03 §9 Bonus 2's reveal no longer predicts a magnitude. The sign arithmetic
+> (`setSpeeds(215,200)` → `setSpeeds(-185,-200)`) is exact and stays verbatim; the `2x` claim is
+> replaced by the measured result and by the reason it came out that way — **a mis-aimed TRIM of 5
+> is a 10-count error, small enough that a well-matched robot runs straighter than with no TRIM.**
+> `L03_A19`'s `why:` said *the big reverse curve* and was fixed in the same sweep (rule 72 — a
+> claim fixed where it was quoted is not fixed where it was repeated).
+> **F11.** 59 cm now appears in L03 §4.4 twice, replacing *the test run is short* in the floor
+> requirement and in the Post-it NOTE. **§5 Step 3's "too small to see over a short test run" was
+> deliberately LEFT** — that sentence is about TRIM resolution, not floor space, and is unaffected.
+> **BD1 CLOSED S197 / BD2 RULED NOT THE SAME DEFECT.** `L3/braking_test` now blinks the yellow LED
+> five times before the motors start — a `countdown()` helper called from BOTH the A and C branches,
+> LED rather than OLED so the challenge gains no hardware object and no vocabulary it has not met.
+> Lesson listing and Maker payload edited together; census pin moved 20 → 31 lines; Maker **v2.72**.
+> **BD2 `L2/speed_limit` was left alone deliberately, and the handoff's "identical defect" reading
+> does not survive reading the challenge.** Three reasons: (1) **it takes no measurement**, so there
+> is no reading for a press-nudge to corrupt — the nudge only matters where a distance is being
+> recorded; (2) it is **hold-to-run** (`buttonB.isPressed()`), a dead-man switch that stops the
+> instant the finger leaves, which is SAFER than countdown-then-autorun — adding a countdown would
+> be a regression; (3) the 400 is **the defect the student is asked to fix** — the whole task is
+> "cap it at 150" — so removing it removes the challenge. L02 already carries its own WARNING that
+> the tracks engage the moment the button is held. **The question "should L02 be running at 400 at
+> all" is answered: yes, deliberately, and only while a finger holds it there.**
+> **Still open from this sheet: F5 battery canon — needs DJ, a fleet fact, not a text fix.**
+
 | **F16** | ✅ RAW HALF CLOSED | Three-sensor config, raw reflectance. White L46 / C26 / R46. Tape L1164 / C692 / R1200. **~26× separation on every sensor** — §8A's premise is safe. Lifted control: L1256 / C728 / R1276, i.e. **tape reads within 8% of no-surface**, confirming matte black tape is the right material. Per-sensor offset is **multiplicative, not additive** (absolute values differ ~2×, ratios identical) — a good specimen for why calibration normalises per sensor. Calibrated 0–1000 half stays OPEN, by design, until DJ's own L04 build runs its calibration. |
 | **F17** | ✅ CLOSED | Materials present. Blocked F15/F16/F18 and the L04 learner build since **S51 — fifty-one sessions**. |
 | **F18** | ✅ CLOSED | Wave test: index order **matches physical left-to-right**, no reversal. Act Two row-1 overflow closed by arithmetic, not hardware — row 0 prints five sensors as single digits (`/101`), row 1 prints `P:` plus position; neither approaches the 21-column width. |

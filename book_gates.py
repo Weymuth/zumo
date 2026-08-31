@@ -2,7 +2,19 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.76.4'
+VERSION = 'v1.76.6'
+# v1.76.6 (S197): gate 80's page floor becomes ONE-SIDED (>= lessons + Maker) because
+#   retired_claims v1.3.0 widened its corpus to referenced SVG text. An equality floor
+#   would have failed this gate on a CORRECT widening, and the next session would have
+#   edited the gate rather than asking why the number moved. Also: the css digest moved
+#   a THIRD time this session (L14 graphic + L03 warning).
+# v1.76.5 (S197): five coverage baselines moved for ONE added callout - L05 7.3 NOTE 5.47,
+#   the jumper pad geometry. Labels 258 -> 259, image references 1,212 -> 1,213, the gate
+#   47/59 callout census 1,135 -> 1,136 in BOTH homes (comparison AND failure message,
+#   S157's lesson again), and the §27.11 digest. THE FACT WAS ALREADY ON THE PAGE - the
+#   silkscreen is legible in IMAGE 5.5a/5.5b and the three-pin group is named in 5.4a's
+#   ALT TEXT - so no gate could see the gap: nothing was missing, nothing pointed at it.
+#   Found at the S196 bench, when DJ had to ask which pads the shunt bridges.
 # v1.76.1 (S193): three pins moved for L15 5.8's back-pointer callout (15.44), each with its
 #   reason: image references 1,210 -> 1,212 (an arrow-repeat mark and a spiral_star_08),
 #   the gate 47/59 callout census 1,134 -> 1,135 in BOTH its homes (the comparison AND the
@@ -2137,12 +2149,13 @@ for f in sorted(glob.glob('lessons/Lesson_*.html')):
 # zero blocks passes). The first pins the scoped population; the second pins the hold, so a
 # held label that gets CORRECTED -- or a hold that drifts off its subject -- fails loudly
 # instead of silently certifying nothing (S128 rule 20).
+# 258 -> 259 at S197: L05 7.3 carries NOTE 5.47 (jumper pad geometry).
 # 256 -> 258 at S157: L10 Step 6b is new and carries WARNING 10.115 and NOTE 10.116.
 # Those are the only two of its four new callouts inside _SCHEME's three families -
 # the card header and the CHECKPOINT resolve to no scheme and are correctly out of
 # scope. DERIVED from _SCHEME, not read off the gate's own complaint (rule 29).
-if seen != 258:
-    bad.append(f'COVERAGE: {seen} labels inspected, expected 258 '
+if seen != 259:
+    bad.append(f'COVERAGE: {seen} labels inspected, expected 259 '
                f'(scheme and data-family must agree; blocks with no title div are gate 34s)')
 if held_seen != _S51_HELD:
     bad.append(f'COVERAGE: the \u00a75.1 hold matched {len(held_seen)} of {len(_S51_HELD)} '
@@ -2189,7 +2202,7 @@ for _page in site:
             # scope control, which seeded breaks into the non-lesson pages.
             _who = L(_page) if _page in files else _page
             bad.append(f'{_who} line {_ln}: image reference -> {_p} does not exist')
-if _seen != 1212:   # 1210 -> 1212 at S193: L15 5.8's BUILDS ON back-pointer to L08 C6 lands an arrow-repeat mark AND a spiral_star_08 (L08-15's forward pointer answered; DJ ruling S193)   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
+if _seen != 1213:   # 1212 -> 1213 at S197: L05 7.3 NOTE 5.47 lands a sticky mark   # 1210 -> 1212 at S193: L15 5.8's BUILDS ON back-pointer to L08 C6 lands an arrow-repeat mark AND a spiral_star_08 (L08-15's forward pointer answered; DJ ruling S193)   # 1208 -> 1209 at S189: L06-03's revised WARNING carries a spiral_star_05 mark (backward reinforcement to L05's combine/difference; measured 26 backward / 0 forward stars book-wide)   # 1209 -> 1208 at S188: L05 GRAPHIC 5.4 for-anatomy removed (duplicate of L04 4.6, L05-01)   # 1208 -> 1209 at S182: L02 LEARN 2.123 lands one book.svg mark                     # 1207 -> 1208 at S168: L13 Step 6b's THE GOAL callout
                                       # lands one bullseye mark.
                                       # 1201 -> 1202 at S138: GRAPHIC 4.7 lands twice in L04
                                       # (§1 and §4.1) and the borrowed L11 diagram leaves: net +1.
@@ -2225,7 +2238,7 @@ if _seen != 1212:   # 1210 -> 1212 at S193: L15 5.8's BUILDS ON back-pointer to 
                                       # L10. stars.svg in INSIGHT 10.113 (the StopReason
                                       # teaching block) plus exclamation-triangle, sticky
                                       # and check-circle in Step 6b's three new callouts.
-    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,212 — a reference '
+    bad.append(f'COVERAGE: {_seen} image references resolved, expected 1,213 — a reference '
                f'was added, removed, or written in a form this gate cannot see')
 # S102: the walk above matches IMAGE EXTENSIONS only (png|jpe?g|svg|gif|webp|ico). A download
 # link to any other extension in images/ was therefore invisible, and one rotted in the live
@@ -2642,7 +2655,7 @@ import hashlib as _hl
 #       whole diff is the header coverage count 22,985 -> 22,976 and two usage-count comments:
 #       .tok-569cd6 x2765 -> x2759 and .tok-7cbf6e x1522 -> x1520, from the nine lastPosition
 #       spans deleted across L08 and L10 under L08-06.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '978161ce4242ca58'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'cdb0a6295a6debea'
 # S193 digest move. PROVED COUNT AND RANK before the baseline was touched, per S180/S190:
 #   574 rules and 2,033 declarations at BOTH ends, ZERO names added, dropped or repointed,
 #   and every declaration block BYTE-IDENTICAL. The whole 38-line raw diff is the header
@@ -3641,8 +3654,8 @@ try:
     # callout-2196f3-bg-e3f2fd-2 are both already in canon, so gate 5.1 stays silent, and
     # build_family_map assigns it (1133/1133, UNASSIGNED 0). The id was DERIVED as max+1
     # rather than typed - my first attempt used 2.60, which callout_id caught as a COLLISION.
-    elif _n != 1135:   # 1134 -> 1135 at S193: L15 5.8 BUILDS ON callout 15.44 (L08-15 back-pointer)
-        bad.append('gate 59 saw %d callouts, expected the 1135 gate 47 holds' % _n)
+    elif _n != 1136:   # 1135 -> 1136 at S197: L05 7.3 NOTE callout 5.47 (jumper pad geometry)
+        bad.append('gate 59 saw %d callouts, expected the 1136 gate 47 holds' % _n)
 except ImportError:
     bad.append('family_tag.py is missing - the attribute has no generator')
 gate('\u00a724.14a every callout carries the family its CONTENT resolves to', bad)
@@ -5002,7 +5015,14 @@ try:
         bad.append('retired_claims could not read the tree: %s' % _err80)
     else:
         bad.extend(_rc80.sweep(_pages80, _banks80))
-        if len(_pages80) != len(files) + 1 or len(_banks80) != len(files):
+        # S197: THE FLOOR ROSE BECAUSE THE CORPUS DID. retired_claims v1.3.0 also
+        # sweeps REFERENCED SVG TEXT, after `L13-13` was found live in
+        # L14_GRAPHIC_14-03 sixteen sessions past a closure that recorded it at
+        # zero book-wide - true of pages and banks, false of the figures.
+        # The floor stays DERIVED and one-sided: pages must be AT LEAST lessons +
+        # Maker. A ceiling would fail this gate the next time a figure is wired in,
+        # which is a correct change failing a coverage check (rule 29).
+        if len(_pages80) < len(files) + 1 or len(_banks80) != len(files):
             bad.append('retired_claims scanned %d page(s) and %d bank(s) against this '
                        "suite's %d lesson(s) + Maker - a gate reading a shrunken "
                        'population passes for the wrong reason'
