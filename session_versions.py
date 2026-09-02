@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.34.0'
+VERSION = 'v1.35.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -217,6 +217,10 @@ ARTEFACTS = [
     ('Maker',                 'newproject.html',          r'Maker version: (v[\d.]+)'),
     ('going_deeper',          'going_deeper.html',        r'Going Deeper version: (v[\d.]+)'),
     ('Syllabus',              'ZUMO_Syllabus_WORKING.md', r'ZUMO_Syllabus_WORKING\.md (v[\d.]+)'),
+    # S199: the daily grid was edited this session and --currency reported it as having
+    # no version home, so nothing asserted it. Registered in the same change that edits
+    # it, which is the discipline the two S181 entries in CURRENCY_HOMES record.
+    ('DailyGrid',             'ZUMO_Teacher_Daily_Grid_F26.md', r'ZUMO_Teacher_Daily_Grid_F26\.md (v[\d.]+)'),
     ('session_versions',      'session_versions.py',      r"VERSION = '(v[\d.]+)'"),
     ('book_gates',            'book_gates.py',            r"VERSION = '(v[\d.]+)'"),
     ('lesson_inventory',      'lesson_inventory.py',      r"VERSION = '(v[\d.]+)'"),
@@ -364,7 +368,8 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"Timer {vals['Timer']} · "
             f"harness_setup {vals['harness_setup']} · "
             f"pio_harness {vals['pio_harness']} · "
-            f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · `images/marks/` **{marks}** · "
+            f"`ZUMO_Syllabus_WORKING.md` {vals['Syllabus']} · "
+            f"`ZUMO_Teacher_Daily_Grid_F26.md` {vals['DailyGrid']} · `images/marks/` **{marks}** · "
             f"`images/icons/` {icons} incl. LICENSE. **Verified by fresh clone at `{sha}`.**")
 
 
@@ -374,7 +379,8 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"Fresh-clone verified at **`{sha}`**. Census **{cen:,}**.\n"
             f"Bible **{vals['Bible']}** · `BookComponentStandard` **{vals['BookComponentStandard']}** · "
             f"Maker **{vals['Maker']}** ·\n`marks/` **{marks}** · `icons/` **{icons}** incl. LICENSE.\n"
-            f"`ZUMO_Syllabus_WORKING.md` **{vals['Syllabus']}**.\n\n"
+            f"`ZUMO_Syllabus_WORKING.md` **{vals['Syllabus']}** · "
+            f"`ZUMO_Teacher_Daily_Grid_F26.md` **{vals['DailyGrid']}**.\n\n"
             f"Instruments: `book_gates` **{vals['book_gates']}** · `lesson_inventory` "
             f"**{vals['lesson_inventory']}** ·\n`gen_component` **{vals['gen_component']}** · "
             f"`pill_sweep` **{vals['pill_sweep']}** · `gate_payload_match` **{vals['gate_payload_match']}** ·\n"
@@ -1203,6 +1209,9 @@ CURRENCY_HOMES = [
     # table could not see and which would therefore have shipped unbumped.
     (lambda r: r == 'ZUMO_FIX_TRACKER.md',
      r'^\*\*Version:\*\* (v[\d.]+)', 'Tracker'),
+    # S199: registered in the same change that edits the grid, same discipline.
+    (lambda r: r == 'ZUMO_Teacher_Daily_Grid_F26.md',
+     r'ZUMO_Teacher_Daily_Grid_F26\.md (v[\d.]+)', 'DailyGrid'),
     (lambda r: r.endswith('.py') or r.endswith('.sh'),
      r'^VERSION\s*=\s*[\'"]([^\'"]+)', 'VERSION'),
 ]

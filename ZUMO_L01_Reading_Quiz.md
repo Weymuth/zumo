@@ -5,9 +5,11 @@
 > refuses the import, build the quiz by hand from this page — the correct answer is marked **✅**.
 > **One attempt, auto-graded, 8 points.** This is a gate, not an exam.
 
-**Why these eight.** Two of them — Q7 and Q8 — cannot be answered by a student who read the lesson
-but never opened PlatformIO or plugged the robot in. That is deliberate: Assignment 1 ends with a
-program running on the robot, and the quiz has to be able to tell.
+**Why these eight.** Every one of them is answerable from the assigned reading, §1–§5, and none of
+them needs the robot. **Ruled S199: this quiz is over the reading, not the build.** Building,
+uploading and the challenges are class work — §6, §7 and §9 are Wednesday's 65 minutes, so nothing
+here draws on them. Q8 is the can't-skim question: it asks the student to trace a loop rather than
+recognise a sentence.
 
 ---
 
@@ -59,21 +61,21 @@ program running on the robot, and the quiz has to be able to tell.
 - Both run once, setup() first
 - Both run forever, alternating
 
-### 7. PlatformIO creates several folders. Which one holds the program you actually work in?
-*Source: §6 Step 1 · bank id `L01_B43` · 1 point*
+### 7. What does `#include <Zumo32U4.h>` actually do for your program?
+*Source: §5.1 · bank id `L01_B17` · 1 point*
 
-- **✅ src — main.cpp lives here**
-- include — for your own header files, empty for now
-- lib — for project-private libraries
-- .pio — the compiler's private workspace
+- **✅ It opens the Pololu library that lib_deps downloaded, pouring every Zumo command into your program**
+- It downloads the Zumo library from the internet
+- It connects your computer to the robot over USB
+- It creates the motors, display and buzzer objects
 
-### 8. Upload fails with "could not open port … Resource busy." What is holding it?
-*Source: §7.2 · bank id `L01_B48` · 1 point*
+### 8. Trace `for (int i = 0; i < 3; i++)`. How many times does the body run, and what ends it?
+*Source: §5.5 · bank id `L01_B32` · 1 point*
 
-- **✅ The Serial Monitor — only one program can use the port at a time, so stop the monitor and upload again**
-- The bootloader, which never released the port after the last upload
-- The robot's own program, which must be stopped with the reset button
-- A power-only USB cable
+- **✅ Three times; the loop ends when the counter reaches 3 and 3 < 3 is false**
+- Four times, because the counter starts at 0
+- Two times, because the counter stops one short
+- Three times; the loop ends when the counter is reset to 0
 
 ---
 
@@ -86,8 +88,12 @@ program running on the robot, and the quiz has to be able to tell.
 
 ## If you want to swap a question
 
-The full L01 bank is `quizzes/ZUMO_QUIZ_L01.yaml` — **79 questions, 60 of which cite §1–§7.**
-Keep at least one from §6 or §7 so the quiz cannot be passed without having plugged in.
+The full L01 bank is `quizzes/ZUMO_QUIZ_L01.yaml` — 79 questions, of which **40 cite §1–§5 and
+nothing else.** That is the pool. **Do not draw from §6, §7 or §9** — those are class work, not the
+assigned reading, and a question from them tests something the assignment never asked for.
+
+Three further questions mention a §1–§5 heading *and* something outside it (§8 once, the Quick
+Reference twice). They are not in the 40 and should not be swapped in without reading them first.
 
 ---
-*Generated from the L01 bank · S194 · Fall Term 2026*
+*Generated from the L01 bank · S194, rescoped to §1–§5 at S199 · Fall Term 2026*
