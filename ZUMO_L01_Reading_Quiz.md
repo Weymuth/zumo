@@ -1,3 +1,9 @@
+<!-- ZUMO_L01_Reading_Quiz.md v1.1 — S199's rescope to §1–§5. The v1.0 header lived only in
+     quizzes/ZUMO_L01_Reading_Quiz.md, which still carried the RETIRED S194 selection and was
+     deleted at S200; this is the one home. Hand-maintained, not generated: the eight ids are
+     registered in quizzes/reading_quiz.py for --check, but that tool cannot rebuild L01's
+     committed QTI package because S194's item idents were random. -->
+
 # Lesson 1 Reading Quiz — Hello, Robot!
 ### Fall 2026 · D Block · closes when class starts **Wednesday September 9, 9:50 AM**
 

@@ -51,7 +51,7 @@ usage:
 """
 import re, os, sys, glob, subprocess, tempfile, shutil
 
-VERSION = 'v1.35.0'
+VERSION = 'v1.36.0'
 
 # The handoff's STATE block opens with this line. It is EMITTED, not hand-typed - the
 # sentence inside it has claimed that since S138 while nothing produced it, so a fixture
@@ -244,6 +244,10 @@ ARTEFACTS = [
     ('build_worklist',        'build_worklist.py',           r"VERSION = '(v[\d.]+)'"),
     ('prose_canon',           'prose_canon.py',              r"VERSION = '(v[\d.]+)'"),
     ('qti_export',            'quizzes/qti_export.py',       r"VERSION = '([\d.]+)'"),
+    # S200: the ROSTER arm named this tool on its first run, unprompted, exactly as it has
+    # for every tool-adding session since S132. A tool nothing tracks can only ever have its
+    # version hand-typed (S12.6).
+    ('reading_quiz',          'quizzes/reading_quiz.py',     r"VERSION = '(v[\d.]+)'"),
     ('retired_claims',        'retired_claims.py',           r"VERSION = '(v[\d.]+)'"),
     ('census',                'census.py',           r"VERSION = '(v[\d.]+)'"),
     ('font_stack_sweep',      'font_stack_sweep.py',      r"VERSION = '(v[\d.]+)'"),
@@ -350,6 +354,7 @@ def emit_live(vals, lessons, marks, icons, cen, sha):
             f"strip_inline {vals['strip_inline']} · "
             f"build_worklist {vals['build_worklist']} · "
             f"qti_export {vals['qti_export']} · "
+            f"reading_quiz {vals['reading_quiz']} · "
             f"prose_canon {vals['prose_canon']} · "
             f"retired_claims {vals['retired_claims']} · "
             f"census {vals['census']} · "
@@ -396,6 +401,7 @@ def emit_handoff(vals, lessons, marks, icons, cen, sha):
             f"`strip_inline` **{vals['strip_inline']}** ·\n"
             f"`build_worklist` **{vals['build_worklist']}** ·\n"
             f"`qti_export` **{vals['qti_export']}** ·\n"
+            f"`reading_quiz` **{vals['reading_quiz']}** ·\n"
             f"`prose_canon` **{vals['prose_canon']}** ·\n"
             f"`retired_claims` **{vals['retired_claims']}** ·\n"
             f"`census` **{vals['census']}** ·\n"
@@ -1212,6 +1218,19 @@ CURRENCY_HOMES = [
     # S199: registered in the same change that edits the grid, same discipline.
     (lambda r: r == 'ZUMO_Teacher_Daily_Grid_F26.md',
      r'ZUMO_Teacher_Daily_Grid_F26\.md (v[\d.]+)', 'DailyGrid'),
+    # S200: the talking-points script is the same class of file as the grid - year layer,
+    # carries dates and a roster size - and S199 registered the grid while leaving its
+    # sibling unasserted. ONE PREDICATE COVERS THE WHOLE FAMILY rather than one entry per
+    # week block, because a per-file entry is a registration that has to be remembered
+    # every time the family grows, and the thing that gets forgotten is the registration.
+    (lambda r: r.startswith('ZUMO_TALKING_POINTS_F26_') and r.endswith('.md'),
+     r'ZUMO_TALKING_POINTS_F26_[\w.-]+\.md (v[\d.]+)', 'TalkingPoints'),
+    # S200: the keyed reading-quiz pages. L01's version home lived ONLY in a second copy
+    # under quizzes/ that still carried the RETIRED S194 selection; S199 edited the root
+    # copy, which had no home at all, so nothing asserted the file five students would be
+    # graded against. Same family predicate, same reason as above.
+    (lambda r: re.match(r'^ZUMO_L\d\d_Reading_Quiz\.md$', r) is not None,
+     r'ZUMO_L\d\d_Reading_Quiz\.md (v[\d.]+)', 'ReadingQuiz'),
     (lambda r: r.endswith('.py') or r.endswith('.sh'),
      r'^VERSION\s*=\s*[\'"]([^\'"]+)', 'VERSION'),
 ]
