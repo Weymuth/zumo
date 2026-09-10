@@ -2,7 +2,25 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.76.7'
+VERSION = 'v1.77.1'
+# v1.77.1 (S201): TWO BASELINES MOVE FOR ONE STAGED FILE. L13_IMAGE_13-01_the_rescue_space.svg
+# was drawn this session and is in images/ but is NOT wired (see LIVE.md - build_css oscillates
+# when .div-999 drops to one usage). An unreferenced true-vector .svg still counts, so 179 -> 180,
+# and regenerating the stylesheet after the wire/un-wire moved the digest with rules and
+# declarations HELD at 574/2,033 - the benign pair again.
+# v1.77.0 (S201): §25.6 GAINS A TEXT ARM - the skeleton arm could not see a reworded
+# credits line; a control proved it. Also: THE CREDITS ANCHOR FOLLOWS THE RULING. DJ ruled the book's title
+# (Sense, Decide, Act), its imprint (RoboLore) and its copyright holder (DJ Weymuth), so
+# the footer line the §25.6 arm anchors on changed in all 18 homes and the arm fired on
+# 17 of them - which is the gate working, not a defect. The anchor now names the COPYRIGHT
+# HOLDER rather than the imprint, because that is the part of the line an accidental edit
+# is least likely to preserve. The IDENTICAL-ACROSS-17 comparison is untouched: this arm
+# still fails if any one lesson's footer diverges from the other sixteen.
+# v1.76.8 (S201): CSS BASELINE MOVED FOR THE BENIGN REASON. L09 gained a §7.1a heading and
+# a four-column table built entirely from EXISTING classes, so book.css came back at the same
+# 574 rules / 2,033 declarations with zero rules born, died or altered - the whole textual
+# diff is the usage census (.td-b-white 239 -> 251, .h3-c-00474b 93 -> 94) and the ordering
+# that census drives. Digest moved, counts held: that pair is what makes it benign.
 # v1.76.7 (S198): GATE 81's WORKLIST SCOPE GAINS THE TRAILING COLOPHON. The ledger
 #   boundary was drawn to keep GPT's verbatim Part 2 prose out and also excluded the
 #   file's own closing line, which stated the closed figure a FOURTH time with nothing
@@ -1131,7 +1149,7 @@ def _skel(block):
     return hashlib.md5(re.sub(r'>[^<]*<', '><', block).encode()).hexdigest()[:8]
 
 
-heroes, footers, bad = {}, {}, []
+heroes, footers, credits, bad = {}, {}, {}, []
 for f in PAGES:
     s2 = R[f]
     lab = 'GOING DEEPER' if f == 'going_deeper.html' else 'LESSON ' + L(f)
@@ -1153,13 +1171,27 @@ for f in PAGES:
         if en > vpos:
             break
     heroes.setdefault(_skel(s2[st:en]), []).append(f)
-    i = _find_any(s2, '&copy; 2026 RoboLore', '© 2026 RoboLore')
+    i = _find_any(s2, '&copy; 2026 DJ Weymuth', '© 2026 DJ Weymuth')
     if i < 0:
         bad.append(f'{f}: footer missing the credits line')
         continue
     a = s2.rfind('<p', 0, i)
     b = s2.find('</p>', i) + 4
     footers.setdefault(_skel(s2[a:b]), []).append(f)
+    # S201 TEXT ARM. _skel() compares MARKUP, so the arm above passed a control that
+    # reworded the credits line in ONE lesson only - the gate's name said 'identical'
+    # and its predicate said 'same shape' (rule 44). The credits line is now a ruled
+    # string in 18 homes (title, imprint, copyright holder), so its TEXT is asserted
+    # here, tags stripped and whitespace collapsed - SCOPED FROM THE COPYRIGHT SYMBOL to
+    # the close of the block, because the same <p> also carries the lesson name and
+    # subtitle, which legitimately differ (the first cut of this arm reported all 17 as
+    # distinct, which was the scope wrong, not the book). The ruled BOOK TITLE is asserted
+    # separately by presence, since it sits above the copyright in the same block. The
+    # anchor arm is left exactly as it was.
+    if 'Sense, Decide, Act &bull; Zumo 32U4 Robotics' not in s2[a:b] and \
+       'Sense, Decide, Act • Zumo 32U4 Robotics' not in s2[a:b]:
+        bad.append(f'{f}: colophon missing the ruled book title')
+    credits.setdefault(' '.join(re.sub(r'<[^>]+>', ' ', s2[i:b]).split()), []).append(f)
     # S89: the BUILD BANNER and 'ZUMO Callout Standard v1.0 Applied' assertions were
     # removed here. The banner was a hidden third version home that the §5b gate was
     # miscounting as visible. The callout-standard string named no document that existed
@@ -1167,6 +1199,8 @@ for f in PAGES:
     # Its successor is BookComponentStandard.md at the repo root.
 if len(heroes) > 1:
     bad.append(f'hero skeletons differ: { {k: [L(x) for x in v] for k, v in heroes.items()} }')
+if len(credits) > 1:
+    bad.append(f'credits text differs: { {k: [L(x) for x in v] for k, v in credits.items()} }')
 if len(footers) > 1:
     bad.append(f'footer skeletons differ: { {k: [L(x) for x in v] for k, v in footers.items()} }')
 gate('§25.6 header/footer identical across all 17', bad)
@@ -2417,8 +2451,8 @@ for _f in _svgs:                              # same population gate 37 walked, 
 # population empties and every check above passes vacuously. Both numbers are STATED, not
 # inherited, and both are expected to move when a graphic is added or removed — bump them
 # in the same edit, the way gate 36's reference count is maintained.
-if len(_vec) != 179:
-    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 179 — a file was '
+if len(_vec) != 180:
+    bad.append(f'COVERAGE: {len(_vec)} true-vector .svg walked, expected 180 — a file was '
                f'added, removed, or now carries a raster (which moves it to gate 37)')
 _ngraphic = sum(1 for _f in _vec if 'GRAPHIC_' in os.path.basename(_f))
 if _ngraphic != 67:
@@ -2663,7 +2697,7 @@ import hashlib as _hl
 #       whole diff is the header coverage count 22,985 -> 22,976 and two usage-count comments:
 #       .tok-569cd6 x2765 -> x2759 and .tok-7cbf6e x1522 -> x1520, from the nine lastPosition
 #       spans deleted across L08 and L10 under L08-06.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '9e2ed45ddad643dc'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'b6f1893c3722fe35'
 #   digest cdb0a629 -> 9e2ed45d at S198: L03 NOTE 3.121 adds one callout, so three usage
 #   COUNTS in the generated comments move (23,001 -> 23,004 inline attributes; div-fs-105em
 #   806 -> 807; div-fs-09em 156 -> 157). RULES AND DECLARATIONS ARE UNMOVED at 574/2,033 -

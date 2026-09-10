@@ -1,4 +1,4 @@
-<!-- Lesson version: v05.28.0 -->
+<!-- Lesson version: v05.30.0 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,8 +76,8 @@
 <div class="div-fs-095em">LESSON 09</div>
 <h1 class="h1">Intersections &amp; Dead Ends</h1>
 <div class="div-fs-11em">Teaching Your Robot to Decide</div>
-<div class="div-fs-1em">Zumo 32U4 Robotics • PlatformIO Edition</div>
-<div class="div-fs-09em-2">Version 05.28 — August 2026</div>
+<div class="div-fs-1em">Sense, Decide, Act • Zumo 32U4 Robotics • PlatformIO Edition</div>
+<div class="div-fs-09em-2">Version 05.30 — September 2026</div>
 </div>
 
 <!-- ===================== PART 1: THEORY & CONCEPTS ===================== -->
@@ -134,7 +134,7 @@
 <div class="div-2e86ab-4">
     <h4 class="h4-c-1f2a3d-2">By the end of this lesson, you will be able to:</h4>
     <ul class="ul-ls-none-3">
-<li>☐ Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own tape</li>
+<li>☐ Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own markers</li>
 <li>☐ Identify an intersection from which outer sensors see green</li>
 <li>☐ Execute precise left, right, and 180° turns as one-line wrappers on Lesson 6’s <code>turnDegrees()</code></li>
 <li>☐ Define an <strong>enum</strong> and say why it beats a magic number</li>
@@ -168,7 +168,7 @@
 
 <div class="callout-2196f3-bg-e3f2fd" data-family="LEARN" data-callout="9.6">
     <div class="div-c-0d47a1"><img src="../images/marks/book.svg" alt="" data-mark="book">Why Green Works</div>
-    <p>The line sensors measure <strong>infrared reflectance</strong>, not color — they cannot see green at all. What makes this work is that the green tape most schools buy reflects <em>some</em> of the IR and absorbs the rest, landing it between white and black on the calibrated scale. On the fleet tape that is roughly <strong>300–700</strong>, but that is a starting guess, not a property of the color green. Section 7’s Green Survey is where you find out what <em>your</em> tape does.</p>
+    <p>The line sensors measure <strong>infrared reflectance</strong>, not color — they cannot see green at all. What makes this work is that a green marker is pigment, not just color: it reflects <em>some</em> of the IR and absorbs the rest, landing between white and black on the calibrated scale. The <strong>300–700</strong> band you will find in <code>RobotConfig.h</code> is a starting guess, not a property of the color green — and not a measurement of <em>your</em> markers. Section 7’s Green Survey is where you find out what they actually do.</p>
 </div>
 
 <table class="table-bc-collapse-2">
@@ -337,8 +337,9 @@ enum IntersectionType {
     <ul>
         <li>Completed Lesson 8 project (P-control line following)</li>
         <li>Zumo 32U4 robot with line sensor array</li>
-        <li>Test course with black line on white surface</li>
-        <li><strong>Green tape or paper for intersection markers</strong></li>
+        <li>A course tile with at least one intersection — or a straight tile you place markers on</li>
+        <li><strong>Green intersection markers — the 25 mm competition squares</strong></li>
+        <li><strong>Two or three other green things</strong> — a green marker on paper, a sticky note, a folder — for the Green Survey in Section 7</li>
         <li>USB cable for uploading code</li>
     </ul>
 </div>
@@ -349,18 +350,22 @@ enum IntersectionType {
 
 <table class="table-bc-collapse-2">
     <tr><th class="th-bg-352405">Material</th><th class="th-bg-352405">Purpose</th><th class="th-bg-352405">Notes</th></tr>
-    <tr><td class="td-b-white">White poster board</td><td class="td-b-white">Course surface</td><td class="td-b-white">Matte finish works best</td></tr>
-    <tr><td class="td-b-white">Black electrical tape (3/4")</td><td class="td-b-white">Line path</td><td class="td-b-white">Same as Lesson 8</td></tr>
-    <tr class="tr-bg-e8f5e9"><td class="td-bb-1pxsolid"><strong>Green tape or paper</strong></td><td class="td-bb-1pxsolid">Intersection markers</td><td class="td-bb-1pxsolid">~1" squares beside the line</td></tr>
+    <tr><td class="td-b-white">Course tile</td><td class="td-b-white">Surface and line together</td><td class="td-b-white">Same tiles as Lesson 8 — the white and the black arrive already made</td></tr>
+    <tr class="tr-bg-e8f5e9"><td class="td-bb-1pxsolid"><strong>Green markers, 25 mm square</strong></td><td class="td-bb-1pxsolid">Intersection markers</td><td class="td-bb-1pxsolid">Placed beside the line, just before the intersection — the competition size</td></tr>
+    <tr><td class="td-b-white">Two or three other greens</td><td class="td-b-white">The Green Survey only</td><td class="td-b-white">A marker on paper, a sticky note, a folder — <strong>never</strong> the markers themselves</td></tr>
 </table>
 
 <div class="callout-6b8e6b-bg-f0f7f0-2" data-family="TIP" data-callout="9.20">
     <div class="div-c-3a5a3a-2"><img src="../images/marks/lightbulb.svg" alt="" data-mark="lightbulb">TIP</div>
-    <div class="div-c-3a5a3a">Green Color Matters</div>
-    <p>Not all greens are created equal, and you cannot tell by looking — your eye is judging visible color and the sensor is measuring infrared. Bright "safety green" and "lime green" tapes have worked well here; dark forest greens have tended to read close to black. Treat that as where to start shopping, not as a rule: the Green Survey in Section 7 is the only thing that settles it for your tape.</p>
+    <div class="div-c-3a5a3a">The Rulebook Cannot Tell Your Robot What Green Is</div>
+    <p>RoboCupJunior Rescue Line specifies the marker exactly: <strong>green, 25 mm × 25 mm, placed just before the intersection</strong> (rules §3.6). Read that again and notice what it does <em>not</em> say. It gives a size, and it gives a word your <em>eye</em> understands. It says nothing about infrared — and infrared is the only thing your sensors can measure.</p>
+    <p>So two markers that both satisfy the rule, both unmistakably green to you, can land in completely different places on the calibrated scale. That is not a loophole; it is the gap between how a rule is written and how a robot reads the world. It is also why the venue you compete at will not hand you your own marker.</p>
+    <p>That is what the other greens are for. In Section 7 you will survey your competition markers <em>and</em> a green marker on paper, side by side. Predict now, before you measure: your eye calls them the same color. Will the sensor?</p>
 </div>
 
 <h3 class="h3-c-433014">4.2 Simple Test Course Layout</h3>
+
+<p>Lay the tile flat and use the line already on it. All you are adding is the green.</p>
 
 <ul>
     <li><strong>Straight section</strong> — At least 12 inches to start</li>
@@ -458,7 +463,7 @@ enum IntersectionType {
 
 <details data-reveal="quiz"><summary>1. Name the three bands on the calibrated scale, and which surface sits in each. (§3.1)</summary>
 
-<div class="div-mt-12px"><p>White reflects most of the infrared, so it reads low — under about 200. Black absorbs it and reads high — over about 800. Green absorbs some and reflects the rest, which lands it in the middle, roughly 300–700. Treat all three as approximate until you survey your own tape in Section 7: the bands are the idea, the numbers are yours.</p></div>
+<div class="div-mt-12px"><p>White reflects most of the infrared, so it reads low — under about 200. Black absorbs it and reads high — over about 800. Green absorbs some and reflects the rest, which lands it in the middle, roughly 300–700. Treat all three as approximate until you survey your own markers in Section 7: the bands are the idea, the numbers are yours.</p></div>
 
 </details>
 
@@ -521,7 +526,7 @@ enum IntersectionType {
 <ul class="p-mb-0">
 <li>VS Code with PlatformIO, Zumo connected via USB</li>
 <li>Your finished Lesson 8 project (or the Maker's Step 1 preload)</li>
-<li>A line course with at least one T-junction and <strong>green tape markers</strong> (Section 4's course works)</li>
+<li>A line course with at least one T-junction and <strong>green markers</strong> (Section 4's course works)</li>
 </ul>
 </div>
 
@@ -1198,7 +1203,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
 
 <h3 class="h3-c-433014">Step 9 — Course Day: The Green Survey and the Full Run</h3>
 
-<p>The code is done; now make the <em>numbers</em> yours. The 300–700 green band in RobotConfig.h is a starting guess — your tape, your lighting, your sensors will disagree. The Green Survey measures your own tape with a five-line temporary block, then you bake those numbers into your constants.</p>
+<p>The code is done; now make the <em>numbers</em> yours. The 300–700 green band in RobotConfig.h is a starting guess — your markers, your lighting, your sensors will disagree. The Green Survey measures your own markers with a five-line temporary block, then you bake those numbers into your constants.</p>
 
 <div class="callout-ff8c00-bg-ffe4cc" data-family="TRY THIS" data-callout="9.57">
     <div class="div-fs-105em">📝 THE GREEN SURVEY</div>
@@ -1215,7 +1220,7 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
       display.print(F(<span class="tok-ce9178">"   "</span>));</pre><ol start="2" class="p-mb-0">
 <li>Upload. A → <strong>B calibrate on your course</strong> (white floor + black line — calibration defines the scale the survey reads in).</li>
 <li>While STOPPED, the bottom row shows live calibrated values from the two outer sensors. Take each surface — <strong>white</strong>, <strong>green</strong>, then <strong>black</strong> — and <strong>slide it slowly through underneath while you watch the numbers move</strong>, sampling different spots along it and at a slight angle. Write down the <strong>lowest and the highest</strong> you see for each. That is a range, not a reading, and it goes in Section 10's Calibration Data Record.</li>
-<li>Expect white near 0 and black near 1000. Green lands somewhere between — <em>your</em> range is the only one that matters, and left and right may differ slightly. <strong>Why sweep instead of taking one reading?</strong> Holding the tape still measures the <em>sensor</em>, which barely moves. Sliding it measures the <em>tape</em> — which part passes under, at what angle, under your lighting — and that is what the robot actually meets at speed.</li>
+<li>Expect white near 0 and black near 1000. Green lands somewhere between — <em>your</em> range is the only one that matters, and left and right may differ slightly. <strong>Why sweep instead of taking one reading?</strong> Holding the marker still measures the <em>sensor</em>, which barely moves. Sliding it measures the <em>marker</em> — which part passes under, at what angle, under your lighting — and that is what the robot actually meets at speed.</li>
 <li>Now put each threshold <strong>in the middle of a gap</strong>. <code>GREEN_LOW_THRESHOLD</code> = halfway between your <em>highest white</em> and your <em>lowest green</em>. <code>GREEN_HIGH_THRESHOLD</code> = halfway between your <em>highest green</em> and your <em>lowest black</em>. A midpoint between two numbers you measured cannot land outside them, so a threshold placed this way cannot stray into white or black.</li>
 <li><strong>Delete the temporary block</strong>, rebuild, re-upload. Survey done.</li>
 </ol>
@@ -1262,10 +1267,25 @@ IntersectionType pendingTurn = NO_INTERSECTION;  <span class="tok-7cbf6e">// The
     <tr><th class="th-bg-00393d">Surface</th><th class="th-bg-00393d">Calibrated reading should be…</th><th class="th-bg-00393d">Red flag</th></tr>
     <tr><td class="td-b-white"><strong>White</strong> (course floor)</td><td class="td-b-white">Near 0 — low double digits are normal across the whole sweep</td><td class="td-b-white">Your <em>highest</em> white above ~150: recalibrate; the spin may have missed true white</td></tr>
     <tr><td class="td-b-white"><strong>Black</strong> (the line)</td><td class="td-b-white">Near 1000 across the whole sweep</td><td class="td-b-white">Your <em>lowest</em> black below ~850: recalibrate on the course you’ll actually run</td></tr>
-    <tr><td class="td-b-white"><strong>Green</strong> (the markers)</td><td class="td-b-white">A band somewhere between — <em>your</em> range is the only one that matters, and left / right may differ slightly</td><td class="td-b-white">Green's highest reaching black's lowest: there is no gap to put a threshold in, and no value of <code>GREEN_HIGH_THRESHOLD</code> will fix it — different green tape beats threshold heroics</td></tr>
+    <tr><td class="td-b-white"><strong>Green</strong> (the markers)</td><td class="td-b-white">A band somewhere between — <em>your</em> range is the only one that matters, and left / right may differ slightly</td><td class="td-b-white">Green's highest reaching black's lowest: there is no gap to put a threshold in, and no value of <code>GREEN_HIGH_THRESHOLD</code> will fix it — a different green beats threshold heroics</td></tr>
 </table>
 
 <p>Then confirm your constants sit in the gaps: <code>GREEN_LOW_THRESHOLD</code> halfway between your highest white and your lowest green, <code>GREEN_HIGH_THRESHOLD</code> halfway between your highest green and your lowest black. <strong>Measure the gaps before you trust them.</strong> Green's top to black's bottom of a few hundred is comfortable; a gap of twenty is a marker that will be read as line the first time the lighting changes. Record everything in Section 10’s Calibration Data Record — competition-day you will thank homework-day you.</p>
+
+<h3 class="h3-c-00474b">7.1a The Other Greens</h3>
+
+<p>Now run the same sweep on the other green things you brought — the marker on paper, the sticky note, whatever else. Same robot, same calibration, same technique. One extra row each:</p>
+
+<table class="table-bc-collapse-2">
+    <tr><th class="th-bg-00393d">What it is</th><th class="th-bg-00393d">Lowest</th><th class="th-bg-00393d">Highest</th><th class="th-bg-00393d">Inside your green band?</th></tr>
+    <tr><td class="td-b-white">Your competition marker</td><td class="td-b-white">______</td><td class="td-b-white">______</td><td class="td-b-white">______</td></tr>
+    <tr><td class="td-b-white">Green marker on paper</td><td class="td-b-white">______</td><td class="td-b-white">______</td><td class="td-b-white">______</td></tr>
+    <tr><td class="td-b-white">Another green of your choosing</td><td class="td-b-white">______</td><td class="td-b-white">______</td><td class="td-b-white">______</td></tr>
+</table>
+
+<p>Your eye put every row in the same category. Your robot did not. Whatever the numbers turn out to be, write down <em>why</em> before you look them up: the sensor never measured color, so what it measured instead is the only thing that can explain the spread.</p>
+
+<p>This is not a detour. The rules give you a size and a word (§3.6); they do not give you a reflectance. At a competition you will run on somebody else's markers, cut from somebody else's material, under somebody else's lights — and the only reason that is survivable is that you know how to survey a green in five minutes instead of hoping.</p>
 
 <h3 class="h3-c-00474b">7.2 Intersection Test Sequence</h3>
 
@@ -1678,7 +1698,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 </div>
 <div class="div-bg-f8f9fa">
 <h4 class="h4-c-7a5905-2">🎯 THE GOAL</h4>
-<p>Solve an <em>unmarked</em> maze — no green anywhere — with the right-hand rule: at every crossing take the right; when the line dies, treat it as a dead end and turn around. Run it on a taped maze and watch it emerge.</p>
+<p>Solve an <em>unmarked</em> maze — no green anywhere — with the right-hand rule: at every crossing take the right; when the line dies, treat it as a dead end and turn around. Run it on a maze of tiles and watch it emerge.</p>
 </div>
 <div class="div-bg-f3e5f5">
 <h4 class="h4-c-7a5905-2">🧠 THE LOGIC (Pseudocode)</h4>
@@ -1819,7 +1839,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 <p>These are the seven objectives this lesson opened with, in Section 2 — the same list, now asked back. Tap each one you can honestly claim. All seven unlock the button.</p>
 
     <ul class="ul-ls-none-2">
-        <li data-bc-skill="1" class="li-c-pointer">☐ Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own tape</li>
+        <li data-bc-skill="1" class="li-c-pointer">☐ Explain why green reads mid-band on a <em>calibrated</em> sensor, and survey the band on your own markers</li>
         <li data-bc-skill="2" class="li-c-pointer">☐ Identify an intersection from which outer sensors see green</li>
         <li data-bc-skill="3" class="li-c-pointer">☐ Execute precise left, right, and 180° turns as one-line wrappers on Lesson 6’s <code>turnDegrees()</code></li>
         <li data-bc-skill="4" class="li-c-pointer">☐ Define an <strong>enum</strong> and say why it beats a magic number</li>
@@ -1839,7 +1859,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
 
 <details data-reveal="quiz"><summary>1. Why do green markers show mid-range sensor values? (§3.1)</summary>
 
-<div class="div-mt-12px"><p>Green absorbs some of the infrared and reflects the rest, so it lands between the two extremes. On the calibrated 0–1000 scale (0 = your white, 1000 = your black): <strong>white reads low (under ~200)</strong>, <strong>black reads high (over ~800)</strong>, and green sits in the middle band — roughly 300–700, though the only number that matters is the one <em>you</em> survey on <em>your</em> tape.</p></div>
+<div class="div-mt-12px"><p>Green absorbs some of the infrared and reflects the rest, so it lands between the two extremes. On the calibrated 0–1000 scale (0 = your white, 1000 = your black): <strong>white reads low (under ~200)</strong>, <strong>black reads high (over ~800)</strong>, and green sits in the middle band — roughly 300–700, though the only number that matters is the one <em>you</em> survey on <em>your</em> markers.</p></div>
 
 </details>
 
@@ -1883,7 +1903,7 @@ driveDistance(____);   <span class="tok-7cbf6e">// center the wheels on the junc
     <tr><td class="td-b-white">Green sweep — left [0] / right [4]</td><td class="td-999"></td><td class="td-999"></td><td class="td-b-white">a band between — yours</td></tr>
     <tr><td class="td-b-white">Black sweep — left [0] / right [4]</td><td class="td-999"></td><td class="td-999"></td><td class="td-b-white">near 1000</td></tr>
     <tr><td class="td-b-white"><strong>Gap:</strong> highest white → lowest green</td><td class="td-999" colspan="2"></td><td class="td-b-white">bigger is safer</td></tr>
-    <tr><td class="td-b-white"><strong>Gap:</strong> highest green → lowest black</td><td class="td-999" colspan="2"></td><td class="td-b-white">no gap = change the tape</td></tr>
+    <tr><td class="td-b-white"><strong>Gap:</strong> highest green → lowest black</td><td class="td-999" colspan="2"></td><td class="td-b-white">no gap = change the green</td></tr>
     <tr><td class="td-b-white"><code>GREEN_LOW_THRESHOLD</code> (midpoint of the first gap)</td><td class="td-999" colspan="2"></td><td class="td-b-white">300 default</td></tr>
     <tr><td class="td-b-white"><code>GREEN_HIGH_THRESHOLD</code> (midpoint of the second gap)</td><td class="td-999" colspan="2"></td><td class="td-b-white">700 default</td></tr>
     <tr><td class="td-b-white"><code>TRACK_WIDTH_MM</code> (carried from Lesson 7)</td><td class="td-999" colspan="2"></td><td class="td-b-white">98.0 start</td></tr>
@@ -2031,8 +2051,8 @@ counted on encoders - a tired battery slows the turn, it does not shorten it</pr
 <p class="p-c-666">
     <strong>LESSON 09 · Intersections & Dead Ends</strong><br>
     Teaching Your Robot to Decide<br>
-    Zumo 32U4 Robotics • PlatformIO Edition<br>
-    © 2026 RoboLore · Written and compiled by DJ Weymuth and Claude AI
+    Sense, Decide, Act • Zumo 32U4 Robotics • PlatformIO Edition<br>
+    © 2026 DJ Weymuth · RoboLore · Written and compiled with Claude AI
 </p>
 
 <!-- ===== BRAIN CHECK COLUMN START (do not edit inside; single block, §25.10) ===== -->

@@ -1,8 +1,8 @@
 # GPT graphics work list (generated)
 
-Work list session: S200 · `build_worklist.py v1.2` · `svg_layout_audit v1.23`
+Work list session: S201 · `build_worklist.py v1.2` · `svg_layout_audit v1.23`
 
-**36 files** needing a human, from an audit of all SVGs in `images/`.
+**37 files** needing a human, from an audit of all SVGs in `images/`.
 Worst-first by how far text runs outside its panel.
 
 **Do not hand-edit — regenerate.** Any list built against an audit below v1.18 was
@@ -15,7 +15,7 @@ and `fit_raster_svg`. They are listed at the end so the backlog stays visible.
 Send one file at a time. Attach the SVG, paste its block, bring the result back before
 moving on.
 
-12 of these 36 have text outside a panel; the rest are structural.
+12 of these 37 have text outside a panel; the rest are structural.
 
 ## L07_GRAPHIC_7-04_how_files_connect.svg
 *worst overflow: 105 units*
@@ -187,6 +187,10 @@ moving on.
 ## L13_GRAPHIC_13-03_the_line_was_doing_three_jobs.svg
 
 - photograph is 360x342 but its box renders about 943 CSS px wide (box 1200 of a 1400 viewBox at a 1100 px column) = 0.38x - under the 2x floor. Needs a source at least 1885 px wide.
+
+## L13_IMAGE_13-01_the_rescue_space.svg
+
+- 1 rotated/skewed <text> NOT checked for overflow or collision - this tool measures horizontal extent only. Eyeball them.
 
 ---
 

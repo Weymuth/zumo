@@ -1,7 +1,7 @@
 # ZUMO — BENCH TEST TRACKER
 ### Everything in this book that only a robot and a floor can settle · one file, by lesson
 
-**Bench tracker version: v1.5** — increment on every substantive edit
+**Bench tracker version: v1.5.1** — increment on every substantive edit
 (moderate change → `v1.x`; minor → `v1.x.y`). The version lives ONLY in this line.
 
 > **WHY THIS FILE EXISTS.** No instrument in this repo can see a floor. `book_gates` reads
@@ -174,7 +174,7 @@ of it.** Ten findings closed, none of them bench-verified.
 
 | # | What to check | Where | Status | Result |
 |---|---|---|---|---|
-| L09-B1 | **Q017 — the green-tape six numbers.** Carried since S41. The single oldest open bench item in the project. | §7 | OPEN | |
+| L09-B1 | **Q017 — the green six numbers, WIDENED at S201.** Carried since S41; the single oldest open bench item in the project. It is no longer six numbers. The fleet green is now the RCJ 25 mm competition marker (DJ ruling S201), and §7.1a adds a second and third green — a marker on paper, one other — surveyed the same way. Report low/high for white, black, the competition marker, and each comparison green, plus both gaps. **The comparison rows are the lesson's discovery**, so a null result (all greens read alike) is a finding that changes §7.1a, not a failed test. | §7, §7.1a | OPEN | |
 
 ---
 

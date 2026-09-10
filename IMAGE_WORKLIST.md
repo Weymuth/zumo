@@ -19,7 +19,7 @@ A figure is PLANNED when a lesson prints its tag and LANDED when an `<img>` in t
 | L06 | VIDEO 6.1 | video |
 | L08 | VIDEO 8.1 | video |
 | L12 | IMAGE 12.1 | no asset |
-| L13 | IMAGE 13.1 | no asset |
+| L13 | IMAGE 13.1 | on disk, unwired: L13_IMAGE_13-01_the_rescue_space.svg |
 | L13 | IMAGE 13.2 | no asset |
 | L14 | IMAGE 14.1 | no asset |
 | L15 | GRAPHIC 15.4 | no asset |
@@ -27,7 +27,7 @@ A figure is PLANNED when a lesson prints its tag and LANDED when an `<img>` in t
 
 ## Unreferenced files in `images/`
 
-31 file(s) on disk that no page points at. Not a defect by itself - staging is legitimate - but every one is either future work or litter.
+32 file(s) on disk that no page points at. Not a defect by itself - staging is legitimate - but every one is either future work or litter.
 
 - `BrainGear_Complete.png`
 - `ChatGPT Image Jul 21, 2026, 08_10_56 PM.png`
@@ -44,6 +44,7 @@ A figure is PLANNED when a lesson prints its tag and LANDED when an `<img>` in t
 - `L05_GRAPHIC_5-08_three_sensor_array.svg`
 - `L05_GRAPHIC_5-09_five_sensor_array.svg`
 - `L05_GRAPHIC_5-10_jumper_positions.svg`
+- `L13_IMAGE_13-01_the_rescue_space.svg`
 - `Line_Rescue_Field_Ariel.jpeg`
 - `Mercersburg_Academy_Robotics.svg`
 - `Mercersburg_Academy_Robotics_dark.svg`

@@ -14,7 +14,7 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.198** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.198** — see the changelog below; this line no longer inlines the newest entry, because a duplicated entry is a second home nobody maintains (S194).
+**Bible version: v8.200** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.200** — see the changelog below; this line no longer inlines the newest entry, because a duplicated entry is a second home nobody maintains (S194).
 
 ### 27.13 The stylesheet must regenerate from the lessons, and that is the guard a repaint cannot spend (S106)
 
@@ -94,6 +94,10 @@ artefact it guards.
 built the artefact cannot be the instrument that guards it.** Both halves were true of gate 41
 (§27) and are true again here. Every future consolidation should be read this way before it
 ships, not after. Lesson bytes 2,582,947 → **2,569,059**. Census unchanged 39,994; visible text identical in all twenty pages. All 16 lessons minor-bumped.) Prior: **v8.93** (v8.93, S105, moderate — **§27.9 NEW: THE HOLD RELEASED. ZERO INLINE STYLES BOOK-WIDE.** The four byte-exact-across-lesson block types (§6.5a strip 320 · §25.6 hero 96 + footer 16 · §6.8 PART dividers 192) converted in one pass. The book now carries **25,036 classes and no `style=""` attribute at all**. Released by measurement: the 624 attributes carry only **16 distinct strings**, each appearing an exact multiple of 16 (proof of book-wide uniformity), and **all 16 round-trip byte-exact** through the stylesheet — only true because §27.8c fixed declaration order and §27.8d fixed colon spacing. `strip_inline` **v1.1** adds `--include-held`, gated on a `roundtrips()` precondition that REFUSES and names offenders; CONTROL I proves both directions. Lesson bytes 2,638,947 → **2,582,947**. Census unchanged 39,994. All 16 lessons minor-bumped.) Prior: **v8.92.1** (**v8.92.1, S105, minor — §27.8d: DJ ruled ONE colon spelling for the generated stylesheet; spaced, which is 98% of the source and the only one the gates accept (unspaced broke five). Lessons byte-unchanged. `build_css` v1.2.1.** Prior entry: v8.92, S105, moderate — **§27.8 NEW: THE MIGRATION COMPLETES ITS SWEEP.** All 16 lessons converted: **24,412** inline attributes to classes against a 664-rule `css/book.css`, **624 held** (39 per lesson, every lesson) — 24,412 + 624 = **25,036**, the §27 census exactly. Zero unmapped, zero dead classes, 41/41 gates. Render identity proved by construction AND independently: 25,036 styled elements compared in document order, declaration sets identical, visible text identical bar one `<link>` per lesson. Census 39,979 → **39,994**. Lesson bytes 3,534,934 → **2,638,947**, 25% smaller. **Three ways a widened build bites, all measured:** (a) widening `SOURCES` renamed 57 of L01's 167 classes and **46 kept their spelling while changing meaning** — invisible to gate 41, so every converted lesson must be re-stripped whenever `SOURCES` changes; (b) `expand_classes` reads the stylesheet from disk and leaves an unresolvable class in place, so regenerating before restoring strands 74 L01 elements permanently — the order **restore → regenerate → apply** is forced; (c) `canon()` sorts while §4.5/§6.8/§25.6 assert authored order, which broke a whole class of gates at once and revealed a **fifth** held block type the S104 hold list missed (the §4.5 bonus banner) — fixed in the generator via `build_css.preferred()`, not by holding blocks until the gates went green. **`strip_inline.py` v1.0 NEW**, eight controls, the tool S104 did not commit; `build_css` v1.2; `session_versions` v1.14.1 after its own CONTROL A was found seeding a literal version string that expired on a bump. All 16 lessons minor-bumped.) Prior: **v8.91** (v8.91, S104, moderate — **§27.7 NEW: THE MIGRATION BEGINS, AND ONE LESSON PRICED IT.** L01 converted end to end: 1,111 of 1,150 inline attributes became classes, 39 held because three constructs are compared byte-exact across lessons (§6.5a strip, §25.6 header/footer, §6.8 PART dividers). **One stylesheet, not sixteen** — 689 distinct declaration strings, 92.5% of instances shared across lessons. **`lesson_inventory.expand_classes()`** so six CSS-reading gates keep working whatever a file's conversion state; **gate 41** because a mistyped class makes an element INVISIBLE where a mistyped inline style only made it wrong — proved by dropping L01's callout census 83→82 with all 40 gates green. Render identity asserted by construction, not inspection. Also S104: **L15's three figures retyped IMAGE→GRAPHIC** (§10 separate number spaces — the tag contradicted its own filename), and a book-wide sweep proved L15 was the entire class. **`image_audit.py` v1.1 NEW** replaces the hand-maintained `IMAGE_SHOT_LIST.md`: 20 outstanding of 145 planned. Its two false findings are recorded in the tool — a cross-lesson tag keyed to the wrong lesson, and ten "type mismatches" that were legitimate separate-number-space figures, killed by reading. **Five L07 figures built** from GCC diagnostics reproduced in the sandbox, clearing L07. `book_gates` v1.35.1 (41 gates), `lesson_inventory` v1.2.0, `build_css` v1.1, `image_audit` v1.1, `session_versions` v1.14, `site_parity` v1.1. L01 **v03.15.2** · L07 **v04.16.0** · L15 **v02.11.2**.) Prior: **v8.90** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+
+v8.200, S201, minor — **CLOSED BOOK FOR THE GRADED QUIZ, OPEN NOTE FOR THE UNGRADED CHECK (§25.3b NEW).** DJ ruled it; it restores the split §25.3 has carried since S70 and that **S195 overwrote in `ZUMO_Syllabus_WORKING.md` alone**, leaving the student-facing document promising the opposite of canon for two weeks. **A ruling recorded in one home is a ruling the other home will contradict.** The quiz is unproctored and taken at home, so the syllabus states the rule and rests it on the honesty section rather than implying enforcement that does not exist. Syllabus **v1.6**, `syllabus.html` regenerated. **§25.3 also corrected on two stale facts:** it no longer says the quizzes do not exist (sixteen banks exist, three built, L01 imported), and its **20% is the CATEGORY weight, which never contradicted the syllabus** — S200 and S201 both carried it as a defect without re-deriving it.
+
+v8.199, S201, moderate — **THE BOOK IS NAMED, CREDITED AND COPYRIGHTED (§3.2 NEW), AND THREE COURSE-SCOPE RULINGS LAND WITH IT.** DJ ruled the title *Sense, Decide, Act*, the imprint RoboLore and the copyright holder DJ Weymuth; the Claude credit moved out of the ownership claim to `with Claude AI`, because a © line names a rights holder and an AI is not one. **34 title sites across 17 files and 18 copyright sites across 18** — a slot the first answer missed entirely by reading `<title>` and `<h1>` and reporting *no title*. *Mastering C++ and the Pololu Zumo Robot* was rejected on measurement: the book's code carries **zero `std::`, templates, classes, `virtual`, `try` or dynamic allocation**, so the title would have been a false claim (§24.6), and a RoboLore-credited title leading with another company's trademark implies an affiliation that does not exist. **§25.6's anchor moved and a control then found the gate weaker than its name** — its comparison ran through `_skel()`, so a reworded credits line in ONE lesson did not fire it (rule 44); `book_gates` **v1.77.0** adds a text arm, whose own first cut was mis-scoped in the opposite direction. **ALSO S201, all DJ-ruled and all course scope:** the classroom uses **course TILES**, so L04 §4.3 stops having students build a poster-board surface and starts having them choose and check one (poster board 7 → 0 in L04), L08's track line follows, and L09's green markers become the **RCJ §3.6 25 mm competition squares** — which turned the old *not all greens are equal* shopping tip into **§7.1a**, a survey of the competition marker against a green marker on paper, because **the rulebook gives a size and a word your eye understands and says nothing about infrared**. `ZUMO_BENCH_TESTS.md` v1.5.1 widens Q017 accordingly — the oldest open bench row in the project, carried since S41. **And a `git checkout` used to restore a control specimen discarded a lesson's uncommitted session work: restore from the byte backup, never from HEAD.**
 
 v8.198, S200, minor — **THE READING QUIZ DRAWS FROM §1–§5 AND THE RULE IS NOW A REFUSAL (§25.3a NEW).** S199's class-model ruling made the assignment §1–§5 and made building, practice and challenges class work; the consequence for the quiz was never written down, and S199 had already paid for that once — L01's Canvas quiz keyed two of eight items to §6 and §7, **a quarter of the points unanswerable by a student who did exactly what was asked.** S200 measured the same defect sitting unshipped in the next two pools: **45 of L03's 61 `before` questions are in scope and 29 of L04's 51** — the remainder reach into §6, §8, §8A or §9. Nothing was broken yet, which is precisely the window in which a rule that lives only in a sentence gets forgotten. **`quizzes/reading_quiz.py` v1.0 holds each selection as an explicit list of bank ids and refuses to build one that names an out-of-scope id**; the test is on the WHOLE cite, so `§5.4, §6 Step 7` is a §6 question wearing a §5 hat. **It refused its own author on its first run.** Two further findings are recorded in §25.3a: a keyed quiz page existed TWICE under the same filename at two paths, the stale copy still naming the retired questions in the present tense and still ordering the reader to keep one from §6 or §7 — **a name that resolves twice is two files**, and `retired_claims` could not see it because a loose markdown file is in no instrument's population. And **an already-imported QTI package cannot be rebuilt unless its idents are derived**: L01's were random, so it is registered for `--check` only. Zero lesson edits, zero payloads, zero bytes of the book.
 
@@ -5246,7 +5250,7 @@ DJ ruled **four constructs**, each with one job.
 
 ### 25.3 THE READING QUIZ (Canvas)
 
-The flipped design gates build time on a pre-class Canvas quiz — short, auto-graded, **one attempt**, opens before class and locks at the bell, worth 20%. It is a **soft gate**: fail it and you re-read and retake, you are never locked out of the course. **The quizzes do not exist yet** (Bible line 733 read *quiz feature deferred*); the Mental Knowledge Check is their source.
+The flipped design gates build time on a pre-class Canvas quiz — short, auto-graded, **one attempt**, opens before class and locks at the bell, worth **20% as a category** (each individual quiz is roughly 1% of the final grade — the two figures agree and neither contradicts the syllabus; S200 and S201 both filed the 20% as a defect and it never was one). It is a **soft gate**: fail it and you re-read and retake, you are never locked out of the course. **Sixteen banks exist**; L01, L03 and L04 are built and carry QTI packages, and L01 is imported to Canvas (S201 — the line that read *the quizzes do not exist yet* was true when it was written and stayed on the page for months after it stopped being true).
 
 **DESIGN RULE — EASY IF YOU READ, HARD IF YOU DIDN'T (DJ, S70).** Every quiz item must be answerable from **a single stated fact in the prose**, and must name the § it came from. Retrieval, not inference. If answering needs the robot in hand or a chain of reasoning, it belongs in the Knowledge Check or the Reflection, not the quiz.
 
@@ -5258,6 +5262,38 @@ The flipped design gates build time on a pre-class Canvas quiz — short, auto-g
      (answer: setup() once at power-on/reset; loop() forever afterward) -->
 ```
 Costs nothing now, harvestable by script later. **Book first, Canvas after** (DJ ruling) — § numbers move while the book is under construction, and a quiz item that names its § would be authored against a moving target.
+
+### 25.3b CLOSED BOOK IS THE GRADED QUIZ; OPEN NOTE IS THE UNGRADED CHECK (v8.200 — NEW, S201)
+
+**RULED BY DJ, S201: the reading quiz is CLOSED BOOK. The Post-Build Check is OPEN NOTE.** That is
+the whole rule, and it restores the split §25.3 has carried since S70.
+
+**IT WAS OVERWRITTEN ONCE, IN ONE FILE, AND SURVIVED TWO WEEKS.** S195 declared the reading quiz
+open book / open notes in `ZUMO_Syllabus_WORKING.md` and **did not edit the Bible**, which went on
+saying CLOSED BOOK. For two weeks the student-facing document promised the opposite of canon, in
+the document students actually read. **A ruling recorded in one home is a ruling that will be
+contradicted by the other.** S200 spotted the disagreement and correctly refused to resolve it
+alone (§24.17 — grading and course scope are DJ's); one ruling closed it.
+
+**THE REASONING IS THE SAME ONE THAT BUILT THE ITEM PAIRS.** Open book means they look it up
+instead of reading the night before, which is exactly the behaviour the gate exists to prevent —
+and it is why each item ships as a rehearsal in the lesson plus a variant in Canvas. Open book
+would have made the pairing pointless work.
+
+**AND IT CANNOT BE PROCTORED, SO THE SYLLABUS SAYS SO.** The quiz is taken at home in Canvas. There
+is no invigilation and there is no plausible technical enforcement, so the syllabus states the rule
+plainly and rests it on the same word the Academic Honesty section already asks for, rather than
+implying a check that does not exist. **A rule a student can silently break is still worth stating;
+a rule that pretends to be enforced is not.**
+
+**THE OPEN-NOTE HALF IS NOT A CONCESSION.** The Post-Build Check is ungraded, unlimited attempts,
+and exists so a milestone is not where a gap gets discovered. Notes open is the point of it. The
+two quizzes now differ on every axis — graded/ungraded, one attempt/unlimited, before/after, closed
+book/open note — which is what makes them teachable as different instruments rather than two quizzes.
+
+`ZUMO_Syllabus_WORKING.md` **v1.6** carries it in three places: the prose section, the grade table
+row and the Post-Build Check section. `syllabus.html` regenerated.
+
 
 ### 25.3a THE READING QUIZ DRAWS FROM THE ASSIGNED READING ONLY (v8.198 — NEW, S200)
 
@@ -5296,14 +5332,71 @@ idents — a second quiz in Canvas, not the same one. Idents are now a hash of (
 zip timestamps are pinned, so a rebuild is byte-identical. **L01 is registered for `--check` coverage
 only and is deliberately not rebuildable.**
 
-**UNRESOLVED, FLAGGED RATHER THAN REWRITTEN — §25.3 ABOVE CONTAINS THREE CLAIMS THAT NO LONGER MATCH
-THE COURSE (NEEDS DJ).** It says *the quizzes do not exist yet* (sixteen banks exist and L01 is
-imported to Canvas); it says **CLOSED BOOK**, against which the working model is open book and notes;
-and it prices the quizzes at **20%**, against a per-quiz weight nearer 1%. Two of the three are
-grading and course-scope decisions and are DJ's under §24.17, so S200 did not touch them. **A rule
-written next to a contradiction is a rule that will be read wrongly** — this flag exists so the
-contradiction is not inherited silently.
+**RESOLVED AT S201 — THE THREE CLAIMS S200 FLAGGED HERE WENT THREE DIFFERENT WAYS. See §25.3b.**
+*The quizzes do not exist yet* was **stale** and §25.3 is corrected. **CLOSED BOOK was right all
+along** — DJ re-ruled it, and it was `ZUMO_Syllabus_WORKING.md` that had drifted, since S195
+declared open book there and never edited this file. And the **20% was never a contradiction at
+all**: it is the CATEGORY weight, and the syllabus grade table says the same 20%, with "about 1%"
+being the per-quiz share of the final grade. **S200 filed it as a defect, S201 carried it forward,
+and S201's own handoff repeated it — three documents, no re-derivation.** A figure that has been
+restated is not thereby confirmed.
 
+**THE FLAG ITSELF IS THE LESSON HERE.** It was correct and useful when written, and it sat two
+paragraphs above the entry that resolved it, still asserting *the working model is open book* after
+that had been reversed. **A flag outlives its resolution unless the resolution edits it** — so
+retiring the flag is part of resolving the thing it flags, not a tidy-up afterwards.
+
+
+### 3.2 THE BOOK HAS A TITLE, AN IMPRINT AND A COPYRIGHT HOLDER (v8.199 — NEW, S201)
+
+**RULED BY DJ, S201: the book is _Sense, Decide, Act_, the imprint is RoboLore, and the copyright
+holder is DJ Weymuth.** The credits line reads `© 2026 DJ Weymuth · RoboLore · Written and compiled
+with Claude AI`, and the colophon line above it reads `Sense, Decide, Act • Zumo 32U4 Robotics •
+PlatformIO Edition`.
+
+**THE CLAUDE CREDIT MOVED OUT OF THE OWNERSHIP CLAIM ON PURPOSE.** The prior line read *by DJ
+Weymuth and Claude AI* directly after the © symbol. A copyright line names a rights holder, and an
+AI is not one; `with Claude AI` keeps the authorship honest without making a claim that is not
+true. The imprint sits after the holder for the same reason — **there is no registered entity**, so
+RoboLore is an imprint, never a `LLC` or `Inc`.
+
+**THE BOOK ALREADY HAD A TITLE SLOT AND THE FIRST ANSWER MISSED IT.** Asked what the book was
+called, the first pass read `<title>` and `<h1>` and reported *no title*. There is a title slot in
+every lesson masthead and colophon — it read `Zumo 32U4 Robotics • PlatformIO Edition` — **34 sites
+across 17 files**, invisible to a search that looks only where a title conventionally lives. **Look
+for the SLOT, not the tag.**
+
+**THE PHRASE HAD TO BE VACATED BEFORE IT COULD BE PROMOTED.** *Sense, Decide, Act* was L01's `<h1>`.
+A book title that is also one chapter's heading reads as that chapter's property, so L01's heading is
+now `Hello, Robot!`, matching its own `<title>` as ten of the sixteen lessons already do. **Promoting
+a phrase means taking it from wherever it was.**
+
+**REJECTED, AND WHY IT MATTERS MORE THAN TASTE.** The first proposal was *Mastering C++ and the
+Pololu Zumo Robot*. Measured across all sixteen lessons' code: **zero `std::`, zero templates, zero
+class definitions, zero `virtual`, zero `try`/`catch`, zero dynamic allocation** — the 29 hits for
+`new` are the English word in comments. The book teaches functions, types, control flow, arrays,
+`enum`, `static`, `const` and multi-file headers on an 8-bit AVR with 2,560 B of RAM. That is the
+right curriculum and *Mastering C++* is not a true description of it. **A TITLE IS A CLAIM AND IS
+SUBJECT TO §24.6.** Separately, leading a RoboLore-credited title with another company's trademark
+implies an affiliation that does not exist; the hardware belongs in the subtitle, where it is plainly
+descriptive.
+
+**§25.6's ANCHOR MOVED AND THE CONTROL FOUND THE GATE WEAKER THAN ITS NAME.** The arm anchored on
+`© 2026 RoboLore` and fired on 17 files the moment the ruling landed, which is the gate working. It
+now anchors on the **copyright holder** rather than the imprint — the part of the line an accidental
+edit is least likely to preserve. **But the control run exposed a real hole:** rewording the credits
+in ONE lesson did **not** fire it, because the comparison ran through `_skel()`, which compares
+MARKUP. The gate's name said *identical*; its predicate said *same shape* (rule 44). `book_gates`
+**v1.77.0** adds a TEXT arm over the credits line and a presence check for the ruled book title.
+**AND THE NEW ARM'S FIRST CUT WAS WRONG IN THE OTHER DIRECTION** — scoped to the whole colophon
+block, it reported all 17 as distinct, because that block also carries each lesson's own name and
+subtitle, which legitimately differ. Rescoped from the © symbol to the close of the block. Both arms
+control-run both ways, clean tree green at both ends.
+
+**A `git checkout` IS NOT A RESTORE ON A TREE WITH UNCOMMITTED WORK.** Restoring a control specimen
+with `git checkout -- lessons/Lesson_11.html` reverted the file to HEAD and silently discarded that
+lesson's title, copyright and version edits. The suite read 80/82 and named the right file. **Restore
+from the byte backup taken before the injection, never from HEAD.**
 
 ### 25.4 WARM-UPS AND THE SPIRAL
 
