@@ -1,11 +1,74 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** September 2, 2026 (Session 201 — **THE SESSION THE BOOK GOT A NAME, AND A CONTROL FOUND THE GATE GUARDING ITS CREDITS WAS WEAKER THAN ITS OWN NAME.**)
-**Status (S201 close, Sep 2):** S200's fourteen-entry batch is PUSHED and verified at `cff7475` — **the fourth consecutive session whose handoff opened "NOTHING IS PUSHED" and was wrong by the time it was read.** **DJ ruled the book's identity:** title *Sense, Decide, Act*, imprint **RoboLore**, copyright **DJ Weymuth** — landed across **34 title sites in 17 files and 18 copyright sites in 18**, with L01's `<h1>` vacated to *Hello, Robot!*. **Three course-scope rulings also landed:** the classroom uses **course tiles** (L04 §4.3 rewritten, poster board 7 → 0; L08's track line follows) and L09's markers are the **RCJ §3.6 25 mm competition green**, which turned the old shopping tip into **§7.1a**, a survey of the competition marker against a green marker on paper. `book_gates` **v1.77.0** — §25.6's anchor moved to the copyright holder, and a control proved its comparison ran through `_skel()` and could not see a reworded credits line (rule 44); a text arm now covers it, control-run both ways. Bible **v8.199** (§3.2 NEW), `GPT_WORKLIST.md` regenerated, `ZUMO_BENCH_TESTS.md` **v1.5.1** (Q017 widened). All 82 gates pass, 16 banks valid, 0 unbumped, site_parity twice.
+**Date:** September 15, 2026 (Session 202 — **THE SESSION THE TUTOR GOT A DOOR, AND THE STYLESHEET PROVED A PARITY ARM COMPARES COUNTS AND NOT BYTES.**)
+**Status (S202 close, Sep 15):** S201's 48-entry batch is PUSHED and verified at `4b20953` — the handoff's own warning was wrong in the usual direction. **S202's batch is NOT yet pushed: count the diff, do not trust this line.** All 16 lessons carry a **TUTOR** pill in the §6.5a strip; `tutor/tutor.html` carries a back-link to the book and is now **registered in `session_versions`**. 82/82 gates, 16 banks valid, all selftests pass.
 
-**Versions:** L01 v03.33.0 · L02 v03.27.0 · L03 v03.48.0 · L04 v04.31.0 · L05 v04.31.0 · L06 v04.38.0 · L07 v04.34.0 · L08 v04.35.0 · L09 v05.30.0 · L10 v02.31.0 · L11 v02.32.0 · L12 v01.36.0 · L13 v02.40.0 · L14 v02.37.0 · L15 v02.33.0 · L16 v02.29.0 · going_deeper v01.7.0 — census **41,869** · Bible **v8.200** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.72 · **book_gates v1.77.1** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.6 · build_family_map v1.6.6.8 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.36.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · reading_quiz v1.0 · prose_canon v1.4.0 · retired_claims v1.3.1 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.6 · `ZUMO_Teacher_Daily_Grid_F26.md` v2.1 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `cff7475`.**
+**Versions:** L01 v03.33.1 · L02 v03.27.1 · L03 v03.48.2 · L04 v04.31.1 · L05 v04.31.1 · L06 v04.38.1 · L07 v04.34.1 · L08 v04.35.1 · L09 v05.30.1 · L10 v02.31.1 · L11 v02.32.1 · L12 v01.36.1 · L13 v02.40.1 · L14 v02.37.1 · L15 v02.33.1 · L16 v02.29.1 · going_deeper v01.7.0 — census **41,870** · Bible **v8.201** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.72 · **book_gates v1.77.3** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.6 · build_family_map v1.6.6.8 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.37.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · reading_quiz v1.0 · prose_canon v1.4.0 · retired_claims v1.3.1 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · AI Tutor v1.1.1 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.6 · `ZUMO_Teacher_Daily_Grid_F26.md` v2.1 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4b20953`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
+
+## WHAT SHIPPED IN S202
+
+**THE §6.5a STRIP GAINS A TUTOR PILL — ALL SIXTEEN LESSONS.** DJ ruled a link to the AI Tutor from
+every lesson and a link back to the book from the tutor. `TUTOR` sits between `DEEPER` and the ⌂ home
+square, pointing at `../tutor/tutor.html`, on the v8.53 DEEPER precedent. It **reuses
+`link-bc-rgba2552`**, which is the whole reason the stylesheet move was benign.
+
+**THE CSS MOVE WAS PROVED BEFORE THE BASELINE WAS TOUCHED.** 574 rules / 2,033 declarations at both
+ends, **zero rules born, died or altered**, every declaration block byte-identical. The entire 19-line
+`book.css` diff is the header census 23,022 → 23,038 — **+16, exactly one link per lesson** — plus ONE
+rank swap, `.link-bc-rgba2552` rising ×288 → ×304 and passing `.tok-4ec9b6` at ×302. §27.8b's
+restore → regenerate → apply cycle was **NOT** owed. `book_gates` **v1.77.2**.
+
+**THE STRIP GATE WAS CONTROL-RUN BOTH WAYS.** Hand-varying one lesson's `title=` fired **§6.5a AND
+§3.1b** (a drifted strip means the next-pointer titles cannot be derived). Restored **from a byte copy
+taken before the injection, not `git checkout`** — S201's lesson, applied.
+
+**`tutor/tutor.html` IS NOW A TRACKED ARTEFACT.** Registered in `session_versions` at **v1.1.1**, and
+`tutor/` was removed from that tool's selftest scratch-copy exclusions — an artefact you track cannot be
+one you hide from your own controls. **CONTROL G CAUGHT THE HALF-DONE JOB:** registering it without
+adding it to BOTH emitted blocks left it tracked but invisible to `--live` and `--handoff`, and the
+selftest said so before anything shipped. `session_versions` **v1.37.0**.
+
+**ALL 16 LESSONS MINOR-BUMPED, ALL 16 BANKS REPINNED AND BUMPED.** Every pin was READ and asserted
+against its expected prior value before it was written (rule 37). A repinned bank is an unbumped edit
+(S201) — both bank homes moved, the comment and the `bank_version` field.
+
+**L03 §5.4 WAS UNFOLLOWABLE AND THE ROOM FOUND IT BEFORE ANY INSTRUMENT COULD.** DJ reported the
+Section 5 pseudo-code as unclear. §5 contains no pseudo-code — the defect was arithmetic. §5.4 said
+*"you'll write four helper functions"*, listed four rows, then said "all five" twice and printed five
+prototypes. `printInstructions()` appeared **exactly once in all of §5**, as a bare name inside the
+block that calls itself *"the whole of it"*, where the other four appeared twice each. The finished
+program has **five** helpers. Row added, count corrected, and the block's ORDER corrected to match the
+built file (it led with `runMotorTest()`; the real file ends with it) — asserted by extracting both
+and comparing, not by eye. **L03 v03.48.2**, four banks repinned (L03, L04, L11, L13).
+
+**NO INSTRUMENT CAN SEE THIS DEFECT CLASS.** A lesson that states a count and then lists the items has
+two homes for one figure, and nothing in this repo checks them against each other. §24.24 does exactly
+this for the worklist tally. The same shape applied to a lesson's own enumerations is unbuilt.
+
+**THE COUNT/ENUMERATION GATE: PROBED, NOT BUILT, REVISIT ON MORE EXAMPLES (DJ ruling).** Broad shape —
+a stated count must equal the items listed after it — priced **226 claims and flagged 156**, and the
+three strongest candidates all hand-checked CLEAN (L07 *"Eight organized files"* over five bullets is
+**correct**: three bullets name `.h`/`.cpp` pairs; L04's four bullets are a procedure, not the three
+things; L12's five-row table is header plus spacer). Unusable at that rate, and §16.44 already says so.
+Narrow shape — every name in a §5 prototype block introduced elsewhere in §5 — is clean and would have
+caught `printInstructions()`, but its population is **8 prototypes in one lesson**, and a gate that
+scans almost nothing passes for the wrong reason. **DJ ruled: add it later if more examples turn up.**
+The trigger is a second and third real instance, which moves the population argument; nothing else.
+Probe script deliberately not committed. **L07's eight-over-five is CORRECT — do not "fix" it.**
+
+**MEASURED, NOT FIXED — `site_parity` COMPARES BYTE COUNTS, NOT BYTES.** The regenerated `book.css` is
+**84,994 bytes at both ends**, because a rank swap moves a block and the census digits are equal-width.
+Parity printed PARITY on a stylesheet whose content had changed. A second S181-class scope limit in the
+same instrument, recorded so it is not rediscovered.
+
+**WORKLIST TALLY — derived by `census.worklist()`, unmoved: 103 closed / 96 fixed / 2 parked /
+140 open of 245.** S202 touched no worklist row.
+
+**OWED AT CLOSE:** the outgoing **S203 handoff** is not written, so `session_versions --check` still
+reports disagreements against `ZUMO_S202_HANDOFF.md` — that is the INCOMING handoff and it is read by
+S203. Expected, not drift.
 
 ## WHAT SHIPPED IN S201
 

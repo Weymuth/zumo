@@ -2,7 +2,7 @@
 # book_gates.py — whole-book consistency gates.
 # VERSION below is the ONE home, and it sits ABOVE the changelog so a plain grep of this
 # file lands on the live version, not on a changelog line (S98).
-VERSION = 'v1.77.1'
+VERSION = 'v1.77.3'
 # v1.77.1 (S201): TWO BASELINES MOVE FOR ONE STAGED FILE. L13_IMAGE_13-01_the_rescue_space.svg
 # was drawn this session and is in images/ but is NOT wired (see LIVE.md - build_css oscillates
 # when .div-999 drops to one usage). An unreferenced true-vector .svg still counts, so 179 -> 180,
@@ -2697,7 +2697,19 @@ import hashlib as _hl
 #       whole diff is the header coverage count 22,985 -> 22,976 and two usage-count comments:
 #       .tok-569cd6 x2765 -> x2759 and .tok-7cbf6e x1522 -> x1520, from the nine lastPosition
 #       spans deleted across L08 and L10 under L08-06.
-CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, 'b6f1893c3722fe35'
+CSS_RULES, CSS_DECLS, CSS_DIGEST = 574, 2033, '75cbd52391a95870'
+#   digest 041559e8 -> 75cbd523 at S202, SECOND move, same session and a smaller cause.
+#   L03 §5.4 gains the printInstructions() row it had been missing. PROVED before the baseline
+#   moved: 574/2,033 both ends, ZERO born, died or altered, and the whole diff is TWO count
+#   comments - header census 23,038 -> 23,040 and .td-ddd-2 ×792 -> ×794, which is exactly the
+#   two <td> cells the new row adds. Not even a rank moved this time.
+#   digest b6f18937 -> 041559e8 at S202: the LESSON STRIP gains a TUTOR link in all sixteen
+#   lessons. PROVED COUNT AND RANK before the baseline moved: 574 rules and 2,033 declarations
+#   BOTH ENDS, ZERO rules born, died or altered, every declaration block byte-identical. The
+#   whole 19-line diff is the header census 23,022 -> 23,038 (+16, exactly one link per lesson)
+#   and ONE rank swap - .link-bc-rgba2552 rises x288 -> x304 and passes .tok-4ec9b6 at x302.
+#   The link reuses an EXISTING class, which is why no rule could be born. §27.8b's cycle is
+#   NOT owed - its danger is a name that disappears or repoints, and zero names did either.
 #   digest cdb0a629 -> 9e2ed45d at S198: L03 NOTE 3.121 adds one callout, so three usage
 #   COUNTS in the generated comments move (23,001 -> 23,004 inline attributes; div-fs-105em
 #   806 -> 807; div-fs-09em 156 -> 157). RULES AND DECLARATIONS ARE UNMOVED at 574/2,033 -

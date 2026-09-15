@@ -1,4 +1,4 @@
-<!-- Lesson version: v03.48.0 -->
+<!-- Lesson version: v03.48.2 -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -72,7 +72,7 @@
         <a href="Lesson_14.html" title="Competition Prep" class="link-bc-rgba2552">14</a>
         <a href="Lesson_15.html" title="Advanced PID Control" class="link-bc-rgba2552">15</a>
         <a href="Lesson_16.html" title="Engineering Showcase" class="link-bc-rgba2552">16</a>
-        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">⌂</a>
+        <a href="../going_deeper.html" title="Going Deeper &mdash; optional extras" class="link-bc-rgba2552">DEEPER</a> <a href="../tutor/tutor.html" title="AI Tutor &mdash; stuck? ask it" class="link-bc-rgba2552">TUTOR</a> <a href="../index.html" title="Textbook home" class="link-bc-rgba2552">⌂</a>
     </div>
     <script>
     (function() {
@@ -1386,7 +1386,7 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 
 <h3 class="h3-c-433014">5.4 Function Reference</h3>
 
-<p>You'll write four helper functions plus <code>setup()</code> and <code>loop()</code>. Each has one job:</p>
+<p>You'll write five helper functions plus <code>setup()</code> and <code>loop()</code>. Each has one job:</p>
 
 <table class="table-bc-collapse">
 <thead>
@@ -1400,6 +1400,7 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 <tr><td class="td-ddd-2"><code>updateDisplay()</code></td><td class="td-ddd-2">Shows current <code>trimValue</code> and <code>testCount</code> on the OLED so robot state is readable at a glance.</td></tr>
 <tr><td class="td-ddd-2"><code>blinkConfirm()</code></td><td class="td-ddd-2">Blinks an LED to confirm a button press registered — instant visual feedback.</td></tr>
 <tr><td class="td-ddd-2"><code>printTrimAdvice()</code></td><td class="td-ddd-2">Logs battery voltage and current TRIM to the Serial Monitor, with hints on what to try next.</td></tr>
+<tr><td class="td-ddd-2"><code>printInstructions()</code></td><td class="td-ddd-2">Prints the Serial banner that explains the buttons. Called from <code>loop()</code>, not <code>setup()</code>, and only once — <code>instructionsPrinted</code> is the flag that remembers.</td></tr>
 </tbody>
 </table>
 
@@ -1408,11 +1409,11 @@ motors.setSpeeds(leftSpeed, rightSpeed);</pre>
 <p>All five live at the <strong>bottom</strong> of the file, below <code>loop()</code> — so all five must be announced at the top. This is the FUNCTION PROTOTYPES section of your <code>main.cpp</code>, and it is the whole of it:</p>
 
 <pre><span class="tok-6a9955">// ===== FUNCTION PROTOTYPES =====</span>
-<span class="tok-569cd6">void</span> runMotorTest();
 <span class="tok-569cd6">void</span> updateDisplay();
 <span class="tok-569cd6">void</span> blinkConfirm();
 <span class="tok-569cd6">void</span> printTrimAdvice();
-<span class="tok-569cd6">void</span> printInstructions();</pre>
+<span class="tok-569cd6">void</span> printInstructions();
+<span class="tok-569cd6">void</span> runMotorTest();</pre>
 
 <p>Each line is a promise with no body: a name, what it hands back (<code>void</code> — nothing), and what it expects in the brackets (nothing). Delete any one of them and the build fails on the line that <em>calls</em> that function, not on the function itself — which is the compiler telling you it was never told the name.</p>
 

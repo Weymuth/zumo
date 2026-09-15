@@ -14,7 +14,7 @@
 
 # ZUMO SUPER BIBLE v8
 
-**Bible version: v8.200** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.200** — see the changelog below; this line no longer inlines the newest entry, because a duplicated entry is a second home nobody maintains (S194).
+**Bible version: v8.201** — increment on EVERY substantive edit (moderate change → `v8.x`; minor fix → `v8.x.y`; a new major re-baseline → `v9`). **Filename is now unversioned: `ZUMO_SUPER_BIBLE.md`** — the version lives ONLY in this line, never in the filename (this avoids a fresh chat misreading a filename number as the version). Current: **v8.201** — see the changelog below; this line no longer inlines the newest entry, because a duplicated entry is a second home nobody maintains (S194).
 
 ### 27.13 The stylesheet must regenerate from the lessons, and that is the guard a repaint cannot spend (S106)
 
@@ -94,6 +94,61 @@ artefact it guards.
 built the artefact cannot be the instrument that guards it.** Both halves were true of gate 41
 (§27) and are true again here. Every future consolidation should be read this way before it
 ships, not after. Lesson bytes 2,582,947 → **2,569,059**. Census unchanged 39,994; visible text identical in all twenty pages. All 16 lessons minor-bumped.) Prior: **v8.93** (v8.93, S105, moderate — **§27.9 NEW: THE HOLD RELEASED. ZERO INLINE STYLES BOOK-WIDE.** The four byte-exact-across-lesson block types (§6.5a strip 320 · §25.6 hero 96 + footer 16 · §6.8 PART dividers 192) converted in one pass. The book now carries **25,036 classes and no `style=""` attribute at all**. Released by measurement: the 624 attributes carry only **16 distinct strings**, each appearing an exact multiple of 16 (proof of book-wide uniformity), and **all 16 round-trip byte-exact** through the stylesheet — only true because §27.8c fixed declaration order and §27.8d fixed colon spacing. `strip_inline` **v1.1** adds `--include-held`, gated on a `roundtrips()` precondition that REFUSES and names offenders; CONTROL I proves both directions. Lesson bytes 2,638,947 → **2,582,947**. Census unchanged 39,994. All 16 lessons minor-bumped.) Prior: **v8.92.1** (**v8.92.1, S105, minor — §27.8d: DJ ruled ONE colon spelling for the generated stylesheet; spaced, which is 98% of the source and the only one the gates accept (unspaced broke five). Lessons byte-unchanged. `build_css` v1.2.1.** Prior entry: v8.92, S105, moderate — **§27.8 NEW: THE MIGRATION COMPLETES ITS SWEEP.** All 16 lessons converted: **24,412** inline attributes to classes against a 664-rule `css/book.css`, **624 held** (39 per lesson, every lesson) — 24,412 + 624 = **25,036**, the §27 census exactly. Zero unmapped, zero dead classes, 41/41 gates. Render identity proved by construction AND independently: 25,036 styled elements compared in document order, declaration sets identical, visible text identical bar one `<link>` per lesson. Census 39,979 → **39,994**. Lesson bytes 3,534,934 → **2,638,947**, 25% smaller. **Three ways a widened build bites, all measured:** (a) widening `SOURCES` renamed 57 of L01's 167 classes and **46 kept their spelling while changing meaning** — invisible to gate 41, so every converted lesson must be re-stripped whenever `SOURCES` changes; (b) `expand_classes` reads the stylesheet from disk and leaves an unresolvable class in place, so regenerating before restoring strands 74 L01 elements permanently — the order **restore → regenerate → apply** is forced; (c) `canon()` sorts while §4.5/§6.8/§25.6 assert authored order, which broke a whole class of gates at once and revealed a **fifth** held block type the S104 hold list missed (the §4.5 bonus banner) — fixed in the generator via `build_css.preferred()`, not by holding blocks until the gates went green. **`strip_inline.py` v1.0 NEW**, eight controls, the tool S104 did not commit; `build_css` v1.2; `session_versions` v1.14.1 after its own CONTROL A was found seeding a literal version string that expired on a bump. All 16 lessons minor-bumped.) Prior: **v8.91** (v8.91, S104, moderate — **§27.7 NEW: THE MIGRATION BEGINS, AND ONE LESSON PRICED IT.** L01 converted end to end: 1,111 of 1,150 inline attributes became classes, 39 held because three constructs are compared byte-exact across lessons (§6.5a strip, §25.6 header/footer, §6.8 PART dividers). **One stylesheet, not sixteen** — 689 distinct declaration strings, 92.5% of instances shared across lessons. **`lesson_inventory.expand_classes()`** so six CSS-reading gates keep working whatever a file's conversion state; **gate 41** because a mistyped class makes an element INVISIBLE where a mistyped inline style only made it wrong — proved by dropping L01's callout census 83→82 with all 40 gates green. Render identity asserted by construction, not inspection. Also S104: **L15's three figures retyped IMAGE→GRAPHIC** (§10 separate number spaces — the tag contradicted its own filename), and a book-wide sweep proved L15 was the entire class. **`image_audit.py` v1.1 NEW** replaces the hand-maintained `IMAGE_SHOT_LIST.md`: 20 outstanding of 145 planned. Its two false findings are recorded in the tool — a cross-lesson tag keyed to the wrong lesson, and ten "type mismatches" that were legitimate separate-number-space figures, killed by reading. **Five L07 figures built** from GCC diagnostics reproduced in the sandbox, clearing L07. `book_gates` v1.35.1 (41 gates), `lesson_inventory` v1.2.0, `build_css` v1.1, `image_audit` v1.1, `session_versions` v1.14, `site_parity` v1.1. L01 **v03.15.2** · L07 **v04.16.0** · L15 **v02.11.2**.) Prior: **v8.90** (v8.79.1, S92 close, minor — record only, no book change — **S92 CLOSE — TWO FAMILY RENAMES RULED, AND 📝 WAS FOUND DOING EIGHT JOBS.** DJ ruled **`✋ YOUR TURN`** to replace `📝 DO THIS NOW` and **`WHAT YOU SHOULD SEE`** as SEE's single name. ✋ is **unused book-wide, 0 occurrences**. `WHAT YOU SHOULD SEE` wins on zero label edits — 21 blocks already say it — and the Icon Guide's short form `SEE` retires; under Option C the label holds exactly one string, so a family with two names cannot ship, making the rename FORCED rather than cosmetic. *"Check for yourself"* was rejected: it reads as an instruction and collides with `✅ CHECKPOINT` (63 blocks). **NEITHER IS A GLYPH-WIDE SWEEP.** 📝 carries **82 blocks doing EIGHT jobs**: `DO THIS NOW` ~54 (in scope), **`MY PLAN` 20 (OUT)**, `WHAT YOU NEED BEFORE STARTING` 2, plus `DISCUSSION QUESTIONS`, `CODE SWAP`, `THE TUNING RITUAL`, `THE GREEN SURVEY`. 👀 likewise: 28 callouts, 21 bare in scope, 7 other constructs. **MY PLAN IS THE PSEUDOCODE STEP AND HAS TWO ENDS** — the lesson callout asks the student to plan in prose before any code, and **the Maker stamps a matching pseudo-code comment block into every generated `main.cpp` header, L01 excepted (recorded in `newproject.html`)**. Renaming it would break book/generator agreement, and a glyph-wide sweep would have done exactly that: YOUR TURN is *go do the thing*, MY PLAN is *write down what you'll do first*. MY PLAN is painted **plum `#f3e5f5`/`#9b6a9e`** and carries 📝 only by borrowing — the S92 borrowed-paint pattern on a different axis. Also found: **`WHAT YOU NEED BEFORE STARTING` exists on TWO glyphs**, 2 on 📝 and 2 on 📋. **Execute these renames only AFTER `BookComponentStandard` has the SEE / 🛑 / 🔬 rows** — renaming in the book first is S91's *ruling-applied-to-the-book-is-not-applied-to-the-canon* failure, the reason §5.1 was wrong for thirty sessions. **This entry exists because those rulings were taken after the v8.79 entry was written and initially lived ONLY in the session handoff — one session from being lost. A ruling reaches the canon or it did not happen.** 
+
+v8.201, S202, moderate — **THE §6.5a STRIP GAINS A TUTOR PILL, AND THE TUTOR BECOMES A TRACKED ARTEFACT.**
+DJ ruled it: a link to the AI Tutor from every lesson, and a link back to the book from the tutor. The
+DEEPER precedent (v8.53) is the shape — the strip already reaches outside `lessons/`, so TUTOR sits
+between DEEPER and the ⌂ home square, `../tutor/tutor.html`, **reusing `link-bc-rgba2552`**. That reuse
+is why the CSS move was benign: 574 rules / 2,033 declarations both ends, **zero rules born, died or
+altered**, and the entire 19-line `book.css` diff is the header census 23,022 → 23,038 (+16, exactly one
+link per lesson) plus ONE rank swap as `.link-bc-rgba2552` rises ×288 → ×304 and passes `.tok-4ec9b6`
+at ×302. §27.11 baseline moved with that proof; §27.8b's cycle was NOT owed. `book_gates` **v1.77.2**.
+**THE STRIP GATE WAS CONTROL-RUN BOTH WAYS** — one lesson's `title=` hand-varied fired §6.5a AND §3.1b
+(titles cannot be derived from a drifted strip), and the restore was **from a byte copy, not `git
+checkout`** (S201's lesson). **`tutor/tutor.html` IS NOW REGISTERED IN `session_versions`** at v1.1.1,
+and `tutor/` was removed from that tool's selftest scratch-copy exclusions, because an artefact you
+track cannot be an artefact you hide from your own controls. **CONTROL G CAUGHT THE HALF-DONE JOB:**
+registering the tutor without adding it to BOTH emitted blocks left it tracked but invisible, and the
+selftest said so before anything shipped. `session_versions` **v1.37.0**. All 16 lessons minor-bumped
+and all 16 banks repinned and bumped (a repinned bank is an unbumped edit, S201).
+**AND §5.4 OF L03 COULD NOT BE FOLLOWED, WHICH IS WHAT DJ'S ROOM REPORTED.** DJ said the Section 5
+pseudo-code was not clear. Measured, the section had no pseudo-code — §5.4 had an arithmetic defect.
+It opened *"you'll write **four** helper functions"*, listed **four** table rows, then said **"all
+five"** twice and printed a block of **FIVE** prototypes. The fifth, `printInstructions()`, appeared
+**exactly once in all of §5** — as a bare name inside that block — while each of the other four
+appeared twice. Its first mention anywhere in the lesson is inside the code block that claims to be
+*"the whole of it"*. The finished program has five helpers, so **"four" was the wrong number and the
+table was the incomplete home.** Row added, count corrected. **AND THE BLOCK'S ORDER WAS WRONG TOO** —
+it led with `runMotorTest()` where the built file ends with it; §5.4 now matches the finished payload
+exactly, asserted by extracting both and comparing. L03 **v03.48.2**; four banks repinned. Second
+§27.11 move of the session, two count comments, no rank change. `book_gates` **v1.77.3**.
+**A LESSON THAT STATES A COUNT AND THEN LISTS THE ITEMS HAS TWO HOMES FOR ONE FIGURE AND NOTHING
+CHECKS THEM AGAINST EACH OTHER.** No instrument in this repo can see it.
+
+**THE COUNT/ENUMERATION GATE WAS PROBED AND NOT BUILT — DJ RULED "add it later if we find more
+examples."** The §5.4 defect is the kind an instrument ought to catch, so a predicate was measured
+before it was written, in two shapes, and both fail for opposite reasons. **BROAD** (a stated count
+must equal the items listed after it): **226 claims priced across the sixteen lessons, 156 flagged**,
+and the three strongest candidates hand-checked **CLEAN** — L07's *"Eight organized files:"* over five
+bullets (three of them name `.h`/`.cpp` PAIRS, so 1+1+2+2+2 = 8), L04's *"Three things matter"* over
+four bullets (the three are named in the sentence; the bullets are a procedure), and L12's *"three
+sensors in one chip"* over a five-row table (header plus spacer). The noise is structural: this book's
+prose is thick with numbers adjacent to blocks — *one wheel*, *two weeks later*, *Lesson 8 does* — and
+nothing in the form distinguishes a count-with-enumeration from a number that merely precedes a `<pre>`.
+**§16.44 ALREADY NAMES THIS FAILURE: a predicate that convicts correct prose is unusable.** **NARROW**
+(every name in a §5 prototype block is introduced elsewhere in §5) is clean and IS the predicate that
+would have caught `printInstructions()` — but its population is **8 prototypes in ONE lesson**, and a
+gate that scans almost nothing passes for the wrong reason (S117/S118). **THE TRIGGER TO REVISIT IS
+MORE INSTANCES, NOT MORE CLEVERNESS:** if a second and third count/enumeration mismatch turn up in real
+lessons, the population argument changes and the narrow shape becomes worth building. Until then this
+is an audit move, not a standing assertion, and the probe script was deliberately NOT committed.
+**RECORDED SO IT IS NOT "FIXED": L07's EIGHT-OVER-FIVE IS CORRECT.** Any future check of this shape
+will flag it.
+
+**MEASURED, NOT FIXED — `site_parity` COMPARES BYTE COUNTS, NOT BYTES.** The regenerated `book.css` is
+**84,994 bytes at both ends** because the rank swap moves a block and the census digits are equal-width,
+so parity printed PARITY on a stylesheet whose content had changed. A second S181-class scope limit in
+the same instrument. Not repaired this session; recorded so it is not rediscovered.
 
 v8.200, S201, minor — **CLOSED BOOK FOR THE GRADED QUIZ, OPEN NOTE FOR THE UNGRADED CHECK (§25.3b NEW).** DJ ruled it; it restores the split §25.3 has carried since S70 and that **S195 overwrote in `ZUMO_Syllabus_WORKING.md` alone**, leaving the student-facing document promising the opposite of canon for two weeks. **A ruling recorded in one home is a ruling the other home will contradict.** The quiz is unproctored and taken at home, so the syllabus states the rule and rests it on the honesty section rather than implying enforcement that does not exist. Syllabus **v1.6**, `syllabus.html` regenerated. **§25.3 also corrected on two stale facts:** it no longer says the quizzes do not exist (sixteen banks exist, three built, L01 imported), and its **20% is the CATEGORY weight, which never contradicted the syllabus** — S200 and S201 both carried it as a defect without re-deriving it.
 
