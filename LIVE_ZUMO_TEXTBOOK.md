@@ -1,11 +1,69 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** September 15, 2026 (Session 202 — **THE SESSION THE TUTOR GOT A DOOR, AND THE STYLESHEET PROVED A PARITY ARM COMPARES COUNTS AND NOT BYTES.**)
-**Status (S202 close, Sep 15):** S201's 48-entry batch is PUSHED and verified at `4b20953` — the handoff's own warning was wrong in the usual direction. **S202's batch is NOT yet pushed: count the diff, do not trust this line.** All 16 lessons carry a **TUTOR** pill in the §6.5a strip; `tutor/tutor.html` carries a back-link to the book and is now **registered in `session_versions`**. 82/82 gates, 16 banks valid, all selftests pass.
+**Date:** September 29, 2026 (Session 206 — **THE SESSION THE ROOM GOT A VOLUME KNOB, AND THE SEMANTIC LAYER TURNED OUT TO BE BUILT FOR EXACTLY THIS.**)
+**Status (S206 close, Sep 29):** S202 AND S203 are both PUSHED at `ddd35ed` — count the diff, do not trust this line. **Lesson 6 carries a Standard/Lite reading switch (§27.15g).** DJ ruled it after the class reported too much text. Nothing is deleted: §3 is 19% lighter in Lite and §5 is 36%, 1,015 words across the two, and every image, code block, formula, key term, challenge and reveal is in BOTH registers. 82/82 gates, 16 banks valid, all selftests pass, 17 browser controls pass. **Worklist 103 closed / 96 fixed / 2 parked / 140 open of 245** (`census.worklist()`, unmoved — S206 touched no row).
 
-**Versions:** L01 v03.33.1 · L02 v03.27.1 · L03 v03.48.2 · L04 v04.31.1 · L05 v04.31.1 · L06 v04.38.1 · L07 v04.34.1 · L08 v04.35.1 · L09 v05.30.1 · L10 v02.31.1 · L11 v02.32.1 · L12 v01.36.1 · L13 v02.40.1 · L14 v02.37.1 · L15 v02.33.1 · L16 v02.29.1 · going_deeper v01.7.0 — census **41,870** · Bible **v8.201** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.72 · **book_gates v1.77.3** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.6 · build_family_map v1.6.6.8 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.37.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · reading_quiz v1.0 · prose_canon v1.4.0 · retired_claims v1.3.1 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · AI Tutor v1.1.1 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.6 · `ZUMO_Teacher_Daily_Grid_F26.md` v2.1 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `4b20953`.**
+**Versions:** L01 v03.33.1 · L02 v03.27.1 · L03 v03.48.2 · L04 v04.31.1 · L05 v04.31.1 · L06 v04.39.0 · L07 v04.34.1 · L08 v04.35.1 · L09 v05.30.1 · L10 v02.31.1 · L11 v02.32.1 · L12 v01.36.1 · L13 v02.40.1 · L14 v02.37.1 · L15 v02.33.1 · L16 v02.29.1 · going_deeper v01.7.0 — census **41,938** · Bible **v8.202** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.72 · **book_gates v1.77.3** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.6 · build_family_map v1.6.6.8 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.37.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · reading_quiz v1.0 · prose_canon v1.4.0 · retired_claims v1.3.1 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · AI Tutor v1.1.1 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.6 · `ZUMO_Teacher_Daily_Grid_F26.md` v2.1 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `ddd35ed`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
+
+## WHAT SHIPPED IN S206
+
+**LESSON 6 HAS A READING-MODE SWITCH, AND THE ARCHITECTURE ALREADY WANTED ONE.** DJ, reporting the
+room: *"students reported today that there is too much text."* Measured before anything was cut —
+L06 is 13,889 words and is **shorter** than L01, L02, L03, L04 and L07, so raw length was never the
+complaint. Density was. Standard is the book as written; **Lite** swaps the long explanation for a
+short one. **§3 goes 1,196 → 964 words (19% lighter), §5 goes 2,166 → 1,383 (36%)** — 1,015 words
+across the two sections DJ named. Every other section is byte-identical in both registers.
+
+**NOTHING IS DELETED AND THAT IS THE WHOLE POINT.** 26 `data-verbose` blocks, 12 `data-lite`
+replacements. Browser-verified in both registers: all **79 images, 74 code blocks, 18 key terms,
+12 challenges and 32 reveals** render in Lite exactly as they do in Standard. The switch reaches
+prose and prose only.
+
+**THE PREVIOUS ATTEMPT FAILED NINE GATES AND THE DIAGNOSIS WAS THE FIX.** It built the control from
+inline `style=""`, which §27.12 forbids outright, then needed a new callout family and two hardcoded
+count bumps to carry it. **None of that was necessary.** §27.15's semantic layer is hand-authored,
+preserved verbatim, and — the part that decides everything — **§27.11's digest is SCOPED to the
+generated block**, precisely so a graduating rule costs no baseline. S123 wrote that scoping for this
+exact case.
+
+**CONTROL-RUN BEFORE A WORD OF CONTENT WAS WRITTEN.** A throwaway comment appended to
+`css/semantic.css`, then `build_css`: generated block **byte-identical at both ends — digest
+`75cbd52391a95870`, 67,298 bytes** — and 82/82 green. So the whole switch costs **zero baseline
+bumps**: no digest, no rule count, no callout count, no `NIMG_EXPECTED`.
+
+**THE SELECTOR IS A DATA ATTRIBUTE, FOR THE THIRD TIME (§27.15b).** S128 put `class="mark"` into
+markup and `build_css` re-emitted it as `.img-fs-0`; S133 hit the same wall twice with `.ul-ls-none`.
+`data-verbose` / `data-lite` / `data-textmode` are invisible to the generator.
+
+**AND THE TRAP FIRED ANYWAY, ON THE ONE CLASS I REUSED.** Three new Lite paragraphs were authored
+`<p data-lite class="p-mb-0">` — an existing class, not a new one — and **gate 45 (§27.13) failed
+immediately**: adding uses to a ranked class re-ranks it and renames rules across untouched lessons.
+Dropping the class from all three cleared it. **A new element in this book carries no class at all.**
+
+**DEFAULT IS STANDARD, AND IT FAILS SAFE.** `[data-lite]{display:none}` is the FIRST rule, so a reader
+whose JavaScript never runs gets the whole lesson and never sees both registers at once. Mode persists
+per reader in `localStorage`.
+
+**THE ANALOGIES WERE RULED INDIVIDUALLY, NOT SWEPT.** DJ: *"sometimes a connection to real life needs
+to be there."* The **turnstile** goes in Lite — it restates the sentence directly above it. The
+**blindfolded walk** stays in both: it is the lesson's hook and IMAGE 6.1 is a picture of it. The
+odometer/mice/3D-printer list stays — Challenge 5 is called The Odometer.
+
+**THE SPIELBERG PASSAGE IS NOT IN LESSON 6.** It is L01's LEARN box on the five-note signal, and
+**Challenge 10 depends on it** — *"You just read how Williams and Spielberg narrowed 134,000
+possibilities to one."* Cutting it orphans the challenge. Left alone; DJ's call if it ever moves.
+
+**PIN-ONLY BUMPS, EARNED BY A CLOSED DIFF (rule 37 / S167).** L06 **v04.38.1 → v04.39.0** (moderate).
+Seven downstream banks name `lesson_06` — L07, L09, L10, L11, L12, L13, L15 — and a repinned bank is
+an unbumped edit (S201), so each moved its own version in **both homes**. The pin-only claim was
+**proved, not asserted**: the Standard register was rendered and diffed against HEAD with the switch
+chrome and version line normalised, and the residue is **ZERO**. Not one lesson sentence was altered
+— only wrapped.
+
+**THIS IS AN EXPERIMENT ON ONE LESSON.** DJ: *"Once they do lesson 6 they can tell me if they want the
+rest like it."* Nothing about §27.15g obliges L07–L16 to follow.
 
 ## WHAT SHIPPED IN S202
 

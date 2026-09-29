@@ -272,6 +272,93 @@ ul[data-objectives] {
   padding-left: 5px;
 }
 
+/* §27.15g THE TEXT-DENSITY SWITCH, S206, DJ ruling. The fifth graduate, and the first one
+ * that exists for a reason from the ROOM rather than from the stylesheet.
+ *
+ * DJ, S206, reporting the class: "students reported today that there is too much text."
+ * Measured before anything was cut: Lesson 6 is 13,889 words and is SHORTER than L01, L02,
+ * L03, L04 and L07, so raw length was not the complaint. Density was. The heavy prose sits
+ * in two places — §3's encoder theory and §5's while/abs()/?:/turn-geometry explanations —
+ * and both are explanation ABOUT code the student is about to write, not the code itself.
+ *
+ * SO NOTHING IS DELETED. Lesson 6 carries both registers and the reader picks. Standard is
+ * the book as written; Lite swaps the long explanation for a short one and drops the
+ * analogies that only restate the sentence above them. Every image, code block, formula,
+ * key term, callout, challenge and reveal is in BOTH — the switch reaches prose and prose
+ * only, which is what makes it safe to ship on one lesson as an experiment.
+ *
+ * WHY AN ATTRIBUTE AND NOT A CLASS, FOR THE THIRD TIME (§27.15b). S128 put class="mark"
+ * into markup and build_css re-emitted it as `.img-fs-0`; S133 hit the same wall with
+ * .ul-ls-none and reverted twice before `ul[data-objectives]` ended it. build_css expands
+ * every class= it finds and re-derives a name from the VALUES, so a semantic class going
+ * INTO markup runs the generator backwards. data-verbose / data-lite / data-textmode are
+ * invisible to the generator. CONTROL-RUN BEFORE ANY CONTENT WAS WRITTEN: a probe appended
+ * to this file left the generated block byte-identical — digest 75cbd52391a95870, 67,298
+ * bytes at both ends — and all 82 gates green, with NO baseline moved. That is the §27.11
+ * scoping working exactly as S123 designed it, and it is why this costs no bump.
+ *
+ * AN EARLIER ATTEMPT AT THIS SWITCH FAILED NINE GATES and was reverted whole. It built the
+ * control out of inline style="" attributes, which is the one thing §27.12 forbids, and
+ * then needed a new callout family and a hardcoded count bump to carry it. None of that is
+ * necessary: the switch is four rules here and no new class anywhere.
+ *
+ * DEFAULT IS STANDARD, AND THAT IS DELIBERATE. A reader who never finds the switch, and a
+ * reader whose JavaScript does not run, both get the whole lesson. data-lite blocks are
+ * hidden by the FIRST rule below, so the condensed prose never double-prints even before
+ * the script has touched the page — the failure mode of a toggle is a page showing both
+ * registers at once, and this orders the rules so that cannot happen.
+ *
+ * display:block IS SAFE HERE because every data-lite element authored in Lesson 6 is a
+ * block-level <p> or <div>. If a future lite block is ever inline, it needs its own rule
+ * rather than a widening of this one. */
+[data-lite] {
+  display: none;
+}
+
+[data-textmode="lite"] [data-verbose] {
+  display: none;
+}
+
+[data-textmode="lite"] [data-lite] {
+  display: block;
+}
+
+/* The control itself. Sized and coloured from values already ruled elsewhere in the book:
+ * #1f2a3d is the section-banner ground, #f5f2e9 the page cream, #c9a463 the approved
+ * accent (ROBOLORE five, S102). No hex here is new to the book. */
+[data-textmode-switch] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px 0;
+  padding: 10px 14px;
+  background: #f5f2e9;
+  border: 1px solid #c9a463;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+[data-textmode-switch] > span {
+  font-weight: bold;
+  color: #1f2a3d;
+}
+
+button[data-textmode-btn] {
+  font: inherit;
+  cursor: pointer;
+  padding: 4px 14px;
+  border: 1px solid #1f2a3d;
+  border-radius: 999px;
+  background: transparent;
+  color: #1f2a3d;
+}
+
+button[data-textmode-btn][aria-pressed="true"] {
+  background: #1f2a3d;
+  color: #f5f2e9;
+  font-weight: bold;
+}
+
 /* ===== GENERATED BLOCK - derived from the lessons. Do not hand-edit. ===== */
 
 /* ×2763  span×2763 */
