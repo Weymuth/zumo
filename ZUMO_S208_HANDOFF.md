@@ -40,10 +40,9 @@ minting keys and route the Bot Builder through the working worker. **A new tool 
 
 # 2. S208 OPENS HERE
 
-**FIRST — THE BOT BUILDER PAGE IS STILL v1.0 IN ITS REPO.** At S207 close `Weymuth/BotBuilder` held v1.0, which
-calls the dead `botbuilder` worker, so "Ask the coach" fails for students. **Upload `index.html` v1.1** (points at
-`zumosupport`, sends `mode:"builder"`) via github.com → Add file → Upload files. Verify by one builder call from
-the live page. **DO NOT GUESS whether DJ has done it — check the repo.**
+**BOT BUILDER IS LIVE END TO END (verified at S207 close).** `Weymuth/BotBuilder` holds `index.html` **v1.1**
+(commit `b210819`), which calls `zumosupport` with `mode:"builder"`; a test question from the live page drew a
+coaching reply. Nothing owed here — check it still answers before relying on it in class.
 
 **OPEN — NEEDS DJ, DO NOT GUESS:**
 - **Lite mode (§27.15g):** has the class seen L06's switch, and do they want it in L07–L16?
