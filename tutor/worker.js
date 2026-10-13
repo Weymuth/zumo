@@ -1,5 +1,8 @@
 // ============================================================
-// Mercersburg Robotics AI Tutor — Cloudflare Worker Proxy v3
+// Mercersburg Robotics AI Tutor — Cloudflare Worker Proxy v3.1
+// v3.1: also serves the RoboLore Bot Builder coach. A request with
+//       mode:"builder" gets the builder prompt; every other request
+//       is handled exactly as in v3 (tutor path unchanged).
 // ============================================================
 // WHAT CHANGED FROM v2 (and WHY):
 //   - REMOVED the hardcoded curriculum. v2 embedded the whole
@@ -85,6 +88,41 @@ When a student shares an error or code:
 - Never say "just" (as in "just add a semicolon") — nothing is "just" for a beginner.
 - If something is genuinely hard, say so.`;
 
+// --- BOT BUILDER PROMPT (used only when mode === "builder") ---
+const BUILDER_PROMPT = `You are the RoboLore Build Coach at Mercersburg Academy. You coach high school students who are designing and building their OWN robot from scratch for RoboCupJunior Rescue Line. They already learned to program a Pololu Zumo 32U4 from a textbook; now they are planning, wiring and building a custom robot. Many have never designed hardware before.
+
+## HOW YOU WORK
+- The student works through build stages in order. The CURRENT STAGE block below is the stage they are on: its goal, a short story from the teacher's own robot build (Vortex), the steps, and the "done when" list. Coach within that stage.
+- The STUDENT NOTEBOOK block is what the student has written so far for this stage. Read it before you answer, and refer to their actual words and numbers.
+- Do not jump ahead to later stages. If they ask about one, answer briefly and bring them back to the current stage's "done when" list.
+
+## COACH, DON'T DESIGN IT FOR THEM
+- This is their robot. Ask before you tell. Ask one question at a time.
+- Give the next small step, a check they can do, or a question that exposes the gap. Never hand them a finished design, parts list, pin map or code.
+- When they make a decision, ask for the reason and push them to write it in their notebook.
+- If their notebook has a gap, an estimate presented as a measurement, or a number that doesn't add up, point at it specifically.
+- Use the Vortex story when it fits ("Vortex ran into exactly this…"), but don't retell it every message.
+
+## ENGINEERING HABITS TO REINFORCE
+- Start from the rules and the hardest field element.
+- Measure the real part; mark anything estimated.
+- Size motor drivers to the motor's STALL current, not running current.
+- Power first, measure every rail, add one part at a time.
+- If behavior is random, check battery voltage before changing code.
+- One change per version; predict, then test.
+- Keep the notebook right; it is the single source of truth.
+
+## FACTS AND SAFETY
+- Never invent part numbers, ratings, prices or rule details. If you don't know a spec, tell them where to find it (the manufacturer's product page or datasheet, or the official rules) and ask them to bring the number back.
+- Field limits from the RoboCupJunior Rescue Line 2026 rules you may use: tile openings at least 25 cm wide; at least 25 cm height under raised tiles; ramps up to 25°; speed bumps up to 1 cm; obstacles at least 15 cm tall; line 1–2 cm wide; gaps up to 20 cm; runs up to 8 minutes; max 48 V DC; lithium batteries stored in safety bags; no maximum robot size or weight.
+- Safety comes first and is not optional: power off before rewiring; check polarity before connecting power; never short a lithium battery; charge LiPos only with a proper charger and supervision; hot glue guns, soldering irons and 3D printer nozzles burn. If a student describes smoke, heat, swelling or a burning smell, tell them to disconnect power and get their teacher now.
+
+## TONE
+- Short answers: usually 2–5 sentences, then one question. These students find long text hard to read.
+- Encouraging and honest. Say "your robot." Celebrate small wins.
+- Never say "just" — nothing is "just" for a beginner.
+- Plain words. Explain a technical term the first time you use it.`;
+
 // --- WORKER HANDLER ---
 export default {
   async fetch(request, env) {
@@ -102,6 +140,26 @@ export default {
     try {
       const body = await request.json();
       const { messages, currentChallenge, lessonContent, lessonTitle } = body;
+
+      // --- Bot Builder branch (v3.1) ---
+      if (body.mode === "builder") {
+        if (!Array.isArray(messages) || messages.length === 0) {
+          return new Response(JSON.stringify({ error: { message: "No message sent." } }), {
+            status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } });
+        }
+        const bSystem = [
+          { type: "text", text: BUILDER_PROMPT + "\n\n# CURRENT STAGE\n" + String(body.stageContent || "(not sent)").slice(0, 6000),
+            cache_control: { type: "ephemeral" } },
+          { type: "text", text: "# STUDENT NOTEBOOK (this stage)\n" + String(body.notebook || "(empty)").slice(0, 6000) },
+        ];
+        const bRes = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
+          body: JSON.stringify({ model: "claude-sonnet-5", max_tokens: 1024, system: bSystem, messages: messages.slice(-20) }),
+        });
+        return new Response(JSON.stringify(await bRes.json()), {
+          headers: { ...CORS_HEADERS, "Content-Type": "application/json" } });
+      }
 
       // Big, stable block: system prompt + the live current lesson.
       // This is what gets prompt-cached across a student's session.

@@ -1,104 +1,66 @@
-# ZUMO — S207 HANDOFF (written at S206 close · paste at top of Session 207)
+# ZUMO — S208 HANDOFF (written at S207 close · paste at top of Session 208)
 
 ## READ THIS FIRST
 
-**THIS SENTENCE CANNOT TELL YOU WHETHER S206 IS PUSHED — READ THE DIFF.** It was wrong five sessions
-running (S198–S202) and at S203 open it was wrong again in the same direction: S202's batch **was**
-already live. **The artefact is the answer** (S197). At the moment this was written S206's batch was
-handed to DJ as files and was NOT pushed, which is exactly why this line is worthless.
+**THIS SENTENCE CANNOT TELL YOU WHETHER S207 IS PUSHED — READ THE DIFF.** The artefact is the answer (S197).
 
-**COUNT THE DIFF; DO NOT TRUST THIS LINE.** S206 touched **16 paths**, counted from
-`git status --porcelain`: **14 modified** — `LIVE_ZUMO_TEXTBOOK.md`, `ZUMO_SUPER_BIBLE.md`,
-`GPT_WORKLIST.md`, `css/semantic.css`, `css/book.css`, `lessons/Lesson_06.html`, and the eight banks
-`ZUMO_QUIZ_L06/L07/L09/L10/L11/L12/L13/L15.yaml` — plus **one added** (this handoff) and **one
-deleted** (`ZUMO_S203_HANDOFF.md`). No new directories, **no new `.html` anywhere**.
-`GPT_WORKLIST.md` moved by exactly one line, its session stamp S202 → S206. If the count differs, a
-later batch landed and is not described here.
-
-**FIFTEEN LESSONS WERE NOT TOUCHED.** Only L06 changed. If any other lesson shows a diff, stop and look.
+**COUNT THE DIFF; DO NOT TRUST THIS LINE.** S207 touched **6 paths**: **4 modified** — `LIVE_ZUMO_TEXTBOOK.md`,
+`ZUMO_SUPER_BIBLE.md`, `tutor/worker.js`, `GPT_WORKLIST.md` (session stamp S206 → S207 only) — plus **one added** (this handoff) and **one deleted**
+(`ZUMO_S207_HANDOFF.md`). **No lesson, bank, CSS, grid or syllabus file. No new `.html`.** If the count differs,
+a later batch landed and is not described here.
 
 ---
 
-# 1. WHAT S206 DID
+# 1. WHAT S207 DID
 
-**LESSON 6 HAS A STANDARD/LITE READING SWITCH (§27.15g NEW).** DJ ruled it after the class reported
-too much text. **The complaint was not length and the measurement says so:** L06 is 13,889 words and
-is SHORTER than L01, L02, L03, L04 and L07. Density was the complaint, and DJ named the register —
-*"Prob. theory/explanation prose"* — so the switch reaches **§3 and §5 only**. §3 **1,196 → 964**
-words in Lite (19% lighter); §5 **2,166 → 1,383** (36%). **1,015 words across the two.** Every other
-section is byte-identical in both registers.
+**THE BOOK DID NOT MOVE — THAT WAS THE RULING.** The class asked to fold in Robotics I planning and building.
+DJ: read and code for a stretch, **stop and build, return to the book**, breaks probably after milestones,
+**book finished by end of Trimester 2**. *"You aren't adjusting anything"* — grid and syllabus untouched until DJ
+rules a schedule. Bible **v8.203**.
 
-**NOTHING IS DELETED.** 26 `data-verbose` blocks, 12 `data-lite` replacements. Browser-verified in
-both registers: **79 images, 74 code blocks, 18 key terms, 12 challenges, 32 reveals** all render in
-Lite exactly as in Standard. **17 browser controls pass**, including persistence across a reload.
+**THE BUILD IS THE NEWMO** (new + Zumo), a custom robot. **Nothing about its hardware is locked.**
 
-**THE PREVIOUS ATTEMPT FAILED NINE GATES AND THE DIAGNOSIS WAS THE ENTIRE FIX.** It built the control
-from inline `style=""` — which §27.12 forbids outright — and then needed a new callout family and two
-hardcoded count bumps to carry it. **None of that was necessary.** §27.15's semantic layer is
-hand-authored and preserved verbatim, and **§27.11's digest is SCOPED to the generated block**
-precisely so a graduating rule costs no baseline. S123 wrote that scoping for this exact case.
+**THE TUTOR'S "CREDIT TOO LOW" WAS A KEY FROM OUTSIDE DJ'S ORG.** DJ's Org held $24.76. New key
+`zumosupport-tutor` (DJ's Org, Default workspace) fixed it, verified live. **`tutor/worker.js` → v3.1**, which also
+serves the Bot Builder via `mode:"builder"`; the tutor path is byte-identical to v3 (proved against a stub).
+Deployed on Cloudflare and verified at S207 close: one tutor call, one builder call.
 
-**CONTROL-RUN BEFORE A WORD OF CONTENT WAS WRITTEN.** A throwaway comment appended to
-`css/semantic.css`, then `build_css`: generated block **byte-identical at both ends — digest
-`75cbd52391a95870`, 67,298 bytes** — 82/82 green. **THE SWITCH MOVED NO BASELINE AT ALL:** not the
-digest, not `CSS_RULES`, not `CSS_DECLS`, not the callout count, not `NIMG_EXPECTED`.
+**BOT BUILDER BUILT** — 12 stages from DJ's *Vortex Build Process — Extracted v1.0*, notebook per stage saved on
+the student's computer, "Done when" gate, coach chat. Own repo **`Weymuth/BotBuilder`**, served at
+**`weymuth.github.io/BotBuilder/`** (capital B's — the lowercase URL 404s).
 
-**THE SELECTOR IS A DATA ATTRIBUTE, FOR THE THIRD TIME (§27.15b).** S128 put `class="mark"` into
-markup and `build_css` re-emitted it as `.img-fs-0`; S133 hit the same wall twice with `.ul-ls-none`.
-`data-verbose` / `data-lite` / `data-textmode` are invisible to the generator.
+**MADE OUTSIDE THE REPO (v1.0, RoboLore styled, PDFs delivered):** *Rescue Line Robot Specs*, *Ramps, Bumps and
+Traction*, *Zumo Baseline Tests*.
 
-**AND THE TRAP FIRED ANYWAY, ON THE ONE CLASS THAT WAS REUSED RATHER THAN BORN.** Three Lite
-paragraphs were authored `<p data-lite class="p-mb-0">` — an **existing** class, not a new one — and
-**gate 45 (§27.13) failed on the next check.** Adding uses to a ranked class re-ranks it and renames
-rules in untouched lessons. Dropping the class from all three cleared it.
-**A NEW ELEMENT AUTHORED INTO A LESSON CARRIES NO CLASS AT ALL — NOT EVEN AN EXISTING ONE.**
-
-**DEFAULT IS STANDARD AND IT FAILS SAFE.** `[data-lite]{display:none}` is the FIRST of the four rules,
-so a reader whose JavaScript never runs gets the whole lesson, and the failure mode of a toggle — both
-registers printing at once — cannot occur even before the script runs. Mode persists in `localStorage`.
-
-**THE ANALOGIES WERE RULED ONE AT A TIME, ON DJ'S INSTRUCTION.** He declined the sweep: *"sometimes a
-connection to real life needs to be there."* **Turnstile** → Lite only; it restates the sentence above
-it. **Blindfolded walk** → stays in BOTH; it is the lesson's hook and IMAGE 6.1 is a picture of it.
-**Odometer / mice / 3D printers** → stays; Challenge 5 is named The Odometer.
-
-**THE SPIELBERG PASSAGE IS NOT IN LESSON 6.** DJ named it from the room; it is **L01's** LEARN box on
-the five-note signal, and **Challenge 10 reads back into it** (*"You just read how Williams and
-Spielberg narrowed 134,000 possibilities to one"*). Cutting it orphans a challenge. **Left alone —
-DJ's call if it ever moves.**
-
-**PIN-ONLY BUMPS, PROVED AND NOT ASSERTED (rule 37 / S167).** L06 **v04.38.1 → v04.39.0** (moderate,
-both §5b homes). Seven downstream banks name `lesson_06` — **L07, L09, L10, L11, L12, L13, L15** — and
-a repinned bank is an unbumped edit (S201), so each moved its own version in **both homes**. The
-pin-only claim was earned by a **CLOSED DIFF**: the Standard register rendered and diffed against HEAD
-with the switch chrome and version line normalised, **residue ZERO**. Not one lesson sentence was
-altered — only wrapped.
+**THE KEY TRAP, SO IT IS NOT RELIVED.** The Console now mints identity-backed `sk-ant-usr-` keys; three pasted
+into a fresh `botbuilder` worker were all rejected, under both `x-api-key` and `Bearer`. The fix was to stop
+minting keys and route the Bot Builder through the working worker. **A new tool rides `zumosupport` first.**
 
 ---
 
-# 2. S207 OPENS HERE
+# 2. S208 OPENS HERE
 
-**THE EXPERIMENT IS OUTSTANDING AND IT IS THE POINT.** DJ: *"Once they do lesson 6 they can tell me if
-they want the rest like it."* **Do not roll §27.15g into L07–L16 until the class has answered.** A
-lesson without the switch is not in breach of it.
+**FIRST — THE BOT BUILDER PAGE IS STILL v1.0 IN ITS REPO.** At S207 close `Weymuth/BotBuilder` held v1.0, which
+calls the dead `botbuilder` worker, so "Ask the coach" fails for students. **Upload `index.html` v1.1** (points at
+`zumosupport`, sends `mode:"builder"`) via github.com → Add file → Upload files. Verify by one builder call from
+the live page. **DO NOT GUESS whether DJ has done it — check the repo.**
 
-**IF THE ANSWER IS YES, THE COST IS KNOWN.** The CSS is done and reaches every lesson already — only
-markup is needed per lesson. Budget the condensing, not the plumbing.
+**OPEN — NEEDS DJ, DO NOT GUESS:**
+- **Lite mode (§27.15g):** has the class seen L06's switch, and do they want it in L07–L16?
+- **Build-break schedule:** which milestones, how long. Grid untouched until ruled.
+- **Newmo hardware:** gear ratio (DJ thinks the class Zumos are 75:1 — unconfirmed), motor (20D vs 25D),
+  driver (MAX14870 if 20D; a bigger one if 25D HP), battery (3S for 12 V motors), OLED needs a level shifter.
+- **Rescue Line Robot Specs:** two rows read "check PDF" (no-mains, no-drones section numbers).
+- **Zumo Baseline Tests:** whether the free idler end sits level with wheels on; whether the 75:1 gearbox
+  back-drives in the tilt test.
+- **File-naming CODE / Type** for the three handouts under DJ's naming rule.
 
-**THE SESSION NUMBER IS AN INFERENCE, NOT A READING.** DJ ran two sessions after S203 that pushed
-nothing and left no handoff; the repo went 13 days with HEAD unmoved at `ddd35ed`. **S204 and S205 are
-assumed to be those two, making this S206.** If DJ says otherwise it is a find-and-replace across
-LIVE.md, the Bible entry, `css/semantic.css`, `Lesson_06.html` and eight bank notes.
+**CLEAN-UP, DJ'S HANDS:** delete the `botbuilder` Cloudflare worker and any `sk-ant-usr-` botbuilder keys in the
+Console. **DJ deleted the old legacy key `ANTHROPIC_API_KEY` (`sk-ant-api03-ZYV…`) at S207** — the tutor never
+used it, but it had $0.21 of use; **if `capstone-planner` or `zumoauth` break, that is why.** Auto-reload is off
+and the spend limit is $1,000 — DJ was advised to change both.
 
-**THE S203 PERIOD 7 FIX WAS NEVER PUSHED AND SEP 21 HAS PASSED.** `ZUMO_TALKING_POINTS_F26_Wk3-4.md`
-is still **v1.0** in the repo with *"Build the test surfaces"* and the poster-board materials block,
-both retired by the S201 tile ruling. The corrected **v1.0.1** was delivered to DJ on Sep 15 and never
-landed. **It is now history, not a hazard** — but the file still teaches wrong if anyone reads it.
-
-**THE CALENDAR HAS MOVED PAST THE GRID'S LAST CHECKED ROW.** Today is **Mon Sep 28 → Period 10**
-(L05 Proximity, **M2 DEMO**). Periods 7, 8 and 9 went by with no session recording them.
-
-## AND THESE ARE OWED, UNCHANGED FROM S203
+## AND THESE ARE STILL OWED (carried from S207's handoff, unchanged)
 - **THE FOUR L03 RULINGS ARE STILL OPEN** — periods, whether §5.5/§5.6 leave the reading scope, the M1
   demo move, and whether §6's eight plans get renumbered. **S203 re-measured two of them and the
   brief was wrong:** L02's reading scope is **7,716** prose words, not the 6,428 the S203 handoff
@@ -186,9 +148,13 @@ landed. **It is now history, not a hazard** — but the file still teaches wrong
 brand and course scope. **§24.19 is the tiebreaker.**
 
 ---
+
+**Today's task:** ______________________________________________
+
+---
 <!-- VERSION BLOCK: emitted by session_versions.py --handoff. Never hand-typed. -->
-Fresh-clone verified at **`ddd35ed`**. Census **41,938**.
-Bible **v8.202** · `BookComponentStandard` **v01.13.0** · Maker **v2.72** ·
+Fresh-clone verified at **`15be698`**. Census **41,938**.
+Bible **v8.203** · `BookComponentStandard` **v01.13.0** · Maker **v2.72** ·
 `marks/` **41** · `icons/` **49** incl. LICENSE.
 `ZUMO_Syllabus_WORKING.md` **v1.6** · `ZUMO_Teacher_Daily_Grid_F26.md` **v2.1**.
 

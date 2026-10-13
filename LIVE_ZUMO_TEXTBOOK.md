@@ -1,11 +1,36 @@
 # LIVE_ZUMO_TEXTBOOK.md
 
-**Date:** September 29, 2026 (Session 206 — **THE SESSION THE ROOM GOT A VOLUME KNOB, AND THE SEMANTIC LAYER TURNED OUT TO BE BUILT FOR EXACTLY THIS.**)
-**Status (S206 close, Sep 29):** S202 AND S203 are both PUSHED at `ddd35ed` — count the diff, do not trust this line. **Lesson 6 carries a Standard/Lite reading switch (§27.15g).** DJ ruled it after the class reported too much text. Nothing is deleted: §3 is 19% lighter in Lite and §5 is 36%, 1,015 words across the two, and every image, code block, formula, key term, challenge and reveal is in BOTH registers. 82/82 gates, 16 banks valid, all selftests pass, 17 browser controls pass. **Worklist 103 closed / 96 fixed / 2 parked / 140 open of 245** (`census.worklist()`, unmoved — S206 touched no row).
+**Date:** October 12, 2026 (Session 207 — **THE SESSION THE CLASS ASKED TO BUILD, AND THE BOOK WAS LEFT ALONE.**)
+**Status (S207 close, Oct 12):** S206 is PUSHED at `15be698` — count the diff, do not trust this line. **No lesson, grid or syllabus file changed (DJ: *"You aren't adjusting anything"*).** Course pacing ruled: book through end of Trimester 2 with Newmo build breaks after milestones. Tutor worker is v3.1 and also serves the Bot Builder (`Weymuth/BotBuilder`). **Worklist 103 closed / 96 fixed / 2 parked / 140 open of 245** (`census.worklist()`, unmoved — S207 touched no row).
 
-**Versions:** L01 v03.33.1 · L02 v03.27.1 · L03 v03.48.2 · L04 v04.31.1 · L05 v04.31.1 · L06 v04.39.0 · L07 v04.34.1 · L08 v04.35.1 · L09 v05.30.1 · L10 v02.31.1 · L11 v02.32.1 · L12 v01.36.1 · L13 v02.40.1 · L14 v02.37.1 · L15 v02.33.1 · L16 v02.29.1 · going_deeper v01.7.0 — census **41,938** · Bible **v8.202** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.72 · **book_gates v1.77.3** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.6 · build_family_map v1.6.6.8 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.37.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · reading_quiz v1.0 · prose_canon v1.4.0 · retired_claims v1.3.1 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · AI Tutor v1.1.1 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.6 · `ZUMO_Teacher_Daily_Grid_F26.md` v2.1 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `ddd35ed`.**
+**Versions:** L01 v03.33.1 · L02 v03.27.1 · L03 v03.48.2 · L04 v04.31.1 · L05 v04.31.1 · L06 v04.39.0 · L07 v04.34.1 · L08 v04.35.1 · L09 v05.30.1 · L10 v02.31.1 · L11 v02.32.1 · L12 v01.36.1 · L13 v02.40.1 · L14 v02.37.1 · L15 v02.33.1 · L16 v02.29.1 · going_deeper v01.7.0 — census **41,938** · Bible **v8.203** · BookComponentStandard v01.13.0 · gen_component v1.6.1 · Maker v2.72 · **book_gates v1.77.3** · lesson_inventory v1.4.1 · pill_sweep v1.1 · gate_payload_match v1.9.6 · build_family_map v1.6.6.8 · callout_id v1.0 · keyterm_prefix v1.0.1 · build_mark_index v1.1.0 · gen_bonus_banner v1.4.1 · gen_part_banners v1.2 · session_versions v1.37.0 · fit_raster_svg v1.2 · flatten_alpha v1.2 · svg_layout_audit v1.23 · site_parity v1.2.1 · build_css v1.4.0 · build_syllabus_html 1.1 · image_audit v1.3 · strip_inline v1.2 · build_worklist v1.2 · qti_export 1.2 · reading_quiz v1.0 · prose_canon v1.4.0 · retired_claims v1.3.1 · census v1.3.0 · regex_audit v1.0 · byte_audit v1.9.1 · build_palette v1.1 · class_sweep v1.0 · color_index v1.0 · entity_sweep v1.0 · font_stack_sweep v1.3.0 · next_pointer v1.2 · family_tag v1.2.1 · glossary_convert v1.0 · mark_wire v1.0.2 · glyph_scan v1.1 · title_feed v1.0 · quiz_bank v1.6.1 · Timer v1.3.2 · AI Tutor v1.1.1 · harness_setup v1.1 · pio_harness v3.1 · `ZUMO_Syllabus_WORKING.md` v1.6 · `ZUMO_Teacher_Daily_Grid_F26.md` v2.1 · `images/marks/` **41** · `images/icons/` 49 incl. LICENSE. **Verified by fresh clone at `15be698`.**
 
 **Quiz banks:** derive with `python3 quizzes/quiz_bank.py --status` — do not hand-count, and do not keep a list here. **ALL SIXTEEN LESSONS ARE NOW BANKED.** L14, L15 and L16 were each read end to end, fixed, and banked in this session, in that order. **Every §7 ladder measurement in L13–L16 is named in those banks as deliberately unasked**, because no rung of any of them has ever been run on this fleet.
+
+## WHAT SHIPPED IN S207
+
+**THE BOOK DID NOT MOVE, AND THAT WAS THE RULING.** The class asked to fold in the Robotics I planning and
+building. DJ: the book stays as written; read and code for a stretch, **stop and build, return to the book**,
+breaks probably after milestones, **finish the book by the end of Trimester 2**. The F26 grid and syllabus are
+untouched until DJ rules a schedule (Bible v8.203).
+
+**THE BUILD IS THE NEWMO** — a custom robot, chosen over Zircon because matching the Zumo's sensing lets each
+build break reinforce the lesson before it. **Hardware is under discussion, nothing locked**: DJ leans A-Star 32U4
+Prime SV, student-wired motor driver, IMU and QTR-8RC, larger 20D or 25D motors; ratio, driver and battery open.
+
+**LITE MODE IS STILL UNTESTED IN THE ROOM.** Students had not seen L06's switch at S207. Do not roll §27.15g to
+L07–L16 until they answer.
+
+**THE TUTOR WAS DOWN FOR MONEY AND THE MONEY WAS NEVER THE PROBLEM.** DJ's Org held the credit; the worker held
+a key from elsewhere. New key `zumosupport-tutor` (DJ's Org, Default workspace) fixed it, verified live.
+
+**`tutor/worker.js` IS v3.1 AND SERVES TWO COACHES.** A request with `mode:"builder"` gets the Bot Builder
+coach; every other request is byte-identical to v3, proved by running both against a stub. Live on Cloudflare
+and verified with one tutor call and one builder call. The Bot Builder page lives in its own repo,
+**`Weymuth/BotBuilder`** (`weymuth.github.io/BotBuilder/`), outside §12/§23 by design.
+
+**MADE OUTSIDE THE REPO (v1.0 each, RoboLore styled, PDFs delivered):** *Rescue Line Robot Specs*,
+*Ramps, Bumps and Traction*, *Zumo Baseline Tests*.
 
 ## WHAT SHIPPED IN S206
 
