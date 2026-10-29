@@ -186,7 +186,7 @@ Instruments: `book_gates` **v1.77.3** · `lesson_inventory` **v1.4.1** ·
 `title_feed` **v1.0** ·
 `quiz_bank` **v1.6.1** ·
 `timer.html` **v1.3.2** ·
-`tutor/tutor.html` **v1.1.1** ·
+`tutor/tutor.html` **v1.2** ·
 `harness_setup.sh` **v1.1** ·
 `pio_harness.sh` **v3.1** ·
 `going_deeper` **v01.7.0**.

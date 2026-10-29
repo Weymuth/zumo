@@ -1,4 +1,5 @@
-<!-- Tutor version: v1.1.1 -->
+<!-- Tutor version: v1.2 -->
+<!-- v1.2 (S208): sign-in with a mercersburg.edu Google account required (worker v3.3). -->
 <!-- Baseline established S70 (Jul 2026). No in-file version had ever existed and NO number is
      recorded anywhere for this file, so this is v1.0.0 by declaration, not by recovery.
      Git shows 5 commits, most recently 6ed7124 (S69, Bonus Challenges optgroup). -->
@@ -160,6 +161,64 @@
     </div>
   </div>
 
+<!-- ===== Mercersburg sign-in (required by worker v3.3) — same block in all three coach pages ===== -->
+<style>
+.ra-gate{position:fixed;inset:0;background:rgba(11,26,46,.88);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px}
+.ra-gate[hidden]{display:none!important}
+.ra-card{background:#FBF9F3;color:#16243A;border-radius:6px;padding:24px 20px;max-width:380px;width:100%;text-align:center;font:15px/1.5 Inter,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.ra-card b{display:block;font-size:19px;margin-bottom:6px}
+.ra-card p{margin:0 0 16px}
+.ra-btn{display:flex;justify-content:center;min-height:44px}
+.ra-err{color:#8C2F12;font-size:13px;margin-top:12px;min-height:1em}
+</style>
+<div class="ra-gate" id="raGate" hidden role="dialog" aria-modal="true" aria-labelledby="raTitle">
+  <div class="ra-card">
+    <b id="raTitle">Sign in to use the coach</b>
+    <p>Use your Mercersburg Google account (@mercersburg.edu).</p>
+    <div class="ra-btn" id="raBtn"></div>
+    <div class="ra-err" id="raErr" aria-live="polite"></div>
+  </div>
+</div>
+<script>
+const RoboAuth = (() => {
+  const CLIENT_ID = "100676999229-54tsuffn8nevempov3rtnub9hrcj6t0l.apps.googleusercontent.com";
+  const DOMAIN = "mercersburg.edu";
+  const KEY = "mercersburg-robotics-idtoken";
+  const gate = document.getElementById("raGate"), err = document.getElementById("raErr");
+  let token = null, ready = false, waiters = [];
+  try { token = sessionStorage.getItem(KEY); } catch (e) {}
+  const claims = t => { try { return JSON.parse(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))); } catch (e) { return {}; } };
+  const fresh = () => !!token && claims(token).exp * 1000 - Date.now() > 120000;   // 2-minute margin
+  function onCredential(r) {
+    if (claims(r.credential).hd !== DOMAIN) { err.textContent = "That isn't a Mercersburg account. Choose your @mercersburg.edu account."; return; }
+    token = r.credential;
+    try { sessionStorage.setItem(KEY, token); } catch (e) {}
+    err.textContent = ""; gate.hidden = true;
+    waiters.splice(0).forEach(f => f(token));
+  }
+  function render() {
+    if (!ready) return;   // the button appears once Google's script has loaded
+    google.accounts.id.renderButton(document.getElementById("raBtn"), { theme: "outline", size: "large", text: "signin_with", shape: "rectangular" });
+    google.accounts.id.prompt();
+  }
+  function show() { gate.hidden = false; render(); }
+  if (!fresh()) show();
+  setTimeout(() => { if (!ready && !gate.hidden) err.textContent = "Google sign-in didn't load. Check your internet connection, then reload the page."; }, 8000);
+  return {
+    init() {
+      ready = true; err.textContent = "";
+      google.accounts.id.initialize({ client_id: CLIENT_ID, callback: onCredential, hd: DOMAIN, auto_select: true, cancel_on_tap_outside: false });
+      if (!gate.hidden) render();
+    },
+    // Resolves with a current token, asking the student to sign in first if needed.
+    get() { if (fresh()) return Promise.resolve(token); show(); return new Promise(res => waiters.push(res)); },
+    // Call when the server says the sign-in is no longer valid.
+    expired() { token = null; try { sessionStorage.removeItem(KEY); } catch (e) {} }
+  };
+})();
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="RoboAuth.init()"></script>
+<!-- ===== end Mercersburg sign-in ===== -->
   <script>
     const WORKER_URL = "https://zumosupport.weymuthd.workers.dev";
     const LESSONS = [
@@ -306,16 +365,21 @@
       try {
         const res = await fetch(WORKER_URL, {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: conversationHistory, currentChallenge, lessonContent, lessonTitle })
+          body: JSON.stringify({ idToken: await RoboAuth.get(), messages: conversationHistory, currentChallenge, lessonContent, lessonTitle })
         });
         const data = await res.json();
-        if (data.error) throw new Error(data.error.message || "API error");
+        if (data.error) {
+          if (data.error.code === "auth") RoboAuth.expired();
+          const x = new Error(data.error.message || "API error"); x.friendly = !!data.error.code; throw x;
+        }
         const reply = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("\n").trim()
                       || "(no response — try rephrasing)";
         conversationHistory.push({ role: "assistant", content: reply });
         addMessage("bot", renderMarkdown(reply));
       } catch (e) {
-        addMessage("bot", `<span style="color:var(--red)">Something went wrong reaching the tutor: ${escapeHtml(e.message)}. Try again in a moment.</span>`);
+        addMessage("bot", e.friendly
+          ? `<span style="color:var(--red)">${escapeHtml(e.message)}</span>`
+          : `<span style="color:var(--red)">Something went wrong reaching the tutor: ${escapeHtml(e.message)}. Try again in a moment.</span>`);
       } finally {
         isLoading = false; document.getElementById("sendBtn").disabled = false;
         document.getElementById("typing").classList.remove("show"); scrollDown();

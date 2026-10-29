@@ -1,5 +1,13 @@
 // ============================================================
-// Mercersburg Robotics AI Tutor — Cloudflare Worker Proxy v3.2
+// Mercersburg Robotics AI Tutor — Cloudflare Worker Proxy v3.3
+// v3.3: SIGN-IN REQUIRED. Every request must carry `idToken`, a Google
+//       ID token for a verified @mercersburg.edu account (Workspace
+//       "hd" claim), issued to our OAuth client. The worker checks
+//       Google's signature itself. Requests are accepted only from
+//       https://weymuth.github.io, and each student is held to
+//       RATE_MAX messages per RATE_WINDOW_MS (best-effort: counted per
+//       Cloudflare instance, not globally). What is sent to the model
+//       on each path is unchanged from v3.2.
 // v3.2: also serves the VEX Code Coach (Weymuth/VexTutor). A request
 //       with mode:"vex" gets the VEX prompt plus the EZ-Template
 //       reference the page sends. Tutor and builder paths unchanged.
@@ -41,11 +49,80 @@
 // 3. ANTHROPIC_API_KEY must already be set in Settings -> Variables
 // ============================================================
 
+// --- ACCESS CONTROL (v3.3) ---
+const GOOGLE_CLIENT_ID = "100676999229-54tsuffn8nevempov3rtnub9hrcj6t0l.apps.googleusercontent.com";
+const ALLOWED_ORIGIN = "https://weymuth.github.io";
+const ALLOWED_DOMAIN = "mercersburg.edu";
+const RATE_MAX = 40;                     // messages per student…
+const RATE_WINDOW_MS = 10 * 60 * 1000;   // …per 10 minutes
+
 const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
+  "Vary": "Origin",
 };
+
+function deny(status, code, message) {
+  return new Response(JSON.stringify({ error: { code, message } }), {
+    status, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } });
+}
+
+// Google's public signing keys, cached for as long as Google says.
+let googleKeyCache = null, googleKeyExpiry = 0;
+async function googleKeys(force) {
+  if (!force && googleKeyCache && Date.now() < googleKeyExpiry) return googleKeyCache;
+  const r = await fetch("https://www.googleapis.com/oauth2/v3/certs");
+  const j = await r.json();
+  const m = /max-age=(\d+)/.exec(r.headers.get("cache-control") || "");
+  googleKeyCache = j.keys || [];
+  googleKeyExpiry = Date.now() + (m ? Number(m[1]) * 1000 : 3600 * 1000);
+  return googleKeyCache;
+}
+function b64urlBytes(s) {
+  s = s.replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  return Uint8Array.from(atob(s), c => c.charCodeAt(0));
+}
+// Returns the student's email if the token is a valid Google ID token for a
+// verified @mercersburg.edu account issued to our client; otherwise null.
+async function verifyGoogleToken(token) {
+  if (typeof token !== "string") return null;
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  let header, claims;
+  try {
+    header = JSON.parse(new TextDecoder().decode(b64urlBytes(parts[0])));
+    claims = JSON.parse(new TextDecoder().decode(b64urlBytes(parts[1])));
+  } catch (e) { return null; }
+  if (header.alg !== "RS256" || !header.kid) return null;
+  let jwk = (await googleKeys(false)).find(k => k.kid === header.kid);
+  if (!jwk) jwk = (await googleKeys(true)).find(k => k.kid === header.kid);   // Google rotated keys
+  if (!jwk) return null;
+  const key = await crypto.subtle.importKey("jwk", jwk, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["verify"]);
+  const ok = await crypto.subtle.verify("RSASSA-PKCS1-v1_5", key, b64urlBytes(parts[2]),
+    new TextEncoder().encode(parts[0] + "." + parts[1]));
+  if (!ok) return null;
+  const now = Date.now() / 1000;
+  if (claims.iss !== "accounts.google.com" && claims.iss !== "https://accounts.google.com") return null;
+  if (claims.aud !== GOOGLE_CLIENT_ID) return null;
+  if (!(claims.exp > now)) return null;
+  const email = String(claims.email || "").toLowerCase();
+  if (claims.hd !== ALLOWED_DOMAIN || claims.email_verified !== true || !email.endsWith("@" + ALLOWED_DOMAIN)) return null;
+  return email;
+}
+
+// Per-student message count (in memory: per Cloudflare instance, best-effort).
+const rateLog = new Map();
+function overLimit(email) {
+  const now = Date.now();
+  const recent = (rateLog.get(email) || []).filter(t => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_MAX) { rateLog.set(email, recent); return true; }
+  recent.push(now);
+  rateLog.set(email, recent);
+  if (rateLog.size > 5000) rateLog.clear();   // keep memory bounded
+  return false;
+}
 
 // --- SYSTEM PROMPT (curriculum-free; the live lesson is injected at request time) ---
 const SYSTEM_PROMPT = `You are the Mercersburg Academy Robotics Tutor — a patient, encouraging coach who helps students debug code and understand concepts for their Pololu Zumo 32U4 line-rescue robotics course. These are freshmen with ZERO prior coding experience. You are precise but never condescending.
@@ -180,9 +257,23 @@ export default {
       });
     }
 
+    // v3.3: only our own pages may call this worker.
+    if (request.headers.get("Origin") !== ALLOWED_ORIGIN) {
+      return deny(403, "origin", "This coach only works from the Mercersburg robotics pages.");
+    }
+
     try {
       const body = await request.json();
       const { messages, currentChallenge, lessonContent, lessonTitle } = body;
+
+      // v3.3: a signed-in Mercersburg student, within the rate limit.
+      const email = await verifyGoogleToken(body.idToken);
+      if (!email) {
+        return deny(401, "auth", "Please sign in with your Mercersburg Google account.");
+      }
+      if (overLimit(email)) {
+        return deny(429, "rate", "You've sent a lot of messages in the last few minutes. Take a short break, try what the coach suggested, then come back.");
+      }
 
       // --- Bot Builder branch (v3.1) ---
       if (body.mode === "builder") {
