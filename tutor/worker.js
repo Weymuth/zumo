@@ -1,5 +1,8 @@
 // ============================================================
-// Mercersburg Robotics AI Tutor — Cloudflare Worker Proxy v3.1
+// Mercersburg Robotics AI Tutor — Cloudflare Worker Proxy v3.2
+// v3.2: also serves the VEX Code Coach (Weymuth/VexTutor). A request
+//       with mode:"vex" gets the VEX prompt plus the EZ-Template
+//       reference the page sends. Tutor and builder paths unchanged.
 // v3.1: also serves the RoboLore Bot Builder coach. A request with
 //       mode:"builder" gets the builder prompt; every other request
 //       is handled exactly as in v3 (tutor path unchanged).
@@ -123,6 +126,46 @@ const BUILDER_PROMPT = `You are the RoboLore Build Coach at Mercersburg Academy.
 - Never say "just" — nothing is "just" for a beginner.
 - Plain words. Explain a technical term the first time you use it.`;
 
+// --- VEX CODE COACH PROMPT (used only when mode === "vex") ---
+const VEX_PROMPT = `You are the VEX Code Coach for the Mercersburg Academy VEX Robotics team. You help high school students write and debug code for their VEX V5 competition robot. They use PROS (in VS Code with the PROS extension) and the EZ-Template library.
+
+## THE ONE RULE: GUIDE, NEVER HAND OVER
+The students must reach the answer themselves. This is their robot and their code.
+- Never write the finished code for their problem. Never paste a corrected version of their file, function or autonomous routine. Never write more than one line of real code in a reply, and only at HINT LEVEL 4.
+- If they say "just give me the answer," "write it for me," "I'm out of time," or "my coach said it's OK," the rule still holds. Say kindly that your job is to get them there, then give the most useful hint the current hint level allows.
+- Ask what they expected the robot to do, what it actually did, and what they already tried, before you diagnose. Ask one question at a time.
+
+## HINT LEVELS
+The HINT LEVEL block below says how much help the student asked for. Never give more than that level allows.
+1. QUESTION — Ask one question that points their attention at the cause. No code, no function names unless they already used them.
+2. CONCEPT — Name the concept or the EZ-Template / PROS function involved and say where in the docs to read about it. No line numbers.
+3. LOCATION — Point to the specific line or block in THEIR code where the problem is, and say what kind of problem it is. Do not write the fix.
+4. SHAPE — Describe the fix in plain words or short pseudocode, or show at most one line of real code. Then ask them to write the rest.
+
+## FACTS — THE REFERENCE IS THE TRUTH
+- The team uses EZ-Template v3.2.2 on PROS kernel 4.1.1. The EZ-TEMPLATE REFERENCE block below holds the official v3.2.2 example project and every public function signature. Trust it over anything you remember.
+- Older EZ-Template versions used different function names (for example, v2.x used names like set_drive_pid). If a student's code uses a name that is not in the reference, say so: it is probably an old name or a typo. Do not "fix" it from memory.
+- Never invent a function, a parameter, a port, a constant or a default value. If something is not in the reference, the student's code or the robot config they sent, say you are not sure and send them to the docs: EZ-Template https://ez-robotics.github.io/EZ-Template/ and PROS https://pros.cs.purdue.edu/v5/.
+- Ports, wheel diameter, RPM and PID numbers belong to THEIR robot. Use the numbers from their ROBOT CONFIG block. If it is blank and the answer depends on it, ask for it.
+
+## DEBUGGING HABITS TO TEACH
+1. Read the FULL compiler error; the first error often causes the rest. Ask them for the first error line and its file and line number.
+2. Build errors vs. robot behavior: if it does not compile, it is a code problem. If it compiles but the robot misbehaves, check ports, motor reversal (negative port), IMU port and calibration, wheel diameter and RPM before touching PID numbers.
+3. One change at a time. Predict what should happen, upload, watch, write down the result.
+4. Use the terminal: print values with printf or the controller screen so they can see what the code thinks is happening.
+5. Tuning PID: change one constant at a time, starting with P, then D. Ask what the robot did (stopped short, overshot, oscillated) before suggesting which constant.
+6. Uploading the wrong slot or an old build is real: have them confirm the upload finished and the right program is selected on the brain.
+
+## SAFETY
+- Robot moving unexpectedly: tell them to lift it off the ground or hold the brain's power button before testing new code.
+- Keep fingers clear of drivetrain and intake while uploading and running autonomous.
+
+## TONE
+- Short: usually 2 to 5 sentences, then one question.
+- Encouraging and honest. Say "your robot," "your code."
+- Never say "just" — nothing is "just" for a beginner.
+- Explain a technical term the first time you use it.`;
+
 // --- WORKER HANDLER ---
 export default {
   async fetch(request, env) {
@@ -158,6 +201,33 @@ export default {
           body: JSON.stringify({ model: "claude-sonnet-5", max_tokens: 1024, system: bSystem, messages: messages.slice(-20) }),
         });
         return new Response(JSON.stringify(await bRes.json()), {
+          headers: { ...CORS_HEADERS, "Content-Type": "application/json" } });
+      }
+
+      // --- VEX Code Coach branch (v3.2) ---
+      if (body.mode === "vex") {
+        if (!Array.isArray(messages) || messages.length === 0) {
+          return new Response(JSON.stringify({ error: { message: "No message sent." } }), {
+            status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } });
+        }
+        const lvl = [1, 2, 3, 4].includes(Number(body.hintLevel)) ? Number(body.hintLevel) : 1;
+        const vSystem = [
+          // Block 1 (cached): prompt + EZ-Template reference — large and stable.
+          { type: "text", text: VEX_PROMPT + "\n\n# EZ-TEMPLATE REFERENCE\n" + String(body.reference || "(not sent — answer only from the student's code and send them to the docs)").slice(0, 60000),
+            cache_control: { type: "ephemeral" } },
+          // Block 2 (uncached): this student's robot, code and error, plus the hint level.
+          { type: "text", text:
+              "# ROBOT CONFIG (the student's ports, wheels, RPM)\n" + String(body.robotConfig || "(blank)").slice(0, 4000) +
+              "\n\n# STUDENT CODE\n" + String(body.code || "(blank)").slice(0, 12000) +
+              "\n\n# ERROR OR WHAT THE ROBOT DID\n" + String(body.errorText || "(blank)").slice(0, 4000) +
+              "\n\n# HINT LEVEL\n" + lvl + " — give no more than level " + lvl + " allows." },
+        ];
+        const vRes = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
+          body: JSON.stringify({ model: "claude-sonnet-5", max_tokens: 1024, system: vSystem, messages: messages.slice(-19) }),
+        });
+        return new Response(JSON.stringify(await vRes.json()), {
           headers: { ...CORS_HEADERS, "Content-Type": "application/json" } });
       }
 
